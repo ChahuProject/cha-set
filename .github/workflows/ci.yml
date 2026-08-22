@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Generate tokens css
+        run: node spec/generators/generate-css.mjs
+      - name: Typecheck
+        run: pnpm --filter @chaset/ui typecheck
+      - name: Test (writes conformance coverage)
+        run: pnpm --filter @chaset/ui test
+      - name: Parity gate
+        run: node gate/parity.mjs
+      - name: Build
+        run: pnpm --filter @chaset/ui build

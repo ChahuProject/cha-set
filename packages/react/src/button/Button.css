@@ -1,0 +1,106 @@
+.cs-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cs-spacing-gap-sm, 0.25rem);
+  border: 1px solid transparent;
+  border-radius: var(--cs-radius-control, 0.5rem);
+  font-family: inherit;
+  font-weight: var(--cs-typography-font-weight-medium, 500);
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+  user-select: none;
+}
+
+.cs-button:focus-visible {
+  outline: 2px solid var(--cs-color-primary, #4b3fe3);
+  outline-offset: 2px;
+}
+
+.cs-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.cs-button--full {
+  width: 100%;
+}
+
+.cs-button--sm {
+  font-size: var(--cs-typography-font-sm, 0.75rem);
+  padding: var(--cs-spacing-padding-sm, 0.375rem 0.75rem);
+}
+
+.cs-button--md {
+  font-size: var(--cs-typography-font-md, 0.875rem);
+  padding: var(--cs-spacing-padding-md, 0.5rem 1rem);
+}
+
+.cs-button--lg {
+  font-size: var(--cs-typography-font-lg, 1rem);
+  padding: var(--cs-spacing-padding-lg, 0.625rem 1.25rem);
+}
+
+.cs-button--primary {
+  background: var(--cs-color-primary);
+  color: var(--cs-color-primary-foreground);
+}
+
+.cs-button--primary:hover:not(:disabled) {
+  background: var(--cs-color-primary-hover);
+}
+
+.cs-button--primary:active:not(:disabled) {
+  background: var(--cs-color-primary-active);
+}
+
+.cs-button--secondary {
+  background: var(--cs-color-secondary);
+  color: var(--cs-color-secondary-foreground);
+  border-color: var(--cs-color-border);
+}
+
+.cs-button--secondary:hover:not(:disabled) {
+  background: var(--cs-color-secondary-hover);
+}
+
+.cs-button--ghost {
+  background: transparent;
+  color: var(--cs-color-text);
+}
+
+.cs-button--ghost:hover:not(:disabled) {
+  background: var(--cs-color-ghost-hover);
+}
+
+.cs-button--danger {
+  background: var(--cs-color-danger);
+  color: var(--cs-color-danger-foreground);
+}
+
+.cs-button--danger:hover:not(:disabled) {
+  background: var(--cs-color-danger-hover);
+}
+
+.cs-button__spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: cs-button-spin 600ms linear infinite;
+}
+
+.cs-button--loading .cs-button__label {
+  opacity: 0.7;
+}
+
+@keyframes cs-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

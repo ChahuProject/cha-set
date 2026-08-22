@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "components": {
+    "button": {
+      "variant": { "requirement": "must", "description": "variant switches visual style" },
+      "size": { "requirement": "must", "description": "size switches dimensions" },
+      "disabled": { "requirement": "must", "description": "disabled blocks interaction" },
+      "keyboard": { "requirement": "must", "description": "native button keyboard activation" },
+      "loading": { "requirement": "should", "description": "loading shows spinner and blocks clicks" },
+      "fullWidth": { "requirement": "should", "description": "fullWidth stretches to container" },
+      "a11y": { "requirement": "should", "description": "accessible label support" }
+    }
+  }
+}
