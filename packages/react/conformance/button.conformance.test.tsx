@@ -1,7 +1,7 @@
 import { afterAll, describe, expect, it } from 'vitest';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { buttonSchema } from '@chaset/spec/button';
+import { buttonSchema } from '@chahu/spec/button';
 
 /**
  * Capabilities this implementation covers (must + should),

@@ -8,9 +8,9 @@
   "scripts": {
     "gen:css": "node spec/generators/generate-css.mjs",
     "gate": "node gate/parity.mjs",
-    "typecheck": "pnpm --filter @chaset/ui typecheck",
-    "test": "pnpm --filter @chaset/ui test",
-    "build": "pnpm --filter @chaset/ui build"
+    "typecheck": "pnpm --filter @chahu/cha-set typecheck",
+    "test": "pnpm --filter @chahu/cha-set test",
+    "build": "pnpm --filter @chahu/cha-set build"
   },
   "engines": {
     "node": ">=20"

@@ -10,7 +10,7 @@ importers:
 
   packages/react:
     devDependencies:
-      '@chaset/spec':
+      '@chahu/spec':
         specifier: workspace:*
         version: link:../../spec
       '@testing-library/jest-dom':

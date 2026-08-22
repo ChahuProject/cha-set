@@ -17,7 +17,7 @@ spec/                       single source of truth (not published)
   capabilities.json         capability manifest (must / should / stack-specific)
 gate/parity.mjs             CI parity gate: every "must" capability must be
                             covered by every existing implementation
-packages/react/             React implementation → @chaset/ui
+packages/react/             React implementation → @chahu/cha-set
 qt/                         Qt implementation (planned)
 ```
 
@@ -25,18 +25,18 @@ qt/                         Qt implementation (planned)
 
 | Package | Description |
 | --- | --- |
-| `@chaset/ui` | React component library (published to npm) |
-| `@chaset/spec` | Spec contracts, used internally (not published) |
+| `@chahu/cha-set` | React component library (published to npm) |
+| `@chahu/spec` | Spec contracts, used internally (not published) |
 
 ## Usage
 
 ```bash
-pnpm add @chaset/ui
+pnpm add @chahu/cha-set
 ```
 
 ```tsx
-import { Button } from '@chaset/ui';
-import '@chaset/ui/styles.css';
+import { Button } from '@chahu/cha-set';
+import '@chahu/cha-set/styles.css';
 
 <Button variant="primary" size="md" loading={isSaving}>
   Save
@@ -51,7 +51,7 @@ pnpm gen:css       # regenerate packages/react/src/styles/tokens.css from spec/t
 pnpm typecheck     # tsc --noEmit
 pnpm test          # vitest (unit + conformance)
 pnpm gate          # parity gate against spec/capabilities.json
-pnpm build         # build @chaset/ui (esm + cjs + d.ts + css)
+pnpm build         # build @chahu/cha-set (esm + cjs + d.ts + css)
 ```
 
 ## License

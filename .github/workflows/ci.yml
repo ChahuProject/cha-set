@@ -20,10 +20,10 @@ jobs:
       - name: Generate tokens css
         run: node spec/generators/generate-css.mjs
       - name: Typecheck
-        run: pnpm --filter @chaset/ui typecheck
+        run: pnpm --filter @chahu/cha-set typecheck
       - name: Test (writes conformance coverage)
-        run: pnpm --filter @chaset/ui test
+        run: pnpm --filter @chahu/cha-set test
       - name: Parity gate
         run: node gate/parity.mjs
       - name: Build
-        run: pnpm --filter @chaset/ui build
+        run: pnpm --filter @chahu/cha-set build

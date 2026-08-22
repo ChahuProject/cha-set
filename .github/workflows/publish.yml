@@ -18,8 +18,8 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
       - run: node spec/generators/generate-css.mjs
-      - run: pnpm --filter @chaset/ui build
-      - name: Publish @chaset/ui
-        run: pnpm --filter @chaset/ui publish --access public --no-git-checks
+      - run: pnpm --filter @chahu/cha-set build
+      - name: Publish @chahu/cha-set
+        run: pnpm --filter @chahu/cha-set publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

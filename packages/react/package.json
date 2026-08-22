@@ -1,5 +1,5 @@
 {
-  "name": "@chaset/ui",
+  "name": "@chahu/cha-set",
   "version": "0.1.0",
   "description": "ChaSet React implementation — cross-stack UI components.",
   "type": "module",
@@ -26,7 +26,7 @@
     "react-dom": ">=18"
   },
   "devDependencies": {
-    "@chaset/spec": "workspace:*",
+    "@chahu/spec": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@types/node": "^26.2.0",
