@@ -8,6 +8,8 @@
   "scripts": {
     "gen:css": "node spec/generators/generate-css.mjs",
     "gen:qt": "node spec/generators/generate-qt.mjs",
+    "gen:all": "node spec/generators/generate-all.mjs",
+    "sync": "node scripts/sync-consumers.mjs",
     "gate": "node gate/parity.mjs",
     "typecheck": "pnpm --filter @chahu/cha-set typecheck",
     "test": "pnpm --filter @chahu/cha-set test",
