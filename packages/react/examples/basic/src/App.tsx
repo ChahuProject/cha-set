@@ -1,75 +1,77 @@
-import { useState } from 'react';
-import { Button } from '@chahu/cha-set';
-import '@chahu/cha-set/styles.css';
+import { useEffect, useState } from 'react';
+import ColorsSection from './sections/ColorsSection';
+import TypeRadiusSection from './sections/TypeRadiusSection';
+import ButtonSection from './sections/ButtonSection';
+
+const ACCENTS: { id: string; label: string }[] = [
+  { id: '', label: '默认' },
+  { id: 'slate', label: 'slate' },
+  { id: 'red', label: 'red' },
+  { id: 'orange', label: 'orange' },
+  { id: 'yellow', label: 'yellow' },
+  { id: 'green', label: 'green' },
+  { id: 'blue', label: 'blue' },
+  { id: 'violet', label: 'violet' },
+  { id: 'rose', label: 'rose' },
+];
+
+function applyTheme(mode: string, accent: string) {
+  const html = document.documentElement;
+  html.classList.toggle('dark', mode === 'dark');
+  if (accent) html.setAttribute('data-theme', accent);
+  else html.removeAttribute('data-theme');
+}
 
 export function App() {
-  const [loading, setLoading] = useState(false);
-  const [log, setLog] = useState<string[]>([]);
+  const [mode, setMode] = useState(() => localStorage.getItem('cs-mode') ?? 'light');
+  const [accent, setAccent] = useState(() => localStorage.getItem('cs-accent') ?? '');
 
-  const push = (msg: string) => setLog((l) => [msg, ...l].slice(0, 6));
+  useEffect(() => {
+    applyTheme(mode, accent);
+    localStorage.setItem('cs-mode', mode);
+    localStorage.setItem('cs-accent', accent);
+  }, [mode, accent]);
+
+  const themeKey = `${mode}:${accent}`;
 
   return (
-    <main className="demo">
-      <h1>ChaSet React Button example</h1>
-      <p className="muted">
-        Rendered from <code>@chahu/cha-set</code> (React implementation, styled by
-        generated <code>--cs-*</code> tokens).
-      </p>
-
-      <section className="row">
-        <Button variant="primary" onClick={() => push('primary clicked')}>
-          Primary
-        </Button>
-        <Button variant="secondary" onClick={() => push('secondary clicked')}>
-          Secondary
-        </Button>
-        <Button variant="ghost" onClick={() => push('ghost clicked')}>
-          Ghost
-        </Button>
-        <Button variant="danger" onClick={() => push('danger clicked')}>
-          Danger
-        </Button>
-      </section>
-
-      <section className="row">
-        <Button size="sm">Small</Button>
-        <Button size="md">Medium</Button>
-        <Button size="lg">Large</Button>
-        <Button fullWidth={false} onClick={() => push('default size')}>
-          Default
-        </Button>
-      </section>
-
-      <section className="row">
-        <Button
-          loading={loading}
-          onClick={() => {
-            setLoading(true);
-            window.setTimeout(() => setLoading(false), 1500);
-          }}
+    <>
+      <header className="topbar">
+        <h1>ChaSet 组件展示</h1>
+        <div className="chipset" role="group" aria-label="强调色主题">
+          {ACCENTS.map((a) => (
+            <button
+              key={a.id}
+              className="chip"
+              aria-pressed={accent === a.id}
+              onClick={() => setAccent(a.id)}
+            >
+              {a.label}
+            </button>
+          ))}
+        </div>
+        <button
+          className="chip"
+          aria-pressed={mode === 'dark'}
+          onClick={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
         >
-          {loading ? 'Saving…' : 'Simulate save'}
-        </Button>
-        <Button disabled onClick={() => push('should never fire')}>
-          Disabled
-        </Button>
-        <Button fullWidth>Full width</Button>
-      </section>
+          {mode === 'dark' ? '暗色' : '浅色'}
+        </button>
+      </header>
 
-      <section className="row">
-        <Button
-          variant="secondary"
-          onClick={() => document.documentElement.classList.toggle('dark')}
-        >
-          Toggle dark mode
-        </Button>
-      </section>
+      <div className="body-grid">
+        <nav className="toc" aria-label="目录">
+          <a href="#colors">色板</a>
+          <a href="#type">字体 / 圆角 / 图表</a>
+          <a href="#button">Button</a>
+        </nav>
 
-      <ul className="log">
-        {log.map((entry, i) => (
-          <li key={i}>{entry}</li>
-        ))}
-      </ul>
-    </main>
+        <main>
+          <ColorsSection themeKey={themeKey} />
+          <TypeRadiusSection />
+          <ButtonSection />
+        </main>
+      </div>
+    </>
   );
 }

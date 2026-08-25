@@ -1,54 +1,198 @@
+/* ChaSet 组件展示 —— 全部颜色消费生成的 --cs-* token（自食其力）。
+ * 明暗由 <html>.dark 切换；强调色由 <html>[data-theme] 切换。 */
+
 :root {
-  font-family: system-ui, sans-serif;
-  color-scheme: light dark;
+  font-family: system-ui, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
 }
 
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
-  background: #fafafa;
+  background: var(--cs-background);
+  color: var(--cs-foreground);
 }
 
-.demo {
-  max-width: 640px;
+/* ---- 顶部栏 ---- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1.25rem;
+  background: color-mix(in oklab, var(--cs-background) 82%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--cs-border);
+}
+.topbar h1 {
+  font-size: 1.05rem;
+  margin: 0 auto 0 0;
+  letter-spacing: 0.02em;
+}
+.chipset {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+.chip {
+  border: 1px solid var(--cs-border);
+  background: transparent;
+  color: var(--cs-muted-foreground);
+  border-radius: 999px;
+  padding: 0.18rem 0.6rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.chip:hover {
+  color: var(--cs-foreground);
+}
+.chip[aria-pressed='true'] {
+  background: var(--cs-primary);
+  border-color: var(--cs-primary);
+  color: var(--cs-primary-foreground);
+}
+
+/* ---- 布局 ---- */
+.body-grid {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 1.5rem;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 1.5rem 1.25rem 4rem;
+}
+nav.toc {
+  position: sticky;
+  top: 3.4rem;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.85rem;
+}
+nav.toc a {
+  color: var(--cs-muted-foreground);
+  text-decoration: none;
+  padding: 0.3rem 0.55rem;
+  border-left: 2px solid transparent;
+}
+nav.toc a:hover {
+  color: var(--cs-foreground);
+  border-left-color: var(--cs-border);
 }
 
-h1 {
-  font-size: 1.5rem;
-  margin: 0 0 0.25rem;
+/* ---- 区块卡片 ---- */
+section.block {
+  scroll-margin-top: 4.2rem;
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-radius, 0.5rem);
+  padding: 1.1rem 1.2rem 1.3rem;
+  margin-bottom: 1.4rem;
+  background: var(--cs-card);
+}
+section.block > h2 {
+  font-size: 0.95rem;
+  margin: 0 0 0.15rem;
+}
+section.block > p.desc {
+  margin: 0 0 1rem;
+  color: var(--cs-muted-foreground);
+  font-size: 0.8rem;
 }
 
-.muted {
-  color: #71717a;
-  font-size: 0.9rem;
-  margin: 0 0 1.5rem;
+/* ---- 色板 ---- */
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 0.6rem;
+}
+.swatch {
+  border: 1px solid var(--cs-border);
+  border-radius: calc(var(--cs-radius, 0.5rem) - 2px);
+  overflow: hidden;
+  font-size: 0.7rem;
+}
+.swatch-color {
+  height: 52px;
+  border-bottom: 1px solid var(--cs-border);
+}
+.swatch-meta {
+  padding: 0.35rem 0.5rem 0.45rem;
+}
+.swatch-name {
+  font-family: ui-monospace, monospace;
+  color: var(--cs-foreground);
+}
+.swatch-value {
+  font-family: ui-monospace, monospace;
+  color: var(--cs-muted-foreground);
+  word-break: break-all;
 }
 
-code {
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 4px;
-  padding: 0 0.3em;
+/* ---- 字体 / 圆角 / 图表 ---- */
+.radius-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.radius-box {
+  width: 72px;
+  height: 56px;
+  border: 1.5px solid var(--cs-primary);
+  background: color-mix(in oklab, var(--cs-primary) 10%, transparent);
+  display: grid;
+  place-items: center;
+  font-size: 0.68rem;
+  color: var(--cs-muted-foreground);
+}
+.weight-sample {
+  font-size: 1.15rem;
+  margin: 0.2rem 0;
+}
+.chart-row {
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-end;
+  height: 84px;
+}
+.chart-bar {
+  width: 44px;
+  border-radius: 4px 4px 0 0;
 }
 
-.row {
+/* ---- 按钮矩阵 / 日志 ---- */
+.matrix-row {
   display: flex;
   gap: 0.75rem;
+  align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.9rem;
 }
-
+.matrix-label {
+  width: 74px;
+  font-size: 0.72rem;
+  color: var(--cs-muted-foreground);
+  font-family: ui-monospace, monospace;
+}
 .log {
   list-style: none;
+  margin: 0.9rem 0 0;
   padding: 0;
-  font-family: monospace;
-  font-size: 0.85rem;
-  color: #3f3f46;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--cs-muted-foreground);
 }
-
 .log li {
-  background: #f4f4f5;
+  border: 1px solid var(--cs-border);
   border-radius: 6px;
-  padding: 0.35rem 0.6rem;
-  margin-bottom: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  margin-bottom: 0.3rem;
 }
