@@ -21,9 +21,6 @@
   --cs-input: oklch(0.922 0 0);
   --cs-ring: color-mix(in oklch, var(--foreground) 12%, transparent);
   --cs-hover: oklch(0 0 0 / 0.05);
-  --cs-status-success: oklch(0.62 0.17 150);
-  --cs-status-warning: oklch(0.72 0.16 75);
-  --cs-status-error: var(--destructive);
   --cs-sidebar: oklch(0.985 0 0);
   --cs-sidebar-foreground: oklch(0.145 0 0);
   --cs-sidebar-primary: oklch(0.205 0 0);
@@ -65,9 +62,6 @@
   --cs-input: oklch(0.269 0 0);
   --cs-ring: color-mix(in oklch, var(--foreground) 14%, transparent);
   --cs-hover: oklch(1 0 0 / 0.08);
-  --cs-status-success: oklch(0.72 0.21 149);
-  --cs-status-warning: oklch(0.79 0.18 86);
-  --cs-status-error: var(--destructive);
   --cs-sidebar: oklch(0.205 0 0);
   --cs-sidebar-foreground: oklch(0.985 0 0);
   --cs-sidebar-primary: oklch(0.922 0 0);
