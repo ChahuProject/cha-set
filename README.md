@@ -12,14 +12,28 @@ ChaSet is the UI layer of the ChahuProject family:
 
 ```
 spec/                       single source of truth (not published)
-  tokens.json               design tokens → generated CSS (React) / QSS+QPalette (Qt)
+  tokens.json               unified design tokens, three tiers:
+                              primitives  - scales (space/motion/size/weight)
+                              semantic    - aliased roles with per-product presets
+                                            ("launcher" = crd-a shadcn palette,
+                                             "dunting"  = dt-a ThemeManager palette)
+                              composite   - multi-part surfaces, $platform-gated
+                              themes      - axes mode x accentTheme x windowTint
+                                            x interfaceStyle + verbatim overrides
+                              qt          - dunting flat tables for generate-qt
+  validate-tokens.mjs       structural validator (CI + pre-gen check)
   components/*.ts           component API contracts (zod schemas)
   capabilities.json         capability manifest (must / should / stack-specific)
 gate/parity.mjs             CI parity gate: every "must" capability must be
                             covered by every existing implementation
 packages/react/             React implementation → @chahu/cha-set
-qt/                         Qt implementation (planned)
+qt/                         Qt reference implementation (ChaSetButton demo)
 ```
+
+Token flow: edit `spec/tokens.json` → generators emit per-stack artifacts
+(CSS custom properties for web, a C++ header for dt-a's ThemeManager) →
+generated artifacts are committed into consumer repos. See
+`docs/token-mapping.md` (Todo 8) for the full mapping and refresh guide.
 
 ## Packages
 
