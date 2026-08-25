@@ -56,6 +56,15 @@ export function App() {
         <Button fullWidth>Full width</Button>
       </section>
 
+      <section className="row">
+        <Button
+          variant="secondary"
+          onClick={() => document.documentElement.classList.toggle('dark')}
+        >
+          Toggle dark mode
+        </Button>
+      </section>
+
       <ul className="log">
         {log.map((entry, i) => (
           <li key={i}>{entry}</li>

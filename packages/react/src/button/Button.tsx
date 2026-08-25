@@ -26,6 +26,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     `cs-button--${variant}`,
     `cs-button--${size}`,
     fullWidth ? 'cs-button--full' : '',
+    loading ? 'cs-button--loading' : '',
     className ?? '',
   ]
     .filter(Boolean)
