@@ -73,7 +73,19 @@ for (const f of EXPECT_COLORS) {
     if (!HEX8.test(c[mode] ?? '')) fail(`qt.colors.${f}.${mode}: "${c[mode]}" is not #RRGGBBAA`);
   }
 }
-if (Object.keys(colors).length !== 33) fail(`qt.colors must have exactly 33 fields, got ${Object.keys(colors).length}`);
+  if (Object.keys(colors).length !== 33) fail(`qt.colors must have exactly 33 fields, got ${Object.keys(colors).length}`);
+  const rgbf = spec.qt?.rgbf ?? {};
+  for (const f of EXPECT_COLORS) {
+    const r = rgbf[f];
+    if (!r) { fail(`qt.rgbf.${f}: missing`); continue; }
+    for (const mode of ['dark', 'light']) {
+      const a = r[mode];
+      if (!Array.isArray(a) || a.length !== 4 || a.some((x) => typeof x !== 'number' || x < 0 || x > 1)) {
+        fail(`qt.rgbf.${f}.${mode}: must be [r,g,b,a] numbers in [0,1]`);
+      }
+    }
+  }
+  if (Object.keys(rgbf).length !== 33) fail(`qt.rgbf must have exactly 33 fields, got ${Object.keys(rgbf).length}`);
 for (const [grp, n] of [['space', 7], ['motion', 3], ['size', 21]]) {
   const got = Object.keys(spec.qt?.[grp] ?? {}).length;
   if (got !== n) fail(`qt.${grp} must have ${n} fields, got ${got}`);

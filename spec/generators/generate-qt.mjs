@@ -4,8 +4,11 @@
 //   namespace cha_set_gen { struct ThemeTokens; inline const ThemeTokens kDark/kLight; }
 // Field names and order match ThemeManager::Tokens exactly (theme_manager.h),
 // so dt-a's ThemeManager can consume generated values field-by-field.
-// Colors are emitted as QColor(QStringLiteral("#AARRGGBB")) literals — the
-// spec stores #RRGGBBAA, so the alpha pair is moved to the front on emit.
+// Colors are emitted as QColor::fromRgbF(...) literals from per-color float
+// arrays (spec.qt.rgbf). Byte-origin channels use "<byte>.0 / 255.0" so the
+// constructed QColor is bit-exact with the original hex/string/int paths at
+// Qt's 16-bit storage; true-float origins (theme_manager.cpp rgb()/fromRgbF)
+// are transcribed verbatim. The #RRGGBBAA hex stays as a trailing comment.
 // accentHover/accentPressed are intentionally ABSENT (runtime-derived in
 // theme_manager.cpp:132-134).
 // Fails loud (exit 1) on validation errors or unsupported qt-platform tokens.
@@ -33,8 +36,18 @@ for (const [name, def] of Object.entries(spec.composite?.launcher ?? {})) {
   }
 }
 
-const rgbaToArgb = (hex) => `#${hex.slice(7, 9)}${hex.slice(1, 7)}`.toLowerCase();
-const colorLiteral = (hex) => `QColor(QStringLiteral("${rgbaToArgb(hex)}"))`;
+// Byte-origin channels emit as "<byte>.0 / 255.0" (exact at Qt's 16-bit
+// storage: v/255*65535 == v*257 == parsed-hex ushort); true-float origins
+// (transcribed verbatim from theme_manager.cpp) emit as decimals.
+const fmtChannel = (v) => {
+  const b = v * 255;
+  return Math.abs(b - Math.round(b)) < 1e-9 ? `${Math.round(b)}.0 / 255.0` : String(v);
+};
+const colorLiteral = (field, mode) => {
+  const [r, g, b, a] = spec.qt.rgbf[field][mode];
+  const hex = spec.qt.colors[field][mode];
+  return `QColor::fromRgbF(${fmtChannel(r)}, ${fmtChannel(g)}, ${fmtChannel(b)}, ${fmtChannel(a)}) /* ${hex} */`;
+};
 
 const COLOR_ORDER = [
   'chrome','background','panel','panelRaised','border','accent','nestAccent','pendingAccent',
@@ -54,7 +67,7 @@ const SIZE_ORDER = [
 
 function themeBlock(mode) {
   const lines = [];
-  for (const f of COLOR_ORDER) lines.push(`    ${colorLiteral(spec.qt.colors[f][mode])},`);
+  for (const f of COLOR_ORDER) lines.push(`    ${colorLiteral(f, mode)},`);
   for (const f of SPACE_ORDER) lines.push(`    ${spec.qt.space[f]},`);
   for (const f of MOTION_ORDER) lines.push(`    ${spec.qt.motion[f]},`);
   for (const f of SIZE_ORDER) lines.push(`    ${spec.qt.size[f]},`);
