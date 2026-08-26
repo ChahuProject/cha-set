@@ -3,9 +3,12 @@
 Qt 6 (QtQuick / QML) implementation of ChaSet. It is generated from and
 checked against the same single source of truth as the React implementation:
 
-- Design tokens come from `spec/tokens.json` (React consumes the generated
-  CSS; Qt consumes the same values directly here).
-- Component API contracts live in `spec/components/button.ts`.
+- Design tokens come from `spec/tokens.json` — `ThemeTokens.generated.qml`
+  is a GENERATED singleton (dark/light live switching) refreshed by
+  `pnpm gen:qt`; do not edit by hand.
+- `src/ChaSetButton.qml` implements the Button contract;
+  `src/Main.qml` is the component showcase gallery (color swatches,
+  radius/type samples, full button matrix).
 - `spec/capabilities.json` lists every "must" capability; this package
   reports coverage through `conformance/coverage.json`, enforced by
   `gate/parity.mjs`.
@@ -17,6 +20,15 @@ set PATH=C:\pengj\qt\6.10.1\msvc2022_64\bin;%PATH%
 cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=C:\pengj\qt\6.10.1\msvc2022_64
 cmake --build qt/build
 qt\build\QtChaSetDemo.exe
+```
+
+Screenshot mode (for CI/evidence):
+
+```bat
+set QT_QPA_PLATFORM=offscreen
+set QT_QUICK_BACKEND=software
+qt\build\QtChaSetDemo.exe --shot shot-dark.png
+qt\build\QtChaSetDemo.exe --shot shot-light.png --light
 ```
 
 Requires a Qt 6 install with QtQuick and a compiler that CMake can find

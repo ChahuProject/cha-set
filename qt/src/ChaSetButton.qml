@@ -1,9 +1,11 @@
-import QtQuick 6.10
-import QtQuick.Controls 6.10
-import ChaSet
-
 // ChaSet Button for Qt (QML), implementing the API contract from
 // spec/components/button.ts and the capabilities in spec/capabilities.json.
+// All colors come from the GENERATED ThemeTokens singleton (spec/tokens.json,
+// dunting preset) — accentHover/accentPressed stay runtime-derived here,
+// mirroring dt-a's ThemeManager behaviour.
+import QtQuick 6.10
+import chaSet
+
 Item {
     id: root
 
@@ -18,89 +20,99 @@ Item {
     signal clicked()
 
     readonly property bool effectiveDisabled: disabled || loading
+    readonly property color cAccentHover: Qt.lighter(ThemeTokens.accent, 1.12)
+    readonly property color cAccentPressed: Qt.darker(ThemeTokens.accent, 1.10)
 
-    function hoveredColor(base) {
+    function hoverBg() {
         switch (variant) {
-        case "primary":  return Theme.colorPrimaryHover
-        case "secondary": return Theme.colorSecondaryHover
-        case "danger":   return Theme.colorDangerHover
-        case "ghost":    return Theme.colorGhostHover
-        default:         return base
+        case "primary":   return cAccentHover
+        case "secondary": return ThemeTokens.selection
+        case "danger":    return ThemeTokens.dangerHover
+        case "ghost":     return ThemeTokens.hover
+        default:          return ThemeTokens.hover
         }
     }
 
     function bgColor() {
-        if (effectiveDisabled || tap.pressed && variant === "ghost") return hoveredColor(Theme.colorText)
+        if (down) {
+            switch (variant) {
+            case "primary":   return cAccentPressed
+            case "secondary": return ThemeTokens.selection
+            case "danger":    return ThemeTokens.dangerHover
+            default:          return ThemeTokens.hover
+            }
+        }
+        if (hovered && !effectiveDisabled) return hoverBg()
         switch (variant) {
-        case "secondary": return Theme.colorSecondary
+        case "secondary": return ThemeTokens.panelRaised
         case "ghost":     return "transparent"
-        case "danger":    return Theme.colorDanger
-        default:          return Theme.colorPrimary
+        case "danger":    return ThemeTokens.danger
+        default:          return ThemeTokens.accent
         }
     }
 
     function fgColor() {
         switch (variant) {
-        case "secondary": return Theme.colorSecondaryForeground
-        case "ghost":     return Theme.colorText
-        case "danger":    return Theme.colorDangerForeground
-        default:          return Theme.colorPrimaryForeground
+        case "secondary": return ThemeTokens.text
+        case "ghost":     return ThemeTokens.text
+        case "danger":    return ThemeTokens.onAccent
+        default:          return ThemeTokens.onAccent
         }
     }
 
     function paddingH() {
         switch (size) {
-        case "sm": return Theme.paddingSmH
-        case "lg": return Theme.paddingLgH
-        default:   return Theme.paddingMdH
+        case "sm": return ThemeTokens.space4   // 12
+        case "lg": return ThemeTokens.space6   // 24
+        default:   return ThemeTokens.space5   // 16
         }
     }
     function paddingV() {
         switch (size) {
-        case "sm": return Theme.paddingSmV
-        case "lg": return Theme.paddingLgV
-        default:   return Theme.paddingMdV
+        case "sm": return ThemeTokens.space2   // 4
+        case "lg": return ThemeTokens.space4   // 12
+        default:   return ThemeTokens.space3   // 8
         }
     }
     function fontSizePx() {
         switch (size) {
-        case "sm": return Theme.fontSm
-        case "lg": return Theme.fontLg
-        default:   return Theme.fontMd
+        case "sm": return ThemeTokens.fontSizeSmall    // 12
+        case "lg": return ThemeTokens.fontSizeHeading  // 16
+        default:   return ThemeTokens.fontSizeBody     // 13
         }
     }
 
-    implicitWidth: (text !== "" ? text.width : fontSizePx()) + paddingH() * 2 + Theme.spacingGapSm
+    implicitWidth: (text !== "" ? label.implicitWidth : fontSizePx()) + paddingH() * 2
     implicitHeight: fontSizePx() + paddingV() * 2
+    width: fullWidth && parent ? parent.width : implicitWidth
 
     property bool down: false
     property bool hovered: false
 
     Accessible.role: Accessible.Button
     Accessible.name: text
+    activeFocusOnTab: true
 
     // Background
     Rectangle {
         id: bg
         anchors.fill: root
-        radius: Theme.radiusControl
-        color: down
-                 ? (variant === "primary" ? Theme.colorPrimaryActive : hoveredColor(Theme.colorText))
-                 : (hovered && !effectiveDisabled ? hoveredColor(Theme.colorText) : bgColor())
-        border.color: variant === "secondary" ? Theme.colorBorder : "transparent"
-        border.width: variant === "secondary" ? 1 : 0
+        radius: ThemeTokens.rowRadius
+        color: root.bgColor()
+        border.color: root.variant === "secondary" ? ThemeTokens.border : "transparent"
+        border.width: root.variant === "secondary" ? 1 : 0
 
-        Behavior on color { ColorAnimation { duration: 120 } }
-        opacity: effectiveDisabled ? 0.6 : 1.0
+        Behavior on color { ColorAnimation { duration: ThemeTokens.motionQuick } }
+        opacity: root.effectiveDisabled ? 0.6 : 1.0
     }
 
     // Focus ring (a11y)
     Rectangle {
         anchors.fill: root
         anchors.margins: -3
-        radius: Theme.radiusControl + 3
+        radius: ThemeTokens.rowRadius + 3
         color: "transparent"
-        border.color: root.activeFocus ? Theme.colorPrimary : "transparent"
+        border.color: root.activeFocus ? ThemeTokens.accent : "transparent"
         border.width: 2
         visible: root.activeFocus
     }
@@ -109,12 +121,10 @@ Item {
     Text {
         id: label
         anchors.centerIn: root
-        anchors.leftMargin: paddingH()
-        anchors.rightMargin: paddingH()
         text: root.text
-        color: fgColor()
-        font.pixelSize: fontSizePx()
-        font.weight: Theme.fontWeightMedium
+        color: root.fgColor()
+        font.pixelSize: root.fontSizePx()
+        font.weight: Font.Medium
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         opacity: loading ? 0.7 : 1.0
@@ -124,26 +134,24 @@ Item {
     Rectangle {
         id: spinner
         visible: loading
-        width: fontSizePx()
-        height: fontSizePx()
+        width: root.fontSizePx()
+        height: root.fontSizePx()
         anchors.centerIn: root
         color: "transparent"
-        border.color: fgColor()
+        border.color: root.fgColor()
         border.width: 2
         radius: width / 2
 
-        // spinning tick
         Rectangle {
             width: 2
             height: width
-            color: fgColor()
+            color: root.fgColor()
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
             radius: width / 2
         }
 
         RotationAnimation {
-            id: spin
             target: spinner
             property: "rotation"
             running: root.loading
@@ -154,18 +162,16 @@ Item {
         }
     }
 
-    // Hover (mouse hover)
     HoverHandler {
         id: hoverHandler
-        enabled: !effectiveDisabled
+        enabled: !root.effectiveDisabled
         onHoveredChanged: root.hovered = hoverHandler.hovered
     }
 
-    // Tap (click) — blocks when disabled/loading
     TapHandler {
         id: tap
         acceptedButtons: Qt.LeftButton
-        enabled: !effectiveDisabled
+        enabled: !root.effectiveDisabled
         onTapped: root.clicked()
         onPressedChanged: {
             root.down = tap.pressed
@@ -174,7 +180,6 @@ Item {
         }
     }
 
-    // Keyboard activation (native button behaviour): Space / Enter when focused
     Keys.onSpacePressed: (event) => {
         event.accepted = true
         if (!effectiveDisabled) { down = true; root.clicked() }
@@ -184,6 +189,4 @@ Item {
         if (!effectiveDisabled) root.clicked()
     }
     Keys.onReleased: (event) => { if (event.key === Qt.Key_Space) down = false }
-
-    focusPolicy: Qt.TabFocus
 }

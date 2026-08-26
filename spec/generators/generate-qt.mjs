@@ -115,3 +115,55 @@ writeFileSync(outFile, header, 'utf8');
 const perTheme = COLOR_ORDER.length + SPACE_ORDER.length + MOTION_ORDER.length + SIZE_ORDER.length;
 console.log(`[gen:qt] emitted ${outFile}`);
 console.log(`[gen:qt] per-theme fields: ${perTheme} (${COLOR_ORDER.length} colors + ${SPACE_ORDER.length} space + ${MOTION_ORDER.length} motion + ${SIZE_ORDER.length} size)`);
+
+// ---------------- QML singleton for the Qt showcase (cha-set/qt) ----------------
+// Same rgbf values as the C++ header, emitted as Qt.rgba(...) so a QML
+// singleton can serve them with live dark/light switching. Written straight
+// into qt/src/ (tracked artifact, mirroring the tokens.css pattern).
+const rgbaLiteral = (mode, field) => {
+  const [r, g, b, a] = spec.qt.rgbf[field][mode];
+  return `Qt.rgba(${fmtChannel(r)}, ${fmtChannel(g)}, ${fmtChannel(b)}, ${fmtChannel(a)})`;
+};
+const intProps = (order, table) => order.map((f) => `    readonly property int ${f}: ${table[f]}`).join('\n');
+
+const qml = `pragma Singleton
+import QtQuick
+
+// GENERATED FILE - DO NOT EDIT.
+// Source: cha-set spec/tokens.json (schemaVersion ${spec.meta.schemaVersion})
+//         via spec/generators/generate-qt.mjs
+// Refresh: \`pnpm gen:qt\` regenerates this file in place.
+// Flip \`dark\` at runtime to switch every bound color live.
+QtObject {
+    id: root
+
+    property bool dark: true
+
+    function color(name) {
+        // qmlcachegen 不支持属性绑定中的对象字面量，改用 switch-case 直返。
+        if (dark) {
+            switch (name) {
+${COLOR_ORDER.map((f) => `            case "${f}":\n                return ${rgbaLiteral('dark', f)}`).join('\n')}
+            }
+        } else {
+            switch (name) {
+${COLOR_ORDER.map((f) => `            case "${f}":\n                return ${rgbaLiteral('light', f)}`).join('\n')}
+            }
+        }
+        return Qt.rgba(0, 0, 0, 1)
+    }
+
+${COLOR_ORDER.map((f) => `    readonly property color ${f}: color("${f}")`).join('\n')}
+
+${intProps(SPACE_ORDER, spec.qt.space)}
+
+${intProps(MOTION_ORDER, spec.qt.motion)}
+
+${intProps(SIZE_ORDER, spec.qt.size)}
+}
+`;
+
+const qmlOut = resolve(repoRoot, 'qt', 'src', 'ThemeTokens.generated.qml');
+mkdirSync(dirname(qmlOut), { recursive: true });
+writeFileSync(qmlOut, qml, 'utf8');
+console.log(`[gen:qt] emitted ${qmlOut}`);

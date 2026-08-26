@@ -21,11 +21,11 @@ jobs:
         run: |
           node spec/generators/generate-css.mjs
           node spec/generators/generate-qt.mjs
-      # Drift gate: committed tokens.css must equal fresh generator output.
-      # The Qt header is enforced on the consumer side (dt-a golden test) —
+      # Drift gate: committed artifacts must equal fresh generator output.
+      # The dt-a-side header is enforced on the consumer side (golden test) —
       # see docs/token-mapping.md "Refresh flow".
       - name: Fail on generated-artifact drift
-        run: git diff --exit-code -- packages/react/src/styles/tokens.css
+        run: git diff --exit-code -- packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml
       - name: Typecheck
         run: pnpm --filter @chahu/cha-set typecheck
       - name: Test (writes conformance coverage)

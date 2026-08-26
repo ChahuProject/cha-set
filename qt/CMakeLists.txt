@@ -16,13 +16,17 @@ qt_add_executable(QtChaSetDemo
     src/main.cpp
 )
 
+set_source_files_properties(src/ThemeTokens.generated.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+)
+
 qt_add_qml_module(QtChaSetDemo
     URI chaSet
     VERSION 0.1
     QML_FILES
         src/Main.qml
         src/ChaSetButton.qml
-        src/Theme.qml
+        src/ThemeTokens.generated.qml
     NO_RESOURCE_TARGET_PATH
 )
 
