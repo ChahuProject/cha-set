@@ -27,7 +27,7 @@ qt                  dunting 扁平表：colors{33 字段×dark/light}+ space/mot
 
 | 产物 | 生成器 | 落点（cha-set） | 消费方 |
 |---|---|---|---|
-| 库风味 CSS | generate-css.mjs | packages/react/src/styles/tokens.css（`--cs-*`） | @chahu/cha-set（Button 等） |
+| 库风味 CSS | generate-css.mjs | packages/react/src/styles/tokens.css（shadcn 标准名，无前缀，仅核心层） | @chahu/cha-set（Button 等）；宿主已定义同名变量时以宿主为准 |
 | 兼容风味 CSS | 同上 | dist/consumers/launcher/generated/tokens.generated.css | crd-a/launcher/src/css/generated/（替换原 shadcn-base/app-variables/window-tint/themes 四文件变量块） |
 | Qt C++ 头 | generate-qt.mjs | dist/consumers/dunting/generated/theme_tokens.generated.h | dt-a/theme/generated/（ThemeManager::Tokens 取值源） |
 

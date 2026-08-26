@@ -10,7 +10,7 @@ Item {
     id: root
 
     // ---- API contract (mirrors spec/components/button.ts) ----
-    property string variant: "primary"   // primary | secondary | ghost | danger
+    property string variant: "primary"   // primary | secondary | ghost | destructive
     property string size: "md"           // sm | md | lg
     property bool loading: false
     property bool fullWidth: false
@@ -27,8 +27,8 @@ Item {
         switch (variant) {
         case "primary":   return cAccentHover
         case "secondary": return ThemeTokens.selection
-        case "danger":    return ThemeTokens.dangerHover
-        case "ghost":     return ThemeTokens.hover
+        case "destructive": return ThemeTokens.dangerHover
+        case "ghost":       return ThemeTokens.hover
         default:          return ThemeTokens.hover
         }
     }
@@ -38,7 +38,7 @@ Item {
             switch (variant) {
             case "primary":   return cAccentPressed
             case "secondary": return ThemeTokens.selection
-            case "danger":    return ThemeTokens.dangerHover
+            case "destructive": return ThemeTokens.dangerHover
             default:          return ThemeTokens.hover
             }
         }
@@ -46,7 +46,7 @@ Item {
         switch (variant) {
         case "secondary": return ThemeTokens.panelRaised
         case "ghost":     return "transparent"
-        case "danger":    return ThemeTokens.danger
+        case "destructive": return ThemeTokens.danger
         default:          return ThemeTokens.accent
         }
     }
@@ -55,7 +55,7 @@ Item {
         switch (variant) {
         case "secondary": return ThemeTokens.text
         case "ghost":     return ThemeTokens.text
-        case "danger":    return ThemeTokens.onAccent
+        case "destructive": return ThemeTokens.onAccent
         default:          return ThemeTokens.onAccent
         }
     }

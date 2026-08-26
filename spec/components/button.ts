@@ -6,7 +6,7 @@ import { z } from 'zod';
  * each stack implements against it. Hand-written until the
  * generate-types generator lands.
  */
-export const buttonVariantSchema = z.enum(['primary', 'secondary', 'ghost', 'danger']);
+export const buttonVariantSchema = z.enum(['primary', 'secondary', 'ghost', 'destructive']);
 export const buttonSizeSchema = z.enum(['sm', 'md', 'lg']);
 
 export const buttonSchema = z.object({

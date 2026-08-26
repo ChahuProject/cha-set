@@ -31,17 +31,17 @@ describe('Button', () => {
   it('renders with default variant and size', () => {
     render(<Button>Save</Button>);
     const button = screen.getByRole('button', { name: 'Save' });
-    expect(button).toHaveClass('cs-button', 'cs-button--primary', 'cs-button--md');
+    expect(button).toHaveClass('bg-primary', 'text-primary-foreground', 'h-9');
   });
 
   it('applies variant and size classes', () => {
     render(
-      <Button variant="danger" size="lg">
+      <Button variant="destructive" size="lg">
         Delete
       </Button>,
     );
     const button = screen.getByRole('button', { name: 'Delete' });
-    expect(button).toHaveClass('cs-button--danger', 'cs-button--lg');
+    expect(button).toHaveClass('bg-destructive', 'text-destructive-foreground', 'h-10');
   });
 
   it('calls onClick', () => {
@@ -72,14 +72,14 @@ describe('Button', () => {
     const button = screen.getByRole('button', { name: 'Wait' });
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute('aria-busy', 'true');
-    expect(button).toHaveClass('cs-button--loading');
+    expect(button.querySelector('.cs-button__spinner')).not.toBeNull();
     fireEvent.click(button);
     expect(onClick).not.toHaveBeenCalled();
   });
 
   it('applies fullWidth class', () => {
     render(<Button fullWidth>Block</Button>);
-    expect(screen.getByRole('button')).toHaveClass('cs-button--full');
+    expect(screen.getByRole('button')).toHaveClass('w-full');
   });
 });
 

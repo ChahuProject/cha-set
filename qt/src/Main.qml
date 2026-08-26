@@ -169,7 +169,7 @@ ApplicationWindow {
                 columns: 1
                 rowSpacing: 10
                 Repeater {
-                    model: ["primary", "secondary", "ghost", "danger"]
+                    model: ["primary", "secondary", "ghost", "destructive"]
                     delegate: Row {
                         required property string modelData
                         spacing: 10
@@ -196,7 +196,7 @@ ApplicationWindow {
                         width: 80
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    ChaSetButton { variant: "danger"; text: "删除"; onClicked: win.push("danger clicked") }
+                    ChaSetButton { variant: "destructive"; text: "删除"; onClicked: win.push("destructive clicked") }
                     ChaSetButton { text: "禁用"; disabled: true }
                     ChaSetButton { fullWidth: true; width: 320; text: "Full width"; onClicked: win.push("fullWidth clicked") }
                 }

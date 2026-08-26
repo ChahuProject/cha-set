@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@chahu/cha-set';
 
-const VARIANTS = ['primary', 'secondary', 'ghost', 'danger'] as const;
+const VARIANTS = ['primary', 'secondary', 'ghost', 'destructive'] as const;
 const SIZES = ['sm', 'md', 'lg'] as const;
 
 export default function ButtonSection() {
@@ -30,7 +30,7 @@ export default function ButtonSection() {
 
       <div className="matrix-row">
         <span className="matrix-label">states</span>
-        <Button variant="danger" onClick={() => push('danger clicked')}>
+        <Button variant="destructive" onClick={() => push('destructive clicked')}>
           删除
         </Button>
         <Button disabled onClick={() => push('never fire')}>

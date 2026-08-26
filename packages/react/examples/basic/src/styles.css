@@ -1,4 +1,4 @@
-/* ChaSet 组件展示 —— 全部颜色消费生成的 --cs-* token（自食其力）。
+/* ChaSet 组件展示 —— 全部颜色消费生成的 shadcn 标准核心 token（无前缀，自食其力）。
  * 明暗由 <html>.dark 切换；强调色由 <html>[data-theme] 切换。 */
 
 :root {
@@ -14,8 +14,8 @@
 }
 body {
   margin: 0;
-  background: var(--cs-background);
-  color: var(--cs-foreground);
+  background: var(--background);
+  color: var(--foreground);
 }
 
 /* ---- 顶部栏 ---- */
@@ -27,9 +27,9 @@ body {
   align-items: center;
   gap: 1rem;
   padding: 0.65rem 1.25rem;
-  background: color-mix(in oklab, var(--cs-background) 82%, transparent);
+  background: color-mix(in oklab, var(--background) 82%, transparent);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--cs-border);
+  border-bottom: 1px solid var(--border);
 }
 .topbar h1 {
   font-size: 1.05rem;
@@ -42,21 +42,21 @@ body {
   align-items: center;
 }
 .chip {
-  border: 1px solid var(--cs-border);
+  border: 1px solid var(--border);
   background: transparent;
-  color: var(--cs-muted-foreground);
+  color: var(--muted-foreground);
   border-radius: 999px;
   padding: 0.18rem 0.6rem;
   font-size: 0.72rem;
   cursor: pointer;
 }
 .chip:hover {
-  color: var(--cs-foreground);
+  color: var(--foreground);
 }
 .chip[aria-pressed='true'] {
-  background: var(--cs-primary);
-  border-color: var(--cs-primary);
-  color: var(--cs-primary-foreground);
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
 }
 
 /* ---- 布局 ---- */
@@ -78,24 +78,24 @@ nav.toc {
   font-size: 0.85rem;
 }
 nav.toc a {
-  color: var(--cs-muted-foreground);
+  color: var(--muted-foreground);
   text-decoration: none;
   padding: 0.3rem 0.55rem;
   border-left: 2px solid transparent;
 }
 nav.toc a:hover {
-  color: var(--cs-foreground);
-  border-left-color: var(--cs-border);
+  color: var(--foreground);
+  border-left-color: var(--border);
 }
 
 /* ---- 区块卡片 ---- */
 section.block {
   scroll-margin-top: 4.2rem;
-  border: 1px solid var(--cs-border);
-  border-radius: var(--cs-radius, 0.5rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius, 0.5rem);
   padding: 1.1rem 1.2rem 1.3rem;
   margin-bottom: 1.4rem;
-  background: var(--cs-card);
+  background: var(--card);
 }
 section.block > h2 {
   font-size: 0.95rem;
@@ -103,7 +103,7 @@ section.block > h2 {
 }
 section.block > p.desc {
   margin: 0 0 1rem;
-  color: var(--cs-muted-foreground);
+  color: var(--muted-foreground);
   font-size: 0.8rem;
 }
 
@@ -114,25 +114,25 @@ section.block > p.desc {
   gap: 0.6rem;
 }
 .swatch {
-  border: 1px solid var(--cs-border);
-  border-radius: calc(var(--cs-radius, 0.5rem) - 2px);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius, 0.5rem) - 2px);
   overflow: hidden;
   font-size: 0.7rem;
 }
 .swatch-color {
   height: 52px;
-  border-bottom: 1px solid var(--cs-border);
+  border-bottom: 1px solid var(--border);
 }
 .swatch-meta {
   padding: 0.35rem 0.5rem 0.45rem;
 }
 .swatch-name {
   font-family: ui-monospace, monospace;
-  color: var(--cs-foreground);
+  color: var(--foreground);
 }
 .swatch-value {
   font-family: ui-monospace, monospace;
-  color: var(--cs-muted-foreground);
+  color: var(--muted-foreground);
   word-break: break-all;
 }
 
@@ -146,12 +146,12 @@ section.block > p.desc {
 .radius-box {
   width: 72px;
   height: 56px;
-  border: 1.5px solid var(--cs-primary);
-  background: color-mix(in oklab, var(--cs-primary) 10%, transparent);
+  border: 1.5px solid var(--primary);
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
   display: grid;
   place-items: center;
   font-size: 0.68rem;
-  color: var(--cs-muted-foreground);
+  color: var(--muted-foreground);
 }
 .weight-sample {
   font-size: 1.15rem;
@@ -179,7 +179,7 @@ section.block > p.desc {
 .matrix-label {
   width: 74px;
   font-size: 0.72rem;
-  color: var(--cs-muted-foreground);
+  color: var(--muted-foreground);
   font-family: ui-monospace, monospace;
 }
 .log {
@@ -188,10 +188,10 @@ section.block > p.desc {
   padding: 0;
   font-family: ui-monospace, monospace;
   font-size: 0.75rem;
-  color: var(--cs-muted-foreground);
+  color: var(--muted-foreground);
 }
 .log li {
-  border: 1px solid var(--cs-border);
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.25rem 0.55rem;
   margin-bottom: 0.3rem;
