@@ -1,0 +1,148 @@
+{
+  "semantic": {
+    "chart-1": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.87 0 0)",
+          "light": "oklch(0.87 0 0)"
+        }
+      }
+    },
+    "chart-2": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.556 0 0)",
+          "light": "oklch(0.556 0 0)"
+        }
+      }
+    },
+    "chart-3": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.439 0 0)",
+          "light": "oklch(0.439 0 0)"
+        }
+      }
+    },
+    "chart-4": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.371 0 0)",
+          "light": "oklch(0.371 0 0)"
+        }
+      }
+    },
+    "chart-5": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.269 0 0)",
+          "light": "oklch(0.269 0 0)"
+        }
+      }
+    },
+    "radius": {
+      "$type": "dimension",
+      "presets": {
+        "launcher": {
+          "dark": "0.5rem",
+          "light": "0.5rem"
+        }
+      }
+    },
+    "sidebar": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.205 0 0)",
+          "light": "oklch(0.985 0 0)"
+        }
+      }
+    },
+    "sidebar-accent": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(1 0 0 / 0.075)",
+          "light": "oklch(0.97 0 0)"
+        }
+      }
+    },
+    "sidebar-accent-foreground": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.985 0 0)",
+          "light": "oklch(0.205 0 0)"
+        }
+      }
+    },
+    "sidebar-border": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.269 0 0)",
+          "light": "oklch(0.922 0 0)"
+        }
+      }
+    },
+    "sidebar-foreground": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.985 0 0)",
+          "light": "oklch(0.145 0 0)"
+        }
+      }
+    },
+    "sidebar-primary": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.922 0 0)",
+          "light": "oklch(0.205 0 0)"
+        }
+      }
+    },
+    "sidebar-primary-foreground": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.205 0 0)",
+          "light": "oklch(0.985 0 0)"
+        }
+      }
+    },
+    "sidebar-ring": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(0.556 0 0)",
+          "light": "oklch(0.708 0 0)"
+        }
+      }
+    },
+    "sidebar-selected": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "oklch(1 0 0 / 0.105)",
+          "light": "oklch(0 0 0 / 0.065)"
+        }
+      }
+    },
+    "sidebar-selected-foreground": {
+      "$type": "color",
+      "presets": {
+        "launcher": {
+          "dark": "var(--sidebar-foreground)",
+          "light": "var(--sidebar-foreground)"
+        }
+      }
+    }
+  }
+}

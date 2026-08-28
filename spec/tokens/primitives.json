@@ -1,0 +1,45 @@
+{
+  "primitives": {
+    "space": {
+      "space0": 0,
+      "space1": 2,
+      "space2": 4,
+      "space3": 8,
+      "space4": 12,
+      "space5": 16,
+      "space6": 24
+    },
+    "motion": {
+      "quick": 90,
+      "short": 120,
+      "medium": 180
+    },
+    "size": {
+      "radiusSmall": 2,
+      "controlHeight": 28,
+      "gap": 8,
+      "pageInset": 24,
+      "dockInset": 12,
+      "dividerThickness": 6,
+      "minimumPaneExtent": 160,
+      "panelRadius": 6,
+      "rowRadius": 4,
+      "radiusLarge": 10,
+      "radiusXl": 14,
+      "separatorHeight": 9,
+      "separatorLine": 1,
+      "checkCol": 18,
+      "iconCol": 18,
+      "cascadeGap": 2,
+      "chevronW": 14,
+      "fontSizeTitle": 28,
+      "fontSizeHeading": 16,
+      "fontSizeBody": 13,
+      "fontSizeSmall": 12
+    },
+    "fontWeight": {
+      "medium": 500,
+      "semibold": 600
+    }
+  }
+}

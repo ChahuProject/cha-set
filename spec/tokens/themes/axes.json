@@ -1,0 +1,32 @@
+{
+  "themes": {
+    "axes": {
+      "mode": [
+        "light",
+        "dark"
+      ],
+      "accentTheme": [
+        "slate",
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "violet",
+        "rose"
+      ],
+      "windowTint": [
+        "slate",
+        "graphite",
+        "mist",
+        "sage",
+        "plum",
+        "custom"
+      ],
+      "interfaceStyle": [
+        "default",
+        "simple"
+      ]
+    }
+  }
+}

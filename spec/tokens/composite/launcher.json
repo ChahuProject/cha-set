@@ -1,0 +1,363 @@
+{
+  "composite": {
+    "launcher": {
+      "app-material-strength": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "0.58",
+        "light": "0.58"
+      },
+      "app-material-card-alpha": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "61%",
+        "light": "61%"
+      },
+      "app-material-panel-alpha": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "73%",
+        "light": "73%"
+      },
+      "app-material-surface-alpha": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "77%",
+        "light": "77%"
+      },
+      "app-material-menu-alpha": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "100%",
+        "light": "100%"
+      },
+      "app-material-modal-alpha": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "100%",
+        "light": "100%"
+      },
+      "app-material-overlay-alpha": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "41%",
+        "light": "41%"
+      },
+      "app-material-blur-radius": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "18px",
+        "light": "18px"
+      },
+      "app-material-menu-blur-radius": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "40px",
+        "light": "40px"
+      },
+      "app-radius-card": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "0.625rem",
+        "light": "0.625rem"
+      },
+      "app-radius-panel": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "0.5625rem",
+        "light": "0.5625rem"
+      },
+      "app-radius-control": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "0.4375rem",
+        "light": "0.4375rem"
+      },
+      "app-shadow-strength": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "0.5",
+        "light": "0.5"
+      },
+      "app-motion-scale": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "0.5",
+        "light": "0.5"
+      },
+      "app-motion-fast": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "140ms",
+        "light": "140ms"
+      },
+      "app-motion-normal": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "180ms",
+        "light": "180ms"
+      },
+      "app-window-tint": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "var(--background)",
+        "light": "var(--background)"
+      },
+      "app-window-tint-foreground": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "var(--foreground)",
+        "light": "var(--foreground)"
+      },
+      "app-window-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "linear-gradient(135deg, color-mix(in oklch, var(--app-window-tint) 92%, white 8%), var(--app-window-tint))",
+        "light": "linear-gradient(135deg, color-mix(in oklch, var(--app-window-tint) 96%, white 4%), var(--app-window-tint))"
+      },
+      "app-window-tint-overlay": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "linear-gradient(135deg, color-mix(in oklch, var(--app-window-tint) 45%, transparent), color-mix(in oklch, var(--app-window-tint) 50%, transparent))",
+        "light": "linear-gradient(135deg, color-mix(in oklch, var(--app-window-tint) 30%, transparent), color-mix(in oklch, var(--app-window-tint) 35%, transparent))"
+      },
+      "app-shell-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "transparent",
+        "light": "transparent"
+      },
+      "app-content-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "transparent",
+        "light": "transparent"
+      },
+      "app-sidebar-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "transparent",
+        "light": "transparent"
+      },
+      "app-sidebar-backdrop-filter": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "none",
+        "light": "none"
+      },
+      "app-card-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, var(--background) var(--app-material-card-alpha), transparent)",
+        "light": "color-mix(in oklch, var(--background) var(--app-material-card-alpha), transparent)"
+      },
+      "app-card-backdrop-filter": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "blur(calc(var(--app-material-blur-radius) * 0.45)) saturate(1.04)",
+        "light": "blur(calc(var(--app-material-blur-radius) * 0.45)) saturate(1.04)"
+      },
+      "app-panel-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, var(--background) var(--app-material-panel-alpha), transparent)",
+        "light": "color-mix(in oklch, var(--background) var(--app-material-panel-alpha), transparent)"
+      },
+      "app-panel-border": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, var(--foreground) 17%, transparent)",
+        "light": "color-mix(in oklch, var(--foreground) 13%, transparent)"
+      },
+      "app-panel-backdrop-filter": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "blur(calc(var(--app-material-blur-radius) * 0.35)) saturate(1.03)",
+        "light": "blur(calc(var(--app-material-blur-radius) * 0.35)) saturate(1.03)"
+      },
+      "app-card-shadow": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "none",
+        "light": "none"
+      },
+      "app-card-shadow-hover": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "none",
+        "light": "none"
+      },
+      "app-modal-overlay-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, black var(--app-material-overlay-alpha), transparent)",
+        "light": "color-mix(in oklch, black var(--app-material-overlay-alpha), transparent)"
+      },
+      "app-modal-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, var(--popover) var(--app-material-modal-alpha), black 4%)",
+        "light": "color-mix(in oklch, var(--popover) var(--app-material-modal-alpha), transparent)"
+      },
+      "app-modal-footer-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "transparent",
+        "light": "transparent"
+      },
+      "app-modal-border": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, var(--foreground) 18%, transparent)",
+        "light": "color-mix(in oklch, var(--foreground) 15%, transparent)"
+      },
+      "app-modal-shadow": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "0 24px 64px color-mix(in oklch, black 38%, transparent), 0 2px 12px color-mix(in oklch, black 20%, transparent), inset 0 1px 0 color-mix(in oklch, white 11%, transparent)",
+        "light": "0 22px 58px color-mix(in oklch, var(--foreground) 16%, transparent), 0 2px 10px color-mix(in oklch, var(--foreground) 8%, transparent), inset 0 1px 0 color-mix(in oklch, white 42%, transparent)"
+      },
+      "app-modal-backdrop-filter": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "blur(calc(var(--app-material-blur-radius) * 0.28)) saturate(1.02)",
+        "light": "blur(calc(var(--app-material-blur-radius) * 0.28)) saturate(1.02)"
+      },
+      "app-modal-overlay-backdrop-filter": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "none",
+        "light": "none"
+      },
+      "app-menu-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, var(--popover) var(--app-material-menu-alpha), black 6%)",
+        "light": "color-mix(in oklch, var(--popover) var(--app-material-menu-alpha), transparent)"
+      },
+      "app-menu-texture": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "linear-gradient(125deg, color-mix(in oklch, var(--popover) 96%, white 4%) 0%, var(--popover) 50%, color-mix(in oklch, var(--popover) 93%, var(--primary) 7%) 100%)",
+        "light": "linear-gradient(125deg, color-mix(in oklch, var(--popover) 95%, white 5%) 0%, var(--popover) 48%, color-mix(in oklch, var(--popover) 95%, var(--primary) 5%) 100%)"
+      },
+      "app-menu-border": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, var(--foreground) 18%, transparent)",
+        "light": "color-mix(in oklch, var(--foreground) 14%, transparent)"
+      },
+      "app-menu-shadow": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "0 22px 70px color-mix(in oklch, black 36%, transparent)",
+        "light": "0 18px 56px color-mix(in oklch, var(--foreground) 16%, transparent)"
+      },
+      "app-menu-backdrop-filter": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "blur(var(--app-material-menu-blur-radius)) saturate(1.1)",
+        "light": "blur(var(--app-material-menu-blur-radius)) saturate(1.1)"
+      },
+      "app-menu-item-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, white 14%, transparent)",
+        "light": "color-mix(in oklch, var(--accent) 68%, transparent)"
+      },
+      "app-menu-item-foreground": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "var(--popover-foreground)",
+        "light": "var(--accent-foreground)"
+      },
+      "app-menu-item-danger-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, var(--destructive) 18%, transparent)",
+        "light": "color-mix(in oklch, var(--destructive) 12%, transparent)"
+      },
+      "app-hero-background": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "var(--app-card-background)",
+        "light": "var(--app-card-background)"
+      },
+      "app-surface-strong": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "color-mix(in oklch, var(--background) 70%, white 7%)",
+        "light": "color-mix(in oklch, var(--background) 82%, var(--foreground) 4%)"
+      },
+      "app-status-success": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "oklch(0.72 0.21 149)",
+        "light": "oklch(0.62 0.17 150)"
+      },
+      "app-status-warning": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "oklch(0.79 0.18 86)",
+        "light": "oklch(0.72 0.16 75)"
+      },
+      "app-status-error": {
+        "$platform": [
+          "css"
+        ],
+        "dark": "var(--destructive)",
+        "light": "var(--destructive)"
+      }
+    }
+  }
+}

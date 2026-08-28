@@ -1,0 +1,443 @@
+{
+  "themes": {
+    "deltas": [
+      {
+        "accentTheme": "slate",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "chart-1": "oklch(0.36 0.035 258)",
+          "chart-2": "oklch(0.52 0.038 258)",
+          "chart-3": "oklch(0.455 0.125 25)",
+          "chart-4": "oklch(0.46 0.1 155)",
+          "chart-5": "oklch(0.485 0.115 12)",
+          "primary": "oklch(0.36 0.035 258)",
+          "primary-foreground": "oklch(0.985 0.003 255)",
+          "ring": "oklch(0.52 0.038 258)"
+        }
+      },
+      {
+        "accentTheme": "red",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "chart-1": "oklch(0.455 0.125 25)",
+          "chart-2": "oklch(0.56 0.115 25)",
+          "chart-3": "oklch(0.52 0.115 48)",
+          "chart-4": "oklch(0.485 0.115 12)",
+          "chart-5": "oklch(0.36 0.035 258)",
+          "primary": "oklch(0.455 0.125 25)",
+          "primary-foreground": "oklch(0.985 0.006 25)",
+          "ring": "oklch(0.56 0.115 25)"
+        }
+      },
+      {
+        "accentTheme": "orange",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "chart-1": "oklch(0.52 0.115 48)",
+          "chart-2": "oklch(0.61 0.105 48)",
+          "chart-3": "oklch(0.56 0.105 78)",
+          "chart-4": "oklch(0.455 0.125 25)",
+          "chart-5": "oklch(0.46 0.1 155)",
+          "primary": "oklch(0.52 0.115 48)",
+          "primary-foreground": "oklch(0.985 0.006 48)",
+          "ring": "oklch(0.61 0.105 48)"
+        }
+      },
+      {
+        "accentTheme": "yellow",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "chart-1": "oklch(0.56 0.105 78)",
+          "chart-2": "oklch(0.65 0.1 78)",
+          "chart-3": "oklch(0.52 0.115 48)",
+          "chart-4": "oklch(0.46 0.1 155)",
+          "chart-5": "oklch(0.47 0.105 255)",
+          "primary": "oklch(0.56 0.105 78)",
+          "primary-foreground": "oklch(0.145 0.01 78)",
+          "ring": "oklch(0.65 0.1 78)"
+        }
+      },
+      {
+        "accentTheme": "green",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "chart-1": "oklch(0.46 0.1 155)",
+          "chart-2": "oklch(0.56 0.1 155)",
+          "chart-3": "oklch(0.47 0.105 255)",
+          "chart-4": "oklch(0.56 0.105 78)",
+          "chart-5": "oklch(0.455 0.125 25)",
+          "primary": "oklch(0.46 0.1 155)",
+          "primary-foreground": "oklch(0.985 0.006 155)",
+          "ring": "oklch(0.56 0.1 155)"
+        }
+      },
+      {
+        "accentTheme": "blue",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "chart-1": "oklch(0.47 0.105 255)",
+          "chart-2": "oklch(0.58 0.105 255)",
+          "chart-3": "oklch(0.48 0.105 292)",
+          "chart-4": "oklch(0.46 0.1 155)",
+          "chart-5": "oklch(0.56 0.105 78)",
+          "primary": "oklch(0.47 0.105 255)",
+          "primary-foreground": "oklch(0.985 0.006 255)",
+          "ring": "oklch(0.58 0.105 255)"
+        }
+      },
+      {
+        "accentTheme": "violet",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "chart-1": "oklch(0.48 0.105 292)",
+          "chart-2": "oklch(0.59 0.1 292)",
+          "chart-3": "oklch(0.485 0.115 12)",
+          "chart-4": "oklch(0.47 0.105 255)",
+          "chart-5": "oklch(0.52 0.115 48)",
+          "primary": "oklch(0.48 0.105 292)",
+          "primary-foreground": "oklch(0.985 0.006 292)",
+          "ring": "oklch(0.59 0.1 292)"
+        }
+      },
+      {
+        "accentTheme": "rose",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "chart-1": "oklch(0.485 0.115 12)",
+          "chart-2": "oklch(0.585 0.11 12)",
+          "chart-3": "oklch(0.455 0.125 25)",
+          "chart-4": "oklch(0.48 0.105 292)",
+          "chart-5": "oklch(0.36 0.035 258)",
+          "primary": "oklch(0.485 0.115 12)",
+          "primary-foreground": "oklch(0.985 0.006 12)",
+          "ring": "oklch(0.585 0.11 12)"
+        }
+      },
+      {
+        "accentTheme": "slate",
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "primary": "oklch(0.79 0.035 258)",
+          "primary-foreground": "oklch(0.16 0.018 258)",
+          "ring": "oklch(0.65 0.038 258)"
+        }
+      },
+      {
+        "accentTheme": "red",
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "primary": "oklch(0.7 0.12 25)",
+          "primary-foreground": "oklch(0.145 0.01 25)",
+          "ring": "oklch(0.65 0.12 25)"
+        }
+      },
+      {
+        "accentTheme": "orange",
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "primary": "oklch(0.735 0.115 48)",
+          "primary-foreground": "oklch(0.16 0.014 48)",
+          "ring": "oklch(0.67 0.11 48)"
+        }
+      },
+      {
+        "accentTheme": "yellow",
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "primary": "oklch(0.79 0.12 82)",
+          "primary-foreground": "oklch(0.145 0.012 82)",
+          "ring": "oklch(0.7 0.115 82)"
+        }
+      },
+      {
+        "accentTheme": "green",
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "primary": "oklch(0.72 0.115 155)",
+          "primary-foreground": "oklch(0.14 0.014 155)",
+          "ring": "oklch(0.65 0.105 155)"
+        }
+      },
+      {
+        "accentTheme": "blue",
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "primary": "oklch(0.735 0.11 255)",
+          "primary-foreground": "oklch(0.145 0.018 255)",
+          "ring": "oklch(0.66 0.105 255)"
+        }
+      },
+      {
+        "accentTheme": "violet",
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "primary": "oklch(0.735 0.115 292)",
+          "primary-foreground": "oklch(0.145 0.018 292)",
+          "ring": "oklch(0.66 0.105 292)"
+        }
+      },
+      {
+        "accentTheme": "rose",
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "primary": "oklch(0.72 0.125 12)",
+          "primary-foreground": "oklch(0.145 0.014 12)",
+          "ring": "oklch(0.65 0.115 12)"
+        }
+      },
+      {
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "oklch(0.944 0.01 255)",
+          "app-window-tint": "oklch(0.955 0.012 255)",
+          "background": "oklch(0.975 0.006 255)",
+          "border": "oklch(0.88 0.012 255)",
+          "card": "oklch(0.982 0.005 255)",
+          "input": "oklch(0.88 0.012 255)",
+          "muted": "oklch(0.944 0.01 255)",
+          "popover": "oklch(0.99 0.004 255)",
+          "secondary": "oklch(0.944 0.01 255)",
+          "sidebar": "oklch(0.965 0.008 255)",
+          "sidebar-border": "oklch(0.88 0.012 255)"
+        },
+        "windowTint": "slate"
+      },
+      {
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "oklch(0.938 0.006 250)",
+          "app-window-tint": "oklch(0.94 0.008 250)",
+          "background": "oklch(0.968 0.004 250)",
+          "border": "oklch(0.872 0.008 250)",
+          "card": "oklch(0.982 0.003 250)",
+          "input": "oklch(0.872 0.008 250)",
+          "muted": "oklch(0.938 0.006 250)",
+          "popover": "oklch(0.99 0.002 250)",
+          "secondary": "oklch(0.938 0.006 250)",
+          "sidebar": "oklch(0.952 0.006 250)",
+          "sidebar-border": "oklch(0.872 0.008 250)"
+        },
+        "windowTint": "graphite"
+      },
+      {
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "oklch(0.946 0.012 220)",
+          "app-window-tint": "oklch(0.954 0.016 220)",
+          "background": "oklch(0.976 0.008 220)",
+          "border": "oklch(0.882 0.014 220)",
+          "card": "oklch(0.984 0.006 220)",
+          "input": "oklch(0.882 0.014 220)",
+          "muted": "oklch(0.946 0.012 220)",
+          "popover": "oklch(0.992 0.004 220)",
+          "secondary": "oklch(0.946 0.012 220)",
+          "sidebar": "oklch(0.962 0.01 220)",
+          "sidebar-border": "oklch(0.882 0.014 220)"
+        },
+        "windowTint": "mist"
+      },
+      {
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "oklch(0.944 0.014 145)",
+          "app-window-tint": "oklch(0.95 0.018 145)",
+          "background": "oklch(0.974 0.01 145)",
+          "border": "oklch(0.878 0.016 145)",
+          "card": "oklch(0.982 0.007 145)",
+          "input": "oklch(0.878 0.016 145)",
+          "muted": "oklch(0.944 0.014 145)",
+          "popover": "oklch(0.99 0.005 145)",
+          "secondary": "oklch(0.944 0.014 145)",
+          "sidebar": "oklch(0.958 0.012 145)",
+          "sidebar-border": "oklch(0.878 0.016 145)"
+        },
+        "windowTint": "sage"
+      },
+      {
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "oklch(0.944 0.012 315)",
+          "app-window-tint": "oklch(0.952 0.016 315)",
+          "background": "oklch(0.974 0.008 315)",
+          "border": "oklch(0.88 0.014 315)",
+          "card": "oklch(0.982 0.006 315)",
+          "input": "oklch(0.88 0.014 315)",
+          "muted": "oklch(0.944 0.012 315)",
+          "popover": "oklch(0.99 0.004 315)",
+          "secondary": "oklch(0.944 0.012 315)",
+          "sidebar": "oklch(0.96 0.01 315)",
+          "sidebar-border": "oklch(0.88 0.014 315)"
+        },
+        "windowTint": "plum"
+      },
+      {
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "color-mix(in oklch, var(--app-window-tint) 90%, black 10%)",
+          "background": "color-mix(in oklch, var(--app-window-tint) 40%, white 60%)",
+          "border": "color-mix(in oklch, var(--app-window-tint) 80%, black 20%)",
+          "card": "color-mix(in oklch, var(--app-window-tint) 20%, white 80%)",
+          "input": "color-mix(in oklch, var(--app-window-tint) 80%, black 20%)",
+          "muted": "color-mix(in oklch, var(--app-window-tint) 90%, black 10%)",
+          "popover": "color-mix(in oklch, var(--app-window-tint) 10%, white 90%)",
+          "secondary": "color-mix(in oklch, var(--app-window-tint) 90%, black 10%)",
+          "sidebar": "color-mix(in oklch, var(--app-window-tint) 60%, white 40%)",
+          "sidebar-border": "color-mix(in oklch, var(--app-window-tint) 80%, black 20%)"
+        },
+        "windowTint": "custom"
+      },
+      {
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "oklch(0.27 0.016 255)",
+          "app-window-tint": "oklch(0.19 0.018 255)",
+          "background": "oklch(0.17 0.014 255)",
+          "border": "oklch(0.3 0.018 255)",
+          "card": "oklch(0.18 0.012 255)",
+          "input": "oklch(0.3 0.018 255)",
+          "muted": "oklch(0.27 0.016 255)",
+          "popover": "oklch(0.18 0.012 255)",
+          "secondary": "oklch(0.27 0.016 255)",
+          "sidebar": "oklch(0.19 0.016 255)",
+          "sidebar-border": "oklch(0.3 0.018 255)"
+        },
+        "windowTint": "slate"
+      },
+      {
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "oklch(0.264 0.006 250)",
+          "app-window-tint": "oklch(0.18 0.008 250)",
+          "background": "oklch(0.165 0.004 250)",
+          "border": "oklch(0.29 0.008 250)",
+          "card": "oklch(0.176 0.004 250)",
+          "input": "oklch(0.29 0.008 250)",
+          "muted": "oklch(0.264 0.006 250)",
+          "popover": "oklch(0.176 0.004 250)",
+          "secondary": "oklch(0.264 0.006 250)",
+          "sidebar": "oklch(0.186 0.006 250)",
+          "sidebar-border": "oklch(0.29 0.008 250)"
+        },
+        "windowTint": "graphite"
+      },
+      {
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "oklch(0.268 0.014 220)",
+          "app-window-tint": "oklch(0.188 0.018 220)",
+          "background": "oklch(0.17 0.012 220)",
+          "border": "oklch(0.298 0.016 220)",
+          "card": "oklch(0.18 0.01 220)",
+          "input": "oklch(0.298 0.016 220)",
+          "muted": "oklch(0.268 0.014 220)",
+          "popover": "oklch(0.18 0.01 220)",
+          "secondary": "oklch(0.268 0.014 220)",
+          "sidebar": "oklch(0.19 0.014 220)",
+          "sidebar-border": "oklch(0.298 0.016 220)"
+        },
+        "windowTint": "mist"
+      },
+      {
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "oklch(0.266 0.014 145)",
+          "app-window-tint": "oklch(0.184 0.018 145)",
+          "background": "oklch(0.168 0.012 145)",
+          "border": "oklch(0.296 0.016 145)",
+          "card": "oklch(0.178 0.01 145)",
+          "input": "oklch(0.296 0.016 145)",
+          "muted": "oklch(0.266 0.014 145)",
+          "popover": "oklch(0.178 0.01 145)",
+          "secondary": "oklch(0.266 0.014 145)",
+          "sidebar": "oklch(0.188 0.014 145)",
+          "sidebar-border": "oklch(0.296 0.016 145)"
+        },
+        "windowTint": "sage"
+      },
+      {
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "oklch(0.268 0.014 315)",
+          "app-window-tint": "oklch(0.188 0.018 315)",
+          "background": "oklch(0.17 0.012 315)",
+          "border": "oklch(0.298 0.016 315)",
+          "card": "oklch(0.18 0.01 315)",
+          "input": "oklch(0.298 0.016 315)",
+          "muted": "oklch(0.268 0.014 315)",
+          "popover": "oklch(0.18 0.01 315)",
+          "secondary": "oklch(0.268 0.014 315)",
+          "sidebar": "oklch(0.19 0.014 315)",
+          "sidebar-border": "oklch(0.298 0.016 315)"
+        },
+        "windowTint": "plum"
+      },
+      {
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "accent": "color-mix(in oklch, var(--app-window-tint) 95%, white 5%)",
+          "background": "var(--app-window-tint)",
+          "border": "color-mix(in oklch, var(--app-window-tint) 70%, white 30%)",
+          "card": "color-mix(in oklch, var(--app-window-tint) 98%, white 2%)",
+          "input": "color-mix(in oklch, var(--app-window-tint) 70%, white 30%)",
+          "muted": "color-mix(in oklch, var(--app-window-tint) 95%, white 5%)",
+          "popover": "color-mix(in oklch, var(--app-window-tint) 98%, white 2%)",
+          "secondary": "color-mix(in oklch, var(--app-window-tint) 95%, white 5%)",
+          "sidebar": "color-mix(in oklch, var(--app-window-tint) 97%, white 3%)",
+          "sidebar-border": "color-mix(in oklch, var(--app-window-tint) 70%, white 30%)"
+        },
+        "windowTint": "custom"
+      },
+      {
+        "interfaceStyle": "simple",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "app-background-opacity": "0",
+          "app-card-shadow": "none",
+          "app-card-shadow-hover": "none",
+          "app-menu-shadow": "0 10px 30px color-mix(in oklch, var(--foreground) 14%, transparent)",
+          "app-panel-border": "color-mix(in oklch, var(--foreground) 16%, transparent)",
+          "border": "color-mix(in oklch, var(--foreground) 16%, transparent)",
+          "radius": "0.35rem",
+          "ring": "color-mix(in oklch, var(--foreground) 12%, transparent)"
+        }
+      },
+      {
+        "interfaceStyle": "simple",
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "app-menu-shadow": "0 12px 36px color-mix(in oklch, black 30%, transparent)"
+        }
+      }
+    ]
+  }
+}

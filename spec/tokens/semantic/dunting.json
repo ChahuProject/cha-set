@@ -1,0 +1,184 @@
+{
+  "semantic": {
+    "accent.blocked": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#8C949EF2",
+          "light": "#8C949EF2"
+        }
+      }
+    },
+    "accent.conflict": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#f0a03aff",
+          "light": "#b26a00ff"
+        }
+      }
+    },
+    "accent.nest": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#B86BAFF2",
+          "light": "#9E61F0F2"
+        }
+      }
+    },
+    "accent.pending": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#FFB838F2",
+          "light": "#E0991AF2"
+        }
+      }
+    },
+    "canvas.grid": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#FFFFFF1A",
+          "light": "#0000001A"
+        }
+      }
+    },
+    "canvas.grid-major": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#FFFFFF29",
+          "light": "#00000029"
+        }
+      }
+    },
+    "canvas.loading-backdrop": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#212936D9",
+          "light": "#DBE3EDD9"
+        }
+      }
+    },
+    "canvas.loading-border": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#73859E99",
+          "light": "#8C9EB899"
+        }
+      }
+    },
+    "canvas.loading-text": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#a0b2c6ff",
+          "light": "#5c6779ff"
+        }
+      }
+    },
+    "canvas.marquee": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#3366aaff",
+          "light": "#3366aaff"
+        }
+      }
+    },
+    "canvas.marquee-border": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#99cceeff",
+          "light": "#99cceeff"
+        }
+      }
+    },
+    "chrome.down": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#FFFFFF66",
+          "light": "#00000038"
+        }
+      }
+    },
+    "chrome.hover": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#FFFFFF21",
+          "light": "#0000001A"
+        }
+      }
+    },
+    "chrome.icon": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#FFFFFFFF",
+          "light": "#1C2430EB"
+        }
+      }
+    },
+    "chrome.surface": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#090E1AE6",
+          "light": "#F0F2F7EB"
+        }
+      }
+    },
+    "interaction.disabled": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#808C9E66",
+          "light": "#808C9E66"
+        }
+      }
+    },
+    "interaction.disabled-text": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#6b7890ff",
+          "light": "#9aa3b3ff"
+        }
+      }
+    },
+    "interaction.pressed": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#FFFFFF24",
+          "light": "#00000014"
+        }
+      }
+    },
+    "overlay.info-bar": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#99000000",
+          "light": "#99000000"
+        }
+      }
+    },
+    "overlay.scrim": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#00000080",
+          "light": "#00000059"
+        }
+      }
+    }
+  }
+}

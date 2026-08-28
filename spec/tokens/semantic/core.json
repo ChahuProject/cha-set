@@ -1,0 +1,267 @@
+{
+  "semantic": {
+    "accent": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#1e293bff",
+          "light": "#dbe4f5ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.269 0 0)",
+          "light": "oklch(0.97 0 0)"
+        }
+      }
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#e6f0faff",
+          "light": "#1c2430ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.985 0 0)",
+          "light": "oklch(0.205 0 0)"
+        }
+      }
+    },
+    "background": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#0a0c14ff",
+          "light": "#f4f6faff"
+        },
+        "launcher": {
+          "dark": "oklch(0.145 0 0)",
+          "light": "oklch(1 0 0)"
+        }
+      }
+    },
+    "border": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#3c4858ff",
+          "light": "#ccd4e0ff"
+        },
+        "launcher": {
+          "dark": "color-mix(in oklch, var(--foreground) 18%, transparent)",
+          "light": "color-mix(in oklch, var(--foreground) 14%, transparent)"
+        }
+      }
+    },
+    "card": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#161b26ff",
+          "light": "#ffffffff"
+        },
+        "launcher": {
+          "dark": "oklch(0.145 0 0)",
+          "light": "oklch(1 0 0)"
+        }
+      }
+    },
+    "card-foreground": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#e6f0faff",
+          "light": "#1c2430ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.985 0 0)",
+          "light": "oklch(0.145 0 0)"
+        }
+      }
+    },
+    "destructive": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#FF3B30E6",
+          "light": "#D12E26E6"
+        },
+        "launcher": {
+          "dark": "oklch(0.62 0.22 27.325)",
+          "light": "oklch(0.577 0.245 27.325)"
+        }
+      }
+    },
+    "destructive-foreground": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#ffffffff",
+          "light": "#ffffffff"
+        },
+        "launcher": {
+          "dark": "oklch(0.985 0 0)",
+          "light": "oklch(0.985 0 0)"
+        }
+      }
+    },
+    "foreground": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#e6f0faff",
+          "light": "#1c2430ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.985 0 0)",
+          "light": "oklch(0.145 0 0)"
+        }
+      }
+    },
+    "input": {
+      "$type": "color",
+      "inherited": {
+        "dunting": "aliases border; dunting defines no separate input token"
+      },
+      "presets": {
+        "dunting": {
+          "dark": "#3c4858ff",
+          "light": "#ccd4e0ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.269 0 0)",
+          "light": "oklch(0.922 0 0)"
+        }
+      }
+    },
+    "interaction.hover": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#FFFFFF17",
+          "light": "#0000000F"
+        },
+        "launcher": {
+          "dark": "oklch(1 0 0 / 0.08)",
+          "light": "oklch(0 0 0 / 0.05)"
+        }
+      }
+    },
+    "muted": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#161b26ff",
+          "light": "#ffffffff"
+        },
+        "launcher": {
+          "dark": "oklch(0.269 0 0)",
+          "light": "oklch(0.97 0 0)"
+        }
+      }
+    },
+    "muted-foreground": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#a0b2c6ff",
+          "light": "#5c6779ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.708 0 0)",
+          "light": "oklch(0.556 0 0)"
+        }
+      }
+    },
+    "popover": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#252d3dff",
+          "light": "#e8ecf3ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.145 0 0)",
+          "light": "oklch(1 0 0)"
+        }
+      }
+    },
+    "popover-foreground": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#e6f0faff",
+          "light": "#1c2430ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.985 0 0)",
+          "light": "oklch(0.145 0 0)"
+        }
+      }
+    },
+    "primary": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#30a0ffff",
+          "light": "#1d7ae0ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.922 0 0)",
+          "light": "oklch(0.205 0 0)"
+        }
+      }
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#ffffffff",
+          "light": "#ffffffff"
+        },
+        "launcher": {
+          "dark": "oklch(0.205 0 0)",
+          "light": "oklch(0.985 0 0)"
+        }
+      }
+    },
+    "ring": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#30a0ffff",
+          "light": "#1d7ae0ff"
+        },
+        "launcher": {
+          "dark": "color-mix(in oklch, var(--foreground) 14%, transparent)",
+          "light": "color-mix(in oklch, var(--foreground) 12%, transparent)"
+        }
+      }
+    },
+    "secondary": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#252d3dff",
+          "light": "#e8ecf3ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.269 0 0)",
+          "light": "oklch(0.97 0 0)"
+        }
+      }
+    },
+    "secondary-foreground": {
+      "$type": "color",
+      "presets": {
+        "dunting": {
+          "dark": "#e6f0faff",
+          "light": "#1c2430ff"
+        },
+        "launcher": {
+          "dark": "oklch(0.985 0 0)",
+          "light": "oklch(0.205 0 0)"
+        }
+      }
+    }
+  }
+}

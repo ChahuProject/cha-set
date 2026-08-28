@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "schemaVersion": 1,
+    "description": "ChaSet unified design tokens. Three tiers: primitives (scales), semantic (aliased roles, per-product presets), composite (multi-part surfaces, platform-gated). Two product presets: 'launcher' (crd-a launcher, shadcn/Tailwind v4, oklch) and 'dunting' (dt-a Qt/QML ThemeManager palette). Values are transcribed verbatim from product sources; nothing is invented or normalized.",
+    "sources": {
+      "dunting.declarations": "dt-a/theme/theme_manager.h lines 41-148",
+      "dunting.palette": "dt-a/theme/theme_manager.cpp kDark lines 319-388, kLight lines 390-459",
+      "excluded": {
+        "accentHover/accentPressed": "runtime-derived in theme_manager.cpp:132-134 (accent().lighter(112)/darker(110)); never static tokens",
+        "tabMinWidth/tabMaxWidth": "user preferences, not design tokens (theme_manager_test.cpp owns them)"
+      },
+      "launcher.accent-themes": "crd-a/launcher/src/css/themes.css (16 selector blocks: 8 light :root[data-theme], 8 dark .dark[data-theme])",
+      "launcher.composites": "crd-a/launcher/src/css/app-variables.css (:root lines 1-66 light/base, .dark lines 67-111 dark overrides)",
+      "launcher.interface-style": "crd-a/launcher/src/css/themes.css lines 1-14 (data-interface-style=simple)",
+      "launcher.semantic-defaults": "crd-a/launcher/src/css/shadcn-base.css (:root light block lines 104-141, .dark block lines 143-179)",
+      "launcher.window-tints": "crd-a/launcher/src/css/window-tint.css (12 selector blocks: 6 light :root[data-window-tint], 6 dark .dark[data-window-tint]; tint ids slate/graphite/mist/sage/plum/custom)",
+      "mappings.dunting-to-core": {
+        "border": "border (+input, inherited - dunting defines no separate input token)",
+        "conflict": "status-warning (+accent.conflict)",
+        "danger": "destructive (+status-error)",
+        "focus": "ring",
+        "onAccent": "primary-foreground (+destructive-foreground)",
+        "panel": "card (+muted base)",
+        "panelRaised": "popover (+secondary)",
+        "selection": "accent",
+        "subduedText": "muted-foreground",
+        "text": "foreground (+card-foreground, secondary-foreground, accent-foreground)"
+      },
+      "reclassifications": [
+        "app-status-success/warning/error stay in composite.launcher under their original --app-* names (consumers reference them by those names; tiering follows source fidelity)",
+        "--hover (shadcn-base.css) merged with dunting hover into semantic.interaction.hover (same role)"
+      ]
+    },
+    "conventions": {
+      "colors.dunting": "#RRGGBBAA hex rendered from QColor::fromRgbF(r,g,b,a) via channel*255 rounded half-away-from-zero once (Qt 8-bit quantization); opaque colors carry 'ff'. Conversion table: .omo/evidence/t1/conversion-table.md",
+      "colors.launcher": "verbatim oklch()/color-mix()/var() strings from css sources",
+      "composite.shape": "{ \"$platform\": [\"css\"], \"light\"?: string, \"dark\"?: string }; a part present in one mode only appears in that mode only",
+      "inheritance": "preset values absent from a source are inherited from the token's base and flagged \"inherited\": true",
+      "keys": "custom property names stored WITHOUT leading '--'; generators re-add it",
+      "overrides.shape": "{ selector (verbatim from source css), preset, axes..., tokens: { name: value } }"
+    }
+  }
+}
