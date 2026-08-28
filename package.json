@@ -16,7 +16,7 @@
     "test": "pnpm --filter @chahu/cha-set test",
     "test:tokens": "pnpm --filter @chahu/cha-set exec vitest run --config spec/vitest.config.mjs",
     "build": "pnpm --filter @chahu/cha-set build",
-    "prepare": "node -e \"try{require('child_process').execSync('lefthook install',{stdio:'inherit'})}catch{console.log('尚未 git init，跳过 lefthook 安装；可先 git init 再运行 pnpm lefthook:install')}\"",
+    "prepare": "node -e \"try{require('child_process').execSync('lefthook install',{stdio:'inherit'})}catch{console.log('Not yet git init, skipping lefthook install; run git init first then pnpm lefthook:install')}\"",
     "lefthook:install": "lefthook install",
     "commitlint": "commitlint",
     "postinstall": "node scripts/ensure-codegraph.mjs"

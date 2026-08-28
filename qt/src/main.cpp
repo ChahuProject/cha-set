@@ -4,9 +4,9 @@
 #include <QQuickWindow>
 #include <QTimer>
 
-// ChaSet Qt 展示程序。
-// 截图模式（用于证据链）：QtChaSetDemo.exe --shot out.png [--light]
-//   渲染完成后抓取窗口保存为 PNG 并退出。
+// ChaSet Qt showcase app.
+// Screenshot mode (for evidence chain): QtChaSetDemo.exe --shot out.png [--light]
+//   Capture the window after rendering completes, save as PNG, and exit.
 int main(int argc, char* argv[])
 {
     QGuiApplication app(argc, argv);
@@ -23,8 +23,8 @@ int main(int argc, char* argv[])
         &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
         []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
-    // 截图连接必须在 loadFromModule 之前注册：qrc 内嵌 QML 为同步加载，
-    // objectCreated 在 load 返回前就已发出。
+    // Screenshot connection must be registered before loadFromModule: QRC-embedded QML loads synchronously,
+    // objectCreated is emitted before load returns.
     if (shotMode) {
         const QString outPath = args.value(shotIdx + 1);
         QObject::connect(

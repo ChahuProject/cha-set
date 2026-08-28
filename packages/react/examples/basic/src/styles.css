@@ -1,5 +1,5 @@
-/* ChaSet 组件展示 —— 全部颜色消费生成的 shadcn 标准核心 token（无前缀，自食其力）。
- * 明暗由 <html>.dark 切换；强调色由 <html>[data-theme] 切换。 */
+/* ChaSet showcase — all colors consume generated shadcn standard core tokens (no prefix, self-sufficient).
+ * Light/dark toggled via <html>.dark; accent via <html>[data-theme]. */
 
 :root {
   font-family: system-ui, 'Segoe UI', 'Microsoft YaHei', sans-serif;
@@ -18,7 +18,7 @@ body {
   color: var(--foreground);
 }
 
-/* ---- 顶部栏 ---- */
+/* ---- Top bar ---- */
 .topbar {
   position: sticky;
   top: 0;
@@ -59,7 +59,7 @@ body {
   color: var(--primary-foreground);
 }
 
-/* ---- 布局 ---- */
+/* ---- Layout ---- */
 .body-grid {
   display: grid;
   grid-template-columns: 190px minmax(0, 1fr);
@@ -88,7 +88,7 @@ nav.toc a:hover {
   border-left-color: var(--border);
 }
 
-/* ---- 区块卡片 ---- */
+/* ---- Section cards ---- */
 section.block {
   scroll-margin-top: 4.2rem;
   border: 1px solid var(--border);
@@ -107,7 +107,7 @@ section.block > p.desc {
   font-size: 0.8rem;
 }
 
-/* ---- 色板 ---- */
+/* ---- Palette ---- */
 .swatch-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
@@ -136,7 +136,7 @@ section.block > p.desc {
   word-break: break-all;
 }
 
-/* ---- 字体 / 圆角 / 图表 ---- */
+/* ---- Typography / Radius / Charts ---- */
 .radius-row {
   display: flex;
   gap: 1rem;
@@ -168,7 +168,7 @@ section.block > p.desc {
   border-radius: 4px 4px 0 0;
 }
 
-/* ---- 按钮矩阵 / 日志 ---- */
+/* ---- Button matrix / Log ---- */
 .matrix-row {
   display: flex;
   gap: 0.75rem;

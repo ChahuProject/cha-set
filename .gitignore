@@ -1,19 +1,5 @@
-node_modules/
-dist/
-coverage/
-*.tgz
-*.log
-.DS_Store
-packages/react/conformance/coverage.json
-qt/build/
-qt/build-vs/
-qt/src/.moc/
-qt/src/.rcc/
-/.omo
-/.playwright-mcp
-
 # PENGJ_TEMPLATE_START
-# --- common 层 ---
+# --- common layer ---
 
 /node_modules
 .env
@@ -23,3 +9,13 @@ qt/src/.rcc/
 
 /.omo/run-continuation
 # PENGJ_TEMPLATE_END
+
+# Build artifacts and dependencies
+dist/
+/packages/*/dist
+/packages/*/node_modules
+/packages/*/*/node_modules
+/packages/*/*/dist
+/qt/build*
+/spec/node_modules
+.playwright-mcp/

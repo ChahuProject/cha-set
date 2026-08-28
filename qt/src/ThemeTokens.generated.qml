@@ -12,7 +12,7 @@ QtObject {
     property bool dark: true
 
     function color(name) {
-        // qmlcachegen 不支持属性绑定中的对象字面量，改用 switch-case 直返。
+        // qmlcachegen does not support object literals in property bindings; use switch-case direct returns.
         if (dark) {
             switch (name) {
             case "chrome":

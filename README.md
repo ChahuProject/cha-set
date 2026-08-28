@@ -1,6 +1,6 @@
 # ChaSet
 
-> 茶具 - a cross-stack UI component library. One source of truth drives multiple implementations (React now, Qt planned).
+> Tea Set — a cross-stack UI component library. One source of truth drives multiple implementations (React now, Qt planned).
 
 ChaSet is the UI layer of the ChahuProject family:
 

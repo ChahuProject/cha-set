@@ -1,6 +1,6 @@
-# lefthook.yml — git hooks 配置（lefthook 层）
+# lefthook.yml — git hooks config (lefthook layer)
 commit-msg:
   commands:
     commitlint:
-      # 用 pnpm exec（本地已装 commitlint）而非 npx；"{1}" 是 lefthook 占位符（跨平台，勿用 $1）
+      # Use pnpm exec (commitlint installed locally) instead of npx; "{1}" is a lefthook placeholder (cross-platform, do not use $1)
       run: pnpm exec commitlint --edit "{1}"

@@ -8,10 +8,10 @@ const RADIUS_STEPS = [
 export default function TypeRadiusSection() {
   return (
     <section className="block" id="type">
-      <h2>字体 / 圆角 / 图表</h2>
+      <h2>Typography / Radius / Charts</h2>
       <p className="desc">
-        圆角派生自 <code>--radius</code>（同 shadcn 的 sm/md/lg/xl 派生式）；
-        字重对应 tokens.json primitives（500/600）；图表五色随强调色联动。
+        Radii derived from <code>--radius</code> (same sm/md/lg/xl derivation as shadcn); font
+        weights map to tokens.json primitives (500/600); chart five colors follow the accent.
       </p>
 
       <div className="radius-row">
@@ -24,10 +24,10 @@ export default function TypeRadiusSection() {
 
       <div style={{ marginTop: '1.1rem' }}>
         <p className="weight-sample" style={{ fontWeight: 500 }}>
-          Medium 500 — 茶具 ChaSet，跨栈组件库
+          Medium 500 — Tea Set ChaSet, cross-stack component library
         </p>
         <p className="weight-sample" style={{ fontWeight: 600 }}>
-          Semibold 600 — 茶具 ChaSet，跨栈组件库
+          Semibold 600 — Tea Set ChaSet, cross-stack component library
         </p>
       </div>
 

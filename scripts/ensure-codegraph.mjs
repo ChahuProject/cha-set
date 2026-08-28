@@ -4,10 +4,10 @@ import { resolve } from 'node:path';
 
 const dbPath = resolve('.codegraph', 'codegraph.db');
 if (!existsSync(dbPath)) {
-  console.log('[codegraph] 首次安装，正在初始化代码知识图谱索引...');
+  console.log('[codegraph] First install, initializing code knowledge graph index...');
   try {
     execSync('npx codegraph query .', { stdio: 'inherit' });
   } catch (err) {
-    console.warn('[codegraph] 索引初始化跳过或失败（可后续手动运行 npx codegraph query .）');
+    console.warn('[codegraph] Index initialization skipped or failed (you can manually run npx codegraph query . later)');
   }
 }

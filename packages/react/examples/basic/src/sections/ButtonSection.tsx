@@ -11,10 +11,10 @@ export default function ButtonSection() {
 
   return (
     <section className="block" id="button">
-      <h2>组件 · Button</h2>
+      <h2>Components · Button</h2>
       <p className="desc">
-        契约：spec/components/button.ts —— variant × size × loading / disabled /
-        fullWidth；键盘 Tab 聚焦后 Enter / Space 可完整操作。
+        Contract: spec/components/button.ts — variant × size × loading / disabled /
+        fullWidth; keyboard Tab focus then Enter / Space to operate.
       </p>
 
       {VARIANTS.map((v) => (
@@ -31,10 +31,10 @@ export default function ButtonSection() {
       <div className="matrix-row">
         <span className="matrix-label">states</span>
         <Button variant="destructive" onClick={() => push('destructive clicked')}>
-          删除
+          Delete
         </Button>
         <Button disabled onClick={() => push('never fire')}>
-          禁用
+          Disabled
         </Button>
         <Button fullWidth onClick={() => push('fullWidth clicked')}>
           Full width
@@ -50,7 +50,7 @@ export default function ButtonSection() {
             window.setTimeout(() => setLoading(false), 1200);
           }}
         >
-          {loading ? '保存中…' : '模拟保存'}
+          {loading ? 'Saving…' : 'Simulate save'}
         </Button>
       </div>
 

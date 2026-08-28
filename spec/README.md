@@ -1,82 +1,82 @@
-# spec: Token 源与聚合说明
+# spec: Token Source and Aggregation
 
-> SoT 为 `tokens/**` 分片 + `qt-mapping.json`，`tokens.json` 为提交快照（生成物）。
+> SoT is `tokens/**` shards + `qt-mapping.json`; `tokens.json` is a committed snapshot (generated artifact).
 
-## 分片一览
+## Shards Overview
 
 ```
 spec/
-  tokens.json                 # 已提交快照（生成物，不要手改）
-  qt-mapping.json             # qt 派生映射：33 colors + space 7 + motion 3 + size 21
-  load-tokens.mjs             # 单一读取入口，分片优先、快照兜底
-  build-tokens.mjs            # 聚合器：分片 → 快照（规范键序 + sha256）
-  token-helpers.mjs           # 共享纯函数：HEX8/OKLCH_RE/HEX、hexToRgbf、fmtChannel、selectorFor、stringifySorted/ORDER
-  validate-tokens.mjs         # 校验器：oklch/color-mix/hex、axes、deltas 30、禁止 selector/qt 分片
+  tokens.json                 # committed snapshot (generated, do NOT hand-edit)
+  qt-mapping.json             # qt derivation map: 33 colors + space 7 + motion 3 + size 21
+  load-tokens.mjs             # single read entry, split-first with snapshot fallback
+  build-tokens.mjs            # aggregator: shards → snapshot (canonical key order + sha256)
+  token-helpers.mjs           # shared pure functions: HEX8/OKLCH_RE/HEX, hexToRgbf, fmtChannel, selectorFor, stringifySorted/ORDER
+  validate-tokens.mjs         # validator: oklch/color-mix/hex, axes, deltas 30, forbid selector/qt shards
   tokens/
     meta.json                 # meta: schemaVersion/sources/conventions
     primitives.json           # primitives: space(7)/motion(3)/size(21)/fontWeight(2)
     semantic/
-      core.json               # 核心 shadcn 兼容 token 约 22 个
-      launcher.json           # launcher 专有：sidebar*、chart-1..5
-      dunting.json            # dunting 命名空间：chrome.*/canvas.*/overlay.*/accent.*
+      core.json               # core shadcn-compatible tokens ~22
+      launcher.json           # launcher-specific: sidebar*, chart-1..5
+      dunting.json            # dunting namespaces: chrome.*/canvas.*/overlay.*/accent.*
     composite/
-      launcher.json           # 40 个 app-* 复合表面，$platform ["css"]
+      launcher.json           # 40 app-* composite surfaces, $platform ["css"]
     themes/
-      axes.json               # 四轴枚举：mode(2) accentTheme(8) windowTint(6) interfaceStyle(2)
-      deltas.json             # 30 条差量（16 accent + 12 tint + 2 interfaceStyle），无 selector
+      axes.json               # four axes: mode(2) accentTheme(8) windowTint(6) interfaceStyle(2)
+      deltas.json             # 30 deltas (16 accent + 12 tint + 2 interfaceStyle), no selector
 ```
 
-键序由 `token-helpers.mjs:ORDER` + `stringifySorted` 固定；分片间顶层键不重叠；`qt` 与 `selector` 均为派生，不存分片。
+Key order is fixed by `token-helpers.mjs:ORDER` + `stringifySorted`; shards have no overlapping top-level keys; `qt` and `selector` are both derived, not stored in shards.
 
-## 常用命令
+## Common Commands
 
 ```bash
-# 聚合快照（分片 → spec/tokens.json）
+# Aggregate snapshot (shards → spec/tokens.json)
 node spec/build-tokens.mjs
 pnpm gen:tokens
 
-# 校验分片与快照一致（CI 同款门，sha256 规范化后比对）
+# Validate shards match snapshot (same gate as CI, sha256 after normalization)
 node spec/build-tokens.mjs --check
 
-# 校验结构（默认读分片，含 qt/selector 派生）
+# Validate structure (reads shards by default, including qt/selector derivation)
 node spec/validate-tokens.mjs
 
-# 生成全部产物
+# Generate all artifacts
 pnpm gen:all            # = gen:css + gen:qt
 pnpm gen:css            # → packages/react/src/styles/tokens.css + dist/consumers/launcher/generated/tokens.generated.css
 pnpm gen:qt             # → dist/consumers/dunting/generated/theme_tokens.generated.h + qt/src/ThemeTokens.generated.qml
 
-# 刷新完整流程（改分片后）
+# Full refresh flow (after editing shards)
 pnpm gen:tokens && pnpm gen:all
 git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/
-node scripts/sync-consumers.mjs  # 同步到同级 crd-a/dt-a 检出（若存在）
+node scripts/sync-consumers.mjs  # sync to sibling crd-a/dt-a checkouts if present
 
-# 紧急旁路：忽略分片，直接用已提交快照
+# Emergency bypass: ignore shards, use committed snapshot directly
 CHA_TOKENS_FROM=snapshot node spec/validate-tokens.mjs
 CHA_TOKENS_FROM=snapshot pnpm gen:all
 ```
 
-## 校验与门禁
+## Validation and Gates
 
-- `node spec/validate-tokens.mjs` 绿：`validateSpec` + `validateShards` 双路径。
-- `node spec/build-tokens.mjs --check` 绿：分片聚合 sha256 与已提交 `spec/tokens.json` 一致。
-- `pnpm gate` 绿：`gate/parity.mjs` 对 `spec/capabilities.json` 校验。
-- CI 额外 `git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/` 防漂移。
+- `node spec/validate-tokens.mjs` green: both `validateSpec` + `validateShards` paths.
+- `node spec/build-tokens.mjs --check` green: aggregated sha256 from shards matches committed `spec/tokens.json`.
+- `pnpm gate` green: `gate/parity.mjs` validates against `spec/capabilities.json`.
+- CI additionally runs `git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/` to prevent drift.
 
-## 环境开关
+## Environment Switches
 
-- `CHA_TOKENS_FROM=snapshot`：强制 `load-tokens.mjs` 读 `spec/tokens.json` 快照而非分片，用于分片损坏或热修复旁路。
-- 默认 `CHA_TOKENS_FROM=split`（分片优先，快照兜底）：`spec/tokens/**` 存在则读分片并派生 `qt`/`selector`，否则回退快照。
+- `CHA_TOKENS_FROM=snapshot`: force `load-tokens.mjs` to read the `spec/tokens.json` snapshot instead of shards, for shard corruption or hotfix bypass.
+- Default `CHA_TOKENS_FROM=split` (shard-first, snapshot fallback): if `spec/tokens/**` exists, read shards and derive `qt`/`selector`; otherwise fall back to snapshot.
 
-## 回滚
+## Rollback
 
-整套重构为值不变、路径不变的纯结构改动，单次 revert 即可回退见 `docs/token-mapping.md` §8。
+The entire refactor is a pure structural change with unchanged values and paths; a single revert can roll it back, see `docs/token-mapping.md` §8.
 
 ```
-git revert --no-commit HEAD~6..HEAD && git commit -m "revert: 回退 cha-token-refactor"
+git revert --no-commit HEAD~6..HEAD && git commit -m "revert: rollback cha-token-refactor"
 ```
 
-## 参考
+## References
 
-- 映射与刷新详见 `docs/token-mapping.md`（文件拆分表、聚合图、33 行 qt 表、selectorFor 规则）。
-- 设计取舍：W3C DTCG 分组思想 + vanilla Node 聚合（见 `docs/token-mapping.md` §9），拒绝 Style Dictionary 以保字节一致。
+- Mapping and refresh details: `docs/token-mapping.md` (file split table, aggregation graph, 33-row qt table, selectorFor rules).
+- Design trade-offs: W3C DTCG grouping idea + vanilla Node aggregation (see `docs/token-mapping.md` §9), rejecting Style Dictionary to preserve byte-identical output.

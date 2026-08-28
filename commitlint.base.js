@@ -1,8 +1,8 @@
 export default {
   extends: ['@commitlint/config-conventional'],
   rules: {
-    'body-max-line-length': [0], // 禁用正文行长度限制
-    'subject-case': [0, 'always'], // 禁用 subject 大小写检查（允许中文标题）
+    'body-max-line-length': [0], // Disable body max line length
+    'subject-case': [0, 'always'], // Disable subject case check (allow English titles)
     'type-enum': [
       2,
       'always',

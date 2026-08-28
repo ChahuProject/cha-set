@@ -4,7 +4,7 @@ import TypeRadiusSection from './sections/TypeRadiusSection';
 import ButtonSection from './sections/ButtonSection';
 
 const ACCENTS: { id: string; label: string }[] = [
-  { id: '', label: '默认' },
+  { id: '', label: 'Default' },
   { id: 'slate', label: 'slate' },
   { id: 'red', label: 'red' },
   { id: 'orange', label: 'orange' },
@@ -37,8 +37,8 @@ export function App() {
   return (
     <>
       <header className="topbar">
-        <h1>ChaSet 组件展示</h1>
-        <div className="chipset" role="group" aria-label="强调色主题">
+        <h1>ChaSet Showcase</h1>
+        <div className="chipset" role="group" aria-label="Accent theme">
           {ACCENTS.map((a) => (
             <button
               key={a.id}
@@ -55,14 +55,14 @@ export function App() {
           aria-pressed={mode === 'dark'}
           onClick={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
         >
-          {mode === 'dark' ? '暗色' : '浅色'}
+          {mode === 'dark' ? 'Dark' : 'Light'}
         </button>
       </header>
 
       <div className="body-grid">
-        <nav className="toc" aria-label="目录">
-          <a href="#colors">色板</a>
-          <a href="#type">字体 / 圆角 / 图表</a>
+        <nav className="toc" aria-label="Table of contents">
+          <a href="#colors">Palette</a>
+          <a href="#type">Typography / Radius / Charts</a>
           <a href="#button">Button</a>
         </nav>
 

@@ -2,14 +2,15 @@ import QtQuick 6.10
 import QtQuick.Controls 6.10
 import chaSet
 
-// ChaSet Qt 展示画廊 —— 消费生成的 ThemeTokens 单例（spec/tokens.json，
-// dunting preset）。顶栏开关实时切换明暗；全部颜色随单例属性联动。
+// ChaSet Qt showcase gallery — consumes the generated ThemeTokens singleton
+// (spec/tokens.json, dunting preset). Top-bar switch toggles light/dark at
+// runtime; all colors react to the singleton properties.
 ApplicationWindow {
     id: win
     width: 900
     height: 1040
     visible: true
-    title: "ChaSet Qt 组件展示"
+    title: "ChaSet Qt Showcase"
     color: ThemeTokens.background
 
     property string lastClick: "Ready."
@@ -17,7 +18,7 @@ ApplicationWindow {
 
     Component.onCompleted: if (startupLight === true) ThemeTokens.dark = false
 
-    // ---- 内联卡片组件 ----
+    // ---- Inline Card component ----
     component Card: Rectangle {
         id: cardRoot
         property string title
@@ -70,42 +71,42 @@ ApplicationWindow {
         anchors.margins: 20
         spacing: 16
 
-        // ---- 顶栏 ----
+        // ---- Top bar ----
         Row {
             width: parent.width
             spacing: 12
             Text {
-                text: "ChaSet Qt 组件展示"
+                text: "ChaSet Qt Showcase"
                 color: ThemeTokens.text
                 font.pixelSize: ThemeTokens.fontSizeTitle
                 font.weight: Font.Medium
             }
             Item { width: 1; height: 1 } // spacer
             Switch {
-                text: "暗色"
+                text: "Dark"
                 checked: ThemeTokens.dark
                 onToggled: ThemeTokens.dark = checked
             }
         }
 
-        // ---- 色板 ----
+        // ---- Palette ----
         Card {
-            title: "色板 · dunting preset（实时联动暗色开关）"
+            title: "Palette · dunting preset (live with dark toggle)"
             Grid {
                 columns: 4
                 columnSpacing: 14
                 rowSpacing: 10
                 Repeater {
                     model: [
-                        ["background", "窗口背景"], ["panel", "面板"],
-                        ["panelRaised", "浮起面板"], ["selection", "选中"],
-                        ["hover", "悬停"], ["pressed", "按下"],
-                        ["accent", "强调"], ["onAccent", "强调上文字"],
-                        ["nestAccent", "嵌套强调"], ["pendingAccent", "待定"],
-                        ["conflict", "冲突"], ["blocked", "受阻"],
-                        ["danger", "危险"], ["dangerHover", "危险悬停"],
-                        ["border", "边框"], ["text", "文字"],
-                        ["subduedText", "次要文字"], ["overlayScrim", "遮罩"]
+                        ["background", "window bg"], ["panel", "panel"],
+                        ["panelRaised", "raised panel"], ["selection", "selection"],
+                        ["hover", "hover"], ["pressed", "pressed"],
+                        ["accent", "accent"], ["onAccent", "on-accent text"],
+                        ["nestAccent", "nest accent"], ["pendingAccent", "pending"],
+                        ["conflict", "conflict"], ["blocked", "blocked"],
+                        ["danger", "danger"], ["dangerHover", "danger hover"],
+                        ["border", "border"], ["text", "text"],
+                        ["subduedText", "secondary text"], ["overlayScrim", "scrim"]
                     ]
                     delegate: SwatchItem {
                         required property var modelData
@@ -116,9 +117,9 @@ ApplicationWindow {
             }
         }
 
-        // ---- 字体 / 圆角 ----
+        // ---- Typography / Radius ----
         Card {
-            title: "字体 / 圆角"
+            title: "Typography / Radius"
             Row {
                 spacing: 14
                 Repeater {
@@ -146,13 +147,13 @@ ApplicationWindow {
             Column {
                 spacing: 4
                 Text {
-                    text: "Medium — 茶具 ChaSet，跨栈组件库"
+                    text: "Medium — Tea Set ChaSet, cross-stack component library"
                     color: ThemeTokens.text
                     font.pixelSize: ThemeTokens.fontSizeHeading
                     font.weight: Font.Medium
                 }
                 Text {
-                    text: "DemiBold — 茶具 ChaSet，跨栈组件库"
+                    text: "DemiBold — Tea Set ChaSet, cross-stack component library"
                     color: ThemeTokens.subduedText
                     font.pixelSize: ThemeTokens.fontSizeHeading
                     font.weight: Font.DemiBold
@@ -160,9 +161,9 @@ ApplicationWindow {
             }
         }
 
-        // ---- 按钮 ----
+        // ---- Buttons ----
         Card {
-            title: "Button · variant × size（cha-set 契约）"
+            title: "Button · variant × size (cha-set contract)"
             width: parent.width
 
             Grid {
@@ -196,8 +197,8 @@ ApplicationWindow {
                         width: 80
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    ChaSetButton { variant: "destructive"; text: "删除"; onClicked: win.push("destructive clicked") }
-                    ChaSetButton { text: "禁用"; disabled: true }
+                    ChaSetButton { variant: "destructive"; text: "Delete"; onClicked: win.push("destructive clicked") }
+                    ChaSetButton { text: "Disabled"; disabled: true }
                     ChaSetButton { fullWidth: true; width: 320; text: "Full width"; onClicked: win.push("fullWidth clicked") }
                 }
                 Row {
@@ -212,7 +213,7 @@ ApplicationWindow {
                     }
                     ChaSetButton {
                         id: saveBtn
-                        text: loading ? "保存中…" : "模拟保存"
+                        text: loading ? "Saving…" : "Simulate save"
                         onClicked: {
                             loading = true
                             resetTimer.restart()

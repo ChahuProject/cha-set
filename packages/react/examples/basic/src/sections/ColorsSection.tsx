@@ -32,10 +32,10 @@ export default function ColorsSection({ themeKey }: { themeKey: string }) {
 
   return (
     <section className="block" id="colors">
-      <h2>色板 · Semantic tokens</h2>
+      <h2>Palette · Semantic tokens</h2>
       <p className="desc">
-        全部来自 spec/tokens.json（launcher preset），以 shadcn 标准名（无前缀）{' '}
-        暴露；右上角切换明暗与强调色即时生效。
+        All from spec/tokens.json (launcher preset), exposed with shadcn standard names (no prefix); toggle
+        light/dark and accent at top-right to take effect instantly.
       </p>
       <div className="swatch-grid">
         {TOKENS.map((t) => (
