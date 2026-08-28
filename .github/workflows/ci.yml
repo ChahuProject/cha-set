@@ -11,21 +11,24 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
-          version: 11
+          version: 9
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Verify snapshot matches shards
+        run: node spec/build-tokens.mjs --check
       - name: Generate token artifacts
         run: |
           node spec/generators/generate-css.mjs
           node spec/generators/generate-qt.mjs
       # Drift gate: committed artifacts must equal fresh generator output.
+      # Covers snapshot + all 4 artifacts (tokens.css + QML + 2 dist/consumers).
       # The dt-a-side header is enforced on the consumer side (golden test) —
       # see docs/token-mapping.md "Refresh flow".
       - name: Fail on generated-artifact drift
-        run: git diff --exit-code -- packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml
+        run: git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/
       - name: Typecheck
         run: pnpm --filter @chahu/cha-set typecheck
       - name: Test (writes conformance coverage)

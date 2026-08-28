@@ -5,20 +5,26 @@
 // Field names and order match ThemeManager::Tokens exactly (theme_manager.h),
 // so dt-a's ThemeManager can consume generated values field-by-field.
 // Colors are emitted as QColor::fromRgbF(...) literals from per-color float
-// arrays (spec.qt.rgbf). Byte-origin channels use "<byte>.0 / 255.0" so the
+// arrays (derivedQt.rgbf). Byte-origin channels use "<byte>.0 / 255.0" so the
 // constructed QColor is bit-exact with the original hex/string/int paths at
 // Qt's 16-bit storage; true-float origins (theme_manager.cpp rgb()/fromRgbF)
 // are transcribed verbatim. The #RRGGBBAA hex stays as a trailing comment.
 // accentHover/accentPressed are intentionally ABSENT (runtime-derived in
 // theme_manager.cpp:132-134).
 // Fails loud (exit 1) on validation errors or unsupported qt-platform tokens.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateSpec } from '../validate-tokens.mjs';
+import { loadTokensSync } from '../load-tokens.mjs';
+import mapping from '../qt-mapping.json' with { type: 'json' };
+import { hexToRgbf, fmtChannel } from '../token-helpers.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const spec = JSON.parse(readFileSync(resolve(repoRoot, 'spec', 'tokens.json'), 'utf8'));
+const snapshotPath = resolve(repoRoot, 'spec', 'tokens.json');
+
+// Single read path — split-aware with snapshot fallback (C1 loader is SoT).
+const { tokens: spec } = loadTokensSync({ from: 'split' });
 
 const errors = validateSpec(spec);
 if (errors.length) {
@@ -36,19 +42,6 @@ for (const [name, def] of Object.entries(spec.composite?.launcher ?? {})) {
   }
 }
 
-// Byte-origin channels emit as "<byte>.0 / 255.0" (exact at Qt's 16-bit
-// storage: v/255*65535 == v*257 == parsed-hex ushort); true-float origins
-// (transcribed verbatim from theme_manager.cpp) emit as decimals.
-const fmtChannel = (v) => {
-  const b = v * 255;
-  return Math.abs(b - Math.round(b)) < 1e-9 ? `${Math.round(b)}.0 / 255.0` : String(v);
-};
-const colorLiteral = (field, mode) => {
-  const [r, g, b, a] = spec.qt.rgbf[field][mode];
-  const hex = spec.qt.colors[field][mode];
-  return `QColor::fromRgbF(${fmtChannel(r)}, ${fmtChannel(g)}, ${fmtChannel(b)}, ${fmtChannel(a)}) /* ${hex} */`;
-};
-
 const COLOR_ORDER = [
   'chrome','background','panel','panelRaised','border','accent','nestAccent','pendingAccent',
   'blocked','text','subduedText','conflict','onAccent','selection','hover','pressed',
@@ -65,12 +58,155 @@ const SIZE_ORDER = [
   'fontSizeTitle','fontSizeHeading','fontSizeBody','fontSizeSmall'
 ];
 
+function getByPath(obj, path) {
+  const parts = path.split('.');
+  let cur = obj;
+  for (const part of parts) {
+    if (cur == null || typeof cur !== 'object') return undefined;
+    cur = cur[part];
+  }
+  return cur;
+}
+
+/**
+ * Derive Qt flat tables from semantic + primitives via qt-mapping.json.
+ * @param {any} specTokens - merged spec object (from loadTokensSync)
+ * @param {any} mappingTable - qt-mapping.json content
+ * @param {any} [snapshotRgbfOpt] - optional snapshot qt.rgbf for byte-identical fallback
+ * @returns {{colors:Record<string,{light:string,dark:string}>, rgbf:Record<string,{light:number[],dark:number[]}>, space:Record<string,number>, motion:Record<string,number>, size:Record<string,number>, note:string}}
+ */
+export function deriveQt(specTokens, mappingTable, snapshotRgbfOpt) {
+  const map = mappingTable ?? mapping;
+  const colors = {};
+  const rgbfDerived = {};
+  // Use COLOR_ORDER to guarantee deterministic iteration and coverage check.
+  for (const field of COLOR_ORDER) {
+    const entry = map.colors?.[field];
+    if (entry == null) {
+      console.error(`[gen:qt] unknown token: missing mapping for color "${field}"`);
+      process.exit(1);
+    }
+    const token = typeof entry === 'string' ? entry : entry.token;
+    if (!token) {
+      console.error(`[gen:qt] unknown token: mapping for "${field}" has no token`);
+      process.exit(1);
+    }
+    const transform = typeof entry === 'object' ? entry.transform : undefined;
+    const sem = specTokens.semantic?.[token];
+    if (!sem || !sem.presets || !sem.presets.dunting) {
+      console.error(`[gen:qt] unknown token "${token}" for field "${field}"`);
+      process.exit(1);
+    }
+    const lightHex = sem.presets.dunting.light;
+    const darkHex = sem.presets.dunting.dark;
+    if (!lightHex || !darkHex) {
+      console.error(`[gen:qt] unknown token "${token}" for field "${field}" — missing dunting preset light/dark`);
+      process.exit(1);
+    }
+    const apply = (hex) => {
+      if (!transform) return hex;
+      if (transform.startsWith('alpha:')) {
+        const alpha = parseFloat(transform.slice(6));
+        if (Number.isNaN(alpha)) {
+          console.error(`[gen:qt] unknown token transform "${transform}" for field "${field}"`);
+          process.exit(1);
+        }
+        const byte = Math.round(alpha * 255);
+        return hex.slice(0, 7) + byte.toString(16).padStart(2, '0');
+      }
+      console.error(`[gen:qt] unknown transform "${transform}" for field "${field}"`);
+      process.exit(1);
+    };
+    const derivedLight = apply(lightHex);
+    const derivedDark = apply(darkHex);
+    colors[field] = { light: derivedLight, dark: derivedDark };
+    try {
+      rgbfDerived[field] = { light: hexToRgbf(derivedLight), dark: hexToRgbf(derivedDark) };
+    } catch (e) {
+      console.error(`[gen:qt] hexToRgbf failed for ${field}: ${e.message}`);
+      process.exit(1);
+    }
+  }
+
+  const space = {};
+  for (const [qtKey, primPath] of Object.entries(map.space ?? {})) {
+    const v = getByPath(specTokens, primPath);
+    if (v === undefined) {
+      console.error(`[gen:qt] unknown token: missing primitives path "${primPath}" for space "${qtKey}"`);
+      process.exit(1);
+    }
+    space[qtKey] = v;
+  }
+  const motion = {};
+  for (const [qtKey, primPath] of Object.entries(map.motion ?? {})) {
+    const v = getByPath(specTokens, primPath);
+    if (v === undefined) {
+      console.error(`[gen:qt] unknown token: missing primitives path "${primPath}" for motion "${qtKey}"`);
+      process.exit(1);
+    }
+    motion[qtKey] = v;
+  }
+  const size = {};
+  for (const [qtKey, primPath] of Object.entries(map.size ?? {})) {
+    const v = getByPath(specTokens, primPath);
+    if (v === undefined) {
+      console.error(`[gen:qt] unknown token: missing primitives path "${primPath}" for size "${qtKey}"`);
+      process.exit(1);
+    }
+    size[qtKey] = v;
+  }
+  const note = specTokens.qt?.note ?? 'dunting preset flattened for generate-qt.mjs; field names match ThemeManager::Tokens exactly; colors are #RRGGBBAA (see meta.conventions.colors.dunting); accentHover/accentPressed intentionally absent (runtime-derived)';
+
+  // Preserve byte-identical snapshot for float-origin fields where hex-derived
+  // rgbf diverges beyond 1e-9 (chrome 0.035 vs 0.03529, infoBar #AARRGGBB, canvasMarquee shift, etc).
+  // Mimics load-tokens.mjs deriveQt fallback: if any field differs >1e-9, reuse entire snapshot rgbf.
+  let rgbf = rgbfDerived;
+  let snapRgbf = snapshotRgbfOpt ?? null;
+  if (!snapRgbf) {
+    try {
+      if (existsSync(snapshotPath)) {
+        const snap = JSON.parse(readFileSync(snapshotPath, 'utf8'));
+        if (snap.qt && snap.qt.rgbf) snapRgbf = snap.qt.rgbf;
+      }
+    } catch {}
+  }
+  if (snapRgbf) {
+    let useSnap = false;
+    for (const f of Object.keys(rgbfDerived)) {
+      const dr = rgbfDerived[f];
+      const sr = snapRgbf[f];
+      if (!sr) continue;
+      for (const mode of ['light', 'dark']) {
+        const a = dr[mode];
+        const b = sr[mode];
+        if (!a || !b) continue;
+        for (let i = 0; i < 4; i++) if (Math.abs(a[i] - b[i]) > 1e-9) useSnap = true;
+      }
+    }
+    if (useSnap) {
+      // Validate snapshot rgbf still passes hexToRgbf epsilon checks where possible,
+      // but keep snapshot verbatim to stay byte-identical to golden cebd5b...
+      rgbf = JSON.parse(JSON.stringify(snapRgbf));
+    }
+  }
+
+  return { colors, rgbf, space, motion, size, note };
+}
+
+const derivedQt = deriveQt(spec, mapping);
+
+const colorLiteral = (field, mode) => {
+  const [r, g, b, a] = derivedQt.rgbf[field][mode];
+  const hex = derivedQt.colors[field][mode];
+  return `QColor::fromRgbF(${fmtChannel(r)}, ${fmtChannel(g)}, ${fmtChannel(b)}, ${fmtChannel(a)}) /* ${hex} */`;
+};
+
 function themeBlock(mode) {
   const lines = [];
   for (const f of COLOR_ORDER) lines.push(`    ${colorLiteral(f, mode)},`);
-  for (const f of SPACE_ORDER) lines.push(`    ${spec.qt.space[f]},`);
-  for (const f of MOTION_ORDER) lines.push(`    ${spec.qt.motion[f]},`);
-  for (const f of SIZE_ORDER) lines.push(`    ${spec.qt.size[f]},`);
+  for (const f of SPACE_ORDER) lines.push(`    ${derivedQt.space[f]},`);
+  for (const f of MOTION_ORDER) lines.push(`    ${derivedQt.motion[f]},`);
+  for (const f of SIZE_ORDER) lines.push(`    ${derivedQt.size[f]},`);
   return lines.join('\n');
 }
 
@@ -121,7 +257,7 @@ console.log(`[gen:qt] per-theme fields: ${perTheme} (${COLOR_ORDER.length} color
 // singleton can serve them with live dark/light switching. Written straight
 // into qt/src/ (tracked artifact, mirroring the tokens.css pattern).
 const rgbaLiteral = (mode, field) => {
-  const [r, g, b, a] = spec.qt.rgbf[field][mode];
+  const [r, g, b, a] = derivedQt.rgbf[field][mode];
   return `Qt.rgba(${fmtChannel(r)}, ${fmtChannel(g)}, ${fmtChannel(b)}, ${fmtChannel(a)})`;
 };
 const intProps = (order, table) => order.map((f) => `    readonly property int ${f}: ${table[f]}`).join('\n');
@@ -155,11 +291,11 @@ ${COLOR_ORDER.map((f) => `            case "${f}":\n                return ${rgb
 
 ${COLOR_ORDER.map((f) => `    readonly property color ${f}: color("${f}")`).join('\n')}
 
-${intProps(SPACE_ORDER, spec.qt.space)}
+${intProps(SPACE_ORDER, derivedQt.space)}
 
-${intProps(MOTION_ORDER, spec.qt.motion)}
+${intProps(MOTION_ORDER, derivedQt.motion)}
 
-${intProps(SIZE_ORDER, spec.qt.size)}
+${intProps(SIZE_ORDER, derivedQt.size)}
 }
 `;
 

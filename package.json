@@ -6,6 +6,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
+    "gen:tokens": "node spec/build-tokens.mjs",
     "gen:css": "node spec/generators/generate-css.mjs",
     "gen:qt": "node spec/generators/generate-qt.mjs",
     "gen:all": "node spec/generators/generate-all.mjs",
@@ -13,9 +14,21 @@
     "gate": "node gate/parity.mjs",
     "typecheck": "pnpm --filter @chahu/cha-set typecheck",
     "test": "pnpm --filter @chahu/cha-set test",
-    "build": "pnpm --filter @chahu/cha-set build"
+    "test:tokens": "pnpm --filter @chahu/cha-set exec vitest run --config spec/vitest.config.mjs",
+    "build": "pnpm --filter @chahu/cha-set build",
+    "prepare": "node -e \"try{require('child_process').execSync('lefthook install',{stdio:'inherit'})}catch{console.log('尚未 git init，跳过 lefthook 安装；可先 git init 再运行 pnpm lefthook:install')}\"",
+    "lefthook:install": "lefthook install",
+    "commitlint": "commitlint",
+    "postinstall": "node scripts/ensure-codegraph.mjs"
   },
   "engines": {
     "node": ">=20"
+  },
+  "packageManager": "pnpm@11.6.0",
+  "devDependencies": {
+    "@commitlint/cli": "latest",
+    "@commitlint/config-conventional": "latest",
+    "lefthook": "latest",
+    "@colbymchenry/codegraph": "^1.5.0"
   }
 }

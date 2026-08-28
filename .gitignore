@@ -9,3 +9,17 @@ qt/build/
 qt/build-vs/
 qt/src/.moc/
 qt/src/.rcc/
+/.omo
+/.playwright-mcp
+
+# PENGJ_TEMPLATE_START
+# --- common 层 ---
+
+/node_modules
+.env
+.env.*
+!.env.example
+*.log
+
+/.omo/run-continuation
+# PENGJ_TEMPLATE_END

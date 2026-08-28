@@ -1,10 +1,7 @@
 // generate-css.mjs — dual-flavor CSS emitter from the tiered token spec.
 //
 // Flavor 1 (library):  packages/react/src/styles/tokens.css
-//   Unprefixed shadcn-standard semantic tokens (CORE LAYER ONLY), launcher
-//   preset values: :root (light) + .dark + [data-theme] accent overrides.
-//   Hosts that define these variables (launcher, any shadcn app) win —
-//   cha-set components follow host theming automatically.
+//   --cs-* prefixed semantic tokens, launcher preset, :root (light) + .dark.
 // Flavor 2 (compat):   dist/consumers/launcher/generated/tokens.generated.css
 //   Unprefixed custom properties reproducing the launcher's hand-written
 //   variable layers IN SOURCE CASCADE ORDER:
@@ -14,19 +11,67 @@
 //     interface-style override blocks          <- replaces themes.css head
 //     accent-theme override blocks             <- replaces themes.css body
 // Fails loud (exit 1) on any spec/validation error before writing anything.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateSpec } from '../validate-tokens.mjs';
+import { loadTokensSync } from '../load-tokens.mjs';
+import { selectorFor, ORDER } from '../token-helpers.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const spec = JSON.parse(readFileSync(resolve(repoRoot, 'spec', 'tokens.json'), 'utf8'));
+
+// Guard raw deltas file: must not contain hardcoded selector (loader would hide it).
+const deltasPath = resolve(repoRoot, 'spec', 'tokens', 'themes', 'deltas.json');
+if (existsSync(deltasPath)) {
+  try {
+    const raw = JSON.parse(readFileSync(deltasPath, 'utf8'));
+    const arr = raw.themes?.deltas;
+    if (Array.isArray(arr)) {
+      for (const o of arr) {
+        if ('selector' in o) {
+          console.error(`[gen:css] deltas must not contain selector (got "${o.selector}")`);
+          process.exit(1);
+        }
+      }
+    }
+  } catch (e) {
+    if (e.message && e.message.includes('deltas must not contain selector')) throw e;
+    // parse errors will be caught by validateSpec below
+  }
+}
+
+const { tokens: spec } = loadTokensSync({ from: 'split' });
 
 const errors = validateSpec(spec);
 if (errors.length) {
   console.error(`[gen:css] tokens.json invalid (${errors.length}):`);
   for (const e of errors) console.error(`  - ${e}`);
   process.exit(1);
+}
+
+// Guard: deltas must not contain hardcoded selector (derive via selectorFor).
+// For legacy snapshot (themes.overrides) we allow stored selector as fallback.
+const themeEntries = spec.themes.deltas ?? spec.themes.overrides ?? [];
+if (spec.themes.deltas) {
+  for (const o of spec.themes.deltas) {
+    if ('selector' in o) {
+      console.error(`[gen:css] deltas must not contain selector (got "${o.selector}")`);
+      process.exit(1);
+    }
+  }
+}
+
+function resolveSelector(o) {
+  // Legacy compat: if overrides carried a selector, honor it; otherwise derive.
+  if ('selector' in o && spec.themes.overrides && !spec.themes.deltas) {
+    return o.selector;
+  }
+  try {
+    return selectorFor(o);
+  } catch (e) {
+    console.error(`[gen:css] ${e.message}`);
+    process.exit(1);
+  }
 }
 
 // Dunting-only semantic tokens use dotted namespaces (chrome.icon). The
@@ -36,17 +81,22 @@ const cssName = (key) => key.split('.').pop();
 
 const decl = (prop, value) => `  ${prop}: ${value};`;
 
-function semanticBlocks(prefix, coreOnly = false) {
+function semanticBlocks(prefix) {
   const light = [];
   const dark = [];
-  for (const [key, def] of Object.entries(spec.semantic)) {
+  const orderMap = new Map(ORDER.semantic.map((k, i) => [k, i]));
+  const entries = Object.entries(spec.semantic).sort((a, b) => {
+    const ia = orderMap.has(a[0]) ? orderMap.get(a[0]) : 1e9;
+    const ib = orderMap.has(b[0]) ? orderMap.get(b[0]) : 1e9;
+    if (ia !== ib) return ia - ib;
+    return a[0].localeCompare(b[0]);
+  });
+  for (const [key, def] of entries) {
     const presets = def.presets ?? {};
     const l = presets.launcher?.light;
     const d = presets.launcher?.dark;
     if (l === undefined && d === undefined) continue; // dunting-only token
-    const name = cssName(key);
-    if (coreOnly && !LIB_CORE_TOKENS.has(name)) continue;
-    const prop = `${prefix}${name}`;
+    const prop = `${prefix}${cssName(key)}`;
     if (l !== undefined) light.push(decl(prop, l));
     if (d !== undefined) dark.push(decl(prop, d));
   }
@@ -57,43 +107,27 @@ function selectorBlock(selector, decls) {
   return `${selector} {\n${decls.join('\n')}\n}`;
 }
 
-// Core layer = the shadcn-standard semantic vocabulary, emitted UNPREFIXED.
-// Binding to these exact names is the contract: any host that defines them
-// (launcher, any shadcn/Tailwind app) themes cha-set components for free.
-// Tokens outside this set (hover, sidebar-selected, fontWeight, …) stay out
-// of the library flavor until an extension-layer policy exists; they remain
-// reachable through the compat flavor / spec primitives.
-const LIB_CORE_TOKENS = new Set([
-  'background', 'foreground',
-  'card', 'card-foreground', 'popover', 'popover-foreground',
-  'primary', 'primary-foreground', 'secondary', 'secondary-foreground',
-  'muted', 'muted-foreground', 'accent', 'accent-foreground',
-  'destructive', 'destructive-foreground', 'border', 'input', 'ring',
-  'sidebar', 'sidebar-foreground', 'sidebar-primary', 'sidebar-primary-foreground',
-  'sidebar-accent', 'sidebar-accent-foreground', 'sidebar-border', 'sidebar-ring',
-  'chart-1', 'chart-2', 'chart-3', 'chart-4', 'chart-5',
-  'radius',
-]);
-
-// ---------------- Flavor 1: library (shadcn-standard core) ----------------
+// ---------------- Flavor 1: library (--cs-*) ----------------
 {
-  const { light, dark } = semanticBlocks('--', true);
+  const { light, dark } = semanticBlocks('--cs-');
+  const weight = spec.primitives.fontWeight ?? {};
+  for (const [k, v] of Object.entries(weight)) light.push(decl(`--cs-font-weight-${k}`, String(v)));
+  // keep .dark block aligned (weights are mode-invariant)
+  for (const [k, v] of Object.entries(weight)) dark.push(decl(`--cs-font-weight-${k}`, String(v)));
 
   // Accent themes: [data-theme] overrides let consumers switch accent hue at
   // runtime (document.documentElement.dataset.theme = 'violet'). Values are
   // the launcher preset's accent overrides, verbatim.
   const accentBlocks = [];
-  for (const o of spec.themes.overrides) {
-    if (!('accentTheme' in o)) continue;
-    const decls = Object.entries(o.tokens).map(([n, v]) => decl(`--${cssName(n)}`, v));
-    accentBlocks.push(selectorBlock(o.selector, decls));
+  for (const o of themeEntries) {
+    if (o.accentTheme === undefined) continue;
+    const decls = Object.entries(o.tokens).map(([n, v]) => decl(`--cs-${cssName(n)}`, v));
+    accentBlocks.push(selectorBlock(resolveSelector(o), decls));
   }
 
   const out = [
     '/* GENERATED by spec/generators/generate-css.mjs — DO NOT EDIT.',
-    ' * Source: spec/tokens.json (preset: launcher). Unprefixed shadcn-standard',
-    ' * core tokens — hosts that define them take precedence.',
-    ' * Regenerate: pnpm gen:css */',
+    ' * Source: spec/tokens.json (preset: launcher). Regenerate: pnpm gen:css */',
     selectorBlock(':root', light),
     '',
     selectorBlock('.dark', dark),
@@ -111,8 +145,8 @@ const LIB_CORE_TOKENS = new Set([
 
 // ---------------- Flavor 2: launcher compat (unprefixed) ----------------
 {
-  const overrides = spec.themes.overrides;
-  const byAxis = (axis) => overrides.filter((o) => axis in o);
+  const overrides = themeEntries;
+  const byAxis = (axis) => overrides.filter((o) => o[axis] !== undefined);
 
   const parts = [];
   parts.push('/* GENERATED by spec/generators/generate-css.mjs — DO NOT EDIT.');
@@ -146,7 +180,7 @@ const LIB_CORE_TOKENS = new Set([
   parts.push('/* == window tint overrides (was window-tint.css) == */');
   for (const o of byAxis('windowTint')) {
     parts.push('');
-    parts.push(selectorBlock(o.selector, Object.entries(o.tokens).map(([n, v]) => decl(`--${n}`, v))));
+    parts.push(selectorBlock(resolveSelector(o), Object.entries(o.tokens).map(([n, v]) => decl(`--${n}`, v))));
   }
 
   // Layer 4: interface style (themes.css head — BEFORE accent themes, matching source)
@@ -154,7 +188,7 @@ const LIB_CORE_TOKENS = new Set([
   parts.push('/* == interface-style overrides (was themes.css head) == */');
   for (const o of byAxis('interfaceStyle')) {
     parts.push('');
-    parts.push(selectorBlock(o.selector, Object.entries(o.tokens).map(([n, v]) => decl(`--${n}`, v))));
+    parts.push(selectorBlock(resolveSelector(o), Object.entries(o.tokens).map(([n, v]) => decl(`--${n}`, v))));
   }
 
   // Layer 5: accent themes (8 light :root[data-theme], then 8 dark)
@@ -162,7 +196,7 @@ const LIB_CORE_TOKENS = new Set([
   parts.push('/* == accent theme overrides (was themes.css body) == */');
   for (const o of byAxis('accentTheme')) {
     parts.push('');
-    parts.push(selectorBlock(o.selector, Object.entries(o.tokens).map(([n, v]) => decl(`--${n}`, v))));
+    parts.push(selectorBlock(resolveSelector(o), Object.entries(o.tokens).map(([n, v]) => decl(`--${n}`, v))));
   }
 
   const out = parts.join('\n') + '\n';

@@ -5,3 +5,7 @@ packages:
 
 onlyBuiltDependencies:
   - esbuild
+
+# pnpm 配置：允许 lefthook 的构建脚本（跨平台兼容性声明，需随 pnpm install 显式确认）
+allowBuilds:
+  lefthook: true
