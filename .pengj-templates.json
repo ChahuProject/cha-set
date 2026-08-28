@@ -1,0 +1,42 @@
+{
+  "tool": "pengj-templates",
+  "version": "0.20.1-beta.1",
+  "project_name": "cha-set",
+  "layers": [
+    "common",
+    "lefthook",
+    "agent",
+    "vscode",
+    "codegraph"
+  ],
+  "options": {
+    "channel": "stable",
+    "chinese_programming": false,
+    "commit_zh": true,
+    "edition": "2024",
+    "skill_lang": "zh",
+    "use_lld": true,
+    "use_sccache": false
+  },
+  "generated_at": "2026-08-28T03:18:47Z",
+  "files": {
+    ".agents\\skills\\arch-align\\SKILL.md": "911129a46fd7f8d9d22822c5474ffde63621c4b375b721327a8d84dd89cf518f",
+    ".agents\\skills\\arch-align\\references\\GENERATE-DOC.md": "7cbd5aca4240f88d8ccce5b7a8278778de791aa7152c3c912c243ec2808511df",
+    ".agents\\skills\\arch-align\\references\\GENERATE-INDEX.md": "8631df67a99bc9eb96096b4edc28d050e1d63151ef6f05be545ba37fb73396bb",
+    ".agents\\skills\\branch-sync\\SKILL.md": "a77f8a77a5aaef16ac937a5b595b8ae5ecde35eb0583f2629c59540b04c30889",
+    ".agents\\skills\\caveman\\SKILL.md": "e66fa0ab7e8227de3d64819029a113a79d0323ed86a5c463dca1b0ad1893ea34",
+    ".agents\\skills\\commit\\SKILL.md": "98df4d4b6fb6b63cac3f5ce52814ad0b375d10f56920b449db90008e6ae6683f",
+    ".agents\\skills\\grill-me\\SKILL.md": "92ec2b94d00e57723e9ae8c5f79a85077b43874a7f8fe63a5fa4780ea9d4edb8",
+    ".agents\\skills\\write-a-skill\\SKILL.md": "b764b2ee2e32617f4681745a710a738ddb6a087b80b6202ccf05887ae23ac0fd",
+    ".gitattributes": "764a5b32bb6581abe21314c46d7250285afdbc54b01959283de3a8f0f3728b9c",
+    ".gitignore": "b7ea4c3e7c3fc8cd9099a4fa45ba98eeab81bf60f1a70724d776265f5b545f85",
+    ".vscode\\extensions.json": "2d63e9df30909926bf326a3d5ee136cf1c1cf0441191705d2dffdae71886baf2",
+    ".vscode\\settings.json": "5ccf099e6f346fa5e3d18a280f96571f21aaeda1c323dca064bc66e03ea00c0f",
+    "AGENTS.md": "3f043b3594c29d9bf233ab3f307622864f4798f532ed82b78d6c986d775066ea",
+    "commitlint.base.js": "36309c80b331b643c5800d5e9babb5b03a85811b5fb1e9c6cc5ca940248ed40b",
+    "lefthook.yml": "474928a3a7d11adbcbc34bea445ea4f94808c101eb9e0b86e2695582934276f7",
+    "package.json": "97d3ad8477f72f19bd4d0ba6b784bb5b5f081a89aa470db65bf3b13ba26c7a3d",
+    "pnpm-workspace.yaml": "dcfc70ea14a010b49505cde45889be59c70c575335efbfecac69553c8d068a0e",
+    "scripts\\ensure-codegraph.mjs": "ac4e6c20b9f41e818669e55050426f0338eac9b3b3e915110119bc0a80ff592e"
+  }
+}
