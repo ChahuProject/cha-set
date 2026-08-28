@@ -9,7 +9,7 @@
 // Behavior: for each consumer whose checkout exists next to this repo, copy
 // the artifact and print the exact `git -C <repo> status` hint. Missing
 // siblings are skipped with a notice (CI-safe). --dry-run logs without copying.
-import { copyFileSync, existsSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
@@ -61,6 +61,7 @@ for (const c of CONSUMERS) {
     if (dryRun) {
       console.log(`[sync] [dry-run] would copy ${cp.from} -> ${cp.to}`);
     } else {
+      mkdirSync(dirname(cp.to), { recursive: true });
       copyFileSync(cp.from, cp.to);
       console.log(`[sync] copied -> ${cp.to}`);
     }

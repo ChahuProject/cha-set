@@ -7,8 +7,6 @@ description: >-
 
 ---
 
-<!-- PENGJ_TEMPLATE_START -->
-
 # 分支同步 — Worktree 感知的线性化同步
 
 将并行特性分支（常被某个 worktree 占用）线性化合入集成分支，**历史必须线性、无 merge 提交、force 推送一律 `--force-with-lease`**。先看清、再去重、再按占用状态走对应路径，万无一失。
@@ -114,35 +112,3 @@ git -C <worktree路径> status --short             # 干净
 - **reset --hard 前必须确认干净**：`git -C <路径> status --short` 有未提交改动会直接丢失。
 - **PowerShell 对 `^` 的转义**：`'feat/x' '^main'` 加单引号，否则被当作转义符。
 - **构建只跑一次**：合后在集成分支跑一次完整校验即可；多 worktree 重复全量构建浪费且易产生并发产物污染。
-
-<!-- PENGJ_TEMPLATE_END -->
-
-
-<!-- 以下为项目专属区域：模板更新只替换上方托管块，本区域归项目所有、完整保留。 -->
-
-## 项目专属同步策略
-
-> 本节归**项目**所有：模板更新只维护上方托管块，这里可按项目实际声明。
-
-### 集成分支
-
-- 本项目统一分支：`main`（默认）。若项目以 `dev` 为统一分支，请改此行。
-- 远端：`origin`。
-
-### 合后校验命令（仅在集成分支跑一次）
-
-```powershell
-cargo fmt --check
-cargo clippy --workspace --all-targets -- -D warnings
-cargo test --workspace
-# 或：just ci
-```
-
-按技术栈调整（Rust / 前端 / 文档），合后仅在集成分支跑一次即可。
-
-### 红线（绝不能做）
-
-- 在集成分支上产生 merge 提交。
-- 裸 `git push -f` / `--force`（必须 `--force-with-lease`）。
-- 在脏 worktree 上 `git reset --hard`。
-- 未甄别净贡献就直接合入。
