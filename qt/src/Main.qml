@@ -1,6 +1,5 @@
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import QtQuick.Layouts 6.10
 import chaSet
 
 // ChaSet Qt Showcase & Theme Workbench
@@ -17,7 +16,7 @@ ApplicationWindow {
     property string lastClick: "Ready."
     property string activeAccent: "Default"
     property int customRadius: ThemeTokens.panelRadius
-    property string activePrimaryColor: ThemeTokens.accent
+    property color activePrimaryColor: ThemeTokens.accent
 
     function push(msg) { lastClick = msg }
 
@@ -94,7 +93,7 @@ ApplicationWindow {
             spacing: 18
 
             // ---- Top Header & Quick Presets ----
-            RowLayout {
+            Row {
                 width: parent.width
                 spacing: 12
 
@@ -105,7 +104,7 @@ ApplicationWindow {
                     font.weight: Font.Bold
                 }
 
-                Item { Layout.fillWidth: true }
+                Item { width: 24; height: 1 }
 
                 Text {
                     text: "Appearance:"
@@ -155,9 +154,9 @@ ApplicationWindow {
                                 width: 84
                                 height: 28
                                 radius: 14
-                                color: win.activeAccent === modelData[0] ? Qt.rgba(modelData[1], 0.2) : ThemeTokens.panelRaised
+                                color: win.activeAccent === modelData[0] ? ThemeTokens.panelRaised : ThemeTokens.panel
                                 border.color: win.activeAccent === modelData[0] ? modelData[1] : ThemeTokens.border
-                                border.width: 1.5
+                                border.width: win.activeAccent === modelData[0] ? 2 : 1
 
                                 Row {
                                     anchors.centerIn: parent
@@ -209,9 +208,9 @@ ApplicationWindow {
                                 width: 96
                                 height: 28
                                 radius: 4
-                                color: win.customRadius === modelData[1] ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.2) : ThemeTokens.panelRaised
+                                color: win.customRadius === modelData[1] ? ThemeTokens.panelRaised : ThemeTokens.panel
                                 border.color: win.customRadius === modelData[1] ? ThemeTokens.accent : ThemeTokens.border
-                                border.width: 1
+                                border.width: win.customRadius === modelData[1] ? 2 : 1
 
                                 Text {
                                     anchors.centerIn: parent

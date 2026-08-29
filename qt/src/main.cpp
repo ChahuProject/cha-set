@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <QQuickWindow>
 #include <QTimer>
+#include <QDebug>
 
 // ChaSet Qt showcase app.
 // Screenshot mode (for evidence chain): QtChaSetDemo.exe --shot out.png [--light]

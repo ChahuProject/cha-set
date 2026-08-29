@@ -78,8 +78,15 @@ Open `http://localhost:5173` in your browser to:
 
 ### 2. Launch Qt Showcase (Desktop)
 
+One-command automatic build and launch:
+```bash
+pnpm showcase:qt
+```
+
+Or manual build via CMake (Windows / Qt 6 MSVC):
 ```bat
-cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=C:\pengj\qt\6.10.1\msvc2022_64
+set PATH=D:\pengj\qt\6.10.1\msvc2022_64\bin;%PATH%
+cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=D:\pengj\qt\6.10.1\msvc2022_64
 cmake --build qt/build
 qt\build\QtChaSetDemo.exe
 ```

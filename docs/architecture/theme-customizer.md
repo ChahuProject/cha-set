@@ -53,6 +53,7 @@
 | **Interactive Sandbox** | `packages/react/examples/basic/src/components/ComponentPlayground.tsx` | Live customizable component preview with JSX generator |
 | **Code Exporter Modal** | `packages/react/examples/basic/src/components/ExportModal.tsx` | Formats and copies CSS vars, Tailwind, JSX, QML |
 | **Qt Showcase App** | [`qt/src/Main.qml`](file:///D:/pengj/cha-set/qt/src/Main.qml) | Qt Quick workbench with live theme toggles, button matrix, and export view |
+| **Qt Showcase Runner** | [`scripts/run-qt-showcase.mjs`](file:///D:/pengj/cha-set/scripts/run-qt-showcase.mjs) | Auto-discovers Qt 6, configures/builds CMake target, and spawns demo binary |
 
 ---
 

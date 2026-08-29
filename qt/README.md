@@ -16,9 +16,16 @@ checked against the same single source of truth as the React implementation:
 
 ## Build & run (Windows / Qt 6 MSVC)
 
+### One-Command Runner (Recommended)
+From the repository root:
+```bash
+pnpm showcase:qt
+```
+
+### Manual Build via CMake
 ```bat
-set PATH=C:\pengj\qt\6.10.1\msvc2022_64\bin;%PATH%
-cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=C:\pengj\qt\6.10.1\msvc2022_64
+set PATH=D:\pengj\qt\6.10.1\msvc2022_64\bin;%PATH%
+cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=D:\pengj\qt\6.10.1\msvc2022_64
 cmake --build qt/build
 qt\build\QtChaSetDemo.exe
 ```
