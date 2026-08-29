@@ -30,9 +30,7 @@ qt_add_qml_module(QtChaSetDemo
     NO_RESOURCE_TARGET_PATH
 )
 
-set_property(TARGET QtChaSetDemo PROPERTY
-    WIN32_EXECUTABLE TRUE
-)
+
 
 target_link_libraries(QtChaSetDemo PRIVATE
     Qt6::Quick
