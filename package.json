@@ -16,6 +16,8 @@
     "test": "pnpm --filter @chahu/cha-set test",
     "test:tokens": "pnpm --filter @chahu/cha-set exec vitest run --config spec/vitest.config.mjs",
     "build": "pnpm --filter @chahu/cha-set build",
+    "showcase": "pnpm --filter @chaset/example-react-button dev",
+    "dev": "pnpm --filter @chaset/example-react-button dev",
     "prepare": "node -e \"try{require('child_process').execSync('lefthook install',{stdio:'inherit'})}catch{console.log('Not yet git init, skipping lefthook install; run git init first then pnpm lefthook:install')}\"",
     "lefthook:install": "lefthook install",
     "commitlint": "commitlint",

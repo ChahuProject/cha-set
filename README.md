@@ -62,10 +62,35 @@ import '@chahu/cha-set/styles.css';
 </Button>
 ```
 
-## Development
+## Component Showcase & Theme Studio
+
+ChaSet includes an interactive **Studio & Theme Customizer** for both React and Qt. It allows real-time token tuning (light/dark mode, accent colors, custom radii, fine-grained color overrides), full component matrix inspection, and **one-click copy of ready-to-use configuration and component code**.
+
+### 1. Launch React Studio (Web)
+
+```bash
+pnpm showcase     # or pnpm dev
+```
+Open `http://localhost:5173` in your browser to:
+- **Tweak live styles**: Test custom primary colors, border radii, and accent presets.
+- **Interactive Component Playground**: Toggle `variant`, `size`, `loading`, `disabled`, `fullWidth`, or Base UI polymorphic `render` props.
+- **One-click Copy & Export**: Copy ready-to-use CSS Variables, Tailwind v4 `@theme`, React JSX, or JSON token configs directly.
+
+### 2. Launch Qt Showcase (Desktop)
+
+```bat
+cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=C:\pengj\qt\6.10.1\msvc2022_64
+cmake --build qt/build
+qt\build\QtChaSetDemo.exe
+```
+
+---
+
+## Development & Workflows
 
 ```bash
 pnpm install
+pnpm showcase      # start interactive studio & theme customizer
 pnpm gen:tokens    # aggregate spec/tokens/** + spec/qt-mapping.json → spec/tokens.json (sha256-gated)
 pnpm gen:css       # regenerate packages/react/src/styles/tokens.css + dist/consumers/launcher/generated/tokens.generated.css
 pnpm gen:qt        # regenerate dist/consumers/dunting/generated/theme_tokens.generated.h + qt/src/ThemeTokens.generated.qml
@@ -76,9 +101,18 @@ pnpm gate          # parity gate against spec/capabilities.json
 pnpm build         # build @chahu/cha-set (esm + cjs + d.ts + css)
 ```
 
-SoT is `spec/tokens/**` shards (plus `spec/qt-mapping.json` for qt derivation), not `spec/tokens.json` directly.
-Edit shards, then run `pnpm gen:tokens && pnpm gen:all` and verify `git diff --exit-code` is clean before committing.
-Emergency fallback `CHA_TOKENS_FROM=snapshot pnpm gen:all` reads the committed snapshot. See `spec/README.md` and `docs/token-mapping.md` §7-8.
+---
+
+## Architecture Documentation
+
+All system architecture and design specifications are cataloged under [`docs/architecture/README.md`](docs/architecture/README.md):
+
+- [`System Architecture Specification`](docs/architecture/system-architecture.md) — Cross-stack architecture and SoT topology.
+- [`Token Pipeline Specification`](docs/architecture/token-pipeline.md) — Shard aggregation, derivation, and consumer sync.
+- [`Component Contracts & Parity Gate`](docs/architecture/component-contracts.md) — Neutral Zod contracts, capability matrix, and gate enforcement.
+- [`Theme Customizer & Studio Workbench`](docs/architecture/theme-customizer.md) — Dual-stack theme configurator and code exporter architecture.
+
+---
 
 ## License
 

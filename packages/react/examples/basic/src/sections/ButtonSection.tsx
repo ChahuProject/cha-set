@@ -11,54 +11,92 @@ export default function ButtonSection() {
 
   return (
     <section className="block" id="button">
-      <h2>Components · Button</h2>
-      <p className="desc">
-        Contract: spec/components/button.ts — variant × size × loading / disabled /
-        fullWidth; keyboard Tab focus then Enter / Space to operate.
-      </p>
+      <div className="block-header">
+        <div>
+          <h2>Components · Button Matrix</h2>
+          <p className="desc">
+            Neutral contract (spec/components/button.ts) implemented via @base-ui/react. Full variant × size matrix,
+            polymorphic link rendering, and asynchronous loading states.
+          </p>
+        </div>
+      </div>
 
+      {/* Variant × Size Matrix */}
       {VARIANTS.map((v) => (
         <div className="matrix-row" key={v}>
           <span className="matrix-label">{v}</span>
           {SIZES.map((s) => (
             <Button key={s} variant={v} size={s} onClick={() => push(`${v}/${s} clicked`)}>
-              {s}
+              {v} {s}
             </Button>
           ))}
         </div>
       ))}
 
+      {/* States Row */}
       <div className="matrix-row">
         <span className="matrix-label">states</span>
         <Button variant="destructive" onClick={() => push('destructive clicked')}>
-          Delete
+          Delete Item
         </Button>
         <Button disabled onClick={() => push('never fire')}>
-          Disabled
+          Disabled Button
         </Button>
-        <Button fullWidth onClick={() => push('fullWidth clicked')}>
-          Full width
+        <Button
+          variant="secondary"
+          render={<a href="#docs" />}
+          nativeButton={false}
+          onClick={() => push('Base UI <a> link clicked')}
+        >
+          Render as Link (`&lt;a&gt;`)
         </Button>
       </div>
 
+      {/* Async Loading & Full Width */}
       <div className="matrix-row">
-        <span className="matrix-label">async</span>
+        <span className="matrix-label">async & block</span>
         <Button
           loading={loading}
           onClick={() => {
             setLoading(true);
-            window.setTimeout(() => setLoading(false), 1200);
+            push('Async action started (1.2s spinner)');
+            window.setTimeout(() => {
+              setLoading(false);
+              push('Async action finished');
+            }, 1200);
           }}
         >
-          {loading ? 'Saving…' : 'Simulate save'}
+          {loading ? 'Saving Changes…' : 'Simulate Async Action'}
         </Button>
       </div>
 
-      <ul className="log">
-        {log.map((entry, i) => (
-          <li key={i}>{entry}</li>
-        ))}
-      </ul>
+      <div className="matrix-row" style={{ marginTop: '0.5rem' }}>
+        <span className="matrix-label">fullWidth</span>
+        <div style={{ flex: 1 }}>
+          <Button fullWidth onClick={() => push('fullWidth clicked')}>
+            Full Width Block Action
+          </Button>
+        </div>
+      </div>
+
+      {/* Interactive Log */}
+      <div className="log-container">
+        <div className="log-header">
+          <span>Interaction Log (Click events)</span>
+          {log.length > 0 && (
+            <button className="btn-text-sm" onClick={() => setLog([])}>
+              Clear
+            </button>
+          )}
+        </div>
+        <ul className="log">
+          {log.length === 0 ? (
+            <li className="log-empty">Click buttons above to see click events…</li>
+          ) : (
+            log.map((entry, i) => <li key={i}>{entry}</li>)
+          )}
+        </ul>
+      </div>
     </section>
   );
 }

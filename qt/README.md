@@ -7,8 +7,9 @@ checked against the same single source of truth as the React implementation:
   is a GENERATED singleton (dark/light live switching) refreshed by
   `pnpm gen:qt`; do not edit by hand.
 - `src/ChaSetButton.qml` implements the Button contract;
-  `src/Main.qml` is the component showcase gallery (color swatches,
-  radius/type samples, full button matrix).
+  `src/Main.qml` is the component showcase gallery and theme studio (interactive
+  light/dark switching, accent theme presets, radius tuners, full button matrix,
+  and copyable QML/C++ configuration export).
 - `spec/capabilities.json` lists every "must" capability; this package
   reports coverage through `conformance/coverage.json`, enforced by
   `gate/parity.mjs`.

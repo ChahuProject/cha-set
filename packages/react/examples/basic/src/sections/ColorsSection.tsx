@@ -22,6 +22,7 @@ const TOKENS = [
 
 export default function ColorsSection({ themeKey }: { themeKey: string }) {
   const [values, setValues] = useState<Record<string, string>>({});
+  const [copiedToken, setCopiedToken] = useState<string | null>(null);
 
   useEffect(() => {
     const cs = getComputedStyle(document.documentElement);
@@ -30,17 +31,37 @@ export default function ColorsSection({ themeKey }: { themeKey: string }) {
     setValues(next);
   }, [themeKey]);
 
+  const copyTokenValue = async (token: string, value: string) => {
+    try {
+      await navigator.clipboard.writeText(`var(--${token}) /* ${value} */`);
+      setCopiedToken(token);
+      setTimeout(() => setCopiedToken(null), 1500);
+    } catch {
+      // Fallback
+    }
+  };
+
   return (
     <section className="block" id="colors">
-      <h2>Palette · Semantic tokens</h2>
-      <p className="desc">
-        All from spec/tokens.json (launcher preset), exposed with shadcn standard names (no prefix); toggle
-        light/dark and accent at top-right to take effect instantly.
-      </p>
+      <div className="block-header">
+        <div>
+          <h2>Palette · Semantic Core Tokens</h2>
+          <p className="desc">
+            All derived from <code>spec/tokens.json</code>. Click any swatch to copy its CSS variable expression.
+          </p>
+        </div>
+      </div>
       <div className="swatch-grid">
         {TOKENS.map((t) => (
-          <div className="swatch" key={t}>
-            <div className="swatch-color" style={{ background: `var(--${t})` }} />
+          <div
+            className="swatch clickable"
+            key={t}
+            onClick={() => copyTokenValue(t, values[t] || '')}
+            title="Click to copy CSS variable"
+          >
+            <div className="swatch-color" style={{ background: `var(--${t})` }}>
+              {copiedToken === t && <span className="swatch-copied-badge">✓ Copied</span>}
+            </div>
             <div className="swatch-meta">
               <div className="swatch-name">--{t}</div>
               <div className="swatch-value">{values[t] || '…'}</div>

@@ -12,10 +12,10 @@
 
 # Build artifacts and dependencies
 dist/
+**/node_modules/
 /packages/*/dist
-/packages/*/node_modules
-/packages/*/*/node_modules
 /packages/*/*/dist
 /qt/build*
 /spec/node_modules
 .playwright-mcp/
+.omo/
