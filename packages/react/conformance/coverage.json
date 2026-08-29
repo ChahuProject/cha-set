@@ -1,0 +1,11 @@
+{
+  "button": {
+    "variant": true,
+    "size": true,
+    "disabled": true,
+    "loading": true,
+    "fullWidth": true,
+    "keyboard": true,
+    "a11y": true
+  }
+}

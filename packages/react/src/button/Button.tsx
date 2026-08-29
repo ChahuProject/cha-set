@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
-import type { ComponentPropsWithoutRef } from 'react';
-import { Slot } from '@radix-ui/react-slot';
+import type * as React from 'react';
+import { Button as BaseButton } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/utils';
 
@@ -40,31 +40,25 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends ComponentPropsWithoutRef<'button'>,
+  extends React.ComponentPropsWithRef<typeof BaseButton>,
     VariantProps<typeof buttonVariants> {
   /** Show a loading state and block clicks. @default false */
   loading?: boolean;
   /** Stretch to fill the parent width. @default false */
   fullWidth?: boolean;
-  /**
-   * Render as the child element instead of <button> (shadcn asChild).
-   * Note: with asChild the spinner is not injected and click-blocking while
-   * loading is left to the child (only aria-disabled/aria-busy are set).
-   */
-  asChild?: boolean;
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
   {
     variant,
     size,
     loading = false,
     fullWidth = false,
-    asChild = false,
     className,
     type = 'button',
     disabled,
     children,
+    render,
     ...rest
   },
   ref,
@@ -72,22 +66,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   const classes = cn(buttonVariants({ variant, size }), fullWidth && 'w-full', className);
   const isDisabled = disabled || loading;
 
-  if (asChild) {
-    return (
-      <Slot
-        ref={ref}
-        className={classes}
-        aria-disabled={isDisabled || undefined}
-        aria-busy={loading || undefined}
-        {...rest}
-      >
-        {children}
-      </Slot>
-    );
-  }
-
   return (
-    <button ref={ref} type={type} className={classes} disabled={isDisabled} aria-busy={loading || undefined} {...rest}>
+    <BaseButton
+      ref={ref}
+      type={type}
+      className={classes}
+      disabled={isDisabled}
+      aria-busy={loading || undefined}
+      render={render}
+      {...rest}
+    >
       {loading ? (
         <span
           className="cs-button__spinner size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
@@ -95,6 +83,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         />
       ) : null}
       <span className={loading ? 'opacity-70' : undefined}>{children}</span>
-    </button>
+    </BaseButton>
   );
 });
+

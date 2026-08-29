@@ -81,6 +81,18 @@ describe('Button', () => {
     render(<Button fullWidth>Block</Button>);
     expect(screen.getByRole('button')).toHaveClass('w-full');
   });
+
+  it('supports Base UI render prop for polymorphism', () => {
+    render(
+      <Button render={<a href="/test" />} nativeButton={false}>
+        Link Button
+      </Button>,
+    );
+    const element = screen.getByRole('button', { name: 'Link Button' });
+    expect(element.tagName.toLowerCase()).toBe('a');
+    expect(element).toHaveAttribute('href', '/test');
+    expect(element).toHaveClass('bg-primary');
+  });
 });
 
 describe('Button keyboard', () => {
