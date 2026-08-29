@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Button } from '@chahu/cha-set';
 import { ThemeTuner, type ThemeOverrides } from './components/ThemeTuner';
 import { ComponentPlayground } from './components/ComponentPlayground';
 import { ExportModal } from './components/ExportModal';
@@ -51,6 +52,25 @@ function applyTheme(mode: string, accent: string, overrides: ThemeOverrides) {
 }
 
 export function App() {
+  const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const harness = searchParams?.get('harness');
+
+  // Isolated Component Visual Test Harness
+  if (harness === 'button') {
+    const variant = (searchParams?.get('variant') ?? 'primary') as any;
+    const size = (searchParams?.get('size') ?? 'md') as any;
+    const label = searchParams?.get('label') ?? 'Create Project';
+    const loading = searchParams?.get('loading') === 'true';
+    const disabled = searchParams?.get('disabled') === 'true';
+    return (
+      <div style={{ width: 220, height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#ffffff', margin: 0, padding: 0 }}>
+        <Button variant={variant} size={size} loading={loading} disabled={disabled}>
+          {label}
+        </Button>
+      </div>
+    );
+  }
+
   const [mode, setMode] = useState(() => localStorage.getItem('cs-mode') ?? 'light');
   const [accent, setAccent] = useState(() => localStorage.getItem('cs-accent') ?? '');
   const [overrides, setOverrides] = useState<ThemeOverrides>(() => {

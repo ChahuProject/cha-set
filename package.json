@@ -19,6 +19,8 @@
     "showcase": "pnpm --filter @chaset/example-react-button dev",
     "showcase:qt": "node scripts/run-qt-showcase.mjs",
     "build:qt": "node scripts/run-qt-showcase.mjs --build-only",
+    "test:visual": "node scripts/visual-diff.mjs",
+    "gate:visual": "node scripts/visual-diff.mjs",
     "dev": "pnpm --filter @chaset/example-react-button dev",
     "prepare": "node -e \"try{require('child_process').execSync('lefthook install',{stdio:'inherit'})}catch{console.log('Not yet git init, skipping lefthook install; run git init first then pnpm lefthook:install')}\"",
     "lefthook:install": "lefthook install",
@@ -30,9 +32,13 @@
   },
   "packageManager": "pnpm@11.6.0",
   "devDependencies": {
+    "@colbymchenry/codegraph": "^1.5.0",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
+    "@types/pixelmatch": "^5.2.6",
+    "@types/pngjs": "^6.0.5",
     "lefthook": "latest",
-    "@colbymchenry/codegraph": "^1.5.0"
+    "pixelmatch": "^7.2.0",
+    "pngjs": "^7.0.0"
   }
 }

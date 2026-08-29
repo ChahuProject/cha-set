@@ -20,6 +20,7 @@
 | :--- | :--- | :--- | :--- |
 | [`token-pipeline.md`](./token-pipeline.md) | Design token pipeline: shards aggregation, derivation, CSS/Qt code generation, and consumer sync | `spec/tokens/**`, `spec/generators/`, `scripts/sync-consumers.mjs` | `[Authoritative Specification]` |
 | [`component-contracts.md`](./component-contracts.md) | Neutral component API contracts, capability manifests, earned coverage testing, and Parity Gate | `spec/components/`, `spec/capabilities.json`, `gate/parity.mjs`, `packages/*/conformance/` | `[Authoritative Specification]` |
+| [`visual-conformance.md`](./visual-conformance.md) | Cross-stack visual conformance, isolated component harnesses, automated Edge CDP + Qt snapshot pipeline, and pixel diff gating | `scripts/visual-diff.mjs`, `packages/react/examples/basic/`, `qt/src/` | `[Authoritative Specification]` |
 | [`theme-customizer.md`](./theme-customizer.md) | Style configurator & component preview workbench (React Studio + Qt Showcase), real-time token tuning, and copyable exports | `packages/react/examples/basic/`, `qt/src/` | `[Design & Implementation]` |
 
 ---

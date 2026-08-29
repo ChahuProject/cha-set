@@ -6,8 +6,8 @@ import chaSet
 // 100% Pixel-Perfect and Behavioral Parity with React Studio (packages/react/examples/basic).
 ApplicationWindow {
     id: win
-    width: 1100
-    height: 1200
+    width: (typeof harnessMode !== "undefined" && harnessMode === "button") ? 220 : 1100
+    height: (typeof harnessMode !== "undefined" && harnessMode === "button") ? 80 : 1200
     visible: true
     title: "ChaSet Studio"
     color: ThemeTokens.dark ? "#020817" : "#ffffff"
@@ -69,7 +69,7 @@ ApplicationWindow {
 
     Timer {
         id: shotTimer
-        interval: 1000
+        interval: (typeof harnessMode !== "undefined" && harnessMode !== "") ? 200 : 800
         running: typeof shotPath !== "undefined" && shotPath !== ""
         onTriggered: {
             rootCanvas.grabToImage(function(result) {
@@ -85,6 +85,27 @@ ApplicationWindow {
         width: win.width
         height: win.height
         color: win.cBg
+
+        // Isolated Component Harness Container (for visual unit tests)
+        Rectangle {
+            id: harnessContainer
+            visible: typeof harnessMode !== "undefined" && harnessMode === "button"
+            anchors.fill: parent
+            color: "#ffffff"
+            ChaSetButton {
+                anchors.centerIn: parent
+                variant: typeof harnessVariant !== "undefined" ? harnessVariant : "primary"
+                size: typeof harnessSize !== "undefined" ? harnessSize : "md"
+                text: typeof harnessLabel !== "undefined" ? harnessLabel : "Create Project"
+                loading: typeof harnessLoading !== "undefined" ? harnessLoading : false
+                disabled: typeof harnessDisabled !== "undefined" ? harnessDisabled : false
+            }
+        }
+
+        Item {
+            id: studioContainer
+            visible: typeof harnessMode === "undefined" || harnessMode === ""
+            anchors.fill: parent
 
         // ==============================================================
         // 1. TOP NAVBAR (Sticky, 60px height, 1px border bottom)
@@ -408,14 +429,15 @@ ApplicationWindow {
                                         ]
                                         delegate: Rectangle {
                                             required property var modelData
-                                            width: 82
-                                            height: 28
-                                            radius: 14
+                                            width: chipRow.implicitWidth + 18
+                                            height: 26
+                                            radius: 13
                                             color: win.activeAccent === modelData[0] ? Qt.rgba(win.cPrimary.r, win.cPrimary.g, win.cPrimary.b, 0.15) : win.cCard
                                             border.color: win.activeAccent === modelData[0] ? win.cPrimary : win.cBorder
                                             border.width: win.activeAccent === modelData[0] ? 1.5 : 1
 
                                             Row {
+                                                id: chipRow
                                                 anchors.centerIn: parent
                                                 spacing: 5
                                                 Rectangle {
@@ -423,12 +445,14 @@ ApplicationWindow {
                                                     height: 8
                                                     radius: 4
                                                     color: parent.parent.modelData[1]
+                                                    anchors.verticalCenter: parent.verticalCenter
                                                 }
                                                 Text {
                                                     text: parent.parent.modelData[0]
                                                     color: win.cFg
                                                     font.pixelSize: 11
                                                     font.weight: Font.Medium
+                                                    anchors.verticalCenter: parent.verticalCenter
                                                 }
                                             }
 
@@ -1310,6 +1334,7 @@ ApplicationWindow {
                     }
                 }
             }
+        }
         }
     }
 }

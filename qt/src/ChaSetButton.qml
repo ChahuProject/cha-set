@@ -122,14 +122,14 @@ Item {
     Row {
         id: contentRow
         anchors.centerIn: root
-        spacing: 8
+        spacing: root.loading ? 8 : 0
 
         // Spinner (loading state)
         Rectangle {
             id: spinner
             visible: root.loading
-            width: 16
-            height: 16
+            width: root.loading ? 16 : 0
+            height: root.loading ? 16 : 0
             anchors.verticalCenter: parent.verticalCenter
             color: "transparent"
             border.color: root.fgColor()

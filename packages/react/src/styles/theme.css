@@ -22,29 +22,29 @@
 @source '../';
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --color-background: var(--background, var(--cs-background));
+  --color-foreground: var(--foreground, var(--cs-foreground));
+  --color-card: var(--card, var(--cs-card));
+  --color-card-foreground: var(--card-foreground, var(--cs-card-foreground));
+  --color-popover: var(--popover, var(--cs-popover));
+  --color-popover-foreground: var(--popover-foreground, var(--cs-popover-foreground));
+  --color-primary: var(--primary, var(--cs-primary));
+  --color-primary-foreground: var(--primary-foreground, var(--cs-primary-foreground));
+  --color-secondary: var(--secondary, var(--cs-secondary));
+  --color-secondary-foreground: var(--secondary-foreground, var(--cs-secondary-foreground));
+  --color-muted: var(--muted, var(--cs-muted));
+  --color-muted-foreground: var(--muted-foreground, var(--cs-muted-foreground));
+  --color-accent: var(--accent, var(--cs-accent));
+  --color-accent-foreground: var(--accent-foreground, var(--cs-accent-foreground));
+  --color-destructive: var(--destructive, var(--cs-destructive));
+  --color-destructive-foreground: var(--destructive-foreground, var(--cs-destructive-foreground));
+  --color-border: var(--border, var(--cs-border));
+  --color-input: var(--input, var(--cs-input));
+  --color-ring: var(--ring, var(--cs-ring));
 
   /* Radius scale derives from the single --radius token (shadcn convention). */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: calc(var(--radius, var(--cs-radius)) - 4px);
+  --radius-md: calc(var(--radius, var(--cs-radius)) - 2px);
+  --radius-lg: var(--radius, var(--cs-radius));
+  --radius-xl: calc(var(--radius, var(--cs-radius)) + 4px);
 }

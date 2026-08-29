@@ -15,14 +15,14 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 const buttonVariants = cva(
   // Base: rem-based sizing honors host root-font-size scaling; focus ring
   // reads --ring; loading/disabled share one disabled visual treatment.
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-60',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-60 border-0 cursor-pointer',
   {
     variants: {
       variant: {
         primary: 'bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80',
         secondary:
-          'bg-secondary text-secondary-foreground border border-border hover:bg-secondary/90 active:bg-secondary/80',
-        ghost: 'text-foreground hover:bg-accent hover:text-accent-foreground active:bg-accent/80',
+          'bg-secondary text-secondary-foreground border border-solid border-border hover:bg-secondary/90 active:bg-secondary/80',
+        ghost: 'bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground active:bg-accent/80',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/80',
       },

@@ -9,7 +9,7 @@ import QtQuick
 QtObject {
     id: root
 
-    property bool dark: true
+    property bool dark: false
 
     function color(name) {
         // qmlcachegen does not support object literals in property bindings; use switch-case direct returns.
