@@ -14,6 +14,9 @@ export const ScrollBarButton = React.forwardRef<HTMLButtonElement, ScrollBarButt
         type="button"
         tabIndex={-1}
         disabled={disabled}
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerUp={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
         className={cn(
           'inline-flex items-center justify-center size-3.5 rounded text-muted-foreground/80 hover:text-foreground hover:bg-accent/80 active:bg-accent focus:outline-none transition-all duration-100 disabled:opacity-20 disabled:pointer-events-none cursor-pointer',
           className,
@@ -110,7 +113,12 @@ export function ScrollBarStartCluster({
   if (orientation === 'vertical') {
     const isAtTop = ctx ? ctx.scrollState.isAtTop : false;
     return (
-      <div className="flex flex-col items-center gap-0.5 pointer-events-auto select-none p-0.5">
+      <div
+        className="flex flex-col items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 h-9 w-full"
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerUp={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
         <ScrollBarButton
           title="Scroll to Top"
           aria-label="Scroll to top"
@@ -139,7 +147,12 @@ export function ScrollBarStartCluster({
 
   const isAtLeft = ctx ? ctx.scrollState.isAtLeft : false;
   return (
-    <div className="flex flex-row items-center gap-0.5 pointer-events-auto select-none p-0.5">
+    <div
+      className="flex flex-row items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 w-9 h-full"
+      onPointerDown={(e) => e.stopPropagation()}
+      onPointerUp={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <ScrollBarButton
         title="Scroll to Start"
         aria-label="Scroll to start"
@@ -176,7 +189,12 @@ export function ScrollBarEndCluster({
   if (orientation === 'vertical') {
     const isAtBottom = ctx ? ctx.scrollState.isAtBottom : false;
     return (
-      <div className="flex flex-col items-center gap-0.5 pointer-events-auto select-none p-0.5">
+      <div
+        className="flex flex-col items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 h-9 w-full"
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerUp={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
         <ScrollBarButton
           title="Page Down"
           aria-label="Page down"
@@ -205,7 +223,12 @@ export function ScrollBarEndCluster({
 
   const isAtRight = ctx ? ctx.scrollState.isAtRight : false;
   return (
-    <div className="flex flex-row items-center gap-0.5 pointer-events-auto select-none p-0.5">
+    <div
+      className="flex flex-row items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 w-9 h-full"
+      onPointerDown={(e) => e.stopPropagation()}
+      onPointerUp={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <ScrollBarButton
         title="Page Right"
         aria-label="Page right"

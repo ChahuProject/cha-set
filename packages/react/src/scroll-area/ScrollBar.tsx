@@ -61,7 +61,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           <div
             className={cn(
               'opacity-0 group-hover:opacity-100 group-data-[hovering]:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto absolute',
-              isVertical ? 'top-0 inset-x-0' : 'left-0 inset-y-0',
+              isVertical ? 'top-0 inset-x-0 h-9' : 'left-0 inset-y-0 w-9',
             )}
           >
             <ScrollBarStartCluster
@@ -75,7 +75,9 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         <BaseScrollArea.Thumb
           className={cn(
             'absolute z-20 flex items-center justify-center cursor-pointer transition-all duration-150',
-            isVertical ? 'top-0 inset-x-0 min-h-6' : 'left-0 inset-y-0 min-w-6',
+            isVertical
+              ? cn('top-0 inset-x-0 min-h-6', showButtons ? 'my-9' : 'my-0.5')
+              : cn('left-0 inset-y-0 min-w-6', showButtons ? 'mx-9' : 'mx-0.5'),
           )}
         >
           {children ?? (
@@ -95,7 +97,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           <div
             className={cn(
               'opacity-0 group-hover:opacity-100 group-data-[hovering]:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto absolute',
-              isVertical ? 'bottom-0 inset-x-0' : 'right-0 inset-y-0',
+              isVertical ? 'bottom-0 inset-x-0 h-9' : 'right-0 inset-y-0 w-9',
             )}
           >
             <ScrollBarEndCluster

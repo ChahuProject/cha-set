@@ -110,4 +110,85 @@ describe('ScrollArea and ScrollBar', () => {
     expect(pageRightBtn).toBeInTheDocument();
     expect(toRightBtn).toBeInTheDocument();
   });
+
+  it('constrains thumb with clearance margins so it never overlaps stepper buttons', () => {
+    // 1. With showButtons=true (default): vertical thumb has my-9
+    const { container: c1 } = render(
+      <ScrollArea className="h-64 w-64" showButtons={true}>
+        <div style={{ height: 1000 }}>Long Content</div>
+      </ScrollArea>,
+    );
+    const vThumbWithButtons = c1.querySelector('[data-orientation="vertical"] [data-state]') || c1.querySelector('[data-orientation="vertical"] > div:nth-child(2)');
+    expect(vThumbWithButtons).toHaveClass('my-9');
+
+    // 2. With showButtons=false: vertical thumb has my-0.5
+    const { container: c2 } = render(
+      <ScrollArea className="h-64 w-64" showButtons={false}>
+        <div style={{ height: 1000 }}>Long Content</div>
+      </ScrollArea>,
+    );
+    const vThumbNoButtons = c2.querySelector('[data-orientation="vertical"] [data-state]') || c2.querySelector('[data-orientation="vertical"] > div');
+    expect(vThumbNoButtons).toHaveClass('my-0.5');
+
+    // 3. Horizontal with showButtons=true: horizontal thumb has mx-9
+    const { container: c3 } = render(
+      <ScrollArea className="h-64 w-64" showHorizontalScrollBar showButtons={true}>
+        <div style={{ width: 1000 }}>Wide Content</div>
+      </ScrollArea>,
+    );
+    const hThumbWithButtons = c3.querySelector('[data-orientation="horizontal"] [data-state]') || c3.querySelector('[data-orientation="horizontal"] > div:nth-child(2)');
+    expect(hThumbWithButtons).toHaveClass('mx-9');
+  });
+
+  it('isolates pointer events on stepper buttons to prevent track click hijacking', () => {
+    render(
+      <ScrollArea className="h-64 w-64">
+        <div style={{ height: 1000 }}>Long Content</div>
+      </ScrollArea>,
+    );
+
+    const pageDownBtn = screen.getByRole('button', { name: /page down/i });
+    const pointerDownEvent = new MouseEvent('pointerdown', { bubbles: true, cancelable: true });
+    const stopPropagationSpy = vi.spyOn(pointerDownEvent, 'stopPropagation');
+
+    fireEvent(pageDownBtn, pointerDownEvent);
+    expect(stopPropagationSpy).toHaveBeenCalled();
+  });
+
+  it('disables all directional buttons when content does not overflow', () => {
+    const { container } = render(
+      <ScrollArea className="h-64 w-64" showHorizontalScrollBar showButtons={true}>
+        <div style={{ height: 50, width: 50 }}>Short Content</div>
+      </ScrollArea>,
+    );
+
+    const viewport = container.querySelector('[data-id$="-viewport"]') as HTMLElement;
+    if (viewport) {
+      Object.defineProperty(viewport, 'scrollHeight', { value: 50, configurable: true });
+      Object.defineProperty(viewport, 'clientHeight', { value: 200, configurable: true });
+      Object.defineProperty(viewport, 'scrollWidth', { value: 50, configurable: true });
+      Object.defineProperty(viewport, 'clientWidth', { value: 200, configurable: true });
+      fireEvent.scroll(viewport);
+    }
+
+    const toTopBtn = screen.getByRole('button', { name: /scroll to top/i });
+    const pageUpBtn = screen.getByRole('button', { name: /page up/i });
+    const pageDownBtn = screen.getByRole('button', { name: /page down/i });
+    const toBottomBtn = screen.getByRole('button', { name: /scroll to bottom/i });
+
+    expect(toTopBtn).toBeDisabled();
+    expect(pageUpBtn).toBeDisabled();
+    expect(pageDownBtn).toBeDisabled();
+    expect(toBottomBtn).toBeDisabled();
+
+    const toLeftBtn = screen.getByRole('button', { name: /scroll to start/i });
+    const pageLeftBtn = screen.getByRole('button', { name: /page left/i });
+    const pageRightBtn = screen.getByRole('button', { name: /page right/i });
+    const toRightBtn = screen.getByRole('button', { name: /scroll to end/i });
+
+    expect(toLeftBtn).toBeDisabled();
+    expect(pageLeftBtn).toBeDisabled();
+    expect(pageRightBtn).toBeDisabled();
+    expect(toRightBtn).toBeDisabled();
+  });
 });

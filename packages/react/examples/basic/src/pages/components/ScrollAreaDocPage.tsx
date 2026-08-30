@@ -5,9 +5,21 @@ import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 
-const SAMPLE_TAGS = Array.from({ length: 40 }).map(
-  (_, i) => `v1.2.0-beta.${40 - i} — Performance optimizations and token synchronization updates`,
-);
+const SAMPLE_TAGS = Array.from({ length: 120 }).map((_, i) => {
+  const num = 120 - i;
+  const major = 1 + Math.floor(num / 50);
+  const minor = Math.floor((num % 50) / 10);
+  const patch = num % 10;
+  const categories = ['Tokens', 'Ergonomics', 'Performance', 'A11y', 'Desktop/Qt', 'Compiler', 'Visuals', 'Architecture'];
+  const category = categories[i % categories.length];
+  return {
+    version: `v${major}.${minor}.${patch}-build.${num}`,
+    category,
+    desc: `Synchronized token updates, scrollbar steppers, and boundary checks (patch #${num})`,
+    date: `2026-08-${String((i % 28) + 1).padStart(2, '0')}`,
+    hash: (Math.sin(num) * 10000).toString(16).substring(7, 14),
+  };
+});
 
 const SAMPLE_CARDS = [
   { id: '1', title: 'Single Source of Truth', desc: 'spec/tokens shards drive CSS & Qt', tag: 'Architecture' },
@@ -18,7 +30,43 @@ const SAMPLE_CARDS = [
   { id: '6', title: 'Tailwind v4 Theming', desc: 'Inline theme variables mapped to CSS tokens', tag: 'Web' },
   { id: '7', title: 'Theme Studio Tuner', desc: 'Live color manipulation and JSON exporter', tag: 'Tooling' },
   { id: '8', title: 'Cross-Stack Parity Gate', desc: 'CI verifies every required capability', tag: 'Quality' },
+  { id: '9', title: 'Token Shard Engine', desc: 'Modular schemas for colors, space, motion', tag: 'Tokens' },
+  { id: '10', title: 'Synchronized Palette', desc: 'Dual-mode dark & light automatic calibration', tag: 'Visuals' },
+  { id: '11', title: 'Fluid Animation Curve', desc: '150ms cubic easing for hot-zone hover states', tag: 'Motion' },
+  { id: '12', title: 'Non-Intrusive Idle', desc: '6px slim visual bar preserves screen estate', tag: 'Ergonomics' },
+  { id: '13', title: 'Multi-Page Stepping', desc: '85% viewport ratio smooth pagination jump', tag: 'Interaction' },
+  { id: '14', title: 'Bi-Directional Bounds', desc: 'Thumb never overlaps stepper button clusters', tag: 'Robustness' },
+  { id: '15', title: 'High Contrast A11y', desc: 'WCAG AAA verified state contrast ratios', tag: 'Accessibility' },
+  { id: '16', title: 'Zero Dependency Core', desc: 'Headless primitives with minimal bundle size', tag: 'Performance' },
+  { id: '17', title: 'QML Quick Integration', desc: 'Direct C++ token pipeline for 60fps Qt apps', tag: 'Desktop' },
+  { id: '18', title: 'Visual Diff Conformance', desc: 'Automated pixelmatch snapshots on pull requests', tag: 'Quality' },
+  { id: '19', title: 'Dual-Axis Sync Corner', desc: 'Seamless 2D grid matrix scrolling support', tag: 'Layout' },
+  { id: '20', title: 'Polymorphic Component', desc: 'Custom render delegation via Base UI engine', tag: 'Architecture' },
+  { id: '21', title: 'Touch & Pen Modality', desc: 'Smooth drag latch with touch gesture priority', tag: 'Interaction' },
+  { id: '22', title: 'Zod API Schema', desc: 'Static typescript validation on design token types', tag: 'TypeSafety' },
+  { id: '23', title: 'Dynamic CSS Variables', desc: 'Scoped custom properties for hot reload themes', tag: 'Web' },
+  { id: '24', title: 'Release Artifact CI', desc: 'Generates headers, css, and tokens in one pass', tag: 'Tooling' },
 ];
+
+const SAMPLE_MATRIX_ROWS = Array.from({ length: 100 }).map((_, i) => {
+  const rowNum = i + 1;
+  const categories = ['Compiler', 'Tokens', 'Components', 'Desktop', 'Web', 'Quality', 'A11y', 'Performance'];
+  const stacks = ['React & Qt', 'React Only', 'Qt Only', 'Spec Pipeline'];
+  const statuses = ['Verified', 'In Review', 'Passing CI', 'Production'];
+  const category = categories[i % categories.length];
+  const stack = stacks[i % stacks.length];
+  const status = statuses[i % statuses.length];
+  const hash = (Math.cos(rowNum) * 100000).toString(16).substring(3, 10);
+  return {
+    id: `#00${rowNum < 10 ? '0' + rowNum : rowNum}`,
+    name: `Cross-stack module feature test #${rowNum} (page step validation)`,
+    category,
+    stack,
+    status,
+    hash,
+    priority: i % 3 === 0 ? 'High' : i % 2 === 0 ? 'Medium' : 'Normal',
+  };
+});
 
 export function ScrollAreaDocPage() {
   const [heroMode, setHeroMode] = useState<'vertical' | 'horizontal' | 'both'>('vertical');
@@ -51,8 +99,8 @@ export function ScrollAreaDocPage() {
       : `<div className="p-4">
     <h4 className="mb-4 text-sm font-medium">Release Changelog</h4>
     {tags.map((tag) => (
-      <div key={tag} className="text-sm py-2 border-b">
-        {tag}
+      <div key={tag.version} className="text-sm py-2 border-b">
+        {tag.version} — {tag.desc}
       </div>
     ))}
   </div>`
@@ -71,12 +119,12 @@ export function ScrollAreaDocPage() {
       heroMode === 'horizontal'
         ? `ListView {
         orientation: ListView.Horizontal
-        model: 8
+        model: 24
         spacing: 12
         delegate: Rectangle { width: 200; height: 120; radius: 6; color: ThemeTokens.panel }
     }`
         : `ListView {
-        model: 40
+        model: 120
         delegate: Text { text: "Item " + index; color: ThemeTokens.text; padding: 8 }
     }`
     }
@@ -115,7 +163,7 @@ export function ScrollAreaDocPage() {
                     heroMode === 'vertical' ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
                   }`}
                 >
-                  Vertical List
+                  Vertical List (120 Rows)
                 </button>
                 <button
                   type="button"
@@ -124,7 +172,7 @@ export function ScrollAreaDocPage() {
                     heroMode === 'horizontal' ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
                   }`}
                 >
-                  Horizontal Cards
+                  Horizontal Cards (24 Cards)
                 </button>
                 <button
                   type="button"
@@ -133,7 +181,7 @@ export function ScrollAreaDocPage() {
                     heroMode === 'both' ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
                   }`}
                 >
-                  Dual Axis (2D)
+                  Dual Axis (100 Rows Matrix)
                 </button>
               </div>
 
@@ -184,14 +232,28 @@ export function ScrollAreaDocPage() {
                 smoothScroll={smoothScroll}
               >
                 <div className="p-4">
-                  <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Release Changelog & Tags (Vertical Scroll)
-                  </h4>
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      Release Changelog & Tags (120 Items)
+                    </h4>
+                    <span className="text-[10px] text-muted-foreground font-mono">120 entries</span>
+                  </div>
                   <div className="divide-y divide-border/50">
-                    {SAMPLE_TAGS.map((tag) => (
-                      <div key={tag} className="py-2.5 text-xs text-foreground/90 flex items-center justify-between">
-                        <span className="font-mono">{tag}</span>
-                        <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Tag</span>
+                    {SAMPLE_TAGS.map((item) => (
+                      <div key={item.version} className="py-2.5 text-xs text-foreground/90 flex items-center justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono font-medium">{item.version}</span>
+                            <span className="text-[10px] text-primary bg-primary/10 px-1.5 py-0.2 rounded font-mono font-semibold">
+                              {item.category}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-muted-foreground truncate mt-0.5">{item.desc}</p>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <span className="text-[10px] text-muted-foreground font-mono block">{item.date}</span>
+                          <span className="text-[10px] text-muted-foreground/60 font-mono block">#{item.hash}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -235,10 +297,13 @@ export function ScrollAreaDocPage() {
                 showButtons={showButtons}
                 smoothScroll={smoothScroll}
               >
-                <div className="p-4 w-[750px]">
-                  <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Dual-Axis Spreadsheet Matrix (2D Viewport)
-                  </h4>
+                <div className="p-4 w-[850px]">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      Dual-Axis Matrix (100 Rows &times; 6 Columns)
+                    </h4>
+                    <span className="text-[10px] text-muted-foreground font-mono">100 items</span>
+                  </div>
                   <table className="w-full text-left text-xs border-collapse font-mono">
                     <thead>
                       <tr className="border-b border-border bg-muted/40 text-[11px] text-muted-foreground">
@@ -247,18 +312,26 @@ export function ScrollAreaDocPage() {
                         <th className="p-2">Category</th>
                         <th className="p-2">Target Stack</th>
                         <th className="p-2">Status</th>
-                        <th className="p-2">Commit Hash</th>
+                        <th className="p-2">Commit</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border/40 text-[11px]">
-                      {Array.from({ length: 25 }).map((_, i) => (
-                        <tr key={i} className="hover:bg-muted/20">
-                          <td className="p-2 font-semibold">#00{i + 1}</td>
-                          <td className="p-2 text-foreground font-sans">Cross-stack token sync pipeline module</td>
-                          <td className="p-2 text-muted-foreground">Compiler</td>
-                          <td className="p-2 text-primary">React & Qt</td>
-                          <td className="p-2"><span className="text-emerald-500">Verified</span></td>
-                          <td className="p-2 text-muted-foreground">7a9f21b</td>
+                      {SAMPLE_MATRIX_ROWS.map((row) => (
+                        <tr key={row.id} className="hover:bg-muted/20">
+                          <td className="p-2 font-semibold text-muted-foreground">{row.id}</td>
+                          <td className="p-2 text-foreground font-sans">{row.name}</td>
+                          <td className="p-2">
+                            <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
+                              {row.category}
+                            </span>
+                          </td>
+                          <td className="p-2 text-foreground/80">{row.stack}</td>
+                          <td className="p-2">
+                            <span className={row.status === 'Verified' ? 'text-emerald-500 font-semibold' : 'text-primary'}>
+                              {row.status}
+                            </span>
+                          </td>
+                          <td className="p-2 text-muted-foreground">{row.hash}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -339,22 +412,64 @@ export function ScrollAreaDocPage() {
             showHorizontalScrollBar
             showVerticalScrollBar
           >
-            <div className="p-4 w-[700px]">
+            <div className="p-4 w-[850px]">
               <pre className="font-mono text-xs text-foreground/90 whitespace-pre leading-relaxed">
-{`// Large Configuration Matrix
+{`// Large Cross-Stack Configuration & Token Matrix (Multi-Page Test Dataset)
 export const CrossStackSpecification = {
   specVersion: 1,
   schema: "zod",
+  namespace: "@chahu/cha-set",
   supportedPlatforms: ["react-web", "qt-quick-desktop", "qt-widgets"],
   tokenShards: [
     "spec/tokens/meta.json",
     "spec/tokens/primitives.json",
     "spec/tokens/semantic/core.json",
     "spec/tokens/semantic/dunting.json",
-    "spec/tokens/themes/axes.json"
+    "spec/tokens/themes/axes.json",
+    "spec/tokens/components/button.json",
+    "spec/tokens/components/scrollbar.json"
   ],
   capabilities: {
-    scrollbar: { hotZone: 16, collapsed: 6, expanded: 12, steppers: true }
+    scrollbar: {
+      hotZone: 16,
+      collapsed: 6,
+      expanded: 12,
+      pageStepRatio: 0.85,
+      smoothScroll: true,
+      boundaryClamp: true,
+      steppers: {
+        toTop: true,
+        pageUp: true,
+        pageDown: true,
+        toBottom: true,
+        toLeft: true,
+        pageLeft: true,
+        pageRight: true,
+        toRight: true
+      },
+      preventThumbOverlap: true
+    },
+    button: {
+      variants: ["primary", "secondary", "ghost", "destructive"],
+      sizes: ["sm", "md", "lg"],
+      loadingSpinner: true,
+      polymorphic: true
+    }
+  },
+  conformanceMatrix: [
+    { rule: "hotZone-expand", target: "both", result: "PASS", latencyMs: 0.4 },
+    { rule: "stepper-clamp", target: "both", result: "PASS", latencyMs: 0.2 },
+    { rule: "smooth-scroll-curve", target: "both", result: "PASS", latencyMs: 0.3 },
+    { rule: "thumb-overlap-prevention", target: "both", result: "PASS", latencyMs: 0.1 },
+    { rule: "dual-axis-corner-sync", target: "both", result: "PASS", latencyMs: 0.5 },
+    { rule: "wcag-contrast-aa", target: "both", result: "PASS", latencyMs: 0.2 },
+    { rule: "wcag-contrast-aaa", target: "both", result: "PASS", latencyMs: 0.2 },
+    { rule: "touch-momentum-latch", target: "both", result: "PASS", latencyMs: 0.6 },
+    { rule: "resize-observer-sync", target: "both", result: "PASS", latencyMs: 0.3 }
+  ],
+  buildTargets: {
+    react: { entry: "src/index.ts", outDir: "dist", format: ["esm", "cjs"] },
+    qt: { entry: "CMakeLists.txt", qmlDir: "src", moduleUri: "chaSet" }
   }
 };`}
               </pre>

@@ -33,7 +33,7 @@ Item {
 
     // Stepper Button Cluster dimensions
     readonly property real buttonClusterSize: showButtons ? (hitSize * 2 + 4) : 0
-    readonly property real availableTrackLength: (isVertical ? height : width) - (hovered && showButtons ? buttonClusterSize * 2 : 0)
+    readonly property real availableTrackLength: (isVertical ? height : width) - (showButtons ? buttonClusterSize * 2 : 0)
 
     // Scroll actions
     function scrollToStart() {
@@ -265,10 +265,10 @@ Item {
     // Track Runway & Thumb
     Item {
         id: trackArea
-        anchors.top: root.isVertical ? (root.hovered && root.showButtons ? startCluster.bottom : parent.top) : parent.top
-        anchors.bottom: root.isVertical ? (root.hovered && root.showButtons ? endCluster.top : parent.bottom) : parent.bottom
-        anchors.left: root.isVertical ? parent.left : (root.hovered && root.showButtons ? startCluster.right : parent.left)
-        anchors.right: root.isVertical ? parent.right : (root.hovered && root.showButtons ? endCluster.left : parent.right)
+        anchors.top: root.isVertical ? (root.showButtons ? startCluster.bottom : parent.top) : parent.top
+        anchors.bottom: root.isVertical ? (root.showButtons ? endCluster.top : parent.bottom) : parent.bottom
+        anchors.left: root.isVertical ? parent.left : (root.showButtons ? startCluster.right : parent.left)
+        anchors.right: root.isVertical ? parent.right : (root.showButtons ? endCluster.left : parent.right)
 
         // Visual Thumb Indicator
         Rectangle {
