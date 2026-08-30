@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@chahu/cha-set';
-import { ThemeTuner, type ThemeOverrides } from './components/ThemeTuner';
-import { ComponentPlayground } from './components/ComponentPlayground';
+import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
-import ColorsSection from './sections/ColorsSection';
-import TypeRadiusSection from './sections/TypeRadiusSection';
-import ButtonSection from './sections/ButtonSection';
+import { CommandSearchModal } from './components/CommandSearchModal';
+import { Header } from './layout/Header';
+import { Sidebar } from './layout/Sidebar';
+import { useRouter } from './router/useRouter';
+import { ButtonDocPage } from './pages/components/ButtonDocPage';
+import { ScrollAreaDocPage } from './pages/components/ScrollAreaDocPage';
+import { IntroductionPage } from './pages/get-started/IntroductionPage';
+import { TokensPage } from './pages/get-started/TokensPage';
+import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
 
 function applyTheme(mode: string, accent: string, overrides: ThemeOverrides) {
   const html = document.documentElement;
@@ -55,7 +60,7 @@ export function App() {
   const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
   const harness = searchParams?.get('harness');
 
-  // Isolated Component Visual Test Harness
+  // Isolated Component Visual Test Harness (Required for visual diff tests)
   if (harness === 'button') {
     const variant = (searchParams?.get('variant') ?? 'primary') as any;
     const size = (searchParams?.get('size') ?? 'md') as any;
@@ -71,6 +76,7 @@ export function App() {
     );
   }
 
+  const { currentHash, navigate } = useRouter();
   const [mode, setMode] = useState(() => localStorage.getItem('cs-mode') ?? 'light');
   const [accent, setAccent] = useState(() => localStorage.getItem('cs-accent') ?? '');
   const [overrides, setOverrides] = useState<ThemeOverrides>(() => {
@@ -81,8 +87,10 @@ export function App() {
       return {};
     }
   });
-  const [showTuner, setShowTuner] = useState(true);
+
+  const [showTuner, setShowTuner] = useState(false);
   const [exportModalOpen, setExportModalOpen] = useState(false);
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
 
   useEffect(() => {
     applyTheme(mode, accent, overrides);
@@ -93,79 +101,62 @@ export function App() {
 
   const themeKey = `${mode}:${accent}:${JSON.stringify(overrides)}`;
 
+  const renderActivePage = () => {
+    switch (currentHash) {
+      case '#/get-started/introduction':
+      case '#/':
+        return <IntroductionPage />;
+      case '#/get-started/tokens':
+        return <TokensPage themeKey={themeKey} />;
+      case '#/get-started/theme-tuner':
+        return (
+          <ThemeTunerPage
+            mode={mode}
+            setMode={setMode}
+            accent={accent}
+            setAccent={setAccent}
+            overrides={overrides}
+            setOverrides={setOverrides}
+            onOpenExport={() => setExportModalOpen(true)}
+          />
+        );
+      case '#/components/scroll-area':
+        return <ScrollAreaDocPage />;
+      case '#/components/button':
+      default:
+        return <ButtonDocPage />;
+    }
+  };
+
   return (
-    <>
+    <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20">
       {/* Top Navbar */}
-      <header className="topbar">
-        <div className="brand-group">
-          <span className="brand-badge">🍵</span>
-          <div>
-            <h1>ChaSet Studio</h1>
-            <span className="brand-subtitle">Theme Tuner & Component Showcase</span>
-          </div>
+      <Header
+        mode={mode}
+        onToggleMode={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
+        onOpenSearch={() => setSearchModalOpen(true)}
+        onToggleTuner={() => setShowTuner((v) => !v)}
+        showTuner={showTuner}
+        onOpenExport={() => setExportModalOpen(true)}
+      />
+
+      {/* Main App Grid */}
+      <div className="flex-1 flex w-full max-w-7xl mx-auto">
+        {/* Left Category Sidebar */}
+        <Sidebar currentHash={currentHash} />
+
+        {/* Dynamic Route Page Content */}
+        <div className="flex-1 min-w-0">
+          {renderActivePage()}
         </div>
-
-        <div className="topbar-actions">
-          <button
-            className={`topbar-btn ${showTuner ? 'active' : ''}`}
-            onClick={() => setShowTuner((v) => !v)}
-            title="Toggle theme tuning controls"
-          >
-            🎨 Style Tuner
-          </button>
-          <button
-            className="topbar-btn"
-            onClick={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
-            title="Toggle light / dark appearance"
-          >
-            {mode === 'dark' ? '🌙 Dark' : '☀️ Light'}
-          </button>
-          <button className="topbar-btn-primary" onClick={() => setExportModalOpen(true)}>
-            📋 Export & Copy Config
-          </button>
-        </div>
-      </header>
-
-      <div className="body-grid">
-        {/* Navigation Table of Contents */}
-        <aside className="sidebar-toc">
-          <nav className="toc" aria-label="Table of contents">
-            <span className="toc-title">Navigation</span>
-            <a href="#playground">Interactive Sandbox</a>
-            <a href="#button">Button Matrix</a>
-            <a href="#colors">Palette & Tokens</a>
-            <a href="#type">Typography & Radius</a>
-          </nav>
-        </aside>
-
-        {/* Main Content Area */}
-        <main className="main-content">
-          {/* Collapsible Style Tuner */}
-          {showTuner && (
-            <ThemeTuner
-              mode={mode}
-              setMode={setMode}
-              accent={accent}
-              setAccent={setAccent}
-              overrides={overrides}
-              setOverrides={setOverrides}
-              onOpenExport={() => setExportModalOpen(true)}
-            />
-          )}
-
-          {/* 1. Live Interactive Sandbox */}
-          <ComponentPlayground />
-
-          {/* 2. Full Button Matrix */}
-          <ButtonSection />
-
-          {/* 3. Palette & Tokens */}
-          <ColorsSection themeKey={themeKey} />
-
-          {/* 4. Typography & Radius */}
-          <TypeRadiusSection />
-        </main>
       </div>
+
+      {/* Quick Search Dialog (Cmd+K) */}
+      <CommandSearchModal
+        isOpen={searchModalOpen}
+        onClose={() => setSearchModalOpen(false)}
+        onSelect={(href) => navigate(href)}
+      />
 
       {/* One-Click Export Modal */}
       <ExportModal
@@ -175,6 +166,6 @@ export function App() {
         accent={accent}
         overrides={overrides}
       />
-    </>
+    </div>
   );
 }

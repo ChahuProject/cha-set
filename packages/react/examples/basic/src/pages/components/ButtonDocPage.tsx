@@ -1,0 +1,268 @@
+import React, { useState } from 'react';
+import { Button, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
+import { DocLayout } from '../../layout/DocLayout';
+import { ComponentPreview } from '../../components/ComponentPreview';
+import { CodeBlock } from '../../components/CodeBlock';
+import { PropsTable } from '../../components/PropsTable';
+
+export function ButtonDocPage() {
+  const [variant, setVariant] = useState<ButtonVariant>('primary');
+  const [size, setSize] = useState<ButtonSize>('md');
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [fullWidth, setFullWidth] = useState(false);
+  const [label, setLabel] = useState('Button');
+
+  const reactCode = `<Button
+  variant="${variant}"
+  size="${size}"${loading ? '\n  loading' : ''}${disabled ? '\n  disabled' : ''}${fullWidth ? '\n  fullWidth' : ''}
+>
+  ${label}
+</Button>`;
+
+  const qtCode = `ChaSetButton {
+    variant: "${variant}"
+    size: "${size}"
+    text: "${label}"
+    loading: ${loading}
+    disabled: ${disabled}
+    fullWidth: ${fullWidth}
+    onClicked: console.log("clicked")
+}`;
+
+  return (
+    <DocLayout
+      category="Components"
+      title="Button"
+      description="Displays a button or a component that looks like a button with multiple variants, sizes, and states."
+      tocItems={[
+        { id: 'preview', title: 'Interactive Preview' },
+        { id: 'installation', title: 'Installation' },
+        { id: 'examples', title: 'Examples' },
+        { id: 'variants', title: 'Variants' },
+        { id: 'sizes', title: 'Sizes' },
+        { id: 'states', title: 'States' },
+        { id: 'props', title: 'API Reference' },
+      ]}
+    >
+      {/* 1. Interactive Preview Hero */}
+      <section id="preview">
+        <ComponentPreview
+          title="Interactive Button Sandbox"
+          reactCode={reactCode}
+          qtCode={qtCode}
+          controls={
+            <div className="flex flex-wrap items-center gap-4 w-full">
+              {/* Variant Selector */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-muted-foreground font-medium">Variant:</span>
+                {(['primary', 'secondary', 'ghost', 'destructive'] as ButtonVariant[]).map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    onClick={() => setVariant(v)}
+                    className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors cursor-pointer capitalize ${
+                      variant === v ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
+                    }`}
+                  >
+                    {v}
+                  </button>
+                ))}
+              </div>
+
+              {/* Size Selector */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-muted-foreground font-medium">Size:</span>
+                {(['sm', 'md', 'lg'] as ButtonSize[]).map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setSize(s)}
+                    className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors cursor-pointer uppercase ${
+                      size === s ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+
+              {/* Toggles */}
+              <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={loading}
+                  onChange={(e) => setLoading(e.target.checked)}
+                  className="rounded border-border"
+                />
+                <span>Loading</span>
+              </label>
+
+              <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={disabled}
+                  onChange={(e) => setDisabled(e.target.checked)}
+                  className="rounded border-border"
+                />
+                <span>Disabled</span>
+              </label>
+
+              <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={fullWidth}
+                  onChange={(e) => setFullWidth(e.target.checked)}
+                  className="rounded border-border"
+                />
+                <span>Full Width</span>
+              </label>
+
+              {/* Text input */}
+              <div className="flex items-center gap-1.5 ml-auto">
+                <span className="text-muted-foreground">Label:</span>
+                <input
+                  type="text"
+                  value={label}
+                  onChange={(e) => setLabel(e.target.value)}
+                  className="w-28 px-2 py-0.5 rounded border border-border bg-background text-xs"
+                />
+              </div>
+            </div>
+          }
+        >
+          <div className={fullWidth ? 'w-full max-w-md px-4' : ''}>
+            <Button
+              variant={variant}
+              size={size}
+              loading={loading}
+              disabled={disabled}
+              fullWidth={fullWidth}
+            >
+              {label}
+            </Button>
+          </div>
+        </ComponentPreview>
+      </section>
+
+      {/* 2. Installation */}
+      <section id="installation" className="my-8">
+        <h2 className="text-xl font-bold tracking-tight mb-3">Installation</h2>
+        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
+        <p className="text-xs text-muted-foreground mt-2">
+          Import styles and component in your application entry:
+        </p>
+        <CodeBlock
+          code={`import { Button } from '@chahu/cha-set';\nimport '@chahu/cha-set/styles.css';`}
+          language="tsx"
+          className="mt-2"
+        />
+      </section>
+
+      {/* 3. Examples */}
+      <section id="examples" className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-4">Examples</h2>
+
+        {/* Variants */}
+        <div id="variants" className="my-6">
+          <h3 className="text-base font-semibold mb-2">Variants</h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            Use the <code className="text-primary font-mono">variant</code> prop to change the visual hierarchy.
+          </p>
+          <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-3">
+            <Button variant="primary">Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="destructive">Destructive</Button>
+          </div>
+          <CodeBlock
+            code={`<Button variant="primary">Primary</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="destructive">Destructive</Button>`}
+            language="tsx"
+            className="mt-3"
+          />
+        </div>
+
+        {/* Sizes */}
+        <div id="sizes" className="my-6">
+          <h3 className="text-base font-semibold mb-2">Sizes</h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            Available in three standardized sizes: <code className="font-mono">sm</code> (32px), <code className="font-mono">md</code> (36px), and <code className="font-mono">lg</code> (40px).
+          </p>
+          <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-3">
+            <Button size="sm">Small (32px)</Button>
+            <Button size="md">Medium (36px)</Button>
+            <Button size="lg">Large (40px)</Button>
+          </div>
+          <CodeBlock
+            code={`<Button size="sm">Small</Button>\n<Button size="md">Medium</Button>\n<Button size="lg">Large</Button>`}
+            language="tsx"
+            className="mt-3"
+          />
+        </div>
+
+        {/* States */}
+        <div id="states" className="my-6">
+          <h3 className="text-base font-semibold mb-2">States & Loading</h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            Buttons handle loading and disabled states automatically, preserving width and blocking pointer events.
+          </p>
+          <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-3">
+            <Button loading>Saving Changes</Button>
+            <Button disabled>Disabled Button</Button>
+          </div>
+          <CodeBlock
+            code={`<Button loading>Saving Changes</Button>\n<Button disabled>Disabled Button</Button>`}
+            language="tsx"
+            className="mt-3"
+          />
+        </div>
+      </section>
+
+      {/* 4. API Reference */}
+      <section id="props" className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-2">API Reference</h2>
+        <PropsTable
+          title="ButtonProps"
+          props={[
+            {
+              name: 'variant',
+              type: "'primary' | 'secondary' | 'ghost' | 'destructive'",
+              default: "'primary'",
+              description: 'Visual appearance and semantic intent.',
+            },
+            {
+              name: 'size',
+              type: "'sm' | 'md' | 'lg'",
+              default: "'md'",
+              description: 'Height and padding dimensions.',
+            },
+            {
+              name: 'loading',
+              type: 'boolean',
+              default: 'false',
+              description: 'Shows spinning indicator and disables user interaction.',
+            },
+            {
+              name: 'fullWidth',
+              type: 'boolean',
+              default: 'false',
+              description: 'Stretches the button to 100% of the parent container width.',
+            },
+            {
+              name: 'disabled',
+              type: 'boolean',
+              default: 'false',
+              description: 'Blocks clicks and applies muted disabled styling.',
+            },
+            {
+              name: 'type',
+              type: "'button' | 'submit' | 'reset'",
+              default: "'button'",
+              description: 'HTML button type attribute.',
+            },
+          ]}
+        />
+      </section>
+    </DocLayout>
+  );
+}
