@@ -70,7 +70,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
             onChange={(e) => setQuery(e.target.value)}
             className="w-full bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground text-foreground"
           />
-          <kbd className="text-[10px] font-mono bg-muted text-muted-foreground px-1.5 py-0.5 rounded border border-border">
+          <kbd className="text-[0.625rem] font-mono bg-muted text-muted-foreground px-1.5 py-0.5 rounded border border-border">
             ESC
           </kbd>
         </div>
@@ -93,14 +93,14 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
                   <div className="font-medium text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
                     {item.title}
                     {item.badge && (
-                      <span className="text-[10px] px-1.5 py-0.2 rounded font-mono bg-primary/10 text-primary font-semibold">
+                      <span className="text-[0.625rem] px-1.5 py-0.2 rounded font-mono bg-primary/10 text-primary font-semibold">
                         {item.badge}
                       </span>
                     )}
                   </div>
                   {item.description && <div className="text-xs text-muted-foreground truncate max-w-sm">{item.description}</div>}
                 </div>
-                <span className="text-[11px] text-muted-foreground bg-muted px-2 py-0.5 rounded font-mono">
+                <span className="text-[0.6875rem] text-muted-foreground bg-muted px-2 py-0.5 rounded font-mono">
                   {category}
                 </span>
               </button>

@@ -423,7 +423,7 @@
           "app-background-opacity": "0",
           "app-card-shadow": "none",
           "app-card-shadow-hover": "none",
-          "app-menu-shadow": "0 10px 30px color-mix(in oklch, var(--foreground) 14%, transparent)",
+          "app-menu-shadow": "0 0.625rem 1.875rem color-mix(in oklch, var(--foreground) 14%, transparent)",
           "app-panel-border": "color-mix(in oklch, var(--foreground) 16%, transparent)",
           "border": "color-mix(in oklch, var(--foreground) 16%, transparent)",
           "radius": "0.35rem",
@@ -435,7 +435,7 @@
         "mode": "dark",
         "preset": "launcher",
         "tokens": {
-          "app-menu-shadow": "0 12px 36px color-mix(in oklch, black 30%, transparent)"
+          "app-menu-shadow": "0 0.75rem 2.25rem color-mix(in oklch, black 30%, transparent)"
         }
       }
     ]

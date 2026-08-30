@@ -61,7 +61,7 @@ export function ButtonDocPage() {
                     key={v}
                     type="button"
                     onClick={() => setVariant(v)}
-                    className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors cursor-pointer capitalize ${
+                    className={`px-2 py-0.5 rounded text-[0.6875rem] font-medium transition-colors cursor-pointer capitalize ${
                       variant === v ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
                     }`}
                   >
@@ -78,7 +78,7 @@ export function ButtonDocPage() {
                     key={s}
                     type="button"
                     onClick={() => setSize(s)}
-                    className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors cursor-pointer uppercase ${
+                    className={`px-2 py-0.5 rounded text-[0.6875rem] font-medium transition-colors cursor-pointer uppercase ${
                       size === s ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
                     }`}
                   >

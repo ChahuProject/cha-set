@@ -48,7 +48,7 @@ describe('ScrollArea and ScrollBar', () => {
     );
 
     const scrollbar = container.querySelector('[data-orientation="vertical"]') as HTMLElement;
-    expect(scrollbar).toHaveStyle({ width: '16px' });
+    expect(scrollbar).toHaveStyle({ width: '1rem' });
     covered.hotZone = true;
 
     // Check inner indicator has narrow to wide dynamic classes

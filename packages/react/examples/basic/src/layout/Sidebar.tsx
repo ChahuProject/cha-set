@@ -29,7 +29,7 @@ export function Sidebar({ currentHash }: SidebarProps) {
                   >
                     <span>{item.title}</span>
                     {item.badge && (
-                      <span className="text-[10px] font-mono px-1.5 py-0.2 rounded font-semibold bg-primary/10 text-primary border border-primary/20">
+                      <span className="text-[0.625rem] font-mono px-1.5 py-0.2 rounded font-semibold bg-primary/10 text-primary border border-primary/20">
                         {item.badge}
                       </span>
                     )}

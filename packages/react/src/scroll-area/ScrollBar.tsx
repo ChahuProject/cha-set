@@ -11,12 +11,18 @@ export interface ScrollBarProps
   pageStepRatio?: number;
   /** Whether stepper buttons trigger smooth scrolling. @default true */
   smoothScroll?: boolean;
-  /** Custom hot zone thickness in pixels. @default 16 */
-  hitSize?: number;
-  /** Collapsed indicator thickness in pixels. @default 6 */
-  collapsedSize?: number;
-  /** Expanded indicator thickness in pixels. @default 12 */
-  expandedSize?: number;
+  /** Custom hot zone thickness in pixels or rem string. @default 16 (1rem) */
+  hitSize?: number | string;
+  /** Collapsed indicator thickness in pixels or rem string. @default 6 */
+  collapsedSize?: number | string;
+  /** Expanded indicator thickness in pixels or rem string. @default 12 */
+  expandedSize?: number | string;
+}
+
+function toRem(val?: number | string): string | undefined {
+  if (val === undefined) return undefined;
+  if (typeof val === 'number') return `${val / 16}rem`;
+  return val;
 }
 
 export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
@@ -45,7 +51,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         orientation={orientation}
         keepMounted={keepMounted}
         style={{
-          ...(isVertical ? { width: hitSize } : { height: hitSize }),
+          ...(isVertical ? { width: toRem(hitSize) } : { height: toRem(hitSize) }),
           ...style,
         }}
         className={cn(

@@ -93,7 +93,7 @@ export function ScrollAreaDocPage() {
     ))}
   </div>`
       : heroMode === 'both'
-      ? `<div className="p-4 w-[800px] h-[500px]">
+      ? `<div className="p-4 w-[50rem] h-[31.25rem]">
     {/* 2D Grid Content */}
   </div>`
       : `<div className="p-4">
@@ -148,81 +148,55 @@ export function ScrollAreaDocPage() {
       {/* 1. Interactive Preview Hero */}
       <section id="preview">
         <ComponentPreview
-          title="Interactive Scroll Area Sandbox"
+          title="ScrollArea Showcase"
+          description="Interactive playground demonstrating cross-stack scrollbar styling, stepper pagination, and dynamic hot-zone expansion."
           reactCode={reactCode}
           qtCode={qtCode}
           controls={
-            <div className="flex flex-wrap items-center gap-4 w-full">
-              {/* Orientation Mode Switcher */}
+            <div className="flex flex-wrap items-center justify-between gap-4 w-full">
+              {/* Orientation Mode */}
               <div className="flex items-center gap-1.5">
                 <span className="text-muted-foreground font-medium">Mode:</span>
-                <button
-                  type="button"
-                  onClick={() => setHeroMode('vertical')}
-                  className={`px-2.5 py-1 rounded text-xs font-medium transition-colors cursor-pointer ${
-                    heroMode === 'vertical' ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
-                  }`}
-                >
-                  Vertical List (120 Rows)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setHeroMode('horizontal')}
-                  className={`px-2.5 py-1 rounded text-xs font-medium transition-colors cursor-pointer ${
-                    heroMode === 'horizontal' ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
-                  }`}
-                >
-                  Horizontal Cards (24 Cards)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setHeroMode('both')}
-                  className={`px-2.5 py-1 rounded text-xs font-medium transition-colors cursor-pointer ${
-                    heroMode === 'both' ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
-                  }`}
-                >
-                  Dual Axis (100 Rows Matrix)
-                </button>
+                {(['vertical', 'horizontal', 'both'] as ('vertical' | 'horizontal' | 'both')[]).map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => setHeroMode(m)}
+                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer capitalize ${
+                      heroMode === m ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
+                    }`}
+                  >
+                    {m === 'both' ? '2D Dual-Axis' : m}
+                  </button>
+                ))}
               </div>
 
-              {/* Stepper buttons toggle */}
-              <label className="flex items-center gap-1.5 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={showButtons}
-                  onChange={(e) => setShowButtons(e.target.checked)}
-                  className="rounded border-border"
-                />
-                <span>Stepper Buttons (Hover)</span>
-              </label>
+              {/* Stepper Buttons Toggle */}
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={showButtons}
+                    onChange={(e) => setShowButtons(e.target.checked)}
+                    className="rounded border-border text-primary focus:ring-primary size-3.5 cursor-pointer"
+                  />
+                  <span className="text-xs text-foreground font-medium">Show Stepper Buttons</span>
+                </label>
 
-              {/* Smooth scroll toggle */}
-              <label className="flex items-center gap-1.5 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={smoothScroll}
-                  onChange={(e) => setSmoothScroll(e.target.checked)}
-                  className="rounded border-border"
-                />
-                <span>Smooth Scroll</span>
-              </label>
-
-              <div className="flex items-center gap-1.5 ml-auto">
-                <span className="text-muted-foreground">Hot-zone:</span>
-                <select
-                  value={hitSize}
-                  onChange={(e) => setHitSize(Number(e.target.value))}
-                  className="px-2 py-0.5 rounded border border-border bg-background text-xs"
-                >
-                  <option value={12}>12px</option>
-                  <option value={16}>16px (Standard)</option>
-                  <option value={20}>20px (Spacious)</option>
-                </select>
+                <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={smoothScroll}
+                    onChange={(e) => setSmoothScroll(e.target.checked)}
+                    className="rounded border-border text-primary focus:ring-primary size-3.5 cursor-pointer"
+                  />
+                  <span className="text-xs text-foreground font-medium">Smooth Scroll</span>
+                </label>
               </div>
             </div>
           }
         >
-          <div className="w-full max-w-lg">
+          <div className="w-full max-w-xl flex justify-center">
             {heroMode === 'vertical' && (
               <ScrollArea
                 className="h-72 w-full rounded-lg border border-border bg-card shadow-xs"
@@ -236,7 +210,7 @@ export function ScrollAreaDocPage() {
                     <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                       Release Changelog & Tags (120 Items)
                     </h4>
-                    <span className="text-[10px] text-muted-foreground font-mono">120 entries</span>
+                    <span className="text-[0.625rem] text-muted-foreground font-mono">120 entries</span>
                   </div>
                   <div className="divide-y divide-border/50">
                     {SAMPLE_TAGS.map((item) => (
@@ -244,15 +218,15 @@ export function ScrollAreaDocPage() {
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
                             <span className="font-mono font-medium">{item.version}</span>
-                            <span className="text-[10px] text-primary bg-primary/10 px-1.5 py-0.2 rounded font-mono font-semibold">
+                            <span className="text-[0.625rem] text-primary bg-primary/10 px-1.5 py-0.2 rounded font-mono font-semibold">
                               {item.category}
                             </span>
                           </div>
-                          <p className="text-[11px] text-muted-foreground truncate mt-0.5">{item.desc}</p>
+                          <p className="text-[0.6875rem] text-muted-foreground truncate mt-0.5">{item.desc}</p>
                         </div>
                         <div className="text-right shrink-0">
-                          <span className="text-[10px] text-muted-foreground font-mono block">{item.date}</span>
-                          <span className="text-[10px] text-muted-foreground/60 font-mono block">#{item.hash}</span>
+                          <span className="text-[0.625rem] text-muted-foreground font-mono block">{item.date}</span>
+                          <span className="text-[0.625rem] text-muted-foreground/60 font-mono block">#{item.hash}</span>
                         </div>
                       </div>
                     ))}
@@ -276,13 +250,13 @@ export function ScrollAreaDocPage() {
                       className="w-56 p-4 rounded-xl border border-border bg-muted/30 shrink-0 hover:border-primary/50 transition-colors"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+                        <span className="text-[0.625rem] font-mono px-1.5 py-0.5 rounded bg-primary/10 text-primary font-semibold">
                           {card.tag}
                         </span>
-                        <span className="text-[10px] text-muted-foreground font-mono">#{card.id}</span>
+                        <span className="text-[0.625rem] text-muted-foreground font-mono">#{card.id}</span>
                       </div>
                       <h5 className="font-bold text-xs text-foreground">{card.title}</h5>
-                      <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{card.desc}</p>
+                      <p className="text-[0.6875rem] text-muted-foreground mt-1 leading-relaxed">{card.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -297,16 +271,16 @@ export function ScrollAreaDocPage() {
                 showButtons={showButtons}
                 smoothScroll={smoothScroll}
               >
-                <div className="p-4 w-[850px]">
+                <div className="p-4 w-[53.125rem]">
                   <div className="flex items-center justify-between mb-3">
                     <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                       Dual-Axis Matrix (100 Rows &times; 6 Columns)
                     </h4>
-                    <span className="text-[10px] text-muted-foreground font-mono">100 items</span>
+                    <span className="text-[0.625rem] text-muted-foreground font-mono">100 items</span>
                   </div>
                   <table className="w-full text-left text-xs border-collapse font-mono">
                     <thead>
-                      <tr className="border-b border-border bg-muted/40 text-[11px] text-muted-foreground">
+                      <tr className="border-b border-border bg-muted/40 text-[0.6875rem] text-muted-foreground">
                         <th className="p-2">ID</th>
                         <th className="p-2">Feature Name</th>
                         <th className="p-2">Category</th>
@@ -315,13 +289,13 @@ export function ScrollAreaDocPage() {
                         <th className="p-2">Commit</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border/40 text-[11px]">
+                    <tbody className="divide-y divide-border/40 text-[0.6875rem]">
                       {SAMPLE_MATRIX_ROWS.map((row) => (
                         <tr key={row.id} className="hover:bg-muted/20">
                           <td className="p-2 font-semibold text-muted-foreground">{row.id}</td>
                           <td className="p-2 text-foreground font-sans">{row.name}</td>
                           <td className="p-2">
-                            <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
+                            <span className="text-[0.625rem] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
                               {row.category}
                             </span>
                           </td>
@@ -374,7 +348,7 @@ export function ScrollAreaDocPage() {
                   key={card.id}
                   className="w-60 p-4 rounded-xl border border-border bg-card shadow-xs shrink-0"
                 >
-                  <span className="text-[10px] font-mono font-semibold text-primary uppercase">{card.tag}</span>
+                  <span className="text-[0.625rem] font-mono font-semibold text-primary uppercase">{card.tag}</span>
                   <h4 className="text-sm font-bold mt-1 text-foreground">{card.title}</h4>
                   <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{card.desc}</p>
                 </div>
@@ -412,7 +386,7 @@ export function ScrollAreaDocPage() {
             showHorizontalScrollBar
             showVerticalScrollBar
           >
-            <div className="p-4 w-[850px]">
+            <div className="p-4 w-[53.125rem]">
               <pre className="font-mono text-xs text-foreground/90 whitespace-pre leading-relaxed">
 {`// Large Cross-Stack Configuration & Token Matrix (Multi-Page Test Dataset)
 export const CrossStackSpecification = {
@@ -431,9 +405,9 @@ export const CrossStackSpecification = {
   ],
   capabilities: {
     scrollbar: {
-      hotZone: 16,
-      collapsed: 6,
-      expanded: 12,
+      hotZone: "1rem",
+      collapsed: "0.375rem",
+      expanded: "0.75rem",
       pageStepRatio: 0.85,
       smoothScroll: true,
       boundaryClamp: true,
@@ -483,23 +457,23 @@ export const CrossStackSpecification = {
         <h2 className="text-xl font-bold tracking-tight mb-2">Dual-Box Hot Zone & Dynamic Width</h2>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
           Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces a{' '}
-          <strong>16px transparent interaction hot-zone</strong> paired with an animated visual indicator that expands
-          from <code className="font-mono text-primary">6px</code> (idle) to <code className="font-mono text-primary">12px</code> (hover) with 150ms cubic easing.
+          <strong>1rem (16px equivalent) transparent interaction hot-zone</strong> paired with an animated visual indicator that expands
+          from <code className="font-mono text-primary">0.375rem</code> (6px idle) to <code className="font-mono text-primary">0.75rem</code> (12px hover) with 150ms cubic easing.
         </p>
 
         <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-col md:flex-row gap-6 items-center">
           <div className="flex-1 text-xs text-muted-foreground space-y-2">
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Idle State:</strong> 6px slim indicator bar, non-intrusive.</span>
+              <span><strong>Idle State:</strong> 0.375rem (6px) slim indicator bar, non-intrusive.</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Hover State:</strong> Expands to 12px with high visual affordance.</span>
+              <span><strong>Hover State:</strong> Expands to 0.75rem (12px) with high visual affordance.</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Hit Area:</strong> 16px transparent box captures pointer immediately.</span>
+              <span><strong>Hit Area:</strong> 1rem (16px) transparent box captures pointer immediately.</span>
             </div>
           </div>
         </div>

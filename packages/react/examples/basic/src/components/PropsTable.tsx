@@ -35,7 +35,7 @@ export function PropsTable({ title, props }: PropsTableProps) {
                   {p.required && <span className="text-destructive ml-1">*</span>}
                 </td>
                 <td className="py-3 px-4 font-mono text-xs text-muted-foreground">
-                  <span className="bg-muted px-1.5 py-0.5 rounded text-[11px] text-foreground/80">{p.type}</span>
+                  <span className="bg-muted px-1.5 py-0.5 rounded text-[0.6875rem] text-foreground/80">{p.type}</span>
                 </td>
                 <td className="py-3 px-4 font-mono text-xs text-muted-foreground">
                   {p.default ? <code className="text-foreground/70">{p.default}</code> : <span className="opacity-40">—</span>}

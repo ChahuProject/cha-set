@@ -68,7 +68,7 @@ export function ComponentPreview({
       {/* Main Content Pane */}
       {activeTab === 'preview' ? (
         <div>
-          <div className="relative min-h-[300px] p-8 flex items-center justify-center bg-background/50 border-b border-border/50 overflow-hidden">
+          <div className="relative min-h-[18.75rem] p-8 flex items-center justify-center bg-background/50 border-b border-border/50 overflow-hidden">
             {children}
           </div>
 

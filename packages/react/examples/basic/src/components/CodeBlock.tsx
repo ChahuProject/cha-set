@@ -21,7 +21,7 @@ export function CodeBlock({ code, language = 'tsx', className = '' }: CodeBlockP
 
   return (
     <div className={`relative group rounded-lg overflow-hidden border border-border bg-muted/40 font-mono text-xs ${className}`}>
-      <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/60 bg-muted/60 text-muted-foreground text-[11px]">
+      <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/60 bg-muted/60 text-muted-foreground text-[0.6875rem]">
         <span className="font-semibold uppercase tracking-wider">{language}</span>
         <button
           type="button"

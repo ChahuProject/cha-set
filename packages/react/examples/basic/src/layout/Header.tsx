@@ -26,7 +26,7 @@ export function Header({
             <span className="text-xl leading-none">🍵</span>
             <span className="text-base tracking-tight">ChaSet</span>
           </a>
-          <span className="rounded-md border border-border bg-muted/60 px-1.5 py-0.5 text-[10px] font-mono font-medium text-muted-foreground">
+          <span className="rounded-md border border-border bg-muted/60 px-1.5 py-0.5 text-[0.625rem] font-mono font-medium text-muted-foreground">
             v0.1.0
           </span>
         </div>
@@ -44,7 +44,7 @@ export function Header({
             </svg>
             <span>Search components & docs...</span>
           </div>
-          <kbd className="rounded border border-border bg-background px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+          <kbd className="rounded border border-border bg-background px-1.5 py-0.5 font-mono text-[0.625rem] text-muted-foreground">
             ⌘K
           </kbd>
         </button>
