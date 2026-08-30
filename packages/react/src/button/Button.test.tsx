@@ -24,7 +24,14 @@ const covered: Record<string, boolean> = {
 afterAll(() => {
   const dir = resolve(import.meta.dirname, '..', '..', 'conformance');
   mkdirSync(dir, { recursive: true });
-  writeFileSync(resolve(dir, 'coverage.json'), JSON.stringify({ button: covered }, null, 2) + '\n', 'utf8');
+  const file = resolve(dir, 'coverage.json');
+  let current: Record<string, unknown> = {};
+  try {
+    const { readFileSync } = require('node:fs');
+    current = JSON.parse(readFileSync(file, 'utf8'));
+  } catch {}
+  current.button = covered;
+  writeFileSync(file, JSON.stringify(current, null, 2) + '\n', 'utf8');
 });
 
 describe('Button', () => {

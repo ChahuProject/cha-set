@@ -9,6 +9,14 @@
       "loading": { "requirement": "should", "description": "loading shows spinner and blocks clicks" },
       "fullWidth": { "requirement": "should", "description": "fullWidth stretches to container" },
       "a11y": { "requirement": "should", "description": "accessible label support" }
+    },
+    "scrollbar": {
+      "orientation": { "requirement": "must", "description": "orientation switches between vertical and horizontal" },
+      "hotZone": { "requirement": "must", "description": "hot zone provides wider hit area than visual collapsed size" },
+      "dynamicWidth": { "requirement": "must", "description": "expands thickness on hover" },
+      "stepperButtons": { "requirement": "must", "description": "to-top, to-bottom, page-up, page-down navigation buttons" },
+      "boundaryClamp": { "requirement": "should", "description": "disables buttons when at scroll boundary" },
+      "smoothScroll": { "requirement": "should", "description": "smooth scroll animation for stepper actions" }
     }
   }
 }

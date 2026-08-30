@@ -7,5 +7,13 @@
     "fullWidth": true,
     "keyboard": true,
     "a11y": true
+  },
+  "scrollbar": {
+    "orientation": true,
+    "hotZone": true,
+    "dynamicWidth": true,
+    "stepperButtons": true,
+    "boundaryClamp": true,
+    "smoothScroll": true
   }
 }

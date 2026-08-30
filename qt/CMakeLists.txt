@@ -26,6 +26,8 @@ qt_add_qml_module(QtChaSetDemo
     QML_FILES
         src/Main.qml
         src/ChaSetButton.qml
+        src/ChaSetScrollBar.qml
+        src/ChaSetScrollView.qml
         src/ThemeTokens.generated.qml
     NO_RESOURCE_TARGET_PATH
 )
