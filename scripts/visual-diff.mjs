@@ -204,6 +204,8 @@ try {
       qtArgs.push('--label', tc.label);
       if (tc.disabled) qtArgs.push('--disabled');
     }
+    qtArgs.push('--width', String(tc.width));
+    qtArgs.push('--height', String(tc.height));
     qtArgs.push('--shot', qtPngPath);
 
     const qtEnv = { ...process.env, PATH: `${qtBin};${process.env.PATH || ''}` };

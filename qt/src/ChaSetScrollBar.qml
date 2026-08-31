@@ -95,6 +95,19 @@ Item {
         }
     }
 
+    function simulateThumbDrag(deltaPixels) {
+        if (!flickable || thumb.maxThumbTravel <= 0) return
+        if (isVertical) {
+            var maxScrollY = Math.max(0, flickable.contentHeight - flickable.height)
+            var deltaScrollY = (deltaPixels / thumb.maxThumbTravel) * maxScrollY
+            flickable.contentY = Math.max(0, Math.min(maxScrollY, flickable.contentY + deltaScrollY))
+        } else {
+            var maxScrollX = Math.max(0, flickable.contentWidth - flickable.width)
+            var deltaScrollX = (deltaPixels / thumb.maxThumbTravel) * maxScrollX
+            flickable.contentX = Math.max(0, Math.min(maxScrollX, flickable.contentX + deltaScrollX))
+        }
+    }
+
     NumberAnimation {
         id: scrollAnimY
         target: root.flickable
@@ -310,8 +323,8 @@ Item {
             readonly property real scrollRatio: Math.max(0, Math.min(1, currentScroll / maxScrollDist))
             readonly property real computedPos: Math.round(scrollRatio * maxThumbTravel)
 
-            x: root.isVertical ? Math.round((trackArea.width - width) / 2) : (thumbMouseArea.pressed ? thumb.x : computedPos)
-            y: root.isVertical ? (thumbMouseArea.pressed ? thumb.y : computedPos) : Math.round((trackArea.height - height) / 2)
+            x: root.isVertical ? Math.round((trackArea.width - width) / 2) : computedPos
+            y: root.isVertical ? computedPos : Math.round((trackArea.height - height) / 2)
             width: root.isVertical ? (root.hovered ? root.expandedSize : root.collapsedSize) : thumbLength
             height: root.isVertical ? thumbLength : (root.hovered ? root.expandedSize : root.collapsedSize)
             radius: Math.min(width, height) / 2
@@ -329,21 +342,31 @@ Item {
                 anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor
-                drag.target: thumb
-                drag.axis: root.isVertical ? Drag.YAxis : Drag.XAxis
-                drag.minimumX: 0
-                drag.maximumX: Math.max(0, trackArea.width - thumb.width)
-                drag.minimumY: 0
-                drag.maximumY: Math.max(0, trackArea.height - thumb.height)
+                preventStealing: true
 
-                onPositionChanged: {
+                property real startTrackPos: 0
+                property real startContentPos: 0
+
+                onPressed: function(mouse) {
+                    if (!root.flickable) return
+                    var pt = mapToItem(trackArea, mouse.x, mouse.y)
+                    startTrackPos = root.isVertical ? pt.y : pt.x
+                    startContentPos = root.isVertical ? root.flickable.contentY : root.flickable.contentX
+                }
+
+                onPositionChanged: function(mouse) {
                     if (pressed && root.flickable && thumb.maxThumbTravel > 0) {
+                        var pt = mapToItem(trackArea, mouse.x, mouse.y)
+                        var curPos = root.isVertical ? pt.y : pt.x
+                        var delta = curPos - startTrackPos
                         if (root.isVertical) {
-                            var ratioY = Math.max(0, Math.min(1, thumb.y / thumb.maxThumbTravel))
-                            root.flickable.contentY = ratioY * (root.flickable.contentHeight - root.flickable.height)
+                            var maxScrollY = Math.max(0, root.flickable.contentHeight - root.flickable.height)
+                            var deltaScrollY = (delta / thumb.maxThumbTravel) * maxScrollY
+                            root.flickable.contentY = Math.max(0, Math.min(maxScrollY, startContentPos + deltaScrollY))
                         } else {
-                            var ratioX = Math.max(0, Math.min(1, thumb.x / thumb.maxThumbTravel))
-                            root.flickable.contentX = ratioX * (root.flickable.contentWidth - root.flickable.width)
+                            var maxScrollX = Math.max(0, root.flickable.contentWidth - root.flickable.width)
+                            var deltaScrollX = (delta / thumb.maxThumbTravel) * maxScrollX
+                            root.flickable.contentX = Math.max(0, Math.min(maxScrollX, startContentPos + deltaScrollX))
                         }
                     }
                 }

@@ -36,6 +36,12 @@ int main(int argc, char* argv[])
     const int scenarioIdx = static_cast<int>(args.indexOf("--test-scenario"));
     const QString testScenario = scenarioIdx >= 0 && scenarioIdx + 1 < args.size() ? args.value(scenarioIdx + 1) : (testScrollMode ? "all" : "");
 
+    const int wIdx = static_cast<int>(args.indexOf("--width"));
+    const int reqWidth = wIdx >= 0 && wIdx + 1 < args.size() ? args.value(wIdx + 1).toInt() : 0;
+
+    const int hIdx = static_cast<int>(args.indexOf("--height"));
+    const int reqHeight = hIdx >= 0 && hIdx + 1 < args.size() ? args.value(hIdx + 1).toInt() : 0;
+
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("startupLight", startLight);
     engine.rootContext()->setContextProperty("shotPath", shotPath);
@@ -47,8 +53,15 @@ int main(int argc, char* argv[])
     engine.rootContext()->setContextProperty("harnessDisabled", harnessDisabled);
     engine.rootContext()->setContextProperty("testScrollMode", testScrollMode);
     engine.rootContext()->setContextProperty("testScenario", testScenario);
+    engine.rootContext()->setContextProperty("reqWidth", reqWidth);
+    engine.rootContext()->setContextProperty("reqHeight", reqHeight);
 
-    QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
+    QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, []() {
+        QCoreApplication::exit(0);
+    });
+    QObject::connect(&engine, &QQmlApplicationEngine::exit, &app, [](int code) {
+        QCoreApplication::exit(code);
+    });
 
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
@@ -66,15 +79,31 @@ int main(int argc, char* argv[])
 
     auto* root = engine.rootObjects().first();
     auto* window = qobject_cast<QQuickWindow*>(root);
-    if (window != nullptr && shotMode) {
+    if (window != nullptr) {
         window->show();
-        QTimer::singleShot(300, window, [window, shotPath]() {
-            const QImage image = window->grabWindow();
-            if (!image.isNull() && image.width() > 0 && image.height() > 0) {
-                image.save(shotPath);
-            }
-            QCoreApplication::exit(0);
-        });
+        if (shotMode) {
+            QTimer::singleShot(300, window, [window, shotPath]() {
+                const QImage image = window->grabWindow();
+                if (!image.isNull() && image.width() > 0 && image.height() > 0) {
+                    image.save(shotPath);
+                }
+                QCoreApplication::exit(0);
+            });
+        } else if (!testScenario.isEmpty()) {
+            QTimer::singleShot(300, window, [window, testScenario]() {
+                QVariant returnedValue;
+                bool ok = QMetaObject::invokeMethod(window, "runTestScenario",
+                    Q_RETURN_ARG(QVariant, returnedValue),
+                    Q_ARG(QVariant, testScenario));
+                if (!ok) {
+                    qWarning("[qt-scenario] Failed to invoke runTestScenario on root window!");
+                    QCoreApplication::exit(1);
+                } else {
+                    int code = returnedValue.toInt();
+                    QCoreApplication::exit(code);
+                }
+            });
+        }
     }
 
     return app.exec();

@@ -6,8 +6,8 @@ import chaSet
 
 ApplicationWindow {
     id: win
-    width: (typeof harnessMode !== "undefined" && harnessMode === "button") ? 220 : 1150
-    height: (typeof harnessMode !== "undefined" && harnessMode === "button") ? 80 : 850
+    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 220 : 1150)
+    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 80 : 850)
     visible: true
     title: "ChaSet Studio"
     color: win.cBg
@@ -71,66 +71,79 @@ ApplicationWindow {
         }
     }
 
-    Timer {
-        id: scenarioRunnerTimer
-        interval: 150
-        running: typeof testScenario !== "undefined" && testScenario !== ""
-        onTriggered: {
-            console.log("[qt-scenario] Running behavioral scenario: " + testScenario);
-            var failures = 0;
+    function runTestScenario(scenario) {
+        console.log("[qt-scenario] Running behavioral scenario: " + scenario);
+        var failures = 0;
 
-            // Scenario 1: Shared Showcase Data Validation
-            if (testScenario === "all" || testScenario === "showcase-data") {
-                if (!ShowcaseData.changelog || ShowcaseData.changelog.length !== 120) {
-                    console.log("[qt-scenario] FAIL: ShowcaseData.changelog length expected 120, got " + (ShowcaseData.changelog ? ShowcaseData.changelog.length : 0));
-                    failures++;
-                } else if (!ShowcaseData.featureCards || ShowcaseData.featureCards.length !== 24) {
-                    console.log("[qt-scenario] FAIL: ShowcaseData.featureCards length expected 24, got " + (ShowcaseData.featureCards ? ShowcaseData.featureCards.length : 0));
-                    failures++;
-                } else {
-                    console.log("[qt-scenario] PASS: Shared ShowcaseData dataset integrity (120 changelogs, 24 cards)");
-                }
-            }
-
-            // Scenario 2: Viewport & Scroll Kinematics
-            if (testScenario === "all" || testScenario === "scroll-kinematics" || testScenario === "scroll-wheel") {
-                var maxScrollY = Math.max(0, contentScroll.flickableItem.contentHeight - contentScroll.height);
-                if (maxScrollY <= 0) {
-                    console.log("[qt-scenario] FAIL: Viewport contentHeight is not overflowing height (contentHeight=" + contentScroll.flickableItem.contentHeight + ", height=" + contentScroll.height + ")");
-                    failures++;
-                } else {
-                    contentScroll.flickableItem.contentY = 150;
-                    var afterDirectY = contentScroll.flickableItem.contentY;
-                    contentScroll.flickableItem.contentY = 0;
-                    var afterResetY = contentScroll.flickableItem.contentY;
-
-                    if (afterDirectY === 150 && afterResetY === 0) {
-                        console.log("[qt-scenario] PASS: Viewport coordinate translation & reset (contentY delta=150 -> 0)");
-                    } else {
-                        console.log("[qt-scenario] FAIL: Viewport coordinate translation mismatch (afterDirect=" + afterDirectY + ", afterReset=" + afterResetY + ")");
-                        failures++;
-                    }
-                }
-            }
-
-            // Scenario 3: Steppers & Boundary Clamping
-            if (testScenario === "all" || testScenario === "scroll-steppers") {
-                contentScroll.scrollToTop();
-                if (contentScroll.flickableItem.contentY !== 0) {
-                    console.log("[qt-scenario] FAIL: scrollToTop did not set contentY to 0");
-                    failures++;
-                } else {
-                    console.log("[qt-scenario] PASS: Stepper top navigation boundary clamp (contentY=0)");
-                }
-            }
-
-            if (failures === 0) {
-                console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
-                Qt.exit(0);
+        // Scenario 1: Shared Showcase Data Validation
+        if (scenario === "all" || scenario === "showcase-data") {
+            if (!ShowcaseData.changelog || ShowcaseData.changelog.length !== 120) {
+                console.log("[qt-scenario] FAIL: ShowcaseData.changelog length expected 120, got " + (ShowcaseData.changelog ? ShowcaseData.changelog.length : 0));
+                failures++;
+            } else if (!ShowcaseData.featureCards || ShowcaseData.featureCards.length !== 24) {
+                console.log("[qt-scenario] FAIL: ShowcaseData.featureCards length expected 24, got " + (ShowcaseData.featureCards ? ShowcaseData.featureCards.length : 0));
+                failures++;
             } else {
-                console.log("[qt-scenario] FAILED — " + failures + " scenario assertions failed");
-                Qt.exit(1);
+                console.log("[qt-scenario] PASS: Shared ShowcaseData dataset integrity (120 changelogs, 24 cards)");
             }
+        }
+
+        // Scenario 2: Viewport & Scroll Kinematics
+        if (scenario === "all" || scenario === "scroll-kinematics" || scenario === "scroll-wheel") {
+            var maxScrollY = Math.max(0, contentScroll.flickableItem.contentHeight - contentScroll.height);
+            if (maxScrollY <= 0) {
+                console.log("[qt-scenario] FAIL: Viewport contentHeight is not overflowing height (contentHeight=" + contentScroll.flickableItem.contentHeight + ", height=" + contentScroll.height + ")");
+                failures++;
+            } else {
+                contentScroll.flickableItem.contentY = 150;
+                var afterDirectY = contentScroll.flickableItem.contentY;
+                contentScroll.flickableItem.contentY = 0;
+                var afterResetY = contentScroll.flickableItem.contentY;
+
+                if (afterDirectY === 150 && afterResetY === 0) {
+                    console.log("[qt-scenario] PASS: Viewport coordinate translation & reset (contentY delta=150 -> 0)");
+                } else {
+                    console.log("[qt-scenario] FAIL: Viewport coordinate translation mismatch (afterDirect=" + afterDirectY + ", afterReset=" + afterResetY + ")");
+                    failures++;
+                }
+            }
+        }
+
+        // Scenario 3: Real Synthetic Thumb Drag Verification
+        if (scenario === "all" || scenario === "scroll-drag") {
+            contentScroll.flickableItem.contentY = 0;
+            var startY = contentScroll.flickableItem.contentY;
+            contentScroll.simulateThumbDrag(50);
+            var draggedY = contentScroll.flickableItem.contentY;
+            contentScroll.flickableItem.contentY = 0;
+            var resetY = contentScroll.flickableItem.contentY;
+
+            console.log("[qt-scenario] Drag test: startY=" + startY + ", draggedY=" + draggedY + ", resetY=" + resetY);
+            if (draggedY > 50 && resetY === 0) {
+                console.log("[qt-scenario] PASS: Synthetic thumb drag kinematics translated to viewport (deltaY=" + draggedY + ")");
+            } else {
+                console.log("[qt-scenario] FAIL: Synthetic thumb drag did not translate to contentY (draggedY=" + draggedY + ")");
+                failures++;
+            }
+        }
+
+        // Scenario 4: Steppers & Boundary Clamping
+        if (scenario === "all" || scenario === "scroll-steppers") {
+            contentScroll.scrollToTop();
+            if (contentScroll.flickableItem.contentY !== 0) {
+                console.log("[qt-scenario] FAIL: scrollToTop did not set contentY to 0");
+                failures++;
+            } else {
+                console.log("[qt-scenario] PASS: Stepper top navigation boundary clamp (contentY=0)");
+            }
+        }
+
+        if (failures === 0) {
+            console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
+            return 0;
+        } else {
+            console.log("[qt-scenario] FAILED — " + failures + " scenario assertions failed");
+            return 1;
         }
     }
 

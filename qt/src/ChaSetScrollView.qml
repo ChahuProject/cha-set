@@ -33,6 +33,7 @@ Item {
     function pageDown() { if (vScrollBar) vScrollBar.scrollPageDown() }
     function pageLeft() { if (hScrollBar) hScrollBar.scrollPageUp() }
     function pageRight() { if (hScrollBar) hScrollBar.scrollPageDown() }
+    function simulateThumbDrag(deltaPixels) { if (vScrollBar) vScrollBar.simulateThumbDrag(deltaPixels) }
 
     clip: true
 
