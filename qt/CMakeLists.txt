@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick QuickControls2)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Quick QuickControls2 Test)
 
 qt_policy(SET QTP0004 NEW)
 
@@ -53,4 +53,5 @@ qt_add_qml_module(QtChaSetDemo
 target_link_libraries(QtChaSetDemo PRIVATE
     Qt6::Quick
     Qt6::QuickControls2
+    Qt6::Test
 )

@@ -2,8 +2,60 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
+#include <QQuickItem>
 #include <QTimer>
 #include <QDebug>
+#include <QTest>
+
+static bool runRealMouseDragVerification(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running authentic C++ QTest mouse drag injection...");
+    
+    // Find contentScroll in the window
+    auto* contentScroll = window->findChild<QQuickItem*>("contentScroll");
+    if (!contentScroll) {
+        qWarning("[qt-scenario] WARNING: contentScroll item not found by objectName");
+        return false;
+    }
+
+    auto* flickable = contentScroll->property("flickableItem").value<QQuickItem*>();
+    if (!flickable) {
+        qWarning("[qt-scenario] WARNING: flickableItem property not accessible");
+        return false;
+    }
+
+    // Reset contentY to 0
+    flickable->setProperty("contentY", 0.0);
+    QTest::qWait(50);
+    double initialY = flickable->property("contentY").toDouble();
+
+    // Calculate the position of the vertical scrollbar thumb on the right edge of contentScroll
+    QPointF scrollBarPos = contentScroll->mapToScene(QPointF(contentScroll->width() - 4, 30));
+    QPoint targetPoint = scrollBarPos.toPoint();
+
+    // 1. Mouse Press on the Scrollbar Thumb
+    QTest::mousePress(window, Qt::LeftButton, Qt::NoModifier, targetPoint, 50);
+    QTest::qWait(50);
+
+    // 2. Mouse Drag 120 pixels down
+    QPoint dragPoint = targetPoint + QPoint(0, 120);
+    QTest::mouseMove(window, dragPoint, 50);
+    QTest::qWait(50);
+
+    // 3. Mouse Release
+    QTest::mouseRelease(window, Qt::LeftButton, Qt::NoModifier, dragPoint, 50);
+    QTest::qWait(50);
+
+    double draggedY = flickable->property("contentY").toDouble();
+    qInfo() << "[qt-scenario] Real C++ QTest Drag result: initialY=" << initialY << ", draggedY=" << draggedY;
+
+    if (draggedY > 0) {
+        qInfo("[qt-scenario] PASS: Real C++ QTest mouse drag verified (contentY delta > 0)");
+        return true;
+    } else {
+        qCritical("[qt-scenario] FAIL: Real C++ QTest mouse drag did NOT move contentY");
+        return false;
+    }
+}
 
 int main(int argc, char* argv[])
 {
@@ -100,6 +152,13 @@ int main(int argc, char* argv[])
                     QCoreApplication::exit(1);
                 } else {
                     int code = returnedValue.toInt();
+                    if (code == 0) {
+                        bool dragOk = runRealMouseDragVerification(window);
+                        if (!dragOk) {
+                            QCoreApplication::exit(1);
+                            return;
+                        }
+                    }
                     QCoreApplication::exit(code);
                 }
             });

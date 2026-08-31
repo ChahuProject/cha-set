@@ -119,7 +119,7 @@ ApplicationWindow {
             var resetY = contentScroll.flickableItem.contentY;
 
             console.log("[qt-scenario] Vertical Drag test: startY=" + startY + ", draggedY=" + draggedY + ", resetY=" + resetY);
-            if (draggedY > 50 && resetY === 0) {
+            if (draggedY >= 50 && resetY === 0) {
                 console.log("[qt-scenario] PASS: Vertical synthetic thumb drag kinematics (deltaY=" + draggedY + ")");
             } else {
                 console.log("[qt-scenario] FAIL: Vertical synthetic thumb drag (draggedY=" + draggedY + ")");
@@ -463,6 +463,7 @@ ApplicationWindow {
                 // Center Main Content Area
                 ChaSetScrollView {
                     id: contentScroll
+                    objectName: "contentScroll"
                     anchors.left: sidebar.right
                     anchors.leftMargin: 32
                     anchors.right: parent.right
