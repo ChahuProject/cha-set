@@ -338,26 +338,37 @@ Item {
 
             onPressed: function(mouse) {
                 if (!root.flickable) return
-                if (mouseOverThumb) {
-                    isDragging = true
+
+                // 1. Immediately stop any active smooth scroll animations
+                if (scrollAnimY.running) scrollAnimY.stop()
+                if (scrollAnimX.running) scrollAnimX.stop()
+
+                // 2. Direct hit testing using mouse event arguments
+                var isHitThumb = root.isVertical
+                    ? (mouse.y >= thumb.y && mouse.y <= (thumb.y + thumb.height))
+                    : (mouse.x >= thumb.x && mouse.x <= (thumb.x + thumb.width))
+
+                isDragging = true
+
+                if (isHitThumb) {
                     dragStartMousePos = root.isVertical ? mouse.y : mouse.x
                     dragStartContentPos = root.isVertical ? root.flickable.contentY : root.flickable.contentX
                 } else {
-                    // Track click jump
-                    if (root.isVertical && trackArea.height > thumb.height) {
-                        var targetY = mouse.y - thumb.height / 2
-                        var maxThumbY = trackArea.height - thumb.height
-                        var ratioY = Math.max(0, Math.min(1, targetY / maxThumbY))
+                    // Track click: jump thumb center directly to mouse position, then continue dragging from there
+                    if (root.isVertical && thumb.maxThumbTravel > 0) {
+                        var targetThumbY = Math.max(0, Math.min(thumb.maxThumbTravel, mouse.y - thumb.height / 2))
+                        var ratioY = targetThumbY / thumb.maxThumbTravel
                         var maxScrollY = Math.max(0, root.flickable.contentHeight - root.flickable.height)
-                        if (root.smoothScroll) root.scrollAnimY.startTo(ratioY * maxScrollY)
-                        else root.flickable.contentY = ratioY * maxScrollY
-                    } else if (!root.isVertical && trackArea.width > thumb.width) {
-                        var targetX = mouse.x - thumb.width / 2
-                        var maxThumbX = trackArea.width - thumb.width
-                        var ratioX = Math.max(0, Math.min(1, targetX / maxThumbX))
+                        root.flickable.contentY = ratioY * maxScrollY
+                        dragStartMousePos = mouse.y
+                        dragStartContentPos = root.flickable.contentY
+                    } else if (!root.isVertical && thumb.maxThumbTravel > 0) {
+                        var targetThumbX = Math.max(0, Math.min(thumb.maxThumbTravel, mouse.x - thumb.width / 2))
+                        var ratioX = targetThumbX / thumb.maxThumbTravel
                         var maxScrollX = Math.max(0, root.flickable.contentWidth - root.flickable.width)
-                        if (root.smoothScroll) root.scrollAnimX.startTo(ratioX * maxScrollX)
-                        else root.flickable.contentX = ratioX * maxScrollX
+                        root.flickable.contentX = ratioX * maxScrollX
+                        dragStartMousePos = mouse.x
+                        dragStartContentPos = root.flickable.contentX
                     }
                 }
             }

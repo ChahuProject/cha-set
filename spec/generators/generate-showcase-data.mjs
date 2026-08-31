@@ -316,7 +316,7 @@ Rectangle {
             Item {
                 id: stageContainer
                 width: parent.width
-                height: 220
+                height: 280
                 clip: true
             }
 

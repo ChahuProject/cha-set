@@ -109,7 +109,7 @@ ApplicationWindow {
             }
         }
 
-        // Scenario 3: Real Synthetic Thumb Drag Verification
+        // Scenario 3: Real Synthetic Vertical & Horizontal Thumb Drag Verification
         if (scenario === "all" || scenario === "scroll-drag") {
             contentScroll.flickableItem.contentY = 0;
             var startY = contentScroll.flickableItem.contentY;
@@ -118,11 +118,11 @@ ApplicationWindow {
             contentScroll.flickableItem.contentY = 0;
             var resetY = contentScroll.flickableItem.contentY;
 
-            console.log("[qt-scenario] Drag test: startY=" + startY + ", draggedY=" + draggedY + ", resetY=" + resetY);
+            console.log("[qt-scenario] Vertical Drag test: startY=" + startY + ", draggedY=" + draggedY + ", resetY=" + resetY);
             if (draggedY > 50 && resetY === 0) {
-                console.log("[qt-scenario] PASS: Synthetic thumb drag kinematics translated to viewport (deltaY=" + draggedY + ")");
+                console.log("[qt-scenario] PASS: Vertical synthetic thumb drag kinematics (deltaY=" + draggedY + ")");
             } else {
-                console.log("[qt-scenario] FAIL: Synthetic thumb drag did not translate to contentY (draggedY=" + draggedY + ")");
+                console.log("[qt-scenario] FAIL: Vertical synthetic thumb drag (draggedY=" + draggedY + ")");
                 failures++;
             }
         }
