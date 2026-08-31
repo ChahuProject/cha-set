@@ -5,8 +5,8 @@ import chaSet
 
 Item {
     id: root
-    width: parent ? parent.width : 860
-    implicitHeight: layoutRow.implicitHeight + 40
+    width: parent ? parent.width : 1000
+    implicitHeight: layoutRow.implicitHeight + 60
 
     property string category: "Components"
     property string pageTitle: "Button"
@@ -24,13 +24,14 @@ Item {
 
     Row {
         id: layoutRow
-        width: parent.width
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: Math.min(parent.width - 48, 1000)
         spacing: 32
 
-        // Main Center Content Column
+        // Main Center Content Column (max-w-4xl)
         Column {
             id: mainCol
-            width: root.tocItems && root.tocItems.length > 0 ? Math.max(480, parent.width - 200) : parent.width
+            width: root.tocItems && root.tocItems.length > 0 ? (layoutRow.width - 180 - layoutRow.spacing) : layoutRow.width
             spacing: 24
 
             // Breadcrumb
@@ -115,7 +116,7 @@ Item {
                 }
             }
 
-            // Page Body Content
+            // Page Dynamic Content
             Column {
                 id: pageContentCol
                 width: parent.width
@@ -123,11 +124,11 @@ Item {
             }
         }
 
-        // Right Table of Contents (TOC, 160px width)
+        // Right Table of Contents (TOC, 180px width)
         Column {
             id: tocCol
             visible: root.tocItems && root.tocItems.length > 0
-            width: 160
+            width: 180
             spacing: 12
 
             Text {

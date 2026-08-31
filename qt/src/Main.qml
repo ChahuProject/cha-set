@@ -224,132 +224,139 @@ ApplicationWindow {
                 border.color: win.cBorder
                 border.width: 1
 
-                Row {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 20
-                    anchors.verticalCenter: parent.verticalCenter
-                    spacing: 10
+                Item {
+                    id: topbarInner
+                    width: Math.min(parent.width - 32, 1280)
+                    height: parent.height
+                    anchors.horizontalCenter: parent.horizontalCenter
 
-                    Text {
-                        text: "🍵"
-                        font.pixelSize: 20
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    Text {
-                        text: "ChaSet"
-                        color: win.cFg
-                        font.pixelSize: 16
-                        font.weight: Font.Bold
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    Rectangle {
-                        width: 48
-                        height: 20
-                        radius: 4
-                        color: win.cAccentBg
-                        border.color: win.cBorder
-                        anchors.verticalCenter: parent.verticalCenter
-                        Text {
-                            anchors.centerIn: parent
-                            text: "v0.1.0"
-                            color: win.cMutedFg
-                            font.pixelSize: 10
-                            font.family: "Consolas, monospace"
-                            font.weight: Font.DemiBold
-                        }
-                    }
-                }
-
-                // Center Search Bar Trigger
-                Rectangle {
-                    width: Math.min(parent.width - 500, 320)
-                    height: 32
-                    radius: 6
-                    color: win.cAccentBg
-                    border.color: win.cBorder
-                    anchors.centerIn: parent
-
+                    // Left Brand Group
                     Row {
-                        anchors.fill: parent
-                        anchors.leftMargin: 10
-                        anchors.rightMargin: 8
-                        spacing: 8
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: 10
 
-                        Text { text: "🔍"; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
-                        Text { text: "Search components & docs..."; color: win.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
-                        Item { width: parent.width - 240; height: 1 }
-                        Rectangle {
-                            width: 32; height: 18; radius: 3; color: win.cCard; border.color: win.cBorder
+                        Text {
+                            text: "🍵"
+                            font.pixelSize: 20
                             anchors.verticalCenter: parent.verticalCenter
-                            Text { anchors.centerIn: parent; text: "⌘K"; color: win.cMutedFg; font.pixelSize: 10; font.family: "Consolas" }
+                        }
+
+                        Text {
+                            text: "ChaSet"
+                            color: win.cFg
+                            font.pixelSize: 16
+                            font.weight: Font.Bold
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        Rectangle {
+                            width: 48
+                            height: 20
+                            radius: 4
+                            color: win.cAccentBg
+                            border.color: win.cBorder
+                            anchors.verticalCenter: parent.verticalCenter
+                            Text {
+                                anchors.centerIn: parent
+                                text: "v0.1.0"
+                                color: win.cMutedFg
+                                font.pixelSize: 10
+                                font.family: "Consolas, monospace"
+                                font.weight: Font.DemiBold
+                            }
                         }
                     }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: win.searchModalOpen = true
-                    }
-                }
-
-                // Right Actions
-                Row {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 20
-                    anchors.verticalCenter: parent.verticalCenter
-                    spacing: 8
-
-                    // Style Tuner Button
-                    ChaSetButton {
-                        variant: win.activePage === "theme-tuner" ? "primary" : "secondary"
-                        size: "sm"
-                        text: "🎨 Studio Tuner"
-                        onClicked: win.activePage = "theme-tuner"
-                    }
-
-                    // Export Button
-                    ChaSetButton {
-                        variant: "secondary"
-                        size: "sm"
-                        text: "📋 Export"
-                        onClicked: win.exportModalOpen = true
-                    }
-
-                    Rectangle { width: 1; height: 18; color: win.cBorder; anchors.verticalCenter: parent.verticalCenter }
-
-                    // Dark/Light Mode Toggle Button
+                    // Center Search Bar Trigger
                     Rectangle {
-                        width: 32
+                        width: Math.min(parent.width - 500, 320)
                         height: 32
                         radius: 6
-                        color: win.cCard
+                        color: win.cAccentBg
                         border.color: win.cBorder
-                        border.width: 1
+                        anchors.centerIn: parent
 
-                        Text {
-                            anchors.centerIn: parent
-                            text: ThemeTokens.dark ? "🌙" : "☀️"
-                            font.pixelSize: 14
+                        Row {
+                            anchors.fill: parent
+                            anchors.leftMargin: 10
+                            anchors.rightMargin: 8
+                            spacing: 8
+
+                            Text { text: "🔍"; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                            Text { text: "Search components & docs..."; color: win.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                            Item { width: parent.width - 240; height: 1 }
+                            Rectangle {
+                                width: 32; height: 18; radius: 3; color: win.cCard; border.color: win.cBorder
+                                anchors.verticalCenter: parent.verticalCenter
+                                Text { anchors.centerIn: parent; text: "⌘K"; color: win.cMutedFg; font.pixelSize: 10; font.family: "Consolas" }
+                            }
                         }
+
                         MouseArea {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: ThemeTokens.dark = !ThemeTokens.dark
+                            onClicked: win.searchModalOpen = true
+                        }
+                    }
+
+                    // Right Actions
+                    Row {
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: 8
+
+                        // Style Tuner Button
+                        ChaSetButton {
+                            variant: win.activePage === "theme-tuner" ? "primary" : "secondary"
+                            size: "sm"
+                            text: "🎨 Studio Tuner"
+                            onClicked: win.activePage = "theme-tuner"
+                        }
+
+                        // Export Button
+                        ChaSetButton {
+                            variant: "secondary"
+                            size: "sm"
+                            text: "📋 Export"
+                            onClicked: win.exportModalOpen = true
+                        }
+
+                        Rectangle { width: 1; height: 18; color: win.cBorder; anchors.verticalCenter: parent.verticalCenter }
+
+                        // Dark/Light Mode Toggle Button
+                        Rectangle {
+                            width: 32
+                            height: 32
+                            radius: 6
+                            color: win.cCard
+                            border.color: win.cBorder
+                            border.width: 1
+
+                            Text {
+                                anchors.centerIn: parent
+                                text: ThemeTokens.dark ? "🌙" : "☀️"
+                                font.pixelSize: 14
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: ThemeTokens.dark = !ThemeTokens.dark
+                            }
                         }
                     }
                 }
             }
 
             // ==============================================================
-            // 2. MAIN BODY (Sidebar + Router Content)
+            // 2. MAIN BODY (Sidebar + Router Content, max-w-7xl = 1280px centered)
             // ==============================================================
             Item {
+                id: mainAppGrid
+                width: Math.min(parent.width, 1280)
+                anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: topbar.bottom
                 anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
 
                 // Left Navigation Sidebar (240px width)
                 Rectangle {
@@ -497,9 +504,7 @@ ApplicationWindow {
                     id: contentScroll
                     objectName: "contentScroll"
                     anchors.left: sidebar.right
-                    anchors.leftMargin: 32
                     anchors.right: parent.right
-                    anchors.rightMargin: 32
                     anchors.top: parent.top
                     anchors.topMargin: 20
                     anchors.bottom: parent.bottom
@@ -509,7 +514,7 @@ ApplicationWindow {
 
                     Item {
                         id: pageContainer
-                        width: Math.min(contentScroll.width - 32, 860)
+                        width: contentScroll.width
                         implicitHeight: {
                             if (win.activePage === "intro") return introPage.implicitHeight
                             if (win.activePage === "tokens") return tokensPage.implicitHeight
