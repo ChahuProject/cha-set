@@ -18,6 +18,7 @@ qt_add_executable(QtChaSetDemo
 
 set_source_files_properties(src/ThemeTokens.generated.qml PROPERTIES
     QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME ThemeTokens
 )
 
 qt_add_qml_module(QtChaSetDemo

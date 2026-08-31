@@ -6,7 +6,7 @@ import chaSet
 Item {
     id: root
 
-    default property alias contentData: flickable.contentData
+    default property alias contentData: flickable.data
     property alias contentWidth: flickable.contentWidth
     property alias contentHeight: flickable.contentHeight
     property alias contentX: flickable.contentX
