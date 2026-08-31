@@ -30,6 +30,13 @@ qt_add_qml_module(QtChaSetDemo
         src/ChaSetScrollBar.qml
         src/ChaSetScrollView.qml
         src/ThemeTokens.generated.qml
+        src/IntroductionPage.qml
+        src/TokensPage.qml
+        src/ThemeTunerPage.qml
+        src/ButtonDocPage.qml
+        src/ScrollAreaDocPage.qml
+        src/CommandSearchModal.qml
+        src/ExportModal.qml
     NO_RESOURCE_TARGET_PATH
 )
 
