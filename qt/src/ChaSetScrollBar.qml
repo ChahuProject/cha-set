@@ -22,7 +22,7 @@ Item {
     property alias scrollAnimX: scrollAnimX
 
     readonly property bool isVertical: orientation === Qt.Vertical
-    readonly property bool hovered: hitMouseArea.containsMouse || startCluster.hovered || endCluster.hovered || thumbMouseArea.containsMouse
+    readonly property bool hovered: hitMouseArea.containsMouse || startCluster.hovered || endCluster.hovered || trackInteractionArea.containsMouse
 
     // Geometry bindings from Flickable
     readonly property real visiblePos: flickable ? (isVertical ? flickable.visibleArea.yPosition : flickable.visibleArea.xPosition) : 0
@@ -286,30 +286,6 @@ Item {
         anchors.left: root.isVertical ? parent.left : (root.showButtons ? startCluster.right : parent.left)
         anchors.right: root.isVertical ? parent.right : (root.showButtons ? endCluster.left : parent.right)
 
-        MouseArea {
-            id: trackClickArea
-            anchors.fill: parent
-            z: 0
-            onClicked: function(mouse) {
-                if (!root.flickable) return
-                if (root.isVertical && trackArea.height > thumb.height) {
-                    var targetY = mouse.y - thumb.height / 2
-                    var maxThumbY = trackArea.height - thumb.height
-                    var ratioY = Math.max(0, Math.min(1, targetY / maxThumbY))
-                    var maxScrollY = Math.max(0, root.flickable.contentHeight - root.flickable.height)
-                    if (root.smoothScroll) root.scrollAnimY.startTo(ratioY * maxScrollY)
-                    else root.flickable.contentY = ratioY * maxScrollY
-                } else if (!root.isVertical && trackArea.width > thumb.width) {
-                    var targetX = mouse.x - thumb.width / 2
-                    var maxThumbX = trackArea.width - thumb.width
-                    var ratioX = Math.max(0, Math.min(1, targetX / maxThumbX))
-                    var maxScrollX = Math.max(0, root.flickable.contentWidth - root.flickable.width)
-                    if (root.smoothScroll) root.scrollAnimX.startTo(ratioX * maxScrollX)
-                    else root.flickable.contentX = ratioX * maxScrollX
-                }
-            }
-        }
-
         // Visual Thumb Indicator
         Rectangle {
             id: thumb
@@ -329,47 +305,85 @@ Item {
             height: root.isVertical ? thumbLength : (root.hovered ? root.expandedSize : root.collapsedSize)
             radius: Math.min(width, height) / 2
 
-            color: thumbMouseArea.pressed ? Qt.rgba(ThemeTokens.text.r, ThemeTokens.text.g, ThemeTokens.text.b, 0.6) :
+            color: trackInteractionArea.isDragging ? Qt.rgba(ThemeTokens.text.r, ThemeTokens.text.g, ThemeTokens.text.b, 0.6) :
                    (root.hovered ? Qt.rgba(ThemeTokens.text.r, ThemeTokens.text.g, ThemeTokens.text.b, 0.4) :
                    Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.8))
 
             Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
             Behavior on height { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
             Behavior on color { ColorAnimation { duration: 150 } }
+        }
 
-            MouseArea {
-                id: thumbMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                cursorShape: pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor
-                preventStealing: true
+        // Unified Track & Thumb Interaction Area (Static coordinate frame)
+        MouseArea {
+            id: trackInteractionArea
+            anchors.fill: parent
+            z: 2
+            hoverEnabled: true
+            preventStealing: true
 
-                property real startTrackPos: 0
-                property real startContentPos: 0
+            property bool isDragging: false
+            property real dragStartMousePos: 0
+            property real dragStartContentPos: 0
 
-                onPressed: function(mouse) {
-                    if (!root.flickable) return
-                    var pt = mapToItem(trackArea, mouse.x, mouse.y)
-                    startTrackPos = root.isVertical ? pt.y : pt.x
-                    startContentPos = root.isVertical ? root.flickable.contentY : root.flickable.contentX
+            property bool mouseOverThumb: {
+                if (root.isVertical) {
+                    return mouseY >= thumb.y && mouseY <= (thumb.y + thumb.height)
+                } else {
+                    return mouseX >= thumb.x && mouseX <= (thumb.x + thumb.width)
                 }
+            }
 
-                onPositionChanged: function(mouse) {
-                    if (pressed && root.flickable && thumb.maxThumbTravel > 0) {
-                        var pt = mapToItem(trackArea, mouse.x, mouse.y)
-                        var curPos = root.isVertical ? pt.y : pt.x
-                        var delta = curPos - startTrackPos
-                        if (root.isVertical) {
-                            var maxScrollY = Math.max(0, root.flickable.contentHeight - root.flickable.height)
-                            var deltaScrollY = (delta / thumb.maxThumbTravel) * maxScrollY
-                            root.flickable.contentY = Math.max(0, Math.min(maxScrollY, startContentPos + deltaScrollY))
-                        } else {
-                            var maxScrollX = Math.max(0, root.flickable.contentWidth - root.flickable.width)
-                            var deltaScrollX = (delta / thumb.maxThumbTravel) * maxScrollX
-                            root.flickable.contentX = Math.max(0, Math.min(maxScrollX, startContentPos + deltaScrollX))
-                        }
+            cursorShape: isDragging ? Qt.ClosedHandCursor : (mouseOverThumb ? Qt.PointingHandCursor : Qt.ArrowCursor)
+
+            onPressed: function(mouse) {
+                if (!root.flickable) return
+                if (mouseOverThumb) {
+                    isDragging = true
+                    dragStartMousePos = root.isVertical ? mouse.y : mouse.x
+                    dragStartContentPos = root.isVertical ? root.flickable.contentY : root.flickable.contentX
+                } else {
+                    // Track click jump
+                    if (root.isVertical && trackArea.height > thumb.height) {
+                        var targetY = mouse.y - thumb.height / 2
+                        var maxThumbY = trackArea.height - thumb.height
+                        var ratioY = Math.max(0, Math.min(1, targetY / maxThumbY))
+                        var maxScrollY = Math.max(0, root.flickable.contentHeight - root.flickable.height)
+                        if (root.smoothScroll) root.scrollAnimY.startTo(ratioY * maxScrollY)
+                        else root.flickable.contentY = ratioY * maxScrollY
+                    } else if (!root.isVertical && trackArea.width > thumb.width) {
+                        var targetX = mouse.x - thumb.width / 2
+                        var maxThumbX = trackArea.width - thumb.width
+                        var ratioX = Math.max(0, Math.min(1, targetX / maxThumbX))
+                        var maxScrollX = Math.max(0, root.flickable.contentWidth - root.flickable.width)
+                        if (root.smoothScroll) root.scrollAnimX.startTo(ratioX * maxScrollX)
+                        else root.flickable.contentX = ratioX * maxScrollX
                     }
                 }
+            }
+
+            onPositionChanged: function(mouse) {
+                if (isDragging && root.flickable && thumb.maxThumbTravel > 0) {
+                    var curPos = root.isVertical ? mouse.y : mouse.x
+                    var delta = curPos - dragStartMousePos
+                    if (root.isVertical) {
+                        var maxScrollY = Math.max(0, root.flickable.contentHeight - root.flickable.height)
+                        var deltaScrollY = (delta / thumb.maxThumbTravel) * maxScrollY
+                        root.flickable.contentY = Math.max(0, Math.min(maxScrollY, dragStartContentPos + deltaScrollY))
+                    } else {
+                        var maxScrollX = Math.max(0, root.flickable.contentWidth - root.flickable.width)
+                        var deltaScrollX = (delta / thumb.maxThumbTravel) * maxScrollX
+                        root.flickable.contentX = Math.max(0, Math.min(maxScrollX, dragStartContentPos + deltaScrollX))
+                    }
+                }
+            }
+
+            onReleased: {
+                isDragging = false
+            }
+
+            onCanceled: {
+                isDragging = false
             }
         }
     }
