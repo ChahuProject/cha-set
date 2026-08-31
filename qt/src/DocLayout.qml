@@ -48,9 +48,14 @@ Item {
                 width: parent.width
                 spacing: 8
 
-                Row {
+                Item {
                     width: parent.width
+                    height: Math.max(titleText.implicitHeight, copyBtn.height)
+
                     Text {
+                        id: titleText
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
                         text: root.pageTitle
                         color: ThemeTokens.text
                         font.pixelSize: 32
@@ -58,9 +63,10 @@ Item {
                         font.letterSpacing: -0.5
                     }
 
-                    Item { width: Math.max(20, parent.width - 280); height: 1 }
-
                     Rectangle {
+                        id: copyBtn
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
                         width: 96; height: 28; radius: 6
                         color: ThemeTokens.panel
                         border.color: ThemeTokens.border

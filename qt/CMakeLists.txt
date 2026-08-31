@@ -35,6 +35,8 @@ qt_add_qml_module(QtChaSetDemo
         src/ChaSetScrollBar.qml
         src/ChaSetScrollView.qml
         src/DocLayout.qml
+        src/CodeBlock.qml
+        src/PropsTable.qml
         src/ComponentPreview.qml
         src/ThemeTokens.generated.qml
         src/ShowcaseData.generated.qml

@@ -55,7 +55,8 @@ ApplicationWindow {
     readonly property color cDestructive: overrideDestructive !== "" ? overrideDestructive : "#ef4444"
 
     Component.onCompleted: {
-        if (typeof startupLight !== "undefined" && startupLight === true) ThemeTokens.dark = false
+        if (typeof startupDark !== "undefined" && startupDark === true) ThemeTokens.dark = true
+        else if (typeof startupLight !== "undefined" && startupLight === true) ThemeTokens.dark = false
         else ThemeTokens.dark = false
         if (typeof reqScrollY !== "undefined" && reqScrollY > 0) {
             contentScroll.contentY = reqScrollY

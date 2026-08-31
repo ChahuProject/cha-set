@@ -1,12 +1,17 @@
-// ThemeTunerPage.qml — Live Interactive Theme Studio
+// ThemeTunerPage.qml — Live Interactive Theme Studio matching React 1:1
 import QtQuick 6.10
 import QtQuick.Controls 6.10
 import chaSet
 
-Item {
+DocLayout {
     id: root
-    width: parent ? parent.width : 820
-    implicitHeight: contentCol.implicitHeight + 60
+    category: "Get Started"
+    pageTitle: "Theme Studio"
+    description: "Live interactive theme tuner. Fine-tune colors, radiuses, and accents with real-time feedback and one-click config export."
+    tocItems: [
+        { id: "tuner", title: "Theme Controls" },
+        { id: "playground", title: "Live Sandbox" }
+    ]
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -25,56 +30,17 @@ Item {
     signal requestExport()
     signal logAction(string msg)
 
+    // Section 1: Theme Controls
     Column {
-        id: contentCol
-        width: Math.min(parent.width, 820)
-        spacing: 24
+        width: parent.width
+        spacing: 14
 
-        // Breadcrumb & Header
-        Column {
-            width: parent.width
-            spacing: 8
-
-            Row {
-                spacing: 6
-                Text { text: "Docs"; color: root.cMutedFg; font.pixelSize: 12 }
-                Text { text: "/"; color: root.cMutedFg; font.pixelSize: 12 }
-                Text { text: "Get Started"; color: root.cMutedFg; font.pixelSize: 12 }
-                Text { text: "/"; color: root.cMutedFg; font.pixelSize: 12 }
-                Text { text: "Theme Studio"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                Rectangle {
-                    width: 36; height: 18; radius: 9
-                    color: Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.15)
-                    Text { anchors.centerIn: parent; text: "Live"; color: root.cPrimary; font.pixelSize: 10; font.weight: Font.Bold }
-                }
-            }
-
-            Text {
-                text: "Theme Studio"
-                color: root.cFg
-                font.pixelSize: 28
-                font.weight: Font.Bold
-            }
-
-            Text {
-                text: "Fine-tune colors, corner radiuses, and theme accents with real-time live preview and multi-platform config export."
-                color: root.cMutedFg
-                font.pixelSize: 14
-                lineHeight: 1.4
-                wrapMode: Text.WordWrap
-                width: parent.width
-            }
-
-            Rectangle { width: parent.width; height: 1; color: root.cBorder }
-        }
-
-        // Main Tuner Card
         Rectangle {
             width: parent.width
-            height: tunerCol.implicitHeight + 36
+            implicitHeight: tunerCol.implicitHeight + 36
             radius: root.customRadius
-            color: root.cCard
-            border.color: root.cBorder
+            color: ThemeTokens.panel
+            border.color: ThemeTokens.border
             border.width: 1
 
             Column {
@@ -84,38 +50,87 @@ Item {
                 width: parent.width - 40
                 spacing: 18
 
-                // Header with Export button
+                // Header
                 Row {
                     width: parent.width
-                    Text { text: "🎨 Live Theme Controls"; color: root.cFg; font.pixelSize: 16; font.weight: Font.Bold }
-                    Item { width: parent.width - 340; height: 1 }
-                    ChaSetButton {
-                        size: "sm"
-                        variant: "primary"
-                        text: "📋 Export Config"
-                        onClicked: root.requestExport()
+                    Row {
+                        spacing: 8
+                        Text { text: "🎨"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter }
+                        Text { text: "Theme & Style Tuner"; color: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.Bold; anchors.verticalCenter: parent.verticalCenter }
+                    }
+
+                    Item { width: Math.max(10, parent.width - 340); height: 1 }
+
+                    Row {
+                        spacing: 8
+                        Rectangle {
+                            visible: root.activeAccent !== "" || root.customRadius !== 8
+                            width: 60; height: 28; radius: 5
+                            color: ThemeTokens.hover
+                            border.color: ThemeTokens.border
+                            Text { anchors.centerIn: parent; text: "Reset"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Medium }
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                    root.activeAccent = ""
+                                    root.customRadius = 8
+                                    ThemeTokens.dark = false
+                                }
+                            }
+                        }
+
+                        ChaSetButton {
+                            size: "sm"
+                            variant: "primary"
+                            text: "📋 Copy Config"
+                            onClicked: root.requestExport()
+                        }
                     }
                 }
 
-                Rectangle { width: parent.width; height: 1; color: root.cBorder }
+                Rectangle { width: parent.width; height: 1; color: ThemeTokens.border }
 
-                // 1. Appearance Mode
+                // 1. Appearance & Mode
                 Column {
                     spacing: 6
-                    Text { text: "APPEARANCE & MODE"; color: root.cMutedFg; font.pixelSize: 11; font.weight: Font.Bold }
+                    Text { text: "APPEARANCE & MODE"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                     Row {
                         spacing: 8
-                        ChaSetButton {
-                            variant: !ThemeTokens.dark ? "primary" : "secondary"
-                            size: "sm"
-                            text: "☀️ Light Mode"
-                            onClicked: { ThemeTokens.dark = false; root.logAction("Switched to Light mode") }
+                        Rectangle {
+                            width: 90; height: 30; radius: 6
+                            color: !ThemeTokens.dark ? ThemeTokens.background : ThemeTokens.hover
+                            border.color: !ThemeTokens.dark ? ThemeTokens.accent : ThemeTokens.border
+                            border.width: !ThemeTokens.dark ? 1.5 : 1
+                            Row {
+                                anchors.centerIn: parent
+                                spacing: 4
+                                Text { text: "☀️"; font.pixelSize: 12 }
+                                Text { text: "Light"; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Medium }
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: ThemeTokens.dark = false
+                            }
                         }
-                        ChaSetButton {
-                            variant: ThemeTokens.dark ? "primary" : "secondary"
-                            size: "sm"
-                            text: "🌙 Dark Mode"
-                            onClicked: { ThemeTokens.dark = true; root.logAction("Switched to Dark mode") }
+
+                        Rectangle {
+                            width: 90; height: 30; radius: 6
+                            color: ThemeTokens.dark ? ThemeTokens.background : ThemeTokens.hover
+                            border.color: ThemeTokens.dark ? ThemeTokens.accent : ThemeTokens.border
+                            border.width: ThemeTokens.dark ? 1.5 : 1
+                            Row {
+                                anchors.centerIn: parent
+                                spacing: 4
+                                Text { text: "🌙"; font.pixelSize: 12 }
+                                Text { text: "Dark"; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Medium }
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: ThemeTokens.dark = true
+                            }
                         }
                     }
                 }
@@ -123,7 +138,7 @@ Item {
                 // 2. Accent Presets (9 Presets)
                 Column {
                     spacing: 6
-                    Text { text: "ACCENT THEME PRESETS"; color: root.cMutedFg; font.pixelSize: 11; font.weight: Font.Bold }
+                    Text { text: "ACCENT THEME PRESET"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                     Flow {
                         width: parent.width
                         spacing: 6
@@ -138,16 +153,16 @@ Item {
                                 width: chipRow.implicitWidth + 18
                                 height: 26
                                 radius: 13
-                                color: root.activeAccent === modelData[0] ? Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.15) : root.cCard
-                                border.color: root.activeAccent === modelData[0] ? root.cPrimary : root.cBorder
+                                color: root.activeAccent === modelData[0] ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.15) : ThemeTokens.hover
+                                border.color: root.activeAccent === modelData[0] ? ThemeTokens.accent : ThemeTokens.border
                                 border.width: root.activeAccent === modelData[0] ? 1.5 : 1
 
                                 Row {
                                     id: chipRow
                                     anchors.centerIn: parent
                                     spacing: 5
-                                    Rectangle { width: 8; height: 8; radius: 4; color: parent.parent.modelData[1]; anchors.verticalCenter: parent.verticalCenter }
-                                    Text { text: parent.parent.modelData[0]; color: root.cFg; font.pixelSize: 11; font.weight: Font.Medium; anchors.verticalCenter: parent.verticalCenter }
+                                    Rectangle { width: 8; height: 8; radius: 4; color: modelData[1]; anchors.verticalCenter: parent.verticalCenter }
+                                    Text { text: modelData[0]; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Medium; anchors.verticalCenter: parent.verticalCenter }
                                 }
 
                                 MouseArea {
@@ -155,7 +170,6 @@ Item {
                                     cursorShape: Qt.PointingHandCursor
                                     onClicked: {
                                         root.activeAccent = parent.modelData[0]
-                                        root.overridePrimary = parent.modelData[1]
                                         root.logAction("Accent preset: " + parent.modelData[0])
                                     }
                                 }
@@ -170,13 +184,14 @@ Item {
                     spacing: 6
                     Row {
                         width: parent.width
-                        Text { text: "CORNER RADIUS (--RADIUS)"; color: root.cMutedFg; font.pixelSize: 11; font.weight: Font.Bold }
-                        Item { width: parent.width - 290; height: 1 }
+                        Text { text: "CORNER RADIUS (--RADIUS)"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+                        Item { width: Math.max(10, parent.width - 320); height: 1 }
                         Text {
                             text: root.customRadius === 8 ? "0.5rem (Default)" : (root.customRadius + "px")
-                            color: root.cMutedFg
+                            color: ThemeTokens.accent
                             font.pixelSize: 11
                             font.family: "Consolas, monospace"
+                            font.weight: Font.Bold
                         }
                     }
 
@@ -184,21 +199,21 @@ Item {
                         width: parent.width
                         height: 8
                         radius: 4
-                        color: root.cAccentBg
-                        border.color: root.cBorder
+                        color: ThemeTokens.hover
+                        border.color: ThemeTokens.border
 
                         Rectangle {
-                            width: (root.customRadius / 24) * parent.width
+                            width: Math.max(8, (root.customRadius / 24) * parent.width)
                             height: parent.height
                             radius: 4
-                            color: root.cPrimary
+                            color: ThemeTokens.accent
                         }
 
                         Rectangle {
-                            x: (root.customRadius / 24) * (parent.width - 16)
+                            x: Math.max(0, Math.min(parent.width - 16, (root.customRadius / 24) * (parent.width - 16)))
                             anchors.verticalCenter: parent.verticalCenter
                             width: 16; height: 16; radius: 8
-                            color: root.cPrimary
+                            color: ThemeTokens.accent
                             border.color: "#ffffff"
                             border.width: 2
                         }
@@ -209,70 +224,97 @@ Item {
                             onPositionChanged: (mouse) => {
                                 if (pressed) {
                                     let frac = Math.max(0, Math.min(1, mouse.x / width))
-                                    root.customRadius = Math.round(frac * 24)
+                                    root.customRadius = Math.round(frac * 12) * 2
                                 }
                             }
                             onClicked: (mouse) => {
                                 let frac = Math.max(0, Math.min(1, mouse.x / width))
-                                root.customRadius = Math.round(frac * 24)
+                                root.customRadius = Math.round(frac * 12) * 2
                             }
                         }
+                    }
+
+                    Row {
+                        width: parent.width
+                        Text { text: "0px (Sharp)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                        Item { width: parent.width - 240; height: 1 }
+                        Text { text: "8px"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                        Item { width: 50; height: 1 }
+                        Text { text: "16px"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                        Item { width: 50; height: 1 }
+                        Text { text: "24px (Pill)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
                     }
                 }
             }
         }
+    }
 
-        // Section 2: Live Sandbox Stage
+    // Section 2: Live Sandbox Stage
+    Column {
+        width: parent.width
+        spacing: 12
+
         Column {
+            spacing: 4
+            Text { text: "Live Component Sandbox"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+            Text { text: "Interact with components rendering live under your current style settings:"; color: ThemeTokens.subduedText; font.pixelSize: 13 }
+        }
+
+        Rectangle {
             width: parent.width
-            spacing: 12
+            implicitHeight: sandboxRow.implicitHeight + 36
+            radius: root.customRadius
+            color: ThemeTokens.panel
+            border.color: ThemeTokens.border
+            border.width: 1
 
-            Text { text: "Live Component Sandbox"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
-            Text { text: "Interact with components rendering live under your current style settings:"; color: root.cMutedFg; font.pixelSize: 13 }
+            Row {
+                id: sandboxRow
+                x: 20
+                y: 18
+                width: parent.width - 40
+                spacing: 24
 
-            Rectangle {
-                width: parent.width
-                height: 200
-                radius: root.customRadius
-                color: root.cCard
-                border.color: root.cBorder
-
-                Row {
-                    anchors.centerIn: parent
-                    spacing: 24
-
-                    Column {
-                        spacing: 12
-                        Text { text: "Buttons"; color: root.cMutedFg; font.pixelSize: 12; font.weight: Font.Bold }
-                        Row {
-                            spacing: 8
-                            ChaSetButton { variant: "primary"; size: "md"; text: "Primary Action"; onClicked: root.logAction("Clicked sandbox primary") }
-                            ChaSetButton { variant: "secondary"; size: "md"; text: "Secondary"; onClicked: root.logAction("Clicked sandbox secondary") }
-                            ChaSetButton { variant: "destructive"; size: "md"; text: "Danger"; onClicked: root.logAction("Clicked sandbox danger") }
-                        }
+                // Buttons Column
+                Column {
+                    spacing: 12
+                    Text { text: "BUTTONS"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+                    Row {
+                        spacing: 8
+                        ChaSetButton { variant: "primary"; size: "md"; text: "Primary Action"; onClicked: root.logAction("Clicked sandbox primary") }
+                        ChaSetButton { variant: "secondary"; size: "md"; text: "Secondary"; onClicked: root.logAction("Clicked sandbox secondary") }
+                        ChaSetButton { variant: "destructive"; size: "md"; text: "Danger"; onClicked: root.logAction("Clicked sandbox danger") }
                     }
+                    Row {
+                        spacing: 8
+                        ChaSetButton { variant: "ghost"; size: "sm"; text: "Ghost Action" }
+                        ChaSetButton { variant: "primary"; size: "sm"; text: "Saving..."; loading: true }
+                        ChaSetButton { variant: "secondary"; size: "sm"; text: "Disabled"; disabled: true }
+                    }
+                }
 
-                    Rectangle { width: 1; height: 120; color: root.cBorder; anchors.verticalCenter: parent.verticalCenter }
+                Rectangle { width: 1; height: 120; color: ThemeTokens.border; anchors.verticalCenter: parent.verticalCenter }
 
-                    Column {
-                        spacing: 12
-                        Text { text: "Mini Scroll Viewport"; color: root.cMutedFg; font.pixelSize: 12; font.weight: Font.Bold }
-                        ChaSetScrollView {
-                            width: 260
-                            height: 100
-                            showButtons: true
-                            contentWidth: 240
-                            contentHeight: 300
+                // Mini Scroll Viewport Column
+                Column {
+                    spacing: 12
+                    Text { text: "MINI SCROLL VIEWPORT"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+                    ChaSetScrollView {
+                        width: 240
+                        height: 100
+                        showButtons: true
+                        contentWidth: 220
+                        contentHeight: 280
+                        clip: true
 
-                            Column {
-                                spacing: 4
-                                Repeater {
-                                    model: 10
-                                    delegate: Rectangle {
-                                        required property int index
-                                        width: 240; height: 24; radius: 4; color: root.cAccentBg
-                                        Text { anchors.centerIn: parent; text: "Item #" + (parent.index + 1); color: root.cFg; font.pixelSize: 11 }
-                                    }
+                        Column {
+                            spacing: 4
+                            Repeater {
+                                model: 10
+                                delegate: Rectangle {
+                                    required property int index
+                                    width: 220; height: 24; radius: 4; color: ThemeTokens.hover
+                                    Text { anchors.centerIn: parent; text: "Item #" + (index + 1); color: ThemeTokens.text; font.pixelSize: 11 }
                                 }
                             }
                         }

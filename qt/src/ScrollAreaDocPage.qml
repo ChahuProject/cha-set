@@ -518,69 +518,27 @@ export const CrossStackSpecification = {
             font.weight: Font.Bold
         }
 
-        // ChaSetScrollView Props
-        Rectangle {
+        PropsTable {
             width: parent.width
-            height: 240
-            radius: 8
-            color: ThemeTokens.panel
-            border.color: ThemeTokens.border
-
-            Column {
-                anchors.fill: parent; anchors.margins: 14; spacing: 8
-                Text { text: "ChaSetScrollView Properties"; color: ThemeTokens.text; font.pixelSize: 14; font.weight: Font.Bold }
-                Rectangle { width: parent.width; height: 1; color: ThemeTokens.border }
-
-                Repeater {
-                    model: [
-                        ["showVerticalScrollBar", "bool", "true", "Whether to render vertical scrollbar."],
-                        ["showHorizontalScrollBar", "bool", "false", "Whether to render horizontal scrollbar."],
-                        ["showButtons", "bool", "true", "Whether stepper navigation buttons appear on hover."],
-                        ["pageStepRatio", "real", "0.85", "Viewport dimension ratio for page up / down."],
-                        ["smoothScroll", "bool", "true", "Whether stepper buttons trigger animated smooth scrolling."]
-                    ]
-                    delegate: Row {
-                        required property var modelData
-                        width: parent.width; spacing: 10
-                        Text { text: modelData[0]; color: ThemeTokens.accent; font.family: "Consolas"; font.pixelSize: 11; width: 180 }
-                        Text { text: modelData[1]; color: ThemeTokens.subduedText; font.family: "Consolas"; font.pixelSize: 11; width: 60 }
-                        Text { text: modelData[2]; color: ThemeTokens.subduedText; font.family: "Consolas"; font.pixelSize: 11; width: 60 }
-                        Text { text: modelData[3]; color: ThemeTokens.text; font.pixelSize: 11; width: parent.width - 330 }
-                    }
-                }
-            }
+            title: "ChaSetScrollView Properties"
+            propsModel: [
+                ["showVerticalScrollBar", "bool", "true", "Whether to render vertical scrollbar."],
+                ["showHorizontalScrollBar", "bool", "false", "Whether to render horizontal scrollbar."],
+                ["showButtons", "bool", "true", "Whether stepper navigation buttons appear on hover."],
+                ["pageStepRatio", "real", "0.85", "Viewport dimension ratio for page up / down."],
+                ["smoothScroll", "bool", "true", "Whether stepper buttons trigger animated smooth scrolling."]
+            ]
         }
 
-        // ChaSetScrollBar Props
-        Rectangle {
+        PropsTable {
             width: parent.width
-            height: 210
-            radius: 8
-            color: ThemeTokens.panel
-            border.color: ThemeTokens.border
-
-            Column {
-                anchors.fill: parent; anchors.margins: 14; spacing: 8
-                Text { text: "ChaSetScrollBar Properties"; color: ThemeTokens.text; font.pixelSize: 14; font.weight: Font.Bold }
-                Rectangle { width: parent.width; height: 1; color: ThemeTokens.border }
-
-                Repeater {
-                    model: [
-                        ["orientation", "Qt::Orientation", "Qt.Vertical", "Scrollbar orientation axis."],
-                        ["collapsedSize", "int", "4", "Thickness in pixels of the visual indicator when idle."],
-                        ["expandedSize", "int", "8", "Thickness in pixels of the visual indicator when hovered."],
-                        ["hitSize", "int", "8", "Thickness in pixels of the pointer-capture hot-zone."]
-                    ]
-                    delegate: Row {
-                        required property var modelData
-                        width: parent.width; spacing: 10
-                        Text { text: modelData[0]; color: ThemeTokens.accent; font.family: "Consolas"; font.pixelSize: 11; width: 180 }
-                        Text { text: modelData[1]; color: ThemeTokens.subduedText; font.family: "Consolas"; font.pixelSize: 11; width: 110 }
-                        Text { text: modelData[2]; color: ThemeTokens.subduedText; font.family: "Consolas"; font.pixelSize: 11; width: 60 }
-                        Text { text: modelData[3]; color: ThemeTokens.text; font.pixelSize: 11; width: parent.width - 380 }
-                    }
-                }
-            }
+            title: "ChaSetScrollBar Properties"
+            propsModel: [
+                ["orientation", "Qt::Orientation", "Qt.Vertical", "Scrollbar orientation axis."],
+                ["collapsedSize", "int", "4", "Thickness in pixels of the visual indicator when idle."],
+                ["expandedSize", "int", "8", "Thickness in pixels of the visual indicator when hovered."],
+                ["hitSize", "int", "8", "Thickness in pixels of the pointer-capture hot-zone."]
+            ]
         }
     }
 }

@@ -25,11 +25,11 @@ Rectangle {
         id: previewContainer
         width: parent.width
 
-        // Tab Navigation Header (36px height)
+        // Tab Navigation Header (38px height)
         Rectangle {
             width: parent.width
             height: 38
-            color: ThemeTokens.hover
+            color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.5)
             border.color: ThemeTokens.border
             border.width: 0.5
 
@@ -41,23 +41,24 @@ Rectangle {
 
                 Rectangle {
                     width: 64; height: 26; radius: 5
-                    color: root.activeTab === "preview" ? ThemeTokens.panel : "transparent"
+                    color: root.activeTab === "preview" ? ThemeTokens.background : "transparent"
                     border.color: root.activeTab === "preview" ? ThemeTokens.border : "transparent"
                     Text { anchors.centerIn: parent; text: "Preview"; color: root.activeTab === "preview" ? ThemeTokens.text : ThemeTokens.subduedText; font.pixelSize: 11; font.weight: root.activeTab === "preview" ? Font.Bold : Font.Normal }
                     MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.activeTab = "preview" }
                 }
 
                 Rectangle {
-                    width: 80; height: 26; radius: 5
-                    color: root.activeTab === "code" ? ThemeTokens.panel : "transparent"
+                    width: 84; height: 26; radius: 5
+                    color: root.activeTab === "code" ? ThemeTokens.background : "transparent"
                     border.color: root.activeTab === "code" ? ThemeTokens.border : "transparent"
                     Text { anchors.centerIn: parent; text: "React Code"; color: root.activeTab === "code" ? ThemeTokens.text : ThemeTokens.subduedText; font.pixelSize: 11; font.weight: root.activeTab === "code" ? Font.Bold : Font.Normal }
                     MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.activeTab = "code" }
                 }
 
                 Rectangle {
+                    visible: root.qtCode !== ""
                     width: 68; height: 26; radius: 5
-                    color: root.activeTab === "qt" ? ThemeTokens.panel : "transparent"
+                    color: root.activeTab === "qt" ? ThemeTokens.background : "transparent"
                     border.color: root.activeTab === "qt" ? ThemeTokens.border : "transparent"
                     Text { anchors.centerIn: parent; text: "Qt QML"; color: root.activeTab === "qt" ? ThemeTokens.text : ThemeTokens.subduedText; font.pixelSize: 11; font.weight: root.activeTab === "qt" ? Font.Bold : Font.Normal }
                     MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.activeTab = "qt" }
@@ -90,37 +91,42 @@ Rectangle {
 
             // Controls Bar
             Rectangle {
+                visible: controlsContainer.children.length > 0
                 width: parent.width
-                height: controlsContainer.implicitHeight + 20
+                implicitHeight: controlsContainer.implicitHeight + 24
                 color: ThemeTokens.hover
                 border.color: ThemeTokens.border
                 border.width: 0.5
 
-                Row {
+                Flow {
                     id: controlsContainer
-                    anchors.centerIn: parent
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.leftMargin: 16
+                    anchors.rightMargin: 16
+                    anchors.top: parent.top
+                    anchors.topMargin: 12
                     spacing: 16
                 }
             }
         }
 
-        // Code Mode Content (React JSX / Qt QML)
-        Rectangle {
-            visible: root.activeTab !== "preview"
+        // React Code Tab
+        CodeBlock {
+            visible: root.activeTab === "code"
             width: parent.width
-            height: 200
-            color: ThemeTokens.background
+            code: root.reactCode
+            language: "tsx"
+            radius: 0
+        }
 
-            TextArea {
-                anchors.fill: parent
-                anchors.margins: 14
-                readOnly: true
-                text: root.activeTab === "code" ? root.reactCode : root.qtCode
-                color: ThemeTokens.text
-                font.family: "Consolas, monospace"
-                font.pixelSize: 12
-                background: null
-            }
+        // Qt QML Code Tab
+        CodeBlock {
+            visible: root.activeTab === "qt"
+            width: parent.width
+            code: root.qtCode
+            language: "qml"
+            radius: 0
         }
     }
 }

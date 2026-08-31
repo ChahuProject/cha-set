@@ -68,6 +68,7 @@ int main(int argc, char* argv[])
     const bool shotMode = shotIdx >= 0 && shotIdx + 1 < args.size();
     const QString shotPath = shotMode ? args.value(shotIdx + 1) : "";
     const bool startLight = args.contains("--light");
+    const bool startDark = args.contains("--dark");
 
     const int harnessIdx = static_cast<int>(args.indexOf("--harness"));
     const QString harnessMode = harnessIdx >= 0 && harnessIdx + 1 < args.size() ? args.value(harnessIdx + 1) : "";
@@ -104,6 +105,7 @@ int main(int argc, char* argv[])
     engine.rootContext()->setContextProperty("reqScrollY", reqScrollY);
     engine.rootContext()->setContextProperty("startupPage", startupPage);
     engine.rootContext()->setContextProperty("startupLight", startLight);
+    engine.rootContext()->setContextProperty("startupDark", startDark);
     engine.rootContext()->setContextProperty("shotPath", shotPath);
     engine.rootContext()->setContextProperty("harnessMode", harnessMode);
     engine.rootContext()->setContextProperty("harnessVariant", harnessVariant);
