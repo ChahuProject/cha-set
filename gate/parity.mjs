@@ -36,3 +36,17 @@ if (failed) {
   process.exit(1);
 }
 console.log(`[gate] OK — all must capabilities covered (${checked} checks)`);
+
+// 2. Executable Behavioral Parity Checks
+const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');
+if (existsSync(qtExe)) {
+  const { spawnSync } = await import('node:child_process');
+  const testRes = spawnSync(qtExe, ['--test-scroll'], { encoding: 'utf8' });
+  if (testRes.status !== 0) {
+    console.error('[gate] FAIL: Qt runtime scroll behavioral verification failed');
+    if (testRes.stdout) console.error(testRes.stdout);
+    if (testRes.stderr) console.error(testRes.stderr);
+    process.exit(1);
+  }
+  console.log('[gate] OK — Qt runtime scroll & viewport behavioral assertions passed');
+}

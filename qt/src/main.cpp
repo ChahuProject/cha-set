@@ -31,6 +31,7 @@ int main(int argc, char* argv[])
 
     const bool harnessLoading = args.contains("--loading");
     const bool harnessDisabled = args.contains("--disabled");
+    const bool testScrollMode = args.contains("--test-scroll");
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("startupLight", startLight);
@@ -41,6 +42,7 @@ int main(int argc, char* argv[])
     engine.rootContext()->setContextProperty("harnessLabel", harnessLabel);
     engine.rootContext()->setContextProperty("harnessLoading", harnessLoading);
     engine.rootContext()->setContextProperty("harnessDisabled", harnessDisabled);
+    engine.rootContext()->setContextProperty("testScrollMode", testScrollMode);
 
     QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
 

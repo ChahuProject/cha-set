@@ -71,6 +71,35 @@ ApplicationWindow {
         }
     }
 
+    Timer {
+        id: testScrollTimer
+        interval: 150
+        running: typeof testScrollMode !== "undefined" && testScrollMode === true
+        onTriggered: {
+            console.log("[qt-test] Starting Scroll & Viewport Behavioral Verification...");
+            var maxScrollY = Math.max(0, contentScroll.flickableItem.contentHeight - contentScroll.height);
+            console.log("[qt-test] contentHeight=" + contentScroll.flickableItem.contentHeight + ", height=" + contentScroll.height + ", maxScrollY=" + maxScrollY);
+            if (maxScrollY <= 0) {
+                console.log("[qt-test] FAIL: Viewport contentHeight is not overflowing height");
+                Qt.exit(1);
+                return;
+            }
+            contentScroll.flickableItem.contentY = 200;
+            var afterDirectY = contentScroll.flickableItem.contentY;
+            contentScroll.flickableItem.contentY = 0;
+            var afterResetY = contentScroll.flickableItem.contentY;
+
+            console.log("[qt-test] afterDirectY=" + afterDirectY + ", afterResetY=" + afterResetY);
+            if (afterDirectY === 200 && afterResetY === 0) {
+                console.log("[qt-test] OK — All scroll viewport interactions verified successfully!");
+                Qt.exit(0);
+            } else {
+                console.log("[qt-test] FAIL — Scroll positions did not update correctly");
+                Qt.exit(1);
+            }
+        }
+    }
+
     // Global Search Shortcut (Ctrl+K / Cmd+K)
     Shortcut {
         sequence: "Ctrl+K"
