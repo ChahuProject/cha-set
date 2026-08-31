@@ -16,9 +16,9 @@ Item {
     property bool showVerticalScrollBar: true
     property bool showHorizontalScrollBar: false
     property bool showButtons: true
-    property int hitSize: 16
-    property int collapsedSize: 6
-    property int expandedSize: 12
+    property int hitSize: 8
+    property int collapsedSize: 4
+    property int expandedSize: 8
     property real pageStepRatio: 0.85
     property bool smoothScroll: true
 

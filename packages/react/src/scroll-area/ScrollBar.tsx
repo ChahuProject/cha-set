@@ -57,8 +57,8 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         className={cn(
           'group absolute select-none touch-none transition-colors duration-150 z-20',
           isVertical
-            ? 'h-full py-0.5 right-0 top-0 bottom-0 bg-transparent hover:bg-muted/30 data-[hovering]:bg-muted/30'
-            : 'w-full px-0.5 bottom-0 left-0 right-0 bg-transparent hover:bg-muted/30 data-[hovering]:bg-muted/30',
+            ? 'h-full py-0.5 right-0 top-0 bottom-0 bg-transparent hover:bg-muted/30'
+            : 'w-full px-0.5 bottom-0 left-0 right-0 bg-transparent hover:bg-muted/30',
           className,
         )}
         {...props}
@@ -66,7 +66,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         {showButtons && (
           <div
             className={cn(
-              'opacity-0 group-hover:opacity-100 group-data-[hovering]:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto absolute',
+              'opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto absolute',
               isVertical ? 'top-0 inset-x-0 h-5' : 'left-0 inset-y-0 w-5',
             )}
           >
@@ -90,10 +90,10 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
             <div
               className={cn(
                 'rounded-full bg-border transition-all duration-150',
-                'group-hover:bg-muted-foreground/50 group-data-[hovering]:bg-muted-foreground/50 active:bg-foreground/60',
+                'group-hover:bg-muted-foreground/50 active:bg-foreground/60',
                 isVertical
-                  ? 'h-full w-1 group-hover:w-2 group-data-[hovering]:w-2'
-                  : 'w-full h-1 group-hover:h-2 group-data-[hovering]:h-2',
+                  ? 'h-full w-1 group-hover:w-2'
+                  : 'w-full h-1 group-hover:h-2',
               )}
             />
           )}
@@ -102,7 +102,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         {showButtons && (
           <div
             className={cn(
-              'opacity-0 group-hover:opacity-100 group-data-[hovering]:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto absolute',
+              'opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto absolute',
               isVertical ? 'bottom-0 inset-x-0 h-5' : 'right-0 inset-y-0 w-5',
             )}
           >
