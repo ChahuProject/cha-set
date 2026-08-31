@@ -129,12 +129,40 @@ ApplicationWindow {
 
         // Scenario 4: Steppers & Boundary Clamping
         if (scenario === "all" || scenario === "scroll-steppers") {
-            contentScroll.scrollToTop();
-            if (contentScroll.flickableItem.contentY !== 0) {
-                console.log("[qt-scenario] FAIL: scrollToTop did not set contentY to 0");
+            // Test scrollToTop
+            contentScroll.scrollToTop(false);
+            if (contentScroll.flickableItem.contentY !== 0 || !contentScroll.isAtTop) {
+                console.log("[qt-scenario] FAIL: scrollToTop did not set contentY to 0 or isAtTop is false (contentY=" + contentScroll.flickableItem.contentY + ")");
                 failures++;
             } else {
-                console.log("[qt-scenario] PASS: Stepper top navigation boundary clamp (contentY=0)");
+                console.log("[qt-scenario] PASS: Stepper top navigation boundary clamp (contentY=0, isAtTop=true)");
+            }
+
+            // Test scrollToBottom
+            var expectedMaxY = Math.max(0, contentScroll.flickableItem.contentHeight - contentScroll.height);
+            contentScroll.scrollToBottom(false);
+            if (Math.abs(contentScroll.flickableItem.contentY - expectedMaxY) > 1 || !contentScroll.isAtBottom) {
+                console.log("[qt-scenario] FAIL: scrollToBottom mismatch (contentY=" + contentScroll.flickableItem.contentY + ", expected=" + expectedMaxY + ", isAtBottom=" + contentScroll.isAtBottom + ")");
+                failures++;
+            } else {
+                console.log("[qt-scenario] PASS: Stepper bottom navigation boundary clamp (contentY=" + contentScroll.flickableItem.contentY + ", isAtBottom=true)");
+            }
+
+            // Test pageUp
+            var prevY = contentScroll.flickableItem.contentY;
+            contentScroll.pageUp(false);
+            var afterPageUpY = contentScroll.flickableItem.contentY;
+            if (afterPageUpY >= prevY) {
+                console.log("[qt-scenario] FAIL: pageUp did not decrease contentY (prev=" + prevY + ", after=" + afterPageUpY + ")");
+                failures++;
+            } else {
+                console.log("[qt-scenario] PASS: Stepper pageUp pagination (from " + prevY + " -> " + afterPageUpY + ")");
+            }
+
+            // Reset back to top
+            contentScroll.scrollToTop(false);
+            if (contentScroll.flickableItem.contentY === 0) {
+                console.log("[qt-scenario] PASS: Reset back to top complete");
             }
         }
 

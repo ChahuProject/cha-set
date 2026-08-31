@@ -3,10 +3,10 @@
     "variant": true,
     "size": true,
     "disabled": true,
-    "keyboard": true,
-    "clickAction": true,
     "loading": true,
     "fullWidth": true,
+    "keyboard": true,
+    "clickAction": true,
     "a11y": true
   },
   "scrollbar": {
@@ -21,3 +21,4 @@
     "smoothScroll": true
   }
 }
+
