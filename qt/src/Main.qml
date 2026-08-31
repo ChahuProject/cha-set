@@ -13,7 +13,7 @@ ApplicationWindow {
     color: win.cBg
 
     // ---- Reactive Theme State ----
-    property string activePage: "intro"   // "intro" | "tokens" | "theme-tuner" | "button" | "scroll-area"
+    property string activePage: (typeof startupPage !== "undefined" && startupPage !== "") ? startupPage : "intro"   // "intro" | "tokens" | "theme-tuner" | "button" | "scroll-area"
     property bool showTuner: activePage === "theme-tuner"
     property string activeAccent: ""
     property int customRadius: 8
@@ -57,6 +57,9 @@ ApplicationWindow {
     Component.onCompleted: {
         if (typeof startupLight !== "undefined" && startupLight === true) ThemeTokens.dark = false
         else ThemeTokens.dark = false
+        if (typeof reqScrollY !== "undefined" && reqScrollY > 0) {
+            contentScroll.contentY = reqScrollY
+        }
     }
 
     Timer {

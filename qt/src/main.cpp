@@ -94,7 +94,15 @@ int main(int argc, char* argv[])
     const int hIdx = static_cast<int>(args.indexOf("--height"));
     const int reqHeight = hIdx >= 0 && hIdx + 1 < args.size() ? args.value(hIdx + 1).toInt() : 0;
 
+    const int pageIdx = static_cast<int>(args.indexOf("--page"));
+    const QString startupPage = pageIdx >= 0 && pageIdx + 1 < args.size() ? args.value(pageIdx + 1) : "";
+
+    const int scrollYIdx = static_cast<int>(args.indexOf("--scroll-y"));
+    const int reqScrollY = scrollYIdx >= 0 && scrollYIdx + 1 < args.size() ? args.value(scrollYIdx + 1).toInt() : 0;
+
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("reqScrollY", reqScrollY);
+    engine.rootContext()->setContextProperty("startupPage", startupPage);
     engine.rootContext()->setContextProperty("startupLight", startLight);
     engine.rootContext()->setContextProperty("shotPath", shotPath);
     engine.rootContext()->setContextProperty("harnessMode", harnessMode);
