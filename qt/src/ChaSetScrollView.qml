@@ -22,6 +22,15 @@ Item {
     property real pageStepRatio: 0.85
     property bool smoothScroll: true
 
+    function scrollToTop() { if (vScrollBar) vScrollBar.scrollToStart() }
+    function scrollToBottom() { if (vScrollBar) vScrollBar.scrollToEnd() }
+    function scrollToLeft() { if (hScrollBar) hScrollBar.scrollToStart() }
+    function scrollToRight() { if (hScrollBar) hScrollBar.scrollToEnd() }
+    function pageUp() { if (vScrollBar) vScrollBar.scrollPageUp() }
+    function pageDown() { if (vScrollBar) vScrollBar.scrollPageDown() }
+    function pageLeft() { if (hScrollBar) hScrollBar.scrollPageUp() }
+    function pageRight() { if (hScrollBar) hScrollBar.scrollPageDown() }
+
     clip: true
 
     Flickable {

@@ -28,6 +28,12 @@ ApplicationWindow {
     property string exportTab: "qt"
     property string activeNavSection: "playground"
 
+    // Scroll Area Demo State
+    property string scrollDemoMode: "vertical"
+    property bool scrollShowButtons: true
+    property bool scrollSmooth: true
+    property int scrollHitSize: 8
+
     // Custom Color Overrides (Live)
     property string overridePrimary: ""
     property string overridePrimaryFg: ""
@@ -272,8 +278,9 @@ ApplicationWindow {
                         model: [
                             ["Interactive Sandbox", "playground", 0],
                             ["Button Matrix", "button", 400],
-                            ["Palette & Tokens", "colors", 800],
-                            ["Typography & Radius", "type", 1200]
+                            ["Scroll Area (New)", "scrollarea", 950],
+                            ["Palette & Tokens", "colors", 1750],
+                            ["Typography & Radius", "type", 2250]
                         ]
                         delegate: Rectangle {
                             required property var modelData
@@ -306,7 +313,7 @@ ApplicationWindow {
             }
 
             // Main Scrollable Content Area (max-width: 820px)
-            ScrollView {
+            ChaSetScrollView {
                 id: contentScroll
                 anchors.left: sidebar.right
                 anchors.leftMargin: 32
@@ -1023,6 +1030,407 @@ ApplicationWindow {
                                                 font.family: "Consolas, monospace"
                                             }
                                         }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // ==============================================================
+                    // SECTION 2.5: COMPONENTS · SCROLL AREA SHOWCASE (Card)
+                    // ==============================================================
+                    Rectangle {
+                        width: parent.width
+                        height: scrollAreaShowcaseCol.implicitHeight + 48
+                        radius: win.customRadius
+                        color: win.cCard
+                        border.color: win.cBorder
+                        border.width: 1
+
+                        Column {
+                            id: scrollAreaShowcaseCol
+                            x: 24
+                            y: 20
+                            width: parent.width - 48
+                            spacing: 16
+
+                            Column {
+                                spacing: 4
+                                Row {
+                                    spacing: 8
+                                    Text { text: "Components · Scroll Area Showcase"; color: win.cFg; font.pixelSize: 17; font.weight: Font.DemiBold }
+                                    Rectangle {
+                                        width: 46; height: 20; radius: 10
+                                        color: Qt.rgba(win.cPrimary.r, win.cPrimary.g, win.cPrimary.b, 0.15)
+                                        Text { anchors.centerIn: parent; text: "New"; color: win.cPrimary; font.pixelSize: 11; font.weight: Font.Bold }
+                                    }
+                                }
+                                Text { text: "Augments native Flickable with custom styling, dynamic hot-zone expansion (0.5rem), accurate track-click jump, and interactive stepper navigation."; color: win.cMutedFg; font.pixelSize: 13 }
+                            }
+
+                            // Mode Selector Tabs & Controls
+                            Row {
+                                width: parent.width
+                                spacing: 12
+
+                                // 3 Mode Tabs
+                                Row {
+                                    spacing: 6
+                                    Repeater {
+                                        model: [
+                                            ["Vertical List (120 Logs)", "vertical"],
+                                            ["Horizontal Cards (24 Cards)", "horizontal"],
+                                            ["Dual-Axis (100x8 Grid)", "both"]
+                                        ]
+                                        delegate: Rectangle {
+                                            required property var modelData
+                                            width: tabText.implicitWidth + 24
+                                            height: 28
+                                            radius: win.customRadius > 6 ? 6 : win.customRadius
+                                            color: win.scrollDemoMode === modelData[1] ? win.cPrimary : win.cBg
+                                            border.color: win.scrollDemoMode === modelData[1] ? win.cPrimary : win.cBorder
+
+                                            Text {
+                                                id: tabText
+                                                anchors.centerIn: parent
+                                                text: parent.modelData[0]
+                                                color: win.scrollDemoMode === parent.modelData[1] ? win.cPrimaryFg : win.cFg
+                                                font.pixelSize: 12
+                                                font.weight: Font.Medium
+                                            }
+                                            MouseArea {
+                                                anchors.fill: parent
+                                                cursorShape: Qt.PointingHandCursor
+                                                onClicked: {
+                                                    win.scrollDemoMode = parent.modelData[1]
+                                                    win.pushLog("Scroll mode: " + parent.modelData[0])
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                Item { width: parent.width - 660; height: 1 }
+
+                                // Quick Controls
+                                Row {
+                                    spacing: 12
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    Row {
+                                        spacing: 6
+                                        CheckBox {
+                                            id: cbScrollBtns
+                                            checked: win.scrollShowButtons
+                                            onToggled: win.scrollShowButtons = checked
+                                        }
+                                        Text { text: "Steppers"; color: win.cFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                                    }
+
+                                    Row {
+                                        spacing: 6
+                                        CheckBox {
+                                            id: cbScrollSmooth
+                                            checked: win.scrollSmooth
+                                            onToggled: win.scrollSmooth = checked
+                                        }
+                                        Text { text: "Smooth"; color: win.cFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                                    }
+                                }
+                            }
+
+                            // Stage Box
+                            Rectangle {
+                                width: parent.width
+                                height: 300
+                                radius: win.customRadius
+                                color: win.cBg
+                                border.color: win.cBorder
+                                border.width: 1
+                                clip: true
+
+                                // Mode 1: Vertical List (120 Items)
+                                ChaSetScrollView {
+                                    id: demoScrollVert
+                                    visible: win.scrollDemoMode === "vertical"
+                                    anchors.fill: parent
+                                    anchors.margins: 4
+                                    showButtons: win.scrollShowButtons
+                                    smoothScroll: win.scrollSmooth
+                                    hitSize: win.scrollHitSize
+                                    contentWidth: parent.width - 20
+                                    contentHeight: vertListCol.implicitHeight + 16
+
+                                    Column {
+                                        id: vertListCol
+                                        x: 8
+                                        y: 8
+                                        width: parent.width - 16
+                                        spacing: 6
+
+                                        Text {
+                                            text: "Release Changelog (120 Releases — Test Page Up/Down & Jump)"
+                                            color: win.cFg
+                                            font.pixelSize: 13
+                                            font.weight: Font.Bold
+                                        }
+
+                                        Repeater {
+                                            model: 120
+                                            delegate: Rectangle {
+                                                required property int index
+                                                width: vertListCol.width
+                                                height: 38
+                                                radius: 4
+                                                color: index % 2 === 0 ? win.cCard : "transparent"
+                                                border.color: win.cBorder
+                                                border.width: 0.5
+
+                                                Row {
+                                                    anchors.fill: parent
+                                                    anchors.leftMargin: 12
+                                                    anchors.rightMargin: 12
+                                                    spacing: 12
+
+                                                    Text {
+                                                        anchors.verticalCenter: parent.verticalCenter
+                                                        text: "v" + (1 + Math.floor((120 - parent.parent.index) / 50)) + "." + (Math.floor(((120 - parent.parent.index) % 50) / 10)) + "." + ((120 - parent.parent.index) % 10) + "-build." + (120 - parent.parent.index)
+                                                        color: win.cPrimary
+                                                        font.pixelSize: 12
+                                                        font.family: "Consolas, monospace"
+                                                        font.weight: Font.Bold
+                                                        width: 140
+                                                    }
+
+                                                    Rectangle {
+                                                        anchors.verticalCenter: parent.verticalCenter
+                                                        width: 70; height: 20; radius: 4
+                                                        color: win.cAccentBg
+                                                        Text {
+                                                            anchors.centerIn: parent
+                                                            text: ["Tokens", "Ergonomics", "Performance", "Desktop/Qt", "Visuals", "Architecture"][parent.parent.parent.index % 6]
+                                                            color: win.cFg
+                                                            font.pixelSize: 10
+                                                            font.weight: Font.Medium
+                                                        }
+                                                    }
+
+                                                    Text {
+                                                        anchors.verticalCenter: parent.verticalCenter
+                                                        text: "Patch #" + (120 - parent.parent.index) + ": Synchronized scrollbar precision, steppers, and boundary checks"
+                                                        color: win.cMutedFg
+                                                        font.pixelSize: 11
+                                                        elide: Text.ElideRight
+                                                        width: 320
+                                                    }
+
+                                                    Text {
+                                                        anchors.verticalCenter: parent.verticalCenter
+                                                        text: "2026-08-" + String((parent.parent.index % 28) + 1).padStart(2, '0')
+                                                        color: win.cMutedFg
+                                                        font.pixelSize: 11
+                                                        font.family: "Consolas, monospace"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Mode 2: Horizontal Feature Cards (24 Cards)
+                                ChaSetScrollView {
+                                    id: demoScrollHoriz
+                                    visible: win.scrollDemoMode === "horizontal"
+                                    anchors.fill: parent
+                                    anchors.margins: 12
+                                    showVerticalScrollBar: false
+                                    showHorizontalScrollBar: true
+                                    showButtons: win.scrollShowButtons
+                                    smoothScroll: win.scrollSmooth
+                                    hitSize: win.scrollHitSize
+                                    contentWidth: horizCardsRow.implicitWidth + 24
+                                    contentHeight: parent.height - 24
+
+                                    Row {
+                                        id: horizCardsRow
+                                        spacing: 12
+                                        height: parent.height - 24
+
+                                        Repeater {
+                                            model: [
+                                                ["Single Source of Truth", "spec/tokens shards drive CSS & Qt", "Architecture"],
+                                                ["Pixel-Perfect Parity", "100% identical styling across platforms", "Visuals"],
+                                                ["Dual-Box Hot Zone", "0.5rem hit zone with 0.25rem-0.5rem dynamic expand", "Ergonomics"],
+                                                ["Stepper Navigation", "To-top, page-up, page-down, to-bottom", "Interaction"],
+                                                ["Native Performance", "Zero Electron overhead, pure QML on Qt", "Desktop"],
+                                                ["Tailwind v4 Theming", "Inline theme variables mapped to CSS tokens", "Web"],
+                                                ["Theme Studio Tuner", "Live color manipulation and JSON exporter", "Tooling"],
+                                                ["Cross-Stack Parity Gate", "CI verifies every required capability", "Quality"],
+                                                ["Token Shard Engine", "Modular schemas for colors, space, motion", "Tokens"],
+                                                ["Synchronized Palette", "Dual-mode dark & light automatic calibration", "Visuals"],
+                                                ["Fluid Animation Curve", "150ms cubic easing for hot-zone hover states", "Motion"],
+                                                ["Non-Intrusive Idle", "4px slim visual bar preserves screen estate", "Ergonomics"],
+                                                ["Multi-Page Stepping", "85% viewport ratio smooth pagination jump", "Interaction"],
+                                                ["Bi-Directional Bounds", "Thumb never overlaps stepper button clusters", "Robustness"],
+                                                ["High Contrast A11y", "WCAG AAA verified state contrast ratios", "Accessibility"],
+                                                ["Zero Dependency Core", "Headless primitives with minimal bundle size", "Performance"],
+                                                ["QML Quick Integration", "Direct C++ token pipeline for 60fps Qt apps", "Desktop"],
+                                                ["Visual Diff Conformance", "Automated pixelmatch snapshots on pull requests", "Quality"],
+                                                ["Dual-Axis Sync Corner", "Seamless 2D grid matrix scrolling support", "Layout"],
+                                                ["Polymorphic Component", "Custom render delegation via Base UI engine", "Architecture"],
+                                                ["Touch & Pen Modality", "Smooth drag latch with touch gesture priority", "Interaction"],
+                                                ["Zod API Schema", "Static typescript validation on design token types", "TypeSafety"],
+                                                ["Dynamic CSS Variables", "Scoped custom properties for hot reload themes", "Web"],
+                                                ["Release Artifact CI", "Generates headers, css, and tokens in one pass", "Tooling"]
+                                            ]
+                                            delegate: Rectangle {
+                                                required property var modelData
+                                                width: 220
+                                                height: 240
+                                                radius: win.customRadius > 6 ? 6 : win.customRadius
+                                                color: win.cCard
+                                                border.color: win.cBorder
+                                                border.width: 1
+
+                                                Column {
+                                                    anchors.fill: parent
+                                                    anchors.margins: 14
+                                                    spacing: 10
+
+                                                    Rectangle {
+                                                        width: badgeText.implicitWidth + 12
+                                                        height: 20
+                                                        radius: 4
+                                                        color: Qt.rgba(win.cPrimary.r, win.cPrimary.g, win.cPrimary.b, 0.15)
+                                                        Text {
+                                                            id: badgeText
+                                                            anchors.centerIn: parent
+                                                            text: parent.parent.parent.modelData[2]
+                                                            color: win.cPrimary
+                                                            font.pixelSize: 10
+                                                            font.weight: Font.Bold
+                                                        }
+                                                    }
+
+                                                    Text {
+                                                        text: parent.parent.modelData[0]
+                                                        color: win.cFg
+                                                        font.pixelSize: 14
+                                                        font.weight: Font.Bold
+                                                        wrapMode: Text.WordWrap
+                                                        width: parent.width
+                                                    }
+
+                                                    Text {
+                                                        text: parent.parent.modelData[1]
+                                                        color: win.cMutedFg
+                                                        font.pixelSize: 12
+                                                        wrapMode: Text.WordWrap
+                                                        width: parent.width
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Mode 3: Dual-Axis 2D Matrix (100 Rows x 8 Columns)
+                                ChaSetScrollView {
+                                    id: demoScrollBoth
+                                    visible: win.scrollDemoMode === "both"
+                                    anchors.fill: parent
+                                    anchors.margins: 4
+                                    showVerticalScrollBar: true
+                                    showHorizontalScrollBar: true
+                                    showButtons: win.scrollShowButtons
+                                    smoothScroll: win.scrollSmooth
+                                    hitSize: win.scrollHitSize
+                                    contentWidth: 920
+                                    contentHeight: matrixRowsCol.implicitHeight + 20
+
+                                    Column {
+                                        id: matrixRowsCol
+                                        x: 8
+                                        y: 8
+                                        spacing: 4
+
+                                        // Matrix Table Header
+                                        Row {
+                                            spacing: 8
+                                            Rectangle { width: 70; height: 26; color: win.cAccentBg; radius: 3; Text { anchors.centerIn: parent; text: "ID"; color: win.cFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                                            Rectangle { width: 260; height: 26; color: win.cAccentBg; radius: 3; Text { anchors.centerIn: parent; text: "Feature Name"; color: win.cFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                                            Rectangle { width: 110; height: 26; color: win.cAccentBg; radius: 3; Text { anchors.centerIn: parent; text: "Category"; color: win.cFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                                            Rectangle { width: 110; height: 26; color: win.cAccentBg; radius: 3; Text { anchors.centerIn: parent; text: "Target Stack"; color: win.cFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                                            Rectangle { width: 90; height: 26; color: win.cAccentBg; radius: 3; Text { anchors.centerIn: parent; text: "Status"; color: win.cFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                                            Rectangle { width: 80; height: 26; color: win.cAccentBg; radius: 3; Text { anchors.centerIn: parent; text: "Priority"; color: win.cFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                                            Rectangle { width: 100; height: 26; color: win.cAccentBg; radius: 3; Text { anchors.centerIn: parent; text: "Commit Hash"; color: win.cFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                                        }
+
+                                        Repeater {
+                                            model: 100
+                                            delegate: Row {
+                                                required property int index
+                                                spacing: 8
+
+                                                Rectangle { width: 70; height: 28; color: parent.index % 2 === 0 ? win.cCard : win.cBg; border.color: win.cBorder; radius: 3; Text { anchors.centerIn: parent; text: "#" + String(parent.parent.index + 1).padStart(3, '0'); color: win.cMutedFg; font.pixelSize: 11; font.family: "Consolas, monospace" } }
+                                                Rectangle { width: 260; height: 28; color: parent.index % 2 === 0 ? win.cCard : win.cBg; border.color: win.cBorder; radius: 3; Text { anchors.left: parent.left; anchors.leftMargin: 8; anchors.verticalCenter: parent.verticalCenter; text: "Cross-stack test matrix item #" + (parent.parent.index + 1); color: win.cFg; font.pixelSize: 11; elide: Text.ElideRight; width: 240 } }
+                                                Rectangle { width: 110; height: 28; color: parent.index % 2 === 0 ? win.cCard : win.cBg; border.color: win.cBorder; radius: 3; Text { anchors.centerIn: parent; text: ["Compiler", "Tokens", "Components", "Desktop", "Web"][parent.parent.index % 5]; color: win.cFg; font.pixelSize: 11 } }
+                                                Rectangle { width: 110; height: 28; color: parent.index % 2 === 0 ? win.cCard : win.cBg; border.color: win.cBorder; radius: 3; Text { anchors.centerIn: parent; text: ["React & Qt", "React Only", "Qt Only"][parent.parent.index % 3]; color: win.cPrimary; font.pixelSize: 11 } }
+                                                Rectangle { width: 90; height: 28; color: parent.index % 2 === 0 ? win.cCard : win.cBg; border.color: win.cBorder; radius: 3; Text { anchors.centerIn: parent; text: "Verified"; color: "#22c55e"; font.pixelSize: 11; font.weight: Font.DemiBold } }
+                                                Rectangle { width: 80; height: 28; color: parent.index % 2 === 0 ? win.cCard : win.cBg; border.color: win.cBorder; radius: 3; Text { anchors.centerIn: parent; text: parent.parent.index % 3 === 0 ? "High" : "Normal"; color: win.cFg; font.pixelSize: 11 } }
+                                                Rectangle { width: 100; height: 28; color: parent.index % 2 === 0 ? win.cCard : win.cBg; border.color: win.cBorder; radius: 3; Text { anchors.centerIn: parent; text: "a1b2c3d"; color: win.cMutedFg; font.pixelSize: 11; font.family: "Consolas, monospace" } }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Programmatic Trigger Actions Toolbar
+                            Row {
+                                spacing: 8
+                                Text { text: "Quick Jump Actions:"; color: win.cMutedFg; font.pixelSize: 11; font.weight: Font.Bold; anchors.verticalCenter: parent.verticalCenter }
+                                ChaSetButton {
+                                    size: "sm"
+                                    variant: "secondary"
+                                    text: "⇡ To Top"
+                                    onClicked: {
+                                        if (win.scrollDemoMode === "vertical") demoScrollVert.scrollToTop()
+                                        else if (win.scrollDemoMode === "horizontal") demoScrollHoriz.scrollToLeft()
+                                        else demoScrollBoth.scrollToTop()
+                                        win.pushLog("Triggered: To Top")
+                                    }
+                                }
+                                ChaSetButton {
+                                    size: "sm"
+                                    variant: "secondary"
+                                    text: "▴ Page Up"
+                                    onClicked: {
+                                        if (win.scrollDemoMode === "vertical") demoScrollVert.pageUp()
+                                        else if (win.scrollDemoMode === "horizontal") demoScrollHoriz.pageLeft()
+                                        else demoScrollBoth.pageUp()
+                                        win.pushLog("Triggered: Page Up")
+                                    }
+                                }
+                                ChaSetButton {
+                                    size: "sm"
+                                    variant: "secondary"
+                                    text: "▾ Page Down"
+                                    onClicked: {
+                                        if (win.scrollDemoMode === "vertical") demoScrollVert.pageDown()
+                                        else if (win.scrollDemoMode === "horizontal") demoScrollHoriz.pageRight()
+                                        else demoScrollBoth.pageDown()
+                                        win.pushLog("Triggered: Page Down")
+                                    }
+                                }
+                                ChaSetButton {
+                                    size: "sm"
+                                    variant: "secondary"
+                                    text: "⇣ To Bottom"
+                                    onClicked: {
+                                        if (win.scrollDemoMode === "vertical") demoScrollVert.scrollToBottom()
+                                        else if (win.scrollDemoMode === "horizontal") demoScrollHoriz.scrollToRight()
+                                        else demoScrollBoth.scrollToBottom()
+                                        win.pushLog("Triggered: To Bottom")
                                     }
                                 }
                             }
