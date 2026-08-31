@@ -86,9 +86,9 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       const hasOverflowY = scrollHeight > clientHeight;
       const hasOverflowX = scrollWidth > clientWidth;
       const isAtTop = scrollTop <= 1;
-      const isAtBottom = hasMeasuredY ? (hasOverflowY ? scrollTop + clientHeight >= scrollHeight - 2 : true) : false;
+      const isAtBottom = hasMeasuredY ? (hasOverflowY ? Math.ceil(scrollTop + clientHeight) >= Math.floor(scrollHeight) - 2 : true) : false;
       const isAtLeft = scrollLeft <= 1;
-      const isAtRight = hasMeasuredX ? (hasOverflowX ? scrollLeft + clientWidth >= scrollWidth - 2 : true) : false;
+      const isAtRight = hasMeasuredX ? (hasOverflowX ? Math.ceil(scrollLeft + clientWidth) >= Math.floor(scrollWidth) - 2 : true) : false;
 
       setScrollState((prev) => {
         if (

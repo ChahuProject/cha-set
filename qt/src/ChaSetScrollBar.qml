@@ -270,9 +270,34 @@ Item {
         anchors.left: root.isVertical ? parent.left : (root.showButtons ? startCluster.right : parent.left)
         anchors.right: root.isVertical ? parent.right : (root.showButtons ? endCluster.left : parent.right)
 
+        MouseArea {
+            id: trackClickArea
+            anchors.fill: parent
+            z: 0
+            onClicked: function(mouse) {
+                if (!root.flickable) return
+                if (root.isVertical && trackArea.height > thumb.height) {
+                    var targetY = mouse.y - thumb.height / 2
+                    var maxThumbY = trackArea.height - thumb.height
+                    var ratioY = Math.max(0, Math.min(1, targetY / maxThumbY))
+                    var maxScrollY = Math.max(0, root.flickable.contentHeight - root.flickable.height)
+                    if (root.smoothScroll) root.scrollAnimY.startTo(ratioY * maxScrollY)
+                    else root.flickable.contentY = ratioY * maxScrollY
+                } else if (!root.isVertical && trackArea.width > thumb.width) {
+                    var targetX = mouse.x - thumb.width / 2
+                    var maxThumbX = trackArea.width - thumb.width
+                    var ratioX = Math.max(0, Math.min(1, targetX / maxThumbX))
+                    var maxScrollX = Math.max(0, root.flickable.contentWidth - root.flickable.width)
+                    if (root.smoothScroll) root.scrollAnimX.startTo(ratioX * maxScrollX)
+                    else root.flickable.contentX = ratioX * maxScrollX
+                }
+            }
+        }
+
         // Visual Thumb Indicator
         Rectangle {
             id: thumb
+            z: 1
             property real thumbLength: Math.max(16, (root.isVertical ? trackArea.height : trackArea.width) * root.visibleRatio)
             property real thumbPos: (root.isVertical ? trackArea.height : trackArea.width) * root.visiblePos
 

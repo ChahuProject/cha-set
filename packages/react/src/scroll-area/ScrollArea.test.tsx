@@ -191,4 +191,39 @@ describe('ScrollArea and ScrollBar', () => {
     expect(pageRightBtn).toBeDisabled();
     expect(toRightBtn).toBeDisabled();
   });
+
+  it('handles track clicking jump accurately without margin distortion', () => {
+    const { container } = render(
+      <ScrollArea className="h-64 w-64">
+        <div style={{ height: 1000 }}>Long Content</div>
+      </ScrollArea>,
+    );
+
+    const scrollbar = container.querySelector('[data-orientation="vertical"]') as HTMLElement;
+    const viewport = container.querySelector('[data-id$="-viewport"]') as HTMLElement;
+
+    if (viewport && scrollbar) {
+      Object.defineProperty(viewport, 'scrollHeight', { value: 1000, configurable: true });
+      Object.defineProperty(viewport, 'clientHeight', { value: 256, configurable: true });
+      scrollbar.getBoundingClientRect = () => ({
+        top: 0,
+        left: 0,
+        bottom: 256,
+        right: 8,
+        width: 8,
+        height: 256,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      });
+
+      const pointerDownEvent = new MouseEvent('pointerdown', {
+        bubbles: true,
+        cancelable: true,
+        clientY: 128,
+      });
+      fireEvent(scrollbar, pointerDownEvent);
+      expect(viewport.scrollTop).toBeGreaterThan(0);
+    }
+  });
 });

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
 import { cn } from '../lib/utils';
+import { useScrollAreaContext } from './context';
 import { ScrollBarStartCluster, ScrollBarEndCluster } from './ScrollBarButtons';
 
 export interface ScrollBarProps
@@ -39,26 +40,91 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
       keepMounted = true,
       children,
       style,
+      onPointerDown,
       ...props
     },
     ref,
   ) {
     const isVertical = orientation === 'vertical';
+    const ctx = useScrollAreaContext();
+
+    const handleTrackPointerDown = React.useCallback(
+      (event: any) => {
+        onPointerDown?.(event);
+        if (event.defaultPrevented || event.button !== 0) return;
+
+        const target = event.target as HTMLElement | null;
+        const currentTarget = event.currentTarget as HTMLElement | null;
+        if (!currentTarget) return;
+
+        // If clicking on the thumb or stepper buttons, let default dragging / button handlers proceed
+        const thumbEl = currentTarget.querySelector('[data-state]') as HTMLElement | null;
+        if (thumbEl && (thumbEl === target || thumbEl.contains(target))) {
+          return;
+        }
+        if (target?.closest('button')) {
+          return;
+        }
+
+        const viewportEl = ctx?.viewportRef.current;
+        if (!viewportEl) return;
+
+        // Prevent Base UI's erroneous track calculation
+        event.preventDefault();
+
+        const trackRect = currentTarget.getBoundingClientRect();
+        const scrollableSize = isVertical ? viewportEl.scrollHeight : viewportEl.scrollWidth;
+        const viewportSize = isVertical ? viewportEl.clientHeight : viewportEl.clientWidth;
+        const maxScrollDistance = scrollableSize - viewportSize;
+        if (maxScrollDistance <= 0) return;
+
+        // 20px stepper button clearance when showButtons is true, 2px padding when false
+        const buttonOffset = showButtons ? 20 : 2;
+        const thumbSizePx = isVertical
+          ? (thumbEl?.offsetHeight || 24)
+          : (thumbEl?.offsetWidth || 24);
+
+        const trackSize = isVertical ? trackRect.height : trackRect.width;
+        const availableTrack = trackSize - thumbSizePx - buttonOffset * 2;
+        if (availableTrack <= 0) return;
+
+        const clickCoord = isVertical ? event.clientY - trackRect.top : event.clientX - trackRect.left;
+        const targetThumbOffset = clickCoord - buttonOffset - thumbSizePx / 2;
+        const scrollRatio = Math.max(0, Math.min(1, targetThumbOffset / availableTrack));
+        const targetScroll = scrollRatio * maxScrollDistance;
+
+        if (isVertical) {
+          if (typeof viewportEl.scrollTo === 'function') {
+            viewportEl.scrollTo({ top: targetScroll, behavior: smoothScroll ? 'smooth' : 'auto' });
+          } else {
+            viewportEl.scrollTop = targetScroll;
+          }
+        } else {
+          if (typeof viewportEl.scrollTo === 'function') {
+            viewportEl.scrollTo({ left: targetScroll, behavior: smoothScroll ? 'smooth' : 'auto' });
+          } else {
+            viewportEl.scrollLeft = targetScroll;
+          }
+        }
+      },
+      [ctx, isVertical, onPointerDown, showButtons, smoothScroll],
+    );
 
     return (
       <BaseScrollArea.Scrollbar
         ref={ref}
         orientation={orientation}
         keepMounted={keepMounted}
+        onPointerDown={handleTrackPointerDown}
         style={{
           ...(isVertical ? { width: toRem(hitSize) } : { height: toRem(hitSize) }),
           ...style,
         }}
         className={cn(
-          'group absolute select-none touch-none transition-colors duration-150 z-20',
+          'group select-none touch-none transition-colors duration-150 z-20',
           isVertical
-            ? 'h-full py-0.5 right-0 top-0 bottom-0 bg-transparent hover:bg-muted/30'
-            : 'w-full px-0.5 bottom-0 left-0 right-0 bg-transparent hover:bg-muted/30',
+            ? 'py-0.5 bg-transparent hover:bg-muted/30'
+            : 'px-0.5 bg-transparent hover:bg-muted/30',
           className,
         )}
         {...props}
