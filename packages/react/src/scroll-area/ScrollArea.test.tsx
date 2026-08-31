@@ -5,6 +5,18 @@ import { resolve } from 'node:path';
 import { ScrollArea } from './ScrollArea';
 import { ScrollBar } from './ScrollBar';
 
+if (typeof Element !== 'undefined') {
+  if (!Element.prototype.setPointerCapture) {
+    Element.prototype.setPointerCapture = () => {};
+  }
+  if (!Element.prototype.releasePointerCapture) {
+    Element.prototype.releasePointerCapture = () => {};
+  }
+  if (!Element.prototype.hasPointerCapture) {
+    Element.prototype.hasPointerCapture = () => false;
+  }
+}
+
 const covered: Record<string, boolean> = {
   orientation: false,
   hotZone: false,
@@ -111,33 +123,28 @@ describe('ScrollArea and ScrollBar', () => {
     expect(toRightBtn).toBeInTheDocument();
   });
 
-  it('constrains thumb with clearance margins so it never overlaps stepper buttons', () => {
-    // 1. With showButtons=true (default): vertical thumb has my-5
+  it('constrains thumb to track runway between stepper buttons', () => {
+    // 1. With showButtons=true (default): vertical scrollbar container has flex structure with stepper clusters
     const { container: c1 } = render(
       <ScrollArea className="h-64 w-64" showButtons={true}>
         <div style={{ height: 1000 }}>Long Content</div>
       </ScrollArea>,
     );
-    const vThumbWithButtons = c1.querySelector('[data-orientation="vertical"] [data-state]') || c1.querySelector('[data-orientation="vertical"] > div:nth-child(2)');
-    expect(vThumbWithButtons).toHaveClass('my-5');
+    const vScrollbar = c1.querySelector('[data-orientation="vertical"]') as HTMLElement;
+    expect(vScrollbar.children.length).toBe(3); // StartCluster, BaseScrollArea.Scrollbar, EndCluster
 
-    // 2. With showButtons=false: vertical thumb has my-0.5
+    // 2. With showButtons=false: vertical scrollbar container only contains BaseScrollArea.Scrollbar
     const { container: c2 } = render(
       <ScrollArea className="h-64 w-64" showButtons={false}>
         <div style={{ height: 1000 }}>Long Content</div>
       </ScrollArea>,
     );
-    const vThumbNoButtons = c2.querySelector('[data-orientation="vertical"] [data-state]') || c2.querySelector('[data-orientation="vertical"] > div');
-    expect(vThumbNoButtons).toHaveClass('my-0.5');
+    const vScrollbarNoButtons = c2.querySelector('[data-orientation="vertical"]') as HTMLElement;
+    expect(vScrollbarNoButtons.children.length).toBe(1); // BaseScrollArea.Scrollbar only
 
-    // 3. Horizontal with showButtons=true: horizontal thumb has mx-5
-    const { container: c3 } = render(
-      <ScrollArea className="h-64 w-64" showHorizontalScrollBar showButtons={true}>
-        <div style={{ width: 1000 }}>Wide Content</div>
-      </ScrollArea>,
-    );
-    const hThumbWithButtons = c3.querySelector('[data-orientation="horizontal"] [data-state]') || c3.querySelector('[data-orientation="horizontal"] > div:nth-child(2)');
-    expect(hThumbWithButtons).toHaveClass('mx-5');
+    // 3. Thumb has standard my-0.5 margin
+    const vThumb = c1.querySelector('[data-orientation="vertical"] [data-state]') || c1.querySelector('[data-orientation="vertical"] .rounded-full')?.parentElement;
+    expect(vThumb).toHaveClass('my-0.5');
   });
 
   it('isolates pointer events on stepper buttons to prevent track click hijacking', () => {
@@ -200,20 +207,26 @@ describe('ScrollArea and ScrollBar', () => {
     );
 
     const scrollbar = container.querySelector('[data-orientation="vertical"]') as HTMLElement;
+    const track = scrollbar?.querySelector('.flex-1') as HTMLElement;
+    const thumb = scrollbar?.querySelector('[data-state]') as HTMLElement;
     const viewport = container.querySelector('[data-id$="-viewport"]') as HTMLElement;
 
-    if (viewport && scrollbar) {
+    if (viewport && track) {
       Object.defineProperty(viewport, 'scrollHeight', { value: 1000, configurable: true });
       Object.defineProperty(viewport, 'clientHeight', { value: 256, configurable: true });
-      scrollbar.getBoundingClientRect = () => ({
-        top: 0,
+      Object.defineProperty(track, 'offsetHeight', { value: 216, configurable: true });
+      if (thumb) {
+        Object.defineProperty(thumb, 'offsetHeight', { value: 40, configurable: true });
+      }
+      track.getBoundingClientRect = () => ({
+        top: 20,
         left: 0,
-        bottom: 256,
+        bottom: 236,
         right: 8,
         width: 8,
-        height: 256,
+        height: 216,
         x: 0,
-        y: 0,
+        y: 20,
         toJSON: () => {},
       });
 
@@ -222,7 +235,7 @@ describe('ScrollArea and ScrollBar', () => {
         cancelable: true,
         clientY: 128,
       });
-      fireEvent(scrollbar, pointerDownEvent);
+      fireEvent(track, pointerDownEvent);
       expect(viewport.scrollTop).toBeGreaterThan(0);
     }
   });
