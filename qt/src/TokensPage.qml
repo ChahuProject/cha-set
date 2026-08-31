@@ -1,4 +1,4 @@
-// TokensPage.qml — Semantic Tokens & Palette Reference
+// TokensPage.qml — Full 33 Semantic Tokens & Palette Reference
 import QtQuick 6.10
 import QtQuick.Controls 6.10
 import chaSet
@@ -16,7 +16,15 @@ Item {
     property color cPrimary: ThemeTokens.accent
     property color cAccentBg: ThemeTokens.hover
 
+    property string copiedFeedback: ""
+
     signal logCopied(string tokenName)
+
+    Timer {
+        id: toastTimer
+        interval: 2000
+        onTriggered: root.copiedFeedback = ""
+    }
 
     Column {
         id: contentCol
@@ -37,11 +45,22 @@ Item {
                 Text { text: "Theme & Tokens"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
             }
 
-            Text {
-                text: "Theme & Tokens"
-                color: root.cFg
-                font.pixelSize: 28
-                font.weight: Font.Bold
+            Row {
+                width: parent.width
+                Text {
+                    text: "Theme & Tokens"
+                    color: root.cFg
+                    font.pixelSize: 28
+                    font.weight: Font.Bold
+                }
+                Item { width: parent.width - 320; height: 1 }
+                Rectangle {
+                    visible: root.copiedFeedback !== ""
+                    width: 140; height: 26; radius: 13
+                    color: Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.2)
+                    border.color: root.cPrimary
+                    Text { anchors.centerIn: parent; text: "✓ " + root.copiedFeedback; color: root.cPrimary; font.pixelSize: 11; font.weight: Font.Bold }
+                }
             }
 
             Text {
@@ -56,7 +75,7 @@ Item {
             Rectangle { width: parent.width; height: 1; color: root.cBorder }
         }
 
-        // Section 1: Color Palette Swatches
+        // Section 1: Color Palette Swatches (Full 33 tokens)
         Column {
             width: parent.width
             spacing: 14
@@ -72,13 +91,20 @@ Item {
 
                 Repeater {
                     model: [
-                        ["background", "window background"], ["text", "primary text"],
-                        ["accent", "primary accent action"], ["onAccent", "accent text"],
+                        ["chrome", "header/chrome bar"], ["background", "window background"],
                         ["panel", "card / surface bg"], ["panelRaised", "raised surface"],
+                        ["border", "stroke boundary"], ["accent", "primary accent action"],
+                        ["nestAccent", "nested accent"], ["pendingAccent", "pending state"],
+                        ["blocked", "blocked state"], ["text", "primary text"],
+                        ["subduedText", "muted caption"], ["conflict", "conflict state"],
+                        ["onAccent", "accent text"], ["selection", "selected highlight"],
                         ["hover", "hover overlay"], ["pressed", "pressed overlay"],
-                        ["border", "stroke boundary"], ["focus", "focus outline ring"],
+                        ["disabled", "disabled state"], ["disabledText", "disabled text"],
+                        ["focus", "focus outline ring"], ["overlayScrim", "modal backdrop"],
                         ["danger", "destructive action"], ["dangerHover", "destructive hover"],
-                        ["subduedText", "muted caption"], ["disabled", "disabled state"]
+                        ["infoBar", "info banner"], ["canvasMarquee", "selection marquee"],
+                        ["canvasGrid", "grid line"], ["chromeIcon", "icon tint"],
+                        ["chromeHover", "chrome hover"], ["chromeDown", "chrome pressed"]
                     ]
                     delegate: Rectangle {
                         required property var modelData
@@ -119,14 +145,18 @@ Item {
                         MouseArea {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: root.logCopied("--" + parent.modelData[0])
+                            onClicked: {
+                                root.copiedFeedback = "--" + parent.modelData[0]
+                                root.logCopied("--" + parent.modelData[0])
+                                toastTimer.restart()
+                            }
                         }
                     }
                 }
             }
         }
 
-        // Section 2: Radius Tokens
+        // Section 2: Radius Scale
         Column {
             width: parent.width
             spacing: 14

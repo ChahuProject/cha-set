@@ -1,4 +1,4 @@
-// ScrollAreaDocPage.qml — Scroll Area Documentation & Showcase
+// ScrollAreaDocPage.qml — Comprehensive Scroll Area Documentation & Showcase
 import QtQuick 6.10
 import QtQuick.Controls 6.10
 import chaSet
@@ -20,6 +20,7 @@ Item {
     property bool scrollShowButtons: true
     property bool scrollSmooth: true
     property int scrollHitSize: 8
+    property string codeTab: "qt" // "qt" | "react"
 
     signal logAction(string msg)
 
@@ -66,7 +67,7 @@ Item {
             Rectangle { width: parent.width; height: 1; color: root.cBorder }
         }
 
-        // Interactive Sandbox
+        // Section 1: Interactive Sandbox
         Rectangle {
             width: parent.width
             height: scrollSandboxCol.implicitHeight + 40
@@ -241,6 +242,142 @@ Item {
                     ChaSetButton { size: "sm"; variant: "secondary"; text: "▴ Page Up"; onClicked: { if (root.scrollDemoMode === "vertical") demoScrollVert.pageUp(); else if (root.scrollDemoMode === "horizontal") demoScrollHoriz.pageLeft(); else demoScrollBoth.pageUp(); } }
                     ChaSetButton { size: "sm"; variant: "secondary"; text: "▾ Page Down"; onClicked: { if (root.scrollDemoMode === "vertical") demoScrollVert.pageDown(); else if (root.scrollDemoMode === "horizontal") demoScrollHoriz.pageRight(); else demoScrollBoth.pageDown(); } }
                     ChaSetButton { size: "sm"; variant: "secondary"; text: "⇣ To Bottom"; onClicked: { if (root.scrollDemoMode === "vertical") demoScrollVert.scrollToBottom(); else if (root.scrollDemoMode === "horizontal") demoScrollHoriz.scrollToRight(); else demoScrollBoth.scrollToBottom(); } }
+                }
+
+                // Live Code Box (QML / React JSX)
+                Column {
+                    width: parent.width
+                    spacing: 6
+
+                    Row {
+                        spacing: 8
+                        Rectangle {
+                            width: 80; height: 24; radius: 4
+                            color: root.codeTab === "qt" ? root.cPrimary : root.cAccentBg
+                            Text { anchors.centerIn: parent; text: "Qt QML"; color: root.codeTab === "qt" ? "#ffffff" : root.cFg; font.pixelSize: 11; font.weight: Font.DemiBold }
+                            MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.codeTab = "qt" }
+                        }
+                        Rectangle {
+                            width: 80; height: 24; radius: 4
+                            color: root.codeTab === "react" ? root.cPrimary : root.cAccentBg
+                            Text { anchors.centerIn: parent; text: "React JSX"; color: root.codeTab === "react" ? "#ffffff" : root.cFg; font.pixelSize: 11; font.weight: Font.DemiBold }
+                            MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.codeTab = "react" }
+                        }
+                    }
+
+                    Rectangle {
+                        width: parent.width
+                        height: 110
+                        radius: 4
+                        color: ThemeTokens.background
+                        border.color: root.cBorder
+
+                        TextArea {
+                            anchors.fill: parent
+                            anchors.margins: 10
+                            readOnly: true
+                            text: {
+                                if (root.codeTab === "qt") {
+                                    return 'ChaSetScrollView {\n    width: 400\n    height: 300\n    showButtons: ' + root.scrollShowButtons + '\n    smoothScroll: ' + root.scrollSmooth + '\n\n    // Child Content View\n}';
+                                }
+                                return '<ScrollArea\n  showButtons={' + root.scrollShowButtons + '}\n  smoothScroll={' + root.scrollSmooth + '}\n  className="h-72 w-full"\n>\n  {/* Child Content View */}\n</ScrollArea>';
+                            }
+                            color: root.cFg
+                            font.family: "Consolas, monospace"
+                            font.pixelSize: 11
+                            background: null
+                        }
+                    }
+                }
+            }
+        }
+
+        // Section 2: Feature Matrix Cards
+        Column {
+            width: parent.width
+            spacing: 14
+
+            Text { text: "Architecture Highlights"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+
+            Grid {
+                columns: 3
+                columnSpacing: 14
+                width: parent.width
+
+                Rectangle {
+                    width: (parent.width - 28) / 3; height: 110; radius: root.customRadius; color: root.cCard; border.color: root.cBorder
+                    Column {
+                        anchors.fill: parent; anchors.margins: 12; spacing: 4
+                        Text { text: "🔥 Hot-Zone Expansion"; color: root.cPrimary; font.pixelSize: 12; font.weight: Font.Bold }
+                        Text { text: "8px hit zone dynamically expands on hover without shifting inner layout content."; color: root.cMutedFg; font.pixelSize: 11; wrapMode: Text.WordWrap; width: parent.width }
+                    }
+                }
+                Rectangle {
+                    width: (parent.width - 28) / 3; height: 110; radius: root.customRadius; color: root.cCard; border.color: root.cBorder
+                    Column {
+                        anchors.fill: parent; anchors.margins: 12; spacing: 4
+                        Text { text: "⚓ Stepper Clearance"; color: root.cPrimary; font.pixelSize: 12; font.weight: Font.Bold }
+                        Text { text: "Thumb travels strictly on dedicated runway between top and bottom stepper button clusters."; color: root.cMutedFg; font.pixelSize: 11; wrapMode: Text.WordWrap; width: parent.width }
+                    }
+                }
+                Rectangle {
+                    width: (parent.width - 28) / 3; height: 110; radius: root.customRadius; color: root.cCard; border.color: root.cBorder
+                    Column {
+                        anchors.fill: parent; anchors.margins: 12; spacing: 4
+                        Text { text: "🖥️ Desktop Wheel Ready"; color: root.cPrimary; font.pixelSize: 12; font.weight: Font.Bold }
+                        Text { text: "Native WheelHandler delivers smooth step animations on Windows, macOS, and Linux."; color: root.cMutedFg; font.pixelSize: 11; wrapMode: Text.WordWrap; width: parent.width }
+                    }
+                }
+            }
+        }
+
+        // Section 3: Props & API Reference Table
+        Column {
+            width: parent.width
+            spacing: 12
+
+            Text { text: "API Reference"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+
+            Rectangle {
+                width: parent.width
+                height: 240
+                radius: root.customRadius
+                color: root.cCard
+                border.color: root.cBorder
+                clip: true
+
+                Column {
+                    anchors.fill: parent
+
+                    // Header
+                    Row {
+                        width: parent.width
+                        height: 36
+                        Rectangle { width: 180; height: 36; color: root.cAccentBg; Text { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; text: "Property"; color: root.cMutedFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                        Rectangle { width: 140; height: 36; color: root.cAccentBg; Text { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; text: "Type"; color: root.cMutedFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                        Rectangle { width: 120; height: 36; color: root.cAccentBg; Text { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; text: "Default"; color: root.cMutedFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                        Rectangle { width: parent.width - 440; height: 36; color: root.cAccentBg; Text { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; text: "Description"; color: root.cMutedFg; font.pixelSize: 11; font.weight: Font.Bold } }
+                    }
+
+                    // Props List
+                    Repeater {
+                        model: [
+                            ["showVerticalScrollBar", "boolean", "true", "Controls vertical scrollbar visibility"],
+                            ["showHorizontalScrollBar", "boolean", "false", "Controls horizontal scrollbar visibility"],
+                            ["showButtons", "boolean", "true", "Enables navigation stepper button clusters"],
+                            ["smoothScroll", "boolean", "true", "Animates pagination and jump actions smoothly"],
+                            ["hitSize", "int", "8", "Pixel width/height of outer mouse hot-zone"]
+                        ]
+                        delegate: Row {
+                            required property var modelData
+                            width: parent.width
+                            height: 40
+                            Rectangle { width: 180; height: 40; color: "transparent"; Text { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; text: parent.parent.modelData[0]; color: root.cPrimary; font.pixelSize: 12; font.family: "Consolas"; font.weight: Font.Bold } }
+                            Rectangle { width: 140; height: 40; color: "transparent"; Text { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; text: parent.parent.modelData[1]; color: root.cFg; font.pixelSize: 11; font.family: "Consolas" } }
+                            Rectangle { width: 120; height: 40; color: "transparent"; Text { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; text: parent.parent.modelData[2]; color: root.cMutedFg; font.pixelSize: 11; font.family: "Consolas" } }
+                            Rectangle { width: parent.width - 440; height: 40; color: "transparent"; Text { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; text: parent.parent.modelData[3]; color: root.cMutedFg; font.pixelSize: 11 } }
+                        }
+                    }
                 }
             }
         }

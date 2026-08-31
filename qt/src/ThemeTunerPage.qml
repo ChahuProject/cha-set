@@ -221,5 +221,64 @@ Item {
                 }
             }
         }
+
+        // Section 2: Live Sandbox Stage
+        Column {
+            width: parent.width
+            spacing: 12
+
+            Text { text: "Live Component Sandbox"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+            Text { text: "Interact with components rendering live under your current style settings:"; color: root.cMutedFg; font.pixelSize: 13 }
+
+            Rectangle {
+                width: parent.width
+                height: 200
+                radius: root.customRadius
+                color: root.cCard
+                border.color: root.cBorder
+
+                Row {
+                    anchors.centerIn: parent
+                    spacing: 24
+
+                    Column {
+                        spacing: 12
+                        Text { text: "Buttons"; color: root.cMutedFg; font.pixelSize: 12; font.weight: Font.Bold }
+                        Row {
+                            spacing: 8
+                            ChaSetButton { variant: "primary"; size: "md"; text: "Primary Action"; onClicked: root.logAction("Clicked sandbox primary") }
+                            ChaSetButton { variant: "secondary"; size: "md"; text: "Secondary"; onClicked: root.logAction("Clicked sandbox secondary") }
+                            ChaSetButton { variant: "destructive"; size: "md"; text: "Danger"; onClicked: root.logAction("Clicked sandbox danger") }
+                        }
+                    }
+
+                    Rectangle { width: 1; height: 120; color: root.cBorder; anchors.verticalCenter: parent.verticalCenter }
+
+                    Column {
+                        spacing: 12
+                        Text { text: "Mini Scroll Viewport"; color: root.cMutedFg; font.pixelSize: 12; font.weight: Font.Bold }
+                        ChaSetScrollView {
+                            width: 260
+                            height: 100
+                            showButtons: true
+                            contentWidth: 240
+                            contentHeight: 300
+
+                            Column {
+                                spacing: 4
+                                Repeater {
+                                    model: 10
+                                    delegate: Rectangle {
+                                        required property int index
+                                        width: 240; height: 24; radius: 4; color: root.cAccentBg
+                                        Text { anchors.centerIn: parent; text: "Item #" + (parent.index + 1); color: root.cFg; font.pixelSize: 11 }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
