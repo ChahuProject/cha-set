@@ -18,7 +18,7 @@ export const ScrollBarButton = React.forwardRef<HTMLButtonElement, ScrollBarButt
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
         className={cn(
-          'inline-flex items-center justify-center size-3.5 rounded text-muted-foreground/80 hover:text-foreground hover:bg-accent/80 active:bg-accent focus:outline-none transition-all duration-100 disabled:opacity-20 disabled:pointer-events-none cursor-pointer',
+          'inline-flex items-center justify-center size-2.5 rounded-[2px] text-muted-foreground/80 hover:text-foreground hover:bg-accent/80 active:bg-accent focus:outline-none transition-all duration-100 disabled:opacity-20 disabled:pointer-events-none cursor-pointer',
           className,
         )}
         {...props}
@@ -31,7 +31,7 @@ export const ScrollBarButton = React.forwardRef<HTMLButtonElement, ScrollBarButt
 
 export function ChevronsUpIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-3', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="m17 11-5-5-5 5" />
       <path d="m17 18-5-5-5 5" />
     </svg>
@@ -40,7 +40,7 @@ export function ChevronsUpIcon({ className }: { className?: string }) {
 
 export function ChevronUpIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-3', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="m18 15-6-6-6 6" />
     </svg>
   );
@@ -48,7 +48,7 @@ export function ChevronUpIcon({ className }: { className?: string }) {
 
 export function ChevronDownIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-3', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="m6 9 6 6 6-6" />
     </svg>
   );
@@ -56,7 +56,7 @@ export function ChevronDownIcon({ className }: { className?: string }) {
 
 export function ChevronsDownIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-3', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="m7 6 5 5 5-5" />
       <path d="m7 13 5 5 5-5" />
     </svg>
@@ -65,7 +65,7 @@ export function ChevronsDownIcon({ className }: { className?: string }) {
 
 export function ChevronsLeftIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-3', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="m11 17-5-5 5-5" />
       <path d="m18 17-5-5 5-5" />
     </svg>
@@ -74,7 +74,7 @@ export function ChevronsLeftIcon({ className }: { className?: string }) {
 
 export function ChevronLeftIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-3', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="m15 18-6-6 6-6" />
     </svg>
   );
@@ -82,7 +82,7 @@ export function ChevronLeftIcon({ className }: { className?: string }) {
 
 export function ChevronRightIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-3', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="m9 18 6-6-6-6" />
     </svg>
   );
@@ -90,7 +90,7 @@ export function ChevronRightIcon({ className }: { className?: string }) {
 
 export function ChevronsRightIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-3', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="m6 17 5-5-5-5" />
       <path d="m13 17 5-5-5-5" />
     </svg>
@@ -114,7 +114,7 @@ export function ScrollBarStartCluster({
     const isAtTop = ctx ? ctx.scrollState.isAtTop : false;
     return (
       <div
-        className="flex flex-col items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 h-9 w-full"
+        className="flex flex-col items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 h-5 w-full"
         onPointerDown={(e) => e.stopPropagation()}
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
@@ -148,7 +148,7 @@ export function ScrollBarStartCluster({
   const isAtLeft = ctx ? ctx.scrollState.isAtLeft : false;
   return (
     <div
-      className="flex flex-row items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 w-9 h-full"
+      className="flex flex-row items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 w-5 h-full"
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}
@@ -190,7 +190,7 @@ export function ScrollBarEndCluster({
     const isAtBottom = ctx ? ctx.scrollState.isAtBottom : false;
     return (
       <div
-        className="flex flex-col items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 h-9 w-full"
+        className="flex flex-col items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 h-5 w-full"
         onPointerDown={(e) => e.stopPropagation()}
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
@@ -224,7 +224,7 @@ export function ScrollBarEndCluster({
   const isAtRight = ctx ? ctx.scrollState.isAtRight : false;
   return (
     <div
-      className="flex flex-row items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 w-9 h-full"
+      className="flex flex-row items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 w-5 h-full"
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}

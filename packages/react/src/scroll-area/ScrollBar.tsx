@@ -11,11 +11,11 @@ export interface ScrollBarProps
   pageStepRatio?: number;
   /** Whether stepper buttons trigger smooth scrolling. @default true */
   smoothScroll?: boolean;
-  /** Custom hot zone thickness in pixels or rem string. @default 16 (1rem) */
+  /** Custom hot zone thickness in pixels or rem string. @default 8 (0.5rem) */
   hitSize?: number | string;
-  /** Collapsed indicator thickness in pixels or rem string. @default 6 */
+  /** Collapsed indicator thickness in pixels or rem string. @default 4 (0.25rem) */
   collapsedSize?: number | string;
-  /** Expanded indicator thickness in pixels or rem string. @default 12 */
+  /** Expanded indicator thickness in pixels or rem string. @default 8 (0.5rem) */
   expandedSize?: number | string;
 }
 
@@ -33,9 +33,9 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
       showButtons = true,
       pageStepRatio = 0.85,
       smoothScroll = true,
-      hitSize = 16,
-      collapsedSize = 6,
-      expandedSize = 12,
+      hitSize = 8,
+      collapsedSize = 4,
+      expandedSize = 8,
       keepMounted = true,
       children,
       style,
@@ -67,7 +67,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           <div
             className={cn(
               'opacity-0 group-hover:opacity-100 group-data-[hovering]:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto absolute',
-              isVertical ? 'top-0 inset-x-0 h-9' : 'left-0 inset-y-0 w-9',
+              isVertical ? 'top-0 inset-x-0 h-5' : 'left-0 inset-y-0 w-5',
             )}
           >
             <ScrollBarStartCluster
@@ -82,8 +82,8 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           className={cn(
             'absolute z-20 flex items-center justify-center cursor-pointer transition-all duration-150',
             isVertical
-              ? cn('top-0 inset-x-0 min-h-6', showButtons ? 'my-9' : 'my-0.5')
-              : cn('left-0 inset-y-0 min-w-6', showButtons ? 'mx-9' : 'mx-0.5'),
+              ? cn('top-0 inset-x-0 min-h-4', showButtons ? 'my-5' : 'my-0.5')
+              : cn('left-0 inset-y-0 min-w-4', showButtons ? 'mx-5' : 'mx-0.5'),
           )}
         >
           {children ?? (
@@ -92,8 +92,8 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
                 'rounded-full bg-border transition-all duration-150',
                 'group-hover:bg-muted-foreground/50 group-data-[hovering]:bg-muted-foreground/50 active:bg-foreground/60',
                 isVertical
-                  ? 'h-full w-1.5 group-hover:w-3 group-data-[hovering]:w-3'
-                  : 'w-full h-1.5 group-hover:h-3 group-data-[hovering]:h-3',
+                  ? 'h-full w-1 group-hover:w-2 group-data-[hovering]:w-2'
+                  : 'w-full h-1 group-hover:h-2 group-data-[hovering]:h-2',
               )}
             />
           )}
@@ -103,7 +103,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           <div
             className={cn(
               'opacity-0 group-hover:opacity-100 group-data-[hovering]:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto absolute',
-              isVertical ? 'bottom-0 inset-x-0 h-9' : 'right-0 inset-y-0 w-9',
+              isVertical ? 'bottom-0 inset-x-0 h-5' : 'right-0 inset-y-0 w-5',
             )}
           >
             <ScrollBarEndCluster

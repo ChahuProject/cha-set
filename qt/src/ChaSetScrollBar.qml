@@ -11,9 +11,9 @@ Item {
     property int orientation: Qt.Vertical   // Qt.Vertical | Qt.Horizontal
     property Flickable flickable: parent && parent.hasOwnProperty("contentY") ? parent : null
     property bool showButtons: true
-    property int hitSize: 16
-    property int collapsedSize: 6
-    property int expandedSize: 12
+    property int hitSize: 8
+    property int collapsedSize: 4
+    property int expandedSize: 8
     property real pageStepRatio: 0.85
     property bool smoothScroll: true
     property real customRadius: ThemeTokens.rowRadius
@@ -273,7 +273,7 @@ Item {
         // Visual Thumb Indicator
         Rectangle {
             id: thumb
-            property real thumbLength: Math.max(24, (root.isVertical ? trackArea.height : trackArea.width) * root.visibleRatio)
+            property real thumbLength: Math.max(16, (root.isVertical ? trackArea.height : trackArea.width) * root.visibleRatio)
             property real thumbPos: (root.isVertical ? trackArea.height : trackArea.width) * root.visiblePos
 
             x: root.isVertical ? Math.round((trackArea.width - width) / 2) : thumbPos

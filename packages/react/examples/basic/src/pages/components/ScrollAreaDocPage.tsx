@@ -456,24 +456,24 @@ export const CrossStackSpecification = {
       <section id="hotzone" className="my-10">
         <h2 className="text-xl font-bold tracking-tight mb-2">Dual-Box Hot Zone & Dynamic Width</h2>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-          Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces a{' '}
-          <strong>1rem (16px equivalent) transparent interaction hot-zone</strong> paired with an animated visual indicator that expands
-          from <code className="font-mono text-primary">0.375rem</code> (6px idle) to <code className="font-mono text-primary">0.75rem</code> (12px hover) with 150ms cubic easing.
+          Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces a compact{' '}
+          <strong>0.5rem (8px equivalent) transparent interaction hot-zone</strong> paired with an animated visual indicator that expands
+          from <code className="font-mono text-primary">0.25rem</code> (4px idle) to <code className="font-mono text-primary">0.5rem</code> (8px hover) with 150ms cubic easing.
         </p>
 
         <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-col md:flex-row gap-6 items-center">
           <div className="flex-1 text-xs text-muted-foreground space-y-2">
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Idle State:</strong> 0.375rem (6px) slim indicator bar, non-intrusive.</span>
+              <span><strong>Idle State:</strong> 0.25rem (4px) slim indicator bar, non-intrusive.</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Hover State:</strong> Expands to 0.75rem (12px) with high visual affordance.</span>
+              <span><strong>Hover State:</strong> Expands to 0.5rem (8px) with high visual affordance.</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Hit Area:</strong> 1rem (16px) transparent box captures pointer immediately.</span>
+              <span><strong>Hit Area:</strong> 0.5rem (8px) compact trigger box prevents accidental cursor capture.</span>
             </div>
           </div>
         </div>

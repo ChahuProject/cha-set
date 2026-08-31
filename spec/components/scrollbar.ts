@@ -10,9 +10,9 @@ export const scrollBarVisibilitySchema = z.enum(['hover', 'always', 'scroll']);
 export const scrollBarSchema = z.object({
   orientation: scrollBarOrientationSchema.default('vertical'),
   showButtons: z.boolean().default(true),
-  hitSize: z.number().default(16),
-  collapsedSize: z.number().default(6),
-  expandedSize: z.number().default(12),
+  hitSize: z.number().default(8),
+  collapsedSize: z.number().default(4),
+  expandedSize: z.number().default(8),
   pageStepRatio: z.number().default(0.85),
   smoothScroll: z.boolean().default(true),
   visibilityMode: scrollBarVisibilitySchema.default('hover'),

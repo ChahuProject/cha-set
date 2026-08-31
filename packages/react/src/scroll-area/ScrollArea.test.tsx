@@ -48,12 +48,12 @@ describe('ScrollArea and ScrollBar', () => {
     );
 
     const scrollbar = container.querySelector('[data-orientation="vertical"]') as HTMLElement;
-    expect(scrollbar).toHaveStyle({ width: '1rem' });
+    expect(scrollbar).toHaveStyle({ width: '0.5rem' });
     covered.hotZone = true;
 
     // Check inner indicator has narrow to wide dynamic classes
     const indicator = scrollbar.querySelector('.rounded-full');
-    expect(indicator).toHaveClass('w-1.5', 'group-hover:w-3');
+    expect(indicator).toHaveClass('w-1', 'group-hover:w-2');
     covered.dynamicWidth = true;
   });
 
@@ -112,14 +112,14 @@ describe('ScrollArea and ScrollBar', () => {
   });
 
   it('constrains thumb with clearance margins so it never overlaps stepper buttons', () => {
-    // 1. With showButtons=true (default): vertical thumb has my-9
+    // 1. With showButtons=true (default): vertical thumb has my-5
     const { container: c1 } = render(
       <ScrollArea className="h-64 w-64" showButtons={true}>
         <div style={{ height: 1000 }}>Long Content</div>
       </ScrollArea>,
     );
     const vThumbWithButtons = c1.querySelector('[data-orientation="vertical"] [data-state]') || c1.querySelector('[data-orientation="vertical"] > div:nth-child(2)');
-    expect(vThumbWithButtons).toHaveClass('my-9');
+    expect(vThumbWithButtons).toHaveClass('my-5');
 
     // 2. With showButtons=false: vertical thumb has my-0.5
     const { container: c2 } = render(
@@ -130,14 +130,14 @@ describe('ScrollArea and ScrollBar', () => {
     const vThumbNoButtons = c2.querySelector('[data-orientation="vertical"] [data-state]') || c2.querySelector('[data-orientation="vertical"] > div');
     expect(vThumbNoButtons).toHaveClass('my-0.5');
 
-    // 3. Horizontal with showButtons=true: horizontal thumb has mx-9
+    // 3. Horizontal with showButtons=true: horizontal thumb has mx-5
     const { container: c3 } = render(
       <ScrollArea className="h-64 w-64" showHorizontalScrollBar showButtons={true}>
         <div style={{ width: 1000 }}>Wide Content</div>
       </ScrollArea>,
     );
     const hThumbWithButtons = c3.querySelector('[data-orientation="horizontal"] [data-state]') || c3.querySelector('[data-orientation="horizontal"] > div:nth-child(2)');
-    expect(hThumbWithButtons).toHaveClass('mx-9');
+    expect(hThumbWithButtons).toHaveClass('mx-5');
   });
 
   it('isolates pointer events on stepper buttons to prevent track click hijacking', () => {
