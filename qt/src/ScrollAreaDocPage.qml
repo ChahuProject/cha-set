@@ -144,17 +144,18 @@ Item {
                             id: vertCol
                             x: 8; y: 8; width: parent.width - 16; spacing: 6
                             Repeater {
-                                model: 120
+                                model: ShowcaseData.changelog
                                 delegate: Rectangle {
+                                    required property var modelData
                                     required property int index
                                     width: vertCol.width; height: 36; radius: 4
                                     color: index % 2 === 0 ? root.cCard : "transparent"
                                     border.color: root.cBorder; border.width: 0.5
                                     Row {
                                         anchors.fill: parent; anchors.margins: 8; spacing: 10
-                                        Text { text: "v2.1.0-build." + (120 - parent.parent.index); color: root.cPrimary; font.pixelSize: 12; font.family: "Consolas"; font.weight: Font.Bold; width: 140 }
-                                        Text { text: "Patch #" + (120 - parent.parent.index) + ": Synchronized cross-stack precision"; color: root.cMutedFg; font.pixelSize: 11; width: 340; elide: Text.ElideRight }
-                                        Text { text: "2026-08-" + String((parent.parent.index % 28) + 1).padStart(2, '0'); color: root.cMutedFg; font.pixelSize: 11 }
+                                        Text { text: parent.parent.modelData.version; color: root.cPrimary; font.pixelSize: 12; font.family: "Consolas"; font.weight: Font.Bold; width: 140 }
+                                        Text { text: parent.parent.modelData.summary; color: root.cMutedFg; font.pixelSize: 11; width: 340; elide: Text.ElideRight }
+                                        Text { text: parent.parent.modelData.date; color: root.cMutedFg; font.pixelSize: 11 }
                                     }
                                 }
                             }
@@ -179,16 +180,21 @@ Item {
                             id: horizRow
                             spacing: 10; height: parent.height - 20
                             Repeater {
-                                model: 24
+                                model: ShowcaseData.featureCards
                                 delegate: Rectangle {
+                                    required property var modelData
                                     required property int index
                                     width: 200; height: 220; radius: 6
                                     color: root.cCard; border.color: root.cBorder
                                     Column {
                                         anchors.fill: parent; anchors.margins: 12; spacing: 8
-                                        Text { text: "Feature #" + (parent.parent.index + 1); color: root.cPrimary; font.pixelSize: 11; font.weight: Font.Bold }
-                                        Text { text: "Single Source of Truth"; color: root.cFg; font.pixelSize: 13; font.weight: Font.Bold }
-                                        Text { text: "spec/tokens shards driving React and Qt synchronized builds."; color: root.cMutedFg; font.pixelSize: 11; wrapMode: Text.WordWrap; width: parent.width }
+                                        Row {
+                                            spacing: 6
+                                            Text { text: parent.parent.parent.modelData.icon; font.pixelSize: 14 }
+                                            Text { text: parent.parent.parent.modelData.badge; color: root.cPrimary; font.pixelSize: 11; font.weight: Font.Bold }
+                                        }
+                                        Text { text: parent.parent.modelData.title; color: root.cFg; font.pixelSize: 13; font.weight: Font.Bold }
+                                        Text { text: parent.parent.modelData.desc; color: root.cMutedFg; font.pixelSize: 11; wrapMode: Text.WordWrap; width: parent.width }
                                     }
                                 }
                             }

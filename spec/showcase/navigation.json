@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Get Started",
+    "items": [
+      {
+        "id": "intro",
+        "title": "Introduction",
+        "href": "#/get-started/introduction",
+        "desc": "Single source of truth architecture and multi-stack overview."
+      },
+      {
+        "id": "tokens",
+        "title": "Theme & Tokens",
+        "href": "#/get-started/tokens",
+        "desc": "Color palette, semantic mappings, radius and typography."
+      },
+      {
+        "id": "theme-tuner",
+        "title": "Theme Studio",
+        "href": "#/get-started/theme-tuner",
+        "badge": "Live",
+        "desc": "Interactive theme customizer and config exporter."
+      }
+    ]
+  },
+  {
+    "title": "Components",
+    "items": [
+      {
+        "id": "button",
+        "title": "Button",
+        "href": "#/components/button",
+        "desc": "A versatile button component with multiple variants, sizes, and states."
+      },
+      {
+        "id": "scroll-area",
+        "title": "Scroll Area",
+        "href": "#/components/scroll-area",
+        "badge": "New",
+        "desc": "Custom scrollable container with hot-zone expansion and stepper buttons."
+      }
+    ]
+  }
+]

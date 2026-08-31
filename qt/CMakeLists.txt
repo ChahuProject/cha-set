@@ -21,6 +21,11 @@ set_source_files_properties(src/ThemeTokens.generated.qml PROPERTIES
     QT_QML_SOURCE_TYPENAME ThemeTokens
 )
 
+set_source_files_properties(src/ShowcaseData.generated.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME ShowcaseData
+)
+
 qt_add_qml_module(QtChaSetDemo
     URI chaSet
     VERSION 0.1
@@ -30,6 +35,7 @@ qt_add_qml_module(QtChaSetDemo
         src/ChaSetScrollBar.qml
         src/ChaSetScrollView.qml
         src/ThemeTokens.generated.qml
+        src/ShowcaseData.generated.qml
         src/IntroductionPage.qml
         src/TokensPage.qml
         src/ThemeTunerPage.qml

@@ -6,6 +6,7 @@
       "size": { "requirement": "must", "description": "size switches dimensions" },
       "disabled": { "requirement": "must", "description": "disabled blocks interaction" },
       "keyboard": { "requirement": "must", "description": "native button keyboard activation" },
+      "clickAction": { "requirement": "must", "description": "clicking triggers action handler" },
       "loading": { "requirement": "should", "description": "loading shows spinner and blocks clicks" },
       "fullWidth": { "requirement": "should", "description": "fullWidth stretches to container" },
       "a11y": { "requirement": "should", "description": "accessible label support" }
@@ -15,6 +16,9 @@
       "hotZone": { "requirement": "must", "description": "hot zone provides wider hit area than visual collapsed size" },
       "dynamicWidth": { "requirement": "must", "description": "expands thickness on hover" },
       "stepperButtons": { "requirement": "must", "description": "to-top, to-bottom, page-up, page-down navigation buttons" },
+      "wheelScroll": { "requirement": "must", "description": "mouse wheel / touchpad scrolls viewport smoothly" },
+      "thumbDrag": { "requirement": "must", "description": "dragging thumb translates viewport linearly with boundary clamping" },
+      "trackJump": { "requirement": "must", "description": "clicking track jumps thumb under cursor accurately" },
       "boundaryClamp": { "requirement": "should", "description": "disables buttons when at scroll boundary" },
       "smoothScroll": { "requirement": "should", "description": "smooth scroll animation for stepper actions" }
     }

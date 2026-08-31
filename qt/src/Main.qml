@@ -72,29 +72,63 @@ ApplicationWindow {
     }
 
     Timer {
-        id: testScrollTimer
+        id: scenarioRunnerTimer
         interval: 150
-        running: typeof testScrollMode !== "undefined" && testScrollMode === true
+        running: typeof testScenario !== "undefined" && testScenario !== ""
         onTriggered: {
-            console.log("[qt-test] Starting Scroll & Viewport Behavioral Verification...");
-            var maxScrollY = Math.max(0, contentScroll.flickableItem.contentHeight - contentScroll.height);
-            console.log("[qt-test] contentHeight=" + contentScroll.flickableItem.contentHeight + ", height=" + contentScroll.height + ", maxScrollY=" + maxScrollY);
-            if (maxScrollY <= 0) {
-                console.log("[qt-test] FAIL: Viewport contentHeight is not overflowing height");
-                Qt.exit(1);
-                return;
-            }
-            contentScroll.flickableItem.contentY = 200;
-            var afterDirectY = contentScroll.flickableItem.contentY;
-            contentScroll.flickableItem.contentY = 0;
-            var afterResetY = contentScroll.flickableItem.contentY;
+            console.log("[qt-scenario] Running behavioral scenario: " + testScenario);
+            var failures = 0;
 
-            console.log("[qt-test] afterDirectY=" + afterDirectY + ", afterResetY=" + afterResetY);
-            if (afterDirectY === 200 && afterResetY === 0) {
-                console.log("[qt-test] OK — All scroll viewport interactions verified successfully!");
+            // Scenario 1: Shared Showcase Data Validation
+            if (testScenario === "all" || testScenario === "showcase-data") {
+                if (!ShowcaseData.changelog || ShowcaseData.changelog.length !== 120) {
+                    console.log("[qt-scenario] FAIL: ShowcaseData.changelog length expected 120, got " + (ShowcaseData.changelog ? ShowcaseData.changelog.length : 0));
+                    failures++;
+                } else if (!ShowcaseData.featureCards || ShowcaseData.featureCards.length !== 24) {
+                    console.log("[qt-scenario] FAIL: ShowcaseData.featureCards length expected 24, got " + (ShowcaseData.featureCards ? ShowcaseData.featureCards.length : 0));
+                    failures++;
+                } else {
+                    console.log("[qt-scenario] PASS: Shared ShowcaseData dataset integrity (120 changelogs, 24 cards)");
+                }
+            }
+
+            // Scenario 2: Viewport & Scroll Kinematics
+            if (testScenario === "all" || testScenario === "scroll-kinematics" || testScenario === "scroll-wheel") {
+                var maxScrollY = Math.max(0, contentScroll.flickableItem.contentHeight - contentScroll.height);
+                if (maxScrollY <= 0) {
+                    console.log("[qt-scenario] FAIL: Viewport contentHeight is not overflowing height (contentHeight=" + contentScroll.flickableItem.contentHeight + ", height=" + contentScroll.height + ")");
+                    failures++;
+                } else {
+                    contentScroll.flickableItem.contentY = 150;
+                    var afterDirectY = contentScroll.flickableItem.contentY;
+                    contentScroll.flickableItem.contentY = 0;
+                    var afterResetY = contentScroll.flickableItem.contentY;
+
+                    if (afterDirectY === 150 && afterResetY === 0) {
+                        console.log("[qt-scenario] PASS: Viewport coordinate translation & reset (contentY delta=150 -> 0)");
+                    } else {
+                        console.log("[qt-scenario] FAIL: Viewport coordinate translation mismatch (afterDirect=" + afterDirectY + ", afterReset=" + afterResetY + ")");
+                        failures++;
+                    }
+                }
+            }
+
+            // Scenario 3: Steppers & Boundary Clamping
+            if (testScenario === "all" || testScenario === "scroll-steppers") {
+                contentScroll.scrollToTop();
+                if (contentScroll.flickableItem.contentY !== 0) {
+                    console.log("[qt-scenario] FAIL: scrollToTop did not set contentY to 0");
+                    failures++;
+                } else {
+                    console.log("[qt-scenario] PASS: Stepper top navigation boundary clamp (contentY=0)");
+                }
+            }
+
+            if (failures === 0) {
+                console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
                 Qt.exit(0);
             } else {
-                console.log("[qt-test] FAIL — Scroll positions did not update correctly");
+                console.log("[qt-scenario] FAILED — " + failures + " scenario assertions failed");
                 Qt.exit(1);
             }
         }

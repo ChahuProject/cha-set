@@ -1,0 +1,170 @@
+[
+  {
+    "id": "feat-1",
+    "icon": "🎯",
+    "title": "Capability Matrix #1",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-2",
+    "icon": "⚡",
+    "title": "Capability Matrix #2",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-3",
+    "icon": "🔒",
+    "title": "Capability Matrix #3",
+    "badge": "Desktop",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-4",
+    "icon": "🍵",
+    "title": "Capability Matrix #4",
+    "badge": "Core",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-5",
+    "icon": "🎨",
+    "title": "Capability Matrix #5",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-6",
+    "icon": "🚀",
+    "title": "Capability Matrix #6",
+    "badge": "Desktop",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-7",
+    "icon": "🎯",
+    "title": "Capability Matrix #7",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-8",
+    "icon": "⚡",
+    "title": "Capability Matrix #8",
+    "badge": "Core",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-9",
+    "icon": "🔒",
+    "title": "Capability Matrix #9",
+    "badge": "Desktop",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-10",
+    "icon": "🍵",
+    "title": "Capability Matrix #10",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-11",
+    "icon": "🎨",
+    "title": "Capability Matrix #11",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-12",
+    "icon": "🚀",
+    "title": "Capability Matrix #12",
+    "badge": "Core",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-13",
+    "icon": "🎯",
+    "title": "Capability Matrix #13",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-14",
+    "icon": "⚡",
+    "title": "Capability Matrix #14",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-15",
+    "icon": "🔒",
+    "title": "Capability Matrix #15",
+    "badge": "Desktop",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-16",
+    "icon": "🍵",
+    "title": "Capability Matrix #16",
+    "badge": "Core",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-17",
+    "icon": "🎨",
+    "title": "Capability Matrix #17",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-18",
+    "icon": "🚀",
+    "title": "Capability Matrix #18",
+    "badge": "Desktop",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-19",
+    "icon": "🎯",
+    "title": "Capability Matrix #19",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-20",
+    "icon": "⚡",
+    "title": "Capability Matrix #20",
+    "badge": "Core",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-21",
+    "icon": "🔒",
+    "title": "Capability Matrix #21",
+    "badge": "Desktop",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-22",
+    "icon": "🍵",
+    "title": "Capability Matrix #22",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-23",
+    "icon": "🎨",
+    "title": "Capability Matrix #23",
+    "badge": "Web",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  },
+  {
+    "id": "feat-24",
+    "icon": "🚀",
+    "title": "Capability Matrix #24",
+    "badge": "Core",
+    "desc": "Spec-driven UI component capability ensuring zero visual drift and identical interaction ergonomics."
+  }
+]

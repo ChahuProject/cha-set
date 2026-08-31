@@ -4,49 +4,22 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
+import { CHANGELOG_DATA, FEATURE_CARDS_DATA } from '../../data/showcaseData.generated';
 
-const SAMPLE_TAGS = Array.from({ length: 120 }).map((_, i) => {
-  const num = 120 - i;
-  const major = 1 + Math.floor(num / 50);
-  const minor = Math.floor((num % 50) / 10);
-  const patch = num % 10;
-  const categories = ['Tokens', 'Ergonomics', 'Performance', 'A11y', 'Desktop/Qt', 'Compiler', 'Visuals', 'Architecture'];
-  const category = categories[i % categories.length];
-  return {
-    version: `v${major}.${minor}.${patch}-build.${num}`,
-    category,
-    desc: `Synchronized token updates, scrollbar steppers, and boundary checks (patch #${num})`,
-    date: `2026-08-${String((i % 28) + 1).padStart(2, '0')}`,
-    hash: (Math.sin(num) * 10000).toString(16).substring(7, 14),
-  };
-});
+const SAMPLE_TAGS = CHANGELOG_DATA.map((item) => ({
+  version: item.version,
+  category: item.category,
+  desc: item.summary,
+  date: item.date,
+  hash: item.id,
+}));
 
-const SAMPLE_CARDS = [
-  { id: '1', title: 'Single Source of Truth', desc: 'spec/tokens shards drive CSS & Qt', tag: 'Architecture' },
-  { id: '2', title: 'Pixel-Perfect Parity', desc: '100% identical styling across platforms', tag: 'Visuals' },
-  { id: '3', title: 'Dual-Box Hot Zone', desc: '16px hit box with 6px-12px dynamic expand', tag: 'Ergonomics' },
-  { id: '4', title: 'Stepper Navigation', desc: 'To-top, page-up, page-down, to-bottom', tag: 'Interaction' },
-  { id: '5', title: 'Native Performance', desc: 'Zero Electron overhead, pure QML on Qt', tag: 'Desktop' },
-  { id: '6', title: 'Tailwind v4 Theming', desc: 'Inline theme variables mapped to CSS tokens', tag: 'Web' },
-  { id: '7', title: 'Theme Studio Tuner', desc: 'Live color manipulation and JSON exporter', tag: 'Tooling' },
-  { id: '8', title: 'Cross-Stack Parity Gate', desc: 'CI verifies every required capability', tag: 'Quality' },
-  { id: '9', title: 'Token Shard Engine', desc: 'Modular schemas for colors, space, motion', tag: 'Tokens' },
-  { id: '10', title: 'Synchronized Palette', desc: 'Dual-mode dark & light automatic calibration', tag: 'Visuals' },
-  { id: '11', title: 'Fluid Animation Curve', desc: '150ms cubic easing for hot-zone hover states', tag: 'Motion' },
-  { id: '12', title: 'Non-Intrusive Idle', desc: '6px slim visual bar preserves screen estate', tag: 'Ergonomics' },
-  { id: '13', title: 'Multi-Page Stepping', desc: '85% viewport ratio smooth pagination jump', tag: 'Interaction' },
-  { id: '14', title: 'Bi-Directional Bounds', desc: 'Thumb never overlaps stepper button clusters', tag: 'Robustness' },
-  { id: '15', title: 'High Contrast A11y', desc: 'WCAG AAA verified state contrast ratios', tag: 'Accessibility' },
-  { id: '16', title: 'Zero Dependency Core', desc: 'Headless primitives with minimal bundle size', tag: 'Performance' },
-  { id: '17', title: 'QML Quick Integration', desc: 'Direct C++ token pipeline for 60fps Qt apps', tag: 'Desktop' },
-  { id: '18', title: 'Visual Diff Conformance', desc: 'Automated pixelmatch snapshots on pull requests', tag: 'Quality' },
-  { id: '19', title: 'Dual-Axis Sync Corner', desc: 'Seamless 2D grid matrix scrolling support', tag: 'Layout' },
-  { id: '20', title: 'Polymorphic Component', desc: 'Custom render delegation via Base UI engine', tag: 'Architecture' },
-  { id: '21', title: 'Touch & Pen Modality', desc: 'Smooth drag latch with touch gesture priority', tag: 'Interaction' },
-  { id: '22', title: 'Zod API Schema', desc: 'Static typescript validation on design token types', tag: 'TypeSafety' },
-  { id: '23', title: 'Dynamic CSS Variables', desc: 'Scoped custom properties for hot reload themes', tag: 'Web' },
-  { id: '24', title: 'Release Artifact CI', desc: 'Generates headers, css, and tokens in one pass', tag: 'Tooling' },
-];
+const SAMPLE_CARDS = FEATURE_CARDS_DATA.map((card) => ({
+  id: card.id,
+  title: card.title,
+  desc: card.desc,
+  tag: card.badge,
+}));
 
 const SAMPLE_MATRIX_ROWS = Array.from({ length: 100 }).map((_, i) => {
   const rowNum = i + 1;

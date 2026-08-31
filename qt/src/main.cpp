@@ -33,6 +33,9 @@ int main(int argc, char* argv[])
     const bool harnessDisabled = args.contains("--disabled");
     const bool testScrollMode = args.contains("--test-scroll");
 
+    const int scenarioIdx = static_cast<int>(args.indexOf("--test-scenario"));
+    const QString testScenario = scenarioIdx >= 0 && scenarioIdx + 1 < args.size() ? args.value(scenarioIdx + 1) : (testScrollMode ? "all" : "");
+
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("startupLight", startLight);
     engine.rootContext()->setContextProperty("shotPath", shotPath);
@@ -43,6 +46,7 @@ int main(int argc, char* argv[])
     engine.rootContext()->setContextProperty("harnessLoading", harnessLoading);
     engine.rootContext()->setContextProperty("harnessDisabled", harnessDisabled);
     engine.rootContext()->setContextProperty("testScrollMode", testScrollMode);
+    engine.rootContext()->setContextProperty("testScenario", testScenario);
 
     QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
 

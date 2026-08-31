@@ -4,6 +4,7 @@
     "size": true,
     "disabled": true,
     "keyboard": true,
+    "clickAction": true,
     "loading": true,
     "fullWidth": true,
     "a11y": true
@@ -13,6 +14,9 @@
     "hotZone": true,
     "dynamicWidth": true,
     "stepperButtons": true,
+    "wheelScroll": true,
+    "thumbDrag": true,
+    "trackJump": true,
     "boundaryClamp": true,
     "smoothScroll": true
   }

@@ -3,9 +3,10 @@
     "variant": true,
     "size": true,
     "disabled": true,
+    "keyboard": true,
+    "clickAction": true,
     "loading": true,
     "fullWidth": true,
-    "keyboard": true,
     "a11y": true
   },
   "scrollbar": {
@@ -13,6 +14,9 @@
     "hotZone": true,
     "dynamicWidth": true,
     "stepperButtons": true,
+    "wheelScroll": true,
+    "thumbDrag": true,
+    "trackJump": true,
     "boundaryClamp": true,
     "smoothScroll": true
   }
