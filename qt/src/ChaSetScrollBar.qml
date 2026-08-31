@@ -18,6 +18,9 @@ Item {
     property bool smoothScroll: true
     property real customRadius: ThemeTokens.rowRadius
 
+    property alias scrollAnimY: scrollAnimY
+    property alias scrollAnimX: scrollAnimX
+
     readonly property bool isVertical: orientation === Qt.Vertical
     readonly property bool hovered: hitMouseArea.containsMouse || startCluster.hovered || endCluster.hovered || thumbMouseArea.containsMouse
 
@@ -298,11 +301,17 @@ Item {
         Rectangle {
             id: thumb
             z: 1
-            property real thumbLength: Math.max(16, (root.isVertical ? trackArea.height : trackArea.width) * root.visibleRatio)
-            property real thumbPos: (root.isVertical ? trackArea.height : trackArea.width) * root.visiblePos
 
-            x: root.isVertical ? Math.round((trackArea.width - width) / 2) : thumbPos
-            y: root.isVertical ? thumbPos : Math.round((trackArea.height - height) / 2)
+            readonly property real trackLength: root.isVertical ? trackArea.height : trackArea.width
+            readonly property real thumbLength: Math.max(16, Math.min(trackLength, trackLength * root.visibleRatio))
+            readonly property real maxThumbTravel: Math.max(0, trackLength - thumbLength)
+            readonly property real maxScrollDist: root.flickable ? Math.max(1, (root.isVertical ? root.flickable.contentHeight - root.flickable.height : root.flickable.contentWidth - root.flickable.width)) : 1
+            readonly property real currentScroll: root.flickable ? Math.max(0, (root.isVertical ? root.flickable.contentY : root.flickable.contentX)) : 0
+            readonly property real scrollRatio: Math.max(0, Math.min(1, currentScroll / maxScrollDist))
+            readonly property real computedPos: Math.round(scrollRatio * maxThumbTravel)
+
+            x: root.isVertical ? Math.round((trackArea.width - width) / 2) : (thumbMouseArea.pressed ? thumb.x : computedPos)
+            y: root.isVertical ? (thumbMouseArea.pressed ? thumb.y : computedPos) : Math.round((trackArea.height - height) / 2)
             width: root.isVertical ? (root.hovered ? root.expandedSize : root.collapsedSize) : thumbLength
             height: root.isVertical ? thumbLength : (root.hovered ? root.expandedSize : root.collapsedSize)
             radius: Math.min(width, height) / 2
@@ -328,12 +337,12 @@ Item {
                 drag.maximumY: Math.max(0, trackArea.height - thumb.height)
 
                 onPositionChanged: {
-                    if (pressed && root.flickable) {
-                        if (root.isVertical && trackArea.height > thumb.height) {
-                            var ratioY = thumb.y / (trackArea.height - thumb.height)
+                    if (pressed && root.flickable && thumb.maxThumbTravel > 0) {
+                        if (root.isVertical) {
+                            var ratioY = Math.max(0, Math.min(1, thumb.y / thumb.maxThumbTravel))
                             root.flickable.contentY = ratioY * (root.flickable.contentHeight - root.flickable.height)
-                        } else if (!root.isVertical && trackArea.width > thumb.width) {
-                            var ratioX = thumb.x / (trackArea.width - thumb.width)
+                        } else {
+                            var ratioX = Math.max(0, Math.min(1, thumb.x / thumb.maxThumbTravel))
                             root.flickable.contentX = ratioX * (root.flickable.contentWidth - root.flickable.width)
                         }
                     }

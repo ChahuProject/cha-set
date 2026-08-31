@@ -7,19 +7,23 @@
 ## General conventions
 
 - Commits follow Conventional Commits — titles in English (see `.agents/skills/commit`).
-- Keep changes minimal and readable; match the existing style; reuse over reinvent.
-- When touching build/deps, docs, or public naming, self-check before finishing.
+- Task conclusion: Always run verification checks, commit changes following Conventional Commits, and push to the remote repository immediately before completing the task.
 
+### Enabled skills
 
+- `arch-align` — see `.agents/skills/arch-align/SKILL.md`
+- `branch-sync` — see `.agents/skills/branch-sync/SKILL.md`
+- `caveman` — see `.agents/skills/caveman/SKILL.md`
+- `commit` — see `.agents/skills/commit/SKILL.md`
+- `grill-me` — see `.agents/skills/grill-me/SKILL.md`
+- `write-a-skill` — see `.agents/skills/write-a-skill/SKILL.md`
 
+### Skill extension convention
 
-## CodeGraph conventions
-
-- All code exploration and searching should prioritize the CodeGraph CLI (`codegraph explore`, `query`, `callers`, `callees`) over raw search.
-
-
-
-
+- A skill file = managed framework + project-specific area: inside `SKILL.md`, the `PENGJ_TEMPLATE_START/END` block holds the template framework (replaced in place on update); **content outside the block belongs to the project** and is never touched by template updates.
+- Document-style customization (domain checklists, judgment tables, red lines) goes directly into the project-specific area outside the block — keep everything in one file so a single read yields all conventions; do not create external files.
+- Executable pre-commit gates are project-defined (any language, any tool — script, task runner, or plain checklist); document how to invoke them in the skill's project-specific area. The framework prescribes no implementation.
+- Legacy fully-custom skills (no managed block) are taken over automatically on adopt/update: the template page wins entirely (frontmatter incl. description is overwritten) and the original body moves down into a transition zone (temporary double flow). Merge domain differences into the project-specific area, then delete the zone.
 <!-- PENGJ_TEMPLATE_END -->
 
 <!-- Project-specific conventions can be written below (outside anchors); template updates will fully preserve user content -->

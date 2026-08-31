@@ -1,5 +1,5 @@
 // ChaSet ScrollView for Qt (QML)
-// High-level scrollable viewport container with integrated ChaSetScrollBar.
+// High-level scrollable viewport container with integrated ChaSetScrollBar and desktop mouse wheel support.
 import QtQuick 6.10
 import chaSet
 
@@ -12,6 +12,9 @@ Item {
     property alias contentX: flickable.contentX
     property alias contentY: flickable.contentY
     property alias flickableItem: flickable
+
+    property alias verticalScrollBar: vScrollBar
+    property alias horizontalScrollBar: hScrollBar
 
     property bool showVerticalScrollBar: true
     property bool showHorizontalScrollBar: false
@@ -38,6 +41,40 @@ Item {
         anchors.fill: parent
         boundsBehavior: Flickable.StopAtBounds
         clip: true
+
+        WheelHandler {
+            id: wheelVertical
+            target: flickable
+            orientation: Qt.Vertical
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+            onWheel: function(event) {
+                var delta = event.angleDelta.y !== 0 ? event.angleDelta.y : event.angleDelta.x
+                var maxScrollY = Math.max(0, flickable.contentHeight - flickable.height)
+                if (maxScrollY > 0 && delta !== 0) {
+                    var step = 100
+                    var targetY = Math.max(0, Math.min(maxScrollY, flickable.contentY - (delta > 0 ? step : -step)))
+                    if (root.smoothScroll && vScrollBar && vScrollBar.scrollAnimY) vScrollBar.scrollAnimY.startTo(targetY)
+                    else flickable.contentY = targetY
+                }
+            }
+        }
+
+        WheelHandler {
+            id: wheelHorizontal
+            target: flickable
+            orientation: Qt.Horizontal
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+            onWheel: function(event) {
+                var delta = event.angleDelta.x
+                var maxScrollX = Math.max(0, flickable.contentWidth - flickable.width)
+                if (maxScrollX > 0 && delta !== 0) {
+                    var step = 100
+                    var targetX = Math.max(0, Math.min(maxScrollX, flickable.contentX - (delta > 0 ? step : -step)))
+                    if (root.smoothScroll && hScrollBar && hScrollBar.scrollAnimX) hScrollBar.scrollAnimX.startTo(targetX)
+                    else flickable.contentX = targetX
+                }
+            }
+        }
     }
 
     ChaSetScrollBar {

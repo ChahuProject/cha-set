@@ -6,15 +6,23 @@
     "common",
     "lefthook",
     "agent",
-    "vscode",
-    "codegraph"
+    "vscode"
   ],
   "options": {
     "channel": "stable",
     "chinese_programming": false,
+    "commit_and_push": true,
     "commit_zh": false,
     "edition": "2024",
     "skill_lang": "en",
+    "skills": [
+      "arch-align",
+      "branch-sync",
+      "caveman",
+      "commit",
+      "grill-me",
+      "write-a-skill"
+    ],
     "use_lld": true,
     "use_sccache": false
   },
@@ -29,14 +37,13 @@
     ".agents\\skills\\grill-me\\SKILL.md": "1e31e70b4606cd77543033cb9c8c0ce61ffd41bd4b8590501e215795b36aeba1",
     ".agents\\skills\\write-a-skill\\SKILL.md": "32efaf8952089d18f31f6ae57e5774b23971a713bd60bfbc3248d963638df760",
     ".gitattributes": "269bd23209da05b77373f5f13adf48536b6ca8f5025570f1a2e5cce289a60b26",
-    ".gitignore": "75c64d88d3ce2375d1c574ab7dc740ce83537502b174a3dfd6b16209bfe85748",
+    ".gitignore": "1d8449ae433e5042aff34b6ad76b8c1474f3ab6ce0902502bcf46b83983a0256",
     ".vscode\\extensions.json": "2d63e9df30909926bf326a3d5ee136cf1c1cf0441191705d2dffdae71886baf2",
     ".vscode\\settings.json": "5ccf099e6f346fa5e3d18a280f96571f21aaeda1c323dca064bc66e03ea00c0f",
-    "AGENTS.md": "ca3cdb4654c641155755066f54a526a166a1ac48c0bf8a7d360ab186e6d2c169",
+    "AGENTS.md": "0f2b4148c9025be75bd604bd322a51e5714f916b4415d3f2006069acf58e18a2",
     "commitlint.base.js": "36309c80b331b643c5800d5e9babb5b03a85811b5fb1e9c6cc5ca940248ed40b",
     "lefthook.yml": "474928a3a7d11adbcbc34bea445ea4f94808c101eb9e0b86e2695582934276f7",
-    "package.json": "ff175c36745e598d739ae2bb8a18df9d848e9d011313d7787865964544dd81cd",
-    "pnpm-workspace.yaml": "dcfc70ea14a010b49505cde45889be59c70c575335efbfecac69553c8d068a0e",
-    "scripts\\ensure-codegraph.mjs": "ac4e6c20b9f41e818669e55050426f0338eac9b3b3e915110119bc0a80ff592e"
+    "package.json": "e4b83b2e797019d84fd7bebfed574aae9995fbded6b0adb8eff59f26a19cf001",
+    "pnpm-workspace.yaml": "dcfc70ea14a010b49505cde45889be59c70c575335efbfecac69553c8d068a0e"
   }
 }
