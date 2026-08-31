@@ -213,7 +213,7 @@ ApplicationWindow {
             anchors.fill: parent
 
             // ==============================================================
-            // 1. TOP NAVBAR (Sticky, 56px height, 1px border bottom)
+            // 1. TOP NAVBAR (Sticky, 56px height, 1px border bottom, full-bleed)
             // ==============================================================
             Rectangle {
                 id: topbar
@@ -221,14 +221,20 @@ ApplicationWindow {
                 height: 56
                 z: 50
                 color: win.cBg
-                border.color: win.cBorder
-                border.width: 1
+
+                // Continuous 1px bottom border across entire window width
+                Rectangle {
+                    anchors.bottom: parent.bottom
+                    width: parent.width
+                    height: 1
+                    color: win.cBorder
+                }
 
                 Item {
                     id: topbarInner
-                    width: Math.min(parent.width - 32, 1280)
-                    height: parent.height
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.fill: parent
+                    anchors.leftMargin: 20
+                    anchors.rightMargin: 20
 
                     // Left Brand Group
                     Row {
@@ -358,7 +364,7 @@ ApplicationWindow {
                 anchors.top: topbar.bottom
                 anchors.bottom: parent.bottom
 
-                // Left Navigation Sidebar (240px width)
+                // Left Navigation Sidebar (240px width with right border)
                 Rectangle {
                     id: sidebar
                     width: 240
@@ -366,8 +372,14 @@ ApplicationWindow {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     color: win.cBg
-                    border.color: win.cBorder
-                    border.width: 1
+
+                    Rectangle {
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        width: 1
+                        color: win.cBorder
+                    }
 
                     Column {
                         anchors.fill: parent
