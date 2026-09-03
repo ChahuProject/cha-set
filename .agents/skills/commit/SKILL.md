@@ -13,6 +13,11 @@ description: >-
 
 Write conventional commit messages. Always push immediately after committing to avoid losing work.
 
+## 0. Trigger conditions (proactive triggers)
+- **Code modification & milestone completion (Mandatory barrier — no accumulation)**: Whenever files are modified and verified in the current turn, you MUST run this commit workflow (pre-commit checks, split commits, and `git push`) before reporting back to the user or proceeding to the next step. Never leave verified changes sitting in the working directory before yielding control; writing `walkthrough.md` in planning modes (`/plan` / `/boost`) does NOT conclude the task — you must commit and push immediately after.
+- **Task conclusion (Mandatory)**: Before concluding any development/maintenance task or delivering final responses, ensure the working tree is clean and all commits are pushed.
+- **Explicit user instruction**: When user invokes `/commit`, "commit", "commit & push", etc.
+
 ## 1. Gather context (standard git, cross-platform)
 Run from repo root:
 

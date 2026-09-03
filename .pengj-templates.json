@@ -33,17 +33,17 @@
     ".agents\\skills\\arch-align\\references\\GENERATE-INDEX.md": "42cbf1e09650fb29a681d7f653685a83055882ea78240e8ad2e07e2e4996975f",
     ".agents\\skills\\branch-sync\\SKILL.md": "c49f85bdc8605e3efc9c89d3cdcc6b9bd192c0f8fc705c136ae0e291a59edfd8",
     ".agents\\skills\\caveman\\SKILL.md": "b7ed1a2655d53bd8c74308cdd4e8a00850c144665a448d38b5dabed580b7d710",
-    ".agents\\skills\\commit\\SKILL.md": "2e72bc43915344fd52547a99520c4d30dbc69e791b08d4531bd028e7f02c0b77",
+    ".agents\\skills\\commit\\SKILL.md": "338efe296cc9f5a48b3abdac42a498b6eb82e95847fe41122ca5da80489c4557",
     ".agents\\skills\\grill-me\\SKILL.md": "1e31e70b4606cd77543033cb9c8c0ce61ffd41bd4b8590501e215795b36aeba1",
     ".agents\\skills\\write-a-skill\\SKILL.md": "32efaf8952089d18f31f6ae57e5774b23971a713bd60bfbc3248d963638df760",
     ".gitattributes": "269bd23209da05b77373f5f13adf48536b6ca8f5025570f1a2e5cce289a60b26",
     ".gitignore": "1d8449ae433e5042aff34b6ad76b8c1474f3ab6ce0902502bcf46b83983a0256",
     ".vscode\\extensions.json": "2d63e9df30909926bf326a3d5ee136cf1c1cf0441191705d2dffdae71886baf2",
     ".vscode\\settings.json": "5ccf099e6f346fa5e3d18a280f96571f21aaeda1c323dca064bc66e03ea00c0f",
-    "AGENTS.md": "0f2b4148c9025be75bd604bd322a51e5714f916b4415d3f2006069acf58e18a2",
+    "AGENTS.md": "03f1b55fdc1f978f8d233700abe5bec7822448f7a73df1a8ea07490c1618e861",
     "commitlint.base.js": "36309c80b331b643c5800d5e9babb5b03a85811b5fb1e9c6cc5ca940248ed40b",
     "lefthook.yml": "474928a3a7d11adbcbc34bea445ea4f94808c101eb9e0b86e2695582934276f7",
-    "package.json": "e4b83b2e797019d84fd7bebfed574aae9995fbded6b0adb8eff59f26a19cf001",
+    "package.json": "28cd7215fd02c954ee6ad49a8577cd27689a8e63a1d6112d60c85b557e043c62",
     "pnpm-workspace.yaml": "dcfc70ea14a010b49505cde45889be59c70c575335efbfecac69553c8d068a0e"
   }
 }
