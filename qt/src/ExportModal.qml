@@ -1,7 +1,7 @@
 // ExportModal.qml — Multi-Stack Config Exporter
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import chaSet
+import ChaSet
 
 Rectangle {
     id: root
@@ -78,7 +78,7 @@ Rectangle {
                     readOnly: true
                     text: {
                         if (root.exportTab === 'qt') {
-                            return '// ChaSet Qt QML Component Usage\nimport QtQuick 6.10\nimport chaSet\n\nChaSetButton {\n    variant: \"primary\"\n    size: \"md\"\n    text: \"Launch Workspace\"\n}\n\nChaSetScrollView {\n    width: 400; height: 300\n    showButtons: true\n}';
+                            return '// ChaSet Qt QML Component Usage\nimport QtQuick 6.10\nimport ChaSet\n\nChaSetButton {\n    variant: \"primary\"\n    size: \"md\"\n    text: \"Launch Workspace\"\n}\n\nChaSetScrollView {\n    width: 400; height: 300\n    showButtons: true\n}';
                         }
                         if (root.exportTab === 'react') {
                             return 'import { Button, ScrollArea } from \'@chahu/cha-set\';\nimport \'@chahu/cha-set/styles.css\';\n\n<Button variant=\"primary\" size=\"md\">Launch Workspace</Button>\n<ScrollArea className=\"h-72 w-full\">...</ScrollArea>';

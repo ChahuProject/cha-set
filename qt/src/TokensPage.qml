@@ -1,7 +1,7 @@
 // TokensPage.qml — Full Semantic Tokens & Palette Reference matching React 1:1
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import chaSet
+import ChaSet
 
 DocLayout {
     id: root

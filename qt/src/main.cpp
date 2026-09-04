@@ -29,7 +29,7 @@ static bool runRealMouseDragVerification(QQuickWindow* window) {
     double initialY = flickable->property("contentY").toDouble();
 
     // Calculate the position of the vertical scrollbar thumb on the right edge of contentScroll
-    QPointF scrollBarPos = contentScroll->mapToScene(QPointF(contentScroll->width() - 4, 30));
+    QPointF scrollBarPos = contentScroll->mapToScene(QPointF(contentScroll->width() - 7, 40));
     QPoint targetPoint = scrollBarPos.toPoint();
 
     // 1. Mouse Press on the Scrollbar Thumb
@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
             QCoreApplication::exit(-1);
         }, Qt::QueuedConnection);
 
-    engine.loadFromModule("chaSet", "Main");
+    engine.loadFromModule("chaSetDemo", "Main");
 
     if (engine.rootObjects().isEmpty()) {
         qCritical("[qt-showcase] No root objects!");

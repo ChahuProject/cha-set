@@ -1,7 +1,7 @@
 // ScrollAreaDocPage.qml — Comprehensive Scroll Area Documentation matching React 1:1
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import chaSet
+import ChaSet
 
 DocLayout {
     id: root
@@ -241,7 +241,7 @@ DocLayout {
             TextArea {
                 anchors.fill: parent; anchors.margins: 12
                 readOnly: true
-                text: "import QtQuick 6.10\nimport chaSet"
+                text: "import QtQuick 6.10\nimport ChaSet"
                 color: ThemeTokens.text
                 font.family: "Consolas, monospace"
                 font.pixelSize: 12

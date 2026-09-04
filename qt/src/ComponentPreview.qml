@@ -1,7 +1,7 @@
 // ComponentPreview.qml — Visual Component Sandbox matching React ComponentPreview.tsx 1:1
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import chaSet
+import ChaSet
 
 Rectangle {
     id: root

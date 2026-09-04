@@ -3,7 +3,7 @@
 // precision mouse wheel handling, smooth animated kinematics, and automatic childrenRect bounds.
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import chaSet
+import ChaSet
 
 Flickable {
     id: root

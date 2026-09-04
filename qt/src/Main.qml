@@ -2,7 +2,7 @@
 // 100% Pixel-Perfect and Behavioral Parity with React Studio (packages/react/examples/basic).
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import chaSet
+import ChaSet
 
 ApplicationWindow {
     id: win

@@ -2,7 +2,7 @@
 // spec/components/button.ts and capabilities in spec/capabilities.json.
 // 100% pixel-perfect and behavioral parity with React (@chahu/cha-set).
 import QtQuick 6.10
-import chaSet
+import ChaSet
 
 Item {
     id: root

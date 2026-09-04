@@ -1,7 +1,7 @@
 // CommandSearchModal.qml — Quick Command & Page Search (Ctrl+K)
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import chaSet
+import ChaSet
 
 Rectangle {
     id: root

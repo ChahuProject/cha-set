@@ -1,7 +1,7 @@
 // CodeBlock.qml — Standard Syntax Code Block matching React CodeBlock.tsx 1:1
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import chaSet
+import ChaSet
 
 Rectangle {
     id: root

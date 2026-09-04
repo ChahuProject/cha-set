@@ -1,7 +1,7 @@
 // ButtonDocPage.qml — Comprehensive Button Documentation matching React 1:1
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import chaSet
+import ChaSet
 
 DocLayout {
     id: root
@@ -154,7 +154,7 @@ DocLayout {
         CodeBlock {
             width: parent.width
             language: "qml"
-            code: "import QtQuick 6.10\nimport chaSet\n\nChaSetButton {\n    variant: \"primary\"\n    size: \"md\"\n    text: \"Create Project\"\n    onClicked: console.log(\"Clicked!\")\n}"
+            code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetButton {\n    variant: \"primary\"\n    size: \"md\"\n    text: \"Create Project\"\n    onClicked: console.log(\"Clicked!\")\n}"
         }
     }
 

@@ -1,7 +1,7 @@
 // IntroductionPage.qml — Getting Started & Architecture Overview matching React 1:1
 import QtQuick 6.10
 import QtQuick.Controls 6.10
-import chaSet
+import ChaSet
 
 DocLayout {
     id: root
@@ -185,7 +185,7 @@ DocLayout {
         CodeBlock {
             width: parent.width
             language: "qml"
-            code: "import QtQuick 6.10\nimport chaSet\n\nChaSetScrollView {\n    width: 400\n    height: 300\n    showButtons: true\n\n    ChaSetButton {\n        variant: \"primary\"\n        size: \"md\"\n        text: \"Launch Workspace\"\n        onClicked: console.log(\"Clicked!\")\n    }\n}"
+            code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetScrollView {\n    width: 400\n    height: 300\n    showButtons: true\n\n    ChaSetButton {\n        variant: \"primary\"\n        size: \"md\"\n        text: \"Launch Workspace\"\n        onClicked: console.log(\"Clicked!\")\n    }\n}"
         }
     }
 
