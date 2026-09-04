@@ -21,3 +21,4 @@ dist/
 .omo/
 *-shot*.png
 *.png
+*.tgz

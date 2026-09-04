@@ -1,9 +1,17 @@
 {
   "name": "@chahu/cha-set",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "ChaSet React implementation — cross-stack UI components.",
   "type": "module",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChahuProject/cha-set.git",
+    "directory": "packages/react"
+  },
   "sideEffects": [
     "**/*.css"
   ],
