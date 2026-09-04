@@ -52,6 +52,7 @@ target_link_libraries(ChaSet PUBLIC
 target_link_libraries(ChaSet INTERFACE ChaSetplugin)
 
 target_include_directories(ChaSet PUBLIC
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
 )

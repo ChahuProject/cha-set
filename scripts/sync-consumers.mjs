@@ -30,15 +30,15 @@ const CONSUMERS = [
     note: 'commit inside crd-a: launcher/src/css/generated/',
   },
   {
-    repo: resolve(repoRoot, '..', 'dt-a'),
+    repo: resolve(repoRoot, '..', 'dunting-qt'),
     workdir: '.',
     copies: [
       {
         from: resolve(dist, 'dunting', 'generated', 'theme_tokens.generated.h'),
-        to: resolve(repoRoot, '..', 'dt-a', 'theme', 'generated', 'theme_tokens.generated.h'),
+        to: resolve(repoRoot, '..', 'dunting-qt', 'theme', 'generated', 'theme_tokens.generated.h'),
       },
     ],
-    note: 'commit inside dt-a: theme/generated/ (then touch theme/theme_manager.cpp — ninja depfile quirk)',
+    note: 'commit inside dunting-qt: theme/generated/ (then touch theme/theme_manager.cpp — ninja depfile quirk)',
   },
 ];
 

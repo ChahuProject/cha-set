@@ -248,8 +248,12 @@ const outFile = resolve(repoRoot, 'dist', 'consumers', 'dunting', 'generated', '
 mkdirSync(dirname(outFile), { recursive: true });
 writeFileSync(outFile, header, 'utf8');
 
+const publicHeader = resolve(repoRoot, 'qt', 'include', 'ChaSet', 'theme_tokens.generated.h');
+mkdirSync(dirname(publicHeader), { recursive: true });
+writeFileSync(publicHeader, header, 'utf8');
+
 const perTheme = COLOR_ORDER.length + SPACE_ORDER.length + MOTION_ORDER.length + SIZE_ORDER.length;
-console.log(`[gen:qt] emitted ${outFile}`);
+console.log(`[gen:qt] emitted ${outFile} and ${publicHeader}`);
 console.log(`[gen:qt] per-theme fields: ${perTheme} (${COLOR_ORDER.length} colors + ${SPACE_ORDER.length} space + ${MOTION_ORDER.length} motion + ${SIZE_ORDER.length} size)`);
 
 // ---------------- QML singleton for the Qt showcase (cha-set/qt) ----------------
