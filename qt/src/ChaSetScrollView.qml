@@ -194,7 +194,7 @@ Flickable {
     ScrollBar.vertical: ChaSetScrollBar {
         id: vScrollBar
         scrollView: root
-        visible: root.showVerticalScrollBar && root.contentHeight > root.height
+        visible: root.showVerticalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentHeight > root.height))
         showButtons: root.showButtons
         collapsedSize: root.collapsedSize
         expandedSize: root.expandedSize
@@ -206,7 +206,7 @@ Flickable {
     ScrollBar.horizontal: ChaSetScrollBar {
         id: hScrollBar
         scrollView: root
-        visible: root.showHorizontalScrollBar && root.contentWidth > root.width
+        visible: root.showHorizontalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentWidth > root.width))
         showButtons: root.showButtons
         collapsedSize: root.collapsedSize
         expandedSize: root.expandedSize

@@ -25,6 +25,9 @@ T.ScrollBar {
     readonly property bool isVertical: orientation === Qt.Vertical
     readonly property bool isAtStart: scrollView ? (isVertical ? scrollView.isAtTop : scrollView.isAtLeft) : (position <= 0.001)
     readonly property bool isAtEnd: scrollView ? (isVertical ? scrollView.isAtBottom : scrollView.isAtRight) : (position >= 0.999 - size)
+    readonly property bool hasOverflow: scrollView ? (isVertical ? (scrollView.contentHeight > scrollView.height) : (scrollView.contentWidth > scrollView.width)) : (size > 0 && size < 1.0)
+
+    visible: policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && hasOverflow)
 
     topPadding: (showButtons && isVertical) ? 24 : 0
     bottomPadding: (showButtons && isVertical) ? 24 : 0
@@ -62,7 +65,7 @@ T.ScrollBar {
     // Top Cluster (To Top ⏫ + Page Up 🔼)
     Item {
         id: vertTopCluster
-        visible: control.showButtons && control.isVertical
+        visible: control.showButtons && control.isVertical && control.hasOverflow
         z: 10
         anchors.top: control.top
         anchors.horizontalCenter: control.horizontalCenter
@@ -153,7 +156,7 @@ T.ScrollBar {
     // Bottom Cluster (Page Down 🔽 + To Bottom ⏬)
     Item {
         id: vertBottomCluster
-        visible: control.showButtons && control.isVertical
+        visible: control.showButtons && control.isVertical && control.hasOverflow
         z: 10
         anchors.bottom: control.bottom
         anchors.horizontalCenter: control.horizontalCenter
@@ -247,7 +250,7 @@ T.ScrollBar {
     // Left Cluster (To Start ⏪ + Page Left ◀)
     Item {
         id: horizLeftCluster
-        visible: control.showButtons && !control.isVertical
+        visible: control.showButtons && !control.isVertical && control.hasOverflow
         z: 10
         anchors.left: control.left
         anchors.verticalCenter: control.verticalCenter
@@ -336,7 +339,7 @@ T.ScrollBar {
     // Right Cluster (Page Right ▶ + To End ⏩)
     Item {
         id: horizRightCluster
-        visible: control.showButtons && !control.isVertical
+        visible: control.showButtons && !control.isVertical && control.hasOverflow
         z: 10
         anchors.right: control.right
         anchors.verticalCenter: control.verticalCenter
