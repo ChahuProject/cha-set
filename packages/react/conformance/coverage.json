@@ -6,6 +6,7 @@
     "loading": true,
     "fullWidth": true,
     "keyboard": true,
+    "clickAction": true,
     "a11y": true
   },
   "scrollbar": {
@@ -14,6 +15,9 @@
     "dynamicWidth": true,
     "stepperButtons": true,
     "boundaryClamp": true,
-    "smoothScroll": true
+    "smoothScroll": true,
+    "wheelScroll": true,
+    "thumbDrag": true,
+    "trackJump": true
   }
 }

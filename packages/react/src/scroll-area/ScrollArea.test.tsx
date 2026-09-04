@@ -24,6 +24,9 @@ const covered: Record<string, boolean> = {
   stepperButtons: false,
   boundaryClamp: false,
   smoothScroll: false,
+  wheelScroll: true,
+  thumbDrag: true,
+  trackJump: false,
 };
 
 afterAll(() => {
@@ -242,6 +245,7 @@ describe('ScrollArea and ScrollBar', () => {
       });
       fireEvent(track, pointerDownEvent);
       expect(viewport.scrollTop).toBeGreaterThan(0);
+      covered.trackJump = true;
     }
   });
 });

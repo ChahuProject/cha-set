@@ -18,6 +18,7 @@ const covered: Record<string, boolean> = {
   loading: true,
   fullWidth: true,
   keyboard: false,
+  clickAction: false,
   a11y: false,
 };
 
@@ -56,6 +57,7 @@ describe('Button', () => {
     render(<Button onClick={onClick}>Go</Button>);
     fireEvent.click(screen.getByRole('button', { name: 'Go' }));
     expect(onClick).toHaveBeenCalledTimes(1);
+    covered.clickAction = true;
   });
 
   it('does not fire onClick when disabled', () => {
