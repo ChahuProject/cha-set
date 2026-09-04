@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
 import { cn } from '../lib/utils';
+import { useScrollAreaContext } from './context';
 import { ScrollBarStartCluster, ScrollBarEndCluster } from './ScrollBarButtons';
 
 export interface ScrollBarProps
@@ -19,8 +20,10 @@ export interface ScrollBarProps
   collapsedSize?: number | string;
   /** Expanded indicator thickness in pixels or rem string. @default 8 (0.5rem) */
   expandedSize?: number | string;
-  /** Whether to keep mounted when hidden. @default true */
+  /** Whether to keep mounted in DOM when hidden. @default false */
   keepMounted?: boolean;
+  /** Whether to automatically hide when content does not overflow. @default true */
+  autoHide?: boolean;
 }
 
 function toRem(val?: number | string): string | undefined {
@@ -40,7 +43,8 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
       hitSize = 8,
       collapsedSize = 4,
       expandedSize = 8,
-      keepMounted = true,
+      keepMounted = false,
+      autoHide = true,
       children,
       style,
       ...props
@@ -48,11 +52,23 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
     ref,
   ) {
     const isVertical = orientation === 'vertical';
+    const ctx = useScrollAreaContext();
+
+    const hasOverflow = ctx
+      ? isVertical
+        ? ctx.scrollState.hasOverflowY
+        : ctx.scrollState.hasOverflowX
+      : true;
+
+    if (autoHide && !hasOverflow && !keepMounted) {
+      return null;
+    }
 
     return (
       <div
         ref={ref}
         data-orientation={orientation}
+        data-has-overflow={hasOverflow ? '' : undefined}
         style={{
           ...(isVertical
             ? {
@@ -67,10 +83,12 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
                 right: 'var(--scroll-area-corner-width, 0px)',
                 bottom: 0,
               }),
+          ...(!hasOverflow ? { display: 'none' } : undefined),
           ...style,
         }}
         className={cn(
           'group absolute select-none touch-none transition-colors duration-150 z-20 flex',
+          !hasOverflow && 'hidden',
           isVertical
             ? 'flex-col items-center hover:bg-muted/30'
             : 'flex-row items-center hover:bg-muted/30',
@@ -95,7 +113,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
 
         <BaseScrollArea.Scrollbar
           orientation={orientation}
-          keepMounted={keepMounted}
+          keepMounted={true}
           style={{
             position: 'relative',
             top: 'auto',

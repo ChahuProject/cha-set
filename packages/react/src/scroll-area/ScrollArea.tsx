@@ -16,9 +16,14 @@ export interface ScrollAreaProps
   pageStepRatio?: number;
   /** Whether stepper buttons use smooth scrolling. @default true */
   smoothScroll?: boolean;
+  /** Whether scrollbars stay mounted in DOM when not overflowing. @default false */
+  keepMounted?: boolean;
   /** Viewport class names. */
   viewportClassName?: string;
 }
+
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
 function scrollElementTo(
   el: HTMLElement,
@@ -55,11 +60,13 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       showButtons = true,
       pageStepRatio = 0.85,
       smoothScroll = true,
+      keepMounted = false,
       ...props
     },
     ref,
   ) {
     const viewportRef = React.useRef<HTMLDivElement | null>(null);
+    const contentRef = React.useRef<HTMLDivElement | null>(null);
 
     const [scrollState, setScrollState] = React.useState<ScrollState>({
       isAtTop: true,
@@ -83,8 +90,9 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       const { scrollTop, scrollLeft, scrollHeight, clientHeight, scrollWidth, clientWidth } = el;
       const hasMeasuredY = scrollHeight > 0 && clientHeight > 0;
       const hasMeasuredX = scrollWidth > 0 && clientWidth > 0;
-      const hasOverflowY = scrollHeight > clientHeight;
-      const hasOverflowX = scrollWidth > clientWidth;
+      // Real measurements when layout is present; fallback to true for unmeasured/jsdom environments
+      const hasOverflowY = hasMeasuredY ? scrollHeight > clientHeight : true;
+      const hasOverflowX = hasMeasuredX ? scrollWidth > clientWidth : true;
       const isAtTop = scrollTop <= 1;
       const isAtBottom = hasMeasuredY ? (hasOverflowY ? Math.ceil(scrollTop + clientHeight) >= Math.floor(scrollHeight) - 2 : true) : false;
       const isAtLeft = scrollLeft <= 1;
@@ -120,7 +128,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       });
     }, []);
 
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       const el = viewportRef.current;
       if (!el) return;
 
@@ -138,6 +146,9 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
           updateScrollState();
         });
         resizeObserver.observe(el);
+        if (contentRef.current) {
+          resizeObserver.observe(contentRef.current);
+        }
       }
 
       return () => {
@@ -259,7 +270,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
             ref={viewportRef}
             className={cn('size-full rounded-[inherit]', viewportClassName)}
           >
-            <BaseScrollArea.Content>{children}</BaseScrollArea.Content>
+            <BaseScrollArea.Content ref={contentRef}>{children}</BaseScrollArea.Content>
           </BaseScrollArea.Viewport>
 
           {showVerticalScrollBar && (
@@ -268,6 +279,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
               showButtons={showButtons}
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}
+              keepMounted={keepMounted}
             />
           )}
 
@@ -277,6 +289,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
               showButtons={showButtons}
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}
+              keepMounted={keepMounted}
             />
           )}
 

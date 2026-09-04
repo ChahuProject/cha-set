@@ -162,41 +162,46 @@ describe('ScrollArea and ScrollBar', () => {
     expect(stopPropagationSpy).toHaveBeenCalled();
   });
 
-  it('disables all directional buttons when content does not overflow', () => {
-    const { container } = render(
+  it('hides scrollbars when content does not overflow', () => {
+    // 1. By default: scrollbars unmount when not overflowing
+    const { container: c1 } = render(
       <ScrollArea className="h-64 w-64" showHorizontalScrollBar showButtons={true}>
         <div style={{ height: 50, width: 50 }}>Short Content</div>
       </ScrollArea>,
     );
 
-    const viewport = container.querySelector('[data-id$="-viewport"]') as HTMLElement;
-    if (viewport) {
-      Object.defineProperty(viewport, 'scrollHeight', { value: 50, configurable: true });
-      Object.defineProperty(viewport, 'clientHeight', { value: 200, configurable: true });
-      Object.defineProperty(viewport, 'scrollWidth', { value: 50, configurable: true });
-      Object.defineProperty(viewport, 'clientWidth', { value: 200, configurable: true });
-      fireEvent.scroll(viewport);
+    const viewport1 = c1.querySelector('[data-id$="-viewport"]') as HTMLElement;
+    if (viewport1) {
+      Object.defineProperty(viewport1, 'scrollHeight', { value: 50, configurable: true });
+      Object.defineProperty(viewport1, 'clientHeight', { value: 200, configurable: true });
+      Object.defineProperty(viewport1, 'scrollWidth', { value: 50, configurable: true });
+      Object.defineProperty(viewport1, 'clientWidth', { value: 200, configurable: true });
+      fireEvent.scroll(viewport1);
     }
 
-    const toTopBtn = screen.getByRole('button', { name: /scroll to top/i });
-    const pageUpBtn = screen.getByRole('button', { name: /page up/i });
-    const pageDownBtn = screen.getByRole('button', { name: /page down/i });
-    const toBottomBtn = screen.getByRole('button', { name: /scroll to bottom/i });
+    expect(c1.querySelector('[data-orientation="vertical"]')).toBeNull();
+    expect(c1.querySelector('[data-orientation="horizontal"]')).toBeNull();
 
-    expect(toTopBtn).toBeDisabled();
-    expect(pageUpBtn).toBeDisabled();
-    expect(pageDownBtn).toBeDisabled();
-    expect(toBottomBtn).toBeDisabled();
+    // 2. When keepMounted is true: scrollbars stay mounted but are hidden
+    const { container: c2 } = render(
+      <ScrollArea className="h-64 w-64" showHorizontalScrollBar showButtons={true} keepMounted={true}>
+        <div style={{ height: 50, width: 50 }}>Short Content</div>
+      </ScrollArea>,
+    );
 
-    const toLeftBtn = screen.getByRole('button', { name: /scroll to start/i });
-    const pageLeftBtn = screen.getByRole('button', { name: /page left/i });
-    const pageRightBtn = screen.getByRole('button', { name: /page right/i });
-    const toRightBtn = screen.getByRole('button', { name: /scroll to end/i });
+    const viewport2 = c2.querySelector('[data-id$="-viewport"]') as HTMLElement;
+    if (viewport2) {
+      Object.defineProperty(viewport2, 'scrollHeight', { value: 50, configurable: true });
+      Object.defineProperty(viewport2, 'clientHeight', { value: 200, configurable: true });
+      Object.defineProperty(viewport2, 'scrollWidth', { value: 50, configurable: true });
+      Object.defineProperty(viewport2, 'clientWidth', { value: 200, configurable: true });
+      fireEvent.scroll(viewport2);
+    }
 
-    expect(toLeftBtn).toBeDisabled();
-    expect(pageLeftBtn).toBeDisabled();
-    expect(pageRightBtn).toBeDisabled();
-    expect(toRightBtn).toBeDisabled();
+    const vBar = c2.querySelector('[data-orientation="vertical"]');
+    const hBar = c2.querySelector('[data-orientation="horizontal"]');
+    expect(vBar).toHaveClass('hidden');
+    expect(hBar).toHaveClass('hidden');
   });
 
   it('handles track clicking jump accurately without margin distortion', () => {
