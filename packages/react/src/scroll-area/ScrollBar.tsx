@@ -113,14 +113,14 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         >
           <BaseScrollArea.Thumb
             className={cn(
-              'absolute z-20 flex items-center justify-center cursor-pointer transition-all duration-150',
+              'absolute z-20 flex items-center justify-center cursor-pointer',
               isVertical ? 'top-0 inset-x-0 min-h-4 my-0.5' : 'left-0 inset-y-0 min-w-4 mx-0.5',
             )}
           >
             {children ?? (
               <div
                 className={cn(
-                  'rounded-full bg-border transition-all duration-150',
+                  'rounded-full bg-border transition-[width,height,background-color] duration-150',
                   'group-hover:bg-muted-foreground/50 active:bg-foreground/60',
                   isVertical ? 'h-full w-1 group-hover:w-2' : 'w-full h-1 group-hover:h-2',
                 )}
