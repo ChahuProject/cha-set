@@ -17,7 +17,8 @@ Rectangle {
         { id: "scroll-area", title: "Scroll Area", category: "Components", desc: "Hot-zone expansion, steppers, dual-axis" },
         { id: "tabs", title: "Tabs", category: "Components", desc: "Layered content sections displayed one at a time" },
         { id: "badge", title: "Badge", category: "Components", desc: "Compact status and label pills with semantic tokens" },
-        { id: "card", title: "Card", category: "Components", desc: "Cards with header, content, and footer actions" }
+        { id: "card", title: "Card", category: "Components", desc: "Cards with header, content, and footer actions" },
+        { id: "input", title: "Input", category: "Components", desc: "Form text input field with sizes and state variants" }
     ]
 
     property string query: ""
@@ -50,33 +51,27 @@ Rectangle {
             spacing: 10
 
             // Search Input
-            Row {
+            ChaSetInput {
+                id: searchInput
                 width: parent.width
-                spacing: 8
-                Text { text: "🔍"; font.pixelSize: 14; anchors.verticalCenter: parent.verticalCenter }
-                TextInput {
-                    id: searchInput
-                    width: parent.width - 50
-                    height: 32
-                    font.pixelSize: 14
-                    color: ThemeTokens.text
-                    selectByMouse: true
-                    focus: true
-                    onTextChanged: { root.query = text; root.selectedIndex = 0 }
-                    Keys.onEscapePressed: root.close()
-                    Keys.onReturnPressed: {
-                        if (root.filteredItems.length > 0 && root.selectedIndex < root.filteredItems.length) {
-                            root.selectPage(root.filteredItems[root.selectedIndex].id)
-                            root.close()
-                        }
-                    }
-                    Keys.onDownPressed: {
-                        if (root.selectedIndex < root.filteredItems.length - 1) root.selectedIndex++
-                    }
-                    Keys.onUpPressed: {
-                        if (root.selectedIndex > 0) root.selectedIndex--
+                placeholderText: "Search components & docs..."
+                text: root.query
+                selectByMouse: true
+                onTextEdited: { root.query = text; root.selectedIndex = 0 }
+                onAccepted: {
+                    if (root.filteredItems.length > 0 && root.selectedIndex < root.filteredItems.length) {
+                        root.selectPage(root.filteredItems[root.selectedIndex].id)
+                        root.close()
                     }
                 }
+                Keys.onEscapePressed: root.close()
+                Keys.onDownPressed: {
+                    if (root.selectedIndex < root.filteredItems.length - 1) root.selectedIndex++
+                }
+                Keys.onUpPressed: {
+                    if (root.selectedIndex > 0) root.selectedIndex--
+                }
+                Component.onCompleted: forceActiveFocus()
             }
 
             Rectangle { width: parent.width; height: 1; color: ThemeTokens.border }

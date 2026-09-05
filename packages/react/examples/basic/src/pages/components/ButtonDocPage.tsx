@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
+import { Button, Input, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -121,12 +121,12 @@ export function ButtonDocPage() {
               {/* Text input */}
               {size !== 'icon' && (
                 <div className="flex items-center gap-1.5 ml-auto">
-                  <span className="text-muted-foreground">Label:</span>
-                  <input
-                    type="text"
+                  <span className="text-muted-foreground text-xs">Label:</span>
+                  <Input
+                    size="sm"
                     value={label}
                     onChange={(e) => setLabel(e.target.value)}
-                    className="w-28 px-2 py-0.5 rounded border border-border bg-background text-xs"
+                    className="w-28 h-7 text-xs"
                   />
                 </div>
               )}

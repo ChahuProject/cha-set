@@ -12,6 +12,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
+  Input,
 } from '@chahu/cha-set';
 import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
@@ -24,6 +25,7 @@ import { ScrollAreaDocPage } from './pages/components/ScrollAreaDocPage';
 import { TabsDocPage } from './pages/components/TabsDocPage';
 import { BadgeDocPage } from './pages/components/BadgeDocPage';
 import { CardDocPage } from './pages/components/CardDocPage';
+import { InputDocPage } from './pages/components/InputDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
@@ -308,6 +310,46 @@ export function App() {
     );
   }
 
+  // Isolated Input Visual Test Harness
+  if (harness === 'input') {
+    const size = (searchParams?.get('size') ?? 'default') as any;
+    const state = searchParams?.get('state') ?? 'idle';
+    const disabled = searchParams?.get('disabled') === 'true';
+    const theme = searchParams?.get('theme') ?? 'light';
+    const width = Number(searchParams?.get('width') ?? 220);
+    const height = Number(searchParams?.get('height') ?? 80);
+    const label = searchParams?.get('label') ?? '·';
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+
+    return (
+      <div
+        style={{
+          width,
+          height,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: theme === 'dark' ? '#020817' : '#ffffff',
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <div style={{ width: 220 }}>
+          <Input
+            size={size}
+            defaultValue={label}
+            disabled={disabled}
+            forceHover={state === 'hover'}
+            forceFocus={state === 'focus'}
+          />
+        </div>
+      </div>
+    );
+  }
+
   const { currentHash, navigate } = useRouter();
   const [mode, setMode] = useState(() => localStorage.getItem('cs-mode') ?? 'light');
   const [accent, setAccent] = useState(() => localStorage.getItem('cs-accent') ?? '');
@@ -360,6 +402,8 @@ export function App() {
         return <BadgeDocPage />;
       case '#/components/card':
         return <CardDocPage />;
+      case '#/components/input':
+        return <InputDocPage />;
       case '#/components/button':
       default:
         return <ButtonDocPage />;

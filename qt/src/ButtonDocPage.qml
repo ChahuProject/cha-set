@@ -121,18 +121,12 @@ DocLayout {
                 visible: root.btnSize !== "icon"
                 spacing: 6
                 Text { text: "Label:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
-                Rectangle {
-                    width: 100; height: 24; radius: 4
-                    color: ThemeTokens.background
-                    border.color: ThemeTokens.border
-                    TextInput {
-                        anchors.fill: parent
-                        anchors.margins: 4
-                        text: root.btnLabel
-                        color: ThemeTokens.text
-                        font.pixelSize: 11
-                        onTextEdited: root.btnLabel = text
-                    }
+                ChaSetInput {
+                    width: 100
+                    size: "sm"
+                    customRadius: 4
+                    text: root.btnLabel
+                    onTextEdited: root.btnLabel = text
                 }
             }
         ]

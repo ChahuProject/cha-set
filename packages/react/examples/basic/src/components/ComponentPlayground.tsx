@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Badge, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
+import { Button, Badge, Input, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
 
 export const ComponentPlayground: React.FC = () => {
   const [variant, setVariant] = useState<ButtonVariant>('default');
@@ -83,12 +83,12 @@ export const ComponentPlayground: React.FC = () => {
 
           <div className="control-field">
             <label className="control-label">Button Label</label>
-            <input
-              type="text"
-              className="text-input"
+            <Input
+              size="sm"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
               placeholder="Button text"
+              className="h-8 text-xs"
             />
           </div>
 

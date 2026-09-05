@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tabs, TabsList, TabsTrigger, Badge } from '@chahu/cha-set';
+import { Button, Tabs, TabsList, TabsTrigger, Badge, Input } from '@chahu/cha-set';
 
 export interface ThemeOverrides {
   primary?: string;
@@ -148,11 +148,12 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
                   value={overrides.primary || (mode === 'dark' ? '#30a0ff' : '#1d7ae0')}
                   onChange={(e) => updateOverride('primary', e.target.value)}
                 />
-                <input
-                  type="text"
+                <Input
+                  size="sm"
                   placeholder="e.g. #3b82f6"
                   value={overrides.primary || ''}
                   onChange={(e) => updateOverride('primary', e.target.value)}
+                  className="h-8 text-xs"
                 />
               </div>
             </div>
@@ -165,11 +166,12 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
                   value={overrides.primaryForeground || '#ffffff'}
                   onChange={(e) => updateOverride('primaryForeground', e.target.value)}
                 />
-                <input
-                  type="text"
+                <Input
+                  size="sm"
                   placeholder="#ffffff"
                   value={overrides.primaryForeground || ''}
                   onChange={(e) => updateOverride('primaryForeground', e.target.value)}
+                  className="h-8 text-xs"
                 />
               </div>
             </div>
@@ -182,11 +184,12 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
                   value={overrides.secondary || (mode === 'dark' ? '#252d3d' : '#e8ecf3')}
                   onChange={(e) => updateOverride('secondary', e.target.value)}
                 />
-                <input
-                  type="text"
+                <Input
+                  size="sm"
                   placeholder="var(--secondary)"
                   value={overrides.secondary || ''}
                   onChange={(e) => updateOverride('secondary', e.target.value)}
+                  className="h-8 text-xs"
                 />
               </div>
             </div>
@@ -199,11 +202,12 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
                   value={overrides.destructive || (mode === 'dark' ? '#ef4444' : '#dc2626')}
                   onChange={(e) => updateOverride('destructive', e.target.value)}
                 />
-                <input
-                  type="text"
+                <Input
+                  size="sm"
                   placeholder="var(--destructive)"
                   value={overrides.destructive || ''}
                   onChange={(e) => updateOverride('destructive', e.target.value)}
+                  className="h-8 text-xs"
                 />
               </div>
             </div>
@@ -216,11 +220,12 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
                   value={overrides.background || (mode === 'dark' ? '#0a0c14' : '#f4f6fa')}
                   onChange={(e) => updateOverride('background', e.target.value)}
                 />
-                <input
-                  type="text"
+                <Input
+                  size="sm"
                   placeholder="var(--background)"
                   value={overrides.background || ''}
                   onChange={(e) => updateOverride('background', e.target.value)}
+                  className="h-8 text-xs"
                 />
               </div>
             </div>
@@ -233,11 +238,12 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
                   value={overrides.card || (mode === 'dark' ? '#161b26' : '#ffffff')}
                   onChange={(e) => updateOverride('card', e.target.value)}
                 />
-                <input
-                  type="text"
+                <Input
+                  size="sm"
                   placeholder="var(--card)"
                   value={overrides.card || ''}
                   onChange={(e) => updateOverride('card', e.target.value)}
+                  className="h-8 text-xs"
                 />
               </div>
             </div>
@@ -250,11 +256,12 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
                   value={overrides.ring || '#30a0ff'}
                   onChange={(e) => updateOverride('ring', e.target.value)}
                 />
-                <input
-                  type="text"
+                <Input
+                  size="sm"
                   placeholder="var(--ring)"
                   value={overrides.ring || ''}
                   onChange={(e) => updateOverride('ring', e.target.value)}
+                  className="h-8 text-xs"
                 />
               </div>
             </div>

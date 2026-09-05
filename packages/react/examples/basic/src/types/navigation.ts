@@ -73,6 +73,13 @@ export const NAVIGATION_CONFIG: NavCategory[] = [
         badge: 'New',
         description: 'Displays a card with header, title, description, content, and footer actions.',
       },
+      {
+        id: 'input',
+        title: 'Input',
+        href: '#/components/input',
+        badge: 'New',
+        description: 'Displays a form text input field or a component that looks like an input field.',
+      },
     ],
   },
 ];

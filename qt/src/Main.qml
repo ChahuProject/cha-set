@@ -359,6 +359,25 @@ ApplicationWindow {
             }
         }
 
+        // Isolated Input Harness Container (for visual unit tests)
+        Rectangle {
+            id: inputHarnessContainer
+            visible: typeof harnessMode !== "undefined" && harnessMode === "input"
+            anchors.fill: parent
+            color: ThemeTokens.dark ? "#020817" : "#ffffff"
+
+            ChaSetInput {
+                id: harnessInput
+                anchors.centerIn: parent
+                width: 220
+                size: typeof harnessSize !== "undefined" ? harnessSize : "default"
+                text: (typeof harnessLabel !== "undefined" && harnessLabel !== "") ? harnessLabel : "·"
+                disabled: typeof harnessDisabled !== "undefined" && harnessDisabled === true
+                forceHover: typeof harnessState !== "undefined" && harnessState === "hover"
+                forceFocus: typeof harnessState !== "undefined" && harnessState === "focus"
+            }
+        }
+
         Item {
             id: studioContainer
             visible: typeof harnessMode === "undefined" || harnessMode === ""
@@ -608,7 +627,8 @@ ApplicationWindow {
                                     ["Scroll Area", "scroll-area", ""],
                                     ["Tabs", "tabs", ""],
                                     ["Badge", "badge", "New"],
-                                    ["Card", "card", "New"]
+                                    ["Card", "card", "New"],
+                                    ["Input", "input", "New"]
                                 ]
                                 delegate: Rectangle {
                                     required property var modelData
@@ -677,6 +697,9 @@ ApplicationWindow {
                             if (win.activePage === "button") return buttonPage.implicitHeight
                             if (win.activePage === "scroll-area") return scrollAreaPage.implicitHeight
                             if (win.activePage === "tabs") return tabsPage.implicitHeight
+                            if (win.activePage === "badge") return badgePage.implicitHeight
+                            if (win.activePage === "card") return cardPage.implicitHeight
+                            if (win.activePage === "input") return inputPage.implicitHeight
                             return 800
                         }
 
@@ -789,6 +812,20 @@ ApplicationWindow {
                         CardDocPage {
                             id: cardPage
                             visible: win.activePage === "card"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                            cPrimary: win.cPrimary
+                            cAccentBg: win.cAccentBg
+                        }
+
+                        // Page 9: Input Doc Page
+                        InputDocPage {
+                            id: inputPage
+                            visible: win.activePage === "input"
                             width: parent.width
                             customRadius: win.customRadius
                             cFg: win.cFg

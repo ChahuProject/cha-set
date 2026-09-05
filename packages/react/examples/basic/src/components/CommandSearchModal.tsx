@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, ScrollArea, Badge, Card } from '@chahu/cha-set';
+import { Button, ScrollArea, Badge, Card, Input } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG, type NavItem } from '../types/navigation';
 
 export interface CommandSearchModalProps {
@@ -63,13 +63,13 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.3-4.3" />
           </svg>
-          <input
+          <Input
             autoFocus
             type="text"
             placeholder="Search documentation and components..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground text-foreground"
+            className="w-full border-0 shadow-none focus-visible:ring-0 rounded-none py-3 text-sm bg-transparent"
           />
           <kbd className="text-[0.625rem] font-mono bg-muted text-muted-foreground px-1.5 py-0.5 rounded border border-border">
             ESC
