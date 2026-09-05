@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, ScrollArea } from '@chahu/cha-set';
+import { Button, ScrollArea, Tabs, TabsList, TabsTrigger } from '@chahu/cha-set';
 import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
 import { CommandSearchModal } from './components/CommandSearchModal';
@@ -8,6 +8,7 @@ import { Sidebar } from './layout/Sidebar';
 import { useRouter } from './router/useRouter';
 import { ButtonDocPage } from './pages/components/ButtonDocPage';
 import { ScrollAreaDocPage } from './pages/components/ScrollAreaDocPage';
+import { TabsDocPage } from './pages/components/TabsDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
@@ -162,6 +163,59 @@ export function App() {
     );
   }
 
+  // Isolated Tabs Visual Test Harness
+  if (harness === 'tabs') {
+    const state = searchParams?.get('state') ?? 'idle';
+    const tabIndex = searchParams?.get('tabIndex') ?? '1';
+    const disabled = searchParams?.get('disabled') === 'true';
+    const theme = searchParams?.get('theme') ?? 'light';
+    const width = Number(searchParams?.get('width') ?? 260);
+    const height = Number(searchParams?.get('height') ?? 80);
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+
+    const label1 = searchParams?.get('label1') ?? '·';
+    const label2 = searchParams?.get('label2') ?? '·';
+
+    return (
+      <div
+        style={{
+          width,
+          height,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: theme === 'dark' ? '#020817' : '#ffffff',
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <Tabs defaultValue={tabIndex === '2' ? 'password' : 'account'}>
+          <TabsList>
+            <TabsTrigger
+              value="account"
+              forceHover={state === 'hover' && (tabIndex === '1' || tabIndex === '')}
+              forceActive={state === 'active' && (tabIndex === '1' || tabIndex === '')}
+              disabled={disabled && tabIndex === '1'}
+            >
+              {label1}
+            </TabsTrigger>
+            <TabsTrigger
+              value="password"
+              forceHover={state === 'hover' && tabIndex === '2'}
+              forceActive={state === 'active' && tabIndex === '2'}
+              disabled={disabled && tabIndex === '2'}
+            >
+              {label2}
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+    );
+  }
+
   const { currentHash, navigate } = useRouter();
   const [mode, setMode] = useState(() => localStorage.getItem('cs-mode') ?? 'light');
   const [accent, setAccent] = useState(() => localStorage.getItem('cs-accent') ?? '');
@@ -208,6 +262,8 @@ export function App() {
         );
       case '#/components/scroll-area':
         return <ScrollAreaDocPage />;
+      case '#/components/tabs':
+        return <TabsDocPage />;
       case '#/components/button':
       default:
         return <ButtonDocPage />;

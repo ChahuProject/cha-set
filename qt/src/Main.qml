@@ -6,8 +6,8 @@ import ChaSet
 
 ApplicationWindow {
     id: win
-    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 220 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 120 : 1150))
-    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 80 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 200 : 850))
+    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 220 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 120 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 260 : 1150)))
+    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 80 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 200 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 80 : 850)))
     visible: true
     title: "ChaSet Studio"
     color: win.cBg
@@ -176,6 +176,24 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 5: Tabs State Coordination & Value Propagation
+        if (scenario === "all" || scenario === "tabs") {
+            tabsPage.demoTab = "account";
+            if (tabsPage.demoTab !== "account") {
+                console.log("[qt-scenario] FAIL: initial tabsPage.demoTab expected 'account'");
+                failures++;
+            } else {
+                tabsPage.demoTab = "password";
+                if (tabsPage.demoTab === "password") {
+                    console.log("[qt-scenario] PASS: Tabs value switching and panel coordination (account -> password)");
+                } else {
+                    console.log("[qt-scenario] FAIL: Tabs value switching failed");
+                    failures++;
+                }
+                tabsPage.demoTab = "account";
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;
@@ -257,6 +275,37 @@ ApplicationWindow {
                             color: ThemeTokens.dark ? "#38bdf8" : "#0284c7"
                             opacity: 0.1
                         }
+                    }
+                }
+            }
+        }
+
+        // Isolated Tabs Harness Container (for visual unit tests)
+        Rectangle {
+            id: tabsHarnessContainer
+            visible: typeof harnessMode !== "undefined" && harnessMode === "tabs"
+            anchors.fill: parent
+            color: ThemeTokens.dark ? "#020817" : "#ffffff"
+
+            ChaSetTabs {
+                id: harnessTabs
+                anchors.centerIn: parent
+                currentValue: (typeof harnessTabIndex !== "undefined" && harnessTabIndex === "2") ? "password" : "account"
+
+                ChaSetTabsList {
+                    ChaSetTabsTrigger {
+                        value: "account"
+                        text: (typeof harnessLabel1 !== "undefined" && harnessLabel1 !== "") ? harnessLabel1 : "·"
+                        forceHover: typeof harnessState !== "undefined" && harnessState === "hover" && (typeof harnessTabIndex === "undefined" || harnessTabIndex === "1")
+                        forceActive: typeof harnessState !== "undefined" && harnessState === "active" && (typeof harnessTabIndex === "undefined" || harnessTabIndex === "1")
+                        disabled: typeof harnessDisabled !== "undefined" && harnessDisabled === true && (typeof harnessTabIndex === "undefined" || harnessTabIndex === "1")
+                    }
+                    ChaSetTabsTrigger {
+                        value: "password"
+                        text: (typeof harnessLabel2 !== "undefined" && harnessLabel2 !== "") ? harnessLabel2 : "·"
+                        forceHover: typeof harnessState !== "undefined" && harnessState === "hover" && typeof harnessTabIndex !== "undefined" && harnessTabIndex === "2"
+                        forceActive: typeof harnessState !== "undefined" && harnessState === "active" && typeof harnessTabIndex !== "undefined" && harnessTabIndex === "2"
+                        disabled: typeof harnessDisabled !== "undefined" && harnessDisabled === true && typeof harnessTabIndex !== "undefined" && harnessTabIndex === "2"
                     }
                 }
             }
@@ -518,7 +567,8 @@ ApplicationWindow {
                             Repeater {
                                 model: [
                                     ["Button", "button", ""],
-                                    ["Scroll Area", "scroll-area", "New"]
+                                    ["Scroll Area", "scroll-area", ""],
+                                    ["Tabs", "tabs", "New"]
                                 ]
                                 delegate: Rectangle {
                                     required property var modelData
@@ -586,6 +636,7 @@ ApplicationWindow {
                             if (win.activePage === "theme-tuner") return tunerPage.implicitHeight
                             if (win.activePage === "button") return buttonPage.implicitHeight
                             if (win.activePage === "scroll-area") return scrollAreaPage.implicitHeight
+                            if (win.activePage === "tabs") return tabsPage.implicitHeight
                             return 800
                         }
 
@@ -664,6 +715,20 @@ ApplicationWindow {
                             cPrimary: win.cPrimary
                             cAccentBg: win.cAccentBg
                             onLogAction: function(msg) { win.pushLog(msg) }
+                        }
+
+                        // Page 6: Tabs Doc Page
+                        TabsDocPage {
+                            id: tabsPage
+                            visible: win.activePage === "tabs"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                            cPrimary: win.cPrimary
+                            cAccentBg: win.cAccentBg
                         }
                     }
                 }

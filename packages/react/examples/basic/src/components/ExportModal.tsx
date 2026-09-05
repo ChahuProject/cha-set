@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ScrollArea } from '@chahu/cha-set';
+import { Button, ScrollArea, Tabs, TabsList, TabsTrigger } from '@chahu/cha-set';
 import type { ThemeOverrides } from './ThemeTuner';
 
 interface ExportModalProps {
@@ -183,42 +183,16 @@ ApplicationWindow {
           </Button>
         </div>
 
-        <div className="modal-tabs flex gap-1 p-2 bg-muted/30 border-b border-border">
-          <Button
-            variant={activeTab === 'css' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => setActiveTab('css')}
-          >
-            CSS Variables
-          </Button>
-          <Button
-            variant={activeTab === 'tailwind' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => setActiveTab('tailwind')}
-          >
-            Tailwind v4
-          </Button>
-          <Button
-            variant={activeTab === 'react' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => setActiveTab('react')}
-          >
-            React Code
-          </Button>
-          <Button
-            variant={activeTab === 'qt' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => setActiveTab('qt')}
-          >
-            Qt / QML
-          </Button>
-          <Button
-            variant={activeTab === 'json' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => setActiveTab('json')}
-          >
-            JSON Spec
-          </Button>
+        <div className="modal-tabs p-2 bg-muted/30 border-b border-border">
+          <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as any)}>
+            <TabsList>
+              <TabsTrigger value="css">CSS Variables</TabsTrigger>
+              <TabsTrigger value="tailwind">Tailwind v4</TabsTrigger>
+              <TabsTrigger value="react">React Code</TabsTrigger>
+              <TabsTrigger value="qt">Qt / QML</TabsTrigger>
+              <TabsTrigger value="json">JSON Spec</TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
 
         <div className="modal-body">

@@ -90,20 +90,18 @@ DocLayout {
                 Column {
                     spacing: 6
                     Text { text: "APPEARANCE & MODE"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
-                    Row {
-                        spacing: 8
-                        ChaSetButton {
-                            size: "sm"
-                            variant: !ThemeTokens.dark ? "default" : "outline"
-                            text: "☀️ Light"
-                            onClicked: ThemeTokens.dark = false
+                    ChaSetTabs {
+                        currentValue: ThemeTokens.dark ? "dark" : "light"
+                        onCurrentValueChanged: {
+                            if (currentValue === "dark") {
+                                ThemeTokens.dark = true
+                            } else if (currentValue === "light") {
+                                ThemeTokens.dark = false
+                            }
                         }
-
-                        ChaSetButton {
-                            size: "sm"
-                            variant: ThemeTokens.dark ? "default" : "outline"
-                            text: "🌙 Dark"
-                            onClicked: ThemeTokens.dark = true
+                        ChaSetTabsList {
+                            ChaSetTabsTrigger { value: "light"; text: "☀️ Light" }
+                            ChaSetTabsTrigger { value: "dark"; text: "🌙 Dark" }
                         }
                     }
                 }

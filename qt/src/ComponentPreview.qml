@@ -33,32 +33,27 @@ Rectangle {
             border.color: ThemeTokens.border
             border.width: 0.5
 
-            Row {
+            ChaSetTabs {
                 anchors.left: parent.left
                 anchors.leftMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 4
+                currentValue: root.activeTab
+                onCurrentValueChanged: root.activeTab = currentValue
 
-                ChaSetButton {
-                    size: "sm"
-                    variant: root.activeTab === "preview" ? "secondary" : "ghost"
-                    text: "Preview"
-                    onClicked: root.activeTab = "preview"
-                }
-
-                ChaSetButton {
-                    size: "sm"
-                    variant: root.activeTab === "code" ? "secondary" : "ghost"
-                    text: "React Code"
-                    onClicked: root.activeTab = "code"
-                }
-
-                ChaSetButton {
-                    visible: root.qtCode !== ""
-                    size: "sm"
-                    variant: root.activeTab === "qt" ? "secondary" : "ghost"
-                    text: "Qt QML"
-                    onClicked: root.activeTab = "qt"
+                ChaSetTabsList {
+                    ChaSetTabsTrigger {
+                        value: "preview"
+                        text: "Preview"
+                    }
+                    ChaSetTabsTrigger {
+                        value: "code"
+                        text: "React Code"
+                    }
+                    ChaSetTabsTrigger {
+                        visible: root.qtCode !== ""
+                        value: "qt"
+                        text: "Qt QML"
+                    }
                 }
             }
 

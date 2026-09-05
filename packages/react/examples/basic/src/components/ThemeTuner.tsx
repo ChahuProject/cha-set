@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@chahu/cha-set';
+import { Button, Tabs, TabsList, TabsTrigger } from '@chahu/cha-set';
 
 export interface ThemeOverrides {
   primary?: string;
@@ -85,22 +85,12 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
         {/* Preset Modes */}
         <div className="tuner-group">
           <label className="tuner-label">Appearance & Mode</label>
-          <div className="flex gap-1.5">
-            <Button
-              variant={mode === 'light' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setMode('light')}
-            >
-              ☀️ Light
-            </Button>
-            <Button
-              variant={mode === 'dark' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setMode('dark')}
-            >
-              🌙 Dark
-            </Button>
-          </div>
+          <Tabs value={mode} onValueChange={(v) => setMode(v as string)}>
+            <TabsList>
+              <TabsTrigger value="light">☀️ Light</TabsTrigger>
+              <TabsTrigger value="dark">🌙 Dark</TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
 
         {/* Accent Themes */}

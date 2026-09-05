@@ -14,7 +14,8 @@ Rectangle {
         { id: "tokens", title: "Theme & Tokens", category: "Get Started", desc: "Design tokens, color palette, typography" },
         { id: "theme-tuner", title: "Theme Studio", category: "Get Started", desc: "Live theme tuner and config exporter" },
         { id: "button", title: "Button", category: "Components", desc: "Variants, sizes, loading & link states" },
-        { id: "scroll-area", title: "Scroll Area", category: "Components", desc: "Hot-zone expansion, steppers, dual-axis" }
+        { id: "scroll-area", title: "Scroll Area", category: "Components", desc: "Hot-zone expansion, steppers, dual-axis" },
+        { id: "tabs", title: "Tabs", category: "Components", desc: "Layered content sections displayed one at a time" }
     ]
 
     property string query: ""

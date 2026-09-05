@@ -52,6 +52,13 @@ export const NAVIGATION_CONFIG: NavCategory[] = [
         badge: 'New',
         description: 'Custom scrollable container with hot-zone expansion and stepper buttons.',
       },
+      {
+        id: 'tabs',
+        title: 'Tabs',
+        href: '#/components/tabs',
+        badge: 'New',
+        description: 'Set of layered content sections known as tab panels, displayed one at a time.',
+      },
     ],
   },
 ];

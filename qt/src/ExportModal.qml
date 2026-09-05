@@ -46,23 +46,16 @@ Rectangle {
             }
 
             // Tabs
-            Row {
-                spacing: 6
-                Repeater {
-                    model: [
-                        ["qt", "Qt / QML"],
-                        ["react", "React Code"],
-                        ["css", "CSS Variables"],
-                        ["tailwind", "Tailwind v4"],
-                        ["json", "JSON Spec"]
-                    ]
-                    delegate: ChaSetButton {
-                        required property var modelData
-                        size: "sm"
-                        variant: root.exportTab === modelData[0] ? "secondary" : "ghost"
-                        text: modelData[1]
-                        onClicked: root.exportTab = modelData[0]
-                    }
+            ChaSetTabs {
+                currentValue: root.exportTab
+                onCurrentValueChanged: root.exportTab = currentValue
+
+                ChaSetTabsList {
+                    ChaSetTabsTrigger { value: "qt"; text: "Qt / QML" }
+                    ChaSetTabsTrigger { value: "react"; text: "React Code" }
+                    ChaSetTabsTrigger { value: "css"; text: "CSS Variables" }
+                    ChaSetTabsTrigger { value: "tailwind"; text: "Tailwind v4" }
+                    ChaSetTabsTrigger { value: "json"; text: "JSON Spec" }
                 }
             }
 

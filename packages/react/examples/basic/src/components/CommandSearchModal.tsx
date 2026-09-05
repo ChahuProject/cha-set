@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { ScrollArea } from '@chahu/cha-set';
+import { Button, ScrollArea } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG, type NavItem } from '../types/navigation';
 
 export interface CommandSearchModalProps {
@@ -81,14 +81,15 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
             <div className="p-4 text-center text-xs text-muted-foreground">No matching pages found.</div>
           ) : (
             filtered.map(({ category, item }) => (
-              <button
+              <Button
                 key={item.id}
+                variant="ghost"
                 type="button"
                 onClick={() => {
                   onSelect(item.href);
                   onClose();
                 }}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left text-sm hover:bg-muted transition-colors cursor-pointer group"
+                className="w-full flex items-center justify-between px-3 py-2.5 h-auto rounded-lg text-left text-sm hover:bg-muted transition-colors cursor-pointer group"
               >
                 <div>
                   <div className="font-medium text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
@@ -104,7 +105,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
                 <span className="text-[0.6875rem] text-muted-foreground bg-muted px-2 py-0.5 rounded font-mono">
                   {category}
                 </span>
-              </button>
+              </Button>
             ))
           )}
         </ScrollArea>
