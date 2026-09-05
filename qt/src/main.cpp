@@ -74,10 +74,10 @@ int main(int argc, char* argv[])
     const QString harnessMode = harnessIdx >= 0 && harnessIdx + 1 < args.size() ? args.value(harnessIdx + 1) : "";
 
     const int varIdx = static_cast<int>(args.indexOf("--variant"));
-    const QString harnessVariant = varIdx >= 0 && varIdx + 1 < args.size() ? args.value(varIdx + 1) : "primary";
+    const QString harnessVariant = varIdx >= 0 && varIdx + 1 < args.size() ? args.value(varIdx + 1) : "default";
 
     const int sizeIdx = static_cast<int>(args.indexOf("--size"));
-    const QString harnessSize = sizeIdx >= 0 && sizeIdx + 1 < args.size() ? args.value(sizeIdx + 1) : "md";
+    const QString harnessSize = sizeIdx >= 0 && sizeIdx + 1 < args.size() ? args.value(sizeIdx + 1) : "default";
 
     const int lblIdx = static_cast<int>(args.indexOf("--label"));
     const QString harnessLabel = lblIdx >= 0 && lblIdx + 1 < args.size() ? args.value(lblIdx + 1) : "Create Project";

@@ -199,8 +199,8 @@ ApplicationWindow {
             color: "#ffffff"
             ChaSetButton {
                 anchors.centerIn: parent
-                variant: typeof harnessVariant !== "undefined" ? harnessVariant : "primary"
-                size: typeof harnessSize !== "undefined" ? harnessSize : "md"
+                variant: typeof harnessVariant !== "undefined" ? harnessVariant : "default"
+                size: typeof harnessSize !== "undefined" ? harnessSize : "default"
                 text: typeof harnessLabel !== "undefined" ? harnessLabel : "Create Project"
                 loading: typeof harnessLoading !== "undefined" ? harnessLoading : false
                 disabled: typeof harnessDisabled !== "undefined" ? harnessDisabled : false
@@ -314,7 +314,7 @@ ApplicationWindow {
 
                         // Style Tuner Button
                         ChaSetButton {
-                            variant: win.activePage === "theme-tuner" ? "primary" : "secondary"
+                            variant: win.activePage === "theme-tuner" ? "default" : "secondary"
                             size: "sm"
                             text: "🎨 Studio Tuner"
                             onClicked: win.activePage = "theme-tuner"

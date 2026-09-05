@@ -82,7 +82,7 @@ DocLayout {
 
                         ChaSetButton {
                             size: "sm"
-                            variant: "primary"
+                            variant: "default"
                             text: "📋 Copy Config"
                             onClicked: root.requestExport()
                         }
@@ -281,14 +281,16 @@ DocLayout {
                     Text { text: "BUTTONS"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                     Row {
                         spacing: 8
-                        ChaSetButton { variant: "primary"; size: "md"; text: "Primary Action"; onClicked: root.logAction("Clicked sandbox primary") }
-                        ChaSetButton { variant: "secondary"; size: "md"; text: "Secondary"; onClicked: root.logAction("Clicked sandbox secondary") }
-                        ChaSetButton { variant: "destructive"; size: "md"; text: "Danger"; onClicked: root.logAction("Clicked sandbox danger") }
+                        ChaSetButton { variant: "default"; size: "default"; text: "Default Action"; onClicked: root.logAction("Clicked sandbox default") }
+                        ChaSetButton { variant: "outline"; size: "default"; text: "Outline"; onClicked: root.logAction("Clicked sandbox outline") }
+                        ChaSetButton { variant: "secondary"; size: "default"; text: "Secondary"; onClicked: root.logAction("Clicked sandbox secondary") }
+                        ChaSetButton { variant: "destructive"; size: "default"; text: "Danger"; onClicked: root.logAction("Clicked sandbox danger") }
                     }
                     Row {
                         spacing: 8
                         ChaSetButton { variant: "ghost"; size: "sm"; text: "Ghost Action" }
-                        ChaSetButton { variant: "primary"; size: "sm"; text: "Saving..."; loading: true }
+                        ChaSetButton { variant: "link"; size: "sm"; text: "Link Action" }
+                        ChaSetButton { variant: "default"; size: "sm"; text: "Saving..."; loading: true }
                         ChaSetButton { variant: "secondary"; size: "sm"; text: "Disabled"; disabled: true }
                     }
                 }

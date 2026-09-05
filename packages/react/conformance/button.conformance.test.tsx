@@ -6,14 +6,24 @@ import { buttonSchema } from '@chahu/spec/button';
 describe('Button conformance (spec contract)', () => {
   it('accepts a props fixture that satisfies the spec contract', () => {
     const fixture = {
-      variant: 'primary',
-      size: 'md',
+      variant: 'default',
+      size: 'default',
       loading: false,
       fullWidth: false,
       disabled: false,
       type: 'button',
     } as const;
     expect(() => buttonSchema.parse(fixture)).not.toThrow();
+
+    // Verify all shadcn variants and sizes
+    const variants = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as const;
+    const sizes = ['default', 'sm', 'lg', 'icon'] as const;
+    for (const v of variants) {
+      expect(() => buttonSchema.parse({ variant: v })).not.toThrow();
+    }
+    for (const s of sizes) {
+      expect(() => buttonSchema.parse({ size: s })).not.toThrow();
+    }
   });
 
   it('rejects unknown variants per the contract', () => {

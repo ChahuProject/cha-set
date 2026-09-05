@@ -6,8 +6,8 @@ import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 
 export function ButtonDocPage() {
-  const [variant, setVariant] = useState<ButtonVariant>('primary');
-  const [size, setSize] = useState<ButtonSize>('md');
+  const [variant, setVariant] = useState<ButtonVariant>('default');
+  const [size, setSize] = useState<ButtonSize>('default');
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [fullWidth, setFullWidth] = useState(false);
@@ -17,13 +17,13 @@ export function ButtonDocPage() {
   variant="${variant}"
   size="${size}"${loading ? '\n  loading' : ''}${disabled ? '\n  disabled' : ''}${fullWidth ? '\n  fullWidth' : ''}
 >
-  ${label}
+  ${size === 'icon' ? '⚙' : label}
 </Button>`;
 
   const qtCode = `ChaSetButton {
     variant: "${variant}"
     size: "${size}"
-    text: "${label}"
+    text: "${size === 'icon' ? '' : label}"
     loading: ${loading}
     disabled: ${disabled}
     fullWidth: ${fullWidth}
@@ -56,7 +56,7 @@ export function ButtonDocPage() {
               {/* Variant Selector */}
               <div className="flex items-center gap-1.5">
                 <span className="text-muted-foreground font-medium">Variant:</span>
-                {(['primary', 'secondary', 'ghost', 'destructive'] as ButtonVariant[]).map((v) => (
+                {(['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'] as ButtonVariant[]).map((v) => (
                   <button
                     key={v}
                     type="button"
@@ -73,7 +73,7 @@ export function ButtonDocPage() {
               {/* Size Selector */}
               <div className="flex items-center gap-1.5">
                 <span className="text-muted-foreground font-medium">Size:</span>
-                {(['sm', 'md', 'lg'] as ButtonSize[]).map((s) => (
+                {(['default', 'sm', 'lg', 'icon'] as ButtonSize[]).map((s) => (
                   <button
                     key={s}
                     type="button"
@@ -119,15 +119,17 @@ export function ButtonDocPage() {
               </label>
 
               {/* Text input */}
-              <div className="flex items-center gap-1.5 ml-auto">
-                <span className="text-muted-foreground">Label:</span>
-                <input
-                  type="text"
-                  value={label}
-                  onChange={(e) => setLabel(e.target.value)}
-                  className="w-28 px-2 py-0.5 rounded border border-border bg-background text-xs"
-                />
-              </div>
+              {size !== 'icon' && (
+                <div className="flex items-center gap-1.5 ml-auto">
+                  <span className="text-muted-foreground">Label:</span>
+                  <input
+                    type="text"
+                    value={label}
+                    onChange={(e) => setLabel(e.target.value)}
+                    className="w-28 px-2 py-0.5 rounded border border-border bg-background text-xs"
+                  />
+                </div>
+              )}
             </div>
           }
         >
@@ -139,7 +141,7 @@ export function ButtonDocPage() {
               disabled={disabled}
               fullWidth={fullWidth}
             >
-              {label}
+              {size === 'icon' ? '⚙' : label}
             </Button>
           </div>
         </ComponentPreview>
@@ -170,13 +172,15 @@ export function ButtonDocPage() {
             Use the <code className="text-primary font-mono">variant</code> prop to change the visual hierarchy.
           </p>
           <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-3">
-            <Button variant="primary">Primary</Button>
+            <Button variant="default">Default</Button>
             <Button variant="secondary">Secondary</Button>
+            <Button variant="outline">Outline</Button>
             <Button variant="ghost">Ghost</Button>
             <Button variant="destructive">Destructive</Button>
+            <Button variant="link">Link</Button>
           </div>
           <CodeBlock
-            code={`<Button variant="primary">Primary</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="destructive">Destructive</Button>`}
+            code={`<Button variant="default">Default</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="outline">Outline</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="destructive">Destructive</Button>\n<Button variant="link">Link</Button>`}
             language="tsx"
             className="mt-3"
           />
@@ -186,15 +190,16 @@ export function ButtonDocPage() {
         <div id="sizes" className="my-6">
           <h3 className="text-base font-semibold mb-2">Sizes</h3>
           <p className="text-xs text-muted-foreground mb-3">
-            Available in three standardized sizes: <code className="font-mono">sm</code> (32px), <code className="font-mono">md</code> (36px), and <code className="font-mono">lg</code> (40px).
+            Available in four standardized sizes: <code className="font-mono">sm</code> (32px), <code className="font-mono">default</code> (36px), <code className="font-mono">lg</code> (40px), and <code className="font-mono">icon</code> (36×36px).
           </p>
           <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-3">
             <Button size="sm">Small (32px)</Button>
-            <Button size="md">Medium (36px)</Button>
+            <Button size="default">Default (36px)</Button>
             <Button size="lg">Large (40px)</Button>
+            <Button size="icon" aria-label="Settings">⚙</Button>
           </div>
           <CodeBlock
-            code={`<Button size="sm">Small</Button>\n<Button size="md">Medium</Button>\n<Button size="lg">Large</Button>`}
+            code={`<Button size="sm">Small</Button>\n<Button size="default">Default</Button>\n<Button size="lg">Large</Button>\n<Button size="icon" aria-label="Settings">⚙</Button>`}
             language="tsx"
             className="mt-3"
           />
@@ -226,14 +231,14 @@ export function ButtonDocPage() {
           props={[
             {
               name: 'variant',
-              type: "'primary' | 'secondary' | 'ghost' | 'destructive'",
-              default: "'primary'",
+              type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'",
+              default: "'default'",
               description: 'Visual appearance and semantic intent.',
             },
             {
               name: 'size',
-              type: "'sm' | 'md' | 'lg'",
-              default: "'md'",
+              type: "'default' | 'sm' | 'lg' | 'icon'",
+              default: "'default'",
               description: 'Height and padding dimensions.',
             },
             {
@@ -247,6 +252,12 @@ export function ButtonDocPage() {
               type: 'boolean',
               default: 'false',
               description: 'Stretches the button to 100% of the parent container width.',
+            },
+            {
+              name: 'asChild',
+              type: 'boolean',
+              default: 'false',
+              description: 'Passes props directly to the child element (polymorphism).',
             },
             {
               name: 'disabled',

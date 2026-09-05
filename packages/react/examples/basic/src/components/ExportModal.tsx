@@ -77,13 +77,13 @@ import '@chahu/cha-set/styles.css';
 export function ActionPanel() {
   return (
     <div className="flex gap-3">
-      <Button variant="primary" size="md">
+      <Button variant="default" size="default">
         Save Changes
       </Button>
-      <Button variant="secondary" size="md">
+      <Button variant="secondary" size="default">
         Cancel
       </Button>
-      <Button variant="destructive" size="md">
+      <Button variant="destructive" size="default">
         Delete
       </Button>
     </div>
@@ -114,15 +114,15 @@ ApplicationWindow {
         anchors.centerIn: parent
 
         ChaSetButton {
-            variant: "primary"
-            size: "md"
+            variant: "default"
+            size: "default"
             text: "Save Changes"
-            onClicked: console.log("Primary clicked")
+            onClicked: console.log("Default clicked")
         }
 
         ChaSetButton {
             variant: "secondary"
-            size: "md"
+            size: "default"
             text: "Cancel"
         }
     }

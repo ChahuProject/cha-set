@@ -78,10 +78,10 @@ Rectangle {
                     readOnly: true
                     text: {
                         if (root.exportTab === 'qt') {
-                            return '// ChaSet Qt QML Component Usage\nimport QtQuick 6.10\nimport ChaSet\n\nChaSetButton {\n    variant: \"primary\"\n    size: \"md\"\n    text: \"Launch Workspace\"\n}\n\nChaSetScrollArea {\n    width: 400; height: 300\n    showButtons: true\n}';
+                            return '// ChaSet Qt QML Component Usage\nimport QtQuick 6.10\nimport ChaSet\n\nChaSetButton {\n    variant: \"default\"\n    size: \"default\"\n    text: \"Launch Workspace\"\n}\n\nChaSetScrollArea {\n    width: 400; height: 300\n    showButtons: true\n}';
                         }
                         if (root.exportTab === 'react') {
-                            return 'import { Button, ScrollArea } from \'@chahu/cha-set\';\nimport \'@chahu/cha-set/styles.css\';\n\n<Button variant=\"primary\" size=\"md\">Launch Workspace</Button>\n<ScrollArea className=\"h-72 w-full\">...</ScrollArea>';
+                            return 'import { Button, ScrollArea } from \'@chahu/cha-set\';\nimport \'@chahu/cha-set/styles.css\';\n\n<Button variant=\"default\" size=\"default\">Launch Workspace</Button>\n<ScrollArea className=\"h-72 w-full\">...</ScrollArea>';
                         }
                         if (root.exportTab === 'css') {
                             return ':root {\n  --radius: ' + root.customRadius + 'px;\n  --primary: ' + (ThemeTokens.dark ? '#30a0ff' : '#1d7ae0') + ';\n  --background: ' + (ThemeTokens.dark ? '#020817' : '#ffffff') + ';\n}';
@@ -102,7 +102,7 @@ Rectangle {
                 anchors.right: parent.right
                 spacing: 10
                 ChaSetButton { size: "sm"; variant: "secondary"; text: "Close"; onClicked: root.close() }
-                ChaSetButton { size: "sm"; variant: "primary"; text: "✓ Done"; onClicked: root.close() }
+                ChaSetButton { size: "sm"; variant: "default"; text: "✓ Done"; onClicked: root.close() }
             }
         }
     }

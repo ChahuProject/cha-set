@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Button } from '@chahu/cha-set';
 
-const VARIANTS = ['primary', 'secondary', 'ghost', 'destructive'] as const;
-const SIZES = ['sm', 'md', 'lg'] as const;
+const VARIANTS = ['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'] as const;
+const SIZES = ['sm', 'default', 'lg', 'icon'] as const;
 
 export default function ButtonSection() {
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ export default function ButtonSection() {
           <span className="matrix-label">{v}</span>
           {SIZES.map((s) => (
             <Button key={s} variant={v} size={s} onClick={() => push(`${v}/${s} clicked`)}>
-              {v} {s}
+              {s === 'icon' ? '⚙' : `${v} ${s}`}
             </Button>
           ))}
         </div>
@@ -43,12 +43,12 @@ export default function ButtonSection() {
           Disabled Button
         </Button>
         <Button
+          asChild
           variant="secondary"
-          render={<a href="#docs" />}
           nativeButton={false}
-          onClick={() => push('Base UI <a> link clicked')}
+          onClick={() => push('asChild <a> link clicked')}
         >
-          Render as Link (`&lt;a&gt;`)
+          <a href="#docs">asChild Link (`&lt;a&gt;`)</a>
         </Button>
       </div>
 

@@ -7,20 +7,21 @@ import ChaSet
 Item {
     id: root
 
-    // ---- API Contract ----
-    property string variant: "primary"   // primary | secondary | ghost | destructive
-    property string size: "md"           // sm | md | lg
+    // ---- API Contract (shadcn/ui aligned) ----
+    property string variant: "default"   // default | destructive | outline | secondary | ghost | link
+    property string size: "default"      // default | sm | lg | icon
     property bool loading: false
     property bool fullWidth: false
     property bool disabled: false
     property string text: ""
-    property int customRadius: ThemeTokens.rowRadius
+    property string iconSource: ""
+    property int customRadius: size === "sm" ? 4 : 6
 
     signal clicked()
 
     readonly property bool effectiveDisabled: disabled || loading
 
-    // Height parity: sm: 32px, md: 36px, lg: 40px
+    // Height parity: sm: 32px, default/md/icon: 36px, lg: 40px
     function buttonHeight() {
         switch (size) {
         case "sm": return 32
@@ -29,16 +30,17 @@ Item {
         }
     }
 
-    // Horizontal padding parity: sm: 12px, md: 16px, lg: 20px
+    // Horizontal padding parity: sm: 12px, default/md: 16px, lg: 24px, icon: 0px
     function paddingH() {
+        if (size === "icon") return 0
         switch (size) {
         case "sm": return 12
-        case "lg": return 20
+        case "lg": return 24
         default:   return 16
         }
     }
 
-    // Font size parity: sm: 12px (text-xs), md: 14px (text-sm), lg: 16px (text-base)
+    // Font size parity: sm: 12px (text-xs), default/md/icon: 14px (text-sm), lg: 16px (text-base)
     function fontSizePx() {
         switch (size) {
         case "sm": return 12
@@ -47,23 +49,42 @@ Item {
         }
     }
 
-    // Colors matching Web Tailwind token classes
+    // Colors matching Web Tailwind token classes (shadcn standard)
     function baseColor() {
         switch (variant) {
-        case "secondary": return ThemeTokens.selection
-        case "ghost":     return "transparent"
         case "destructive": return ThemeTokens.danger
-        default:          return ThemeTokens.accent
+        case "outline":     return ThemeTokens.background
+        case "secondary":   return ThemeTokens.panelRaised
+        case "ghost":
+        case "link":        return "transparent"
+        case "default":
+        case "primary":
+        default:            return ThemeTokens.accent
         }
     }
 
     function bgColor() {
-        const base = baseColor()
-        if (base === "transparent") {
+        if (variant === "ghost" || variant === "link") {
+            if (variant === "link") return "transparent"
             if (down) return ThemeTokens.pressed
-            if (hovered && !effectiveDisabled) return ThemeTokens.hover
+            if (hovered && !effectiveDisabled) return ThemeTokens.selection
             return "transparent"
         }
+
+        if (variant === "outline") {
+            if (down) return ThemeTokens.pressed
+            if (hovered && !effectiveDisabled) return ThemeTokens.selection
+            return ThemeTokens.background
+        }
+
+        if (variant === "secondary") {
+            const base = ThemeTokens.panelRaised
+            if (down) return ThemeTokens.pressed
+            if (hovered && !effectiveDisabled) return Qt.rgba(base.r, base.g, base.b, 0.8)
+            return base
+        }
+
+        const base = baseColor()
         if (down) {
             return Qt.rgba(base.r, base.g, base.b, 0.8) // active/80
         }
@@ -75,15 +96,29 @@ Item {
 
     function fgColor() {
         switch (variant) {
-        case "secondary": return ThemeTokens.text
-        case "ghost":     return ThemeTokens.text
         case "destructive": return ThemeTokens.onAccent
-        default:          return ThemeTokens.onAccent
+        case "outline":
+        case "secondary":
+        case "ghost":       return ThemeTokens.text
+        case "link":        return ThemeTokens.accent
+        case "default":
+        case "primary":
+        default:            return ThemeTokens.onAccent
         }
     }
 
+    function hasBorder() {
+        return variant === "outline"
+    }
+
+    function isIconButton() {
+        return size === "icon"
+    }
+
     implicitHeight: buttonHeight()
-    implicitWidth: Math.max(buttonHeight(), (text !== "" ? contentRow.implicitWidth : fontSizePx()) + paddingH() * 2)
+    implicitWidth: isIconButton()
+        ? buttonHeight()
+        : Math.max(buttonHeight(), (text !== "" || iconSource !== "" ? contentRow.implicitWidth : fontSizePx()) + paddingH() * 2)
     height: buttonHeight()
     width: fullWidth && parent ? parent.width : implicitWidth
 
@@ -91,8 +126,20 @@ Item {
     property bool hovered: false
 
     Accessible.role: Accessible.Button
-    Accessible.name: text
+    Accessible.name: text !== "" ? text : (isIconButton() ? "Icon Button" : "")
     activeFocusOnTab: true
+
+    // Subtle drop shadow / depth for solid & outline variants (shadcn shadow-xs)
+    Rectangle {
+        id: shadowDepth
+        anchors.fill: root
+        anchors.topMargin: 1
+        radius: root.customRadius
+        color: root.hasBorder() || root.variant === "default" || root.variant === "primary" || root.variant === "secondary" || root.variant === "destructive"
+               ? Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.25 : 0.06)
+               : "transparent"
+        visible: !root.down && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link")
+    }
 
     // Background surface
     Rectangle {
@@ -100,14 +147,14 @@ Item {
         anchors.fill: root
         radius: root.customRadius
         color: root.bgColor()
-        border.color: root.variant === "secondary" ? ThemeTokens.border : "transparent"
-        border.width: root.variant === "secondary" ? 1 : 0
+        border.color: root.hasBorder() ? ThemeTokens.border : "transparent"
+        border.width: root.hasBorder() ? 1 : 0
 
         Behavior on color { ColorAnimation { duration: ThemeTokens.motionQuick } }
-        opacity: root.effectiveDisabled ? 0.6 : 1.0
+        opacity: root.effectiveDisabled ? 0.5 : 1.0
     }
 
-    // Focus ring (2px width with 2px offset matching focus-visible:outline-2 focus-visible:outline-ring)
+    // Focus ring (2px offset ring matching focus-visible:ring-2 focus-visible:ring-ring)
     Rectangle {
         anchors.fill: root
         anchors.margins: -2
@@ -118,11 +165,11 @@ Item {
         visible: root.activeFocus
     }
 
-    // Content: Spinner + Label (centered row)
+    // Content: Spinner + Icon + Label (centered row)
     Row {
         id: contentRow
         anchors.centerIn: root
-        spacing: root.loading ? 8 : 0
+        spacing: 8
 
         // Spinner (loading state)
         Rectangle {
@@ -156,15 +203,30 @@ Item {
             }
         }
 
+        // Optional Icon
+        Image {
+            id: btnIcon
+            visible: !root.loading && root.iconSource !== ""
+            width: visible ? (root.size === "sm" ? 14 : 16) : 0
+            height: width
+            anchors.verticalCenter: parent.verticalCenter
+            source: root.iconSource
+            sourceSize.width: width
+            sourceSize.height: height
+            fillMode: Image.PreserveAspectFit
+        }
+
         // Label
         Text {
             id: label
+            visible: root.text !== ""
             anchors.verticalCenter: parent.verticalCenter
             text: root.text
             color: root.fgColor()
             font.pixelSize: root.fontSizePx()
             font.weight: Font.Medium
             font.family: "Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif"
+            font.underline: root.variant === "link" && root.hovered && !root.effectiveDisabled
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             opacity: root.loading ? 0.7 : 1.0
@@ -174,6 +236,7 @@ Item {
     HoverHandler {
         id: hoverHandler
         enabled: !root.effectiveDisabled
+        cursorShape: root.effectiveDisabled ? Qt.ArrowCursor : Qt.PointingHandCursor
         onHoveredChanged: root.hovered = hoverHandler.hovered
     }
 

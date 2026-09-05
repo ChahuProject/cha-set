@@ -57,7 +57,7 @@ pnpm add @chahu/cha-set
 import { Button } from '@chahu/cha-set';
 import '@chahu/cha-set/styles.css';
 
-<Button variant="primary" size="md" loading={isSaving}>
+<Button variant="default" size="default" loading={isSaving}>
   Save
 </Button>
 ```

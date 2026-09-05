@@ -74,7 +74,7 @@ export function MyView() {
   return (
     <ScrollArea className="h-80 w-full border rounded-md">
       <div className="p-4 space-y-3">
-        <Button variant="primary">Launch Workspace</Button>
+        <Button variant="default">Launch Workspace</Button>
       </div>
     </ScrollArea>
   );

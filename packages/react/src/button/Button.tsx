@@ -1,40 +1,52 @@
 import { forwardRef } from 'react';
-import type * as React from 'react';
+import * as React from 'react';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/utils';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonVariant =
+  | 'default'
+  | 'destructive'
+  | 'outline'
+  | 'secondary'
+  | 'ghost'
+  | 'link';
+
+export type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
 
 /**
- * shadcn-style variant table. Utilities resolve against the shadcn-standard
+ * shadcn-standard variant table. Utilities resolve against the shadcn-standard
  * core tokens (see styles/theme.css @theme inline) — the host's variables
  * win at runtime, cha-set only ships defaults.
  */
 const buttonVariants = cva(
-  // Base: rem-based sizing honors host root-font-size scaling; focus ring
-  // reads --ring; loading/disabled share one disabled visual treatment.
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-60 border-0 cursor-pointer',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow,background-color] select-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
-        primary: 'bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80',
-        secondary:
-          'bg-secondary text-secondary-foreground border border-solid border-border hover:bg-secondary/90 active:bg-secondary/80',
-        ghost: 'bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground active:bg-accent/80',
+        default:
+          'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 active:bg-primary/80',
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/80',
+          'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 active:bg-destructive/80',
+        outline:
+          'border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground active:bg-accent/80',
+        secondary:
+          'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 active:bg-secondary/70',
+        ghost:
+          'hover:bg-accent hover:text-accent-foreground active:bg-accent/80',
+        link:
+          'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        sm: 'h-8 px-3 text-xs',
-        md: 'h-9 px-4',
-        lg: 'h-10 px-5 text-base',
+        default: 'h-9 px-4 py-2 has-[>svg]:px-3',
+        sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5 text-xs',
+        lg: 'h-10 rounded-md px-6 has-[>svg]:px-4 text-base',
+        icon: 'size-9 p-0',
       },
     },
     defaultVariants: {
-      variant: 'primary',
-      size: 'md',
+      variant: 'default',
+      size: 'default',
     },
   },
 );
@@ -46,6 +58,11 @@ export interface ButtonProps
   loading?: boolean;
   /** Stretch to fill the parent width. @default false */
   fullWidth?: boolean;
+  /**
+   * shadcn-compatible prop: when true, merges props onto the immediate child element.
+   * In Base UI, this maps directly to the `render` prop.
+   */
+  asChild?: boolean;
 }
 
 export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
@@ -54,6 +71,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
     size,
     loading = false,
     fullWidth = false,
+    asChild = false,
     className,
     type = 'button',
     disabled,
@@ -66,6 +84,8 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
   const classes = cn(buttonVariants({ variant, size }), fullWidth && 'w-full', className);
   const isDisabled = disabled || loading;
 
+  const effectiveRender = asChild && React.isValidElement(children) ? children : render;
+
   return (
     <BaseButton
       ref={ref}
@@ -73,16 +93,22 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
       className={classes}
       disabled={isDisabled}
       aria-busy={loading || undefined}
-      render={render}
+      render={effectiveRender}
       {...rest}
     >
-      {loading ? (
-        <span
-          className="cs-button__spinner size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
-          aria-hidden="true"
-        />
-      ) : null}
-      <span className={loading ? 'opacity-70' : undefined}>{children}</span>
+      {asChild ? (
+        children
+      ) : (
+        <>
+          {loading ? (
+            <span
+              className="cs-button__spinner size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+              aria-hidden="true"
+            />
+          ) : null}
+          <span className={loading ? 'opacity-70' : undefined}>{children}</span>
+        </>
+      )}
     </BaseButton>
   );
 });

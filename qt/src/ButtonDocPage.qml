@@ -18,8 +18,8 @@ DocLayout {
         { id: "props", title: "API Reference" }
     ]
 
-    property string btnVariant: "primary"
-    property string btnSize: "md"
+    property string btnVariant: "default"
+    property string btnSize: "default"
     property string btnLabel: "Button"
     property bool btnLoading: false
     property bool btnDisabled: false
@@ -41,12 +41,12 @@ DocLayout {
   variant="${root.btnVariant}"
   size="${root.btnSize}"${root.btnLoading ? '\n  loading' : ''}${root.btnDisabled ? '\n  disabled' : ''}${root.btnFullWidth ? '\n  fullWidth' : ''}
 >
-  ${root.btnLabel}
+  ${root.btnSize === 'icon' ? '⚙' : root.btnLabel}
 </Button>`
         qtCode: `ChaSetButton {
     variant: "${root.btnVariant}"
     size: "${root.btnSize}"
-    text: "${root.btnLabel}"
+    text: "${root.btnSize === 'icon' ? '' : root.btnLabel}"
     loading: ${root.btnLoading}
     disabled: ${root.btnDisabled}
     fullWidth: ${root.btnFullWidth}
@@ -62,7 +62,7 @@ DocLayout {
                 anchors.centerIn: parent
                 variant: root.btnVariant
                 size: root.btnSize
-                text: root.btnLabel
+                text: root.btnSize === "icon" ? "" : root.btnLabel
                 loading: root.btnLoading
                 disabled: root.btnDisabled
                 width: root.btnFullWidth ? Math.min(parent.width - 48, 360) : implicitWidth
@@ -75,7 +75,7 @@ DocLayout {
                 spacing: 6
                 Text { text: "Variant:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Repeater {
-                    model: ["primary", "secondary", "ghost", "destructive"]
+                    model: ["default", "secondary", "outline", "ghost", "destructive", "link"]
                     delegate: Rectangle {
                         required property var modelData
                         width: btnText.implicitWidth + 14
@@ -92,15 +92,15 @@ DocLayout {
                 spacing: 6
                 Text { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Repeater {
-                    model: ["sm", "md", "lg"]
+                    model: ["sm", "default", "lg", "icon"]
                     delegate: Rectangle {
                         required property var modelData
-                        width: 32
+                        width: sizeText.implicitWidth + 12
                         height: 24
                         radius: 4
                         color: root.btnSize === modelData ? ThemeTokens.accent : ThemeTokens.hover
                         border.color: root.btnSize === modelData ? ThemeTokens.accent : ThemeTokens.border
-                        Text { anchors.centerIn: parent; text: modelData.toUpperCase(); color: root.btnSize === modelData ? "#ffffff" : ThemeTokens.text; font.pixelSize: 10; font.weight: Font.Medium }
+                        Text { id: sizeText; anchors.centerIn: parent; text: modelData.toUpperCase(); color: root.btnSize === modelData ? "#ffffff" : ThemeTokens.text; font.pixelSize: 10; font.weight: Font.Medium }
                         MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.btnSize = modelData }
                     }
                 }
@@ -124,6 +124,7 @@ DocLayout {
                 }
             },
             Row {
+                visible: root.btnSize !== "icon"
                 spacing: 6
                 Text { text: "Label:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Rectangle {
@@ -154,7 +155,7 @@ DocLayout {
         CodeBlock {
             width: parent.width
             language: "qml"
-            code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetButton {\n    variant: \"primary\"\n    size: \"md\"\n    text: \"Create Project\"\n    onClicked: console.log(\"Clicked!\")\n}"
+            code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetButton {\n    variant: \"default\"\n    size: \"default\"\n    text: \"Create Project\"\n    onClicked: console.log(\"Clicked!\")\n}"
         }
     }
 
@@ -180,16 +181,18 @@ DocLayout {
                 Row {
                     anchors.centerIn: parent
                     spacing: 10
-                    ChaSetButton { variant: "primary"; text: "Primary" }
+                    ChaSetButton { variant: "default"; text: "Default" }
                     ChaSetButton { variant: "secondary"; text: "Secondary" }
+                    ChaSetButton { variant: "outline"; text: "Outline" }
                     ChaSetButton { variant: "ghost"; text: "Ghost" }
                     ChaSetButton { variant: "destructive"; text: "Destructive" }
+                    ChaSetButton { variant: "link"; text: "Link" }
                 }
             }
             CodeBlock {
                 width: parent.width
                 language: "qml"
-                code: "ChaSetButton { variant: \"primary\"; text: \"Primary\" }\nChaSetButton { variant: \"secondary\"; text: \"Secondary\" }\nChaSetButton { variant: \"ghost\"; text: \"Ghost\" }\nChaSetButton { variant: \"destructive\"; text: \"Destructive\" }"
+                code: "ChaSetButton { variant: \"default\"; text: \"Default\" }\nChaSetButton { variant: \"secondary\"; text: \"Secondary\" }\nChaSetButton { variant: \"outline\"; text: \"Outline\" }\nChaSetButton { variant: \"ghost\"; text: \"Ghost\" }\nChaSetButton { variant: \"destructive\"; text: \"Destructive\" }\nChaSetButton { variant: \"link\"; text: \"Link\" }"
             }
         }
 
@@ -198,7 +201,7 @@ DocLayout {
             width: parent.width
             spacing: 8
             Text { text: "Sizes"; color: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.DemiBold }
-            Text { text: "Available in three standardized sizes: sm (32px), md (36px), and lg (40px)."; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+            Text { text: "Available in four standardized sizes: sm (32px), default (36px), lg (40px), and icon (36×36px)."; color: ThemeTokens.subduedText; font.pixelSize: 12 }
             Rectangle {
                 width: parent.width
                 height: 72
@@ -209,14 +212,15 @@ DocLayout {
                     anchors.centerIn: parent
                     spacing: 10
                     ChaSetButton { size: "sm"; text: "Small (32px)" }
-                    ChaSetButton { size: "md"; text: "Medium (36px)" }
+                    ChaSetButton { size: "default"; text: "Default (36px)" }
                     ChaSetButton { size: "lg"; text: "Large (40px)" }
+                    ChaSetButton { size: "icon"; text: "⚙" }
                 }
             }
             CodeBlock {
                 width: parent.width
                 language: "qml"
-                code: "ChaSetButton { size: \"sm\"; text: \"Small\" }\nChaSetButton { size: \"md\"; text: \"Medium\" }\nChaSetButton { size: \"lg\"; text: \"Large\" }"
+                code: "ChaSetButton { size: \"sm\"; text: \"Small\" }\nChaSetButton { size: \"default\"; text: \"Default\" }\nChaSetButton { size: \"lg\"; text: \"Large\" }\nChaSetButton { size: \"icon\"; text: \"⚙\" }"
             }
         }
 
@@ -252,11 +256,12 @@ DocLayout {
         width: parent.width
         title: "API Reference"
         propsModel: [
-            ["variant", "'primary' | 'secondary' | 'ghost' | 'destructive'", "'primary'", "Visual appearance and semantic intent."],
-            ["size", "'sm' | 'md' | 'lg'", "'md'", "Height and padding dimensions."],
+            ["variant", "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", "'default'", "Visual appearance and semantic intent."],
+            ["size", "'default' | 'sm' | 'lg' | 'icon'", "'default'", "Height and padding dimensions."],
             ["loading", "bool", "false", "Shows spinning indicator and disables user interaction."],
             ["fullWidth", "bool", "false", "Stretches the button to 100% of the parent container width."],
             ["disabled", "bool", "false", "Blocks clicks and applies muted disabled styling."],
+            ["iconSource", "string", "\"\"", "Optional icon image source URL."],
             ["text", "string", "\"\"", "Button label text content."]
         ]
     }

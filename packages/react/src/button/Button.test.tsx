@@ -52,6 +52,39 @@ describe('Button', () => {
     expect(button).toHaveClass('bg-destructive', 'text-destructive-foreground', 'h-10');
   });
 
+  it('supports shadcn outline, secondary, ghost, and link variants', () => {
+    const { rerender } = render(<Button variant="outline">Outline</Button>);
+    expect(screen.getByRole('button', { name: 'Outline' })).toHaveClass(
+      'border',
+      'border-input',
+      'bg-background',
+    );
+
+    rerender(<Button variant="secondary">Secondary</Button>);
+    expect(screen.getByRole('button', { name: 'Secondary' })).toHaveClass(
+      'bg-secondary',
+      'text-secondary-foreground',
+    );
+
+    rerender(<Button variant="ghost">Ghost</Button>);
+    expect(screen.getByRole('button', { name: 'Ghost' })).toHaveClass(
+      'hover:bg-accent',
+      'hover:text-accent-foreground',
+    );
+
+    rerender(<Button variant="link">Link</Button>);
+    expect(screen.getByRole('button', { name: 'Link' })).toHaveClass(
+      'text-primary',
+      'underline-offset-4',
+    );
+  });
+
+  it('supports icon size', () => {
+    render(<Button size="icon" aria-label="Settings">⚙</Button>);
+    const button = screen.getByRole('button', { name: 'Settings' });
+    expect(button).toHaveClass('size-9', 'p-0');
+  });
+
   it('calls onClick', () => {
     const onClick = vi.fn();
     render(<Button onClick={onClick}>Go</Button>);
@@ -100,6 +133,18 @@ describe('Button', () => {
     const element = screen.getByRole('button', { name: 'Link Button' });
     expect(element.tagName.toLowerCase()).toBe('a');
     expect(element).toHaveAttribute('href', '/test');
+    expect(element).toHaveClass('bg-primary');
+  });
+
+  it('supports shadcn asChild prop for polymorphism', () => {
+    render(
+      <Button asChild nativeButton={false}>
+        <a href="/as-child">AsChild Link</a>
+      </Button>,
+    );
+    const element = screen.getByRole('button', { name: 'AsChild Link' });
+    expect(element.tagName.toLowerCase()).toBe('a');
+    expect(element).toHaveAttribute('href', '/as-child');
     expect(element).toHaveClass('bg-primary');
   });
 });
