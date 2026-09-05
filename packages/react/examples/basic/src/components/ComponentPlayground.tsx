@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Badge, Input, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
+import { Button, Badge, Input, Checkbox, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
 
 export const ComponentPlayground: React.FC = () => {
   const [variant, setVariant] = useState<ButtonVariant>('default');
@@ -93,41 +93,33 @@ export const ComponentPlayground: React.FC = () => {
           </div>
 
           <div className="control-switches-grid">
-            <label className="switch-row">
-              <input
-                type="checkbox"
-                checked={loading}
-                onChange={(e) => setLoading(e.target.checked)}
-              />
-              <span>Loading State</span>
-            </label>
+            <Checkbox
+              size="sm"
+              checked={loading}
+              onCheckedChange={(val) => setLoading(val)}
+              label="Loading State"
+            />
 
-            <label className="switch-row">
-              <input
-                type="checkbox"
-                checked={disabled}
-                onChange={(e) => setDisabled(e.target.checked)}
-              />
-              <span>Disabled</span>
-            </label>
+            <Checkbox
+              size="sm"
+              checked={disabled}
+              onCheckedChange={(val) => setDisabled(val)}
+              label="Disabled"
+            />
 
-            <label className="switch-row">
-              <input
-                type="checkbox"
-                checked={fullWidth}
-                onChange={(e) => setFullWidth(e.target.checked)}
-              />
-              <span>Full Width</span>
-            </label>
+            <Checkbox
+              size="sm"
+              checked={fullWidth}
+              onCheckedChange={(val) => setFullWidth(val)}
+              label="Full Width"
+            />
 
-            <label className="switch-row">
-              <input
-                type="checkbox"
-                checked={renderAsLink}
-                onChange={(e) => setRenderAsLink(e.target.checked)}
-              />
-              <span>Polymorphic (`&lt;a&gt;` link via Base UI)</span>
-            </label>
+            <Checkbox
+              size="sm"
+              checked={renderAsLink}
+              onCheckedChange={(val) => setRenderAsLink(val)}
+              label="Polymorphic (<a> link via Base UI)"
+            />
           </div>
         </div>
 

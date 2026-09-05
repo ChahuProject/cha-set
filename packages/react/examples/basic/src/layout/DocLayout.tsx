@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from '@chahu/cha-set';
+import { Button, Separator } from '@chahu/cha-set';
 import { TableOfContents, type TocItem } from './TableOfContents';
 
 export interface DocLayoutProps {
@@ -40,7 +40,7 @@ export function DocLayout({
         </div>
 
         {/* Page Header */}
-        <div className="flex flex-col gap-2 pb-6 border-b border-border mb-8">
+        <div className="flex flex-col gap-2 pb-6">
           <div className="flex items-center justify-between gap-4">
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               {title}
@@ -75,6 +75,7 @@ export function DocLayout({
             {description}
           </p>
         </div>
+        <Separator className="mb-8" />
 
         {/* Page Content */}
         <div className="prose-content">{children}</div>

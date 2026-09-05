@@ -87,11 +87,7 @@ Item {
                     width: parent.width
                 }
 
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: ThemeTokens.border
-                }
+                ChaSetSeparator {}
             }
 
             // Page Dynamic Content

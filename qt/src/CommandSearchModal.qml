@@ -77,7 +77,7 @@ Rectangle {
                 Component.onCompleted: forceActiveFocus()
             }
 
-            Rectangle { width: parent.width; height: 1; color: ThemeTokens.border }
+            ChaSetSeparator {}
 
             // Results List
             ListView {

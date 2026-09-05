@@ -7,6 +7,7 @@ import {
   Tabs,
   TabsList,
   TabsTrigger,
+  Checkbox,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -92,15 +93,12 @@ export function InputDocPage() {
               </div>
 
               {/* Disabled Toggle */}
-              <label className="flex items-center gap-1.5 cursor-pointer select-none text-xs">
-                <input
-                  type="checkbox"
-                  checked={disabled}
-                  onChange={(e) => setDisabled(e.target.checked)}
-                  className="rounded border-border text-primary focus:ring-primary size-3.5 cursor-pointer"
-                />
-                <span className="text-muted-foreground">Disabled</span>
-              </label>
+              <Checkbox
+                size="sm"
+                checked={disabled}
+                onCheckedChange={(val) => setDisabled(val)}
+                label="Disabled"
+              />
             </div>
           }
         >

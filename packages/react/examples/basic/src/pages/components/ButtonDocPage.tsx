@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Input, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
+import { Button, Input, Checkbox, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -88,35 +88,26 @@ export function ButtonDocPage() {
               </div>
 
               {/* Toggles */}
-              <label className="flex items-center gap-1.5 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={loading}
-                  onChange={(e) => setLoading(e.target.checked)}
-                  className="rounded border-border"
-                />
-                <span>Loading</span>
-              </label>
+              <Checkbox
+                size="sm"
+                checked={loading}
+                onCheckedChange={(val) => setLoading(val)}
+                label="Loading"
+              />
 
-              <label className="flex items-center gap-1.5 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={disabled}
-                  onChange={(e) => setDisabled(e.target.checked)}
-                  className="rounded border-border"
-                />
-                <span>Disabled</span>
-              </label>
+              <Checkbox
+                size="sm"
+                checked={disabled}
+                onCheckedChange={(val) => setDisabled(val)}
+                label="Disabled"
+              />
 
-              <label className="flex items-center gap-1.5 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={fullWidth}
-                  onChange={(e) => setFullWidth(e.target.checked)}
-                  className="rounded border-border"
-                />
-                <span>Full Width</span>
-              </label>
+              <Checkbox
+                size="sm"
+                checked={fullWidth}
+                onCheckedChange={(val) => setFullWidth(val)}
+                label="Full Width"
+              />
 
               {/* Text input */}
               {size !== 'icon' && (

@@ -105,10 +105,11 @@ DocLayout {
                     }
                 }
 
-                CheckBox {
-                    text: "Disabled"
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Disabled"
                     checked: root.demoDisabled
-                    onToggled: root.demoDisabled = checked
+                    onToggled: (val) => root.demoDisabled = val
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }

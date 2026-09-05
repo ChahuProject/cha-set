@@ -101,20 +101,23 @@ DocLayout {
             },
             Row {
                 spacing: 12
-                CheckBox {
-                    text: "Loading"
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Loading"
                     checked: root.btnLoading
-                    onToggled: root.btnLoading = checked
+                    onToggled: (val) => root.btnLoading = val
                 }
-                CheckBox {
-                    text: "Disabled"
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Disabled"
                     checked: root.btnDisabled
-                    onToggled: root.btnDisabled = checked
+                    onToggled: (val) => root.btnDisabled = val
                 }
-                CheckBox {
-                    text: "Full Width"
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Full Width"
                     checked: root.btnFullWidth
-                    onToggled: root.btnFullWidth = checked
+                    onToggled: (val) => root.btnFullWidth = val
                 }
             },
             Row {

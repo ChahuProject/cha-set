@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollArea, Button } from '@chahu/cha-set';
+import { ScrollArea, Button, Checkbox } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -146,25 +146,19 @@ export function ScrollAreaDocPage() {
 
               {/* Stepper Buttons Toggle */}
               <div className="flex items-center gap-3">
-                <label className="flex items-center gap-1.5 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={showButtons}
-                    onChange={(e) => setShowButtons(e.target.checked)}
-                    className="rounded border-border text-primary focus:ring-primary size-3.5 cursor-pointer"
-                  />
-                  <span className="text-xs text-foreground font-medium">Show Stepper Buttons</span>
-                </label>
+                <Checkbox
+                  size="sm"
+                  checked={showButtons}
+                  onCheckedChange={(val) => setShowButtons(val)}
+                  label="Show Stepper Buttons"
+                />
 
-                <label className="flex items-center gap-1.5 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={smoothScroll}
-                    onChange={(e) => setSmoothScroll(e.target.checked)}
-                    className="rounded border-border text-primary focus:ring-primary size-3.5 cursor-pointer"
-                  />
-                  <span className="text-xs text-foreground font-medium">Smooth Scroll</span>
-                </label>
+                <Checkbox
+                  size="sm"
+                  checked={smoothScroll}
+                  onCheckedChange={(val) => setSmoothScroll(val)}
+                  label="Smooth Scroll"
+                />
               </div>
             </div>
           }

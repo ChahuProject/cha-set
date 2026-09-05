@@ -188,15 +188,17 @@ DocLayout {
             },
             Row {
                 spacing: 12
-                CheckBox {
-                    text: "Show Steppers"
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Show Steppers"
                     checked: root.showButtons
-                    onToggled: root.showButtons = checked
+                    onToggled: (val) => root.showButtons = val
                 }
-                CheckBox {
-                    text: "Smooth Scroll"
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Smooth Scroll"
                     checked: root.smoothScroll
-                    onToggled: root.smoothScroll = checked
+                    onToggled: (val) => root.smoothScroll = val
                 }
             }
         ]
