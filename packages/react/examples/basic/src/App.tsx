@@ -70,7 +70,7 @@ export function App() {
     if (rawSize === 'md') rawSize = 'default';
     const size = rawSize as any;
 
-    const label = searchParams?.get('label') ?? 'Create Project';
+    const label = searchParams?.get('label') ?? '·';
     const loading = searchParams?.get('loading') === 'true';
     const disabled = searchParams?.get('disabled') === 'true';
     const state = searchParams?.get('state') ?? 'idle';
@@ -90,7 +90,7 @@ export function App() {
           forceHover={state === 'hover'}
           forceActive={state === 'active'}
         >
-          {size === 'icon' ? '⚙' : label}
+          {label}
         </Button>
       </div>
     );

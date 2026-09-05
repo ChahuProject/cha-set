@@ -20,9 +20,11 @@ Static screenshot comparison by "human eyeballing" is unreliable and leads to su
 2. **Strict DPI Scale Locking**:
    - Qt and Chromium engines must render at strictly `1.0` device pixel ratio (`QT_ENABLE_HIGHDPI_SCALING=0`, `QT_SCALE_FACTOR=1`, CDP `deviceScaleFactor: 1`). Both viewports must yield bit-identical canvas resolutions (e.g. `220x80`).
 3. **Dual Spatial & Color Probe Assertions**:
-   - **Spatial Pixel Diff (`pixelmatch`)**: Overall image mismatch rate must be <= 2.8% (tolerance accommodates micro subpixel anti-aliasing variations between DirectWrite/FreeType and Blink font engines).
-   - **Surface Color Probe (Delta E <= 4.0)**: Background fill and interactive state colors sampled inside component padding must match within mathematical Delta E <= 4.0 (flat solid fills achieve bit-exact Delta E = 0.0).
-4. **Selective Targeted Execution (Opt-in)**:
+   - **Spatial Pixel Diff (`pixelmatch`)**: Overall image mismatch rate must be <= 0.20% for standard variants and states using the zero-variance Unicode Middle Dot (`·`, U+00B7) benchmark (achieving literal 0.00% across 13/16 scenarios).
+   - **Surface Color Probe (Delta E <= 4.0)**: Background fill and interactive state colors sampled inside component padding must match within mathematical Delta E <= 4.0 (flat solid fills achieve bit-exact Delta E = 0.0 across all states).
+4. **Zero-Variance Unicode Benchmark Lexicon**:
+   - To completely eliminate kerning pair accumulation and font styling variances across OS text rasterizers, visual unit conformance uses the standard Unicode Middle Dot (`·`, U+00B7), which renders with integer-aligned center geometry across Chromium Skia and Qt DirectWrite.
+5. **Selective Targeted Execution (Opt-in)**:
    - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for `button`).
 
 ---

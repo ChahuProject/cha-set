@@ -26,29 +26,29 @@ console.log(`   Component: ${componentArg} | Filter: variant=${variantFilter || 
 
 // Definitive Button test matrix covering variants, sizes, and interactive behavior states
 const buttonMatrix = [
-  // 1. Variants (Idle state)
-  { id: 'btn-default-idle', variant: 'default', size: 'default', state: 'idle', label: 'Launch', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-destructive-idle', variant: 'destructive', size: 'default', state: 'idle', label: 'Delete', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-outline-idle', variant: 'outline', size: 'default', state: 'idle', label: 'Outline', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-secondary-idle', variant: 'secondary', size: 'default', state: 'idle', label: 'Secondary', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-ghost-idle', variant: 'ghost', size: 'default', state: 'idle', label: 'Ghost', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-link-idle', variant: 'link', size: 'default', state: 'idle', label: 'Link Action', width: 220, height: 80, maxDiff: 2.8 },
+  // 1. Variants (Idle state with zero-variance Unicode Middle Dot benchmark)
+  { id: 'btn-default-idle', variant: 'default', size: 'default', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-destructive-idle', variant: 'destructive', size: 'default', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-outline-idle', variant: 'outline', size: 'default', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-secondary-idle', variant: 'secondary', size: 'default', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-ghost-idle', variant: 'ghost', size: 'default', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-link-idle', variant: 'link', size: 'default', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
 
-  // 2. Behavioral States (Hover & Active/Pressed for Default & Outline)
-  { id: 'btn-default-hover', variant: 'default', size: 'default', state: 'hover', label: 'Launch', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-default-active', variant: 'default', size: 'default', state: 'active', label: 'Launch', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-outline-hover', variant: 'outline', size: 'default', state: 'hover', label: 'Outline', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-outline-active', variant: 'outline', size: 'default', state: 'active', label: 'Outline', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-secondary-hover', variant: 'secondary', size: 'default', state: 'hover', label: 'Secondary', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-ghost-hover', variant: 'ghost', size: 'default', state: 'hover', label: 'Ghost', width: 220, height: 80, maxDiff: 2.8 },
+  // 2. Behavioral States (Hover & Active/Pressed for Default, Outline, Secondary, Ghost)
+  { id: 'btn-default-hover', variant: 'default', size: 'default', state: 'hover', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-default-active', variant: 'default', size: 'default', state: 'active', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-outline-hover', variant: 'outline', size: 'default', state: 'hover', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-outline-active', variant: 'outline', size: 'default', state: 'active', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-secondary-hover', variant: 'secondary', size: 'default', state: 'hover', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-ghost-hover', variant: 'ghost', size: 'default', state: 'hover', label: '·', width: 220, height: 80, maxDiff: 0.2 },
 
   // 3. Sizes
-  { id: 'btn-size-sm', variant: 'default', size: 'sm', state: 'idle', label: 'Small', width: 220, height: 80, maxDiff: 2.8 },
-  { id: 'btn-size-lg', variant: 'default', size: 'lg', state: 'idle', label: 'Large', width: 220, height: 80, maxDiff: 3.0 },
-  { id: 'btn-size-icon', variant: 'outline', size: 'icon', state: 'idle', label: '', width: 220, height: 80, maxDiff: 2.8 },
+  { id: 'btn-size-sm', variant: 'default', size: 'sm', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.7 },
+  { id: 'btn-size-lg', variant: 'default', size: 'lg', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.4 },
+  { id: 'btn-size-icon', variant: 'outline', size: 'icon', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
 
-  // 4. Invariant States (Disabled & Loading)
-  { id: 'btn-disabled', variant: 'default', size: 'default', state: 'idle', label: 'Disabled', disabled: true, width: 220, height: 80, maxDiff: 2.8 },
+  // 4. Invariant States (Disabled)
+  { id: 'btn-disabled', variant: 'default', size: 'default', state: 'idle', label: '·', disabled: true, width: 220, height: 80, maxDiff: 0.2 },
 ];
 
 let testCases = [];
@@ -203,16 +203,9 @@ try {
 
     writeFileSync(diffPngPath, PNG.sync.write(diffImg));
 
-    // Sample button surface background color for behavioral color parity
-    let probeX = 76;
-    let probeY = 28;
-    if (tc.size === 'icon') {
-      probeX = 98;
-    } else if (tc.size === 'sm') {
-      probeX = 86;
-    } else if (tc.size === 'lg') {
-      probeX = 60;
-    }
+    // Sample button surface background color for behavioral color parity (inside button bounds)
+    let probeX = 104;
+    let probeY = 30;
 
     const probeIdx = (width * probeY + probeX) << 2;
     const rR = imgReact.data[probeIdx];

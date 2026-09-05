@@ -201,7 +201,7 @@ ApplicationWindow {
                 anchors.centerIn: parent
                 variant: typeof harnessVariant !== "undefined" ? harnessVariant : "default"
                 size: typeof harnessSize !== "undefined" ? harnessSize : "default"
-                text: (typeof harnessSize !== "undefined" && harnessSize === "icon") ? "⚙" : (typeof harnessLabel !== "undefined" ? harnessLabel : "Create Project")
+                text: (typeof harnessLabel !== "undefined" && harnessLabel !== "") ? harnessLabel : "·"
                 loading: typeof harnessLoading !== "undefined" ? harnessLoading : false
                 disabled: typeof harnessDisabled !== "undefined" ? harnessDisabled : false
                 forceHover: typeof harnessState !== "undefined" && harnessState === "hover"
