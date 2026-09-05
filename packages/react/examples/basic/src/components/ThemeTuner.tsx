@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tabs, TabsList, TabsTrigger, Badge, Input } from '@chahu/cha-set';
+import { Button, Tabs, TabsList, TabsTrigger, Badge, Input, Slider, Tooltip } from '@chahu/cha-set';
 
 export interface ThemeOverrides {
   primary?: string;
@@ -66,18 +66,21 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
         </div>
         <div className="tuner-actions">
           {hasOverrides && (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={clearOverrides}
-              title="Reset all custom color overrides"
-            >
-              Reset
-            </Button>
+            <Tooltip content="Reset all custom color overrides" side="bottom">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={clearOverrides}
+              >
+                Reset
+              </Button>
+            </Tooltip>
           )}
-          <Button variant="default" size="sm" onClick={onOpenExport}>
-            📋 Copy Config
-          </Button>
+          <Tooltip content="Export theme configuration as CSS, Tailwind, or JSON" side="bottom">
+            <Button variant="default" size="sm" onClick={onOpenExport}>
+              📋 Copy Config
+            </Button>
+          </Tooltip>
         </div>
       </div>
 
@@ -119,15 +122,15 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
             <label className="tuner-label">Corner Radius (--radius)</label>
             <Badge size="sm" variant="secondary">{overrides.radius || '0.5rem (Default)'}</Badge>
           </div>
-          <input
-            type="range"
-            min="0"
-            max="24"
-            step="2"
-            value={overrides.radius ? parseInt(overrides.radius) : 8}
-            onChange={(e) => updateOverride('radius', `${e.target.value}px`)}
-            className="tuner-slider"
-          />
+          <div className="py-2">
+            <Slider
+              min={0}
+              max={24}
+              step={2}
+              value={overrides.radius ? parseInt(overrides.radius) : 8}
+              onValueChange={(val) => updateOverride('radius', `${val}px`)}
+            />
+          </div>
           <div className="slider-ticks">
             <span>0px (Sharp)</span>
             <span>8px</span>

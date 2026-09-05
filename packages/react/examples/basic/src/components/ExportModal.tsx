@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { Button, ScrollArea, Tabs, TabsList, TabsTrigger } from '@chahu/cha-set';
+import {
+  Button,
+  ScrollArea,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@chahu/cha-set';
 import type { ThemeOverrides } from './ThemeTuner';
 
 interface ExportModalProps {
@@ -19,8 +31,6 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'css' | 'tailwind' | 'react' | 'qt' | 'json'>('css');
   const [copied, setCopied] = useState(false);
-
-  if (!isOpen) return null;
 
   // Build CSS Variables Snippet
   const buildCssSnippet = () => {
@@ -171,19 +181,16 @@ ApplicationWindow {
   };
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <div className="modal-title-group">
-            <h3>Export & Copy Theme Configuration</h3>
-            <p>One-click copy tailored styles and component code for your target framework.</p>
-          </div>
-          <Button variant="ghost" size="icon" className="size-7" onClick={onClose} aria-label="Close">
-            ✕
-          </Button>
-        </div>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogContent className="max-w-2xl p-6">
+        <DialogHeader>
+          <DialogTitle>Export & Copy Theme Configuration</DialogTitle>
+          <DialogDescription>
+            One-click copy tailored styles and component code for your target framework.
+          </DialogDescription>
+        </DialogHeader>
 
-        <div className="modal-tabs p-2 bg-muted/30 border-b border-border">
+        <div className="modal-tabs p-2 bg-muted/30 border-b border-border -mx-6">
           <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as any)}>
             <TabsList>
               <TabsTrigger value="css">CSS Variables</TabsTrigger>
@@ -195,7 +202,7 @@ ApplicationWindow {
           </Tabs>
         </div>
 
-        <div className="modal-body">
+        <div className="py-2">
           <ScrollArea
             showVerticalScrollBar={true}
             showHorizontalScrollBar={true}
@@ -209,11 +216,11 @@ ApplicationWindow {
           </ScrollArea>
         </div>
 
-        <div className="modal-footer">
-          <span className="modal-hint">
+        <DialogFooter className="flex items-center justify-between sm:justify-between w-full pt-2">
+          <span className="text-xs text-muted-foreground">
             💡 Drop this configuration directly into your project's stylesheet or theme manager.
           </span>
-          <div className="modal-footer-actions flex gap-2">
+          <div className="flex gap-2">
             <Button variant="secondary" size="sm" onClick={onClose}>
               Close
             </Button>
@@ -221,8 +228,8 @@ ApplicationWindow {
               {copied ? '✓ Copied to Clipboard!' : '📋 Copy to Clipboard'}
             </Button>
           </div>
-        </div>
-      </div>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };

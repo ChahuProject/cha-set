@@ -148,42 +148,14 @@ DocLayout {
                         }
                     }
 
-                    Rectangle {
+                    ChaSetSlider {
                         width: parent.width
-                        height: 8
-                        radius: 4
-                        color: ThemeTokens.hover
-                        border.color: ThemeTokens.border
-
-                        Rectangle {
-                            width: Math.max(8, (root.customRadius / 24) * parent.width)
-                            height: parent.height
-                            radius: 4
-                            color: ThemeTokens.accent
-                        }
-
-                        Rectangle {
-                            x: Math.max(0, Math.min(parent.width - 16, (root.customRadius / 24) * (parent.width - 16)))
-                            anchors.verticalCenter: parent.verticalCenter
-                            width: 16; height: 16; radius: 8
-                            color: ThemeTokens.accent
-                            border.color: "#ffffff"
-                            border.width: 2
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onPositionChanged: (mouse) => {
-                                if (pressed) {
-                                    let frac = Math.max(0, Math.min(1, mouse.x / width))
-                                    root.customRadius = Math.round(frac * 12) * 2
-                                }
-                            }
-                            onClicked: (mouse) => {
-                                let frac = Math.max(0, Math.min(1, mouse.x / width))
-                                root.customRadius = Math.round(frac * 12) * 2
-                            }
+                        min: 0
+                        max: 24
+                        step: 2
+                        value: root.customRadius
+                        onValueMoved: function(val) {
+                            root.customRadius = Math.round(val)
                         }
                     }
 

@@ -1,5 +1,14 @@
 import React from 'react';
-import { ScrollArea, Badge } from '@chahu/cha-set';
+import {
+  ScrollArea,
+  Badge,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@chahu/cha-set';
 
 export interface PropItem {
   name: string;
@@ -27,35 +36,35 @@ export function PropsTable({ title, props, items }: PropsTableProps) {
         showButtons={false}
         className="rounded-lg border border-border w-full"
       >
-        <table className="w-full text-left text-sm border-collapse">
-          <thead>
-            <tr className="border-b border-border bg-muted/40 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              <th className="py-2.5 px-4">Prop</th>
-              <th className="py-2.5 px-4">Type</th>
-              <th className="py-2.5 px-4">Default</th>
-              <th className="py-2.5 px-4">Description</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border/60">
+        <Table className="w-full text-left text-sm border-collapse">
+          <TableHeader>
+            <TableRow className="border-b border-border bg-muted/40 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              <TableHead className="py-2.5 px-4 w-40">Prop</TableHead>
+              <TableHead className="py-2.5 px-4 w-36">Type</TableHead>
+              <TableHead className="py-2.5 px-4 w-28">Default</TableHead>
+              <TableHead className="py-2.5 px-4">Description</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="divide-y divide-border/60">
             {list.map((p) => (
-              <tr key={p.name} className="hover:bg-muted/20 transition-colors">
-                <td className="py-3 px-4 font-mono text-xs font-medium text-primary whitespace-nowrap">
+              <TableRow key={p.name} className="hover:bg-muted/20 transition-colors">
+                <TableCell className="py-3 px-4 font-mono text-xs font-medium text-primary whitespace-nowrap">
                   {p.name}
                   {p.required && <span className="text-destructive ml-1">*</span>}
-                </td>
-                <td className="py-3 px-4 font-mono text-xs text-muted-foreground">
+                </TableCell>
+                <TableCell className="py-3 px-4 font-mono text-xs text-muted-foreground">
                   <Badge size="sm" variant="outline" className="font-mono text-[0.6875rem] text-foreground/80 bg-muted/60">
                     {p.type}
                   </Badge>
-                </td>
-                <td className="py-3 px-4 font-mono text-xs text-muted-foreground">
+                </TableCell>
+                <TableCell className="py-3 px-4 font-mono text-xs text-muted-foreground">
                   {(p.default ?? p.defaultValue) ? <code className="text-foreground/70">{p.default ?? p.defaultValue}</code> : <span className="opacity-40">—</span>}
-                </td>
-                <td className="py-3 px-4 text-xs text-muted-foreground leading-relaxed">{p.description}</td>
-              </tr>
+                </TableCell>
+                <TableCell className="py-3 px-4 text-xs text-muted-foreground leading-relaxed">{p.description}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </ScrollArea>
     </div>
   );
