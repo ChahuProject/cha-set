@@ -229,7 +229,8 @@ Item {
             color: root.fgColor()
             font.pixelSize: root.fontSizePx()
             font.weight: Font.Medium
-            font.family: "Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif"
+            font.family: "Segoe UI"
+            renderType: Text.NativeRendering
             font.underline: root.variant === "link" && root.effectiveHovered
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
