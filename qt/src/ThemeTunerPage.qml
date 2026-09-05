@@ -133,7 +133,23 @@ DocLayout {
                     }
                 }
 
-                // 3. Corner Radius Slider
+                // 3. Custom Color Override
+                Column {
+                    spacing: 6
+                    Text { text: "CUSTOM COLOR OVERRIDE"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+                    ChaSetColorPicker {
+                        id: tunerColorPicker
+                        mode: "popover"
+                        size: "sm"
+                        value: root.cPrimary
+                        onHexChanged: {
+                            root.overridePrimary = tunerColorPicker.hex
+                            root.logAction("Custom primary: " + tunerColorPicker.hex)
+                        }
+                    }
+                }
+
+                // 4. Corner Radius Slider
                 Column {
                     width: parent.width
                     spacing: 6

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Button, Tabs, TabsList, TabsTrigger, Badge, Input, Slider, Tooltip } from '@chahu/cha-set';
+import { Button, Tabs, TabsList, TabsTrigger, Badge, Input, Slider, Tooltip, ColorPicker } from '@chahu/cha-set';
 
 export interface ThemeOverrides {
   primary?: string;
@@ -146,17 +145,18 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
             <div className="color-input-row">
               <label>Primary Action</label>
               <div className="color-field">
-                <input
-                  type="color"
+                <ColorPicker
+                  mode="popover"
+                  size="sm"
                   value={overrides.primary || (mode === 'dark' ? '#30a0ff' : '#1d7ae0')}
-                  onChange={(e) => updateOverride('primary', e.target.value)}
+                  onChange={(val) => updateOverride('primary', val)}
                 />
                 <Input
                   size="sm"
                   placeholder="e.g. #3b82f6"
                   value={overrides.primary || ''}
                   onChange={(e) => updateOverride('primary', e.target.value)}
-                  className="h-8 text-xs"
+                  className="h-8 text-xs flex-1"
                 />
               </div>
             </div>
@@ -164,17 +164,18 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
             <div className="color-input-row">
               <label>Primary Text</label>
               <div className="color-field">
-                <input
-                  type="color"
+                <ColorPicker
+                  mode="popover"
+                  size="sm"
                   value={overrides.primaryForeground || '#ffffff'}
-                  onChange={(e) => updateOverride('primaryForeground', e.target.value)}
+                  onChange={(val) => updateOverride('primaryForeground', val)}
                 />
                 <Input
                   size="sm"
                   placeholder="#ffffff"
                   value={overrides.primaryForeground || ''}
                   onChange={(e) => updateOverride('primaryForeground', e.target.value)}
-                  className="h-8 text-xs"
+                  className="h-8 text-xs flex-1"
                 />
               </div>
             </div>
@@ -182,17 +183,18 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
             <div className="color-input-row">
               <label>Secondary Bg</label>
               <div className="color-field">
-                <input
-                  type="color"
+                <ColorPicker
+                  mode="popover"
+                  size="sm"
                   value={overrides.secondary || (mode === 'dark' ? '#252d3d' : '#e8ecf3')}
-                  onChange={(e) => updateOverride('secondary', e.target.value)}
+                  onChange={(val) => updateOverride('secondary', val)}
                 />
                 <Input
                   size="sm"
                   placeholder="var(--secondary)"
                   value={overrides.secondary || ''}
                   onChange={(e) => updateOverride('secondary', e.target.value)}
-                  className="h-8 text-xs"
+                  className="h-8 text-xs flex-1"
                 />
               </div>
             </div>
@@ -200,17 +202,18 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
             <div className="color-input-row">
               <label>Destructive</label>
               <div className="color-field">
-                <input
-                  type="color"
+                <ColorPicker
+                  mode="popover"
+                  size="sm"
                   value={overrides.destructive || (mode === 'dark' ? '#ef4444' : '#dc2626')}
-                  onChange={(e) => updateOverride('destructive', e.target.value)}
+                  onChange={(val) => updateOverride('destructive', val)}
                 />
                 <Input
                   size="sm"
                   placeholder="var(--destructive)"
                   value={overrides.destructive || ''}
                   onChange={(e) => updateOverride('destructive', e.target.value)}
-                  className="h-8 text-xs"
+                  className="h-8 text-xs flex-1"
                 />
               </div>
             </div>
@@ -218,17 +221,18 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
             <div className="color-input-row">
               <label>Page Background</label>
               <div className="color-field">
-                <input
-                  type="color"
+                <ColorPicker
+                  mode="popover"
+                  size="sm"
                   value={overrides.background || (mode === 'dark' ? '#0a0c14' : '#f4f6fa')}
-                  onChange={(e) => updateOverride('background', e.target.value)}
+                  onChange={(val) => updateOverride('background', val)}
                 />
                 <Input
                   size="sm"
                   placeholder="var(--background)"
                   value={overrides.background || ''}
                   onChange={(e) => updateOverride('background', e.target.value)}
-                  className="h-8 text-xs"
+                  className="h-8 text-xs flex-1"
                 />
               </div>
             </div>
@@ -236,17 +240,18 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
             <div className="color-input-row">
               <label>Card / Panel</label>
               <div className="color-field">
-                <input
-                  type="color"
+                <ColorPicker
+                  mode="popover"
+                  size="sm"
                   value={overrides.card || (mode === 'dark' ? '#161b26' : '#ffffff')}
-                  onChange={(e) => updateOverride('card', e.target.value)}
+                  onChange={(val) => updateOverride('card', val)}
                 />
                 <Input
                   size="sm"
                   placeholder="var(--card)"
                   value={overrides.card || ''}
                   onChange={(e) => updateOverride('card', e.target.value)}
-                  className="h-8 text-xs"
+                  className="h-8 text-xs flex-1"
                 />
               </div>
             </div>
@@ -254,17 +259,18 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
             <div className="color-input-row">
               <label>Focus Ring</label>
               <div className="color-field">
-                <input
-                  type="color"
+                <ColorPicker
+                  mode="popover"
+                  size="sm"
                   value={overrides.ring || '#30a0ff'}
-                  onChange={(e) => updateOverride('ring', e.target.value)}
+                  onChange={(val) => updateOverride('ring', val)}
                 />
                 <Input
                   size="sm"
                   placeholder="var(--ring)"
                   value={overrides.ring || ''}
                   onChange={(e) => updateOverride('ring', e.target.value)}
-                  className="h-8 text-xs"
+                  className="h-8 text-xs flex-1"
                 />
               </div>
             </div>
