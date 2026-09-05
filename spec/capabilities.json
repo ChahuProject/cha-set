@@ -49,6 +49,25 @@
       "placeholder": { "requirement": "must", "description": "renders placeholder text when empty" },
       "focusRing": { "requirement": "must", "description": "displays focus ring and border highlight on active focus" },
       "readOnly": { "requirement": "should", "description": "prevents editing while retaining focusable state" }
+    },
+    "checkbox": {
+      "checked": { "requirement": "must", "description": "checked state controls toggled representation" },
+      "toggle": { "requirement": "must", "description": "clicking or space key triggers check state change" },
+      "disabled": { "requirement": "must", "description": "disabled state blocks interaction" },
+      "size": { "requirement": "must", "description": "supports default and sm sizes" },
+      "indeterminate": { "requirement": "must", "description": "supports indeterminate visual state and logic" },
+      "label": { "requirement": "must", "description": "renders accompanying label and clicking label toggles" }
+    },
+    "switch": {
+      "checked": { "requirement": "must", "description": "checked state controls on/off representation" },
+      "toggle": { "requirement": "must", "description": "clicking or keyboard triggers switch state toggle" },
+      "disabled": { "requirement": "must", "description": "disabled state blocks interaction" },
+      "size": { "requirement": "must", "description": "supports default and sm sizes" },
+      "label": { "requirement": "must", "description": "renders accompanying label" }
+    },
+    "separator": {
+      "orientation": { "requirement": "must", "description": "orientation switches between horizontal and vertical" },
+      "decorative": { "requirement": "must", "description": "supports decorative flag for accessibility" }
     }
   }
 }

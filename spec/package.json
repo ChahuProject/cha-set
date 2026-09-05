@@ -10,7 +10,10 @@
     "./tabs": "./components/tabs.ts",
     "./badge": "./components/badge.ts",
     "./card": "./components/card.ts",
-    "./input": "./components/input.ts"
+    "./input": "./components/input.ts",
+    "./checkbox": "./components/checkbox.ts",
+    "./switch": "./components/switch.ts",
+    "./separator": "./components/separator.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

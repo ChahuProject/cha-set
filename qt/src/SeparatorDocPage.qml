@@ -1,0 +1,308 @@
+// SeparatorDocPage.qml — Documentation and interactive sandbox for ChaSetSeparator
+import QtQuick 6.10
+import QtQuick.Controls 6.10
+import ChaSet
+
+DocLayout {
+    id: root
+    category: "Components"
+    pageTitle: "Separator"
+    description: "Visually or semantically separates content in a list or section."
+    tocItems: [
+        { id: "overview", title: "Interactive Overview" },
+        { id: "installation", title: "Installation" },
+        { id: "anatomy", title: "Anatomy" },
+        { id: "states", title: "Examples & States" },
+        { id: "props", title: "Props Reference" }
+    ]
+
+    property int customRadius: 8
+    property color cFg: ThemeTokens.text
+    property color cMutedFg: ThemeTokens.subduedText
+    property color cCard: ThemeTokens.panel
+    property color cBorder: ThemeTokens.border
+
+    property string demoOrientation: "horizontal"
+
+    // Section 1: Overview
+    ComponentPreview {
+        id: heroPreview
+        width: parent.width
+        title: "Separator Sandbox"
+        reactCode: root.demoOrientation === "horizontal"
+            ? `<div className="w-full max-w-sm space-y-4">\n  <div>\n    <h4 className="text-sm font-medium leading-none">ChaSet UI</h4>\n    <p className="text-sm text-muted-foreground">Cross-stack React & Qt Quick Design System.</p>\n  </div>\n  <Separator orientation="horizontal" />\n  <div className="flex h-5 items-center space-x-4 text-sm">\n    <div>Docs</div>\n    <Separator orientation="vertical" />\n    <div>Source</div>\n    <Separator orientation="vertical" />\n    <div>Changelog</div>\n  </div>\n</div>`
+            : `<div className="flex h-8 items-center space-x-4 text-sm">\n  <span>Components</span>\n  <Separator orientation="vertical" />\n  <span>Tokens</span>\n  <Separator orientation="vertical" />\n  <span>Showcase</span>\n</div>`
+        qtCode: root.demoOrientation === "horizontal"
+            ? `Column {\n    width: 280\n    spacing: 12\n    Column {\n        spacing: 4\n        Text { text: "ChaSet UI"; font.bold: true; color: ThemeTokens.text }\n        Text { text: "Cross-stack React & Qt Quick Design System."; color: ThemeTokens.subduedText; font.pixelSize: 12 }\n    }\n    ChaSetSeparator { orientation: "horizontal" }\n    Row {\n        spacing: 12\n        Text { text: "Docs"; color: ThemeTokens.text; font.pixelSize: 12 }\n        ChaSetSeparator { orientation: "vertical"; height: 16 }\n        Text { text: "Source"; color: ThemeTokens.text; font.pixelSize: 12 }\n        ChaSetSeparator { orientation: "vertical"; height: 16 }\n        Text { text: "Changelog"; color: ThemeTokens.text; font.pixelSize: 12 }\n    }\n}`
+            : `Row {\n    spacing: 12\n    Text { text: "Components"; color: ThemeTokens.text; font.pixelSize: 13 }\n    ChaSetSeparator { orientation: "vertical"; height: 20 }\n    Text { text: "Tokens"; color: ThemeTokens.text; font.pixelSize: 13 }\n    ChaSetSeparator { orientation: "vertical"; height: 20 }\n    Text { text: "Showcase"; color: ThemeTokens.text; font.pixelSize: 13 }\n}`
+
+        stageData: [
+            Item {
+                anchors.centerIn: parent
+                width: root.demoOrientation === "horizontal" ? 300 : 260
+                height: root.demoOrientation === "horizontal" ? 110 : 40
+
+                Column {
+                    visible: root.demoOrientation === "horizontal"
+                    anchors.fill: parent
+                    spacing: 12
+
+                    Column {
+                        spacing: 4
+                        Text {
+                            text: "ChaSet UI"
+                            font.bold: true
+                            font.pixelSize: 14
+                            color: root.cFg
+                        }
+                        Text {
+                            text: "Cross-stack React & Qt Quick Design System."
+                            color: root.cMutedFg
+                            font.pixelSize: 12
+                        }
+                    }
+
+                    ChaSetSeparator {
+                        orientation: "horizontal"
+                        width: parent.width
+                    }
+
+                    Row {
+                        spacing: 12
+                        Text { text: "Docs"; color: root.cMutedFg; font.pixelSize: 12 }
+                        ChaSetSeparator { orientation: "vertical"; height: 14 }
+                        Text { text: "Source"; color: root.cMutedFg; font.pixelSize: 12 }
+                        ChaSetSeparator { orientation: "vertical"; height: 14 }
+                        Text { text: "Changelog"; color: root.cMutedFg; font.pixelSize: 12 }
+                    }
+                }
+
+                Row {
+                    visible: root.demoOrientation === "vertical"
+                    anchors.centerIn: parent
+                    spacing: 12
+
+                    Text { text: "Components"; color: root.cFg; font.pixelSize: 13; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetSeparator { orientation: "vertical"; height: 18; anchors.verticalCenter: parent.verticalCenter }
+                    Text { text: "Tokens"; color: root.cFg; font.pixelSize: 13; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetSeparator { orientation: "vertical"; height: 18; anchors.verticalCenter: parent.verticalCenter }
+                    Text { text: "Showcase"; color: root.cFg; font.pixelSize: 13; anchors.verticalCenter: parent.verticalCenter }
+                }
+            }
+        ]
+
+        controlsData: [
+            Row {
+                spacing: 16
+
+                Row {
+                    spacing: 8
+                    Text { text: "Orientation:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetTabs {
+                        anchors.verticalCenter: parent.verticalCenter
+                        currentValue: root.demoOrientation
+                        onCurrentValueChanged: root.demoOrientation = currentValue
+                        ChaSetTabsList {
+                            ChaSetTabsTrigger { value: "horizontal"; text: "Horizontal" }
+                            ChaSetTabsTrigger { value: "vertical"; text: "Vertical" }
+                        }
+                    }
+                }
+            }
+        ]
+    }
+
+    // Section 2: Installation
+    Column {
+        width: parent.width
+        spacing: 8
+        Text { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        CodeBlock {
+            width: parent.width
+            language: "bash"
+            code: "pnpm add @chahu/cha-set"
+        }
+    }
+
+    // Section 3: Anatomy
+    Column {
+        width: parent.width
+        spacing: 8
+        Text { text: "Anatomy"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        Text { text: "Import and place ChaSetSeparator horizontally or vertically to segment content."; color: root.cMutedFg; font.pixelSize: 13 }
+
+        CodeBlock {
+            width: parent.width
+            language: "qml"
+            code: "ChaSetSeparator {\n    orientation: \"horizontal\"\n    width: parent.width\n}"
+        }
+    }
+
+    // Section 4: Examples & States
+    Column {
+        width: parent.width
+        spacing: 12
+        Text { text: "Examples & States"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        Text { text: "Common layout patterns using horizontal and vertical separators."; color: root.cMutedFg; font.pixelSize: 13 }
+
+        Row {
+            width: parent.width
+            spacing: 16
+
+            // Example 1: Horizontal Card Content Separation
+            ChaSetCard {
+                width: (parent.width - 16) / 2
+                customRadius: root.customRadius
+
+                ChaSetCardHeader {
+                    ChaSetCardTitle { text: "Account Overview" }
+                    ChaSetCardDescription { text: "Manage your workspace settings and profile." }
+                }
+
+                ChaSetSeparator {
+                    orientation: "horizontal"
+                    width: parent.width
+                }
+
+                ChaSetCardContent {
+                    Column {
+                        width: parent.width
+                        spacing: 8
+
+                        Row {
+                            width: parent.width
+                            Text { text: "Status"; color: root.cMutedFg; font.pixelSize: 13 }
+                            Text { text: "Active"; color: root.cFg; font.weight: Font.DemiBold; font.pixelSize: 13; anchors.right: parent.right }
+                        }
+
+                        Row {
+                            width: parent.width
+                            Text { text: "Plan"; color: root.cMutedFg; font.pixelSize: 13 }
+                            Text { text: "Enterprise"; color: root.cFg; font.weight: Font.DemiBold; font.pixelSize: 13; anchors.right: parent.right }
+                        }
+                    }
+                }
+
+                ChaSetSeparator {
+                    orientation: "horizontal"
+                    width: parent.width
+                }
+
+                ChaSetCardFooter {
+                    Row {
+                        width: parent.width
+                        Item { width: 1; height: 1 }
+                        ChaSetButton {
+                            size: "sm"
+                            text: "Manage"
+                            anchors.right: parent.right
+                        }
+                    }
+                }
+            }
+
+            // Example 2: Vertical Navigation Divider
+            ChaSetCard {
+                width: (parent.width - 16) / 2
+                height: 180
+                customRadius: root.customRadius
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 16
+                    spacing: 12
+
+                    Text {
+                        text: "Navigation Divider"
+                        font.pixelSize: 15
+                        font.weight: Font.Bold
+                        color: root.cFg
+                    }
+
+                    Text {
+                        text: "Vertical dividers between inline list items or metadata tags."
+                        font.pixelSize: 13
+                        color: root.cMutedFg
+                        wrapMode: Text.WordWrap
+                        width: parent.width
+                    }
+
+                    Rectangle {
+                        width: parent.width
+                        height: 38
+                        radius: 6
+                        color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.4)
+                        border.color: root.cBorder
+                        border.width: 1
+
+                        Row {
+                            anchors.centerIn: parent
+                            spacing: 12
+
+                            Text {
+                                text: "v0.2.0"
+                                font.weight: Font.DemiBold
+                                font.pixelSize: 12
+                                color: root.cFg
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            ChaSetSeparator {
+                                orientation: "vertical"
+                                height: 16
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            Text {
+                                text: "MIT License"
+                                font.pixelSize: 12
+                                color: root.cMutedFg
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            ChaSetSeparator {
+                                orientation: "vertical"
+                                height: 16
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            Text {
+                                text: "React 19 & Qt 6"
+                                font.pixelSize: 12
+                                color: root.cMutedFg
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Section 5: Props Reference
+    Column {
+        width: parent.width
+        spacing: 8
+        Text { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+
+        PropsTable {
+            width: parent.width
+            propsModel: [
+                {
+                    name: "orientation",
+                    type: "\"horizontal\" | \"vertical\"",
+                    default: "\"horizontal\"",
+                    description: "The orientation of the separator line."
+                },
+                {
+                    name: "decorative",
+                    type: "bool",
+                    default: "true",
+                    description: "Whether the element is purely decorative or conveys semantic structure."
+                },
+                {
+                    name: "customColor",
+                    type: "color",
+                    default: "\"transparent\"",
+                    description: "Optional explicit override color for the divider line (defaults to ThemeTokens.border)."
+                }
+            ]
+        }
+    }
+}

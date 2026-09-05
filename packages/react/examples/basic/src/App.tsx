@@ -26,6 +26,9 @@ import { TabsDocPage } from './pages/components/TabsDocPage';
 import { BadgeDocPage } from './pages/components/BadgeDocPage';
 import { CardDocPage } from './pages/components/CardDocPage';
 import { InputDocPage } from './pages/components/InputDocPage';
+import { CheckboxDocPage } from './pages/components/CheckboxDocPage';
+import { SwitchDocPage } from './pages/components/SwitchDocPage';
+import { SeparatorDocPage } from './pages/components/SeparatorDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
@@ -404,6 +407,12 @@ export function App() {
         return <CardDocPage />;
       case '#/components/input':
         return <InputDocPage />;
+      case '#/components/checkbox':
+        return <CheckboxDocPage />;
+      case '#/components/switch':
+        return <SwitchDocPage />;
+      case '#/components/separator':
+        return <SeparatorDocPage />;
       case '#/components/button':
       default:
         return <ButtonDocPage />;

@@ -47,5 +47,26 @@
     "placeholder": true,
     "focusRing": true,
     "readOnly": true
+  },
+  "checkbox": {
+    "checked": true,
+    "toggle": true,
+    "disabled": true,
+    "size": true,
+    "indeterminate": true,
+    "label": true
+  },
+  "switch": {
+    "checked": true,
+    "toggle": true,
+    "disabled": true,
+    "size": true,
+    "label": true,
+    "focusRing": true
+  },
+  "separator": {
+    "orientation": true,
+    "decorative": true,
+    "styling": true
   }
 }

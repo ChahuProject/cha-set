@@ -80,6 +80,27 @@ export const NAVIGATION_CONFIG: NavCategory[] = [
         badge: 'New',
         description: 'Displays a form text input field or a component that looks like an input field.',
       },
+      {
+        id: 'checkbox',
+        title: 'Checkbox',
+        href: '#/components/checkbox',
+        badge: 'New',
+        description: 'A control that allows the user to toggle between checked and not-checked states.',
+      },
+      {
+        id: 'switch',
+        title: 'Switch',
+        href: '#/components/switch',
+        badge: 'New',
+        description: 'A control that allows the user to toggle between checked and not checked states.',
+      },
+      {
+        id: 'separator',
+        title: 'Separator',
+        href: '#/components/separator',
+        badge: 'New',
+        description: 'Visually or semantically separates content in a list or section.',
+      },
     ],
   },
 ];

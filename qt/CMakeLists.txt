@@ -51,6 +51,9 @@ qt_add_qml_module(ChaSet
         src/ChaSetCardContent.qml
         src/ChaSetCardFooter.qml
         src/ChaSetInput.qml
+        src/ChaSetCheckbox.qml
+        src/ChaSetSwitch.qml
+        src/ChaSetSeparator.qml
         src/ThemeTokens.generated.qml
         src/ShowcaseData.generated.qml
     NO_GENERATE_EXTRA_QMLDIRS
@@ -98,6 +101,9 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/BadgeDocPage.qml
             src/CardDocPage.qml
             src/InputDocPage.qml
+            src/CheckboxDocPage.qml
+            src/SwitchDocPage.qml
+            src/SeparatorDocPage.qml
             src/CommandSearchModal.qml
             src/ExportModal.qml
         NO_RESOURCE_TARGET_PATH

@@ -628,7 +628,10 @@ ApplicationWindow {
                                     ["Tabs", "tabs", ""],
                                     ["Badge", "badge", "New"],
                                     ["Card", "card", "New"],
-                                    ["Input", "input", "New"]
+                                    ["Input", "input", "New"],
+                                    ["Checkbox", "checkbox", "New"],
+                                    ["Switch", "switch", "New"],
+                                    ["Separator", "separator", "New"]
                                 ]
                                 delegate: Rectangle {
                                     required property var modelData
@@ -700,6 +703,9 @@ ApplicationWindow {
                             if (win.activePage === "badge") return badgePage.implicitHeight
                             if (win.activePage === "card") return cardPage.implicitHeight
                             if (win.activePage === "input") return inputPage.implicitHeight
+                            if (win.activePage === "checkbox") return checkboxPage.implicitHeight
+                            if (win.activePage === "switch") return switchPage.implicitHeight
+                            if (win.activePage === "separator") return separatorPage.implicitHeight
                             return 800
                         }
 
@@ -834,6 +840,45 @@ ApplicationWindow {
                             cBorder: win.cBorder
                             cPrimary: win.cPrimary
                             cAccentBg: win.cAccentBg
+                        }
+
+                        // Page 10: Checkbox Doc Page
+                        CheckboxDocPage {
+                            id: checkboxPage
+                            visible: win.activePage === "checkbox"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                            cPrimary: win.cPrimary
+                            cAccentBg: win.cAccentBg
+                        }
+
+                        // Page 11: Switch Doc Page
+                        SwitchDocPage {
+                            id: switchPage
+                            visible: win.activePage === "switch"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                            cPrimary: win.cPrimary
+                        }
+
+                        // Page 12: Separator Doc Page
+                        SeparatorDocPage {
+                            id: separatorPage
+                            visible: win.activePage === "separator"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
                         }
                     }
                 }

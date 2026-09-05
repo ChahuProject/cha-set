@@ -18,7 +18,10 @@ Rectangle {
         { id: "tabs", title: "Tabs", category: "Components", desc: "Layered content sections displayed one at a time" },
         { id: "badge", title: "Badge", category: "Components", desc: "Compact status and label pills with semantic tokens" },
         { id: "card", title: "Card", category: "Components", desc: "Cards with header, content, and footer actions" },
-        { id: "input", title: "Input", category: "Components", desc: "Form text input field with sizes and state variants" }
+        { id: "input", title: "Input", category: "Components", desc: "Form text input field with sizes and state variants" },
+        { id: "checkbox", title: "Checkbox", category: "Components", desc: "Interactive checkbox with states, sizes, and labels" },
+        { id: "switch", title: "Switch", category: "Components", desc: "Toggle switch control for binary settings" },
+        { id: "separator", title: "Separator", category: "Components", desc: "Visual divider between elements" }
     ]
 
     property string query: ""

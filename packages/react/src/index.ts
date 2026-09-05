@@ -6,3 +6,6 @@ export * from './tabs';
 export * from './badge';
 export * from './card';
 export * from './input';
+export * from './checkbox';
+export * from './switch';
+export * from './separator';
