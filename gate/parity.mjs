@@ -53,8 +53,10 @@ if (existsSync(qtExe)) {
 
 // 3. Optional Targeted Pixel Conformance Gate (selective opt-in)
 if (process.argv.includes('--pixel')) {
-  console.log('[gate] Executing targeted pixel-level conformance gate for button...');
+  const compIndex = process.argv.indexOf('--component');
+  const comp = compIndex !== -1 ? process.argv[compIndex + 1] : 'all';
+  console.log(`[gate] Executing targeted pixel-level conformance gate for ${comp}...`);
   const { execSync } = await import('node:child_process');
-  execSync('node scripts/pixel-sync-test.mjs --component button', { stdio: 'inherit', cwd: root });
+  execSync(`node scripts/pixel-sync-test.mjs --component ${comp}`, { stdio: 'inherit', cwd: root });
   console.log('[gate] OK — Pixel conformance gate passed!');
 }

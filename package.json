@@ -24,7 +24,7 @@
     "test:visual": "node scripts/visual-diff.mjs",
     "gate:visual": "node scripts/visual-diff.mjs",
     "test:pixel": "node scripts/pixel-sync-test.mjs",
-    "gate:pixel": "node scripts/pixel-sync-test.mjs --component button",
+    "gate:pixel": "node scripts/pixel-sync-test.mjs --component all",
     "dev": "pnpm --filter @chaset/example-react-button dev",
     "prepare": "node -e \"try{require('child_process').execSync('lefthook install',{stdio:'inherit'})}catch{console.log('Not yet git init, skipping lefthook install; run git init first then pnpm lefthook:install')}\"",
     "lefthook:install": "lefthook install",

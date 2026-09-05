@@ -25,7 +25,7 @@ Static screenshot comparison by "human eyeballing" is unreliable and leads to su
 4. **Zero-Variance Unicode Benchmark Lexicon**:
    - To completely eliminate kerning pair accumulation and font styling variances across OS text rasterizers, visual unit conformance uses the standard Unicode Middle Dot (`·`, U+00B7), which renders with integer-aligned center geometry across Chromium Skia and Qt DirectWrite.
 5. **Selective Targeted Execution (Opt-in)**:
-   - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for `button`).
+   - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for `button` and `scroll-area`).
 
 ---
 
@@ -48,11 +48,19 @@ Ensure mathematical color parity between Tailwind v4 color mixing and Qt QML col
   - Idle: `#ef4444` (`rgb(239, 68, 68)`).
 - **Disabled**:
   - `opacity: 0.5` applied identically across React and Qt -> `rgb(141, 187, 239)` (Delta <= 2.4).
+- **ScrollBar / ScrollArea**:
+  - Light Idle: `rgb(226, 232, 240)` | Hover: `rgb(175, 184, 196)` | Active: `rgb(101, 106, 115)` (Delta E = 0.0).
+  - Dark Idle: `rgb(30, 41, 59)` | Hover: `rgb(83, 96, 115)` | Active: `rgb(157, 161, 170)` (Delta E = 0.0).
+  - Steppers: 8x8 standard chevron glyphs, paired within 20px header/footer runways.
 
 ### Step 2: Isolated Test Harness
 Both stacks expose an isolated rendering harness centered in a minimal canvas:
-- **React**: `http://127.0.0.1:5299/?harness=button&variant={v}&size={s}&state={st}&disabled={d}&loading={l}`
-- **Qt**: `QtChaSetDemo.exe --harness button --variant {v} --size {s} --state {st} --width 220 --height 80 --shot {path}`
+- **Button**:
+  - React: `http://127.0.0.1:5299/?harness=button&variant={v}&size={s}&state={st}&disabled={d}`
+  - Qt: `QtChaSetDemo.exe --harness button --variant {v} --size {s} --state {st} --width 220 --height 80 --shot {path}`
+- **ScrollArea**:
+  - React: `http://127.0.0.1:5299/?harness=scroll-area&orientation={v|h}&state={st}&buttons={0|1}&theme={light|dark}`
+  - Qt: `QtChaSetDemo.exe --harness scroll-area --orientation {v|h} --state {st} [--no-buttons] [--dark] --width {w} --height {h} --shot {path}`
 
 ### Step 3: Headless Image Acquisition
 - Use Edge/Chromium via Chrome DevTools Protocol (`Page.navigate`, `Emulation.setDeviceMetricsOverride`, `Page.captureScreenshot`).
@@ -60,8 +68,8 @@ Both stacks expose an isolated rendering harness centered in a minimal canvas:
 
 ### Step 4: Programmatic Comparison
 Run `scripts/pixel-sync-test.mjs`:
-- Sample button surface color at size-aware coordinates away from text glyphs (`sm: (86, 28)`, `default: (76, 28)`, `lg: (60, 28)`, `icon: (98, 28)`).
-- Verify color Delta: Delta E = sqrt(Delta R^2 + Delta G^2 + Delta B^2) <= 4.0.
+- Sample surface color at geometry-aware coordinates (Button: away from text glyphs; ScrollArea: centered on thumb runway).
+- Verify color Delta: Delta E = sqrt(Delta R^2 + Delta G^2 + Delta B^2) <= 4.0 (achieving Delta E = 0.0 on solid fills).
 - Compute visual diff heatmap and mismatched pixel percentage via `pixelmatch`.
 
 ### Step 5: Visual HTML Conformance Report
@@ -79,11 +87,13 @@ Open `.pixel-diff/report.html` to inspect side-by-side:
 # 1. Run targeted pixel test for button (all variants & states)
 pnpm test:pixel --component button
 
-# 2. Run targeted pixel test for a specific variant or state
-pnpm test:pixel --component button --variant outline
-pnpm test:pixel --component button --state hover
+# 2. Run targeted pixel test for scroll-area (all orientations & states)
+pnpm test:pixel --component scroll-area
 
-# 3. Run cross-stack parity gate including targeted pixel gate
+# 3. Run targeted pixel test for all supported components
+pnpm test:pixel --component all
+
+# 4. Run cross-stack parity gate including targeted pixel gate
 pnpm gate:pixel
 # OR
 pnpm gate --pixel

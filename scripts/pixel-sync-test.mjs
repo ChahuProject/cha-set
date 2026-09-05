@@ -48,7 +48,38 @@ const buttonMatrix = [
   { id: 'btn-size-icon', variant: 'outline', size: 'icon', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
 
   // 4. Invariant States (Disabled)
-  { id: 'btn-disabled', variant: 'default', size: 'default', state: 'idle', label: '·', disabled: true, width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-disabled', component: 'button', variant: 'default', size: 'default', state: 'idle', label: '·', disabled: true, width: 220, height: 80, probeX: 104, probeY: 30, maxDiff: 0.2 },
+];
+
+// Mark component on buttonMatrix
+for (const b of buttonMatrix) {
+  if (!b.component) b.component = 'button';
+  if (!b.probeX) b.probeX = 104;
+  if (!b.probeY) b.probeY = 30;
+}
+
+// Definitive ScrollArea test matrix covering vertical & horizontal orientations, idle/hover/active, steppers, and themes
+const scrollAreaMatrix = [
+  // 1. Vertical with Steppers (Idle, Hover, Active)
+  { id: 'scroll-vert-stepper-idle', component: 'scroll-area', orientation: 'vertical', state: 'idle', showButtons: true, theme: 'light', width: 120, height: 200, probeX: 106, probeY: 65, maxDiff: 0.8 },
+  { id: 'scroll-vert-stepper-hover', component: 'scroll-area', orientation: 'vertical', state: 'hover', showButtons: true, theme: 'light', width: 120, height: 200, probeX: 106, probeY: 65, maxDiff: 0.8 },
+  { id: 'scroll-vert-stepper-active', component: 'scroll-area', orientation: 'vertical', state: 'active', showButtons: true, theme: 'light', width: 120, height: 200, probeX: 106, probeY: 65, maxDiff: 0.8 },
+
+  // 2. Vertical Minimalist (No Steppers)
+  { id: 'scroll-vert-idle', component: 'scroll-area', orientation: 'vertical', state: 'idle', showButtons: false, theme: 'light', width: 120, height: 200, probeX: 106, probeY: 55, maxDiff: 0.8 },
+  { id: 'scroll-vert-hover', component: 'scroll-area', orientation: 'vertical', state: 'hover', showButtons: false, theme: 'light', width: 120, height: 200, probeX: 106, probeY: 55, maxDiff: 0.8 },
+  { id: 'scroll-vert-active', component: 'scroll-area', orientation: 'vertical', state: 'active', showButtons: false, theme: 'light', width: 120, height: 200, probeX: 106, probeY: 55, maxDiff: 0.8 },
+
+  // 3. Horizontal (Minimalist & with Steppers)
+  { id: 'scroll-horiz-idle', component: 'scroll-area', orientation: 'horizontal', state: 'idle', showButtons: false, theme: 'light', width: 200, height: 80, probeX: 55, probeY: 66, maxDiff: 0.8 },
+  { id: 'scroll-horiz-hover', component: 'scroll-area', orientation: 'horizontal', state: 'hover', showButtons: false, theme: 'light', width: 200, height: 80, probeX: 55, probeY: 66, maxDiff: 0.8 },
+  { id: 'scroll-horiz-active', component: 'scroll-area', orientation: 'horizontal', state: 'active', showButtons: false, theme: 'light', width: 200, height: 80, probeX: 55, probeY: 66, maxDiff: 0.8 },
+  { id: 'scroll-horiz-stepper-hover', component: 'scroll-area', orientation: 'horizontal', state: 'hover', showButtons: true, theme: 'light', width: 200, height: 80, probeX: 65, probeY: 66, maxDiff: 0.8 },
+
+  // 4. Dark Theme
+  { id: 'scroll-dark-vert-idle', component: 'scroll-area', orientation: 'vertical', state: 'idle', showButtons: true, theme: 'dark', width: 120, height: 200, probeX: 106, probeY: 65, maxDiff: 0.8 },
+  { id: 'scroll-dark-vert-hover', component: 'scroll-area', orientation: 'vertical', state: 'hover', showButtons: true, theme: 'dark', width: 120, height: 200, probeX: 106, probeY: 65, maxDiff: 0.8 },
+  { id: 'scroll-dark-vert-active', component: 'scroll-area', orientation: 'vertical', state: 'active', showButtons: true, theme: 'dark', width: 120, height: 200, probeX: 106, probeY: 65, maxDiff: 0.8 },
 ];
 
 let testCases = [];
@@ -56,6 +87,11 @@ if (componentArg === 'button') {
   testCases = buttonMatrix;
   if (variantFilter) testCases = testCases.filter((tc) => tc.variant === variantFilter);
   if (stateFilter) testCases = testCases.filter((tc) => tc.state === stateFilter);
+} else if (componentArg === 'scroll-area' || componentArg === 'scrollbar') {
+  testCases = scrollAreaMatrix;
+  if (stateFilter) testCases = testCases.filter((tc) => tc.state === stateFilter);
+} else if (componentArg === 'all') {
+  testCases = [...buttonMatrix, ...scrollAreaMatrix];
 } else {
   console.log(`[pixel-sync] Component "${componentArg}" is not enabled for selective pixel sync. Skipping.`);
   process.exit(0);
@@ -128,15 +164,25 @@ try {
     const diffPngPath = join(outDir, `${tc.id}-diff.png`);
 
     // A. Capture React
-    const query = new URLSearchParams({
-      harness: 'button',
-      variant: tc.variant,
-      size: tc.size,
-      label: tc.label,
-      state: tc.state,
-      disabled: tc.disabled ? 'true' : 'false',
-      loading: tc.loading ? 'true' : 'false',
-    }).toString();
+    const query = tc.component === 'scroll-area'
+      ? new URLSearchParams({
+          harness: 'scroll-area',
+          orientation: tc.orientation,
+          state: tc.state,
+          showButtons: tc.showButtons ? 'true' : 'false',
+          theme: tc.theme,
+          width: String(tc.width),
+          height: String(tc.height),
+        }).toString()
+      : new URLSearchParams({
+          harness: 'button',
+          variant: tc.variant,
+          size: tc.size,
+          label: tc.label,
+          state: tc.state,
+          disabled: tc.disabled ? 'true' : 'false',
+          loading: tc.loading ? 'true' : 'false',
+        }).toString();
     const targetUrl = `http://127.0.0.1:${port}/?${query}`;
 
     await sendCdp('Page.navigate', { url: targetUrl });
@@ -157,18 +203,29 @@ try {
     writeFileSync(reactPngPath, reactBuf);
 
     // B. Capture Qt
-    const qtArgs = [
-      '--harness', 'button',
-      '--variant', tc.variant,
-      '--size', tc.size,
-      '--label', tc.label,
-      '--state', tc.state,
-      '--width', String(tc.width),
-      '--height', String(tc.height),
-      '--shot', qtPngPath,
-    ];
-    if (tc.disabled) qtArgs.push('--disabled');
-    if (tc.loading) qtArgs.push('--loading');
+    const qtArgs = tc.component === 'scroll-area'
+      ? [
+          '--harness', 'scroll-area',
+          '--orientation', tc.orientation,
+          '--state', tc.state,
+          '--width', String(tc.width),
+          '--height', String(tc.height),
+          '--shot', qtPngPath,
+          ...(tc.showButtons ? [] : ['--no-buttons']),
+          ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
+        ]
+      : [
+          '--harness', 'button',
+          '--variant', tc.variant,
+          '--size', tc.size,
+          '--label', tc.label,
+          '--state', tc.state,
+          '--width', String(tc.width),
+          '--height', String(tc.height),
+          '--shot', qtPngPath,
+          ...(tc.disabled ? ['--disabled'] : []),
+          ...(tc.loading ? ['--loading'] : []),
+        ];
 
     const qtEnv = {
       ...process.env,
@@ -203,9 +260,9 @@ try {
 
     writeFileSync(diffPngPath, PNG.sync.write(diffImg));
 
-    // Sample button surface background color for behavioral color parity (inside button bounds)
-    let probeX = 104;
-    let probeY = 30;
+    // Sample component surface background color for behavioral color parity
+    const probeX = tc.probeX ?? 104;
+    const probeY = tc.probeY ?? 30;
 
     const probeIdx = (width * probeY + probeX) << 2;
     const rR = imgReact.data[probeIdx];
@@ -224,9 +281,10 @@ try {
 
     results.push({
       id: tc.id,
-      variant: tc.variant,
+      component: tc.component,
+      variant: tc.variant ?? tc.orientation,
       state: tc.state,
-      size: tc.size,
+      size: tc.size ?? (tc.showButtons ? 'steppers' : 'minimal'),
       width,
       height,
       colorReact: `rgb(${rR},${rG},${rB})`,
