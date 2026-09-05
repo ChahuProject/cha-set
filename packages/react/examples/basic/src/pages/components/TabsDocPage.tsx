@@ -196,35 +196,35 @@ export default function Example() {
           Props Reference
         </h2>
         <PropsTable
-          items={[
+          props={[
             {
               name: 'defaultValue',
               type: 'string',
-              defaultValue: 'undefined',
+              default: 'undefined',
               description: 'The value of the tab that should be active when initially rendered (uncontrolled).',
             },
             {
               name: 'value',
               type: 'string',
-              defaultValue: 'undefined',
+              default: 'undefined',
               description: 'The controlled value of the active tab.',
             },
             {
               name: 'onValueChange',
               type: '(value: string) => void',
-              defaultValue: 'undefined',
+              default: 'undefined',
               description: 'Event handler called when the active tab changes.',
             },
             {
               name: 'orientation',
               type: '"horizontal" | "vertical"',
-              defaultValue: '"horizontal"',
+              default: '"horizontal"',
               description: 'The orientation of the tabs (controls keyboard navigation axis).',
             },
             {
               name: 'disabled',
               type: 'boolean',
-              defaultValue: 'false',
+              default: 'false',
               description: 'When true on TabsTrigger, prevents interaction on that tab.',
             },
           ]}

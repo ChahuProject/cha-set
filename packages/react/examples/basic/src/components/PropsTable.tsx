@@ -5,16 +5,19 @@ export interface PropItem {
   name: string;
   type: string;
   default?: string;
+  defaultValue?: string;
   description: string;
   required?: boolean;
 }
 
 export interface PropsTableProps {
   title?: string;
-  props: PropItem[];
+  props?: PropItem[];
+  items?: PropItem[];
 }
 
-export function PropsTable({ title, props }: PropsTableProps) {
+export function PropsTable({ title, props, items }: PropsTableProps) {
+  const list = props ?? items ?? [];
   return (
     <div className="my-6">
       {title && <h3 className="text-base font-semibold mb-3 tracking-tight">{title}</h3>}
@@ -34,7 +37,7 @@ export function PropsTable({ title, props }: PropsTableProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-border/60">
-            {props.map((p) => (
+            {list.map((p) => (
               <tr key={p.name} className="hover:bg-muted/20 transition-colors">
                 <td className="py-3 px-4 font-mono text-xs font-medium text-primary whitespace-nowrap">
                   {p.name}
@@ -46,7 +49,7 @@ export function PropsTable({ title, props }: PropsTableProps) {
                   </Badge>
                 </td>
                 <td className="py-3 px-4 font-mono text-xs text-muted-foreground">
-                  {p.default ? <code className="text-foreground/70">{p.default}</code> : <span className="opacity-40">—</span>}
+                  {(p.default ?? p.defaultValue) ? <code className="text-foreground/70">{p.default ?? p.defaultValue}</code> : <span className="opacity-40">—</span>}
                 </td>
                 <td className="py-3 px-4 text-xs text-muted-foreground leading-relaxed">{p.description}</td>
               </tr>
