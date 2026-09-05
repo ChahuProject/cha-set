@@ -1,7 +1,6 @@
 // ChaSet ScrollArea for Qt (QML)
 // Native Flickable viewport with integrated ChaSetScrollBar,
 // precision mouse wheel handling, smooth animated kinematics, and automatic childrenRect bounds.
-// Note: ChaSetScrollView is retained as a backward-compatible alias.
 import QtQuick 6.10
 import QtQuick.Controls 6.10
 import ChaSet
@@ -195,7 +194,6 @@ Flickable {
     ScrollBar.vertical: ChaSetScrollBar {
         id: vScrollBar
         scrollArea: root
-        scrollView: root
         visible: root.showVerticalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentHeight > root.height))
         showButtons: root.showButtons
         collapsedSize: root.collapsedSize
@@ -208,7 +206,6 @@ Flickable {
     ScrollBar.horizontal: ChaSetScrollBar {
         id: hScrollBar
         scrollArea: root
-        scrollView: root
         visible: root.showHorizontalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentWidth > root.width))
         showButtons: root.showButtons
         collapsedSize: root.collapsedSize

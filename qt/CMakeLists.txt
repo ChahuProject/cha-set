@@ -38,7 +38,6 @@ qt_add_qml_module(ChaSet
     QML_FILES
         src/ChaSetScrollBar.qml
         src/ChaSetScrollArea.qml
-        src/ChaSetScrollView.qml
         src/ChaSetButton.qml
         src/ThemeTokens.generated.qml
         src/ShowcaseData.generated.qml

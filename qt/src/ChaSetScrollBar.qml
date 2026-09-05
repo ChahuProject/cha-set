@@ -28,8 +28,7 @@ T.ScrollBar {
     property real pageStepRatio: 0.85
     property bool smoothScroll: true
     property var scrollArea: null
-    property var scrollView: null
-    readonly property var _scrollTarget: scrollArea !== null ? scrollArea : scrollView
+    readonly property var _scrollTarget: scrollArea
 
     // Backward compatibility aliases for cha-set showcase and tests
     property alias hitSize: control.hitThickness

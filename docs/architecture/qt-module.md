@@ -114,7 +114,6 @@ import ChaSet 1.0
 
 ChaSetScrollArea {
     id: scrollArea
-    // Note: ChaSetScrollView is fully supported as a backward-compatible facade
 }
 
 ChaSetScrollBar {

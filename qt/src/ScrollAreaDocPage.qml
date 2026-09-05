@@ -141,8 +141,8 @@ DocLayout {
                 }
             }
 
-            // Mode 3: Dual Axis 2D Grid (validates backward-compatible ChaSetScrollView alias)
-            ChaSetScrollView {
+            // Mode 3: Dual Axis 2D Grid
+            ChaSetScrollArea {
                 id: demoScrollBoth
                 visible: root.heroMode === "both"
                 anchors.fill: parent
@@ -277,7 +277,7 @@ DocLayout {
             color: ThemeTokens.background
             border.color: ThemeTokens.border
 
-            ChaSetScrollView {
+            ChaSetScrollArea {
                 anchors.fill: parent
                 anchors.margins: 12
                 showVerticalScrollBar: false
@@ -345,7 +345,7 @@ DocLayout {
             color: ThemeTokens.background
             border.color: ThemeTokens.border
 
-            ChaSetScrollView {
+            ChaSetScrollArea {
                 anchors.fill: parent
                 anchors.margins: 10
                 showVerticalScrollBar: true
@@ -520,7 +520,7 @@ export const CrossStackSpecification = {
 
         PropsTable {
             width: parent.width
-            title: "ChaSetScrollArea (ChaSetScrollView) Properties"
+            title: "ChaSetScrollArea Properties"
             propsModel: [
                 ["showVerticalScrollBar", "bool", "true", "Whether to render vertical scrollbar."],
                 ["showHorizontalScrollBar", "bool", "false", "Whether to render horizontal scrollbar."],

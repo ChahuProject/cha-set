@@ -103,7 +103,7 @@ Rectangle {
             implicitHeight: Math.max(48, codeText.implicitHeight + 24)
             color: ThemeTokens.background
 
-            ChaSetScrollView {
+            ChaSetScrollArea {
                 anchors.fill: parent
                 anchors.margins: 12
                 showVerticalScrollBar: false

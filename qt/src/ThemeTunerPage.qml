@@ -299,7 +299,7 @@ DocLayout {
                 Column {
                     spacing: 12
                     Text { text: "MINI SCROLL VIEWPORT"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
-                    ChaSetScrollView {
+                    ChaSetScrollArea {
                         width: 240
                         height: 100
                         showButtons: true
