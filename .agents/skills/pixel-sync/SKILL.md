@@ -25,7 +25,7 @@ Static screenshot comparison by "human eyeballing" is unreliable and leads to su
 4. **Zero-Variance Unicode Benchmark Lexicon**:
    - To completely eliminate kerning pair accumulation and font styling variances across OS text rasterizers, visual unit conformance uses the standard Unicode Middle Dot (`·`, U+00B7), which renders with integer-aligned center geometry across Chromium Skia and Qt DirectWrite.
 5. **Selective Targeted Execution (Opt-in)**:
-   - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for `button` and `scroll-area`).
+   - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for `button`, `scroll-area`, and `tabs`).
 
 ---
 
@@ -52,6 +52,10 @@ Ensure mathematical color parity between Tailwind v4 color mixing and Qt QML col
   - Light Idle: `rgb(226, 232, 240)` | Hover: `rgb(175, 184, 196)` | Active: `rgb(101, 106, 115)` (Delta E = 0.0).
   - Dark Idle: `rgb(30, 41, 59)` | Hover: `rgb(83, 96, 115)` | Active: `rgb(157, 161, 170)` (Delta E = 0.0).
   - Steppers: 8x8 standard chevron glyphs, paired within 20px header/footer runways.
+- **Tabs / TabsList / TabsTrigger**:
+  - Light List Track: `#f1f5f9` (`rgb(241, 245, 249)`) | Active Trigger Pill: `#ffffff` (`rgb(255, 255, 255)`) with subtle shadow.
+  - Dark List Track: `#1e293b` (`rgb(30, 41, 59)`) | Active Trigger Pill: `#020817` (`rgb(2, 8, 23)`).
+  - Trigger Padding: `h-7 px-3 py-1 text-xs`, 0.03% pixel diff rate benchmark across Light & Dark.
 
 ### Step 2: Isolated Test Harness
 Both stacks expose an isolated rendering harness centered in a minimal canvas:
@@ -61,6 +65,9 @@ Both stacks expose an isolated rendering harness centered in a minimal canvas:
 - **ScrollArea**:
   - React: `http://127.0.0.1:5299/?harness=scroll-area&orientation={v|h}&state={st}&buttons={0|1}&theme={light|dark}`
   - Qt: `QtChaSetDemo.exe --harness scroll-area --orientation {v|h} --state {st} [--no-buttons] [--dark] --width {w} --height {h} --shot {path}`
+- **Tabs**:
+  - React: `http://127.0.0.1:5299/?harness=tabs&tabIndex={idx}&state={st}&disabled={0|1}&theme={light|dark}`
+  - Qt: `QtChaSetDemo.exe --harness tabs --tab-index {idx} --state {st} [--disabled] [--dark] --width 260 --height 80 --shot {path}`
 
 ### Step 3: Headless Image Acquisition
 - Use Edge/Chromium via Chrome DevTools Protocol (`Page.navigate`, `Emulation.setDeviceMetricsOverride`, `Page.captureScreenshot`).
@@ -90,10 +97,13 @@ pnpm test:pixel --component button
 # 2. Run targeted pixel test for scroll-area (all orientations & states)
 pnpm test:pixel --component scroll-area
 
-# 3. Run targeted pixel test for all supported components
+# 3. Run targeted pixel test for tabs (all variants, themes & states)
+pnpm test:pixel --component tabs
+
+# 4. Run targeted pixel test for all supported components
 pnpm test:pixel --component all
 
-# 4. Run cross-stack parity gate including targeted pixel gate
+# 5. Run cross-stack parity gate including targeted pixel gate
 pnpm gate:pixel
 # OR
 pnpm gate --pixel

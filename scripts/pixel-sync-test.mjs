@@ -82,6 +82,19 @@ const scrollAreaMatrix = [
   { id: 'scroll-dark-vert-active', component: 'scroll-area', orientation: 'vertical', state: 'active', showButtons: true, theme: 'dark', width: 120, height: 200, probeX: 106, probeY: 65, maxDiff: 0.8 },
 ];
 
+// Definitive Tabs test matrix covering idle, hover, active selection, disabled, and dark theme
+const tabsMatrix = [
+  // 1. Light Mode States
+  { id: 'tabs-idle', component: 'tabs', tabIndex: '1', state: 'idle', theme: 'light', width: 260, height: 80, probeX: 116, probeY: 30, maxDiff: 1.0 },
+  { id: 'tabs-hover-tab2', component: 'tabs', tabIndex: '2', state: 'hover', theme: 'light', width: 260, height: 80, probeX: 116, probeY: 30, maxDiff: 1.0 },
+  { id: 'tabs-active-tab2', component: 'tabs', tabIndex: '2', state: 'active', theme: 'light', width: 260, height: 80, probeX: 144, probeY: 30, maxDiff: 1.0 },
+  { id: 'tabs-disabled', component: 'tabs', tabIndex: '2', state: 'idle', disabled: true, theme: 'light', width: 260, height: 80, probeX: 116, probeY: 30, maxDiff: 1.0 },
+
+  // 2. Dark Mode States
+  { id: 'tabs-dark-idle', component: 'tabs', tabIndex: '1', state: 'idle', theme: 'dark', width: 260, height: 80, probeX: 116, probeY: 30, maxDiff: 1.0 },
+  { id: 'tabs-dark-active-tab2', component: 'tabs', tabIndex: '2', state: 'active', theme: 'dark', width: 260, height: 80, probeX: 144, probeY: 30, maxDiff: 1.0 },
+];
+
 let testCases = [];
 if (componentArg === 'button') {
   testCases = buttonMatrix;
@@ -90,8 +103,11 @@ if (componentArg === 'button') {
 } else if (componentArg === 'scroll-area' || componentArg === 'scrollbar') {
   testCases = scrollAreaMatrix;
   if (stateFilter) testCases = testCases.filter((tc) => tc.state === stateFilter);
+} else if (componentArg === 'tabs' || componentArg === 'tab') {
+  testCases = tabsMatrix;
+  if (stateFilter) testCases = testCases.filter((tc) => tc.state === stateFilter);
 } else if (componentArg === 'all') {
-  testCases = [...buttonMatrix, ...scrollAreaMatrix];
+  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix];
 } else {
   console.log(`[pixel-sync] Component "${componentArg}" is not enabled for selective pixel sync. Skipping.`);
   process.exit(0);
@@ -164,25 +180,38 @@ try {
     const diffPngPath = join(outDir, `${tc.id}-diff.png`);
 
     // A. Capture React
-    const query = tc.component === 'scroll-area'
-      ? new URLSearchParams({
-          harness: 'scroll-area',
-          orientation: tc.orientation,
-          state: tc.state,
-          showButtons: tc.showButtons ? 'true' : 'false',
-          theme: tc.theme,
-          width: String(tc.width),
-          height: String(tc.height),
-        }).toString()
-      : new URLSearchParams({
-          harness: 'button',
-          variant: tc.variant,
-          size: tc.size,
-          label: tc.label,
-          state: tc.state,
-          disabled: tc.disabled ? 'true' : 'false',
-          loading: tc.loading ? 'true' : 'false',
-        }).toString();
+    let query = '';
+    if (tc.component === 'tabs') {
+      query = new URLSearchParams({
+        harness: 'tabs',
+        tabIndex: tc.tabIndex ?? '1',
+        state: tc.state,
+        disabled: tc.disabled ? 'true' : 'false',
+        theme: tc.theme ?? 'light',
+        width: String(tc.width),
+        height: String(tc.height),
+      }).toString();
+    } else if (tc.component === 'scroll-area') {
+      query = new URLSearchParams({
+        harness: 'scroll-area',
+        orientation: tc.orientation,
+        state: tc.state,
+        showButtons: tc.showButtons ? 'true' : 'false',
+        theme: tc.theme,
+        width: String(tc.width),
+        height: String(tc.height),
+      }).toString();
+    } else {
+      query = new URLSearchParams({
+        harness: 'button',
+        variant: tc.variant,
+        size: tc.size,
+        label: tc.label,
+        state: tc.state,
+        disabled: tc.disabled ? 'true' : 'false',
+        loading: tc.loading ? 'true' : 'false',
+      }).toString();
+    }
     const targetUrl = `http://127.0.0.1:${port}/?${query}`;
 
     await sendCdp('Page.navigate', { url: targetUrl });
@@ -203,29 +232,43 @@ try {
     writeFileSync(reactPngPath, reactBuf);
 
     // B. Capture Qt
-    const qtArgs = tc.component === 'scroll-area'
-      ? [
-          '--harness', 'scroll-area',
-          '--orientation', tc.orientation,
-          '--state', tc.state,
-          '--width', String(tc.width),
-          '--height', String(tc.height),
-          '--shot', qtPngPath,
-          ...(tc.showButtons ? [] : ['--no-buttons']),
-          ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
-        ]
-      : [
-          '--harness', 'button',
-          '--variant', tc.variant,
-          '--size', tc.size,
-          '--label', tc.label,
-          '--state', tc.state,
-          '--width', String(tc.width),
-          '--height', String(tc.height),
-          '--shot', qtPngPath,
-          ...(tc.disabled ? ['--disabled'] : []),
-          ...(tc.loading ? ['--loading'] : []),
-        ];
+    let qtArgs = [];
+    if (tc.component === 'tabs') {
+      qtArgs = [
+        '--harness', 'tabs',
+        '--tab-index', tc.tabIndex ?? '1',
+        '--state', tc.state,
+        '--width', String(tc.width),
+        '--height', String(tc.height),
+        '--shot', qtPngPath,
+        ...(tc.disabled ? ['--disabled'] : []),
+        ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
+      ];
+    } else if (tc.component === 'scroll-area') {
+      qtArgs = [
+        '--harness', 'scroll-area',
+        '--orientation', tc.orientation,
+        '--state', tc.state,
+        '--width', String(tc.width),
+        '--height', String(tc.height),
+        '--shot', qtPngPath,
+        ...(tc.showButtons ? [] : ['--no-buttons']),
+        ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
+      ];
+    } else {
+      qtArgs = [
+        '--harness', 'button',
+        '--variant', tc.variant,
+        '--size', tc.size,
+        '--label', tc.label,
+        '--state', tc.state,
+        '--width', String(tc.width),
+        '--height', String(tc.height),
+        '--shot', qtPngPath,
+        ...(tc.disabled ? ['--disabled'] : []),
+        ...(tc.loading ? ['--loading'] : []),
+      ];
+    }
 
     const qtEnv = {
       ...process.env,
@@ -282,9 +325,9 @@ try {
     results.push({
       id: tc.id,
       component: tc.component,
-      variant: tc.variant ?? tc.orientation,
+      variant: tc.variant ?? tc.orientation ?? (tc.component === 'tabs' ? 'tabs' : 'default'),
       state: tc.state,
-      size: tc.size ?? (tc.showButtons ? 'steppers' : 'minimal'),
+      size: tc.size ?? (tc.showButtons ? 'steppers' : (tc.component === 'tabs' ? `tab-${tc.tabIndex ?? '1'}` : 'minimal')),
       width,
       height,
       colorReact: `rgb(${rR},${rG},${rB})`,
