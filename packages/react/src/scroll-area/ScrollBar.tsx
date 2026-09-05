@@ -24,6 +24,12 @@ export interface ScrollBarProps
   keepMounted?: boolean;
   /** Whether to automatically hide when content does not overflow. @default true */
   autoHide?: boolean;
+  /** Force scrollbar into hovered visual state (for deterministic testing). */
+  forceHover?: boolean;
+  /** Force scrollbar into active/dragging visual state (for deterministic testing). */
+  forceActive?: boolean;
+  /** Force stepper buttons into specific state (for deterministic testing). */
+  forceButtonState?: 'idle' | 'hover' | 'active';
 }
 
 function toRem(val?: number | string): string | undefined {
@@ -45,6 +51,9 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
       expandedSize = 8,
       keepMounted = false,
       autoHide = true,
+      forceHover = false,
+      forceActive = false,
+      forceButtonState,
       children,
       style,
       ...props
@@ -63,6 +72,8 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
     if (autoHide && !hasOverflow && !keepMounted) {
       return null;
     }
+
+    const isExpanded = forceHover || forceActive;
 
     return (
       <div
@@ -92,6 +103,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           isVertical
             ? 'flex-col items-center hover:bg-muted/30'
             : 'flex-row items-center hover:bg-muted/30',
+          isExpanded && 'bg-muted/30',
           className,
         )}
         {...props}
@@ -100,6 +112,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           <div
             className={cn(
               'opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto shrink-0',
+              isExpanded && 'opacity-100 pointer-events-auto',
               isVertical ? 'h-5 w-full' : 'w-5 h-full',
             )}
           >
@@ -107,6 +120,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
               orientation={orientation}
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}
+              forceState={forceButtonState}
             />
           </div>
         )}
@@ -141,6 +155,9 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
                   'rounded-full bg-border transition-[width,height,background-color] duration-150',
                   'group-hover:bg-muted-foreground/50 active:bg-foreground/60',
                   isVertical ? 'h-full w-1 group-hover:w-2' : 'w-full h-1 group-hover:h-2',
+                  isExpanded && (isVertical ? 'w-2' : 'h-2'),
+                  forceHover && !forceActive && 'bg-muted-foreground/50',
+                  forceActive && 'bg-foreground/60',
                 )}
               />
             )}
@@ -151,6 +168,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           <div
             className={cn(
               'opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto shrink-0',
+              isExpanded && 'opacity-100 pointer-events-auto',
               isVertical ? 'h-5 w-full' : 'w-5 h-full',
             )}
           >
@@ -158,6 +176,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
               orientation={orientation}
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}
+              forceState={forceButtonState}
             />
           </div>
         )}

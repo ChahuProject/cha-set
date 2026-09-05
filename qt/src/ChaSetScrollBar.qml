@@ -16,11 +16,11 @@ T.ScrollBar {
     id: control
 
     // ---- Desktop Geometry Properties ----
-    property int hitThickness: 14
-    property int thumbThickness: 6
-    property int expandedThumbThickness: 10
-    property int minThumbLength: 30
-    property int buttonLength: 14
+    property int hitThickness: 8
+    property int thumbThickness: 4
+    property int expandedThumbThickness: 8
+    property int minThumbLength: 16
+    property int buttonLength: 8
     property bool showButtons: true
     property bool autoRepeat: true
     property int autoRepeatDelay: 400
@@ -30,6 +30,11 @@ T.ScrollBar {
     property var scrollArea: null
     readonly property var _scrollTarget: scrollArea
 
+    // Deterministic state overrides for pixel testing
+    property bool forceHover: false
+    property bool forceActive: false
+    property string forceButtonState: ""
+
     // Backward compatibility aliases for cha-set showcase and tests
     property alias hitSize: control.hitThickness
     property alias collapsedSize: control.thumbThickness
@@ -37,12 +42,12 @@ T.ScrollBar {
 
     readonly property bool isVertical: control.vertical
 
-    readonly property bool _hasSpaceForButtons: showButtons && ((vertical ? height : width) >= (buttonLength * 4 + 24))
+    readonly property bool _hasSpaceForButtons: showButtons && ((vertical ? height : width) >= (buttonLength * 4 + 16))
 
-    topPadding: (vertical && _hasSpaceForButtons) ? (buttonLength * 2) : 0
-    bottomPadding: (vertical && _hasSpaceForButtons) ? (buttonLength * 2) : 0
-    leftPadding: (horizontal && _hasSpaceForButtons) ? (buttonLength * 2) : 0
-    rightPadding: (horizontal && _hasSpaceForButtons) ? (buttonLength * 2) : 0
+    topPadding: (vertical && _hasSpaceForButtons) ? 20 : 0
+    bottomPadding: (vertical && _hasSpaceForButtons) ? 20 : 0
+    leftPadding: (horizontal && _hasSpaceForButtons) ? 20 : 0
+    rightPadding: (horizontal && _hasSpaceForButtons) ? 20 : 0
     padding: 0
     hoverEnabled: true
 
@@ -78,7 +83,7 @@ T.ScrollBar {
     readonly property bool isAtEnd: !canScrollForward
 
     // Expansion State
-    readonly property bool _isExpanded: control.hovered || control.pressed
+    readonly property bool _isExpanded: control.forceHover || control.forceActive || control.hovered || control.pressed
                                         || (btnStartTo && btnStartTo._isHovered)
                                         || (btnStartPage && btnStartPage._isHovered)
                                         || (btnEndPage && btnEndPage._isHovered)
@@ -125,9 +130,9 @@ T.ScrollBar {
     background: Rectangle {
         implicitWidth: control.vertical ? control.hitThickness : 0
         implicitHeight: control.horizontal ? control.hitThickness : 0
-        color: control._isExpanded ? Qt.rgba(control._panelRaised.r, control._panelRaised.g, control._panelRaised.b, 0.5) : "transparent"
-        radius: 4
-        Behavior on color { ColorAnimation { duration: 120 } }
+        color: control._isExpanded ? (ThemeTokens.dark ? Qt.rgba(255/255, 255/255, 255/255, 0.05) : Qt.rgba(241/255, 245/255, 249/255, 0.3)) : "transparent"
+        radius: 0
+        Behavior on color { enabled: !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: 120 } }
     }
 
     // Centered Thumb Item with Min Length Clamping
@@ -151,13 +156,13 @@ T.ScrollBar {
 
             radius: Math.min(width, height) / 2
 
-            color: control.pressed ? control._accent :
-                   (control.hovered ? control._subduedText :
-                   Qt.rgba(control._subduedText.r, control._subduedText.g, control._subduedText.b, 0.45))
+            color: (control.pressed || control.forceActive) ? (ThemeTokens.dark ? Qt.rgba(157/255, 161/255, 170/255, 1.0) : Qt.rgba(101/255, 106/255, 115/255, 1.0)) :
+                   (control.hovered || control.forceHover) ? (ThemeTokens.dark ? Qt.rgba(83/255, 96/255, 115/255, 1.0) : Qt.rgba(175/255, 184/255, 196/255, 1.0)) :
+                   (ThemeTokens.dark ? "#1e293b" : "#e2e8f0")
 
-            Behavior on width { NumberAnimation { duration: 120; easing.type: Easing.OutQuad } }
-            Behavior on height { NumberAnimation { duration: 120; easing.type: Easing.OutQuad } }
-            Behavior on color { ColorAnimation { duration: 120 } }
+            Behavior on width { enabled: !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: 120; easing.type: Easing.OutQuad } }
+            Behavior on height { enabled: !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: 120; easing.type: Easing.OutQuad } }
+            Behavior on color { enabled: !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: 120 } }
         }
     }
 
@@ -174,20 +179,20 @@ T.ScrollBar {
         height: control.buttonLength
         radius: 2
 
-        readonly property bool _isHovered: _ma.containsMouse && isEnabled
-        readonly property bool _isPressed: _ma.pressed && isEnabled
+        readonly property bool _isHovered: (control.forceButtonState === "hover") || (_ma.containsMouse && isEnabled)
+        readonly property bool _isPressed: (control.forceButtonState === "active") || (_ma.pressed && isEnabled)
 
         color: !isEnabled ? "transparent" :
-               _isPressed ? Qt.rgba(control._accent.r, control._accent.g, control._accent.b, 0.35) :
-               _isHovered ? Qt.rgba(control._panelRaised.r, control._panelRaised.g, control._panelRaised.b, 0.9) : "transparent"
+               _isPressed ? (ThemeTokens.dark ? "#334155" : "#e2e8f0") :
+               _isHovered ? (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8)) : "transparent"
 
-        opacity: !isEnabled ? 0.22 : (control._isExpanded ? 1.0 : 0.0)
+        opacity: !isEnabled ? 0.20 : (control._isExpanded ? 1.0 : 0.0)
         Behavior on opacity { NumberAnimation { duration: 120 } }
         Behavior on color { ColorAnimation { duration: 120 } }
 
-        readonly property color iconColor: !isEnabled ? control._subduedText :
-                                          (_isPressed ? control._accent :
-                                          (_isHovered ? control._text : control._subduedText))
+        readonly property color iconColor: !isEnabled ? (ThemeTokens.dark ? "#64748b" : "#94a3b8") :
+                                          ((_isPressed || _isHovered) ? (ThemeTokens.dark ? "#f8fafc" : "#020817") :
+                                          (ThemeTokens.dark ? Qt.rgba(148/255, 163/255, 184/255, 0.8) : Qt.rgba(100/255, 116/255, 139/255, 0.8)))
 
         Canvas {
             id: iconCanvas
@@ -200,34 +205,34 @@ T.ScrollBar {
                 ctx.reset()
                 ctx.clearRect(0, 0, width, height)
                 ctx.strokeStyle = btn.iconColor
-                ctx.lineWidth = 1.2
+                ctx.lineWidth = 1.0
                 ctx.lineCap = "round"
                 ctx.lineJoin = "round"
 
                 var isVert = control.vertical
                 if (isVert) {
                     if (btn.kind === 0) { // ToTop
-                        ctx.moveTo(3.5, 6.5); ctx.lineTo(7, 3); ctx.lineTo(10.5, 6.5); ctx.stroke()
-                        ctx.moveTo(3.5, 10.5); ctx.lineTo(7, 7); ctx.lineTo(10.5, 10.5); ctx.stroke()
+                        ctx.moveTo(1.5, 4); ctx.lineTo(4, 1.5); ctx.lineTo(6.5, 4); ctx.stroke()
+                        ctx.moveTo(1.5, 6.5); ctx.lineTo(4, 4); ctx.lineTo(6.5, 6.5); ctx.stroke()
                     } else if (btn.kind === 1) { // PageUp
-                        ctx.moveTo(3.5, 8.5); ctx.lineTo(7, 5); ctx.lineTo(10.5, 8.5); ctx.stroke()
+                        ctx.moveTo(1.5, 5); ctx.lineTo(4, 2.5); ctx.lineTo(6.5, 5); ctx.stroke()
                     } else if (btn.kind === 2) { // PageDown
-                        ctx.moveTo(3.5, 5.5); ctx.lineTo(7, 9); ctx.lineTo(10.5, 5.5); ctx.stroke()
+                        ctx.moveTo(1.5, 3); ctx.lineTo(4, 5.5); ctx.lineTo(6.5, 3); ctx.stroke()
                     } else if (btn.kind === 3) { // ToBottom
-                        ctx.moveTo(3.5, 3.5); ctx.lineTo(7, 7); ctx.lineTo(10.5, 3.5); ctx.stroke()
-                        ctx.moveTo(3.5, 7.5); ctx.lineTo(7, 11); ctx.lineTo(10.5, 7.5); ctx.stroke()
+                        ctx.moveTo(1.5, 1.5); ctx.lineTo(4, 4); ctx.lineTo(6.5, 1.5); ctx.stroke()
+                        ctx.moveTo(1.5, 4); ctx.lineTo(4, 6.5); ctx.lineTo(6.5, 4); ctx.stroke()
                     }
                 } else {
                     if (btn.kind === 0) { // ToLeft
-                        ctx.moveTo(6.5, 3.5); ctx.lineTo(3, 7); ctx.lineTo(6.5, 10.5); ctx.stroke()
-                        ctx.moveTo(10.5, 3.5); ctx.lineTo(7, 7); ctx.lineTo(10.5, 10.5); ctx.stroke()
+                        ctx.moveTo(4, 1.5); ctx.lineTo(1.5, 4); ctx.lineTo(4, 6.5); ctx.stroke()
+                        ctx.moveTo(6.5, 1.5); ctx.lineTo(4, 4); ctx.lineTo(6.5, 6.5); ctx.stroke()
                     } else if (btn.kind === 1) { // PageLeft
-                        ctx.moveTo(8.5, 3.5); ctx.lineTo(5, 7); ctx.lineTo(8.5, 10.5); ctx.stroke()
+                        ctx.moveTo(5, 1.5); ctx.lineTo(2.5, 4); ctx.lineTo(5, 6.5); ctx.stroke()
                     } else if (btn.kind === 2) { // PageRight
-                        ctx.moveTo(5.5, 3.5); ctx.lineTo(9, 7); ctx.lineTo(5.5, 10.5); ctx.stroke()
+                        ctx.moveTo(3, 1.5); ctx.lineTo(5.5, 4); ctx.lineTo(3, 6.5); ctx.stroke()
                     } else if (btn.kind === 3) { // ToRight
-                        ctx.moveTo(3.5, 3.5); ctx.lineTo(7, 7); ctx.lineTo(3.5, 10.5); ctx.stroke()
-                        ctx.moveTo(7.5, 3.5); ctx.lineTo(11, 7); ctx.lineTo(7.5, 10.5); ctx.stroke()
+                        ctx.moveTo(1.5, 1.5); ctx.lineTo(4, 4); ctx.lineTo(1.5, 6.5); ctx.stroke()
+                        ctx.moveTo(4, 1.5); ctx.lineTo(6.5, 4); ctx.lineTo(4, 6.5); ctx.stroke()
                     }
                 }
             }
@@ -298,8 +303,8 @@ T.ScrollBar {
         visible: control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollBack
         tooltipText: control.vertical ? qsTr("到顶") : qsTr("到最左")
-        x: 0
-        y: 0
+        x: control.vertical ? 0 : 2
+        y: control.vertical ? 2 : 0
         onTriggered: control.scrollToStart()
     }
 
@@ -310,8 +315,8 @@ T.ScrollBar {
         visible: control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollBack
         tooltipText: control.vertical ? qsTr("向上翻一页") : qsTr("向左翻一页")
-        x: control.vertical ? 0 : control.buttonLength
-        y: control.vertical ? control.buttonLength : 0
+        x: control.vertical ? 0 : 10
+        y: control.vertical ? 10 : 0
         onTriggered: control.scrollPageBack()
     }
 
@@ -323,8 +328,8 @@ T.ScrollBar {
         visible: control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollForward
         tooltipText: control.vertical ? qsTr("向下翻一页") : qsTr("向右翻一页")
-        x: control.vertical ? 0 : (control.width - control.buttonLength * 2)
-        y: control.vertical ? (control.height - control.buttonLength * 2) : 0
+        x: control.vertical ? 0 : (control.width - 18)
+        y: control.vertical ? (control.height - 18) : 0
         onTriggered: control.scrollPageForward()
     }
 
@@ -335,8 +340,8 @@ T.ScrollBar {
         visible: control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollForward
         tooltipText: control.vertical ? qsTr("到底") : qsTr("到最右")
-        x: control.vertical ? 0 : (control.width - control.buttonLength)
-        y: control.vertical ? (control.height - control.buttonLength) : 0
+        x: control.vertical ? 0 : (control.width - 10)
+        y: control.vertical ? (control.height - 10) : 0
         onTriggered: control.scrollToEnd()
     }
 }

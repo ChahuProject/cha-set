@@ -4,10 +4,12 @@ import { useScrollAreaContext } from './context';
 
 export interface ScrollBarButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   iconOnly?: boolean;
+  forceHover?: boolean;
+  forceActive?: boolean;
 }
 
 export const ScrollBarButton = React.forwardRef<HTMLButtonElement, ScrollBarButtonProps>(
-  function ScrollBarButton({ className, disabled, children, ...props }, ref) {
+  function ScrollBarButton({ className, disabled, forceHover, forceActive, children, ...props }, ref) {
     return (
       <button
         ref={ref}
@@ -18,7 +20,9 @@ export const ScrollBarButton = React.forwardRef<HTMLButtonElement, ScrollBarButt
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
         className={cn(
-          'inline-flex items-center justify-center size-2.5 rounded-[2px] text-muted-foreground/80 hover:text-foreground hover:bg-accent/80 active:bg-accent focus:outline-none transition-all duration-100 disabled:opacity-20 disabled:pointer-events-none cursor-pointer',
+          'inline-flex items-center justify-center size-2 rounded-[2px] text-muted-foreground/80 hover:text-foreground hover:bg-accent/80 active:bg-accent focus:outline-none transition-all duration-100 disabled:opacity-20 disabled:pointer-events-none cursor-pointer',
+          forceHover && !forceActive && 'bg-accent/80 text-foreground',
+          forceActive && 'bg-accent text-foreground',
           className,
         )}
         {...props}
@@ -31,68 +35,68 @@ export const ScrollBarButton = React.forwardRef<HTMLButtonElement, ScrollBarButt
 
 export function ChevronsUpIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m17 11-5-5-5 5" />
-      <path d="m17 18-5-5-5 5" />
+    <svg className={cn('size-2', className)} viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m1.5 4 2.5-2.5 2.5 2.5" />
+      <path d="m1.5 6.5 2.5-2.5 2.5 2.5" />
     </svg>
   );
 }
 
 export function ChevronUpIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m18 15-6-6-6 6" />
+    <svg className={cn('size-2', className)} viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m1.5 5 2.5-2.5 2.5 2.5" />
     </svg>
   );
 }
 
 export function ChevronDownIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m6 9 6 6 6-6" />
+    <svg className={cn('size-2', className)} viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m1.5 3 2.5 2.5 2.5-2.5" />
     </svg>
   );
 }
 
 export function ChevronsDownIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m7 6 5 5 5-5" />
-      <path d="m7 13 5 5 5-5" />
+    <svg className={cn('size-2', className)} viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m1.5 1.5 2.5 2.5 2.5-2.5" />
+      <path d="m1.5 4 2.5 2.5 2.5-2.5" />
     </svg>
   );
 }
 
 export function ChevronsLeftIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m11 17-5-5 5-5" />
-      <path d="m18 17-5-5 5-5" />
+    <svg className={cn('size-2', className)} viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m4 1.5-2.5 2.5 2.5 2.5" />
+      <path d="m6.5 1.5-2.5 2.5 2.5 2.5" />
     </svg>
   );
 }
 
 export function ChevronLeftIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m15 18-6-6 6-6" />
+    <svg className={cn('size-2', className)} viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m5 1.5-2.5 2.5 2.5 2.5" />
     </svg>
   );
 }
 
 export function ChevronRightIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m9 18 6-6-6-6" />
+    <svg className={cn('size-2', className)} viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m3 1.5 2.5 2.5-2.5 2.5" />
     </svg>
   );
 }
 
 export function ChevronsRightIcon({ className }: { className?: string }) {
   return (
-    <svg className={cn('size-2.5', className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m6 17 5-5-5-5" />
-      <path d="m13 17 5-5-5-5" />
+    <svg className={cn('size-2', className)} viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m1.5 1.5 2.5 2.5-2.5 2.5" />
+      <path d="m4 1.5 2.5 2.5-2.5 2.5" />
     </svg>
   );
 }
@@ -101,12 +105,14 @@ export interface ScrollBarStepperProps {
   orientation: 'vertical' | 'horizontal';
   pageStepRatio?: number;
   smoothScroll?: boolean;
+  forceState?: 'idle' | 'hover' | 'active';
 }
 
 export function ScrollBarStartCluster({
   orientation,
   pageStepRatio = 0.85,
   smoothScroll = true,
+  forceState,
 }: ScrollBarStepperProps) {
   const ctx = useScrollAreaContext();
 
@@ -114,7 +120,7 @@ export function ScrollBarStartCluster({
     const isAtTop = ctx ? ctx.scrollState.isAtTop : false;
     return (
       <div
-        className="flex flex-col items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 h-5 w-full"
+        className="flex flex-col items-center justify-between pointer-events-auto select-none py-0.5 h-5 w-full"
         onPointerDown={(e) => e.stopPropagation()}
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
@@ -123,6 +129,8 @@ export function ScrollBarStartCluster({
           title="Scroll to Top"
           aria-label="Scroll to top"
           disabled={isAtTop}
+          forceHover={forceState === 'hover'}
+          forceActive={forceState === 'active'}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollToTop(smoothScroll);
@@ -134,6 +142,8 @@ export function ScrollBarStartCluster({
           title="Page Up"
           aria-label="Page up"
           disabled={isAtTop}
+          forceHover={forceState === 'hover'}
+          forceActive={forceState === 'active'}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollPageUp(pageStepRatio, smoothScroll);
@@ -148,7 +158,7 @@ export function ScrollBarStartCluster({
   const isAtLeft = ctx ? ctx.scrollState.isAtLeft : false;
   return (
     <div
-      className="flex flex-row items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 w-5 h-full"
+      className="flex flex-row items-center justify-between pointer-events-auto select-none px-0.5 w-5 h-full"
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}
@@ -157,6 +167,8 @@ export function ScrollBarStartCluster({
         title="Scroll to Start"
         aria-label="Scroll to start"
         disabled={isAtLeft}
+        forceHover={forceState === 'hover'}
+        forceActive={forceState === 'active'}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollToLeft(smoothScroll);
@@ -168,6 +180,8 @@ export function ScrollBarStartCluster({
         title="Page Left"
         aria-label="Page left"
         disabled={isAtLeft}
+        forceHover={forceState === 'hover'}
+        forceActive={forceState === 'active'}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollPageLeft(pageStepRatio, smoothScroll);
@@ -183,6 +197,7 @@ export function ScrollBarEndCluster({
   orientation,
   pageStepRatio = 0.85,
   smoothScroll = true,
+  forceState,
 }: ScrollBarStepperProps) {
   const ctx = useScrollAreaContext();
 
@@ -190,7 +205,7 @@ export function ScrollBarEndCluster({
     const isAtBottom = ctx ? ctx.scrollState.isAtBottom : false;
     return (
       <div
-        className="flex flex-col items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 h-5 w-full"
+        className="flex flex-col items-center justify-between pointer-events-auto select-none py-0.5 h-5 w-full"
         onPointerDown={(e) => e.stopPropagation()}
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
@@ -199,6 +214,8 @@ export function ScrollBarEndCluster({
           title="Page Down"
           aria-label="Page down"
           disabled={isAtBottom}
+          forceHover={forceState === 'hover'}
+          forceActive={forceState === 'active'}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollPageDown(pageStepRatio, smoothScroll);
@@ -210,6 +227,8 @@ export function ScrollBarEndCluster({
           title="Scroll to Bottom"
           aria-label="Scroll to bottom"
           disabled={isAtBottom}
+          forceHover={forceState === 'hover'}
+          forceActive={forceState === 'active'}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollToBottom(smoothScroll);
@@ -224,7 +243,7 @@ export function ScrollBarEndCluster({
   const isAtRight = ctx ? ctx.scrollState.isAtRight : false;
   return (
     <div
-      className="flex flex-row items-center justify-center gap-0.5 pointer-events-auto select-none p-0.5 w-5 h-full"
+      className="flex flex-row items-center justify-between pointer-events-auto select-none px-0.5 w-5 h-full"
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}
@@ -233,6 +252,8 @@ export function ScrollBarEndCluster({
         title="Page Right"
         aria-label="Page right"
         disabled={isAtRight}
+        forceHover={forceState === 'hover'}
+        forceActive={forceState === 'active'}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollPageRight(pageStepRatio, smoothScroll);
@@ -244,6 +265,8 @@ export function ScrollBarEndCluster({
         title="Scroll to End"
         aria-label="Scroll to end"
         disabled={isAtRight}
+        forceHover={forceState === 'hover'}
+        forceActive={forceState === 'active'}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollToRight(smoothScroll);

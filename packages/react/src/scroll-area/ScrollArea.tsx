@@ -18,6 +18,10 @@ export interface ScrollAreaProps
   smoothScroll?: boolean;
   /** Whether scrollbars stay mounted in DOM when not overflowing. @default false */
   keepMounted?: boolean;
+  /** Force scrollbar into hovered visual state (for deterministic testing). */
+  forceHover?: boolean;
+  /** Force scrollbar into active/dragging visual state (for deterministic testing). */
+  forceActive?: boolean;
   /** Viewport class names. */
   viewportClassName?: string;
 }
@@ -61,6 +65,8 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       pageStepRatio = 0.85,
       smoothScroll = true,
       keepMounted = false,
+      forceHover = false,
+      forceActive = false,
       ...props
     },
     ref,
@@ -280,6 +286,8 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}
               keepMounted={keepMounted}
+              forceHover={forceHover}
+              forceActive={forceActive}
             />
           )}
 
@@ -290,6 +298,8 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}
               keepMounted={keepMounted}
+              forceHover={forceHover}
+              forceActive={forceActive}
             />
           )}
 

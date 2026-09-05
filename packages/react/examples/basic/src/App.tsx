@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button } from '@chahu/cha-set';
+import { Button, ScrollArea } from '@chahu/cha-set';
 import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
 import { CommandSearchModal } from './components/CommandSearchModal';
@@ -92,6 +92,72 @@ export function App() {
         >
           {label}
         </Button>
+      </div>
+    );
+  }
+
+  if (harness === 'scroll-area' || harness === 'scrollbar') {
+    const orientation = (searchParams?.get('orientation') ?? 'vertical') as 'vertical' | 'horizontal';
+    const state = searchParams?.get('state') ?? 'idle';
+    const showButtons = searchParams?.get('showButtons') !== 'false';
+    const theme = searchParams?.get('theme') ?? 'light';
+    const width = Number(searchParams?.get('width') ?? (orientation === 'vertical' ? 120 : 200));
+    const height = Number(searchParams?.get('height') ?? (orientation === 'vertical' ? 200 : 80));
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+
+    const isVert = orientation === 'vertical';
+    const containerW = isVert ? 100 : 180;
+    const containerH = isVert ? 180 : 60;
+    const contentW = isVert ? 100 : 360;
+    const contentH = isVert ? 360 : 60;
+
+    return (
+      <div
+        style={{
+          width,
+          height,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: theme === 'dark' ? '#020817' : '#ffffff',
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <div
+          style={{
+            width: containerW,
+            height: containerH,
+            position: 'relative',
+            overflow: 'hidden',
+            background: theme === 'dark' ? '#0f172a' : '#ffffff',
+            borderRadius: 6,
+            border: `1px solid ${theme === 'dark' ? '#1e293b' : '#e2e8f0'}`,
+          }}
+        >
+          <ScrollArea
+            style={{ width: '100%', height: '100%' }}
+            showVerticalScrollBar={isVert}
+            showHorizontalScrollBar={!isVert}
+            showButtons={showButtons}
+            forceHover={state === 'hover'}
+            forceActive={state === 'active'}
+          >
+            <div style={{ width: contentW, height: contentH, padding: 8 }}>
+              <div
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  opacity: 0.1,
+                  background: theme === 'dark' ? '#38bdf8' : '#0284c7',
+                }}
+              />
+            </div>
+          </ScrollArea>
+        </div>
       </div>
     );
   }

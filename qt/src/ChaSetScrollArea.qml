@@ -20,6 +20,9 @@ Flickable {
     property int expandedSize: 8
     property real pageStepRatio: 0.85
     property bool smoothScroll: true
+    property bool forceHover: false
+    property bool forceActive: false
+    property string forceButtonState: ""
 
     readonly property bool isAtTop: root.contentY <= 1
     readonly property bool isAtBottom: root.contentHeight > root.height ? (root.contentY + root.height >= root.contentHeight - 2) : true
@@ -201,6 +204,9 @@ Flickable {
         hitSize: root.hitSize
         pageStepRatio: root.pageStepRatio
         smoothScroll: root.smoothScroll
+        forceHover: root.forceHover
+        forceActive: root.forceActive
+        forceButtonState: root.forceButtonState
     }
 
     ScrollBar.horizontal: ChaSetScrollBar {
@@ -213,6 +219,9 @@ Flickable {
         hitSize: root.hitSize
         pageStepRatio: root.pageStepRatio
         smoothScroll: root.smoothScroll
+        forceHover: root.forceHover
+        forceActive: root.forceActive
+        forceButtonState: root.forceButtonState
     }
 
     // Dual-Axis Corner Piece

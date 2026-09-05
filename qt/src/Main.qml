@@ -6,8 +6,8 @@ import ChaSet
 
 ApplicationWindow {
     id: win
-    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 220 : 1150)
-    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 80 : 850)
+    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 220 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 120 : 1150))
+    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 80 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 200 : 850))
     visible: true
     title: "ChaSet Studio"
     color: win.cBg
@@ -53,6 +53,12 @@ ApplicationWindow {
     readonly property color cPrimary: overridePrimary !== "" ? overridePrimary : (ThemeTokens.dark ? "#30a0ff" : "#1d7ae0")
     readonly property color cPrimaryFg: overridePrimaryFg !== "" ? overridePrimaryFg : "#ffffff"
     readonly property color cDestructive: overrideDestructive !== "" ? overrideDestructive : "#ef4444"
+
+    Binding {
+        target: ThemeTokens
+        property: "dark"
+        value: typeof startupDark !== "undefined" && startupDark === true
+    }
 
     Component.onCompleted: {
         if (typeof startupDark !== "undefined" && startupDark === true) ThemeTokens.dark = true
@@ -206,6 +212,53 @@ ApplicationWindow {
                 disabled: typeof harnessDisabled !== "undefined" ? harnessDisabled : false
                 forceHover: typeof harnessState !== "undefined" && harnessState === "hover"
                 forceActive: typeof harnessState !== "undefined" && harnessState === "active"
+            }
+        }
+
+        // Isolated ScrollArea Harness Container (for visual unit tests)
+        Rectangle {
+            id: scrollHarnessContainer
+            visible: typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")
+            anchors.fill: parent
+            color: ThemeTokens.dark ? "#020817" : "#ffffff"
+
+            readonly property bool isVert: typeof harnessOrientation === "undefined" || harnessOrientation !== "horizontal"
+            readonly property int containerW: isVert ? 100 : 180
+            readonly property int containerH: isVert ? 180 : 60
+            readonly property int contentW: isVert ? 100 : 360
+            readonly property int contentH: isVert ? 360 : 60
+
+            Rectangle {
+                anchors.centerIn: parent
+                width: scrollHarnessContainer.containerW
+                height: scrollHarnessContainer.containerH
+                radius: 6
+                color: ThemeTokens.dark ? "#0f172a" : "#ffffff"
+                border.width: 1
+                border.color: ThemeTokens.dark ? "#1e293b" : "#e2e8f0"
+                clip: true
+
+                ChaSetScrollArea {
+                    id: harnessScroll
+                    anchors.fill: parent
+                    showVerticalScrollBar: scrollHarnessContainer.isVert
+                    showHorizontalScrollBar: !scrollHarnessContainer.isVert
+                    showButtons: typeof harnessShowButtons === "undefined" || harnessShowButtons !== false
+                    forceHover: typeof harnessState !== "undefined" && harnessState === "hover"
+                    forceActive: typeof harnessState !== "undefined" && harnessState === "active"
+
+                    Item {
+                        width: scrollHarnessContainer.contentW
+                        height: scrollHarnessContainer.contentH
+
+                        Rectangle {
+                            anchors.fill: parent
+                            anchors.margins: 8
+                            color: ThemeTokens.dark ? "#38bdf8" : "#0284c7"
+                            opacity: 0.1
+                        }
+                    }
+                }
             }
         }
 
