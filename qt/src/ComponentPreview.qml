@@ -3,14 +3,11 @@ import QtQuick 6.10
 import QtQuick.Controls 6.10
 import ChaSet
 
-Rectangle {
+ChaSetCard {
     id: root
     width: parent ? parent.width : 760
     implicitHeight: previewContainer.implicitHeight
-    radius: 8
-    color: ThemeTokens.panel
-    border.color: ThemeTokens.border
-    border.width: 1
+    customRadius: 8
     clip: true
 
     property string title: ""

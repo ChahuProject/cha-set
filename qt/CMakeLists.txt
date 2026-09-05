@@ -44,6 +44,12 @@ qt_add_qml_module(ChaSet
         src/ChaSetTabsTrigger.qml
         src/ChaSetTabsContent.qml
         src/ChaSetBadge.qml
+        src/ChaSetCard.qml
+        src/ChaSetCardHeader.qml
+        src/ChaSetCardTitle.qml
+        src/ChaSetCardDescription.qml
+        src/ChaSetCardContent.qml
+        src/ChaSetCardFooter.qml
         src/ThemeTokens.generated.qml
         src/ShowcaseData.generated.qml
     NO_GENERATE_EXTRA_QMLDIRS
@@ -89,6 +95,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/ScrollAreaDocPage.qml
             src/TabsDocPage.qml
             src/BadgeDocPage.qml
+            src/CardDocPage.qml
             src/CommandSearchModal.qml
             src/ExportModal.qml
         NO_RESOURCE_TARGET_PATH

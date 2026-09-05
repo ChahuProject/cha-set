@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent, Button } from '@chahu/cha-set';
+import { Tabs, TabsList, TabsTrigger, TabsContent, Button, Card } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -90,7 +90,7 @@ export function TabsDocPage() {
             </div>
           }
         >
-          <div className="w-full max-w-md p-6 bg-card rounded-xl border border-border">
+          <Card className="w-full max-w-md p-6">
             <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as string)} orientation={orientation}>
               <TabsList className={orientation === 'vertical' ? 'flex-col h-auto w-40 p-1' : ''}>
                 <TabsTrigger value="account" className={orientation === 'vertical' ? 'w-full justify-start' : ''}>
@@ -119,7 +119,7 @@ export function TabsDocPage() {
                 </TabsContent>
               </div>
             </Tabs>
-          </div>
+          </Card>
         </ComponentPreview>
       </section>
 
@@ -178,7 +178,7 @@ export default function Example() {
         <p className="text-sm text-muted-foreground mb-4">
           Individual tab triggers can be disabled to prevent user interaction.
         </p>
-        <div className="p-6 bg-card rounded-xl border border-border mb-4">
+        <Card className="p-6 mb-4">
           <Tabs defaultValue="active">
             <TabsList>
               <TabsTrigger value="active">Active Tab</TabsTrigger>
@@ -187,7 +187,7 @@ export default function Example() {
               </TabsTrigger>
             </TabsList>
           </Tabs>
-        </div>
+        </Card>
       </section>
 
       {/* 5. Props Reference */}

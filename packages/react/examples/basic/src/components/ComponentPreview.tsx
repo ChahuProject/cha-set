@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@chahu/cha-set';
+import { Tabs, TabsList, TabsTrigger, TabsContent, Card } from '@chahu/cha-set';
 import { CodeBlock } from './CodeBlock';
 
 export interface ComponentPreviewProps {
@@ -22,7 +22,7 @@ export function ComponentPreview({
   const [activeTab, setActiveTab] = useState<'preview' | 'code' | 'qt'>('preview');
 
   return (
-    <div className="my-6 rounded-xl border border-border bg-card overflow-hidden shadow-xs">
+    <Card className="my-6 overflow-hidden">
       <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as any)} className="gap-0">
         {/* Tab Navigation Header */}
         <div className="flex items-center justify-between border-b border-border bg-muted/40 px-3 py-2">
@@ -69,6 +69,6 @@ export function ComponentPreview({
           </TabsContent>
         )}
       </Tabs>
-    </div>
+    </Card>
   );
 }

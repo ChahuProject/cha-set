@@ -100,13 +100,10 @@ DocLayout {
         Text { text: "Variants"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
         Text { text: "Four standard semantic variants aligned with the ChaSet design token system."; color: root.cMutedFg; font.pixelSize: 13 }
 
-        Rectangle {
+        ChaSetCard {
             width: parent.width
             height: 70
-            radius: root.customRadius
-            color: root.cCard
-            border.color: root.cBorder
-            border.width: 1
+            customRadius: root.customRadius
 
             Row {
                 anchors.centerIn: parent
@@ -126,13 +123,10 @@ DocLayout {
         Text { text: "Sizes"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
         Text { text: "Choose between standard pill height (22px) and compact micro badge (16px)."; color: root.cMutedFg; font.pixelSize: 13 }
 
-        Rectangle {
+        ChaSetCard {
             width: parent.width
             height: 70
-            radius: root.customRadius
-            color: root.cCard
-            border.color: root.cBorder
-            border.width: 1
+            customRadius: root.customRadius
 
             Row {
                 anchors.centerIn: parent

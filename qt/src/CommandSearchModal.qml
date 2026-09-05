@@ -16,7 +16,8 @@ Rectangle {
         { id: "button", title: "Button", category: "Components", desc: "Variants, sizes, loading & link states" },
         { id: "scroll-area", title: "Scroll Area", category: "Components", desc: "Hot-zone expansion, steppers, dual-axis" },
         { id: "tabs", title: "Tabs", category: "Components", desc: "Layered content sections displayed one at a time" },
-        { id: "badge", title: "Badge", category: "Components", desc: "Compact status and label pills with semantic tokens" }
+        { id: "badge", title: "Badge", category: "Components", desc: "Compact status and label pills with semantic tokens" },
+        { id: "card", title: "Card", category: "Components", desc: "Cards with header, content, and footer actions" }
     ]
 
     property string query: ""
@@ -35,13 +36,10 @@ Rectangle {
 
     MouseArea { anchors.fill: parent; onClicked: root.close() }
 
-    Rectangle {
+    ChaSetCard {
         width: Math.min(parent.width - 40, 560)
         height: Math.min(parent.height - 80, 380)
-        radius: 8
-        color: ThemeTokens.panel
-        border.color: ThemeTokens.border
-        border.width: 1
+        customRadius: 8
         anchors.centerIn: parent
 
         MouseArea { anchors.fill: parent }

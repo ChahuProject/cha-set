@@ -328,6 +328,37 @@ ApplicationWindow {
             }
         }
 
+        // Isolated Card Harness Container (for visual unit tests)
+        Rectangle {
+            id: cardHarnessContainer
+            visible: typeof harnessMode !== "undefined" && harnessMode === "card"
+            anchors.fill: parent
+            color: ThemeTokens.dark ? "#020817" : "#ffffff"
+
+            ChaSetCard {
+                id: harnessCard
+                anchors.centerIn: parent
+                width: 280
+                variant: typeof harnessVariant !== "undefined" ? harnessVariant : "default"
+
+                ChaSetCardHeader {
+                    ChaSetCardTitle {
+                        text: (typeof harnessLabel !== "undefined" && harnessLabel !== "") ? harnessLabel : "·"
+                    }
+                    ChaSetCardDescription {
+                        text: "·"
+                    }
+                }
+                ChaSetCardContent {
+                    Text {
+                        text: "·"
+                        font.pixelSize: 13
+                        color: ThemeTokens.dark ? Qt.rgba(248/255, 250/255, 252/255, 1.0) : Qt.rgba(2/255, 8/255, 23/255, 1.0)
+                    }
+                }
+            }
+        }
+
         Item {
             id: studioContainer
             visible: typeof harnessMode === "undefined" || harnessMode === ""
@@ -576,7 +607,8 @@ ApplicationWindow {
                                     ["Button", "button", ""],
                                     ["Scroll Area", "scroll-area", ""],
                                     ["Tabs", "tabs", ""],
-                                    ["Badge", "badge", "New"]
+                                    ["Badge", "badge", "New"],
+                                    ["Card", "card", "New"]
                                 ]
                                 delegate: Rectangle {
                                     required property var modelData
@@ -743,6 +775,20 @@ ApplicationWindow {
                         BadgeDocPage {
                             id: badgePage
                             visible: win.activePage === "badge"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                            cPrimary: win.cPrimary
+                            cAccentBg: win.cAccentBg
+                        }
+
+                        // Page 8: Card Doc Page
+                        CardDocPage {
+                            id: cardPage
+                            visible: win.activePage === "card"
                             width: parent.width
                             customRadius: win.customRadius
                             cFg: win.cFg

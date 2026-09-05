@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Badge, type BadgeVariant, type BadgeSize, Tabs, TabsList, TabsTrigger } from '@chahu/cha-set';
+import { Badge, type BadgeVariant, type BadgeSize, Tabs, TabsList, TabsTrigger, Card } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -93,12 +93,12 @@ export function BadgeDocPage() {
         <p className="text-sm text-muted-foreground mb-4">
           Four standard semantic variants aligned with the ChaSet design token system.
         </p>
-        <div className="flex flex-wrap items-center gap-3 p-6 border rounded-xl bg-card">
+        <Card className="flex flex-wrap items-center gap-3 p-6">
           <Badge variant="default">Default</Badge>
           <Badge variant="secondary">Secondary</Badge>
           <Badge variant="destructive">Destructive</Badge>
           <Badge variant="outline">Outline</Badge>
-        </div>
+        </Card>
       </section>
 
       {/* 4. Sizes */}
@@ -109,7 +109,7 @@ export function BadgeDocPage() {
         <p className="text-sm text-muted-foreground mb-4">
           Choose between standard pill height (22px) and compact micro badge (16px).
         </p>
-        <div className="flex flex-wrap items-center gap-4 p-6 border rounded-xl bg-card">
+        <Card className="flex flex-wrap items-center gap-4 p-6">
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">Default:</span>
             <Badge size="default">Badge Default</Badge>
@@ -118,7 +118,7 @@ export function BadgeDocPage() {
             <span className="text-xs text-muted-foreground">Small:</span>
             <Badge size="sm">NEW</Badge>
           </div>
-        </div>
+        </Card>
       </section>
 
       {/* 5. Props Reference */}

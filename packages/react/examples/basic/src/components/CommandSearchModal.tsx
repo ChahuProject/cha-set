@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, ScrollArea, Badge } from '@chahu/cha-set';
+import { Button, ScrollArea, Badge, Card } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG, type NavItem } from '../types/navigation';
 
 export interface CommandSearchModalProps {
@@ -57,7 +57,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
         onClick={onClose}
         aria-hidden="true"
       />
-      <div className="relative w-full max-w-lg rounded-xl border border-border bg-card shadow-2xl overflow-hidden z-10 animate-in zoom-in-95 duration-150">
+      <Card className="relative w-full max-w-lg shadow-2xl overflow-hidden z-10 animate-in zoom-in-95 duration-150">
         <div className="flex items-center border-b border-border px-3">
           <svg className="size-4 text-muted-foreground mr-2 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8" />
@@ -109,7 +109,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
             ))
           )}
         </ScrollArea>
-      </div>
+      </Card>
     </div>
   );
 }

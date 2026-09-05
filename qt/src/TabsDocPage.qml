@@ -64,14 +64,11 @@ DocLayout {
 }`
 
         // Sandbox Stage
-        Rectangle {
+        ChaSetCard {
             anchors.centerIn: parent
             width: Math.min(parent.width - 40, 420)
             implicitHeight: sandboxTabsCol.implicitHeight + 40
-            radius: root.customRadius
-            color: root.cCard
-            border.color: root.cBorder
-            border.width: 1
+            customRadius: root.customRadius
 
             Column {
                 id: sandboxTabsCol
@@ -207,13 +204,10 @@ DocLayout {
             Text { text: "Disabled State"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
             Text { text: "Individual tab triggers can be disabled to prevent user interaction:"; font.pixelSize: 13; color: root.cMutedFg }
 
-            Rectangle {
+            ChaSetCard {
                 width: parent.width
                 height: 70
-                radius: root.customRadius
-                color: root.cCard
-                border.color: root.cBorder
-                border.width: 1
+                customRadius: root.customRadius
 
                 ChaSetTabs {
                     anchors.centerIn: parent

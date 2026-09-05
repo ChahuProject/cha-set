@@ -51,13 +51,10 @@ DocLayout {
             spacing: 14
 
             // Pillar 1
-            Rectangle {
+            ChaSetCard {
                 width: (parent.width - 28) / 3
                 implicitHeight: col1.implicitHeight + 28
-                radius: 10
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
-                border.width: 1
+                customRadius: 10
 
                 Column {
                     id: col1
@@ -78,13 +75,10 @@ DocLayout {
             }
 
             // Pillar 2
-            Rectangle {
+            ChaSetCard {
                 width: (parent.width - 28) / 3
                 implicitHeight: col2.implicitHeight + 28
-                radius: 10
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
-                border.width: 1
+                customRadius: 10
 
                 Column {
                     id: col2
@@ -105,13 +99,10 @@ DocLayout {
             }
 
             // Pillar 3
-            Rectangle {
+            ChaSetCard {
                 width: (parent.width - 28) / 3
                 implicitHeight: col3.implicitHeight + 28
-                radius: 10
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
-                border.width: 1
+                customRadius: 10
 
                 Column {
                     id: col3

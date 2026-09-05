@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollArea } from '@chahu/cha-set';
+import { ScrollArea, Card, CardTitle, CardDescription } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { CodeBlock } from '../../components/CodeBlock';
 
@@ -23,27 +23,27 @@ export function IntroductionPage() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
-          <div className="p-4 rounded-xl border border-border bg-card">
+          <Card className="p-4">
             <span className="text-2xl mb-2 block">🎯</span>
-            <h3 className="font-semibold text-sm mb-1">One Source of Truth</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <CardTitle className="font-semibold text-sm mb-1">One Source of Truth</CardTitle>
+            <CardDescription className="text-xs leading-relaxed">
               Design tokens and API contracts reside in <code className="font-mono text-primary">spec/</code> and emit synchronized tokens for Web & Qt.
-            </p>
-          </div>
-          <div className="p-4 rounded-xl border border-border bg-card">
+            </CardDescription>
+          </Card>
+          <Card className="p-4">
             <span className="text-2xl mb-2 block">⚡</span>
-            <h3 className="font-semibold text-sm mb-1">Native Ergonomics</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <CardTitle className="font-semibold text-sm mb-1">Native Ergonomics</CardTitle>
+            <CardDescription className="text-xs leading-relaxed">
               Tailwind CSS v4 & Base UI on React; pure QML Quick Controls on Qt — no electron bloat or foreign wrappers.
-            </p>
-          </div>
-          <div className="p-4 rounded-xl border border-border bg-card">
+            </CardDescription>
+          </Card>
+          <Card className="p-4">
             <span className="text-2xl mb-2 block">🔒</span>
-            <h3 className="font-semibold text-sm mb-1">Automated Parity Gate</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <CardTitle className="font-semibold text-sm mb-1">Automated Parity Gate</CardTitle>
+            <CardDescription className="text-xs leading-relaxed">
               CI enforces that all required capabilities and visual rendering match 100% across stacks.
-            </p>
-          </div>
+            </CardDescription>
+          </Card>
         </div>
       </section>
 

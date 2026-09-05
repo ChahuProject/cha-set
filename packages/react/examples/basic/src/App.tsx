@@ -1,5 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Button, ScrollArea, Tabs, TabsList, TabsTrigger, Badge } from '@chahu/cha-set';
+import {
+  Button,
+  ScrollArea,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  Badge,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@chahu/cha-set';
 import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
 import { CommandSearchModal } from './components/CommandSearchModal';
@@ -10,6 +23,7 @@ import { ButtonDocPage } from './pages/components/ButtonDocPage';
 import { ScrollAreaDocPage } from './pages/components/ScrollAreaDocPage';
 import { TabsDocPage } from './pages/components/TabsDocPage';
 import { BadgeDocPage } from './pages/components/BadgeDocPage';
+import { CardDocPage } from './pages/components/CardDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
@@ -256,6 +270,44 @@ export function App() {
     );
   }
 
+  // Isolated Card Visual Test Harness
+  if (harness === 'card') {
+    const variant = (searchParams?.get('variant') ?? 'default') as any;
+    const theme = searchParams?.get('theme') ?? 'light';
+    const width = Number(searchParams?.get('width') ?? 340);
+    const height = Number(searchParams?.get('height') ?? 220);
+    const label = searchParams?.get('label') ?? '·';
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+
+    return (
+      <div
+        style={{
+          width,
+          height,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: theme === 'dark' ? '#020817' : '#ffffff',
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <Card style={{ width: 280 }} variant={variant}>
+          <CardHeader>
+            <CardTitle>{label}</CardTitle>
+            <CardDescription>·</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <span style={{ fontSize: 13, color: theme === 'dark' ? '#f8fafc' : '#020817' }}>·</span>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   const { currentHash, navigate } = useRouter();
   const [mode, setMode] = useState(() => localStorage.getItem('cs-mode') ?? 'light');
   const [accent, setAccent] = useState(() => localStorage.getItem('cs-accent') ?? '');
@@ -306,6 +358,8 @@ export function App() {
         return <TabsDocPage />;
       case '#/components/badge':
         return <BadgeDocPage />;
+      case '#/components/card':
+        return <CardDocPage />;
       case '#/components/button':
       default:
         return <ButtonDocPage />;

@@ -66,6 +66,13 @@ export const NAVIGATION_CONFIG: NavCategory[] = [
         badge: 'New',
         description: 'Displays a badge or a component that looks like a badge to highlight status, tags, and counts.',
       },
+      {
+        id: 'card',
+        title: 'Card',
+        href: '#/components/card',
+        badge: 'New',
+        description: 'Displays a card with header, title, description, content, and footer actions.',
+      },
     ],
   },
 ];
