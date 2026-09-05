@@ -35,6 +35,12 @@
       "size": { "requirement": "must", "description": "supports default and sm sizes" },
       "styling": { "requirement": "must", "description": "pill geometry with semantic color tokens and border" },
       "customClass": { "requirement": "should", "description": "allows passing custom classes or color overrides" }
+    },
+    "card": {
+      "structure": { "requirement": "must", "description": "composite subcomponents: CardHeader, CardTitle, CardDescription, CardContent, CardFooter" },
+      "variant": { "requirement": "must", "description": "supports default, secondary, and outline variants" },
+      "styling": { "requirement": "must", "description": "rounded-xl geometry, border, background, and text tokens" },
+      "customClass": { "requirement": "should", "description": "allows passing custom classes or style overrides" }
     }
   }
 }

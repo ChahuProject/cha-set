@@ -4,3 +4,4 @@ export * from './button';
 export * from './scroll-area';
 export * from './tabs';
 export * from './badge';
+export * from './card';

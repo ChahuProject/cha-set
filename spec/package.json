@@ -8,7 +8,8 @@
     "./button": "./components/button.ts",
     "./scrollbar": "./components/scrollbar.ts",
     "./tabs": "./components/tabs.ts",
-    "./badge": "./components/badge.ts"
+    "./badge": "./components/badge.ts",
+    "./card": "./components/card.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"
