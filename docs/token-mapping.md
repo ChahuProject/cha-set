@@ -8,14 +8,14 @@
 Tier 0 primitives   Scale constants: space(0..6=0/2/4/8/12/16/24px), motion(90/120/180ms),
                     size(21 control sizes), fontWeight — theme-independent constants.
 Tier 1 semantic     Role aliases, each token with presets:
-                      launcher: {light, dark}   ← verbatim transcription of crd-a/launcher hand-written variables
-                      dunting:  {light, dark}   ← ThemeManager kDark/kLight mapping
+                      launcher: {light, dark}   ← Web UI variable preset (OKLCH format)
+                      dunting:  {light, dark}   ← Desktop Native / Quick Controls preset (#RRGGBBAA format)
                     Core vocabulary = shadcn-compatible (background/foreground/card/popover/
                     primary/secondary/muted/accent/destructive/border/input/ring/
-                    chart-1..5); product-specific names are namespaced: chrome.* canvas.* overlay.*
+                    chart-1..5); domain-specific names are namespaced: chrome.* canvas.* overlay.*
                     interaction.* accent.nest/pending/conflict/blocked.
 Tier 2 composite    Multi-part surfaces (material alpha/blur/shadow/gradient), only "$platform":["css"];
-                    Qt rendering pipeline does not consume (Dunting is offscreen QML, no QSS).
+                    Qt rendering pipeline does not consume (Desktop Quick Controls uses offscreen QML, no QSS).
 themes              Selector axes mode × accentTheme(8) × windowTint(6) × interfaceStyle(2)
                     + deltas[] (axis combinations + tokens, no selector, see §6 derivation rules).
 qt                  Derived table (not stored in shards): colors{33 fields×dark/light}+ space/motion/size,
@@ -132,18 +132,18 @@ Key invariants:
 - Key order is determined by `spec/token-helpers.mjs: ORDER` + `stringifySorted`, guaranteeing byte-identical `pnpm gen:tokens`.
 - `qt` is not stored in shards, `selector` is not stored in deltas; both are derived at runtime.
 
-## 4. Artifacts and Consumers
+## 4. Artifacts and Exported Targets
 
-| Artifact | Generator | Location (cha-set) | Consumer |
+| Artifact | Generator | Location (cha-set) | Purpose / Target |
 |---|---|---|---|
-| Library CSS | generate-css.mjs | packages/react/src/styles/tokens.css (shadcn standard names, no prefix, core only) | @chahu/cha-set (Button etc.); host wins if same variable already defined |
-| Compat CSS | same | dist/consumers/launcher/generated/tokens.generated.css | crd-a/launcher/src/css/generated/ (replaces variable blocks in shadcn-base/app-variables/window-tint/themes) |
-| Qt C++ header | generate-qt.mjs | dist/consumers/dunting/generated/theme_tokens.generated.h | dt-a/theme/generated/ (ThemeManager::Tokens value source) |
-| Qt QML singleton | generate-qt.mjs | qt/src/ThemeTokens.generated.qml | qt showcase / Dunting QML |
+| Library CSS | generate-css.mjs | packages/react/src/styles/tokens.css (shadcn standard names, no prefix, core only) | @chahu/cha-set (Button, ScrollArea, etc.) |
+| Web Theme CSS | same | dist/.../tokens.generated.css | Web host applications |
+| Qt C++ Public Header | generate-qt.mjs | qt/include/ChaSet/theme_tokens.generated.h | Public header exported by ChaSet target for host CMake applications |
+| Qt QML Singleton | generate-qt.mjs | qt/src/ThemeTokens.generated.qml | ChaSet 1.0 QML module (ThemeTokens singleton) |
 
-## 5. dunting → unified Semantic Mapping
+## 5. Desktop Preset → Unified Semantic Mapping
 
-### 5.1 Overview (ThemeManager field → unified semantic slot)
+### 5.1 Overview (Desktop token field → unified semantic slot)
 
 | ThemeManager field | unified semantic slot |
 |---|---|
@@ -258,24 +258,21 @@ git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt
 # One-shot refresh verify (same as CI)
 pnpm gen:tokens && pnpm gen:all && git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/
 
-# 4) Sync to sibling checkouts (copy if present, skip if missing; includes git status hint)
+# 4) Sync to consumer checkouts (copy if present, skip if missing)
 node scripts/sync-consumers.mjs
-#    crd-a  ← dist/consumers/launcher/generated/tokens.generated.css
-#    dt-a   ← dist/consumers/dunting/generated/theme_tokens.generated.h
-#            Note: after refreshing the header, touch theme/theme_manager.cpp then ninja, otherwise no rebuild
+#    Web consumer     ← dist/consumers/launcher/generated/tokens.generated.css
+#    Desktop consumer ← dist/consumers/dunting/generated/theme_tokens.generated.h
 
 # 5) Commit (commit shards + snapshot + artifacts in this repo)
-git add spec/tokens/** spec/tokens.json spec/qt-mapping.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/
+git add spec/tokens/** spec/tokens.json spec/qt-mapping.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml qt/include/ dist/consumers/
 git commit -m "refactor(spec): ..."
-
-# 6) Review and commit in each consumer repo (see their workflows)
 ```
 
 Drift prevention:
 
-- This repo CI gates `spec/tokens.json` + 4 artifacts via `git diff --exit-code`.
+- This repo CI gates `spec/tokens.json` + artifacts via `git diff --exit-code`.
 - Additional `node spec/build-tokens.mjs --check` ensures shards and snapshot sha256 match (after normalization).
-- dt-a side `DuntingThemeTokensGoldenTests` golden tests gate header drift.
+- Consumer automated tests gate header and token drift.
 
 Emergency bypass: see §8 `CHA_TOKENS_FROM`.
 
@@ -332,7 +329,3 @@ Generators internally pin `loadTokensSync({from:"split"})`, but manually launchi
 - Qt `QColor(QString)` 9-digit hex is **#AARRGGBB**: source `infoBar "#99000000"` = α0x99 black; `canvasMarquee "#3366aaff"` likewise α0x33. spec.qt.rgbf stores the true value as float arrays; the generator emits `QColor::fromRgbF(...)` for bit-exact 16-bit storage equivalence.
 - Launcher compat flavor variable names = semantic keys stripped of namespace prefix (interaction.hover→--hover).
 - `--app-status-*` kept in place under composite (consumers reference by name).
-
-## 11. Debt Appendix (not cleaned, only recorded)
-
-~300 `? theme.X : "#hex"` fallback color values in dt-a qml/ (308 hex + 48 rgba across 19 files), some already drifted from kDark (e.g. InspectorPanel `#1c2330` vs true panel `#161b26`). Categories and Top10 list in `.omo/drafts/chaset-ui-unify.md` "migration debt" section; recommended to converge future DuntingButton guard-pattern into a single guarded-token singleton.

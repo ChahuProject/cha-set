@@ -7,7 +7,7 @@
     - Token authoring in granular JSON shards under `spec/tokens/**`.
     - Shard aggregation into canonical `spec/tokens.json` with sha256 snapshot hashing.
     - Token generation for Web (CSS Custom Properties) and Qt (C++ header + QML singleton).
-    - Synchronizing generated files into sibling product repos (`crd-a`, `dt-a`) via `scripts/sync-consumers.mjs`.
+    - Exporting generated token headers directly into module include paths (`qt/include/ChaSet/`) and optional consumer distributions.
   - **Out-of-Scope**:
     - Runtime CSS parsing or dynamic stylesheet runtime injection inside consumer applications.
 
@@ -20,11 +20,12 @@
 2. **CSS Generator (`spec/generators/generate-css.mjs`)**:
    Produces:
    - `packages/react/src/styles/tokens.css` (for the `@chahu/cha-set` library).
-   - `dist/consumers/launcher/generated/tokens.generated.css` (for `crd-a` launcher product).
+   - `dist/.../tokens.generated.css` (for consumer web stylesheets).
 3. **Qt Generator (`spec/generators/generate-qt.mjs`)**:
-   Uses `spec/qt-mapping.json` to map 33 dunting semantic roles into:
-   - `dist/consumers/dunting/generated/theme_tokens.generated.h` (C++ `ThemeTokens` namespace with RGBA hex integers).
+   Uses `spec/qt-mapping.json` to map semantic roles into:
+   - `qt/include/ChaSet/theme_tokens.generated.h` (public C++ `cha_set_gen::ThemeTokens` header with bit-exact `kDark` and `kLight`).
    - `qt/src/ThemeTokens.generated.qml` (QML singleton with reactive `dark` boolean property).
+   - `dist/.../theme_tokens.generated.h` (consumer distribution artifact).
 4. **Consumer Sync (`scripts/sync-consumers.mjs`)**:
    Copies generated artifacts into sibling checkouts when present.
 
@@ -46,5 +47,5 @@
 ## 4. Invariants & Forbidden Anti-Patterns
 
 1. **Deterministic Order**: Aggregated `spec/tokens.json` must always preserve exact alphabetical/hierarchical key sorting to prevent noisy git diffs.
-2. **Preset Completeness**: Any new semantic role added to `semantic/core.json` must specify values for both `dunting` and `launcher` presets.
+2. **Preset Completeness**: Any new semantic role added to `semantic/core.json` must specify values for both desktop and web presets.
 3. **No Direct Hex Hardcoding in Components**: Components must reference semantic token variables (CSS vars in Web, `ThemeTokens.<role>` in QML) rather than hardcoded colors.
