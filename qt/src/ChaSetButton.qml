@@ -15,11 +15,16 @@ Item {
     property bool disabled: false
     property string text: ""
     property string iconSource: ""
-    property int customRadius: size === "sm" ? 4 : 6
+    property int customRadius: 6
+
+    property bool forceHover: false
+    property bool forceActive: false
 
     signal clicked()
 
     readonly property bool effectiveDisabled: disabled || loading
+    readonly property bool effectiveHovered: (hovered || forceHover) && !effectiveDisabled
+    readonly property bool effectiveDown: (down || forceActive) && !effectiveDisabled
 
     // Height parity: sm: 32px, default/md/icon: 36px, lg: 40px
     function buttonHeight() {
@@ -50,57 +55,56 @@ Item {
     }
 
     // Colors matching Web Tailwind token classes (shadcn standard)
-    function baseColor() {
-        switch (variant) {
-        case "destructive": return ThemeTokens.danger
-        case "outline":     return ThemeTokens.background
-        case "secondary":   return ThemeTokens.panelRaised
-        case "ghost":
-        case "link":        return "transparent"
-        case "default":
-        case "primary":
-        default:            return ThemeTokens.accent
-        }
-    }
+    readonly property color cPrimary: ThemeTokens.dark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
+    readonly property color cDestructive: Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)
+    readonly property color cBackground: ThemeTokens.dark ? Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
+    readonly property color cBorder: ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
+    readonly property color cFg: ThemeTokens.dark ? Qt.rgba(248.0 / 255.0, 250.0 / 255.0, 252.0 / 255.0, 1.0) : Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0)
+    readonly property color cAccentBg: ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(241.0 / 255.0, 245.0 / 255.0, 249.0 / 255.0, 1.0)
+    readonly property color cAccentFg: ThemeTokens.dark ? Qt.rgba(248.0 / 255.0, 250.0 / 255.0, 252.0 / 255.0, 1.0) : Qt.rgba(15.0 / 255.0, 23.0 / 255.0, 42.0 / 255.0, 1.0)
+    readonly property color cSecondaryBg: cAccentBg
+    readonly property color cSecondaryFg: cAccentFg
 
     function bgColor() {
         if (variant === "ghost" || variant === "link") {
             if (variant === "link") return "transparent"
-            if (down) return ThemeTokens.pressed
-            if (hovered && !effectiveDisabled) return ThemeTokens.selection
+            if (effectiveDown) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
+            if (effectiveHovered) return cAccentBg
             return "transparent"
         }
 
         if (variant === "outline") {
-            if (down) return ThemeTokens.pressed
-            if (hovered && !effectiveDisabled) return ThemeTokens.selection
-            return ThemeTokens.background
+            if (effectiveDown) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
+            if (effectiveHovered) return cAccentBg
+            return cBackground
         }
 
         if (variant === "secondary") {
-            const base = ThemeTokens.panelRaised
-            if (down) return ThemeTokens.pressed
-            if (hovered && !effectiveDisabled) return Qt.rgba(base.r, base.g, base.b, 0.8)
-            return base
+            if (effectiveDown) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(245.0 / 255.0, 248.0 / 255.0, 251.0 / 255.0, 1.0)
+            if (effectiveHovered) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
+            return cSecondaryBg
         }
 
-        const base = baseColor()
-        if (down) {
-            return Qt.rgba(base.r, base.g, base.b, 0.8) // active/80
+        if (variant === "destructive") {
+            if (effectiveDown) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.8)
+            if (effectiveHovered) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.9)
+            return cDestructive
         }
-        if (hovered && !effectiveDisabled) {
-            return Qt.rgba(base.r, base.g, base.b, 0.9) // hover/90
-        }
+
+        // default / primary
+        const base = cPrimary
+        if (effectiveDown) return Qt.rgba(74.0 / 255.0, 149.0 / 255.0, 230.0 / 255.0, 1.0)
+        if (effectiveHovered) return Qt.rgba(51.0 / 255.0, 135.0 / 255.0, 227.0 / 255.0, 1.0)
         return base
     }
 
     function fgColor() {
         switch (variant) {
         case "destructive": return ThemeTokens.onAccent
-        case "outline":
-        case "secondary":
-        case "ghost":       return ThemeTokens.text
-        case "link":        return ThemeTokens.accent
+        case "outline":     return effectiveHovered ? cAccentFg : cFg
+        case "secondary":   return cSecondaryFg
+        case "ghost":       return effectiveHovered ? cAccentFg : cFg
+        case "link":        return cPrimary
         case "default":
         case "primary":
         default:            return ThemeTokens.onAccent
@@ -138,7 +142,7 @@ Item {
         color: root.hasBorder() || root.variant === "default" || root.variant === "primary" || root.variant === "secondary" || root.variant === "destructive"
                ? Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.25 : 0.06)
                : "transparent"
-        visible: !root.down && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link")
+        visible: !root.effectiveDown && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link")
     }
 
     // Background surface
@@ -147,7 +151,7 @@ Item {
         anchors.fill: root
         radius: root.customRadius
         color: root.bgColor()
-        border.color: root.hasBorder() ? ThemeTokens.border : "transparent"
+        border.color: root.hasBorder() ? root.cBorder : "transparent"
         border.width: root.hasBorder() ? 1 : 0
 
         Behavior on color { ColorAnimation { duration: ThemeTokens.motionQuick } }
@@ -226,7 +230,7 @@ Item {
             font.pixelSize: root.fontSizePx()
             font.weight: Font.Medium
             font.family: "Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif"
-            font.underline: root.variant === "link" && root.hovered && !root.effectiveDisabled
+            font.underline: root.variant === "link" && root.effectiveHovered
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             opacity: root.loading ? 0.7 : 1.0

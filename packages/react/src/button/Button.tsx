@@ -63,7 +63,29 @@ export interface ButtonProps
    * In Base UI, this maps directly to the `render` prop.
    */
   asChild?: boolean;
+  /** Programmatically force the hover state for visual testing and snapshot parity. */
+  forceHover?: boolean;
+  /** Programmatically force the active/pressed state for visual testing and snapshot parity. */
+  forceActive?: boolean;
 }
+
+const forceHoverClasses: Record<string, string> = {
+  default: 'bg-primary/90',
+  destructive: 'bg-destructive/90',
+  outline: 'bg-accent text-accent-foreground',
+  secondary: 'bg-secondary/80',
+  ghost: 'bg-accent text-accent-foreground',
+  link: 'underline',
+};
+
+const forceActiveClasses: Record<string, string> = {
+  default: 'bg-primary/80',
+  destructive: 'bg-destructive/80',
+  outline: 'bg-accent/80 text-accent-foreground',
+  secondary: 'bg-secondary/70',
+  ghost: 'bg-accent/80 text-accent-foreground',
+  link: 'underline',
+};
 
 export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
   {
@@ -72,6 +94,8 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
     loading = false,
     fullWidth = false,
     asChild = false,
+    forceHover = false,
+    forceActive = false,
     className,
     type = 'button',
     disabled,
@@ -81,7 +105,19 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
   },
   ref,
 ) {
-  const classes = cn(buttonVariants({ variant, size }), fullWidth && 'w-full', className);
+  const currentVariant = variant ?? 'default';
+  const forceClass =
+    forceActive
+      ? (forceActiveClasses[currentVariant] ?? '')
+      : forceHover
+      ? (forceHoverClasses[currentVariant] ?? '')
+      : '';
+  const classes = cn(
+    buttonVariants({ variant, size }),
+    forceClass,
+    fullWidth && 'w-full',
+    className,
+  );
   const isDisabled = disabled || loading;
 
   const effectiveRender = asChild && React.isValidElement(children) ? children : render;

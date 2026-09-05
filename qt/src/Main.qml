@@ -196,14 +196,16 @@ ApplicationWindow {
             id: harnessContainer
             visible: typeof harnessMode !== "undefined" && harnessMode === "button"
             anchors.fill: parent
-            color: "#ffffff"
+            color: ThemeTokens.dark ? "#020817" : "#ffffff"
             ChaSetButton {
                 anchors.centerIn: parent
                 variant: typeof harnessVariant !== "undefined" ? harnessVariant : "default"
                 size: typeof harnessSize !== "undefined" ? harnessSize : "default"
-                text: typeof harnessLabel !== "undefined" ? harnessLabel : "Create Project"
+                text: (typeof harnessSize !== "undefined" && harnessSize === "icon") ? "⚙" : (typeof harnessLabel !== "undefined" ? harnessLabel : "Create Project")
                 loading: typeof harnessLoading !== "undefined" ? harnessLoading : false
                 disabled: typeof harnessDisabled !== "undefined" ? harnessDisabled : false
+                forceHover: typeof harnessState !== "undefined" && harnessState === "hover"
+                forceActive: typeof harnessState !== "undefined" && harnessState === "active"
             }
         }
 

@@ -62,15 +62,35 @@ export function App() {
 
   // Isolated Component Visual Test Harness (Required for visual diff tests)
   if (harness === 'button') {
-    const variant = (searchParams?.get('variant') ?? 'primary') as any;
-    const size = (searchParams?.get('size') ?? 'md') as any;
+    let rawVariant = searchParams?.get('variant') ?? 'default';
+    if (rawVariant === 'primary') rawVariant = 'default';
+    const variant = rawVariant as any;
+
+    let rawSize = searchParams?.get('size') ?? 'default';
+    if (rawSize === 'md') rawSize = 'default';
+    const size = rawSize as any;
+
     const label = searchParams?.get('label') ?? 'Create Project';
     const loading = searchParams?.get('loading') === 'true';
     const disabled = searchParams?.get('disabled') === 'true';
+    const state = searchParams?.get('state') ?? 'idle';
+    const theme = searchParams?.get('theme') ?? 'light';
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+
     return (
-      <div style={{ width: 220, height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#ffffff', margin: 0, padding: 0 }}>
-        <Button variant={variant} size={size} loading={loading} disabled={disabled}>
-          {label}
+      <div style={{ width: 220, height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', background: theme === 'dark' ? '#020817' : '#ffffff', margin: 0, padding: 0 }}>
+        <Button
+          variant={variant}
+          size={size}
+          loading={loading}
+          disabled={disabled}
+          forceHover={state === 'hover'}
+          forceActive={state === 'active'}
+        >
+          {size === 'icon' ? '⚙' : label}
         </Button>
       </div>
     );

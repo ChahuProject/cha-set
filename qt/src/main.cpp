@@ -82,6 +82,9 @@ int main(int argc, char* argv[])
     const int lblIdx = static_cast<int>(args.indexOf("--label"));
     const QString harnessLabel = lblIdx >= 0 && lblIdx + 1 < args.size() ? args.value(lblIdx + 1) : "Create Project";
 
+    const int stateIdx = static_cast<int>(args.indexOf("--state"));
+    const QString harnessState = stateIdx >= 0 && stateIdx + 1 < args.size() ? args.value(stateIdx + 1) : "idle";
+
     const bool harnessLoading = args.contains("--loading");
     const bool harnessDisabled = args.contains("--disabled");
     const bool testScrollMode = args.contains("--test-scroll");
@@ -111,6 +114,7 @@ int main(int argc, char* argv[])
     engine.rootContext()->setContextProperty("harnessVariant", harnessVariant);
     engine.rootContext()->setContextProperty("harnessSize", harnessSize);
     engine.rootContext()->setContextProperty("harnessLabel", harnessLabel);
+    engine.rootContext()->setContextProperty("harnessState", harnessState);
     engine.rootContext()->setContextProperty("harnessLoading", harnessLoading);
     engine.rootContext()->setContextProperty("harnessDisabled", harnessDisabled);
     engine.rootContext()->setContextProperty("testScrollMode", testScrollMode);
