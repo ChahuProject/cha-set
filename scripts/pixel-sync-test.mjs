@@ -125,6 +125,22 @@ const cardMatrix = [
   { id: 'card-dark-outline', component: 'card', variant: 'outline', state: 'idle', theme: 'dark', label: '·', width: 340, height: 220, probeX: 200, probeY: 110, maxDiff: 0.3 },
 ];
 
+// Definitive Input test matrix covering size, interactive states, disabled, and dark theme
+const inputMatrix = [
+  // 1. Idle & State Variants (Default Size)
+  { id: 'input-default-idle', component: 'input', size: 'default', state: 'idle', theme: 'light', label: '·', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.3 },
+  { id: 'input-hover', component: 'input', size: 'default', state: 'hover', theme: 'light', label: '·', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.3 },
+  { id: 'input-focus', component: 'input', size: 'default', state: 'focus', theme: 'light', label: '·', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.3 },
+
+  // 2. Sizes & Invariant States
+  { id: 'input-size-sm', component: 'input', size: 'sm', state: 'idle', theme: 'light', label: '·', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.4 },
+  { id: 'input-disabled', component: 'input', size: 'default', state: 'idle', disabled: true, theme: 'light', label: '·', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.3 },
+
+  // 3. Dark Theme States
+  { id: 'input-dark-default', component: 'input', size: 'default', state: 'idle', theme: 'dark', label: '·', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.3 },
+  { id: 'input-dark-focus', component: 'input', size: 'default', state: 'focus', theme: 'dark', label: '·', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.3 },
+];
+
 let testCases = [];
 if (componentArg === 'button') {
   testCases = buttonMatrix;
@@ -143,8 +159,11 @@ if (componentArg === 'button') {
 } else if (componentArg === 'card') {
   testCases = cardMatrix;
   if (variantFilter) testCases = testCases.filter((tc) => tc.variant === variantFilter);
+} else if (componentArg === 'input') {
+  testCases = inputMatrix;
+  if (stateFilter) testCases = testCases.filter((tc) => tc.state === stateFilter);
 } else if (componentArg === 'all') {
-  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix, ...cardMatrix];
+  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix, ...cardMatrix, ...inputMatrix];
 } else {
   console.log(`[pixel-sync] Component "${componentArg}" is not enabled for selective pixel sync. Skipping.`);
   process.exit(0);
@@ -258,6 +277,17 @@ try {
         width: String(tc.width),
         height: String(tc.height),
       }).toString();
+    } else if (tc.component === 'input') {
+      query = new URLSearchParams({
+        harness: 'input',
+        size: tc.size ?? 'default',
+        state: tc.state ?? 'idle',
+        disabled: tc.disabled ? 'true' : 'false',
+        theme: tc.theme ?? 'light',
+        label: tc.label ?? '·',
+        width: String(tc.width),
+        height: String(tc.height),
+      }).toString();
     } else {
       query = new URLSearchParams({
         harness: 'button',
@@ -332,6 +362,18 @@ try {
         '--width', String(tc.width),
         '--height', String(tc.height),
         '--shot', qtPngPath,
+        ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
+      ];
+    } else if (tc.component === 'input') {
+      qtArgs = [
+        '--harness', 'input',
+        '--size', tc.size ?? 'default',
+        '--state', tc.state ?? 'idle',
+        '--label', tc.label ?? '·',
+        '--width', String(tc.width),
+        '--height', String(tc.height),
+        '--shot', qtPngPath,
+        ...(tc.disabled ? ['--disabled'] : []),
         ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
       ];
     } else {

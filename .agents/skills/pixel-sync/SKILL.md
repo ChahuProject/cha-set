@@ -62,6 +62,10 @@ Ensure mathematical color parity between Tailwind v4 color mixing and Qt QML col
 - **Card / CardHeader / CardTitle / CardDescription / CardContent / CardFooter**:
   - Variants: `default` (surface `#ffffff` light / `#0f172a` dark, border `#e2e8f0` / `#1e293b`), `secondary` (`#f1f5f9` / `#1e293b`), `outline` (transparent background).
   - Geometry: `rounded-xl` (12px), 1px border width, 0.02% pixel diff benchmark across light & dark.
+- **Input**:
+  - Sizes: `default` (h=36, px=12, text 14px), `sm` (h=32, px=10, text 12px).
+  - Borders & Rings: 1px border (`#e2e8f0` light / `#1e293b` dark); focus ring 1px offset matching `focus-visible:ring-1` (`#1d7ae0` light / `#30a0ff` dark); disabled `opacity: 0.5`.
+  - Conformance benchmark: <= 0.04% pixel diff rate across all idle, hover, focus, disabled, and dark states.
 
 ### Step 2: Isolated Test Harness
 Both stacks expose an isolated rendering harness centered in a minimal canvas:
@@ -80,6 +84,9 @@ Both stacks expose an isolated rendering harness centered in a minimal canvas:
 - **Card**:
   - React: `http://127.0.0.1:5299/?harness=card&variant={v}&label={l}&theme={light|dark}&width=340&height=220`
   - Qt: `QtChaSetDemo.exe --harness card --variant {v} --label {l} [--dark] --width 340 --height 220 --shot {path}`
+- **Input**:
+  - React: `http://127.0.0.1:5299/?harness=input&size={s}&state={st}&disabled={0|1}&theme={light|dark}&width=220&height=80`
+  - Qt: `QtChaSetDemo.exe --harness input --size {s} --state {st} [--disabled] [--dark] --width 220 --height 80 --shot {path}`
 
 ### Step 3: Headless Image Acquisition
 - Use Edge/Chromium via Chrome DevTools Protocol (`Page.navigate`, `Emulation.setDeviceMetricsOverride`, `Page.captureScreenshot`).
@@ -118,7 +125,10 @@ pnpm test:pixel --component badge
 # 5. Run targeted pixel test for card (all variants & themes)
 pnpm test:pixel --component card
 
-# 6. Run targeted pixel test for all supported components
+# 6. Run targeted pixel test for input (all sizes, states & themes)
+pnpm test:pixel --component input
+
+# 7. Run targeted pixel test for all supported components
 pnpm test:pixel --component all
 
 # 7. Run cross-stack parity gate including targeted pixel gate
