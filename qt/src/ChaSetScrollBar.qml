@@ -27,7 +27,9 @@ T.ScrollBar {
     property int autoRepeatInterval: 100
     property real pageStepRatio: 0.85
     property bool smoothScroll: true
+    property var scrollArea: null
     property var scrollView: null
+    readonly property var _scrollTarget: scrollArea !== null ? scrollArea : scrollView
 
     // Backward compatibility aliases for cha-set showcase and tests
     property alias hitSize: control.hitThickness
@@ -60,8 +62,8 @@ T.ScrollBar {
     readonly property color _hoverColor: (_themeSource && typeof _themeSource.hover !== "undefined") ? _themeSource.hover : Qt.rgba(1, 1, 1, 0.1)
 
     // ---- Overflow & Visibility ----
-    readonly property bool hasOverflow: scrollView
-        ? (isVertical ? (scrollView.contentHeight > scrollView.height) : (scrollView.contentWidth > scrollView.width))
+    readonly property bool hasOverflow: _scrollTarget
+        ? (isVertical ? (_scrollTarget.contentHeight > _scrollTarget.height) : (_scrollTarget.contentWidth > _scrollTarget.width))
         : (size > 0 && size < 0.9999)
 
     policy: ScrollBar.AsNeeded
@@ -70,8 +72,8 @@ T.ScrollBar {
     enabled: _needed
     active: _needed
 
-    readonly property bool canScrollBack: scrollView ? (isVertical ? !scrollView.isAtTop : !scrollView.isAtLeft) : (position > 0.0001 && size < 1.0)
-    readonly property bool canScrollForward: scrollView ? (isVertical ? !scrollView.isAtBottom : !scrollView.isAtRight) : (position < (1.0 - size - 0.0001) && size < 1.0)
+    readonly property bool canScrollBack: _scrollTarget ? (isVertical ? !_scrollTarget.isAtTop : !_scrollTarget.isAtLeft) : (position > 0.0001 && size < 1.0)
+    readonly property bool canScrollForward: _scrollTarget ? (isVertical ? !_scrollTarget.isAtBottom : !_scrollTarget.isAtRight) : (position < (1.0 - size - 0.0001) && size < 1.0)
 
     readonly property bool isAtStart: !canScrollBack
     readonly property bool isAtEnd: !canScrollForward
@@ -85,36 +87,36 @@ T.ScrollBar {
 
     // Navigation Methods
     function scrollToStart() {
-        if (scrollView) {
-            if (isVertical) scrollView.scrollToTop(control.smoothScroll)
-            else scrollView.scrollToLeft(control.smoothScroll)
+        if (_scrollTarget) {
+            if (isVertical) _scrollTarget.scrollToTop(control.smoothScroll)
+            else _scrollTarget.scrollToLeft(control.smoothScroll)
         } else if (canScrollBack) {
             position = 0.0
         }
     }
 
     function scrollPageBack() {
-        if (scrollView) {
-            if (isVertical) scrollView.pageUp(control.smoothScroll)
-            else scrollView.pageLeft(control.smoothScroll)
+        if (_scrollTarget) {
+            if (isVertical) _scrollTarget.pageUp(control.smoothScroll)
+            else _scrollTarget.pageLeft(control.smoothScroll)
         } else if (canScrollBack) {
             position = Math.max(0.0, position - size)
         }
     }
 
     function scrollPageForward() {
-        if (scrollView) {
-            if (isVertical) scrollView.pageDown(control.smoothScroll)
-            else scrollView.pageRight(control.smoothScroll)
+        if (_scrollTarget) {
+            if (isVertical) _scrollTarget.pageDown(control.smoothScroll)
+            else _scrollTarget.pageRight(control.smoothScroll)
         } else if (canScrollForward) {
             position = Math.min(Math.max(0.0, 1.0 - size), position + size)
         }
     }
 
     function scrollToEnd() {
-        if (scrollView) {
-            if (isVertical) scrollView.scrollToBottom(control.smoothScroll)
-            else scrollView.scrollToRight(control.smoothScroll)
+        if (_scrollTarget) {
+            if (isVertical) _scrollTarget.scrollToBottom(control.smoothScroll)
+            else _scrollTarget.scrollToRight(control.smoothScroll)
         } else if (canScrollForward) {
             position = Math.max(0.0, 1.0 - size)
         }

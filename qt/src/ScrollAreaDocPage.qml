@@ -45,7 +45,7 @@ DocLayout {
 >
   {/* Content */}
 </ScrollArea>`
-        qtCode: `ChaSetScrollView {
+        qtCode: `ChaSetScrollArea {
     width: parent.width
     height: 280
     showButtons: ${root.showButtons}
@@ -66,7 +66,7 @@ DocLayout {
             clip: true
 
             // Mode 1: Vertical 120 Logs
-            ChaSetScrollView {
+            ChaSetScrollArea {
                 id: demoScrollVert
                 visible: root.heroMode === "vertical"
                 anchors.fill: parent
@@ -99,7 +99,7 @@ DocLayout {
             }
 
             // Mode 2: Horizontal 24 Cards
-            ChaSetScrollView {
+            ChaSetScrollArea {
                 id: demoScrollHoriz
                 visible: root.heroMode === "horizontal"
                 anchors.fill: parent
@@ -141,7 +141,7 @@ DocLayout {
                 }
             }
 
-            // Mode 3: Dual Axis 2D Grid
+            // Mode 3: Dual Axis 2D Grid (validates backward-compatible ChaSetScrollView alias)
             ChaSetScrollView {
                 id: demoScrollBoth
                 visible: root.heroMode === "both"
@@ -520,7 +520,7 @@ export const CrossStackSpecification = {
 
         PropsTable {
             width: parent.width
-            title: "ChaSetScrollView Properties"
+            title: "ChaSetScrollArea (ChaSetScrollView) Properties"
             propsModel: [
                 ["showVerticalScrollBar", "bool", "true", "Whether to render vertical scrollbar."],
                 ["showHorizontalScrollBar", "bool", "false", "Whether to render horizontal scrollbar."],

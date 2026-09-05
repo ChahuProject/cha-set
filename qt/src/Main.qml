@@ -170,6 +170,16 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 5: Backward Compatibility Alias Verification (ChaSetScrollView)
+        if (scenario === "all" || scenario === "scroll-alias") {
+            if (testAliasScrollView && typeof testAliasScrollView.scrollToTop === "function" && typeof testAliasScrollView.simulateThumbDrag === "function") {
+                console.log("[qt-scenario] PASS: ChaSetScrollView backward-compatible alias instantiation & API parity verified");
+            } else {
+                console.log("[qt-scenario] FAIL: ChaSetScrollView alias instance failed API inspection");
+                failures++;
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;
@@ -190,6 +200,14 @@ ApplicationWindow {
         objectName: "rootCanvas"
         anchors.fill: parent
         color: win.cBg
+
+        // Verification instance ensuring ChaSetScrollView backward-compatible alias functions correctly
+        ChaSetScrollView {
+            id: testAliasScrollView
+            visible: false
+            width: 100
+            height: 100
+        }
 
         // Isolated Component Harness Container (for visual unit tests)
         Rectangle {
@@ -512,7 +530,7 @@ ApplicationWindow {
                 }
 
                 // Center Main Content Area
-                ChaSetScrollView {
+                ChaSetScrollArea {
                     id: contentScroll
                     objectName: "contentScroll"
                     anchors.left: sidebar.right

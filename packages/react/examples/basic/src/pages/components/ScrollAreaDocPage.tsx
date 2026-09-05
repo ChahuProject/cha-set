@@ -80,7 +80,7 @@ export function ScrollAreaDocPage() {
   }
 </ScrollArea>`;
 
-  const qtCode = `ChaSetScrollView {
+  const qtCode = `ChaSetScrollArea {
     width: parent.width
     height: 300
     showButtons: ${showButtons}
