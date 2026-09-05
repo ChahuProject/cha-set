@@ -20,7 +20,7 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - Run `pnpm gen:showcase` / `pnpm build:tokens` to emit synchronized artifacts. Never duplicate raw arrays in TSX and QML.
 
 3. **Desktop Native Idiom Compliance (遵循 Qt 桌面端物理特性)**
-   - **Wheel Events**: Qt `Flickable` on Windows ignores mouse wheels unless `WheelHandler` is attached. Always use `ChaSetScrollView` with built-in `WheelHandler`.
+   - **Wheel Events**: Qt `Flickable` on Windows ignores mouse wheels unless `WheelHandler` is attached. Always use `ChaSetScrollArea` (or `ChaSetScrollView` alias) with built-in `WheelHandler`.
    - **Drag Decoupling**: In QML, dragging `thumb` must decouple from reactive `y: computedPos` bindings during active mouse press to prevent jitter and binding destruction.
    - **Viewport Bounds**: Ensure `contentHeight` and `contentWidth` are correctly computed or bounded via `childrenRect`.
 

@@ -1,7 +1,7 @@
 # Scroll Area & ScrollBar Architecture Specification
 
 > **Authority Level**: [Authoritative Specification]  
-> **Scope**: Platform-neutral specifications, desktop platform idioms, and runtime kinematics for ScrollArea and ScrollBar across Web (React @chahu/cha-set) and Desktop (Qt Quick ChaSetScrollBar, ChaSetScrollView).
+> **Scope**: Platform-neutral specifications, desktop platform idioms, and runtime kinematics for ScrollArea and ScrollBar across Web (React @chahu/cha-set) and Desktop (Qt Quick ChaSetScrollBar, ChaSetScrollArea with ChaSetScrollView compatibility alias).
 
 ---
 
@@ -55,19 +55,19 @@ To ensure desktop-grade ergonomics and cross-stack parity, all implementations M
 - **Minimum Thumb Length**: Clamped to minThumbLength: 30px to guarantee clickability even in extremely large documents.
 
 ### 2.6 Native Desktop Wheel Handling
-- **Rule**: Desktop scrollable views must use ChaSetScrollView with native WheelHandler.
-- **Rationale**: On Qt Quick, default Flickable does not handle desktop mouse wheel events reliably. ChaSetScrollView wraps native wheel handling with configurable scroll step sizes.
+- **Rule**: Desktop scrollable views must use ChaSetScrollArea (or ChaSetScrollView compatibility alias) with native WheelHandler.
+- **Rationale**: On Qt Quick, default Flickable does not handle desktop mouse wheel events reliably. ChaSetScrollArea wraps native wheel handling with configurable scroll step sizes.
 
 ### 2.7 Dual-Mode Adaptive Theme Source
 - **Rule**: Components must gracefully adapt to their hosting environment without hardcoded theme couplings.
 - **Pattern**:
-  `qml
+  ```qml
   // Prioritize host-provided theme context property; fallback to ChaSet built-in ThemeTokens
   readonly property var _themeSource: (typeof theme !== "undefined" && theme !== null) ? theme : ThemeTokens
   readonly property color _accent: _themeSource.accent
   readonly property color _subduedText: _themeSource.subduedText
   readonly property color _panelRaised: _themeSource.panelRaised
-  `
+  ```
 
 ---
 
@@ -78,7 +78,8 @@ To ensure desktop-grade ergonomics and cross-stack parity, all implementations M
 | **React ScrollArea** | [packages/react/src/scroll-area/ScrollArea.tsx](file:///D:/pengj/cha-set/packages/react/src/scroll-area/ScrollArea.tsx) | Base UI wrapper, dual ResizeObserver, overflow detection |
 | **React ScrollBar** | [packages/react/src/scroll-area/ScrollBar.tsx](file:///D:/pengj/cha-set/packages/react/src/scroll-area/ScrollBar.tsx) | Web scrollbar, stepper buttons, auto-repeat, track margin isolation |
 | **Qt ScrollBar** | [qt/src/ChaSetScrollBar.qml](file:///D:/pengj/cha-set/qt/src/ChaSetScrollBar.qml) | Native Quick Controls 2 ScrollBar with desktop thickness, steppers, and auto-hide |
-| **Qt ScrollView** | [qt/src/ChaSetScrollView.qml](file:///D:/pengj/cha-set/qt/src/ChaSetScrollView.qml) | ScrollView with WheelHandler and attached ChaSetScrollBar |
+| **Qt ScrollArea** | [qt/src/ChaSetScrollArea.qml](file:///D:/pengj/cha-set/qt/src/ChaSetScrollArea.qml) | Authoritative ScrollArea with WheelHandler and attached ChaSetScrollBar |
+| **Qt ScrollView (Alias)** | [qt/src/ChaSetScrollView.qml](file:///D:/pengj/cha-set/qt/src/ChaSetScrollView.qml) | Backward-compatible facade wrapping ChaSetScrollArea |
 | **Verification Gate** | [gate/parity.mjs](file:///D:/pengj/cha-set/gate/parity.mjs) | Validates scroll kinematics, drag tracking, and stepper actions |
 
 ---

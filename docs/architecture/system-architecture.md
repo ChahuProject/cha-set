@@ -62,7 +62,7 @@
 | **Component Contracts** | [`spec/components/`](file:///D:/pengj/cha-set/spec/components/) | Zod schema contracts defining neutral props, types, and defaults |
 | **Parity Gate** | [`gate/parity.mjs`](file:///D:/pengj/cha-set/gate/parity.mjs) | CI gate asserting earned capability coverage across all active stacks |
 | **React Package** | [`packages/react/`](file:///D:/pengj/cha-set/packages/react/) | `@chahu/cha-set` implementation using Base UI + Tailwind CSS + CVA |
-| **Qt QML Module** | [`qt/`](file:///D:/pengj/cha-set/qt/) | Qt Quick / QML module (`ChaSet 1.0`) with `ChaSetScrollBar`, `ChaSetScrollView`, `ChaSetButton` |
+| **Qt QML Module** | [`qt/`](file:///D:/pengj/cha-set/qt/) | Qt Quick / QML module (`ChaSet 1.0`) with `ChaSetScrollBar`, `ChaSetScrollArea` (`ChaSetScrollView` alias), `ChaSetButton` |
 | **Exported C++ Headers** | [`qt/include/ChaSet/`](file:///D:/pengj/cha-set/qt/include/ChaSet/) | Typed C++ headers (`theme_tokens.generated.h`) exported for host application integration |
 | **Showcase & Workbench** | [`packages/react/examples/basic/`](file:///D:/pengj/cha-set/packages/react/examples/basic/), [`qt/src/Main.qml`](file:///D:/pengj/cha-set/qt/src/Main.qml) | Interactive live theme customizer, component gallery, and code exporter |
 

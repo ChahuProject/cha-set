@@ -107,15 +107,20 @@ endif()
 `
 
 ### 3.1 QML Consumption
-`qml
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+```qml
+import QtQuick 6.10
+import QtQuick.Controls 6.10
 import ChaSet 1.0
+
+ChaSetScrollArea {
+    id: scrollArea
+    // Note: ChaSetScrollView is fully supported as a backward-compatible facade
+}
 
 ChaSetScrollBar {
     id: scrollBar
 }
-`
+```
 
 ### 3.2 C++ Typed Token Consumption
 `cpp

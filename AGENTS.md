@@ -40,7 +40,7 @@
 1. **NO Visual-Only Delivery**: An Agent must NEVER declare a UI component task complete based solely on static screenshots or compilation passes. Interactive verification (wheel scrolling, drag tracking, clicks) is strictly mandatory.
 2. **Single Source of Truth for Data**: All showcase data, token definitions, and component contracts MUST reside in `spec/showcase/*.json` and `spec/tokens/**`. Never duplicate hardcoded arrays in React TSX or Qt QML.
 3. **Desktop Platform Idiom Compliance**:
-   - **Wheel Scrolling**: Always use `ChaSetScrollView` with native `WheelHandler` on Qt. Never assume `Flickable` handles mouse wheel by default.
+   - **Wheel Scrolling**: Always use `ChaSetScrollArea` (or `ChaSetScrollView` compatibility alias) with native `WheelHandler` on Qt. Never assume `Flickable` handles mouse wheel by default.
    - **Drag Decoupling**: In QML, dragging `thumb` must decouple from reactive `y: computedPos` bindings during active mouse press.
    - **Dynamic Viewport**: Ensure `contentHeight` and `contentWidth` are bound to `childrenRect` when dynamic.
 4. **Mandatory Behavioral Parity Gate**: Before finishing any task, run `pnpm gate` which executes full contract validation, headless Qt interaction scenarios (`--test-scenario all`), and React test suites.
