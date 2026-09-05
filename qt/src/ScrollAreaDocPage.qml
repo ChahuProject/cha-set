@@ -177,13 +177,12 @@ DocLayout {
                 Text { text: "Mode:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Repeater {
                     model: [["vertical", "Vertical"], ["horizontal", "Horizontal"], ["both", "2D Dual-Axis"]]
-                    delegate: Rectangle {
+                    delegate: ChaSetButton {
                         required property var modelData
-                        width: 76; height: 26; radius: 5
-                        color: root.heroMode === modelData[0] ? ThemeTokens.accent : ThemeTokens.panel
-                        border.color: ThemeTokens.border
-                        Text { anchors.centerIn: parent; text: modelData[1]; color: root.heroMode === modelData[0] ? "#ffffff" : ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Medium }
-                        MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.heroMode = modelData[0] }
+                        size: "sm"
+                        variant: root.heroMode === modelData[0] ? "default" : "outline"
+                        text: modelData[1]
+                        onClicked: root.heroMode = modelData[0]
                     }
                 }
             },

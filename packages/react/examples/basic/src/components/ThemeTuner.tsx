@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@chahu/cha-set';
 
 export interface ThemeOverrides {
   primary?: string;
@@ -65,13 +66,18 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
         </div>
         <div className="tuner-actions">
           {hasOverrides && (
-            <button className="btn-secondary-sm" onClick={clearOverrides} title="Reset all custom color overrides">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={clearOverrides}
+              title="Reset all custom color overrides"
+            >
               Reset
-            </button>
+            </Button>
           )}
-          <button className="btn-primary-sm" onClick={onOpenExport}>
+          <Button variant="default" size="sm" onClick={onOpenExport}>
             📋 Copy Config
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -79,19 +85,21 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
         {/* Preset Modes */}
         <div className="tuner-group">
           <label className="tuner-label">Appearance & Mode</label>
-          <div className="segmented-control">
-            <button
-              className={`segmented-item ${mode === 'light' ? 'active' : ''}`}
+          <div className="flex gap-1.5">
+            <Button
+              variant={mode === 'light' ? 'default' : 'outline'}
+              size="sm"
               onClick={() => setMode('light')}
             >
               ☀️ Light
-            </button>
-            <button
-              className={`segmented-item ${mode === 'dark' ? 'active' : ''}`}
+            </Button>
+            <Button
+              variant={mode === 'dark' ? 'default' : 'outline'}
+              size="sm"
               onClick={() => setMode('dark')}
             >
               🌙 Dark
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -100,15 +108,17 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
           <label className="tuner-label">Accent Theme Preset</label>
           <div className="accent-grid">
             {ACCENT_PRESETS.map((a) => (
-              <button
+              <Button
                 key={a.id}
-                className={`accent-chip ${accent === a.id ? 'active' : ''}`}
+                variant={accent === a.id ? 'default' : 'outline'}
+                size="sm"
+                className="justify-start gap-1.5 h-7 px-2 text-xs font-normal"
                 onClick={() => setAccent(a.id)}
                 title={`Preset: ${a.label}`}
               >
                 <span className="accent-dot" style={{ backgroundColor: a.color }} />
                 <span>{a.label}</span>
-              </button>
+              </Button>
             ))}
           </div>
         </div>

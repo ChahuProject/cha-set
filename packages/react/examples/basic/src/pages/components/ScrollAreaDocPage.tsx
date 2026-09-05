@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollArea } from '@chahu/cha-set';
+import { ScrollArea, Button } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -131,16 +131,16 @@ export function ScrollAreaDocPage() {
               <div className="flex items-center gap-1.5">
                 <span className="text-muted-foreground font-medium">Mode:</span>
                 {(['vertical', 'horizontal', 'both'] as ('vertical' | 'horizontal' | 'both')[]).map((m) => (
-                  <button
+                  <Button
                     key={m}
                     type="button"
+                    variant={heroMode === m ? 'default' : 'outline'}
+                    size="sm"
                     onClick={() => setHeroMode(m)}
-                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer capitalize ${
-                      heroMode === m ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
-                    }`}
+                    className="h-7 text-xs capitalize"
                   >
                     {m === 'both' ? '2D Dual-Axis' : m}
-                  </button>
+                  </Button>
                 ))}
               </div>
 

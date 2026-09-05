@@ -63,20 +63,15 @@ DocLayout {
 
                     Row {
                         spacing: 8
-                        Rectangle {
+                        ChaSetButton {
                             visible: root.activeAccent !== "" || root.customRadius !== 8
-                            width: 60; height: 28; radius: 5
-                            color: ThemeTokens.hover
-                            border.color: ThemeTokens.border
-                            Text { anchors.centerIn: parent; text: "Reset"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Medium }
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: {
-                                    root.activeAccent = ""
-                                    root.customRadius = 8
-                                    ThemeTokens.dark = false
-                                }
+                            size: "sm"
+                            variant: "outline"
+                            text: "Reset"
+                            onClicked: {
+                                root.activeAccent = ""
+                                root.customRadius = 8
+                                ThemeTokens.dark = false
                             }
                         }
 
@@ -97,40 +92,18 @@ DocLayout {
                     Text { text: "APPEARANCE & MODE"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                     Row {
                         spacing: 8
-                        Rectangle {
-                            width: 90; height: 30; radius: 6
-                            color: !ThemeTokens.dark ? ThemeTokens.background : ThemeTokens.hover
-                            border.color: !ThemeTokens.dark ? ThemeTokens.accent : ThemeTokens.border
-                            border.width: !ThemeTokens.dark ? 1.5 : 1
-                            Row {
-                                anchors.centerIn: parent
-                                spacing: 4
-                                Text { text: "☀️"; font.pixelSize: 12 }
-                                Text { text: "Light"; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Medium }
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: ThemeTokens.dark = false
-                            }
+                        ChaSetButton {
+                            size: "sm"
+                            variant: !ThemeTokens.dark ? "default" : "outline"
+                            text: "☀️ Light"
+                            onClicked: ThemeTokens.dark = false
                         }
 
-                        Rectangle {
-                            width: 90; height: 30; radius: 6
-                            color: ThemeTokens.dark ? ThemeTokens.background : ThemeTokens.hover
-                            border.color: ThemeTokens.dark ? ThemeTokens.accent : ThemeTokens.border
-                            border.width: ThemeTokens.dark ? 1.5 : 1
-                            Row {
-                                anchors.centerIn: parent
-                                spacing: 4
-                                Text { text: "🌙"; font.pixelSize: 12 }
-                                Text { text: "Dark"; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Medium }
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: ThemeTokens.dark = true
-                            }
+                        ChaSetButton {
+                            size: "sm"
+                            variant: ThemeTokens.dark ? "default" : "outline"
+                            text: "🌙 Dark"
+                            onClicked: ThemeTokens.dark = true
                         }
                     }
                 }
@@ -148,30 +121,14 @@ DocLayout {
                                 ["Orange", "#f97316"], ["Yellow", "#eab308"], ["Green", "#22c55e"],
                                 ["Blue", "#3b82f6"], ["Violet", "#8b5cf6"], ["Rose", "#f43f5e"]
                             ]
-                            delegate: Rectangle {
+                            delegate: ChaSetButton {
                                 required property var modelData
-                                width: chipRow.implicitWidth + 18
-                                height: 26
-                                radius: 13
-                                color: root.activeAccent === modelData[0] ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.15) : ThemeTokens.hover
-                                border.color: root.activeAccent === modelData[0] ? ThemeTokens.accent : ThemeTokens.border
-                                border.width: root.activeAccent === modelData[0] ? 1.5 : 1
-
-                                Row {
-                                    id: chipRow
-                                    anchors.centerIn: parent
-                                    spacing: 5
-                                    Rectangle { width: 8; height: 8; radius: 4; color: modelData[1]; anchors.verticalCenter: parent.verticalCenter }
-                                    Text { text: modelData[0]; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Medium; anchors.verticalCenter: parent.verticalCenter }
-                                }
-
-                                MouseArea {
-                                    anchors.fill: parent
-                                    cursorShape: Qt.PointingHandCursor
-                                    onClicked: {
-                                        root.activeAccent = parent.modelData[0]
-                                        root.logAction("Accent preset: " + parent.modelData[0])
-                                    }
+                                size: "sm"
+                                variant: root.activeAccent === modelData[0] ? "default" : "outline"
+                                text: "● " + modelData[0]
+                                onClicked: {
+                                    root.activeAccent = modelData[0]
+                                    root.logAction("Accent preset: " + modelData[0])
                                 }
                             }
                         }

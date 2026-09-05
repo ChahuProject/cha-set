@@ -84,9 +84,9 @@ export default function ButtonSection() {
         <div className="log-header">
           <span>Interaction Log (Click events)</span>
           {log.length > 0 && (
-            <button className="btn-text-sm" onClick={() => setLog([])}>
+            <Button variant="ghost" size="sm" onClick={() => setLog([])}>
               Clear
-            </button>
+            </Button>
           )}
         </div>
         <ul className="log">

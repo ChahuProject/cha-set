@@ -61,39 +61,14 @@ Rectangle {
                 }
             }
 
-            Rectangle {
+            ChaSetButton {
                 anchors.right: parent.right
-                anchors.rightMargin: 10
+                anchors.rightMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
-                width: copyRow.implicitWidth + 14
-                height: 22
-                radius: 4
-                color: root.copied ? Qt.rgba(0.06, 0.72, 0.5, 0.15) : "transparent"
-                border.color: root.copied ? "#10b981" : "transparent"
-
-                Row {
-                    id: copyRow
-                    anchors.centerIn: parent
-                    spacing: 4
-                    Text {
-                        text: root.copied ? "✓" : "📋"
-                        font.pixelSize: 10
-                        color: root.copied ? "#10b981" : ThemeTokens.subduedText
-                    }
-                    Text {
-                        text: root.copied ? "Copied!" : "Copy"
-                        font.pixelSize: 10
-                        font.weight: Font.Medium
-                        color: root.copied ? "#10b981" : ThemeTokens.subduedText
-                    }
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    hoverEnabled: true
-                    onClicked: root.copyToClipboard()
-                }
+                size: "sm"
+                variant: "ghost"
+                text: root.copied ? "✓ Copied!" : "📋 Copy"
+                onClicked: root.copyToClipboard()
             }
         }
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '@chahu/cha-set';
 import { TableOfContents, type TocItem } from './TableOfContents';
 
 export interface DocLayoutProps {
@@ -45,10 +46,10 @@ export function DocLayout({
               {title}
             </h1>
             <div className="flex items-center gap-2">
-              <button
-                type="button"
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={handleCopyPage}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-border bg-muted/40 hover:bg-muted text-foreground transition-colors cursor-pointer"
                 title="Copy page link"
               >
                 {copied ? (
@@ -67,7 +68,7 @@ export function DocLayout({
                     <span>Copy Link</span>
                   </>
                 )}
-              </button>
+              </Button>
             </div>
           </div>
           <p className="text-sm md:text-base text-muted-foreground leading-relaxed">

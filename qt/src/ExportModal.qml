@@ -34,19 +34,20 @@ Rectangle {
 
             Row {
                 width: parent.width
-                Text { text: "Export & Copy Theme Configuration"; color: ThemeTokens.text; font.pixelSize: 16; font.weight: Font.Bold }
+                Text { text: "Export & Copy Theme Configuration"; color: ThemeTokens.text; font.pixelSize: 16; font.weight: Font.Bold; anchors.verticalCenter: parent.verticalCenter }
                 Item { width: parent.width - 320; height: 1 }
-                Text {
+                ChaSetButton {
+                    size: "sm"
+                    variant: "ghost"
                     text: "✕"
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: 16
-                    MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.close() }
+                    anchors.verticalCenter: parent.verticalCenter
+                    onClicked: root.close()
                 }
             }
 
             // Tabs
             Row {
-                spacing: 8
+                spacing: 6
                 Repeater {
                     model: [
                         ["qt", "Qt / QML"],
@@ -55,12 +56,12 @@ Rectangle {
                         ["tailwind", "Tailwind v4"],
                         ["json", "JSON Spec"]
                     ]
-                    delegate: Rectangle {
+                    delegate: ChaSetButton {
                         required property var modelData
-                        width: 100; height: 28; radius: 4
-                        color: root.exportTab === modelData[0] ? ThemeTokens.accent : ThemeTokens.hover
-                        Text { anchors.centerIn: parent; text: parent.modelData[1]; color: root.exportTab === parent.modelData[0] ? "#ffffff" : ThemeTokens.text; font.pixelSize: 12 }
-                        MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.exportTab = parent.modelData[0] }
+                        size: "sm"
+                        variant: root.exportTab === modelData[0] ? "secondary" : "ghost"
+                        text: modelData[1]
+                        onClicked: root.exportTab = modelData[0]
                     }
                 }
             }

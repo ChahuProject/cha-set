@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '@chahu/cha-set';
 import { CodeBlock } from './CodeBlock';
 
 export interface ComponentPreviewProps {
@@ -25,40 +26,34 @@ export function ComponentPreview({
       {/* Tab Navigation Header */}
       <div className="flex items-center justify-between border-b border-border bg-muted/40 px-3 py-2">
         <div className="flex items-center gap-1 bg-muted/70 p-0.5 rounded-lg border border-border/50">
-          <button
+          <Button
             type="button"
+            variant={activeTab === 'preview' ? 'secondary' : 'ghost'}
+            size="sm"
             onClick={() => setActiveTab('preview')}
-            className={`px-3 py-1 text-xs font-medium rounded-md transition-all cursor-pointer ${
-              activeTab === 'preview'
-                ? 'bg-background text-foreground shadow-xs font-semibold'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
+            className="h-7 px-3 text-xs font-medium"
           >
             Preview
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant={activeTab === 'code' ? 'secondary' : 'ghost'}
+            size="sm"
             onClick={() => setActiveTab('code')}
-            className={`px-3 py-1 text-xs font-medium rounded-md transition-all cursor-pointer ${
-              activeTab === 'code'
-                ? 'bg-background text-foreground shadow-xs font-semibold'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
+            className="h-7 px-3 text-xs font-medium"
           >
             React Code
-          </button>
+          </Button>
           {qtCode && (
-            <button
+            <Button
               type="button"
+              variant={activeTab === 'qt' ? 'secondary' : 'ghost'}
+              size="sm"
               onClick={() => setActiveTab('qt')}
-              className={`px-3 py-1 text-xs font-medium rounded-md transition-all cursor-pointer ${
-                activeTab === 'qt'
-                  ? 'bg-background text-foreground shadow-xs font-semibold'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className="h-7 px-3 text-xs font-medium"
             >
               Qt QML
-            </button>
+            </Button>
           )}
         </div>
 

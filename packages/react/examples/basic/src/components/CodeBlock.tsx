@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '@chahu/cha-set';
 
 export interface CodeBlockProps {
   code: string;
@@ -23,10 +24,12 @@ export function CodeBlock({ code, language = 'tsx', className = '' }: CodeBlockP
     <div className={`relative group rounded-lg overflow-hidden border border-border bg-muted/40 font-mono text-xs ${className}`}>
       <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/60 bg-muted/60 text-muted-foreground text-[0.6875rem]">
         <span className="font-semibold uppercase tracking-wider">{language}</span>
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="sm"
           onClick={handleCopy}
-          className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-background/80 transition-colors cursor-pointer border border-transparent hover:border-border"
+          className="h-6 px-2 text-[0.6875rem] gap-1 text-muted-foreground hover:text-foreground"
           title="Copy code to clipboard"
         >
           {copied ? (
@@ -45,7 +48,7 @@ export function CodeBlock({ code, language = 'tsx', className = '' }: CodeBlockP
               <span>Copy</span>
             </>
           )}
-        </button>
+        </Button>
       </div>
       <pre className="p-4 overflow-x-auto m-0 leading-relaxed text-foreground/90 font-mono whitespace-pre selection:bg-primary/20">
         <code>{code.trim()}</code>

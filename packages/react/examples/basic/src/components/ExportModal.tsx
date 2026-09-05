@@ -177,42 +177,47 @@ ApplicationWindow {
             <h3>Export & Copy Theme Configuration</h3>
             <p>One-click copy tailored styles and component code for your target framework.</p>
           </div>
-          <button className="modal-close-btn" onClick={onClose} aria-label="Close">
+          <Button variant="ghost" size="icon" className="size-7" onClick={onClose} aria-label="Close">
             ✕
-          </button>
+          </Button>
         </div>
 
-        <div className="modal-tabs">
-          <button
-            className={`modal-tab ${activeTab === 'css' ? 'active' : ''}`}
+        <div className="modal-tabs flex gap-1 p-2 bg-muted/30 border-b border-border">
+          <Button
+            variant={activeTab === 'css' ? 'secondary' : 'ghost'}
+            size="sm"
             onClick={() => setActiveTab('css')}
           >
             CSS Variables
-          </button>
-          <button
-            className={`modal-tab ${activeTab === 'tailwind' ? 'active' : ''}`}
+          </Button>
+          <Button
+            variant={activeTab === 'tailwind' ? 'secondary' : 'ghost'}
+            size="sm"
             onClick={() => setActiveTab('tailwind')}
           >
             Tailwind v4
-          </button>
-          <button
-            className={`modal-tab ${activeTab === 'react' ? 'active' : ''}`}
+          </Button>
+          <Button
+            variant={activeTab === 'react' ? 'secondary' : 'ghost'}
+            size="sm"
             onClick={() => setActiveTab('react')}
           >
             React Code
-          </button>
-          <button
-            className={`modal-tab ${activeTab === 'qt' ? 'active' : ''}`}
+          </Button>
+          <Button
+            variant={activeTab === 'qt' ? 'secondary' : 'ghost'}
+            size="sm"
             onClick={() => setActiveTab('qt')}
           >
             Qt / QML
-          </button>
-          <button
-            className={`modal-tab ${activeTab === 'json' ? 'active' : ''}`}
+          </Button>
+          <Button
+            variant={activeTab === 'json' ? 'secondary' : 'ghost'}
+            size="sm"
             onClick={() => setActiveTab('json')}
           >
             JSON Spec
-          </button>
+          </Button>
         </div>
 
         <div className="modal-body">
@@ -225,13 +230,13 @@ ApplicationWindow {
           <span className="modal-hint">
             💡 Drop this configuration directly into your project's stylesheet or theme manager.
           </span>
-          <div className="modal-footer-actions">
-            <button className="btn-secondary" onClick={onClose}>
+          <div className="modal-footer-actions flex gap-2">
+            <Button variant="secondary" size="sm" onClick={onClose}>
               Close
-            </button>
-            <button className="btn-primary" onClick={copyToClipboard}>
+            </Button>
+            <Button variant="default" size="sm" onClick={copyToClipboard}>
               {copied ? '✓ Copied to Clipboard!' : '📋 Copy to Clipboard'}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

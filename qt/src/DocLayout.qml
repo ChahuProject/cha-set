@@ -64,38 +64,16 @@ Item {
                         font.letterSpacing: -0.5
                     }
 
-                    Rectangle {
+                    ChaSetButton {
                         id: copyBtn
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        width: 96; height: 28; radius: 6
-                        color: ThemeTokens.panel
-                        border.color: ThemeTokens.border
-                        border.width: 1
-
-                        Row {
-                            anchors.centerIn: parent
-                            spacing: 5
-                            Text {
-                                text: root.copiedLink ? "✓" : "📋"
-                                font.pixelSize: 11
-                                color: root.copiedLink ? "#10b981" : ThemeTokens.subduedText
-                            }
-                            Text {
-                                text: root.copiedLink ? "Copied" : "Copy Link"
-                                color: root.copiedLink ? "#10b981" : ThemeTokens.text
-                                font.pixelSize: 11
-                                font.weight: Font.Medium
-                            }
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: {
-                                root.copiedLink = true
-                                copyTimer.restart()
-                            }
+                        variant: "outline"
+                        size: "sm"
+                        text: root.copiedLink ? "✓ Copied" : "📋 Copy Link"
+                        onClicked: {
+                            root.copiedLink = true
+                            copyTimer.restart()
                         }
                     }
                 }

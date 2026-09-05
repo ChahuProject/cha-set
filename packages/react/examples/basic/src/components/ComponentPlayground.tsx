@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Button, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
 
 export const ComponentPlayground: React.FC = () => {
-  const [variant, setVariant] = useState<ButtonVariant>('primary');
-  const [size, setSize] = useState<ButtonSize>('md');
+  const [variant, setVariant] = useState<ButtonVariant>('default');
+  const [size, setSize] = useState<ButtonSize>('default');
   const [label, setLabel] = useState('Create Project');
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -47,32 +47,36 @@ export const ComponentPlayground: React.FC = () => {
         <div className="playground-controls">
           <div className="control-field">
             <label className="control-label">Variant</label>
-            <div className="chip-selector">
-              {(['primary', 'secondary', 'ghost', 'destructive'] as const).map((v) => (
-                <button
+            <div className="chip-selector flex flex-wrap gap-1">
+              {(['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'] as const).map((v) => (
+                <Button
                   key={v}
                   type="button"
-                  className={`chip-btn ${variant === v ? 'selected' : ''}`}
+                  variant={variant === v ? 'default' : 'outline'}
+                  size="sm"
+                  className="h-6 px-2 text-xs capitalize"
                   onClick={() => setVariant(v)}
                 >
                   {v}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
 
           <div className="control-field">
             <label className="control-label">Size</label>
-            <div className="chip-selector">
-              {(['sm', 'md', 'lg'] as const).map((s) => (
-                <button
+            <div className="chip-selector flex flex-wrap gap-1">
+              {(['default', 'sm', 'lg', 'icon'] as const).map((s) => (
+                <Button
                   key={s}
                   type="button"
-                  className={`chip-btn ${size === s ? 'selected' : ''}`}
+                  variant={size === s ? 'default' : 'outline'}
+                  size="sm"
+                  className="h-6 px-2 text-xs uppercase"
                   onClick={() => setSize(s)}
                 >
-                  {s.toUpperCase()}
-                </button>
+                  {s}
+                </Button>
               ))}
             </div>
           </div>
@@ -167,9 +171,9 @@ export const ComponentPlayground: React.FC = () => {
           <div className="code-snippet-box">
             <div className="code-snippet-header">
               <span>React JSX Usage</span>
-              <button className="copy-code-btn" onClick={copyCode}>
+              <Button variant="ghost" size="sm" className="h-6 px-2 text-xs" onClick={copyCode}>
                 {copied ? '✓ Copied' : '📋 Copy JSX'}
-              </button>
+              </Button>
             </div>
             <pre className="code-snippet-pre">
               <code>{generatedCode}</code>

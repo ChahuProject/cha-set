@@ -331,24 +331,11 @@ ApplicationWindow {
                         Rectangle { width: 1; height: 18; color: win.cBorder; anchors.verticalCenter: parent.verticalCenter }
 
                         // Dark/Light Mode Toggle Button
-                        Rectangle {
-                            width: 32
-                            height: 32
-                            radius: 6
-                            color: win.cCard
-                            border.color: win.cBorder
-                            border.width: 1
-
-                            Text {
-                                anchors.centerIn: parent
-                                text: ThemeTokens.dark ? "🌙" : "☀️"
-                                font.pixelSize: 14
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: ThemeTokens.dark = !ThemeTokens.dark
-                            }
+                        ChaSetButton {
+                            size: "icon"
+                            variant: "outline"
+                            text: ThemeTokens.dark ? "🌙" : "☀️"
+                            onClicked: ThemeTokens.dark = !ThemeTokens.dark
                         }
                     }
                 }

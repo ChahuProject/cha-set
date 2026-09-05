@@ -57,16 +57,16 @@ export function ButtonDocPage() {
               <div className="flex items-center gap-1.5">
                 <span className="text-muted-foreground font-medium">Variant:</span>
                 {(['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'] as ButtonVariant[]).map((v) => (
-                  <button
+                  <Button
                     key={v}
                     type="button"
+                    variant={variant === v ? 'default' : 'outline'}
+                    size="sm"
                     onClick={() => setVariant(v)}
-                    className={`px-2 py-0.5 rounded text-[0.6875rem] font-medium transition-colors cursor-pointer capitalize ${
-                      variant === v ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
-                    }`}
+                    className="h-6 px-2 text-[0.6875rem] capitalize font-medium"
                   >
                     {v}
-                  </button>
+                  </Button>
                 ))}
               </div>
 
@@ -74,16 +74,16 @@ export function ButtonDocPage() {
               <div className="flex items-center gap-1.5">
                 <span className="text-muted-foreground font-medium">Size:</span>
                 {(['default', 'sm', 'lg', 'icon'] as ButtonSize[]).map((s) => (
-                  <button
+                  <Button
                     key={s}
                     type="button"
+                    variant={size === s ? 'default' : 'outline'}
+                    size="sm"
                     onClick={() => setSize(s)}
-                    className={`px-2 py-0.5 rounded text-[0.6875rem] font-medium transition-colors cursor-pointer uppercase ${
-                      size === s ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted hover:bg-muted/80 text-foreground'
-                    }`}
+                    className="h-6 px-2 text-[0.6875rem] uppercase font-medium"
                   >
                     {s}
-                  </button>
+                  </Button>
                 ))}
               </div>
 

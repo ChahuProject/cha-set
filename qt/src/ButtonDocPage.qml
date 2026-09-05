@@ -76,15 +76,12 @@ DocLayout {
                 Text { text: "Variant:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Repeater {
                     model: ["default", "secondary", "outline", "ghost", "destructive", "link"]
-                    delegate: Rectangle {
+                    delegate: ChaSetButton {
                         required property var modelData
-                        width: btnText.implicitWidth + 14
-                        height: 24
-                        radius: 4
-                        color: root.btnVariant === modelData ? ThemeTokens.accent : ThemeTokens.hover
-                        border.color: root.btnVariant === modelData ? ThemeTokens.accent : ThemeTokens.border
-                        Text { id: btnText; anchors.centerIn: parent; text: modelData; color: root.btnVariant === modelData ? "#ffffff" : ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Medium }
-                        MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.btnVariant = modelData }
+                        size: "sm"
+                        variant: root.btnVariant === modelData ? "default" : "outline"
+                        text: modelData
+                        onClicked: root.btnVariant = modelData
                     }
                 }
             },
@@ -93,15 +90,12 @@ DocLayout {
                 Text { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Repeater {
                     model: ["sm", "default", "lg", "icon"]
-                    delegate: Rectangle {
+                    delegate: ChaSetButton {
                         required property var modelData
-                        width: sizeText.implicitWidth + 12
-                        height: 24
-                        radius: 4
-                        color: root.btnSize === modelData ? ThemeTokens.accent : ThemeTokens.hover
-                        border.color: root.btnSize === modelData ? ThemeTokens.accent : ThemeTokens.border
-                        Text { id: sizeText; anchors.centerIn: parent; text: modelData.toUpperCase(); color: root.btnSize === modelData ? "#ffffff" : ThemeTokens.text; font.pixelSize: 10; font.weight: Font.Medium }
-                        MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.btnSize = modelData }
+                        size: "sm"
+                        variant: root.btnSize === modelData ? "default" : "outline"
+                        text: modelData.toUpperCase()
+                        onClicked: root.btnSize = modelData
                     }
                 }
             },
