@@ -25,7 +25,7 @@ Static screenshot comparison by "human eyeballing" is unreliable and leads to su
 4. **Zero-Variance Unicode Benchmark Lexicon**:
    - To completely eliminate kerning pair accumulation and font styling variances across OS text rasterizers, visual unit conformance uses the standard Unicode Middle Dot (`·`, U+00B7), which renders with integer-aligned center geometry across Chromium Skia and Qt DirectWrite.
 5. **Selective Targeted Execution (Opt-in)**:
-   - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for `button`, `scroll-area`, and `tabs`).
+   - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for `button`, `scroll-area`, `tabs`, and `badge`).
 
 ---
 
@@ -56,6 +56,9 @@ Ensure mathematical color parity between Tailwind v4 color mixing and Qt QML col
   - Light List Track: `#f1f5f9` (`rgb(241, 245, 249)`) | Active Trigger Pill: `#ffffff` (`rgb(255, 255, 255)`) with subtle shadow.
   - Dark List Track: `#1e293b` (`rgb(30, 41, 59)`) | Active Trigger Pill: `#020817` (`rgb(2, 8, 23)`).
   - Trigger Padding: `h-7 px-3 py-1 text-xs`, 0.03% pixel diff rate benchmark across Light & Dark.
+- **Badge**:
+  - Variants: `default` (`#1d7ae0`), `secondary` (`#f1f5f9`), `destructive` (`#ef4444`), `outline` (border `#e2e8f0`).
+  - Sizes: `default` (h=22, radius=11, full-pill), `sm` (h=16, radius=4, micro-pill).
 
 ### Step 2: Isolated Test Harness
 Both stacks expose an isolated rendering harness centered in a minimal canvas:
@@ -68,6 +71,9 @@ Both stacks expose an isolated rendering harness centered in a minimal canvas:
 - **Tabs**:
   - React: `http://127.0.0.1:5299/?harness=tabs&tabIndex={idx}&state={st}&disabled={0|1}&theme={light|dark}`
   - Qt: `QtChaSetDemo.exe --harness tabs --tab-index {idx} --state {st} [--disabled] [--dark] --width 260 --height 80 --shot {path}`
+- **Badge**:
+  - React: `http://127.0.0.1:5299/?harness=badge&variant={v}&size={s}&state={st}&theme={light|dark}`
+  - Qt: `QtChaSetDemo.exe --harness badge --variant {v} --size {s} --state {st} [--dark] --width 220 --height 80 --shot {path}`
 
 ### Step 3: Headless Image Acquisition
 - Use Edge/Chromium via Chrome DevTools Protocol (`Page.navigate`, `Emulation.setDeviceMetricsOverride`, `Page.captureScreenshot`).
@@ -100,10 +106,13 @@ pnpm test:pixel --component scroll-area
 # 3. Run targeted pixel test for tabs (all variants, themes & states)
 pnpm test:pixel --component tabs
 
-# 4. Run targeted pixel test for all supported components
+# 4. Run targeted pixel test for badge (all variants, sizes & states)
+pnpm test:pixel --component badge
+
+# 5. Run targeted pixel test for all supported components
 pnpm test:pixel --component all
 
-# 5. Run cross-stack parity gate including targeted pixel gate
+# 6. Run cross-stack parity gate including targeted pixel gate
 pnpm gate:pixel
 # OR
 pnpm gate --pixel

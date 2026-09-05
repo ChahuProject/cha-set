@@ -95,6 +95,23 @@ const tabsMatrix = [
   { id: 'tabs-dark-active-tab2', component: 'tabs', tabIndex: '2', state: 'active', theme: 'dark', width: 260, height: 80, probeX: 144, probeY: 30, maxDiff: 1.0 },
 ];
 
+// Definitive Badge test matrix covering variants, sizes, states and dark theme
+const badgeMatrix = [
+  // 1. Variants (Idle)
+  { id: 'badge-default-idle', component: 'badge', variant: 'default', size: 'default', state: 'idle', label: '·', width: 220, height: 80, probeX: 102, probeY: 40, maxDiff: 0.2 },
+  { id: 'badge-secondary-idle', component: 'badge', variant: 'secondary', size: 'default', state: 'idle', label: '·', width: 220, height: 80, probeX: 102, probeY: 40, maxDiff: 0.2 },
+  { id: 'badge-destructive-idle', component: 'badge', variant: 'destructive', size: 'default', state: 'idle', label: '·', width: 220, height: 80, probeX: 102, probeY: 40, maxDiff: 0.2 },
+  { id: 'badge-outline-idle', component: 'badge', variant: 'outline', size: 'default', state: 'idle', label: '·', width: 220, height: 80, probeX: 102, probeY: 40, maxDiff: 0.2 },
+
+  // 2. Behavioral States (Hover & Active)
+  { id: 'badge-default-hover', component: 'badge', variant: 'default', size: 'default', state: 'hover', label: '·', width: 220, height: 80, probeX: 102, probeY: 40, maxDiff: 0.2 },
+  { id: 'badge-default-active', component: 'badge', variant: 'default', size: 'default', state: 'active', label: '·', width: 220, height: 80, probeX: 102, probeY: 40, maxDiff: 0.2 },
+
+  // 3. Sizes & Themes
+  { id: 'badge-size-sm', component: 'badge', variant: 'default', size: 'sm', state: 'idle', label: '·', width: 220, height: 80, probeX: 105, probeY: 40, maxDiff: 0.5 },
+  { id: 'badge-dark-idle', component: 'badge', variant: 'default', size: 'default', state: 'idle', theme: 'dark', label: '·', width: 220, height: 80, probeX: 102, probeY: 40, maxDiff: 0.2 },
+];
+
 let testCases = [];
 if (componentArg === 'button') {
   testCases = buttonMatrix;
@@ -106,8 +123,12 @@ if (componentArg === 'button') {
 } else if (componentArg === 'tabs' || componentArg === 'tab') {
   testCases = tabsMatrix;
   if (stateFilter) testCases = testCases.filter((tc) => tc.state === stateFilter);
+} else if (componentArg === 'badge') {
+  testCases = badgeMatrix;
+  if (variantFilter) testCases = testCases.filter((tc) => tc.variant === variantFilter);
+  if (stateFilter) testCases = testCases.filter((tc) => tc.state === stateFilter);
 } else if (componentArg === 'all') {
-  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix];
+  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix];
 } else {
   console.log(`[pixel-sync] Component "${componentArg}" is not enabled for selective pixel sync. Skipping.`);
   process.exit(0);
@@ -201,6 +222,17 @@ try {
         width: String(tc.width),
         height: String(tc.height),
       }).toString();
+    } else if (tc.component === 'badge') {
+      query = new URLSearchParams({
+        harness: 'badge',
+        variant: tc.variant,
+        size: tc.size,
+        label: tc.label ?? '·',
+        state: tc.state,
+        theme: tc.theme ?? 'light',
+        width: String(tc.width),
+        height: String(tc.height),
+      }).toString();
     } else {
       query = new URLSearchParams({
         harness: 'button',
@@ -253,6 +285,18 @@ try {
         '--height', String(tc.height),
         '--shot', qtPngPath,
         ...(tc.showButtons ? [] : ['--no-buttons']),
+        ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
+      ];
+    } else if (tc.component === 'badge') {
+      qtArgs = [
+        '--harness', 'badge',
+        '--variant', tc.variant,
+        '--size', tc.size,
+        '--label', tc.label ?? '·',
+        '--state', tc.state,
+        '--width', String(tc.width),
+        '--height', String(tc.height),
+        '--shot', qtPngPath,
         ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
       ];
     } else {
