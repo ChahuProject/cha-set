@@ -101,20 +101,10 @@ Column {
                         }
 
                         // Type Badge
-                        Rectangle {
-                            width: Math.min(140, typeText.implicitWidth + 12)
-                            height: 22
-                            radius: 4
-                            color: ThemeTokens.hover
-                            border.color: ThemeTokens.border
-                            Text {
-                                id: typeText
-                                anchors.centerIn: parent
-                                text: modelData.type || modelData[1]
-                                color: ThemeTokens.text
-                                font.family: "Consolas, monospace"
-                                font.pixelSize: 10
-                            }
+                        ChaSetBadge {
+                            size: "sm"
+                            variant: "outline"
+                            text: modelData.type || modelData[1]
                         }
 
                         // Default Value

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@chahu/cha-set';
+import { Button, Badge } from '@chahu/cha-set';
 
 export interface HeaderProps {
   mode: string;
@@ -27,9 +27,9 @@ export function Header({
             <span className="text-xl leading-none">🍵</span>
             <span className="text-base tracking-tight">ChaSet</span>
           </a>
-          <span className="rounded-md border border-border bg-muted/60 px-1.5 py-0.5 text-[0.625rem] font-mono font-medium text-muted-foreground">
+          <Badge variant="outline" size="sm" className="font-medium text-muted-foreground bg-muted/60">
             v0.1.0
-          </span>
+          </Badge>
         </div>
 
         {/* Center Search Trigger */}

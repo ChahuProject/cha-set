@@ -6,8 +6,8 @@ import ChaSet
 
 ApplicationWindow {
     id: win
-    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 220 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 120 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 260 : 1150)))
-    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && harnessMode === "button") ? 80 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 200 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 80 : 850)))
+    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge")) ? 220 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 120 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 260 : 1150)))
+    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge")) ? 80 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 200 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 80 : 850)))
     visible: true
     title: "ChaSet Studio"
     color: win.cBg
@@ -311,6 +311,23 @@ ApplicationWindow {
             }
         }
 
+        // Isolated Badge Harness Container (for visual unit tests)
+        Rectangle {
+            id: badgeHarnessContainer
+            visible: typeof harnessMode !== "undefined" && harnessMode === "badge"
+            anchors.fill: parent
+            color: ThemeTokens.dark ? "#020817" : "#ffffff"
+
+            ChaSetBadge {
+                anchors.centerIn: parent
+                variant: typeof harnessVariant !== "undefined" ? harnessVariant : "default"
+                size: typeof harnessSize !== "undefined" ? harnessSize : "default"
+                text: (typeof harnessLabel !== "undefined" && harnessLabel !== "") ? harnessLabel : "·"
+                forceHover: typeof harnessState !== "undefined" && harnessState === "hover"
+                forceActive: typeof harnessState !== "undefined" && harnessState === "active"
+            }
+        }
+
         Item {
             id: studioContainer
             visible: typeof harnessMode === "undefined" || harnessMode === ""
@@ -360,21 +377,11 @@ ApplicationWindow {
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
-                        Rectangle {
-                            width: 48
-                            height: 20
-                            radius: 4
-                            color: win.cAccentBg
-                            border.color: win.cBorder
+                        ChaSetBadge {
+                            variant: "outline"
+                            size: "sm"
+                            text: "v0.1.0"
                             anchors.verticalCenter: parent.verticalCenter
-                            Text {
-                                anchors.centerIn: parent
-                                text: "v0.1.0"
-                                color: win.cMutedFg
-                                font.pixelSize: 10
-                                font.family: "Consolas, monospace"
-                                font.weight: Font.DemiBold
-                            }
                         }
                     }
 
@@ -531,12 +538,12 @@ ApplicationWindow {
 
                                         Item { width: 10; height: 1 }
 
-                                        Rectangle {
+                                        ChaSetBadge {
                                             visible: parent.parent.modelData[2] !== ""
-                                            width: 32; height: 16; radius: 8
-                                            color: Qt.rgba(win.cPrimary.r, win.cPrimary.g, win.cPrimary.b, 0.15)
+                                            variant: "secondary"
+                                            size: "sm"
+                                            text: parent.parent.modelData[2]
                                             anchors.verticalCenter: parent.verticalCenter
-                                            Text { anchors.centerIn: parent; text: parent.parent.parent.modelData[2]; color: win.cPrimary; font.pixelSize: 9; font.weight: Font.Bold }
                                         }
                                     }
 
@@ -568,7 +575,8 @@ ApplicationWindow {
                                 model: [
                                     ["Button", "button", ""],
                                     ["Scroll Area", "scroll-area", ""],
-                                    ["Tabs", "tabs", "New"]
+                                    ["Tabs", "tabs", ""],
+                                    ["Badge", "badge", "New"]
                                 ]
                                 delegate: Rectangle {
                                     required property var modelData
@@ -593,12 +601,12 @@ ApplicationWindow {
 
                                         Item { width: 10; height: 1 }
 
-                                        Rectangle {
+                                        ChaSetBadge {
                                             visible: parent.parent.modelData[2] !== ""
-                                            width: 34; height: 16; radius: 8
-                                            color: Qt.rgba(win.cPrimary.r, win.cPrimary.g, win.cPrimary.b, 0.15)
+                                            variant: "secondary"
+                                            size: "sm"
+                                            text: parent.parent.modelData[2]
                                             anchors.verticalCenter: parent.verticalCenter
-                                            Text { anchors.centerIn: parent; text: parent.parent.parent.modelData[2]; color: win.cPrimary; font.pixelSize: 9; font.weight: Font.Bold }
                                         }
                                     }
 
@@ -721,6 +729,20 @@ ApplicationWindow {
                         TabsDocPage {
                             id: tabsPage
                             visible: win.activePage === "tabs"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                            cPrimary: win.cPrimary
+                            cAccentBg: win.cAccentBg
+                        }
+
+                        // Page 7: Badge Doc Page
+                        BadgeDocPage {
+                            id: badgePage
+                            visible: win.activePage === "badge"
                             width: parent.width
                             customRadius: win.customRadius
                             cFg: win.cFg

@@ -141,12 +141,10 @@ DocLayout {
                         width: parent.width
                         Text { text: "CORNER RADIUS (--RADIUS)"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                         Item { width: Math.max(10, parent.width - 320); height: 1 }
-                        Text {
+                        ChaSetBadge {
+                            size: "sm"
+                            variant: "secondary"
                             text: root.customRadius === 8 ? "0.5rem (Default)" : (root.customRadius + "px")
-                            color: ThemeTokens.accent
-                            font.pixelSize: 11
-                            font.family: "Consolas, monospace"
-                            font.weight: Font.Bold
                         }
                     }
 

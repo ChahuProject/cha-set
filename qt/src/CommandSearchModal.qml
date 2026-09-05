@@ -15,7 +15,8 @@ Rectangle {
         { id: "theme-tuner", title: "Theme Studio", category: "Get Started", desc: "Live theme tuner and config exporter" },
         { id: "button", title: "Button", category: "Components", desc: "Variants, sizes, loading & link states" },
         { id: "scroll-area", title: "Scroll Area", category: "Components", desc: "Hot-zone expansion, steppers, dual-axis" },
-        { id: "tabs", title: "Tabs", category: "Components", desc: "Layered content sections displayed one at a time" }
+        { id: "tabs", title: "Tabs", category: "Components", desc: "Layered content sections displayed one at a time" },
+        { id: "badge", title: "Badge", category: "Components", desc: "Compact status and label pills with semantic tokens" }
     ]
 
     property string query: ""
@@ -109,8 +110,8 @@ Rectangle {
                             spacing: 2
                             Row {
                                 spacing: 6
-                                Text { text: parent.parent.parent.parent.modelData.title; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                                Text { text: "• " + parent.parent.parent.parent.modelData.category; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                                Text { text: parent.parent.parent.parent.modelData.title; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold; anchors.verticalCenter: parent.verticalCenter }
+                                ChaSetBadge { size: "sm"; variant: "outline"; text: parent.parent.parent.parent.modelData.category; anchors.verticalCenter: parent.verticalCenter }
                             }
                             Text { text: parent.parent.parent.modelData.desc; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                         }

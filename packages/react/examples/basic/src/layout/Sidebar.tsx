@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollArea } from '@chahu/cha-set';
+import { ScrollArea, Badge } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG } from '../types/navigation';
 
 export interface SidebarProps {
@@ -31,9 +31,9 @@ export function Sidebar({ currentHash }: SidebarProps) {
                   >
                     <span>{item.title}</span>
                     {item.badge && (
-                      <span className="text-[0.625rem] font-mono px-1.5 py-0.2 rounded font-semibold bg-primary/10 text-primary border border-primary/20">
+                      <Badge size="sm" variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                         {item.badge}
-                      </span>
+                      </Badge>
                     )}
                   </a>
                 );

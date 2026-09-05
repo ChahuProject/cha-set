@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
+import { Button, Badge, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
 
 export const ComponentPlayground: React.FC = () => {
   const [variant, setVariant] = useState<ButtonVariant>('default');
@@ -163,8 +163,8 @@ export const ComponentPlayground: React.FC = () => {
             </div>
             <div className="stage-feedback">
               <span>Clicks: {clickCount}</span>
-              {loading && <span className="badge-pill">Loading spinner active</span>}
-              {disabled && <span className="badge-pill">Disabled</span>}
+              {loading && <Badge size="sm" variant="secondary">Loading spinner active</Badge>}
+              {disabled && <Badge size="sm" variant="destructive">Disabled</Badge>}
             </div>
           </div>
 

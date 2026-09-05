@@ -59,6 +59,13 @@ export const NAVIGATION_CONFIG: NavCategory[] = [
         badge: 'New',
         description: 'Set of layered content sections known as tab panels, displayed one at a time.',
       },
+      {
+        id: 'badge',
+        title: 'Badge',
+        href: '#/components/badge',
+        badge: 'New',
+        description: 'Displays a badge or a component that looks like a badge to highlight status, tags, and counts.',
+      },
     ],
   },
 ];

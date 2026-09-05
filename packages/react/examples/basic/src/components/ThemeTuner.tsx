@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tabs, TabsList, TabsTrigger } from '@chahu/cha-set';
+import { Button, Tabs, TabsList, TabsTrigger, Badge } from '@chahu/cha-set';
 
 export interface ThemeOverrides {
   primary?: string;
@@ -117,7 +117,7 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
         <div className="tuner-group">
           <div className="tuner-label-row">
             <label className="tuner-label">Corner Radius (--radius)</label>
-            <span className="tuner-value-badge">{overrides.radius || '0.5rem (Default)'}</span>
+            <Badge size="sm" variant="secondary">{overrides.radius || '0.5rem (Default)'}</Badge>
           </div>
           <input
             type="range"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, ScrollArea } from '@chahu/cha-set';
+import { Button, ScrollArea, Badge } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG, type NavItem } from '../types/navigation';
 
 export interface CommandSearchModalProps {
@@ -95,16 +95,16 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
                   <div className="font-medium text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
                     {item.title}
                     {item.badge && (
-                      <span className="text-[0.625rem] px-1.5 py-0.2 rounded font-mono bg-primary/10 text-primary font-semibold">
+                      <Badge size="sm" variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                         {item.badge}
-                      </span>
+                      </Badge>
                     )}
                   </div>
                   {item.description && <div className="text-xs text-muted-foreground truncate max-w-sm">{item.description}</div>}
                 </div>
-                <span className="text-[0.6875rem] text-muted-foreground bg-muted px-2 py-0.5 rounded font-mono">
+                <Badge size="sm" variant="outline" className="text-muted-foreground bg-muted font-normal">
                   {category}
-                </span>
+                </Badge>
               </Button>
             ))
           )}
