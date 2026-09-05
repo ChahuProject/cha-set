@@ -17,7 +17,8 @@
     "./slider": "./components/slider.ts",
     "./dialog": "./components/dialog.ts",
     "./tooltip": "./components/tooltip.ts",
-    "./table": "./components/table.ts"
+    "./table": "./components/table.ts",
+    "./color-picker": "./components/color-picker.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

@@ -4,6 +4,8 @@ export interface NavItem {
   href: string;
   badge?: string;
   description?: string;
+  label?: string;
+  path?: string;
 }
 
 export interface NavCategory {
@@ -128,6 +130,15 @@ export const NAVIGATION_CONFIG: NavCategory[] = [
         href: '#/components/table',
         badge: 'New',
         description: 'A responsive, accessible table component for organizing and displaying tabular data.',
+      },
+      {
+        id: 'color-picker',
+        title: 'ColorPicker',
+        href: '#/components/color-picker',
+        label: 'ColorPicker',
+        path: '#/components/color-picker',
+        badge: 'New',
+        description: 'An interactive color selection component featuring saturation/brightness field, hue slider, hex input, and swatches.',
       },
     ],
   },

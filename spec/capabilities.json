@@ -95,6 +95,13 @@
       "row": { "requirement": "must", "description": "renders table rows" },
       "cell": { "requirement": "must", "description": "renders table cells" },
       "alignment": { "requirement": "must", "description": "supports cell text alignment" }
+    },
+    "colorPicker": {
+      "colorValue": { "requirement": "must", "description": "colorValue controls selected color value" },
+      "hexInput": { "requirement": "must", "description": "hexInput provides hexadecimal text editing" },
+      "swatches": { "requirement": "must", "description": "swatches renders preset color chips" },
+      "hueSlider": { "requirement": "must", "description": "hueSlider adjusts color hue track" },
+      "disabled": { "requirement": "must", "description": "disabled blocks color interactions" }
     }
   }
 }

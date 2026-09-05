@@ -647,7 +647,8 @@ ApplicationWindow {
                                     ["Slider", "slider", "New"],
                                     ["Dialog", "dialog", "New"],
                                     ["Tooltip", "tooltip", "New"],
-                                    ["Table", "table", "New"]
+                                    ["Table", "table", "New"],
+                                    ["ColorPicker", "color-picker", "New"]
                                 ]
                                 delegate: Rectangle {
                                     required property var modelData
@@ -726,6 +727,7 @@ ApplicationWindow {
                             if (win.activePage === "dialog") return dialogPage.implicitHeight
                             if (win.activePage === "tooltip") return tooltipPage.implicitHeight
                             if (win.activePage === "table") return tablePage.implicitHeight
+                            if (win.activePage === "color-picker") return colorPickerPage.implicitHeight
                             return 800
                         }
 
@@ -952,6 +954,19 @@ ApplicationWindow {
                             cMutedFg: win.cMutedFg
                             cCard: win.cCard
                             cBorder: win.cBorder
+                        }
+
+                        // Page 17: ColorPicker Doc Page
+                        ColorPickerDocPage {
+                            id: colorPickerPage
+                            visible: win.activePage === "color-picker"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                            cPrimary: win.cPrimary
                         }
                     }
                 }

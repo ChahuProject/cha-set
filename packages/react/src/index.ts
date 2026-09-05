@@ -13,3 +13,4 @@ export * from './slider';
 export * from './dialog';
 export * from './tooltip';
 export * from './table';
+export * from './color-picker';

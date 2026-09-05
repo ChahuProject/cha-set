@@ -33,6 +33,7 @@ import { SliderDocPage } from './pages/components/SliderDocPage';
 import { DialogDocPage } from './pages/components/DialogDocPage';
 import { TooltipDocPage } from './pages/components/TooltipDocPage';
 import { TableDocPage } from './pages/components/TableDocPage';
+import { ColorPickerDocPage } from './pages/components/ColorPickerDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
@@ -425,6 +426,8 @@ export function App() {
         return <TooltipDocPage />;
       case '#/components/table':
         return <TableDocPage />;
+      case '#/components/color-picker':
+        return <ColorPickerDocPage />;
       case '#/components/button':
       default:
         return <ButtonDocPage />;

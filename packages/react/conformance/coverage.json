@@ -95,5 +95,12 @@
     "row": true,
     "cell": true,
     "alignment": true
+  },
+  "colorPicker": {
+    "colorValue": true,
+    "hexInput": true,
+    "swatches": true,
+    "hueSlider": true,
+    "disabled": true
   }
 }

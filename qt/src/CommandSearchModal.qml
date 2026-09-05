@@ -25,7 +25,8 @@ Rectangle {
         { id: "slider", title: "Slider", category: "Components", desc: "Numeric value selection along a continuous or stepped track" },
         { id: "dialog", title: "Dialog", category: "Components", desc: "Modal window overlay for critical workflows" },
         { id: "tooltip", title: "Tooltip", category: "Components", desc: "Popup hint on hover or keyboard focus" },
-        { id: "table", title: "Table", category: "Components", desc: "Responsive tabular data display with rows and headers" }
+        { id: "table", title: "Table", category: "Components", desc: "Responsive tabular data display with rows and headers" },
+        { id: "color-picker", title: "ColorPicker", category: "Components", desc: "Interactive color selection with saturation field, hue slider, and presets" }
     ]
 
     property string query: ""

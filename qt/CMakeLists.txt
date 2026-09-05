@@ -58,6 +58,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetDialog.qml
         src/ChaSetTooltip.qml
         src/ChaSetTable.qml
+        src/ChaSetColorPicker.qml
         src/ThemeTokens.generated.qml
         src/ShowcaseData.generated.qml
     NO_GENERATE_EXTRA_QMLDIRS
@@ -112,6 +113,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/DialogDocPage.qml
             src/TooltipDocPage.qml
             src/TableDocPage.qml
+            src/ColorPickerDocPage.qml
             src/CommandSearchModal.qml
             src/ExportModal.qml
         NO_RESOURCE_TARGET_PATH
