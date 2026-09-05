@@ -54,6 +54,10 @@ qt_add_qml_module(ChaSet
         src/ChaSetCheckbox.qml
         src/ChaSetSwitch.qml
         src/ChaSetSeparator.qml
+        src/ChaSetSlider.qml
+        src/ChaSetDialog.qml
+        src/ChaSetTooltip.qml
+        src/ChaSetTable.qml
         src/ThemeTokens.generated.qml
         src/ShowcaseData.generated.qml
     NO_GENERATE_EXTRA_QMLDIRS
@@ -104,6 +108,10 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/CheckboxDocPage.qml
             src/SwitchDocPage.qml
             src/SeparatorDocPage.qml
+            src/SliderDocPage.qml
+            src/DialogDocPage.qml
+            src/TooltipDocPage.qml
+            src/TableDocPage.qml
             src/CommandSearchModal.qml
             src/ExportModal.qml
         NO_RESOURCE_TARGET_PATH

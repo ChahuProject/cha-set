@@ -13,7 +13,11 @@
     "./input": "./components/input.ts",
     "./checkbox": "./components/checkbox.ts",
     "./switch": "./components/switch.ts",
-    "./separator": "./components/separator.ts"
+    "./separator": "./components/separator.ts",
+    "./slider": "./components/slider.ts",
+    "./dialog": "./components/dialog.ts",
+    "./tooltip": "./components/tooltip.ts",
+    "./table": "./components/table.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

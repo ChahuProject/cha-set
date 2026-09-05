@@ -29,6 +29,10 @@ import { InputDocPage } from './pages/components/InputDocPage';
 import { CheckboxDocPage } from './pages/components/CheckboxDocPage';
 import { SwitchDocPage } from './pages/components/SwitchDocPage';
 import { SeparatorDocPage } from './pages/components/SeparatorDocPage';
+import { SliderDocPage } from './pages/components/SliderDocPage';
+import { DialogDocPage } from './pages/components/DialogDocPage';
+import { TooltipDocPage } from './pages/components/TooltipDocPage';
+import { TableDocPage } from './pages/components/TableDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
@@ -413,6 +417,14 @@ export function App() {
         return <SwitchDocPage />;
       case '#/components/separator':
         return <SeparatorDocPage />;
+      case '#/components/slider':
+        return <SliderDocPage />;
+      case '#/components/dialog':
+        return <DialogDocPage />;
+      case '#/components/tooltip':
+        return <TooltipDocPage />;
+      case '#/components/table':
+        return <TableDocPage />;
       case '#/components/button':
       default:
         return <ButtonDocPage />;

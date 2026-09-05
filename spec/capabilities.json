@@ -68,6 +68,33 @@
     "separator": {
       "orientation": { "requirement": "must", "description": "orientation switches between horizontal and vertical" },
       "decorative": { "requirement": "must", "description": "supports decorative flag for accessibility" }
+    },
+    "slider": {
+      "valueBounds": { "requirement": "must", "description": "min, max bounds and value clamping" },
+      "step": { "requirement": "must", "description": "step snapping for values" },
+      "disabled": { "requirement": "must", "description": "disabled state blocks interaction" },
+      "thumbDrag": { "requirement": "must", "description": "dragging thumb updates value" },
+      "focusRing": { "requirement": "must", "description": "focus ring and keyboard navigation" }
+    },
+    "dialog": {
+      "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
+      "portal": { "requirement": "must", "description": "renders dialog into portal layer" },
+      "overlay": { "requirement": "must", "description": "backdrop overlay behind dialog content" },
+      "closeButton": { "requirement": "must", "description": "close button triggers onOpenChange" },
+      "escapeKey": { "requirement": "must", "description": "pressing Escape key closes the dialog" }
+    },
+    "tooltip": {
+      "content": { "requirement": "must", "description": "renders tooltip text content" },
+      "side": { "requirement": "must", "description": "positions tooltip relative to trigger" },
+      "delay": { "requirement": "must", "description": "supports delay before displaying" },
+      "hoverTrigger": { "requirement": "must", "description": "hover triggers tooltip display" }
+    },
+    "table": {
+      "header": { "requirement": "must", "description": "renders table header row and columns" },
+      "body": { "requirement": "must", "description": "renders table body" },
+      "row": { "requirement": "must", "description": "renders table rows" },
+      "cell": { "requirement": "must", "description": "renders table cells" },
+      "alignment": { "requirement": "must", "description": "supports cell text alignment" }
     }
   }
 }

@@ -21,7 +21,11 @@ Rectangle {
         { id: "input", title: "Input", category: "Components", desc: "Form text input field with sizes and state variants" },
         { id: "checkbox", title: "Checkbox", category: "Components", desc: "Interactive checkbox with states, sizes, and labels" },
         { id: "switch", title: "Switch", category: "Components", desc: "Toggle switch control for binary settings" },
-        { id: "separator", title: "Separator", category: "Components", desc: "Visual divider between elements" }
+        { id: "separator", title: "Separator", category: "Components", desc: "Visual divider between elements" },
+        { id: "slider", title: "Slider", category: "Components", desc: "Numeric value selection along a continuous or stepped track" },
+        { id: "dialog", title: "Dialog", category: "Components", desc: "Modal window overlay for critical workflows" },
+        { id: "tooltip", title: "Tooltip", category: "Components", desc: "Popup hint on hover or keyboard focus" },
+        { id: "table", title: "Table", category: "Components", desc: "Responsive tabular data display with rows and headers" }
     ]
 
     property string query: ""

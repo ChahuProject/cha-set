@@ -1,0 +1,360 @@
+import React, { useState } from 'react';
+import {
+  Button,
+  Input,
+  Badge,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from '@chahu/cha-set';
+import { DocLayout } from '../../layout/DocLayout';
+import { ComponentPreview } from '../../components/ComponentPreview';
+import { CodeBlock } from '../../components/CodeBlock';
+import { PropsTable } from '../../components/PropsTable';
+
+export function DialogDocPage() {
+  const [open, setOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [name, setName] = useState('Alex Rivera');
+  const [username, setUsername] = useState('@arivera');
+
+  const heroReactCode = `<Dialog open={open} onOpenChange={setOpen}>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open Profile Dialog</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Edit profile</DialogTitle>
+      <DialogDescription>
+        Make changes to your profile here. Click save when you're done.
+      </DialogDescription>
+    </DialogHeader>
+    <div className="grid gap-4 py-4">
+      <div className="grid grid-cols-4 items-center gap-4">
+        <label className="text-right text-sm font-medium">Name</label>
+        <Input className="col-span-3" defaultValue="Alex Rivera" />
+      </div>
+      <div className="grid grid-cols-4 items-center gap-4">
+        <label className="text-right text-sm font-medium">Username</label>
+        <Input className="col-span-3" defaultValue="@arivera" />
+      </div>
+    </div>
+    <DialogFooter>
+      <DialogClose asChild>
+        <Button variant="outline">Cancel</Button>
+      </DialogClose>
+      <Button type="submit">Save changes</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>`;
+
+  const heroQtCode = `ChaSetDialog {
+    id: profileDialog
+    title: "Edit profile"
+    description: "Make changes to your profile here. Click save when you're done."
+    dialogWidth: 480
+
+    Column {
+        width: parent.width
+        spacing: 12
+
+        Row {
+            spacing: 10
+            Text { text: "Name:"; width: 70; color: ThemeTokens.text }
+            ChaSetInput { width: 340; text: "Alex Rivera" }
+        }
+        Row {
+            spacing: 10
+            Text { text: "Username:"; width: 70; color: ThemeTokens.text }
+            ChaSetInput { width: 340; text: "@arivera" }
+        }
+    }
+
+    Row {
+        anchors.right: parent.right
+        spacing: 10
+        ChaSetButton {
+            variant: "outline"
+            text: "Cancel"
+            onClicked: profileDialog.reject()
+        }
+        ChaSetButton {
+            text: "Save changes"
+            onClicked: profileDialog.accept()
+        }
+    }
+}`;
+
+  return (
+    <DocLayout
+      category="Components"
+      title="Dialog"
+      description="A modal window that interrupts the user with critical content and prompts for user action."
+      tocItems={[
+        { id: 'overview', title: 'Interactive Overview' },
+        { id: 'installation', title: 'Installation' },
+        { id: 'anatomy', title: 'Anatomy' },
+        { id: 'examples', title: 'Examples & States' },
+        { id: 'props', title: 'Props Reference' },
+      ]}
+    >
+      {/* 1. Interactive Overview */}
+      <section id="overview" className="scroll-mt-20">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Interactive Overview
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Experience full modal behavior with backdrop blur, keyboard ESC dismissal, and focus containment across Web and Desktop.
+        </p>
+
+        <ComponentPreview
+          title="Dialog Sandbox"
+          reactCode={heroReactCode}
+          qtCode={heroQtCode}
+        >
+          <div className="flex flex-col items-center justify-center gap-4 py-8">
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline">Open Profile Dialog</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Edit profile</DialogTitle>
+                  <DialogDescription>
+                    Make changes to your profile here. Click save when you're done.
+                  </DialogDescription>
+                </DialogHeader>
+
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <label className="text-right text-sm font-medium text-foreground">
+                      Name
+                    </label>
+                    <Input
+                      className="col-span-3"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <label className="text-right text-sm font-medium text-foreground">
+                      Username
+                    </label>
+                    <Input
+                      className="col-span-3"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <Button type="button" onClick={() => setOpen(false)}>
+                    Save changes
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            <span className="text-xs text-muted-foreground">
+              Current profile: <strong className="text-foreground">{name}</strong> ({username})
+            </span>
+          </div>
+        </ComponentPreview>
+      </section>
+
+      {/* 2. Installation */}
+      <section id="installation" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Installation
+        </h2>
+        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
+      </section>
+
+      {/* 3. Anatomy */}
+      <section id="anatomy" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Anatomy
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Dialog is composed of modular compound components following accessible modal standards.
+        </p>
+        <CodeBlock
+          code={`import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from '@chahu/cha-set';
+
+export function DialogDemo() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Open</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Dialog Title</DialogTitle>
+          <DialogDescription>Dialog Description</DialogDescription>
+        </DialogHeader>
+        <div>Modal Body Content</div>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button>Confirm</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}`}
+          language="tsx"
+        />
+      </section>
+
+      {/* 4. Examples & States */}
+      <section id="examples" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Examples & States
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Common modal dialog patterns: confirmation dialogs, forms, and alerts.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Confirmation / Destructive */}
+          <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
+            <span className="text-sm font-medium text-foreground">Destructive Confirmation</span>
+            <p className="text-xs text-muted-foreground mb-3">
+              Dialog for destructive operations that require explicit confirmation.
+            </p>
+            <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+              <DialogTrigger asChild>
+                <Button variant="destructive" size="sm">
+                  Delete Account
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Are you absolutely sure?</DialogTitle>
+                  <DialogDescription>
+                    This action cannot be undone. This will permanently delete your account
+                    and remove your data from our servers.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline" size="sm">
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => setConfirmOpen(false)}
+                  >
+                    Yes, delete account
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          {/* Simple Alert */}
+          <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
+            <span className="text-sm font-medium text-foreground">Informational Notice</span>
+            <p className="text-xs text-muted-foreground mb-3">
+              Lightweight alert modal for system notifications and messages.
+            </p>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="secondary" size="sm">
+                  System Update Notice
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <div className="flex items-center gap-2">
+                    <DialogTitle>Scheduled Maintenance</DialogTitle>
+                    <Badge variant="secondary">Notice</Badge>
+                  </div>
+                  <DialogDescription>
+                    The cloud service will be undergoing scheduled infrastructure updates tonight at 02:00 UTC.
+                  </DialogDescription>
+                </DialogHeader>
+                <p className="text-xs text-muted-foreground">
+                  Expected downtime is under 10 minutes. All data remains encrypted and safe.
+                </p>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button size="sm">Understood</Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Props Reference */}
+      <section id="props" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Props Reference
+        </h2>
+        <PropsTable
+          props={[
+            {
+              name: 'open',
+              type: 'boolean',
+              default: 'false',
+              description: 'The controlled open state of the dialog.',
+            },
+            {
+              name: 'defaultOpen',
+              type: 'boolean',
+              default: 'false',
+              description: 'The default open state when uncontrolled.',
+            },
+            {
+              name: 'onOpenChange',
+              type: '(open: boolean) => void',
+              default: '—',
+              description: 'Event handler called when the open state changes.',
+            },
+            {
+              name: 'title',
+              type: 'string',
+              default: "''",
+              description: 'Optional shortcut title rendered inside DialogTitle.',
+            },
+            {
+              name: 'description',
+              type: 'string',
+              default: "''",
+              description: 'Optional shortcut description rendered inside DialogDescription.',
+            },
+            {
+              name: 'overlayClassName',
+              type: 'string',
+              default: "''",
+              description: 'Additional CSS classes to customize the backdrop overlay.',
+            },
+          ]}
+        />
+      </section>
+    </DocLayout>
+  );
+}

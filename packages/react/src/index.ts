@@ -9,3 +9,7 @@ export * from './input';
 export * from './checkbox';
 export * from './switch';
 export * from './separator';
+export * from './slider';
+export * from './dialog';
+export * from './tooltip';
+export * from './table';

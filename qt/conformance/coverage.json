@@ -68,5 +68,32 @@
     "orientation": true,
     "decorative": true,
     "styling": true
+  },
+  "slider": {
+    "valueBounds": true,
+    "step": true,
+    "disabled": true,
+    "thumbDrag": true,
+    "focusRing": true
+  },
+  "dialog": {
+    "open": true,
+    "portal": true,
+    "overlay": true,
+    "closeButton": true,
+    "escapeKey": true
+  },
+  "tooltip": {
+    "content": true,
+    "side": true,
+    "delay": true,
+    "hoverTrigger": true
+  },
+  "table": {
+    "header": true,
+    "body": true,
+    "row": true,
+    "cell": true,
+    "alignment": true
   }
 }

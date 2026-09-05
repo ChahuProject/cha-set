@@ -474,29 +474,41 @@ ApplicationWindow {
                         spacing: 8
 
                         // Style Tuner Button
-                        ChaSetButton {
-                            variant: win.activePage === "theme-tuner" ? "default" : "secondary"
-                            size: "sm"
-                            text: "🎨 Studio Tuner"
-                            onClicked: win.activePage = "theme-tuner"
+                        ChaSetTooltip {
+                            text: "Toggle theme controls"
+                            side: "bottom"
+                            ChaSetButton {
+                                variant: win.activePage === "theme-tuner" ? "default" : "secondary"
+                                size: "sm"
+                                text: "🎨 Studio Tuner"
+                                onClicked: win.activePage = "theme-tuner"
+                            }
                         }
 
                         // Export Button
-                        ChaSetButton {
-                            variant: "secondary"
-                            size: "sm"
-                            text: "📋 Export"
-                            onClicked: win.exportModalOpen = true
+                        ChaSetTooltip {
+                            text: "Export Theme Config"
+                            side: "bottom"
+                            ChaSetButton {
+                                variant: "secondary"
+                                size: "sm"
+                                text: "📋 Export"
+                                onClicked: win.exportModalOpen = true
+                            }
                         }
 
                         Rectangle { width: 1; height: 18; color: win.cBorder; anchors.verticalCenter: parent.verticalCenter }
 
                         // Dark/Light Mode Toggle Button
-                        ChaSetButton {
-                            size: "icon"
-                            variant: "outline"
-                            text: ThemeTokens.dark ? "🌙" : "☀️"
-                            onClicked: ThemeTokens.dark = !ThemeTokens.dark
+                        ChaSetTooltip {
+                            text: ThemeTokens.dark ? "Switch to light mode" : "Switch to dark mode"
+                            side: "bottom"
+                            ChaSetButton {
+                                size: "icon"
+                                variant: "outline"
+                                text: ThemeTokens.dark ? "🌙" : "☀️"
+                                onClicked: ThemeTokens.dark = !ThemeTokens.dark
+                            }
                         }
                     }
                 }
@@ -631,7 +643,11 @@ ApplicationWindow {
                                     ["Input", "input", "New"],
                                     ["Checkbox", "checkbox", "New"],
                                     ["Switch", "switch", "New"],
-                                    ["Separator", "separator", "New"]
+                                    ["Separator", "separator", "New"],
+                                    ["Slider", "slider", "New"],
+                                    ["Dialog", "dialog", "New"],
+                                    ["Tooltip", "tooltip", "New"],
+                                    ["Table", "table", "New"]
                                 ]
                                 delegate: Rectangle {
                                     required property var modelData
@@ -706,6 +722,10 @@ ApplicationWindow {
                             if (win.activePage === "checkbox") return checkboxPage.implicitHeight
                             if (win.activePage === "switch") return switchPage.implicitHeight
                             if (win.activePage === "separator") return separatorPage.implicitHeight
+                            if (win.activePage === "slider") return sliderPage.implicitHeight
+                            if (win.activePage === "dialog") return dialogPage.implicitHeight
+                            if (win.activePage === "tooltip") return tooltipPage.implicitHeight
+                            if (win.activePage === "table") return tablePage.implicitHeight
                             return 800
                         }
 
@@ -880,6 +900,59 @@ ApplicationWindow {
                             cCard: win.cCard
                             cBorder: win.cBorder
                         }
+
+                        // Page 13: Slider Doc Page
+                        SliderDocPage {
+                            id: sliderPage
+                            visible: win.activePage === "slider"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                            cPrimary: win.cPrimary
+                        }
+
+                        // Page 14: Dialog Doc Page
+                        DialogDocPage {
+                            id: dialogPage
+                            visible: win.activePage === "dialog"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                            cPrimary: win.cPrimary
+                            cAccentBg: win.cAccentBg
+                        }
+
+                        // Page 15: Tooltip Doc Page
+                        TooltipDocPage {
+                            id: tooltipPage
+                            visible: win.activePage === "tooltip"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                            cPrimary: win.cPrimary
+                            cAccentBg: win.cAccentBg
+                        }
+
+                        // Page 16: Table Doc Page
+                        TableDocPage {
+                            id: tablePage
+                            visible: win.activePage === "table"
+                            width: parent.width
+                            customRadius: win.customRadius
+                            cFg: win.cFg
+                            cMutedFg: win.cMutedFg
+                            cCard: win.cCard
+                            cBorder: win.cBorder
+                        }
                     }
                 }
             }
@@ -893,7 +966,7 @@ ApplicationWindow {
 
             // Export Config Modal
             ExportModal {
-                visible: win.exportModalOpen
+                open: win.exportModalOpen
                 customRadius: win.customRadius
                 exportTab: win.exportTab
                 onClose: win.exportModalOpen = false
