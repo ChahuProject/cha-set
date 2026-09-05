@@ -39,5 +39,13 @@
     "variant": true,
     "styling": true,
     "customClass": true
+  },
+  "input": {
+    "textInput": true,
+    "size": true,
+    "disabled": true,
+    "placeholder": true,
+    "focusRing": true,
+    "readOnly": true
   }
 }

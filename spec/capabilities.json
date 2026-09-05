@@ -41,6 +41,14 @@
       "variant": { "requirement": "must", "description": "supports default, secondary, and outline variants" },
       "styling": { "requirement": "must", "description": "rounded-xl geometry, border, background, and text tokens" },
       "customClass": { "requirement": "should", "description": "allows passing custom classes or style overrides" }
+    },
+    "input": {
+      "textInput": { "requirement": "must", "description": "supports typing and updating value" },
+      "size": { "requirement": "must", "description": "supports default (36px) and sm (32px) heights" },
+      "disabled": { "requirement": "must", "description": "disabled state blocks typing and dims opacity" },
+      "placeholder": { "requirement": "must", "description": "renders placeholder text when empty" },
+      "focusRing": { "requirement": "must", "description": "displays focus ring and border highlight on active focus" },
+      "readOnly": { "requirement": "should", "description": "prevents editing while retaining focusable state" }
     }
   }
 }

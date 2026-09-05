@@ -9,7 +9,8 @@
     "./scrollbar": "./components/scrollbar.ts",
     "./tabs": "./components/tabs.ts",
     "./badge": "./components/badge.ts",
-    "./card": "./components/card.ts"
+    "./card": "./components/card.ts",
+    "./input": "./components/input.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"
