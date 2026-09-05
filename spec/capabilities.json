@@ -29,6 +29,12 @@
       "disabled": { "requirement": "must", "description": "disabled tab blocks selection and mouse interactions" },
       "styling": { "requirement": "must", "description": "shadcn-aligned visual presentation with active pill background and subtle shadow" },
       "activation": { "requirement": "should", "description": "automatic or manual tab activation" }
+    },
+    "badge": {
+      "variant": { "requirement": "must", "description": "supports default, secondary, destructive, and outline variants" },
+      "size": { "requirement": "must", "description": "supports default and sm sizes" },
+      "styling": { "requirement": "must", "description": "pill geometry with semantic color tokens and border" },
+      "customClass": { "requirement": "should", "description": "allows passing custom classes or color overrides" }
     }
   }
 }

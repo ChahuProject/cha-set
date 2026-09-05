@@ -27,5 +27,11 @@
     "disabled": true,
     "styling": true,
     "activation": true
+  },
+  "badge": {
+    "variant": true,
+    "size": true,
+    "styling": true,
+    "customClass": true
   }
 }
