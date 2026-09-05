@@ -21,6 +21,14 @@
       "trackJump": { "requirement": "must", "description": "clicking track jumps thumb under cursor accurately" },
       "boundaryClamp": { "requirement": "should", "description": "disables buttons when at scroll boundary" },
       "smoothScroll": { "requirement": "should", "description": "smooth scroll animation for stepper actions" }
+    },
+    "tabs": {
+      "selection": { "requirement": "must", "description": "selecting a tab switches active panel and state" },
+      "orientation": { "requirement": "must", "description": "orientation switches between horizontal and vertical layout" },
+      "keyboard": { "requirement": "must", "description": "arrow key navigation between tabs" },
+      "disabled": { "requirement": "must", "description": "disabled tab blocks selection and mouse interactions" },
+      "styling": { "requirement": "must", "description": "shadcn-aligned visual presentation with active pill background and subtle shadow" },
+      "activation": { "requirement": "should", "description": "automatic or manual tab activation" }
     }
   }
 }

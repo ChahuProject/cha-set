@@ -6,7 +6,8 @@
   "description": "ChaSet single source of truth: design tokens, component contracts, capability manifest.",
   "exports": {
     "./button": "./components/button.ts",
-    "./scrollbar": "./components/scrollbar.ts"
+    "./scrollbar": "./components/scrollbar.ts",
+    "./tabs": "./components/tabs.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

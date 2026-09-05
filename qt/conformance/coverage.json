@@ -19,5 +19,13 @@
     "trackJump": true,
     "boundaryClamp": true,
     "smoothScroll": true
+  },
+  "tabs": {
+    "selection": true,
+    "orientation": true,
+    "keyboard": true,
+    "disabled": true,
+    "styling": true,
+    "activation": true
   }
 }

@@ -19,5 +19,13 @@
     "wheelScroll": true,
     "thumbDrag": true,
     "trackJump": true
+  },
+  "tabs": {
+    "selection": true,
+    "orientation": true,
+    "keyboard": true,
+    "disabled": true,
+    "styling": true,
+    "activation": true
   }
 }

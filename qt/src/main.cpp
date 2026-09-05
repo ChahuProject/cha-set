@@ -96,6 +96,9 @@ int main(int argc, char* argv[])
     const QString harnessOrientation = orientIdx >= 0 && orientIdx + 1 < args.size() ? args.value(orientIdx + 1) : "vertical";
     const bool harnessNoButtons = args.contains("--no-buttons");
 
+    const int tabIdx = static_cast<int>(args.indexOf("--tab-index"));
+    const QString harnessTabIndex = tabIdx >= 0 && tabIdx + 1 < args.size() ? args.value(tabIdx + 1) : "1";
+
     const int wIdx = static_cast<int>(args.indexOf("--width"));
     const int reqWidth = wIdx >= 0 && wIdx + 1 < args.size() ? args.value(wIdx + 1).toInt() : 0;
 
@@ -123,6 +126,7 @@ int main(int argc, char* argv[])
     engine.rootContext()->setContextProperty("harnessDisabled", harnessDisabled);
     engine.rootContext()->setContextProperty("harnessOrientation", harnessOrientation);
     engine.rootContext()->setContextProperty("harnessShowButtons", !harnessNoButtons);
+    engine.rootContext()->setContextProperty("harnessTabIndex", harnessTabIndex);
     engine.rootContext()->setContextProperty("testScrollMode", testScrollMode);
     engine.rootContext()->setContextProperty("testScenario", testScenario);
     engine.rootContext()->setContextProperty("reqWidth", reqWidth);
