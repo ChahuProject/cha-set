@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { ScrollArea } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG, type NavItem } from '../types/navigation';
 
 export interface CommandSearchModalProps {
@@ -75,7 +76,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
           </kbd>
         </div>
 
-        <div className="max-h-80 overflow-y-auto p-2">
+        <ScrollArea className="max-h-80 w-full" viewportClassName="p-2">
           {filtered.length === 0 ? (
             <div className="p-4 text-center text-xs text-muted-foreground">No matching pages found.</div>
           ) : (
@@ -106,7 +107,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
               </button>
             ))
           )}
-        </div>
+        </ScrollArea>
       </div>
     </div>
   );

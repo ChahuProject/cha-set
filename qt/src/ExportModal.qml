@@ -73,29 +73,38 @@ Rectangle {
                 border.color: ThemeTokens.border
                 radius: 4
 
-                TextArea {
+                ChaSetScrollArea {
                     anchors.fill: parent
                     anchors.margins: 10
-                    readOnly: true
-                    text: {
-                        if (root.exportTab === 'qt') {
-                            return '// ChaSet Qt QML Component Usage\nimport QtQuick 6.10\nimport ChaSet\n\nChaSetButton {\n    variant: \"default\"\n    size: \"default\"\n    text: \"Launch Workspace\"\n}\n\nChaSetScrollArea {\n    width: 400; height: 300\n    showButtons: true\n}';
+                    showVerticalScrollBar: true
+                    showHorizontalScrollBar: true
+                    showButtons: false
+                    contentWidth: Math.max(width, exportText.implicitWidth)
+                    contentHeight: exportText.implicitHeight
+
+                    TextEdit {
+                        id: exportText
+                        readOnly: true
+                        selectByMouse: true
+                        text: {
+                            if (root.exportTab === 'qt') {
+                                return '// ChaSet Qt QML Component Usage\nimport QtQuick 6.10\nimport ChaSet\n\nChaSetButton {\n    variant: \"default\"\n    size: \"default\"\n    text: \"Launch Workspace\"\n}\n\nChaSetScrollArea {\n    width: 400; height: 300\n    showButtons: true\n}';
+                            }
+                            if (root.exportTab === 'react') {
+                                return 'import { Button, ScrollArea } from \'@chahu/cha-set\';\nimport \'@chahu/cha-set/styles.css\';\n\n<Button variant=\"default\" size=\"default\">Launch Workspace</Button>\n<ScrollArea className=\"h-72 w-full\">...</ScrollArea>';
+                            }
+                            if (root.exportTab === 'css') {
+                                return ':root {\n  --radius: ' + root.customRadius + 'px;\n  --primary: ' + (ThemeTokens.dark ? '#30a0ff' : '#1d7ae0') + ';\n  --background: ' + (ThemeTokens.dark ? '#020817' : '#ffffff') + ';\n}';
+                            }
+                            if (root.exportTab === 'tailwind') {
+                                return '@theme inline {\n  --color-primary: var(--primary);\n  --radius: ' + root.customRadius + 'px;\n}';
+                            }
+                            return '{\n  \"theme\": {\n    \"mode\": \"' + (ThemeTokens.dark ? 'dark' : 'light') + '\",\n    \"radius\": ' + root.customRadius + '\n  }\n}';
                         }
-                        if (root.exportTab === 'react') {
-                            return 'import { Button, ScrollArea } from \'@chahu/cha-set\';\nimport \'@chahu/cha-set/styles.css\';\n\n<Button variant=\"default\" size=\"default\">Launch Workspace</Button>\n<ScrollArea className=\"h-72 w-full\">...</ScrollArea>';
-                        }
-                        if (root.exportTab === 'css') {
-                            return ':root {\n  --radius: ' + root.customRadius + 'px;\n  --primary: ' + (ThemeTokens.dark ? '#30a0ff' : '#1d7ae0') + ';\n  --background: ' + (ThemeTokens.dark ? '#020817' : '#ffffff') + ';\n}';
-                        }
-                        if (root.exportTab === 'tailwind') {
-                            return '@theme inline {\n  --color-primary: var(--primary);\n  --radius: ' + root.customRadius + 'px;\n}';
-                        }
-                        return '{\n  \"theme\": {\n    \"mode\": \"' + (ThemeTokens.dark ? 'dark' : 'light') + '\",\n    \"radius\": ' + root.customRadius + '\n  }\n}';
+                        color: ThemeTokens.text
+                        font.family: 'Consolas, monospace'
+                        font.pixelSize: 12
                     }
-                    color: ThemeTokens.text
-                    font.family: 'Consolas, monospace'
-                    font.pixelSize: 12
-                    background: null
                 }
             }
 

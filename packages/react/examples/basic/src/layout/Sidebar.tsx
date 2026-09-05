@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollArea } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG } from '../types/navigation';
 
 export interface SidebarProps {
@@ -7,8 +8,9 @@ export interface SidebarProps {
 
 export function Sidebar({ currentHash }: SidebarProps) {
   return (
-    <aside className="w-64 shrink-0 hidden md:block border-r border-border h-[calc(100vh-3.5rem)] sticky top-14 overflow-y-auto p-4 select-none bg-background/50">
-      <nav className="flex flex-col gap-6" aria-label="Documentation Sidebar">
+    <aside className="w-64 shrink-0 hidden md:block border-r border-border h-[calc(100vh-3.5rem)] sticky top-14 select-none bg-background/50 overflow-hidden">
+      <ScrollArea className="h-full w-full" viewportClassName="p-4">
+        <nav className="flex flex-col gap-6" aria-label="Documentation Sidebar">
         {NAVIGATION_CONFIG.map((cat) => (
           <div key={cat.title} className="flex flex-col gap-1.5">
             <h4 className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
@@ -40,6 +42,7 @@ export function Sidebar({ currentHash }: SidebarProps) {
           </div>
         ))}
       </nav>
+      </ScrollArea>
     </aside>
   );
 }

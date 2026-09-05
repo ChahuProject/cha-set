@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from '@chahu/cha-set';
+import { Button, ScrollArea } from '@chahu/cha-set';
 
 export interface CodeBlockProps {
   code: string;
@@ -50,9 +50,17 @@ export function CodeBlock({ code, language = 'tsx', className = '' }: CodeBlockP
           )}
         </Button>
       </div>
-      <pre className="p-4 overflow-x-auto m-0 leading-relaxed text-foreground/90 font-mono whitespace-pre selection:bg-primary/20">
-        <code>{code.trim()}</code>
-      </pre>
+      <ScrollArea
+        showVerticalScrollBar={false}
+        showHorizontalScrollBar={true}
+        showButtons={false}
+        className="w-full"
+        viewportClassName="p-4"
+      >
+        <pre className="m-0 leading-relaxed text-foreground/90 font-mono whitespace-pre selection:bg-primary/20">
+          <code>{code.trim()}</code>
+        </pre>
+      </ScrollArea>
     </div>
   );
 }

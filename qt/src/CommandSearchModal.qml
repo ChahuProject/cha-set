@@ -83,10 +83,14 @@ Rectangle {
 
             // Results List
             ListView {
+                id: resultsList
                 width: parent.width
                 height: parent.height - 70
                 clip: true
                 model: root.filteredItems
+                ScrollBar.vertical: ChaSetScrollBar {
+                    showButtons: false
+                }
                 delegate: Rectangle {
                     required property var modelData
                     required property int index

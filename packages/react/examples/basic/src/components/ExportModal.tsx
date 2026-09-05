@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button, ScrollArea } from '@chahu/cha-set';
 import type { ThemeOverrides } from './ThemeTuner';
 
 interface ExportModalProps {
@@ -221,9 +222,17 @@ ApplicationWindow {
         </div>
 
         <div className="modal-body">
-          <pre className="modal-code-pre">
-            <code>{getSnippet()}</code>
-          </pre>
+          <ScrollArea
+            showVerticalScrollBar={true}
+            showHorizontalScrollBar={true}
+            showButtons={false}
+            className="max-h-72 rounded-md border border-border bg-card"
+            viewportClassName="p-4"
+          >
+            <pre className="m-0 font-mono text-xs leading-relaxed text-foreground whitespace-pre">
+              <code>{getSnippet()}</code>
+            </pre>
+          </ScrollArea>
         </div>
 
         <div className="modal-footer">

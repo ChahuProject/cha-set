@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollArea } from '@chahu/cha-set';
 
 export interface PropItem {
   name: string;
@@ -17,7 +18,12 @@ export function PropsTable({ title, props }: PropsTableProps) {
   return (
     <div className="my-6">
       {title && <h3 className="text-base font-semibold mb-3 tracking-tight">{title}</h3>}
-      <div className="overflow-x-auto rounded-lg border border-border">
+      <ScrollArea
+        showVerticalScrollBar={false}
+        showHorizontalScrollBar={true}
+        showButtons={false}
+        className="rounded-lg border border-border w-full"
+      >
         <table className="w-full text-left text-sm border-collapse">
           <thead>
             <tr className="border-b border-border bg-muted/40 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -45,7 +51,7 @@ export function PropsTable({ title, props }: PropsTableProps) {
             ))}
           </tbody>
         </table>
-      </div>
+      </ScrollArea>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollArea } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { CodeBlock } from '../../components/CodeBlock';
 
@@ -48,7 +49,13 @@ export function IntroductionPage() {
 
       <section id="architecture" className="my-10">
         <h2 className="text-xl font-bold tracking-tight mb-3">How It Works</h2>
-        <div className="p-4 rounded-xl border border-border bg-muted/40 font-mono text-xs leading-relaxed overflow-x-auto text-foreground/90">
+        <ScrollArea
+          showVerticalScrollBar={false}
+          showHorizontalScrollBar={true}
+          showButtons={false}
+          className="rounded-xl border border-border bg-muted/40"
+          viewportClassName="p-4 font-mono text-xs leading-relaxed text-foreground/90 whitespace-pre"
+        >
 {`spec/                     single source of truth
   tokens/**               shards: colors, space, motion, typography
   tokens.json             committed token snapshot
@@ -56,7 +63,7 @@ export function IntroductionPage() {
   capabilities.json       capability manifest (must / should)
 packages/react/           React implementation (@chahu/cha-set)
 qt/                       Qt 6 / QML implementation (QtChaSetDemo)`}
-        </div>
+        </ScrollArea>
       </section>
 
       <section id="quickstart" className="my-10">
@@ -85,7 +92,12 @@ export function MyView() {
 
       <section id="packages" className="my-10">
         <h2 className="text-xl font-bold tracking-tight mb-3">Packages</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <ScrollArea
+          showVerticalScrollBar={false}
+          showHorizontalScrollBar={true}
+          showButtons={false}
+          className="rounded-lg border border-border w-full"
+        >
           <table className="w-full text-left text-xs">
             <thead>
               <tr className="border-b border-border bg-muted/40 font-semibold text-muted-foreground uppercase">
@@ -112,7 +124,7 @@ export function MyView() {
               </tr>
             </tbody>
           </table>
-        </div>
+        </ScrollArea>
       </section>
     </DocLayout>
   );

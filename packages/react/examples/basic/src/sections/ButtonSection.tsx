@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@chahu/cha-set';
+import { Button, ScrollArea } from '@chahu/cha-set';
 
 const VARIANTS = ['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'] as const;
 const SIZES = ['sm', 'default', 'lg', 'icon'] as const;
@@ -89,13 +89,15 @@ export default function ButtonSection() {
             </Button>
           )}
         </div>
-        <ul className="log">
-          {log.length === 0 ? (
-            <li className="log-empty">Click buttons above to see click events…</li>
-          ) : (
-            log.map((entry, i) => <li key={i}>{entry}</li>)
-          )}
-        </ul>
+        <ScrollArea className="max-h-32" viewportClassName="p-3">
+          <ul className="list-none m-0 p-0 font-mono text-xs text-muted-foreground space-y-1">
+            {log.length === 0 ? (
+              <li className="italic opacity-60">Click buttons above to see click events…</li>
+            ) : (
+              log.map((entry, i) => <li key={i}>{entry}</li>)
+            )}
+          </ul>
+        </ScrollArea>
       </div>
     </section>
   );

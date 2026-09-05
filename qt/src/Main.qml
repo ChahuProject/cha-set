@@ -366,12 +366,22 @@ ApplicationWindow {
                         anchors.bottom: parent.bottom
                         width: 1
                         color: win.cBorder
+                        z: 5
                     }
 
-                    Column {
+                    ChaSetScrollArea {
                         anchors.fill: parent
                         anchors.margins: 16
-                        spacing: 20
+                        showVerticalScrollBar: true
+                        showHorizontalScrollBar: false
+                        showButtons: false
+                        contentWidth: width - 8
+                        contentHeight: sidebarCol.implicitHeight
+
+                        Column {
+                            id: sidebarCol
+                            width: parent.width
+                            spacing: 20
 
                         // Category 1: GET STARTED
                         Column {
@@ -497,6 +507,7 @@ ApplicationWindow {
                         }
                     }
                 }
+            }
 
                 // Center Main Content Area
                 ChaSetScrollArea {
