@@ -112,6 +112,19 @@ const badgeMatrix = [
   { id: 'badge-dark-idle', component: 'badge', variant: 'default', size: 'default', state: 'idle', theme: 'dark', label: '·', width: 220, height: 80, probeX: 102, probeY: 40, maxDiff: 0.2 },
 ];
 
+// Definitive Card test matrix covering variants and dark theme
+const cardMatrix = [
+  // 1. Light Theme Variants
+  { id: 'card-default-idle', component: 'card', variant: 'default', state: 'idle', theme: 'light', label: '·', width: 340, height: 220, probeX: 200, probeY: 110, maxDiff: 0.3 },
+  { id: 'card-secondary-idle', component: 'card', variant: 'secondary', state: 'idle', theme: 'light', label: '·', width: 340, height: 220, probeX: 200, probeY: 110, maxDiff: 0.3 },
+  { id: 'card-outline-idle', component: 'card', variant: 'outline', state: 'idle', theme: 'light', label: '·', width: 340, height: 220, probeX: 200, probeY: 110, maxDiff: 0.3 },
+
+  // 2. Dark Theme Variants
+  { id: 'card-dark-default', component: 'card', variant: 'default', state: 'idle', theme: 'dark', label: '·', width: 340, height: 220, probeX: 200, probeY: 110, maxDiff: 0.3 },
+  { id: 'card-dark-secondary', component: 'card', variant: 'secondary', state: 'idle', theme: 'dark', label: '·', width: 340, height: 220, probeX: 200, probeY: 110, maxDiff: 0.3 },
+  { id: 'card-dark-outline', component: 'card', variant: 'outline', state: 'idle', theme: 'dark', label: '·', width: 340, height: 220, probeX: 200, probeY: 110, maxDiff: 0.3 },
+];
+
 let testCases = [];
 if (componentArg === 'button') {
   testCases = buttonMatrix;
@@ -127,8 +140,11 @@ if (componentArg === 'button') {
   testCases = badgeMatrix;
   if (variantFilter) testCases = testCases.filter((tc) => tc.variant === variantFilter);
   if (stateFilter) testCases = testCases.filter((tc) => tc.state === stateFilter);
+} else if (componentArg === 'card') {
+  testCases = cardMatrix;
+  if (variantFilter) testCases = testCases.filter((tc) => tc.variant === variantFilter);
 } else if (componentArg === 'all') {
-  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix];
+  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix, ...cardMatrix];
 } else {
   console.log(`[pixel-sync] Component "${componentArg}" is not enabled for selective pixel sync. Skipping.`);
   process.exit(0);
@@ -233,6 +249,15 @@ try {
         width: String(tc.width),
         height: String(tc.height),
       }).toString();
+    } else if (tc.component === 'card') {
+      query = new URLSearchParams({
+        harness: 'card',
+        variant: tc.variant,
+        label: tc.label ?? '·',
+        theme: tc.theme ?? 'light',
+        width: String(tc.width),
+        height: String(tc.height),
+      }).toString();
     } else {
       query = new URLSearchParams({
         harness: 'button',
@@ -294,6 +319,16 @@ try {
         '--size', tc.size,
         '--label', tc.label ?? '·',
         '--state', tc.state,
+        '--width', String(tc.width),
+        '--height', String(tc.height),
+        '--shot', qtPngPath,
+        ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
+      ];
+    } else if (tc.component === 'card') {
+      qtArgs = [
+        '--harness', 'card',
+        '--variant', tc.variant,
+        '--label', tc.label ?? '·',
         '--width', String(tc.width),
         '--height', String(tc.height),
         '--shot', qtPngPath,

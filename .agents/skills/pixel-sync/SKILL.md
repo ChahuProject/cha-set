@@ -59,6 +59,9 @@ Ensure mathematical color parity between Tailwind v4 color mixing and Qt QML col
 - **Badge**:
   - Variants: `default` (`#1d7ae0`), `secondary` (`#f1f5f9`), `destructive` (`#ef4444`), `outline` (border `#e2e8f0`).
   - Sizes: `default` (h=22, radius=11, full-pill), `sm` (h=16, radius=4, micro-pill).
+- **Card / CardHeader / CardTitle / CardDescription / CardContent / CardFooter**:
+  - Variants: `default` (surface `#ffffff` light / `#0f172a` dark, border `#e2e8f0` / `#1e293b`), `secondary` (`#f1f5f9` / `#1e293b`), `outline` (transparent background).
+  - Geometry: `rounded-xl` (12px), 1px border width, 0.02% pixel diff benchmark across light & dark.
 
 ### Step 2: Isolated Test Harness
 Both stacks expose an isolated rendering harness centered in a minimal canvas:
@@ -74,6 +77,9 @@ Both stacks expose an isolated rendering harness centered in a minimal canvas:
 - **Badge**:
   - React: `http://127.0.0.1:5299/?harness=badge&variant={v}&size={s}&state={st}&theme={light|dark}`
   - Qt: `QtChaSetDemo.exe --harness badge --variant {v} --size {s} --state {st} [--dark] --width 220 --height 80 --shot {path}`
+- **Card**:
+  - React: `http://127.0.0.1:5299/?harness=card&variant={v}&label={l}&theme={light|dark}&width=340&height=220`
+  - Qt: `QtChaSetDemo.exe --harness card --variant {v} --label {l} [--dark] --width 340 --height 220 --shot {path}`
 
 ### Step 3: Headless Image Acquisition
 - Use Edge/Chromium via Chrome DevTools Protocol (`Page.navigate`, `Emulation.setDeviceMetricsOverride`, `Page.captureScreenshot`).
@@ -81,7 +87,7 @@ Both stacks expose an isolated rendering harness centered in a minimal canvas:
 
 ### Step 4: Programmatic Comparison
 Run `scripts/pixel-sync-test.mjs`:
-- Sample surface color at geometry-aware coordinates (Button: away from text glyphs; ScrollArea: centered on thumb runway).
+- Sample surface color at geometry-aware coordinates (Button: away from text glyphs; ScrollArea: centered on thumb runway; Card: solid panel interior).
 - Verify color Delta: Delta E = sqrt(Delta R^2 + Delta G^2 + Delta B^2) <= 4.0 (achieving Delta E = 0.0 on solid fills).
 - Compute visual diff heatmap and mismatched pixel percentage via `pixelmatch`.
 
@@ -109,10 +115,13 @@ pnpm test:pixel --component tabs
 # 4. Run targeted pixel test for badge (all variants, sizes & states)
 pnpm test:pixel --component badge
 
-# 5. Run targeted pixel test for all supported components
+# 5. Run targeted pixel test for card (all variants & themes)
+pnpm test:pixel --component card
+
+# 6. Run targeted pixel test for all supported components
 pnpm test:pixel --component all
 
-# 6. Run cross-stack parity gate including targeted pixel gate
+# 7. Run cross-stack parity gate including targeted pixel gate
 pnpm gate:pixel
 # OR
 pnpm gate --pixel
