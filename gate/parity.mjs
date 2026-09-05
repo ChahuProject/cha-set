@@ -50,3 +50,11 @@ if (existsSync(qtExe)) {
   }
   console.log('[gate] OK — Qt runtime behavioral scenario assertions passed (showcase-data, scroll-kinematics, steppers)');
 }
+
+// 3. Optional Targeted Pixel Conformance Gate (selective opt-in)
+if (process.argv.includes('--pixel')) {
+  console.log('[gate] Executing targeted pixel-level conformance gate for button...');
+  const { execSync } = await import('node:child_process');
+  execSync('node scripts/pixel-sync-test.mjs --component button', { stdio: 'inherit', cwd: root });
+  console.log('[gate] OK — Pixel conformance gate passed!');
+}

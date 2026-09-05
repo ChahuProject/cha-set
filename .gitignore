@@ -18,6 +18,7 @@ dist/
 /qt/build*
 /spec/node_modules
 .playwright-mcp/
+.pixel-diff/
 .omo/
 *-shot*.png
 *.png
