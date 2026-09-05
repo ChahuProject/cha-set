@@ -33,6 +33,7 @@
 
 ## Cross-Stack Component Engineering Standards (React Web & Qt Desktop)
 
+> See `.agents/skills/add-component/SKILL.md` for the standard operating procedure to introduce new cross-stack components.
 > See `.agents/skills/cross-stack-verify/SKILL.md` for full protocol and verification commands.
 > See `.agents/skills/pixel-sync/SKILL.md` for the scientific pixel-level synchronization protocol.
 
