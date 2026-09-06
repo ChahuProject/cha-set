@@ -8,4 +8,5 @@ export {
   CardFooter,
   type CardProps,
   type CardVariant,
+  type CardSize,
 } from './Card';

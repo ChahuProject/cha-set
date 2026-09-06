@@ -272,17 +272,30 @@ const sidePositionClasses: Record<TooltipSide, string> = {
   right: 'left-full top-1/2 -translate-y-1/2 ml-2',
 };
 
+export type TooltipAlign = 'start' | 'center' | 'end';
+
 export interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement> {
   side?: TooltipSide;
+  align?: TooltipAlign;
+  sideOffset?: number;
+  alignOffset?: number;
 }
 
 export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
-  ({ className, side: propSide, children, ...props }, ref) => {
+  ({ className, side: propSide, align = 'center', sideOffset, alignOffset, children, style, ...props }, ref) => {
     const { isOpen, side: contextSide, tooltipId } = useTooltip();
     const side = propSide || contextSide || 'top';
 
     if (!isOpen) {
       return null;
+    }
+
+    const computedStyle: React.CSSProperties = { ...style };
+    if (sideOffset !== undefined) {
+      if (side === 'top') computedStyle.marginBottom = `${sideOffset}px`;
+      else if (side === 'bottom') computedStyle.marginTop = `${sideOffset}px`;
+      else if (side === 'left') computedStyle.marginRight = `${sideOffset}px`;
+      else if (side === 'right') computedStyle.marginLeft = `${sideOffset}px`;
     }
 
     return (
@@ -292,7 +305,9 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
         id={tooltipId}
         data-slot="tooltip-content"
         data-side={side}
+        data-align={align}
         data-state={isOpen ? 'open' : 'closed'}
+        style={computedStyle}
         className={cn(
           'absolute whitespace-nowrap pointer-events-none select-none',
           'z-50 overflow-hidden rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md animate-in fade-in-0 zoom-in-95',

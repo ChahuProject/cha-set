@@ -6,8 +6,11 @@ export const cardVariantSchema = z.enum([
   'outline',
 ]);
 
+export const cardSizeSchema = z.enum(['default', 'sm']);
+
 export const cardSchema = z.object({
   variant: cardVariantSchema.default('default'),
+  size: cardSizeSchema.default('default'),
 });
 
 export const cardHeaderSchema = z.object({});

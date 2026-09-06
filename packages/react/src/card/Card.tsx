@@ -1,9 +1,11 @@
 import React from 'react';
 
 export type CardVariant = 'default' | 'secondary' | 'outline';
+export type CardSize = 'default' | 'sm';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: CardVariant;
+  size?: CardSize;
 }
 
 const variantStyles: Record<CardVariant, string> = {
@@ -13,13 +15,14 @@ const variantStyles: Record<CardVariant, string> = {
 };
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className = '', variant = 'default', children, ...props }, ref) => {
+  ({ className = '', variant = 'default', size = 'default', children, ...props }, ref) => {
     return (
       <div
         ref={ref}
         data-slot="card"
         data-variant={variant}
-        className={`rounded-xl border transition-colors ${variantStyles[variant]} ${className}`.trim()}
+        data-size={size}
+        className={`rounded-xl border transition-colors ${variantStyles[variant]} ${size === 'sm' ? 'text-xs p-3' : ''} ${className}`.trim()}
         {...props}
       >
         {children}
