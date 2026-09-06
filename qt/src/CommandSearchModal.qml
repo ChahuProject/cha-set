@@ -46,17 +46,22 @@ Rectangle {
     MouseArea { anchors.fill: parent; onClicked: root.close() }
 
     ChaSetCard {
+        id: searchCard
         width: Math.min(parent.width - 40, 560)
         height: Math.min(parent.height - 80, 380)
         customRadius: 8
         anchors.centerIn: parent
 
-        MouseArea { anchors.fill: parent }
+        Item {
+            width: parent.width
+            height: searchCard.height
 
-        Column {
-            anchors.fill: parent
-            anchors.margins: 14
-            spacing: 10
+            MouseArea { anchors.fill: parent }
+
+            Column {
+                anchors.fill: parent
+                anchors.margins: 14
+                spacing: 10
 
             // Search Input
             ChaSetInput {
@@ -130,6 +135,7 @@ Rectangle {
                     }
                 }
             }
+        }
         }
     }
 }

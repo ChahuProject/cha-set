@@ -32,7 +32,7 @@ DocLayout {
         width: parent.width
         title: "Card Sandbox"
         reactCode: `<Card variant="${root.demoVariant}" className="w-[350px]">\n  <CardHeader>\n    <div className="flex items-center justify-between">\n      <CardTitle>Create project</CardTitle>\n      <Badge variant="secondary">Pro</Badge>\n    </div>\n    <CardDescription>Deploy your new project in one-click.</CardDescription>\n  </CardHeader>\n  <CardContent>\n    <p className="text-sm text-muted-foreground">\n      Your project will be deployed to the edge network automatically.\n    </p>\n  </CardContent>\n  <CardFooter className="flex justify-between">\n    <Button variant="outline" size="sm">Cancel</Button>\n    <Button size="sm">Deploy</Button>\n  </CardFooter>\n</Card>`
-        qtCode: `ChaSetCard {\n    width: 350\n    variant: "${root.demoVariant}"\n\n    ChaSetCardHeader {\n        Row {\n            width: parent.width\n            ChaSetCardTitle { text: "Create project" }\n            ChaSetBadge { variant: "secondary"; text: "Pro"; anchors.right: parent.right }\n        }\n        ChaSetCardDescription { text: "Deploy your new project in one-click." }\n    }\n    ChaSetCardContent {\n        Text {\n            text: "Your project will be deployed to the edge network automatically."\n            color: ThemeTokens.subduedText\n            font.pixelSize: 13\n        }\n    }\n    ChaSetCardFooter {\n        ChaSetButton { variant: "outline"; size: "sm"; text: "Cancel" }\n        ChaSetButton { size: "sm"; text: "Deploy" }\n    }\n}`
+        qtCode: `ChaSetCard {\n    width: 350\n    variant: "${root.demoVariant}"\n\n    ChaSetCardHeader {\n        Item {\n            width: parent.width\n            implicitHeight: Math.max(cardTitle.implicitHeight, badge.implicitHeight)\n            ChaSetCardTitle { id: cardTitle; text: "Create project"; anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter }\n            ChaSetBadge { id: badge; variant: "secondary"; text: "Pro"; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter }\n        }\n        ChaSetCardDescription { text: "Deploy your new project in one-click." }\n    }\n    ChaSetCardContent {\n        Text {\n            text: "Your project will be deployed to the edge network automatically."\n            color: ThemeTokens.subduedText\n            font.pixelSize: 13\n        }\n    }\n    ChaSetCardFooter {\n        ChaSetButton { variant: "outline"; size: "sm"; text: "Cancel" }\n        ChaSetButton { size: "sm"; text: "Deploy" }\n    }\n}`
 
         stageData: [
             ChaSetCard {
@@ -41,15 +41,21 @@ DocLayout {
                 variant: root.demoVariant
 
                 ChaSetCardHeader {
-                    Row {
+                    Item {
                         width: parent.width
+                        implicitHeight: Math.max(heroCardTitle.implicitHeight, heroBadge.implicitHeight)
                         ChaSetCardTitle {
+                            id: heroCardTitle
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
                             text: "Create project"
                         }
                         ChaSetBadge {
+                            id: heroBadge
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
                             variant: "secondary"
                             text: "Pro"
-                            anchors.right: parent.right
                         }
                     }
                     ChaSetCardDescription {

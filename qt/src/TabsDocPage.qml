@@ -67,12 +67,14 @@ DocLayout {
         ChaSetCard {
             anchors.centerIn: parent
             width: Math.min(parent.width - 40, 420)
-            implicitHeight: sandboxTabsCol.implicitHeight + 40
+            implicitHeight: sandboxTabsCol.implicitHeight
             customRadius: root.customRadius
 
             Column {
                 id: sandboxTabsCol
-                anchors.centerIn: parent
+                anchors.horizontalCenter: parent.horizontalCenter
+                topPadding: 20
+                bottomPadding: 20
                 width: parent.width - 40
                 spacing: 16
 
@@ -209,13 +211,18 @@ DocLayout {
                 height: 70
                 customRadius: root.customRadius
 
-                ChaSetTabs {
-                    anchors.centerIn: parent
-                    currentValue: "active"
+                Item {
+                    width: parent.width
+                    height: 70
 
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "active"; text: "Active Tab" }
-                        ChaSetTabsTrigger { value: "disabled"; text: "Disabled Tab"; disabled: true }
+                    ChaSetTabs {
+                        anchors.centerIn: parent
+                        currentValue: "active"
+
+                        ChaSetTabsList {
+                            ChaSetTabsTrigger { value: "active"; text: "Active Tab" }
+                            ChaSetTabsTrigger { value: "disabled"; text: "Disabled Tab"; disabled: true }
+                        }
                     }
                 }
             }

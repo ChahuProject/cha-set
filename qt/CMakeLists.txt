@@ -10,6 +10,7 @@ set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Quick QuickControls2)
 
+qt_policy(SET QTP0001 NEW)
 qt_policy(SET QTP0004 NEW)
 
 # -------------------------------------------------------------

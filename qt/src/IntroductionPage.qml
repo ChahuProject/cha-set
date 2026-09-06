@@ -53,23 +53,29 @@ DocLayout {
             // Pillar 1
             ChaSetCard {
                 width: (parent.width - 28) / 3
-                implicitHeight: col1.implicitHeight + 28
+                implicitHeight: pillarItem1.implicitHeight
                 customRadius: 10
 
-                Column {
-                    id: col1
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 6
-                    Text { text: "🎯"; font.pixelSize: 22 }
-                    Text { text: "One Source of Truth"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                    Text {
-                        text: "Design tokens and API contracts reside in spec/ and emit synchronized tokens for Web & Qt."
-                        color: ThemeTokens.subduedText
-                        font.pixelSize: 11
-                        lineHeight: 1.3
-                        wrapMode: Text.WordWrap
-                        width: parent.width
+                Item {
+                    id: pillarItem1
+                    width: parent.width
+                    implicitHeight: col1.implicitHeight + 28
+
+                    Column {
+                        id: col1
+                        anchors.fill: parent
+                        anchors.margins: 14
+                        spacing: 6
+                        Text { text: "🎯"; font.pixelSize: 22 }
+                        Text { text: "One Source of Truth"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                        Text {
+                            text: "Design tokens and API contracts reside in spec/ and emit synchronized tokens for Web & Qt."
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: 11
+                            lineHeight: 1.3
+                            wrapMode: Text.WordWrap
+                            width: parent.width
+                        }
                     }
                 }
             }
@@ -77,23 +83,29 @@ DocLayout {
             // Pillar 2
             ChaSetCard {
                 width: (parent.width - 28) / 3
-                implicitHeight: col2.implicitHeight + 28
+                implicitHeight: pillarItem2.implicitHeight
                 customRadius: 10
 
-                Column {
-                    id: col2
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 6
-                    Text { text: "⚡"; font.pixelSize: 22 }
-                    Text { text: "Native Ergonomics"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                    Text {
-                        text: "Tailwind CSS v4 & Base UI on React; pure QML Quick Controls on Qt — no electron bloat or foreign wrappers."
-                        color: ThemeTokens.subduedText
-                        font.pixelSize: 11
-                        lineHeight: 1.3
-                        wrapMode: Text.WordWrap
-                        width: parent.width
+                Item {
+                    id: pillarItem2
+                    width: parent.width
+                    implicitHeight: col2.implicitHeight + 28
+
+                    Column {
+                        id: col2
+                        anchors.fill: parent
+                        anchors.margins: 14
+                        spacing: 6
+                        Text { text: "⚡"; font.pixelSize: 22 }
+                        Text { text: "Native Ergonomics"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                        Text {
+                            text: "Tailwind CSS v4 & Base UI on React; pure QML Quick Controls on Qt — no electron bloat or foreign wrappers."
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: 11
+                            lineHeight: 1.3
+                            wrapMode: Text.WordWrap
+                            width: parent.width
+                        }
                     }
                 }
             }
@@ -101,23 +113,29 @@ DocLayout {
             // Pillar 3
             ChaSetCard {
                 width: (parent.width - 28) / 3
-                implicitHeight: col3.implicitHeight + 28
+                implicitHeight: pillarItem3.implicitHeight
                 customRadius: 10
 
-                Column {
-                    id: col3
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 6
-                    Text { text: "🔒"; font.pixelSize: 22 }
-                    Text { text: "Automated Parity Gate"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                    Text {
-                        text: "CI enforces that all required capabilities and visual rendering match 100% across stacks."
-                        color: ThemeTokens.subduedText
-                        font.pixelSize: 11
-                        lineHeight: 1.3
-                        wrapMode: Text.WordWrap
-                        width: parent.width
+                Item {
+                    id: pillarItem3
+                    width: parent.width
+                    implicitHeight: col3.implicitHeight + 28
+
+                    Column {
+                        id: col3
+                        anchors.fill: parent
+                        anchors.margins: 14
+                        spacing: 6
+                        Text { text: "🔒"; font.pixelSize: 22 }
+                        Text { text: "Automated Parity Gate"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                        Text {
+                            text: "CI enforces that all required capabilities and visual rendering match 100% across stacks."
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: 11
+                            lineHeight: 1.3
+                            wrapMode: Text.WordWrap
+                            width: parent.width
+                        }
                     }
                 }
             }

@@ -179,42 +179,22 @@ DocLayout {
                 height: 140
                 customRadius: root.customRadius
 
-                Column {
-                    anchors.fill: parent
-                    anchors.margins: 16
-                    spacing: 8
-
-                    Text { text: "Unchecked & Checked"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                    Text { text: "Standard interactive toggle states"; font.pixelSize: 11; color: root.cMutedFg }
+                Item {
+                    width: parent.width
+                    height: 140
 
                     Column {
+                        anchors.fill: parent
+                        anchors.margins: 16
                         spacing: 8
-                        ChaSetCheckbox { checked: false; label: "Unchecked by default" }
-                        ChaSetCheckbox { checked: true; label: "Checked by default" }
-                    }
-                }
-            }
 
-            ChaSetCard {
-                width: (parent.width - 16) / 2
-                height: 140
-                customRadius: root.customRadius
+                        Text { text: "Unchecked & Checked"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        Text { text: "Standard interactive toggle states"; font.pixelSize: 11; color: root.cMutedFg }
 
-                Column {
-                    anchors.fill: parent
-                    anchors.margins: 16
-                    spacing: 8
-
-                    Text { text: "Indeterminate State"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                    Text { text: "Represents partially selected sub-options"; font.pixelSize: 11; color: root.cMutedFg }
-
-                    Column {
-                        spacing: 6
-                        ChaSetCheckbox { indeterminate: true; label: "Select all sub-tasks" }
-                        Row {
+                        Column {
                             spacing: 8
-                            Item { width: 14; height: 1 }
-                            ChaSetCheckbox { size: "sm"; checked: true; label: "Task 1: Requirements" }
+                            ChaSetCheckbox { checked: false; label: "Unchecked by default" }
+                            ChaSetCheckbox { checked: true; label: "Checked by default" }
                         }
                     }
                 }
@@ -225,18 +205,27 @@ DocLayout {
                 height: 140
                 customRadius: root.customRadius
 
-                Column {
-                    anchors.fill: parent
-                    anchors.margins: 16
-                    spacing: 8
-
-                    Text { text: "Disabled States"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                    Text { text: "Non-interactive with 50% opacity"; font.pixelSize: 11; color: root.cMutedFg }
+                Item {
+                    width: parent.width
+                    height: 140
 
                     Column {
+                        anchors.fill: parent
+                        anchors.margins: 16
                         spacing: 8
-                        ChaSetCheckbox { disabled: true; checked: false; label: "Disabled unchecked" }
-                        ChaSetCheckbox { disabled: true; checked: true; label: "Disabled checked" }
+
+                        Text { text: "Indeterminate State"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        Text { text: "Represents partially selected sub-options"; font.pixelSize: 11; color: root.cMutedFg }
+
+                        Column {
+                            spacing: 6
+                            ChaSetCheckbox { indeterminate: true; label: "Select all sub-tasks" }
+                            Row {
+                                spacing: 8
+                                Item { width: 14; height: 1 }
+                                ChaSetCheckbox { size: "sm"; checked: true; label: "Task 1: Requirements" }
+                            }
+                        }
                     }
                 }
             }
@@ -246,18 +235,49 @@ DocLayout {
                 height: 140
                 customRadius: root.customRadius
 
-                Column {
-                    anchors.fill: parent
-                    anchors.margins: 16
-                    spacing: 8
-
-                    Text { text: "Size Variants"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                    Text { text: "Default 16px vs Compact 14px box"; font.pixelSize: 11; color: root.cMutedFg }
+                Item {
+                    width: parent.width
+                    height: 140
 
                     Column {
+                        anchors.fill: parent
+                        anchors.margins: 16
                         spacing: 8
-                        ChaSetCheckbox { size: "default"; checked: true; label: "Default size (16px box, text-sm)" }
-                        ChaSetCheckbox { size: "sm"; checked: true; label: "Small size (14px box, text-xs)" }
+
+                        Text { text: "Disabled States"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        Text { text: "Non-interactive with 50% opacity"; font.pixelSize: 11; color: root.cMutedFg }
+
+                        Column {
+                            spacing: 8
+                            ChaSetCheckbox { disabled: true; checked: false; label: "Disabled unchecked" }
+                            ChaSetCheckbox { disabled: true; checked: true; label: "Disabled checked" }
+                        }
+                    }
+                }
+            }
+
+            ChaSetCard {
+                width: (parent.width - 16) / 2
+                height: 140
+                customRadius: root.customRadius
+
+                Item {
+                    width: parent.width
+                    height: 140
+
+                    Column {
+                        anchors.fill: parent
+                        anchors.margins: 16
+                        spacing: 8
+
+                        Text { text: "Size Variants"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        Text { text: "Default 16px vs Compact 14px box"; font.pixelSize: 11; color: root.cMutedFg }
+
+                        Column {
+                            spacing: 8
+                            ChaSetCheckbox { size: "default"; checked: true; label: "Default size (16px box, text-sm)" }
+                            ChaSetCheckbox { size: "sm"; checked: true; label: "Small size (14px box, text-xs)" }
+                        }
                     }
                 }
             }

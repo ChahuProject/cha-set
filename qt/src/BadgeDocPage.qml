@@ -105,13 +105,18 @@ DocLayout {
             height: 70
             customRadius: root.customRadius
 
-            Row {
-                anchors.centerIn: parent
-                spacing: 12
-                ChaSetBadge { variant: "default"; text: "Default" }
-                ChaSetBadge { variant: "secondary"; text: "Secondary" }
-                ChaSetBadge { variant: "destructive"; text: "Destructive" }
-                ChaSetBadge { variant: "outline"; text: "Outline" }
+            Item {
+                width: parent.width
+                height: 70
+
+                Row {
+                    anchors.centerIn: parent
+                    spacing: 12
+                    ChaSetBadge { variant: "default"; text: "Default" }
+                    ChaSetBadge { variant: "secondary"; text: "Secondary" }
+                    ChaSetBadge { variant: "destructive"; text: "Destructive" }
+                    ChaSetBadge { variant: "outline"; text: "Outline" }
+                }
             }
         }
     }
@@ -128,18 +133,23 @@ DocLayout {
             height: 70
             customRadius: root.customRadius
 
-            Row {
-                anchors.centerIn: parent
-                spacing: 20
+            Item {
+                width: parent.width
+                height: 70
+
                 Row {
-                    spacing: 8
-                    Text { anchors.verticalCenter: parent.verticalCenter; text: "Default:"; color: root.cMutedFg; font.pixelSize: 12 }
-                    ChaSetBadge { size: "default"; text: "Badge Default" }
-                }
-                Row {
-                    spacing: 8
-                    Text { anchors.verticalCenter: parent.verticalCenter; text: "Small:"; color: root.cMutedFg; font.pixelSize: 12 }
-                    ChaSetBadge { size: "sm"; text: "NEW" }
+                    anchors.centerIn: parent
+                    spacing: 20
+                    Row {
+                        spacing: 8
+                        Text { anchors.verticalCenter: parent.verticalCenter; text: "Default:"; color: root.cMutedFg; font.pixelSize: 12 }
+                        ChaSetBadge { size: "default"; text: "Badge Default" }
+                    }
+                    Row {
+                        spacing: 8
+                        Text { anchors.verticalCenter: parent.verticalCenter; text: "Small:"; color: root.cMutedFg; font.pixelSize: 12 }
+                        ChaSetBadge { size: "sm"; text: "NEW" }
+                    }
                 }
             }
         }

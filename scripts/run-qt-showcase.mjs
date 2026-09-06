@@ -50,7 +50,6 @@ const configRes = spawnSync('cmake', cmakeArgs, {
   cwd: repoRoot,
   stdio: 'inherit',
   env: process.env,
-  shell: true,
 });
 
 if (configRes.status !== 0) {
@@ -64,7 +63,6 @@ const buildRes = spawnSync('cmake', ['--build', buildDir], {
   cwd: repoRoot,
   stdio: 'inherit',
   env: process.env,
-  shell: true,
 });
 
 if (buildRes.status !== 0) {

@@ -169,16 +169,18 @@ DocLayout {
                         width: parent.width
                         spacing: 8
 
-                        Row {
+                        Item {
                             width: parent.width
-                            Text { text: "Status"; color: root.cMutedFg; font.pixelSize: 13 }
-                            Text { text: "Active"; color: root.cFg; font.weight: Font.DemiBold; font.pixelSize: 13; anchors.right: parent.right }
+                            implicitHeight: Math.max(tStatusLbl.implicitHeight, tStatusVal.implicitHeight)
+                            Text { id: tStatusLbl; text: "Status"; color: root.cMutedFg; font.pixelSize: 13; anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter }
+                            Text { id: tStatusVal; text: "Active"; color: root.cFg; font.weight: Font.DemiBold; font.pixelSize: 13; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter }
                         }
 
-                        Row {
+                        Item {
                             width: parent.width
-                            Text { text: "Plan"; color: root.cMutedFg; font.pixelSize: 13 }
-                            Text { text: "Enterprise"; color: root.cFg; font.weight: Font.DemiBold; font.pixelSize: 13; anchors.right: parent.right }
+                            implicitHeight: Math.max(tPlanLbl.implicitHeight, tPlanVal.implicitHeight)
+                            Text { id: tPlanLbl; text: "Plan"; color: root.cMutedFg; font.pixelSize: 13; anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter }
+                            Text { id: tPlanVal; text: "Enterprise"; color: root.cFg; font.weight: Font.DemiBold; font.pixelSize: 13; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter }
                         }
                     }
                 }
@@ -189,13 +191,15 @@ DocLayout {
                 }
 
                 ChaSetCardFooter {
-                    Row {
+                    Item {
                         width: parent.width
-                        Item { width: 1; height: 1 }
+                        implicitHeight: manageBtn.implicitHeight
                         ChaSetButton {
+                            id: manageBtn
                             size: "sm"
                             text: "Manage"
                             anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
                         }
                     }
                 }
@@ -207,10 +211,14 @@ DocLayout {
                 height: 180
                 customRadius: root.customRadius
 
-                Column {
-                    anchors.fill: parent
-                    anchors.margins: 16
-                    spacing: 12
+                Item {
+                    width: parent.width
+                    height: 180
+
+                    Column {
+                        anchors.fill: parent
+                        anchors.margins: 16
+                        spacing: 12
 
                     Text {
                         text: "Navigation Divider"
@@ -274,6 +282,7 @@ DocLayout {
             }
         }
     }
+}
 
     // Section 5: Props Reference
     Column {
