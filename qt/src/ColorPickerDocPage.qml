@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Components"
     pageTitle: "ColorPicker"
-    description: "An interactive color selection component featuring 2D saturation/brightness field, triangle HSV picker, live hex input, preset swatches, and color channel sliders."
+    description: "An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB)."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
@@ -43,7 +43,7 @@ DocLayout {
             Item {
                 anchors.centerIn: parent
                 width: 320
-                height: root.demoMode === "popover" ? 100 : 420
+                height: root.demoMode === "popover" ? 100 : 540
 
                 Column {
                     anchors.centerIn: parent
@@ -389,6 +389,36 @@ DocLayout {
                     type: "var (string[])",
                     default: "16 default colors",
                     description: "Array of hex color strings displayed as preset swatches."
+                },
+                {
+                    name: "activePanel",
+                    type: "\"square\" | \"circle\" | \"triangle\" | \"swatches\"",
+                    default: "\"square\"",
+                    description: "Active color selector panel mode."
+                },
+                {
+                    name: "showRgbSliders",
+                    type: "bool",
+                    default: "true",
+                    description: "Whether RGB channel sliders and numeric inputs are visible."
+                },
+                {
+                    name: "showHsvSliders",
+                    type: "bool",
+                    default: "false",
+                    description: "Whether HSV channel sliders and numeric inputs are visible."
+                },
+                {
+                    name: "showCmykSliders",
+                    type: "bool",
+                    default: "false",
+                    description: "Whether CMYK channel sliders and numeric inputs are visible."
+                },
+                {
+                    name: "showLabSliders",
+                    type: "bool",
+                    default: "false",
+                    description: "Whether CIELAB channel sliders and numeric inputs are visible."
                 }
             ]
         }

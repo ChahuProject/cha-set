@@ -103,13 +103,19 @@ describe('ColorPicker component', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  it('switches between square, triangle, and swatches selector panels', () => {
+  it('switches between square, circle, triangle, and swatches selector panels', () => {
     render(<ColorPicker defaultValue="#1D7AE0" />);
 
-    // Default is square view
+    // Default is square view (inside HueRing)
     expect(screen.getByLabelText('Color saturation and brightness')).toBeInTheDocument();
+    expect(screen.getByLabelText('Hue ring')).toBeInTheDocument();
 
-    // Switch to triangle view
+    // Switch to circle (wheel) view
+    const circleTab = screen.getByRole('button', { name: 'Circle' });
+    fireEvent.click(circleTab);
+    expect(screen.getByLabelText('Color Wheel')).toBeInTheDocument();
+
+    // Switch to triangle view (inside HueRing)
     const triangleTab = screen.getByRole('button', { name: 'Triangle' });
     fireEvent.click(triangleTab);
     expect(screen.getByLabelText('Triangle HSV color picker')).toBeInTheDocument();
@@ -118,5 +124,46 @@ describe('ColorPicker component', () => {
     const swatchesTab = screen.getByRole('button', { name: 'Swatches' });
     fireEvent.click(swatchesTab);
     expect(screen.getByTitle(DEFAULT_PRESET_COLORS[0]!)).toBeInTheDocument();
+  });
+
+  it('supports independent multi-channel toggles (RGB, HSV, CMYK, LAB)', () => {
+    render(<ColorPicker defaultValue="#1D7AE0" />);
+
+    // RGB is visible by default
+    expect(screen.getByLabelText('RGB channels')).toBeInTheDocument();
+    expect(screen.queryByLabelText('HSV channels')).not.toBeInTheDocument();
+
+    // Toggle HSV on
+    const hsvToggle = screen.getByRole('button', { name: 'HSV' });
+    fireEvent.click(hsvToggle);
+    expect(screen.getByLabelText('RGB channels')).toBeInTheDocument();
+    expect(screen.getByLabelText('HSV channels')).toBeInTheDocument();
+
+    // Toggle CMYK on
+    const cmykToggle = screen.getByRole('button', { name: 'CMYK' });
+    fireEvent.click(cmykToggle);
+    expect(screen.getByLabelText('CMYK channels')).toBeInTheDocument();
+
+    // Toggle LAB on
+    const labToggle = screen.getByRole('button', { name: 'LAB' });
+    fireEvent.click(labToggle);
+    expect(screen.getByLabelText('LAB channels')).toBeInTheDocument();
+
+    // All 4 channel groups visible simultaneously
+    expect(screen.getByLabelText('RGB channels')).toBeInTheDocument();
+    expect(screen.getByLabelText('HSV channels')).toBeInTheDocument();
+    expect(screen.getByLabelText('CMYK channels')).toBeInTheDocument();
+    expect(screen.getByLabelText('LAB channels')).toBeInTheDocument();
+  });
+
+  it('updates color when editing channel numeric inputs', () => {
+    const onChange = vi.fn();
+    render(<ColorPicker defaultValue="#000000" onChange={onChange} />);
+
+    // Modify R input
+    const rInput = screen.getByLabelText('Color channel R value');
+    fireEvent.change(rInput, { target: { value: '255' } });
+
+    expect(onChange).toHaveBeenCalledWith('#FF0000');
   });
 });

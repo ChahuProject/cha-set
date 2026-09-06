@@ -3,10 +3,12 @@ import { cn } from '../lib/utils';
 import {
   clamp,
   cmykToRgb,
+  getHueFromPointer,
   hexToHsv,
   hsvToHex,
   hsvToRgb,
   hsvToTriangleWeights,
+  hsvToWheelCoords,
   isValidHex,
   labToRgb,
   normalizeHex,
@@ -18,6 +20,7 @@ import {
   rgbToLab,
   triangleWeightsToHsv,
   weightsToPoint,
+  wheelCoordsToHsv,
   DEFAULT_TRIANGLE_WIDTH,
   DEFAULT_TRIANGLE_HEIGHT,
   DEFAULT_TRIANGLE_PURE,
@@ -31,7 +34,7 @@ import {
 
 export type ColorPickerSize = 'default' | 'sm';
 export type ColorPickerMode = 'inline' | 'popover';
-export type ColorPickerPanel = 'square' | 'triangle' | 'swatches';
+export type ColorPickerPanel = 'square' | 'circle' | 'triangle' | 'swatches';
 export type ColorChannelMode = 'rgb' | 'hsv' | 'cmyk' | 'lab';
 
 export const DEFAULT_PRESET_COLORS = [
@@ -124,6 +127,242 @@ function ChevronDownIcon({ className }: { className?: string }) {
   );
 }
 
+interface HueRingProps {
+  hue: number;
+  onHueChange: (hue: number) => void;
+  ariaLabel: string;
+  disabled?: boolean;
+  sizePx?: number;
+  children: React.ReactNode;
+}
+
+function HueRing({
+  hue,
+  onHueChange,
+  ariaLabel,
+  disabled = false,
+  sizePx = 236,
+  children,
+}: HueRingProps) {
+  const ringRef = React.useRef<HTMLDivElement | null>(null);
+
+  const updateFromCoords = (clientX: number, clientY: number) => {
+    if (disabled || !ringRef.current) return;
+    onHueChange(getHueFromPointer(ringRef.current, clientX, clientY));
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (disabled || e.button !== 0) return;
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    updateFromCoords(e.clientX, e.clientY);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (disabled || e.buttons !== 1) return;
+    updateFromCoords(e.clientX, e.clientY);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (disabled) return;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      onHueChange((hue + 359) % 360);
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      onHueChange((hue + 1) % 360);
+    }
+  };
+
+  const thickness = 20;
+  const innerSize = sizePx - thickness * 2;
+  const handleRadius = (sizePx - thickness) / 2;
+
+  return (
+    <div
+      ref={ringRef}
+      role="slider"
+      tabIndex={disabled ? -1 : 0}
+      aria-label={ariaLabel}
+      aria-valuemin={0}
+      aria-valuemax={360}
+      aria-valuenow={Math.round(hue)}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onKeyDown={handleKeyDown}
+      className={cn(
+        'relative rounded-full select-none touch-none cursor-crosshair flex items-center justify-center shadow-xs',
+        disabled && 'cursor-not-allowed opacity-50',
+      )}
+      style={{
+        width: `${sizePx}px`,
+        height: `${sizePx}px`,
+        background:
+          'conic-gradient(from 0deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)',
+      }}
+    >
+      <div
+        className="rounded-full bg-card flex items-center justify-center overflow-hidden border border-border/50 shadow-inner"
+        style={{
+          width: `${innerSize}px`,
+          height: `${innerSize}px`,
+        }}
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerMove={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
+
+      <span
+        className="absolute pointer-events-none size-3.5 rounded-full border-2 border-white bg-foreground shadow-md ring-1 ring-black/40"
+        style={{
+          top: '50%',
+          left: '50%',
+          transform: `translate(-50%, -50%) rotate(${hue}deg) translateY(-${handleRadius}px)`,
+        }}
+      />
+    </div>
+  );
+}
+
+interface CircleWheelProps {
+  hsva: HsvColor;
+  onChange: (hsva: HsvColor) => void;
+  disabled?: boolean;
+  sizePx?: number;
+}
+
+function CircleWheel({
+  hsva,
+  onChange,
+  disabled = false,
+  sizePx = 236,
+}: CircleWheelProps) {
+  const wheelRef = React.useRef<HTMLDivElement | null>(null);
+  const radius = sizePx / 2;
+
+  const updateFromCoords = (clientX: number, clientY: number) => {
+    if (disabled || !wheelRef.current) return;
+    const { h, s } = wheelCoordsToHsv(wheelRef.current, clientX, clientY);
+    onChange({
+      ...hsva,
+      h,
+      s,
+      v: hsva.v < 5 ? 100 : hsva.v,
+    });
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (disabled || e.button !== 0) return;
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    updateFromCoords(e.clientX, e.clientY);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (disabled || e.buttons !== 1) return;
+    updateFromCoords(e.clientX, e.clientY);
+  };
+
+  const pointer = hsvToWheelCoords(hsva.h, hsva.s, radius);
+
+  return (
+    <div
+      ref={wheelRef}
+      role="slider"
+      aria-label="Color Wheel"
+      aria-valuenow={hsva.h}
+      tabIndex={disabled ? -1 : 0}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      className={cn(
+        'relative rounded-full select-none touch-none cursor-crosshair overflow-hidden border border-border/50 shadow-inner',
+        disabled && 'cursor-not-allowed opacity-50',
+      )}
+      style={{
+        width: `${sizePx}px`,
+        height: `${sizePx}px`,
+        background:
+          'conic-gradient(from 0deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)',
+      }}
+    >
+      <div
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle closest-side, #ffffff 0%, transparent 100%)',
+        }}
+      />
+
+      <span
+        className="absolute pointer-events-none size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-md ring-1 ring-black/40"
+        style={{
+          left: `${pointer.x}px`,
+          top: `${pointer.y}px`,
+          backgroundColor: hsvToHex(hsva),
+        }}
+      />
+    </div>
+  );
+}
+
+interface ColorChannelSliderProps {
+  label: string;
+  labelColor?: string;
+  min: number;
+  max: number;
+  value: number;
+  gradient: string;
+  disabled?: boolean;
+  onChange: (val: number) => void;
+}
+
+function ColorChannelSlider({
+  label,
+  labelColor,
+  min,
+  max,
+  value,
+  gradient,
+  disabled = false,
+  onChange,
+}: ColorChannelSliderProps) {
+  const rounded = Math.round(value);
+
+  return (
+    <div className="grid grid-cols-[1.25rem_1fr_3.5rem] items-center gap-2 text-xs">
+      <span
+        className="font-mono font-bold text-center select-none"
+        style={{ color: labelColor }}
+      >
+        {label}
+      </span>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={1}
+        value={rounded}
+        disabled={disabled}
+        aria-label={`Color channel ${label}`}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="h-2 w-full cursor-pointer appearance-none rounded-full outline-hidden"
+        style={{ background: gradient }}
+      />
+      <input
+        type="number"
+        min={min}
+        max={max}
+        step={1}
+        value={rounded}
+        disabled={disabled}
+        aria-label={`Color channel ${label} value`}
+        onChange={(e) => onChange(clamp(Number(e.target.value), min, max))}
+        className="h-6 w-full rounded border border-border/80 bg-background px-1.5 font-mono text-[11px] text-foreground text-center outline-hidden focus:border-primary focus:ring-1 focus:ring-primary"
+      />
+    </div>
+  );
+}
+
 export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
   (
     {
@@ -151,8 +390,13 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
     const [hsva, setHsva] = React.useState<HsvColor>(() => hexToHsv(activeHex));
     const [hexDraft, setHexDraft] = React.useState<string>(activeHex);
     const [activePanel, setActivePanel] = React.useState<ColorPickerPanel>('square');
-    const [channelMode, setChannelMode] = React.useState<ColorChannelMode>('rgb');
-    const [showChannels, setShowChannels] = React.useState<boolean>(false);
+
+    // Independent multi-channel group toggles
+    const [showRgbSliders, setShowRgbSliders] = React.useState<boolean>(true);
+    const [showHsvSliders, setShowHsvSliders] = React.useState<boolean>(false);
+    const [showCmykSliders, setShowCmykSliders] = React.useState<boolean>(false);
+    const [showLabSliders, setShowLabSliders] = React.useState<boolean>(false);
+
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const [copied, setCopied] = React.useState<boolean>(false);
 
@@ -303,6 +547,28 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
     const pureHueHex = hsvToHex({ h: hsva.h, s: 100, v: 100 });
 
     const isSm = size === 'sm';
+    const stageSize = isSm ? 200 : 236;
+    const squareInnerSize = isSm ? 112 : 136;
+    const triangleInnerW = isSm ? 150 : 180;
+    const triangleInnerH = isSm ? 115 : 140;
+
+    // Channel Gradients
+    const redGradient = `linear-gradient(90deg, rgb(0, ${rgb.g}, ${rgb.b}), rgb(255, ${rgb.g}, ${rgb.b}))`;
+    const greenGradient = `linear-gradient(90deg, rgb(${rgb.r}, 0, ${rgb.b}), rgb(${rgb.r}, 255, ${rgb.b}))`;
+    const blueGradient = `linear-gradient(90deg, rgb(${rgb.r}, ${rgb.g}, 0), rgb(${rgb.r}, ${rgb.g}, 255))`;
+
+    const hueGradient = 'linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)';
+    const satGradient = `linear-gradient(90deg, ${hsvToHex({ ...hsva, s: 0 })}, ${hsvToHex({ ...hsva, s: 100 })})`;
+    const valGradient = `linear-gradient(90deg, #000000, ${hsvToHex({ ...hsva, v: 100 })})`;
+
+    const cyanGradient = `linear-gradient(90deg, ${rgbToCss(cmykToRgb({ ...cmyk, c: 0 }))}, ${rgbToCss(cmykToRgb({ ...cmyk, c: 100 }))})`;
+    const magentaGradient = `linear-gradient(90deg, ${rgbToCss(cmykToRgb({ ...cmyk, m: 0 }))}, ${rgbToCss(cmykToRgb({ ...cmyk, m: 100 }))})`;
+    const yellowGradient = `linear-gradient(90deg, ${rgbToCss(cmykToRgb({ ...cmyk, y: 0 }))}, ${rgbToCss(cmykToRgb({ ...cmyk, y: 100 }))})`;
+    const blackGradient = `linear-gradient(90deg, ${rgbToCss(cmykToRgb({ ...cmyk, k: 0 }))}, ${rgbToCss(cmykToRgb({ ...cmyk, k: 100 }))})`;
+
+    const labLGradient = `linear-gradient(90deg, ${rgbToCss(labToRgb({ ...lab, l: 0 }))}, ${rgbToCss(labToRgb({ ...lab, l: 100 }))})`;
+    const labAGradient = `linear-gradient(90deg, ${rgbToCss(labToRgb({ ...lab, a: -128 }))}, ${rgbToCss(labToRgb({ ...lab, a: 127 }))})`;
+    const labBGradient = `linear-gradient(90deg, ${rgbToCss(labToRgb({ ...lab, b: -128 }))}, ${rgbToCss(labToRgb({ ...lab, b: 127 }))})`;
 
     // Core Picker Panel Card
     const panelContent = (
@@ -353,219 +619,180 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
 
         {/* 2. Visual Selector Panel Tabs */}
         <div className="flex items-center justify-between gap-1 rounded-md bg-muted/70 p-1">
-          <button
-            type="button"
-            disabled={disabled}
-            onClick={() => setActivePanel('square')}
-            className={cn(
-              'flex-1 rounded py-1 text-center font-medium transition-all select-none',
-              activePanel === 'square'
-                ? 'bg-background text-foreground shadow-xs'
-                : 'text-muted-foreground hover:text-foreground',
-              isSm ? 'text-[11px]' : 'text-xs',
-            )}
-          >
-            Square
-          </button>
-          <button
-            type="button"
-            disabled={disabled}
-            onClick={() => setActivePanel('triangle')}
-            className={cn(
-              'flex-1 rounded py-1 text-center font-medium transition-all select-none',
-              activePanel === 'triangle'
-                ? 'bg-background text-foreground shadow-xs'
-                : 'text-muted-foreground hover:text-foreground',
-              isSm ? 'text-[11px]' : 'text-xs',
-            )}
-          >
-            Triangle
-          </button>
-          <button
-            type="button"
-            disabled={disabled}
-            onClick={() => setActivePanel('swatches')}
-            className={cn(
-              'flex-1 rounded py-1 text-center font-medium transition-all select-none',
-              activePanel === 'swatches'
-                ? 'bg-background text-foreground shadow-xs'
-                : 'text-muted-foreground hover:text-foreground',
-              isSm ? 'text-[11px]' : 'text-xs',
-            )}
-          >
-            Swatches
-          </button>
+          {(
+            [
+              { value: 'square', label: 'Square' },
+              { value: 'circle', label: 'Circle' },
+              { value: 'triangle', label: 'Triangle' },
+              { value: 'swatches', label: 'Swatches' },
+            ] as const
+          ).map((p) => (
+            <button
+              key={p.value}
+              type="button"
+              disabled={disabled}
+              onClick={() => setActivePanel(p.value)}
+              className={cn(
+                'flex-1 rounded py-1 text-center font-medium transition-all select-none',
+                activePanel === p.value
+                  ? 'bg-background text-foreground shadow-xs'
+                  : 'text-muted-foreground hover:text-foreground',
+                isSm ? 'text-[11px]' : 'text-xs',
+              )}
+            >
+              {p.label}
+            </button>
+          ))}
         </div>
 
         {/* 3. Panel Body */}
-        {activePanel === 'square' && (
-          <div className="flex flex-col gap-2.5">
-            {/* 2D Saturation / Value Canvas */}
-            <div
-              ref={squareRef}
-              role="slider"
-              aria-label="Color saturation and brightness"
-              aria-valuenow={hsva.v}
-              tabIndex={disabled ? -1 : 0}
-              onPointerDown={handleSquarePointerDown}
-              onPointerMove={handleSquarePointerMove}
-              className={cn(
-                'relative w-full cursor-crosshair overflow-hidden rounded-md border border-border/60 shadow-inner select-none',
-                isSm ? 'h-32' : 'h-36',
-              )}
-              style={{
-                backgroundColor: `hsl(${hsva.h}, 100%, 50%)`,
-                backgroundImage:
-                  'linear-gradient(to top, #000000 0%, transparent 100%), linear-gradient(to right, #ffffff 0%, transparent 100%)',
-              }}
-            >
-              {/* Draggable thumb */}
-              <div
-                className="absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-md ring-1 ring-black/40 pointer-events-none transition-transform"
-                style={{
-                  left: `${hsva.s}%`,
-                  top: `${100 - hsva.v}%`,
-                  backgroundColor: activeHex,
-                }}
-              />
-            </div>
-
-            {/* Horizontal Hue Slider */}
-            <div className="flex flex-col gap-1">
-              <input
-                type="range"
-                min={0}
-                max={360}
-                step={1}
-                disabled={disabled}
-                value={hsva.h}
-                aria-label="Color hue"
-                onChange={(e) =>
-                  commitColor({ ...hsva, h: Number(e.target.value) })
-                }
-                className="h-3 w-full cursor-pointer appearance-none rounded-full outline-hidden"
-                style={{
-                  background:
-                    'linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%)',
-                }}
-              />
-            </div>
-          </div>
-        )}
-
-        {activePanel === 'triangle' && (
-          <div className="flex flex-col items-center gap-2.5">
-            <svg
-              ref={triangleSvgRef}
-              viewBox={`0 0 ${DEFAULT_TRIANGLE_WIDTH} ${DEFAULT_TRIANGLE_HEIGHT}`}
-              role="slider"
-              aria-label="Triangle HSV color picker"
-              tabIndex={disabled ? -1 : 0}
-              onPointerDown={handleTrianglePointerDown}
-              onPointerMove={handleTrianglePointerMove}
-              className={cn(
-                'cursor-crosshair select-none touch-none',
-                isSm ? 'h-32 w-48' : 'h-36 w-56',
-              )}
-            >
-              <defs>
-                <linearGradient
-                  id="cha-set-triangle-white"
-                  x1={DEFAULT_TRIANGLE_WHITE.x}
-                  y1={DEFAULT_TRIANGLE_WHITE.y}
-                  x2={DEFAULT_TRIANGLE_PURE.x}
-                  y2={DEFAULT_TRIANGLE_PURE.y}
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop stopColor="#ffffff" />
-                  <stop offset="1" stopColor={pureHueHex} stopOpacity="0" />
-                </linearGradient>
-                <linearGradient
-                  id="cha-set-triangle-black"
-                  x1={DEFAULT_TRIANGLE_BLACK.x}
-                  y1={DEFAULT_TRIANGLE_BLACK.y}
-                  x2={DEFAULT_TRIANGLE_PURE.x}
-                  y2={DEFAULT_TRIANGLE_PURE.y}
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop stopColor="#000000" />
-                  <stop offset="1" stopColor={pureHueHex} stopOpacity="0" />
-                </linearGradient>
-              </defs>
-
-              {/* Polygons */}
-              <polygon points={trianglePoints} fill={pureHueHex} />
-              <polygon points={trianglePoints} fill="url(#cha-set-triangle-white)" />
-              <polygon points={trianglePoints} fill="url(#cha-set-triangle-black)" />
-              <polygon
-                points={trianglePoints}
-                fill="none"
-                stroke="currentColor"
-                strokeOpacity="0.2"
-                strokeWidth="1.5"
-              />
-
-              {/* Draggable Circle Pointer */}
-              <circle
-                cx={trianglePointer.x}
-                cy={trianglePointer.y}
-                r="7"
-                fill={activeHex}
-                stroke="#ffffff"
-                strokeWidth="2"
-                className="drop-shadow-sm pointer-events-none"
-              />
-            </svg>
-
-            {/* Horizontal Hue Slider */}
-            <input
-              type="range"
-              min={0}
-              max={360}
-              step={1}
+        <div className="flex items-center justify-center min-h-[200px]">
+          {activePanel === 'square' && (
+            <HueRing
+              hue={hsva.h}
+              onHueChange={(h) => commitColor({ ...hsva, h })}
+              ariaLabel="Hue ring"
               disabled={disabled}
-              value={hsva.h}
-              aria-label="Color hue"
-              onChange={(e) =>
-                commitColor({ ...hsva, h: Number(e.target.value) })
-              }
-              className="h-3 w-full cursor-pointer appearance-none rounded-full outline-hidden"
-              style={{
-                background:
-                  'linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%)',
-              }}
-            />
-          </div>
-        )}
+              sizePx={stageSize}
+            >
+              <div
+                ref={squareRef}
+                role="slider"
+                aria-label="Color saturation and brightness"
+                aria-valuenow={hsva.v}
+                tabIndex={disabled ? -1 : 0}
+                onPointerDown={handleSquarePointerDown}
+                onPointerMove={handleSquarePointerMove}
+                className="relative cursor-crosshair overflow-hidden rounded-sm border border-border/60 shadow-inner select-none"
+                style={{
+                  width: `${squareInnerSize}px`,
+                  height: `${squareInnerSize}px`,
+                  backgroundColor: `hsl(${hsva.h}, 100%, 50%)`,
+                  backgroundImage:
+                    'linear-gradient(to top, #000000 0%, transparent 100%), linear-gradient(to right, #ffffff 0%, transparent 100%)',
+                }}
+              >
+                <div
+                  className="absolute size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-md ring-1 ring-black/40 pointer-events-none"
+                  style={{
+                    left: `${hsva.s}%`,
+                    top: `${100 - hsva.v}%`,
+                    backgroundColor: activeHex,
+                  }}
+                />
+              </div>
+            </HueRing>
+          )}
 
-        {activePanel === 'swatches' && (
-          <div className="grid grid-cols-8 gap-1.5 py-1">
-            {presetColors.map((color) => {
-              const isSelected = color.toUpperCase() === activeHex.toUpperCase();
-              return (
-                <button
-                  key={color}
-                  type="button"
-                  disabled={disabled}
-                  aria-label={color}
-                  title={color}
-                  onClick={() => commitHex(color)}
-                  className={cn(
-                    'group relative size-6 rounded-md border transition-all hover:scale-110 active:scale-95 flex items-center justify-center',
-                    isSelected
-                      ? 'border-primary ring-2 ring-primary/40 shadow-xs'
-                      : 'border-border/60 hover:border-border',
-                  )}
-                  style={{ backgroundColor: color }}
-                >
-                  {isSelected && (
-                    <span className="size-2 rounded-full bg-white shadow-xs drop-shadow-sm" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        )}
+          {activePanel === 'circle' && (
+            <CircleWheel
+              hsva={hsva}
+              onChange={commitColor}
+              disabled={disabled}
+              sizePx={stageSize}
+            />
+          )}
+
+          {activePanel === 'triangle' && (
+            <HueRing
+              hue={hsva.h}
+              onHueChange={(h) => commitColor({ ...hsva, h })}
+              ariaLabel="Hue ring"
+              disabled={disabled}
+              sizePx={stageSize}
+            >
+              <svg
+                ref={triangleSvgRef}
+                viewBox={`0 0 ${DEFAULT_TRIANGLE_WIDTH} ${DEFAULT_TRIANGLE_HEIGHT}`}
+                role="slider"
+                aria-label="Triangle HSV color picker"
+                tabIndex={disabled ? -1 : 0}
+                onPointerDown={handleTrianglePointerDown}
+                onPointerMove={handleTrianglePointerMove}
+                className="cursor-crosshair select-none touch-none overflow-visible"
+                style={{
+                  width: `${triangleInnerW}px`,
+                  height: `${triangleInnerH}px`,
+                }}
+              >
+                <defs>
+                  <linearGradient
+                    id="cha-set-triangle-white"
+                    x1={DEFAULT_TRIANGLE_WHITE.x}
+                    y1={DEFAULT_TRIANGLE_WHITE.y}
+                    x2={DEFAULT_TRIANGLE_PURE.x}
+                    y2={DEFAULT_TRIANGLE_PURE.y}
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stopColor="#ffffff" />
+                    <stop offset="1" stopColor={pureHueHex} stopOpacity="0" />
+                  </linearGradient>
+                  <linearGradient
+                    id="cha-set-triangle-black"
+                    x1={DEFAULT_TRIANGLE_BLACK.x}
+                    y1={DEFAULT_TRIANGLE_BLACK.y}
+                    x2={DEFAULT_TRIANGLE_PURE.x}
+                    y2={DEFAULT_TRIANGLE_PURE.y}
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stopColor="#000000" />
+                    <stop offset="1" stopColor={pureHueHex} stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+
+                <polygon points={trianglePoints} fill={pureHueHex} />
+                <polygon points={trianglePoints} fill="url(#cha-set-triangle-white)" />
+                <polygon points={trianglePoints} fill="url(#cha-set-triangle-black)" />
+                <polygon
+                  points={trianglePoints}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeOpacity="0.2"
+                  strokeWidth="1.5"
+                />
+
+                <circle
+                  cx={trianglePointer.x}
+                  cy={trianglePointer.y}
+                  r="6"
+                  fill={activeHex}
+                  stroke="#ffffff"
+                  strokeWidth="2"
+                  className="drop-shadow-sm pointer-events-none"
+                />
+              </svg>
+            </HueRing>
+          )}
+
+          {activePanel === 'swatches' && (
+            <div className="grid grid-cols-8 gap-1.5 py-4 w-full">
+              {presetColors.map((color) => {
+                const isSelected = color.toUpperCase() === activeHex.toUpperCase();
+                return (
+                  <button
+                    key={color}
+                    type="button"
+                    disabled={disabled}
+                    aria-label={color}
+                    title={color}
+                    onClick={() => commitHex(color)}
+                    className={cn(
+                      'group relative size-6 rounded-md border transition-all hover:scale-110 active:scale-95 flex items-center justify-center',
+                      isSelected
+                        ? 'border-primary ring-2 ring-primary/40 shadow-xs'
+                        : 'border-border/60 hover:border-border',
+                    )}
+                    style={{ backgroundColor: color }}
+                  >
+                    {isSelected && (
+                      <span className="size-2 rounded-full bg-white shadow-xs drop-shadow-sm" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         {/* Quick swatches row when not on swatches tab */}
         {showSwatches && activePanel !== 'swatches' && (
@@ -593,10 +820,10 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
           </div>
         )}
 
-        {/* 4. Hex Input Row */}
+        {/* 4. Hex Input Row with Copy Button */}
         {showHex && (
           <div className="flex items-center gap-2 border-t border-border/40 pt-2.5">
-            <span className="text-xs font-semibold uppercase text-muted-foreground w-8">
+            <span className="w-8 font-mono text-xs font-semibold uppercase text-muted-foreground">
               HEX
             </span>
             <div className="relative flex-1">
@@ -630,8 +857,8 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                 type="button"
                 disabled={disabled}
                 onClick={handleCopy}
-                title="Copy HEX"
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                title="Copy HEX color"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded hover:bg-muted/50 cursor-pointer"
               >
                 {copied ? (
                   <CheckIcon className="size-3 text-emerald-500" />
@@ -643,294 +870,214 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
           </div>
         )}
 
-        {/* 5. Channel Sliders Toggle Section */}
-        <div className="flex flex-col gap-2 border-t border-border/40 pt-2">
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
-              disabled={disabled}
-              onClick={() => setShowChannels(!showChannels)}
-              className="text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <span>Color Channels</span>
-              <ChevronDownIcon
-                className={cn('size-3 transition-transform', showChannels && 'rotate-180')}
-              />
-            </button>
+        {/* 5. Channel Sliders & Multi-Group Toggles */}
+        <div className="flex flex-col gap-2.5 border-t border-border/40 pt-2.5">
+          {/* Active Channel Value Sliders */}
+          <div className="flex flex-col gap-2">
+            {showRgbSliders && (
+              <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="RGB channels">
+                <ColorChannelSlider
+                  label="R"
+                  labelColor="#ef4444"
+                  min={0}
+                  max={255}
+                  value={rgb.r}
+                  gradient={redGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitHex(rgbToHex({ ...rgb, r: val }))}
+                />
+                <ColorChannelSlider
+                  label="G"
+                  labelColor="#22c55e"
+                  min={0}
+                  max={255}
+                  value={rgb.g}
+                  gradient={greenGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitHex(rgbToHex({ ...rgb, g: val }))}
+                />
+                <ColorChannelSlider
+                  label="B"
+                  labelColor="#3b82f6"
+                  min={0}
+                  max={255}
+                  value={rgb.b}
+                  gradient={blueGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitHex(rgbToHex({ ...rgb, b: val }))}
+                />
+              </div>
+            )}
 
-            {showChannels && (
-              <div className="flex items-center gap-1">
-                {(['rgb', 'hsv', 'cmyk', 'lab'] as const).map((modeKey) => (
-                  <button
-                    key={modeKey}
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => setChannelMode(modeKey)}
-                    className={cn(
-                      'rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase transition-colors',
-                      channelMode === modeKey
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground hover:text-foreground',
-                    )}
-                  >
-                    {modeKey}
-                  </button>
-                ))}
+            {showHsvSliders && (
+              <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="HSV channels">
+                <ColorChannelSlider
+                  label="H"
+                  min={0}
+                  max={360}
+                  value={hsva.h}
+                  gradient={hueGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitColor({ ...hsva, h: val })}
+                />
+                <ColorChannelSlider
+                  label="S"
+                  min={0}
+                  max={100}
+                  value={hsva.s}
+                  gradient={satGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitColor({ ...hsva, s: val })}
+                />
+                <ColorChannelSlider
+                  label="V"
+                  min={0}
+                  max={100}
+                  value={hsva.v}
+                  gradient={valGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitColor({ ...hsva, v: val })}
+                />
+              </div>
+            )}
+
+            {showCmykSliders && (
+              <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="CMYK channels">
+                <ColorChannelSlider
+                  label="C"
+                  labelColor="#06b6d4"
+                  min={0}
+                  max={100}
+                  value={cmyk.c}
+                  gradient={cyanGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, c: val })))}
+                />
+                <ColorChannelSlider
+                  label="M"
+                  labelColor="#ec4899"
+                  min={0}
+                  max={100}
+                  value={cmyk.m}
+                  gradient={magentaGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, m: val })))}
+                />
+                <ColorChannelSlider
+                  label="Y"
+                  labelColor="#eab308"
+                  min={0}
+                  max={100}
+                  value={cmyk.y}
+                  gradient={yellowGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, y: val })))}
+                />
+                <ColorChannelSlider
+                  label="K"
+                  labelColor="var(--color-foreground)"
+                  min={0}
+                  max={100}
+                  value={cmyk.k}
+                  gradient={blackGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, k: val })))}
+                />
+              </div>
+            )}
+
+            {showLabSliders && (
+              <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="LAB channels">
+                <ColorChannelSlider
+                  label="L"
+                  min={0}
+                  max={100}
+                  value={lab.l}
+                  gradient={labLGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitHex(rgbToHex(labToRgb({ ...lab, l: val })))}
+                />
+                <ColorChannelSlider
+                  label="A"
+                  min={-128}
+                  max={127}
+                  value={lab.a}
+                  gradient={labAGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitHex(rgbToHex(labToRgb({ ...lab, a: val })))}
+                />
+                <ColorChannelSlider
+                  label="B"
+                  min={-128}
+                  max={127}
+                  value={lab.b}
+                  gradient={labBGradient}
+                  disabled={disabled}
+                  onChange={(val) => commitHex(rgbToHex(labToRgb({ ...lab, b: val })))}
+                />
               </div>
             )}
           </div>
 
-          {showChannels && (
-            <div className="flex flex-col gap-2 rounded-md bg-muted/40 p-2 text-xs">
-              {channelMode === 'rgb' && (
-                <>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">R</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={255}
-                      value={rgb.r}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitHex(rgbToHex({ ...rgb, r: Number(e.target.value) }))
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                      style={{
-                        background: `linear-gradient(to right, rgb(0, ${rgb.g}, ${rgb.b}), rgb(255, ${rgb.g}, ${rgb.b}))`,
-                      }}
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{rgb.r}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">G</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={255}
-                      value={rgb.g}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitHex(rgbToHex({ ...rgb, g: Number(e.target.value) }))
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                      style={{
-                        background: `linear-gradient(to right, rgb(${rgb.r}, 0, ${rgb.b}), rgb(${rgb.r}, 255, ${rgb.b}))`,
-                      }}
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{rgb.g}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">B</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={255}
-                      value={rgb.b}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitHex(rgbToHex({ ...rgb, b: Number(e.target.value) }))
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                      style={{
-                        background: `linear-gradient(to right, rgb(${rgb.r}, ${rgb.g}, 0), rgb(${rgb.r}, ${rgb.g}, 255))`,
-                      }}
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{rgb.b}</span>
-                  </div>
-                </>
+          {/* Independent Multi-Channel Toggle Buttons */}
+          <div className="grid grid-cols-4 gap-1 rounded-md bg-muted/60 p-1" role="group" aria-label="Color channel sliders">
+            <button
+              type="button"
+              disabled={disabled}
+              aria-pressed={showRgbSliders}
+              onClick={() => setShowRgbSliders(!showRgbSliders)}
+              className={cn(
+                'rounded py-1 text-center font-medium text-xs transition-colors cursor-pointer select-none',
+                showRgbSliders
+                  ? 'bg-background text-foreground shadow-xs font-semibold'
+                  : 'text-muted-foreground hover:text-foreground',
               )}
-
-              {channelMode === 'hsv' && (
-                <>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">H</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={360}
-                      value={hsva.h}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitColor({ ...hsva, h: Number(e.target.value) })
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                      style={{
-                        background:
-                          'linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%)',
-                      }}
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{hsva.h}°</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">S</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={hsva.s}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitColor({ ...hsva, s: Number(e.target.value) })
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                      style={{
-                        background: `linear-gradient(to right, ${hsvToHex({ ...hsva, s: 0 })}, ${hsvToHex({ ...hsva, s: 100 })})`,
-                      }}
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{hsva.s}%</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">V</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={hsva.v}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitColor({ ...hsva, v: Number(e.target.value) })
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                      style={{
-                        background: `linear-gradient(to right, #000000, ${hsvToHex({ ...hsva, v: 100 })})`,
-                      }}
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{hsva.v}%</span>
-                  </div>
-                </>
+            >
+              RGB
+            </button>
+            <button
+              type="button"
+              disabled={disabled}
+              aria-pressed={showHsvSliders}
+              onClick={() => setShowHsvSliders(!showHsvSliders)}
+              className={cn(
+                'rounded py-1 text-center font-medium text-xs transition-colors cursor-pointer select-none',
+                showHsvSliders
+                  ? 'bg-background text-foreground shadow-xs font-semibold'
+                  : 'text-muted-foreground hover:text-foreground',
               )}
-
-              {channelMode === 'cmyk' && (
-                <>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">C</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={Math.round(cmyk.c)}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitHex(
-                          rgbToHex(cmykToRgb({ ...cmyk, c: Number(e.target.value) })),
-                        )
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{Math.round(cmyk.c)}%</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">M</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={Math.round(cmyk.m)}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitHex(
-                          rgbToHex(cmykToRgb({ ...cmyk, m: Number(e.target.value) })),
-                        )
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{Math.round(cmyk.m)}%</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">Y</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={Math.round(cmyk.y)}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitHex(
-                          rgbToHex(cmykToRgb({ ...cmyk, y: Number(e.target.value) })),
-                        )
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{Math.round(cmyk.y)}%</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">K</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={Math.round(cmyk.k)}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitHex(
-                          rgbToHex(cmykToRgb({ ...cmyk, k: Number(e.target.value) })),
-                        )
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{Math.round(cmyk.k)}%</span>
-                  </div>
-                </>
+            >
+              HSV
+            </button>
+            <button
+              type="button"
+              disabled={disabled}
+              aria-pressed={showCmykSliders}
+              onClick={() => setShowCmykSliders(!showCmykSliders)}
+              className={cn(
+                'rounded py-1 text-center font-medium text-xs transition-colors cursor-pointer select-none',
+                showCmykSliders
+                  ? 'bg-background text-foreground shadow-xs font-semibold'
+                  : 'text-muted-foreground hover:text-foreground',
               )}
-
-              {channelMode === 'lab' && (
-                <>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">L</span>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={Math.round(lab.l)}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitHex(
-                          rgbToHex(labToRgb({ ...lab, l: Number(e.target.value) })),
-                        )
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{Math.round(lab.l)}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">A</span>
-                    <input
-                      type="range"
-                      min={-128}
-                      max={127}
-                      value={Math.round(lab.a)}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitHex(
-                          rgbToHex(labToRgb({ ...lab, a: Number(e.target.value) })),
-                        )
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{Math.round(lab.a)}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 font-mono font-semibold text-muted-foreground">B</span>
-                    <input
-                      type="range"
-                      min={-128}
-                      max={127}
-                      value={Math.round(lab.b)}
-                      disabled={disabled}
-                      onChange={(e) =>
-                        commitHex(
-                          rgbToHex(labToRgb({ ...lab, b: Number(e.target.value) })),
-                        )
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
-                    />
-                    <span className="w-7 text-right font-mono text-[11px]">{Math.round(lab.b)}</span>
-                  </div>
-                </>
+            >
+              CMYK
+            </button>
+            <button
+              type="button"
+              disabled={disabled}
+              aria-pressed={showLabSliders}
+              onClick={() => setShowLabSliders(!showLabSliders)}
+              className={cn(
+                'rounded py-1 text-center font-medium text-xs transition-colors cursor-pointer select-none',
+                showLabSliders
+                  ? 'bg-background text-foreground shadow-xs font-semibold'
+                  : 'text-muted-foreground hover:text-foreground',
               )}
-            </div>
-          )}
+            >
+              LAB
+            </button>
+          </div>
         </div>
       </div>
     );

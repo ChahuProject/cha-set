@@ -51,7 +51,7 @@ export function ColorPickerDocPage() {
     <DocLayout
       category="Components"
       title="ColorPicker"
-      description="An interactive color selection component featuring 2D saturation/brightness field, triangle HSV picker, live hex input, preset swatches, and color channel sliders."
+      description="An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB)."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },

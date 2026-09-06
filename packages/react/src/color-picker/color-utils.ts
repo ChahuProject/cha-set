@@ -409,3 +409,51 @@ export function triangleWeightsToHsv(weights: TriangleWeights, hue: number): Hsv
     a: 1,
   };
 }
+
+/**
+ * Calculates hue angle (0-360 deg) from pointer position relative to element center.
+ * 0 deg corresponds to top (12 o'clock).
+ */
+export function getHueFromPointer(element: HTMLElement, clientX: number, clientY: number): number {
+  const rect = element.getBoundingClientRect();
+  const x = clientX - rect.left - rect.width / 2;
+  const y = clientY - rect.top - rect.height / 2;
+  return Math.round((Math.atan2(y, x) * 180 / Math.PI + 450) % 360);
+}
+
+/**
+ * Converts client coordinates on a circular color wheel disc into Hue and Saturation.
+ */
+export function wheelCoordsToHsv(
+  element: HTMLElement,
+  clientX: number,
+  clientY: number,
+): { h: number; s: number } {
+  const rect = element.getBoundingClientRect();
+  const cx = rect.width / 2;
+  const cy = rect.height / 2;
+  const x = clientX - rect.left - cx;
+  const y = clientY - rect.top - cy;
+  const radius = Math.min(cx, cy);
+  const dist = Math.sqrt(x * x + y * y);
+  const s = clamp(Math.round((dist / radius) * 100), 0, 100);
+  const h = Math.round((Math.atan2(y, x) * 180 / Math.PI + 450) % 360);
+  return { h, s };
+}
+
+/**
+ * Converts Hue and Saturation into 2D coordinates on a circular color wheel disc.
+ */
+export function hsvToWheelCoords(
+  h: number,
+  s: number,
+  radius: number,
+): Point {
+  const rad = ((h - 90) * Math.PI) / 180;
+  const dist = (clamp(s, 0, 100) / 100) * radius;
+  return {
+    x: radius + dist * Math.cos(rad),
+    y: radius + dist * Math.sin(rad),
+  };
+}
+

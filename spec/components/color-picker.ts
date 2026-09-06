@@ -6,6 +6,8 @@ import { z } from 'zod';
  */
 export const colorPickerSizeSchema = z.enum(['default', 'sm']);
 export const colorPickerModeSchema = z.enum(['inline', 'popover']);
+export const colorPickerPanelSchema = z.enum(['square', 'circle', 'triangle', 'swatches']);
+export const colorChannelModeSchema = z.enum(['rgb', 'hsv', 'cmyk', 'lab']);
 
 export const defaultPresetColors = [
   '#18181b',
@@ -41,3 +43,5 @@ export const colorPickerSchema = z.object({
 export type ColorPickerApi = z.infer<typeof colorPickerSchema>;
 export type ColorPickerSize = z.infer<typeof colorPickerSizeSchema>;
 export type ColorPickerMode = z.infer<typeof colorPickerModeSchema>;
+export type ColorPickerPanel = z.infer<typeof colorPickerPanelSchema>;
+export type ColorChannelMode = z.infer<typeof colorChannelModeSchema>;
