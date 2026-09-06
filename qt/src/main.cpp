@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <QQuickWindow>
 #include <QQuickItem>
+#include <QSGRendererInterface>
 #include <QTimer>
 #include <QDebug>
 #include <QTest>
@@ -57,8 +58,125 @@ static bool runRealMouseDragVerification(QQuickWindow* window) {
     }
 }
 
+#if defined(Q_OS_WIN)
+#include <windows.h>
+#include <d3d11.h>
+
+typedef HRESULT (WINAPI *PFN_D3D11_CREATE_DEVICE)(
+    IDXGIAdapter*,
+    D3D_DRIVER_TYPE,
+    HMODULE,
+    UINT,
+    const D3D_FEATURE_LEVEL*,
+    UINT,
+    UINT,
+    ID3D11Device**,
+    D3D_FEATURE_LEVEL*,
+    ID3D11DeviceContext**
+);
+
+static bool isD3D11HardwareAvailable() {
+    HMODULE hD3D11 = LoadLibraryW(L"d3d11.dll");
+    if (!hD3D11) {
+        return false;
+    }
+    auto pfnCreate = reinterpret_cast<PFN_D3D11_CREATE_DEVICE>(
+        GetProcAddress(hD3D11, "D3D11CreateDevice")
+    );
+    if (!pfnCreate) {
+        FreeLibrary(hD3D11);
+        return false;
+    }
+
+    ID3D11Device* dev = nullptr;
+    ID3D11DeviceContext* ctx = nullptr;
+    D3D_FEATURE_LEVEL featureLevel;
+    const D3D_FEATURE_LEVEL featureLevels[] = {
+        D3D_FEATURE_LEVEL_11_0,
+        D3D_FEATURE_LEVEL_10_1,
+        D3D_FEATURE_LEVEL_10_0
+    };
+
+    HRESULT hr = pfnCreate(
+        nullptr,
+        D3D_DRIVER_TYPE_HARDWARE,
+        nullptr,
+        0,
+        featureLevels,
+        ARRAYSIZE(featureLevels),
+        D3D11_SDK_VERSION,
+        &dev,
+        &featureLevel,
+        &ctx
+    );
+
+    if (ctx) ctx->Release();
+    if (dev) dev->Release();
+    FreeLibrary(hD3D11);
+
+    return SUCCEEDED(hr);
+}
+#endif
+
 int main(int argc, char* argv[])
 {
+    // 1. Scan for Graphics API & RHI backend configuration before creating windows
+    bool forceSoftware = false;
+    bool forceOpenGL = false;
+    bool forceD3D11 = false;
+    bool forceD3D12 = false;
+    bool forceVulkan = false;
+    bool forceWarp = false;
+
+    for (int i = 1; i < argc; ++i) {
+        const QString arg = QString::fromUtf8(argv[i]);
+        if (arg == "--software") forceSoftware = true;
+        else if (arg == "--opengl") forceOpenGL = true;
+        else if (arg == "--d3d11") forceD3D11 = true;
+        else if (arg == "--d3d12") forceD3D12 = true;
+        else if (arg == "--vulkan") forceVulkan = true;
+        else if (arg == "--warp") forceWarp = true;
+        else if (arg == "--rhi" && i + 1 < argc) {
+            const QString rhiVal = QString::fromUtf8(argv[++i]).toLower();
+            if (rhiVal == "software") forceSoftware = true;
+            else if (rhiVal == "opengl") forceOpenGL = true;
+            else if (rhiVal == "d3d11") forceD3D11 = true;
+            else if (rhiVal == "d3d12") forceD3D12 = true;
+            else if (rhiVal == "vulkan") forceVulkan = true;
+            else if (rhiVal == "warp") forceWarp = true;
+        }
+    }
+
+    if (forceSoftware) {
+        QQuickWindow::setGraphicsApi(QSGRendererInterface::Software);
+        qInfo("[qt-showcase] RHI override: Software rendering.");
+    } else if (forceOpenGL) {
+        QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
+        qInfo("[qt-showcase] RHI override: OpenGL rendering.");
+    } else if (forceD3D12) {
+        QQuickWindow::setGraphicsApi(QSGRendererInterface::Direct3D12);
+        qInfo("[qt-showcase] RHI override: Direct3D 12 rendering.");
+    } else if (forceVulkan) {
+        QQuickWindow::setGraphicsApi(QSGRendererInterface::Vulkan);
+        qInfo("[qt-showcase] RHI override: Vulkan rendering.");
+    } else if (forceWarp) {
+        qputenv("QSG_RHI_PREFER_SOFTWARE_RENDERER", "1");
+        qInfo("[qt-showcase] RHI override: WARP software rasterizer.");
+    } else if (forceD3D11) {
+        QQuickWindow::setGraphicsApi(QSGRendererInterface::Direct3D11);
+        qInfo("[qt-showcase] RHI override: Direct3D 11 rendering.");
+    } else {
+#if defined(Q_OS_WIN)
+        if (qEnvironmentVariableIsEmpty("QSG_RHI_BACKEND") && qEnvironmentVariableIsEmpty("QSG_RHI_PREFER_SOFTWARE_RENDERER")) {
+            if (!isD3D11HardwareAvailable()) {
+                qWarning("[qt-showcase] Hardware Direct3D 11 device is unavailable or memory exhausted.");
+                qWarning("[qt-showcase] Automatically activating WARP software rasterizer for reliable display.");
+                qputenv("QSG_RHI_PREFER_SOFTWARE_RENDERER", "1");
+            }
+        }
+#endif
+    }
+
     QGuiApplication app(argc, argv);
 
     const QStringList args = app.arguments();
