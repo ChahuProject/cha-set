@@ -35,7 +35,6 @@ describe('Switch conformance (spec contract)', () => {
   it('rejects unknown size variants per the contract', () => {
     expect(() =>
       switchSchema.parse({
-        // @ts-expect-error - testing invalid size variant
         size: 'invalid-size',
       }),
     ).toThrow();

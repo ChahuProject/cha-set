@@ -39,7 +39,6 @@ describe('Slider conformance (spec contract)', () => {
   it('rejects unknown orientation per the contract', () => {
     expect(() =>
       sliderSchema.parse({
-        // @ts-expect-error - testing invalid orientation
         orientation: 'diagonal',
       }),
     ).toThrow();

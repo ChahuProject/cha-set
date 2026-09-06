@@ -47,14 +47,12 @@ describe('ColorPicker conformance (spec contract)', () => {
   it('rejects unknown size or mode per the contract', () => {
     expect(() =>
       colorPickerSchema.parse({
-        // @ts-expect-error - testing invalid size
         size: 'huge',
       }),
     ).toThrow();
 
     expect(() =>
       colorPickerSchema.parse({
-        // @ts-expect-error - testing invalid mode
         mode: 'modal',
       }),
     ).toThrow();
