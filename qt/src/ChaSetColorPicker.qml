@@ -642,8 +642,7 @@ Item {
                                 radius: 0
                                 clip: true
                                 color: Qt.hsva(root.currentH, 1.0, 1.0, 1.0)
-                                border.color: root.isDark ? Qt.rgba(1, 1, 1, 0.2) : Qt.rgba(0, 0, 0, 0.15)
-                                border.width: 1
+                                border.width: 0
 
                                 Rectangle {
                                     anchors.fill: parent

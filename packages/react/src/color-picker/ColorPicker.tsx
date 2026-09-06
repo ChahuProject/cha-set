@@ -202,7 +202,7 @@ function HueRing({
         background:
           'conic-gradient(from 0deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)',
         boxShadow:
-          'inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 1px 2px rgba(0, 0, 0, 0.16)',
+          'inset 0 0 0 1px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14)',
       }}
     >
       {/* Clean inner circular card mask */}
@@ -210,7 +210,7 @@ function HueRing({
         className="absolute rounded-full bg-card pointer-events-none"
         style={{
           inset: `${thickness}px`,
-          boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.14)',
+          boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.12)',
         }}
       />
 
@@ -302,7 +302,7 @@ function CircleWheel({
         width: `${sizePx}px`,
         height: `${sizePx}px`,
         boxShadow:
-          'inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 1px 2px rgba(0, 0, 0, 0.16)',
+          'inset 0 0 0 1px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14)',
       }}
     >
       {/* 1. Conic hue base */}
@@ -810,7 +810,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                 tabIndex={disabled ? -1 : 0}
                 onPointerDown={handleSquarePointerDown}
                 onPointerMove={handleSquarePointerMove}
-                className="relative cursor-crosshair overflow-hidden rounded-xs border border-border/70 shadow-xs select-none"
+                className="relative cursor-crosshair overflow-hidden select-none"
                 style={{
                   width: `${squareInnerSize}px`,
                   height: `${squareInnerSize}px`,
@@ -855,7 +855,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                 role="slider"
                 aria-label="Triangle HSV color picker"
                 tabIndex={disabled ? -1 : 0}
-                className="cursor-crosshair select-none touch-none overflow-visible"
+                className="cursor-crosshair select-none touch-none overflow-hidden"
                 style={{
                   width: `${innerSize}px`,
                   height: `${innerSize}px`,
@@ -892,8 +892,8 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                 <polygon
                   points={trianglePoints}
                   fill="none"
-                  stroke="rgba(255,255,255,0.25)"
-                  strokeWidth="1.25"
+                  stroke="rgba(0, 0, 0, 0.15)"
+                  strokeWidth="1"
                 />
 
                 <circle
