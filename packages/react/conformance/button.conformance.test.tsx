@@ -17,7 +17,16 @@ describe('Button conformance (spec contract)', () => {
 
     // Verify all shadcn variants and sizes
     const variants = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as const;
-    const sizes = ['default', 'sm', 'lg', 'icon'] as const;
+    const sizes = [
+      'default',
+      'sm',
+      'lg',
+      'icon',
+      'xs',
+      'icon-xs',
+      'icon-sm',
+      'icon-lg',
+    ] as const;
     for (const v of variants) {
       expect(() => buttonSchema.parse({ variant: v })).not.toThrow();
     }

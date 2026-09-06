@@ -52,6 +52,20 @@ describe('Button', () => {
     expect(button).toHaveClass('bg-destructive', 'text-destructive-foreground', 'h-10');
   });
 
+  it('supports dense sizes xs, icon-xs, icon-sm, icon-lg', () => {
+    const { rerender } = render(<Button size="xs">XS</Button>);
+    expect(screen.getByRole('button', { name: 'XS' })).toHaveClass('h-6', 'text-xs');
+
+    rerender(<Button size="icon-xs">🔍</Button>);
+    expect(screen.getByRole('button', { name: '🔍' })).toHaveClass('size-6');
+
+    rerender(<Button size="icon-sm">🔍</Button>);
+    expect(screen.getByRole('button', { name: '🔍' })).toHaveClass('size-7');
+
+    rerender(<Button size="icon-lg">🔍</Button>);
+    expect(screen.getByRole('button', { name: '🔍' })).toHaveClass('size-10');
+  });
+
   it('supports shadcn outline, secondary, ghost, and link variants', () => {
     const { rerender } = render(<Button variant="outline">Outline</Button>);
     expect(screen.getByRole('button', { name: 'Outline' })).toHaveClass(

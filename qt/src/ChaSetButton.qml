@@ -26,28 +26,34 @@ Item {
     readonly property bool effectiveHovered: (hovered || forceHover) && !effectiveDisabled
     readonly property bool effectiveDown: (down || forceActive) && !effectiveDisabled
 
-    // Height parity: sm: 32px, default/md/icon: 36px, lg: 40px
+    // Height parity: xs/icon-xs: 24px, icon-sm: 28px, sm: 32px, default/md/icon: 36px, lg/icon-lg: 40px
     function buttonHeight() {
         switch (size) {
+        case "xs":
+        case "icon-xs": return 24
+        case "icon-sm": return 28
         case "sm": return 32
+        case "icon-lg":
         case "lg": return 40
         default:   return 36
         }
     }
 
-    // Horizontal padding parity: sm: 12px, default/md: 16px, lg: 24px, icon: 0px
+    // Horizontal padding parity: sm: 12px, default/md: 16px, lg: 24px, icon*: 0px
     function paddingH() {
-        if (size === "icon") return 0
+        if (size === "icon" || size === "icon-xs" || size === "icon-sm" || size === "icon-lg") return 0
         switch (size) {
+        case "xs": return 8
         case "sm": return 12
         case "lg": return 24
         default:   return 16
         }
     }
 
-    // Font size parity: sm: 12px (text-xs), default/md/icon: 14px (text-sm), lg: 16px (text-base)
+    // Font size parity: xs: 11px, sm: 12px (text-xs), default/md/icon: 14px (text-sm), lg: 16px (text-base)
     function fontSizePx() {
         switch (size) {
+        case "xs": return 11
         case "sm": return 12
         case "lg": return 16
         default:   return 14
@@ -116,7 +122,7 @@ Item {
     }
 
     function isIconButton() {
-        return size === "icon"
+        return size === "icon" || size === "icon-xs" || size === "icon-sm" || size === "icon-lg"
     }
 
     implicitHeight: buttonHeight()

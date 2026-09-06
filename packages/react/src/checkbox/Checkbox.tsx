@@ -5,12 +5,12 @@ export type CheckboxSize = 'default' | 'sm';
 
 export interface CheckboxProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
-  checked?: boolean;
+  checked?: boolean | 'indeterminate';
   defaultChecked?: boolean;
   indeterminate?: boolean;
   size?: CheckboxSize;
   label?: React.ReactNode;
-  onCheckedChange?: (checked: boolean) => void;
+  onCheckedChange?: (checked: boolean | 'indeterminate') => void;
   forceHover?: boolean;
   forceFocus?: boolean;
   wrapperClassName?: string;
@@ -42,17 +42,18 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     },
     ref,
   ) => {
+    const isExplicitIndeterminate = controlledChecked === 'indeterminate' || indeterminate;
     const isControlled = controlledChecked !== undefined;
     const [uncontrolledChecked, setUncontrolledChecked] =
       React.useState<boolean>(defaultChecked);
-    const isChecked = isControlled ? Boolean(controlledChecked) : uncontrolledChecked;
+    const isChecked = controlledChecked === 'indeterminate' ? false : (isControlled ? Boolean(controlledChecked) : uncontrolledChecked);
 
     const buttonRef = React.useRef<HTMLButtonElement | null>(null);
     React.useImperativeHandle(ref, () => buttonRef.current as HTMLButtonElement);
 
     const handleToggle = (e?: React.MouseEvent<HTMLButtonElement>) => {
       if (disabled) return;
-      const nextChecked = indeterminate ? true : !isChecked;
+      const nextChecked = isExplicitIndeterminate ? true : !isChecked;
       if (!isControlled) {
         setUncontrolledChecked(nextChecked);
       }
@@ -69,12 +70,12 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
       forcedStateClass += ' ring-1 ring-ring border-ring outline-hidden';
     }
     if (forceHover && !disabled) {
-      forcedStateClass += isChecked || indeterminate
+      forcedStateClass += isChecked || isExplicitIndeterminate
         ? ' bg-primary/90 border-primary/90'
         : ' border-foreground/40';
     }
 
-    const stateClasses = isChecked || indeterminate
+    const stateClasses = isChecked || isExplicitIndeterminate
       ? 'bg-primary text-primary-foreground border-primary'
       : 'border-input bg-transparent hover:border-foreground/40';
 
@@ -84,11 +85,11 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
         type="button"
         role="checkbox"
         id={id}
-        aria-checked={indeterminate ? 'mixed' : isChecked}
+        aria-checked={isExplicitIndeterminate ? 'mixed' : isChecked}
         aria-disabled={disabled || undefined}
         disabled={disabled}
         data-slot="checkbox"
-        data-state={indeterminate ? 'indeterminate' : isChecked ? 'checked' : 'unchecked'}
+        data-state={isExplicitIndeterminate ? 'indeterminate' : isChecked ? 'checked' : 'unchecked'}
         data-size={size}
         className={cn(
           'inline-flex items-center justify-center shrink-0 border transition-colors cursor-pointer',
@@ -102,7 +103,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
         onClick={handleClick}
         {...props}
       >
-        {indeterminate ? (
+        {isExplicitIndeterminate ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

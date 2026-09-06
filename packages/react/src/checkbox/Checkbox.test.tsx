@@ -55,6 +55,13 @@ describe('Checkbox component', () => {
     expect(handleChange).toHaveBeenCalledWith(false);
   });
 
+  it('supports checked="indeterminate" as a mixed state', () => {
+    render(<Checkbox checked="indeterminate" data-testid="checkbox" />);
+    const checkbox = screen.getByTestId('checkbox');
+    expect(checkbox).toHaveAttribute('aria-checked', 'mixed');
+    expect(checkbox).toHaveAttribute('data-state', 'indeterminate');
+  });
+
   it('blocks click interactions when disabled', () => {
     const handleChange = vi.fn();
     render(

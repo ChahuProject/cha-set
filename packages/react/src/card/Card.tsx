@@ -77,6 +77,22 @@ export const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTML
 );
 CardDescription.displayName = 'CardDescription';
 
+export const CardAction = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className = '', children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        data-slot="card-action"
+        className={`col-start-2 row-span-2 row-start-1 self-start justify-self-end ${className}`.trim()}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  },
+);
+CardAction.displayName = 'CardAction';
+
 export const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className = '', children, ...props }, ref) => {
     return (

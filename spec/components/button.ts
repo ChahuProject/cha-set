@@ -14,7 +14,16 @@ export const buttonVariantSchema = z.enum([
   'ghost',
   'link',
 ]);
-export const buttonSizeSchema = z.enum(['default', 'sm', 'lg', 'icon']);
+export const buttonSizeSchema = z.enum([
+  'default',
+  'sm',
+  'lg',
+  'icon',
+  'xs',
+  'icon-xs',
+  'icon-sm',
+  'icon-lg',
+]);
 
 export const buttonSchema = z.object({
   variant: buttonVariantSchema.default('default'),

@@ -13,6 +13,7 @@ export const cardSchema = z.object({
 export const cardHeaderSchema = z.object({});
 export const cardTitleSchema = z.object({});
 export const cardDescriptionSchema = z.object({});
+export const cardActionSchema = z.object({});
 export const cardContentSchema = z.object({});
 export const cardFooterSchema = z.object({});
 

@@ -12,14 +12,22 @@ export type ButtonVariant =
   | 'ghost'
   | 'link';
 
-export type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
+export type ButtonSize =
+  | 'default'
+  | 'sm'
+  | 'lg'
+  | 'icon'
+  | 'xs'
+  | 'icon-xs'
+  | 'icon-sm'
+  | 'icon-lg';
 
 /**
  * shadcn-standard variant table. Utilities resolve against the shadcn-standard
  * core tokens (see styles/theme.css @theme inline) — the host's variables
  * win at runtime, cha-set only ships defaults.
  */
-const buttonVariants = cva(
+export const buttonVariants = cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow,background-color] select-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:shrink-0',
   {
     variants: {
@@ -42,6 +50,10 @@ const buttonVariants = cva(
         sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5 text-xs',
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4 text-base',
         icon: 'size-9 p-0',
+        xs: 'h-6 rounded-[min(var(--radius-md),0.625rem)] gap-1 px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*=\'size-\'])]:size-3',
+        'icon-xs': 'size-6 rounded-[min(var(--radius-md),0.625rem)] p-0 [&_svg:not([class*=\'size-\'])]:size-3',
+        'icon-sm': 'size-7 rounded-[min(var(--radius-md),0.75rem)] p-0 [&_svg:not([class*=\'size-\'])]:size-3.5',
+        'icon-lg': 'size-10 p-0',
       },
     },
     defaultVariants: {

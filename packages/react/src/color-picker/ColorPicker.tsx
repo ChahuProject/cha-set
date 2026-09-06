@@ -59,6 +59,8 @@ export const DEFAULT_PRESET_COLORS = [
 export interface ColorPickerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue' | 'title'> {
   value?: string;
+  /** Alias for `value` for compatibility with common color picker props */
+  color?: string;
   defaultValue?: string;
   disabled?: boolean;
   showPreview?: boolean;
@@ -425,6 +427,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
     {
       className,
       value,
+      color,
       defaultValue = '#1d7ae0',
       disabled = false,
       showPreview = true,
@@ -441,9 +444,10 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
     },
     ref,
   ) => {
-    const isControlled = value !== undefined;
+    const effectiveValue = value !== undefined ? value : color;
+    const isControlled = effectiveValue !== undefined;
     const [internalValue, setInternalValue] = React.useState<string>(defaultValue);
-    const activeHex = normalizeHex(isControlled ? value : internalValue);
+    const activeHex = normalizeHex(isControlled ? effectiveValue! : internalValue);
 
     const [hsva, setHsva] = React.useState<HsvColor>(() => hexToHsv(activeHex));
     const [hexDraft, setHexDraft] = React.useState<string>(activeHex);
