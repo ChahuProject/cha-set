@@ -37,6 +37,7 @@ export const colorPickerSchema = z.object({
   showSwatches: z.boolean().default(true),
   size: colorPickerSizeSchema.default('default'),
   mode: colorPickerModeSchema.default('inline'),
+  movable: z.boolean().default(false),
   presetColors: z.array(z.string()).optional(),
 });
 

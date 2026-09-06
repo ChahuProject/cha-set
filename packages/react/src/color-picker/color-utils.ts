@@ -41,7 +41,7 @@ export interface TriangleWeights {
 }
 
 export const DEFAULT_TRIANGLE_WIDTH = 260;
-export const DEFAULT_TRIANGLE_HEIGHT = 200;
+export const DEFAULT_TRIANGLE_HEIGHT = 260;
 export const DEFAULT_TRIANGLE_PURE: Point = { x: 130, y: 0 };
 export const DEFAULT_TRIANGLE_WHITE: Point = { x: 17.4167, y: 195 };
 export const DEFAULT_TRIANGLE_BLACK: Point = { x: 242.5833, y: 195 };

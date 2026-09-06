@@ -27,6 +27,7 @@ DocLayout {
     property string demoMode: "inline"
     property string demoSize: "default"
     property bool demoDisabled: false
+    property bool demoMovable: false
     property bool demoShowPreview: true
     property bool demoShowHex: true
     property bool demoShowSwatches: true
@@ -36,8 +37,8 @@ DocLayout {
         id: heroPreview
         width: parent.width
         title: "ColorPicker Sandbox"
-        reactCode: `<ColorPicker\n  value="${root.demoColor}"\n  mode="${root.demoMode}"\n  size="${root.demoSize}"\n  disabled={${root.demoDisabled}}\n  showPreview={${root.demoShowPreview}}\n  showHex={${root.demoShowHex}}\n  showSwatches={${root.demoShowSwatches}}\n  onChange={setColor}\n/>`
-        qtCode: `ChaSetColorPicker {\n    value: "${root.demoColor}"\n    mode: "${root.demoMode}"\n    size: "${root.demoSize}"\n    disabled: ${root.demoDisabled}\n    showPreview: ${root.demoShowPreview}\n    showHex: ${root.demoShowHex}\n    showSwatches: ${root.demoShowSwatches}\n    onHexChanged: function(newHex) {\n        // handle color change\n    }\n}`
+        reactCode: `<ColorPicker\n  value="${root.demoColor}"\n  mode="${root.demoMode}"\n  size="${root.demoSize}"\n  disabled={${root.demoDisabled}}\n  movable={${root.demoMovable}}\n  showPreview={${root.demoShowPreview}}\n  showHex={${root.demoShowHex}}\n  showSwatches={${root.demoShowSwatches}}\n  onChange={setColor}\n/>`
+        qtCode: `ChaSetColorPicker {\n    value: "${root.demoColor}"\n    mode: "${root.demoMode}"\n    size: "${root.demoSize}"\n    disabled: ${root.demoDisabled}\n    movable: ${root.demoMovable}\n    showPreview: ${root.demoShowPreview}\n    showHex: ${root.demoShowHex}\n    showSwatches: ${root.demoShowSwatches}\n    onHexChanged: function(newHex) {\n        // handle color change\n    }\n}`
 
         stageData: [
             Item {
@@ -56,6 +57,7 @@ DocLayout {
                         mode: root.demoMode
                         size: root.demoSize
                         disabled: root.demoDisabled
+                        movable: root.demoMovable
                         showPreview: root.demoShowPreview
                         showHex: root.demoShowHex
                         showSwatches: root.demoShowSwatches
@@ -139,6 +141,14 @@ DocLayout {
                     label: "Disabled"
                     checked: root.demoDisabled
                     onToggled: (val) => root.demoDisabled = val
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Movable"
+                    checked: root.demoMovable
+                    onToggled: (val) => root.demoMovable = val
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -365,6 +375,12 @@ DocLayout {
                     type: "bool",
                     default: "false",
                     description: "Disables user interactions and applies muted opacity."
+                },
+                {
+                    name: "movable",
+                    type: "bool",
+                    default: "false",
+                    description: "Allows dragging blank background areas to reposition the component. Double-click resets offset."
                 },
                 {
                     name: "showPreview",

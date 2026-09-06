@@ -166,4 +166,21 @@ describe('ColorPicker component', () => {
 
     expect(onChange).toHaveBeenCalledWith('#FF0000');
   });
+
+  it('supports movable prop and dragging on empty card area', () => {
+    const { container } = render(<ColorPicker movable defaultValue="#1d7ae0" />);
+    const card = container.querySelector('.cursor-grab') as HTMLElement;
+    expect(card).toBeInTheDocument();
+
+    // Drag blank area
+    fireEvent.pointerDown(card, { clientX: 100, clientY: 100, pointerId: 1 });
+    fireEvent.pointerMove(card, { clientX: 150, clientY: 120, pointerId: 1 });
+    fireEvent.pointerUp(card, { pointerId: 1 });
+
+    expect(card.style.transform).toBe('translate3d(50px, 20px, 0)');
+
+    // Double click to reset
+    fireEvent.doubleClick(card);
+    expect(card.style.transform).toBeFalsy();
+  });
 });

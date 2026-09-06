@@ -19,6 +19,7 @@ export function ColorPickerDocPage() {
   const [mode, setMode] = useState<ColorPickerMode>('inline');
   const [size, setSize] = useState<ColorPickerSize>('default');
   const [disabled, setDisabled] = useState(false);
+  const [movable, setMovable] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
   const [showHex, setShowHex] = useState(true);
   const [showSwatches, setShowSwatches] = useState(true);
@@ -27,6 +28,7 @@ export function ColorPickerDocPage() {
   value="${color}"
   mode="${mode}"
   size="${size}"
+  movable={${movable}}
   disabled={${disabled}}
   showPreview={${showPreview}}
   showHex={${showHex}}
@@ -38,6 +40,7 @@ export function ColorPickerDocPage() {
     value: "${color}"
     mode: "${mode}"
     size: "${size}"
+    movable: ${movable}
     disabled: ${disabled}
     showPreview: ${showPreview}
     showHex: ${showHex}
@@ -105,6 +108,14 @@ export function ColorPickerDocPage() {
                 label="Disabled"
               />
 
+              {/* Movable toggle */}
+              <Checkbox
+                size="sm"
+                checked={movable}
+                onCheckedChange={(val) => setMovable(val)}
+                label="Movable"
+              />
+
               {/* Show preview toggle */}
               <Checkbox
                 size="sm"
@@ -136,6 +147,7 @@ export function ColorPickerDocPage() {
               value={color}
               mode={mode}
               size={size}
+              movable={movable}
               disabled={disabled}
               showPreview={showPreview}
               showHex={showHex}
@@ -284,6 +296,12 @@ export function ColorPickerDemo() {
               type: 'boolean',
               default: 'false',
               description: 'When true, prevents user interaction and applies muted opacity.',
+            },
+            {
+              name: 'movable',
+              type: 'boolean',
+              default: 'false',
+              description: 'When true, allows dragging on empty background areas to reposition the component. Double-click resets position.',
             },
             {
               name: 'showPreview',

@@ -66,6 +66,7 @@ export interface ColorPickerProps
   showSwatches?: boolean;
   size?: ColorPickerSize;
   mode?: ColorPickerMode;
+  movable?: boolean;
   presetColors?: string[];
   onChange?: (hex: string) => void;
   onValueChange?: (hex: string) => void;
@@ -133,6 +134,7 @@ interface HueRingProps {
   ariaLabel: string;
   disabled?: boolean;
   sizePx?: number;
+  thickness?: number;
   children: React.ReactNode;
 }
 
@@ -142,6 +144,7 @@ function HueRing({
   ariaLabel,
   disabled = false,
   sizePx = 236,
+  thickness = 20,
   children,
 }: HueRingProps) {
   const ringRef = React.useRef<HTMLDivElement | null>(null);
@@ -174,7 +177,6 @@ function HueRing({
     }
   };
 
-  const thickness = 20;
   const innerSize = sizePx - thickness * 2;
   const handleRadius = (sizePx - thickness) / 2;
 
@@ -191,7 +193,7 @@ function HueRing({
       onPointerMove={handlePointerMove}
       onKeyDown={handleKeyDown}
       className={cn(
-        'relative rounded-full select-none touch-none cursor-crosshair flex items-center justify-center shadow-xs',
+        'relative rounded-full select-none touch-none cursor-crosshair flex items-center justify-center',
         disabled && 'cursor-not-allowed opacity-50',
       )}
       style={{
@@ -199,22 +201,39 @@ function HueRing({
         height: `${sizePx}px`,
         background:
           'conic-gradient(from 0deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)',
+        boxShadow:
+          'inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 1px 2px rgba(0, 0, 0, 0.16)',
       }}
     >
+      {/* Clean inner circular card mask */}
       <div
-        className="rounded-full bg-card flex items-center justify-center overflow-hidden border border-border/50 shadow-inner"
+        className="absolute rounded-full bg-card pointer-events-none"
+        style={{
+          inset: `${thickness}px`,
+          boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.14)',
+        }}
+      />
+
+      {/* Content wrapper with pointer containment */}
+      <div
+        className="relative z-10 flex items-center justify-center pointer-events-none"
         style={{
           width: `${innerSize}px`,
           height: `${innerSize}px`,
         }}
-        onPointerDown={(e) => e.stopPropagation()}
-        onPointerMove={(e) => e.stopPropagation()}
       >
-        {children}
+        <div
+          className="pointer-events-auto flex items-center justify-center"
+          onPointerDown={(e) => e.stopPropagation()}
+          onPointerMove={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
       </div>
 
+      {/* Orbiting ring handle */}
       <span
-        className="absolute pointer-events-none size-3.5 rounded-full border-2 border-white bg-foreground shadow-md ring-1 ring-black/40"
+        className="absolute pointer-events-none size-3.5 rounded-full border-2 border-white bg-foreground shadow-md ring-1 ring-black/40 z-20"
         style={{
           top: '50%',
           left: '50%',
@@ -276,25 +295,42 @@ function CircleWheel({
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       className={cn(
-        'relative rounded-full select-none touch-none cursor-crosshair overflow-hidden border border-border/50 shadow-inner',
+        'relative rounded-full select-none touch-none cursor-crosshair overflow-hidden',
         disabled && 'cursor-not-allowed opacity-50',
       )}
       style={{
         width: `${sizePx}px`,
         height: `${sizePx}px`,
-        background:
-          'conic-gradient(from 0deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)',
+        boxShadow:
+          'inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 1px 2px rgba(0, 0, 0, 0.16)',
       }}
     >
+      {/* 1. Conic hue base */}
+      <div
+        className="absolute inset-0 rounded-full"
+        style={{
+          background:
+            'conic-gradient(from 0deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)',
+        }}
+      />
+      {/* 2. Radial saturation fade to white at center */}
       <div
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle closest-side, #ffffff 0%, transparent 100%)',
         }}
       />
+      {/* 3. Dark overlay for value (brightness) */}
+      <div
+        className="absolute inset-0 rounded-full pointer-events-none bg-black transition-opacity"
+        style={{
+          opacity: 1 - hsva.v / 100,
+        }}
+      />
 
+      {/* Pointer handle */}
       <span
-        className="absolute pointer-events-none size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-md ring-1 ring-black/40"
+        className="absolute pointer-events-none size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-md ring-1 ring-black/40 z-10"
         style={{
           left: `${pointer.x}px`,
           top: `${pointer.y}px`,
@@ -312,6 +348,7 @@ interface ColorChannelSliderProps {
   max: number;
   value: number;
   gradient: string;
+  density?: 'spacious' | 'compact' | 'dense';
   disabled?: boolean;
   onChange: (val: number) => void;
 }
@@ -323,15 +360,32 @@ function ColorChannelSlider({
   max,
   value,
   gradient,
+  density = 'spacious',
   disabled = false,
   onChange,
 }: ColorChannelSliderProps) {
   const rounded = Math.round(value);
 
+  const trackHeightClass =
+    density === 'dense' ? 'h-1' : density === 'compact' ? 'h-1.5' : 'h-2';
+  const rowGapClass = density === 'dense' ? 'gap-1' : 'gap-1.5';
+  const inputHeightClass =
+    density === 'dense'
+      ? 'h-4.5 text-[9px] px-1'
+      : density === 'compact'
+        ? 'h-5 text-[10px] px-1'
+        : 'h-6 text-[11px] px-1.5';
+  const labelTextClass =
+    density === 'dense'
+      ? 'text-[10px]'
+      : density === 'compact'
+        ? 'text-[11px]'
+        : 'text-xs';
+
   return (
-    <div className="grid grid-cols-[1.25rem_1fr_3.5rem] items-center gap-2 text-xs">
+    <div className={cn('grid grid-cols-[1.25rem_1fr_3.25rem] items-center', rowGapClass)}>
       <span
-        className="font-mono font-bold text-center select-none"
+        className={cn('font-mono font-bold text-center select-none', labelTextClass)}
         style={{ color: labelColor }}
       >
         {label}
@@ -345,7 +399,7 @@ function ColorChannelSlider({
         disabled={disabled}
         aria-label={`Color channel ${label}`}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="h-2 w-full cursor-pointer appearance-none rounded-full outline-hidden"
+        className={cn('w-full cursor-pointer appearance-none rounded-full outline-hidden', trackHeightClass)}
         style={{ background: gradient }}
       />
       <input
@@ -357,7 +411,10 @@ function ColorChannelSlider({
         disabled={disabled}
         aria-label={`Color channel ${label} value`}
         onChange={(e) => onChange(clamp(Number(e.target.value), min, max))}
-        className="h-6 w-full rounded border border-border/80 bg-background px-1.5 font-mono text-[11px] text-foreground text-center outline-hidden focus:border-primary focus:ring-1 focus:ring-primary"
+        className={cn(
+          'w-full rounded border border-border/80 bg-background font-mono text-foreground text-center outline-hidden focus:border-primary focus:ring-1 focus:ring-primary',
+          inputHeightClass,
+        )}
       />
     </div>
   );
@@ -375,6 +432,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
       showSwatches = true,
       size = 'default',
       mode = 'inline',
+      movable = false,
       presetColors = DEFAULT_PRESET_COLORS as unknown as string[],
       onChange,
       onValueChange,
@@ -399,6 +457,15 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
 
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const [copied, setCopied] = React.useState<boolean>(false);
+
+    // Movable drag displacement
+    const [dragOffset, setDragOffset] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 });
+    const dragStartRef = React.useRef<{
+      startX: number;
+      startY: number;
+      initialX: number;
+      initialY: number;
+    } | null>(null);
 
     const popoverContainerRef = React.useRef<HTMLDivElement | null>(null);
     const squareRef = React.useRef<HTMLDivElement | null>(null);
@@ -520,16 +587,74 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
       commitColor(triangleWeightsToHsv(weights, hsva.h));
     };
 
-    const handleTrianglePointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
+    const handleTrianglePointerDown = (e: React.PointerEvent<SVGPolygonElement>) => {
       if (disabled || e.button !== 0) return;
       e.preventDefault();
       e.currentTarget.setPointerCapture(e.pointerId);
       updateTriangleFromCoords(e.clientX, e.clientY);
     };
 
-    const handleTrianglePointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    const handleTrianglePointerMove = (e: React.PointerEvent<SVGPolygonElement>) => {
       if (disabled || e.buttons !== 1) return;
       updateTriangleFromCoords(e.clientX, e.clientY);
+    };
+
+    // Blank-area dragging handlers
+    const handleCardPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!movable || disabled) return;
+      const target = e.target as HTMLElement | null;
+      if (
+        target?.closest(
+          'input, button, select, textarea, [role="slider"], [role="button"], [role="tab"]',
+        )
+      ) {
+        return;
+      }
+      try {
+        e.currentTarget.setPointerCapture(e.pointerId);
+      } catch {
+        // jsdom or unsupported browser
+      }
+      dragStartRef.current = {
+        startX: e.clientX,
+        startY: e.clientY,
+        initialX: dragOffset.x,
+        initialY: dragOffset.y,
+      };
+    };
+
+    const handleCardPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!dragStartRef.current) return;
+      const dx = e.clientX - dragStartRef.current.startX;
+      const dy = e.clientY - dragStartRef.current.startY;
+      setDragOffset({
+        x: dragStartRef.current.initialX + dx,
+        y: dragStartRef.current.initialY + dy,
+      });
+    };
+
+    const handleCardPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+      if (dragStartRef.current) {
+        dragStartRef.current = null;
+        try {
+          e.currentTarget.releasePointerCapture(e.pointerId);
+        } catch {
+          // ignore
+        }
+      }
+    };
+
+    const handleCardDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!movable || disabled) return;
+      const target = e.target as HTMLElement | null;
+      if (
+        target?.closest(
+          'input, button, select, textarea, [role="slider"], [role="button"], [role="tab"]',
+        )
+      ) {
+        return;
+      }
+      setDragOffset({ x: 0, y: 0 });
     };
 
     // Color spaces for channels
@@ -548,14 +673,14 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
 
     const isSm = size === 'sm';
     const stageSize = isSm ? 200 : 236;
-    const squareInnerSize = isSm ? 112 : 136;
-    const triangleInnerW = isSm ? 150 : 180;
-    const triangleInnerH = isSm ? 115 : 140;
+    const ringThickness = isSm ? 16 : 20;
+    const innerSize = stageSize - ringThickness * 2;
+    const squareInnerSize = Math.round(innerSize / Math.SQRT2);
 
-    // Channel Gradients
-    const redGradient = `linear-gradient(90deg, rgb(0, ${rgb.g}, ${rgb.b}), rgb(255, ${rgb.g}, ${rgb.b}))`;
-    const greenGradient = `linear-gradient(90deg, rgb(${rgb.r}, 0, ${rgb.b}), rgb(${rgb.r}, 255, ${rgb.b}))`;
-    const blueGradient = `linear-gradient(90deg, rgb(${rgb.r}, ${rgb.g}, 0), rgb(${rgb.r}, ${rgb.g}, 255))`;
+    // Dynamic Slider Gradients reflecting current selected color
+    const redGradient = `linear-gradient(90deg, rgb(0 ${Math.round(rgb.g)} ${Math.round(rgb.b)}), rgb(255 ${Math.round(rgb.g)} ${Math.round(rgb.b)}))`;
+    const greenGradient = `linear-gradient(90deg, rgb(${Math.round(rgb.r)} 0 ${Math.round(rgb.b)}), rgb(${Math.round(rgb.r)} 255 ${Math.round(rgb.b)}))`;
+    const blueGradient = `linear-gradient(90deg, rgb(${Math.round(rgb.r)} ${Math.round(rgb.g)} 0), rgb(${Math.round(rgb.r)} ${Math.round(rgb.g)} 255))`;
 
     const hueGradient = 'linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)';
     const satGradient = `linear-gradient(90deg, ${hsvToHex({ ...hsva, s: 0 })}, ${hsvToHex({ ...hsva, s: 100 })})`;
@@ -570,12 +695,33 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
     const labAGradient = `linear-gradient(90deg, ${rgbToCss(labToRgb({ ...lab, a: -128 }))}, ${rgbToCss(labToRgb({ ...lab, a: 127 }))})`;
     const labBGradient = `linear-gradient(90deg, ${rgbToCss(labToRgb({ ...lab, b: -128 }))}, ${rgbToCss(labToRgb({ ...lab, b: 127 }))})`;
 
+    // Density calculation based on active slider count
+    const activeSliderCount =
+      (showRgbSliders ? 3 : 0) +
+      (showHsvSliders ? 3 : 0) +
+      (showCmykSliders ? 4 : 0) +
+      (showLabSliders ? 3 : 0);
+
+    const sliderDensity: 'spacious' | 'compact' | 'dense' =
+      activeSliderCount <= 4 ? 'spacious' : activeSliderCount <= 7 ? 'compact' : 'dense';
+
     // Core Picker Panel Card
     const panelContent = (
       <div
+        onPointerDown={handleCardPointerDown}
+        onPointerMove={handleCardPointerMove}
+        onPointerUp={handleCardPointerUp}
+        onDoubleClick={handleCardDoubleClick}
+        style={{
+          transform:
+            dragOffset.x !== 0 || dragOffset.y !== 0
+              ? `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0)`
+              : undefined,
+        }}
         className={cn(
-          'flex flex-col gap-3 rounded-lg border border-border bg-card p-3.5 text-card-foreground shadow-sm',
+          'flex flex-col gap-3 rounded-lg border border-border bg-card p-3.5 text-card-foreground shadow-sm transition-shadow',
           isSm ? 'w-64 text-xs' : 'w-72 text-sm',
+          movable && 'cursor-grab active:cursor-grabbing',
           disabled && 'opacity-50 pointer-events-none select-none',
         )}
       >
@@ -654,6 +800,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
               ariaLabel="Hue ring"
               disabled={disabled}
               sizePx={stageSize}
+              thickness={ringThickness}
             >
               <div
                 ref={squareRef}
@@ -663,7 +810,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                 tabIndex={disabled ? -1 : 0}
                 onPointerDown={handleSquarePointerDown}
                 onPointerMove={handleSquarePointerMove}
-                className="relative cursor-crosshair overflow-hidden rounded-sm border border-border/60 shadow-inner select-none"
+                className="relative cursor-crosshair overflow-hidden rounded-xs border border-border/70 shadow-xs select-none"
                 style={{
                   width: `${squareInnerSize}px`,
                   height: `${squareInnerSize}px`,
@@ -700,6 +847,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
               ariaLabel="Hue ring"
               disabled={disabled}
               sizePx={stageSize}
+              thickness={ringThickness}
             >
               <svg
                 ref={triangleSvgRef}
@@ -707,12 +855,10 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                 role="slider"
                 aria-label="Triangle HSV color picker"
                 tabIndex={disabled ? -1 : 0}
-                onPointerDown={handleTrianglePointerDown}
-                onPointerMove={handleTrianglePointerMove}
                 className="cursor-crosshair select-none touch-none overflow-visible"
                 style={{
-                  width: `${triangleInnerW}px`,
-                  height: `${triangleInnerH}px`,
+                  width: `${innerSize}px`,
+                  height: `${innerSize}px`,
                 }}
               >
                 <defs>
@@ -746,19 +892,26 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                 <polygon
                   points={trianglePoints}
                   fill="none"
-                  stroke="currentColor"
-                  strokeOpacity="0.2"
-                  strokeWidth="1.5"
+                  stroke="rgba(255,255,255,0.25)"
+                  strokeWidth="1.25"
                 />
 
                 <circle
                   cx={trianglePointer.x}
                   cy={trianglePointer.y}
-                  r="6"
-                  fill={activeHex}
+                  r="7"
+                  fill="transparent"
                   stroke="#ffffff"
-                  strokeWidth="2"
+                  strokeWidth="2.5"
                   className="drop-shadow-sm pointer-events-none"
+                />
+
+                <polygon
+                  points={trianglePoints}
+                  fill="transparent"
+                  className="cursor-crosshair pointer-events-auto"
+                  onPointerDown={handleTrianglePointerDown}
+                  onPointerMove={handleTrianglePointerMove}
                 />
               </svg>
             </HueRing>
@@ -870,214 +1023,200 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
           </div>
         )}
 
-        {/* 5. Channel Sliders & Multi-Group Toggles */}
-        <div className="flex flex-col gap-2.5 border-t border-border/40 pt-2.5">
-          {/* Active Channel Value Sliders */}
-          <div className="flex flex-col gap-2">
-            {showRgbSliders && (
-              <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="RGB channels">
-                <ColorChannelSlider
-                  label="R"
-                  labelColor="#ef4444"
-                  min={0}
-                  max={255}
-                  value={rgb.r}
-                  gradient={redGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitHex(rgbToHex({ ...rgb, r: val }))}
-                />
-                <ColorChannelSlider
-                  label="G"
-                  labelColor="#22c55e"
-                  min={0}
-                  max={255}
-                  value={rgb.g}
-                  gradient={greenGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitHex(rgbToHex({ ...rgb, g: val }))}
-                />
-                <ColorChannelSlider
-                  label="B"
-                  labelColor="#3b82f6"
-                  min={0}
-                  max={255}
-                  value={rgb.b}
-                  gradient={blueGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitHex(rgbToHex({ ...rgb, b: val }))}
-                />
-              </div>
-            )}
-
-            {showHsvSliders && (
-              <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="HSV channels">
-                <ColorChannelSlider
-                  label="H"
-                  min={0}
-                  max={360}
-                  value={hsva.h}
-                  gradient={hueGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitColor({ ...hsva, h: val })}
-                />
-                <ColorChannelSlider
-                  label="S"
-                  min={0}
-                  max={100}
-                  value={hsva.s}
-                  gradient={satGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitColor({ ...hsva, s: val })}
-                />
-                <ColorChannelSlider
-                  label="V"
-                  min={0}
-                  max={100}
-                  value={hsva.v}
-                  gradient={valGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitColor({ ...hsva, v: val })}
-                />
-              </div>
-            )}
-
-            {showCmykSliders && (
-              <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="CMYK channels">
-                <ColorChannelSlider
-                  label="C"
-                  labelColor="#06b6d4"
-                  min={0}
-                  max={100}
-                  value={cmyk.c}
-                  gradient={cyanGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, c: val })))}
-                />
-                <ColorChannelSlider
-                  label="M"
-                  labelColor="#ec4899"
-                  min={0}
-                  max={100}
-                  value={cmyk.m}
-                  gradient={magentaGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, m: val })))}
-                />
-                <ColorChannelSlider
-                  label="Y"
-                  labelColor="#eab308"
-                  min={0}
-                  max={100}
-                  value={cmyk.y}
-                  gradient={yellowGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, y: val })))}
-                />
-                <ColorChannelSlider
-                  label="K"
-                  labelColor="var(--color-foreground)"
-                  min={0}
-                  max={100}
-                  value={cmyk.k}
-                  gradient={blackGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, k: val })))}
-                />
-              </div>
-            )}
-
-            {showLabSliders && (
-              <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="LAB channels">
-                <ColorChannelSlider
-                  label="L"
-                  min={0}
-                  max={100}
-                  value={lab.l}
-                  gradient={labLGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitHex(rgbToHex(labToRgb({ ...lab, l: val })))}
-                />
-                <ColorChannelSlider
-                  label="A"
-                  min={-128}
-                  max={127}
-                  value={lab.a}
-                  gradient={labAGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitHex(rgbToHex(labToRgb({ ...lab, a: val })))}
-                />
-                <ColorChannelSlider
-                  label="B"
-                  min={-128}
-                  max={127}
-                  value={lab.b}
-                  gradient={labBGradient}
-                  disabled={disabled}
-                  onChange={(val) => commitHex(rgbToHex(labToRgb({ ...lab, b: val })))}
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Independent Multi-Channel Toggle Buttons */}
-          <div className="grid grid-cols-4 gap-1 rounded-md bg-muted/60 p-1" role="group" aria-label="Color channel sliders">
+        {/* 5. Channel Selector Toggle Bar (PLACED AT TOP OF SLIDERS) */}
+        <div className="flex items-center justify-between gap-1 border-t border-border/40 pt-2.5">
+          {[
+            { id: 'rgb', label: 'RGB', active: showRgbSliders, toggle: () => setShowRgbSliders((v) => !v) },
+            { id: 'hsv', label: 'HSV', active: showHsvSliders, toggle: () => setShowHsvSliders((v) => !v) },
+            { id: 'cmyk', label: 'CMYK', active: showCmykSliders, toggle: () => setShowCmykSliders((v) => !v) },
+            { id: 'lab', label: 'LAB', active: showLabSliders, toggle: () => setShowLabSliders((v) => !v) },
+          ].map((ch) => (
             <button
+              key={ch.id}
               type="button"
               disabled={disabled}
-              aria-pressed={showRgbSliders}
-              onClick={() => setShowRgbSliders(!showRgbSliders)}
+              onClick={ch.toggle}
+              aria-pressed={ch.active}
               className={cn(
-                'rounded py-1 text-center font-medium text-xs transition-colors cursor-pointer select-none',
-                showRgbSliders
-                  ? 'bg-background text-foreground shadow-xs font-semibold'
-                  : 'text-muted-foreground hover:text-foreground',
+                'flex-1 rounded py-1 text-center font-semibold text-[11px] transition-all select-none border',
+                ch.active
+                  ? 'border-primary/40 bg-primary/10 text-primary shadow-2xs font-bold'
+                  : 'border-transparent text-muted-foreground hover:bg-muted hover:text-foreground',
               )}
             >
-              RGB
+              {ch.label}
             </button>
-            <button
-              type="button"
-              disabled={disabled}
-              aria-pressed={showHsvSliders}
-              onClick={() => setShowHsvSliders(!showHsvSliders)}
-              className={cn(
-                'rounded py-1 text-center font-medium text-xs transition-colors cursor-pointer select-none',
-                showHsvSliders
-                  ? 'bg-background text-foreground shadow-xs font-semibold'
-                  : 'text-muted-foreground hover:text-foreground',
-              )}
-            >
-              HSV
-            </button>
-            <button
-              type="button"
-              disabled={disabled}
-              aria-pressed={showCmykSliders}
-              onClick={() => setShowCmykSliders(!showCmykSliders)}
-              className={cn(
-                'rounded py-1 text-center font-medium text-xs transition-colors cursor-pointer select-none',
-                showCmykSliders
-                  ? 'bg-background text-foreground shadow-xs font-semibold'
-                  : 'text-muted-foreground hover:text-foreground',
-              )}
-            >
-              CMYK
-            </button>
-            <button
-              type="button"
-              disabled={disabled}
-              aria-pressed={showLabSliders}
-              onClick={() => setShowLabSliders(!showLabSliders)}
-              className={cn(
-                'rounded py-1 text-center font-medium text-xs transition-colors cursor-pointer select-none',
-                showLabSliders
-                  ? 'bg-background text-foreground shadow-xs font-semibold'
-                  : 'text-muted-foreground hover:text-foreground',
-              )}
-            >
-              LAB
-            </button>
-          </div>
+          ))}
+        </div>
+
+        {/* 6. Dynamic Sliders List */}
+        <div className="flex flex-col gap-2">
+          {/* RGB Sliders */}
+          {showRgbSliders && (
+            <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="RGB channels">
+              <ColorChannelSlider
+                label="R"
+                labelColor="#ef4444"
+                min={0}
+                max={255}
+                value={rgb.r}
+                gradient={redGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitHex(rgbToHex({ ...rgb, r: val }))}
+              />
+              <ColorChannelSlider
+                label="G"
+                labelColor="#22c55e"
+                min={0}
+                max={255}
+                value={rgb.g}
+                gradient={greenGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitHex(rgbToHex({ ...rgb, g: val }))}
+              />
+              <ColorChannelSlider
+                label="B"
+                labelColor="#3b82f6"
+                min={0}
+                max={255}
+                value={rgb.b}
+                gradient={blueGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitHex(rgbToHex({ ...rgb, b: val }))}
+              />
+            </div>
+          )}
+
+          {/* HSV Sliders */}
+          {showHsvSliders && (
+            <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="HSV channels">
+              <ColorChannelSlider
+                label="H"
+                labelColor="#eab308"
+                min={0}
+                max={360}
+                value={hsva.h}
+                gradient={hueGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitColor({ ...hsva, h: val })}
+              />
+              <ColorChannelSlider
+                label="S"
+                labelColor="#ec4899"
+                min={0}
+                max={100}
+                value={hsva.s}
+                gradient={satGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitColor({ ...hsva, s: val })}
+              />
+              <ColorChannelSlider
+                label="V"
+                labelColor="#8b5cf6"
+                min={0}
+                max={100}
+                value={hsva.v}
+                gradient={valGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitColor({ ...hsva, v: val })}
+              />
+            </div>
+          )}
+
+          {/* CMYK Sliders */}
+          {showCmykSliders && (
+            <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="CMYK channels">
+              <ColorChannelSlider
+                label="C"
+                labelColor="#06b6d4"
+                min={0}
+                max={100}
+                value={cmyk.c}
+                gradient={cyanGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, c: val })))}
+              />
+              <ColorChannelSlider
+                label="M"
+                labelColor="#ec4899"
+                min={0}
+                max={100}
+                value={cmyk.m}
+                gradient={magentaGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, m: val })))}
+              />
+              <ColorChannelSlider
+                label="Y"
+                labelColor="#eab308"
+                min={0}
+                max={100}
+                value={cmyk.y}
+                gradient={yellowGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, y: val })))}
+              />
+              <ColorChannelSlider
+                label="K"
+                labelColor="var(--color-foreground)"
+                min={0}
+                max={100}
+                value={cmyk.k}
+                gradient={blackGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitHex(rgbToHex(cmykToRgb({ ...cmyk, k: val })))}
+              />
+            </div>
+          )}
+
+          {/* CIELAB Sliders */}
+          {showLabSliders && (
+            <div className="flex flex-col gap-1.5 rounded-md bg-muted/40 p-2" aria-label="LAB channels">
+              <ColorChannelSlider
+                label="L"
+                labelColor="#a1a1aa"
+                min={0}
+                max={100}
+                value={lab.l}
+                gradient={labLGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitHex(rgbToHex(labToRgb({ ...lab, l: val })))}
+              />
+              <ColorChannelSlider
+                label="A"
+                labelColor="#f43f5e"
+                min={-128}
+                max={127}
+                value={lab.a}
+                gradient={labAGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitHex(rgbToHex(labToRgb({ ...lab, a: val })))}
+              />
+              <ColorChannelSlider
+                label="B"
+                labelColor="#3b82f6"
+                min={-128}
+                max={127}
+                value={lab.b}
+                gradient={labBGradient}
+                density={sliderDensity}
+                disabled={disabled}
+                onChange={(val) => commitHex(rgbToHex(labToRgb({ ...lab, b: val })))}
+              />
+            </div>
+          )}
         </div>
       </div>
     );
