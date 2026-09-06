@@ -123,14 +123,20 @@ export function SliderDocPage() {
             </div>
           }
         >
-          <div className="flex items-center justify-center p-8">
+          <div className="w-full flex items-center justify-center p-8">
             <div
               className={
                 orientation === 'horizontal'
-                  ? 'w-full max-w-xs flex flex-col gap-3'
+                  ? 'w-72 max-w-xs flex flex-col gap-3'
                   : 'h-48 flex flex-col items-center justify-center'
               }
             >
+              {orientation === 'horizontal' && (
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Value</span>
+                  <span className="font-mono font-medium text-foreground">{value}</span>
+                </div>
+              )}
               <Slider
                 value={value}
                 min={min}
@@ -140,6 +146,9 @@ export function SliderDocPage() {
                 orientation={orientation}
                 onValueChange={setValue}
               />
+              {orientation === 'vertical' && (
+                <span className="font-mono text-xs font-medium text-foreground mt-2">{value}</span>
+              )}
             </div>
           </div>
         </ComponentPreview>
