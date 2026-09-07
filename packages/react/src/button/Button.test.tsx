@@ -39,7 +39,10 @@ describe('Button', () => {
   it('renders with default variant and size', () => {
     render(<Button>Save</Button>);
     const button = screen.getByRole('button', { name: 'Save' });
-    expect(button).toHaveClass('bg-primary', 'text-primary-foreground', 'h-9');
+    expect(button).toHaveClass('bg-primary', 'text-primary-foreground', 'h-8');
+    expect(button).toHaveAttribute('data-slot', 'button');
+    expect(button).toHaveAttribute('data-variant', 'default');
+    expect(button).toHaveAttribute('data-size', 'default');
   });
 
   it('applies variant and size classes', () => {
@@ -49,7 +52,9 @@ describe('Button', () => {
       </Button>,
     );
     const button = screen.getByRole('button', { name: 'Delete' });
-    expect(button).toHaveClass('bg-destructive', 'text-destructive-foreground', 'h-10');
+    expect(button).toHaveClass('bg-destructive/10', 'text-destructive', 'h-9');
+    expect(button).toHaveAttribute('data-variant', 'destructive');
+    expect(button).toHaveAttribute('data-size', 'lg');
   });
 
   it('supports dense sizes xs, icon-xs, icon-sm, icon-lg', () => {
@@ -63,7 +68,7 @@ describe('Button', () => {
     expect(screen.getByRole('button', { name: '🔍' })).toHaveClass('size-7');
 
     rerender(<Button size="icon-lg">🔍</Button>);
-    expect(screen.getByRole('button', { name: '🔍' })).toHaveClass('size-10');
+    expect(screen.getByRole('button', { name: '🔍' })).toHaveClass('size-9');
   });
 
   it('supports shadcn outline, secondary, ghost, and link variants', () => {
@@ -82,8 +87,8 @@ describe('Button', () => {
 
     rerender(<Button variant="ghost">Ghost</Button>);
     expect(screen.getByRole('button', { name: 'Ghost' })).toHaveClass(
-      'hover:bg-accent',
-      'hover:text-accent-foreground',
+      'hover:bg-muted',
+      'hover:text-foreground',
     );
 
     rerender(<Button variant="link">Link</Button>);
@@ -96,7 +101,44 @@ describe('Button', () => {
   it('supports icon size', () => {
     render(<Button size="icon" aria-label="Settings">⚙</Button>);
     const button = screen.getByRole('button', { name: 'Settings' });
-    expect(button).toHaveClass('size-9', 'p-0');
+    expect(button).toHaveClass('size-8', 'p-0');
+  });
+
+  it('renders children directly without wrapping span for true flex layout and gap', () => {
+    render(
+      <Button>
+        <svg data-testid="test-icon" className="size-4" />
+        <span data-testid="test-text">Click Me</span>
+      </Button>,
+    );
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('gap-1.5', 'items-center', 'justify-center');
+    expect(screen.getByTestId('test-icon').parentElement).toBe(button);
+    expect(screen.getByTestId('test-text').parentElement).toBe(button);
+  });
+
+  it('supports single icon centering without extra wrapper or offset', () => {
+    render(
+      <Button size="icon" aria-label="Icon Only">
+        <svg data-testid="icon" className="size-4" />
+      </Button>,
+    );
+    const button = screen.getByRole('button', { name: 'Icon Only' });
+    expect(button).toHaveClass('size-8', 'p-0', 'items-center', 'justify-center');
+    expect(screen.getByTestId('icon').parentElement).toBe(button);
+  });
+
+  it('renders loading spinner as direct flex child without breaking sibling elements', () => {
+    render(
+      <Button loading>
+        <span data-testid="label">Saving</span>
+      </Button>,
+    );
+    const button = screen.getByRole('button');
+    const spinner = button.querySelector('.cs-button__spinner');
+    expect(spinner).not.toBeNull();
+    expect(spinner?.parentElement).toBe(button);
+    expect(screen.getByTestId('label').parentElement).toBe(button);
   });
 
   it('calls onClick', () => {

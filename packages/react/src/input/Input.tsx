@@ -10,8 +10,8 @@ export interface InputProps
 }
 
 const sizeStyles: Record<InputSize, string> = {
-  default: 'h-9 px-3 py-1 text-sm',
-  sm: 'h-8 px-2.5 py-0.5 text-xs',
+  default: 'h-8 px-2.5 py-1 text-sm',
+  sm: 'h-7 px-2 py-0.5 text-xs',
 };
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -39,7 +39,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         data-slot="input"
         data-size={size}
         disabled={disabled}
-        className={`flex w-full rounded-md border border-input bg-transparent shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 text-foreground ${sizeStyles[size]} ${forcedStateClass} ${className}`.trim()}
+        className={`flex w-full rounded-md border border-input bg-transparent dark:bg-input/20 shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 text-foreground ${sizeStyles[size]} ${forcedStateClass} ${className}`.trim()}
         {...props}
       />
     );

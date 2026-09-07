@@ -22,11 +22,11 @@ describe('Input component', () => {
     const { rerender } = render(<Input size="sm" data-testid="input" />);
     let input = screen.getByTestId('input');
     expect(input).toHaveAttribute('data-size', 'sm');
-    expect(input.className).toContain('h-8');
+    expect(input.className).toContain('h-7');
 
     rerender(<Input size="default" data-testid="input" />);
     input = screen.getByTestId('input');
-    expect(input.className).toContain('h-9');
+    expect(input.className).toContain('h-8');
   });
 
   it('handles disabled state', () => {

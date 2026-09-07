@@ -15,14 +15,20 @@ const variantStyles: Record<CardVariant, string> = {
 };
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className = '', variant = 'default', size = 'default', children, ...props }, ref) => {
+  ({ className = '', variant = 'default', size = 'default', style, children, ...props }, ref) => {
+    const spacingStyle = {
+      '--card-spacing': size === 'sm' ? '0.75rem' : '1rem',
+      ...style,
+    } as React.CSSProperties;
+
     return (
       <div
         ref={ref}
         data-slot="card"
         data-variant={variant}
         data-size={size}
-        className={`rounded-xl border transition-colors ${variantStyles[variant]} ${size === 'sm' ? 'text-xs p-3' : ''} ${className}`.trim()}
+        style={spacingStyle}
+        className={`rounded-xl border transition-colors ${variantStyles[variant]} ${size === 'sm' ? 'text-xs' : ''} ${className}`.trim()}
         {...props}
       >
         {children}
@@ -38,7 +44,7 @@ export const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
       <div
         ref={ref}
         data-slot="card-header"
-        className={`flex flex-col gap-1.5 p-6 ${className}`.trim()}
+        className={`grid grid-cols-[1fr_auto] items-start gap-1.5 p-[var(--card-spacing,1rem)] ${className}`.trim()}
         {...props}
       >
         {children}
@@ -54,7 +60,7 @@ export const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttribut
       <h3
         ref={ref}
         data-slot="card-title"
-        className={`font-semibold leading-none tracking-tight text-lg text-card-foreground ${className}`.trim()}
+        className={`col-start-1 font-semibold leading-none tracking-tight text-base text-card-foreground ${className}`.trim()}
         {...props}
       >
         {children}
@@ -70,7 +76,7 @@ export const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTML
       <p
         ref={ref}
         data-slot="card-description"
-        className={`text-sm text-muted-foreground ${className}`.trim()}
+        className={`col-start-1 text-sm text-muted-foreground ${className}`.trim()}
         {...props}
       >
         {children}
@@ -102,7 +108,7 @@ export const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes
       <div
         ref={ref}
         data-slot="card-content"
-        className={`p-6 pt-0 ${className}`.trim()}
+        className={`p-[var(--card-spacing,1rem)] pt-0 ${className}`.trim()}
         {...props}
       >
         {children}
@@ -118,7 +124,7 @@ export const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
       <div
         ref={ref}
         data-slot="card-footer"
-        className={`flex items-center p-6 pt-0 gap-2 ${className}`.trim()}
+        className={`flex items-center p-[var(--card-spacing,1rem)] gap-2 border-t border-border/50 bg-muted/20 rounded-b-xl ${className}`.trim()}
         {...props}
       >
         {children}

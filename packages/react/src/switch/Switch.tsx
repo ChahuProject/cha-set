@@ -32,6 +32,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
       forceHover = false,
       forceFocus = false,
       onClick,
+      'aria-label': ariaLabelProp,
       ...props
     },
     ref,
@@ -70,7 +71,15 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
       forcedHoverClass = isChecked ? 'bg-primary/90' : 'bg-input/80';
     }
 
-    const buttonElement = (
+    const fallbackLabel =
+      typeof label === 'string'
+        ? label
+        : typeof children === 'string'
+        ? children
+        : undefined;
+    const effectiveAriaLabel = ariaLabelProp ?? fallbackLabel;
+
+    return (
       <button
         ref={ref}
         type="button"
@@ -78,12 +87,13 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         id={switchId}
         name={name}
         aria-checked={isChecked}
+        aria-label={effectiveAriaLabel}
         data-slot="switch"
         data-state={state}
         data-size={size}
         disabled={disabled}
         className={cn(
-          'peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+          'peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 select-none',
           isSm ? 'h-4 w-7' : 'h-5 w-9',
           isChecked ? 'bg-primary' : 'bg-input',
           forcedFocusClass,
@@ -103,31 +113,6 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           )}
         />
       </button>
-    );
-
-    const companion = label ?? children;
-    if (!companion) {
-      return buttonElement;
-    }
-
-    return (
-      <label
-        htmlFor={switchId}
-        className={cn(
-          'inline-flex items-center gap-2 select-none',
-          disabled ? 'cursor-not-allowed' : 'cursor-pointer',
-        )}
-      >
-        {buttonElement}
-        <span
-          className={cn(
-            'text-sm font-medium leading-none text-foreground',
-            disabled && 'opacity-50 cursor-not-allowed',
-          )}
-        >
-          {companion}
-        </span>
-      </label>
     );
   },
 );

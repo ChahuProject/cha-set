@@ -9,6 +9,8 @@ export const badgeVariantSchema = z.enum([
   'secondary',
   'destructive',
   'outline',
+  'ghost',
+  'link',
 ]);
 
 export const badgeSizeSchema = z.enum(['default', 'sm']);

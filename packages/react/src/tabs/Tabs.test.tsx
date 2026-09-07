@@ -118,4 +118,26 @@ describe('Tabs Component', () => {
     const tab2 = screen.getByRole('tab', { name: 'Tab 2' });
     expect(tab2.className).toContain('text-foreground');
   });
+
+  it('supports variant="line" with underline styling and trigger gap', () => {
+    render(
+      <Tabs defaultValue="tab1" variant="line">
+        <TabsList data-testid="tabs-list">
+          <TabsTrigger value="tab1" data-testid="trigger-1">
+            <svg data-testid="tab-icon" />
+            Tab 1
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>,
+    );
+
+    const list = screen.getByTestId('tabs-list');
+    expect(list).toHaveAttribute('data-variant', 'line');
+    expect(list.className).toContain('border-b');
+
+    const trigger = screen.getByTestId('trigger-1');
+    expect(trigger).toHaveAttribute('data-variant', 'line');
+    expect(trigger.className).toContain('gap-1.5');
+    expect(trigger.className).toContain('border-b-2');
+  });
 });

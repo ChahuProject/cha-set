@@ -52,4 +52,36 @@ describe('Card component', () => {
     expect(card.className).toContain('custom-test-class');
     expect(ref.current).toBe(card);
   });
+
+  it('supports CardAction in grid CardHeader without line breaks', () => {
+    render(
+      <Card data-testid="card-grid">
+        <CardHeader data-testid="header">
+          <CardTitle>Title</CardTitle>
+          <CardDescription>Description</CardDescription>
+          <div data-slot="card-action" data-testid="action">
+            <button type="button">Action</button>
+          </div>
+        </CardHeader>
+      </Card>,
+    );
+
+    const header = screen.getByTestId('header');
+    expect(header.className).toContain('grid');
+    expect(header.className).toContain('grid-cols-[1fr_auto]');
+    const action = screen.getByTestId('action');
+    expect(action).toBeInTheDocument();
+  });
+
+  it('renders CardFooter with divider and subtle background', () => {
+    render(
+      <Card>
+        <CardFooter data-testid="footer">Footer Buttons</CardFooter>
+      </Card>,
+    );
+
+    const footer = screen.getByTestId('footer');
+    expect(footer.className).toContain('border-t');
+    expect(footer.className).toContain('bg-muted/20');
+  });
 });

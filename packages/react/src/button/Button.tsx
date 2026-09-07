@@ -28,32 +28,32 @@ export type ButtonSize =
  * win at runtime, cha-set only ships defaults.
  */
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow,background-color] select-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg text-sm font-medium transition-[color,box-shadow,background-color,transform] select-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:not-aria-[haspopup]:translate-y-px [&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
         default:
           'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 active:bg-primary/80',
         destructive:
-          'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 active:bg-destructive/80',
+          'bg-destructive/10 text-destructive shadow-xs hover:bg-destructive/20 active:bg-destructive/25 dark:bg-destructive/20 dark:hover:bg-destructive/30',
         outline:
           'border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground active:bg-accent/80',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 active:bg-secondary/70',
         ghost:
-          'hover:bg-accent hover:text-accent-foreground active:bg-accent/80',
+          'hover:bg-muted hover:text-foreground active:bg-muted/80',
         link:
           'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-9 px-4 py-2 has-[>svg]:px-3',
-        sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5 text-xs',
-        lg: 'h-10 rounded-md px-6 has-[>svg]:px-4 text-base',
-        icon: 'size-9 p-0',
-        xs: 'h-6 rounded-[min(var(--radius-md),0.625rem)] gap-1 px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*=\'size-\'])]:size-3',
-        'icon-xs': 'size-6 rounded-[min(var(--radius-md),0.625rem)] p-0 [&_svg:not([class*=\'size-\'])]:size-3',
-        'icon-sm': 'size-7 rounded-[min(var(--radius-md),0.75rem)] p-0 [&_svg:not([class*=\'size-\'])]:size-3.5',
-        'icon-lg': 'size-10 p-0',
+        default: 'h-8 gap-1.5 px-2.5 text-sm',
+        sm: 'h-7 gap-1 px-2.5 text-[0.8rem]',
+        xs: 'h-6 gap-1 px-2 text-xs [&_svg:not([class*=\'size-\'])]:size-3',
+        lg: 'h-9 gap-2 px-3 text-sm',
+        icon: 'size-8 p-0',
+        'icon-xs': 'size-6 p-0 [&_svg:not([class*=\'size-\'])]:size-3',
+        'icon-sm': 'size-7 p-0 [&_svg:not([class*=\'size-\'])]:size-3.5',
+        'icon-lg': 'size-9 p-0 [&_svg:not([class*=\'size-\'])]:size-4.5',
       },
     },
     defaultVariants: {
@@ -83,19 +83,19 @@ export interface ButtonProps
 
 const forceHoverClasses: Record<string, string> = {
   default: 'bg-primary/90',
-  destructive: 'bg-destructive/90',
+  destructive: 'bg-destructive/20',
   outline: 'bg-accent text-accent-foreground',
   secondary: 'bg-secondary/80',
-  ghost: 'bg-accent text-accent-foreground',
+  ghost: 'bg-muted text-foreground',
   link: 'underline',
 };
 
 const forceActiveClasses: Record<string, string> = {
   default: 'bg-primary/80',
-  destructive: 'bg-destructive/80',
+  destructive: 'bg-destructive/25',
   outline: 'bg-accent/80 text-accent-foreground',
   secondary: 'bg-secondary/70',
-  ghost: 'bg-accent/80 text-accent-foreground',
+  ghost: 'bg-muted/80 text-foreground',
   link: 'underline',
 };
 
@@ -118,6 +118,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
   ref,
 ) {
   const currentVariant = variant ?? 'default';
+  const currentSize = size ?? 'default';
   const forceClass =
     forceActive
       ? (forceActiveClasses[currentVariant] ?? '')
@@ -142,6 +143,9 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
       disabled={isDisabled}
       aria-busy={loading || undefined}
       render={effectiveRender}
+      data-slot="button"
+      data-variant={currentVariant}
+      data-size={currentSize}
       {...rest}
     >
       {asChild ? (
@@ -150,11 +154,11 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
         <>
           {loading ? (
             <span
-              className="cs-button__spinner size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+              className="cs-button__spinner size-4 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent"
               aria-hidden="true"
             />
           ) : null}
-          <span className={loading ? 'opacity-70' : undefined}>{children}</span>
+          {children}
         </>
       )}
     </BaseButton>

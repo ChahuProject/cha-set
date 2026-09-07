@@ -77,24 +77,27 @@ describe('Switch component', () => {
     expect(switchEl.className).toContain('h-4 w-7');
   });
 
-  it('renders companion label and links accessibility', () => {
+  it('removes outer injected label element and acts as a pure controlled component with aria accessibility', () => {
     const onCheckedChange = vi.fn();
-    render(<Switch label="Airplane Mode" onCheckedChange={onCheckedChange} id="test-airplane" />);
+    const { container } = render(
+      <Switch label="Airplane Mode" onCheckedChange={onCheckedChange} id="test-airplane" data-testid="switch" />,
+    );
 
-    const labelText = screen.getByText('Airplane Mode');
-    expect(labelText).toBeInTheDocument();
-
-    const switchEl = screen.getByLabelText('Airplane Mode');
+    expect(container.querySelector('label')).toBeNull();
+    const switchEl = screen.getByRole('switch', { name: 'Airplane Mode' });
     expect(switchEl).toBeInTheDocument();
     expect(switchEl).toHaveAttribute('id', 'test-airplane');
+    expect(switchEl).toHaveAttribute('aria-label', 'Airplane Mode');
 
-    fireEvent.click(labelText);
+    fireEvent.click(switchEl);
     expect(onCheckedChange).toHaveBeenCalledWith(true);
   });
 
-  it('supports companion label via children', () => {
-    render(<Switch>Bluetooth Enabled</Switch>);
-    expect(screen.getByText('Bluetooth Enabled')).toBeInTheDocument();
+  it('supports companion label via string children mapped to aria-label', () => {
+    const { container } = render(<Switch>Bluetooth Enabled</Switch>);
+    expect(container.querySelector('label')).toBeNull();
+    const switchEl = screen.getByRole('switch', { name: 'Bluetooth Enabled' });
+    expect(switchEl).toBeInTheDocument();
   });
 
   it('forwards ref and merges custom className', () => {

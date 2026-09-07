@@ -97,7 +97,7 @@ export const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(
       ref={ref}
       data-slot="table-head"
       className={cn(
-        'h-10 px-3 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 text-xs',
+        'h-8 px-2 text-left align-middle font-medium text-muted-foreground whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-xs',
         className
       )}
       {...props}
@@ -114,7 +114,7 @@ export const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
       ref={ref}
       data-slot="table-cell"
       className={cn(
-        'p-3 align-middle [&:has([role=checkbox])]:pr-0 text-foreground text-xs',
+        'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-foreground text-xs',
         className
       )}
       {...props}

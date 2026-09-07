@@ -15,7 +15,7 @@ Item {
     property bool disabled: false
     property string text: ""
     property string iconSource: ""
-    property int customRadius: 6
+    property int customRadius: 8
 
     property bool forceHover: false
     property bool forceActive: false
@@ -26,36 +26,36 @@ Item {
     readonly property bool effectiveHovered: (hovered || forceHover) && !effectiveDisabled
     readonly property bool effectiveDown: (down || forceActive) && !effectiveDisabled
 
-    // Height parity: xs/icon-xs: 24px, icon-sm: 28px, sm: 32px, default/md/icon: 36px, lg/icon-lg: 40px
+    // Height parity: xs/icon-xs: 24px (h-6), sm/icon-sm: 28px (h-7), default/icon: 32px (h-8), lg/icon-lg: 36px (h-9)
     function buttonHeight() {
         switch (size) {
         case "xs":
         case "icon-xs": return 24
-        case "icon-sm": return 28
-        case "sm": return 32
+        case "icon-sm":
+        case "sm": return 28
         case "icon-lg":
-        case "lg": return 40
-        default:   return 36
+        case "lg": return 36
+        default:   return 32
         }
     }
 
-    // Horizontal padding parity: sm: 12px, default/md: 16px, lg: 24px, icon*: 0px
+    // Horizontal padding parity: xs: 8px (px-2), sm: 10px (px-2.5), default: 10px (px-2.5), lg: 12px (px-3), icon*: 0px
     function paddingH() {
         if (size === "icon" || size === "icon-xs" || size === "icon-sm" || size === "icon-lg") return 0
         switch (size) {
         case "xs": return 8
-        case "sm": return 12
-        case "lg": return 24
-        default:   return 16
+        case "sm": return 10
+        case "lg": return 12
+        default:   return 10
         }
     }
 
-    // Font size parity: xs: 11px, sm: 12px (text-xs), default/md/icon: 14px (text-sm), lg: 16px (text-base)
+    // Font size parity: xs: 11px, sm: 12px (text-xs), default/md/icon: 14px (text-sm), lg: 14px (text-sm)
     function fontSizePx() {
         switch (size) {
         case "xs": return 11
         case "sm": return 12
-        case "lg": return 16
+        case "lg": return 14
         default:   return 14
         }
     }
@@ -92,9 +92,9 @@ Item {
         }
 
         if (variant === "destructive") {
-            if (effectiveDown) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.8)
-            if (effectiveHovered) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.9)
-            return cDestructive
+            if (effectiveDown) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.25)
+            if (effectiveHovered) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.2)
+            return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.1)
         }
 
         // default / primary
@@ -106,7 +106,7 @@ Item {
 
     function fgColor() {
         switch (variant) {
-        case "destructive": return ThemeTokens.onAccent
+        case "destructive": return cDestructive
         case "outline":     return effectiveHovered ? cAccentFg : cFg
         case "secondary":   return cSecondaryFg
         case "ghost":       return effectiveHovered ? cAccentFg : cFg
@@ -178,8 +178,10 @@ Item {
     // Content: Spinner + Icon + Label (centered row)
     Row {
         id: contentRow
-        anchors.centerIn: root
-        spacing: 8
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.verticalCenter: root.verticalCenter
+        anchors.verticalCenterOffset: root.effectiveDown ? 1 : 0
+        spacing: root.size === "lg" ? 8 : 6
 
         // Spinner (loading state)
         Rectangle {

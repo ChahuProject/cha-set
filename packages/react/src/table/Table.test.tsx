@@ -62,10 +62,15 @@ describe('Table component', () => {
     const head1 = screen.getByTestId('table-head-1');
     expect(head1).toHaveAttribute('data-slot', 'table-head');
     expect(head1).toHaveTextContent('Invoice');
+    expect(head1.className).toContain('whitespace-nowrap');
+    expect(head1.className).toContain('h-8');
+    expect(head1.className).toContain('px-2');
 
     const cell1 = screen.getByTestId('table-cell-1');
     expect(cell1).toHaveAttribute('data-slot', 'table-cell');
     expect(cell1).toHaveTextContent('INV001');
+    expect(cell1.className).toContain('whitespace-nowrap');
+    expect(cell1.className).toContain('p-2');
 
     const row1 = screen.getByTestId('table-row-1');
     expect(row1).toHaveAttribute('data-slot', 'table-row');
