@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Desktop & Virtualization"
     pageTitle: "Draggable Modal"
-    description: "Desktop floating panel window with a draggable header bar and bounded parent viewport constraints."
+    description: "Desktop floating panel window with a draggable header bar, bounded parent viewport constraints, and size mode switching."
     tocItems: [
         { id: "preview", title: "Interactive Preview" },
         { id: "installation", title: "Installation" },
@@ -16,12 +16,27 @@ DocLayout {
 
     ComponentPreview {
         title: "Draggable Modal Preview"
-        reactCode: `<DraggableModal title="Floating Tools" open={open} onClose={() => setOpen(false)}>
+        reactCode: `<DraggableModal
+  title="Floating Tools"
+  initialPositionMode="center"
+  showEscBadge
+  sizeOptions={[
+    { name: "默认", special: "default" },
+    { name: "宽屏", widthRem: 32, heightRem: 20 },
+    { name: "全窗口", special: "fullscreen" }
+  ]}
+>
   <div className="p-4">Inspect active rendering targets</div>
 </DraggableModal>`
         qtCode: `ChaSetDraggableModal {
     title: "Floating Tools"
-    open: true
+    initialPositionMode: "center"
+    showEscBadge: true
+    sizeOptions: [
+        { name: "默认", special: "default" },
+        { name: "宽屏", widthRem: 32, heightRem: 20 },
+        { name: "全窗口", special: "fullscreen" }
+    ]
     width: 300
     height: 200
 }`
@@ -46,9 +61,16 @@ DocLayout {
                 ChaSetDraggableModal {
                     x: 40
                     y: 30
-                    width: 280
-                    height: 180
+                    width: 300
+                    height: 200
                     title: "Shader Debugger"
+                    showEscBadge: true
+                    initialPositionMode: "center"
+                    sizeOptions: [
+                        { name: "默认", special: "default" },
+                        { name: "宽屏", widthRem: 22, heightRem: 14 },
+                        { name: "全窗口", special: "fullscreen" }
+                    ]
 
                     Column {
                         anchors.fill: parent
@@ -67,7 +89,7 @@ DocLayout {
 
     CodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetDraggableModal { title: \"Inspector\"; width: 300; height: 200 }"
+        code: "import ChaSet 1.0\n\nChaSetDraggableModal {\n    title: \"Inspector\"\n    initialPositionMode: \"center\"\n    width: 300\n    height: 200\n}"
         language: "qml"
     }
 
@@ -76,7 +98,16 @@ DocLayout {
         props: [
             { name: "title", type: "string", default: "'Inspector Window'", description: "Headline text in the drag bar." },
             { name: "open", type: "bool", default: "true", description: "Whether the floating window is currently visible." },
-            { name: "customRadius", type: "int", default: "8", description: "Corner radius of the floating window." }
+            { name: "customRadius", type: "int", default: "8", description: "Corner radius of the floating window." },
+            { name: "initialPositionMode", type: "string", default: "'center'", description: "Initial positioning mode: 'center' or 'top'." },
+            { name: "topMargin", type: "int", default: "72", description: "Top offset pixel margin when in top position mode." },
+            { name: "sizeOptions", type: "var", default: "[]", description: "Array of preset size options for dropdown switching." },
+            { name: "sizeMenuTooltip", type: "string", default: "'Adjust Size'", description: "Tooltip text for the size dropdown button." },
+            { name: "remBase", type: "real", default: "16", description: "Base pixel value per rem." },
+            { name: "showEscBadge", type: "bool", default: "false", description: "Whether to display the ESC keyboard shortcut badge." },
+            { name: "fixedFooter", type: "Item", default: "null", description: "Fixed footer action bar item anchored to the bottom." },
+            { name: "topControls", type: "Item", default: "null", description: "Custom control item rendered in the header toolbar." }
         ]
     }
 }
+

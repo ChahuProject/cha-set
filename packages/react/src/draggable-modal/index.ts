@@ -1,2 +1,3 @@
-export { DraggableModal, type DraggableModalProps } from './DraggableModal';
-export { FloatingWindow, type FloatingWindowProps } from './FloatingWindow';
+export * from './DraggableModal';
+export * from './FloatingWindow';
+

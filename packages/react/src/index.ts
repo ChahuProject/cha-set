@@ -48,5 +48,6 @@ export {
   KeyboardIcon,
   SearchIcon,
   ArrowUpDownIcon,
+  Maximize2Icon,
 } from './lib/icons';
 
