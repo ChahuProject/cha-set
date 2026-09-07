@@ -1,20 +1,30 @@
 import React from 'react';
-import { VirtualGrid } from '@chahu/cha-set';
+import { VirtualGrid, Badge } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 
+const SAMPLE_ITEMS = Array.from({ length: 60 }, (_, i) => ({
+  id: i + 1,
+  title: `Module #${i + 1}`,
+  description: `Virtual windowed card unit asset ${i + 1}`,
+  status: i % 3 === 0 ? 'Active' : 'Pending',
+}));
+
 export function VirtualGridDocPage() {
   const reactCode = `<VirtualGrid
-  rowCount={1000}
-  columnCount={100}
-  estimateRowSize={() => 36}
-  estimateColumnSize={() => 80}
-  className="h-64 border rounded-md"
-  renderCell={(row, col) => (
-    <div className="flex items-center justify-center border-r border-b text-xs font-mono">
-      {row}:{col}
+  items={items}
+  minColumnWidthRem={10}
+  estimateSize={96}
+  className="h-72 border rounded-md bg-card overflow-auto p-2"
+  renderCard={(item) => (
+    <div className="p-3 border rounded-lg bg-muted/20 flex flex-col gap-1">
+      <div className="flex justify-between items-center">
+        <span className="font-mono text-xs font-semibold">{item.title}</span>
+        <Badge size="sm" variant="outline">{item.status}</Badge>
+      </div>
+      <p className="text-[0.7rem] text-muted-foreground">{item.description}</p>
     </div>
   )}
 />`;
@@ -23,7 +33,7 @@ export function VirtualGridDocPage() {
     <DocLayout
       category="Desktop & Virtualization"
       title="Virtual Grid"
-      description="2D windowed grid virtualizer for massive matrix, spreadsheet, and memory dump visualization."
+      description="2D responsive windowed grid virtualizer for massive cards, matrix data, and dynamic layouts."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },
@@ -35,23 +45,28 @@ export function VirtualGridDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Virtualizing a <strong>1,000 × 100 (100,000 cells)</strong> 2D matrix smoothly with independent horizontal and vertical windowing.
+          Virtualizing responsive card columns with automatic width calculation and row-based DOM recycling.
         </p>
 
         <ComponentPreview title="Virtual Grid Sandbox" reactCode={reactCode}>
-          <div className="w-full max-w-lg">
+          <div className="w-full max-w-xl">
             <VirtualGrid
-              rowCount={1000}
-              columnCount={100}
-              estimateRowSize={() => 36}
-              estimateColumnSize={() => 80}
-              className="h-64 border border-border rounded-md bg-card overflow-auto"
-              renderCell={(row, col) => (
+              items={SAMPLE_ITEMS}
+              minColumnWidthRem={10}
+              estimateSize={96}
+              className="h-72 border border-border rounded-md bg-card overflow-auto p-2"
+              renderCard={(item) => (
                 <div
-                  key={`${row}-${col}`}
-                  className="flex items-center justify-center border-r border-b border-border/40 text-[0.7rem] font-mono text-muted-foreground hover:bg-muted/40 transition-colors"
+                  key={item.id}
+                  className="p-3 border border-border/60 rounded-lg bg-muted/20 hover:bg-muted/50 transition-colors flex flex-col gap-1.5"
                 >
-                  R{row}:C{col}
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-semibold text-foreground">{item.title}</span>
+                    <Badge size="sm" variant={item.status === 'Active' ? 'secondary' : 'outline'}>
+                      {item.status}
+                    </Badge>
+                  </div>
+                  <p className="text-[0.7rem] text-muted-foreground">{item.description}</p>
                 </div>
               )}
             />

@@ -18,6 +18,7 @@ import {
 import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
 import { CommandSearchModal } from './components/CommandSearchModal';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Header } from './layout/Header';
 import { Sidebar } from './layout/Sidebar';
 import { useRouter } from './router/useRouter';
@@ -559,7 +560,9 @@ export function App() {
 
         {/* Dynamic Route Page Content */}
         <div className="flex-1 min-w-0">
-          {renderActivePage()}
+          <ErrorBoundary key={currentHash} fallbackTitle="Page Rendering Error">
+            {renderActivePage()}
+          </ErrorBoundary>
         </div>
       </div>
 

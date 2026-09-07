@@ -101,6 +101,25 @@ if (existsSync(qtExe)) {
   console.log('[gate] OK — Qt runtime behavioral scenario assertions passed (showcase-data, scroll-kinematics, steppers)');
 }
 
+// 4. React Showcase Smoke & Interactive Click Integrity Check
+const showcaseTestFile = resolve(root, 'packages/react/src/__tests__/showcase-pages.test.tsx');
+if (existsSync(showcaseTestFile)) {
+  const { execSync } = await import('node:child_process');
+  try {
+    execSync('pnpm --filter @chahu/cha-set exec vitest run src/__tests__/showcase-pages.test.tsx', {
+      cwd: root,
+      stdio: 'pipe',
+      encoding: 'utf8',
+    });
+    console.log('[gate] OK — React showcase living documentation pages smoke & click integrity passed (36 pages verified)');
+  } catch (err) {
+    console.error('[gate] FAIL: React showcase living documentation pages smoke & click integrity check failed');
+    if (err.stdout) console.error(err.stdout);
+    if (err.stderr) console.error(err.stderr);
+    process.exit(1);
+  }
+}
+
 // 4. Optional Targeted Pixel Conformance Gate (selective opt-in)
 if (process.argv.includes('--pixel')) {
   const compIndex = process.argv.indexOf('--component');

@@ -19,32 +19,87 @@ import {
   newConditionId,
 } from './types';
 
-export interface QueryBuilderProps<TRecord> {
+export interface QueryBuilderProps<TRecord = any> {
   fields: FilterFieldDefinition<TRecord>[];
-  rootGroup: FilterGroup;
-  onChange: (nextGroup: FilterGroup) => void;
+  rootGroup?: FilterGroup;
+  /** Alias for rootGroup */
+  query?: any;
+  onChange?: (nextGroup: FilterGroup) => void;
+  /** Alias for onChange */
+  onQueryChange?: (nextGroup: any) => void;
   disabled?: boolean;
   className?: string;
 }
 
+function normalizeGroup(g: any): FilterGroup {
+  if (!g) return createFilterGroup();
+  if (g.connector && Array.isArray(g.children)) return g;
+  return {
+    id: g.id || 'root',
+    connector: (g.combinator || g.connector || 'and').toLowerCase() === 'or' ? 'or' : 'and',
+    children: (g.rules || g.children || []).map((r: any) => {
+      if (r.rules || (r.children && !r.field)) return normalizeGroup(r);
+      return {
+        id: r.id || newConditionId(),
+        field: r.field || '',
+        operator: r.operator || 'equals',
+        value: r.value ?? '',
+      };
+    }),
+  };
+}
+
+function normalizeFields(fields: any[]): FilterFieldDefinition<any>[] {
+  return (fields || []).map((f) => {
+    const key = f.key || f.id || f.name || '';
+    const operators =
+      f.operators && f.operators.length > 0
+        ? f.operators
+        : [
+            { key: 'equals', label: 'equals', match: (r: any, v: any) => r == v },
+            { key: 'contains', label: 'contains', match: (r: any, v: any) => String(r).includes(String(v)) },
+            { key: 'greaterThan', label: '>', match: (r: any, v: any) => Number(r) > Number(v) },
+          ];
+    return {
+      key,
+      label: f.label || key,
+      operators,
+      getValue: f.getValue || ((r: any) => r?.[key]),
+      options: f.options,
+    };
+  });
+}
+
 export function QueryBuilder<TRecord>({
-  fields,
+  fields = [],
   rootGroup,
+  query,
   onChange,
+  onQueryChange,
   disabled = false,
   className,
 }: QueryBuilderProps<TRecord>) {
+  const safeFields = React.useMemo(() => normalizeFields(fields), [fields]);
+  const safeGroup = React.useMemo(() => normalizeGroup(rootGroup ?? query), [rootGroup, query]);
+  const handleChange = React.useCallback(
+    (nextGroup: FilterGroup) => {
+      onChange?.(nextGroup);
+      onQueryChange?.(nextGroup);
+    },
+    [onChange, onQueryChange],
+  );
+
   return (
     <div
       data-slot="query-builder"
       className={cn('rounded-lg border border-border/80 bg-card p-4 text-xs shadow-xs', className)}
     >
       <GroupRenderer
-        group={rootGroup}
+        group={safeGroup}
         depth={0}
-        fields={fields}
+        fields={safeFields}
         disabled={disabled}
-        onChangeGroup={(updated) => onChange(updated)}
+        onChangeGroup={handleChange}
       />
     </div>
   );
@@ -65,11 +120,15 @@ function GroupRenderer<TRecord>({
   onChangeGroup: (group: FilterGroup) => void;
   onDeleteGroup?: () => void;
 }) {
+  if (!group) return null;
+  const connector = group.connector || 'and';
+  const children = Array.isArray(group.children) ? group.children : [];
+
   const toggleConnector = () => {
     if (disabled) return;
     onChangeGroup({
       ...group,
-      connector: group.connector === 'and' ? 'or' : 'and',
+      connector: connector === 'and' ? 'or' : 'and',
     });
   };
 
@@ -85,21 +144,21 @@ function GroupRenderer<TRecord>({
     };
     onChangeGroup({
       ...group,
-      children: [...group.children, newCond],
+      children: [...children, newCond],
     });
   };
 
   const handleAddSubgroup = () => {
     if (disabled) return;
-    const newSubgroup = createFilterGroup(group.connector === 'and' ? 'or' : 'and');
+    const newSubgroup = createFilterGroup(connector === 'and' ? 'or' : 'and');
     onChangeGroup({
       ...group,
-      children: [...group.children, newSubgroup],
+      children: [...children, newSubgroup],
     });
   };
 
   const handleUpdateChild = (idx: number, updatedChild: FilterCondition | FilterGroup) => {
-    const nextChildren = [...group.children];
+    const nextChildren = [...children];
     nextChildren[idx] = updatedChild;
     onChangeGroup({ ...group, children: nextChildren });
   };
@@ -107,7 +166,7 @@ function GroupRenderer<TRecord>({
   const handleDeleteChild = (idx: number) => {
     onChangeGroup({
       ...group,
-      children: group.children.filter((_, i) => i !== idx),
+      children: children.filter((_, i) => i !== idx),
     });
   };
 
@@ -130,7 +189,7 @@ function GroupRenderer<TRecord>({
             onClick={toggleConnector}
             className="h-6 font-semibold uppercase tracking-wider"
           >
-            {group.connector}
+            {connector}
           </Button>
 
           <Button
@@ -172,11 +231,12 @@ function GroupRenderer<TRecord>({
       </div>
 
       <div className="flex flex-col gap-2 pl-2">
-        {group.children.map((child, idx) => {
+        {children.map((child, idx) => {
+          if (!child) return null;
           if (isFilterGroup(child)) {
             return (
               <GroupRenderer
-                key={child.id}
+                key={child.id || `group-${idx}`}
                 group={child}
                 depth={depth + 1}
                 fields={fields}

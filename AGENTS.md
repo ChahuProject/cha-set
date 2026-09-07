@@ -45,7 +45,7 @@
      1. An entry registered in `spec/showcase/navigation.json` under the appropriate category.
      2. A dedicated Living Documentation Page `packages/react/examples/basic/src/pages/components/${PascalCase}DocPage.tsx` with interactive preview, variant playground, code snippets, and token references.
      3. Active routing and page rendering registered in `packages/react/examples/basic/src/App.tsx`.
-   - **Mechanical Automated Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas and immediately halts the build if any showcase item, DocPage, or route is missing.
+    - **Mechanical Automated Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas, verifies navigation/route coverage, and automatically mounts every DocPage executing interactive button click tests (`showcase-pages.test.tsx`) to guarantee zero runtime white screens.
 2. **NO Visual-Only Delivery (禁止仅凭静态截图验收)**:
    - An Agent must NEVER declare a UI component task complete based solely on static screenshots or compilation passes. Interactive verification (wheel scrolling, drag tracking, clicks, keyboard shortcuts) is strictly mandatory.
 3. **Strict Tiered Quality Compliance (按组件层级实施针对性检验)**:
@@ -62,8 +62,9 @@
    - **Wheel Scrolling**: Always use `ChaSetScrollArea` with native `WheelHandler` on Qt. Never assume `Flickable` handles mouse wheel by default.
    - **Drag Decoupling**: In QML, dragging `thumb` must decouple from reactive `y: computedPos` bindings during active mouse press to prevent binding thrashing.
    - **Dynamic Viewport**: Ensure `contentHeight` and `contentWidth` are bound to `childrenRect` when dynamic.
-7. **Mandatory Behavioral Parity Gate**:
-   - Before finishing any task, run `pnpm gate` which executes full contract validation, living showcase documentation completeness checks, headless Qt interaction scenarios (`--test-scenario all`), and React test suites.
+7. **Mandatory Behavioral Parity Gate & White-Screen Zero Tolerance**:
+   - Before finishing any task, run `pnpm gate` which executes full contract validation, living showcase documentation completeness checks, automated showcase DocPage smoke & button click tests, headless Qt interaction scenarios (`--test-scenario all`), and React test suites.
+   - All showcase preview panels and dynamic routes MUST be guarded by `<ErrorBoundary>` to ensure isolated rendering errors display actionable diagnostics instead of crashing to a blank white screen.
 
 ---
 

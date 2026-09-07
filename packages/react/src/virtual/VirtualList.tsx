@@ -10,9 +10,11 @@ export interface VirtualListHandle {
 export interface VirtualListProps<T> {
   items: readonly T[];
   /** Initial row height estimate (px) */
-  estimateSize?: number;
+  estimateSize?: number | ((index: number) => number);
   /** Function rendering an individual item */
-  renderRow: (item: T, index: number) => React.ReactNode;
+  renderRow?: (item: T, index: number) => React.ReactNode;
+  /** Alias for renderRow */
+  renderItem?: (item: T, index: number) => React.ReactNode;
   /** Vertical gap between items (px) */
   gap?: number;
   /** Number of items to render outside of the visible area */
@@ -31,6 +33,7 @@ export function VirtualList<T>({
   items,
   estimateSize = 36,
   renderRow,
+  renderItem,
   gap = 0,
   overscan = 8,
   emptyNode,
@@ -38,15 +41,37 @@ export function VirtualList<T>({
   onScroll,
   ref,
 }: VirtualListProps<T>) {
+  const safeItems = items ?? [];
+  const actualRenderRow = React.useMemo(
+    () =>
+      renderRow ??
+      renderItem ??
+      ((item: any) => (
+        <div className="p-2 text-xs font-mono border-b border-border/40">
+          {String(item?.title ?? item?.name ?? item)}
+        </div>
+      )),
+    [renderRow, renderItem],
+  );
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-  const measuredSizeRef = React.useRef(estimateSize);
+  const measuredSize = typeof estimateSize === 'function' ? estimateSize(0) : estimateSize;
+  const measuredSizeRef = React.useRef(measuredSize);
 
   const virtualizer = useVirtualizer({
-    count: items.length,
+    count: safeItems.length,
     getScrollElement: () => scrollContainerRef.current,
-    estimateSize: () => measuredSizeRef.current,
+    estimateSize: (index) =>
+      typeof estimateSize === 'function' ? estimateSize(index) : estimateSize,
     overscan,
     gap,
+    measureElement: (element) => {
+      const measured = element?.getBoundingClientRect()?.height;
+      if (typeof measured === 'number' && measured > 0) {
+        return measured;
+      }
+      const idx = Number(element?.getAttribute?.('data-index') ?? 0);
+      return typeof estimateSize === 'function' ? estimateSize(idx) : estimateSize;
+    },
     observeElementRect: (instance, cb) => {
       return observeElementRect(instance, (rect) => {
         cb({
@@ -81,7 +106,7 @@ export function VirtualList<T>({
       data-slot="virtual-list"
       className={cn('overflow-y-auto', className)}
     >
-      {items.length === 0 ? (
+      {safeItems.length === 0 ? (
         emptyNode ?? null
       ) : (
         <div
@@ -97,7 +122,7 @@ export function VirtualList<T>({
               className="absolute top-0 left-0 w-full"
               style={{ transform: `translateY(${virtualRow.start}px)` }}
             >
-              {renderRow(items[virtualRow.index]!, virtualRow.index)}
+              {actualRenderRow(safeItems[virtualRow.index]!, virtualRow.index)}
             </div>
           ))}
         </div>

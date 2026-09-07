@@ -2,9 +2,13 @@ import * as React from 'react';
 import { observeElementRect, useVirtualizer } from '@tanstack/react-virtual';
 import { cn } from '../lib/utils';
 
-export interface VirtualGridProps<T> {
-  items: readonly T[];
-  renderCard: (item: T, index: number) => React.ReactNode;
+export interface VirtualGridProps<T = any> {
+  items?: readonly T[];
+  renderCard?: (item: T, index: number) => React.ReactNode;
+  /** Alias for renderCard */
+  renderItem?: (item: T, index: number) => React.ReactNode;
+  /** Cell renderer fallback */
+  renderCell?: (row: number, col: number) => React.ReactNode;
   /** Minimum card column width (rem, default: 12) */
   minColumnWidthRem?: number;
   /** Gap between grid items (rem, default: 0.75) */
@@ -20,8 +24,10 @@ export interface VirtualGridProps<T> {
 }
 
 export function VirtualGrid<T>({
-  items,
+  items: rawItems,
   renderCard,
+  renderItem,
+  renderCell,
   minColumnWidthRem = 12,
   gapRem = 0.75,
   estimateSize = 180,
@@ -29,6 +35,17 @@ export function VirtualGrid<T>({
   emptyNode,
   className,
 }: VirtualGridProps<T>) {
+  const items = rawItems ?? [];
+  const actualRenderCard = React.useMemo(() => {
+    if (renderCard) return renderCard;
+    if (renderItem) return renderItem;
+    if (renderCell) return (_: any, idx: number) => renderCell(Math.floor(idx / 10), idx % 10);
+    return (item: any, idx: number) => (
+      <div className="p-3 border border-border/60 rounded-lg bg-card text-xs font-mono">
+        {String(item?.title ?? item?.name ?? item ?? `Item ${idx}`)}
+      </div>
+    );
+  }, [renderCard, renderItem, renderCell]);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const measuredSizeRef = React.useRef(estimateSize);
   const [containerWidth, setContainerWidth] = React.useState(0);
@@ -111,7 +128,7 @@ export function VirtualGrid<T>({
             >
               {rows[virtualRow.index]!.map((item, colIndex) => (
                 <div key={colIndex} className="min-w-0">
-                  {renderCard(item, virtualRow.index * columnCount + colIndex)}
+                  {actualRenderCard(item, virtualRow.index * columnCount + colIndex)}
                 </div>
               ))}
             </div>

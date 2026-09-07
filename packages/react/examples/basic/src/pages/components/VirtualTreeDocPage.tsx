@@ -47,11 +47,28 @@ export function VirtualTreeDocPage() {
   const [selectedId, setSelectedId] = useState<string | null>('button.tsx');
 
   const reactCode = `<VirtualTree
-  nodes={treeData}
-  selectedId={selectedId}
-  onSelectNode={(node) => setSelectedId(node.id)}
-  defaultExpandedIds={['src', 'components']}
-  className="h-64 border rounded-md"
+  rootNodes={treeData}
+  getChildren={(node) => node.children ?? []}
+  getNodeKey={(node) => node.id}
+  defaultExpandDepth={2}
+  className="h-64 border border-border rounded-md bg-card overflow-auto p-2"
+  renderRow={({ node, depth, hasChildren, isExpanded, toggleExpand }) => (
+    <div
+      className="flex items-center gap-2 px-2 py-1 text-xs cursor-pointer hover:bg-muted/50 rounded"
+      style={{ paddingLeft: \`\${depth * 16 + 8}px\` }}
+      onClick={() => {
+        setSelectedId(node.id);
+        if (hasChildren) toggleExpand();
+      }}
+    >
+      {hasChildren ? (
+        <span className="text-[10px] w-3.5 text-muted-foreground">{isExpanded ? '▼' : '▶'}</span>
+      ) : (
+        <span className="w-3.5 text-[10px] text-muted-foreground/50">•</span>
+      )}
+      <span className="font-mono">{node.label}</span>
+    </div>
+  )}
 />`;
 
   return (
@@ -76,11 +93,32 @@ export function VirtualTreeDocPage() {
         <ComponentPreview title="Virtual Tree Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-sm flex flex-col gap-3">
             <VirtualTree
-              nodes={SAMPLE_TREE}
-              selectedId={selectedId}
-              onSelectNode={(node) => setSelectedId(node.id)}
-              defaultExpandedIds={['src', 'components', 'virtual']}
+              rootNodes={SAMPLE_TREE}
+              getChildren={(node) => node.children ?? []}
+              getNodeKey={(node) => node.id}
+              defaultExpandDepth={2}
               className="h-64 border border-border rounded-md bg-card overflow-auto p-2"
+              renderRow={({ node, depth, hasChildren, isExpanded, toggleExpand }) => (
+                <div
+                  className={`flex items-center gap-2 px-2 py-1 text-xs rounded cursor-pointer transition-colors select-none ${
+                    selectedId === node.id
+                      ? 'bg-primary/15 text-primary font-medium'
+                      : 'hover:bg-muted/50 text-foreground'
+                  }`}
+                  style={{ paddingLeft: `${depth * 16 + 8}px` }}
+                  onClick={() => {
+                    setSelectedId(node.id);
+                    if (hasChildren) toggleExpand();
+                  }}
+                >
+                  {hasChildren ? (
+                    <span className="text-[10px] w-3.5 text-muted-foreground">{isExpanded ? '▼' : '▶'}</span>
+                  ) : (
+                    <span className="w-3.5 text-[10px] text-muted-foreground/50">•</span>
+                  )}
+                  <span className="font-mono">{node.label}</span>
+                </div>
+              )}
             />
             <span className="text-xs text-muted-foreground">
               Selected node: <strong className="text-foreground">{selectedId || 'None'}</strong>

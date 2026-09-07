@@ -12,14 +12,16 @@ export interface VirtualTreeRowContext<T> {
 }
 
 export interface VirtualTreeProps<T> {
-  rootNodes: readonly T[];
-  getChildren: (node: T) => readonly T[];
-  getNodeKey: (node: T) => string;
+  rootNodes?: readonly T[];
+  /** Alias for rootNodes */
+  nodes?: readonly T[];
+  getChildren?: (node: T) => readonly T[];
+  getNodeKey?: (node: T) => string;
   defaultExpandDepth?: number;
   estimateSize?: number;
   gap?: number;
   overscan?: number;
-  renderRow: (context: VirtualTreeRowContext<T>) => React.ReactNode;
+  renderRow?: (context: VirtualTreeRowContext<T>) => React.ReactNode;
   emptyNode?: React.ReactNode;
   className?: string;
 }
@@ -34,6 +36,7 @@ interface FlatNode<T> {
 
 export function VirtualTree<T>({
   rootNodes,
+  nodes,
   getChildren,
   getNodeKey,
   defaultExpandDepth = 0,
@@ -44,13 +47,44 @@ export function VirtualTree<T>({
   emptyNode,
   className,
 }: VirtualTreeProps<T>) {
+  const safeRootNodes = rootNodes ?? nodes ?? [];
+  const safeGetChildren = React.useMemo(
+    () => getChildren ?? ((node: any) => node?.children ?? []),
+    [getChildren],
+  );
+  const safeGetNodeKey = React.useMemo(
+    () => getNodeKey ?? ((node: any) => node?.id ?? node?.key ?? String(node)),
+    [getNodeKey],
+  );
+  const safeRenderRow = React.useMemo(
+    () =>
+      renderRow ??
+      (({ node, depth, hasChildren, isExpanded, toggleExpand }) => (
+        <div
+          className="flex items-center gap-2 px-2 py-1 text-xs cursor-pointer hover:bg-muted/50 rounded select-none"
+          style={{ paddingLeft: `${depth * 16 + 8}px` }}
+          onClick={hasChildren ? toggleExpand : undefined}
+        >
+          {hasChildren ? (
+            <span className="text-[10px] w-3.5 text-muted-foreground">{isExpanded ? '▼' : '▶'}</span>
+          ) : (
+            <span className="w-3.5 text-[10px] text-muted-foreground/50">•</span>
+          )}
+          <span className="font-mono text-foreground">
+            {(node as any)?.label ?? (node as any)?.name ?? (node as any)?.title ?? String(node)}
+          </span>
+        </div>
+      )),
+    [renderRow],
+  );
+
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const measuredSizeRef = React.useRef(estimateSize);
 
-  const getChildrenRef = React.useRef(getChildren);
-  getChildrenRef.current = getChildren;
-  const getNodeKeyRef = React.useRef(getNodeKey);
-  getNodeKeyRef.current = getNodeKey;
+  const getChildrenRef = React.useRef(safeGetChildren);
+  getChildrenRef.current = safeGetChildren;
+  const getNodeKeyRef = React.useRef(safeGetNodeKey);
+  getNodeKeyRef.current = safeGetNodeKey;
 
   const [expandedKeys, setExpandedKeys] = React.useState<ReadonlySet<string>>(new Set());
   const [collapsedKeys, setCollapsedKeys] = React.useState<ReadonlySet<string>>(new Set());
@@ -107,11 +141,11 @@ export function VirtualTree<T>({
       }
     };
 
-    for (const root of rootNodes) {
+    for (const root of safeRootNodes) {
       traverse(root, 0);
     }
     return results;
-  }, [rootNodes, defaultExpandDepth, expandedKeys, collapsedKeys]);
+  }, [safeRootNodes, defaultExpandDepth, expandedKeys, collapsedKeys]);
 
   const virtualizer = useVirtualizer({
     count: visibleNodes.length,
@@ -154,7 +188,7 @@ export function VirtualTree<T>({
                 className="absolute top-0 left-0 w-full"
                 style={{ transform: `translateY(${virtualRow.start}px)` }}
               >
-                {renderRow({
+                {safeRenderRow({
                   node: flat.node,
                   depth: flat.depth,
                   isExpanded: flat.isExpanded,

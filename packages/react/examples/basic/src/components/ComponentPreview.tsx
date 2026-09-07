@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent, Card } from '@chahu/cha-set';
 import { CodeBlock } from './CodeBlock';
+import { ErrorBoundary } from './ErrorBoundary';
 
 export interface ComponentPreviewProps {
   title?: string;
@@ -47,7 +48,9 @@ export function ComponentPreview({
         <TabsContent value="preview" className="mt-0">
           <div>
             <div className="relative min-h-[18.75rem] p-8 flex items-center justify-center bg-background/50 border-b border-border/50 overflow-hidden">
-              {children}
+              <ErrorBoundary fallbackTitle="Component Preview Error">
+                {children}
+              </ErrorBoundary>
             </div>
 
             {/* Interactive Controls Bar */}

@@ -51,7 +51,7 @@ export function VirtualListDocPage() {
               items={items}
               estimateSize={() => 36}
               className="h-64 border border-border rounded-md bg-card overflow-auto"
-              renderItem={(item) => (
+              renderRow={(item) => (
                 <div
                   key={item.id}
                   className="flex items-center justify-between px-3 h-9 border-b border-border/40 text-xs hover:bg-muted/40 transition-colors"
