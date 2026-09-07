@@ -41,6 +41,11 @@
     "required": true,
     "styling": true
   },
+  "collapsible": {
+    "standard": true,
+    "defaultOpen": true,
+    "disabled": true
+  },
   "card": {
     "structure": true,
     "variant": true,

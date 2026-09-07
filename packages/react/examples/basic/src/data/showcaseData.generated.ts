@@ -1208,6 +1208,12 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/skeleton",
         "badge": "Stage 1",
         "desc": "Used to show a placeholder while content is loading with pulse animations."
+      },
+      {
+        "id": "collapsible",
+        "title": "Collapsible",
+        "href": "#/components/collapsible",
+        "desc": "An interactive component which expands and collapses a panel of content."
       }
     ]
   },

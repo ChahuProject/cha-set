@@ -5,6 +5,7 @@ export * from './scroll-area';
 export * from './tabs';
 export * from './badge';
 export * from './label';
+export * from './collapsible';
 export * from './card';
 export * from './input';
 export * from './checkbox';

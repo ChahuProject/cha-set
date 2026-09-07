@@ -46,6 +46,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetTabsContent.qml
         src/ChaSetBadge.qml
         src/ChaSetLabel.qml
+        src/ChaSetCollapsible.qml
         src/ChaSetCard.qml
         src/ChaSetCardHeader.qml
         src/ChaSetCardTitle.qml
@@ -129,6 +130,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/TabsDocPage.qml
             src/BadgeDocPage.qml
             src/LabelDocPage.qml
+            src/CollapsibleDocPage.qml
             src/CardDocPage.qml
             src/InputDocPage.qml
             src/CheckboxDocPage.qml

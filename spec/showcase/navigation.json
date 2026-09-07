@@ -47,7 +47,8 @@
       { "id": "context-menu", "title": "Context Menu", "href": "#/components/context-menu", "badge": "Stage 1", "desc": "Displays a menu located at the pointer coordinates on right-click or context gesture." },
       { "id": "alert-dialog", "title": "Alert Dialog", "href": "#/components/alert-dialog", "badge": "Stage 1", "desc": "A modal dialog that interrupts the user with important content and requires confirmation." },
       { "id": "sheet", "title": "Sheet", "href": "#/components/sheet", "badge": "Stage 1", "desc": "Extends the dialog component to display content that slides in from any screen edge." },
-      { "id": "skeleton", "title": "Skeleton", "href": "#/components/skeleton", "badge": "Stage 1", "desc": "Used to show a placeholder while content is loading with pulse animations." }
+      { "id": "skeleton", "title": "Skeleton", "href": "#/components/skeleton", "badge": "Stage 1", "desc": "Used to show a placeholder while content is loading with pulse animations." },
+      { "id": "collapsible", "title": "Collapsible", "href": "#/components/collapsible", "desc": "An interactive component which expands and collapses a panel of content." }
     ]
   },
   {

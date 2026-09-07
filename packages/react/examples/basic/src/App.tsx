@@ -28,6 +28,7 @@ import { ScrollAreaDocPage } from './pages/components/ScrollAreaDocPage';
 import { TabsDocPage } from './pages/components/TabsDocPage';
 import { BadgeDocPage } from './pages/components/BadgeDocPage';
 import { LabelDocPage } from './pages/components/LabelDocPage';
+import { CollapsibleDocPage } from './pages/components/CollapsibleDocPage';
 import { CardDocPage } from './pages/components/CardDocPage';
 import { InputDocPage } from './pages/components/InputDocPage';
 import { CheckboxDocPage } from './pages/components/CheckboxDocPage';
@@ -516,6 +517,8 @@ export function App() {
         return <BadgeDocPage />;
       case '#/components/label':
         return <LabelDocPage />;
+      case '#/components/collapsible':
+        return <CollapsibleDocPage />;
       case '#/components/card':
         return <CardDocPage />;
       case '#/components/input':

@@ -43,6 +43,11 @@
       "required": { "requirement": "must", "description": "renders required asterisk indicator marker when required" },
       "styling": { "requirement": "must", "description": "typography, peer-disabled styles and colors aligned with ChaSet tokens" }
     },
+    "collapsible": {
+      "standard": { "requirement": "must", "description": "core expanding and collapsing interaction" },
+      "defaultOpen": { "requirement": "must", "description": "initial open state control" },
+      "disabled": { "requirement": "must", "description": "disables collapsible toggling" }
+    },
     "card": {
       "structure": { "requirement": "must", "description": "composite subcomponents: CardHeader, CardTitle, CardDescription, CardContent, CardFooter" },
       "variant": { "requirement": "must", "description": "supports default, secondary, and outline variants" },

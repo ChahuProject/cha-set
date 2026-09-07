@@ -10,6 +10,7 @@
     "./tabs": "./components/tabs.ts",
     "./badge": "./components/badge.ts",
     "./label": "./components/label.ts",
+    "./collapsible": "./components/collapsible.ts",
     "./card": "./components/card.ts",
     "./input": "./components/input.ts",
     "./checkbox": "./components/checkbox.ts",

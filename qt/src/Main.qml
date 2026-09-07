@@ -53,6 +53,7 @@ ApplicationWindow {
         case "tabs": return "TabsDocPage.qml";
         case "badge": return "BadgeDocPage.qml";
         case "label": return "LabelDocPage.qml";
+        case "collapsible": return "CollapsibleDocPage.qml";
         case "card": return "CardDocPage.qml";
         case "input": return "InputDocPage.qml";
         case "checkbox": return "CheckboxDocPage.qml";

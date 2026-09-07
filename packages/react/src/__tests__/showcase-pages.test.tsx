@@ -17,6 +17,7 @@ import { GenericDataTableDocPage } from '../../examples/basic/src/pages/componen
 import { InlineEditableTextDocPage } from '../../examples/basic/src/pages/components/InlineEditableTextDocPage';
 import { InputDocPage } from '../../examples/basic/src/pages/components/InputDocPage';
 import { LabelDocPage } from '../../examples/basic/src/pages/components/LabelDocPage';
+import { CollapsibleDocPage } from '../../examples/basic/src/pages/components/CollapsibleDocPage';
 import { KeybindingRecorderDocPage } from '../../examples/basic/src/pages/components/KeybindingRecorderDocPage';
 import { PanelCardDocPage } from '../../examples/basic/src/pages/components/PanelCardDocPage';
 import { PopoverDocPage } from '../../examples/basic/src/pages/components/PopoverDocPage';
@@ -56,6 +57,7 @@ const pages = [
   { name: 'InlineEditableTextDocPage', Component: InlineEditableTextDocPage },
   { name: 'InputDocPage', Component: InputDocPage },
   { name: 'LabelDocPage', Component: LabelDocPage },
+  { name: 'CollapsibleDocPage', Component: CollapsibleDocPage },
   { name: 'KeybindingRecorderDocPage', Component: KeybindingRecorderDocPage },
   { name: 'PanelCardDocPage', Component: PanelCardDocPage },
   { name: 'PopoverDocPage', Component: PopoverDocPage },
