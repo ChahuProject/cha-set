@@ -60,6 +60,7 @@
       { "id": "inline-editable-text", "title": "Inline Editable Text", "href": "#/components/inline-editable-text", "badge": "Stage 2", "desc": "Text element that switches seamlessly to an input field on double-click or edit trigger." },
       { "id": "range-slider", "title": "Range Slider", "href": "#/components/range-slider", "badge": "Stage 2", "desc": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention." },
       { "id": "read-only-input", "title": "Read-Only Input", "href": "#/components/read-only-input", "badge": "Stage 2", "desc": "Protected input field for tokens and IDs with integrated copy-to-clipboard action." },
+      { "id": "preset-number-input", "title": "Preset Number Input", "href": "#/components/preset-number-input", "badge": "Stage 2", "desc": "Numeric input field with quick-select preset dropdown panel and clear actions." },
       { "id": "keybinding-recorder", "title": "Keybinding Recorder", "href": "#/components/keybinding-recorder", "badge": "Stage 2", "desc": "Interactive recorder that captures accelerator keyboard sequences for desktop apps." }
     ]
   },

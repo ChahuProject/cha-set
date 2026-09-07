@@ -1263,6 +1263,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "desc": "Protected input field for tokens and IDs with integrated copy-to-clipboard action."
       },
       {
+        "id": "preset-number-input",
+        "title": "Preset Number Input",
+        "href": "#/components/preset-number-input",
+        "badge": "Stage 2",
+        "desc": "Numeric input field with quick-select preset dropdown panel and clear actions."
+      },
+      {
         "id": "keybinding-recorder",
         "title": "Keybinding Recorder",
         "href": "#/components/keybinding-recorder",

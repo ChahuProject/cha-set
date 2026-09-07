@@ -24,6 +24,7 @@ import { PopoverDocPage } from '../../examples/basic/src/pages/components/Popove
 import { QueryBuilderDocPage } from '../../examples/basic/src/pages/components/QueryBuilderDocPage';
 import { RangeSliderDocPage } from '../../examples/basic/src/pages/components/RangeSliderDocPage';
 import { ReadOnlyInputDocPage } from '../../examples/basic/src/pages/components/ReadOnlyInputDocPage';
+import { PresetNumberInputDocPage } from '../../examples/basic/src/pages/components/PresetNumberInputDocPage';
 import { ScrollAreaDocPage } from '../../examples/basic/src/pages/components/ScrollAreaDocPage';
 import { SelectDocPage } from '../../examples/basic/src/pages/components/SelectDocPage';
 import { SeparatorDocPage } from '../../examples/basic/src/pages/components/SeparatorDocPage';
@@ -64,6 +65,7 @@ const pages = [
   { name: 'QueryBuilderDocPage', Component: QueryBuilderDocPage },
   { name: 'RangeSliderDocPage', Component: RangeSliderDocPage },
   { name: 'ReadOnlyInputDocPage', Component: ReadOnlyInputDocPage },
+  { name: 'PresetNumberInputDocPage', Component: PresetNumberInputDocPage },
   { name: 'ScrollAreaDocPage', Component: ScrollAreaDocPage },
   { name: 'SelectDocPage', Component: SelectDocPage },
   { name: 'SeparatorDocPage', Component: SeparatorDocPage },

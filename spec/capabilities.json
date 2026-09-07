@@ -221,6 +221,12 @@
     "queryBuilder": {
       "conditionTree": { "requirement": "must", "description": "builds and evaluates nested condition group trees" },
       "operatorMatching": { "requirement": "must", "description": "matches record fields against selected operators" }
+    },
+    "presetNumberInput": {
+      "standard": { "requirement": "must", "description": "base numeric text editing and value updates" },
+      "presets": { "requirement": "must", "description": "floating dropdown preset panel selection" },
+      "clear": { "requirement": "must", "description": "clears or resets current value" },
+      "disabled": { "requirement": "must", "description": "disables input and prevents preset popup interaction" }
     }
   }
 }

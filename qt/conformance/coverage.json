@@ -221,5 +221,11 @@
   "queryBuilder": {
     "conditionTree": true,
     "operatorMatching": true
+  },
+  "presetNumberInput": {
+    "standard": true,
+    "presets": true,
+    "clear": true,
+    "disabled": true
   }
 }

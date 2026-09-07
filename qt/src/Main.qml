@@ -77,6 +77,7 @@ ApplicationWindow {
         case "inline-editable-text": return "InlineEditableTextDocPage.qml";
         case "range-slider": return "RangeSliderDocPage.qml";
         case "read-only-input": return "ReadOnlyInputDocPage.qml";
+        case "preset-number-input": return "PresetNumberInputDocPage.qml";
         case "keybinding-recorder": return "KeybindingRecorderDocPage.qml";
         case "virtual-list": return "VirtualListDocPage.qml";
         case "virtual-tree": return "VirtualTreeDocPage.qml";

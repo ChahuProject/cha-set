@@ -52,6 +52,7 @@ import { SplitButtonDocPage } from './pages/components/SplitButtonDocPage';
 import { InlineEditableTextDocPage } from './pages/components/InlineEditableTextDocPage';
 import { RangeSliderDocPage } from './pages/components/RangeSliderDocPage';
 import { ReadOnlyInputDocPage } from './pages/components/ReadOnlyInputDocPage';
+import { PresetNumberInputDocPage } from './pages/components/PresetNumberInputDocPage';
 import { KeybindingRecorderDocPage } from './pages/components/KeybindingRecorderDocPage';
 import { VirtualListDocPage } from './pages/components/VirtualListDocPage';
 import { VirtualTreeDocPage } from './pages/components/VirtualTreeDocPage';
@@ -565,6 +566,8 @@ export function App() {
         return <RangeSliderDocPage />;
       case '#/components/read-only-input':
         return <ReadOnlyInputDocPage />;
+      case '#/components/preset-number-input':
+        return <PresetNumberInputDocPage />;
       case '#/components/keybinding-recorder':
         return <KeybindingRecorderDocPage />;
       case '#/components/virtual-list':

@@ -75,6 +75,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetInlineEditableText.qml
         src/ChaSetRangeSlider.qml
         src/ChaSetReadOnlyInput.qml
+        src/ChaSetPresetNumberInput.qml
         src/ChaSetKeybindingRecorder.qml
         src/ChaSetVirtualList.qml
         src/ChaSetVirtualTree.qml
@@ -154,6 +155,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/InlineEditableTextDocPage.qml
             src/RangeSliderDocPage.qml
             src/ReadOnlyInputDocPage.qml
+            src/PresetNumberInputDocPage.qml
             src/KeybindingRecorderDocPage.qml
             src/VirtualListDocPage.qml
             src/VirtualTreeDocPage.qml
