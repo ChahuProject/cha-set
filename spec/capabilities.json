@@ -102,6 +102,46 @@
       "swatches": { "requirement": "must", "description": "swatches renders preset color chips" },
       "hueSlider": { "requirement": "must", "description": "hueSlider adjusts color hue track" },
       "disabled": { "requirement": "must", "description": "disabled blocks color interactions" }
+    },
+    "dropdownMenu": {
+      "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
+      "items": { "requirement": "must", "description": "renders menu items and triggers actions" },
+      "submenus": { "requirement": "must", "description": "supports nested cascading submenus" },
+      "checkboxItems": { "requirement": "should", "description": "supports checkable menu items" },
+      "radioItems": { "requirement": "should", "description": "supports radio selection menu items" }
+    },
+    "select": {
+      "value": { "requirement": "must", "description": "controlled and uncontrolled value selection" },
+      "trigger": { "requirement": "must", "description": "renders trigger with placeholder and selected value" },
+      "popup": { "requirement": "must", "description": "opens dropdown popup with selectable options" },
+      "disabled": { "requirement": "must", "description": "disabled state blocks selection and interaction" },
+      "scrollButtons": { "requirement": "should", "description": "provides scroll buttons when options overflow" }
+    },
+    "popover": {
+      "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
+      "positioning": { "requirement": "must", "description": "positions popup relative to trigger or anchor" },
+      "movable": { "requirement": "should", "description": "supports dragging popover position via handle" }
+    },
+    "contextMenu": {
+      "trigger": { "requirement": "must", "description": "right-click opens context menu at cursor position" },
+      "items": { "requirement": "must", "description": "renders menu items with click actions" },
+      "submenus": { "requirement": "should", "description": "supports nested cascading context submenus" }
+    },
+    "alertDialog": {
+      "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
+      "action": { "requirement": "must", "description": "action button confirms and closes alert dialog" },
+      "cancel": { "requirement": "must", "description": "cancel button dismisses alert dialog" },
+      "overlay": { "requirement": "must", "description": "renders backdrop overlay behind alert dialog" }
+    },
+    "sheet": {
+      "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
+      "side": { "requirement": "must", "description": "drawer slides in from top, right, bottom, or left side" },
+      "overlay": { "requirement": "must", "description": "renders backdrop overlay behind sheet drawer" },
+      "close": { "requirement": "must", "description": "close button or backdrop click dismisses sheet" }
+    },
+    "skeleton": {
+      "pulse": { "requirement": "must", "description": "renders pulse animation placeholder" },
+      "customClass": { "requirement": "must", "description": "accepts custom width, height, and radius classes" }
     }
   }
 }

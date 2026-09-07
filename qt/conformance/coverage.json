@@ -102,5 +102,45 @@
     "swatches": true,
     "hueSlider": true,
     "disabled": true
+  },
+  "dropdownMenu": {
+    "open": true,
+    "items": true,
+    "submenus": true,
+    "checkboxItems": true,
+    "radioItems": true
+  },
+  "select": {
+    "value": true,
+    "trigger": true,
+    "popup": true,
+    "disabled": true,
+    "scrollButtons": true
+  },
+  "popover": {
+    "open": true,
+    "positioning": true,
+    "movable": true
+  },
+  "contextMenu": {
+    "trigger": true,
+    "items": true,
+    "submenus": true
+  },
+  "alertDialog": {
+    "open": true,
+    "action": true,
+    "cancel": true,
+    "overlay": true
+  },
+  "sheet": {
+    "open": true,
+    "side": true,
+    "overlay": true,
+    "close": true
+  },
+  "skeleton": {
+    "pulse": true,
+    "customClass": true
   }
 }

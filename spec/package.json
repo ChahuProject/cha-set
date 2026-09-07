@@ -18,7 +18,14 @@
     "./dialog": "./components/dialog.ts",
     "./tooltip": "./components/tooltip.ts",
     "./table": "./components/table.ts",
-    "./color-picker": "./components/color-picker.ts"
+    "./color-picker": "./components/color-picker.ts",
+    "./dropdown-menu": "./components/dropdown-menu.ts",
+    "./select": "./components/select.ts",
+    "./popover": "./components/popover.ts",
+    "./context-menu": "./components/context-menu.ts",
+    "./alert-dialog": "./components/alert-dialog.ts",
+    "./sheet": "./components/sheet.ts",
+    "./skeleton": "./components/skeleton.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"
