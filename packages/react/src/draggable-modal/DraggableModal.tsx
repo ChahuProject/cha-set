@@ -10,12 +10,16 @@ import { Maximize2Icon } from '../lib/icons';
 import { cn } from '../lib/utils';
 
 export interface DraggableModalSizeOption {
-  name: string;
+  name?: string;
+  名称?: string;
   width?: number;
   height?: number;
   widthRem?: number;
   heightRem?: number;
+  宽度rem?: number;
+  高度rem?: number;
   special?: 'fullscreen' | 'default' | '全窗口' | '默认';
+  特殊?: 'fullscreen' | 'default' | '全窗口' | '默认';
 }
 
 export interface DraggableModalProps {
@@ -244,21 +248,18 @@ export function DraggableModal({
     let targetW: number;
     let targetH: number;
 
-    if (option.special === 'fullscreen' || option.special === '全窗口') {
+    const optSpecial = option.special ?? option.特殊;
+    if (optSpecial === 'fullscreen' || optSpecial === '全窗口') {
       targetW = currentInnerW - 16;
       targetH = currentInnerH - 16;
-    } else if (option.special === 'default' || option.special === '默认') {
+    } else if (optSpecial === 'default' || optSpecial === '默认') {
       targetW = initialPos.width;
       targetH = initialPos.height;
     } else {
-      const optW =
-        option.widthRem !== undefined
-          ? option.widthRem * rem
-          : (option.width ?? initialPos.width);
-      const optH =
-        option.heightRem !== undefined
-          ? option.heightRem * rem
-          : (option.height ?? initialPos.height);
+      const remW = option.widthRem ?? option.宽度rem;
+      const remH = option.heightRem ?? option.高度rem;
+      const optW = remW !== undefined ? remW * rem : (option.width ?? initialPos.width);
+      const optH = remH !== undefined ? remH * rem : (option.height ?? initialPos.height);
 
       targetW = Math.min(optW, currentInnerW - 16);
       targetH = Math.min(optH, currentInnerH - 16);
@@ -344,14 +345,17 @@ export function DraggableModal({
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                {effectiveSizeOptions.map((option) => (
-                  <DropdownMenuItem
-                    key={option.name}
-                    onClick={() => handleSelectSize(option)}
-                  >
-                    {option.name}
-                  </DropdownMenuItem>
-                ))}
+                {effectiveSizeOptions.map((option, idx) => {
+                  const label = option.name ?? option.名称 ?? `Option ${idx + 1}`;
+                  return (
+                    <DropdownMenuItem
+                      key={label}
+                      onClick={() => handleSelectSize(option)}
+                    >
+                      {label}
+                    </DropdownMenuItem>
+                  );
+                })}
               </DropdownMenuContent>
             </DropdownMenu>
           )}

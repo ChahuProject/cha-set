@@ -1,12 +1,16 @@
 import { z } from 'zod';
 
 export const draggableModalSizeOptionSchema = z.object({
-  name: z.string(),
+  name: z.string().optional(),
+  名称: z.string().optional(),
   width: z.number().optional(),
   height: z.number().optional(),
   widthRem: z.number().optional(),
   heightRem: z.number().optional(),
+  宽度rem: z.number().optional(),
+  高度rem: z.number().optional(),
   special: z.enum(['fullscreen', 'default', '全窗口', '默认']).optional(),
+  特殊: z.enum(['fullscreen', 'default', '全窗口', '默认']).optional(),
 });
 
 export type DraggableModalSizeOptionApi = z.infer<typeof draggableModalSizeOptionSchema>;
