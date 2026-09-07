@@ -41,6 +41,7 @@
     "./virtual-grid": "./components/virtual-grid.ts",
     "./draggable-modal": "./components/draggable-modal.ts",
     "./splitter": "./components/splitter.ts",
+    "./resizable": "./components/resizable.ts",
     "./window-title-bar": "./components/window-title-bar.ts",
     "./data-table": "./components/data-table.ts",
     "./query-builder": "./components/query-builder.ts",

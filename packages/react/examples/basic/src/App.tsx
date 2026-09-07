@@ -59,6 +59,7 @@ import { VirtualTreeDocPage } from './pages/components/VirtualTreeDocPage';
 import { VirtualGridDocPage } from './pages/components/VirtualGridDocPage';
 import { DraggableModalDocPage } from './pages/components/DraggableModalDocPage';
 import { SplitterDocPage } from './pages/components/SplitterDocPage';
+import { ResizableDocPage } from './pages/components/ResizableDocPage';
 import { WindowTitleBarDocPage } from './pages/components/WindowTitleBarDocPage';
 import { GenericDataTableDocPage } from './pages/components/GenericDataTableDocPage';
 import { QueryBuilderDocPage } from './pages/components/QueryBuilderDocPage';
@@ -581,6 +582,8 @@ export function App() {
         return <DraggableModalDocPage />;
       case '#/components/splitter':
         return <SplitterDocPage />;
+      case '#/components/resizable':
+        return <ResizableDocPage />;
       case '#/components/window-title-bar':
         return <WindowTitleBarDocPage />;
       case '#/components/generic-data-table':

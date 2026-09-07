@@ -84,6 +84,7 @@ ApplicationWindow {
         case "virtual-grid": return "VirtualGridDocPage.qml";
         case "draggable-modal": return "DraggableModalDocPage.qml";
         case "splitter": return "SplitterDocPage.qml";
+        case "resizable": return "ResizableDocPage.qml";
         case "window-title-bar": return "WindowTitleBarDocPage.qml";
         case "generic-data-table": return "GenericDataTableDocPage.qml";
         case "query-builder": return "QueryBuilderDocPage.qml";

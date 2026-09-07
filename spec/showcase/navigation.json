@@ -73,6 +73,7 @@
       { "id": "virtual-grid", "title": "Virtual Grid", "href": "#/components/virtual-grid", "badge": "Stage 3", "desc": "2D windowed grid virtualizer for massive dataset visualization." },
       { "id": "draggable-modal", "title": "Draggable Modal", "href": "#/components/draggable-modal", "badge": "Stage 3", "desc": "Desktop floating window with dragging title bar and bound viewport constraints." },
       { "id": "splitter", "title": "Splitter", "href": "#/components/splitter", "badge": "Stage 3", "desc": "Multi-pane resizable layout container with draggable gutters and collapse limits." },
+      { "id": "resizable", "title": "Resizable", "href": "#/components/resizable", "badge": "Stage 3", "desc": "Accessible resizable panel groups and layout splitters." },
       { "id": "window-title-bar", "title": "Window Title Bar", "href": "#/components/window-title-bar", "badge": "Stage 3", "desc": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons." }
     ]
   },

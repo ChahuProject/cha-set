@@ -208,6 +208,12 @@
     "dragResize": true,
     "doubleClickReset": true
   },
+  "resizable": {
+    "panelGroup": true,
+    "panelResize": true,
+    "handleDrag": true,
+    "collapsible": true
+  },
   "windowTitleBar": {
     "captionButtons": true,
     "doubleClickMaximize": true

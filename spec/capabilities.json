@@ -208,6 +208,12 @@
       "dragResize": { "requirement": "must", "description": "drags divider to adjust adjacent pane sizes" },
       "doubleClickReset": { "requirement": "must", "description": "double-clicking divider resets size to initial value" }
     },
+    "resizable": {
+      "panelGroup": { "requirement": "must", "description": "arranges child panels in horizontal or vertical orientation" },
+      "panelResize": { "requirement": "must", "description": "dynamically allocates width or height percentages to child panels" },
+      "handleDrag": { "requirement": "must", "description": "draggable handle separating panels with interactive feedback" },
+      "collapsible": { "requirement": "must", "description": "supports collapsing panels past minimum threshold" }
+    },
     "windowTitleBar": {
       "captionButtons": { "requirement": "must", "description": "renders minimize, maximize/restore, and close buttons" },
       "doubleClickMaximize": { "requirement": "must", "description": "double-clicking header toggles maximized state" }

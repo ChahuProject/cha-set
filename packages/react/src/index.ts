@@ -34,6 +34,7 @@ export * from './keybinding-recorder';
 export * from './virtual';
 export * from './draggable-modal';
 export * from './splitter';
+export * from './resizable';
 export * from './window-title-bar';
 export * from './data-table';
 export * from './query-builder';

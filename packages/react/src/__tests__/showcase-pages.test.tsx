@@ -33,6 +33,7 @@ import { SkeletonDocPage } from '../../examples/basic/src/pages/components/Skele
 import { SliderDocPage } from '../../examples/basic/src/pages/components/SliderDocPage';
 import { SplitButtonDocPage } from '../../examples/basic/src/pages/components/SplitButtonDocPage';
 import { SplitterDocPage } from '../../examples/basic/src/pages/components/SplitterDocPage';
+import { ResizableDocPage } from '../../examples/basic/src/pages/components/ResizableDocPage';
 import { SwitchDocPage } from '../../examples/basic/src/pages/components/SwitchDocPage';
 import { TableDocPage } from '../../examples/basic/src/pages/components/TableDocPage';
 import { TabsDocPage } from '../../examples/basic/src/pages/components/TabsDocPage';
@@ -74,6 +75,7 @@ const pages = [
   { name: 'SliderDocPage', Component: SliderDocPage },
   { name: 'SplitButtonDocPage', Component: SplitButtonDocPage },
   { name: 'SplitterDocPage', Component: SplitterDocPage },
+  { name: 'ResizableDocPage', Component: ResizableDocPage },
   { name: 'SwitchDocPage', Component: SwitchDocPage },
   { name: 'TableDocPage', Component: TableDocPage },
   { name: 'TabsDocPage', Component: TabsDocPage },

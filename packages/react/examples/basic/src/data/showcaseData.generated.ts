@@ -1317,6 +1317,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "desc": "Multi-pane resizable layout container with draggable gutters and collapse limits."
       },
       {
+        "id": "resizable",
+        "title": "Resizable",
+        "href": "#/components/resizable",
+        "badge": "Stage 3",
+        "desc": "Accessible resizable panel groups and layout splitters."
+      },
+      {
         "id": "window-title-bar",
         "title": "Window Title Bar",
         "href": "#/components/window-title-bar",

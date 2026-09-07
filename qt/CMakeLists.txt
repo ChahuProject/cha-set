@@ -82,6 +82,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetVirtualGrid.qml
         src/ChaSetDraggableModal.qml
         src/ChaSetSplitter.qml
+        src/ChaSetResizable.qml
         src/ChaSetWindowTitleBar.qml
         src/ChaSetGenericDataTable.qml
         src/ChaSetQueryBuilder.qml
@@ -163,6 +164,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/VirtualGridDocPage.qml
             src/DraggableModalDocPage.qml
             src/SplitterDocPage.qml
+            src/ResizableDocPage.qml
             src/WindowTitleBarDocPage.qml
             src/GenericDataTableDocPage.qml
             src/QueryBuilderDocPage.qml
