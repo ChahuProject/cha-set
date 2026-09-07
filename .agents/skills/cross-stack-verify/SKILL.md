@@ -35,10 +35,13 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - All component datasets (changelogs, feature matrices, docs hierarchy, token tables) MUST reside in `spec/showcase/*.json` or `spec/tokens/**`.
    - Run `pnpm gen:showcase` / `pnpm build:tokens` to emit synchronized artifacts. Never duplicate raw arrays in TSX and QML.
 
-6. **Desktop Native Idiom Compliance (遵循 Qt 桌面端物理特性)**
+6. **Desktop Native Idiom & QML Robustness Compliance (遵循 Qt 桌面端物理交互与健壮性规约)**
    - **Wheel Events**: Qt `Flickable` on Windows ignores mouse wheels unless `WheelHandler` is attached. Always use `ChaSetScrollArea` with built-in `WheelHandler`.
    - **Drag Decoupling**: In QML, dragging `thumb` must decouple from reactive `y: computedPos` bindings during active mouse press to prevent jitter and binding destruction.
    - **Viewport Bounds**: Ensure `contentHeight` and `contentWidth` are correctly computed or bounded via `childrenRect`.
+   - **Layout Attached Properties**: Never use `Layout.fillWidth` or `Layout.fillHeight` inside standard `Row` or `Column`. Only use inside `RowLayout`/`ColumnLayout` or use anchors.
+   - **Signal Duplication**: Never redeclare automatic property change signals (`property string value` already generates `signal valueChanged`).
+   - **Component Runtime Instantiation Gate**: Never rely merely on file existence. All Qt doc pages must pass physical instantiation via `QtChaSetDemo.exe --test-scenario all` to verify zero `Component.Error`.
 
 ## 2. Verification Commands Checklist
 

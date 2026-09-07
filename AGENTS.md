@@ -50,7 +50,7 @@
         - Component implementation: `qt/src/ChaSet${PascalCase}.qml` registered in `qt/CMakeLists.txt`.
         - Dedicated Living Doc Page: `qt/src/${PascalCase}DocPage.qml` registered in `qt/CMakeLists.txt`.
         - Active routing & dynamic loader mapping in `qt/src/Main.qml` (`getPageSource`).
-   - **Mechanical Automated Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas, verifies dual-stack (React & Qt) component files, living showcase doc pages, route handling, and CMake registrations. It automatically mounts every React DocPage executing interactive click tests (`showcase-pages.test.tsx`) AND executes headless Qt runtime scenario tests (`QtChaSetDemo.exe --test-scenario all`) across all routes to guarantee zero runtime crashes and zero white screens across both platforms.
+   - **Mechanical Automated Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas, verifies dual-stack (React & Qt) component files, living showcase doc pages, route handling, and CMake registrations. It automatically mounts every React DocPage executing interactive click tests (`showcase-pages.test.tsx`) AND executes headless Qt runtime scenario tests (`QtChaSetDemo.exe --test-scenario all`) which physically compiles and instantiates all 39 QML showcase doc pages to guarantee zero runtime crashes, zero QML type/binding errors, and zero white screens across both platforms.
 2. **NO Visual-Only Delivery (禁止仅凭静态截图验收)**:
    - An Agent must NEVER declare a UI component task complete based solely on static screenshots or compilation passes. Interactive verification (wheel scrolling, drag tracking, clicks, keyboard shortcuts) is strictly mandatory.
 3. **Strict Tiered Quality Compliance (按组件层级实施针对性检验)**:
@@ -63,13 +63,16 @@
    - Never leave raw native tags or ad-hoc custom implementations in the showcase when ChaSet provides that primitive.
 5. **Single Source of Truth for Data (数据单一真理源)**:
    - All showcase datasets, token definitions, navigation structures, and component contracts MUST reside in `spec/showcase/*.json`, `spec/tokens/**`, and `spec/components/*.ts`. Never duplicate hardcoded arrays in React TSX or Qt QML.
-6. **Desktop Platform Idiom Compliance (遵循桌面端原生物理交互)**:
+6. **Desktop Platform Idiom & QML Robustness Compliance (遵循桌面端物理交互与 QML 健壮性规约)**:
    - **Wheel Scrolling**: Always use `ChaSetScrollArea` with native `WheelHandler` on Qt. Never assume `Flickable` handles mouse wheel by default.
    - **Drag Decoupling**: In QML, dragging `thumb` must decouple from reactive `y: computedPos` bindings during active mouse press to prevent binding thrashing.
    - **Dynamic Viewport**: Ensure `contentHeight` and `contentWidth` are bound to `childrenRect` when dynamic.
-7. **Mandatory Behavioral Parity Gate & White-Screen Zero Tolerance**:
+   - **QML Layout Attached Properties**: NEVER attach `Layout.fillWidth` or `Layout.fillHeight` inside standard `Row` or `Column` (only use them inside `RowLayout`/`ColumnLayout` from `QtQuick.Layouts`, or prefer robust anchors).
+   - **QML Signal Declarations**: NEVER redeclare automatic property change signals (e.g. `property string value` automatically synthesizes `signal valueChanged`; manually redeclaring it causes duplicate signal name errors).
+   - **Delegate Properties**: In Qt 6 QML delegates, explicitly declare `required property int index` whenever `index` is referenced.
+7. **Mandatory Behavioral Parity Gate & White-Screen Zero Tolerance (双端零白屏与全量加载门禁)**:
    - Before finishing any task, run `pnpm gate` which executes full contract validation, living showcase documentation completeness checks, automated showcase DocPage smoke & button click tests, headless Qt interaction scenarios (`--test-scenario all`), and React test suites.
-   - All showcase preview panels and dynamic routes MUST be guarded by `<ErrorBoundary>` to ensure isolated rendering errors display actionable diagnostics instead of crashing to a blank white screen.
+   - All showcase preview panels and dynamic routes MUST be guarded by `<ErrorBoundary>` on Web, and verified by physical QML component instantiation on Qt (`runTestScenario("pages")`), ensuring zero unhandled exceptions and zero broken pages.
 
 ---
 

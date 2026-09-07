@@ -176,6 +176,11 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - Register `qt/src/<Name>DocPage.qml` in `qt/CMakeLists.txt` under `QtChaSetDemo` `QML_FILES`.
    - Register `qt/src/ChaSet<Name>.qml` in `qt/CMakeLists.txt` under `ChaSet` `QML_FILES`.
    - Add route mapping in `qt/src/Main.qml` (`getPageSource`).
+   - **QML Robustness Red Lines**:
+     - Never use `Layout.fillWidth` or `Layout.fillHeight` inside standard `Row` or `Column` (use anchors or `RowLayout`).
+     - Never declare duplicate signals for existing properties (e.g. `property string value` already generates `signal valueChanged`).
+     - In delegates, explicitly declare `required property int index` if `index` is referenced.
+     - Run `.\qt\build\QtChaSetDemo.exe --test-scenario all` to physically verify component compilation and instantiation with 0 errors.
 3. **Showcase Navigation Registration**:
    - Add navigation entry to `spec/showcase/navigation.json` under its category:
      ```json
