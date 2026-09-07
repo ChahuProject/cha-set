@@ -21,4 +21,27 @@ export * from './context-menu';
 export * from './alert-dialog';
 export * from './sheet';
 export * from './skeleton';
-export { CheckIcon, XIcon, GripHorizontalIcon } from './lib/icons';
+export * from './copy-button';
+export * from './panel-card';
+export * from './split-button';
+export * from './inline-editable-text';
+export * from './range-slider';
+export * from './read-only-input';
+export * from './keybinding-recorder';
+export * from './virtual';
+export * from './draggable-modal';
+export * from './splitter';
+export * from './window-title-bar';
+export * from './data-table';
+export * from './query-builder';
+export {
+  CheckIcon,
+  XIcon,
+  GripHorizontalIcon,
+  CopyIcon,
+  PencilIcon,
+  KeyboardIcon,
+  SearchIcon,
+  ArrowUpDownIcon,
+} from './lib/icons';
+
