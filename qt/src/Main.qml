@@ -519,7 +519,7 @@ ApplicationWindow {
                             }
                         }
 
-                        Rectangle { width: 1; height: 18; color: win.cBorder; anchors.verticalCenter: parent.verticalCenter }
+                        ChaSetSeparator { orientation: "vertical"; height: 18; anchors.verticalCenter: parent.verticalCenter }
 
                         // Dark/Light Mode Toggle Button
                         ChaSetTooltip {

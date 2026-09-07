@@ -22,7 +22,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 3. **Tiered Quality Defense Matrix**:
    - **L1 Atomic Visual Primitives** (`button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`): **MANDATORY Bit-Exact Pixel-Sync** (`pnpm test:pixel --component <name>`). Spatial diff $\le 0.20\%$, surface color $\Delta E \le 4.0$ (solid fill $\Delta E = 0.0$).
    - **L2 Floating Overlays**, **L3 Desktop Virtualization**, and **L4 Composite Engines**: Token conformance, keyboard navigation flows, 60fps virtualization kinetics, and JSON AST serialization round-trips.
-4. **No Native Fallbacks in Showcases**: When a component is added to ChaSet, all corresponding native HTML tags (e.g. `<button>`, `<span>` pills, `<input>`) or ad-hoc QML elements in all demo pages and modal dialogs MUST be migrated to the new component.
+4. **Mandatory Dogfooding & Showcase Migration (零原生标签与全量自举)**: When a component is added to ChaSet, an Agent MUST immediately scan all demo pages, layouts, and dialogs (`packages/react/examples/basic/src/` and `qt/src/`). All corresponding native HTML tags, ad-hoc SVG button implementations (e.g. manual clipboard copying, raw divider lines, hardcoded tooltip wrappers), or ad-hoc QML elements MUST be migrated to the new component. No raw HTML tags or ad-hoc custom implementations are permitted in the showcase when ChaSet provides that primitive.
 5. **Mandatory Gate Verification**: Run `pnpm gate` which verifies capabilities, Living Showcase completeness, and headless Qt scenario tests. For L1 components, also verify `pnpm test:pixel --component <name>`.
 
 ---

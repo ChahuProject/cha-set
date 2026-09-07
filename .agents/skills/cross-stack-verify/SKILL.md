@@ -27,11 +27,15 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **L1 Atomic Visual Primitives** (`button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`): Bit-exact pixel-sync mandatory (`pnpm test:pixel --component <name>`).
    - **L2 Floating Overlays**, **L3 Virtualization & Shell**, **L4 Composite Engines**: Focus on semantic token mapping, keyboard flows, 60fps virtualization kinetics, and JSON AST serialization equivalence.
 
-4. **Single Source of Truth for Data (禁止双端手写重复数据)**
+4. **Mandatory Dogfooding & Showcase Self-Hosting (组件自举与演示置换红线)**
+   - Whenever a new component is introduced, scan all demo layouts, headers, sidebars, and dialogs in both React and Qt.
+   - All raw HTML elements, ad-hoc button implementations, custom copy scripts, and raw divider rectangles MUST be replaced immediately with the new ChaSet primitive (e.g. `<CopyButton>`, `<Separator>`, `<DropdownMenu>`, `<Tooltip>`).
+
+5. **Single Source of Truth for Data (禁止双端手写重复数据)**
    - All component datasets (changelogs, feature matrices, docs hierarchy, token tables) MUST reside in `spec/showcase/*.json` or `spec/tokens/**`.
    - Run `pnpm gen:showcase` / `pnpm build:tokens` to emit synchronized artifacts. Never duplicate raw arrays in TSX and QML.
 
-5. **Desktop Native Idiom Compliance (遵循 Qt 桌面端物理特性)**
+6. **Desktop Native Idiom Compliance (遵循 Qt 桌面端物理特性)**
    - **Wheel Events**: Qt `Flickable` on Windows ignores mouse wheels unless `WheelHandler` is attached. Always use `ChaSetScrollArea` with built-in `WheelHandler`.
    - **Drag Decoupling**: In QML, dragging `thumb` must decouple from reactive `y: computedPos` bindings during active mouse press to prevent jitter and binding destruction.
    - **Viewport Bounds**: Ensure `contentHeight` and `contentWidth` are correctly computed or bounded via `childrenRect`.

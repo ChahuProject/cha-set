@@ -52,13 +52,17 @@
    - Component testing is categorized into 4 tiers (see Matrix below).
    - **L1 Atomic Visual Primitives** MUST pass bit-exact pixel-sync (`pnpm test:pixel --component <name>`).
    - **L2 Floating Overlays**, **L3 Desktop Virtualization**, and **L4 Composite Engines** MUST pass their respective behavioral scenarios, token checks, and AST data equivalence tests.
-4. **Single Source of Truth for Data (数据单一真理源)**:
+4. **Mandatory Dogfooding & Showcase Self-Hosting (组件自举与演示置换红线)**:
+   - Whenever a new component is implemented in ChaSet (or when modifying existing demo code), an Agent MUST proactively scan all showcase/demo pages, layouts, and dialogs (`packages/react/examples/basic/src/` and `qt/src/`).
+   - If any raw HTML tags, ad-hoc wrappers, or placeholder elements can be replaced by the newly created ChaSet component (e.g. replacing manual copy buttons with `<CopyButton>`, dividers with `<Separator>`, tooltips with `<Tooltip>`, dropdown menus with `<DropdownMenu>`, dialogs with `<Dialog>`, inputs with `<Input>`, badges with `<Badge>`, etc.), **they MUST be replaced immediately**.
+   - Never leave raw native tags or ad-hoc custom implementations in the showcase when ChaSet provides that primitive.
+5. **Single Source of Truth for Data (数据单一真理源)**:
    - All showcase datasets, token definitions, navigation structures, and component contracts MUST reside in `spec/showcase/*.json`, `spec/tokens/**`, and `spec/components/*.ts`. Never duplicate hardcoded arrays in React TSX or Qt QML.
-5. **Desktop Platform Idiom Compliance (遵循桌面端原生物理交互)**:
+6. **Desktop Platform Idiom Compliance (遵循桌面端原生物理交互)**:
    - **Wheel Scrolling**: Always use `ChaSetScrollArea` with native `WheelHandler` on Qt. Never assume `Flickable` handles mouse wheel by default.
    - **Drag Decoupling**: In QML, dragging `thumb` must decouple from reactive `y: computedPos` bindings during active mouse press to prevent binding thrashing.
    - **Dynamic Viewport**: Ensure `contentHeight` and `contentWidth` are bound to `childrenRect` when dynamic.
-6. **Mandatory Behavioral Parity Gate**:
+7. **Mandatory Behavioral Parity Gate**:
    - Before finishing any task, run `pnpm gate` which executes full contract validation, living showcase documentation completeness checks, headless Qt interaction scenarios (`--test-scenario all`), and React test suites.
 
 ---

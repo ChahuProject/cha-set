@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Badge, Input, Checkbox, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
+import { Button, Badge, Input, Checkbox, CopyButton, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
 
 export const ComponentPlayground: React.FC = () => {
   const [variant, setVariant] = useState<ButtonVariant>('default');
@@ -9,7 +9,6 @@ export const ComponentPlayground: React.FC = () => {
   const [disabled, setDisabled] = useState(false);
   const [fullWidth, setFullWidth] = useState(false);
   const [renderAsLink, setRenderAsLink] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [clickCount, setClickCount] = useState(0);
 
   const generatedCode = `<Button
@@ -20,16 +19,6 @@ export const ComponentPlayground: React.FC = () => {
 >
   ${label}
 </Button>`;
-
-  const copyCode = async () => {
-    try {
-      await navigator.clipboard.writeText(generatedCode);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Fallback
-    }
-  };
 
   return (
     <section className="block playground-block" id="playground">
@@ -163,9 +152,13 @@ export const ComponentPlayground: React.FC = () => {
           <div className="code-snippet-box">
             <div className="code-snippet-header">
               <span>React JSX Usage</span>
-              <Button variant="ghost" size="sm" className="h-6 px-2 text-xs" onClick={copyCode}>
-                {copied ? '✓ Copied' : '📋 Copy JSX'}
-              </Button>
+              <CopyButton
+                text={generatedCode}
+                label="Copy JSX"
+                variant="ghost"
+                size="sm"
+                className="h-6 px-2 text-xs"
+              />
             </div>
             <pre className="code-snippet-pre">
               <code>{generatedCode}</code>

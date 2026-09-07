@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  Separator,
 } from '@chahu/cha-set';
 
 export interface HeaderProps {
@@ -116,7 +117,7 @@ export function Header({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <div className="h-4 w-px bg-border mx-1" />
+          <Separator orientation="vertical" className="h-4 mx-1" />
 
           {/* Theme Mode Toggle */}
           <Tooltip content={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'} side="bottom">
