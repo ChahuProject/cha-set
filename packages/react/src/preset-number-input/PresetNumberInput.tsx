@@ -21,6 +21,8 @@ export interface PresetNumberInputProps {
   inputClassName?: string;
   /** Container class name */
   className?: string;
+  /** Accessibility label for the input element */
+  'aria-label'?: string;
 }
 
 const DEFAULT_PRESETS = [64, 128, 256, 512, 1024, 2048, 4096, 8192];
@@ -43,6 +45,7 @@ export function PresetNumberInput({
   clearLabel = 'None',
   inputClassName,
   className,
+  'aria-label': ariaLabel,
 }: PresetNumberInputProps) {
   const [open, setOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -93,6 +96,7 @@ export function PresetNumberInput({
           if (!disabled) setOpen(true);
         }}
         onKeyDown={handleKeyDown}
+        aria-label={ariaLabel}
         className={cn('h-8 text-xs', inputClassName)}
       />
       {open && !disabled && (
