@@ -19,7 +19,7 @@ Rectangle {
     width: isVertical ? 1 : (parent ? parent.width : implicitWidth)
     height: isVertical ? (parent ? parent.height : implicitHeight) : 1
 
-    color: customColor !== Qt.rgba(0, 0, 0, 0) && customColor != "transparent" && customColor != "#00000000"
+    color: customColor.a > 0
         ? customColor
         : (isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0))
 }

@@ -94,7 +94,7 @@ Item {
         if (variant === "destructive") {
             if (effectiveDown) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.25)
             if (effectiveHovered) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.2)
-            return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.1)
+            return ThemeTokens.dark ? Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.2) : Qt.rgba(252.0 / 255.0, 218.0 / 255.0, 218.0 / 255.0, 1.0)
         }
 
         // default / primary
@@ -128,7 +128,7 @@ Item {
     implicitHeight: buttonHeight()
     implicitWidth: isIconButton()
         ? buttonHeight()
-        : Math.max(buttonHeight(), (text !== "" || iconSource !== "" ? contentRow.implicitWidth : fontSizePx()) + paddingH() * 2)
+        : ((text !== "" || iconSource !== "" ? contentRow.implicitWidth : fontSizePx()) + paddingH() * 2)
     height: buttonHeight()
     width: fullWidth && parent ? parent.width : implicitWidth
 
@@ -148,7 +148,7 @@ Item {
         color: root.hasBorder() || root.variant === "default" || root.variant === "primary" || root.variant === "secondary" || root.variant === "destructive"
                ? Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.25 : 0.06)
                : "transparent"
-        visible: !root.effectiveDown && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link")
+        visible: !root.effectiveDown && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link" && root.variant !== "destructive")
     }
 
     // Background surface

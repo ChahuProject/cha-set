@@ -47,7 +47,7 @@ Rectangle {
         } else if (root.variant === "secondary") {
             return isDark ? Qt.rgba(0.118, 0.161, 0.231, 1.0) : Qt.rgba(0.945, 0.961, 0.976, 1.0) // #f1f5f9
         } else if (root.variant === "destructive") {
-            return Qt.rgba(0.937, 0.267, 0.267, 0.15)
+            return isDark ? Qt.rgba(0.937, 0.267, 0.267, 0.2) : Qt.rgba(252.0 / 255.0, 218.0 / 255.0, 218.0 / 255.0, 1.0)
         } else if (root.variant === "outline") {
             return isDark ? Qt.rgba(0.008, 0.031, 0.09, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
         }

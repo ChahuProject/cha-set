@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
+  CopyButton,
 } from '@chahu/cha-set';
 import type { ThemeOverrides } from './ThemeTuner';
 
@@ -224,9 +225,12 @@ ApplicationWindow {
             <Button variant="secondary" size="sm" onClick={onClose}>
               Close
             </Button>
-            <Button variant="default" size="sm" onClick={copyToClipboard}>
-              {copied ? '✓ Copied to Clipboard!' : '📋 Copy to Clipboard'}
-            </Button>
+            <CopyButton
+              variant="default"
+              size="sm"
+              text={getSnippet()}
+              label="Copy to Clipboard"
+            />
           </div>
         </DialogFooter>
       </DialogContent>

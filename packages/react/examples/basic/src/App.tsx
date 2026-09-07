@@ -13,6 +13,7 @@ import {
   CardContent,
   CardFooter,
   Input,
+  Separator,
 } from '@chahu/cha-set';
 import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
@@ -34,6 +35,28 @@ import { DialogDocPage } from './pages/components/DialogDocPage';
 import { TooltipDocPage } from './pages/components/TooltipDocPage';
 import { TableDocPage } from './pages/components/TableDocPage';
 import { ColorPickerDocPage } from './pages/components/ColorPickerDocPage';
+import { DropdownMenuDocPage } from './pages/components/DropdownMenuDocPage';
+import { SelectDocPage } from './pages/components/SelectDocPage';
+import { PopoverDocPage } from './pages/components/PopoverDocPage';
+import { ContextMenuDocPage } from './pages/components/ContextMenuDocPage';
+import { AlertDialogDocPage } from './pages/components/AlertDialogDocPage';
+import { SheetDocPage } from './pages/components/SheetDocPage';
+import { SkeletonDocPage } from './pages/components/SkeletonDocPage';
+import { CopyButtonDocPage } from './pages/components/CopyButtonDocPage';
+import { PanelCardDocPage } from './pages/components/PanelCardDocPage';
+import { SplitButtonDocPage } from './pages/components/SplitButtonDocPage';
+import { InlineEditableTextDocPage } from './pages/components/InlineEditableTextDocPage';
+import { RangeSliderDocPage } from './pages/components/RangeSliderDocPage';
+import { ReadOnlyInputDocPage } from './pages/components/ReadOnlyInputDocPage';
+import { KeybindingRecorderDocPage } from './pages/components/KeybindingRecorderDocPage';
+import { VirtualListDocPage } from './pages/components/VirtualListDocPage';
+import { VirtualTreeDocPage } from './pages/components/VirtualTreeDocPage';
+import { VirtualGridDocPage } from './pages/components/VirtualGridDocPage';
+import { DraggableModalDocPage } from './pages/components/DraggableModalDocPage';
+import { SplitterDocPage } from './pages/components/SplitterDocPage';
+import { WindowTitleBarDocPage } from './pages/components/WindowTitleBarDocPage';
+import { GenericDataTableDocPage } from './pages/components/GenericDataTableDocPage';
+import { QueryBuilderDocPage } from './pages/components/QueryBuilderDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
@@ -358,6 +381,45 @@ export function App() {
     );
   }
 
+  // Isolated Separator Visual Test Harness
+  if (harness === 'separator') {
+    const orientation = (searchParams?.get('orientation') ?? 'horizontal') as 'horizontal' | 'vertical';
+    const theme = searchParams?.get('theme') ?? 'light';
+    const width = Number(searchParams?.get('width') ?? 220);
+    const height = Number(searchParams?.get('height') ?? 80);
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+
+    const isVert = orientation === 'vertical';
+
+    return (
+      <div
+        style={{
+          width,
+          height,
+          position: 'relative',
+          background: theme === 'dark' ? '#020817' : '#ffffff',
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: isVert ? 110 : 20,
+            top: isVert ? 10 : 40,
+            width: isVert ? 1 : 180,
+            height: isVert ? 60 : 1,
+          }}
+        >
+          <Separator orientation={orientation} className={isVert ? 'h-full w-[1px]' : 'w-full h-[1px]'} />
+        </div>
+      </div>
+    );
+  }
+
   const { currentHash, navigate } = useRouter();
   const [mode, setMode] = useState(() => localStorage.getItem('cs-mode') ?? 'light');
   const [accent, setAccent] = useState(() => localStorage.getItem('cs-accent') ?? '');
@@ -428,6 +490,50 @@ export function App() {
         return <TableDocPage />;
       case '#/components/color-picker':
         return <ColorPickerDocPage />;
+      case '#/components/dropdown-menu':
+        return <DropdownMenuDocPage />;
+      case '#/components/select':
+        return <SelectDocPage />;
+      case '#/components/popover':
+        return <PopoverDocPage />;
+      case '#/components/context-menu':
+        return <ContextMenuDocPage />;
+      case '#/components/alert-dialog':
+        return <AlertDialogDocPage />;
+      case '#/components/sheet':
+        return <SheetDocPage />;
+      case '#/components/skeleton':
+        return <SkeletonDocPage />;
+      case '#/components/copy-button':
+        return <CopyButtonDocPage />;
+      case '#/components/panel-card':
+        return <PanelCardDocPage />;
+      case '#/components/split-button':
+        return <SplitButtonDocPage />;
+      case '#/components/inline-editable-text':
+        return <InlineEditableTextDocPage />;
+      case '#/components/range-slider':
+        return <RangeSliderDocPage />;
+      case '#/components/read-only-input':
+        return <ReadOnlyInputDocPage />;
+      case '#/components/keybinding-recorder':
+        return <KeybindingRecorderDocPage />;
+      case '#/components/virtual-list':
+        return <VirtualListDocPage />;
+      case '#/components/virtual-tree':
+        return <VirtualTreeDocPage />;
+      case '#/components/virtual-grid':
+        return <VirtualGridDocPage />;
+      case '#/components/draggable-modal':
+        return <DraggableModalDocPage />;
+      case '#/components/splitter':
+        return <SplitterDocPage />;
+      case '#/components/window-title-bar':
+        return <WindowTitleBarDocPage />;
+      case '#/components/generic-data-table':
+        return <GenericDataTableDocPage />;
+      case '#/components/query-builder':
+        return <QueryBuilderDocPage />;
       case '#/components/button':
       default:
         return <ButtonDocPage />;

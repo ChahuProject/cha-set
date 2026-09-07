@@ -141,6 +141,14 @@ const inputMatrix = [
   { id: 'input-dark-focus', component: 'input', size: 'default', state: 'focus', theme: 'dark', label: '·', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.3 },
 ];
 
+// Definitive Separator test matrix covering horizontal & vertical orientations across light and dark themes
+const separatorMatrix = [
+  { id: 'sep-horiz-light', component: 'separator', orientation: 'horizontal', theme: 'light', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.15 },
+  { id: 'sep-horiz-dark', component: 'separator', orientation: 'horizontal', theme: 'dark', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.15 },
+  { id: 'sep-vert-light', component: 'separator', orientation: 'vertical', theme: 'light', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.15 },
+  { id: 'sep-vert-dark', component: 'separator', orientation: 'vertical', theme: 'dark', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.15 },
+];
+
 let testCases = [];
 if (componentArg === 'button') {
   testCases = buttonMatrix;
@@ -162,8 +170,10 @@ if (componentArg === 'button') {
 } else if (componentArg === 'input') {
   testCases = inputMatrix;
   if (stateFilter) testCases = testCases.filter((tc) => tc.state === stateFilter);
+} else if (componentArg === 'separator') {
+  testCases = separatorMatrix;
 } else if (componentArg === 'all') {
-  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix, ...cardMatrix, ...inputMatrix];
+  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix, ...cardMatrix, ...inputMatrix, ...separatorMatrix];
 } else {
   console.log(`[pixel-sync] Component "${componentArg}" is not enabled for selective pixel sync. Skipping.`);
   process.exit(0);
@@ -288,6 +298,14 @@ try {
         width: String(tc.width),
         height: String(tc.height),
       }).toString();
+    } else if (tc.component === 'separator') {
+      query = new URLSearchParams({
+        harness: 'separator',
+        orientation: tc.orientation ?? 'horizontal',
+        theme: tc.theme ?? 'light',
+        width: String(tc.width),
+        height: String(tc.height),
+      }).toString();
     } else {
       query = new URLSearchParams({
         harness: 'button',
@@ -374,6 +392,15 @@ try {
         '--height', String(tc.height),
         '--shot', qtPngPath,
         ...(tc.disabled ? ['--disabled'] : []),
+        ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
+      ];
+    } else if (tc.component === 'separator') {
+      qtArgs = [
+        '--harness', 'separator',
+        '--orientation', tc.orientation ?? 'horizontal',
+        '--width', String(tc.width),
+        '--height', String(tc.height),
+        '--shot', qtPngPath,
         ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
       ];
     } else {

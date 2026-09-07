@@ -33,7 +33,7 @@ Rectangle {
     readonly property bool isDark: ThemeTokens.dark
 
     implicitWidth: 200
-    implicitHeight: isSm ? 32 : 36
+    implicitHeight: isSm ? 28 : 32
     radius: customRadius >= 0 ? customRadius : 6
     color: "transparent"
 
@@ -62,8 +62,8 @@ Rectangle {
     TextInput {
         id: inputInner
         anchors.fill: parent
-        anchors.leftMargin: root.isSm ? 10 : 12
-        anchors.rightMargin: root.isSm ? 10 : 12
+        anchors.leftMargin: root.isSm ? 8 : 10
+        anchors.rightMargin: root.isSm ? 8 : 10
         verticalAlignment: TextInput.AlignVCenter
 
         text: root.text

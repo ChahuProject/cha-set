@@ -378,6 +378,28 @@ ApplicationWindow {
             }
         }
 
+        // Isolated Separator Harness Container (for visual unit tests)
+        Rectangle {
+            id: separatorHarnessContainer
+            visible: typeof harnessMode !== "undefined" && harnessMode === "separator"
+            anchors.fill: parent
+            color: ThemeTokens.dark ? "#020817" : "#ffffff"
+
+            readonly property bool isVert: typeof harnessOrientation !== "undefined" && harnessOrientation === "vertical"
+
+            Item {
+                x: separatorHarnessContainer.isVert ? 110 : 20
+                y: separatorHarnessContainer.isVert ? 10 : 40
+                width: separatorHarnessContainer.isVert ? 1 : 180
+                height: separatorHarnessContainer.isVert ? 60 : 1
+
+                ChaSetSeparator {
+                    anchors.fill: parent
+                    orientation: separatorHarnessContainer.isVert ? "vertical" : "horizontal"
+                }
+            }
+        }
+
         Item {
             id: studioContainer
             visible: typeof harnessMode === "undefined" || harnessMode === ""

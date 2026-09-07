@@ -1,5 +1,15 @@
 import React from 'react';
-import { Button, Badge, Tooltip } from '@chahu/cha-set';
+import {
+  Button,
+  Badge,
+  Tooltip,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from '@chahu/cha-set';
 
 export interface HeaderProps {
   mode: string;
@@ -77,6 +87,34 @@ export function Header({
               <span className="hidden md:inline">Export</span>
             </Button>
           </Tooltip>
+
+          {/* Quick Jump Dropdown Menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="hidden lg:inline-flex items-center gap-1.5">
+                <span>⚡ Jump to</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-52">
+              <DropdownMenuLabel>Featured Engines</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => { window.location.hash = '#/components/generic-data-table'; }}>
+                📊 Generic Data Table
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => { window.location.hash = '#/components/query-builder'; }}>
+                🔍 Query Builder
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => { window.location.hash = '#/components/virtual-list'; }}>
+                📜 Virtual List
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => { window.location.hash = '#/components/draggable-modal'; }}>
+                🪟 Draggable Modal
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => { window.location.hash = '#/components/splitter'; }}>
+                ✂️ Splitter
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <div className="h-4 w-px bg-border mx-1" />
 
