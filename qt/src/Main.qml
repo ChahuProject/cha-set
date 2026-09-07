@@ -43,6 +43,51 @@ ApplicationWindow {
         clickLogs = []
     }
 
+    function getPageSource(pageId) {
+        switch (pageId) {
+        case "intro": return "IntroductionPage.qml";
+        case "tokens": return "TokensPage.qml";
+        case "theme-tuner": return "ThemeTunerPage.qml";
+        case "button": return "ButtonDocPage.qml";
+        case "scroll-area": return "ScrollAreaDocPage.qml";
+        case "tabs": return "TabsDocPage.qml";
+        case "badge": return "BadgeDocPage.qml";
+        case "card": return "CardDocPage.qml";
+        case "input": return "InputDocPage.qml";
+        case "checkbox": return "CheckboxDocPage.qml";
+        case "switch": return "SwitchDocPage.qml";
+        case "separator": return "SeparatorDocPage.qml";
+        case "slider": return "SliderDocPage.qml";
+        case "dialog": return "DialogDocPage.qml";
+        case "tooltip": return "TooltipDocPage.qml";
+        case "table": return "TableDocPage.qml";
+        case "color-picker": return "ColorPickerDocPage.qml";
+        case "dropdown-menu": return "DropdownMenuDocPage.qml";
+        case "select": return "SelectDocPage.qml";
+        case "popover": return "PopoverDocPage.qml";
+        case "context-menu": return "ContextMenuDocPage.qml";
+        case "alert-dialog": return "AlertDialogDocPage.qml";
+        case "sheet": return "SheetDocPage.qml";
+        case "skeleton": return "SkeletonDocPage.qml";
+        case "copy-button": return "CopyButtonDocPage.qml";
+        case "panel-card": return "PanelCardDocPage.qml";
+        case "split-button": return "SplitButtonDocPage.qml";
+        case "inline-editable-text": return "InlineEditableTextDocPage.qml";
+        case "range-slider": return "RangeSliderDocPage.qml";
+        case "read-only-input": return "ReadOnlyInputDocPage.qml";
+        case "keybinding-recorder": return "KeybindingRecorderDocPage.qml";
+        case "virtual-list": return "VirtualListDocPage.qml";
+        case "virtual-tree": return "VirtualTreeDocPage.qml";
+        case "virtual-grid": return "VirtualGridDocPage.qml";
+        case "draggable-modal": return "DraggableModalDocPage.qml";
+        case "splitter": return "SplitterDocPage.qml";
+        case "window-title-bar": return "WindowTitleBarDocPage.qml";
+        case "generic-data-table": return "GenericDataTableDocPage.qml";
+        case "query-builder": return "QueryBuilderDocPage.qml";
+        default: return "ButtonDocPage.qml";
+        }
+    }
+
     // Dynamic Colors based on theme
     readonly property color cBg: ThemeTokens.dark ? (overrideBackground !== "" ? overrideBackground : "#020817") : (overrideBackground !== "" ? overrideBackground : "#ffffff")
     readonly property color cCard: ThemeTokens.dark ? (overrideCard !== "" ? overrideCard : "#0f172a") : (overrideCard !== "" ? overrideCard : "#ffffff")
@@ -178,19 +223,48 @@ ApplicationWindow {
 
         // Scenario 5: Tabs State Coordination & Value Propagation
         if (scenario === "all" || scenario === "tabs") {
-            tabsPage.demoTab = "account";
-            if (tabsPage.demoTab !== "account") {
-                console.log("[qt-scenario] FAIL: initial tabsPage.demoTab expected 'account'");
+            testTabs.currentValue = "account";
+            if (testTabs.currentValue !== "account") {
+                console.log("[qt-scenario] FAIL: initial testTabs.currentValue expected 'account'");
                 failures++;
             } else {
-                tabsPage.demoTab = "password";
-                if (tabsPage.demoTab === "password") {
+                testTabs.currentValue = "password";
+                if (testTabs.currentValue === "password") {
                     console.log("[qt-scenario] PASS: Tabs value switching and panel coordination (account -> password)");
                 } else {
                     console.log("[qt-scenario] FAIL: Tabs value switching failed");
                     failures++;
                 }
-                tabsPage.demoTab = "account";
+                testTabs.currentValue = "account";
+            }
+        }
+
+        // Scenario 6: Living Showcase Navigation & Page Loading Coverage
+        if (scenario === "all" || scenario === "pages") {
+            var navItems = [];
+            if (ShowcaseData && ShowcaseData.navigation) {
+                for (var i = 0; i < ShowcaseData.navigation.length; i++) {
+                    var grp = ShowcaseData.navigation[i];
+                    if (grp.items) {
+                        for (var j = 0; j < grp.items.length; j++) {
+                            navItems.push(grp.items[j].id);
+                        }
+                    }
+                }
+            }
+            var pageErrors = 0;
+            for (var p = 0; p < navItems.length; p++) {
+                var src = win.getPageSource(navItems[p]);
+                if (!src || src === "" || (navItems[p] !== "button" && src === "ButtonDocPage.qml")) {
+                    console.log("[qt-scenario] FAIL: Missing page source mapping for " + navItems[p]);
+                    pageErrors++;
+                }
+            }
+            if (pageErrors === 0 && navItems.length >= 36) {
+                console.log("[qt-scenario] PASS: All " + navItems.length + " showcase page routes correctly mapped to QML doc pages");
+            } else {
+                console.log("[qt-scenario] FAIL: Page routing validation failed (" + pageErrors + " unmapped, total " + navItems.length + ")");
+                failures++;
             }
         }
 
@@ -214,6 +288,17 @@ ApplicationWindow {
         objectName: "rootCanvas"
         anchors.fill: parent
         color: win.cBg
+
+        // Hidden tabs instance for headless scenario testing
+        ChaSetTabs {
+            id: testTabs
+            visible: false
+            currentValue: "account"
+            ChaSetTabsList {
+                ChaSetTabsTrigger { value: "account"; text: "Account" }
+                ChaSetTabsTrigger { value: "password"; text: "Password" }
+            }
+        }
 
         // Isolated Component Harness Container (for visual unit tests)
         Rectangle {
@@ -578,136 +663,62 @@ ApplicationWindow {
                             width: parent.width
                             spacing: 20
 
-                        // Category 1: GET STARTED
-                        Column {
-                            width: parent.width
-                            spacing: 4
+                        Repeater {
+                            model: ShowcaseData.navigation || []
+                            delegate: Column {
+                                required property var modelData
+                                width: parent.width
+                                spacing: 4
 
-                            Text {
-                                text: "GET STARTED"
-                                color: win.cMutedFg
-                                font.pixelSize: 11
-                                font.weight: Font.Bold
-                                font.family: "Segoe UI, sans-serif"
-                            }
-
-                            Item { width: 1; height: 4 }
-
-                            Repeater {
-                                model: [
-                                    ["Introduction", "intro", ""],
-                                    ["Theme & Tokens", "tokens", ""],
-                                    ["Theme Studio", "theme-tuner", "Live"]
-                                ]
-                                delegate: Rectangle {
-                                    required property var modelData
-                                    width: parent.width
-                                    height: 32
-                                    radius: 6
-                                    color: win.activePage === modelData[1] ? win.cAccentBg : "transparent"
-
-                                    Row {
-                                        anchors.fill: parent
-                                        anchors.leftMargin: 10
-                                        anchors.rightMargin: 10
-                                        spacing: 8
-
-                                        Text {
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            text: parent.parent.modelData[0]
-                                            color: win.activePage === parent.parent.modelData[1] ? win.cFg : win.cMutedFg
-                                            font.pixelSize: 13
-                                            font.weight: win.activePage === parent.parent.modelData[1] ? Font.DemiBold : Font.Normal
-                                        }
-
-                                        Item { width: 10; height: 1 }
-
-                                        ChaSetBadge {
-                                            visible: parent.parent.modelData[2] !== ""
-                                            variant: "secondary"
-                                            size: "sm"
-                                            text: parent.parent.modelData[2]
-                                            anchors.verticalCenter: parent.verticalCenter
-                                        }
-                                    }
-
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        cursorShape: Qt.PointingHandCursor
-                                        onClicked: win.activePage = parent.modelData[1]
-                                    }
+                                Text {
+                                    text: modelData.title ? modelData.title.toUpperCase() : ""
+                                    color: win.cMutedFg
+                                    font.pixelSize: 11
+                                    font.weight: Font.Bold
+                                    font.family: "Segoe UI, sans-serif"
                                 }
-                            }
-                        }
 
-                        // Category 2: COMPONENTS
-                        Column {
-                            width: parent.width
-                            spacing: 4
+                                Item { width: 1; height: 4 }
 
-                            Text {
-                                text: "COMPONENTS"
-                                color: win.cMutedFg
-                                font.pixelSize: 11
-                                font.weight: Font.Bold
-                                font.family: "Segoe UI, sans-serif"
-                            }
-
-                            Item { width: 1; height: 4 }
-
-                            Repeater {
-                                model: [
-                                    ["Button", "button", ""],
-                                    ["Scroll Area", "scroll-area", ""],
-                                    ["Tabs", "tabs", ""],
-                                    ["Badge", "badge", "New"],
-                                    ["Card", "card", "New"],
-                                    ["Input", "input", "New"],
-                                    ["Checkbox", "checkbox", "New"],
-                                    ["Switch", "switch", "New"],
-                                    ["Separator", "separator", "New"],
-                                    ["Slider", "slider", "New"],
-                                    ["Dialog", "dialog", "New"],
-                                    ["Tooltip", "tooltip", "New"],
-                                    ["Table", "table", "New"],
-                                    ["ColorPicker", "color-picker", "New"]
-                                ]
-                                delegate: Rectangle {
-                                    required property var modelData
-                                    width: parent.width
-                                    height: 32
-                                    radius: 6
-                                    color: win.activePage === modelData[1] ? win.cAccentBg : "transparent"
-
-                                    Row {
-                                        anchors.fill: parent
-                                        anchors.leftMargin: 10
-                                        anchors.rightMargin: 10
-                                        spacing: 8
+                                Repeater {
+                                    model: modelData.items || []
+                                    delegate: Rectangle {
+                                        id: navItemRect
+                                        required property var modelData
+                                        width: parent.width
+                                        height: 32
+                                        radius: 6
+                                        color: win.activePage === navItemRect.modelData.id ? win.cAccentBg : "transparent"
 
                                         Text {
+                                            anchors.left: parent.left
+                                            anchors.leftMargin: 10
+                                            anchors.right: navItemBadge.visible ? navItemBadge.left : parent.right
+                                            anchors.rightMargin: 8
                                             anchors.verticalCenter: parent.verticalCenter
-                                            text: parent.parent.modelData[0]
-                                            color: win.activePage === parent.parent.modelData[1] ? win.cFg : win.cMutedFg
+                                            elide: Text.ElideRight
+                                            text: navItemRect.modelData.title || ""
+                                            color: win.activePage === navItemRect.modelData.id ? win.cFg : win.cMutedFg
                                             font.pixelSize: 13
-                                            font.weight: win.activePage === parent.parent.modelData[1] ? Font.DemiBold : Font.Normal
+                                            font.weight: win.activePage === navItemRect.modelData.id ? Font.DemiBold : Font.Normal
                                         }
-
-                                        Item { width: 10; height: 1 }
 
                                         ChaSetBadge {
-                                            visible: parent.parent.modelData[2] !== ""
+                                            id: navItemBadge
+                                            visible: !!navItemRect.modelData.badge
                                             variant: "secondary"
                                             size: "sm"
-                                            text: parent.parent.modelData[2]
+                                            text: navItemRect.modelData.badge || ""
+                                            anchors.right: parent.right
+                                            anchors.rightMargin: 10
                                             anchors.verticalCenter: parent.verticalCenter
                                         }
-                                    }
 
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        cursorShape: Qt.PointingHandCursor
-                                        onClicked: win.activePage = parent.modelData[1]
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            cursorShape: Qt.PointingHandCursor
+                                            onClicked: win.activePage = navItemRect.modelData.id
+                                        }
                                     }
                                 }
                             }
@@ -732,263 +743,28 @@ ApplicationWindow {
                     Item {
                         id: pageContainer
                         width: contentScroll.width
-                        implicitHeight: {
-                            if (win.activePage === "intro") return introPage.implicitHeight
-                            if (win.activePage === "tokens") return tokensPage.implicitHeight
-                            if (win.activePage === "theme-tuner") return tunerPage.implicitHeight
-                            if (win.activePage === "button") return buttonPage.implicitHeight
-                            if (win.activePage === "scroll-area") return scrollAreaPage.implicitHeight
-                            if (win.activePage === "tabs") return tabsPage.implicitHeight
-                            if (win.activePage === "badge") return badgePage.implicitHeight
-                            if (win.activePage === "card") return cardPage.implicitHeight
-                            if (win.activePage === "input") return inputPage.implicitHeight
-                            if (win.activePage === "checkbox") return checkboxPage.implicitHeight
-                            if (win.activePage === "switch") return switchPage.implicitHeight
-                            if (win.activePage === "separator") return separatorPage.implicitHeight
-                            if (win.activePage === "slider") return sliderPage.implicitHeight
-                            if (win.activePage === "dialog") return dialogPage.implicitHeight
-                            if (win.activePage === "tooltip") return tooltipPage.implicitHeight
-                            if (win.activePage === "table") return tablePage.implicitHeight
-                            if (win.activePage === "color-picker") return colorPickerPage.implicitHeight
-                            return 800
-                        }
+                        implicitHeight: pageLoader.item ? Math.max(pageLoader.item.implicitHeight, pageLoader.item.height, 800) : 800
 
-                        // Page 1: Introduction
-                        IntroductionPage {
-                            id: introPage
-                            visible: win.activePage === "intro"
+                        Loader {
+                            id: pageLoader
                             width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                            onOpenPage: function(pageId) { win.activePage = pageId }
-                        }
-
-                        // Page 2: Tokens & Theme
-                        TokensPage {
-                            id: tokensPage
-                            visible: win.activePage === "tokens"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                            onLogCopied: function(token) { win.pushLog("Copied: " + token) }
-                        }
-
-                        // Page 3: Theme Studio
-                        ThemeTunerPage {
-                            id: tunerPage
-                            visible: win.activePage === "theme-tuner"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                            activeAccent: win.activeAccent
-                            onRequestExport: win.exportModalOpen = true
-                            onLogAction: function(msg) { win.pushLog(msg) }
-                        }
-
-                        // Page 4: Button Doc Page
-                        ButtonDocPage {
-                            id: buttonPage
-                            visible: win.activePage === "button"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                            onLogAction: function(msg) { win.pushLog(msg) }
-                        }
-
-                        // Page 5: Scroll Area Doc Page
-                        ScrollAreaDocPage {
-                            id: scrollAreaPage
-                            visible: win.activePage === "scroll-area"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                            onLogAction: function(msg) { win.pushLog(msg) }
-                        }
-
-                        // Page 6: Tabs Doc Page
-                        TabsDocPage {
-                            id: tabsPage
-                            visible: win.activePage === "tabs"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                        }
-
-                        // Page 7: Badge Doc Page
-                        BadgeDocPage {
-                            id: badgePage
-                            visible: win.activePage === "badge"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                        }
-
-                        // Page 8: Card Doc Page
-                        CardDocPage {
-                            id: cardPage
-                            visible: win.activePage === "card"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                        }
-
-                        // Page 9: Input Doc Page
-                        InputDocPage {
-                            id: inputPage
-                            visible: win.activePage === "input"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                        }
-
-                        // Page 10: Checkbox Doc Page
-                        CheckboxDocPage {
-                            id: checkboxPage
-                            visible: win.activePage === "checkbox"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                        }
-
-                        // Page 11: Switch Doc Page
-                        SwitchDocPage {
-                            id: switchPage
-                            visible: win.activePage === "switch"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                        }
-
-                        // Page 12: Separator Doc Page
-                        SeparatorDocPage {
-                            id: separatorPage
-                            visible: win.activePage === "separator"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                        }
-
-                        // Page 13: Slider Doc Page
-                        SliderDocPage {
-                            id: sliderPage
-                            visible: win.activePage === "slider"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                        }
-
-                        // Page 14: Dialog Doc Page
-                        DialogDocPage {
-                            id: dialogPage
-                            visible: win.activePage === "dialog"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                        }
-
-                        // Page 15: Tooltip Doc Page
-                        TooltipDocPage {
-                            id: tooltipPage
-                            visible: win.activePage === "tooltip"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
-                            cAccentBg: win.cAccentBg
-                        }
-
-                        // Page 16: Table Doc Page
-                        TableDocPage {
-                            id: tablePage
-                            visible: win.activePage === "table"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                        }
-
-                        // Page 17: ColorPicker Doc Page
-                        ColorPickerDocPage {
-                            id: colorPickerPage
-                            visible: win.activePage === "color-picker"
-                            width: parent.width
-                            customRadius: win.customRadius
-                            cFg: win.cFg
-                            cMutedFg: win.cMutedFg
-                            cCard: win.cCard
-                            cBorder: win.cBorder
-                            cPrimary: win.cPrimary
+                            source: win.getPageSource(win.activePage)
+                            onLoaded: {
+                                if (item) {
+                                    if ("customRadius" in item) item.customRadius = Qt.binding(function() { return win.customRadius })
+                                    if ("cFg" in item) item.cFg = Qt.binding(function() { return win.cFg })
+                                    if ("cMutedFg" in item) item.cMutedFg = Qt.binding(function() { return win.cMutedFg })
+                                    if ("cCard" in item) item.cCard = Qt.binding(function() { return win.cCard })
+                                    if ("cBorder" in item) item.cBorder = Qt.binding(function() { return win.cBorder })
+                                    if ("cPrimary" in item) item.cPrimary = Qt.binding(function() { return win.cPrimary })
+                                    if ("cAccentBg" in item) item.cAccentBg = Qt.binding(function() { return win.cAccentBg })
+                                    if ("activeAccent" in item) item.activeAccent = Qt.binding(function() { return win.activeAccent })
+                                    if ("logAction" in item) item.logAction.connect(function(msg) { win.pushLog(msg) })
+                                    if ("logCopied" in item) item.logCopied.connect(function(token) { win.pushLog("Copied: " + token) })
+                                    if ("openPage" in item) item.openPage.connect(function(id) { win.activePage = id })
+                                    if ("requestExport" in item) item.requestExport.connect(function() { win.exportModalOpen = true })
+                                }
+                            }
                         }
                     }
                 }

@@ -1,0 +1,118 @@
+// ChaSetAlertDialog.qml — Cross-Stack Alert Dialog Component
+import QtQuick 6.10
+import QtQuick.Controls 6.10
+import ChaSet
+
+Rectangle {
+    id: root
+    anchors.fill: parent
+    z: 250
+    color: Qt.rgba(0, 0, 0, 0.6)
+
+    property bool open: false
+    property string title: "Are you absolutely sure?"
+    property string description: "This action cannot be undone. This will permanently delete your account and remove your data."
+    property string confirmText: "Continue"
+    property string cancelText: "Cancel"
+    property bool destructive: true
+    property int customRadius: 8
+    property int dialogWidth: 460
+
+    signal confirmed()
+    signal cancelled()
+
+    opacity: root.open ? 1.0 : 0.0
+    visible: opacity > 0.0
+    focus: root.open
+
+    Behavior on opacity {
+        NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
+    }
+
+    Keys.onEscapePressed: function(event) {
+        event.accepted = true
+        root.open = false
+        root.cancelled()
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            root.open = false
+            root.cancelled()
+        }
+    }
+
+    Rectangle {
+        id: card
+        width: Math.min(parent.width - 40, root.dialogWidth)
+        implicitHeight: cardCol.implicitHeight + 36
+        anchors.centerIn: parent
+        color: ThemeTokens.panel
+        border.color: ThemeTokens.border
+        border.width: 1
+        radius: root.customRadius
+        scale: root.open ? 1.0 : 0.95
+
+        Behavior on scale {
+            NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            // prevent scrim dismiss when clicking inside dialog
+        }
+
+        Column {
+            id: cardCol
+            anchors.fill: parent
+            anchors.margins: 20
+            spacing: 16
+
+            Column {
+                width: parent.width
+                spacing: 6
+
+                Text {
+                    text: root.title
+                    color: ThemeTokens.text
+                    font.pixelSize: 16
+                    font.weight: Font.DemiBold
+                }
+
+                Text {
+                    text: root.description
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: 13
+                    wrapMode: Text.WordWrap
+                    width: parent.width
+                }
+            }
+
+            Row {
+                anchors.right: parent.right
+                spacing: 8
+
+                ChaSetButton {
+                    text: root.cancelText
+                    variant: "outline"
+                    size: "sm"
+                    onClicked: {
+                        root.open = false
+                        root.cancelled()
+                    }
+                }
+
+                ChaSetButton {
+                    text: root.confirmText
+                    variant: root.destructive ? "destructive" : "default"
+                    size: "sm"
+                    onClicked: {
+                        root.open = false
+                        root.confirmed()
+                    }
+                }
+            }
+        }
+    }
+}

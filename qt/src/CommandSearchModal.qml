@@ -9,25 +9,24 @@ Rectangle {
     z: 200
     color: Qt.rgba(0, 0, 0, 0.6)
 
-    property var allItems: [
-        { id: "intro", title: "Introduction", category: "Get Started", desc: "Architecture overview & philosophy" },
-        { id: "tokens", title: "Theme & Tokens", category: "Get Started", desc: "Design tokens, color palette, typography" },
-        { id: "theme-tuner", title: "Theme Studio", category: "Get Started", desc: "Live theme tuner and config exporter" },
-        { id: "button", title: "Button", category: "Components", desc: "Variants, sizes, loading & link states" },
-        { id: "scroll-area", title: "Scroll Area", category: "Components", desc: "Hot-zone expansion, steppers, dual-axis" },
-        { id: "tabs", title: "Tabs", category: "Components", desc: "Layered content sections displayed one at a time" },
-        { id: "badge", title: "Badge", category: "Components", desc: "Compact status and label pills with semantic tokens" },
-        { id: "card", title: "Card", category: "Components", desc: "Cards with header, content, and footer actions" },
-        { id: "input", title: "Input", category: "Components", desc: "Form text input field with sizes and state variants" },
-        { id: "checkbox", title: "Checkbox", category: "Components", desc: "Interactive checkbox with states, sizes, and labels" },
-        { id: "switch", title: "Switch", category: "Components", desc: "Toggle switch control for binary settings" },
-        { id: "separator", title: "Separator", category: "Components", desc: "Visual divider between elements" },
-        { id: "slider", title: "Slider", category: "Components", desc: "Numeric value selection along a continuous or stepped track" },
-        { id: "dialog", title: "Dialog", category: "Components", desc: "Modal window overlay for critical workflows" },
-        { id: "tooltip", title: "Tooltip", category: "Components", desc: "Popup hint on hover or keyboard focus" },
-        { id: "table", title: "Table", category: "Components", desc: "Responsive tabular data display with rows and headers" },
-        { id: "color-picker", title: "ColorPicker", category: "Components", desc: "Interactive color selection with saturation field, hue slider, and presets" }
-    ]
+    property var allItems: {
+        var items = []
+        var nav = ShowcaseData.navigation || []
+        for (var i = 0; i < nav.length; i++) {
+            var cat = nav[i]
+            var catItems = cat.items || []
+            for (var j = 0; j < catItems.length; j++) {
+                var it = catItems[j]
+                items.push({
+                    id: it.id,
+                    title: it.title,
+                    category: cat.title,
+                    desc: it.desc || ""
+                })
+            }
+        }
+        return items
+    }
 
     property string query: ""
     property int selectedIndex: 0

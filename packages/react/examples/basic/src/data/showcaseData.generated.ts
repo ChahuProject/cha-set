@@ -1068,7 +1068,7 @@ export const NAVIGATION_DATA: NavCategory[] = [
     ]
   },
   {
-    "title": "Components",
+    "title": "Base Primitives",
     "items": [
       {
         "id": "button",
@@ -1080,8 +1080,248 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "scroll-area",
         "title": "Scroll Area",
         "href": "#/components/scroll-area",
-        "badge": "New",
         "desc": "Custom scrollable container with hot-zone expansion and stepper buttons."
+      },
+      {
+        "id": "tabs",
+        "title": "Tabs",
+        "href": "#/components/tabs",
+        "desc": "Set of layered content sections known as tab panels, displayed one at a time."
+      },
+      {
+        "id": "badge",
+        "title": "Badge",
+        "href": "#/components/badge",
+        "desc": "Displays a badge or status tag to highlight status, tags, and counts."
+      },
+      {
+        "id": "card",
+        "title": "Card",
+        "href": "#/components/card",
+        "desc": "Displays a card with header, title, description, content, and footer actions."
+      },
+      {
+        "id": "input",
+        "title": "Input",
+        "href": "#/components/input",
+        "desc": "Form text input field with desktop high-density sizing and states."
+      },
+      {
+        "id": "checkbox",
+        "title": "Checkbox",
+        "href": "#/components/checkbox",
+        "desc": "Control that allows toggling between checked, unchecked, and indeterminate."
+      },
+      {
+        "id": "switch",
+        "title": "Switch",
+        "href": "#/components/switch",
+        "desc": "A control that allows toggling binary state with smooth animated transitions."
+      },
+      {
+        "id": "separator",
+        "title": "Separator",
+        "href": "#/components/separator",
+        "desc": "Visually or semantically separates content in horizontal or vertical orientation."
+      },
+      {
+        "id": "slider",
+        "title": "Slider",
+        "href": "#/components/slider",
+        "desc": "Interactive control that allows selecting a numeric value along a track."
+      },
+      {
+        "id": "dialog",
+        "title": "Dialog",
+        "href": "#/components/dialog",
+        "desc": "Modal window that interrupts the user with critical content."
+      },
+      {
+        "id": "tooltip",
+        "title": "Tooltip",
+        "href": "#/components/tooltip",
+        "desc": "Popup that displays information related to an element on hover or focus."
+      },
+      {
+        "id": "table",
+        "title": "Table",
+        "href": "#/components/table",
+        "desc": "Responsive, accessible table component for tabular data."
+      },
+      {
+        "id": "color-picker",
+        "title": "ColorPicker",
+        "href": "#/components/color-picker",
+        "desc": "Interactive color selection with saturation/brightness field and swatches."
+      },
+      {
+        "id": "dropdown-menu",
+        "title": "Dropdown Menu",
+        "href": "#/components/dropdown-menu",
+        "badge": "Stage 1",
+        "desc": "Displays a menu to the user triggered by a button with item groups and shortcuts."
+      },
+      {
+        "id": "select",
+        "title": "Select",
+        "href": "#/components/select",
+        "badge": "Stage 1",
+        "desc": "Displays a list of options for the user to pick from with trigger and indicator."
+      },
+      {
+        "id": "popover",
+        "title": "Popover",
+        "href": "#/components/popover",
+        "badge": "Stage 1",
+        "desc": "Displays rich interactive content in a floating portal anchored to a trigger."
+      },
+      {
+        "id": "context-menu",
+        "title": "Context Menu",
+        "href": "#/components/context-menu",
+        "badge": "Stage 1",
+        "desc": "Displays a menu located at the pointer coordinates on right-click or context gesture."
+      },
+      {
+        "id": "alert-dialog",
+        "title": "Alert Dialog",
+        "href": "#/components/alert-dialog",
+        "badge": "Stage 1",
+        "desc": "A modal dialog that interrupts the user with important content and requires confirmation."
+      },
+      {
+        "id": "sheet",
+        "title": "Sheet",
+        "href": "#/components/sheet",
+        "badge": "Stage 1",
+        "desc": "Extends the dialog component to display content that slides in from any screen edge."
+      },
+      {
+        "id": "skeleton",
+        "title": "Skeleton",
+        "href": "#/components/skeleton",
+        "badge": "Stage 1",
+        "desc": "Used to show a placeholder while content is loading with pulse animations."
+      }
+    ]
+  },
+  {
+    "title": "Interactive Controls",
+    "items": [
+      {
+        "id": "copy-button",
+        "title": "Copy Button",
+        "href": "#/components/copy-button",
+        "badge": "Stage 2",
+        "desc": "One-click clipboard copy button with transient feedback icons and custom timeouts."
+      },
+      {
+        "id": "panel-card",
+        "title": "Panel Card",
+        "href": "#/components/panel-card",
+        "badge": "Stage 2",
+        "desc": "Card surface with integrated collapsible sections and header action slots."
+      },
+      {
+        "id": "split-button",
+        "title": "Split Button",
+        "href": "#/components/split-button",
+        "badge": "Stage 2",
+        "desc": "Dual-action button with primary direct click and secondary dropdown chevron."
+      },
+      {
+        "id": "inline-editable-text",
+        "title": "Inline Editable Text",
+        "href": "#/components/inline-editable-text",
+        "badge": "Stage 2",
+        "desc": "Text element that switches seamlessly to an input field on double-click or edit trigger."
+      },
+      {
+        "id": "range-slider",
+        "title": "Range Slider",
+        "href": "#/components/range-slider",
+        "badge": "Stage 2",
+        "desc": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention."
+      },
+      {
+        "id": "read-only-input",
+        "title": "Read-Only Input",
+        "href": "#/components/read-only-input",
+        "badge": "Stage 2",
+        "desc": "Protected input field for tokens and IDs with integrated copy-to-clipboard action."
+      },
+      {
+        "id": "keybinding-recorder",
+        "title": "Keybinding Recorder",
+        "href": "#/components/keybinding-recorder",
+        "badge": "Stage 2",
+        "desc": "Interactive recorder that captures accelerator keyboard sequences for desktop apps."
+      }
+    ]
+  },
+  {
+    "title": "Desktop & Virtualization",
+    "items": [
+      {
+        "id": "virtual-list",
+        "title": "Virtual List",
+        "href": "#/components/virtual-list",
+        "badge": "Stage 3",
+        "desc": "High-performance windowed 100k+ row list with dynamic or fixed item measurements."
+      },
+      {
+        "id": "virtual-tree",
+        "title": "Virtual Tree",
+        "href": "#/components/virtual-tree",
+        "badge": "Stage 3",
+        "desc": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
+      },
+      {
+        "id": "virtual-grid",
+        "title": "Virtual Grid",
+        "href": "#/components/virtual-grid",
+        "badge": "Stage 3",
+        "desc": "2D windowed grid virtualizer for massive dataset visualization."
+      },
+      {
+        "id": "draggable-modal",
+        "title": "Draggable Modal",
+        "href": "#/components/draggable-modal",
+        "badge": "Stage 3",
+        "desc": "Desktop floating window with dragging title bar and bound viewport constraints."
+      },
+      {
+        "id": "splitter",
+        "title": "Splitter",
+        "href": "#/components/splitter",
+        "badge": "Stage 3",
+        "desc": "Multi-pane resizable layout container with draggable gutters and collapse limits."
+      },
+      {
+        "id": "window-title-bar",
+        "title": "Window Title Bar",
+        "href": "#/components/window-title-bar",
+        "badge": "Stage 3",
+        "desc": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons."
+      }
+    ]
+  },
+  {
+    "title": "Composite Engines",
+    "items": [
+      {
+        "id": "generic-data-table",
+        "title": "Generic Data Table",
+        "href": "#/components/generic-data-table",
+        "badge": "Stage 4",
+        "desc": "Full-featured data table with column sorting, filtering, selection, and pagination."
+      },
+      {
+        "id": "query-builder",
+        "title": "Query Builder",
+        "href": "#/components/query-builder",
+        "badge": "Stage 4",
+        "desc": "Visual rule tree builder for structured query generation with nested logic groups."
       }
     ]
   }

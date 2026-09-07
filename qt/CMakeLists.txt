@@ -60,6 +60,28 @@ qt_add_qml_module(ChaSet
         src/ChaSetTooltip.qml
         src/ChaSetTable.qml
         src/ChaSetColorPicker.qml
+        src/ChaSetDropdownMenu.qml
+        src/ChaSetSelect.qml
+        src/ChaSetPopover.qml
+        src/ChaSetContextMenu.qml
+        src/ChaSetAlertDialog.qml
+        src/ChaSetSheet.qml
+        src/ChaSetSkeleton.qml
+        src/ChaSetCopyButton.qml
+        src/ChaSetPanelCard.qml
+        src/ChaSetSplitButton.qml
+        src/ChaSetInlineEditableText.qml
+        src/ChaSetRangeSlider.qml
+        src/ChaSetReadOnlyInput.qml
+        src/ChaSetKeybindingRecorder.qml
+        src/ChaSetVirtualList.qml
+        src/ChaSetVirtualTree.qml
+        src/ChaSetVirtualGrid.qml
+        src/ChaSetDraggableModal.qml
+        src/ChaSetSplitter.qml
+        src/ChaSetWindowTitleBar.qml
+        src/ChaSetGenericDataTable.qml
+        src/ChaSetQueryBuilder.qml
         src/ThemeTokens.generated.qml
         src/ShowcaseData.generated.qml
     NO_GENERATE_EXTRA_QMLDIRS
@@ -115,6 +137,28 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/TooltipDocPage.qml
             src/TableDocPage.qml
             src/ColorPickerDocPage.qml
+            src/DropdownMenuDocPage.qml
+            src/SelectDocPage.qml
+            src/PopoverDocPage.qml
+            src/ContextMenuDocPage.qml
+            src/AlertDialogDocPage.qml
+            src/SheetDocPage.qml
+            src/SkeletonDocPage.qml
+            src/CopyButtonDocPage.qml
+            src/PanelCardDocPage.qml
+            src/SplitButtonDocPage.qml
+            src/InlineEditableTextDocPage.qml
+            src/RangeSliderDocPage.qml
+            src/ReadOnlyInputDocPage.qml
+            src/KeybindingRecorderDocPage.qml
+            src/VirtualListDocPage.qml
+            src/VirtualTreeDocPage.qml
+            src/VirtualGridDocPage.qml
+            src/DraggableModalDocPage.qml
+            src/SplitterDocPage.qml
+            src/WindowTitleBarDocPage.qml
+            src/GenericDataTableDocPage.qml
+            src/QueryBuilderDocPage.qml
             src/CommandSearchModal.qml
             src/ExportModal.qml
         NO_RESOURCE_TARGET_PATH
