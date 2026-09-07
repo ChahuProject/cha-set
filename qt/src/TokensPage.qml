@@ -81,7 +81,7 @@ DocLayout {
                 ]
                 delegate: Rectangle {
                     required property var modelData
-                    width: (parent.width - 36) / 4
+                    width: (parent ? parent.width - 36 : 760) / 4
                     height: 100
                     radius: 8
                     color: ThemeTokens.panel
@@ -161,7 +161,7 @@ DocLayout {
                 ]
                 delegate: Rectangle {
                     required property var modelData
-                    width: (parent.width - 36) / 4
+                    width: (parent ? parent.width - 36 : 760) / 4
                     height: 64
                     radius: modelData[1]
                     color: ThemeTokens.panel
@@ -217,7 +217,7 @@ DocLayout {
                         height: modelData[2]
                         radius: 4
                         color: modelData[1]
-                        anchors.bottom: parent.bottom
+                        anchors.bottom: parent ? parent.bottom : undefined
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.bottom: parent.top

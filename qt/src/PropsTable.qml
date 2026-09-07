@@ -10,6 +10,7 @@ Column {
 
     property string title: ""
     property var propsModel: []
+    property alias props: root.propsModel
 
     Text {
         visible: root.title !== ""

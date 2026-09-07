@@ -13,6 +13,7 @@ Rectangle {
     border.width: 1
     clip: true
 
+    property string title: ""
     property string code: ""
     property string language: "tsx"
     property bool copied: false
@@ -53,7 +54,7 @@ Rectangle {
                 anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
                 Text {
-                    text: root.language.toUpperCase()
+                    text: root.title !== "" ? root.title : root.language.toUpperCase()
                     color: ThemeTokens.subduedText
                     font.pixelSize: 11
                     font.weight: Font.Bold

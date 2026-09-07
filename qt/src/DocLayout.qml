@@ -121,7 +121,7 @@ Item {
                     color: ThemeTokens.subduedText
                     font.pixelSize: 12
                     wrapMode: Text.WordWrap
-                    width: parent.width
+                    width: tocCol.width
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor

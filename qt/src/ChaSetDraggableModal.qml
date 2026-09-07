@@ -30,30 +30,29 @@ Rectangle {
             height: 36
             color: ThemeTokens.hover
 
-            Row {
-                anchors.fill: parent
-                anchors.leftMargin: 12
-                anchors.rightMargin: 8
-                spacing: 8
-
                 Text {
+                    anchors.left: parent.left
+                    anchors.leftMargin: 12
+                    anchors.right: closeBtn.left
+                    anchors.rightMargin: 8
                     anchors.verticalCenter: parent.verticalCenter
                     text: root.title
                     color: ThemeTokens.text
                     font.pixelSize: 13
                     font.weight: Font.DemiBold
+                    elide: Text.ElideRight
                 }
 
-                Item { width: 1; height: 1; Layout.fillWidth: true }
-
                 ChaSetButton {
+                    id: closeBtn
                     text: "✕"
                     variant: "ghost"
                     size: "icon-xs"
+                    anchors.right: parent.right
+                    anchors.rightMargin: 8
                     anchors.verticalCenter: parent.verticalCenter
                     onClicked: root.open = false
                 }
-            }
 
             MouseArea {
                 id: dragArea

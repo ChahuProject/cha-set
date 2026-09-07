@@ -37,9 +37,11 @@ Rectangle {
             color: ThemeTokens.hover
 
             Row {
-                anchors.fill: parent
+                anchors.left: parent.left
                 anchors.leftMargin: 12
-                anchors.rightMargin: 12
+                anchors.right: collapseBtn.visible ? collapseBtn.left : parent.right
+                anchors.rightMargin: 8
+                anchors.verticalCenter: parent.verticalCenter
                 spacing: 8
 
                 Text {
@@ -57,17 +59,18 @@ Rectangle {
                     size: "sm"
                     anchors.verticalCenter: parent.verticalCenter
                 }
+            }
 
-                Item { width: 1; height: 1; Layout.fillWidth: true }
-
-                ChaSetButton {
-                    visible: root.collapsible
-                    variant: "ghost"
-                    size: "icon-xs"
-                    text: root.collapsed ? "▾" : "▴"
-                    anchors.verticalCenter: parent.verticalCenter
-                    onClicked: root.collapsed = !root.collapsed
-                }
+            ChaSetButton {
+                id: collapseBtn
+                visible: root.collapsible
+                variant: "ghost"
+                size: "icon-xs"
+                text: root.collapsed ? "▾" : "▴"
+                anchors.right: parent.right
+                anchors.rightMargin: 12
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: root.collapsed = !root.collapsed
             }
         }
 

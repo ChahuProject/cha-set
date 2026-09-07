@@ -22,25 +22,25 @@ Item {
         radius: root.customRadius
         focus: root.recording
 
-        Row {
-            anchors.fill: parent
-            anchors.leftMargin: 10
-            anchors.rightMargin: 8
-            spacing: 8
-
             Text {
                 id: display
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                anchors.right: recBtn.left
+                anchors.rightMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.recording ? "Press shortcut keys..." : root.keybinding
                 color: root.recording ? ThemeTokens.accent : ThemeTokens.text
                 font.pixelSize: 12
                 font.family: "monospace"
                 font.weight: root.recording ? Font.DemiBold : Font.Normal
+                elide: Text.ElideRight
             }
 
-            Item { width: 1; height: 1; Layout.fillWidth: true }
-
             ChaSetButton {
+                id: recBtn
+                anchors.right: parent.right
+                anchors.rightMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.recording ? "Done" : "Record"
                 variant: root.recording ? "default" : "outline"
@@ -49,7 +49,6 @@ Item {
                     root.recording = !root.recording
                 }
             }
-        }
 
         Keys.onPressed: function(event) {
             if (!root.recording) return

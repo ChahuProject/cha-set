@@ -253,17 +253,35 @@ ApplicationWindow {
                 }
             }
             var pageErrors = 0;
+            var instantiatedCount = 0;
             for (var p = 0; p < navItems.length; p++) {
                 var src = win.getPageSource(navItems[p]);
                 if (!src || src === "" || (navItems[p] !== "button" && src === "ButtonDocPage.qml")) {
                     console.log("[qt-scenario] FAIL: Missing page source mapping for " + navItems[p]);
                     pageErrors++;
+                    continue;
+                }
+
+                // Physically compile and instantiate every QML component to catch missing attached objects, invalid types, duplicate signals, etc.
+                var comp = Qt.createComponent(src);
+                if (comp.status === Component.Error) {
+                    console.log("[qt-scenario] FAIL: Page component " + src + " failed to load: " + comp.errorString());
+                    pageErrors++;
+                } else if (comp.status === Component.Ready) {
+                    var obj = comp.createObject(null);
+                    if (!obj) {
+                        console.log("[qt-scenario] FAIL: Page component " + src + " failed to instantiate: " + comp.errorString());
+                        pageErrors++;
+                    } else {
+                        instantiatedCount++;
+                        obj.destroy();
+                    }
                 }
             }
-            if (pageErrors === 0 && navItems.length >= 36) {
-                console.log("[qt-scenario] PASS: All " + navItems.length + " showcase page routes correctly mapped to QML doc pages");
+            if (pageErrors === 0 && instantiatedCount >= 36) {
+                console.log("[qt-scenario] PASS: All " + instantiatedCount + " showcase page components successfully compiled and instantiated with zero errors");
             } else {
-                console.log("[qt-scenario] FAIL: Page routing validation failed (" + pageErrors + " unmapped, total " + navItems.length + ")");
+                console.log("[qt-scenario] FAIL: Showcase page instantiation failed (" + pageErrors + " errors, " + instantiatedCount + " instantiated)");
                 failures++;
             }
         }

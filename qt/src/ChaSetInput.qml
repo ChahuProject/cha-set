@@ -11,6 +11,7 @@ Rectangle {
     property string size: "default" // "default" | "sm"
     property string text: ""
     property string placeholderText: ""
+    property alias placeholder: root.placeholderText
     property bool disabled: false
     property bool readOnly: false
     property bool forceHover: false

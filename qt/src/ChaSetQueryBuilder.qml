@@ -95,9 +95,11 @@ Rectangle {
                     radius: 4
 
                     Row {
-                        anchors.fill: parent
+                        anchors.left: parent.left
                         anchors.leftMargin: 8
+                        anchors.right: deleteBtn.left
                         anchors.rightMargin: 8
+                        anchors.verticalCenter: parent.verticalCenter
                         spacing: 8
 
                         // Field
@@ -130,17 +132,18 @@ Rectangle {
                                 root.queryChanged()
                             }
                         }
+                    }
 
-                        Item { width: 1; height: 1; Layout.fillWidth: true }
-
-                        // Delete
-                        ChaSetButton {
-                            anchors.verticalCenter: parent.verticalCenter
-                            text: "✕"
-                            variant: "ghost"
-                            size: "icon-xs"
-                            onClicked: root.deleteRule(parent.parent.index)
-                        }
+                    // Delete
+                    ChaSetButton {
+                        id: deleteBtn
+                        anchors.right: parent.right
+                        anchors.rightMargin: 8
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: "✕"
+                        variant: "ghost"
+                        size: "icon-xs"
+                        onClicked: root.deleteRule(parent.index)
                     }
                 }
             }

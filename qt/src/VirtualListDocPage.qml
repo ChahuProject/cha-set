@@ -60,28 +60,27 @@ DocLayout {
                         height: 36
                         color: index % 2 === 0 ? ThemeTokens.hover : "transparent"
 
-                        Row {
-                            anchors.fill: parent
+                        Text {
+                            anchors.left: parent.left
                             anchors.leftMargin: 12
+                            anchors.right: badgeItem.left
+                            anchors.rightMargin: 8
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: "Dataset Record #" + (index + 1)
+                            color: ThemeTokens.text
+                            font.pixelSize: 12
+                            font.family: "monospace"
+                            elide: Text.ElideRight
+                        }
+
+                        ChaSetBadge {
+                            id: badgeItem
+                            anchors.right: parent.right
                             anchors.rightMargin: 12
-                            spacing: 8
-
-                            Text {
-                                text: "Dataset Record #" + (index + 1)
-                                color: ThemeTokens.text
-                                font.pixelSize: 12
-                                font.family: "monospace"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-
-                            Item { width: 1; height: 1; Layout.fillWidth: true }
-
-                            ChaSetBadge {
-                                text: index % 3 === 0 ? "Production" : "Staging"
-                                variant: index % 3 === 0 ? "default" : "secondary"
-                                size: "sm"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: index % 3 === 0 ? "Production" : "Staging"
+                            variant: index % 3 === 0 ? "default" : "secondary"
+                            size: "sm"
                         }
                     }
                 }

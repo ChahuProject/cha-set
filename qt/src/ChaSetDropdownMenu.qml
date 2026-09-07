@@ -60,9 +60,11 @@ Item {
                     opacity: modelData.disabled ? 0.4 : 1.0
 
                     Row {
-                        anchors.fill: parent
+                        anchors.left: parent.left
                         anchors.leftMargin: 8
+                        anchors.right: shortcutText.visible ? shortcutText.left : parent.right
                         anchors.rightMargin: 8
+                        anchors.verticalCenter: parent.verticalCenter
                         spacing: 6
 
                         Text {
@@ -79,21 +81,18 @@ Item {
                             font.pixelSize: 12
                             anchors.verticalCenter: parent.verticalCenter
                         }
+                    }
 
-                        Item {
-                            width: 1
-                            height: 1
-                            Layout.fillWidth: true
-                        }
-
-                        Text {
-                            visible: !!parent.parent.modelData.shortcut
-                            text: parent.parent.modelData.shortcut || ""
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: 10
-                            font.family: "monospace"
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
+                    Text {
+                        id: shortcutText
+                        anchors.right: parent.right
+                        anchors.rightMargin: 8
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: !!parent.modelData.shortcut
+                        text: parent.modelData.shortcut || ""
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: 10
+                        font.family: "monospace"
                     }
 
                     MouseArea {

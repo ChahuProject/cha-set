@@ -58,9 +58,7 @@ DocLayout {
                         { value: "cherry", label: "🍒 Cherry" },
                         { value: "dragonfruit", label: "🐉 Dragonfruit (Disabled)", disabled: true }
                     ]
-                    onValueChanged: function(val) {
-                        root.selectedFruit = val
-                    }
+                    onValueChanged: root.selectedFruit = value
                 }
 
                 Text {

@@ -252,7 +252,7 @@ DocLayout {
                     delegate: Rectangle {
                         required property var modelData
                         required property int index
-                        width: parent.width
+                        width: parent ? parent.width : 760
                         height: 44
                         color: index % 2 === 0 ? "transparent" : Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.2)
 

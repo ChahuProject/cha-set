@@ -12,8 +12,6 @@ Item {
     property bool disabled: false
     property int customRadius: 6
 
-    signal valueChanged(string newValue)
-
     implicitWidth: 160
     implicitHeight: 32
 
@@ -101,29 +99,28 @@ Item {
                     color: isSelected ? ThemeTokens.hover : (optMouse.containsMouse ? ThemeTokens.hover : "transparent")
                     opacity: modelData.disabled ? 0.4 : 1.0
 
-                    Row {
-                        anchors.fill: parent
+                    Text {
+                        anchors.left: parent.left
                         anchors.leftMargin: 8
+                        anchors.right: checkText.visible ? checkText.left : parent.right
                         anchors.rightMargin: 8
-                        spacing: 6
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: parent.modelData.label || ""
+                        color: ThemeTokens.text
+                        font.pixelSize: 12
+                        font.weight: parent.isSelected ? Font.DemiBold : Font.Normal
+                        elide: Text.ElideRight
+                    }
 
-                        Text {
-                            text: parent.parent.modelData.label || ""
-                            color: ThemeTokens.text
-                            font.pixelSize: 12
-                            font.weight: parent.parent.isSelected ? Font.DemiBold : Font.Normal
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-
-                        Item { width: 1; height: 1; Layout.fillWidth: true }
-
-                        Text {
-                            visible: parent.parent.isSelected
-                            text: "✓"
-                            color: ThemeTokens.accent
-                            font.pixelSize: 11
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
+                    Text {
+                        id: checkText
+                        anchors.right: parent.right
+                        anchors.rightMargin: 8
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: parent.isSelected
+                        text: "✓"
+                        color: ThemeTokens.accent
+                        font.pixelSize: 11
                     }
 
                     MouseArea {

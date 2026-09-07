@@ -73,31 +73,26 @@ Item {
                 height: 44
                 color: ThemeTokens.panel
 
-                Row {
-                    anchors.fill: parent
+                ChaSetInput {
+                    anchors.left: parent.left
                     anchors.leftMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 220
+                    height: 28
+                    placeholder: "Filter records..."
+                    onTextEdited: {
+                        root.searchFilter = text
+                        root.currentPage = 1
+                    }
+                }
+
+                Text {
+                    anchors.right: parent.right
                     anchors.rightMargin: 10
                     anchors.verticalCenter: parent.verticalCenter
-                    spacing: 8
-
-                    ChaSetInput {
-                        width: 220
-                        height: 28
-                        placeholder: "Filter records..."
-                        onTextEdited: {
-                            root.searchFilter = text
-                            root.currentPage = 1
-                        }
-                    }
-
-                    Item { width: 1; height: 1; Layout.fillWidth: true }
-
-                    Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: root.filteredData.length + " rows"
-                        color: ThemeTokens.subduedText
-                        font.pixelSize: 11
-                    }
+                    text: root.filteredData.length + " rows"
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: 11
                 }
             }
 
@@ -160,6 +155,7 @@ Item {
 
                 delegate: Rectangle {
                     required property var modelData
+                    required property int index
                     width: bodyList.width
                     height: 32
                     color: index % 2 === 0 ? ThemeTokens.hover : "transparent"
@@ -198,27 +194,26 @@ Item {
                 border.color: ThemeTokens.border
                 border.width: 1
 
-                Row {
-                    anchors.fill: parent
+                Text {
+                    anchors.left: parent.left
                     anchors.leftMargin: 12
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: "Page " + root.currentPage + " of " + root.totalPages
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: 11
+                }
+
+                Row {
+                    anchors.right: parent.right
                     anchors.rightMargin: 12
+                    anchors.verticalCenter: parent.verticalCenter
                     spacing: 8
-
-                    Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: "Page " + root.currentPage + " of " + root.totalPages
-                        color: ThemeTokens.subduedText
-                        font.pixelSize: 11
-                    }
-
-                    Item { width: 1; height: 1; Layout.fillWidth: true }
 
                     ChaSetButton {
                         text: "Previous"
                         size: "xs"
                         variant: "outline"
                         disabled: root.currentPage <= 1
-                        anchors.verticalCenter: parent.verticalCenter
                         onClicked: root.currentPage--
                     }
 
@@ -227,7 +222,6 @@ Item {
                         size: "xs"
                         variant: "outline"
                         disabled: root.currentPage >= root.totalPages
-                        anchors.verticalCenter: parent.verticalCenter
                         onClicked: root.currentPage++
                     }
                 }

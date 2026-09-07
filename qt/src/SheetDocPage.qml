@@ -96,7 +96,7 @@ ChaSetSheet {
                         ChaSetInput { width: parent.width; height: 32; text: "Staff Infrastructure Architect" }
                     }
 
-                    Item { width: 1; height: 1; Layout.fillHeight: true }
+                    Item { width: 1; height: 16 }
 
                     Row {
                         anchors.right: parent.right
