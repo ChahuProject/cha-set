@@ -227,5 +227,10 @@
     "presets": true,
     "clear": true,
     "disabled": true
+  },
+  "viewportConstrainedContainer": {
+    "viewportMeasure": true,
+    "maxHeightOverride": true,
+    "overflowScroll": true
   }
 }

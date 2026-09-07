@@ -62,6 +62,7 @@ import { SplitterDocPage } from './pages/components/SplitterDocPage';
 import { WindowTitleBarDocPage } from './pages/components/WindowTitleBarDocPage';
 import { GenericDataTableDocPage } from './pages/components/GenericDataTableDocPage';
 import { QueryBuilderDocPage } from './pages/components/QueryBuilderDocPage';
+import { ViewportConstrainedContainerDocPage } from './pages/components/ViewportConstrainedContainerDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
@@ -586,6 +587,8 @@ export function App() {
         return <GenericDataTableDocPage />;
       case '#/components/query-builder':
         return <QueryBuilderDocPage />;
+      case '#/components/viewport-constrained-container':
+        return <ViewportConstrainedContainerDocPage />;
       case '#/components/button':
       default:
         return <ButtonDocPage />;

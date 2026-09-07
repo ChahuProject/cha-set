@@ -87,6 +87,7 @@ ApplicationWindow {
         case "window-title-bar": return "WindowTitleBarDocPage.qml";
         case "generic-data-table": return "GenericDataTableDocPage.qml";
         case "query-builder": return "QueryBuilderDocPage.qml";
+        case "viewport-constrained-container": return "ViewportConstrainedContainerDocPage.qml";
         default: return "ButtonDocPage.qml";
         }
     }

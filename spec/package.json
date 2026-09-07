@@ -43,7 +43,8 @@
     "./splitter": "./components/splitter.ts",
     "./window-title-bar": "./components/window-title-bar.ts",
     "./data-table": "./components/data-table.ts",
-    "./query-builder": "./components/query-builder.ts"
+    "./query-builder": "./components/query-builder.ts",
+    "./viewport-constrained-container": "./components/viewport-constrained-container.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

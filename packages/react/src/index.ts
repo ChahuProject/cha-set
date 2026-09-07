@@ -37,6 +37,7 @@ export * from './splitter';
 export * from './window-title-bar';
 export * from './data-table';
 export * from './query-builder';
+export * from './viewport-constrained-container';
 export {
   CheckIcon,
   XIcon,

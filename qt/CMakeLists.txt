@@ -85,6 +85,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetWindowTitleBar.qml
         src/ChaSetGenericDataTable.qml
         src/ChaSetQueryBuilder.qml
+        src/ChaSetViewportConstrainedContainer.qml
         src/ThemeTokens.generated.qml
         src/ShowcaseData.generated.qml
     NO_GENERATE_EXTRA_QMLDIRS
@@ -165,6 +166,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/WindowTitleBarDocPage.qml
             src/GenericDataTableDocPage.qml
             src/QueryBuilderDocPage.qml
+            src/ViewportConstrainedContainerDocPage.qml
             src/CommandSearchModal.qml
             src/ExportModal.qml
         NO_RESOURCE_TARGET_PATH
