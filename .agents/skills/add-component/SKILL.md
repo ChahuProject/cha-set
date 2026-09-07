@@ -14,16 +14,23 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 ## 1. Golden Rules for New Components
 
 1. **Single Source of Truth First**: Never write React TSX or Qt QML before formalizing the API contract in `spec/components/<name>.ts` and capability declarations in `spec/capabilities.json`.
-2. **Zero-Variance Visual Parity**: Every component variant, size, and interactive state (idle, hover, active, disabled) must achieve bit-exact or scientific pixel alignment (spatial diff $\le 0.20\%$, surface color $\Delta E = 0.0$).
-3. **No Native Fallbacks in Showcases**: When a component is added to ChaSet, all corresponding native HTML tags (e.g. `<button>`, `<span>` pills, `<input>`) or ad-hoc QML elements in all demo pages and modal dialogs MUST be migrated to the new component.
-4. **Mandatory Dual Gate Verification**: Both `pnpm gate` (behavioral/capability contract) and `pnpm test:pixel --component <name>` (bit-exact rendering) must pass before committing.
+2. **100% Living Showcase Coverage Mandate (零盲区文档演示)**: Every component MUST have:
+   - Registration in `spec/showcase/navigation.json` under its group.
+   - A dedicated living doc page `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx` with interactive preview, variant playground, code snippets, and token reference.
+   - Active route and page rendering wired into `packages/react/examples/basic/src/App.tsx`.
+   - **Mechanical Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas and halts with a hard error if any component lacks living documentation.
+3. **Tiered Quality Defense Matrix**:
+   - **L1 Atomic Visual Primitives** (`button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`): **MANDATORY Bit-Exact Pixel-Sync** (`pnpm test:pixel --component <name>`). Spatial diff $\le 0.20\%$, surface color $\Delta E \le 4.0$ (solid fill $\Delta E = 0.0$).
+   - **L2 Floating Overlays**, **L3 Desktop Virtualization**, and **L4 Composite Engines**: Token conformance, keyboard navigation flows, 60fps virtualization kinetics, and JSON AST serialization round-trips.
+4. **No Native Fallbacks in Showcases**: When a component is added to ChaSet, all corresponding native HTML tags (e.g. `<button>`, `<span>` pills, `<input>`) or ad-hoc QML elements in all demo pages and modal dialogs MUST be migrated to the new component.
+5. **Mandatory Gate Verification**: Run `pnpm gate` which verifies capabilities, Living Showcase completeness, and headless Qt scenario tests. For L1 components, also verify `pnpm test:pixel --component <name>`.
 
 ---
 
 ## 2. The 7-Phase Component Lifecycle
 
 ```
-[Phase 1: Spec Contract]
+[Phase 1: Spec Contract & Capabilities]
       ↓
 [Phase 2: React Component & Tests]
       ↓
@@ -31,9 +38,9 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
       ↓
 [Phase 4: Behavioral Parity Gate]
       ↓
-[Phase 5: Scientific Pixel Sync]
+[Phase 5: Tiered Verification (L1 Pixel-Sync / L2-L4 Scenarios)]
       ↓
-[Phase 6: Docs Page & Showcase Migration]
+[Phase 6: 100% Living Showcase DocPage & Migration]
       ↓
 [Phase 7: Pre-Response Commit Gate]
 ```
@@ -114,7 +121,10 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 
 ---
 
-### Phase 5: Scientific Pixel-Level Synchronization
+### Phase 5: Tiered Verification (L1 Pixel-Sync / L2–L4 Scenarios)
+
+#### A. For L1 Atomic Visual Primitives (MANDATORY Bit-Exact Pixel-Sync)
+> Scope: `button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`.
 
 1. **Add Test Matrix in `scripts/pixel-sync-test.mjs`**:
    - Define `<name>Matrix` covering all variants, sizes, interactive states (idle, hover, active), and dark theme.
@@ -122,31 +132,52 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - Set spatial diff thresholds: `maxDiff: 0.20` for standard boxes, $\Delta E \le 4.0$ (or $0.0$ for solid fills).
 2. **Add React Test Harness in `packages/react/examples/basic/src/App.tsx`**:
    - Handle `harness === '<name>'` with isolated minimal container, parsing `variant`, `state`, `theme`, `disabled`.
-3. **Execute Verification**:
+3. **Add Qt Test Harness in `qt/src/Main.qml`**:
+   - Add `<Name>` mount block when `harnessMode === '<name>'`.
+4. **Execute Verification**:
    ```bash
    pnpm test:pixel --component <name>
    ```
    Inspect `.pixel-diff/report.html` to confirm 100% PASS with green indicators.
-4. **Update Skill Documentation**:
+5. **Update Skill Documentation**:
    - Add `<name>` to `.agents/skills/pixel-sync/SKILL.md` supported list.
+
+#### B. For L2 Floating Overlays, L3 Virtualization & L4 Composite Engines
+> Scope: Popovers, Dialogs, Virtual Trees/Grids, Splitter, WindowTitleBar, DataTable, QueryBuilder.
+- Do NOT perform full-screen static pixel diffs (floating window coordinates and dynamic scroll offsets cause false positive diffs across OS window managers).
+- Verify:
+  1. Token conformance (verify background/border CSS classes and QML ThemeTokens).
+  2. Keyboard interactions (Esc to dismiss, Arrow keys for traversal, Enter/Space for activation).
+  3. Boundary clipping and kinematic decoupling (for virtual lists and splitters).
+  4. AST JSON round-trip serialization (for data tables and query builders).
 
 ---
 
-### Phase 6: Showcase, Documentation & Migration
+### Phase 6: Showcase, Living Documentation & Migration (100% MANDATORY)
 
-1. **React Documentation Page**:
+> [!IMPORTANT]
+> **Zero Blindspots**: An Agent is strictly forbidden from finishing a task without creating the living showcase documentation. `pnpm gate` mechanically enforces this rule and will fail if skipped!
+
+1. **Living DocPage Component**:
    - Create `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx`.
-   - Use `ComponentPreview`, `CodeBlock`, and `PropsTable`.
-2. **Qt Documentation Page**:
-   - Create `qt/src/<Name>DocPage.qml` with 1:1 identical layout, controls, and preview.
-   - Register `<Name>DocPage.qml` in `qt/CMakeLists.txt` and `qt/src/Main.qml`.
-3. **Navigation & Router**:
-   - Add navigation item under `"Components"` in `packages/react/examples/basic/src/types/navigation.ts`.
-   - Update `packages/react/examples/basic/src/App.tsx` router.
-   - Update `CommandSearchModal.tsx` and `qt/src/CommandSearchModal.qml` search indexes.
-4. **Full Demo Codebase Migration**:
-   - Scan all demo pages, layouts, and dialogs (`Header`, `Sidebar`, `ComponentPreview`, `ExportModal`, `CommandSearchModal`, `ThemeTuner`).
-   - Replace any raw HTML tags or ad-hoc QML shapes with the new component.
+   - Incorporate:
+     - Header with title, badge, and description.
+     - Interactive `ComponentPreview` with live preview and controls.
+     - Variant showcase section.
+     - Clean TSX / QML `CodeBlock` examples.
+     - Complete `PropsTable`.
+2. **Showcase Navigation Registration**:
+   - Add navigation entry to `spec/showcase/navigation.json` under its category:
+     ```json
+     { "id": "<name>", "title": "<Display Name>", "href": "#/components/<name>", "desc": "<Short Description>" }
+     ```
+3. **Application Routing Registration**:
+   - In `packages/react/examples/basic/src/App.tsx`:
+     - Import `<Name>DocPage`.
+     - Add `case '#/components/<name>': return <<Name>DocPage />;` in `renderActivePage()`.
+4. **Full Demo Dogfooding & Migration**:
+   - Scan showcase layouts and dialogs (`Header`, `Sidebar`, `ComponentPreview`, `ExportModal`, `CommandSearchModal`, `ThemeTuner`).
+   - Replace any raw HTML tags (e.g. `<button>`, `<input>`, `<span>` pills) with the newly created ChaSet component.
 
 ---
 

@@ -39,11 +39,35 @@
 
 ### Golden Red Lines for AI Agents
 
-1. **NO Visual-Only Delivery**: An Agent must NEVER declare a UI component task complete based solely on static screenshots or compilation passes. Interactive verification (wheel scrolling, drag tracking, clicks) is strictly mandatory.
-2. **Single Source of Truth for Data**: All showcase data, token definitions, and component contracts MUST reside in `spec/showcase/*.json` and `spec/tokens/**`. Never duplicate hardcoded arrays in React TSX or Qt QML.
-3. **Desktop Platform Idiom Compliance**:
+1. **NO Half-Baked Delivery (100% 演示文档与路由必须就绪)**:
+   - An Agent must NEVER stop a component task after only writing component core code and unit tests.
+   - Every single component defined in `spec/components/*.ts` MUST have:
+     1. An entry registered in `spec/showcase/navigation.json` under the appropriate category.
+     2. A dedicated Living Documentation Page `packages/react/examples/basic/src/pages/components/${PascalCase}DocPage.tsx` with interactive preview, variant playground, code snippets, and token references.
+     3. Active routing and page rendering registered in `packages/react/examples/basic/src/App.tsx`.
+   - **Mechanical Automated Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas and immediately halts the build if any showcase item, DocPage, or route is missing.
+2. **NO Visual-Only Delivery (禁止仅凭静态截图验收)**:
+   - An Agent must NEVER declare a UI component task complete based solely on static screenshots or compilation passes. Interactive verification (wheel scrolling, drag tracking, clicks, keyboard shortcuts) is strictly mandatory.
+3. **Strict Tiered Quality Compliance (按组件层级实施针对性检验)**:
+   - Component testing is categorized into 4 tiers (see Matrix below).
+   - **L1 Atomic Visual Primitives** MUST pass bit-exact pixel-sync (`pnpm test:pixel --component <name>`).
+   - **L2 Floating Overlays**, **L3 Desktop Virtualization**, and **L4 Composite Engines** MUST pass their respective behavioral scenarios, token checks, and AST data equivalence tests.
+4. **Single Source of Truth for Data (数据单一真理源)**:
+   - All showcase datasets, token definitions, navigation structures, and component contracts MUST reside in `spec/showcase/*.json`, `spec/tokens/**`, and `spec/components/*.ts`. Never duplicate hardcoded arrays in React TSX or Qt QML.
+5. **Desktop Platform Idiom Compliance (遵循桌面端原生物理交互)**:
    - **Wheel Scrolling**: Always use `ChaSetScrollArea` with native `WheelHandler` on Qt. Never assume `Flickable` handles mouse wheel by default.
-   - **Drag Decoupling**: In QML, dragging `thumb` must decouple from reactive `y: computedPos` bindings during active mouse press.
+   - **Drag Decoupling**: In QML, dragging `thumb` must decouple from reactive `y: computedPos` bindings during active mouse press to prevent binding thrashing.
    - **Dynamic Viewport**: Ensure `contentHeight` and `contentWidth` are bound to `childrenRect` when dynamic.
-4. **Mandatory Behavioral Parity Gate**: Before finishing any task, run `pnpm gate` which executes full contract validation, headless Qt interaction scenarios (`--test-scenario all`), and React test suites.
-5. **Targeted Scientific Pixel Sync**: When aligning component visuals, run `pnpm gate:pixel` (or `pnpm test:pixel --component <name>`) to ensure both spatial pixelmatch diff ($\le 2.8\%$) and interactive state color delta ($\Delta E \le 4.0$) pass bit-exact verification. Keep standard `pnpm gate` fast; pixel sync is selective/opt-in.
+6. **Mandatory Behavioral Parity Gate**:
+   - Before finishing any task, run `pnpm gate` which executes full contract validation, living showcase documentation completeness checks, headless Qt interaction scenarios (`--test-scenario all`), and React test suites.
+
+---
+
+### Four-Layer Quality Defense Matrix (四级分层质量防御体系)
+
+| 层级 (Tier) | 组件范围 (Components) | 核心特性与技术挑战 | 质量防御标准 (Verification Standard) | 判定准则与门禁命令 |
+| :--- | :--- | :--- | :--- | :--- |
+| **L1: Atomic Visual Primitives**<br>(原子级视觉原语) | `button`, `scroll-area` (`scrollbar`), `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider` | 纯几何与颜色盒子，固定尺寸、边框、阴影、微圆角，状态明确 (idle, hover, active, disabled) | **Bit-Exact 像素级严格对齐 (Pixel-Sync Gate)**<br>必须在 React 与 Qt 双端分别暴露微隔离 Harness，使用基准点采样与零方差中圆点 (`·`) 测试矩阵 | `pnpm test:pixel --component <name>`<br>• 空间像素误差 $\le 0.20\%$<br>• 表面颜色色差 $\Delta E \le 4.0$ (平铺单色 $\Delta E = 0.0$) |
+| **L2: Floating & Contextual Overlays**<br>(浮动与上下文覆盖层) | `dialog`, `tooltip`, `dropdown-menu`, `select`, `popover`, `context-menu`, `alert-dialog`, `sheet`, `copy-button`, `split-button`, `inline-editable-text`, `color-picker`, `read-only-input`, `keybinding-recorder`, `panel-card`, `skeleton` | 依赖 Portal/Window 弹出，坐标系漂移，跨 OS 窗口阴影/模糊算法不同 (Floating-UI vs Qt Popup/Window) | **Visual-Token 与交互行为流验证 (Behavioral & Token Conformance)**<br>禁止粗暴进行整屏静态像素 Diff；重点验证语义 Token 一致性、键盘流 (Esc/Enter/Tab)、焦点捕获与遮罩点击关闭 | `pnpm test` + Headless Scenario<br>• Token 映射 100% 对齐<br>• 演示文档完整交互演练<br>• 零硬编码 HTML 原生标签 |
+| **L3: Desktop Virtualization & Shell**<br>(桌面级虚拟化与窗口套件) | `virtual-list`, `virtual-tree`, `virtual-grid`, `draggable-modal`, `splitter`, `window-title-bar` | 高频视口裁剪、滚动偏移计算、鼠标实时拖拽追踪、原生窗口边框动力学 | **动力学与边界契约验证 (Kinematic & Boundary Verification)**<br>验证 100k+ 数据量视口裁剪不卡顿、拖拽平滑解耦、分栏边界限制与双击重置 | `pnpm gate` (Qt C++ QTest Scenarios)<br>• 60fps 滚动平滑度<br>• 拖拽位移与视口偏移线性映射<br>• 最大/最小尺寸硬边界保护 |
+| **L4: Composite Engines**<br>(复合中后台引擎) | `generic-data-table` (`data-table`), `query-builder` | 组合大量 L1 原语 (Input, Badge, Button, Select, ScrollArea)，维护复杂的树形/条件状态机 | **AST 数据等价性与组合契约验证 (AST Equivalence & Composition Gate)**<br>验证 JSON AST 序列化与反序列化双向等价、过滤/排序纯函数输出一致 | `pnpm test` (Contract / Conformance)<br>• 条件树双向解析无损<br>• 排序与过滤数据集输出 bit-for-bit 等价 |

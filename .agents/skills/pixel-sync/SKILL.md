@@ -25,11 +25,24 @@ Static screenshot comparison by "human eyeballing" is unreliable and leads to su
 4. **Zero-Variance Unicode Benchmark Lexicon**:
    - To completely eliminate kerning pair accumulation and font styling variances across OS text rasterizers, visual unit conformance uses the standard Unicode Middle Dot (`·`, U+00B7), which renders with integer-aligned center geometry across Chromium Skia and Qt DirectWrite.
 5. **Selective Targeted Execution (Opt-in)**:
-   - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for `button`, `scroll-area`, `tabs`, and `badge`).
+   - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for all L1 Atomic Visual Primitives: `button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`).
 
 ---
 
-## 2. The 5-Step Synchronization Pipeline
+## 2. Applicability Scope: Why Only L1 Primitives?
+
+Pixel-sync is a high-cost, high-precision instrument. We apply it where it yields maximal value and avoid applying it where it causes fragile false positives:
+
+| Component Category | Target Components | Pixel-Sync Policy | Rationale |
+| :--- | :--- | :--- | :--- |
+| **L1: Atomic Visual Primitives** | `button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider` | **MANDATORY** | Self-contained boxes with deterministic geometry, fixed borders, shadows, and color states. 100% bit-exact parity is required. |
+| **L2: Floating Overlays** | `dialog`, `tooltip`, `dropdown-menu`, `popover`, `select`, `context-menu`, `sheet`, `alert-dialog` | **EXCLUDED** from static diff | Floating coordinates, blur filters, and OS popup windowing produce fragile false positive diffs across Skia and Qt DirectWrite. Tested via token checks and interactive scenarios. |
+| **L3: Virtualization & Shell** | `virtual-list`, `virtual-tree`, `virtual-grid`, `draggable-modal`, `splitter`, `window-title-bar` | **EXCLUDED** from static diff | Dynamic viewport clipping, scroll offsets, and gutter dragging require kinematic stress tests, not static screenshots. |
+| **L4: Composite Engines** | `generic-data-table`, `query-builder` | **EXCLUDED** from static diff | Composed of L1/L2 elements; verified through JSON AST serialization and filter/sort function equality. |
+
+---
+
+## 3. The 5-Step Synchronization Pipeline
 
 ### Step 1: Token & Color Space Alignment
 Ensure mathematical color parity between Tailwind v4 color mixing and Qt QML color declarations:
@@ -66,6 +79,9 @@ Ensure mathematical color parity between Tailwind v4 color mixing and Qt QML col
   - Sizes: `default` (h=36, px=12, text 14px), `sm` (h=32, px=10, text 12px).
   - Borders & Rings: 1px border (`#e2e8f0` light / `#1e293b` dark); focus ring 1px offset matching `focus-visible:ring-1` (`#1d7ae0` light / `#30a0ff` dark); disabled `opacity: 0.5`.
   - Conformance benchmark: <= 0.04% pixel diff rate across all idle, hover, focus, disabled, and dark states.
+- **Separator**:
+  - Orientation: `horizontal` (h=1, w=full, `#e2e8f0` light / `#1e293b` dark), `vertical` (w=1, h=full).
+  - Conformance benchmark: literal 0.00% pixel diff rate across all orientations and themes.
 
 ### Step 2: Isolated Test Harness
 Both stacks expose an isolated rendering harness centered in a minimal canvas:
@@ -87,6 +103,9 @@ Both stacks expose an isolated rendering harness centered in a minimal canvas:
 - **Input**:
   - React: `http://127.0.0.1:5299/?harness=input&size={s}&state={st}&disabled={0|1}&theme={light|dark}&width=220&height=80`
   - Qt: `QtChaSetDemo.exe --harness input --size {s} --state {st} [--disabled] [--dark] --width 220 --height 80 --shot {path}`
+- **Separator**:
+  - React: `http://127.0.0.1:5299/?harness=separator&orientation={horizontal|vertical}&theme={light|dark}&width=220&height=80`
+  - Qt: `QtChaSetDemo.exe --harness separator --orientation {horizontal|vertical} [--dark] --width 220 --height 80 --shot {path}`
 
 ### Step 3: Headless Image Acquisition
 - Use Edge/Chromium via Chrome DevTools Protocol (`Page.navigate`, `Emulation.setDeviceMetricsOverride`, `Page.captureScreenshot`).
@@ -94,7 +113,7 @@ Both stacks expose an isolated rendering harness centered in a minimal canvas:
 
 ### Step 4: Programmatic Comparison
 Run `scripts/pixel-sync-test.mjs`:
-- Sample surface color at geometry-aware coordinates (Button: away from text glyphs; ScrollArea: centered on thumb runway; Card: solid panel interior).
+- Sample surface color at geometry-aware coordinates (Button: away from text glyphs; ScrollArea: centered on thumb runway; Card: solid panel interior; Separator: centered divider line).
 - Verify color Delta: Delta E = sqrt(Delta R^2 + Delta G^2 + Delta B^2) <= 4.0 (achieving Delta E = 0.0 on solid fills).
 - Compute visual diff heatmap and mismatched pixel percentage via `pixelmatch`.
 
@@ -107,7 +126,7 @@ Open `.pixel-diff/report.html` to inspect side-by-side:
 
 ---
 
-## 3. Verification Commands
+## 4. Verification Commands
 
 ```bash
 # 1. Run targeted pixel test for button (all variants & states)
@@ -128,10 +147,13 @@ pnpm test:pixel --component card
 # 6. Run targeted pixel test for input (all sizes, states & themes)
 pnpm test:pixel --component input
 
-# 7. Run targeted pixel test for all supported components
+# 7. Run targeted pixel test for separator (horizontal & vertical, light & dark)
+pnpm test:pixel --component separator
+
+# 8. Run targeted pixel test for all supported L1 components
 pnpm test:pixel --component all
 
-# 7. Run cross-stack parity gate including targeted pixel gate
+# 9. Run cross-stack parity gate including targeted pixel gate
 pnpm gate:pixel
 # OR
 pnpm gate --pixel
@@ -139,7 +161,7 @@ pnpm gate --pixel
 
 ---
 
-## 4. Red Lines for AI Agents
+## 5. Red Lines for AI Agents
 
 1. **NEVER accept visual drift on interactive states**: Hover and active states are first-class citizens. When a button is hovered or clicked, the resulting color MUST match across React and Qt.
 2. **DO NOT probe font glyphs for color match**: Font anti-aliasing differs across rendering engines. Background surface colors must be sampled in padding areas, while font rendering is verified via `pixelmatch` spatial tolerance (<= 2.8%).
