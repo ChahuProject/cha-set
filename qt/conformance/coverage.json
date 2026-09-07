@@ -142,5 +142,72 @@
   "skeleton": {
     "pulse": true,
     "customClass": true
+  },
+  "copyButton": {
+    "copyText": true,
+    "feedbackState": true
+  },
+  "panelCard": {
+    "container": true,
+    "tintedHeader": true,
+    "size": true
+  },
+  "splitButton": {
+    "mainAction": true,
+    "dropdownMenu": true,
+    "separator": true
+  },
+  "inlineEditableText": {
+    "displayMode": true,
+    "editMode": true,
+    "cancel": true
+  },
+  "rangeSlider": {
+    "dualThumbs": true,
+    "dragInteraction": true,
+    "trackClick": true
+  },
+  "readOnlyInput": {
+    "readOnlyValue": true,
+    "copyTrigger": true
+  },
+  "keybindingRecorder": {
+    "recordMode": true,
+    "modifierBadges": true,
+    "clear": true
+  },
+  "virtualList": {
+    "virtualWindow": true,
+    "scrollToIndex": true
+  },
+  "virtualTree": {
+    "hierarchicalFlattening": true,
+    "toggleExpand": true
+  },
+  "virtualGrid": {
+    "responsiveColumns": true,
+    "rowVirtualization": true
+  },
+  "draggableModal": {
+    "dragMove": true,
+    "resizeBounds": true
+  },
+  "splitter": {
+    "dragResize": true,
+    "doubleClickReset": true
+  },
+  "windowTitleBar": {
+    "captionButtons": true,
+    "doubleClickMaximize": true
+  },
+  "dataTable": {
+    "coreTable": true,
+    "sorting": true,
+    "globalFilter": true,
+    "rowSelection": true
+  },
+  "queryBuilder": {
+    "conditionTree": true,
+    "operatorMatching": true
   }
 }

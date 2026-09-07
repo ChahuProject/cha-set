@@ -142,6 +142,73 @@
     "skeleton": {
       "pulse": { "requirement": "must", "description": "renders pulse animation placeholder" },
       "customClass": { "requirement": "must", "description": "accepts custom width, height, and radius classes" }
+    },
+    "copyButton": {
+      "copyText": { "requirement": "must", "description": "copies configured string or callback text to clipboard" },
+      "feedbackState": { "requirement": "must", "description": "temporarily displays copied state icon and tooltip" }
+    },
+    "panelCard": {
+      "container": { "requirement": "must", "description": "renders card container with rounded borders and background" },
+      "tintedHeader": { "requirement": "must", "description": "supports tinted header background styling" },
+      "size": { "requirement": "should", "description": "supports default and compact sm sizing variants" }
+    },
+    "splitButton": {
+      "mainAction": { "requirement": "must", "description": "renders main primary action button triggering callback" },
+      "dropdownMenu": { "requirement": "must", "description": "renders secondary chevron trigger opening dropdown menu options" },
+      "separator": { "requirement": "must", "description": "renders visual divider between main button and chevron trigger" }
+    },
+    "inlineEditableText": {
+      "displayMode": { "requirement": "must", "description": "renders text with hover edit indicator" },
+      "editMode": { "requirement": "must", "description": "enters editable input mode on click with save on enter or blur" },
+      "cancel": { "requirement": "must", "description": "restores original value on escape key press" }
+    },
+    "rangeSlider": {
+      "dualThumbs": { "requirement": "must", "description": "renders low and high thumbs on shared track with highlighted range" },
+      "dragInteraction": { "requirement": "must", "description": "supports dragging individual thumbs to adjust range boundaries" },
+      "trackClick": { "requirement": "must", "description": "clicking track snaps the nearest thumb to clicked position" }
+    },
+    "readOnlyInput": {
+      "readOnlyValue": { "requirement": "must", "description": "renders readonly text input with auto-select on focus" },
+      "copyTrigger": { "requirement": "must", "description": "provides integrated copy button to copy content to clipboard" }
+    },
+    "keybindingRecorder": {
+      "recordMode": { "requirement": "must", "description": "enters recording state on click and captures key combinations" },
+      "modifierBadges": { "requirement": "must", "description": "displays recorded modifier keys and primary key as badges" },
+      "clear": { "requirement": "must", "description": "allows clearing recorded keybinding" }
+    },
+    "virtualList": {
+      "virtualWindow": { "requirement": "must", "description": "renders only items within visible viewport window" },
+      "scrollToIndex": { "requirement": "must", "description": "programmatically scrolls to specified item index" }
+    },
+    "virtualTree": {
+      "hierarchicalFlattening": { "requirement": "must", "description": "flattens hierarchical nodes into virtualized rows" },
+      "toggleExpand": { "requirement": "must", "description": "expands and collapses node children" }
+    },
+    "virtualGrid": {
+      "responsiveColumns": { "requirement": "must", "description": "computes responsive column count from container width" },
+      "rowVirtualization": { "requirement": "must", "description": "virtualizes grid card rows" }
+    },
+    "draggableModal": {
+      "dragMove": { "requirement": "must", "description": "allows dragging window position across viewport" },
+      "resizeBounds": { "requirement": "must", "description": "allows resizing window dimensions within bounds" }
+    },
+    "splitter": {
+      "dragResize": { "requirement": "must", "description": "drags divider to adjust adjacent pane sizes" },
+      "doubleClickReset": { "requirement": "must", "description": "double-clicking divider resets size to initial value" }
+    },
+    "windowTitleBar": {
+      "captionButtons": { "requirement": "must", "description": "renders minimize, maximize/restore, and close buttons" },
+      "doubleClickMaximize": { "requirement": "must", "description": "double-clicking header toggles maximized state" }
+    },
+    "dataTable": {
+      "coreTable": { "requirement": "must", "description": "renders header, body, rows, and cells using TanStack table" },
+      "sorting": { "requirement": "must", "description": "sorts table rows ascending, descending, or neutral" },
+      "globalFilter": { "requirement": "must", "description": "filters rows via global search query" },
+      "rowSelection": { "requirement": "should", "description": "supports single and multiple row selection" }
+    },
+    "queryBuilder": {
+      "conditionTree": { "requirement": "must", "description": "builds and evaluates nested condition group trees" },
+      "operatorMatching": { "requirement": "must", "description": "matches record fields against selected operators" }
     }
   }
 }

@@ -25,7 +25,22 @@
     "./context-menu": "./components/context-menu.ts",
     "./alert-dialog": "./components/alert-dialog.ts",
     "./sheet": "./components/sheet.ts",
-    "./skeleton": "./components/skeleton.ts"
+    "./skeleton": "./components/skeleton.ts",
+    "./copy-button": "./components/copy-button.ts",
+    "./panel-card": "./components/panel-card.ts",
+    "./split-button": "./components/split-button.ts",
+    "./inline-editable-text": "./components/inline-editable-text.ts",
+    "./range-slider": "./components/range-slider.ts",
+    "./read-only-input": "./components/read-only-input.ts",
+    "./keybinding-recorder": "./components/keybinding-recorder.ts",
+    "./virtual-list": "./components/virtual-list.ts",
+    "./virtual-tree": "./components/virtual-tree.ts",
+    "./virtual-grid": "./components/virtual-grid.ts",
+    "./draggable-modal": "./components/draggable-modal.ts",
+    "./splitter": "./components/splitter.ts",
+    "./window-title-bar": "./components/window-title-bar.ts",
+    "./data-table": "./components/data-table.ts",
+    "./query-builder": "./components/query-builder.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"
