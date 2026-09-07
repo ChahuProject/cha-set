@@ -151,12 +151,18 @@ DialogTrigger.displayName = 'DialogTrigger';
 export interface DialogPortalProps {
   children?: React.ReactNode;
   container?: HTMLElement | null;
+  forceMount?: boolean;
 }
 
 export function DialogPortal({
   children,
   container,
+  forceMount = false,
 }: DialogPortalProps) {
+  const context = React.useContext(DialogContext);
+  if (context && !context.open && !forceMount) {
+    return null;
+  }
   const targetContainer = container ?? (typeof document !== 'undefined' ? document.body : null);
   if (!targetContainer) {
     return <>{children}</>;
@@ -226,11 +232,17 @@ export const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>
 DialogClose.displayName = 'DialogClose';
 
 export interface DialogOverlayProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+  extends React.HTMLAttributes<HTMLDivElement> {
+  forceMount?: boolean;
+}
 
 export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps>(
-  ({ className, onClick, ...props }, ref) => {
-    const { setOpen } = useDialogContext();
+  ({ className, onClick, forceMount = false, ...props }, ref) => {
+    const { open, setOpen } = useDialogContext();
+
+    if (!open && !forceMount) {
+      return null;
+    }
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
       onClick?.(e);
