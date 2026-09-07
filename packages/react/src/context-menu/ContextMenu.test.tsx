@@ -1,0 +1,79 @@
+import { describe, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+} from './ContextMenu';
+
+describe('ContextMenu', () => {
+  it('opens context menu on contextmenu (right click) event', () => {
+    render(
+      <ContextMenu>
+        <ContextMenuTrigger>
+          <div data-testid="right-click-area">Right click here</div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem>Back</ContextMenuItem>
+          <ContextMenuItem>Forward</ContextMenuItem>
+          <ContextMenuSeparator />
+          <ContextMenuItem>
+            Reload
+            <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+          </ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>,
+    );
+
+    const area = screen.getByTestId('right-click-area');
+    expect(area).toBeInTheDocument();
+    expect(screen.queryByText('Back')).toBeNull();
+
+    fireEvent.contextMenu(area);
+
+    expect(screen.getByText('Back')).toBeInTheDocument();
+    expect(screen.getByText('Forward')).toBeInTheDocument();
+    expect(screen.getByText('Reload')).toBeInTheDocument();
+    expect(screen.getByText('⌘R')).toBeInTheDocument();
+  });
+
+  it('triggers item click handler', async () => {
+    const user = userEvent.setup();
+    const handleAction = vi.fn();
+
+    render(
+      <ContextMenu defaultOpen>
+        <ContextMenuTrigger>
+          <div>Target</div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem onClick={handleAction}>Inspect</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>,
+    );
+
+    const item = screen.getByText('Inspect');
+    expect(item).toBeInTheDocument();
+
+    await user.click(item);
+    expect(handleAction).toHaveBeenCalled();
+  });
+
+  it('renders destructive item variant', () => {
+    render(
+      <ContextMenu open>
+        <ContextMenuTrigger>Target</ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem variant="destructive">Remove</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>,
+    );
+
+    const item = screen.getByText('Remove');
+    expect(item).toHaveAttribute('data-variant', 'destructive');
+  });
+});
