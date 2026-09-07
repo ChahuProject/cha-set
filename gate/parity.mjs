@@ -37,54 +37,86 @@ if (failed) {
 }
 console.log(`[gate] OK — all must capabilities covered (${checked} checks)`);
 
-// 2. Mandatory Living Showcase Documentation & Demo Completeness Gate (100% Coverage)
+// 2. Mandatory Dual-Stack Living Showcase & Component Completeness Gate (100% React & Qt Coverage)
 const navPath = resolve(root, 'spec', 'showcase', 'navigation.json');
-const appPath = resolve(root, 'packages', 'react', 'examples', 'basic', 'src', 'App.tsx');
-const componentsDir = resolve(root, 'spec', 'components');
-const docPagesDir = resolve(root, 'packages', 'react', 'examples', 'basic', 'src', 'pages', 'components');
+const reactAppPath = resolve(root, 'packages', 'react', 'examples', 'basic', 'src', 'App.tsx');
+const reactDocPagesDir = resolve(root, 'packages', 'react', 'examples', 'basic', 'src', 'pages', 'components');
 
-if (existsSync(componentsDir) && existsSync(navPath) && existsSync(appPath)) {
+const qtSrcDir = resolve(root, 'qt', 'src');
+const qtMainPath = resolve(root, 'qt', 'src', 'Main.qml');
+const qtCmakePath = resolve(root, 'qt', 'CMakeLists.txt');
+const componentsDir = resolve(root, 'spec', 'components');
+
+if (existsSync(componentsDir) && existsSync(navPath)) {
   const nav = JSON.parse(readFileSync(navPath, 'utf8'));
   const navIds = new Set(nav.flatMap(group => group.items.map(item => item.id)));
-  const appContent = readFileSync(appPath, 'utf8');
+  const reactAppContent = existsSync(reactAppPath) ? readFileSync(reactAppPath, 'utf8') : '';
+  const qtMainContent = existsSync(qtMainPath) ? readFileSync(qtMainPath, 'utf8') : '';
+  const qtCmakeContent = existsSync(qtCmakePath) ? readFileSync(qtCmakePath, 'utf8') : '';
   const specFiles = readdirSync(componentsDir).filter(f => f.endsWith('.ts'));
-
-  const specialMap = {
-    'scrollbar': { navId: 'scroll-area', docPage: 'ScrollAreaDocPage.tsx' },
-    'data-table': { navId: 'generic-data-table', docPage: 'GenericDataTableDocPage.tsx' }
-  };
 
   function toPascalCase(str) {
     return str.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('');
   }
 
-  let docMissing = 0;
+  const specialMap = {
+    'scrollbar': { navId: 'scroll-area', reactDoc: 'ScrollAreaDocPage.tsx', qtDoc: 'ScrollAreaDocPage.qml', qtComp: 'ChaSetScrollBar.qml' },
+    'data-table': { navId: 'generic-data-table', reactDoc: 'GenericDataTableDocPage.tsx', qtDoc: 'GenericDataTableDocPage.qml', qtComp: 'ChaSetGenericDataTable.qml' }
+  };
+
+  let missingCount = 0;
   for (const file of specFiles) {
     const base = file.replace('.ts', '');
+    const pascal = toPascalCase(base);
     const navId = specialMap[base]?.navId || base;
-    const docPage = specialMap[base]?.docPage || `${toPascalCase(base)}DocPage.tsx`;
-    const docPath = resolve(docPagesDir, docPage);
+    const reactDocName = specialMap[base]?.reactDoc || `${pascal}DocPage.tsx`;
+    const qtDocName = specialMap[base]?.qtDoc || `${pascal}DocPage.qml`;
+    const qtCompName = specialMap[base]?.qtComp || `ChaSet${pascal}.qml`;
 
+    // 1. Navigation item in spec/showcase/navigation.json
     const hasNav = navIds.has(navId);
-    const hasDoc = existsSync(docPath);
-    const hasRoute = appContent.includes(docPage.replace('.tsx', ''));
 
-    if (!hasNav || !hasDoc || !hasRoute) {
-      console.error(`[gate] FAIL: Component "${base}" is missing living showcase coverage:`);
-      if (!hasNav) console.error(`  - Missing navigation entry in spec/showcase/navigation.json (id: "${navId}")`);
-      if (!hasDoc) console.error(`  - Missing doc page component: packages/react/examples/basic/src/pages/components/${docPage}`);
-      if (!hasRoute) console.error(`  - Missing route/import in packages/react/examples/basic/src/App.tsx`);
-      docMissing++;
+    // 2. React Living Showcase (DocPage file & App.tsx route)
+    const hasReactDoc = existsSync(resolve(reactDocPagesDir, reactDocName));
+    const hasReactRoute = reactAppContent.includes(reactDocName.replace('.tsx', ''));
+
+    // 3. Qt Library Component file & CMake registration
+    const hasQtComp = existsSync(resolve(qtSrcDir, qtCompName));
+    const hasQtCompCmake = qtCmakeContent.includes(`src/${qtCompName}`);
+
+    // 4. Qt Living Showcase (DocPage file, Main.qml route, & CMake registration)
+    const hasQtDoc = existsSync(resolve(qtSrcDir, qtDocName));
+    const hasQtDocCmake = qtCmakeContent.includes(`src/${qtDocName}`);
+    const hasQtRoute = qtMainContent.includes(`"${navId}"`) && qtMainContent.includes(`"${qtDocName}"`);
+
+    const checks = [
+      { ok: hasNav, msg: `Missing navigation entry in spec/showcase/navigation.json (id: "${navId}")` },
+      { ok: hasReactDoc, msg: `Missing React doc page: packages/react/examples/basic/src/pages/components/${reactDocName}` },
+      { ok: hasReactRoute, msg: `Missing React route in packages/react/examples/basic/src/App.tsx` },
+      { ok: hasQtComp, msg: `Missing Qt component: qt/src/${qtCompName}` },
+      { ok: hasQtCompCmake, msg: `Missing Qt component CMake registration: qt/CMakeLists.txt (src/${qtCompName})` },
+      { ok: hasQtDoc, msg: `Missing Qt doc page: qt/src/${qtDocName}` },
+      { ok: hasQtDocCmake, msg: `Missing Qt doc page CMake registration: qt/CMakeLists.txt (src/${qtDocName})` },
+      { ok: hasQtRoute, msg: `Missing Qt getPageSource route in qt/src/Main.qml (case "${navId}": return "${qtDocName}")` }
+    ];
+
+    const failedChecks = checks.filter(c => !c.ok);
+    if (failedChecks.length > 0) {
+      console.error(`[gate] FAIL: Component "${base}" is missing dual-stack showcase coverage:`);
+      for (const fc of failedChecks) {
+        console.error(`  - ${fc.msg}`);
+      }
+      missingCount++;
       failed = true;
     }
   }
 
   if (failed) {
-    console.error(`[gate] Showcase documentation completeness failed (${docMissing} components incomplete).`);
-    console.error(`[gate] Golden Red Line: Every component MUST have a living showcase demo before PR/gate sign-off.`);
+    console.error(`[gate] Showcase documentation & dual-stack completeness failed (${missingCount} components incomplete).`);
+    console.error(`[gate] Golden Red Line: Every component MUST have 100% living showcase demos and implementations in BOTH React and Qt before PR/gate sign-off.`);
     process.exit(1);
   }
-  console.log(`[gate] OK — 100% Living Showcase documentation coverage (${specFiles.length} components registered)`);
+  console.log(`[gate] OK — 100% Dual-Stack Living Showcase documentation coverage (${specFiles.length} components registered across React & Qt)`);
 }
 
 // 3. Executable Behavioral Parity Checks

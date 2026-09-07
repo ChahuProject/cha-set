@@ -11,13 +11,13 @@ When developing or modifying components across React and Qt, you MUST follow thi
 
 ## 1. The 5 Golden Red Lines
 
-1. **NO Half-Baked Delivery (100% 演示文档与路由必须就绪)**
+1. **NO Half-Baked Delivery (100% 双端演示文档与路由必须就绪 — React & Qt)**
    - An Agent must NEVER stop after only implementing component core code and unit tests.
    - Every component defined in `spec/components/*.ts` MUST have:
      1. Navigation entry in `spec/showcase/navigation.json`.
-     2. Living DocPage `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx` with interactive preview and props table.
-     3. Active routing registered in `packages/react/examples/basic/src/App.tsx`.
-   - **Mechanical Gate**: `pnpm gate` mechanically scans all component specs and aborts if living documentation is incomplete.
+     2. **Web (React)**: Living DocPage `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx` and active route in `packages/react/examples/basic/src/App.tsx`.
+     3. **Desktop (Qt/QML)**: Component `qt/src/ChaSet<Name>.qml` + DocPage `qt/src/<Name>DocPage.qml` (both registered in `qt/CMakeLists.txt`) and active route in `qt/src/Main.qml` (`getPageSource`).
+   - **Mechanical Gate**: `pnpm gate` mechanically scans all component specs and enforces 100% dual-stack (React + Qt) living showcase completeness and runs headless scenario tests (`QtChaSetDemo.exe --test-scenario all`) across all routes.
 
 2. **NO Visual-Only Delivery (禁止仅凭静态截图验收)**
    - Screenshots only verify static CSS / QML bounding boxes.

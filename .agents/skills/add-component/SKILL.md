@@ -14,11 +14,16 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 ## 1. Golden Rules for New Components
 
 1. **Single Source of Truth First**: Never write React TSX or Qt QML before formalizing the API contract in `spec/components/<name>.ts` and capability declarations in `spec/capabilities.json`.
-2. **100% Living Showcase Coverage Mandate (零盲区文档演示)**: Every component MUST have:
+2. **100% Dual-Stack Living Showcase Coverage Mandate (双端全量演示与路由零盲区)**: Every component MUST have:
    - Registration in `spec/showcase/navigation.json` under its group.
-   - A dedicated living doc page `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx` with interactive preview, variant playground, code snippets, and token reference.
-   - Active route and page rendering wired into `packages/react/examples/basic/src/App.tsx`.
-   - **Mechanical Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas and halts with a hard error if any component lacks living documentation.
+   - **Web (React)**:
+     - Dedicated living doc page `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx` with interactive preview, variant playground, code snippets, and token reference.
+     - Active route and page rendering wired into `packages/react/examples/basic/src/App.tsx`.
+   - **Desktop (Qt/QML)**:
+     - Component implementation `qt/src/ChaSet<Name>.qml` registered in `qt/CMakeLists.txt` (`ChaSet` module).
+     - Living doc page `qt/src/<Name>DocPage.qml` registered in `qt/CMakeLists.txt` (`QtChaSetDemo` module).
+     - Route mapping in `qt/src/Main.qml` (`getPageSource`).
+   - **Mechanical Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas and halts with a hard error if any component lacks living documentation or route mapping on either React or Qt.
 3. **Tiered Quality Defense Matrix**:
    - **L1 Atomic Visual Primitives** (`button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`): **MANDATORY Bit-Exact Pixel-Sync** (`pnpm test:pixel --component <name>`). Spatial diff $\le 0.20\%$, surface color $\Delta E \le 4.0$ (solid fill $\Delta E = 0.0$).
    - **L2 Floating Overlays**, **L3 Desktop Virtualization**, and **L4 Composite Engines**: Token conformance, keyboard navigation flows, 60fps virtualization kinetics, and JSON AST serialization round-trips.
@@ -158,7 +163,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 > [!IMPORTANT]
 > **Zero Blindspots**: An Agent is strictly forbidden from finishing a task without creating the living showcase documentation. `pnpm gate` mechanically enforces this rule and will fail if skipped!
 
-1. **Living DocPage Component**:
+1. **React Living DocPage Component**:
    - Create `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx`.
    - Incorporate:
      - Header with title, badge, and description.
@@ -166,16 +171,22 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Variant showcase section.
      - Clean TSX / QML `CodeBlock` examples.
      - Complete `PropsTable`.
-2. **Showcase Navigation Registration**:
+2. **Qt Living DocPage Component & Main Route**:
+   - Create `qt/src/<Name>DocPage.qml` with interactive preview, variant controls, code blocks, and props table.
+   - Register `qt/src/<Name>DocPage.qml` in `qt/CMakeLists.txt` under `QtChaSetDemo` `QML_FILES`.
+   - Register `qt/src/ChaSet<Name>.qml` in `qt/CMakeLists.txt` under `ChaSet` `QML_FILES`.
+   - Add route mapping in `qt/src/Main.qml` (`getPageSource`).
+3. **Showcase Navigation Registration**:
    - Add navigation entry to `spec/showcase/navigation.json` under its category:
      ```json
      { "id": "<name>", "title": "<Display Name>", "href": "#/components/<name>", "desc": "<Short Description>" }
      ```
-3. **Application Routing Registration**:
+   - Run `node spec/generators/generate-showcase-data.mjs` to regenerate `qt/src/ShowcaseData.generated.qml`.
+4. **Application Routing Registration**:
    - In `packages/react/examples/basic/src/App.tsx`:
      - Import `<Name>DocPage`.
      - Add `case '#/components/<name>': return <<Name>DocPage />;` in `renderActivePage()`.
-4. **Full Demo Dogfooding & Migration**:
+5. **Full Demo Dogfooding & Migration**:
    - Scan showcase layouts and dialogs (`Header`, `Sidebar`, `ComponentPreview`, `ExportModal`, `CommandSearchModal`, `ThemeTuner`).
    - Replace any raw HTML tags (e.g. `<button>`, `<input>`, `<span>` pills) with the newly created ChaSet component.
 

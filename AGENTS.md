@@ -39,13 +39,18 @@
 
 ### Golden Red Lines for AI Agents
 
-1. **NO Half-Baked Delivery (100% 演示文档与路由必须就绪)**:
+1. **NO Half-Baked Delivery (100% 双端演示文档与路由必须就绪 — React & Qt)**:
    - An Agent must NEVER stop a component task after only writing component core code and unit tests.
    - Every single component defined in `spec/components/*.ts` MUST have:
      1. An entry registered in `spec/showcase/navigation.json` under the appropriate category.
-     2. A dedicated Living Documentation Page `packages/react/examples/basic/src/pages/components/${PascalCase}DocPage.tsx` with interactive preview, variant playground, code snippets, and token references.
-     3. Active routing and page rendering registered in `packages/react/examples/basic/src/App.tsx`.
-    - **Mechanical Automated Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas, verifies navigation/route coverage, and automatically mounts every DocPage executing interactive button click tests (`showcase-pages.test.tsx`) to guarantee zero runtime white screens.
+     2. **Web (React)**:
+        - Dedicated Living Doc Page: `packages/react/examples/basic/src/pages/components/${PascalCase}DocPage.tsx` with interactive preview, variant playground, code snippets, and token references.
+        - Active routing & page rendering in `packages/react/examples/basic/src/App.tsx`.
+     3. **Desktop (Qt/QML)**:
+        - Component implementation: `qt/src/ChaSet${PascalCase}.qml` registered in `qt/CMakeLists.txt`.
+        - Dedicated Living Doc Page: `qt/src/${PascalCase}DocPage.qml` registered in `qt/CMakeLists.txt`.
+        - Active routing & dynamic loader mapping in `qt/src/Main.qml` (`getPageSource`).
+   - **Mechanical Automated Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas, verifies dual-stack (React & Qt) component files, living showcase doc pages, route handling, and CMake registrations. It automatically mounts every React DocPage executing interactive click tests (`showcase-pages.test.tsx`) AND executes headless Qt runtime scenario tests (`QtChaSetDemo.exe --test-scenario all`) across all routes to guarantee zero runtime crashes and zero white screens across both platforms.
 2. **NO Visual-Only Delivery (禁止仅凭静态截图验收)**:
    - An Agent must NEVER declare a UI component task complete based solely on static screenshots or compilation passes. Interactive verification (wheel scrolling, drag tracking, clicks, keyboard shortcuts) is strictly mandatory.
 3. **Strict Tiered Quality Compliance (按组件层级实施针对性检验)**:
