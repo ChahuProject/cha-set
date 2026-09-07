@@ -238,5 +238,11 @@
     "viewportMeasure": true,
     "maxHeightOverride": true,
     "overflowScroll": true
+  },
+  "sidebar": {
+    "providerContext": true,
+    "collapsibleVariant": true,
+    "resizableRail": true,
+    "menuHierarchy": true
   }
 }

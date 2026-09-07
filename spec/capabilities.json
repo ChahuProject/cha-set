@@ -238,6 +238,12 @@
       "viewportMeasure": { "requirement": "must", "description": "dynamically measures viewport height and bounds max-height" },
       "maxHeightOverride": { "requirement": "must", "description": "respects custom numeric or string maxHeight upper limits" },
       "overflowScroll": { "requirement": "must", "description": "enables smooth vertical scrolling when content exceeds bounded height" }
+    },
+    "sidebar": {
+      "providerContext": { "requirement": "must", "description": "provides responsive sidebar state, toggle and width management" },
+      "collapsibleVariant": { "requirement": "must", "description": "supports expanded, icon collapsed, offcanvas modes" },
+      "resizableRail": { "requirement": "must", "description": "interactive drag rail for resizing sidebar width" },
+      "menuHierarchy": { "requirement": "must", "description": "structured sidebar menus, submenus, actions and badges" }
     }
   }
 }

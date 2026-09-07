@@ -45,7 +45,8 @@
     "./window-title-bar": "./components/window-title-bar.ts",
     "./data-table": "./components/data-table.ts",
     "./query-builder": "./components/query-builder.ts",
-    "./viewport-constrained-container": "./components/viewport-constrained-container.ts"
+    "./viewport-constrained-container": "./components/viewport-constrained-container.ts",
+    "./sidebar": "./components/sidebar.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"
