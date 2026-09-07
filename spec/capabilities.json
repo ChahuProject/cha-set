@@ -36,6 +36,13 @@
       "styling": { "requirement": "must", "description": "pill geometry with semantic color tokens and border" },
       "customClass": { "requirement": "should", "description": "allows passing custom classes or color overrides" }
     },
+    "label": {
+      "standard": { "requirement": "must", "description": "renders text label and associates with form controls via htmlFor" },
+      "size": { "requirement": "must", "description": "supports default (text-sm) and sm (text-xs) font sizing" },
+      "disabled": { "requirement": "must", "description": "disabled state dims opacity and blocks pointer interactions" },
+      "required": { "requirement": "must", "description": "renders required asterisk indicator marker when required" },
+      "styling": { "requirement": "must", "description": "typography, peer-disabled styles and colors aligned with ChaSet tokens" }
+    },
     "card": {
       "structure": { "requirement": "must", "description": "composite subcomponents: CardHeader, CardTitle, CardDescription, CardContent, CardFooter" },
       "variant": { "requirement": "must", "description": "supports default, secondary, and outline variants" },

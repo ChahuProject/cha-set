@@ -30,6 +30,7 @@
       { "id": "scroll-area", "title": "Scroll Area", "href": "#/components/scroll-area", "desc": "Custom scrollable container with hot-zone expansion and stepper buttons." },
       { "id": "tabs", "title": "Tabs", "href": "#/components/tabs", "desc": "Set of layered content sections known as tab panels, displayed one at a time." },
       { "id": "badge", "title": "Badge", "href": "#/components/badge", "desc": "Displays a badge or status tag to highlight status, tags, and counts." },
+      { "id": "label", "title": "Label", "href": "#/components/label", "desc": "Renders an accessible label associated with form controls." },
       { "id": "card", "title": "Card", "href": "#/components/card", "desc": "Displays a card with header, title, description, content, and footer actions." },
       { "id": "input", "title": "Input", "href": "#/components/input", "desc": "Form text input field with desktop high-density sizing and states." },
       { "id": "checkbox", "title": "Checkbox", "href": "#/components/checkbox", "desc": "Control that allows toggling between checked, unchecked, and indeterminate." },

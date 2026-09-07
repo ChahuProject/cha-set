@@ -6,6 +6,7 @@ import {
   TabsList,
   TabsTrigger,
   Badge,
+  Label,
   Card,
   CardHeader,
   CardTitle,
@@ -26,6 +27,7 @@ import { ButtonDocPage } from './pages/components/ButtonDocPage';
 import { ScrollAreaDocPage } from './pages/components/ScrollAreaDocPage';
 import { TabsDocPage } from './pages/components/TabsDocPage';
 import { BadgeDocPage } from './pages/components/BadgeDocPage';
+import { LabelDocPage } from './pages/components/LabelDocPage';
 import { CardDocPage } from './pages/components/CardDocPage';
 import { InputDocPage } from './pages/components/InputDocPage';
 import { CheckboxDocPage } from './pages/components/CheckboxDocPage';
@@ -304,6 +306,47 @@ export function App() {
     );
   }
 
+  // Isolated Label Visual Test Harness
+  if (harness === 'label') {
+    const size = (searchParams?.get('size') ?? 'default') as any;
+    const disabled = searchParams?.get('disabled') === 'true';
+    const required = searchParams?.get('required') === 'true';
+    const state = searchParams?.get('state') ?? 'idle';
+    const theme = searchParams?.get('theme') ?? 'light';
+    const width = Number(searchParams?.get('width') ?? 220);
+    const height = Number(searchParams?.get('height') ?? 80);
+    const label = searchParams?.get('label') ?? '·';
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+
+    return (
+      <div
+        style={{
+          width,
+          height,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: theme === 'dark' ? '#020817' : '#ffffff',
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <Label
+          size={size}
+          disabled={disabled}
+          required={required}
+          forceHover={state === 'hover'}
+          forceActive={state === 'active'}
+        >
+          {label}
+        </Label>
+      </div>
+    );
+  }
+
   // Isolated Card Visual Test Harness
   if (harness === 'card') {
     const variant = (searchParams?.get('variant') ?? 'default') as any;
@@ -471,6 +514,8 @@ export function App() {
         return <TabsDocPage />;
       case '#/components/badge':
         return <BadgeDocPage />;
+      case '#/components/label':
+        return <LabelDocPage />;
       case '#/components/card':
         return <CardDocPage />;
       case '#/components/input':

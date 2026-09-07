@@ -6,8 +6,8 @@ import ChaSet
 
 ApplicationWindow {
     id: win
-    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge")) ? 220 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 120 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 260 : 1150)))
-    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge")) ? 80 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 200 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 80 : 850)))
+    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge" || harnessMode === "label")) ? 220 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 120 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 260 : 1150)))
+    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge" || harnessMode === "label")) ? 80 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 200 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 80 : 850)))
     visible: true
     title: "ChaSet Studio"
     color: win.cBg
@@ -52,6 +52,7 @@ ApplicationWindow {
         case "scroll-area": return "ScrollAreaDocPage.qml";
         case "tabs": return "TabsDocPage.qml";
         case "badge": return "BadgeDocPage.qml";
+        case "label": return "LabelDocPage.qml";
         case "card": return "CardDocPage.qml";
         case "input": return "InputDocPage.qml";
         case "checkbox": return "CheckboxDocPage.qml";
@@ -425,6 +426,24 @@ ApplicationWindow {
                 anchors.centerIn: parent
                 variant: typeof harnessVariant !== "undefined" ? harnessVariant : "default"
                 size: typeof harnessSize !== "undefined" ? harnessSize : "default"
+                text: (typeof harnessLabel !== "undefined" && harnessLabel !== "") ? harnessLabel : "·"
+                forceHover: typeof harnessState !== "undefined" && harnessState === "hover"
+                forceActive: typeof harnessState !== "undefined" && harnessState === "active"
+            }
+        }
+
+        // Isolated Label Harness Container (for visual unit tests)
+        Rectangle {
+            id: labelHarnessContainer
+            visible: typeof harnessMode !== "undefined" && harnessMode === "label"
+            anchors.fill: parent
+            color: ThemeTokens.dark ? "#020817" : "#ffffff"
+
+            ChaSetLabel {
+                anchors.centerIn: parent
+                size: typeof harnessSize !== "undefined" ? harnessSize : "default"
+                disabled: typeof harnessDisabled !== "undefined" && harnessDisabled === true
+                required: typeof harnessRequired !== "undefined" && harnessRequired === true
                 text: (typeof harnessLabel !== "undefined" && harnessLabel !== "") ? harnessLabel : "·"
                 forceHover: typeof harnessState !== "undefined" && harnessState === "hover"
                 forceActive: typeof harnessState !== "undefined" && harnessState === "active"

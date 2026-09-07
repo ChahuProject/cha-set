@@ -34,6 +34,13 @@
     "styling": true,
     "customClass": true
   },
+  "label": {
+    "standard": true,
+    "size": true,
+    "disabled": true,
+    "required": true,
+    "styling": true
+  },
   "card": {
     "structure": true,
     "variant": true,

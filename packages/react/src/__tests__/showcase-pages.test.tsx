@@ -16,6 +16,7 @@ import { DropdownMenuDocPage } from '../../examples/basic/src/pages/components/D
 import { GenericDataTableDocPage } from '../../examples/basic/src/pages/components/GenericDataTableDocPage';
 import { InlineEditableTextDocPage } from '../../examples/basic/src/pages/components/InlineEditableTextDocPage';
 import { InputDocPage } from '../../examples/basic/src/pages/components/InputDocPage';
+import { LabelDocPage } from '../../examples/basic/src/pages/components/LabelDocPage';
 import { KeybindingRecorderDocPage } from '../../examples/basic/src/pages/components/KeybindingRecorderDocPage';
 import { PanelCardDocPage } from '../../examples/basic/src/pages/components/PanelCardDocPage';
 import { PopoverDocPage } from '../../examples/basic/src/pages/components/PopoverDocPage';
@@ -54,6 +55,7 @@ const pages = [
   { name: 'GenericDataTableDocPage', Component: GenericDataTableDocPage },
   { name: 'InlineEditableTextDocPage', Component: InlineEditableTextDocPage },
   { name: 'InputDocPage', Component: InputDocPage },
+  { name: 'LabelDocPage', Component: LabelDocPage },
   { name: 'KeybindingRecorderDocPage', Component: KeybindingRecorderDocPage },
   { name: 'PanelCardDocPage', Component: PanelCardDocPage },
   { name: 'PopoverDocPage', Component: PopoverDocPage },

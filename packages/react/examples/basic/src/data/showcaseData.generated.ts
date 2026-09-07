@@ -1095,6 +1095,12 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "desc": "Displays a badge or status tag to highlight status, tags, and counts."
       },
       {
+        "id": "label",
+        "title": "Label",
+        "href": "#/components/label",
+        "desc": "Renders an accessible label associated with form controls."
+      },
+      {
         "id": "card",
         "title": "Card",
         "href": "#/components/card",
