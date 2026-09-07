@@ -22,7 +22,11 @@ export interface DraggableModalSizeOption {
   特殊?: 'fullscreen' | 'default' | '全窗口' | '默认';
 }
 
-export interface DraggableModalProps {
+export interface DraggableModalProps
+  extends Omit<
+    React.HTMLAttributes<HTMLDivElement>,
+    'onDrag' | 'onDragStart' | 'onDragEnd' | 'onResize' | 'onResizeStart' | 'onResizeStop'
+  > {
   children: React.ReactNode;
   className?: string;
   contentClassName?: string;
@@ -66,53 +70,63 @@ export interface DraggableModalProps {
 const cancelDragSelector =
   "button, input, textarea, select, a, label, [role='option'], [role='combobox'], [data-slot='dialog-close'], [data-slot='dropdown-menu-trigger'], [data-slot='splitter'], [data-slot='resizable-handle'], [data-no-drag], [data-no-drag] *";
 
-export function DraggableModal({
-  children,
-  className,
-  contentClassName,
-  dataSlot = 'dialog-content',
-  dragHandleClassName,
-  showEscBadge = false,
-  fixedFooter,
-  topControls,
-  rootExtra,
-  defaultWidth,
-  defaultHeight,
-  minWidth,
-  minHeight,
-  defaultWidthRem,
-  defaultHeightRem,
-  minWidthRem,
-  minHeightRem,
-  initialPositionMode = 'center',
-  topMarginRem = 4.5,
-  remBase = 16,
-  autoFitHeight = true,
-  sizeOptions,
-  sizeMenuTooltip,
+export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalProps>(
+  function DraggableModal(
+    {
+      children,
+      className,
+      contentClassName,
+      dataSlot = 'dialog-content',
+      dragHandleClassName,
+      showEscBadge = false,
+      fixedFooter,
+      topControls,
+      rootExtra,
+      defaultWidth,
+      defaultHeight,
+      minWidth,
+      minHeight,
+      defaultWidthRem,
+      defaultHeightRem,
+      minWidthRem,
+      minHeightRem,
+      initialPositionMode = 'center',
+      topMarginRem = 4.5,
+      remBase = 16,
+      autoFitHeight = true,
+      sizeOptions,
+      sizeMenuTooltip,
 
-  // Compatibility aliases
-  内容类名,
-  根级附加,
-  右上角控制,
-  底部固定区,
-  默认宽度rem,
-  默认高度rem,
-  最小宽度rem,
-  最小高度rem,
-  初始位置模式,
-  顶部边距rem,
-  自动贴高,
-  尺寸选项,
-  尺寸按钮提示,
-}: DraggableModalProps) {
-  const rndRef = React.useRef<Rnd | null>(null);
-  const contentRef = React.useRef<HTMLDivElement | null>(null);
-  const footerRef = React.useRef<HTMLDivElement | null>(null);
-  const hasManuallyAdjustedRef = React.useRef(false);
+      // Compatibility aliases
+      内容类名,
+      根级附加,
+      右上角控制,
+      底部固定区,
+      默认宽度rem,
+      默认高度rem,
+      最小宽度rem,
+      最小高度rem,
+      初始位置模式,
+      顶部边距rem,
+      自动贴高,
+      尺寸选项,
+      尺寸按钮提示,
 
-  const finalContentClassName = contentClassName ?? 内容类名;
-  const finalFixedFooter = fixedFooter ?? 底部固定区;
+      role,
+      onClick,
+      ...restProps
+    }: DraggableModalProps,
+    ref,
+  ) {
+    const rndRef = React.useRef<Rnd | null>(null);
+    const contentRef = React.useRef<HTMLDivElement | null>(null);
+    const footerRef = React.useRef<HTMLDivElement | null>(null);
+    const hasManuallyAdjustedRef = React.useRef(false);
+
+    React.useImperativeHandle(ref, () => rndRef.current?.getSelfElement() as HTMLDivElement, []);
+
+    const finalContentClassName = contentClassName ?? 内容类名;
+    const finalFixedFooter = fixedFooter ?? 底部固定区;
   const finalTopControls = topControls ?? 右上角控制;
   const finalRootExtra = rootExtra ?? 根级附加;
   const effectiveSizeOptions = sizeOptions ?? 尺寸选项;
@@ -288,13 +302,18 @@ export function DraggableModal({
       dragHandleClassName={dragHandleClassName}
       cancel={cancelDragSelector}
       data-slot={dataSlot}
+      role={role}
+      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        onClick?.(e);
+      }}
       onDragStart={() => {
         hasManuallyAdjustedRef.current = true;
       }}
       onResizeStart={() => {
         hasManuallyAdjustedRef.current = true;
       }}
-      onDrag={(e, data) => {
+      onDrag={(e: any, data) => {
         const root = (e.target as HTMLElement).closest(`[data-slot="${dataSlot}"]`) as HTMLElement | null;
         if (root) {
           root.style.backgroundPosition = `${-data.x}px ${-data.y}px`;
@@ -309,6 +328,7 @@ export function DraggableModal({
         !dragHandleClassName && 'cursor-move',
         className,
       )}
+      {...(restProps as any)}
     >
       <div
         ref={contentRef}
@@ -366,4 +386,5 @@ export function DraggableModal({
       {finalRootExtra}
     </Rnd>
   );
-}
+});
+DraggableModal.displayName = 'DraggableModal';

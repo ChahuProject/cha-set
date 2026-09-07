@@ -33,17 +33,45 @@ describe('Dialog conformance (spec contract)', () => {
     const contentFixture = {
       customRadius: 8,
     } as const;
-    expect(() => dialogContentSchema.parse(contentFixture)).not.toThrow();
+    const parsedContent = dialogContentSchema.parse(contentFixture);
+    expect(parsedContent.draggable).toBe(true);
+    expect(parsedContent.showCloseButton).toBe(true);
+    expect(parsedContent.showEscBadge).toBe(true);
+
+    const desktopContentFixture = {
+      draggable: true,
+      showCloseButton: true,
+      showEscBadge: true,
+      defaultWidthRem: 36,
+      defaultHeightRem: 24,
+      minWidthRem: 20,
+      minHeightRem: 15,
+      initialPositionMode: 'top' as const,
+      topMarginRem: 4.5,
+      autoFitHeight: true,
+      sizeOptions: [
+        { name: '默认', special: 'default' as const },
+        { name: '宽屏', widthRem: 42, heightRem: 28 },
+      ],
+      sizeMenuTooltip: '切换窗口尺寸',
+      dragHandleClassName: 'custom-dialog-header',
+      contentClassName: 'custom-dialog-body',
+      内容类名: 'custom-dialog-body-cn',
+    };
+    expect(() => dialogContentSchema.parse(desktopContentFixture)).not.toThrow();
 
     expect(() => dialogHeaderSchema.parse({})).not.toThrow();
     expect(() => dialogTitleSchema.parse({})).not.toThrow();
     expect(() => dialogDescriptionSchema.parse({})).not.toThrow();
     expect(() => dialogFooterSchema.parse({})).not.toThrow();
+    expect(() => dialogFooterSchema.parse({ showCloseButton: true })).not.toThrow();
     expect(() => dialogCloseSchema.parse({})).not.toThrow();
   });
 
   it('rejects invalid types per the contract', () => {
     expect(() => dialogSchema.parse({ open: 'not-a-boolean' })).toThrow();
+    expect(() => dialogContentSchema.parse({ draggable: 'not-a-bool' })).toThrow();
+    expect(() => dialogContentSchema.parse({ initialPositionMode: 'invalid-mode' })).toThrow();
   });
 
   it('earned coverage declares must capabilities', () => {

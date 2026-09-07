@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { draggableModalSizeOptionSchema } from './draggable-modal';
 
 /**
  * Neutral API contract for the Dialog component.
@@ -19,13 +20,32 @@ export const dialogTriggerSchema = z.object({
 
 export const dialogContentSchema = z.object({
   customRadius: z.number().optional(),
+  draggable: z.boolean().default(true),
+  showCloseButton: z.boolean().default(true),
+  showEscBadge: z.boolean().default(true),
+  defaultWidthRem: z.number().optional(),
+  defaultHeightRem: z.number().optional(),
+  minWidthRem: z.number().optional(),
+  minHeightRem: z.number().optional(),
+  initialPositionMode: z.enum(['center', 'top', '居中', '顶部靠上']).optional(),
+  topMarginRem: z.number().optional(),
+  autoFitHeight: z.boolean().optional(),
+  sizeOptions: z.array(draggableModalSizeOptionSchema).optional(),
+  sizeMenuTooltip: z.string().optional(),
+  dragHandleClassName: z.string().optional(),
+  contentClassName: z.string().optional(),
+  内容类名: z.string().optional(),
 });
 
 export const dialogHeaderSchema = z.object({});
 export const dialogTitleSchema = z.object({});
 export const dialogDescriptionSchema = z.object({});
-export const dialogFooterSchema = z.object({});
-export const dialogCloseSchema = z.object({});
+export const dialogFooterSchema = z.object({
+  showCloseButton: z.boolean().default(false),
+});
+export const dialogCloseSchema = z.object({
+  asChild: z.boolean().default(false),
+});
 
 export type DialogApi = z.infer<typeof dialogSchema>;
 export type DialogTriggerApi = z.infer<typeof dialogTriggerSchema>;

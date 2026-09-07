@@ -10,6 +10,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogClose,
+  type DialogSizeOption,
 } from './Dialog';
 
 describe('Dialog', () => {
@@ -225,5 +226,96 @@ describe('Dialog', () => {
 
     await user.click(customClose);
     expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('supports draggable modal mode with size options and esc badge', async () => {
+    const user = userEvent.setup();
+    const sizeOptions: DialogSizeOption[] = [
+      { name: '默认', special: 'default' },
+      { name: '宽屏', widthRem: 42, heightRem: 28 },
+    ];
+
+    render(
+      <Dialog defaultOpen>
+        <DialogContent
+          showEscBadge
+          defaultWidthRem={32}
+          defaultHeightRem={24}
+          initialPositionMode="top"
+          topMarginRem={5}
+          sizeOptions={sizeOptions}
+          sizeMenuTooltip="切换尺寸"
+        >
+          <DialogHeader>
+            <DialogTitle>Draggable Dialog Title</DialogTitle>
+            <DialogDescription>Draggable mode description</DialogDescription>
+          </DialogHeader>
+          <div>Draggable Body Content</div>
+        </DialogContent>
+      </Dialog>,
+    );
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText('ESC')).toBeInTheDocument();
+    expect(screen.getByText('Draggable Body Content')).toBeInTheDocument();
+
+    const sizeButton = screen.getByRole('button', { name: '切换尺寸' });
+    expect(sizeButton).toBeInTheDocument();
+
+    await user.click(sizeButton);
+    expect(await screen.findByText('宽屏')).toBeInTheDocument();
+  });
+
+  it('splits DialogFooter as fixed bottom area and supports showCloseButton on footer', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    render(
+      <Dialog defaultOpen onOpenChange={onOpenChange}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Fixed Footer Test</DialogTitle>
+          </DialogHeader>
+          <div data-testid="scrollable-content">Main Body Area</div>
+          <DialogFooter showCloseButton>
+            <button type="button">Confirm</button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>,
+    );
+
+    expect(screen.getByTestId('scrollable-content')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
+
+    const footerCloseButtons = screen.getAllByRole('button', { name: 'Close' });
+    expect(footerCloseButtons.length).toBeGreaterThanOrEqual(1);
+
+    await user.click(footerCloseButtons[footerCloseButtons.length - 1]);
+    expect(onOpenChange).toHaveBeenCalledWith(false);
+  });
+
+  it('supports draggable={false} for static centered dialog card', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    render(
+      <Dialog defaultOpen onOpenChange={onOpenChange}>
+        <DialogContent draggable={false}>
+          <DialogTitle>Static Modal</DialogTitle>
+          <p>Static Body</p>
+        </DialogContent>
+      </Dialog>,
+    );
+
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toBeInTheDocument();
+    expect(screen.getByText('Static Modal')).toBeInTheDocument();
+
+    fireEvent.click(dialog);
+    expect(onOpenChange).not.toHaveBeenCalled();
+
+    const closeBtn = screen.getByRole('button', { name: 'Close' });
+    await user.click(closeBtn);
+    expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 });

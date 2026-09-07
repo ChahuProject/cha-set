@@ -39,6 +39,7 @@ export * from './window-title-bar';
 export * from './data-table';
 export * from './query-builder';
 export * from './viewport-constrained-container';
+export * from './lib/splitFixedFooter';
 export {
   CheckIcon,
   XIcon,

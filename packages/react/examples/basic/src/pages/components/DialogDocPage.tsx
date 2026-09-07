@@ -11,6 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogClose,
+  type DialogSizeOption,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -20,6 +21,7 @@ import { PropsTable } from '../../components/PropsTable';
 export function DialogDocPage() {
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [desktopOpen, setDesktopOpen] = useState(false);
   const [name, setName] = useState('Alex Rivera');
   const [username, setUsername] = useState('@arivera');
 
@@ -58,6 +60,8 @@ export function DialogDocPage() {
     title: "Edit profile"
     description: "Make changes to your profile here. Click save when you're done."
     dialogWidth: 480
+    showCloseButton: true
+    showEscBadge: true
 
     Column {
         width: parent.width
@@ -89,6 +93,12 @@ export function DialogDocPage() {
         }
     }
 }`;
+
+  const desktopSizeOptions: DialogSizeOption[] = [
+    { name: '默认', special: 'default' },
+    { name: '紧凑', widthRem: 26, heightRem: 20 },
+    { name: '全视口', special: 'fullscreen' },
+  ];
 
   return (
     <DocLayout
@@ -231,10 +241,50 @@ export function DialogDemo() {
           Examples & States
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Common modal dialog patterns: confirmation dialogs, forms, and alerts.
+          Common modal dialog patterns: desktop draggable windows, confirmation dialogs, and alert notices.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Desktop Draggable Modal */}
+          <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
+            <span className="text-sm font-medium text-foreground">Desktop Draggable Modal</span>
+            <p className="text-xs text-muted-foreground mb-3">
+              Draggable modal with size presets, auto-fitting height, ESC badge, and fixed footer.
+            </p>
+            <Dialog open={desktopOpen} onOpenChange={setDesktopOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  Open Draggable Window
+                </Button>
+              </DialogTrigger>
+              <DialogContent
+                draggable={true}
+                showEscBadge={true}
+                defaultWidthRem={32}
+                defaultHeightRem={22}
+                sizeOptions={desktopSizeOptions}
+                sizeMenuTooltip="调整窗口大小"
+              >
+                <DialogHeader>
+                  <DialogTitle>Advanced Desktop Tool</DialogTitle>
+                  <DialogDescription>
+                    Drag the title bar or window body to reposition. Switch size presets from the top-right button.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-3 py-2 text-xs text-muted-foreground">
+                  <p>
+                    The bottom actions area is extracted as a fixed footer that stays pinned during vertical scrolling.
+                  </p>
+                </div>
+                <DialogFooter showCloseButton>
+                  <Button size="sm" onClick={() => setDesktopOpen(false)}>
+                    Confirm
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+
           {/* Confirmation / Destructive */}
           <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
             <span className="text-sm font-medium text-foreground">Destructive Confirmation</span>
@@ -335,16 +385,76 @@ export function DialogDemo() {
               description: 'Event handler called when the open state changes.',
             },
             {
-              name: 'title',
-              type: 'string',
-              default: "''",
-              description: 'Optional shortcut title rendered inside DialogTitle.',
+              name: 'draggable',
+              type: 'boolean',
+              default: 'true',
+              description: 'Whether the dialog is rendered as a desktop draggable and resizable modal window.',
             },
             {
-              name: 'description',
+              name: 'showCloseButton',
+              type: 'boolean',
+              default: 'true',
+              description: 'Whether to render the close button in the top-right controls.',
+            },
+            {
+              name: 'showEscBadge',
+              type: 'boolean',
+              default: 'true',
+              description: 'Whether to render an ESC keyboard shortcut badge in the top-right controls.',
+            },
+            {
+              name: 'defaultWidthRem',
+              type: 'number',
+              default: '—',
+              description: 'Initial modal width in rem units (e.g. 32).',
+            },
+            {
+              name: 'defaultHeightRem',
+              type: 'number',
+              default: '—',
+              description: 'Initial modal height in rem units (e.g. 24).',
+            },
+            {
+              name: 'initialPositionMode',
+              type: "'center' | 'top' | '居中' | '顶部靠上'",
+              default: "'center'",
+              description: 'Initial positioning mode for the modal window.',
+            },
+            {
+              name: 'topMarginRem',
+              type: 'number',
+              default: '4.5',
+              description: 'Top margin in rem when initialPositionMode is top.',
+            },
+            {
+              name: 'autoFitHeight',
+              type: 'boolean',
+              default: 'true',
+              description: 'Automatically adjust modal height to fit inner content.',
+            },
+            {
+              name: 'sizeOptions',
+              type: 'DialogSizeOption[]',
+              default: '—',
+              description: 'Preset sizing options for the top-right size switcher dropdown menu.',
+            },
+            {
+              name: 'sizeMenuTooltip',
               type: 'string',
-              default: "''",
-              description: 'Optional shortcut description rendered inside DialogDescription.',
+              default: "'调整弹窗尺寸'",
+              description: 'Tooltip text for the size switcher dropdown button.',
+            },
+            {
+              name: 'dragHandleClassName',
+              type: 'string',
+              default: '—',
+              description: 'CSS class selector for the drag handle area (e.g. dialog header).',
+            },
+            {
+              name: 'contentClassName',
+              type: 'string',
+              default: '—',
+              description: 'Custom class name for the scrollable inner content container.',
             },
             {
               name: 'overlayClassName',

@@ -15,6 +15,9 @@ Rectangle {
     property string description: ""
     property int customRadius: 8
     property int dialogWidth: 500
+    property bool showCloseButton: true
+    property bool showEscBadge: false
+    property bool draggable: true
 
     signal opened()
     signal closed()
@@ -79,6 +82,11 @@ Rectangle {
             onClicked: {}
         }
 
+        DragHandler {
+            enabled: root.draggable
+            target: card
+        }
+
         Column {
             id: cardLayout
             width: parent.width - 40
@@ -93,10 +101,11 @@ Rectangle {
 
                 Row {
                     width: parent.width
+                    spacing: 8
 
                     Text {
                         id: titleText
-                        width: parent.width - 32
+                        width: parent.width - (headerActions.width + (headerActions.visible ? 8 : 0))
                         text: root.title
                         color: ThemeTokens.text
                         font.pixelSize: 16
@@ -105,16 +114,44 @@ Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    ChaSetButton {
-                        width: 28
-                        height: 28
-                        size: "sm"
-                        variant: "ghost"
-                        text: "✕"
+                    Row {
+                        id: headerActions
+                        spacing: 6
                         anchors.verticalCenter: parent.verticalCenter
-                        onClicked: {
-                            root.open = false
-                            root.rejected()
+
+                        Rectangle {
+                            id: escBadge
+                            visible: root.showEscBadge
+                            width: 32
+                            height: 20
+                            radius: 4
+                            color: ThemeTokens.card
+                            border.color: ThemeTokens.border
+                            border.width: 1
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            Text {
+                                anchors.centerIn: parent
+                                text: "ESC"
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: 10
+                                font.weight: Font.DemiBold
+                            }
+                        }
+
+                        ChaSetButton {
+                            id: closeBtn
+                            visible: root.showCloseButton
+                            width: 28
+                            height: 28
+                            size: "sm"
+                            variant: "ghost"
+                            text: "✕"
+                            anchors.verticalCenter: parent.verticalCenter
+                            onClicked: {
+                                root.open = false
+                                root.rejected()
+                            }
                         }
                     }
                 }

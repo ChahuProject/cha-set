@@ -242,6 +242,24 @@ DocLayout {
                     description: "Maximum width of the dialog card."
                 },
                 {
+                    name: "showCloseButton",
+                    type: "bool",
+                    default: "true",
+                    description: "Whether to render the close button in the top-right corner."
+                },
+                {
+                    name: "showEscBadge",
+                    type: "bool",
+                    default: "false",
+                    description: "Whether to display the ESC keyboard badge in the top-right header."
+                },
+                {
+                    name: "draggable",
+                    type: "bool",
+                    default: "true",
+                    description: "Whether the dialog card can be dragged across the viewport."
+                },
+                {
                     name: "contentData",
                     type: "list<QtObject>",
                     default: "[]",
