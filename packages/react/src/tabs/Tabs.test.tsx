@@ -140,4 +140,23 @@ describe('Tabs Component', () => {
     expect(trigger.className).toContain('gap-1.5');
     expect(trigger.className).toContain('border-b-2');
   });
+
+  it('hugs contents with w-fit on default TabsList and constrains TabsContent with min-w-0', () => {
+    render(
+      <Tabs defaultValue="tab1">
+        <TabsList data-testid="default-tabs-list">
+          <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tab1" data-testid="default-tabs-content">
+          Tab 1 Content
+        </TabsContent>
+      </Tabs>,
+    );
+
+    const list = screen.getByTestId('default-tabs-list');
+    expect(list.className).toContain('w-fit');
+
+    const content = screen.getByTestId('default-tabs-content');
+    expect(content.className).toContain('min-w-0');
+  });
 });

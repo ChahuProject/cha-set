@@ -24,6 +24,10 @@ export interface ScrollAreaProps
   forceActive?: boolean;
   /** Viewport class names. */
   viewportClassName?: string;
+  /** Content container class names. */
+  contentClassName?: string;
+  /** Content container inline styles. */
+  contentStyle?: React.CSSProperties;
 }
 
 const useIsomorphicLayoutEffect =
@@ -58,6 +62,8 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
     {
       className,
       viewportClassName,
+      contentClassName,
+      contentStyle,
       children,
       showVerticalScrollBar = true,
       showHorizontalScrollBar = false,
@@ -276,7 +282,16 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
             ref={viewportRef}
             className={cn('size-full rounded-[inherit]', viewportClassName)}
           >
-            <BaseScrollArea.Content ref={contentRef}>{children}</BaseScrollArea.Content>
+            <BaseScrollArea.Content
+              ref={contentRef}
+              className={cn(!showHorizontalScrollBar && 'w-full max-w-full min-w-0', contentClassName)}
+              style={{
+                ...(!showHorizontalScrollBar ? { minWidth: 0, maxWidth: '100%', width: '100%' } : undefined),
+                ...contentStyle,
+              }}
+            >
+              {children}
+            </BaseScrollArea.Content>
           </BaseScrollArea.Viewport>
 
           {showVerticalScrollBar && (

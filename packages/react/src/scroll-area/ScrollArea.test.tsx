@@ -248,4 +248,20 @@ describe('ScrollArea and ScrollBar', () => {
       covered.trackJump = true;
     }
   });
+
+  it('constrains content width when horizontal scrollbar is disabled', () => {
+    const { container } = render(
+      <ScrollArea className="h-64 w-64">
+        <div style={{ width: 1000 }}>Wide Content</div>
+      </ScrollArea>,
+    );
+
+    const viewport = container.querySelector('[data-id$="-viewport"]');
+    const content = viewport?.firstElementChild as HTMLElement | null;
+    expect(content).toBeInTheDocument();
+    expect(content?.className).toContain('w-full');
+    expect(content?.className).toContain('max-w-full');
+    expect(content?.className).toContain('min-w-0');
+    expect(content?.style.minWidth).toBe('0px');
+  });
 });
