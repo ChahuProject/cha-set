@@ -290,7 +290,7 @@ describe('Dialog', () => {
     const footerCloseButtons = screen.getAllByRole('button', { name: 'Close' });
     expect(footerCloseButtons.length).toBeGreaterThanOrEqual(1);
 
-    await user.click(footerCloseButtons[footerCloseButtons.length - 1]);
+    await user.click(footerCloseButtons[footerCloseButtons.length - 1]!);
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 

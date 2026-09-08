@@ -27,8 +27,8 @@ describe('DraggableModal conformance (spec contract)', () => {
     expect(customParsed.initialPositionMode).toBe('top');
     expect(customParsed.topMargin).toBe(80);
     expect(customParsed.sizeOptions).toHaveLength(3);
-    expect(customParsed.sizeOptions?.[0].special).toBe('default');
-    expect(customParsed.sizeOptions?.[1].widthRem).toBe(24);
+    expect(customParsed.sizeOptions?.[0]?.special).toBe('default');
+    expect(customParsed.sizeOptions?.[1]?.widthRem).toBe(24);
     expect(customParsed.sizeMenuTooltip).toBe('调整尺寸');
   });
 

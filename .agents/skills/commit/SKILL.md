@@ -49,7 +49,9 @@ Separate unrelated areas into distinct commits (e.g. do not mix docs with featur
 ## 4. Commit message format
 `type(scope): subject`
 
-- Subject in English (imperative, short, no trailing period).
+- Subject in English (imperative, short, no trailing period; strictly forbidden to contain Chinese characters).
+  - ❌ Forbidden: `feat(cli): 新增参数支持`
+  - ✅ Correct: `feat(cli): add new flags`
 - Type/scope in English: `feat` `fix` `docs` `style` `refactor` `perf` `test` `build` `ci` `chore` `revert`.
 - Scope from the project's `commitlint.config.js` scope-enum whitelist when it exists.
 

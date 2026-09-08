@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { DraggableModal, DraggableModalSizeOption } from './DraggableModal';
+import { DraggableModal, type DraggableModalSizeOption } from './DraggableModal';
 import { FloatingWindow } from './FloatingWindow';
 
 describe('DraggableModal and FloatingWindow', () => {

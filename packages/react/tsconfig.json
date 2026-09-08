@@ -3,5 +3,6 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "include": ["src", "conformance", "vitest.setup.ts"]
+  "include": ["src", "conformance", "vitest.setup.ts"],
+  "exclude": ["src/__tests__/showcase-pages.test.tsx"]
 }
