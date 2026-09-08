@@ -203,7 +203,7 @@ export function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        'flex w-full items-center justify-between gap-1.5 rounded-lg border border-input bg-background py-1.5 pr-2 pl-3 text-sm transition-colors outline-hidden select-none cursor-pointer',
+        'flex w-full items-center justify-between gap-1.5 rounded-lg border border-input bg-background text-foreground py-1.5 pr-2 pl-3 text-sm transition-colors outline-hidden select-none cursor-pointer',
         'focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50',
         'disabled:cursor-not-allowed disabled:opacity-50',
         'aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20',
@@ -360,7 +360,7 @@ export function SelectScrollUpButton({
     <SelectPrimitive.ScrollUpArrow
       data-slot="select-scroll-up-button"
       className={cn(
-        'z-10 flex cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*=\'size-\'])]:size-4',
+        'z-10 flex cursor-default items-center justify-center bg-popover text-popover-foreground py-1 [&_svg:not([class*=\'size-\'])]:size-4',
         className,
       )}
       {...props}
@@ -381,7 +381,7 @@ export function SelectScrollDownButton({
     <SelectPrimitive.ScrollDownArrow
       data-slot="select-scroll-down-button"
       className={cn(
-        'z-10 flex cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*=\'size-\'])]:size-4',
+        'z-10 flex cursor-default items-center justify-center bg-popover text-popover-foreground py-1 [&_svg:not([class*=\'size-\'])]:size-4',
         className,
       )}
       {...props}

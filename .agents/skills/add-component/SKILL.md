@@ -29,6 +29,10 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - **L2 Floating Overlays**, **L3 Desktop Virtualization**, and **L4 Composite Engines**: Token conformance, keyboard navigation flows, 60fps virtualization kinetics, and JSON AST serialization round-trips.
 4. **Mandatory Dogfooding & Showcase Migration (零原生标签与全量自举)**: When a component is added to ChaSet, an Agent MUST immediately scan all demo pages, layouts, and dialogs (`packages/react/examples/basic/src/` and `qt/src/`). All corresponding native HTML tags, ad-hoc SVG button implementations (e.g. manual clipboard copying, raw divider lines, hardcoded tooltip wrappers), or ad-hoc QML elements MUST be migrated to the new component. No raw HTML tags or ad-hoc custom implementations are permitted in the showcase when ChaSet provides that primitive.
 5. **Mandatory Gate Verification**: Run `pnpm gate` which verifies capabilities, Living Showcase completeness, and headless Qt scenario tests. For L1 components, also verify `pnpm test:pixel --component <name>`.
+6. **Mandatory Color & Contrast Self-Containment (色彩自洽与背景前景成对配对律)**:
+   - Any component, variant, or floating overlay declaring a background surface (`bg-background`, `bg-card`, `bg-popover`, `bg-primary`, `bg-secondary`, `bg-muted`, etc.) MUST explicitly pair it with the corresponding text token (`text-foreground`, `text-card-foreground`, `text-popover-foreground`, `ThemeTokens.text`, etc.).
+   - Portal overlays (`AlertDialog`, `Dialog`, `Sheet`, `Popover`, `Tooltip`) MUST NEVER rely on host CSS inheritance for text colors (in dark mode, unassigned text falls back to user-agent black `rgb(0,0,0)`, creating invisible black-on-black text).
+   - Controls with background fills (such as `outline` button variants, select triggers, search bars) must declare `text-foreground` in their default resting state, not only on hover.
 
 ---
 
@@ -82,6 +86,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 1. **Component Implementation**:
    Create `packages/react/src/<name>/<Name>.tsx`:
    - Follow Tailwind CSS v4 styling matching tokens (`--primary`, `--secondary`, `--border`, `--radius`).
+   - Pair surface colors with explicit text tokens (`bg-background` -> `text-foreground`, `bg-card` -> `text-card-foreground`, etc.). Never leave text colors reliant on DOM inheritance.
    - Support `forceHover` and `forceActive` boolean props to allow deterministic headless screenshot capture.
    - Support `asChild` (via `@base-ui/react` or Slot) where applicable.
 2. **Module Exports**:

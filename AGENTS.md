@@ -73,6 +73,10 @@
 7. **Mandatory Behavioral Parity Gate & White-Screen Zero Tolerance (双端零白屏与全量加载门禁)**:
    - Before finishing any task, run `pnpm gate` which executes full contract validation, living showcase documentation completeness checks, automated showcase DocPage smoke & button click tests, headless Qt interaction scenarios (`--test-scenario all`), and React test suites.
    - All showcase preview panels and dynamic routes MUST be guarded by `<ErrorBoundary>` on Web, and verified by physical QML component instantiation on Qt (`runTestScenario("pages")`), ensuring zero unhandled exceptions and zero broken pages.
+8. **Mandatory Color & Contrast Self-Containment (背景与前景色必须成对自洽律 — 浮层与原子原语零继承依赖)**:
+   - **Background-Foreground Pairing Mandate**: Whenever a component, variant, or surface declares a background color class (`bg-background`, `bg-card`, `bg-popover`, `bg-primary`, `bg-secondary`, `bg-muted`, etc.) or QML panel color (`ThemeTokens.panel`, `ThemeTokens.card`, etc.), it **MUST** simultaneously declare the corresponding foreground color token (`text-foreground`, `text-card-foreground`, `text-popover-foreground`, `ThemeTokens.text`, etc.). Never leave text colors unstated or relying on ambient browser/DOM `color: inherit`.
+   - **Portal Isolation & Dark Mode Contrast**: Overlays and dialogs mounted via Portal into `document.body` or separate container nodes (`AlertDialogContent`, `DialogContent`, `DraggableModal`, `Sheet`, `PopoverContent`, `TooltipContent`, etc.) MUST be completely self-contained in styling. Never assume the host application or root `<body>` declares `text-foreground`. In dark mode, missing foreground classes cause text to fall back to user-agent default black (`rgb(0,0,0)`), resulting in completely invisible black-on-black text.
+   - **Variant Completeness (Button/Badge/Action Controls)**: Compound controls and buttons (especially `variant="outline"`, `AlertDialogCancel`, `SelectTrigger`) must specify `text-foreground` in their default resting state, rather than only setting foreground styles on `:hover`.
 
 ---
 

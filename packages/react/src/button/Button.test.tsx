@@ -77,6 +77,7 @@ describe('Button', () => {
       'border',
       'border-input',
       'bg-background',
+      'text-foreground',
     );
 
     rerender(<Button variant="secondary">Secondary</Button>);

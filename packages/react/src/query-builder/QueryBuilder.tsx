@@ -92,7 +92,7 @@ export function QueryBuilder<TRecord>({
   return (
     <div
       data-slot="query-builder"
-      className={cn('rounded-lg border border-border/80 bg-card p-4 text-xs shadow-xs', className)}
+      className={cn('rounded-lg border border-border/80 bg-card p-4 text-xs text-card-foreground shadow-xs', className)}
     >
       <GroupRenderer
         group={safeGroup}

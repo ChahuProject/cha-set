@@ -144,7 +144,7 @@ export function KeybindingRecorder({
       onBlur={stopRecording}
       onKeyDown={handleKeyDown}
       className={cn(
-        'relative flex min-h-9 w-full cursor-pointer select-none items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-1.5 text-sm transition-colors',
+        'relative flex min-h-9 w-full cursor-pointer select-none items-center justify-between gap-2 rounded-md border border-input bg-background text-foreground px-3 py-1.5 text-sm transition-colors',
         isRecording
           ? 'animate-pulse border-primary bg-primary/5 ring-2 ring-primary/30'
           : 'hover:border-primary/50',

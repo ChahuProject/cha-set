@@ -43,6 +43,9 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Signal Duplication**: Never redeclare automatic property change signals (`property string value` already generates `signal valueChanged`).
    - **Component Runtime Instantiation Gate**: Never rely merely on file existence. All Qt doc pages must pass physical instantiation via `QtChaSetDemo.exe --test-scenario all` to verify zero `Component.Error`.
 
+7. **Mandatory Color & Contrast Self-Containment (双端色彩自洽与成对配对律)**
+   - Ensure all components, floating overlays, and interactive controls pair surface colors with explicit foreground text colors (`bg-background` + `text-foreground`, `bg-card` + `text-card-foreground`, `ThemeTokens.panel` + `ThemeTokens.text`). Never allow portal overlays or outline buttons to leave text colors unassigned or reliant on ambient DOM inheritance.
+
 ## 2. Verification Commands Checklist
 
 Before declaring any component task complete, execute:

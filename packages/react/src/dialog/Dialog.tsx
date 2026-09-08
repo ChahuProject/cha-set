@@ -440,7 +440,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
           aria-describedby={props['aria-describedby'] ?? descriptionId}
           data-slot="dialog-content"
           className={cn(
-            'fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border border-border bg-background p-6 shadow-2xl rounded-xl animate-in zoom-in-95 duration-150 pointer-events-auto',
+            'fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border border-border bg-background text-foreground p-6 shadow-2xl rounded-xl animate-in zoom-in-95 duration-150 pointer-events-auto',
             className,
           )}
           onClick={(e) => {

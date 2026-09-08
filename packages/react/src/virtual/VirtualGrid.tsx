@@ -41,7 +41,7 @@ export function VirtualGrid<T>({
     if (renderItem) return renderItem;
     if (renderCell) return (_: any, idx: number) => renderCell(Math.floor(idx / 10), idx % 10);
     return (item: any, idx: number) => (
-      <div className="p-3 border border-border/60 rounded-lg bg-card text-xs font-mono">
+      <div className="p-3 border border-border/60 rounded-lg bg-card text-xs text-card-foreground font-mono">
         {String(item?.title ?? item?.name ?? item ?? `Item ${idx}`)}
       </div>
     );
