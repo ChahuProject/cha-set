@@ -16,11 +16,11 @@ T.ScrollBar {
     id: control
 
     // ---- Desktop Geometry Properties ----
-    property int hitThickness: 8
+    property int hitThickness: 14
     property int thumbThickness: 4
-    property int expandedThumbThickness: 8
-    property int minThumbLength: 16
-    property int buttonLength: 8
+    property int expandedThumbThickness: 10
+    property int minThumbLength: 30
+    property int buttonLength: 14
     property bool showButtons: true
     property bool autoRepeat: true
     property int autoRepeatDelay: 400
@@ -42,12 +42,12 @@ T.ScrollBar {
 
     readonly property bool isVertical: control.vertical
 
-    readonly property bool _hasSpaceForButtons: showButtons && ((vertical ? height : width) >= (buttonLength * 4 + 16))
+    readonly property bool _hasSpaceForButtons: showButtons && ((vertical ? height : width) >= (buttonLength * 4 + 24))
 
-    topPadding: (vertical && _hasSpaceForButtons) ? 20 : 0
-    bottomPadding: (vertical && _hasSpaceForButtons) ? 20 : 0
-    leftPadding: (horizontal && _hasSpaceForButtons) ? 20 : 0
-    rightPadding: (horizontal && _hasSpaceForButtons) ? 20 : 0
+    topPadding: (vertical && _hasSpaceForButtons) ? (buttonLength * 2) : 0
+    bottomPadding: (vertical && _hasSpaceForButtons) ? (buttonLength * 2) : 0
+    leftPadding: (horizontal && _hasSpaceForButtons) ? (buttonLength * 2) : 0
+    rightPadding: (horizontal && _hasSpaceForButtons) ? (buttonLength * 2) : 0
     padding: 0
     hoverEnabled: true
 
@@ -212,27 +212,27 @@ T.ScrollBar {
                 var isVert = control.vertical
                 if (isVert) {
                     if (btn.kind === 0) { // ToTop
-                        ctx.moveTo(1.5, 4); ctx.lineTo(4, 1.5); ctx.lineTo(6.5, 4); ctx.stroke()
-                        ctx.moveTo(1.5, 6.5); ctx.lineTo(4, 4); ctx.lineTo(6.5, 6.5); ctx.stroke()
+                        ctx.moveTo(3.5, 6.5); ctx.lineTo(7, 3); ctx.lineTo(10.5, 6.5); ctx.stroke()
+                        ctx.moveTo(3.5, 10.5); ctx.lineTo(7, 7); ctx.lineTo(10.5, 10.5); ctx.stroke()
                     } else if (btn.kind === 1) { // PageUp
-                        ctx.moveTo(1.5, 5); ctx.lineTo(4, 2.5); ctx.lineTo(6.5, 5); ctx.stroke()
+                        ctx.moveTo(3.5, 8.5); ctx.lineTo(7, 5); ctx.lineTo(10.5, 8.5); ctx.stroke()
                     } else if (btn.kind === 2) { // PageDown
-                        ctx.moveTo(1.5, 3); ctx.lineTo(4, 5.5); ctx.lineTo(6.5, 3); ctx.stroke()
+                        ctx.moveTo(3.5, 5.5); ctx.lineTo(7, 9); ctx.lineTo(10.5, 5.5); ctx.stroke()
                     } else if (btn.kind === 3) { // ToBottom
-                        ctx.moveTo(1.5, 1.5); ctx.lineTo(4, 4); ctx.lineTo(6.5, 1.5); ctx.stroke()
-                        ctx.moveTo(1.5, 4); ctx.lineTo(4, 6.5); ctx.lineTo(6.5, 4); ctx.stroke()
+                        ctx.moveTo(3.5, 3.5); ctx.lineTo(7, 7); ctx.lineTo(10.5, 3.5); ctx.stroke()
+                        ctx.moveTo(3.5, 7.5); ctx.lineTo(7, 11); ctx.lineTo(10.5, 7.5); ctx.stroke()
                     }
                 } else {
                     if (btn.kind === 0) { // ToLeft
-                        ctx.moveTo(4, 1.5); ctx.lineTo(1.5, 4); ctx.lineTo(4, 6.5); ctx.stroke()
-                        ctx.moveTo(6.5, 1.5); ctx.lineTo(4, 4); ctx.lineTo(6.5, 6.5); ctx.stroke()
+                        ctx.moveTo(6.5, 3.5); ctx.lineTo(3, 7); ctx.lineTo(6.5, 10.5); ctx.stroke()
+                        ctx.moveTo(10.5, 3.5); ctx.lineTo(7, 7); ctx.lineTo(10.5, 10.5); ctx.stroke()
                     } else if (btn.kind === 1) { // PageLeft
-                        ctx.moveTo(5, 1.5); ctx.lineTo(2.5, 4); ctx.lineTo(5, 6.5); ctx.stroke()
+                        ctx.moveTo(8.5, 3.5); ctx.lineTo(5, 7); ctx.lineTo(8.5, 10.5); ctx.stroke()
                     } else if (btn.kind === 2) { // PageRight
-                        ctx.moveTo(3, 1.5); ctx.lineTo(5.5, 4); ctx.lineTo(3, 6.5); ctx.stroke()
+                        ctx.moveTo(5.5, 3.5); ctx.lineTo(9, 7); ctx.lineTo(5.5, 10.5); ctx.stroke()
                     } else if (btn.kind === 3) { // ToRight
-                        ctx.moveTo(1.5, 1.5); ctx.lineTo(4, 4); ctx.lineTo(1.5, 6.5); ctx.stroke()
-                        ctx.moveTo(4, 1.5); ctx.lineTo(6.5, 4); ctx.lineTo(4, 6.5); ctx.stroke()
+                        ctx.moveTo(3.5, 3.5); ctx.lineTo(7, 7); ctx.lineTo(3.5, 10.5); ctx.stroke()
+                        ctx.moveTo(7.5, 3.5); ctx.lineTo(11, 7); ctx.lineTo(7.5, 10.5); ctx.stroke()
                     }
                 }
             }
@@ -303,8 +303,8 @@ T.ScrollBar {
         visible: control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollBack
         tooltipText: control.vertical ? qsTr("到顶") : qsTr("到最左")
-        x: control.vertical ? 0 : 2
-        y: control.vertical ? 2 : 0
+        x: 0
+        y: 0
         onTriggered: control.scrollToStart()
     }
 
@@ -315,8 +315,8 @@ T.ScrollBar {
         visible: control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollBack
         tooltipText: control.vertical ? qsTr("向上翻一页") : qsTr("向左翻一页")
-        x: control.vertical ? 0 : 10
-        y: control.vertical ? 10 : 0
+        x: control.vertical ? 0 : control.buttonLength
+        y: control.vertical ? control.buttonLength : 0
         onTriggered: control.scrollPageBack()
     }
 
@@ -328,8 +328,8 @@ T.ScrollBar {
         visible: control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollForward
         tooltipText: control.vertical ? qsTr("向下翻一页") : qsTr("向右翻一页")
-        x: control.vertical ? 0 : (control.width - 18)
-        y: control.vertical ? (control.height - 18) : 0
+        x: control.vertical ? 0 : (control.width - control.buttonLength * 2)
+        y: control.vertical ? (control.height - control.buttonLength * 2) : 0
         onTriggered: control.scrollPageForward()
     }
 
@@ -340,8 +340,8 @@ T.ScrollBar {
         visible: control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollForward
         tooltipText: control.vertical ? qsTr("到底") : qsTr("到最右")
-        x: control.vertical ? 0 : (control.width - 10)
-        y: control.vertical ? (control.height - 10) : 0
+        x: control.vertical ? 0 : (control.width - control.buttonLength)
+        y: control.vertical ? (control.height - control.buttonLength) : 0
         onTriggered: control.scrollToEnd()
     }
 }

@@ -537,8 +537,8 @@ export const CrossStackSpecification = {
             propsModel: [
                 ["orientation", "Qt::Orientation", "Qt.Vertical", "Scrollbar orientation axis."],
                 ["collapsedSize", "int", "4", "Thickness in pixels of the visual indicator when idle."],
-                ["expandedSize", "int", "8", "Thickness in pixels of the visual indicator when hovered."],
-                ["hitSize", "int", "8", "Thickness in pixels of the pointer-capture hot-zone."]
+                ["expandedSize", "int", "10", "Thickness in pixels of the visual indicator when hovered."],
+                ["hitSize", "int", "14", "Thickness in pixels of the pointer-capture hot-zone (preventing Win32 resize border conflict)."]
             ]
         }
     }
