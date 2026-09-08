@@ -3,6 +3,44 @@ import * as React from 'react';
 import { cn } from '../lib/utils';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '../lib/icons';
 
+interface SelectContextValue {
+  registerItem: (value: any, label: React.ReactNode) => void;
+  unregisterItem: (value: any) => void;
+  getLabel: (value: any) => React.ReactNode | undefined;
+}
+
+const SelectContext = React.createContext<SelectContextValue | null>(null);
+
+function extractItemsFromChildren(children: React.ReactNode, map: Record<string, React.ReactNode>) {
+  React.Children.forEach(children, (child) => {
+    if (!React.isValidElement(child)) return;
+    const props = child.props as Record<string, any> | undefined;
+    if (!props) return;
+
+    if ('value' in props && props.value !== undefined && props.value !== null) {
+      const valKey = String(props.value);
+      const label = props.itemText !== undefined ? props.itemText : props.children;
+      if (label !== undefined && !(valKey in map)) {
+        map[valKey] = label;
+      }
+    }
+
+    if (props.children) {
+      extractItemsFromChildren(props.children, map);
+    }
+  });
+}
+
+function shallowEqualRecords(a: Record<string, any>, b: Record<string, any>): boolean {
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+  if (keysA.length !== keysB.length) return false;
+  for (const key of keysA) {
+    if (a[key] !== b[key]) return false;
+  }
+  return true;
+}
+
 export interface SelectProps<Value = string> {
   value?: Value | null;
   defaultValue?: Value | null;
@@ -22,16 +60,69 @@ export function SelectRoot<Value = string>({
   value,
   defaultValue,
   onValueChange,
+  items: itemsProp,
+  children,
   ...props
 }: SelectProps<Value>) {
+  const previousMapRef = React.useRef<Record<string, React.ReactNode>>({});
+  const dynamicMapRef = React.useRef<Map<string, React.ReactNode>>(new Map());
+
+  const extractedMap = React.useMemo(() => {
+    const map: Record<string, React.ReactNode> = {};
+    extractItemsFromChildren(children, map);
+    if (shallowEqualRecords(previousMapRef.current, map)) {
+      return previousMapRef.current;
+    }
+    previousMapRef.current = map;
+    return map;
+  }, [children]);
+
+  const registerItem = React.useCallback((val: any, label: React.ReactNode) => {
+    if (val === undefined || val === null) return;
+    dynamicMapRef.current.set(String(val), label);
+  }, []);
+
+  const unregisterItem = React.useCallback((val: any) => {
+    if (val === undefined || val === null) return;
+    dynamicMapRef.current.delete(String(val));
+  }, []);
+
+  const getLabel = React.useCallback(
+    (val: any) => {
+      if (val === null || val === undefined) return undefined;
+      const key = String(val);
+      if (itemsProp && typeof itemsProp === 'object' && !Array.isArray(itemsProp)) {
+        return itemsProp[val] ?? itemsProp[key];
+      }
+      return extractedMap[key] ?? dynamicMapRef.current.get(key);
+    },
+    [itemsProp, extractedMap]
+  );
+
+  const contextValue = React.useMemo<SelectContextValue>(
+    () => ({
+      registerItem,
+      unregisterItem,
+      getLabel,
+    }),
+    [registerItem, unregisterItem, getLabel]
+  );
+
+  const mergedItems = itemsProp !== undefined ? itemsProp : extractedMap;
+
   return (
-    <SelectPrimitive.Root
-      data-slot="select"
-      value={value}
-      defaultValue={defaultValue}
-      onValueChange={onValueChange as any}
-      {...(props as any)}
-    />
+    <SelectContext.Provider value={contextValue}>
+      <SelectPrimitive.Root
+        data-slot="select"
+        value={value}
+        defaultValue={defaultValue}
+        onValueChange={onValueChange as any}
+        items={mergedItems}
+        {...(props as any)}
+      >
+        {children}
+      </SelectPrimitive.Root>
+    </SelectContext.Provider>
   );
 }
 
@@ -49,22 +140,48 @@ export function SelectGroup({ className, ...props }: SelectGroupProps) {
 }
 
 export interface SelectValueProps
-  extends React.ComponentProps<typeof SelectPrimitive.Value> {
+  extends Omit<React.ComponentProps<typeof SelectPrimitive.Value>, 'children'> {
   placeholder?: React.ReactNode;
+  children?: React.ReactNode | ((value: any) => React.ReactNode);
 }
 
 export function SelectValue({
   placeholder,
   className,
+  children,
   ...props
 }: SelectValueProps) {
+  const ctx = React.useContext(SelectContext);
+
+  const renderValue = React.useCallback(
+    (selectedValue: any) => {
+      if (selectedValue === null || selectedValue === undefined || selectedValue === '') {
+        return placeholder;
+      }
+      if (typeof children === 'function') {
+        return children(selectedValue);
+      }
+      if (children !== undefined && children !== null) {
+        return children;
+      }
+      const label = ctx?.getLabel(selectedValue);
+      if (label !== undefined && label !== null) {
+        return label;
+      }
+      return selectedValue;
+    },
+    [placeholder, children, ctx]
+  );
+
   return (
     <SelectPrimitive.Value
       data-slot="select-value"
       placeholder={placeholder}
       className={className}
       {...props}
-    />
+    >
+      {renderValue}
+    </SelectPrimitive.Value>
   );
 }
 
@@ -175,11 +292,25 @@ export function SelectItem({
   className,
   children,
   itemText,
+  value,
   ...props
 }: SelectItemProps) {
+  const ctx = React.useContext(SelectContext);
+
+  React.useEffect(() => {
+    const label = itemText !== undefined ? itemText : children;
+    if (ctx && value !== undefined && value !== null && label !== undefined) {
+      ctx.registerItem(value, label);
+      return () => {
+        ctx.unregisterItem(value);
+      };
+    }
+  }, [ctx, value, itemText, children]);
+
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
+      value={value}
       className={cn(
         'relative flex w-full cursor-pointer items-center gap-1.5 rounded-md py-1.5 pr-8 pl-2 text-sm outline-hidden select-none transition-colors',
         'focus:bg-accent focus:text-accent-foreground',
@@ -195,8 +326,9 @@ export function SelectItem({
           <CheckIcon className="size-4 pointer-events-none" />
         </SelectPrimitive.ItemIndicator>
       </span>
-      <SelectPrimitive.ItemText>{itemText ?? children}</SelectPrimitive.ItemText>
-      {itemText !== undefined && children}
+      <SelectPrimitive.ItemText>
+        {children ?? itemText}
+      </SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
   );
 }

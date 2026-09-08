@@ -85,4 +85,43 @@ describe('Select', () => {
     const trigger = screen.getByRole('combobox');
     expect(trigger).toHaveAttribute('data-size', 'sm');
   });
+
+  it('renders item label instead of raw numeric value in trigger', () => {
+    render(
+      <Select defaultValue="0">
+        <SelectTrigger>
+          <SelectValue placeholder="选择阶段" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="0">顶点着色器</SelectItem>
+          <SelectItem value="1">片元着色器</SelectItem>
+        </SelectContent>
+      </Select>,
+    );
+
+    // 初始关闭状态下，trigger 应显示“顶点着色器”，而不是数字 "0"
+    expect(screen.getByText('顶点着色器')).toBeInTheDocument();
+    expect(screen.queryByText('0')).not.toBeInTheDocument();
+  });
+
+  it('renders itemText instead of children with action buttons in trigger', () => {
+    render(
+      <Select defaultValue="preset-1">
+        <SelectTrigger>
+          <SelectValue placeholder="选择预设" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="preset-1" itemText="基准方案 A">
+            <span>基准方案 A</span>
+            <button type="button">删除</button>
+          </SelectItem>
+        </SelectContent>
+      </Select>,
+    );
+
+    expect(screen.getByText('基准方案 A')).toBeInTheDocument();
+    // 触发器中不应渲染内层带有删除按钮的完整 DOM
+    const trigger = screen.getByRole('combobox');
+    expect(trigger.querySelector('button')).toBeNull();
+  });
 });
