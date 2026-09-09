@@ -51,6 +51,51 @@ describe('GenericDataTable', () => {
     expect(screen.queryByText('Charlie')).not.toBeInTheDocument();
   });
 
+  it('filters data rows using meta.searchText and hex/hash matching', () => {
+    interface HashData {
+      id: string;
+      hash: bigint;
+      tag: string;
+    }
+    const hashColumns: ColumnDef<HashData, any>[] = [
+      {
+        accessorKey: 'hash',
+        header: 'Hash',
+        meta: {
+          searchText: (row: HashData) => `0x${row.hash.toString(16)}`,
+        },
+        cell: (info) => `0x${info.getValue().toString(16)}`,
+      },
+      {
+        accessorKey: 'tag',
+        header: 'Tag',
+        cell: (info) => info.getValue(),
+      },
+    ];
+    const hashData: HashData[] = [
+      { id: '1', hash: 0x422a2cdc8980fef9n, tag: 'Vertex' },
+      { id: '2', hash: 0x1234567890abcdefn, tag: 'Fragment' },
+    ];
+
+    render(<GenericDataTable data={hashData} columns={hashColumns} enableGlobalFilter />);
+    const searchInput = screen.getByPlaceholderText('Search records...');
+
+    // 搜索 0x422a
+    fireEvent.change(searchInput, { target: { value: '0x422a' } });
+    expect(screen.getByText('0x422a2cdc8980fef9')).toBeInTheDocument();
+    expect(screen.queryByText('0x1234567890abcdef')).not.toBeInTheDocument();
+
+    // 搜索 0x1234
+    fireEvent.change(searchInput, { target: { value: '0x1234' } });
+    expect(screen.queryByText('0x422a2cdc8980fef9')).not.toBeInTheDocument();
+    expect(screen.getByText('0x1234567890abcdef')).toBeInTheDocument();
+
+    // 搜索不带 0x 的十六进制片段
+    fireEvent.change(searchInput, { target: { value: '422a2cdc' } });
+    expect(screen.getByText('0x422a2cdc8980fef9')).toBeInTheDocument();
+    expect(screen.queryByText('0x1234567890abcdef')).not.toBeInTheDocument();
+  });
+
   it('supports row selection in single mode', () => {
     const onRowClick = vi.fn();
     render(

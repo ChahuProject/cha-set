@@ -3,6 +3,8 @@ import {
   type ColumnDef,
   type SortingState,
   type RowSelectionState,
+  type FilterFn,
+  type RowData,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
@@ -31,11 +33,64 @@ import {
 } from '../lib/icons';
 import { cn } from '../lib/utils';
 
+declare module '@tanstack/react-table' {
+  interface ColumnMeta<TData extends RowData, TValue> {
+    searchText?: string | ((row: TData) => string);
+    copyText?: string | ((row: TData) => string);
+  }
+}
+
+/**
+ * Intelligent default global filter:
+ * 1. Honors column meta.searchText;
+ * 2. Honors column meta.copyText;
+ * 3. Honors column-specific custom filterFn;
+ * 4. Supports hex number / hash matching when query starts with 0x or is hex;
+ * 5. Falls back to string inclusion.
+ */
+export const defaultGlobalFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
+  if (filterValue == null || filterValue === '') return true;
+  const col = row.getAllCells().find((c) => c.column.id === columnId)?.column;
+  const meta = col?.columnDef?.meta as any;
+  const searchStr = String(filterValue).trim().toLowerCase();
+
+  if (meta?.searchText) {
+    const text = typeof meta.searchText === 'function' ? meta.searchText(row.original) : String(meta.searchText);
+    return text.toLowerCase().includes(searchStr);
+  }
+  if (meta?.copyText) {
+    const text = typeof meta.copyText === 'function' ? meta.copyText(row.original) : String(meta.copyText);
+    return text.toLowerCase().includes(searchStr);
+  }
+  const customFilter = col?.columnDef?.filterFn;
+  if (typeof customFilter === 'function') {
+    return customFilter(row, columnId, filterValue, () => {});
+  }
+  const value = row.getValue(columnId);
+  if (value == null) return false;
+  const strVal = String(value).toLowerCase();
+  if (strVal.includes(searchStr)) return true;
+  if (
+    (typeof value === 'number' || typeof value === 'bigint') &&
+    (searchStr.startsWith('0x') || /^[0-9a-f]+$/i.test(searchStr))
+  ) {
+    try {
+      const hex = `0x${BigInt(value).toString(16).toLowerCase()}`;
+      const target = searchStr.replace(/^0x/i, '');
+      return hex.includes(searchStr) || hex.replace(/^0x/, '').includes(target);
+    } catch {
+      // ignore parse errors
+    }
+  }
+  return false;
+};
+
 export interface GenericDataTableProps<TData> {
   data: TData[];
   columns: ColumnDef<TData, any>[];
   enableGlobalFilter?: boolean;
   globalFilterPlaceholder?: string;
+  globalFilterFn?: FilterFn<TData>;
   enableSorting?: boolean;
   enableFooter?: boolean;
   enablePagination?: boolean;
@@ -60,6 +115,7 @@ export function GenericDataTable<TData>({
   columns,
   enableGlobalFilter = true,
   globalFilterPlaceholder = 'Search records...',
+  globalFilterFn,
   enableSorting = true,
   enableFooter = false,
   enablePagination = false,
@@ -120,10 +176,16 @@ export function GenericDataTable<TData>({
   }), []);
 
   const displayColumns = React.useMemo(() => {
+    const processed = columns.map((col) => {
+      if (col.enableGlobalFilter === undefined) {
+        return { ...col, enableGlobalFilter: true };
+      }
+      return col;
+    });
     if (selectionMode === 'multiple') {
-      return [selectionColumn, ...columns];
+      return [selectionColumn, ...processed];
     }
-    return columns;
+    return processed;
   }, [selectionMode, selectionColumn, columns]);
 
   const handleSortingChange = React.useCallback(
@@ -161,6 +223,8 @@ export function GenericDataTable<TData>({
     enableRowSelection: !!selectionMode,
     enableSorting,
     onSortingChange: handleSortingChange,
+    globalFilterFn: globalFilterFn ?? defaultGlobalFilterFn,
+    getColumnCanGlobalFilter: (column) => (column.columnDef.enableGlobalFilter !== undefined ? column.columnDef.enableGlobalFilter : true),
     onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: handleRowSelectionChange,
     getCoreRowModel: getCoreRowModel(),
