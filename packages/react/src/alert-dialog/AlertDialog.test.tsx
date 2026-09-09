@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   AlertDialog,
@@ -84,6 +84,30 @@ describe('AlertDialog', () => {
 
     const confirmButton = screen.getByRole('button', { name: 'Confirm' });
     await user.click(confirmButton);
+
+    expect(handleOpenChange).toHaveBeenCalledWith(false, expect.anything());
+    expect(screen.queryByText('Confirm Action')).toBeNull();
+  });
+
+  it('closes dialog when Escape key is pressed', async () => {
+    const user = userEvent.setup();
+    const handleOpenChange = vi.fn();
+
+    render(
+      <AlertDialog defaultOpen onOpenChange={handleOpenChange}>
+        <AlertDialogContent>
+          <AlertDialogTitle>Confirm Action</AlertDialogTitle>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abort</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>,
+    );
+
+    expect(screen.getByText('Confirm Action')).toBeInTheDocument();
+
+    (document.activeElement as HTMLElement)?.blur();
+    fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' });
 
     expect(handleOpenChange).toHaveBeenCalledWith(false, expect.anything());
     expect(screen.queryByText('Confirm Action')).toBeNull();

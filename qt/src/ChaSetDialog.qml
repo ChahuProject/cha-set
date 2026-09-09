@@ -43,10 +43,19 @@ Rectangle {
         }
     }
 
+    Shortcut {
+        sequence: "Escape"
+        enabled: root.open
+        onActivated: {
+            root.open = false
+            root.rejected()
+        }
+    }
+
     Keys.onEscapePressed: function(event) {
         event.accepted = true
         root.open = false
-        root.closed()
+        root.rejected()
     }
 
     // Overlay scrim click to dismiss

@@ -29,6 +29,21 @@ Rectangle {
         NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
     }
 
+    onOpenChanged: {
+        if (root.open) {
+            root.forceActiveFocus()
+        }
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        enabled: root.open
+        onActivated: {
+            root.open = false
+            root.cancelled()
+        }
+    }
+
     Keys.onEscapePressed: function(event) {
         event.accepted = true
         root.open = false

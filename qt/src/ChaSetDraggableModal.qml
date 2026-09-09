@@ -29,6 +29,17 @@ Rectangle {
     visible: root.open
     clip: true
 
+    Shortcut {
+        sequence: "Escape"
+        enabled: root.open
+        onActivated: root.open = false
+    }
+
+    Keys.onEscapePressed: function(event) {
+        event.accepted = true
+        root.open = false
+    }
+
     Component.onCompleted: {
         applyInitialPosition()
     }
