@@ -48,9 +48,14 @@ declare module '@tanstack/react-table' {
  * 4. Supports hex number / hash matching when query starts with 0x or is hex;
  * 5. Falls back to string inclusion.
  */
-export const defaultGlobalFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
+export const defaultGlobalFilterFn: FilterFn<any> & ((row: any, columnId: string, filterValue: any, addMeta?: any) => boolean) = (
+  row,
+  columnId,
+  filterValue,
+  _addMeta,
+) => {
   if (filterValue == null || filterValue === '') return true;
-  const col = row.getAllCells().find((c) => c.column.id === columnId)?.column;
+  const col = row.getAllCells().find((c: any) => c.column.id === columnId)?.column;
   const meta = col?.columnDef?.meta as any;
   const searchStr = String(filterValue).trim().toLowerCase();
 
