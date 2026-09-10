@@ -15,58 +15,95 @@ DocLayout {
         { id: "props", title: "API Reference" }
     ]
 
+    property string animationMode: "pulse"
+
     ComponentPreview {
         title: "Skeleton Preview"
         reactCode: `<div className="flex items-center space-x-4">
-  <Skeleton className="h-12 w-12 rounded-full" />
+  <Skeleton animation="${root.animationMode}" rounded="full" className="size-12" />
   <div className="space-y-2">
-    <Skeleton className="h-4 w-[250px]" />
-    <Skeleton className="h-4 w-[200px]" />
+    <Skeleton animation="${root.animationMode}" className="h-4 w-64" />
+    <Skeleton animation="${root.animationMode}" className="h-4 w-48" />
   </div>
 </div>`
         qtCode: `Row {
     spacing: 12
-    ChaSetSkeleton { width: 48; height: 48; customRadius: 24 }
+    ChaSetSkeleton { width: 48; height: 48; rounded: "full"; animation: "${root.animationMode}" }
     Column {
         spacing: 8
-        ChaSetSkeleton { width: 200; height: 16 }
-        ChaSetSkeleton { width: 140; height: 16 }
+        ChaSetSkeleton { width: 200; height: 16; rounded: "md"; animation: "${root.animationMode}" }
+        ChaSetSkeleton { width: 140; height: 16; rounded: "md"; animation: "${root.animationMode}" }
     }
 }`
 
         Item {
             anchors.fill: parent
 
-            Row {
+            Column {
                 anchors.centerIn: parent
                 spacing: 16
 
-                ChaSetSkeleton {
-                    width: 52
-                    height: 52
-                    customRadius: 26
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 8
+
+                    ChaSetButton {
+                        text: "pulse"
+                        variant: root.animationMode === "pulse" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.animationMode = "pulse"
+                    }
+
+                    ChaSetButton {
+                        text: "wave"
+                        variant: root.animationMode === "wave" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.animationMode = "wave"
+                    }
+
+                    ChaSetButton {
+                        text: "none"
+                        variant: root.animationMode === "none" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.animationMode = "none"
+                    }
                 }
 
-                Column {
-                    spacing: 10
-                    anchors.verticalCenter: parent.verticalCenter
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 16
 
                     ChaSetSkeleton {
-                        width: 220
-                        height: 16
-                        customRadius: 4
+                        width: 52
+                        height: 52
+                        rounded: "full"
+                        animation: root.animationMode
                     }
 
-                    ChaSetSkeleton {
-                        width: 160
-                        height: 14
-                        customRadius: 4
-                    }
+                    Column {
+                        spacing: 10
+                        anchors.verticalCenter: parent.verticalCenter
 
-                    ChaSetSkeleton {
-                        width: 100
-                        height: 12
-                        customRadius: 4
+                        ChaSetSkeleton {
+                            width: 220
+                            height: 16
+                            rounded: "md"
+                            animation: root.animationMode
+                        }
+
+                        ChaSetSkeleton {
+                            width: 160
+                            height: 14
+                            rounded: "md"
+                            animation: root.animationMode
+                        }
+
+                        ChaSetSkeleton {
+                            width: 100
+                            height: 12
+                            rounded: "md"
+                            animation: root.animationMode
+                        }
                     }
                 }
             }
@@ -75,11 +112,10 @@ DocLayout {
 
     CodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSkeleton { width: 200; height: 20 }"
+        code: "import ChaSet 1.0\n\nChaSetSkeleton { width: 200; height: 20; rounded: 'md' }"
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "skeleton"
     }
@@ -87,8 +123,10 @@ DocLayout {
     PropsTable {
         title: "Props Reference"
         props: [
-            { name: "customRadius", type: "int", default: "4", description: "Corner radius of the skeleton element." },
-            { name: "animate", type: "bool", default: "true", description: "Whether the pulse animation is active." }
+            { name: "animation", type: "string", default: "'pulse'", description: "Animation mode: 'pulse' | 'wave' | 'none'." },
+            { name: "rounded", type: "string", default: "'md'", description: "Corner radius preset: 'none' | 'sm' | 'md' | 'lg' | 'full'." },
+            { name: "customRadius", type: "int", default: "-1", description: "Custom corner radius override." },
+            { name: "animate", type: "bool", default: "true", description: "Convenience flag to enable or disable animation." }
         ]
     }
 }

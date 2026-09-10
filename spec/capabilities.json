@@ -187,6 +187,7 @@
     },
     "skeleton": {
       "pulse": { "requirement": "must", "description": "renders pulse animation placeholder" },
+      "wave": { "requirement": "should", "description": "renders wave shimmer animation placeholder" },
       "customClass": { "requirement": "must", "description": "accepts custom width, height, and radius classes" }
     },
     "copyButton": {

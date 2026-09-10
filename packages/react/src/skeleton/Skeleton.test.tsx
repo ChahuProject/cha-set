@@ -25,4 +25,18 @@ describe('Skeleton', () => {
     const { container: c2 } = render(<Skeleton rounded="none" />);
     expect(c2.querySelector('[data-slot="skeleton"]')).toHaveClass('rounded-none');
   });
+
+  it('supports animation variants (wave, none)', () => {
+    const { container: c1 } = render(<Skeleton animation="wave" />);
+    const el1 = c1.querySelector('[data-slot="skeleton"]');
+    expect(el1).toHaveAttribute('data-animation', 'wave');
+    expect(el1).toHaveClass('relative');
+    expect(el1).toHaveClass('overflow-hidden');
+    expect(el1?.querySelector('span')).toBeInTheDocument();
+
+    const { container: c2 } = render(<Skeleton animation="none" />);
+    const el2 = c2.querySelector('[data-slot="skeleton"]');
+    expect(el2).toHaveAttribute('data-animation', 'none');
+    expect(el2).not.toHaveClass('animate-pulse');
+  });
 });

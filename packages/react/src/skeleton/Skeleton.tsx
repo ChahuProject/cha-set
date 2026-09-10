@@ -2,9 +2,11 @@ import * as React from 'react';
 import { cn } from '../lib/utils';
 
 export type SkeletonRadius = 'none' | 'sm' | 'md' | 'lg' | 'full';
+export type SkeletonAnimation = 'pulse' | 'wave' | 'none';
 
 export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   animate?: boolean;
+  animation?: SkeletonAnimation;
   rounded?: SkeletonRadius;
 }
 
@@ -19,19 +21,35 @@ const radiusClasses: Record<SkeletonRadius, string> = {
 export function Skeleton({
   className,
   animate = true,
+  animation,
   rounded = 'md',
+  children,
   ...props
 }: SkeletonProps) {
+  const effectiveAnimation: SkeletonAnimation =
+    animation ?? (animate ? 'pulse' : 'none');
+
   return (
     <div
       data-slot="skeleton"
+      data-animation={effectiveAnimation}
+      data-rounded={rounded}
       className={cn(
         'bg-muted',
-        animate && 'animate-pulse',
+        effectiveAnimation === 'pulse' && 'animate-pulse',
+        effectiveAnimation === 'wave' && 'relative overflow-hidden',
         radiusClasses[rounded],
         className,
       )}
       {...props}
-    />
+    >
+      {effectiveAnimation === 'wave' && (
+        <span
+          className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-foreground/8 to-transparent"
+          style={{ animation: 'cha-set-shimmer 1.6s infinite ease-in-out' }}
+        />
+      )}
+      {children}
+    </div>
   );
 }

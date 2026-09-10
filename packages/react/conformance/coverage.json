@@ -163,6 +163,7 @@
   },
   "skeleton": {
     "pulse": true,
+    "wave": true,
     "customClass": true
   },
   "copyButton": {
