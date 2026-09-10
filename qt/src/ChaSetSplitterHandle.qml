@@ -24,7 +24,7 @@ Item {
     property bool disabled: false
 
     property color lineColor: ThemeTokens.border
-    property color activeLineColor: ThemeTokens.primary
+    property color activeLineColor: ThemeTokens.accent
 
     readonly property bool isVertical: edge === "left" || edge === "right"
     readonly property bool dragging: mouseArea.pressed

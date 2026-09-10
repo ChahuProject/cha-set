@@ -74,7 +74,7 @@ Rectangle {
             border.width: root.activeFocus ? 1 : 0
             color: {
                 if (root.forceActive || triggerMouseArea.pressed) {
-                    return ThemeTokens.active
+                    return ThemeTokens.pressed
                 }
                 if (root.forceHover || triggerMouseArea.containsMouse) {
                     return ThemeTokens.hover

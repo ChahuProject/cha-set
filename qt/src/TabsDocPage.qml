@@ -73,7 +73,7 @@ DocLayout {
 
             Column {
                 id: sandboxTabsCol
-                anchors.horizontalCenter: parent.horizontalCenter
+                x: 20
                 topPadding: 20
                 bottomPadding: 20
                 width: parent.width - 40

@@ -50,7 +50,7 @@ DocLayout {
                 anchors.centerIn: parent
                 width: root.containerWidth
                 height: 36
-                color: ThemeTokens.card
+                color: ThemeTokens.panel
                 radius: 6
                 border.color: ThemeTokens.border
                 border.width: 1
@@ -68,7 +68,6 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: 16
-                anchors.verticalCenter: parent.verticalCenter
 
                 Row {
                     spacing: 8
@@ -77,7 +76,7 @@ DocLayout {
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "Width: " + root.containerWidth + "px"
-                        color: ThemeTokens.mutedForeground
+                        color: ThemeTokens.subduedText
                         font.pixelSize: 12
                     }
 
@@ -126,14 +125,14 @@ DocLayout {
                     width: parent.width
                     wrapMode: Text.Wrap
                     text: "Using maxLines: 2 to clamp overflowing multiline paragraphs with trailing ellipsis."
-                    color: ThemeTokens.mutedForeground
+                    color: ThemeTokens.subduedText
                     font.pixelSize: 12
                 }
 
                 Rectangle {
                     width: Math.min(parent.width, 360)
                     height: 48
-                    color: ThemeTokens.card
+                    color: ThemeTokens.panel
                     radius: 6
                     border.color: ThemeTokens.border
                     border.width: 1

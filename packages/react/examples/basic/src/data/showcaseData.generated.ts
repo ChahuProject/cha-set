@@ -23,6 +23,7 @@ export interface NavItem {
   href: string;
   badge?: string;
   desc: string;
+  description?: string;
 }
 
 export interface NavCategory {
@@ -1055,20 +1056,23 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "intro",
         "title": "Introduction",
         "href": "#/get-started/introduction",
-        "desc": "Single source of truth architecture and multi-stack overview."
+        "desc": "Single source of truth architecture and multi-stack overview.",
+        "description": "Single source of truth architecture and multi-stack overview."
       },
       {
         "id": "tokens",
         "title": "Theme & Tokens",
         "href": "#/get-started/tokens",
-        "desc": "Color palette, semantic mappings, radius and typography."
+        "desc": "Color palette, semantic mappings, radius and typography.",
+        "description": "Color palette, semantic mappings, radius and typography."
       },
       {
         "id": "theme-tuner",
         "title": "Theme Studio",
         "href": "#/get-started/theme-tuner",
         "badge": "Live",
-        "desc": "Interactive theme customizer and config exporter."
+        "desc": "Interactive theme customizer and config exporter.",
+        "description": "Interactive theme customizer and config exporter."
       }
     ]
   },
@@ -1079,146 +1083,169 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "button",
         "title": "Button",
         "href": "#/components/button",
-        "desc": "A versatile button component with multiple variants, sizes, and states."
+        "desc": "A versatile button component with multiple variants, sizes, and states.",
+        "description": "A versatile button component with multiple variants, sizes, and states."
       },
       {
         "id": "scroll-area",
         "title": "Scroll Area",
         "href": "#/components/scroll-area",
-        "desc": "Custom scrollable container with hot-zone expansion and stepper buttons."
+        "desc": "Custom scrollable container with hot-zone expansion and stepper buttons.",
+        "description": "Custom scrollable container with hot-zone expansion and stepper buttons."
       },
       {
         "id": "tabs",
         "title": "Tabs",
         "href": "#/components/tabs",
-        "desc": "Set of layered content sections known as tab panels, displayed one at a time."
+        "desc": "Set of layered content sections known as tab panels, displayed one at a time.",
+        "description": "Set of layered content sections known as tab panels, displayed one at a time."
       },
       {
         "id": "badge",
         "title": "Badge",
         "href": "#/components/badge",
-        "desc": "Displays a badge or status tag to highlight status, tags, and counts."
+        "desc": "Displays a badge or status tag to highlight status, tags, and counts.",
+        "description": "Displays a badge or status tag to highlight status, tags, and counts."
       },
       {
         "id": "label",
         "title": "Label",
         "href": "#/components/label",
-        "desc": "Renders an accessible label associated with form controls."
+        "desc": "Renders an accessible label associated with form controls.",
+        "description": "Renders an accessible label associated with form controls."
       },
       {
         "id": "card",
         "title": "Card",
         "href": "#/components/card",
-        "desc": "Displays a card with header, title, description, content, and footer actions."
+        "desc": "Displays a card with header, title, description, content, and footer actions.",
+        "description": "Displays a card with header, title, description, content, and footer actions."
       },
       {
         "id": "input",
         "title": "Input",
         "href": "#/components/input",
-        "desc": "Form text input field with desktop high-density sizing and states."
+        "desc": "Form text input field with desktop high-density sizing and states.",
+        "description": "Form text input field with desktop high-density sizing and states."
       },
       {
         "id": "checkbox",
         "title": "Checkbox",
         "href": "#/components/checkbox",
-        "desc": "Control that allows toggling between checked, unchecked, and indeterminate."
+        "desc": "Control that allows toggling between checked, unchecked, and indeterminate.",
+        "description": "Control that allows toggling between checked, unchecked, and indeterminate."
       },
       {
         "id": "switch",
         "title": "Switch",
         "href": "#/components/switch",
-        "desc": "A control that allows toggling binary state with smooth animated transitions."
+        "desc": "A control that allows toggling binary state with smooth animated transitions.",
+        "description": "A control that allows toggling binary state with smooth animated transitions."
       },
       {
         "id": "separator",
         "title": "Separator",
         "href": "#/components/separator",
-        "desc": "Visually or semantically separates content in horizontal or vertical orientation."
+        "desc": "Visually or semantically separates content in horizontal or vertical orientation.",
+        "description": "Visually or semantically separates content in horizontal or vertical orientation."
       },
       {
         "id": "slider",
         "title": "Slider",
         "href": "#/components/slider",
-        "desc": "Interactive control that allows selecting a numeric value along a track."
+        "desc": "Interactive control that allows selecting a numeric value along a track.",
+        "description": "Interactive control that allows selecting a numeric value along a track."
       },
       {
         "id": "dialog",
         "title": "Dialog",
         "href": "#/components/dialog",
-        "desc": "Modal window that interrupts the user with critical content."
+        "desc": "Modal window that interrupts the user with critical content.",
+        "description": "Modal window that interrupts the user with critical content."
       },
       {
         "id": "tooltip",
         "title": "Tooltip",
         "href": "#/components/tooltip",
-        "desc": "Popup that displays information related to an element on hover or focus."
+        "desc": "Popup that displays information related to an element on hover or focus.",
+        "description": "Popup that displays information related to an element on hover or focus."
       },
       {
         "id": "table",
         "title": "Table",
         "href": "#/components/table",
-        "desc": "Responsive, accessible table component for tabular data."
+        "desc": "Responsive, accessible table component for tabular data.",
+        "description": "Responsive, accessible table component for tabular data."
       },
       {
         "id": "color-picker",
         "title": "ColorPicker",
         "href": "#/components/color-picker",
-        "desc": "Interactive color selection with saturation/brightness field and swatches."
+        "desc": "Interactive color selection with saturation/brightness field and swatches.",
+        "description": "Interactive color selection with saturation/brightness field and swatches."
       },
       {
         "id": "dropdown-menu",
         "title": "Dropdown Menu",
         "href": "#/components/dropdown-menu",
         "badge": "Stage 1",
-        "desc": "Displays a menu to the user triggered by a button with item groups and shortcuts."
+        "desc": "Displays a menu to the user triggered by a button with item groups and shortcuts.",
+        "description": "Displays a menu to the user triggered by a button with item groups and shortcuts."
       },
       {
         "id": "select",
         "title": "Select",
         "href": "#/components/select",
         "badge": "Stage 1",
-        "desc": "Displays a list of options for the user to pick from with trigger and indicator."
+        "desc": "Displays a list of options for the user to pick from with trigger and indicator.",
+        "description": "Displays a list of options for the user to pick from with trigger and indicator."
       },
       {
         "id": "popover",
         "title": "Popover",
         "href": "#/components/popover",
         "badge": "Stage 1",
-        "desc": "Displays rich interactive content in a floating portal anchored to a trigger."
+        "desc": "Displays rich interactive content in a floating portal anchored to a trigger.",
+        "description": "Displays rich interactive content in a floating portal anchored to a trigger."
       },
       {
         "id": "context-menu",
         "title": "Context Menu",
         "href": "#/components/context-menu",
         "badge": "Stage 1",
-        "desc": "Displays a menu located at the pointer coordinates on right-click or context gesture."
+        "desc": "Displays a menu located at the pointer coordinates on right-click or context gesture.",
+        "description": "Displays a menu located at the pointer coordinates on right-click or context gesture."
       },
       {
         "id": "alert-dialog",
         "title": "Alert Dialog",
         "href": "#/components/alert-dialog",
         "badge": "Stage 1",
-        "desc": "A modal dialog that interrupts the user with important content and requires confirmation."
+        "desc": "A modal dialog that interrupts the user with important content and requires confirmation.",
+        "description": "A modal dialog that interrupts the user with important content and requires confirmation."
       },
       {
         "id": "sheet",
         "title": "Sheet",
         "href": "#/components/sheet",
         "badge": "Stage 1",
-        "desc": "Extends the dialog component to display content that slides in from any screen edge."
+        "desc": "Extends the dialog component to display content that slides in from any screen edge.",
+        "description": "Extends the dialog component to display content that slides in from any screen edge."
       },
       {
         "id": "skeleton",
         "title": "Skeleton",
         "href": "#/components/skeleton",
         "badge": "Stage 1",
-        "desc": "Used to show a placeholder while content is loading with pulse animations."
+        "desc": "Used to show a placeholder while content is loading with pulse animations.",
+        "description": "Used to show a placeholder while content is loading with pulse animations."
       },
       {
         "id": "collapsible",
         "title": "Collapsible",
         "href": "#/components/collapsible",
-        "desc": "An interactive component which expands and collapses a panel of content."
+        "desc": "An interactive component which expands and collapses a panel of content.",
+        "description": "An interactive component which expands and collapses a panel of content."
       }
     ]
   },
@@ -1230,84 +1257,96 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "title": "Copy Button",
         "href": "#/components/copy-button",
         "badge": "Stage 2",
-        "desc": "One-click clipboard copy button with transient feedback icons and custom timeouts."
+        "desc": "One-click clipboard copy button with transient feedback icons and custom timeouts.",
+        "description": "One-click clipboard copy button with transient feedback icons and custom timeouts."
       },
       {
         "id": "panel-card",
         "title": "Panel Card",
         "href": "#/components/panel-card",
         "badge": "Stage 2",
-        "desc": "Card surface with integrated collapsible sections and header action slots."
+        "desc": "Card surface with integrated collapsible sections and header action slots.",
+        "description": "Card surface with integrated collapsible sections and header action slots."
       },
       {
         "id": "split-button",
         "title": "Split Button",
         "href": "#/components/split-button",
         "badge": "Stage 2",
-        "desc": "Dual-action button with primary direct click and secondary dropdown chevron."
+        "desc": "Dual-action button with primary direct click and secondary dropdown chevron.",
+        "description": "Dual-action button with primary direct click and secondary dropdown chevron."
       },
       {
         "id": "inline-editable-text",
         "title": "Inline Editable Text",
         "href": "#/components/inline-editable-text",
         "badge": "Stage 2",
-        "desc": "Text element that switches seamlessly to an input field on double-click or edit trigger."
+        "desc": "Text element that switches seamlessly to an input field on double-click or edit trigger.",
+        "description": "Text element that switches seamlessly to an input field on double-click or edit trigger."
       },
       {
         "id": "range-slider",
         "title": "Range Slider",
         "href": "#/components/range-slider",
         "badge": "Stage 2",
-        "desc": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention."
+        "desc": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention.",
+        "description": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention."
       },
       {
         "id": "read-only-input",
         "title": "Read-Only Input",
         "href": "#/components/read-only-input",
         "badge": "Stage 2",
-        "desc": "Protected input field for tokens and IDs with integrated copy-to-clipboard action."
+        "desc": "Protected input field for tokens and IDs with integrated copy-to-clipboard action.",
+        "description": "Protected input field for tokens and IDs with integrated copy-to-clipboard action."
       },
       {
         "id": "preset-number-input",
         "title": "Preset Number Input",
         "href": "#/components/preset-number-input",
         "badge": "Stage 2",
-        "desc": "Numeric input field with quick-select preset dropdown panel and clear actions."
+        "desc": "Numeric input field with quick-select preset dropdown panel and clear actions.",
+        "description": "Numeric input field with quick-select preset dropdown panel and clear actions."
       },
       {
         "id": "keybinding-recorder",
         "title": "Keybinding Recorder",
         "href": "#/components/keybinding-recorder",
         "badge": "Stage 2",
-        "desc": "Interactive recorder that captures accelerator keyboard sequences for desktop apps."
+        "desc": "Interactive recorder that captures accelerator keyboard sequences for desktop apps.",
+        "description": "Interactive recorder that captures accelerator keyboard sequences for desktop apps."
       },
       {
         "id": "viewport-constrained-container",
         "title": "Viewport Constrained Container",
         "href": "#/components/viewport-constrained-container",
         "badge": "Stage 2",
-        "desc": "Container that dynamically bounds max-height based on available viewport space below the anchor."
+        "desc": "Container that dynamically bounds max-height based on available viewport space below the anchor.",
+        "description": "Container that dynamically bounds max-height based on available viewport space below the anchor."
       },
       {
         "id": "segmented-control",
         "title": "Segmented Control",
         "href": "#/components/segmented-control",
         "badge": "Stage 2",
-        "desc": "Compact pill segmented switch for toolbars, menus, and view toggles."
+        "desc": "Compact pill segmented switch for toolbars, menus, and view toggles.",
+        "description": "Compact pill segmented switch for toolbars, menus, and view toggles."
       },
       {
         "id": "setting-row",
         "title": "Setting Row",
         "href": "#/components/setting-row",
         "badge": "Stage 2",
-        "desc": "Settings form item layout with title, description, control slot, and anchor flash."
+        "desc": "Settings form item layout with title, description, control slot, and anchor flash.",
+        "description": "Settings form item layout with title, description, control slot, and anchor flash."
       },
       {
         "id": "elided-text",
         "title": "Elided Text",
         "href": "#/components/elided-text",
         "badge": "Stage 2",
-        "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
+        "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated.",
+        "description": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
       }
     ]
   },
@@ -1319,70 +1358,80 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "title": "Virtual List",
         "href": "#/components/virtual-list",
         "badge": "Stage 3",
-        "desc": "High-performance windowed 100k+ row list with dynamic or fixed item measurements."
+        "desc": "High-performance windowed 100k+ row list with dynamic or fixed item measurements.",
+        "description": "High-performance windowed 100k+ row list with dynamic or fixed item measurements."
       },
       {
         "id": "virtual-tree",
         "title": "Virtual Tree",
         "href": "#/components/virtual-tree",
         "badge": "Stage 3",
-        "desc": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
+        "desc": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation.",
+        "description": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
       },
       {
         "id": "virtual-grid",
         "title": "Virtual Grid",
         "href": "#/components/virtual-grid",
         "badge": "Stage 3",
-        "desc": "2D windowed grid virtualizer for massive dataset visualization."
+        "desc": "2D windowed grid virtualizer for massive dataset visualization.",
+        "description": "2D windowed grid virtualizer for massive dataset visualization."
       },
       {
         "id": "draggable-modal",
         "title": "Draggable Modal",
         "href": "#/components/draggable-modal",
         "badge": "Stage 3",
-        "desc": "Desktop floating window with dragging title bar and bound viewport constraints."
+        "desc": "Desktop floating window with dragging title bar and bound viewport constraints.",
+        "description": "Desktop floating window with dragging title bar and bound viewport constraints."
       },
       {
         "id": "splitter",
         "title": "Splitter",
         "href": "#/components/splitter",
         "badge": "Stage 3",
-        "desc": "Multi-pane resizable layout container with draggable gutters and collapse limits."
+        "desc": "Multi-pane resizable layout container with draggable gutters and collapse limits.",
+        "description": "Multi-pane resizable layout container with draggable gutters and collapse limits."
       },
       {
         "id": "splitter-handle",
         "title": "Splitter Handle",
         "href": "#/components/splitter-handle",
         "badge": "Stage 3",
-        "desc": "Edge resize handle with reference item coordinate stabilization and min/max clamping."
+        "desc": "Edge resize handle with reference item coordinate stabilization and min/max clamping.",
+        "description": "Edge resize handle with reference item coordinate stabilization and min/max clamping."
       },
       {
         "id": "resizable",
         "title": "Resizable",
         "href": "#/components/resizable",
         "badge": "Stage 3",
-        "desc": "Accessible resizable panel groups and layout splitters."
+        "desc": "Accessible resizable panel groups and layout splitters.",
+        "description": "Accessible resizable panel groups and layout splitters."
       },
       {
         "id": "window-title-bar",
         "title": "Window Title Bar",
         "href": "#/components/window-title-bar",
         "badge": "Stage 3",
-        "desc": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons."
+        "desc": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons.",
+        "description": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons."
       },
       {
         "id": "sidebar",
         "title": "Sidebar",
         "href": "#/components/sidebar",
         "badge": "Stage 3",
-        "desc": "Composable, responsive and resizable desktop-grade sidebar navigation system."
+        "desc": "Composable, responsive and resizable desktop-grade sidebar navigation system.",
+        "description": "Composable, responsive and resizable desktop-grade sidebar navigation system."
       },
       {
         "id": "smooth-wheel-handler",
         "title": "Smooth Wheel Handler",
         "href": "#/components/smooth-wheel-handler",
         "badge": "Stage 3",
-        "desc": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex."
+        "desc": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex.",
+        "description": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex."
       }
     ]
   },
@@ -1394,18 +1443,21 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "title": "Generic Data Table",
         "href": "#/components/generic-data-table",
         "badge": "Stage 4",
-        "desc": "Full-featured data table with column sorting, filtering, selection, and pagination."
+        "desc": "Full-featured data table with column sorting, filtering, selection, and pagination.",
+        "description": "Full-featured data table with column sorting, filtering, selection, and pagination."
       },
       {
         "id": "query-builder",
         "title": "Query Builder",
         "href": "#/components/query-builder",
         "badge": "Stage 4",
-        "desc": "Visual rule tree builder for structured query generation with nested logic groups."
+        "desc": "Visual rule tree builder for structured query generation with nested logic groups.",
+        "description": "Visual rule tree builder for structured query generation with nested logic groups."
       }
     ]
   }
 ];
+export const NAVIGATION_CONFIG: NavCategory[] = NAVIGATION_DATA;
 export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
   "button": [
     {

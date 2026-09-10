@@ -9,7 +9,7 @@ export default defineConfig({
     alias: [
       {
         find: /^@chahu\/cha-set$/,
-        replacement: path.resolve(__dirname, '../../src/index.ts'),
+        replacement: path.resolve(import.meta.dirname, '../../src/index.ts'),
       },
     ],
   },

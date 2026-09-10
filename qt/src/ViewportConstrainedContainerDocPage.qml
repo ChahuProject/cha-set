@@ -53,7 +53,9 @@ DocLayout {
             anchors.fill: parent
 
             ChaSetViewportConstrainedContainer {
-                anchors.centerIn: parent
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
+                anchors.topMargin: 24
                 width: 260
                 maxHeight: 220
                 margin: 16

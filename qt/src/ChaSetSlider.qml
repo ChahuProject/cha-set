@@ -236,13 +236,13 @@ Item {
                         width: 4
                         height: 4
                         radius: 2
-                        color: tickItem.tickProgress <= root.progress ? ThemeTokens.primary : (root.isDark ? Qt.rgba(1, 1, 1, 0.25) : Qt.rgba(0, 0, 0, 0.25))
+                        color: tickItem.tickProgress <= root.progress ? ThemeTokens.accent : (root.isDark ? Qt.rgba(1, 1, 1, 0.25) : Qt.rgba(0, 0, 0, 0.25))
                     }
 
                     Text {
                         visible: root.marks && index < root.marks.length && root.marks[index].length > 0
                         text: visible ? root.marks[index] : ""
-                        color: ThemeTokens.mutedForeground
+                        color: ThemeTokens.subduedText
                         font.pixelSize: 10
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.top: parent.bottom

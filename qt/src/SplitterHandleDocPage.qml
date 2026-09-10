@@ -41,7 +41,7 @@ DocLayout {
     Rectangle {
         width: root.sidebarWidth
         height: parent.height
-        color: ThemeTokens.card
+        color: ThemeTokens.panel
 
         ChaSetSplitterHandle {
             edge: "right"
@@ -81,7 +81,7 @@ DocLayout {
                         id: sidebarBox
                         width: root.sidebarWidth
                         height: parent.height
-                        color: ThemeTokens.card
+                        color: ThemeTokens.panel
 
                         Column {
                             anchors.centerIn: parent
@@ -98,7 +98,7 @@ DocLayout {
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text: Math.round(root.sidebarWidth) + "px"
-                                color: ThemeTokens.mutedForeground
+                                color: ThemeTokens.subduedText
                                 font.pixelSize: 11
                             }
                         }
@@ -133,7 +133,7 @@ DocLayout {
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text: "Focus handle and use Left/Right arrows or drag border"
-                                color: ThemeTokens.mutedForeground
+                                color: ThemeTokens.subduedText
                                 font.pixelSize: 11
                             }
                         }
@@ -145,12 +145,11 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: 16
-                anchors.verticalCenter: parent.verticalCenter
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
                     text: "Width: " + Math.round(root.sidebarWidth) + "px"
-                    color: ThemeTokens.mutedForeground
+                    color: ThemeTokens.subduedText
                     font.pixelSize: 12
                 }
 
@@ -188,7 +187,7 @@ DocLayout {
                     width: parent.width
                     wrapMode: Text.Wrap
                     text: "Handles can also be attached to top or bottom edges to control vertical drawers or console panes."
-                    color: ThemeTokens.mutedForeground
+                    color: ThemeTokens.subduedText
                     font.pixelSize: 12
                 }
 
@@ -212,7 +211,7 @@ DocLayout {
                             Text {
                                 anchors.centerIn: parent
                                 text: "Editor Canvas"
-                                color: ThemeTokens.mutedForeground
+                                color: ThemeTokens.subduedText
                                 font.pixelSize: 12
                             }
                         }
@@ -220,7 +219,7 @@ DocLayout {
                         Rectangle {
                             width: parent.width
                             height: root.bottomHeight
-                            color: ThemeTokens.card
+                            color: ThemeTokens.panel
 
                             ChaSetSplitterHandle {
                                 edge: "top"

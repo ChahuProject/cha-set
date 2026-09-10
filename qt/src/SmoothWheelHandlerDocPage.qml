@@ -97,12 +97,13 @@ DocLayout {
                             border.color: ThemeTokens.border
                             border.width: 1
 
-                            Row {
+                            Item {
                                 anchors.fill: parent
                                 anchors.leftMargin: 12
                                 anchors.rightMargin: 12
 
                                 Text {
+                                    anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
                                     text: "Kinematic Scroll Item #" + (index + 1)
                                     color: ThemeTokens.text
@@ -111,8 +112,8 @@ DocLayout {
                                 }
 
                                 Text {
-                                    anchors.verticalCenter: parent.verticalCenter
                                     anchors.right: parent.right
+                                    anchors.verticalCenter: parent.verticalCenter
                                     text: "offset: " + (index * 50) + "px"
                                     color: ThemeTokens.subduedText
                                     font.pixelSize: 11

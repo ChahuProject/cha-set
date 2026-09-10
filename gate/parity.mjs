@@ -111,6 +111,26 @@ if (existsSync(componentsDir) && existsSync(navPath)) {
     }
   }
 
+  // Verify Single Source of Truth for showcase navigation
+  const generatedDataPath = resolve(root, 'packages/react/examples/basic/src/data/showcaseData.generated.ts');
+  const navTypesPath = resolve(root, 'packages/react/examples/basic/src/types/navigation.ts');
+  if (existsSync(generatedDataPath)) {
+    const genContent = readFileSync(generatedDataPath, 'utf8');
+    for (const navId of navIds) {
+      if (!genContent.includes(`"id": "${navId}"`)) {
+        console.error(`[gate] FAIL: showcaseData.generated.ts is out of sync with spec/showcase/navigation.json (missing id "${navId}"). Run "pnpm gen:showcase".`);
+        failed = true;
+      }
+    }
+  }
+  if (existsSync(navTypesPath)) {
+    const navTypesContent = readFileSync(navTypesPath, 'utf8');
+    if (!navTypesContent.includes('showcaseData.generated')) {
+      console.error(`[gate] FAIL: packages/react/examples/basic/src/types/navigation.ts must re-export from showcaseData.generated to prevent duplicate navigation data.`);
+      failed = true;
+    }
+  }
+
   if (failed) {
     console.error(`[gate] Showcase documentation & dual-stack completeness failed (${missingCount} components incomplete).`);
     console.error(`[gate] Golden Red Line: Every component MUST have 100% living showcase demos and implementations in BOTH React and Qt before PR/gate sign-off.`);
@@ -138,12 +158,12 @@ const showcaseTestFile = resolve(root, 'packages/react/src/__tests__/showcase-pa
 if (existsSync(showcaseTestFile)) {
   const { execSync } = await import('node:child_process');
   try {
-    execSync('pnpm --filter @chahu/cha-set exec vitest run src/__tests__/showcase-pages.test.tsx', {
+    execSync('pnpm --filter @chahu/cha-set exec vitest run src/__tests__/showcase-pages.test.tsx src/__tests__/showcase-sidebar.test.tsx', {
       cwd: root,
       stdio: 'pipe',
       encoding: 'utf8',
     });
-    console.log('[gate] OK — React showcase living documentation pages smoke & click integrity passed (all showcase pages verified)');
+    console.log('[gate] OK — React showcase living documentation pages & sidebar navigation integrity passed');
   } catch (err) {
     console.error('[gate] FAIL: React showcase living documentation pages smoke & click integrity check failed');
     if (err.stdout) console.error(err.stdout);

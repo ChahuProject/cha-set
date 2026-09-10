@@ -129,11 +129,12 @@ DocLayout {
 
         ChaSetCard {
             width: parent.width
-            height: 90
             customRadius: root.customRadius
 
             Column {
-                anchors.centerIn: parent
+                anchors.horizontalCenter: parent.horizontalCenter
+                topPadding: 16
+                bottomPadding: 16
                 spacing: 12
                 width: parent.width - 48
 
@@ -160,11 +161,12 @@ DocLayout {
 
         ChaSetCard {
             width: parent.width
-            height: 120
             customRadius: root.customRadius
 
             Column {
-                anchors.centerIn: parent
+                anchors.horizontalCenter: parent.horizontalCenter
+                topPadding: 16
+                bottomPadding: 16
                 spacing: 12
                 width: parent.width - 48
 

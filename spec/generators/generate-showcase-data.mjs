@@ -12,6 +12,14 @@ const featureCards = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'feature-
 const navigation = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'navigation.json'), 'utf8'));
 const keyboardShortcuts = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'keyboard-shortcuts.json'), 'utf8'));
 
+const navigationWithDesc = navigation.map(group => ({
+  ...group,
+  items: group.items.map(item => ({
+    ...item,
+    description: item.description || item.desc,
+  }))
+}));
+
 // React Output
 const reactOutDir = path.resolve(repoRoot, 'packages', 'react', 'examples', 'basic', 'src', 'data');
 if (!fs.existsSync(reactOutDir)) fs.mkdirSync(reactOutDir, { recursive: true });
@@ -41,6 +49,7 @@ export interface NavItem {
   href: string;
   badge?: string;
   desc: string;
+  description?: string;
 }
 
 export interface NavCategory {
@@ -55,7 +64,8 @@ export interface KeyboardShortcutItem {
 
 export const CHANGELOG_DATA: ChangelogItem[] = ${JSON.stringify(changelog, null, 2)};
 export const FEATURE_CARDS_DATA: FeatureCardItem[] = ${JSON.stringify(featureCards, null, 2)};
-export const NAVIGATION_DATA: NavCategory[] = ${JSON.stringify(navigation, null, 2)};
+export const NAVIGATION_DATA: NavCategory[] = ${JSON.stringify(navigationWithDesc, null, 2)};
+export const NAVIGATION_CONFIG: NavCategory[] = NAVIGATION_DATA;
 export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = ${JSON.stringify(keyboardShortcuts, null, 2)};
 `;
 
