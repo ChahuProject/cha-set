@@ -25,6 +25,7 @@ DocLayout {
   max={100}
   step={1}
   value={[minPrice, maxPrice]}
+  showTooltip
   onValueChange={([min, max]) => {
     setMinPrice(min);
     setMaxPrice(max);
@@ -35,6 +36,7 @@ DocLayout {
     to: 100
     firstValue: 25
     secondValue: 75
+    showTooltip: true
     onValuesChanged: function(f, s) { console.log(f, s) }
 }`
 
@@ -43,18 +45,51 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
+                spacing: 20
                 width: 280
 
-                ChaSetRangeSlider {
+                Column {
+                    spacing: 6
                     width: parent.width
-                    from: 0
-                    to: 100
-                    firstValue: root.minPrice
-                    secondValue: root.maxPrice
-                    onValuesChanged: function(f, s) {
-                        root.minPrice = f
-                        root.maxPrice = s
+
+                    Text {
+                        text: "Default Density with Tooltips:"
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: 12
+                    }
+
+                    ChaSetRangeSlider {
+                        width: parent.width
+                        from: 0
+                        to: 100
+                        firstValue: root.minPrice
+                        secondValue: root.maxPrice
+                        showTooltip: true
+                        onValuesChanged: function(f, s) {
+                            root.minPrice = f
+                            root.maxPrice = s
+                        }
+                    }
+                }
+
+                Column {
+                    spacing: 6
+                    width: parent.width
+
+                    Text {
+                        text: "Compact (sm) Variant:"
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: 12
+                    }
+
+                    ChaSetRangeSlider {
+                        width: parent.width
+                        size: "sm"
+                        from: 0
+                        to: 100
+                        firstValue: 30
+                        secondValue: 70
+                        showTooltip: true
                     }
                 }
 
@@ -75,11 +110,10 @@ DocLayout {
 
     CodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetRangeSlider { from: 0; to: 100 }"
+        code: "import ChaSet 1.0\n\nChaSetRangeSlider { from: 0; to: 100; showTooltip: true }"
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "range-slider"
     }
@@ -92,7 +126,11 @@ DocLayout {
             { name: "firstValue", type: "real", default: "20.0", description: "Value represented by the first thumb." },
             { name: "secondValue", type: "real", default: "80.0", description: "Value represented by the second thumb." },
             { name: "stepSize", type: "real", default: "1.0", description: "Stepped granularity increment." },
-            { name: "disabled", type: "bool", default: "false", description: "Whether the range slider interaction is disabled." }
+            { name: "size", type: "string", default: "'default'", description: "Size variant: 'default' | 'sm'." },
+            { name: "showTooltip", type: "bool", default: "false", description: "Whether to show floating value tooltips above thumbs." },
+            { name: "readOnly", type: "bool", default: "false", description: "Prevents dragging while preserving normal opacity." },
+            { name: "disabled", type: "bool", default: "false", description: "Whether the range slider interaction is disabled." },
+            { name: "minStepsBetweenThumbs", type: "real", default: "0.0", description: "Minimum gap between the two thumbs." }
         ]
     }
 }

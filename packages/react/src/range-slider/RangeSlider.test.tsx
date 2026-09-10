@@ -35,4 +35,54 @@ describe('RangeSlider', () => {
     fireEvent.keyDown(highThumb!, { key: 'End' });
     expect(onChange).toHaveBeenCalledWith([20, 100]);
   });
+
+  it('fires onValueChange callback along with onChange', () => {
+    const onValueChange = vi.fn();
+    render(<RangeSlider value={[20, 80]} min={0} max={100} step={1} onValueChange={onValueChange} />);
+    const [lowThumb] = screen.getAllByRole('slider');
+
+    fireEvent.keyDown(lowThumb!, { key: 'ArrowRight' });
+    expect(onValueChange).toHaveBeenCalledWith([21, 80]);
+  });
+
+  it('prevents value changes when readOnly', () => {
+    const onChange = vi.fn();
+    render(<RangeSlider value={[20, 80]} min={0} max={100} step={1} readOnly onChange={onChange} />);
+    const [lowThumb] = screen.getAllByRole('slider');
+
+    fireEvent.keyDown(lowThumb!, { key: 'ArrowRight' });
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('enforces minStepsBetweenThumbs gap', () => {
+    const onChange = vi.fn();
+    render(
+      <RangeSlider
+        value={[75, 80]}
+        min={0}
+        max={100}
+        step={1}
+        minStepsBetweenThumbs={5}
+        onChange={onChange}
+      />,
+    );
+    const [lowThumb] = screen.getAllByRole('slider');
+
+    fireEvent.keyDown(lowThumb!, { key: 'ArrowRight' });
+    // Should be clamped to currentHigh (80) - minGap (5) = 75
+    expect(onChange).toHaveBeenCalledWith([75, 80]);
+  });
+
+  it('renders sm size with compact classes', () => {
+    render(<RangeSlider value={[20, 80]} size="sm" />);
+    const [lowThumb] = screen.getAllByRole('slider');
+    expect(lowThumb?.className).toContain('size-3');
+  });
+
+  it('displays tooltip on focus when showTooltip is true', () => {
+    render(<RangeSlider value={[20, 80]} showTooltip />);
+    const [lowThumb] = screen.getAllByRole('slider');
+    fireEvent.focus(lowThumb!);
+    expect(screen.getByText('20')).toBeInTheDocument();
+  });
 });
