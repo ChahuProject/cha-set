@@ -65,6 +65,8 @@ DocLayout {
         title: "Props Reference"
         props: [
             { name: "value", type: "string", default: "''", description: "The read-only token or string to be displayed and copied." },
+            { name: "placeholder", type: "string", default: "''", description: "Placeholder text displayed when value is empty." },
+            { name: "colorScheme", type: "string", default: "'default'", description: "Color theme variant: 'default', 'destructive', 'warning', 'success'." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the input container." }
         ]
     }
