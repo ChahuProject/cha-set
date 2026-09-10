@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SplitterHandle, Card, Button } from '@chahu/cha-set';
+import { SplitterHandle, Card, Button, Badge } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -11,12 +11,12 @@ export function SplitterHandleDocPage() {
   const [bottomHeight, setBottomHeight] = useState(120);
 
   const heroReactCode = `<div className="flex h-64 border rounded overflow-hidden">
-  <div style={{ width: ${sidebarWidth} }} className="bg-muted/30 p-4">
-    Sidebar Content (${sidebarWidth}px)
+  <div style={{ width: \`\${sidebarWidth * 0.0625}rem\` }} className="bg-muted/30 p-4">
+    Sidebar Content (\${sidebarWidth})
   </div>
   <SplitterHandle
     edge="right"
-    targetSize={${sidebarWidth}}
+    targetSize={sidebarWidth}
     minSize={140}
     maxSize={400}
     onSizeChanging={setSidebarWidth}
@@ -38,7 +38,7 @@ export function SplitterHandleDocPage() {
 
         Text {
             anchors.centerIn: parent
-            text: "Sidebar (" + root.sidebarWidth + "px)"
+            text: "Sidebar (" + root.sidebarWidth + ")"
             color: ThemeTokens.text
         }
 
@@ -75,7 +75,7 @@ export function SplitterHandleDocPage() {
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
         <p className="text-sm text-muted-foreground">
-          Drag the right edge handle to resize the sidebar. Double click or press Enter to reset to 200px.
+          Drag the right edge handle to resize the sidebar. Double click or press Enter to reset to 200.
         </p>
 
         <ComponentPreview
@@ -83,13 +83,15 @@ export function SplitterHandleDocPage() {
           qtCode={heroQtCode}
           controls={
             <div className="flex flex-wrap items-center gap-4 text-xs">
-              <span className="text-muted-foreground">Current Width: {sidebarWidth}px</span>
+              <span className="text-muted-foreground flex items-center gap-1.5">
+                Current Width: <Badge variant="outline">{sidebarWidth}</Badge>
+              </span>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setSidebarWidth(200)}
               >
-                Reset to 200px
+                Reset to 200
               </Button>
             </div>
           }
@@ -97,11 +99,11 @@ export function SplitterHandleDocPage() {
           <div className="w-full max-w-xl mx-auto py-4">
             <Card className="flex h-64 border rounded-md overflow-hidden bg-card">
               <div
-                style={{ width: `${sidebarWidth}px` }}
+                style={{ width: `${sidebarWidth * 0.0625}rem` }}
                 className="bg-muted/40 p-4 flex flex-col justify-center items-center text-sm font-medium shrink-0 border-r border-border/20"
               >
                 <span>Sidebar</span>
-                <span className="text-xs text-muted-foreground">{sidebarWidth}px</span>
+                <Badge variant="secondary" className="mt-1">{sidebarWidth}</Badge>
               </div>
               <SplitterHandle
                 edge="right"
@@ -140,11 +142,11 @@ export function SplitterHandleDocPage() {
             onSizeChanged={setBottomHeight}
           />
           <div
-            style={{ height: `${bottomHeight}px` }}
+            style={{ height: `${bottomHeight * 0.0625}rem` }}
             className="bg-muted/40 p-3 text-xs flex items-center justify-between shrink-0 border-t border-border/20"
           >
             <span className="font-semibold">Terminal / Output Console</span>
-            <span className="text-muted-foreground">{bottomHeight}px</span>
+            <Badge variant="secondary">{bottomHeight}</Badge>
           </div>
         </Card>
       </section>
@@ -185,14 +187,14 @@ export function SplitterHandleDocPage() {
               type: 'number',
               default: '100',
               required: false,
-              description: 'Minimum allowed size in pixels.',
+              description: 'Minimum allowed size bound.',
             },
             {
               name: 'maxSize',
               type: 'number',
               default: '1000',
               required: false,
-              description: 'Maximum allowed size in pixels.',
+              description: 'Maximum allowed size bound.',
             },
             {
               name: 'defaultSize',
@@ -212,14 +214,14 @@ export function SplitterHandleDocPage() {
               type: 'number',
               default: '6',
               required: false,
-              description: 'Interactive mouse hit test zone thickness in pixels.',
+              description: 'Interactive mouse hit test zone thickness.',
             },
             {
               name: 'visualThickness',
               type: 'number',
               default: '1',
               required: false,
-              description: 'Resting visible hairline thickness in pixels.',
+              description: 'Resting visible hairline thickness.',
             },
             {
               name: 'activeVisualThickness',

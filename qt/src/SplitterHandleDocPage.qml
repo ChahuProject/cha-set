@@ -85,7 +85,7 @@ DocLayout {
 
                         Column {
                             anchors.centerIn: parent
-                            spacing: 4
+                            spacing: 6
 
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -95,11 +95,10 @@ DocLayout {
                                 font.bold: true
                             }
 
-                            Text {
+                            ChaSetBadge {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text: Math.round(root.sidebarWidth) + "px"
-                                color: ThemeTokens.subduedText
-                                font.pixelSize: 11
+                                variant: "secondary"
+                                text: "" + Math.round(root.sidebarWidth)
                             }
                         }
 
@@ -146,17 +145,26 @@ DocLayout {
             Row {
                 spacing: 16
 
-                Text {
+                Row {
+                    spacing: 8
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "Width: " + Math.round(root.sidebarWidth) + "px"
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: "Width:"
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: 12
+                    }
+                    ChaSetBadge {
+                        anchors.verticalCenter: parent.verticalCenter
+                        variant: "outline"
+                        text: "" + Math.round(root.sidebarWidth)
+                    }
                 }
 
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Reset to 220px"
+                    text: "Reset to 220"
                     onClicked: root.sidebarWidth = 220
                 }
             }
@@ -231,11 +239,22 @@ DocLayout {
                                 onSizeChanged: function(finalSize) { root.bottomHeight = finalSize; }
                             }
 
-                            Text {
+                            Row {
                                 anchors.centerIn: parent
-                                text: "Console: " + Math.round(root.bottomHeight) + "px"
-                                color: ThemeTokens.text
-                                font.pixelSize: 12
+                                spacing: 8
+
+                                Text {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: "Console"
+                                    color: ThemeTokens.text
+                                    font.pixelSize: 12
+                                }
+
+                                ChaSetBadge {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    variant: "secondary"
+                                    text: "" + Math.round(root.bottomHeight)
+                                }
                             }
                         }
                     }
@@ -262,12 +281,12 @@ DocLayout {
         props: [
             { name: "edge", type: "string", default: "'left'", description: "Which edge of the target panel the resize handle controls ('left', 'right', 'top', 'bottom')." },
             { name: "targetSize", type: "real", default: "200", description: "Current size (width or height) of the target element being resized." },
-            { name: "minSize", type: "real", default: "100", description: "Minimum allowed size in pixels." },
-            { name: "maxSize", type: "real", default: "1000", description: "Maximum allowed size in pixels." },
+            { name: "minSize", type: "real", default: "100", description: "Minimum allowed size bound." },
+            { name: "maxSize", type: "real", default: "1000", description: "Maximum allowed size bound." },
             { name: "defaultSize", type: "real", default: "minSize", description: "Size restored when double-clicked or Enter is pressed." },
             { name: "liveUpdate", type: "bool", default: "true", description: "Whether size updates fire continuously during drag." },
-            { name: "hitThickness", type: "real", default: "6", description: "Interactive mouse hit test zone thickness in pixels." },
-            { name: "visualThickness", type: "real", default: "1", description: "Resting visible hairline thickness in pixels." },
+            { name: "hitThickness", type: "real", default: "6", description: "Interactive mouse hit test zone thickness." },
+            { name: "visualThickness", type: "real", default: "1", description: "Resting visible hairline thickness." },
             { name: "activeVisualThickness", type: "real", default: "2", description: "Highlighted visible hairline thickness when hovered or dragged." },
             { name: "disabled", type: "bool", default: "false", description: "Whether handle resizing is disabled." }
         ]

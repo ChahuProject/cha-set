@@ -199,8 +199,8 @@ export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandlePro
           className,
         )}
         style={{
-          width: isVertical ? `${hitThickness}px` : '100%',
-          height: isVertical ? '100%' : `${hitThickness}px`,
+          width: isVertical ? `${hitThickness * 0.0625}rem` : '100%',
+          height: isVertical ? '100%' : `${hitThickness * 0.0625}rem`,
           ...style,
         }}
         {...props}
@@ -216,25 +216,25 @@ export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandlePro
               left: 0,
               top: 0,
               bottom: 0,
-              width: `${currentVisualThickness}px`,
+              width: `${currentVisualThickness * 0.0625}rem`,
             }),
             ...(edge === 'right' && {
               right: 0,
               top: 0,
               bottom: 0,
-              width: `${currentVisualThickness}px`,
+              width: `${currentVisualThickness * 0.0625}rem`,
             }),
             ...(edge === 'top' && {
               top: 0,
               left: 0,
               right: 0,
-              height: `${currentVisualThickness}px`,
+              height: `${currentVisualThickness * 0.0625}rem`,
             }),
             ...(edge === 'bottom' && {
               bottom: 0,
               left: 0,
               right: 0,
-              height: `${currentVisualThickness}px`,
+              height: `${currentVisualThickness * 0.0625}rem`,
             }),
           }}
         />
