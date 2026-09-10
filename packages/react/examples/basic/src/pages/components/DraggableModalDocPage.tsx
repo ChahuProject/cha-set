@@ -95,13 +95,13 @@ export function DraggableModalDocPage() {
                   <p>
                     拖动弹窗任意未被交互元素占用的区域即可移动位置；也可拉伸窗口边框调整尺寸。
                   </p>
-                  <div className="flex justify-between border-t border-border/50 pt-2 font-mono">
+                  <div className="flex items-center justify-between border-t border-border/50 pt-2 font-mono">
                     <span>堆内存已用:</span>
-                    <span className="text-foreground">42.8 MB</span>
+                    <Badge variant="outline">42.8 MB</Badge>
                   </div>
-                  <div className="flex justify-between font-mono">
+                  <div className="flex items-center justify-between font-mono">
                     <span>活跃纹理:</span>
-                    <span className="text-foreground">128 alloc</span>
+                    <Badge variant="secondary">128 alloc</Badge>
                   </div>
                 </div>
               </DraggableModal>
@@ -117,7 +117,6 @@ export function DraggableModalDocPage() {
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
-      
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -145,10 +144,10 @@ export function DraggableModalDocPage() {
             { name: 'showEscBadge', type: 'boolean', default: 'false', description: '是否在右上角显示 ESC 键提示徽章。' },
             { name: 'defaultWidthRem', type: 'number', default: 'undefined', description: '初始宽度（rem 单位）。' },
             { name: 'defaultHeightRem', type: 'number', default: 'undefined', description: '初始高度（rem 单位）。' },
-            { name: 'defaultWidth', type: 'number', default: '500', description: '初始宽度（像素单位）。' },
-            { name: 'defaultHeight', type: 'number', default: '400', description: '初始高度（像素单位）。' },
+            { name: 'defaultWidth', type: 'number', default: '500', description: '初始宽度。' },
+            { name: 'defaultHeight', type: 'number', default: '400', description: '初始高度。' },
             { name: 'topMarginRem', type: 'number', default: '4.5', description: '靠顶模式下的顶部外边距（rem 单位）。' },
-            { name: 'remBase', type: 'number', default: '16', description: 'rem 换算像素基准值。' },
+            { name: 'remBase', type: 'number', default: '16', description: 'rem 换算基准比例。' },
           ]}
         />
       </section>
