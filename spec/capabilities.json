@@ -290,7 +290,7 @@
     },
     "segmentedControl": {
       "selection": { "requirement": "must", "description": "selecting an option switches active value" },
-      "size": { "requirement": "must", "description": "supports sm (22px), default (28px), and lg (36px) sizes" },
+      "size": { "requirement": "must", "description": "supports sm, default, and lg sizes" },
       "disabled": { "requirement": "must", "description": "disabled control or option blocks selection" },
       "keyboard": { "requirement": "must", "description": "keyboard arrow keys and Enter/Space navigate options" },
       "styling": { "requirement": "must", "description": "pill geometry with active indicator and ThemeTokens" }

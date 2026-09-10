@@ -17,9 +17,9 @@ DocLayout {
     ]
 
     property var viewOptions: [
-        { label: "Grid", value: "grid" },
-        { label: "List", value: "list" },
-        { label: "Gallery", value: "gallery" }
+        { label: "Grid", value: "grid", icon: "⊞" },
+        { label: "List", value: "list", icon: "☰" },
+        { label: "Gallery", value: "gallery", icon: "▣", badge: 3 }
     ]
 
     property var selectedView: "grid"
@@ -32,9 +32,9 @@ DocLayout {
         reactCode: `<SegmentedControl
   size="${root.currentSize}"
   options={[
-    { label: 'Grid', value: 'grid' },
-    { label: 'List', value: 'list' },
-    { label: 'Gallery', value: 'gallery' }
+    { label: 'Grid', value: 'grid', icon: '⊞' },
+    { label: 'List', value: 'list', icon: '☰' },
+    { label: 'Gallery', value: 'gallery', icon: '▣', badge: 3 }
   ]}
   value="${root.selectedView}"
   disabled={${root.disabledState}}
@@ -42,9 +42,9 @@ DocLayout {
         qtCode: `ChaSetSegmentedControl {
     size: "${root.currentSize}"
     options: [
-        { label: "Grid", value: "grid" },
-        { label: "List", value: "list" },
-        { label: "Gallery", value: "gallery" }
+        { label: "Grid", value: "grid", icon: "⊞" },
+        { label: "List", value: "list", icon: "☰" },
+        { label: "Gallery", value: "gallery", icon: "▣", badge: 3 }
     ]
     value: "${root.selectedView}"
     disabled: ${root.disabledState}
@@ -113,7 +113,7 @@ DocLayout {
 
     // Sizes
     Text {
-        text: "Sizes"
+        text: "Sizes & Badges"
         font.pixelSize: 18
         font.bold: true
         color: ThemeTokens.text
@@ -132,7 +132,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Small (22px) - Compact menus & toolbars"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    Text { text: "Small (sm) - Compact menus & toolbars"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "sm"
                         options: root.viewOptions
@@ -144,7 +144,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Default (28px) - Standard controls"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    Text { text: "Default - Standard controls"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "default"
                         options: root.viewOptions
@@ -156,7 +156,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Large (36px) - Prominent tabs switch"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    Text { text: "Large (lg) - Prominent tabs switch"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "lg"
                         options: root.viewOptions
@@ -211,12 +211,13 @@ DocLayout {
     PropsTable {
         title: "Props Reference"
         props: [
-            { name: "options", type: "array", default: "[]", description: "Array of segment options: [{ label, value, disabled? }]" },
+            { name: "options", type: "array", default: "[]", description: "Array of segment options: [{ label, value, icon?, badge?, disabled? }]" },
             { name: "value", type: "var", default: "undefined", description: "Currently active selected value" },
-            { name: "size", type: "string", default: "'default'", description: "Size variant: 'sm' (22px), 'default' (28px), or 'lg' (36px)" },
+            { name: "size", type: "string", default: "'default'", description: "Size variant: 'sm', 'default', or 'lg'" },
             { name: "title", type: "string", default: "''", description: "Optional inline label displayed before the segments" },
             { name: "disabled", type: "bool", default: "false", description: "Whether the segmented control is disabled" },
             { name: "fullWidth", type: "bool", default: "false", description: "Whether segments expand equally across container width" }
         ]
     }
 }
+

@@ -190,16 +190,47 @@ Item {
 
                 Behavior on color { ColorAnimation { duration: 100 } }
 
-                Text {
+                Row {
                     anchors.centerIn: parent
-                    text: modelData && modelData.label ? String(modelData.label) : ""
-                    font.pixelSize: root.itemFontSize
-                    font.bold: segItem.isSelected
-                    color: {
-                        if (segItem.isItemDisabled) return ThemeTokens.subduedText;
-                        if (segItem.isSelected) return ThemeTokens.text;
-                        if (segItem.isHighlighted) return ThemeTokens.text;
-                        return ThemeTokens.subduedText;
+                    spacing: 4
+
+                    Text {
+                        visible: modelData && modelData.icon !== undefined && String(modelData.icon).length > 0
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: modelData && modelData.icon ? String(modelData.icon) : ""
+                        font.pixelSize: root.itemFontSize
+                        color: segItem.isSelected ? ThemeTokens.text : ThemeTokens.subduedText
+                    }
+
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: modelData && modelData.label ? String(modelData.label) : ""
+                        font.pixelSize: root.itemFontSize
+                        font.bold: segItem.isSelected
+                        color: {
+                            if (segItem.isItemDisabled) return ThemeTokens.subduedText;
+                            if (segItem.isSelected) return ThemeTokens.text;
+                            if (segItem.isHighlighted) return ThemeTokens.text;
+                            return ThemeTokens.subduedText;
+                        }
+                    }
+
+                    Rectangle {
+                        visible: modelData && modelData.badge !== undefined && String(modelData.badge).length > 0
+                        anchors.verticalCenter: parent.verticalCenter
+                        radius: 8
+                        height: root.itemFontSize + 2
+                        width: badgeText.implicitWidth + 8
+                        color: segItem.isSelected ? Qt.rgba(14/255, 165/255, 233/255, 0.15) : Qt.rgba(100/255, 116/255, 139/255, 0.15)
+
+                        Text {
+                            id: badgeText
+                            anchors.centerIn: parent
+                            text: modelData && modelData.badge !== undefined ? String(modelData.badge) : ""
+                            font.pixelSize: root.itemFontSize - 2
+                            font.bold: true
+                            color: segItem.isSelected ? ThemeTokens.accent : ThemeTokens.subduedText
+                        }
                     }
                 }
 

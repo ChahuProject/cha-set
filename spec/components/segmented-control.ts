@@ -8,6 +8,7 @@ export const segmentedControlOptionSchema = z.object({
   label: z.string(),
   value: z.union([z.string(), z.number()]),
   icon: z.string().optional(),
+  badge: z.union([z.string(), z.number()]).optional(),
   disabled: z.boolean().default(false),
 });
 

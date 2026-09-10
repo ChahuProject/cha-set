@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SegmentedControl, Card } from '@chahu/cha-set';
+import { SegmentedControl, Card, Button, Checkbox } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -12,9 +12,9 @@ export function SegmentedControlDocPage() {
   const [disabled, setDisabled] = useState(false);
 
   const viewOptions = [
-    { label: 'Grid', value: 'grid' },
-    { label: 'List', value: 'list' },
-    { label: 'Gallery', value: 'gallery' },
+    { label: 'Grid', value: 'grid', icon: '⊞' },
+    { label: 'List', value: 'list', icon: '☰' },
+    { label: 'Gallery', value: 'gallery', icon: '▣', badge: 3 },
   ];
 
   const menuOptions = [
@@ -26,9 +26,9 @@ export function SegmentedControlDocPage() {
   const heroReactCode = `<SegmentedControl
   size="${selectedSize}"
   options={[
-    { label: 'Grid', value: 'grid' },
-    { label: 'List', value: 'list' },
-    { label: 'Gallery', value: 'gallery' },
+    { label: 'Grid', value: 'grid', icon: '⊞' },
+    { label: 'List', value: 'list', icon: '☰' },
+    { label: 'Gallery', value: 'gallery', icon: '▣', badge: 3 },
   ]}
   value={activeView}
   onValueChange={setActiveView}
@@ -38,9 +38,9 @@ export function SegmentedControlDocPage() {
   const heroQtCode = `ChaSetSegmentedControl {
     size: "${selectedSize}"
     options: [
-        { label: "Grid", value: "grid" },
-        { label: "List", value: "list" },
-        { label: "Gallery", value: "gallery" }
+        { label: "Grid", value: "grid", icon: "⊞" },
+        { label: "List", value: "list", icon: "☰" },
+        { label: "Gallery", value: "gallery", icon: "▣", badge: 3 }
     ]
     value: activeView
     disabled: ${disabled}
@@ -51,7 +51,7 @@ export function SegmentedControlDocPage() {
     <DocLayout
       category="Components"
       title="Segmented Control"
-      description="A compact pill-style segmented switch for toolbars, menus, and view toggles."
+      description="A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'sizes', title: 'Sizes' },
@@ -68,27 +68,26 @@ export function SegmentedControlDocPage() {
           qtCode={heroQtCode}
           controls={
             <div className="flex flex-wrap items-center gap-4 text-xs">
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <span>Size:</span>
-                <select
-                  value={selectedSize}
-                  onChange={(e) => setSelectedSize(e.target.value as 'sm' | 'default' | 'lg')}
-                  className="rounded border border-border bg-background px-2 py-1 text-foreground"
-                >
-                  <option value="sm">sm (22px)</option>
-                  <option value="default">default (28px)</option>
-                  <option value="lg">lg (36px)</option>
-                </select>
-              </label>
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={disabled}
-                  onChange={(e) => setDisabled(e.target.checked)}
-                  className="rounded border-border"
-                />
-                <span>Disabled</span>
-              </label>
+              <div className="flex items-center gap-1.5">
+                <span className="text-muted-foreground">Size:</span>
+                <div className="flex items-center gap-1">
+                  {(['sm', 'default', 'lg'] as const).map((s) => (
+                    <Button
+                      key={s}
+                      size="sm"
+                      variant={selectedSize === s ? 'default' : 'outline'}
+                      onClick={() => setSelectedSize(s)}
+                    >
+                      {s.toUpperCase()}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              <Checkbox
+                checked={disabled}
+                onCheckedChange={(c) => setDisabled(Boolean(c))}
+                label="Disabled"
+              />
             </div>
           }
         >
@@ -108,18 +107,18 @@ export function SegmentedControlDocPage() {
       </section>
 
       <section id="sizes" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Sizes</h2>
+        <h2 className="text-xl font-semibold text-foreground">Sizes & Badges</h2>
         <Card className="p-6 space-y-6">
           <div className="space-y-2">
-            <div className="text-xs font-semibold text-muted-foreground">Small (22px - Menu & Toolbar dense)</div>
+            <div className="text-xs font-semibold text-muted-foreground">Small (sm - Menu & Toolbar dense)</div>
             <SegmentedControl size="sm" options={viewOptions} defaultValue="grid" />
           </div>
           <div className="space-y-2">
-            <div className="text-xs font-semibold text-muted-foreground">Default (28px - Standard controls)</div>
+            <div className="text-xs font-semibold text-muted-foreground">Default (Standard controls)</div>
             <SegmentedControl size="default" options={viewOptions} defaultValue="grid" />
           </div>
           <div className="space-y-2">
-            <div className="text-xs font-semibold text-muted-foreground">Large (36px - Prominent tabs style)</div>
+            <div className="text-xs font-semibold text-muted-foreground">Large (lg - Prominent tabs style)</div>
             <SegmentedControl size="lg" options={viewOptions} defaultValue="grid" />
           </div>
         </Card>
@@ -161,7 +160,7 @@ export function SegmentedControlDocPage() {
               name: 'options',
               type: 'SegmentedControlOption[]',
               required: true,
-              description: 'Array of option objects ({ label, value, icon?, disabled? }).',
+              description: 'Array of option objects ({ label, value, icon?, badge?, disabled? }).',
             },
             {
               name: 'value',
@@ -186,7 +185,7 @@ export function SegmentedControlDocPage() {
               type: "'sm' | 'default' | 'lg'",
               default: "'default'",
               required: false,
-              description: 'Physical dimension variant (sm: 22px, default: 28px, lg: 36px).',
+              description: "Physical dimension variant ('sm', 'default', 'lg').",
             },
             {
               name: 'title',
@@ -214,3 +213,4 @@ export function SegmentedControlDocPage() {
     </DocLayout>
   );
 }
+

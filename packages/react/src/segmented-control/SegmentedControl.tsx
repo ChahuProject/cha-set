@@ -8,7 +8,7 @@ export const segmentedControlVariants = cva(
   {
     variants: {
       size: {
-        sm: 'h-[22px] text-xs gap-0.5',
+        sm: 'h-[1.375rem] text-xs gap-0.5',
         default: 'h-7 text-xs gap-1',
         lg: 'h-9 text-sm gap-1',
       },
@@ -20,11 +20,11 @@ export const segmentedControlVariants = cva(
 );
 
 export const segmentedItemVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-[5px] font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40 cursor-pointer',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-[0.3125rem] font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40 cursor-pointer gap-1.5',
   {
     variants: {
       size: {
-        sm: 'h-[18px] px-2 text-[11px] leading-none',
+        sm: 'h-[1.125rem] px-2 text-[0.6875rem] leading-none',
         default: 'h-6 px-2.5 text-xs',
         lg: 'h-8 px-3 text-sm',
       },
@@ -42,6 +42,7 @@ export interface SegmentedControlProps
   value?: string | number;
   defaultValue?: string | number;
   onValueChange?: (value: string | number) => void;
+  onChange?: (value: string | number) => void;
   size?: SegmentedControlSize;
   title?: string;
   disabled?: boolean;
@@ -55,6 +56,7 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
       value: controlledValue,
       defaultValue,
       onValueChange,
+      onChange,
       size = 'default',
       title,
       disabled = false,
@@ -77,6 +79,7 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
         setUncontrolledValue(val);
       }
       onValueChange?.(val);
+      onChange?.(val);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -149,7 +152,25 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
                     : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
                 )}
               >
-                {option.label}
+                {option.icon && (
+                  <span data-slot="segmented-icon" className="inline-flex shrink-0 items-center justify-center">
+                    {option.icon}
+                  </span>
+                )}
+                <span>{option.label}</span>
+                {option.badge !== undefined && (
+                  <span
+                    data-slot="segmented-badge"
+                    className={cn(
+                      'inline-flex items-center justify-center rounded-full px-1.5 text-[0.625rem] font-semibold leading-tight',
+                      isSelected
+                        ? 'bg-primary/10 text-primary'
+                        : 'bg-muted-foreground/15 text-muted-foreground'
+                    )}
+                  >
+                    {option.badge}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -160,3 +181,4 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
 );
 
 SegmentedControl.displayName = 'SegmentedControl';
+
