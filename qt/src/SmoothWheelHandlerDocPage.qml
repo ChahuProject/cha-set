@@ -111,13 +111,11 @@ DocLayout {
                                     font.bold: true
                                 }
 
-                                Text {
+                                ChaSetBadge {
                                     anchors.right: parent.right
                                     anchors.verticalCenter: parent.verticalCenter
-                                    text: "offset: " + (index * 50) + "px"
-                                    color: ThemeTokens.subduedText
-                                    font.pixelSize: 11
-                                    font.family: "monospace"
+                                    variant: "outline"
+                                    text: "Item #" + (index + 1)
                                 }
                             }
                         }

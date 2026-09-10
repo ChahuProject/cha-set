@@ -19,7 +19,7 @@ Item {
     /// Speed multiplier applied to raw wheel delta
     property real speedMultiplier: 1.2
 
-    /// Optional fixed pixel step size per notch (<= 0 for dynamic angleDelta)
+    /// Optional fixed step size per notch (<= 0 for dynamic angleDelta)
     property real fixedStepSize: 0
 
     /// Intercept and consume wheel event
@@ -113,7 +113,7 @@ Item {
         return isVerticalTarget() ? targetItem.contentY : targetItem.contentX
     }
 
-    function scrollBy(deltaPixels) {
+    function scrollBy(deltaAmount) {
         if (!targetItem) return
         const maxScroll = calculateMaxScroll()
         const cur = currentPos()
@@ -125,7 +125,7 @@ Item {
             }
         }
 
-        const nextTarget = Math.max(0, Math.min(maxScroll, base + deltaPixels))
+        const nextTarget = Math.max(0, Math.min(maxScroll, base + deltaAmount))
         targetPos = nextTarget
 
         const dur = root.duration

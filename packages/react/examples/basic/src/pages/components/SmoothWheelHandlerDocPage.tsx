@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { SmoothWheelHandler, Card, Button } from '@chahu/cha-set';
+import {
+  SmoothWheelHandler,
+  Card,
+  Badge,
+  SegmentedControl,
+} from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -69,31 +74,33 @@ export function SmoothWheelHandlerDocPage() {
           qtCode={heroQtCode}
           controls={
             <div className="flex flex-wrap items-center gap-4 text-xs">
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <span>Speed:</span>
-                <select
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground font-medium">Speed Multiplier:</span>
+                <SegmentedControl
+                  size="sm"
                   value={speed}
-                  onChange={(e) => setSpeed(Number(e.target.value))}
-                  className="rounded border border-border bg-background px-2 py-1 text-foreground"
-                >
-                  <option value={1.0}>1.0x (Standard)</option>
-                  <option value={1.2}>1.2x (Responsive)</option>
-                  <option value={1.5}>1.5x (Fast)</option>
-                  <option value={2.0}>2.0x (Hyper)</option>
-                </select>
-              </label>
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <span>Damping Duration:</span>
-                <select
+                  onValueChange={(val) => setSpeed(Number(val))}
+                  options={[
+                    { label: '1.0x', value: 1.0 },
+                    { label: '1.2x', value: 1.2 },
+                    { label: '1.5x', value: 1.5 },
+                    { label: '2.0x', value: 2.0 },
+                  ]}
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground font-medium">Damping Duration:</span>
+                <SegmentedControl
+                  size="sm"
                   value={duration}
-                  onChange={(e) => setDuration(Number(e.target.value))}
-                  className="rounded border border-border bg-background px-2 py-1 text-foreground"
-                >
-                  <option value={100}>100ms (Tight)</option>
-                  <option value={200}>200ms (Natural)</option>
-                  <option value={350}>350ms (Soft Glide)</option>
-                </select>
-              </label>
+                  onValueChange={(val) => setDuration(Number(val))}
+                  options={[
+                    { label: '100ms', value: 100 },
+                    { label: '200ms', value: 200 },
+                    { label: '350ms', value: 350 },
+                  ]}
+                />
+              </div>
             </div>
           }
         >
@@ -111,7 +118,7 @@ export function SmoothWheelHandlerDocPage() {
                     className="p-3 bg-card border border-border/60 rounded-lg shadow-xs flex items-center justify-between text-xs"
                   >
                     <span className="font-medium text-foreground">Smooth Scroll Item #{i + 1}</span>
-                    <span className="text-muted-foreground font-mono">pos: {i * 48}px</span>
+                    <Badge variant="outline">Item #{i + 1}</Badge>
                   </div>
                 ))}
               </div>
@@ -194,7 +201,7 @@ export function SmoothWheelHandlerDocPage() {
               type: 'number',
               default: '0',
               required: false,
-              description: 'Optional quantized pixel step per wheel notch (0 for dynamic).',
+              description: 'Optional quantized step increment per wheel notch (0 for dynamic).',
             },
             {
               name: 'consumeEvent',
