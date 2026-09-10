@@ -21,7 +21,8 @@
       "thumbDrag": { "requirement": "must", "description": "dragging thumb translates viewport linearly with boundary clamping" },
       "trackJump": { "requirement": "must", "description": "clicking track jumps thumb under cursor accurately" },
       "boundaryClamp": { "requirement": "should", "description": "disables buttons when at scroll boundary" },
-      "smoothScroll": { "requirement": "should", "description": "smooth scroll animation for stepper actions" }
+      "smoothScroll": { "requirement": "should", "description": "smooth scroll animation for stepper actions" },
+      "size": { "requirement": "should", "description": "supports default and compact sm sizes" }
     },
     "tabs": {
       "selection": { "requirement": "must", "description": "selecting a tab switches active panel and state" },

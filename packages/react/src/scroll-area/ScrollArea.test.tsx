@@ -27,6 +27,7 @@ const covered: Record<string, boolean> = {
   wheelScroll: true,
   thumbDrag: true,
   trackJump: false,
+  size: false,
 };
 
 afterAll(() => {
@@ -263,5 +264,25 @@ describe('ScrollArea and ScrollBar', () => {
     expect(content?.className).toContain('max-w-full');
     expect(content?.className).toContain('min-w-0');
     expect(content?.style.minWidth).toBe('0px');
+  });
+
+  it('supports size prop for compact density', () => {
+    const { container, rerender } = render(
+      <ScrollArea size="sm" className="h-64 w-64">
+        <div style={{ height: 1000 }}>Compact Scrollable</div>
+      </ScrollArea>,
+    );
+
+    let scrollbar = container.querySelector('[data-orientation="vertical"]');
+    expect(scrollbar).toHaveAttribute('data-size', 'sm');
+
+    rerender(
+      <ScrollArea size="default" className="h-64 w-64">
+        <div style={{ height: 1000 }}>Default Scrollable</div>
+      </ScrollArea>,
+    );
+    scrollbar = container.querySelector('[data-orientation="vertical"]');
+    expect(scrollbar).toHaveAttribute('data-size', 'default');
+    covered.size = true;
   });
 });

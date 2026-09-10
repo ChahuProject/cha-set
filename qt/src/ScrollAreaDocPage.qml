@@ -20,6 +20,7 @@ DocLayout {
     ]
 
     property string heroMode: "vertical"
+    property string heroSize: "default"
     property bool showButtons: true
     property bool smoothScroll: true
     property int customRadius: 8
@@ -39,6 +40,7 @@ DocLayout {
         title: "ScrollArea Showcase"
         reactCode: `<ScrollArea
   className="h-72 w-full rounded-md border border-border"
+  size="${root.heroSize}"
   showVerticalScrollBar={${root.heroMode !== "horizontal"}}
   showHorizontalScrollBar={${root.heroMode !== "vertical"}}
   showButtons={${root.showButtons}}
@@ -49,6 +51,7 @@ DocLayout {
         qtCode: `ChaSetScrollArea {
     width: parent.width
     height: 280
+    size: "${root.heroSize}"
     showButtons: ${root.showButtons}
     showVerticalScrollBar: ${root.heroMode !== "horizontal"}
     showHorizontalScrollBar: ${root.heroMode !== "vertical"}
@@ -72,6 +75,7 @@ DocLayout {
                 visible: root.heroMode === "vertical"
                 anchors.fill: parent
                 anchors.margins: 4
+                size: root.heroSize
                 showButtons: root.showButtons
                 smoothScroll: root.smoothScroll
                 contentWidth: parent.width - 20
@@ -105,6 +109,7 @@ DocLayout {
                 visible: root.heroMode === "horizontal"
                 anchors.fill: parent
                 anchors.margins: 10
+                size: root.heroSize
                 showVerticalScrollBar: false
                 showHorizontalScrollBar: true
                 showButtons: root.showButtons
@@ -148,6 +153,7 @@ DocLayout {
                 visible: root.heroMode === "both"
                 anchors.fill: parent
                 anchors.margins: 6
+                size: root.heroSize
                 showVerticalScrollBar: true
                 showHorizontalScrollBar: true
                 showButtons: root.showButtons
@@ -184,6 +190,20 @@ DocLayout {
                         variant: root.heroMode === modelData[0] ? "default" : "outline"
                         text: modelData[1]
                         onClicked: root.heroMode = modelData[0]
+                    }
+                }
+            },
+            Row {
+                spacing: 6
+                Text { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
+                Repeater {
+                    model: [["default", "Default"], ["sm", "Compact (sm)"]]
+                    delegate: ChaSetButton {
+                        required property var modelData
+                        size: "sm"
+                        variant: root.heroSize === modelData[0] ? "default" : "outline"
+                        text: modelData[1]
+                        onClicked: root.heroSize = modelData[0]
                     }
                 }
             },
@@ -413,7 +433,7 @@ export const CrossStackSpecification = {
         }
 
         Text {
-            text: "Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces an interaction hot-zone paired with an animated visual indicator that expands from 4px idle to 8px hover with 150ms cubic easing."
+            text: "Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces an interaction hot-zone paired with an animated visual indicator that expands from slim idle to expanded hover with 150ms cubic easing."
             color: ThemeTokens.subduedText
             font.pixelSize: 13
             wrapMode: Text.WordWrap
@@ -432,17 +452,17 @@ export const CrossStackSpecification = {
                 Row {
                     spacing: 8
                     Rectangle { width: 8; height: 8; radius: 4; color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
-                    Text { text: "Idle State: 4px slim indicator bar, non-intrusive and lightweight."; color: ThemeTokens.text; font.pixelSize: 12 }
+                    Text { text: "Idle State: Slim indicator bar, non-intrusive and lightweight."; color: ThemeTokens.text; font.pixelSize: 12 }
                 }
                 Row {
                     spacing: 8
                     Rectangle { width: 8; height: 8; radius: 4; color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
-                    Text { text: "Hover State: Expands to 8px with high visual affordance."; color: ThemeTokens.text; font.pixelSize: 12 }
+                    Text { text: "Hover State: Expands with high visual affordance."; color: ThemeTokens.text; font.pixelSize: 12 }
                 }
                 Row {
                     spacing: 8
                     Rectangle { width: 8; height: 8; radius: 4; color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
-                    Text { text: "Hit Area: 8px compact trigger box prevents accidental cursor capture."; color: ThemeTokens.text; font.pixelSize: 12 }
+                    Text { text: "Hit Area: Compact trigger box prevents accidental cursor capture."; color: ThemeTokens.text; font.pixelSize: 12 }
                 }
             }
         }
@@ -524,6 +544,7 @@ export const CrossStackSpecification = {
             width: parent.width
             title: "ChaSetScrollArea Properties"
             propsModel: [
+                ["size", "string", "\"default\"", "Scrollbar density and scale (\"default\" | \"sm\")."],
                 ["showVerticalScrollBar", "bool", "true", "Whether to render vertical scrollbar."],
                 ["showHorizontalScrollBar", "bool", "false", "Whether to render horizontal scrollbar."],
                 ["showButtons", "bool", "true", "Whether stepper navigation buttons appear on hover."],
@@ -532,19 +553,19 @@ export const CrossStackSpecification = {
             ]
         }
 
-        
-    KeyboardShortcutsTable {
-        componentId: "scroll-area"
-    }
+        KeyboardShortcutsTable {
+            componentId: "scroll-area"
+        }
 
-    PropsTable {
+        PropsTable {
             width: parent.width
             title: "ChaSetScrollBar Properties"
             propsModel: [
                 ["orientation", "Qt::Orientation", "Qt.Vertical", "Scrollbar orientation axis."],
-                ["collapsedSize", "int", "4", "Thickness in pixels of the visual indicator when idle."],
-                ["expandedSize", "int", "10", "Thickness in pixels of the visual indicator when hovered."],
-                ["hitSize", "int", "14", "Thickness in pixels of the pointer-capture hot-zone (preventing Win32 resize border conflict)."]
+                ["barSize", "string", "\"default\"", "Scrollbar density and scale (\"default\" | \"sm\")."],
+                ["collapsedSize", "int", "4", "Thickness of the visual indicator when idle."],
+                ["expandedSize", "int", "10", "Thickness of the visual indicator when hovered."],
+                ["hitSize", "int", "14", "Thickness of the pointer-capture hot-zone (preventing Win32 resize border conflict)."]
             ]
         }
     }

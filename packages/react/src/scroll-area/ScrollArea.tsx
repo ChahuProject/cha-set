@@ -6,6 +6,8 @@ import { ScrollBar } from './ScrollBar';
 
 export interface ScrollAreaProps
   extends React.ComponentPropsWithoutRef<typeof BaseScrollArea.Root> {
+  /** Scrollbar density and scale. @default 'default' */
+  size?: 'default' | 'sm';
   /** Whether to automatically render a vertical scrollbar. @default true */
   showVerticalScrollBar?: boolean;
   /** Whether to automatically render a horizontal scrollbar. @default false */
@@ -65,6 +67,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       contentClassName,
       contentStyle,
       children,
+      size = 'default',
       showVerticalScrollBar = true,
       showHorizontalScrollBar = false,
       showButtons = true,
@@ -297,6 +300,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
           {showVerticalScrollBar && (
             <ScrollBar
               orientation="vertical"
+              size={size}
               showButtons={showButtons}
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}
@@ -309,6 +313,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
           {showHorizontalScrollBar && (
             <ScrollBar
               orientation="horizontal"
+              size={size}
               showButtons={showButtons}
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}

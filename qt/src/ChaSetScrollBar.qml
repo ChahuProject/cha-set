@@ -1,9 +1,9 @@
 // ChaSet ScrollBar for Qt (QML)
 // Professional Cross-Stack ScrollBar implementation:
 // 1. Dual-mode Theme Adapter (operates seamlessly with ThemeTokens or dunting-qt ThemeManager)
-// 2. 14px hit interaction zone preventing Win32 window resizing border conflict
-// 3. Dynamic symmetric expansion (6px idle -> 10px hover/drag) with zero-latency thumb tracking
-// 4. Guaranteed minimum thumb length (minThumbLength: 30) for 100k+ item datasets
+// 2. Interaction zone preventing Win32 window resizing border conflict
+// 3. Dynamic symmetric expansion (idle -> hover/drag) with zero-latency thumb tracking
+// 4. Guaranteed minimum thumb length for large item datasets
 // 5. Two-end stepper navigation buttons with autoRepeat and boundary clamping
 // 6. Automatic auto-hide when content fits without overflow
 
@@ -16,11 +16,13 @@ T.ScrollBar {
     id: control
 
     // ---- Desktop Geometry Properties ----
-    property int hitThickness: 14
-    property int thumbThickness: 4
-    property int expandedThumbThickness: 10
-    property int minThumbLength: 30
-    property int buttonLength: 14
+    property string barSize: "default" // "default" | "sm"
+    readonly property bool isSm: barSize === "sm"
+    property int hitThickness: isSm ? 10 : 14
+    property int thumbThickness: isSm ? 2 : 4
+    property int expandedThumbThickness: isSm ? 6 : 10
+    property int minThumbLength: isSm ? 20 : 30
+    property int buttonLength: isSm ? 10 : 14
     property bool showButtons: true
     property bool autoRepeat: true
     property int autoRepeatDelay: 400

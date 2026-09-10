@@ -12,12 +12,13 @@ Flickable {
     property alias verticalScrollBar: vScrollBar
     property alias horizontalScrollBar: hScrollBar
 
+    property string size: "default" // "default" | "sm"
     property bool showVerticalScrollBar: true
     property bool showHorizontalScrollBar: false
     property bool showButtons: true
-    property int hitSize: 8
-    property int collapsedSize: 4
-    property int expandedSize: 8
+    property int hitSize: size === "sm" ? 6 : 8
+    property int collapsedSize: size === "sm" ? 2 : 4
+    property int expandedSize: size === "sm" ? 6 : 8
     property real pageStepRatio: 0.85
     property bool smoothScroll: true
     property bool forceHover: false
@@ -221,6 +222,7 @@ Flickable {
     ScrollBar.vertical: ChaSetScrollBar {
         id: vScrollBar
         scrollArea: root
+        barSize: root.size
         visible: root.showVerticalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentHeight > root.height))
         showButtons: root.showButtons
         collapsedSize: root.collapsedSize
@@ -236,6 +238,7 @@ Flickable {
     ScrollBar.horizontal: ChaSetScrollBar {
         id: hScrollBar
         scrollArea: root
+        barSize: root.size
         visible: root.showHorizontalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentWidth > root.width))
         showButtons: root.showButtons
         collapsedSize: root.collapsedSize

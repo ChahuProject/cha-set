@@ -8,17 +8,19 @@ export interface ScrollBarProps
   extends React.HTMLAttributes<HTMLDivElement> {
   /** Scrollbar orientation. @default 'vertical' */
   orientation?: 'vertical' | 'horizontal';
+  /** Scrollbar density and scale. @default 'default' */
+  size?: 'default' | 'sm';
   /** Whether to show to-top/bottom & page-up/down stepper buttons. @default true */
   showButtons?: boolean;
   /** Viewport scroll step ratio for page buttons. @default 0.85 */
   pageStepRatio?: number;
   /** Whether stepper buttons trigger smooth scrolling. @default true */
   smoothScroll?: boolean;
-  /** Custom hot zone thickness in pixels or rem string. @default 8 (0.5rem) */
+  /** Custom hot zone thickness in rem string or scale value. @default 8 (0.5rem) */
   hitSize?: number | string;
-  /** Collapsed indicator thickness in pixels or rem string. @default 4 (0.25rem) */
+  /** Collapsed indicator thickness in rem string or scale value. @default 4 (0.25rem) */
   collapsedSize?: number | string;
-  /** Expanded indicator thickness in pixels or rem string. @default 8 (0.5rem) */
+  /** Expanded indicator thickness in rem string or scale value. @default 8 (0.5rem) */
   expandedSize?: number | string;
   /** Whether to keep mounted in DOM when hidden. @default false */
   keepMounted?: boolean;
@@ -43,12 +45,13 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
     {
       className,
       orientation = 'vertical',
+      size = 'default',
       showButtons = true,
       pageStepRatio = 0.85,
       smoothScroll = true,
-      hitSize = 8,
-      collapsedSize = 4,
-      expandedSize = 8,
+      hitSize = size === 'sm' ? 6 : 8,
+      collapsedSize = size === 'sm' ? 2 : 4,
+      expandedSize = size === 'sm' ? 6 : 8,
       keepMounted = false,
       autoHide = true,
       forceHover = false,
@@ -79,6 +82,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
       <div
         ref={ref}
         data-orientation={orientation}
+        data-size={size}
         data-has-overflow={hasOverflow ? '' : undefined}
         style={{
           ...(isVertical

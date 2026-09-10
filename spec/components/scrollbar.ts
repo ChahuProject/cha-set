@@ -6,9 +6,11 @@ import { z } from 'zod';
  */
 export const scrollBarOrientationSchema = z.enum(['vertical', 'horizontal']);
 export const scrollBarVisibilitySchema = z.enum(['hover', 'always', 'scroll']);
+export const scrollBarSizeSchema = z.enum(['default', 'sm']);
 
 export const scrollBarSchema = z.object({
   orientation: scrollBarOrientationSchema.default('vertical'),
+  size: scrollBarSizeSchema.default('default'),
   showButtons: z.boolean().default(true),
   hitSize: z.number().default(8),
   collapsedSize: z.number().default(4),
@@ -20,6 +22,7 @@ export const scrollBarSchema = z.object({
 });
 
 export const scrollAreaSchema = z.object({
+  size: scrollBarSizeSchema.default('default'),
   type: scrollBarVisibilitySchema.default('hover'),
   scrollHideDelay: z.number().default(600),
   showVerticalScrollBar: z.boolean().default(true),
@@ -29,3 +32,5 @@ export const scrollAreaSchema = z.object({
 
 export type ScrollBarApi = z.infer<typeof scrollBarSchema>;
 export type ScrollAreaApi = z.infer<typeof scrollAreaSchema>;
+export type ScrollBarSize = z.infer<typeof scrollBarSizeSchema>;
+

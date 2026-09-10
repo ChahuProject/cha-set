@@ -19,7 +19,8 @@
     "smoothScroll": true,
     "wheelScroll": true,
     "thumbDrag": true,
-    "trackJump": true
+    "trackJump": true,
+    "size": true
   },
   "tabs": {
     "selection": true,

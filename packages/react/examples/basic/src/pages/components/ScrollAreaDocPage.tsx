@@ -44,12 +44,13 @@ const SAMPLE_MATRIX_ROWS = Array.from({ length: 100 }).map((_, i) => {
 
 export function ScrollAreaDocPage() {
   const [heroMode, setHeroMode] = useState<'vertical' | 'horizontal' | 'both'>('vertical');
+  const [heroSize, setHeroSize] = useState<'default' | 'sm'>('default');
   const [showButtons, setShowButtons] = useState(true);
   const [smoothScroll, setSmoothScroll] = useState(true);
-  const [hitSize, setHitSize] = useState(16);
 
   const reactCode = `<ScrollArea
   className="h-72 w-full rounded-md border border-border"
+  size="${heroSize}"
   showVerticalScrollBar={${heroMode !== 'horizontal'}}
   showHorizontalScrollBar={${heroMode !== 'vertical'}}
   showButtons={${showButtons}}
@@ -84,6 +85,7 @@ export function ScrollAreaDocPage() {
   const qtCode = `ChaSetScrollArea {
     width: parent.width
     height: 300
+    size: "${heroSize}"
     showButtons: ${showButtons}
     showVerticalScrollBar: ${heroMode !== 'horizontal'}
     showHorizontalScrollBar: ${heroMode !== 'vertical'}
@@ -131,7 +133,7 @@ export function ScrollAreaDocPage() {
             <div className="flex flex-wrap items-center justify-between gap-4 w-full">
               {/* Orientation Mode */}
               <div className="flex items-center gap-1.5">
-                <span className="text-muted-foreground font-medium">Mode:</span>
+                <span className="text-muted-foreground font-medium text-xs">Mode:</span>
                 {(['vertical', 'horizontal', 'both'] as ('vertical' | 'horizontal' | 'both')[]).map((m) => (
                   <Button
                     key={m}
@@ -142,6 +144,23 @@ export function ScrollAreaDocPage() {
                     className="h-7 text-xs capitalize"
                   >
                     {m === 'both' ? '2D Dual-Axis' : m}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Size Scale Toggle */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-muted-foreground font-medium text-xs">Size:</span>
+                {(['default', 'sm'] as const).map((s) => (
+                  <Button
+                    key={s}
+                    type="button"
+                    variant={heroSize === s ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setHeroSize(s)}
+                    className="h-7 text-xs capitalize"
+                  >
+                    {s === 'sm' ? 'Compact (sm)' : 'Default'}
                   </Button>
                 ))}
               </div>
@@ -169,6 +188,7 @@ export function ScrollAreaDocPage() {
             {heroMode === 'vertical' && (
               <ScrollArea
                 className="h-72 w-full rounded-lg border border-border bg-card shadow-xs"
+                size={heroSize}
                 showVerticalScrollBar
                 showHorizontalScrollBar={false}
                 showButtons={showButtons}
@@ -207,6 +227,7 @@ export function ScrollAreaDocPage() {
             {heroMode === 'horizontal' && (
               <ScrollArea
                 className="w-full rounded-lg border border-border bg-card shadow-xs"
+                size={heroSize}
                 showVerticalScrollBar={false}
                 showHorizontalScrollBar
                 showButtons={showButtons}
@@ -235,6 +256,7 @@ export function ScrollAreaDocPage() {
             {heroMode === 'both' && (
               <ScrollArea
                 className="h-72 w-full rounded-lg border border-border bg-card shadow-xs"
+                size={heroSize}
                 showVerticalScrollBar
                 showHorizontalScrollBar
                 showButtons={showButtons}
@@ -426,23 +448,23 @@ export const CrossStackSpecification = {
         <h2 className="text-xl font-bold tracking-tight mb-2">Dual-Box Hot Zone & Dynamic Width</h2>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
           Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces a compact{' '}
-          <strong>0.5rem (8px equivalent) transparent interaction hot-zone</strong> paired with an animated visual indicator that expands
-          from <code className="font-mono text-primary">0.25rem</code> (4px idle) to <code className="font-mono text-primary">0.5rem</code> (8px hover) with 150ms cubic easing.
+          <strong>0.5rem transparent interaction hot-zone</strong> paired with an animated visual indicator that expands
+          from <code className="font-mono text-primary">0.25rem</code> (idle) to <code className="font-mono text-primary">0.5rem</code> (hover) with 150ms cubic easing.
         </p>
 
         <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-col md:flex-row gap-6 items-center">
           <div className="flex-1 text-xs text-muted-foreground space-y-2">
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Idle State:</strong> 0.25rem (4px) slim indicator bar, non-intrusive.</span>
+              <span><strong>Idle State:</strong> 0.25rem slim indicator bar, non-intrusive.</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Hover State:</strong> Expands to 0.5rem (8px) with high visual affordance.</span>
+              <span><strong>Hover State:</strong> Expands to 0.5rem with high visual affordance.</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Hit Area:</strong> 0.5rem (8px) compact trigger box prevents accidental cursor capture.</span>
+              <span><strong>Hit Area:</strong> 0.5rem compact trigger box prevents accidental cursor capture.</span>
             </div>
           </div>
         </div>
@@ -492,6 +514,12 @@ export const CrossStackSpecification = {
           title="ScrollAreaProps"
           props={[
             {
+              name: 'size',
+              type: "'default' | 'sm'",
+              default: "'default'",
+              description: 'Scrollbar density and scale.',
+            },
+            {
               name: 'showVerticalScrollBar',
               type: 'boolean',
               default: 'true',
@@ -540,22 +568,28 @@ export const CrossStackSpecification = {
               description: 'Scrollbar orientation axis.',
             },
             {
+              name: 'size',
+              type: "'default' | 'sm'",
+              default: "'default'",
+              description: 'Scrollbar density and scale.',
+            },
+            {
               name: 'hitSize',
-              type: 'number',
-              default: '16',
-              description: 'Thickness in pixels of the transparent pointer-capture hot-zone.',
+              type: 'number | string',
+              default: '8',
+              description: 'Thickness of the transparent pointer-capture hot-zone.',
             },
             {
               name: 'collapsedSize',
-              type: 'number',
-              default: '6',
-              description: 'Thickness in pixels of the visual indicator when idle.',
+              type: 'number | string',
+              default: '4',
+              description: 'Thickness of the visual indicator when idle.',
             },
             {
               name: 'expandedSize',
-              type: 'number',
-              default: '12',
-              description: 'Thickness in pixels of the visual indicator when hovered.',
+              type: 'number | string',
+              default: '8',
+              description: 'Thickness of the visual indicator when hovered.',
             },
           ]}
         />
