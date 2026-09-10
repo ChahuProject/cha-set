@@ -119,7 +119,7 @@ export function DropdownMenuDocPage() {
             { name: 'open', type: 'boolean', default: 'undefined', description: 'Controlled open state of the dropdown menu.' },
             { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: 'Event handler called when open state changes.' },
             { name: 'modal', type: 'boolean', default: 'true', description: 'Whether to render as a modal trapping focus.' },
-            { name: 'sideOffset', type: 'number', default: '4', description: 'Distance in pixels from trigger to floating content.' },
+            { name: 'sideOffset', type: 'number', default: '4', description: 'Distance offset from trigger to floating content.' },
             { name: 'align', type: "'start' | 'center' | 'end'", default: "'start'", description: 'Alignment along trigger edge.' },
           ]}
         />

@@ -94,7 +94,7 @@ DocLayout {
         props: [
             { name: "open", type: "bool", default: "false", description: "Whether the menu popup is currently open." },
             { name: "items", type: "var[]", default: "[]", description: "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }." },
-            { name: "menuWidth", type: "int", default: "180", description: "Width of the popup menu panel in pixels." },
+            { name: "menuWidth", type: "int", default: "180", description: "Width dimension of the popup menu panel." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the menu panel." }
         ]
     }
