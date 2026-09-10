@@ -12,6 +12,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
+import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function SelectDocPage() {
   const [value, setValue] = useState('apple');
@@ -39,6 +40,7 @@ export function SelectDocPage() {
       description="Displays a list of options for the user to pick from, triggered by a button with item indicators and scroll buttons."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
+        { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'installation', title: 'Installation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -68,6 +70,16 @@ export function SelectDocPage() {
             </SelectContent>
           </Select>
         </ComponentPreview>
+      </section>
+
+      <section id="keyboard" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Keyboard Navigation
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Select options support full keyboard cycling, typeahead search, and seamless cursor tracking without dual-highlight artifacts.
+        </p>
+        <KeyboardShortcutsTable componentId="select" />
       </section>
 
       <section id="installation" className="scroll-mt-20 my-10">

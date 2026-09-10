@@ -10,6 +10,7 @@ DocLayout {
     description: "Displays a list of options for the user to pick from — triggered by a button with chevron and checked indicators."
     tocItems: [
         { id: "preview", title: "Interactive Preview" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "installation", title: "Installation" },
         { id: "props", title: "API Reference" }
     ]
@@ -70,6 +71,10 @@ DocLayout {
                 }
             }
         }
+    }
+
+    KeyboardShortcutsTable {
+        componentId: "select"
     }
 
     CodeBlock {

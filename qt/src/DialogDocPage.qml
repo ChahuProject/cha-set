@@ -10,6 +10,7 @@ DocLayout {
     description: "A modal window that interrupts the user with critical content and prompts for user action."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
         { id: "examples", title: "Examples & States" },
@@ -53,6 +54,10 @@ DocLayout {
                 }
             }
         ]
+    }
+
+    KeyboardShortcutsTable {
+        componentId: "dialog"
     }
 
     // Section 2: Installation

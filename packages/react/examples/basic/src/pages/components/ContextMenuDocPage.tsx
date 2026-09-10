@@ -11,6 +11,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
+import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function ContextMenuDocPage() {
   const reactCode = `<ContextMenu>
@@ -43,6 +44,7 @@ export function ContextMenuDocPage() {
       description="Displays a menu located at the pointer coordinates on right-click or desktop context gesture."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
+        { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'installation', title: 'Installation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -79,6 +81,16 @@ export function ContextMenuDocPage() {
             </ContextMenuContent>
           </ContextMenu>
         </ComponentPreview>
+      </section>
+
+      <section id="keyboard" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Keyboard Navigation
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Context menu supports desktop shortcut triggers (Shift+F10 / Menu key), directional item traversal, and modality isolation.
+        </p>
+        <KeyboardShortcutsTable componentId="context-menu" />
       </section>
 
       <section id="installation" className="scroll-mt-20 my-10">

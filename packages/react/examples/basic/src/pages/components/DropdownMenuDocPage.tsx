@@ -13,6 +13,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
+import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function DropdownMenuDocPage() {
   const reactCode = `<DropdownMenu>
@@ -49,6 +50,7 @@ export function DropdownMenuDocPage() {
       description="Displays a menu to the user triggered by a button, supporting items, labels, separators, shortcuts, and destructive actions."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
+        { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'installation', title: 'Installation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -89,6 +91,16 @@ export function DropdownMenuDocPage() {
             </DropdownMenuContent>
           </DropdownMenu>
         </ComponentPreview>
+      </section>
+
+      <section id="keyboard" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Keyboard Navigation
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Dropdown Menu implements the ChaSet Input Modality State Machine, suppressing stationary mouse hover highlights when navigating with arrow keys.
+        </p>
+        <KeyboardShortcutsTable componentId="dropdown-menu" />
       </section>
 
       <section id="installation" className="scroll-mt-20 my-10">

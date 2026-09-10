@@ -10,6 +10,7 @@ DocLayout {
     description: "Displays a menu to the user triggered by a button with item groups, icons, shortcuts, and destructive actions."
     tocItems: [
         { id: "preview", title: "Interactive Preview" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "installation", title: "Installation" },
         { id: "props", title: "API Reference" }
     ]
@@ -76,6 +77,10 @@ DocLayout {
                 }
             }
         }
+    }
+
+    KeyboardShortcutsTable {
+        componentId: "dropdown-menu"
     }
 
     CodeBlock {

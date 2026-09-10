@@ -10,6 +10,7 @@ DocLayout {
     description: "A set of layered content sections known as tab panels, displayed one at a time."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
         { id: "disabled", title: "Disabled State" },
@@ -138,6 +139,10 @@ DocLayout {
                 }
             }
         ]
+    }
+
+    KeyboardShortcutsTable {
+        componentId: "tabs"
     }
 
     // 2. Installation

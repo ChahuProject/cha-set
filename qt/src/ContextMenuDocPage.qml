@@ -10,6 +10,7 @@ DocLayout {
     description: "Displays a contextual popup menu at pointer coordinates triggered by right-click interaction."
     tocItems: [
         { id: "preview", title: "Interactive Preview" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "installation", title: "Installation" },
         { id: "props", title: "API Reference" }
     ]
@@ -101,6 +102,10 @@ DocLayout {
                 }
             }
         }
+    }
+
+    KeyboardShortcutsTable {
+        componentId: "context-menu"
     }
 
     CodeBlock {

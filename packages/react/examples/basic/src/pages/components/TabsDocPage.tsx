@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
+import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function TabsDocPage() {
   const [activeTab, setActiveTab] = useState('account');
@@ -57,9 +58,10 @@ export function TabsDocPage() {
       description="A set of layered content sections known as tab panels, displayed one at a time."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
+        { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'installation', title: 'Installation' },
         { id: 'anatomy', title: 'Anatomy' },
-        { id: 'disabled', title: 'Disabled State' },
+        { id: 'examples', title: 'Examples' },
         { id: 'props', title: 'Props Reference' },
       ]}
     >
@@ -121,6 +123,17 @@ export function TabsDocPage() {
             </Tabs>
           </Card>
         </ComponentPreview>
+      </section>
+
+      {/* Keyboard Navigation */}
+      <section id="keyboard" className="mt-12 scroll-mt-20">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Keyboard Navigation
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Tabs support standard horizontal and vertical arrow navigation with automatic selection or manual Space/Enter commit.
+        </p>
+        <KeyboardShortcutsTable componentId="tabs" />
       </section>
 
       {/* 2. Installation */}

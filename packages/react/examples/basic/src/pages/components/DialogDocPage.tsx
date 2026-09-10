@@ -17,6 +17,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
+import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function DialogDocPage() {
   const [open, setOpen] = useState(false);
@@ -107,6 +108,7 @@ export function DialogDocPage() {
       description="A modal window that interrupts the user with critical content and prompts for user action."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
+        { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'installation', title: 'Installation' },
         { id: 'anatomy', title: 'Anatomy' },
         { id: 'examples', title: 'Examples & States' },
@@ -179,6 +181,17 @@ export function DialogDocPage() {
             </span>
           </div>
         </ComponentPreview>
+      </section>
+
+      {/* Keyboard Navigation */}
+      <section id="keyboard" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Keyboard Navigation
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Dialog enforces accessible modal standards: Tab focus cycling is strictly trapped inside the modal, and Escape automatically dismisses the dialog while returning focus to the trigger.
+        </p>
+        <KeyboardShortcutsTable componentId="dialog" />
       </section>
 
       {/* 2. Installation */}
