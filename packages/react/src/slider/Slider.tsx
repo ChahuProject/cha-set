@@ -12,6 +12,8 @@ export interface SliderProps
   step?: number;
   disabled?: boolean;
   orientation?: SliderOrientation;
+  showTicks?: boolean;
+  marks?: string[];
   onValueChange?: (value: number) => void;
   onChange?: (value: number) => void;
   name?: string;
@@ -42,6 +44,8 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
       step = 1,
       disabled = false,
       orientation = 'horizontal',
+      showTicks = false,
+      marks,
       onValueChange,
       onChange,
       name,
@@ -61,6 +65,21 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
     const rootRef = React.useRef<HTMLDivElement | null>(null);
     const trackRef = React.useRef<HTMLSpanElement | null>(null);
     const thumbRef = React.useRef<HTMLSpanElement | null>(null);
+
+    const tickCount = marks && marks.length > 0
+      ? marks.length
+      : showTicks
+      ? Math.min(21, Math.max(2, Math.round((max - min) / step) + 1))
+      : 0;
+
+    const ticks = React.useMemo(() => {
+      if (tickCount <= 0) return [];
+      return Array.from({ length: tickCount }, (_, i) => {
+        const pct = (i / (tickCount - 1)) * 100;
+        const markLabel = marks && marks[i] !== undefined ? marks[i] : null;
+        return { index: i, pct, label: markLabel };
+      });
+    }, [tickCount, marks]);
 
     const composedRef = React.useCallback(
       (node: HTMLDivElement | null) => {
@@ -235,6 +254,54 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
             }
           />
         </span>
+        {ticks.length > 0 && (
+          <div
+            data-slot="slider-ticks"
+            className={cn(
+              'pointer-events-none absolute inset-0 flex items-center justify-between',
+              orientation === 'vertical' && 'flex-col',
+            )}
+          >
+            {ticks.map((t) => (
+              <span
+                key={t.index}
+                data-slot="slider-tick"
+                className={cn(
+                  'rounded-full z-[1]',
+                  orientation === 'horizontal' ? 'w-1 h-1' : 'h-1 w-1',
+                  t.pct <= percentage ? 'bg-primary' : 'bg-muted-foreground/40',
+                )}
+                style={
+                  orientation === 'horizontal'
+                    ? { position: 'absolute', left: `${t.pct}%`, transform: 'translateX(-50%)' }
+                    : { position: 'absolute', bottom: `${t.pct}%`, transform: 'translateY(50%)' }
+                }
+              />
+            ))}
+          </div>
+        )}
+        {marks && marks.length > 0 && (
+          <div
+            data-slot="slider-marks"
+            className={cn(
+              'absolute flex text-[10px] text-muted-foreground select-none pointer-events-none',
+              orientation === 'horizontal' ? 'w-full -bottom-4' : 'h-full -right-6 flex-col-reverse',
+            )}
+          >
+            {ticks.map((t) => (
+              <span
+                key={t.index}
+                style={
+                  orientation === 'horizontal'
+                    ? { position: 'absolute', left: `${t.pct}%`, transform: 'translateX(-50%)' }
+                    : { position: 'absolute', bottom: `${t.pct}%`, transform: 'translateY(50%)' }
+                }
+              >
+                {t.label}
+              </span>
+            ))}
+          </div>
+        )}
         <span
           ref={thumbRef}
           role="slider"

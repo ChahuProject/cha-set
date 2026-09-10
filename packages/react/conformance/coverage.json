@@ -244,5 +244,29 @@
     "collapsibleVariant": true,
     "resizableRail": true,
     "menuHierarchy": true
+  },
+  "segmentedControl": {
+    "selection": true,
+    "size": true,
+    "disabled": true,
+    "keyboard": true,
+    "styling": true
+  },
+  "smoothWheelHandler": {
+    "kinematics": true,
+    "orientation": true,
+    "interactionMutex": true
+  },
+  "settingRow": {
+    "layout": true,
+    "highlight": true
+  },
+  "elidedText": {
+    "truncation": true,
+    "tooltip": true
+  },
+  "splitterHandle": {
+    "resize": true,
+    "edgeOrientation": true
   }
 }

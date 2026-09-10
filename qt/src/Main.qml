@@ -90,6 +90,11 @@ ApplicationWindow {
         case "query-builder": return "QueryBuilderDocPage.qml";
         case "viewport-constrained-container": return "ViewportConstrainedContainerDocPage.qml";
         case "sidebar": return "SidebarDocPage.qml";
+        case "segmented-control": return "SegmentedControlDocPage.qml";
+        case "smooth-wheel-handler": return "SmoothWheelHandlerDocPage.qml";
+        case "setting-row": return "SettingRowDocPage.qml";
+        case "elided-text": return "ElidedTextDocPage.qml";
+        case "splitter-handle": return "SplitterHandleDocPage.qml";
         default: return "ButtonDocPage.qml";
         }
     }

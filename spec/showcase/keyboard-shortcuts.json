@@ -140,6 +140,12 @@
     { "key": "Home / End", "action": "Snap splitter to minimum / maximum pane limit" },
     { "key": "Enter", "action": "Reset splitter to default balanced ratio" }
   ],
+  "splitter-handle": [
+    { "key": "← / → / ↑ / ↓", "action": "Resize target panel by 10px increment" },
+    { "key": "Home", "action": "Snap panel to minSize" },
+    { "key": "End", "action": "Snap panel to maxSize" },
+    { "key": "Enter / Double Click", "action": "Reset panel to defaultSize" }
+  ],
   "resizable": [
     { "key": "Arrow Keys", "action": "Resize panel dimensions along active drag edge" },
     { "key": "Home / End", "action": "Snap panel to minimum / maximum allowable size" }
@@ -196,5 +202,20 @@
   "viewport-constrained-container": [
     { "key": "PageUp / PageDown", "action": "Scroll constrained viewport page up / down" },
     { "key": "Arrow Keys", "action": "Scroll viewport smoothly by step" }
+  ],
+  "segmented-control": [
+    { "key": "← / →", "action": "Navigate between adjacent segments" },
+    { "key": "Home / End", "action": "Jump to the first / last segment" },
+    { "key": "Space / Enter", "action": "Select and activate the focused segment" }
+  ],
+  "smooth-wheel-handler": [
+    { "key": "Mouse Wheel", "action": "Continuous smooth scrolling with momentum damping" },
+    { "key": "Shift + Wheel", "action": "Map vertical mouse wheel to horizontal scrolling" }
+  ],
+  "setting-row": [
+    { "key": "Tab / Shift + Tab", "action": "Focus embedded control inside setting row" }
+  ],
+  "elided-text": [
+    { "key": "Hover / Focus", "action": "Display full untruncated text in tooltip if elided" }
   ]
 }

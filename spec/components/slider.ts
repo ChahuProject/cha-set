@@ -14,6 +14,8 @@ export const sliderSchema = z.object({
   step: z.number().default(1),
   disabled: z.boolean().default(false),
   orientation: sliderOrientationSchema.default('horizontal'),
+  showTicks: z.boolean().default(false),
+  marks: z.array(z.string()).optional(),
 });
 
 export type SliderApi = z.infer<typeof sliderSchema>;

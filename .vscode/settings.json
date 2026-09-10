@@ -8,5 +8,6 @@
     ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap",
     "tsconfig.json": "tsconfig.*.json, jsconfig.*.json",
     ".env.example": ".env, .env.*"
-  }
+  },
+  "cmake.sourceDirectory": "D:/pengj/cha-set/qt"
 }

@@ -65,6 +65,11 @@ import { GenericDataTableDocPage } from './pages/components/GenericDataTableDocP
 import { QueryBuilderDocPage } from './pages/components/QueryBuilderDocPage';
 import { ViewportConstrainedContainerDocPage } from './pages/components/ViewportConstrainedContainerDocPage';
 import { SidebarDocPage } from './pages/components/SidebarDocPage';
+import { SegmentedControlDocPage } from './pages/components/SegmentedControlDocPage';
+import { SmoothWheelHandlerDocPage } from './pages/components/SmoothWheelHandlerDocPage';
+import { SettingRowDocPage } from './pages/components/SettingRowDocPage';
+import { ElidedTextDocPage } from './pages/components/ElidedTextDocPage';
+import { SplitterHandleDocPage } from './pages/components/SplitterHandleDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
@@ -595,6 +600,16 @@ export function App() {
         return <ViewportConstrainedContainerDocPage />;
       case '#/components/sidebar':
         return <SidebarDocPage />;
+      case '#/components/segmented-control':
+        return <SegmentedControlDocPage />;
+      case '#/components/smooth-wheel-handler':
+        return <SmoothWheelHandlerDocPage />;
+      case '#/components/setting-row':
+        return <SettingRowDocPage />;
+      case '#/components/elided-text':
+        return <ElidedTextDocPage />;
+      case '#/components/splitter-handle':
+        return <SplitterHandleDocPage />;
       case '#/components/button':
       default:
         return <ButtonDocPage />;

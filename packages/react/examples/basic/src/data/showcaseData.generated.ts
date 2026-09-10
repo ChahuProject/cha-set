@@ -1287,6 +1287,27 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/viewport-constrained-container",
         "badge": "Stage 2",
         "desc": "Container that dynamically bounds max-height based on available viewport space below the anchor."
+      },
+      {
+        "id": "segmented-control",
+        "title": "Segmented Control",
+        "href": "#/components/segmented-control",
+        "badge": "Stage 2",
+        "desc": "Compact pill segmented switch for toolbars, menus, and view toggles."
+      },
+      {
+        "id": "setting-row",
+        "title": "Setting Row",
+        "href": "#/components/setting-row",
+        "badge": "Stage 2",
+        "desc": "Settings form item layout with title, description, control slot, and anchor flash."
+      },
+      {
+        "id": "elided-text",
+        "title": "Elided Text",
+        "href": "#/components/elided-text",
+        "badge": "Stage 2",
+        "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
       }
     ]
   },
@@ -1329,6 +1350,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "desc": "Multi-pane resizable layout container with draggable gutters and collapse limits."
       },
       {
+        "id": "splitter-handle",
+        "title": "Splitter Handle",
+        "href": "#/components/splitter-handle",
+        "badge": "Stage 3",
+        "desc": "Edge resize handle with reference item coordinate stabilization and min/max clamping."
+      },
+      {
         "id": "resizable",
         "title": "Resizable",
         "href": "#/components/resizable",
@@ -1348,6 +1376,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/sidebar",
         "badge": "Stage 3",
         "desc": "Composable, responsive and resizable desktop-grade sidebar navigation system."
+      },
+      {
+        "id": "smooth-wheel-handler",
+        "title": "Smooth Wheel Handler",
+        "href": "#/components/smooth-wheel-handler",
+        "badge": "Stage 3",
+        "desc": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex."
       }
     ]
   },
@@ -1762,6 +1797,24 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
       "action": "Reset splitter to default balanced ratio"
     }
   ],
+  "splitter-handle": [
+    {
+      "key": "← / → / ↑ / ↓",
+      "action": "Resize target panel by 10px increment"
+    },
+    {
+      "key": "Home",
+      "action": "Snap panel to minSize"
+    },
+    {
+      "key": "End",
+      "action": "Snap panel to maxSize"
+    },
+    {
+      "key": "Enter / Double Click",
+      "action": "Reset panel to defaultSize"
+    }
+  ],
   "resizable": [
     {
       "key": "Arrow Keys",
@@ -1910,6 +1963,42 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Arrow Keys",
       "action": "Scroll viewport smoothly by step"
+    }
+  ],
+  "segmented-control": [
+    {
+      "key": "← / →",
+      "action": "Navigate between adjacent segments"
+    },
+    {
+      "key": "Home / End",
+      "action": "Jump to the first / last segment"
+    },
+    {
+      "key": "Space / Enter",
+      "action": "Select and activate the focused segment"
+    }
+  ],
+  "smooth-wheel-handler": [
+    {
+      "key": "Mouse Wheel",
+      "action": "Continuous smooth scrolling with momentum damping"
+    },
+    {
+      "key": "Shift + Wheel",
+      "action": "Map vertical mouse wheel to horizontal scrolling"
+    }
+  ],
+  "setting-row": [
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Focus embedded control inside setting row"
+    }
+  ],
+  "elided-text": [
+    {
+      "key": "Hover / Focus",
+      "action": "Display full untruncated text in tooltip if elided"
     }
   ]
 };

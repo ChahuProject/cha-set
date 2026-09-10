@@ -42,6 +42,11 @@ import { VirtualGridDocPage } from '../../examples/basic/src/pages/components/Vi
 import { VirtualListDocPage } from '../../examples/basic/src/pages/components/VirtualListDocPage';
 import { VirtualTreeDocPage } from '../../examples/basic/src/pages/components/VirtualTreeDocPage';
 import { WindowTitleBarDocPage } from '../../examples/basic/src/pages/components/WindowTitleBarDocPage';
+import { SegmentedControlDocPage } from '../../examples/basic/src/pages/components/SegmentedControlDocPage';
+import { SmoothWheelHandlerDocPage } from '../../examples/basic/src/pages/components/SmoothWheelHandlerDocPage';
+import { SettingRowDocPage } from '../../examples/basic/src/pages/components/SettingRowDocPage';
+import { ElidedTextDocPage } from '../../examples/basic/src/pages/components/ElidedTextDocPage';
+import { SplitterHandleDocPage } from '../../examples/basic/src/pages/components/SplitterHandleDocPage';
 
 const pages = [
   { name: 'AlertDialogDocPage', Component: AlertDialogDocPage },
@@ -84,6 +89,11 @@ const pages = [
   { name: 'VirtualListDocPage', Component: VirtualListDocPage },
   { name: 'VirtualTreeDocPage', Component: VirtualTreeDocPage },
   { name: 'WindowTitleBarDocPage', Component: WindowTitleBarDocPage },
+  { name: 'SegmentedControlDocPage', Component: SegmentedControlDocPage },
+  { name: 'SmoothWheelHandlerDocPage', Component: SmoothWheelHandlerDocPage },
+  { name: 'SettingRowDocPage', Component: SettingRowDocPage },
+  { name: 'ElidedTextDocPage', Component: ElidedTextDocPage },
+  { name: 'SplitterHandleDocPage', Component: SplitterHandleDocPage },
 ];
 
 describe('Showcase Living Documentation Pages (Smoke & Click Integrity)', () => {

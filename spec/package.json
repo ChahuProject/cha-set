@@ -46,7 +46,12 @@
     "./data-table": "./components/data-table.ts",
     "./query-builder": "./components/query-builder.ts",
     "./viewport-constrained-container": "./components/viewport-constrained-container.ts",
-    "./sidebar": "./components/sidebar.ts"
+    "./sidebar": "./components/sidebar.ts",
+    "./segmented-control": "./components/segmented-control.ts",
+    "./smooth-wheel-handler": "./components/smooth-wheel-handler.ts",
+    "./setting-row": "./components/setting-row.ts",
+    "./elided-text": "./components/elided-text.ts",
+    "./splitter-handle": "./components/splitter-handle.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

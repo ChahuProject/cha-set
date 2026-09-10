@@ -23,6 +23,7 @@ describe('Keyboard Navigation & Input Modality Standards', () => {
     for (const comp of requiredComponents) {
       const shortcuts = KEYBOARD_SHORTCUTS_DATA[comp];
       expect(shortcuts, `Component ${comp} must have keyboard shortcuts registered`).toBeDefined();
+      if (!shortcuts) continue;
       expect(shortcuts.length).toBeGreaterThan(0);
       for (const item of shortcuts) {
         expect(item.key).toBeTruthy();
@@ -49,7 +50,10 @@ describe('Keyboard Navigation & Input Modality Standards', () => {
 
     // Verify item action text from spec
     const dropdownShortcuts = KEYBOARD_SHORTCUTS_DATA['dropdown-menu'];
-    expect(screen.getByText(dropdownShortcuts[0].action)).toBeInTheDocument();
+    expect(dropdownShortcuts).toBeDefined();
+    if (dropdownShortcuts && dropdownShortcuts[0]) {
+      expect(screen.getByText(dropdownShortcuts[0].action)).toBeInTheDocument();
+    }
   });
 
   it('renders custom shortcuts table when custom shortcuts array is passed', () => {

@@ -40,6 +40,11 @@ export * from './data-table';
 export * from './query-builder';
 export * from './viewport-constrained-container';
 export * from './sidebar';
+export * from './segmented-control';
+export * from './smooth-wheel-handler';
+export * from './setting-row';
+export * from './elided-text';
+export * from './splitter-handle';
 export * from './lib/splitFixedFooter';
 export {
   CheckIcon,

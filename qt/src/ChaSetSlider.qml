@@ -13,6 +13,8 @@ Item {
     property real step: 1
     property bool disabled: false
     property string orientation: "horizontal" // "horizontal" | "vertical"
+    property bool showTicks: false
+    property var marks: []
     property bool forceHover: false
     property bool forceFocus: false
 
@@ -159,10 +161,10 @@ Item {
             for (var j = 0; j < 10; j++) root.stepDown();
             event.accepted = true;
         } else if (event.key === Qt.Key_Home) {
-            root.value = root.from;
+            root.value = root.min;
             event.accepted = true;
         } else if (event.key === Qt.Key_End) {
-            root.value = root.to;
+            root.value = root.max;
             event.accepted = true;
         }
     }
@@ -204,6 +206,50 @@ Item {
             color: root.isDark
                 ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0)
                 : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
+        }
+
+        // Ticks & Marks
+        Item {
+            id: ticksContainer
+            anchors.fill: parent
+            visible: root.showTicks || (root.marks && root.marks.length > 0)
+            z: 1
+
+            readonly property int tickCount: (root.marks && root.marks.length > 0)
+                ? root.marks.length
+                : (root.showTicks && root.step > 0 ? Math.min(21, Math.max(2, Math.round((root.max - root.min) / root.step) + 1)) : 0)
+
+            Repeater {
+                model: ticksContainer.tickCount
+
+                Item {
+                    id: tickItem
+                    required property int index
+                    readonly property real tickProgress: ticksContainer.tickCount > 1 ? (index / (ticksContainer.tickCount - 1)) : 0.0
+                    x: root.isHorizontal ? Math.round(tickProgress * ticksContainer.width) - 2 : (ticksContainer.width - 4) / 2
+                    y: root.isHorizontal ? (ticksContainer.height - 4) / 2 : Math.round((1.0 - tickProgress) * ticksContainer.height) - 2
+                    width: 4
+                    height: 4
+
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: 4
+                        height: 4
+                        radius: 2
+                        color: tickItem.tickProgress <= root.progress ? ThemeTokens.primary : (root.isDark ? Qt.rgba(1, 1, 1, 0.25) : Qt.rgba(0, 0, 0, 0.25))
+                    }
+
+                    Text {
+                        visible: root.marks && index < root.marks.length && root.marks[index].length > 0
+                        text: visible ? root.marks[index] : ""
+                        color: ThemeTokens.mutedForeground
+                        font.pixelSize: 10
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.top: parent.bottom
+                        anchors.topMargin: 4
+                    }
+                }
+            }
         }
     }
 

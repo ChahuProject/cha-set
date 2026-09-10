@@ -244,6 +244,30 @@
       "collapsibleVariant": { "requirement": "must", "description": "supports expanded, icon collapsed, offcanvas modes" },
       "resizableRail": { "requirement": "must", "description": "interactive drag rail for resizing sidebar width" },
       "menuHierarchy": { "requirement": "must", "description": "structured sidebar menus, submenus, actions and badges" }
+    },
+    "segmentedControl": {
+      "selection": { "requirement": "must", "description": "selecting an option switches active value" },
+      "size": { "requirement": "must", "description": "supports sm (22px), default (28px), and lg (36px) sizes" },
+      "disabled": { "requirement": "must", "description": "disabled control or option blocks selection" },
+      "keyboard": { "requirement": "must", "description": "keyboard arrow keys and Enter/Space navigate options" },
+      "styling": { "requirement": "must", "description": "pill geometry with active indicator and ThemeTokens" }
+    },
+    "smoothWheelHandler": {
+      "kinematics": { "requirement": "must", "description": "smooth physics damping calculation for wheel events" },
+      "orientation": { "requirement": "must", "description": "vertical, horizontal, and vertical-to-horizontal mapping" },
+      "interactionMutex": { "requirement": "must", "description": "aborts smooth scroll animation on drag or flick gesture" }
+    },
+    "settingRow": {
+      "layout": { "requirement": "must", "description": "structured layout with title, description, and control slot" },
+      "highlight": { "requirement": "must", "description": "anchor targeting with 3-pulse flash highlight animation" }
+    },
+    "elidedText": {
+      "truncation": { "requirement": "must", "description": "detects overflow truncation accurately" },
+      "tooltip": { "requirement": "must", "description": "conditionally reveals full text tooltip only upon actual overflow" }
+    },
+    "splitterHandle": {
+      "resize": { "requirement": "must", "description": "drags to resize container dimension with reference item coordinate stabilization" },
+      "edgeOrientation": { "requirement": "must", "description": "supports left, right, top, bottom edge anchors and cursor styling" }
     }
   }
 }

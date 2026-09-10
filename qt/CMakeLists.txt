@@ -88,6 +88,11 @@ qt_add_qml_module(ChaSet
         src/ChaSetQueryBuilder.qml
         src/ChaSetViewportConstrainedContainer.qml
         src/ChaSetSidebar.qml
+        src/ChaSetSegmentedControl.qml
+        src/ChaSetSmoothWheelHandler.qml
+        src/ChaSetSettingRow.qml
+        src/ChaSetElidedText.qml
+        src/ChaSetSplitterHandle.qml
         src/ThemeTokens.generated.qml
         src/ShowcaseData.generated.qml
     NO_GENERATE_EXTRA_QMLDIRS
@@ -172,6 +177,11 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/QueryBuilderDocPage.qml
             src/ViewportConstrainedContainerDocPage.qml
             src/SidebarDocPage.qml
+            src/SegmentedControlDocPage.qml
+            src/SmoothWheelHandlerDocPage.qml
+            src/SettingRowDocPage.qml
+            src/ElidedTextDocPage.qml
+            src/SplitterHandleDocPage.qml
             src/CommandSearchModal.qml
             src/ExportModal.qml
         NO_RESOURCE_TARGET_PATH
