@@ -2,14 +2,29 @@ import { Collapsible as CollapsiblePrimitive } from '@base-ui/react/collapsible'
 import * as React from 'react';
 import { cn } from '../lib/utils';
 
-export interface CollapsibleProps
-  extends React.ComponentProps<typeof CollapsiblePrimitive.Root> {}
+export type CollapsibleVariant = 'default' | 'card' | 'ghost';
 
-export function Collapsible({ className, ...props }: CollapsibleProps) {
+export interface CollapsibleProps
+  extends React.ComponentProps<typeof CollapsiblePrimitive.Root> {
+  variant?: CollapsibleVariant;
+}
+
+const collapsibleVariantClasses: Record<CollapsibleVariant, string> = {
+  default: 'w-full',
+  card: 'w-full rounded-lg border border-border bg-card text-card-foreground p-3 shadow-xs',
+  ghost: 'w-full rounded-lg bg-transparent text-foreground',
+};
+
+export function Collapsible({
+  className,
+  variant = 'default',
+  ...props
+}: CollapsibleProps) {
   return (
     <CollapsiblePrimitive.Root
       data-slot="collapsible"
-      className={cn('w-full', className)}
+      data-variant={variant}
+      className={cn(collapsibleVariantClasses[variant], className)}
       {...props}
     />
   );

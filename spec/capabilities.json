@@ -190,6 +190,12 @@
       "wave": { "requirement": "should", "description": "renders wave shimmer animation placeholder" },
       "customClass": { "requirement": "must", "description": "accepts custom width, height, and radius classes" }
     },
+    "collapsible": {
+      "standard": { "requirement": "must", "description": "toggles open and collapsed states" },
+      "defaultOpen": { "requirement": "must", "description": "mounts initially expanded when defaultOpen is true" },
+      "disabled": { "requirement": "must", "description": "disables interaction when disabled is true" },
+      "variant": { "requirement": "should", "description": "supports default, card, and ghost styling variants" }
+    },
     "copyButton": {
       "copyText": { "requirement": "must", "description": "copies configured string or callback text to clipboard" },
       "feedbackState": { "requirement": "must", "description": "temporarily displays copied state icon and tooltip" }

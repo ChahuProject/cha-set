@@ -185,4 +185,25 @@ describe('Collapsible Component', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByText('Keyboard Content')).toBeNull();
   });
+
+  it('supports variant presets (card, ghost)', () => {
+    const { container: c1 } = render(
+      <Collapsible variant="card">
+        <CollapsibleTrigger>Card Trigger</CollapsibleTrigger>
+      </Collapsible>,
+    );
+    const root1 = c1.querySelector('[data-slot="collapsible"]');
+    expect(root1).toHaveAttribute('data-variant', 'card');
+    expect(root1).toHaveClass('bg-card');
+    expect(root1).toHaveClass('text-card-foreground');
+
+    const { container: c2 } = render(
+      <Collapsible variant="ghost">
+        <CollapsibleTrigger>Ghost Trigger</CollapsibleTrigger>
+      </Collapsible>,
+    );
+    const root2 = c2.querySelector('[data-slot="collapsible"]');
+    expect(root2).toHaveAttribute('data-variant', 'ghost');
+    expect(root2).toHaveClass('bg-transparent');
+  });
 });

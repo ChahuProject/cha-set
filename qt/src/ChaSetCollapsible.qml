@@ -10,6 +10,7 @@ Rectangle {
     property bool open: false
     property bool defaultOpen: false
     property bool disabled: false
+    property string variant: "default" // "default" | "card" | "ghost"
     property string title: ""
     property int customRadius: 6
     property bool forceHover: false
@@ -25,12 +26,14 @@ Rectangle {
         }
     }
 
-    color: "transparent"
+    color: root.variant === "card" ? ThemeTokens.card : "transparent"
+    border.color: root.variant === "card" ? ThemeTokens.border : "transparent"
+    border.width: root.variant === "card" ? 1 : 0
     radius: root.customRadius
     clip: true
 
     implicitWidth: 320
-    implicitHeight: headerBar.height + contentWrapper.height
+    implicitHeight: headerBar.height + contentWrapper.height + (root.variant === "card" ? 16 : 0)
 
     activeFocusOnTab: !root.disabled
 
@@ -62,6 +65,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
+        anchors.margins: root.variant === "card" ? 8 : 0
         spacing: 0
 
         // Header Bar (Trigger)

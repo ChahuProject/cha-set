@@ -12,6 +12,7 @@ import {
   Tabs,
   TabsList,
   TabsTrigger,
+  type CollapsibleVariant,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -22,8 +23,9 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 export function CollapsibleDocPage() {
   const [open, setOpen] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [variant, setVariant] = useState<CollapsibleVariant>('default');
 
-  const heroReactCode = `<Collapsible open={${open}} onOpenChange={setOpen}${disabled ? ' disabled' : ''}>
+  const heroReactCode = `<Collapsible open={${open}} onOpenChange={setOpen} variant="${variant}"${disabled ? ' disabled' : ''}>
   <div className="flex items-center justify-between space-x-4 px-4 py-2 border rounded-md">
     <h4 className="text-sm font-semibold">@peduarte starred 3 repositories</h4>
     <CollapsibleTrigger asChild>
@@ -128,6 +130,17 @@ export function CollapsibleDocPage() {
               </div>
 
               <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">Variant:</span>
+                <Tabs value={variant} onValueChange={(v) => setVariant(v as CollapsibleVariant)}>
+                  <TabsList className="h-8">
+                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
+                    <TabsTrigger value="card" className="h-6 px-2.5 text-xs">Card</TabsTrigger>
+                    <TabsTrigger value="ghost" className="h-6 px-2.5 text-xs">Ghost</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">Disabled:</span>
                 <Tabs value={disabled ? 'true' : 'false'} onValueChange={(v) => setDisabled(v === 'true')}>
                   <TabsList className="h-8">
@@ -140,8 +153,8 @@ export function CollapsibleDocPage() {
           }
         >
           <div className="w-full max-w-sm p-4">
-            <Collapsible open={open} onOpenChange={setOpen} disabled={disabled}>
-              <div className="flex items-center justify-between space-x-4 px-4 py-2 border rounded-md bg-card">
+            <Collapsible open={open} onOpenChange={setOpen} disabled={disabled} variant={variant}>
+              <div className="flex items-center justify-between space-x-4 px-4 py-2 border border-border rounded-md bg-card">
                 <h4 className="text-sm font-semibold text-foreground">
                   @peduarte starred 3 repositories
                 </h4>
@@ -154,14 +167,14 @@ export function CollapsibleDocPage() {
                   </Button>
                 </CollapsibleTrigger>
               </div>
-              <div className="rounded-md border px-4 py-2 font-mono text-sm mt-2 bg-muted/40">
+              <div className="rounded-md border border-border px-4 py-2 font-mono text-sm mt-2 bg-muted/40">
                 @radix-ui/primitives
               </div>
               <CollapsibleContent className="space-y-2 mt-2">
-                <div className="rounded-md border px-4 py-2 font-mono text-sm bg-muted/40">
+                <div className="rounded-md border border-border px-4 py-2 font-mono text-sm bg-muted/40">
                   @radix-ui/colors
                 </div>
-                <div className="rounded-md border px-4 py-2 font-mono text-sm bg-muted/40">
+                <div className="rounded-md border border-border px-4 py-2 font-mono text-sm bg-muted/40">
                   @stitches/react
                 </div>
               </CollapsibleContent>
@@ -270,6 +283,12 @@ export function CollapsibleDocPage() {
               type: '(open: boolean) => void',
               default: 'undefined',
               description: 'Callback invoked when open state changes.',
+            },
+            {
+              name: 'variant',
+              type: "'default' | 'card' | 'ghost'",
+              default: "'default'",
+              description: 'Visual container styling variant.',
             },
             {
               name: 'disabled',

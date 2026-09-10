@@ -27,14 +27,15 @@ DocLayout {
 
     property bool demoOpen: false
     property bool demoDisabled: false
+    property string demoVariant: "default"
 
     // Section 1: Overview
     ComponentPreview {
         id: heroPreview
         width: parent.width
         title: "Collapsible Sandbox"
-        reactCode: `<Collapsible open={${root.demoOpen}} disabled={${root.demoDisabled}}>\n  <CollapsibleTrigger>Toggle Details</CollapsibleTrigger>\n  <CollapsibleContent>\n    <div>Collapsible content panel</div>\n  </CollapsibleContent>\n</Collapsible>`
-        qtCode: `ChaSetCollapsible {\n    width: 280\n    title: "Repository Details"\n    open: ${root.demoOpen}\n    disabled: ${root.demoDisabled}\n\n    Column {\n        width: parent.width\n        spacing: 6\n        topPadding: 8\n\n        Rectangle {\n            width: parent.width\n            height: 32\n            radius: 4\n            color: ThemeTokens.hover\n            Text {\n                anchors.centerIn: parent\n                text: "@radix-ui/primitives"\n                color: ThemeTokens.text\n                font.pixelSize: 12\n            }\n        }\n    }\n}`
+        reactCode: `<Collapsible open={${root.demoOpen}} disabled={${root.demoDisabled}} variant="${root.demoVariant}">\n  <CollapsibleTrigger>Toggle Details</CollapsibleTrigger>\n  <CollapsibleContent>\n    <div>Collapsible content panel</div>\n  </CollapsibleContent>\n</Collapsible>`
+        qtCode: `ChaSetCollapsible {\n    width: 280\n    title: "Repository Details"\n    open: ${root.demoOpen}\n    disabled: ${root.demoDisabled}\n    variant: "${root.demoVariant}"\n\n    Column {\n        width: parent.width\n        spacing: 6\n        topPadding: 8\n\n        Rectangle {\n            width: parent.width\n            height: 32\n            radius: 4\n            color: ThemeTokens.hover\n            Text {\n                anchors.centerIn: parent\n                text: "@radix-ui/primitives"\n                color: ThemeTokens.text\n                font.pixelSize: 12\n            }\n        }\n    }\n}`
 
         stageData: [
             Column {
@@ -47,6 +48,7 @@ DocLayout {
                     title: "Repository Details"
                     open: root.demoOpen
                     disabled: root.demoDisabled
+                    variant: root.demoVariant
                     onToggled: function(val) { root.demoOpen = val; }
 
                     Column {
@@ -100,6 +102,21 @@ DocLayout {
                         ChaSetTabsList {
                             ChaSetTabsTrigger { value: "false"; text: "Collapsed" }
                             ChaSetTabsTrigger { value: "true"; text: "Expanded" }
+                        }
+                    }
+                }
+
+                Row {
+                    spacing: 8
+                    Text { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetTabs {
+                        anchors.verticalCenter: parent.verticalCenter
+                        currentValue: root.demoVariant
+                        onCurrentValueChanged: root.demoVariant = currentValue
+                        ChaSetTabsList {
+                            ChaSetTabsTrigger { value: "default"; text: "Default" }
+                            ChaSetTabsTrigger { value: "card"; text: "Card" }
+                            ChaSetTabsTrigger { value: "ghost"; text: "Ghost" }
                         }
                     }
                 }
@@ -224,6 +241,7 @@ DocLayout {
                 { name: "open", type: "bool", defaultValue: "false", desc: "Whether the collapsible content is currently expanded." },
                 { name: "defaultOpen", type: "bool", defaultValue: "false", desc: "Whether the collapsible is initially expanded on load." },
                 { name: "disabled", type: "bool", defaultValue: "false", desc: "Whether user interaction and toggling are disabled." },
+                { name: "variant", type: "string", defaultValue: "'default'", desc: "Visual container styling variant: 'default' | 'card' | 'ghost'." },
                 { name: "title", type: "string", defaultValue: "''", desc: "Title text displayed in the header trigger bar." },
                 { name: "customRadius", type: "int", defaultValue: "6", desc: "Corner radius of the header and container." }
             ]

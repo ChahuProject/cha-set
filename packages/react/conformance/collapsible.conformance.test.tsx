@@ -13,6 +13,7 @@ describe('Collapsible conformance (spec contract)', () => {
       open: false,
       defaultOpen: false,
       disabled: false,
+      variant: 'card',
       className: 'test-root',
     } as const;
     expect(() => collapsibleSchema.parse(rootFixture)).not.toThrow();
@@ -20,6 +21,7 @@ describe('Collapsible conformance (spec contract)', () => {
     const defaultParsed = collapsibleSchema.parse({});
     expect(defaultParsed.defaultOpen).toBe(false);
     expect(defaultParsed.disabled).toBe(false);
+    expect(defaultParsed.variant).toBe('default');
 
     const triggerFixture = {
       asChild: false,
@@ -37,6 +39,7 @@ describe('Collapsible conformance (spec contract)', () => {
   it('rejects invalid types per the contract', () => {
     expect(() => collapsibleSchema.parse({ defaultOpen: 'not-a-boolean' })).toThrow();
     expect(() => collapsibleSchema.parse({ disabled: 'not-a-boolean' })).toThrow();
+    expect(() => collapsibleSchema.parse({ variant: 'invalid-variant' })).toThrow();
   });
 
   it('earned coverage declares must capabilities', () => {
@@ -52,7 +55,7 @@ describe('Collapsible conformance (spec contract)', () => {
       console.warn('[conformance] coverage.json has no collapsible entry yet; skipping earned-capability assertions');
       return;
     }
-    for (const cap of ['standard', 'defaultOpen', 'disabled'] as const) {
+    for (const cap of ['standard', 'defaultOpen', 'disabled', 'variant'] as const) {
       expect(coverage.collapsible?.[cap], `capability "${cap}" must be earned`).toBe(true);
     }
   });

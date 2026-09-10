@@ -166,6 +166,12 @@
     "wave": true,
     "customClass": true
   },
+  "collapsible": {
+    "standard": true,
+    "defaultOpen": true,
+    "disabled": true,
+    "variant": true
+  },
   "copyButton": {
     "copyText": true,
     "feedbackState": true
