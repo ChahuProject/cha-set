@@ -102,7 +102,10 @@
       "step": { "requirement": "must", "description": "step snapping for values" },
       "disabled": { "requirement": "must", "description": "disabled state blocks interaction" },
       "thumbDrag": { "requirement": "must", "description": "dragging thumb updates value" },
-      "focusRing": { "requirement": "must", "description": "focus ring and keyboard navigation" }
+      "focusRing": { "requirement": "must", "description": "focus ring and keyboard navigation" },
+      "size": { "requirement": "should", "description": "supports default and compact sm sizes" },
+      "readOnly": { "requirement": "should", "description": "prevents interaction without muted opacity" },
+      "tooltip": { "requirement": "should", "description": "floating value tooltip on thumb hover or drag" }
     },
     "dialog": {
       "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },

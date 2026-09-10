@@ -148,4 +148,51 @@ describe('Slider component', () => {
     expect(hiddenInput).toHaveAttribute('name', 'volume');
     expect(hiddenInput).toHaveAttribute('value', '65');
   });
+
+  it('supports size variants (default and sm)', () => {
+    const { rerender } = render(<Slider size="default" data-testid="slider" />);
+    let sliderEl = screen.getByTestId('slider');
+    let thumb = screen.getByRole('slider');
+    expect(sliderEl).toHaveAttribute('data-size', 'default');
+    expect(thumb.className).toContain('size-4');
+
+    rerender(<Slider size="sm" data-testid="slider" />);
+    sliderEl = screen.getByTestId('slider');
+    thumb = screen.getByRole('slider');
+    expect(sliderEl).toHaveAttribute('data-size', 'sm');
+    expect(thumb.className).toContain('size-3');
+  });
+
+  it('supports readOnly mode and prevents value change while keeping full opacity', () => {
+    const onValueChange = vi.fn();
+    render(<Slider readOnly defaultValue={40} onValueChange={onValueChange} data-testid="slider" />);
+    const sliderEl = screen.getByTestId('slider');
+    const thumb = screen.getByRole('slider');
+
+    expect(sliderEl).toHaveAttribute('data-readonly', '');
+    expect(sliderEl.className).toContain('cursor-default');
+    expect(sliderEl.className).not.toContain('opacity-50');
+    expect(thumb).toHaveAttribute('aria-readonly', 'true');
+
+    fireEvent.keyDown(thumb, { key: 'ArrowRight' });
+    expect(onValueChange).not.toHaveBeenCalled();
+
+    fireEvent.click(sliderEl, { clientX: 90, clientY: 0 });
+    expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it('supports showTooltip floating value indicator', () => {
+    render(
+      <Slider
+        showTooltip
+        forceHover
+        value={75}
+        formatValue={(val) => `${val}%`}
+        data-testid="slider"
+      />,
+    );
+    const tooltip = screen.getByText('75%');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveAttribute('data-slot', 'slider-tooltip');
+  });
 });

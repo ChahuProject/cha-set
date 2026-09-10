@@ -26,22 +26,26 @@ DocLayout {
 
     property real demoValue: 50
     property real demoStep: 1
+    property string demoSize: "default"
     property string demoOrientation: "horizontal"
     property bool demoDisabled: false
+    property bool demoReadOnly: false
+    property bool demoShowTooltip: true
+    property bool demoShowTicks: false
 
     // Section 1: Overview
     ComponentPreview {
         id: heroPreview
         width: parent.width
         title: "Slider Sandbox"
-        reactCode: `<div className="w-full max-w-xs flex flex-col gap-2">\n  <div className="flex justify-between text-xs text-muted-foreground">\n    <span>Value</span>\n    <span className="font-mono font-medium text-foreground">${root.demoValue}</span>\n  </div>\n  <Slider\n    value={${root.demoValue}}\n    min={0}\n    max={100}\n    step={${root.demoStep}}\n    disabled={${root.demoDisabled}}\n    orientation="${root.demoOrientation}"\n    onValueChange={setValue}\n  />\n</div>`
-        qtCode: `ChaSetSlider {\n    width: 240\n    value: ${root.demoValue}\n    min: 0\n    max: 100\n    step: ${root.demoStep}\n    disabled: ${root.demoDisabled}\n    orientation: "${root.demoOrientation}"\n    onValueMoved: function(val) {\n        // handle slider value update\n    }\n}`
+        reactCode: `<div className="w-full max-w-xs flex flex-col gap-2">\n  <div className="flex justify-between text-xs text-muted-foreground">\n    <span>Value</span>\n    <span className="font-mono font-medium text-foreground">${root.demoValue}</span>\n  </div>\n  <Slider\n    value={${root.demoValue}}\n    min={0}\n    max={100}\n    step={${root.demoStep}}\n    size="${root.demoSize}"\n    disabled={${root.demoDisabled}}\n    readOnly={${root.demoReadOnly}}\n    showTooltip={${root.demoShowTooltip}}\n    showTicks={${root.demoShowTicks}}\n    orientation="${root.demoOrientation}"\n    onValueChange={setValue}\n  />\n</div>`
+        qtCode: `ChaSetSlider {\n    width: 240\n    value: ${root.demoValue}\n    min: 0\n    max: 100\n    step: ${root.demoStep}\n    size: "${root.demoSize}"\n    disabled: ${root.demoDisabled}\n    readOnly: ${root.demoReadOnly}\n    showTooltip: ${root.demoShowTooltip}\n    showTicks: ${root.demoShowTicks}\n    orientation: "${root.demoOrientation}"\n    onValueMoved: function(val) {\n        // handle slider value update\n    }\n}`
 
         stageData: [
             Item {
                 anchors.centerIn: parent
                 width: root.demoOrientation === "horizontal" ? 260 : 60
-                height: root.demoOrientation === "horizontal" ? 60 : 200
+                height: root.demoOrientation === "horizontal" ? 70 : 200
 
                 Column {
                     anchors.centerIn: parent
@@ -73,8 +77,12 @@ DocLayout {
                         min: 0
                         max: 100
                         step: root.demoStep
+                        size: root.demoSize
                         orientation: root.demoOrientation
                         disabled: root.demoDisabled
+                        readOnly: root.demoReadOnly
+                        showTooltip: root.demoShowTooltip
+                        showTicks: root.demoShowTicks
                         onValueMoved: function(val) {
                             root.demoValue = val
                         }
@@ -84,8 +92,28 @@ DocLayout {
         ]
 
         controlsData: [
-            Row {
+            Flow {
+                width: parent.width
                 spacing: 16
+
+                Row {
+                    spacing: 8
+                    Text {
+                        text: "Size:"
+                        color: root.cMutedFg
+                        font.pixelSize: 12
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    ChaSetTabs {
+                        anchors.verticalCenter: parent.verticalCenter
+                        currentValue: root.demoSize
+                        onCurrentValueChanged: root.demoSize = currentValue
+                        ChaSetTabsList {
+                            ChaSetTabsTrigger { value: "default"; text: "Default" }
+                            ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
+                        }
+                    }
+                }
 
                 Row {
                     spacing: 8
@@ -134,6 +162,30 @@ DocLayout {
                     onToggled: (val) => root.demoDisabled = val
                     anchors.verticalCenter: parent.verticalCenter
                 }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Read-Only"
+                    checked: root.demoReadOnly
+                    onToggled: (val) => root.demoReadOnly = val
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Tooltip"
+                    checked: root.demoShowTooltip
+                    onToggled: (val) => root.demoShowTooltip = val
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Ticks"
+                    checked: root.demoShowTicks
+                    onToggled: (val) => root.demoShowTicks = val
+                    anchors.verticalCenter: parent.verticalCenter
+                }
             }
         ]
     }
@@ -178,7 +230,7 @@ DocLayout {
         CodeBlock {
             width: parent.width
             language: "qml"
-            code: `import ChaSet\n\nChaSetSlider {\n    width: 240\n    value: 50\n    min: 0\n    max: 100\n    step: 1\n    onValueMoved: function(val) {\n        console.log("Slider moved:", val)\n    }\n}`
+            code: `import ChaSet\n\nChaSetSlider {\n    width: 240\n    value: 50\n    min: 0\n    max: 100\n    step: 1\n    showTooltip: true\n    formatValue: function(v) {\n        return v + "%"\n    }\n    onValueMoved: function(val) {\n        console.log("Slider moved:", val)\n    }\n}`
         }
     }
 
@@ -195,7 +247,7 @@ DocLayout {
         }
 
         Text {
-            text: "Visual matrix of common slider configurations and interactive states in Qt Quick."
+            text: "Visual matrix of common slider configurations, size scales, tooltips, and interactive states in Qt Quick."
             color: root.cMutedFg
             font.pixelSize: 13
         }
@@ -207,7 +259,7 @@ DocLayout {
 
             Rectangle {
                 width: (parent.width - 16) / 2
-                height: 110
+                height: 120
                 radius: 8
                 color: root.cCard
                 border.color: root.cBorder
@@ -216,21 +268,24 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Default Continuous Slider"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "0 to 100 with smooth continuous dragging"; color: root.cMutedFg; font.pixelSize: 11 }
+                    Text { text: "Floating Value Tooltip"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    Text { text: "Interactive formatted indicator on thumb drag and hover"; color: root.cMutedFg; font.pixelSize: 11 }
+                    Item { width: parent.width; height: 6 }
                     ChaSetSlider {
                         width: parent.width
-                        value: 45
+                        value: 75
                         min: 0
                         max: 100
                         step: 1
+                        showTooltip: true
+                        formatValue: function(v) { return v + "%"; }
                     }
                 }
             }
 
             Rectangle {
                 width: (parent.width - 16) / 2
-                height: 110
+                height: 120
                 radius: 8
                 color: root.cCard
                 border.color: root.cBorder
@@ -239,21 +294,22 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Stepped Increments (step=25)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Quantized stops for discrete selection"; color: root.cMutedFg; font.pixelSize: 11 }
+                    Text { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    Text { text: "Reduced track thickness and thumb size for toolbars"; color: root.cMutedFg; font.pixelSize: 11 }
+                    Item { width: parent.width; height: 6 }
                     ChaSetSlider {
                         width: parent.width
-                        value: 50
+                        size: "sm"
+                        value: 40
                         min: 0
                         max: 100
-                        step: 25
                     }
                 }
             }
 
             Rectangle {
                 width: (parent.width - 16) / 2
-                height: 110
+                height: 120
                 radius: 8
                 color: root.cCard
                 border.color: root.cBorder
@@ -262,11 +318,12 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Non-interactive with 50% opacity for locked values"; color: root.cMutedFg; font.pixelSize: 11 }
+                    Text { text: "Read-Only State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    Text { text: "Locked value without dimmed 50% opacity"; color: root.cMutedFg; font.pixelSize: 11 }
+                    Item { width: parent.width; height: 6 }
                     ChaSetSlider {
                         width: parent.width
-                        disabled: true
+                        readOnly: true
                         value: 60
                         min: 0
                         max: 100
@@ -276,7 +333,57 @@ DocLayout {
 
             Rectangle {
                 width: (parent.width - 16) / 2
-                height: 110
+                height: 120
+                radius: 8
+                color: root.cCard
+                border.color: root.cBorder
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 14
+                    spacing: 8
+                    Text { text: "Discrete Stops with Ticks"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    Text { text: "Quantized stops with tick indicators and label marks"; color: root.cMutedFg; font.pixelSize: 11 }
+                    Item { width: parent.width; height: 6 }
+                    ChaSetSlider {
+                        width: parent.width
+                        value: 50
+                        min: 0
+                        max: 100
+                        step: 25
+                        showTicks: true
+                        marks: ["0%", "25%", "50%", "75%", "100%"]
+                    }
+                }
+            }
+
+            Rectangle {
+                width: (parent.width - 16) / 2
+                height: 120
+                radius: 8
+                color: root.cCard
+                border.color: root.cBorder
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 14
+                    spacing: 8
+                    Text { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    Text { text: "Non-interactive with dimmed opacity for disabled controls"; color: root.cMutedFg; font.pixelSize: 11 }
+                    Item { width: parent.width; height: 6 }
+                    ChaSetSlider {
+                        width: parent.width
+                        disabled: true
+                        value: 45
+                        min: 0
+                        max: 100
+                    }
+                }
+            }
+
+            Rectangle {
+                width: (parent.width - 16) / 2
+                height: 120
                 radius: 8
                 color: root.cCard
                 border.color: root.cBorder
@@ -286,7 +393,8 @@ DocLayout {
                     anchors.margins: 14
                     spacing: 8
                     Text { text: "Custom Range (20 to 80)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Bounded custom min and max values with step=5"; color: root.cMutedFg; font.pixelSize: 11 }
+                    Text { text: "Bounded custom minimum and maximum limits with step=5"; color: root.cMutedFg; font.pixelSize: 11 }
+                    Item { width: parent.width; height: 6 }
                     ChaSetSlider {
                         width: parent.width
                         value: 50
@@ -305,18 +413,26 @@ DocLayout {
         spacing: 12
 
         Text {
+            text: "Keyboard Navigation"
+            color: root.cFg
+            font.pixelSize: 18
+            font.weight: Font.Bold
+        }
+
+        KeyboardShortcutsTable {
+            componentId: "slider"
+        }
+
+        Item { width: parent.width; height: 12 }
+
+        Text {
             text: "Props Reference"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        
-    KeyboardShortcutsTable {
-        componentId: "slider"
-    }
-
-    PropsTable {
+        PropsTable {
             width: parent.width
             propsModel: [
                 {
@@ -344,10 +460,46 @@ DocLayout {
                     description: "The stepping granularity interval."
                 },
                 {
+                    name: "size",
+                    type: "\"default\" | \"sm\"",
+                    default: "\"default\"",
+                    description: "The size scale of the slider track and thumb."
+                },
+                {
                     name: "disabled",
                     type: "bool",
                     default: "false",
                     description: "Disables user interactions and applies muted opacity."
+                },
+                {
+                    name: "readOnly",
+                    type: "bool",
+                    default: "false",
+                    description: "Locks value changes while keeping active full visual contrast."
+                },
+                {
+                    name: "showTooltip",
+                    type: "bool",
+                    default: "false",
+                    description: "Displays a floating value indicator tooltip badge on hover or active dragging."
+                },
+                {
+                    name: "formatValue",
+                    type: "var",
+                    default: "null",
+                    description: "Optional formatting function for the floating tooltip text."
+                },
+                {
+                    name: "showTicks",
+                    type: "bool",
+                    default: "false",
+                    description: "Renders tick marks at step intervals along the track."
+                },
+                {
+                    name: "marks",
+                    type: "var",
+                    default: "[]",
+                    description: "Optional array of text mark labels rendered along the track."
                 },
                 {
                     name: "orientation",

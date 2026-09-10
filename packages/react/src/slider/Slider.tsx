@@ -2,6 +2,7 @@ import * as React from 'react';
 import { cn } from '../lib/utils';
 
 export type SliderOrientation = 'horizontal' | 'vertical';
+export type SliderSize = 'default' | 'sm';
 
 export interface SliderProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
@@ -11,9 +12,13 @@ export interface SliderProps
   max?: number;
   step?: number;
   disabled?: boolean;
+  readOnly?: boolean;
+  size?: SliderSize;
   orientation?: SliderOrientation;
   showTicks?: boolean;
   marks?: string[];
+  showTooltip?: boolean;
+  formatValue?: (value: number) => string;
   onValueChange?: (value: number) => void;
   onChange?: (value: number) => void;
   name?: string;
@@ -43,9 +48,13 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
       max = 100,
       step = 1,
       disabled = false,
+      readOnly = false,
+      size = 'default',
       orientation = 'horizontal',
       showTicks = false,
       marks,
+      showTooltip = false,
+      formatValue,
       onValueChange,
       onChange,
       name,
@@ -62,6 +71,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
     const currentValue = snapToStep(rawValue, min, max, step);
 
     const [isDragging, setIsDragging] = React.useState(false);
+    const [isHovered, setIsHovered] = React.useState(false);
     const rootRef = React.useRef<HTMLDivElement | null>(null);
     const trackRef = React.useRef<HTMLSpanElement | null>(null);
     const thumbRef = React.useRef<HTMLSpanElement | null>(null);
@@ -128,7 +138,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
     );
 
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-      if (disabled || e.button !== 0) return;
+      if (disabled || readOnly || e.button !== 0) return;
       e.preventDefault();
       thumbRef.current?.focus();
       setIsDragging(true);
@@ -149,7 +159,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
     };
 
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (e.defaultPrevented || disabled || e.button !== 0) return;
+      if (e.defaultPrevented || disabled || readOnly || e.button !== 0) return;
       thumbRef.current?.focus();
       setIsDragging(true);
       updateFromCoords(e.clientX, e.clientY);
@@ -169,13 +179,13 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
     };
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (disabled || e.button !== 0) return;
+      if (disabled || readOnly || e.button !== 0) return;
       updateFromCoords(e.clientX, e.clientY);
       onClick?.(e);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
-      if (disabled) return;
+      if (disabled || readOnly) return;
       let nextVal = currentValue;
       const largeStep = Math.max(step * 10, (max - min) / 10);
 
@@ -215,21 +225,27 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
 
     const percentage =
       max > min ? Math.max(0, Math.min(100, ((currentValue - min) / (max - min)) * 100)) : 0;
+    const isSm = size === 'sm';
 
     return (
       <div
         ref={composedRef}
         data-slot="slider"
         data-orientation={orientation}
+        data-size={size}
         data-disabled={disabled ? '' : undefined}
+        data-readonly={readOnly ? '' : undefined}
         className={cn(
           'relative flex touch-none select-none items-center',
           orientation === 'horizontal' ? 'w-full h-4' : 'h-full w-4 flex-col justify-center',
           disabled && 'opacity-50 cursor-not-allowed',
+          readOnly && 'cursor-default',
           className,
         )}
         onPointerDown={handlePointerDown}
         onMouseDown={handleMouseDown}
+        onPointerEnter={() => setIsHovered(true)}
+        onPointerLeave={() => setIsHovered(false)}
         onClick={handleClick}
         {...props}
       >
@@ -238,7 +254,9 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           data-slot="slider-track"
           className={cn(
             'relative grow overflow-hidden rounded-full bg-secondary',
-            orientation === 'horizontal' ? 'h-1.5 w-full' : 'w-1.5 h-full',
+            orientation === 'horizontal'
+              ? (isSm ? 'h-1 w-full' : 'h-1.5 w-full')
+              : (isSm ? 'w-1 h-full' : 'w-1.5 h-full'),
           )}
         >
           <span
@@ -312,9 +330,12 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           aria-valuenow={currentValue}
           aria-orientation={orientation}
           aria-disabled={disabled}
+          aria-readonly={readOnly || undefined}
           className={cn(
-            'block size-4 rounded-full border-2 border-primary bg-background shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:scale-105 active:scale-95 cursor-grab active:cursor-grabbing',
-            isDragging && 'cursor-grabbing scale-95',
+            'block rounded-full border-2 border-primary bg-background shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:scale-105 active:scale-95',
+            readOnly ? 'cursor-default' : 'cursor-grab active:cursor-grabbing',
+            isSm ? 'size-3' : 'size-4',
+            isDragging && !readOnly && 'cursor-grabbing scale-95',
             forceHover && 'scale-105',
             forceFocus && 'ring-1 ring-ring outline-hidden',
           )}
@@ -334,7 +355,21 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
                 }
           }
           onKeyDown={handleKeyDown}
-        />
+        >
+          {showTooltip && (isDragging || isHovered || forceHover || forceFocus) && (
+            <div
+              data-slot="slider-tooltip"
+              className={cn(
+                'absolute pointer-events-none z-20 whitespace-nowrap rounded border border-border bg-popover px-1.5 py-0.5 text-xs font-mono font-medium text-popover-foreground shadow-xs select-none',
+                orientation === 'horizontal'
+                  ? '-top-7 left-1/2 -translate-x-1/2'
+                  : '-right-9 top-1/2 -translate-y-1/2',
+              )}
+            >
+              {formatValue ? formatValue(currentValue) : currentValue}
+            </div>
+          )}
+        </span>
         {name && (
           <input
             type="hidden"

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Slider,
   type SliderOrientation,
+  type SliderSize,
   Tabs,
   TabsList,
   TabsTrigger,
@@ -20,19 +21,27 @@ export function SliderDocPage() {
   const [min] = useState(0);
   const [max] = useState(100);
   const [disabled, setDisabled] = useState(false);
+  const [readOnly, setReadOnly] = useState(false);
+  const [size, setSize] = useState<SliderSize>('default');
+  const [showTooltip, setShowTooltip] = useState(true);
+  const [showTicks, setShowTicks] = useState(false);
   const [orientation, setOrientation] = useState<SliderOrientation>('horizontal');
 
   const heroReactCode = `<div className="w-full max-w-xs flex flex-col gap-2">
   <div className="flex justify-between text-xs text-muted-foreground">
     <span>Value</span>
-    <span className="font-mono font-medium text-foreground">${value}</span>
+    <span className="font-mono font-medium text-foreground">{value}</span>
   </div>
   <Slider
     value={${value}}
     min={${min}}
     max={${max}}
     step={${step}}
+    size="${size}"
     disabled={${disabled}}
+    readOnly={${readOnly}}
+    showTooltip={${showTooltip}}
+    showTicks={${showTicks}}
     orientation="${orientation}"
     onValueChange={setValue}
   />
@@ -44,7 +53,11 @@ export function SliderDocPage() {
     min: ${min}
     max: ${max}
     step: ${step}
+    size: "${size}"
     disabled: ${disabled}
+    readOnly: ${readOnly}
+    showTooltip: ${showTooltip}
+    showTicks: ${showTicks}
     orientation: "${orientation}"
     onValueMoved: function(val) {
         // handle slider value update
@@ -71,7 +84,7 @@ export function SliderDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Explore interactive slider behaviors, steps, orientations, and states across Web and Qt Desktop.
+          Explore interactive slider behaviors, sizes, steps, orientations, tooltips, and states across Web and Qt Desktop.
         </p>
 
         <ComponentPreview
@@ -86,6 +99,17 @@ export function SliderDocPage() {
                 <span className="font-mono text-xs font-semibold text-foreground px-2 py-0.5 rounded bg-muted">
                   {value}
                 </span>
+              </div>
+
+              {/* Size selector */}
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground text-xs">Size:</span>
+                <Tabs value={size} onValueChange={(v) => setSize(v as SliderSize)}>
+                  <TabsList className="h-8">
+                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
+                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </div>
 
               {/* Step selector */}
@@ -115,12 +139,33 @@ export function SliderDocPage() {
                 </Tabs>
               </div>
 
-              {/* Disabled toggle */}
+              {/* Toggles */}
               <Checkbox
                 size="sm"
                 checked={disabled}
                 onCheckedChange={(val) => setDisabled(val)}
                 label="Disabled"
+              />
+
+              <Checkbox
+                size="sm"
+                checked={readOnly}
+                onCheckedChange={(val) => setReadOnly(val)}
+                label="Read-Only"
+              />
+
+              <Checkbox
+                size="sm"
+                checked={showTooltip}
+                onCheckedChange={(val) => setShowTooltip(val)}
+                label="Tooltip"
+              />
+
+              <Checkbox
+                size="sm"
+                checked={showTicks}
+                onCheckedChange={(val) => setShowTicks(val)}
+                label="Ticks"
               />
             </div>
           }
@@ -144,7 +189,11 @@ export function SliderDocPage() {
                 min={min}
                 max={max}
                 step={step}
+                size={size}
                 disabled={disabled}
+                readOnly={readOnly}
+                showTooltip={showTooltip}
+                showTicks={showTicks}
                 orientation={orientation}
                 onValueChange={setValue}
               />
@@ -186,6 +235,8 @@ export function SliderDemo() {
         min={0}
         max={100}
         step={1}
+        showTooltip
+        formatValue={(v) => \`\${v}%\`}
         onValueChange={setVolume}
       />
     </div>
@@ -201,37 +252,53 @@ export function SliderDemo() {
           Examples & States
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Visual matrix of common slider configurations and interactive states.
+          Visual matrix of common slider configurations, size scales, tooltips, and interactive states.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Default Continuous Slider</span>
-            <span className="text-xs text-muted-foreground">Smooth continuous 0 to 100 with unit step</span>
-            <div className="pt-2">
-              <Slider defaultValue={45} min={0} max={100} step={1} />
+            <span className="text-xs font-medium text-foreground">Floating Value Tooltip</span>
+            <span className="text-xs text-muted-foreground">Interactive formatted indicator on thumb drag and hover</span>
+            <div className="pt-6 pb-2">
+              <Slider defaultValue={75} showTooltip formatValue={(v) => `${v}%`} />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Stepped Increments (step=25)</span>
-            <span className="text-xs text-muted-foreground">Quantized stops for discrete selection</span>
-            <div className="pt-2">
-              <Slider defaultValue={50} min={0} max={100} step={25} />
+            <span className="text-xs font-medium text-foreground">Compact Size (sm)</span>
+            <span className="text-xs text-muted-foreground">Reduced track thickness and thumb size for toolbars</span>
+            <div className="pt-6 pb-2">
+              <Slider size="sm" defaultValue={40} />
+            </div>
+          </Card>
+
+          <Card className="flex flex-col gap-3 p-5">
+            <span className="text-xs font-medium text-foreground">Read-Only State</span>
+            <span className="text-xs text-muted-foreground">Locked value without dimmed 50% opacity</span>
+            <div className="pt-6 pb-2">
+              <Slider readOnly defaultValue={60} />
+            </div>
+          </Card>
+
+          <Card className="flex flex-col gap-3 p-5">
+            <span className="text-xs font-medium text-foreground">Discrete Stops with Ticks</span>
+            <span className="text-xs text-muted-foreground">Quantized stops with tick indicators and label marks</span>
+            <div className="pt-6 pb-4">
+              <Slider defaultValue={50} min={0} max={100} step={25} showTicks marks={['0%', '25%', '50%', '75%', '100%']} />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
             <span className="text-xs font-medium text-foreground">Disabled State</span>
-            <span className="text-xs text-muted-foreground">Non-interactive with 50% opacity for locked values</span>
-            <div className="pt-2">
-              <Slider disabled defaultValue={60} min={0} max={100} />
+            <span className="text-xs text-muted-foreground">Non-interactive with dimmed opacity for disabled controls</span>
+            <div className="pt-6 pb-2">
+              <Slider disabled defaultValue={45} min={0} max={100} />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
             <span className="text-xs font-medium text-foreground">Custom Range (20 to 80)</span>
-            <span className="text-xs text-muted-foreground">Bounded custom min and max values</span>
-            <div className="pt-2">
+            <span className="text-xs text-muted-foreground">Bounded custom minimum and maximum limits with step=5</span>
+            <div className="pt-6 pb-2">
               <Slider defaultValue={50} min={20} max={80} step={5} />
             </div>
           </Card>
@@ -239,7 +306,6 @@ export function SliderDemo() {
       </section>
 
       {/* 5. Props Reference */}
-      
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -287,10 +353,46 @@ export function SliderDemo() {
               description: 'The stepping granularity interval.',
             },
             {
+              name: 'size',
+              type: "'default' | 'sm'",
+              default: "'default'",
+              description: 'The size scale of the slider track and thumb.',
+            },
+            {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
               description: 'When true, prevents user interaction and applies muted opacity.',
+            },
+            {
+              name: 'readOnly',
+              type: 'boolean',
+              default: 'false',
+              description: 'When true, prevents value changes while maintaining full visual opacity.',
+            },
+            {
+              name: 'showTooltip',
+              type: 'boolean',
+              default: 'false',
+              description: 'When true, shows an interactive floating value tooltip over the thumb on drag and hover.',
+            },
+            {
+              name: 'formatValue',
+              type: '(value: number) => string',
+              default: '—',
+              description: 'Optional formatter function for the floating tooltip text.',
+            },
+            {
+              name: 'showTicks',
+              type: 'boolean',
+              default: 'false',
+              description: 'Displays tick mark indicators along the slider track.',
+            },
+            {
+              name: 'marks',
+              type: 'string[]',
+              default: '—',
+              description: 'Optional array of label strings corresponding to discrete stop positions.',
             },
             {
               name: 'orientation',

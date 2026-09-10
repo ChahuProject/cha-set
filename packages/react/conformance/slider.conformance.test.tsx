@@ -22,6 +22,9 @@ describe('Slider conformance (spec contract)', () => {
     expect(defaultParsed.max).toBe(100);
     expect(defaultParsed.step).toBe(1);
     expect(defaultParsed.disabled).toBe(false);
+    expect(defaultParsed.readOnly).toBe(false);
+    expect(defaultParsed.size).toBe('default');
+    expect(defaultParsed.showTooltip).toBe(false);
     expect(defaultParsed.orientation).toBe('horizontal');
 
     for (const o of ['horizontal', 'vertical'] as const) {
@@ -30,16 +33,26 @@ describe('Slider conformance (spec contract)', () => {
     }
     for (const d of [true, false] as const) {
       expect(() => sliderSchema.parse({ disabled: d })).not.toThrow();
+      expect(() => sliderSchema.parse({ readOnly: d })).not.toThrow();
+      expect(() => sliderSchema.parse({ showTooltip: d })).not.toThrow();
+    }
+    for (const s of ['default', 'sm'] as const) {
+      expect(() => sliderSchema.parse({ size: s })).not.toThrow();
     }
     for (const v of [0, 25, 50, 75, 100]) {
       expect(() => sliderSchema.parse({ value: v })).not.toThrow();
     }
   });
 
-  it('rejects unknown orientation per the contract', () => {
+  it('rejects unknown orientation and size per the contract', () => {
     expect(() =>
       sliderSchema.parse({
         orientation: 'diagonal',
+      }),
+    ).toThrow();
+    expect(() =>
+      sliderSchema.parse({
+        size: 'huge',
       }),
     ).toThrow();
   });

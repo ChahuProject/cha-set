@@ -12,9 +12,13 @@ Item {
     property real max: 100
     property real step: 1
     property bool disabled: false
+    property bool readOnly: false
+    property string size: "default" // "default" | "sm"
     property string orientation: "horizontal" // "horizontal" | "vertical"
     property bool showTicks: false
     property var marks: []
+    property bool showTooltip: false
+    property var formatValue: null
     property bool forceHover: false
     property bool forceFocus: false
 
@@ -22,15 +26,16 @@ Item {
 
     readonly property bool isDark: ThemeTokens.dark
     readonly property bool isHorizontal: root.orientation === "horizontal"
+    readonly property bool isSm: root.size === "sm"
     readonly property bool isFocused: root.forceFocus || root.activeFocus
     readonly property bool isHovered: root.forceHover || mouseArea.containsMouse
     readonly property bool isDragging: mouseArea.pressed
 
-    implicitWidth: root.isHorizontal ? 200 : 20
-    implicitHeight: root.isHorizontal ? 20 : 200
+    implicitWidth: root.isHorizontal ? 200 : (root.isSm ? 16 : 20)
+    implicitHeight: root.isHorizontal ? (root.isSm ? 16 : 20) : 200
 
     opacity: root.disabled ? 0.5 : 1.0
-    activeFocusOnTab: !root.disabled
+    activeFocusOnTab: !root.disabled && !root.readOnly
 
     readonly property real progress: (root.max > root.min)
         ? Math.max(0.0, Math.min(1.0, (root.value - root.min) / (root.max - root.min)))
@@ -62,7 +67,7 @@ Item {
     }
 
     function updateFromMouse(mouseX, mouseY) {
-        if (root.disabled) return;
+        if (root.disabled || root.readOnly) return;
         var ratio = 0.0;
         if (root.isHorizontal) {
             if (root.maxTravelX <= 0) return;
@@ -84,6 +89,7 @@ Item {
     }
 
     function stepUp() {
+        if (root.disabled || root.readOnly) return;
         var next = quantize(root.value + root.step);
         if (next !== root.value) {
             root.value = next;
@@ -93,6 +99,7 @@ Item {
     }
 
     function stepDown() {
+        if (root.disabled || root.readOnly) return;
         var next = quantize(root.value - root.step);
         if (next !== root.value) {
             root.value = next;
@@ -125,35 +132,35 @@ Item {
 
     // Keys interaction
     Keys.onLeftPressed: function(event) {
-        if (!root.disabled && root.isHorizontal) {
+        if (!root.disabled && !root.readOnly && root.isHorizontal) {
             root.stepDown();
             event.accepted = true;
         }
     }
 
     Keys.onRightPressed: function(event) {
-        if (!root.disabled && root.isHorizontal) {
+        if (!root.disabled && !root.readOnly && root.isHorizontal) {
             root.stepUp();
             event.accepted = true;
         }
     }
 
     Keys.onUpPressed: function(event) {
-        if (!root.disabled) {
+        if (!root.disabled && !root.readOnly) {
             root.stepUp();
             event.accepted = true;
         }
     }
 
     Keys.onDownPressed: function(event) {
-        if (!root.disabled) {
+        if (!root.disabled && !root.readOnly) {
             root.stepDown();
             event.accepted = true;
         }
     }
 
     Keys.onPressed: function(event) {
-        if (root.disabled) return;
+        if (root.disabled || root.readOnly) return;
         if (event.key === Qt.Key_PageUp) {
             for (var i = 0; i < 10; i++) root.stepUp();
             event.accepted = true;
@@ -174,17 +181,17 @@ Item {
         id: track
         anchors.left: root.isHorizontal ? parent.left : undefined
         anchors.right: root.isHorizontal ? parent.right : undefined
-        anchors.leftMargin: root.isHorizontal ? 8 : 0
-        anchors.rightMargin: root.isHorizontal ? 8 : 0
+        anchors.leftMargin: root.isHorizontal ? (root.isSm ? 6 : 8) : 0
+        anchors.rightMargin: root.isHorizontal ? (root.isSm ? 6 : 8) : 0
         anchors.top: !root.isHorizontal ? parent.top : undefined
         anchors.bottom: !root.isHorizontal ? parent.bottom : undefined
-        anchors.topMargin: !root.isHorizontal ? 8 : 0
-        anchors.bottomMargin: !root.isHorizontal ? 8 : 0
+        anchors.topMargin: !root.isHorizontal ? (root.isSm ? 6 : 8) : 0
+        anchors.bottomMargin: !root.isHorizontal ? (root.isSm ? 6 : 8) : 0
         anchors.verticalCenter: root.isHorizontal ? parent.verticalCenter : undefined
         anchors.horizontalCenter: !root.isHorizontal ? parent.horizontalCenter : undefined
-        width: root.isHorizontal ? undefined : 6
-        height: root.isHorizontal ? 6 : undefined
-        radius: 3
+        width: root.isHorizontal ? undefined : (root.isSm ? 4 : 6)
+        height: root.isHorizontal ? (root.isSm ? 4 : 6) : undefined
+        radius: root.isSm ? 2 : 3
         color: root.isDark
             ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0)
             : Qt.rgba(241.0 / 255.0, 245.0 / 255.0, 249.0 / 255.0, 1.0)
@@ -197,12 +204,12 @@ Item {
             anchors.top: root.isHorizontal ? parent.top : undefined
             anchors.right: !root.isHorizontal ? parent.right : undefined
             width: root.isHorizontal
-                ? Math.max(0, Math.min(track.width, thumb.x + 8 - track.x))
+                ? Math.max(0, Math.min(track.width, thumb.x + (root.isSm ? 6 : 8) - track.x))
                 : track.width
             height: !root.isHorizontal
-                ? Math.max(0, Math.min(track.height, track.height - (thumb.y + 8 - track.y)))
+                ? Math.max(0, Math.min(track.height, track.height - (thumb.y + (root.isSm ? 6 : 8) - track.y)))
                 : track.height
-            radius: 3
+            radius: root.isSm ? 2 : 3
             color: root.isDark
                 ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0)
                 : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
@@ -253,12 +260,12 @@ Item {
         }
     }
 
-    // Thumb: 16x16 circle, radius 8
+    // Thumb: 16x16 (default) or 12x12 (sm) circle
     Rectangle {
         id: thumb
-        width: 16
-        height: 16
-        radius: 8
+        width: root.isSm ? 12 : 16
+        height: root.isSm ? 12 : 16
+        radius: root.isSm ? 6 : 8
         z: 2
 
         anchors.verticalCenter: root.isHorizontal ? parent.verticalCenter : undefined
@@ -273,12 +280,12 @@ Item {
             ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0)
             : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
 
-        scale: root.isDragging ? 0.95 : (root.isHovered ? 1.05 : 1.0)
+        scale: root.isDragging && !root.readOnly ? 0.95 : (root.isHovered ? 1.05 : 1.0)
         Behavior on scale {
             NumberAnimation { duration: 100 }
         }
 
-        // Focus ring: 1px offset outer ring visible when focused
+        // Focus ring
         Rectangle {
             id: focusRing
             anchors.fill: parent
@@ -291,6 +298,37 @@ Item {
                 : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
             visible: root.isFocused
         }
+
+        // Floating Tooltip Badge
+        Rectangle {
+            id: tooltipPopup
+            visible: root.showTooltip && (root.isDragging || root.isHovered || root.forceHover || root.forceFocus)
+            z: 10
+            width: tooltipText.implicitWidth + 10
+            height: tooltipText.implicitHeight + 4
+            radius: 4
+            color: ThemeTokens.panel
+            border.color: ThemeTokens.border
+            border.width: 1
+
+            anchors.bottom: root.isHorizontal ? parent.top : undefined
+            anchors.bottomMargin: root.isHorizontal ? 6 : 0
+            anchors.horizontalCenter: root.isHorizontal ? parent.horizontalCenter : undefined
+
+            anchors.left: !root.isHorizontal ? parent.right : undefined
+            anchors.leftMargin: !root.isHorizontal ? 8 : 0
+            anchors.verticalCenter: !root.isHorizontal ? parent.verticalCenter : undefined
+
+            Text {
+                id: tooltipText
+                anchors.centerIn: parent
+                text: (typeof root.formatValue === "function") ? root.formatValue(root.value) : root.value.toString()
+                color: ThemeTokens.text
+                font.pixelSize: 11
+                font.family: "monospace"
+                font.weight: Font.Medium
+            }
+        }
     }
 
     MouseArea {
@@ -298,7 +336,11 @@ Item {
         anchors.fill: parent
         hoverEnabled: !root.disabled
         enabled: !root.disabled
-        cursorShape: root.disabled ? Qt.ForbiddenCursor : (mouseArea.pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor)
+        cursorShape: root.disabled
+            ? Qt.ForbiddenCursor
+            : (root.readOnly
+                ? Qt.ArrowCursor
+                : (mouseArea.pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor))
 
         onPressed: function(mouse) {
             root.forceActiveFocus();
