@@ -150,4 +150,39 @@ describe('Collapsible Component', () => {
     expect(screen.getByRole('button', { name: 'Trigger' })).toHaveClass('custom-trigger');
     expect(screen.getByTestId('panel')).toHaveClass('custom-content');
   });
+
+  it('toggles open state with Enter and Space keys', async () => {
+    const user = userEvent.setup();
+    render(
+      <Collapsible>
+        <CollapsibleTrigger>Keyboard Toggle</CollapsibleTrigger>
+        <CollapsibleContent data-testid="panel">
+          <div>Keyboard Content</div>
+        </CollapsibleContent>
+      </Collapsible>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Keyboard Toggle' });
+    trigger.focus();
+
+    // Toggle open with Enter
+    await user.keyboard('{Enter}');
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('Keyboard Content')).toBeVisible();
+
+    // Toggle close with Enter
+    await user.keyboard('{Enter}');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByText('Keyboard Content')).toBeNull();
+
+    // Toggle open with Space
+    await user.keyboard(' ');
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('Keyboard Content')).toBeVisible();
+
+    // Toggle close with Space
+    await user.keyboard(' ');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByText('Keyboard Content')).toBeNull();
+  });
 });

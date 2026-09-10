@@ -32,6 +32,30 @@ Rectangle {
     implicitWidth: 320
     implicitHeight: headerBar.height + contentWrapper.height
 
+    activeFocusOnTab: !root.disabled
+
+    Keys.onSpacePressed: function(event) {
+        if (!root.disabled) {
+            event.accepted = true
+            root.open = !root.open
+            root.toggled(root.open)
+        }
+    }
+    Keys.onReturnPressed: function(event) {
+        if (!root.disabled) {
+            event.accepted = true
+            root.open = !root.open
+            root.toggled(root.open)
+        }
+    }
+    Keys.onEnterPressed: function(event) {
+        if (!root.disabled) {
+            event.accepted = true
+            root.open = !root.open
+            root.toggled(root.open)
+        }
+    }
+
     opacity: root.disabled ? 0.5 : 1.0
 
     Column {
@@ -46,6 +70,8 @@ Rectangle {
             width: parent.width
             height: 36
             radius: root.customRadius
+            border.color: root.activeFocus ? ThemeTokens.accent : "transparent"
+            border.width: root.activeFocus ? 1 : 0
             color: {
                 if (root.forceActive || triggerMouseArea.pressed) {
                     return ThemeTokens.active
@@ -100,6 +126,7 @@ Rectangle {
                 cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
                 onClicked: {
                     if (!root.disabled) {
+                        root.forceActiveFocus()
                         root.open = !root.open
                         root.toggled(root.open)
                     }

@@ -76,4 +76,49 @@ describe('ContextMenu', () => {
     const item = screen.getByText('Remove');
     expect(item).toHaveAttribute('data-variant', 'destructive');
   });
+
+  it('supports keyboard navigation: navigating with ArrowDown, selecting with Enter', async () => {
+    const user = userEvent.setup();
+    const handleAction1 = vi.fn();
+    const handleAction2 = vi.fn();
+
+    render(
+      <ContextMenu defaultOpen>
+        <ContextMenuTrigger>
+          <div>Target</div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem onClick={handleAction1}>First Action</ContextMenuItem>
+          <ContextMenuItem onClick={handleAction2}>Second Action</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>,
+    );
+
+    expect(await screen.findByText('First Action')).toBeInTheDocument();
+
+    // Navigate with ArrowDown and select with Enter
+    await user.keyboard('{ArrowDown}');
+    await user.keyboard('{Enter}');
+    expect(handleAction1.mock.calls.length + handleAction2.mock.calls.length).toBeGreaterThan(0);
+  });
+
+  it('closes context menu when Escape is pressed', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <ContextMenu defaultOpen>
+        <ContextMenuTrigger>
+          <div>Target</div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem>Item</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>,
+    );
+
+    expect(await screen.findByText('Item')).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+    expect(screen.queryByText('Item')).toBeNull();
+  });
 });

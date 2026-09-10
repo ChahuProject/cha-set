@@ -11,9 +11,12 @@ Item {
     property var options: [] // [{ value: "apple", label: "Apple", disabled: false }]
     property bool disabled: false
     property int customRadius: 6
+    property int highlightedIndex: -1
 
     implicitWidth: 160
     implicitHeight: 32
+
+    activeFocusOnTab: !root.disabled
 
     readonly property var currentOption: {
         for (let i = 0; i < options.length; i++) {
@@ -22,12 +25,109 @@ Item {
         return null
     }
 
+    function openPopup() {
+        if (root.disabled) return
+        initHighlight()
+        selectPopup.open()
+    }
+
+    function initHighlight() {
+        let selectedIdx = -1
+        for (let i = 0; i < options.length; i++) {
+            if (String(options[i].value) === String(root.value)) {
+                selectedIdx = i
+                break
+            }
+        }
+        if (selectedIdx >= 0 && (!options[selectedIdx] || !options[selectedIdx].disabled)) {
+            highlightedIndex = selectedIdx
+        } else {
+            highlightedIndex = findFirstEnabledIndex()
+        }
+    }
+
+    function findNextEnabledIndex(startIndex, direction) {
+        if (!options || options.length === 0) return -1
+        let idx = startIndex + direction
+        while (idx >= 0 && idx < options.length) {
+            if (!options[idx] || !options[idx].disabled) {
+                return idx
+            }
+            idx += direction
+        }
+        if (startIndex >= 0 && startIndex < options.length && (!options[startIndex] || !options[startIndex].disabled)) {
+            return startIndex
+        }
+        return findFirstEnabledIndex()
+    }
+
+    function findFirstEnabledIndex() {
+        if (!options || options.length === 0) return -1
+        for (let i = 0; i < options.length; i++) {
+            if (!options[i] || !options[i].disabled) return i
+        }
+        return -1
+    }
+
+    function findLastEnabledIndex() {
+        if (!options || options.length === 0) return -1
+        for (let i = options.length - 1; i >= 0; i--) {
+            if (!options[i] || !options[i].disabled) return i
+        }
+        return -1
+    }
+
+    function selectHighlighted() {
+        if (highlightedIndex >= 0 && highlightedIndex < options.length) {
+            const opt = options[highlightedIndex]
+            if (opt && !opt.disabled) {
+                root.value = String(opt.value)
+                root.valueChanged()
+                selectPopup.close()
+                root.forceActiveFocus()
+            }
+        }
+    }
+
+    function handleKeyEvent(event) {
+        if (!selectPopup.visible) {
+            if (event.key === Qt.Key_Space || event.key === Qt.Key_Return || event.key === Qt.Key_Enter || event.key === Qt.Key_Down) {
+                event.accepted = true
+                openPopup()
+            }
+            return
+        }
+
+        if (event.key === Qt.Key_Down) {
+            event.accepted = true
+            highlightedIndex = findNextEnabledIndex(highlightedIndex, 1)
+        } else if (event.key === Qt.Key_Up) {
+            event.accepted = true
+            highlightedIndex = findNextEnabledIndex(highlightedIndex, -1)
+        } else if (event.key === Qt.Key_Home) {
+            event.accepted = true
+            highlightedIndex = findFirstEnabledIndex()
+        } else if (event.key === Qt.Key_End) {
+            event.accepted = true
+            highlightedIndex = findLastEnabledIndex()
+        } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter || event.key === Qt.Key_Space) {
+            event.accepted = true
+            selectHighlighted()
+        } else if (event.key === Qt.Key_Escape) {
+            event.accepted = true
+            selectPopup.close()
+            root.forceActiveFocus()
+        }
+    }
+
+    Keys.onPressed: (event) => handleKeyEvent(event)
+
     Rectangle {
         id: triggerBox
         anchors.fill: parent
         radius: root.customRadius
         color: ThemeTokens.panel
-        border.color: selectPopup.visible ? ThemeTokens.accent : (triggerMouse.containsMouse ? ThemeTokens.border : ThemeTokens.border)
+        border.color: (selectPopup.visible || root.activeFocus) ? ThemeTokens.accent : (triggerMouse.containsMouse ? ThemeTokens.border : ThemeTokens.border)
         border.width: 1
         opacity: root.disabled ? 0.5 : 1.0
 
@@ -62,8 +162,9 @@ Item {
             cursorShape: root.disabled ? Qt.ArrowCursor : Qt.PointingHandCursor
             onClicked: {
                 if (root.disabled) return
+                root.forceActiveFocus()
                 if (selectPopup.visible) selectPopup.close()
-                else selectPopup.open()
+                else root.openPopup()
             }
         }
     }
@@ -77,6 +178,14 @@ Item {
         focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
+        onOpened: {
+            root.initHighlight()
+            selectPopup.contentItem.forceActiveFocus()
+        }
+        onClosed: {
+            root.highlightedIndex = -1
+        }
+
         background: Rectangle {
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
@@ -87,16 +196,20 @@ Item {
         contentItem: Column {
             spacing: 2
             width: parent.width
+            focus: true
+            Keys.onPressed: (event) => root.handleKeyEvent(event)
 
             Repeater {
                 model: root.options
                 delegate: Rectangle {
                     required property var modelData
+                    required property int index
                     width: parent.width
                     height: 28
                     radius: 4
                     readonly property bool isSelected: String(modelData.value) === String(root.value)
-                    color: isSelected ? ThemeTokens.hover : (optMouse.containsMouse ? ThemeTokens.hover : "transparent")
+                    readonly property bool isHighlighted: index === root.highlightedIndex
+                    color: (isSelected || isHighlighted) ? ThemeTokens.hover : (optMouse.containsMouse ? ThemeTokens.hover : "transparent")
                     opacity: modelData.disabled ? 0.4 : 1.0
 
                     Text {
@@ -128,11 +241,15 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: !parent.modelData.disabled
                         cursorShape: parent.modelData.disabled ? Qt.ArrowCursor : Qt.PointingHandCursor
+                        onEntered: {
+                            if (!parent.modelData.disabled) root.highlightedIndex = parent.index
+                        }
                         onClicked: {
                             if (parent.modelData.disabled) return
                             root.value = String(parent.modelData.value)
-                            root.valueChanged(root.value)
+                            root.valueChanged()
                             selectPopup.close()
+                            root.forceActiveFocus()
                         }
                     }
                 }

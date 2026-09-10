@@ -58,6 +58,102 @@ static bool runRealMouseDragVerification(QQuickWindow* window) {
     }
 }
 
+static bool runRealKeyboardVerification(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running authentic C++ QTest keyboard navigation verification...");
+
+    auto* testSelect = window->findChild<QQuickItem*>("testSelect");
+    if (!testSelect) {
+        qWarning("[qt-scenario] WARNING: testSelect item not found by objectName");
+        return false;
+    }
+
+    auto* testDropdown = window->findChild<QQuickItem*>("testDropdown");
+    if (!testDropdown) {
+        qWarning("[qt-scenario] WARNING: testDropdown item not found by objectName");
+        return false;
+    }
+
+    // 1. ChaSetSelect keyboard navigation verification via QTest
+    testSelect->setProperty("value", "");
+    testSelect->forceActiveFocus();
+    QTest::qWait(50);
+
+    // Press Space to open
+    QTest::keyClick(window, Qt::Key_Space);
+    QTest::qWait(50);
+    int hlIdx = testSelect->property("highlightedIndex").toInt();
+    if (hlIdx != 0) {
+        qCritical() << "[qt-scenario] FAIL: QTest Space key did not initialize testSelect highlightedIndex to 0 (got " << hlIdx << ")";
+        return false;
+    }
+
+    // Down arrow to move to next enabled option (index 1)
+    QTest::keyClick(window, Qt::Key_Down);
+    QTest::qWait(50);
+    hlIdx = testSelect->property("highlightedIndex").toInt();
+    if (hlIdx != 1) {
+        qCritical() << "[qt-scenario] FAIL: QTest Down arrow did not move testSelect highlightedIndex to 1 (got " << hlIdx << ")";
+        return false;
+    }
+
+    // Press Return to select
+    QTest::keyClick(window, Qt::Key_Return);
+    QTest::qWait(50);
+    QString selectedVal = testSelect->property("value").toString();
+    if (selectedVal != "banana") {
+        qCritical() << "[qt-scenario] FAIL: QTest Enter did not select 'banana' (got " << selectedVal << ")";
+        return false;
+    }
+
+    // Reopen with Down arrow
+    QTest::keyClick(window, Qt::Key_Down);
+    QTest::qWait(50);
+
+    // Escape closes popup
+    QTest::keyClick(window, Qt::Key_Escape);
+    QTest::qWait(50);
+    hlIdx = testSelect->property("highlightedIndex").toInt();
+    if (hlIdx != -1) {
+        qCritical() << "[qt-scenario] FAIL: QTest Escape did not close testSelect (got highlightedIndex " << hlIdx << ")";
+        return false;
+    }
+
+    // 2. ChaSetDropdownMenu keyboard navigation verification via QTest
+    testDropdown->setProperty("open", false);
+    testDropdown->forceActiveFocus();
+    QTest::qWait(50);
+
+    // Press Enter to open
+    QTest::keyClick(window, Qt::Key_Return);
+    QTest::qWait(50);
+    bool isOpen = testDropdown->property("open").toBool();
+    if (!isOpen) {
+        qCritical("[qt-scenario] FAIL: QTest Enter key did not open testDropdown");
+        return false;
+    }
+
+    // Down arrow to move highlightedIndex to 0
+    QTest::keyClick(window, Qt::Key_Down);
+    QTest::qWait(50);
+    int dropHlIdx = testDropdown->property("highlightedIndex").toInt();
+    if (dropHlIdx != 0) {
+        qCritical() << "[qt-scenario] FAIL: QTest Down arrow did not move testDropdown highlightedIndex to 0 (got " << dropHlIdx << ")";
+        return false;
+    }
+
+    // Escape closes menu
+    QTest::keyClick(window, Qt::Key_Escape);
+    QTest::qWait(50);
+    isOpen = testDropdown->property("open").toBool();
+    if (isOpen) {
+        qCritical("[qt-scenario] FAIL: QTest Escape key did not close testDropdown");
+        return false;
+    }
+
+    qInfo("[qt-scenario] PASS: Authentic C++ QTest keyboard navigation verified for Select and DropdownMenu");
+    return true;
+}
+
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #include <d3d11.h>
@@ -295,10 +391,19 @@ int main(int argc, char* argv[])
                 } else {
                     int code = returnedValue.toInt();
                     if (code == 0) {
-                        bool dragOk = runRealMouseDragVerification(window);
-                        if (!dragOk) {
-                            QCoreApplication::exit(1);
-                            return;
+                        if (testScenario == "all" || testScenario == "scroll-drag") {
+                            bool dragOk = runRealMouseDragVerification(window);
+                            if (!dragOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                        }
+                        if (testScenario == "all" || testScenario == "keyboard-navigation") {
+                            bool kbOk = runRealKeyboardVerification(window);
+                            if (!kbOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
                         }
                     }
                     QCoreApplication::exit(code);

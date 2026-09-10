@@ -292,6 +292,97 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 7: Cross-Stack Keyboard Navigation Parity
+        if (scenario === "all" || scenario === "keyboard-navigation") {
+            console.log("[qt-scenario] Running keyboard navigation scenario...");
+            var kbFailures = 0;
+
+            // --- 1. ChaSetSelect Keyboard Flow ---
+            testSelect.value = "";
+            testSelect.handleKeyEvent({ key: Qt.Key_Space, accepted: false });
+            if (testSelect.highlightedIndex !== 0) {
+                console.log("[qt-scenario] FAIL: testSelect opened via Space should initialize highlightedIndex to 0, got " + testSelect.highlightedIndex);
+                kbFailures++;
+            }
+
+            // Down arrow moves to next enabled option (index 1: Banana)
+            testSelect.handleKeyEvent({ key: Qt.Key_Down, accepted: false });
+            if (testSelect.highlightedIndex !== 1) {
+                console.log("[qt-scenario] FAIL: testSelect Down arrow should move highlightedIndex to 1, got " + testSelect.highlightedIndex);
+                kbFailures++;
+            }
+
+            // Down arrow skips disabled cherry (index 2) to durian (index 3)
+            testSelect.handleKeyEvent({ key: Qt.Key_Down, accepted: false });
+            if (testSelect.highlightedIndex !== 3) {
+                console.log("[qt-scenario] FAIL: testSelect Down arrow should skip disabled option and land on index 3, got " + testSelect.highlightedIndex);
+                kbFailures++;
+            }
+
+            // Enter selects option at highlightedIndex and closes
+            testSelect.handleKeyEvent({ key: Qt.Key_Return, accepted: false });
+            if (testSelect.value !== "durian") {
+                console.log("[qt-scenario] FAIL: testSelect Enter key should select 'durian', got " + testSelect.value);
+                kbFailures++;
+            }
+
+            // Reopen with Down arrow
+            testSelect.handleKeyEvent({ key: Qt.Key_Down, accepted: false });
+            if (testSelect.highlightedIndex !== 3) {
+                console.log("[qt-scenario] FAIL: testSelect Down arrow should open and highlight current value index 3, got " + testSelect.highlightedIndex);
+                kbFailures++;
+            }
+
+            // Escape closes popup (highlightedIndex resets to -1)
+            testSelect.handleKeyEvent({ key: Qt.Key_Escape, accepted: false });
+            if (testSelect.highlightedIndex !== -1) {
+                console.log("[qt-scenario] FAIL: testSelect Escape key should close and reset highlightedIndex, got " + testSelect.highlightedIndex);
+                kbFailures++;
+            }
+
+            // --- 2. ChaSetDropdownMenu Keyboard Flow ---
+            testDropdown.open = false;
+            testDropdown.handleKeyEvent({ key: Qt.Key_Return, accepted: false });
+            if (!testDropdown.open) {
+                console.log("[qt-scenario] FAIL: testDropdown Enter key should open menu");
+                kbFailures++;
+            }
+
+            // Down arrow moves highlightedIndex to 0
+            testDropdown.handleKeyEvent({ key: Qt.Key_Down, accepted: false });
+            if (testDropdown.highlightedIndex !== 0) {
+                console.log("[qt-scenario] FAIL: testDropdown Down arrow should move highlightedIndex to 0, got " + testDropdown.highlightedIndex);
+                kbFailures++;
+            }
+
+            // Down arrow moves highlightedIndex to 1
+            testDropdown.handleKeyEvent({ key: Qt.Key_Down, accepted: false });
+            if (testDropdown.highlightedIndex !== 1) {
+                console.log("[qt-scenario] FAIL: testDropdown Down arrow should move highlightedIndex to 1, got " + testDropdown.highlightedIndex);
+                kbFailures++;
+            }
+
+            // Down arrow skips disabled item 3 to item 4 (index 3)
+            testDropdown.handleKeyEvent({ key: Qt.Key_Down, accepted: false });
+            if (testDropdown.highlightedIndex !== 3) {
+                console.log("[qt-scenario] FAIL: testDropdown Down arrow should skip disabled item to index 3, got " + testDropdown.highlightedIndex);
+                kbFailures++;
+            }
+
+            // Escape closes menu
+            testDropdown.handleKeyEvent({ key: Qt.Key_Escape, accepted: false });
+            if (testDropdown.open) {
+                console.log("[qt-scenario] FAIL: testDropdown Escape key should close menu");
+                kbFailures++;
+            }
+
+            if (kbFailures === 0) {
+                console.log("[qt-scenario] PASS: ChaSetSelect & ChaSetDropdownMenu keyboard navigation verified");
+            } else {
+                failures += kbFailures;
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;
@@ -322,6 +413,39 @@ ApplicationWindow {
                 ChaSetTabsTrigger { value: "account"; text: "Account" }
                 ChaSetTabsTrigger { value: "password"; text: "Password" }
             }
+        }
+
+        // Hidden test instances for keyboard navigation scenario testing
+        ChaSetSelect {
+            id: testSelect
+            objectName: "testSelect"
+            x: -2000
+            y: -2000
+            width: 160
+            height: 32
+            visible: true
+            options: [
+                { value: "apple", label: "Apple", disabled: false },
+                { value: "banana", label: "Banana", disabled: false },
+                { value: "cherry", label: "Cherry", disabled: true },
+                { value: "durian", label: "Durian", disabled: false }
+            ]
+        }
+
+        ChaSetDropdownMenu {
+            id: testDropdown
+            objectName: "testDropdown"
+            x: -2000
+            y: -1900
+            width: 160
+            height: 32
+            visible: true
+            items: [
+                { id: "item1", label: "Item 1", disabled: false },
+                { id: "item2", label: "Item 2", disabled: false },
+                { id: "item3", label: "Item 3", disabled: true },
+                { id: "item4", label: "Item 4", disabled: false }
+            ]
         }
 
         // Isolated Component Harness Container (for visual unit tests)

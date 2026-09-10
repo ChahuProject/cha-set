@@ -18,6 +18,7 @@ Rectangle {
     property bool showCloseButton: true
     property bool showEscBadge: false
     property bool draggable: true
+    property bool closeOnEscape: true
 
     signal opened()
     signal closed()
@@ -45,7 +46,7 @@ Rectangle {
 
     Shortcut {
         sequence: "Escape"
-        enabled: root.open
+        enabled: root.open && root.closeOnEscape
         onActivated: {
             root.open = false
             root.rejected()
@@ -53,9 +54,11 @@ Rectangle {
     }
 
     Keys.onEscapePressed: function(event) {
-        event.accepted = true
-        root.open = false
-        root.rejected()
+        if (root.closeOnEscape) {
+            event.accepted = true
+            root.open = false
+            root.rejected()
+        }
     }
 
     // Overlay scrim click to dismiss
@@ -134,7 +137,7 @@ Rectangle {
                             width: 32
                             height: 20
                             radius: 4
-                            color: ThemeTokens.card
+                            color: ThemeTokens.panelRaised
                             border.color: ThemeTokens.border
                             border.width: 1
                             anchors.verticalCenter: parent.verticalCenter

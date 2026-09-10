@@ -124,4 +124,55 @@ describe('Select', () => {
     const trigger = screen.getByRole('combobox');
     expect(trigger.querySelector('button')).toBeNull();
   });
+
+  it('supports keyboard navigation: navigating with ArrowDown, selecting with Enter, and closing with Escape', async () => {
+    const user = userEvent.setup();
+    const handleValueChange = vi.fn();
+
+    render(
+      <Select onValueChange={handleValueChange}>
+        <SelectTrigger>
+          <SelectValue placeholder="Choose option" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+          <SelectItem value="orange">Orange</SelectItem>
+        </SelectContent>
+      </Select>,
+    );
+
+    const trigger = screen.getByRole('combobox');
+    trigger.focus();
+
+    // Open and navigate with ArrowDown, select with Enter
+    await user.keyboard('{ArrowDown}');
+    expect(await screen.findByRole('option', { name: 'Apple' })).toBeInTheDocument();
+
+    await user.keyboard('{ArrowDown}');
+    await user.keyboard('{Enter}');
+    expect(handleValueChange).toHaveBeenCalled();
+  });
+
+  it('closes select popup when Escape is pressed', async () => {
+    const user = userEvent.setup();
+    render(
+      <Select>
+        <SelectTrigger>
+          <SelectValue placeholder="Choose option" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+        </SelectContent>
+      </Select>,
+    );
+
+    const trigger = screen.getByRole('combobox');
+    await user.click(trigger);
+    expect(await screen.findByRole('option', { name: 'Apple' })).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('option', { name: 'Apple' })).toBeNull();
+  });
 });

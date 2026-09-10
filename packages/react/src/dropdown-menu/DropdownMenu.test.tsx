@@ -121,4 +121,56 @@ describe('DropdownMenu', () => {
     fireEvent.click(trigger);
     expect(await screen.findByText('Nested Item')).toBeInTheDocument();
   });
+
+  it('supports keyboard navigation: opening with Enter/Space, navigating with ArrowDown, selecting with Enter', async () => {
+    const user = userEvent.setup();
+    const handleAction1 = vi.fn();
+    const handleAction2 = vi.fn();
+
+    render(
+      <DropdownMenu>
+        <DropdownMenuTrigger>Menu</DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={handleAction1}>Action 1</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleAction2}>Action 2</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Menu' });
+    trigger.focus();
+
+    // Open with Enter
+    await user.keyboard('{Enter}');
+    expect(await screen.findByText('Action 1')).toBeInTheDocument();
+
+    // When opened with Enter, first item is focused; ArrowDown navigates to second item
+    await user.keyboard('{ArrowDown}');
+    await user.keyboard('{Enter}');
+    expect(handleAction2).toHaveBeenCalled();
+  });
+
+  it('supports opening with Space and closing with Escape', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <DropdownMenu>
+        <DropdownMenuTrigger>Menu</DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>Action 1</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Menu' });
+    trigger.focus();
+
+    // Open with Space
+    await user.keyboard(' ');
+    expect(await screen.findByText('Action 1')).toBeInTheDocument();
+
+    // Close with Escape
+    await user.keyboard('{Escape}');
+    expect(screen.queryByText('Action 1')).toBeNull();
+  });
 });

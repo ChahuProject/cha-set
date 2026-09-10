@@ -17,6 +17,7 @@ Rectangle {
     property bool destructive: true
     property int customRadius: 8
     property int dialogWidth: 460
+    property bool closeOnEscape: true
 
     signal confirmed()
     signal cancelled()
@@ -37,7 +38,7 @@ Rectangle {
 
     Shortcut {
         sequence: "Escape"
-        enabled: root.open
+        enabled: root.open && root.closeOnEscape
         onActivated: {
             root.open = false
             root.cancelled()
@@ -45,9 +46,11 @@ Rectangle {
     }
 
     Keys.onEscapePressed: function(event) {
-        event.accepted = true
-        root.open = false
-        root.cancelled()
+        if (root.closeOnEscape) {
+            event.accepted = true
+            root.open = false
+            root.cancelled()
+        }
     }
 
     MouseArea {

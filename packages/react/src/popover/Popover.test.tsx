@@ -78,4 +78,21 @@ describe('Popover', () => {
     await user.click(closeBtn);
     expect(screen.queryByText('Close Popover')).toBeNull();
   });
+
+  it('closes popover when Escape is pressed', async () => {
+    const user = userEvent.setup();
+    render(
+      <Popover defaultOpen>
+        <PopoverTrigger>Trigger</PopoverTrigger>
+        <PopoverContent>
+          <div>Popover Body</div>
+        </PopoverContent>
+      </Popover>,
+    );
+
+    expect(screen.getByText('Popover Body')).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+    expect(screen.queryByText('Popover Body')).toBeNull();
+  });
 });
