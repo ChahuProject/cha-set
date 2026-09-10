@@ -22,7 +22,15 @@ describe('Sheet conformance (spec contract)', () => {
 
     expect(() => sheetTriggerSchema.parse({ asChild: false, disabled: false })).not.toThrow();
     expect(() => sheetCloseSchema.parse({ asChild: false })).not.toThrow();
-    expect(() => sheetContentSchema.parse({ side: 'right', showCloseButton: true })).not.toThrow();
+    expect(() =>
+      sheetContentSchema.parse({
+        side: 'right',
+        size: 'lg',
+        showCloseButton: true,
+        closeOnOverlayClick: false,
+        closeOnEscape: true,
+      }),
+    ).not.toThrow();
     expect(() => sheetHeaderSchema.parse({})).not.toThrow();
     expect(() => sheetFooterSchema.parse({})).not.toThrow();
     expect(() => sheetTitleSchema.parse({})).not.toThrow();
@@ -31,6 +39,7 @@ describe('Sheet conformance (spec contract)', () => {
 
   it('rejects invalid types per the contract', () => {
     expect(() => sheetContentSchema.parse({ side: 'diagonal' })).toThrow();
+    expect(() => sheetContentSchema.parse({ size: 'huge' })).toThrow();
   });
 
   it('earned coverage declares must capabilities', () => {
@@ -43,5 +52,6 @@ describe('Sheet conformance (spec contract)', () => {
     expect(coverage.sheet?.side).toBe(true);
     expect(coverage.sheet?.overlay).toBe(true);
     expect(coverage.sheet?.close).toBe(true);
+    expect(coverage.sheet?.size).toBe(true);
   });
 });

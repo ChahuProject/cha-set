@@ -21,4 +21,5 @@ export {
   type SheetTitleProps,
   type SheetDescriptionProps,
   type SheetSide,
+  type SheetSize,
 } from './Sheet';

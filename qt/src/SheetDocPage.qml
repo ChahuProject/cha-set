@@ -16,6 +16,7 @@ DocLayout {
     ]
 
     property string sheetSide: "right"
+    property string sheetSizePreset: "default"
 
     ComponentPreview {
         title: "Sheet Preview"
@@ -23,7 +24,7 @@ DocLayout {
   <SheetTrigger asChild>
     <Button variant="outline">Open Right Sheet</Button>
   </SheetTrigger>
-  <SheetContent side="right">
+  <SheetContent side="right" size="default">
     <SheetHeader>
       <SheetTitle>Edit profile</SheetTitle>
       <SheetDescription>Make changes to your profile here.</SheetDescription>
@@ -42,6 +43,7 @@ DocLayout {
 ChaSetSheet {
     id: sheet
     side: "right"
+    size: "default"
     title: "Edit profile"
     description: "Make changes to your profile here."
     // ...content...
@@ -50,32 +52,88 @@ ChaSetSheet {
         Item {
             anchors.fill: parent
 
-            Row {
+            Column {
                 anchors.centerIn: parent
                 spacing: 12
 
-                ChaSetButton {
-                    text: "Open Right Sheet"
-                    variant: "outline"
-                    onClicked: {
-                        root.sheetSide = "right"
-                        demoSheet.open = true
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 8
+
+                    ChaSetButton {
+                        text: "left"
+                        variant: root.sheetSide === "left" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.sheetSide = "left"
+                    }
+
+                    ChaSetButton {
+                        text: "right"
+                        variant: root.sheetSide === "right" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.sheetSide = "right"
+                    }
+
+                    ChaSetButton {
+                        text: "top"
+                        variant: root.sheetSide === "top" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.sheetSide = "top"
+                    }
+
+                    ChaSetButton {
+                        text: "bottom"
+                        variant: root.sheetSide === "bottom" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.sheetSide = "bottom"
+                    }
+                }
+
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 8
+
+                    ChaSetButton {
+                        text: "sm"
+                        variant: root.sheetSizePreset === "sm" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.sheetSizePreset = "sm"
+                    }
+
+                    ChaSetButton {
+                        text: "default"
+                        variant: root.sheetSizePreset === "default" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.sheetSizePreset = "default"
+                    }
+
+                    ChaSetButton {
+                        text: "lg"
+                        variant: root.sheetSizePreset === "lg" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.sheetSizePreset = "lg"
+                    }
+
+                    ChaSetButton {
+                        text: "xl"
+                        variant: root.sheetSizePreset === "xl" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: root.sheetSizePreset = "xl"
                     }
                 }
 
                 ChaSetButton {
-                    text: "Open Bottom Sheet"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Open " + root.sheetSide + " Sheet (" + root.sheetSizePreset + ")"
                     variant: "outline"
-                    onClicked: {
-                        root.sheetSide = "bottom"
-                        demoSheet.open = true
-                    }
+                    onClicked: demoSheet.open = true
                 }
             }
 
             ChaSetSheet {
                 id: demoSheet
                 side: root.sheetSide
+                size: root.sheetSizePreset
                 title: "Edit Account Profile"
                 description: "Update your account handle and workspace configuration."
 
@@ -120,7 +178,6 @@ ChaSetSheet {
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "sheet"
     }
@@ -130,9 +187,13 @@ ChaSetSheet {
         props: [
             { name: "open", type: "bool", default: "false", description: "Whether the sheet is currently open." },
             { name: "side", type: "string", default: "'right'", description: "The edge from which the sheet enters: 'top' | 'bottom' | 'left' | 'right'." },
-            { name: "sheetSize", type: "int", default: "360", description: "Width (for left/right) or height (for top/bottom) of the sheet in pixels." },
+            { name: "size", type: "string", default: "'default'", description: "Preset drawer dimension sizing ('sm', 'default', 'lg', 'xl', 'full')." },
+            { name: "customSheetSize", type: "int", default: "0", description: "Custom dimension override for width or height." },
             { name: "title", type: "string", default: "''", description: "Headline text in the sheet header." },
-            { name: "description", type: "string", default: "''", description: "Subordinate description text in the header." }
+            { name: "description", type: "string", default: "''", description: "Subordinate description text in the header." },
+            { name: "showCloseButton", type: "bool", default: "true", description: "Whether the header close button is displayed." },
+            { name: "closeOnOverlayClick", type: "bool", default: "true", description: "Whether clicking outside dismisses the sheet." },
+            { name: "closeOnEscape", type: "bool", default: "true", description: "Whether pressing Escape dismisses the sheet." }
         ]
     }
 }

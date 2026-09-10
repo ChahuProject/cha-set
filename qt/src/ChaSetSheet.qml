@@ -13,7 +13,28 @@ Rectangle {
     property string title: "Edit profile"
     property string description: "Make changes to your profile here. Click save when you're done."
     property string side: "right" // "top" | "bottom" | "left" | "right"
-    property int sheetSize: 360
+    property string size: "default" // "sm" | "default" | "lg" | "xl" | "full"
+    property bool closeOnOverlayClick: true
+    property bool closeOnEscape: true
+    property bool showCloseButton: true
+    property int customSheetSize: 0
+    property int sheetSize: {
+        if (customSheetSize > 0) return customSheetSize
+        var isHorizontal = (side === "left" || side === "right")
+        if (isHorizontal) {
+            if (size === "sm") return 280
+            if (size === "lg") return 460
+            if (size === "xl") return 640
+            if (size === "full") return root.width
+            return 360 // "default"
+        } else {
+            if (size === "sm") return 200
+            if (size === "lg") return 440
+            if (size === "xl") return 600
+            if (size === "full") return root.height
+            return 300 // "default"
+        }
+    }
 
     signal closed()
 
@@ -27,17 +48,30 @@ Rectangle {
         NumberAnimation { duration: 200; easing.type: Easing.OutQuad }
     }
 
+    Shortcut {
+        sequence: "Escape"
+        enabled: root.open && root.closeOnEscape
+        onActivated: {
+            root.open = false
+            root.closed()
+        }
+    }
+
     Keys.onEscapePressed: function(event) {
-        event.accepted = true
-        root.open = false
-        root.closed()
+        if (root.closeOnEscape) {
+            event.accepted = true
+            root.open = false
+            root.closed()
+        }
     }
 
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            root.open = false
-            root.closed()
+            if (root.closeOnOverlayClick) {
+                root.open = false
+                root.closed()
+            }
         }
     }
 
@@ -105,6 +139,7 @@ Rectangle {
                     text: "✕"
                     variant: "ghost"
                     size: "icon-xs"
+                    visible: root.showCloseButton
                     anchors.verticalCenter: parent.verticalCenter
                     onClicked: {
                         root.open = false

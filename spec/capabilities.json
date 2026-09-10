@@ -182,7 +182,8 @@
       "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
       "side": { "requirement": "must", "description": "drawer slides in from top, right, bottom, or left side" },
       "overlay": { "requirement": "must", "description": "renders backdrop overlay behind sheet drawer" },
-      "close": { "requirement": "must", "description": "close button or backdrop click dismisses sheet" }
+      "close": { "requirement": "must", "description": "close button or backdrop click dismisses sheet" },
+      "size": { "requirement": "should", "description": "drawer sizing presets across dimensions" }
     },
     "skeleton": {
       "pulse": { "requirement": "must", "description": "renders pulse animation placeholder" },

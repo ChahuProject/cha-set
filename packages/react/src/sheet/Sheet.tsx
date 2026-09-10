@@ -5,10 +5,22 @@ import { Button } from '../button';
 import { XIcon } from '../lib/icons';
 
 export interface SheetProps
-  extends React.ComponentProps<typeof SheetPrimitive.Root> {}
+  extends React.ComponentProps<typeof SheetPrimitive.Root> {
+  closeOnOverlayClick?: boolean;
+}
 
-export function SheetRoot({ ...props }: SheetProps) {
-  return <SheetPrimitive.Root data-slot="sheet" {...props} />;
+export function SheetRoot({
+  closeOnOverlayClick = true,
+  disablePointerDismissal,
+  ...props
+}: SheetProps) {
+  return (
+    <SheetPrimitive.Root
+      data-slot="sheet"
+      disablePointerDismissal={disablePointerDismissal ?? !closeOnOverlayClick}
+      {...props}
+    />
+  );
 }
 
 export interface SheetTriggerProps
@@ -88,32 +100,58 @@ export function SheetOverlay({
 }
 
 export type SheetSide = 'top' | 'right' | 'bottom' | 'left';
+export type SheetSize = 'sm' | 'default' | 'lg' | 'xl' | 'full';
+
+const horizontalSizeClasses: Record<SheetSize, string> = {
+  sm: 'sm:max-w-xs',
+  default: 'sm:max-w-sm',
+  lg: 'sm:max-w-md',
+  xl: 'sm:max-w-xl',
+  full: 'sm:max-w-full',
+};
+
+const verticalSizeClasses: Record<SheetSize, string> = {
+  sm: 'max-h-48',
+  default: 'max-h-80',
+  lg: 'max-h-[50vh]',
+  xl: 'max-h-[75vh]',
+  full: 'max-h-screen',
+};
 
 export interface SheetContentProps
   extends React.ComponentProps<typeof SheetPrimitive.Popup> {
   side?: SheetSide;
+  size?: SheetSize;
   showCloseButton?: boolean;
+  overlayClassName?: string;
 }
 
 export function SheetContent({
   className,
+  overlayClassName,
   children,
   side = 'right',
+  size = 'default',
   showCloseButton = true,
   ...props
 }: SheetContentProps) {
+  const isHorizontal = side === 'left' || side === 'right';
+  const sizeClass = isHorizontal ? horizontalSizeClasses[size] : verticalSizeClasses[size];
+
   return (
     <SheetPortal>
-      <SheetOverlay />
+      <SheetOverlay className={overlayClassName} />
       <SheetPrimitive.Popup
         data-slot="sheet-content"
         data-side={side}
+        data-size={size}
         className={cn(
           'fixed z-50 flex flex-col gap-4 bg-background bg-clip-padding text-sm text-foreground shadow-2xl transition duration-200 ease-in-out outline-hidden',
-          side === 'top' && 'inset-x-0 top-0 border-b',
-          side === 'bottom' && 'inset-x-0 bottom-0 border-t',
-          side === 'left' && 'inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm',
-          side === 'right' && 'inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm',
+          side === 'top' && 'inset-x-0 top-0 border-b border-border',
+          side === 'bottom' && 'inset-x-0 bottom-0 border-t border-border',
+          side === 'left' && 'inset-y-0 left-0 h-full w-3/4 border-r border-border',
+          side === 'right' && 'inset-y-0 right-0 h-full w-3/4 border-l border-border',
+          sizeClass,
           'data-open:animate-in data-open:fade-in-0',
           side === 'top' && 'data-open:slide-in-from-top-10 data-closed:slide-out-to-top-10',
           side === 'bottom' && 'data-open:slide-in-from-bottom-10 data-closed:slide-out-to-bottom-10',

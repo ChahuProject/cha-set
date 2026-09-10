@@ -158,7 +158,8 @@
     "open": true,
     "side": true,
     "overlay": true,
-    "close": true
+    "close": true,
+    "size": true
   },
   "skeleton": {
     "pulse": true,

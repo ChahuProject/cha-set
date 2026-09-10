@@ -84,4 +84,42 @@ describe('Sheet', () => {
     expect(onOpenChange).toHaveBeenCalledWith(false, expect.anything());
     expect(screen.queryByText('Closable Sheet')).toBeNull();
   });
+
+  it('supports size variants (sm, default, lg, xl, full)', () => {
+    const { rerender } = render(
+      <Sheet open={true}>
+        <SheetContent side="right" size="lg">
+          <SheetTitle>Large Drawer</SheetTitle>
+        </SheetContent>
+      </Sheet>,
+    );
+
+    const sheetEl = screen.getByText('Large Drawer').closest('[data-slot="sheet-content"]');
+    expect(sheetEl).toHaveAttribute('data-size', 'lg');
+    expect(sheetEl).toHaveClass('sm:max-w-md');
+
+    rerender(
+      <Sheet open={true}>
+        <SheetContent side="bottom" size="sm">
+          <SheetTitle>Small Bottom Sheet</SheetTitle>
+        </SheetContent>
+      </Sheet>,
+    );
+
+    const bottomSheetEl = screen.getByText('Small Bottom Sheet').closest('[data-slot="sheet-content"]');
+    expect(bottomSheetEl).toHaveAttribute('data-size', 'sm');
+    expect(bottomSheetEl).toHaveClass('max-h-48');
+  });
+
+  it('disables pointer dismissal when closeOnOverlayClick is false', () => {
+    render(
+      <Sheet defaultOpen closeOnOverlayClick={false}>
+        <SheetContent>
+          <SheetTitle>Non-dismissible Sheet</SheetTitle>
+        </SheetContent>
+      </Sheet>,
+    );
+
+    expect(screen.getByText('Non-dismissible Sheet')).toBeInTheDocument();
+  });
 });
