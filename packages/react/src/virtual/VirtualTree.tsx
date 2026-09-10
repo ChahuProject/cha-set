@@ -2,13 +2,24 @@ import * as React from 'react';
 import { observeElementRect, useVirtualizer } from '@tanstack/react-virtual';
 import { cn } from '../lib/utils';
 
+export interface VirtualTreeHandle {
+  /** Scroll to a specific item index */
+  scrollToIndex: (index: number, align?: 'start' | 'center' | 'end' | 'auto') => void;
+  /** Expand all foldable nodes */
+  expandAll: () => void;
+  /** Collapse all foldable nodes */
+  collapseAll: () => void;
+}
+
 export interface VirtualTreeRowContext<T> {
   node: T;
   depth: number;
   isExpanded: boolean;
+  isSelected: boolean;
   hasChildren: boolean;
   childCount: number;
   toggleExpand: () => void;
+  selectNode: () => void;
 }
 
 export interface VirtualTreeProps<T> {
@@ -24,6 +35,9 @@ export interface VirtualTreeProps<T> {
   renderRow?: (context: VirtualTreeRowContext<T>) => React.ReactNode;
   emptyNode?: React.ReactNode;
   className?: string;
+  selectedId?: string | null;
+  onSelectNode?: (node: T) => void;
+  ref?: React.Ref<VirtualTreeHandle>;
 }
 
 interface FlatNode<T> {
@@ -46,6 +60,9 @@ export function VirtualTree<T>({
   renderRow,
   emptyNode,
   className,
+  selectedId,
+  onSelectNode,
+  ref,
 }: VirtualTreeProps<T>) {
   const safeRootNodes = rootNodes ?? nodes ?? [];
   const safeGetChildren = React.useMemo(
@@ -59,18 +76,26 @@ export function VirtualTree<T>({
   const safeRenderRow = React.useMemo(
     () =>
       renderRow ??
-      (({ node, depth, hasChildren, isExpanded, toggleExpand }) => (
+      (({ node, depth, hasChildren, isExpanded, isSelected, toggleExpand, selectNode }) => (
         <div
-          className="flex items-center gap-2 px-2 py-1 text-xs cursor-pointer hover:bg-muted/50 rounded select-none"
-          style={{ paddingLeft: `${depth * 16 + 8}px` }}
-          onClick={hasChildren ? toggleExpand : undefined}
+          className={cn(
+            'flex items-center gap-2 px-2 py-1 text-xs cursor-pointer rounded select-none transition-colors',
+            isSelected
+              ? 'bg-primary/15 text-primary font-medium'
+              : 'hover:bg-muted/50 text-foreground',
+          )}
+          style={{ paddingLeft: `${(depth * 16 + 8) / 16}rem` }}
+          onClick={() => {
+            selectNode();
+            if (hasChildren) toggleExpand();
+          }}
         >
           {hasChildren ? (
             <span className="text-[10px] w-3.5 text-muted-foreground">{isExpanded ? '▼' : '▶'}</span>
           ) : (
             <span className="w-3.5 text-[10px] text-muted-foreground/50">•</span>
           )}
-          <span className="font-mono text-foreground">
+          <span className="font-mono">
             {(node as any)?.label ?? (node as any)?.name ?? (node as any)?.title ?? String(node)}
           </span>
         </div>
@@ -116,6 +141,35 @@ export function VirtualTree<T>({
     },
     [defaultExpandDepth],
   );
+
+  const getAllKeys = React.useCallback(() => {
+    const keys: string[] = [];
+    const traverse = (node: T) => {
+      const children = safeGetChildren(node) ?? [];
+      if (children.length > 0) {
+        keys.push(safeGetNodeKey(node));
+        for (const child of children) {
+          traverse(child);
+        }
+      }
+    };
+    for (const root of safeRootNodes) {
+      traverse(root);
+    }
+    return keys;
+  }, [safeRootNodes, safeGetChildren, safeGetNodeKey]);
+
+  const expandAll = React.useCallback(() => {
+    const all = getAllKeys();
+    setExpandedKeys(new Set(all));
+    setCollapsedKeys(new Set());
+  }, [getAllKeys]);
+
+  const collapseAll = React.useCallback(() => {
+    const all = getAllKeys();
+    setCollapsedKeys(new Set(all));
+    setExpandedKeys(new Set());
+  }, [getAllKeys]);
 
   const visibleNodes = React.useMemo(() => {
     const results: FlatNode<T>[] = [];
@@ -164,6 +218,18 @@ export function VirtualTree<T>({
     },
   });
 
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      scrollToIndex: (index, align = 'auto') => {
+        virtualizer.scrollToIndex(index, { align });
+      },
+      expandAll,
+      collapseAll,
+    }),
+    [virtualizer, expandAll, collapseAll],
+  );
+
   const [focusedIndex, setFocusedIndex] = React.useState(0);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -204,8 +270,9 @@ export function VirtualTree<T>({
         }
       }
     } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onSelectNode?.(current.node);
       if (current.hasChildren) {
-        e.preventDefault();
         toggleExpand(current.node, current.depth, current.isExpanded);
       }
     }
@@ -231,6 +298,8 @@ export function VirtualTree<T>({
           {virtualizer.getVirtualItems().map((virtualRow) => {
             const flat = visibleNodes[virtualRow.index]!;
             const isFocused = virtualRow.index === focusedIndex;
+            const nodeKey = safeGetNodeKey(flat.node);
+            const isSelected = selectedId != null && nodeKey === selectedId;
             return (
               <div
                 key={virtualRow.key}
@@ -244,9 +313,11 @@ export function VirtualTree<T>({
                   node: flat.node,
                   depth: flat.depth,
                   isExpanded: flat.isExpanded,
+                  isSelected,
                   hasChildren: flat.hasChildren,
                   childCount: flat.childCount,
                   toggleExpand: () => toggleExpand(flat.node, flat.depth, flat.isExpanded),
+                  selectNode: () => onSelectNode?.(flat.node),
                 })}
               </div>
             );

@@ -9,6 +9,10 @@ Item {
     property var nodes: [] // [{ id, label, children: [...] }]
     property string selectedId: ""
     property var expandedIds: ({})
+    property int defaultExpandDepth: 0
+    property int estimateSize: 28
+    property int gap: 0
+    property int overscan: 10
     property int customRadius: 6
 
     signal nodeSelected(string nodeId)
@@ -23,7 +27,7 @@ Item {
         for (let i = 0; i < list.length; i++) {
             let n = list[i]
             let hasCh = n.children && n.children.length > 0
-            let isExp = !!root.expandedIds[n.id]
+            let isExp = root.expandedIds[n.id] !== undefined ? !!root.expandedIds[n.id] : (depth < root.defaultExpandDepth)
             res.push({
                 id: n.id,
                 label: n.label,
@@ -43,8 +47,51 @@ Item {
 
     function toggleExpand(id) {
         let copy = Object.assign({}, root.expandedIds)
-        copy[id] = !copy[id]
+        let currentExp = copy[id]
+        if (currentExp === undefined) {
+            let found = false
+            function findDepth(list, d) {
+                if (!list || found) return
+                for (let i = 0; i < list.length; i++) {
+                    if (list[i].id === id) {
+                        currentExp = d < root.defaultExpandDepth
+                        found = true
+                        return
+                    }
+                    if (list[i].children) findDepth(list[i].children, d + 1)
+                }
+            }
+            findDepth(root.nodes, 0)
+        }
+        copy[id] = !currentExp
         root.expandedIds = copy
+    }
+
+    function expandAll() {
+        let all = {}
+        function collect(list) {
+            if (!list) return
+            for (let i = 0; i < list.length; i++) {
+                let n = list[i]
+                if (n.children && n.children.length > 0) {
+                    all[n.id] = true
+                    collect(n.children)
+                }
+            }
+        }
+        collect(root.nodes)
+        root.expandedIds = all
+    }
+
+    function collapseAll() {
+        root.expandedIds = ({})
+    }
+
+    function scrollToIndex(index) {
+        if (treeList) {
+            treeList.positionViewAtIndex(index, ListView.Beginning)
+            root.currentIndex = index
+        }
     }
 
     property int currentIndex: -1
@@ -148,6 +195,8 @@ Item {
             model: root.flatItems
             boundsBehavior: Flickable.StopAtBounds
             clip: true
+            spacing: root.gap
+            cacheBuffer: root.overscan * root.estimateSize
 
             ScrollBar.vertical: ChaSetScrollBar {
                 orientation: Qt.Vertical

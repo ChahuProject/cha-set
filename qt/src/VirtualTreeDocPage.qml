@@ -48,7 +48,27 @@ DocLayout {
                 anchors.centerIn: parent
                 spacing: 12
 
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 8
+
+                    ChaSetButton {
+                        text: "Expand All"
+                        variant: "outline"
+                        size: "sm"
+                        onClicked: virtualTree.expandAll()
+                    }
+
+                    ChaSetButton {
+                        text: "Collapse All"
+                        variant: "outline"
+                        size: "sm"
+                        onClicked: virtualTree.collapseAll()
+                    }
+                }
+
                 ChaSetVirtualTree {
+                    id: virtualTree
                     width: 320
                     height: 240
                     expandedIds: ({ "src": true, "components": true })
@@ -102,7 +122,6 @@ DocLayout {
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "virtual-tree"
     }
@@ -113,7 +132,14 @@ DocLayout {
             { name: "nodes", type: "var[]", default: "[]", description: "Hierarchical array of tree node objects with nested children arrays." },
             { name: "selectedId", type: "string", default: "''", description: "ID of the currently highlighted node." },
             { name: "expandedIds", type: "var", default: "{}", description: "Map of expanded node IDs." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the tree container." }
+            { name: "defaultExpandDepth", type: "int", default: "0", description: "Default level of expansion for child branches." },
+            { name: "estimateSize", type: "int", default: "28", description: "Estimated row height for virtual calculations." },
+            { name: "gap", type: "int", default: "0", description: "Spacing between adjacent rows." },
+            { name: "overscan", type: "int", default: "10", description: "Buffer nodes rendered outside visible bounds." },
+            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the tree container." },
+            { name: "expandAll()", type: "function", default: "function", description: "Expands all collapsible tree branches." },
+            { name: "collapseAll()", type: "function", default: "function", description: "Collapses all open tree branches." },
+            { name: "scrollToIndex(index)", type: "function", default: "function", description: "Scrolls the virtual tree to the specified index." }
         ]
     }
 }

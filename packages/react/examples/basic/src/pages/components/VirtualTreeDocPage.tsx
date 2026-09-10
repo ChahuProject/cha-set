@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { VirtualTree, type TreeNode } from '@chahu/cha-set';
+import React, { useState, useRef } from 'react';
+import { VirtualTree, type TreeNode, type VirtualTreeHandle, Button } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -45,31 +45,25 @@ const SAMPLE_TREE: TreeNode[] = [
 ];
 
 export function VirtualTreeDocPage() {
+  const treeRef = useRef<VirtualTreeHandle>(null);
   const [selectedId, setSelectedId] = useState<string | null>('button.tsx');
 
-  const reactCode = `<VirtualTree
+  const reactCode = `const treeRef = useRef<VirtualTreeHandle>(null);
+
+<div className="flex gap-2 mb-2">
+  <Button size="sm" variant="outline" onClick={() => treeRef.current?.expandAll()}>Expand All</Button>
+  <Button size="sm" variant="outline" onClick={() => treeRef.current?.collapseAll()}>Collapse All</Button>
+</div>
+
+<VirtualTree
+  ref={treeRef}
   rootNodes={treeData}
+  selectedId={selectedId}
+  onSelectNode={(node) => setSelectedId(node.id)}
   getChildren={(node) => node.children ?? []}
   getNodeKey={(node) => node.id}
   defaultExpandDepth={2}
   className="h-64 border border-border rounded-md bg-card overflow-auto p-2"
-  renderRow={({ node, depth, hasChildren, isExpanded, toggleExpand }) => (
-    <div
-      className="flex items-center gap-2 px-2 py-1 text-xs cursor-pointer hover:bg-muted/50 rounded"
-      style={{ paddingLeft: \`\${depth * 16 + 8}px\` }}
-      onClick={() => {
-        setSelectedId(node.id);
-        if (hasChildren) toggleExpand();
-      }}
-    >
-      {hasChildren ? (
-        <span className="text-[10px] w-3.5 text-muted-foreground">{isExpanded ? '▼' : '▶'}</span>
-      ) : (
-        <span className="w-3.5 text-[10px] text-muted-foreground/50">•</span>
-      )}
-      <span className="font-mono">{node.label}</span>
-    </div>
-  )}
 />`;
 
   return (
@@ -89,27 +83,47 @@ export function VirtualTreeDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Expand folders and click to select files in the tree view below.
+          Expand folders, select nodes via mouse or keyboard, or use the batch controls below.
         </p>
 
         <ComponentPreview title="Virtual Tree Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-sm flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => treeRef.current?.expandAll()}
+              >
+                Expand All
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => treeRef.current?.collapseAll()}
+              >
+                Collapse All
+              </Button>
+            </div>
+
             <VirtualTree
+              ref={treeRef}
               rootNodes={SAMPLE_TREE}
+              selectedId={selectedId}
+              onSelectNode={(node) => setSelectedId(node.id)}
               getChildren={(node) => node.children ?? []}
               getNodeKey={(node) => node.id}
               defaultExpandDepth={2}
               className="h-64 border border-border rounded-md bg-card overflow-auto p-2"
-              renderRow={({ node, depth, hasChildren, isExpanded, toggleExpand }) => (
+              renderRow={({ node, depth, hasChildren, isExpanded, isSelected, toggleExpand, selectNode }) => (
                 <div
                   className={`flex items-center gap-2 px-2 py-1 text-xs rounded cursor-pointer transition-colors select-none ${
-                    selectedId === node.id
+                    isSelected
                       ? 'bg-primary/15 text-primary font-medium'
                       : 'hover:bg-muted/50 text-foreground'
                   }`}
-                  style={{ paddingLeft: `${depth * 16 + 8}px` }}
+                  style={{ paddingLeft: `${(depth * 16 + 8) / 16}rem` }}
                   onClick={() => {
-                    setSelectedId(node.id);
+                    selectNode();
                     if (hasChildren) toggleExpand();
                   }}
                 >
@@ -136,7 +150,6 @@ export function VirtualTreeDocPage() {
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
-      
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -153,11 +166,19 @@ export function VirtualTreeDocPage() {
         </h2>
         <PropsTable
           props={[
-            { name: 'nodes', type: 'TreeNode[]', default: '[]', description: 'Hierarchical node tree structure.' },
-            { name: 'selectedId', type: 'string | null', default: 'null', description: 'ID of currently active selected node.' },
-            { name: 'onSelectNode', type: '(node: TreeNode) => void', default: 'undefined', description: 'Selection callback.' },
-            { name: 'defaultExpandedIds', type: 'string[]', default: '[]', description: 'Initially expanded folder IDs.' },
-            { name: 'indentWidth', type: 'number', default: '16', description: 'Pixel indent per nesting level.' },
+            { name: 'rootNodes', type: 'readonly T[]', default: '[]', description: 'Array of top-level hierarchy nodes.' },
+            { name: 'nodes', type: 'readonly T[]', default: '[]', description: 'Alias for rootNodes.' },
+            { name: 'getChildren', type: '(node: T) => readonly T[]', default: '(node) => node.children', description: 'Accessor returning child nodes of a node.' },
+            { name: 'getNodeKey', type: '(node: T) => string', default: '(node) => node.id', description: 'Unique identifier accessor for a node.' },
+            { name: 'selectedId', type: 'string | null', default: 'null', description: 'Identifier of the currently selected node.' },
+            { name: 'onSelectNode', type: '(node: T) => void', default: 'undefined', description: 'Callback invoked when a node is selected.' },
+            { name: 'defaultExpandDepth', type: 'number', default: '0', description: 'Default level of expansion for child branches.' },
+            { name: 'estimateSize', type: 'number', default: '32', description: 'Estimated row height for virtual calculation.' },
+            { name: 'gap', type: 'number', default: '0', description: 'Spacing between adjacent rows.' },
+            { name: 'overscan', type: 'number', default: '10', description: 'Buffer nodes rendered outside visible bounds.' },
+            { name: 'renderRow', type: '(context: VirtualTreeRowContext<T>) => ReactNode', default: 'undefined', description: 'Custom row rendering function.' },
+            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: 'Content shown when tree is empty.' },
+            { name: 'ref', type: 'Ref<VirtualTreeHandle>', default: 'undefined', description: 'Handle exposing expandAll(), collapseAll(), scrollToIndex().' },
           ]}
         />
       </section>

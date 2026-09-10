@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { VirtualTree } from './VirtualTree';
 
 interface TreeNode {
@@ -53,5 +53,55 @@ describe('VirtualTree', () => {
     fireEvent.click(expandBtn);
 
     expect(screen.getByText('File 1.1')).toBeInTheDocument();
+  });
+
+  it('supports programmatic expandAll and collapseAll via ref handle', () => {
+    const ref = React.createRef<any>();
+    render(
+      <VirtualTree
+        ref={ref}
+        rootNodes={treeData}
+        getChildren={(node) => node.children ?? []}
+        getNodeKey={(node) => node.id}
+        estimateSize={30}
+      />,
+    );
+
+    expect(screen.queryByText('File 1.1')).not.toBeInTheDocument();
+
+    expect(ref.current).toBeDefined();
+    expect(typeof ref.current?.expandAll).toBe('function');
+    expect(typeof ref.current?.collapseAll).toBe('function');
+
+    act(() => {
+      ref.current.expandAll();
+    });
+    expect(screen.getByText('File 1.1')).toBeInTheDocument();
+
+    act(() => {
+      ref.current.collapseAll();
+    });
+    expect(screen.queryByText('File 1.1')).not.toBeInTheDocument();
+  });
+
+  it('supports selectedId and onSelectNode callback', () => {
+    let selected: any = null;
+    render(
+      <VirtualTree
+        rootNodes={treeData}
+        selectedId="root-2"
+        onSelectNode={(n) => {
+          selected = n;
+        }}
+        getChildren={(node) => node.children ?? []}
+        getNodeKey={(node) => node.id}
+        estimateSize={30}
+      />,
+    );
+
+    const folder2 = screen.getByText('Folder 2');
+    expect(folder2).toBeInTheDocument();
+    fireEvent.click(folder2);
+    expect(selected?.id).toBe('root-2');
   });
 });
