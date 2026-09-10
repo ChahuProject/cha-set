@@ -10,8 +10,11 @@ Item {
     property bool checked: false
     property bool indeterminate: false
     property bool disabled: false
+    property bool readOnly: false
+    property bool invalid: false
     property string size: "default" // "default" | "sm"
     property string label: ""
+    property string description: ""
     property bool forceHover: false
     property bool forceFocus: false
     property int customRadius: -1
@@ -19,7 +22,7 @@ Item {
     signal toggled(bool checked)
 
     function toggle() {
-        if (root.disabled) return;
+        if (root.disabled || root.readOnly) return;
         if (root.indeterminate) {
             root.indeterminate = false;
             root.checked = true;
@@ -32,13 +35,15 @@ Item {
     readonly property bool isSm: root.size === "sm"
     readonly property int boxSize: isSm ? 14 : 16
     readonly property int effectiveRadius: customRadius >= 0 ? customRadius : (isSm ? 3 : 4)
-    readonly property bool isHovered: (root.forceHover || mouseArea.containsMouse) && !root.disabled
+    readonly property bool isHovered: (root.forceHover || mouseArea.containsMouse) && !root.disabled && !root.readOnly
     readonly property bool isFocused: (root.forceFocus || root.activeFocus) && !root.disabled
     readonly property bool isDark: ThemeTokens.dark
     readonly property bool isCheckedOrIndeterminate: root.checked || root.indeterminate
+    readonly property color destructiveColor: isDark ? Qt.rgba(248.0 / 255.0, 113.0 / 255.0, 113.0 / 255.0, 1.0) : Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)
+    readonly property bool hasCompanionContent: root.label !== "" || root.description !== ""
 
-    implicitWidth: box.width + (root.label !== "" ? 8 + labelText.implicitWidth : 0)
-    implicitHeight: Math.max(box.height, root.label !== "" ? labelText.implicitHeight : 0)
+    implicitWidth: box.width + (hasCompanionContent ? 8 + labelColumn.implicitWidth : 0)
+    implicitHeight: Math.max(box.height, hasCompanionContent ? labelColumn.implicitHeight : 0)
 
     opacity: root.disabled ? 0.5 : 1.0
 
@@ -58,7 +63,7 @@ Item {
         color: "transparent"
         border.width: 1
         border.color: root.isFocused
-            ? (isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0))
+            ? (root.invalid ? root.destructiveColor : (isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)))
             : "transparent"
         visible: root.isFocused
     }
@@ -69,7 +74,9 @@ Item {
         width: root.boxSize
         height: root.boxSize
         radius: root.effectiveRadius
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenter: root.description !== "" ? undefined : parent.verticalCenter
+        anchors.top: root.description !== "" ? parent.top : undefined
+        anchors.topMargin: root.description !== "" ? 2 : 0
         anchors.left: parent.left
 
         color: {
@@ -86,6 +93,9 @@ Item {
         border.color: {
             if (root.isCheckedOrIndeterminate) {
                 return ThemeTokens.accent
+            }
+            if (root.invalid) {
+                return root.destructiveColor
             }
             if (root.isHovered) {
                 return isDark ? Qt.rgba(148.0 / 255.0, 163.0 / 255.0, 184.0 / 255.0, 0.4) : Qt.rgba(100.0 / 255.0, 116.0 / 255.0, 139.0 / 255.0, 0.4)
@@ -150,24 +160,39 @@ Item {
         }
     }
 
-    // Companion Label Text
-    Text {
-        id: labelText
+    // Companion Label & Description Column
+    Column {
+        id: labelColumn
         anchors.left: box.right
         anchors.leftMargin: 8
-        anchors.verticalCenter: parent.verticalCenter
-        visible: root.label !== ""
-        text: root.label
-        font.pixelSize: root.isSm ? 12 : 14
-        font.weight: Font.Medium
-        color: ThemeTokens.text
+        anchors.verticalCenter: root.description !== "" ? undefined : parent.verticalCenter
+        anchors.top: root.description !== "" ? parent.top : undefined
+        visible: root.hasCompanionContent
+        spacing: 3
+
+        Text {
+            id: labelText
+            visible: root.label !== ""
+            text: root.label
+            font.pixelSize: root.isSm ? 12 : 14
+            font.weight: Font.Medium
+            color: ThemeTokens.text
+        }
+
+        Text {
+            id: descText
+            visible: root.description !== ""
+            text: root.description
+            font.pixelSize: root.isSm ? 11 : 12
+            color: ThemeTokens.subduedText
+        }
     }
 
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        hoverEnabled: !root.disabled
-        cursorShape: root.disabled ? Qt.ArrowCursor : Qt.PointingHandCursor
+        hoverEnabled: !root.disabled && !root.readOnly
+        cursorShape: root.disabled ? Qt.ArrowCursor : (root.readOnly ? Qt.ArrowCursor : Qt.PointingHandCursor)
         onClicked: root.toggle()
     }
 

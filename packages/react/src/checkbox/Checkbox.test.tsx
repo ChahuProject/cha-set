@@ -165,4 +165,53 @@ describe('Checkbox component', () => {
     expect(checkbox.className).toContain('custom-checkbox-class');
     expect(ref.current).toBe(checkbox);
   });
+
+  it('supports invalid error state', () => {
+    render(<Checkbox invalid data-testid="invalid-checkbox" />);
+    const checkbox = screen.getByTestId('invalid-checkbox');
+    expect(checkbox).toHaveAttribute('aria-invalid', 'true');
+    expect(checkbox.className).toContain('border-destructive');
+  });
+
+  it('blocks interaction in readOnly mode while retaining opacity', () => {
+    const handleChange = vi.fn();
+    render(
+      <Checkbox
+        readOnly
+        defaultChecked={true}
+        onCheckedChange={handleChange}
+        data-testid="readonly-checkbox"
+      />,
+    );
+
+    const checkbox = screen.getByTestId('readonly-checkbox');
+    expect(checkbox).toHaveAttribute('aria-readonly', 'true');
+    expect(checkbox).toHaveAttribute('aria-checked', 'true');
+    expect(checkbox).not.toBeDisabled();
+    expect(checkbox).not.toHaveAttribute('aria-disabled');
+
+    fireEvent.click(checkbox);
+    expect(handleChange).not.toHaveBeenCalled();
+    expect(checkbox).toHaveAttribute('aria-checked', 'true');
+  });
+
+  it('renders companion description and allows toggling by clicking description', () => {
+    const handleChange = vi.fn();
+    render(
+      <Checkbox
+        label="Subscribe"
+        description="Receive periodic product newsletters."
+        onCheckedChange={handleChange}
+        data-testid="desc-checkbox"
+      />,
+    );
+
+    const labelText = screen.getByText('Subscribe');
+    const descText = screen.getByText('Receive periodic product newsletters.');
+    expect(labelText).toBeInTheDocument();
+    expect(descText).toBeInTheDocument();
+
+    fireEvent.click(descText);
+    expect(handleChange).toHaveBeenCalledWith(true);
+  });
 });

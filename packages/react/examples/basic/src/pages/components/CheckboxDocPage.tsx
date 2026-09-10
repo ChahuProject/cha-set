@@ -17,15 +17,21 @@ export function CheckboxDocPage() {
   const [checked, setChecked] = useState(true);
   const [indeterminate, setIndeterminate] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const [readOnly, setReadOnly] = useState(false);
+  const [showDesc, setShowDesc] = useState(true);
   const [label, setLabel] = useState('Accept terms and conditions');
+  const descriptionText = showDesc ? 'You agree to the automated billing policy and privacy guidelines.' : undefined;
 
   const heroReactCode = `<Checkbox
   size="${size}"
   checked={${indeterminate ? 'false' : checked}}
   indeterminate={${indeterminate}}
   disabled={${disabled}}
+  readOnly={${readOnly}}
+  invalid={${invalid}}
   label="${label}"
-  onCheckedChange={(val) => setChecked(val)}
+  ${descriptionText ? `description="${descriptionText}"\n  ` : ''}onCheckedChange={(val) => setChecked(val)}
 />`;
 
   const heroQtCode = `ChaSetCheckbox {
@@ -33,15 +39,17 @@ export function CheckboxDocPage() {
     checked: ${indeterminate ? 'false' : checked}
     indeterminate: ${indeterminate}
     disabled: ${disabled}
+    readOnly: ${readOnly}
+    invalid: ${invalid}
     label: "${label}"
-    onToggled: (val) => { /* handle toggle */ }
+    ${descriptionText ? `description: "${descriptionText}"\n    ` : ''}onToggled: (val) => { /* handle toggle */ }
 }`;
 
   return (
     <DocLayout
       category="Components"
       title="Checkbox"
-      description="A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, and companion labels."
+      description="A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, helper descriptions, and companion labels."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },
@@ -57,7 +65,7 @@ export function CheckboxDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Test interactive checkbox toggling, indeterminate states, companion labels, and sizes across Web and Qt Desktop.
+          Test interactive checkbox toggling, indeterminate states, helper descriptions, error states, and sizes across Web and Qt Desktop.
         </p>
 
         <ComponentPreview
@@ -71,38 +79,59 @@ export function CheckboxDocPage() {
                 <span className="text-muted-foreground text-xs">Size:</span>
                 <Tabs value={size} onValueChange={(v) => setSize(v as CheckboxSize)}>
                   <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default (16px)</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (14px)</TabsTrigger>
+                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
+                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
 
-              {/* Checked Toggle */}
-              <Checkbox
-                size="sm"
-                checked={checked && !indeterminate}
-                onCheckedChange={(val) => {
-                  setChecked(val);
-                  if (indeterminate) setIndeterminate(false);
-                }}
-                label="Checked"
-              />
+              {/* Toggles */}
+              <div className="flex flex-wrap items-center gap-4">
+                <Checkbox
+                  size="sm"
+                  checked={checked && !indeterminate}
+                  onCheckedChange={(val) => {
+                    setChecked(val as boolean);
+                    if (indeterminate) setIndeterminate(false);
+                  }}
+                  label="Checked"
+                />
 
-              {/* Indeterminate Toggle */}
-              <Checkbox
-                size="sm"
-                checked={indeterminate}
-                onCheckedChange={(val) => setIndeterminate(val)}
-                label="Indeterminate"
-              />
+                <Checkbox
+                  size="sm"
+                  checked={indeterminate}
+                  onCheckedChange={(val) => setIndeterminate(val as boolean)}
+                  label="Indeterminate"
+                />
 
-              {/* Disabled Toggle */}
-              <Checkbox
-                size="sm"
-                checked={disabled}
-                onCheckedChange={(val) => setDisabled(val)}
-                label="Disabled"
-              />
+                <Checkbox
+                  size="sm"
+                  checked={disabled}
+                  onCheckedChange={(val) => setDisabled(val as boolean)}
+                  label="Disabled"
+                />
+
+                <Checkbox
+                  size="sm"
+                  checked={readOnly}
+                  onCheckedChange={(val) => setReadOnly(val as boolean)}
+                  label="Read-Only"
+                />
+
+                <Checkbox
+                  size="sm"
+                  checked={invalid}
+                  onCheckedChange={(val) => setInvalid(val as boolean)}
+                  label="Invalid"
+                />
+
+                <Checkbox
+                  size="sm"
+                  checked={showDesc}
+                  onCheckedChange={(val) => setShowDesc(val as boolean)}
+                  label="Description"
+                />
+              </div>
             </div>
           }
         >
@@ -112,10 +141,13 @@ export function CheckboxDocPage() {
               checked={checked}
               indeterminate={indeterminate}
               disabled={disabled}
+              readOnly={readOnly}
+              invalid={invalid}
               label={label}
+              description={descriptionText}
               onCheckedChange={(next) => {
                 if (indeterminate) setIndeterminate(false);
-                setChecked(next);
+                setChecked(next as boolean);
               }}
             />
           </div>
@@ -136,7 +168,7 @@ export function CheckboxDocPage() {
           Anatomy
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Render Checkbox standalone or with a companion label in React JSX or Qt QML trees.
+          Render Checkbox standalone or with companion labels and descriptions in React JSX or Qt QML trees.
         </p>
         <CodeBlock
           code={`import { Checkbox } from '@chahu/cha-set';
@@ -148,7 +180,8 @@ export function CheckboxDemo() {
     <Checkbox
       checked={agree}
       onCheckedChange={setAgree}
-      label="I agree to the service agreement and privacy policy"
+      label="Service agreement"
+      description="I agree to the service agreement and terms of use."
     />
   );
 }`}
@@ -162,7 +195,7 @@ export function CheckboxDemo() {
           Examples & States
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Visual matrix of common checkbox configurations, sizes, and states.
+          Visual matrix of common checkbox configurations, sizes, descriptions, and states.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="flex flex-col gap-2 p-5">
@@ -187,27 +220,51 @@ export function CheckboxDemo() {
           </Card>
 
           <Card className="flex flex-col gap-2 p-5">
-            <span className="text-xs font-semibold text-foreground">Disabled States</span>
-            <span className="text-xs text-muted-foreground mb-2">Non-interactive with 50% opacity</span>
+            <span className="text-xs font-semibold text-foreground">With Helper Description</span>
+            <span className="text-xs text-muted-foreground mb-2">Detailed multi-line label and subtext</span>
+            <div className="flex flex-col gap-3">
+              <Checkbox
+                defaultChecked
+                label="Automatic background syncing"
+                description="Sync data with remote servers every 5 minutes when idle."
+              />
+            </div>
+          </Card>
+
+          <Card className="flex flex-col gap-2 p-5">
+            <span className="text-xs font-semibold text-foreground">Invalid / Error State</span>
+            <span className="text-xs text-muted-foreground mb-2">Highlights unchecked required confirmation</span>
+            <div className="flex flex-col gap-3">
+              <Checkbox
+                invalid
+                defaultChecked={false}
+                label="Mandatory compliance confirmation"
+                description="Must be accepted before proceeding with setup."
+              />
+            </div>
+          </Card>
+
+          <Card className="flex flex-col gap-2 p-5">
+            <span className="text-xs font-semibold text-foreground">Disabled & Read-Only States</span>
+            <span className="text-xs text-muted-foreground mb-2">Dimmed non-interactive vs locked presentation</span>
             <div className="flex flex-col gap-3">
               <Checkbox disabled defaultChecked={false} label="Disabled unchecked" />
-              <Checkbox disabled defaultChecked={true} label="Disabled checked" />
+              <Checkbox readOnly defaultChecked={true} label="Read-only checked" />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-2 p-5">
             <span className="text-xs font-semibold text-foreground">Size Variants</span>
-            <span className="text-xs text-muted-foreground mb-2">Default 16px vs Compact 14px size</span>
+            <span className="text-xs text-muted-foreground mb-2">Default vs Compact size</span>
             <div className="flex flex-col gap-3">
-              <Checkbox size="default" defaultChecked label="Default size (16px box, text-sm)" />
-              <Checkbox size="sm" defaultChecked label="Small size (14px box, text-xs)" />
+              <Checkbox size="default" defaultChecked label="Default size (text-sm)" />
+              <Checkbox size="sm" defaultChecked label="Small size (sm, text-xs)" />
             </div>
           </Card>
         </div>
       </section>
 
-      {/* 5. Props Reference */}
-      
+      {/* 5. Keyboard Navigation */}
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -218,6 +275,7 @@ export function CheckboxDemo() {
         <KeyboardShortcutsTable componentId="checkbox" />
       </section>
 
+      {/* 6. Props Reference */}
       <section id="props" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Props Reference
@@ -249,16 +307,34 @@ export function CheckboxDemo() {
               description: 'Disables user interactions and applies 50% opacity.',
             },
             {
+              name: 'readOnly',
+              type: 'boolean',
+              default: 'false',
+              description: 'Prevents toggling state while retaining focusability and full opacity.',
+            },
+            {
+              name: 'invalid',
+              type: 'boolean',
+              default: 'false',
+              description: 'Applies destructive error styling and aria-invalid attribute.',
+            },
+            {
               name: 'size',
               type: "'default' | 'sm'",
               default: "'default'",
-              description: 'The size variant: default (16px box) or sm (14px box).',
+              description: 'The size variant: default or sm.',
             },
             {
               name: 'label',
               type: 'ReactNode',
               default: 'undefined',
               description: 'Optional companion label rendered alongside the checkbox.',
+            },
+            {
+              name: 'description',
+              type: 'ReactNode',
+              default: 'undefined',
+              description: 'Optional helper text rendered below the label.',
             },
             {
               name: 'onCheckedChange',

@@ -29,15 +29,19 @@ DocLayout {
     property bool demoChecked: true
     property bool demoIndeterminate: false
     property bool demoDisabled: false
+    property bool demoReadOnly: false
+    property bool demoInvalid: false
+    property bool demoShowDesc: true
     property string demoLabel: "Accept terms and conditions"
+    property string demoDescription: "You agree to the automated billing policy and privacy guidelines."
 
     // Section 1: Overview
     ComponentPreview {
         id: heroPreview
         width: parent.width
         title: "Checkbox Sandbox"
-        reactCode: `<Checkbox\n  size="${root.demoSize}"\n  checked={${root.demoIndeterminate ? 'false' : root.demoChecked}}\n  indeterminate={${root.demoIndeterminate}}\n  disabled={${root.demoDisabled}}\n  label="${root.demoLabel}"\n  onCheckedChange={(val) => setChecked(val)}\n/>`
-        qtCode: `ChaSetCheckbox {\n    size: "${root.demoSize}"\n    checked: ${root.demoIndeterminate ? 'false' : root.demoChecked}\n    indeterminate: ${root.demoIndeterminate}\n    disabled: ${root.demoDisabled}\n    label: "${root.demoLabel}"\n    onToggled: (val) => { /* handle toggle */ }\n}`
+        reactCode: `<Checkbox\n  size="${root.demoSize}"\n  checked={${root.demoIndeterminate ? 'false' : root.demoChecked}}\n  indeterminate={${root.demoIndeterminate}}\n  disabled={${root.demoDisabled}}\n  readOnly={${root.demoReadOnly}}\n  invalid={${root.demoInvalid}}\n  label="${root.demoLabel}"\n  ${root.demoShowDesc ? `description="${root.demoDescription}"\n  ` : ''}onCheckedChange={(val) => setChecked(val)}\n/>`
+        qtCode: `ChaSetCheckbox {\n    size: "${root.demoSize}"\n    checked: ${root.demoIndeterminate ? 'false' : root.demoChecked}\n    indeterminate: ${root.demoIndeterminate}\n    disabled: ${root.demoDisabled}\n    readOnly: ${root.demoReadOnly}\n    invalid: ${root.demoInvalid}\n    label: "${root.demoLabel}"\n    ${root.demoShowDesc ? `description: "${root.demoDescription}"\n    ` : ''}onToggled: (val) => { /* handle toggle */ }\n}`
 
         stageData: [
             Item {
@@ -52,7 +56,10 @@ DocLayout {
                     checked: root.demoChecked
                     indeterminate: root.demoIndeterminate
                     disabled: root.demoDisabled
+                    readOnly: root.demoReadOnly
+                    invalid: root.demoInvalid
                     label: root.demoLabel
+                    description: root.demoShowDesc ? root.demoDescription : ""
                     onToggled: (val) => {
                         if (root.demoIndeterminate) root.demoIndeterminate = false;
                         root.demoChecked = val;
@@ -73,37 +80,60 @@ DocLayout {
                         currentValue: root.demoSize
                         onCurrentValueChanged: root.demoSize = currentValue
                         ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default (16px)" }
-                            ChaSetTabsTrigger { value: "sm"; text: "Small (14px)" }
+                            ChaSetTabsTrigger { value: "default"; text: "Default" }
+                            ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
                         }
                     }
                 }
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Checked"
-                    checked: root.demoChecked && !root.demoIndeterminate
-                    onToggled: (val) => {
-                        root.demoChecked = val;
-                        if (root.demoIndeterminate) root.demoIndeterminate = false;
+                Row {
+                    spacing: 12
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Checked"
+                        checked: root.demoChecked && !root.demoIndeterminate
+                        onToggled: (val) => {
+                            root.demoChecked = val;
+                            if (root.demoIndeterminate) root.demoIndeterminate = false;
+                        }
                     }
-                    anchors.verticalCenter: parent.verticalCenter
-                }
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Indeterminate"
-                    checked: root.demoIndeterminate
-                    onToggled: (val) => root.demoIndeterminate = val
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Indeterminate"
+                        checked: root.demoIndeterminate
+                        onToggled: (val) => root.demoIndeterminate = val
+                    }
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Disabled"
-                    checked: root.demoDisabled
-                    onToggled: (val) => root.demoDisabled = val
-                    anchors.verticalCenter: parent.verticalCenter
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Disabled"
+                        checked: root.demoDisabled
+                        onToggled: (val) => root.demoDisabled = val
+                    }
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Read-Only"
+                        checked: root.demoReadOnly
+                        onToggled: (val) => root.demoReadOnly = val
+                    }
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Invalid"
+                        checked: root.demoInvalid
+                        onToggled: (val) => root.demoInvalid = val
+                    }
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Description"
+                        checked: root.demoShowDesc
+                        onToggled: (val) => root.demoShowDesc = val
+                    }
                 }
             }
         ]
@@ -245,13 +275,66 @@ DocLayout {
                         anchors.margins: 16
                         spacing: 8
 
-                        Text { text: "Disabled States"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                        Text { text: "Non-interactive with 50% opacity"; font.pixelSize: 11; color: root.cMutedFg }
+                        Text { text: "With Helper Description"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        Text { text: "Detailed multi-line label and subtext"; font.pixelSize: 11; color: root.cMutedFg }
+
+                        ChaSetCheckbox {
+                            checked: true
+                            label: "Automatic background syncing"
+                            description: "Sync data with remote servers when idle."
+                        }
+                    }
+                }
+            }
+
+            ChaSetCard {
+                width: (parent.width - 16) / 2
+                height: 140
+                customRadius: root.customRadius
+
+                Item {
+                    width: parent.width
+                    height: 140
+
+                    Column {
+                        anchors.fill: parent
+                        anchors.margins: 16
+                        spacing: 8
+
+                        Text { text: "Invalid / Error State"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        Text { text: "Highlights unchecked required confirmation"; font.pixelSize: 11; color: root.cMutedFg }
+
+                        ChaSetCheckbox {
+                            invalid: true
+                            checked: false
+                            label: "Mandatory compliance confirmation"
+                            description: "Must be accepted before setup."
+                        }
+                    }
+                }
+            }
+
+            ChaSetCard {
+                width: (parent.width - 16) / 2
+                height: 140
+                customRadius: root.customRadius
+
+                Item {
+                    width: parent.width
+                    height: 140
+
+                    Column {
+                        anchors.fill: parent
+                        anchors.margins: 16
+                        spacing: 8
+
+                        Text { text: "Disabled & Read-Only States"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        Text { text: "Dimmed non-interactive vs locked presentation"; font.pixelSize: 11; color: root.cMutedFg }
 
                         Column {
                             spacing: 8
                             ChaSetCheckbox { disabled: true; checked: false; label: "Disabled unchecked" }
-                            ChaSetCheckbox { disabled: true; checked: true; label: "Disabled checked" }
+                            ChaSetCheckbox { readOnly: true; checked: true; label: "Read-only checked" }
                         }
                     }
                 }
@@ -272,12 +355,12 @@ DocLayout {
                         spacing: 8
 
                         Text { text: "Size Variants"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                        Text { text: "Default 16px vs Compact 14px box"; font.pixelSize: 11; color: root.cMutedFg }
+                        Text { text: "Default vs Compact size"; font.pixelSize: 11; color: root.cMutedFg }
 
                         Column {
                             spacing: 8
-                            ChaSetCheckbox { size: "default"; checked: true; label: "Default size (16px box, text-sm)" }
-                            ChaSetCheckbox { size: "sm"; checked: true; label: "Small size (14px box, text-xs)" }
+                            ChaSetCheckbox { size: "default"; checked: true; label: "Default size (text-sm)" }
+                            ChaSetCheckbox { size: "sm"; checked: true; label: "Small size (sm, text-xs)" }
                         }
                     }
                 }
@@ -308,8 +391,11 @@ DocLayout {
                 { name: "checked", type: "bool", defaultValue: "false", desc: "Whether the checkbox is currently checked." },
                 { name: "indeterminate", type: "bool", defaultValue: "false", desc: "Whether the checkbox is in an indeterminate state (takes visual precedence over checked)." },
                 { name: "disabled", type: "bool", defaultValue: "false", desc: "Disables user interactions and applies 50% opacity." },
-                { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "The size variant: default (16px box) or sm (14px box)." },
+                { name: "readOnly", type: "bool", defaultValue: "false", desc: "Prevents toggling state while retaining focusability and full opacity." },
+                { name: "invalid", type: "bool", defaultValue: "false", desc: "Applies destructive error styling to box border and focus ring." },
+                { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "The size variant: default or sm." },
                 { name: "label", type: "string", defaultValue: "''", desc: "Companion label text displayed next to the checkbox." },
+                { name: "description", type: "string", defaultValue: "''", desc: "Optional helper text displayed below the label." },
                 { name: "customRadius", type: "int", defaultValue: "-1", desc: "Optional custom corner radius for the checkbox box (-1 uses default)." },
                 { name: "forceHover", type: "bool", defaultValue: "false", desc: "Visual testing aid to force hover state styles." },
                 { name: "forceFocus", type: "bool", defaultValue: "false", desc: "Visual testing aid to force focus ring styles." }

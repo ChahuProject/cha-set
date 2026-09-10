@@ -74,7 +74,10 @@
       "disabled": { "requirement": "must", "description": "disabled state blocks interaction" },
       "size": { "requirement": "must", "description": "supports default and sm sizes" },
       "indeterminate": { "requirement": "must", "description": "supports indeterminate visual state and logic" },
-      "label": { "requirement": "must", "description": "renders accompanying label and clicking label toggles" }
+      "label": { "requirement": "must", "description": "renders accompanying label and clicking label toggles" },
+      "invalid": { "requirement": "should", "description": "indicates error state with destructive highlight" },
+      "description": { "requirement": "should", "description": "renders supporting helper text below label" },
+      "readOnly": { "requirement": "should", "description": "prevents toggling while maintaining focusability" }
     },
     "switch": {
       "checked": { "requirement": "must", "description": "checked state controls on/off representation" },
