@@ -68,13 +68,35 @@ DocLayout {
                             width: parent.width
                             height: parent.height - 36
 
-                            Text {
+                            Column {
                                 anchors.centerIn: parent
-                                text: "Desktop Mock Window Frame\nCaption Event: " + root.lastAction
-                                horizontalAlignment: Text.AlignHCenter
-                                color: ThemeTokens.subduedText
-                                font.pixelSize: 12
-                                font.family: "monospace"
+                                spacing: 8
+
+                                Text {
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    text: "Desktop Mock Window Frame"
+                                    color: ThemeTokens.text
+                                    font.pixelSize: 13
+                                    font.weight: Font.DemiBold
+                                }
+
+                                Row {
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    spacing: 8
+
+                                    Text {
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        text: "Caption Event:"
+                                        color: ThemeTokens.subduedText
+                                        font.pixelSize: 12
+                                    }
+
+                                    ChaSetBadge {
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        variant: "secondary"
+                                        text: root.lastAction
+                                    }
+                                }
                             }
                         }
                     }

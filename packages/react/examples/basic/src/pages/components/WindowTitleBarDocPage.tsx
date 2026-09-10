@@ -1,5 +1,5 @@
-import React from 'react';
-import { WindowTitleBar } from '@chahu/cha-set';
+import React, { useState } from 'react';
+import { WindowTitleBar, Badge } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -7,12 +7,14 @@ import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function WindowTitleBarDocPage() {
+  const [lastAction, setLastAction] = useState('Idle');
+
   const reactCode = `<WindowTitleBar
   title="ChaSet Desktop Studio"
   icon={<span className="text-base">🍵</span>}
-  onMinimize={() => console.log('minimize')}
-  onMaximize={() => console.log('maximize')}
-  onClose={() => console.log('close')}
+  onMinimize={() => setLastAction('Minimize clicked')}
+  onMaximize={() => setLastAction('Maximize / Restore clicked')}
+  onClose={() => setLastAction('Close clicked')}
 />`;
 
   return (
@@ -40,12 +42,16 @@ export function WindowTitleBarDocPage() {
             <WindowTitleBar
               title="ChaSet Desktop Studio"
               icon={<span className="text-sm">🍵</span>}
-              onMinimize={() => alert('Minimize clicked')}
-              onMaximize={() => alert('Maximize clicked')}
-              onClose={() => alert('Close clicked')}
+              onMinimize={() => setLastAction('Minimize clicked')}
+              onMaximize={() => setLastAction('Maximize / Restore clicked')}
+              onClose={() => setLastAction('Close clicked')}
             />
-            <div className="h-32 p-4 bg-card text-xs text-muted-foreground flex items-center justify-center">
-              Frameless Client Window Area
+            <div className="h-32 p-4 bg-card text-xs text-muted-foreground flex flex-col items-center justify-center gap-2">
+              <span>Frameless Client Window Area</span>
+              <div className="flex items-center gap-2">
+                <span>Caption Event:</span>
+                <Badge variant="secondary">{lastAction}</Badge>
+              </div>
             </div>
           </div>
         </ComponentPreview>
