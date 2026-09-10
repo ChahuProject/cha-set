@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SettingRow, Switch, Card, Button } from '@chahu/cha-set';
+import { SettingRow, Switch, Card, Button, Separator } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -19,6 +19,8 @@ export function SettingRowDocPage() {
 
   const heroReactCode = `<SettingRow
   name="Hardware Acceleration"
+  icon="⚡"
+  badge="Recommended"
   description="Enable GPU-accelerated rasterization and smooth rendering."
   highlightId="hw-accel"
   highlightTarget="${highlightTarget}"
@@ -28,6 +30,8 @@ export function SettingRowDocPage() {
 
   const heroQtCode = `ChaSetSettingRow {
     name: "Hardware Acceleration"
+    icon: "⚡"
+    badge: "Recommended"
     description: "Enable GPU-accelerated rasterization and smooth rendering."
     highlightId: "hw-accel"
     highlightTarget: "${highlightTarget}"
@@ -72,6 +76,8 @@ export function SettingRowDocPage() {
             <Card className="p-2 space-y-1">
               <SettingRow
                 name="Hardware Acceleration"
+                icon="⚡"
+                badge="Recommended"
                 description="Enable GPU-accelerated rasterization and smooth viewport rendering."
                 highlightId="hw-accel"
                 highlightTarget={highlightTarget}
@@ -82,10 +88,11 @@ export function SettingRowDocPage() {
                 />
               </SettingRow>
 
-              <div className="h-px bg-border/50 mx-2" />
+              <Separator className="my-1" />
 
               <SettingRow
                 name="Auto-Check Updates"
+                icon="🔄"
                 description="Periodically verify semantic releases and download patches in background."
                 highlightId="auto-update"
                 highlightTarget={highlightTarget}
@@ -150,6 +157,25 @@ export function SettingRowDocPage() {
               description: 'Secondary explanatory subtitle text.',
             },
             {
+              name: 'icon',
+              type: 'ReactNode | string',
+              required: false,
+              description: 'Optional leading icon or badge avatar.',
+            },
+            {
+              name: 'badge',
+              type: 'ReactNode | string',
+              required: false,
+              description: 'Optional trailing badge tag next to title.',
+            },
+            {
+              name: 'size',
+              type: "'default' | 'sm'",
+              default: "'default'",
+              required: false,
+              description: "Density size variant ('default' or 'sm').",
+            },
+            {
               name: 'highlightId',
               type: 'string',
               required: false,
@@ -181,3 +207,4 @@ export function SettingRowDocPage() {
     </DocLayout>
   );
 }
+

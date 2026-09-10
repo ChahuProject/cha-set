@@ -8,17 +8,22 @@ Item {
 
     property string name: ""
     property string description: ""
+    property string icon: ""
+    property string badge: ""
+    property string size: "default" // "default" | "sm"
     property string highlightId: ""
     property string highlightTarget: ""
     property bool highlight: highlightTarget !== "" && highlightTarget === highlightId
     property bool disabled: false
+
+    readonly property bool isSm: root.size === "sm"
 
     signal highlightFinished(string id)
 
     default property alias controls: _controlZone.children
 
     width: parent ? parent.width : 0
-    implicitHeight: Math.max(_labelColumn.implicitHeight, _controlZone.implicitHeight) + 20
+    implicitHeight: Math.max(_labelColumn.implicitHeight, _controlZone.implicitHeight) + (root.isSm ? 14 : 20)
 
     opacity: root.disabled ? 0.5 : 1.0
 
@@ -54,9 +59,26 @@ Item {
 
     Row {
         anchors.fill: parent
-        anchors.topMargin: 10
-        anchors.bottomMargin: 10
-        spacing: 12
+        anchors.topMargin: root.isSm ? 6 : 10
+        anchors.bottomMargin: root.isSm ? 6 : 10
+        spacing: root.isSm ? 8 : 12
+
+        Rectangle {
+            id: _iconBox
+            visible: root.icon.length > 0
+            width: root.isSm ? 26 : 32
+            height: root.isSm ? 26 : 32
+            radius: 6
+            color: ThemeTokens.hover
+            anchors.verticalCenter: parent.verticalCenter
+
+            Text {
+                anchors.centerIn: parent
+                text: root.icon
+                font.pixelSize: root.isSm ? 12 : 14
+                color: ThemeTokens.text
+            }
+        }
 
         Column {
             id: _labelColumn
@@ -64,13 +86,23 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 2
 
-            Text {
-                width: parent.width
-                text: root.name
-                color: ThemeTokens.text
-                font.pixelSize: 13
-                font.bold: true
-                wrapMode: Text.Wrap
+            Row {
+                spacing: 6
+
+                Text {
+                    text: root.name
+                    color: ThemeTokens.text
+                    font.pixelSize: root.isSm ? 12 : 13
+                    font.bold: true
+                }
+
+                ChaSetBadge {
+                    visible: root.badge.length > 0
+                    text: root.badge
+                    variant: "secondary"
+                    size: "sm"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
             }
 
             Text {
@@ -78,16 +110,17 @@ Item {
                 text: root.description
                 visible: root.description.length > 0
                 color: ThemeTokens.subduedText
-                font.pixelSize: 11
+                font.pixelSize: root.isSm ? 10 : 11
                 wrapMode: Text.Wrap
             }
         }
 
         Item {
             id: _controlZone
-            width: parent.width - _labelColumn.width - 12
+            width: parent.width - _labelColumn.width - (_iconBox.visible ? _iconBox.width + 12 : 0) - 12
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
         }
     }
 }
+

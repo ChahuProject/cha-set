@@ -66,6 +66,8 @@ DocLayout {
 
                 ChaSetSettingRow {
                     name: "Hardware Acceleration"
+                    icon: "⚡"
+                    badge: "Recommended"
                     description: "Enable GPU-accelerated rasterization and smooth rendering."
                     highlightId: "hw-accel"
                     highlightTarget: root.activeHighlightTarget
@@ -82,6 +84,7 @@ DocLayout {
 
                 ChaSetSettingRow {
                     name: "Auto-Check Updates"
+                    icon: "🔄"
                     description: "Periodically verify semantic releases and download patches in background."
                     highlightId: "auto-update"
                     highlightTarget: root.activeHighlightTarget
@@ -163,6 +166,9 @@ DocLayout {
         props: [
             { name: "name", type: "string", default: "''", description: "Primary title of the setting row" },
             { name: "description", type: "string", default: "''", description: "Secondary subtitle description text" },
+            { name: "icon", type: "string", default: "''", description: "Optional leading icon" },
+            { name: "badge", type: "string", default: "''", description: "Optional trailing badge tag next to title" },
+            { name: "size", type: "string", default: "'default'", description: "Size variant ('default' or 'sm')" },
             { name: "highlightId", type: "string", default: "''", description: "Unique anchor ID for targeted highlighting" },
             { name: "highlightTarget", type: "string", default: "''", description: "Current active target ID to trigger flash pulse" },
             { name: "highlight", type: "bool", default: "false", description: "Boolean flag indicating if highlight animation is active" },
@@ -170,3 +176,4 @@ DocLayout {
         ]
     }
 }
+
