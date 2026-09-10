@@ -17,9 +17,10 @@ DocLayout {
 
     ComponentPreview {
         title: "Read-Only Input Preview"
-        reactCode: `<ReadOnlyInput value="chaset_live_sk_948f98a2e4c19" />`
+        reactCode: `<ReadOnlyInput value="chaset_live_sec_994a28be401cb18" masked />`
         qtCode: `ChaSetReadOnlyInput {
-    value: "chaset_live_sk_948f98a2e4c19"
+    value: "chaset_live_sec_994a28be401cb18"
+    masked: true
 }`
 
         Item {
@@ -31,18 +32,20 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "API Secret Key:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+                    Text { text: "API Secret Key (Masked):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
                     ChaSetReadOnlyInput {
                         width: 340
                         value: "chaset_live_sec_994a28be401cb18"
+                        masked: true
                     }
                 }
 
                 Column {
                     spacing: 6
-                    Text { text: "Container Instance ID:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+                    Text { text: "Container Instance ID (Compact):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
                     ChaSetReadOnlyInput {
                         width: 340
+                        size: "sm"
                         value: "sha256:d84f10928e3bca71059f1c7"
                     }
                 }
@@ -52,11 +55,10 @@ DocLayout {
 
     CodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetReadOnlyInput { value: \"token_123\" }"
+        code: "import ChaSet 1.0\n\nChaSetReadOnlyInput { value: \"token_123\"; masked: true }"
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "read-only-input"
     }
@@ -66,6 +68,12 @@ DocLayout {
         props: [
             { name: "value", type: "string", default: "''", description: "The read-only token or string to be displayed and copied." },
             { name: "placeholder", type: "string", default: "''", description: "Placeholder text displayed when value is empty." },
+            { name: "masked", type: "bool", default: "false", description: "Whether to obscure characters for secrets/passwords." },
+            { name: "showMaskToggle", type: "bool", default: "true", description: "Whether to render the reveal eye toggle button." },
+            { name: "maskChar", type: "string", default: "'•'", description: "Character used for masking." },
+            { name: "size", type: "string", default: "'default'", description: "Size variant: 'default' | 'sm'." },
+            { name: "disabled", type: "bool", default: "false", description: "Whether user interaction is disabled." },
+            { name: "showCopy", type: "bool", default: "true", description: "Whether to display the copy-to-clipboard button." },
             { name: "colorScheme", type: "string", default: "'default'", description: "Color theme variant: 'default', 'destructive', 'warning', 'success'." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the input container." }
         ]

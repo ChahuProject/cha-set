@@ -21,6 +21,7 @@ export function ReadOnlyInputDocPage() {
       description="Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
+        { id: 'variants', title: 'Sizes & Themes' },
         { id: 'installation', title: 'Installation' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
@@ -31,7 +32,7 @@ export function ReadOnlyInputDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Safely expose secret credentials with optional masking and one-click copy.
+          Safely expose secret credentials with optional masking, reveal toggle, and one-click copy.
         </p>
 
         <ComponentPreview title="Read-Only Input Sandbox" reactCode={reactCode}>
@@ -49,6 +50,32 @@ export function ReadOnlyInputDocPage() {
         </ComponentPreview>
       </section>
 
+      <section id="variants" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Sizes & Color Schemes
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Available in default and sm sizing tiers with semantic status color schemes.
+        </p>
+
+        <ComponentPreview
+          title="Sizes & Status Variants"
+          reactCode={`<ReadOnlyInput value="default_token_val_1" size="default" />
+<ReadOnlyInput value="compact_sm_token_2" size="sm" />
+<ReadOnlyInput value="destructive_secret_3" colorScheme="destructive" />
+<ReadOnlyInput value="warning_token_4" colorScheme="warning" />
+<ReadOnlyInput value="success_token_5" colorScheme="success" />`}
+        >
+          <div className="w-full max-w-md flex flex-col gap-3">
+            <ReadOnlyInput value="chaset_default_token_preview" size="default" />
+            <ReadOnlyInput value="chaset_compact_sm_token_preview" size="sm" />
+            <ReadOnlyInput value="chaset_destructive_revoked" colorScheme="destructive" />
+            <ReadOnlyInput value="chaset_warning_expiring_soon" colorScheme="warning" />
+            <ReadOnlyInput value="chaset_success_verified" colorScheme="success" />
+          </div>
+        </ComponentPreview>
+      </section>
+
       <section id="installation" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Installation
@@ -56,7 +83,6 @@ export function ReadOnlyInputDocPage() {
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
-      
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -77,6 +103,11 @@ export function ReadOnlyInputDocPage() {
             { name: 'showCopy', type: 'boolean', default: 'true', description: 'Whether to show the attached copy button.' },
             { name: 'masked', type: 'boolean', default: 'false', description: 'Whether to mask characters with bullets.' },
             { name: 'maskChar', type: 'string', default: "'•'", description: 'Character used for masking.' },
+            { name: 'showMaskToggle', type: 'boolean', default: 'true', description: 'Whether to show the reveal/hide toggle button when masked.' },
+            { name: 'size', type: '"default" | "sm"', default: '"default"', description: 'Density and sizing variant.' },
+            { name: 'colorScheme', type: '"default" | "destructive" | "warning" | "success"', default: '"default"', description: 'Color theme variant.' },
+            { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether the input field is disabled.' },
+            { name: 'placeholder', type: 'string', default: "''", description: 'Placeholder displayed when value is empty.' },
           ]}
         />
       </section>

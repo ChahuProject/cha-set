@@ -33,7 +33,37 @@ describe('ReadOnlyInput', () => {
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith('token-abc-123');
       expect(onCopy).toHaveBeenCalledWith('token-abc-123');
     });
+  });
 
-    expect(screen.getByRole('button', { name: 'Copied' })).toBeInTheDocument();
+  it('masks value when masked is true and reveals on toggle', () => {
+    render(<ReadOnlyInput value="secret-token-123" masked />);
+    expect(screen.queryByDisplayValue('secret-token-123')).not.toBeInTheDocument();
+    expect(screen.getByDisplayValue('••••••••••••••••')).toBeInTheDocument();
+
+    const revealBtn = screen.getByRole('button', { name: 'Reveal secret' });
+    fireEvent.click(revealBtn);
+    expect(screen.getByDisplayValue('secret-token-123')).toBeInTheDocument();
+  });
+
+  it('copies original unmasked token even when masked', async () => {
+    const onCopy = vi.fn();
+    render(<ReadOnlyInput value="secret-api-key" masked onCopy={onCopy} />);
+    const copyBtn = screen.getByRole('button', { name: 'Copy' });
+
+    fireEvent.click(copyBtn);
+    await waitFor(() => {
+      expect(navigator.clipboard.writeText).toHaveBeenCalledWith('secret-api-key');
+      expect(onCopy).toHaveBeenCalledWith('secret-api-key');
+    });
+  });
+
+  it('renders sm size with compact height', () => {
+    const { container } = render(<ReadOnlyInput value="token" size="sm" />);
+    expect(container.firstChild).toHaveClass('h-7');
+  });
+
+  it('hides copy button when showCopy is false', () => {
+    render(<ReadOnlyInput value="token" showCopy={false} />);
+    expect(screen.queryByRole('button', { name: 'Copy' })).not.toBeInTheDocument();
   });
 });
