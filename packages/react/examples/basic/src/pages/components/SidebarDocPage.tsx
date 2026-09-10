@@ -14,7 +14,8 @@ import {
   SidebarTrigger,
   SidebarRail,
   SidebarInset,
-  Button,
+  Badge,
+  SegmentedControl,
 } from "@chahu/cha-set";
 import { DocLayout } from "../../layout/DocLayout";
 import { ComponentPreview } from "../../components/ComponentPreview";
@@ -64,7 +65,7 @@ export function SidebarDocPage() {
     >
       <h2 className="text-xl font-semibold mt-8 mb-4">Interactive Preview</h2>
       <ComponentPreview reactCode={basicUsageCode}>
-        <div className="h-[360px] w-full border rounded-lg overflow-hidden flex bg-background">
+        <div className="h-[22.5rem] w-full border rounded-lg overflow-hidden flex bg-background">
           <SidebarProvider defaultOpen={true}>
             <Sidebar collapsible={collapsibleMode} className="border-r">
               <SidebarHeader className="border-b border-border/50 p-2">
@@ -122,41 +123,32 @@ export function SidebarDocPage() {
                 </SidebarGroup>
               </SidebarContent>
               <SidebarFooter className="border-t border-border/50 p-2">
-                <span className="text-xs text-muted-foreground px-2">v0.2.0 Desktop</span>
+                <Badge variant="outline" className="text-[0.625rem]">v0.2.0 Desktop</Badge>
               </SidebarFooter>
               <SidebarRail />
             </Sidebar>
             <SidebarInset className="p-4 flex-1 flex flex-col items-start gap-4">
               <div className="flex items-center gap-2">
                 <SidebarTrigger />
-                <span className="text-sm font-medium">Selected View: {activeItem}</span>
+                <span className="text-sm font-medium flex items-center gap-1.5">
+                  Selected View: <Badge variant="outline">{activeItem}</Badge>
+                </span>
               </div>
               <p className="text-sm text-muted-foreground">
                 Drag the rail on the right edge of the sidebar to resize, or click the trigger to collapse/expand.
               </p>
-              <div className="flex items-center gap-2 mt-auto">
-                <span className="text-xs text-muted-foreground">Collapsible Mode:</span>
-                <Button
+              <div className="flex items-center gap-3 mt-auto">
+                <span className="text-xs text-muted-foreground font-medium">Collapsible Mode:</span>
+                <SegmentedControl
                   size="sm"
-                  variant={collapsibleMode === "icon" ? "default" : "outline"}
-                  onClick={() => setCollapsibleMode("icon")}
-                >
-                  Icon
-                </Button>
-                <Button
-                  size="sm"
-                  variant={collapsibleMode === "offcanvas" ? "default" : "outline"}
-                  onClick={() => setCollapsibleMode("offcanvas")}
-                >
-                  Offcanvas
-                </Button>
-                <Button
-                  size="sm"
-                  variant={collapsibleMode === "none" ? "default" : "outline"}
-                  onClick={() => setCollapsibleMode("none")}
-                >
-                  None
-                </Button>
+                  value={collapsibleMode}
+                  onValueChange={(val) => setCollapsibleMode(val as "icon" | "offcanvas" | "none")}
+                  options={[
+                    { label: "Icon", value: "icon" },
+                    { label: "Offcanvas", value: "offcanvas" },
+                    { label: "None", value: "none" },
+                  ]}
+                />
               </div>
             </SidebarInset>
           </SidebarProvider>

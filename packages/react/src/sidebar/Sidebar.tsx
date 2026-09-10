@@ -12,27 +12,27 @@ import { cn } from '../lib/utils';
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 /** 逻辑宽度单位：rem（随根 font-size / 界面缩放） */
-const SIDEBAR_WIDTH = 16; // 100% 下约 256px
+const SIDEBAR_WIDTH = 16; // rem
 const SIDEBAR_WIDTH_ICON = '3rem';
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
 const SIDEBAR_WIDTH_STORAGE_KEY = 'sidebar_width';
 const SIDEBAR_HIDDEN_STORAGE_KEY = 'sidebar_hidden';
-const SIDEBAR_MIN_WIDTH = 12; // ~192px @100%
-const SIDEBAR_MAX_WIDTH = 24; // ~384px @100%
-const SIDEBAR_HIDE_THRESHOLD = 6; // ~96px @100%
+const SIDEBAR_MIN_WIDTH = 12; // rem
+const SIDEBAR_MAX_WIDTH = 24; // rem
+const SIDEBAR_HIDE_THRESHOLD = 6; // rem
 const SIDEBAR_REVEAL_DELAY = 120;
 const SIDEBAR_CONCEAL_DELAY = 180;
 const SIDEBAR_EDGE_REVEAL_ZONE_WIDTH = 0.5; // rem
 const SIDEBAR_EDGE_REVEAL_LINE_WIDTH = 0.125; // rem
 
-/** 兼容旧 localStorage 像素值（>48 视为 px，换算为 rem） */
+/** 兼容旧 localStorage 历史值（>48 换算为 rem） */
 function normalizeSidebarWidth(raw: number): number {
   if (!Number.isFinite(raw) || raw <= 0) return SIDEBAR_WIDTH;
   const rem = raw > 48 ? raw / 16 : raw;
   return Math.min(Math.max(rem, SIDEBAR_MIN_WIDTH), SIDEBAR_MAX_WIDTH);
 }
 
-function getRootFontSizePx(): number {
+function getRootFontSize(): number {
   if (typeof document === 'undefined') return 16;
   const n = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
   return Number.isFinite(n) && n > 0 ? n : 16;
@@ -288,7 +288,6 @@ export function SidebarProvider({
         style={
           {
             '--sidebar-width': `${sidebarWidth}rem`,
-            '--sidebar-width-px': `${sidebarWidth * 16}px`,
             '--sidebar-width-icon': SIDEBAR_WIDTH_ICON,
             ...style,
           } as React.CSSProperties
@@ -380,7 +379,7 @@ export function Sidebar({
         className={cn(
           'fixed top-10 bottom-0 z-10 flex h-[calc(100svh-2.5rem)] w-(--sidebar-width) bg-sidebar text-sidebar-foreground border-r border-sidebar-border/50 transition-[left,right,width,transform] duration-200 ease-out data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] group-data-[resizing=true]:transition-none',
           variant === 'floating' || variant === 'inset'
-            ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]'
+            ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+0.125rem)]'
             : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)',
           className,
         )}
@@ -521,10 +520,10 @@ export function SidebarRail({
       event.currentTarget.setPointerCapture(event.pointerId);
 
       const handlePointerMove = (moveEvent: PointerEvent) => {
-        const rootFontSize = getRootFontSizePx();
-        const deltaPx =
+        const rootFontSize = getRootFontSize();
+        const deltaX =
           side === 'left' ? moveEvent.clientX - startRef.current.x : startRef.current.x - moveEvent.clientX;
-        const nextWidth = startRef.current.width + deltaPx / rootFontSize;
+        const nextWidth = startRef.current.width + deltaX / rootFontSize;
         if (nextWidth < SIDEBAR_HIDE_THRESHOLD) {
           setOpen(false);
           setSidebarWidth(SIDEBAR_MIN_WIDTH);
@@ -559,7 +558,7 @@ export function SidebarRail({
       onPointerDown={handlePointerDown}
       title={title}
       className={cn(
-        'absolute inset-y-0 z-20 hidden w-4 touch-none transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:start-1/2 after:w-[2px] after:transition-colors after:duration-150 hover:after:bg-sidebar-ring/60 sm:flex ltr:-translate-x-1/2 rtl:-translate-x-1/2',
+        'absolute inset-y-0 z-20 hidden w-4 touch-none transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:start-1/2 after:w-0.5 after:transition-colors after:duration-150 hover:after:bg-sidebar-ring/60 sm:flex ltr:-translate-x-1/2 rtl:-translate-x-1/2',
         'in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize',
         'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full hover:group-data-[collapsible=offcanvas]:bg-sidebar',
         '[[data-side=left][data-collapsible=offcanvas]_&]:-right-2',
@@ -897,7 +896,7 @@ export function SidebarMenuSub({ className, ...props }: React.ComponentProps<'ul
       data-slot="sidebar-menu-sub"
       data-sidebar="menu-sub"
       className={cn(
-        'ml-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border pl-2.5 py-0.5 group-data-[collapsible=icon]:hidden',
+        'ml-3.5 flex min-w-0 translate-x-[0.0625rem] flex-col gap-1 border-l border-sidebar-border pl-2.5 py-0.5 group-data-[collapsible=icon]:hidden',
         className,
       )}
       {...props}
@@ -943,7 +942,7 @@ export function SidebarMenuSubButton({
       'data-size': size,
       'data-active': isActive,
       className: cn(
-        'flex h-7 min-w-0 w-full -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-left text-sidebar-foreground ring-sidebar-ring outline-hidden cursor-pointer transition-all duration-150 ease-out group-data-[collapsible=icon]:hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-2xs focus-visible:ring-2 active:brightness-95 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[size=md]:text-sm data-[size=sm]:text-xs data-[active=true]:bg-[var(--sidebar-selected)] data-[active=true]:text-[var(--sidebar-selected-foreground)] data-[active=true]:shadow-2xs data-[active=true]:hover:brightness-110 data-[active=true]:hover:shadow-xs data-[active=true]:[&>svg]:text-[var(--sidebar-selected-foreground)] [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:transition-transform [&>svg]:duration-150 group-hover/menu-sub-item:[&>svg]:scale-[1.05] [&>svg]:text-sidebar-accent-foreground',
+        'flex h-7 min-w-0 w-full -translate-x-[0.0625rem] items-center gap-2 overflow-hidden rounded-md px-2 text-left text-sidebar-foreground ring-sidebar-ring outline-hidden cursor-pointer transition-all duration-150 ease-out group-data-[collapsible=icon]:hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-2xs focus-visible:ring-2 active:brightness-95 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[size=md]:text-sm data-[size=sm]:text-xs data-[active=true]:bg-[var(--sidebar-selected)] data-[active=true]:text-[var(--sidebar-selected-foreground)] data-[active=true]:shadow-2xs data-[active=true]:hover:brightness-110 data-[active=true]:hover:shadow-xs data-[active=true]:[&>svg]:text-[var(--sidebar-selected-foreground)] [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:transition-transform [&>svg]:duration-150 group-hover/menu-sub-item:[&>svg]:scale-[1.05] [&>svg]:text-sidebar-accent-foreground',
         className,
       ),
       children: renderElement === children ? undefined : children,

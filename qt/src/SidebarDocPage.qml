@@ -196,11 +196,28 @@ DocLayout {
                             font.weight: Font.DemiBold
                         }
 
-                        Text {
+                        Row {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            text: "Sidebar Width: " + demoSidebar.width + "px (" + (demoSidebar.collapsed ? "Collapsed" : "Expanded") + ")"
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: 12
+                            spacing: 8
+
+                            Text {
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: "Sidebar Width:"
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: 12
+                            }
+
+                            ChaSetBadge {
+                                anchors.verticalCenter: parent.verticalCenter
+                                variant: "outline"
+                                text: "" + Math.round(demoSidebar.width)
+                            }
+
+                            ChaSetBadge {
+                                anchors.verticalCenter: parent.verticalCenter
+                                variant: demoSidebar.collapsed ? "secondary" : "default"
+                                text: demoSidebar.collapsed ? "Collapsed" : "Expanded"
+                            }
                         }
 
                         Row {
@@ -215,7 +232,7 @@ DocLayout {
                             }
 
                             ChaSetButton {
-                                text: "Reset Width (220px)"
+                                text: "Reset Width (220)"
                                 variant: "ghost"
                                 size: "sm"
                                 onClicked: {
@@ -244,7 +261,7 @@ DocLayout {
     PropsTable {
         title: "Props Reference"
         props: [
-            { name: "sidebarWidth", type: "int", default: "256", description: "Expanded width of the sidebar in pixels." },
+            { name: "sidebarWidth", type: "int", default: "256", description: "Expanded width of the sidebar bound." },
             { name: "minWidth", type: "int", default: "160", description: "Minimum draggable width limit." },
             { name: "maxWidth", type: "int", default: "400", description: "Maximum draggable width limit." },
             { name: "iconWidth", type: "int", default: "52", description: "Width when collapsed in icon mode." },
