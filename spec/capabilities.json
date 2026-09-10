@@ -61,7 +61,9 @@
       "structure": { "requirement": "must", "description": "composite subcomponents: CardHeader, CardTitle, CardDescription, CardContent, CardFooter" },
       "variant": { "requirement": "must", "description": "supports default, secondary, and outline variants" },
       "styling": { "requirement": "must", "description": "rounded-xl geometry, border, background, and text tokens" },
-      "customClass": { "requirement": "should", "description": "allows passing custom classes or style overrides" }
+      "customClass": { "requirement": "should", "description": "allows passing custom classes or style overrides" },
+      "size": { "requirement": "should", "description": "supports default and compact sm sizes" },
+      "interactive": { "requirement": "should", "description": "supports hoverable interactive card elevation and border highlight" }
     },
     "input": {
       "textInput": { "requirement": "must", "description": "supports typing and updating value" },

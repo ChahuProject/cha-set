@@ -13,6 +13,10 @@ describe('Card conformance (spec contract)', () => {
     for (const v of ['default', 'secondary', 'outline'] as const) {
       expect(() => cardSchema.parse({ variant: v })).not.toThrow();
     }
+    for (const s of ['default', 'sm'] as const) {
+      expect(() => cardSchema.parse({ size: s })).not.toThrow();
+    }
+    expect(() => cardSchema.parse({ interactive: true })).not.toThrow();
   });
 
   it('rejects unknown variants per the contract', () => {

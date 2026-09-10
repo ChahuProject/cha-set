@@ -84,4 +84,26 @@ describe('Card component', () => {
     expect(footer.className).toContain('border-t');
     expect(footer.className).toContain('bg-muted/20');
   });
+
+  it('supports interactive prop and size prop', () => {
+    const { rerender } = render(
+      <Card data-testid="card-interactive" interactive size="sm">
+        Content
+      </Card>,
+    );
+    let card = screen.getByTestId('card-interactive');
+    expect(card).toHaveAttribute('data-interactive', 'true');
+    expect(card).toHaveAttribute('data-size', 'sm');
+    expect(card.className).toContain('cursor-pointer');
+    expect(card.className).toContain('hover:shadow-md');
+
+    rerender(
+      <Card data-testid="card-interactive" interactive={false} size="default">
+        Content
+      </Card>,
+    );
+    card = screen.getByTestId('card-interactive');
+    expect(card).not.toHaveAttribute('data-interactive');
+    expect(card).toHaveAttribute('data-size', 'default');
+  });
 });

@@ -1,13 +1,24 @@
 // ChaSetCardHeader.qml — Header container for Card
-// Matching React: flex flex-col space-y-1.5 p-6 (24px padding, 6px spacing)
+// Matching React: flex flex-col space-y-1.5 p-6
 import QtQuick 6.10
 import ChaSet
 
 Item {
     id: root
 
-    property int padding: 24
-    property int spacing: 6
+    function findCard() {
+        var p = root.parent;
+        while (p) {
+            if (p.size !== undefined && p.variant !== undefined) return p;
+            p = p.parent;
+        }
+        return null;
+    }
+    readonly property Item parentCard: findCard()
+    readonly property bool isSm: parentCard && parentCard.size === "sm"
+
+    property int padding: isSm ? 16 : 24
+    property int spacing: isSm ? 4 : 6
 
     default property alias contentData: col.data
 

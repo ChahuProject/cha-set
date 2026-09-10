@@ -26,20 +26,24 @@ DocLayout {
     property color cAccentBg: ThemeTokens.hover
 
     property string demoVariant: "default"
+    property string demoSize: "default"
+    property bool demoInteractive: false
 
     // Section 1: Overview
     ComponentPreview {
         id: heroPreview
         width: parent.width
         title: "Card Sandbox"
-        reactCode: `<Card variant="${root.demoVariant}" className="w-[350px]">\n  <CardHeader>\n    <div className="flex items-center justify-between">\n      <CardTitle>Create project</CardTitle>\n      <Badge variant="secondary">Pro</Badge>\n    </div>\n    <CardDescription>Deploy your new project in one-click.</CardDescription>\n  </CardHeader>\n  <CardContent>\n    <p className="text-sm text-muted-foreground">\n      Your project will be deployed to the edge network automatically.\n    </p>\n  </CardContent>\n  <CardFooter className="flex justify-between">\n    <Button variant="outline" size="sm">Cancel</Button>\n    <Button size="sm">Deploy</Button>\n  </CardFooter>\n</Card>`
-        qtCode: `ChaSetCard {\n    width: 350\n    variant: "${root.demoVariant}"\n\n    ChaSetCardHeader {\n        Item {\n            width: parent.width\n            implicitHeight: Math.max(cardTitle.implicitHeight, badge.implicitHeight)\n            ChaSetCardTitle { id: cardTitle; text: "Create project"; anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter }\n            ChaSetBadge { id: badge; variant: "secondary"; text: "Pro"; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter }\n        }\n        ChaSetCardDescription { text: "Deploy your new project in one-click." }\n    }\n    ChaSetCardContent {\n        Text {\n            text: "Your project will be deployed to the edge network automatically."\n            color: ThemeTokens.subduedText\n            font.pixelSize: 13\n        }\n    }\n    ChaSetCardFooter {\n        ChaSetButton { variant: "outline"; size: "sm"; text: "Cancel" }\n        ChaSetButton { size: "sm"; text: "Deploy" }\n    }\n}`
+        reactCode: `<Card variant="${root.demoVariant}" size="${root.demoSize}"${root.demoInteractive ? ' interactive' : ''} className="w-full max-w-sm">\n  <CardHeader>\n    <div className="flex items-center justify-between">\n      <CardTitle>Create project</CardTitle>\n      <Badge variant="secondary">Pro</Badge>\n    </div>\n    <CardDescription>Deploy your new project in one-click.</CardDescription>\n  </CardHeader>\n  <CardContent>\n    <p className="text-sm text-muted-foreground">\n      Your project will be deployed to the edge network automatically.\n    </p>\n  </CardContent>\n  <CardFooter className="flex justify-between">\n    <Button variant="outline" size="sm">Cancel</Button>\n    <Button size="sm">Deploy</Button>\n  </CardFooter>\n</Card>`
+        qtCode: `ChaSetCard {\n    width: 340\n    variant: "${root.demoVariant}"\n    size: "${root.demoSize}"\n    interactive: ${root.demoInteractive}\n\n    ChaSetCardHeader {\n        Item {\n            width: parent.width\n            implicitHeight: Math.max(cardTitle.implicitHeight, badge.implicitHeight)\n            ChaSetCardTitle { id: cardTitle; text: "Create project"; anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter }\n            ChaSetBadge { id: badge; variant: "secondary"; text: "Pro"; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter }\n        }\n        ChaSetCardDescription { text: "Deploy your new project in one-click." }\n    }\n    ChaSetCardContent {\n        Text {\n            text: "Your project will be deployed to the edge network automatically."\n            color: ThemeTokens.subduedText\n            font.pixelSize: 13\n        }\n    }\n    ChaSetCardFooter {\n        ChaSetButton { variant: "outline"; size: "sm"; text: "Cancel" }\n        ChaSetButton { size: "sm"; text: "Deploy" }\n    }\n}`
 
         stageData: [
             ChaSetCard {
                 anchors.centerIn: parent
                 width: 340
                 variant: root.demoVariant
+                size: root.demoSize
+                interactive: root.demoInteractive
 
                 ChaSetCardHeader {
                     Item {
@@ -105,6 +109,27 @@ DocLayout {
                             ChaSetTabsTrigger { value: "outline"; text: "Outline" }
                         }
                     }
+                }
+
+                Row {
+                    spacing: 8
+                    Text { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetTabs {
+                        anchors.verticalCenter: parent.verticalCenter
+                        currentValue: root.demoSize
+                        onCurrentValueChanged: root.demoSize = currentValue
+                        ChaSetTabsList {
+                            ChaSetTabsTrigger { value: "default"; text: "Default" }
+                            ChaSetTabsTrigger { value: "sm"; text: "Compact (sm)" }
+                        }
+                    }
+                }
+
+                ChaSetCheckbox {
+                    anchors.verticalCenter: parent.verticalCenter
+                    label: "Interactive"
+                    checked: root.demoInteractive
+                    onToggled: (val) => root.demoInteractive = val
                 }
             }
         ]
@@ -203,6 +228,56 @@ DocLayout {
                 }
             }
         }
+
+        Text {
+            text: "Interactive Feedback & Density"
+            color: root.cFg
+            font.pixelSize: 16
+            font.weight: Font.SemiBold
+        }
+
+        Text {
+            text: "Enable interactive hover/press elevation feedback, or use compact density for constrained spaces."
+            color: root.cMutedFg
+            font.pixelSize: 13
+        }
+
+        Row {
+            width: parent.width
+            spacing: 12
+
+            ChaSetCard {
+                width: (parent.width - 12) / 2
+                interactive: true
+                ChaSetCardHeader {
+                    ChaSetCardTitle { text: "Interactive Card"; font.pixelSize: 15 }
+                    ChaSetCardDescription { text: "Hover over me to see cursor and elevation changes" }
+                }
+                ChaSetCardContent {
+                    Text {
+                        text: "Clickable surface for dashboards and selectable items."
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: 12
+                    }
+                }
+            }
+
+            ChaSetCard {
+                width: (parent.width - 12) / 2
+                size: "sm"
+                ChaSetCardHeader {
+                    ChaSetCardTitle { text: "Compact Card (sm)"; font.pixelSize: 15 }
+                    ChaSetCardDescription { text: "Reduced padding for tight sidebars and sheets" }
+                }
+                ChaSetCardContent {
+                    Text {
+                        text: "Streamlined layout with denser inner padding."
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: 12
+                    }
+                }
+            }
+        }
     }
 
     // Section 5: Props Reference
@@ -217,12 +292,11 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        
-    KeyboardShortcutsTable {
-        componentId: "card"
-    }
+        KeyboardShortcutsTable {
+            componentId: "card"
+        }
 
-    PropsTable {
+        PropsTable {
             width: parent.width
             propsModel: [
                 {
@@ -232,10 +306,22 @@ DocLayout {
                     propDescription: "Visual presentation style of the card container."
                 },
                 {
+                    propName: "size",
+                    propType: "\"default\" | \"sm\"",
+                    propDefault: "\"default\"",
+                    propDescription: "Density and spacing scale of the card."
+                },
+                {
+                    propName: "interactive",
+                    propType: "bool",
+                    propDefault: "false",
+                    propDescription: "Whether the card exhibits hover and press feedback with click interaction."
+                },
+                {
                     propName: "customRadius",
                     propType: "int",
                     propDefault: "-1",
-                    propDescription: "Explicit corner radius override in pixels (defaults to ThemeTokens.radius)."
+                    propDescription: "Explicit corner radius override (defaults to ThemeTokens.radius)."
                 },
                 {
                     propName: "contentData",

@@ -21,8 +21,10 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 
 export function CardDocPage() {
   const [variant, setVariant] = useState<CardVariant>('default');
+  const [size, setSize] = useState<'default' | 'sm'>('default');
+  const [interactive, setInteractive] = useState(false);
 
-  const heroReactCode = `<Card variant="${variant}" className="w-[350px]">
+  const heroReactCode = `<Card variant="${variant}" size="${size}"${interactive ? ' interactive' : ''} className="w-full max-w-sm">
   <CardHeader>
     <div className="flex items-center justify-between">
       <CardTitle>Create project</CardTitle>
@@ -36,14 +38,16 @@ export function CardDocPage() {
     </p>
   </CardContent>
   <CardFooter className="flex justify-between">
-    <Button variant="outline">Cancel</Button>
-    <Button>Deploy</Button>
+    <Button variant="outline" size="sm">Cancel</Button>
+    <Button size="sm">Deploy</Button>
   </CardFooter>
 </Card>`;
 
   const heroQtCode = `ChaSetCard {
-    width: 350
+    width: 340
     variant: "${variant}"
+    size: "${size}"
+    interactive: ${interactive}
 
     ChaSetCardHeader {
         Row {
@@ -57,8 +61,8 @@ export function CardDocPage() {
         Text { text: "Your project will be deployed to the cloud instantly."; color: ThemeTokens.subduedText }
     }
     ChaSetCardFooter {
-        ChaSetButton { variant: "outline"; text: "Cancel" }
-        ChaSetButton { text: "Deploy" }
+        ChaSetButton { variant: "outline"; size: "sm"; text: "Cancel" }
+        ChaSetButton { size: "sm"; text: "Deploy" }
     }
 }`;
 
@@ -92,7 +96,7 @@ export function CardDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Variant:</span>
+                <span className="text-muted-foreground text-sm">Variant:</span>
                 <Tabs value={variant} onValueChange={(v) => setVariant(v as CardVariant)}>
                   <TabsList className="h-8">
                     <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
@@ -101,10 +105,28 @@ export function CardDocPage() {
                   </TabsList>
                 </Tabs>
               </div>
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground text-sm">Size:</span>
+                <Tabs value={size} onValueChange={(v) => setSize(v as 'default' | 'sm')}>
+                  <TabsList className="h-8">
+                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
+                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Compact (sm)</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+              <label className="flex items-center gap-2 cursor-pointer select-none text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  checked={interactive}
+                  onChange={(e) => setInteractive(e.target.checked)}
+                  className="rounded border-border text-primary focus:ring-ring"
+                />
+                Interactive Feedback
+              </label>
             </div>
           }
         >
-          <Card variant={variant} className="w-full max-w-sm">
+          <Card variant={variant} size={size} interactive={interactive} className="w-full max-w-sm">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>Create project</CardTitle>
@@ -199,10 +221,36 @@ export function Example() {
             </CardHeader>
           </Card>
         </div>
+
+        <h3 className="text-base font-semibold tracking-tight text-foreground mt-8 mb-3">
+          Interactive Feedback & Density
+        </h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          Enable interactive hover/press elevation feedback, or use compact density for constrained spaces.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card interactive>
+            <CardHeader>
+              <CardTitle className="text-base">Interactive Card</CardTitle>
+              <CardDescription>Hover over me to see cursor and elevation changes</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-muted-foreground">Clickable surface for dashboards and selectable items.</p>
+            </CardContent>
+          </Card>
+          <Card size="sm">
+            <CardHeader>
+              <CardTitle className="text-base">Compact Card (sm)</CardTitle>
+              <CardDescription>Reduced padding for tight sidebars and mobile sheets</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-muted-foreground">Streamlined layout with denser inner padding.</p>
+            </CardContent>
+          </Card>
+        </div>
       </section>
 
-      {/* 5. Props Reference */}
-      
+      {/* 5. Keyboard Navigation */}
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -224,6 +272,18 @@ export function Example() {
               type: "'default' | 'secondary' | 'outline'",
               default: "'default'",
               description: 'Visual presentation style of the card container.',
+            },
+            {
+              name: 'size',
+              type: "'default' | 'sm'",
+              default: "'default'",
+              description: 'Density and padding scale of the card and composite containers.',
+            },
+            {
+              name: 'interactive',
+              type: 'boolean',
+              default: 'false',
+              description: 'Whether the card provides hover/active elevation styling and cursor pointer.',
             },
             {
               name: 'className',

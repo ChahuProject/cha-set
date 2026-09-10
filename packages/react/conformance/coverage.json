@@ -51,7 +51,9 @@
     "structure": true,
     "variant": true,
     "styling": true,
-    "customClass": true
+    "customClass": true,
+    "size": true,
+    "interactive": true
   },
   "input": {
     "textInput": true,

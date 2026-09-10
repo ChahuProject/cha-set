@@ -6,6 +6,7 @@ export type CardSize = 'default' | 'sm';
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: CardVariant;
   size?: CardSize;
+  interactive?: boolean;
 }
 
 const variantStyles: Record<CardVariant, string> = {
@@ -15,7 +16,7 @@ const variantStyles: Record<CardVariant, string> = {
 };
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className = '', variant = 'default', size = 'default', style, children, ...props }, ref) => {
+  ({ className = '', variant = 'default', size = 'default', interactive = false, style, children, ...props }, ref) => {
     const spacingStyle = {
       '--card-spacing': size === 'sm' ? '0.75rem' : '1rem',
       ...style,
@@ -27,8 +28,9 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         data-slot="card"
         data-variant={variant}
         data-size={size}
+        data-interactive={interactive ? 'true' : undefined}
         style={spacingStyle}
-        className={`rounded-xl border transition-colors ${variantStyles[variant]} ${size === 'sm' ? 'text-xs' : ''} ${className}`.trim()}
+        className={`rounded-xl border transition-all ${variantStyles[variant]} ${size === 'sm' ? 'text-xs' : ''} ${interactive ? 'cursor-pointer hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5' : ''} ${className}`.trim()}
         {...props}
       >
         {children}
