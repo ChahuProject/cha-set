@@ -210,7 +210,7 @@ DocLayout {
                                 text: demoSidebar.collapsed ? "Expand Sidebar" : "Collapse Sidebar"
                                 variant: "outline"
                                 size: "sm"
-                                onClickClicked: demoSidebar.toggle()
+                                onClicked: demoSidebar.toggle()
                             }
 
                             ChaSetButton {

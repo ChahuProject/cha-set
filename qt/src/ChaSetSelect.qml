@@ -12,6 +12,9 @@ Item {
     property bool disabled: false
     property int customRadius: 6
     property int highlightedIndex: -1
+    property string modality: "pointer" // "pointer" | "keyboard"
+    property real lastPointerSceneX: -1
+    property real lastPointerSceneY: -1
 
     implicitWidth: 160
     implicitHeight: 32
@@ -23,6 +26,16 @@ Item {
             if (String(options[i].value) === String(root.value)) return options[i]
         }
         return null
+    }
+
+    function handlePointerMove(idx, sceneX, sceneY) {
+        if (Math.abs(sceneX - lastPointerSceneX) < 1.5 && Math.abs(sceneY - lastPointerSceneY) < 1.5) {
+            return
+        }
+        lastPointerSceneX = sceneX
+        lastPointerSceneY = sceneY
+        modality = "pointer"
+        highlightedIndex = idx
     }
 
     function openPopup() {
@@ -48,17 +61,17 @@ Item {
 
     function findNextEnabledIndex(startIndex, direction) {
         if (!options || options.length === 0) return -1
+        let count = options.length
         let idx = startIndex + direction
-        while (idx >= 0 && idx < options.length) {
-            if (!options[idx] || !options[idx].disabled) {
+        for (let step = 0; step < count; step++) {
+            if (idx < 0) idx = count - 1
+            else if (idx >= count) idx = 0
+            if (options[idx] && !options[idx].disabled) {
                 return idx
             }
             idx += direction
         }
-        if (startIndex >= 0 && startIndex < options.length && (!options[startIndex] || !options[startIndex].disabled)) {
-            return startIndex
-        }
-        return findFirstEnabledIndex()
+        return -1
     }
 
     function findFirstEnabledIndex() {
@@ -100,15 +113,19 @@ Item {
 
         if (event.key === Qt.Key_Down) {
             event.accepted = true
+            modality = "keyboard"
             highlightedIndex = findNextEnabledIndex(highlightedIndex, 1)
         } else if (event.key === Qt.Key_Up) {
             event.accepted = true
+            modality = "keyboard"
             highlightedIndex = findNextEnabledIndex(highlightedIndex, -1)
         } else if (event.key === Qt.Key_Home) {
             event.accepted = true
+            modality = "keyboard"
             highlightedIndex = findFirstEnabledIndex()
         } else if (event.key === Qt.Key_End) {
             event.accepted = true
+            modality = "keyboard"
             highlightedIndex = findLastEnabledIndex()
         } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter || event.key === Qt.Key_Space) {
             event.accepted = true
@@ -209,7 +226,7 @@ Item {
                     radius: 4
                     readonly property bool isSelected: String(modelData.value) === String(root.value)
                     readonly property bool isHighlighted: index === root.highlightedIndex
-                    color: (isSelected || isHighlighted) ? ThemeTokens.hover : (optMouse.containsMouse ? ThemeTokens.hover : "transparent")
+                    color: isHighlighted ? ThemeTokens.hover : "transparent"
                     opacity: modelData.disabled ? 0.4 : 1.0
 
                     Text {
@@ -241,8 +258,14 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: !parent.modelData.disabled
                         cursorShape: parent.modelData.disabled ? Qt.ArrowCursor : Qt.PointingHandCursor
+                        onPositionChanged: (mouse) => {
+                            var p = optMouse.mapToItem(null, mouse.x, mouse.y)
+                            root.handlePointerMove(parent.index, p.x, p.y)
+                        }
                         onEntered: {
-                            if (!parent.modelData.disabled) root.highlightedIndex = parent.index
+                            if (root.modality === "pointer" && !parent.modelData.disabled) {
+                                root.highlightedIndex = parent.index
+                            }
                         }
                         onClicked: {
                             if (parent.modelData.disabled) return

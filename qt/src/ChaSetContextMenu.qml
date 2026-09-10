@@ -10,22 +10,35 @@ Item {
     property int menuWidth: 180
     property int customRadius: 6
     property int highlightedIndex: -1
+    property string modality: "pointer" // "pointer" | "keyboard"
+    property real lastPointerSceneX: -1
+    property real lastPointerSceneY: -1
 
     signal itemSelected(string itemId)
 
+    function handlePointerMove(idx, sceneX, sceneY) {
+        if (Math.abs(sceneX - lastPointerSceneX) < 1.5 && Math.abs(sceneY - lastPointerSceneY) < 1.5) {
+            return
+        }
+        lastPointerSceneX = sceneX
+        lastPointerSceneY = sceneY
+        modality = "pointer"
+        highlightedIndex = idx
+    }
+
     function findNextEnabledIndex(startIndex, direction) {
         if (!items || items.length === 0) return -1
+        let count = items.length
         let idx = startIndex + direction
-        while (idx >= 0 && idx < items.length) {
-            if (!items[idx] || !items[idx].disabled) {
+        for (let step = 0; step < count; step++) {
+            if (idx < 0) idx = count - 1
+            else if (idx >= count) idx = 0
+            if (items[idx] && !items[idx].disabled) {
                 return idx
             }
             idx += direction
         }
-        if (startIndex >= 0 && startIndex < items.length && (!items[startIndex] || !items[startIndex].disabled)) {
-            return startIndex
-        }
-        return findFirstEnabledIndex()
+        return -1
     }
 
     function findFirstEnabledIndex() {
@@ -107,10 +120,12 @@ Item {
 
             Keys.onDownPressed: (event) => {
                 event.accepted = true
+                root.modality = "keyboard"
                 root.highlightedIndex = root.findNextEnabledIndex(root.highlightedIndex, 1)
             }
             Keys.onUpPressed: (event) => {
                 event.accepted = true
+                root.modality = "keyboard"
                 root.highlightedIndex = root.findNextEnabledIndex(root.highlightedIndex, -1)
             }
             Keys.onReturnPressed: (event) => {
@@ -139,7 +154,7 @@ Item {
                     height: 28
                     radius: 4
                     readonly property bool isHighlighted: index === root.highlightedIndex
-                    color: (isHighlighted || itemMouse.containsMouse) ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
+                    color: isHighlighted ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
                     opacity: modelData.disabled ? 0.4 : 1.0
 
                     Row {
@@ -183,8 +198,14 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: !parent.modelData.disabled
                         cursorShape: parent.modelData.disabled ? Qt.ArrowCursor : Qt.PointingHandCursor
+                        onPositionChanged: (mouse) => {
+                            var p = itemMouse.mapToItem(null, mouse.x, mouse.y)
+                            root.handlePointerMove(parent.index, p.x, p.y)
+                        }
                         onEntered: {
-                            if (!parent.modelData.disabled) root.highlightedIndex = parent.index
+                            if (root.modality === "pointer" && !parent.modelData.disabled) {
+                                root.highlightedIndex = parent.index
+                            }
                         }
                         onClicked: {
                             if (parent.modelData.disabled) return
