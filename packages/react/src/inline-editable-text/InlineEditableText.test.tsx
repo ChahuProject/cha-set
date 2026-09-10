@@ -40,4 +40,44 @@ describe('InlineEditableText', () => {
     expect(onSave).not.toHaveBeenCalled();
     expect(screen.getByText('Original')).toBeInTheDocument();
   });
+
+  it('triggers onValueChange on confirm button click', async () => {
+    const onValueChange = vi.fn();
+    render(<InlineEditableText value="Old Title" onValueChange={onValueChange} />);
+
+    fireEvent.click(screen.getByText('Old Title'));
+    const input = screen.getByRole('textbox');
+    fireEvent.change(input, { target: { value: 'Confirmed Title' } });
+
+    const confirmBtn = screen.getByRole('button', { name: 'Confirm edit' });
+    fireEvent.click(confirmBtn);
+
+    await waitFor(() => {
+      expect(onValueChange).toHaveBeenCalledWith('Confirmed Title');
+    });
+  });
+
+  it('supports doubleClick trigger mode', () => {
+    render(<InlineEditableText value="Double Click Me" trigger="doubleClick" />);
+    const displayBtn = screen.getByText('Double Click Me');
+
+    fireEvent.click(displayBtn);
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+
+    fireEvent.doubleClick(displayBtn);
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+  });
+
+  it('does not enter edit mode when disabled', () => {
+    render(<InlineEditableText value="Disabled Text" disabled />);
+    const displayBtn = screen.getByText('Disabled Text');
+    fireEvent.click(displayBtn);
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+  });
+
+  it('renders sm size with compact font classes', () => {
+    render(<InlineEditableText value="Small Text" size="sm" />);
+    const span = screen.getByText('Small Text');
+    expect(span.className).toContain('text-xs');
+  });
 });

@@ -8,6 +8,8 @@ export const inlineEditableTextSchema = z.object({
   placeholder: z.string().optional(),
   disabled: z.boolean().default(false),
   hint: z.string().optional(),
+  size: z.enum(['default', 'sm']).default('default'),
+  trigger: z.enum(['click', 'doubleClick']).default('click'),
 });
 
 export type InlineEditableTextApi = z.infer<typeof inlineEditableTextSchema>;

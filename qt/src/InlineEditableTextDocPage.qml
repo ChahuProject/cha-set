@@ -25,8 +25,8 @@ DocLayout {
   placeholder="Click to edit title..."
 />`
         qtCode: `ChaSetInlineEditableText {
-    text: "Project Apollo Architecture"
-    onTextCommitted: function(newVal) { console.log(newVal) }
+    value: "Project Apollo Architecture"
+    onSave: function(newVal) { console.log(newVal) }
 }`
 
         Item {
@@ -38,7 +38,7 @@ DocLayout {
 
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Double-click the label below to edit in place:"
+                    text: "Click or double-click the label below to edit in place:"
                     color: ThemeTokens.subduedText
                     font.pixelSize: 12
                 }
@@ -46,10 +46,17 @@ DocLayout {
                 ChaSetInlineEditableText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: 260
-                    text: root.currentTitle
-                    onTextCommitted: function(newVal) {
+                    value: root.currentTitle
+                    onSave: function(newVal) {
                         root.currentTitle = newVal
                     }
+                }
+
+                ChaSetInlineEditableText {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 260
+                    size: "sm"
+                    value: "Compact Tag: release-v1.4"
                 }
 
                 Text {
@@ -65,11 +72,10 @@ DocLayout {
 
     CodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetInlineEditableText { text: \"Sample Title\" }"
+        code: "import ChaSet 1.0\n\nChaSetInlineEditableText { value: \"Sample Title\" }"
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "inline-editable-text"
     }
@@ -77,8 +83,12 @@ DocLayout {
     PropsTable {
         title: "Props Reference"
         props: [
-            { name: "text", type: "string", default: "'Double click to edit'", description: "The active text value displayed and edited." },
-            { name: "placeholder", type: "string", default: "'Enter text...'", description: "Fallback text when the text property is empty." },
+            { name: "value", type: "string", default: "'Click to edit'", description: "The active text value displayed and edited." },
+            { name: "text", type: "string", default: "''", description: "Alias for value property." },
+            { name: "placeholder", type: "string", default: "'Enter text...'", description: "Fallback text when the value property is empty." },
+            { name: "trigger", type: "string", default: "'click'", description: "Activation trigger: 'click' or 'doubleClick'." },
+            { name: "size", type: "string", default: "'default'", description: "Density and sizing variant: 'default' | 'sm'." },
+            { name: "disabled", type: "bool", default: "false", description: "Whether inline editing interaction is disabled." },
             { name: "editing", type: "bool", default: "false", description: "Whether the component is currently in input edit mode." }
         ]
     }
