@@ -91,7 +91,11 @@
     },
     "separator": {
       "orientation": { "requirement": "must", "description": "orientation switches between horizontal and vertical" },
-      "decorative": { "requirement": "must", "description": "supports decorative flag for accessibility" }
+      "decorative": { "requirement": "must", "description": "supports decorative flag for accessibility" },
+      "styling": { "requirement": "must", "description": "border token styling and dimension containment" },
+      "variant": { "requirement": "should", "description": "supports solid, dashed, and dotted line styles" },
+      "label": { "requirement": "should", "description": "embedded text label or divider annotation slot" },
+      "labelPosition": { "requirement": "should", "description": "aligns label to left, center, or right" }
     },
     "slider": {
       "valueBounds": { "requirement": "must", "description": "min, max bounds and value clamping" },

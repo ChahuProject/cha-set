@@ -52,4 +52,36 @@ describe('Separator Component', () => {
     render(<Separator ref={ref} data-testid="separator" />);
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
+
+  it('supports dashed and dotted variants', () => {
+    const { rerender } = render(<Separator variant="dashed" data-testid="separator" />);
+    let separator = screen.getByTestId('separator');
+    expect(separator).toHaveAttribute('data-variant', 'dashed');
+    expect(separator.className).toContain('border-dashed');
+
+    rerender(<Separator variant="dotted" orientation="vertical" data-testid="separator" />);
+    separator = screen.getByTestId('separator');
+    expect(separator).toHaveAttribute('data-variant', 'dotted');
+    expect(separator.className).toContain('border-dotted');
+  });
+
+  it('renders label with center, left, and right positions', () => {
+    const { rerender } = render(<Separator label="Continue with" data-testid="separator" />);
+    let separator = screen.getByTestId('separator');
+    expect(separator).toHaveAttribute('data-has-label', 'true');
+    expect(screen.getByText('Continue with')).toBeInTheDocument();
+
+    rerender(<Separator label="Section Header" labelPosition="left" data-testid="separator" />);
+    separator = screen.getByTestId('separator');
+    expect(screen.getByText('Section Header')).toBeInTheDocument();
+
+    rerender(<Separator label="End of list" labelPosition="right" data-testid="separator" />);
+    separator = screen.getByTestId('separator');
+    expect(screen.getByText('End of list')).toBeInTheDocument();
+  });
+
+  it('supports children as label content', () => {
+    render(<Separator data-testid="separator">Or with email</Separator>);
+    expect(screen.getByText('Or with email')).toBeInTheDocument();
+  });
 });

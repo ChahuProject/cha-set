@@ -24,6 +24,9 @@ DocLayout {
     property color cBorder: ThemeTokens.border
 
     property string demoOrientation: "horizontal"
+    property string demoVariant: "solid"
+    property bool demoHasLabel: false
+    property string demoLabelPosition: "center"
 
     // Section 1: Overview
     ComponentPreview {
@@ -31,20 +34,51 @@ DocLayout {
         width: parent.width
         title: "Separator Sandbox"
         reactCode: root.demoOrientation === "horizontal"
-            ? `<div className="w-full max-w-sm space-y-4">\n  <div>\n    <h4 className="text-sm font-medium leading-none">ChaSet UI</h4>\n    <p className="text-sm text-muted-foreground">Cross-stack React & Qt Quick Design System.</p>\n  </div>\n  <Separator orientation="horizontal" />\n  <div className="flex h-5 items-center space-x-4 text-sm">\n    <div>Docs</div>\n    <Separator orientation="vertical" />\n    <div>Source</div>\n    <Separator orientation="vertical" />\n    <div>Changelog</div>\n  </div>\n</div>`
-            : `<div className="flex h-8 items-center space-x-4 text-sm">\n  <span>Components</span>\n  <Separator orientation="vertical" />\n  <span>Tokens</span>\n  <Separator orientation="vertical" />\n  <span>Showcase</span>\n</div>`
+            ? (root.demoHasLabel
+                ? `<div className="w-full max-w-sm space-y-4">\n  <Button className="w-full" size="sm">Sign in with SSO</Button>\n  <Separator orientation="horizontal" variant="${root.demoVariant}" label="Continue with" labelPosition="${root.demoLabelPosition}" />\n  <Button variant="outline" className="w-full" size="sm">Sign in with Email</Button>\n</div>`
+                : `<div className="w-full max-w-sm space-y-4">\n  <div>\n    <h4 className="text-sm font-medium leading-none">ChaSet UI</h4>\n    <p className="text-sm text-muted-foreground">Cross-stack React & Qt Quick Design System.</p>\n  </div>\n  <Separator orientation="horizontal" variant="${root.demoVariant}" />\n  <div className="flex h-5 items-center space-x-4 text-sm">\n    <div>Docs</div>\n    <Separator orientation="vertical" variant="${root.demoVariant}" />\n    <div>Source</div>\n    <Separator orientation="vertical" variant="${root.demoVariant}" />\n    <div>Changelog</div>\n  </div>\n</div>`)
+            : `<div className="flex h-8 items-center space-x-4 text-sm">\n  <span>Components</span>\n  <Separator orientation="vertical" variant="${root.demoVariant}" />\n  <span>Tokens</span>\n  <Separator orientation="vertical" variant="${root.demoVariant}" />\n  <span>Showcase</span>\n</div>`
         qtCode: root.demoOrientation === "horizontal"
-            ? `Column {\n    width: 280\n    spacing: 12\n    Column {\n        spacing: 4\n        Text { text: "ChaSet UI"; font.bold: true; color: ThemeTokens.text }\n        Text { text: "Cross-stack React & Qt Quick Design System."; color: ThemeTokens.subduedText; font.pixelSize: 12 }\n    }\n    ChaSetSeparator { orientation: "horizontal" }\n    Row {\n        spacing: 12\n        Text { text: "Docs"; color: ThemeTokens.text; font.pixelSize: 12 }\n        ChaSetSeparator { orientation: "vertical"; height: 16 }\n        Text { text: "Source"; color: ThemeTokens.text; font.pixelSize: 12 }\n        ChaSetSeparator { orientation: "vertical"; height: 16 }\n        Text { text: "Changelog"; color: ThemeTokens.text; font.pixelSize: 12 }\n    }\n}`
-            : `Row {\n    spacing: 12\n    Text { text: "Components"; color: ThemeTokens.text; font.pixelSize: 13 }\n    ChaSetSeparator { orientation: "vertical"; height: 20 }\n    Text { text: "Tokens"; color: ThemeTokens.text; font.pixelSize: 13 }\n    ChaSetSeparator { orientation: "vertical"; height: 20 }\n    Text { text: "Showcase"; color: ThemeTokens.text; font.pixelSize: 13 }\n}`
+            ? (root.demoHasLabel
+                ? `Column {\n    width: 280\n    spacing: 12\n    ChaSetButton { text: "Sign in with SSO"; size: "sm"; width: parent.width }\n    ChaSetSeparator {\n        orientation: "horizontal"\n        variant: "${root.demoVariant}"\n        label: "Continue with"\n        labelPosition: "${root.demoLabelPosition}"\n        width: parent.width\n    }\n    ChaSetButton { variant: "outline"; text: "Sign in with Email"; size: "sm"; width: parent.width }\n}`
+                : `Column {\n    width: 280\n    spacing: 12\n    Column {\n        spacing: 4\n        Text { text: "ChaSet UI"; font.bold: true; color: ThemeTokens.text }\n        Text { text: "Cross-stack React & Qt Quick Design System."; color: ThemeTokens.subduedText; font.pixelSize: 12 }\n    }\n    ChaSetSeparator { orientation: "horizontal"; variant: "${root.demoVariant}" }\n    Row {\n        spacing: 12\n        Text { text: "Docs"; color: ThemeTokens.text; font.pixelSize: 12 }\n        ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 16 }\n        Text { text: "Source"; color: ThemeTokens.text; font.pixelSize: 12 }\n        ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 16 }\n        Text { text: "Changelog"; color: ThemeTokens.text; font.pixelSize: 12 }\n    }\n}`)
+            : `Row {\n    spacing: 12\n    Text { text: "Components"; color: ThemeTokens.text; font.pixelSize: 13 }\n    ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 20 }\n    Text { text: "Tokens"; color: ThemeTokens.text; font.pixelSize: 13 }\n    ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 20 }\n    Text { text: "Showcase"; color: ThemeTokens.text; font.pixelSize: 13 }\n}`
 
         stageData: [
             Item {
                 anchors.centerIn: parent
                 width: root.demoOrientation === "horizontal" ? 300 : 260
-                height: root.demoOrientation === "horizontal" ? 110 : 40
+                height: root.demoOrientation === "horizontal" ? (root.demoHasLabel ? 120 : 110) : 40
 
                 Column {
-                    visible: root.demoOrientation === "horizontal"
+                    visible: root.demoOrientation === "horizontal" && root.demoHasLabel
+                    anchors.fill: parent
+                    spacing: 12
+
+                    ChaSetButton {
+                        text: "Sign in with SSO"
+                        size: "sm"
+                        width: parent.width
+                    }
+
+                    ChaSetSeparator {
+                        orientation: "horizontal"
+                        variant: root.demoVariant
+                        label: "Continue with"
+                        labelPosition: root.demoLabelPosition
+                        width: parent.width
+                    }
+
+                    ChaSetButton {
+                        text: "Sign in with Email"
+                        variant: "outline"
+                        size: "sm"
+                        width: parent.width
+                    }
+                }
+
+                Column {
+                    visible: root.demoOrientation === "horizontal" && !root.demoHasLabel
                     anchors.fill: parent
                     spacing: 12
 
@@ -65,15 +99,16 @@ DocLayout {
 
                     ChaSetSeparator {
                         orientation: "horizontal"
+                        variant: root.demoVariant
                         width: parent.width
                     }
 
                     Row {
                         spacing: 12
                         Text { text: "Docs"; color: root.cMutedFg; font.pixelSize: 12 }
-                        ChaSetSeparator { orientation: "vertical"; height: 14 }
+                        ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 14 }
                         Text { text: "Source"; color: root.cMutedFg; font.pixelSize: 12 }
-                        ChaSetSeparator { orientation: "vertical"; height: 14 }
+                        ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 14 }
                         Text { text: "Changelog"; color: root.cMutedFg; font.pixelSize: 12 }
                     }
                 }
@@ -84,9 +119,9 @@ DocLayout {
                     spacing: 12
 
                     Text { text: "Components"; color: root.cFg; font.pixelSize: 13; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetSeparator { orientation: "vertical"; height: 18; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 18; anchors.verticalCenter: parent.verticalCenter }
                     Text { text: "Tokens"; color: root.cFg; font.pixelSize: 13; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetSeparator { orientation: "vertical"; height: 18; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 18; anchors.verticalCenter: parent.verticalCenter }
                     Text { text: "Showcase"; color: root.cFg; font.pixelSize: 13; anchors.verticalCenter: parent.verticalCenter }
                 }
             }
@@ -106,6 +141,46 @@ DocLayout {
                         ChaSetTabsList {
                             ChaSetTabsTrigger { value: "horizontal"; text: "Horizontal" }
                             ChaSetTabsTrigger { value: "vertical"; text: "Vertical" }
+                        }
+                    }
+                }
+
+                Row {
+                    spacing: 8
+                    Text { text: "Style:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetTabs {
+                        anchors.verticalCenter: parent.verticalCenter
+                        currentValue: root.demoVariant
+                        onCurrentValueChanged: root.demoVariant = currentValue
+                        ChaSetTabsList {
+                            ChaSetTabsTrigger { value: "solid"; text: "Solid" }
+                            ChaSetTabsTrigger { value: "dashed"; text: "Dashed" }
+                            ChaSetTabsTrigger { value: "dotted"; text: "Dotted" }
+                        }
+                    }
+                }
+
+                ChaSetCheckbox {
+                    visible: root.demoOrientation === "horizontal"
+                    size: "sm"
+                    label: "Label"
+                    checked: root.demoHasLabel
+                    onToggled: (val) => root.demoHasLabel = val
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Row {
+                    visible: root.demoOrientation === "horizontal" && root.demoHasLabel
+                    spacing: 8
+                    Text { text: "Position:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetTabs {
+                        anchors.verticalCenter: parent.verticalCenter
+                        currentValue: root.demoLabelPosition
+                        onCurrentValueChanged: root.demoLabelPosition = currentValue
+                        ChaSetTabsList {
+                            ChaSetTabsTrigger { value: "left"; text: "Left" }
+                            ChaSetTabsTrigger { value: "center"; text: "Center" }
+                            ChaSetTabsTrigger { value: "right"; text: "Right" }
                         }
                     }
                 }
@@ -146,8 +221,9 @@ DocLayout {
         Text { text: "Examples & States"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
         Text { text: "Common layout patterns using horizontal and vertical separators."; color: root.cMutedFg; font.pixelSize: 13 }
 
-        Row {
+        Grid {
             width: parent.width
+            columns: 2
             spacing: 16
 
             // Example 1: Horizontal Card Content Separation
@@ -206,7 +282,7 @@ DocLayout {
                 }
             }
 
-            // Example 2: Vertical Navigation Divider
+            // Example 3: Labeled Dividers
             ChaSetCard {
                 width: (parent.width - 16) / 2
                 height: 180
@@ -221,61 +297,163 @@ DocLayout {
                         anchors.margins: 16
                         spacing: 12
 
-                    Text {
-                        text: "Navigation Divider"
-                        font.pixelSize: 15
-                        font.weight: Font.Bold
-                        color: root.cFg
-                    }
+                        Text {
+                            text: "Labeled Dividers"
+                            font.pixelSize: 15
+                            font.weight: Font.Bold
+                            color: root.cFg
+                        }
 
-                    Text {
-                        text: "Vertical dividers between inline list items or metadata tags."
-                        font.pixelSize: 13
-                        color: root.cMutedFg
-                        wrapMode: Text.WordWrap
-                        width: parent.width
-                    }
+                        Text {
+                            text: "Embed section titles or auth splits with left, center, or right alignment."
+                            font.pixelSize: 13
+                            color: root.cMutedFg
+                            wrapMode: Text.WordWrap
+                            width: parent.width
+                        }
 
-                    Rectangle {
-                        width: parent.width
-                        height: 38
-                        radius: 6
-                        color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.4)
-                        border.color: root.cBorder
-                        border.width: 1
+                        Column {
+                            width: parent.width
+                            spacing: 10
 
-                        Row {
-                            anchors.centerIn: parent
-                            spacing: 12
-
-                            Text {
-                                text: "v0.2.0"
-                                font.weight: Font.DemiBold
-                                font.pixelSize: 12
-                                color: root.cFg
-                                anchors.verticalCenter: parent.verticalCenter
+                            ChaSetSeparator {
+                                label: "Section Start"
+                                labelPosition: "left"
+                                width: parent.width
                             }
                             ChaSetSeparator {
-                                orientation: "vertical"
-                                height: 16
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Text {
-                                text: "MIT License"
-                                font.pixelSize: 12
-                                color: root.cMutedFg
-                                anchors.verticalCenter: parent.verticalCenter
+                                label: "OR CONTINUE WITH"
+                                labelPosition: "center"
+                                width: parent.width
                             }
                             ChaSetSeparator {
-                                orientation: "vertical"
-                                height: 16
-                                anchors.verticalCenter: parent.verticalCenter
+                                label: "End of Category"
+                                labelPosition: "right"
+                                width: parent.width
                             }
-                            Text {
-                                text: "React 19 & Qt 6"
-                                font.pixelSize: 12
-                                color: root.cMutedFg
-                                anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+                }
+            }
+
+            // Example 4: Border Styles (Solid, Dashed, Dotted)
+            ChaSetCard {
+                width: (parent.width - 16) / 2
+                height: 180
+                customRadius: root.customRadius
+
+                Item {
+                    width: parent.width
+                    height: 180
+
+                    Column {
+                        anchors.fill: parent
+                        anchors.margins: 16
+                        spacing: 12
+
+                        Text {
+                            text: "Border Styles"
+                            font.pixelSize: 15
+                            font.weight: Font.Bold
+                            color: root.cFg
+                        }
+
+                        Text {
+                            text: "Choose between solid, dashed, or dotted dividers to distinguish hierarchy."
+                            font.pixelSize: 13
+                            color: root.cMutedFg
+                            wrapMode: Text.WordWrap
+                            width: parent.width
+                        }
+
+                        Column {
+                            width: parent.width
+                            spacing: 8
+
+                            Text { text: "Solid (Default)"; color: root.cMutedFg; font.pixelSize: 11 }
+                            ChaSetSeparator { variant: "solid"; width: parent.width }
+
+                            Text { text: "Dashed"; color: root.cMutedFg; font.pixelSize: 11 }
+                            ChaSetSeparator { variant: "dashed"; width: parent.width }
+
+                            Text { text: "Dotted"; color: root.cMutedFg; font.pixelSize: 11 }
+                            ChaSetSeparator { variant: "dotted"; width: parent.width }
+                        }
+                    }
+                }
+            }
+
+            // Example 4: Vertical Navigation Divider
+            ChaSetCard {
+                width: (parent.width - 16) / 2
+                height: 180
+                customRadius: root.customRadius
+
+                Item {
+                    width: parent.width
+                    height: 180
+
+                    Column {
+                        anchors.fill: parent
+                        anchors.margins: 16
+                        spacing: 12
+
+                        Text {
+                            text: "Navigation Divider"
+                            font.pixelSize: 15
+                            font.weight: Font.Bold
+                            color: root.cFg
+                        }
+
+                        Text {
+                            text: "Vertical dividers between inline list items or metadata tags."
+                            font.pixelSize: 13
+                            color: root.cMutedFg
+                            wrapMode: Text.WordWrap
+                            width: parent.width
+                        }
+
+                        Rectangle {
+                            width: parent.width
+                            height: 38
+                            radius: 6
+                            color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.4)
+                            border.color: root.cBorder
+                            border.width: 1
+
+                            Row {
+                                anchors.centerIn: parent
+                                spacing: 12
+
+                                Text {
+                                    text: "v0.2.0"
+                                    font.weight: Font.DemiBold
+                                    font.pixelSize: 12
+                                    color: root.cFg
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+                                ChaSetSeparator {
+                                    orientation: "vertical"
+                                    height: 16
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+                                Text {
+                                    text: "MIT License"
+                                    font.pixelSize: 12
+                                    color: root.cMutedFg
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+                                ChaSetSeparator {
+                                    orientation: "vertical"
+                                    height: 16
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+                                Text {
+                                    text: "React 19 & Qt 6"
+                                    font.pixelSize: 12
+                                    color: root.cMutedFg
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
                             }
                         }
                     }
@@ -283,7 +461,6 @@ DocLayout {
             }
         }
     }
-}
 
     // Section 5: Props Reference
     Column {
@@ -291,12 +468,11 @@ DocLayout {
         spacing: 8
         Text { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
 
-        
-    KeyboardShortcutsTable {
-        componentId: "separator"
-    }
+        KeyboardShortcutsTable {
+            componentId: "separator"
+        }
 
-    PropsTable {
+        PropsTable {
             width: parent.width
             propsModel: [
                 {
@@ -304,6 +480,24 @@ DocLayout {
                     type: "\"horizontal\" | \"vertical\"",
                     default: "\"horizontal\"",
                     description: "The orientation of the separator line."
+                },
+                {
+                    name: "variant",
+                    type: "\"solid\" | \"dashed\" | \"dotted\"",
+                    default: "\"solid\"",
+                    description: "The stroke style of the separator line."
+                },
+                {
+                    name: "label",
+                    type: "string",
+                    default: "\"\"",
+                    description: "Optional label text embedded in the divider line."
+                },
+                {
+                    name: "labelPosition",
+                    type: "\"left\" | \"center\" | \"right\"",
+                    default: "\"center\"",
+                    description: "Alignment for the embedded label text."
                 },
                 {
                     name: "decorative",

@@ -12,8 +12,8 @@ describe('Separator conformance (spec contract)', () => {
     expect(() => separatorSchema.parse(fixture)).not.toThrow();
 
     const defaultParsed = separatorSchema.parse({});
-    expect(defaultParsed.orientation).toBe('horizontal');
-    expect(defaultParsed.decorative).toBe(true);
+    expect(defaultParsed.variant).toBe('solid');
+    expect(defaultParsed.labelPosition).toBe('center');
 
     for (const o of ['horizontal', 'vertical'] as const) {
       expect(() => separatorSchema.parse({ orientation: o })).not.toThrow();
@@ -22,10 +22,17 @@ describe('Separator conformance (spec contract)', () => {
     for (const d of [true, false] as const) {
       expect(() => separatorSchema.parse({ decorative: d })).not.toThrow();
     }
+    for (const v of ['solid', 'dashed', 'dotted'] as const) {
+      expect(() => separatorSchema.parse({ variant: v })).not.toThrow();
+    }
+    for (const pos of ['left', 'center', 'right'] as const) {
+      expect(() => separatorSchema.parse({ labelPosition: pos, label: 'Test' })).not.toThrow();
+    }
   });
 
-  it('rejects unknown orientation per the contract', () => {
+  it('rejects unknown orientation and variant per the contract', () => {
     expect(() => separatorSchema.parse({ orientation: 'invalid-orientation' })).toThrow();
+    expect(() => separatorSchema.parse({ variant: 'invalid-variant' })).toThrow();
   });
 
   it('earned coverage declares must capabilities', () => {

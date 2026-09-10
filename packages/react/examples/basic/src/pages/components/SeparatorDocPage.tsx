@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import {
   Separator,
   type SeparatorOrientation,
+  type SeparatorVariant,
+  type SeparatorLabelPosition,
   Tabs,
   TabsList,
   TabsTrigger,
@@ -22,35 +24,65 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 
 export function SeparatorDocPage() {
   const [orientation, setOrientation] = useState<SeparatorOrientation>('horizontal');
+  const [variant, setVariant] = useState<SeparatorVariant>('solid');
+  const [hasLabel, setHasLabel] = useState(false);
+  const [labelPosition, setLabelPosition] = useState<SeparatorLabelPosition>('center');
   const [decorative, setDecorative] = useState(true);
 
+  const labelText = hasLabel ? 'Continue with' : undefined;
+
   const heroReactCode = orientation === 'horizontal'
-    ? `<div className="w-full max-w-sm space-y-4">
+    ? hasLabel
+      ? `<div className="w-full max-w-sm space-y-4">
+  <Button className="w-full">Sign in with SSO</Button>
+  <Separator
+    orientation="horizontal"
+    variant="${variant}"
+    label="${labelText}"
+    labelPosition="${labelPosition}"${decorative ? '' : ' decorative={false}'}
+  />
+  <Button variant="outline" className="w-full">Sign in with Email</Button>
+</div>`
+      : `<div className="w-full max-w-sm space-y-4">
   <div className="space-y-1">
     <h4 className="text-sm font-medium leading-none">ChaSet UI</h4>
     <p className="text-sm text-muted-foreground">
       Cross-stack React & Qt Quick Design System.
     </p>
   </div>
-  <Separator orientation="horizontal"${decorative ? '' : ' decorative={false}'} />
+  <Separator orientation="horizontal" variant="${variant}"${decorative ? '' : ' decorative={false}'} />
   <div className="flex h-5 items-center space-x-4 text-sm">
     <div>Docs</div>
-    <Separator orientation="vertical" />
+    <Separator orientation="vertical" variant="${variant}" />
     <div>Source</div>
-    <Separator orientation="vertical" />
+    <Separator orientation="vertical" variant="${variant}" />
     <div>Changelog</div>
   </div>
 </div>`
     : `<div className="flex h-8 items-center space-x-4 text-sm">
   <span>Components</span>
-  <Separator orientation="vertical"${decorative ? '' : ' decorative={false}'} />
+  <Separator orientation="vertical" variant="${variant}"${decorative ? '' : ' decorative={false}'} />
   <span>Tokens</span>
-  <Separator orientation="vertical" />
+  <Separator orientation="vertical" variant="${variant}" />
   <span>Showcase</span>
 </div>`;
 
   const heroQtCode = orientation === 'horizontal'
-    ? `Column {
+    ? hasLabel
+      ? `Column {
+    width: 280
+    spacing: 12
+    ChaSetButton { text: "Sign in with SSO"; width: parent.width }
+    ChaSetSeparator {
+        orientation: "horizontal"
+        variant: "${variant}"
+        label: "${labelText}"
+        labelPosition: "${labelPosition}"
+        width: parent.width
+    }
+    ChaSetButton { variant: "outline"; text: "Sign in with Email"; width: parent.width }
+}`
+      : `Column {
     width: 280
     spacing: 12
 
@@ -60,23 +92,23 @@ export function SeparatorDocPage() {
         Text { text: "Cross-stack React & Qt Quick Design System."; color: ThemeTokens.subduedText; font.pixelSize: 12 }
     }
 
-    ChaSetSeparator { orientation: "horizontal" }
+    ChaSetSeparator { orientation: "horizontal"; variant: "${variant}" }
 
     Row {
         spacing: 12
         Text { text: "Docs"; color: ThemeTokens.text; font.pixelSize: 12 }
-        ChaSetSeparator { orientation: "vertical"; height: 16 }
+        ChaSetSeparator { orientation: "vertical"; variant: "${variant}"; height: 16 }
         Text { text: "Source"; color: ThemeTokens.text; font.pixelSize: 12 }
-        ChaSetSeparator { orientation: "vertical"; height: 16 }
+        ChaSetSeparator { orientation: "vertical"; variant: "${variant}"; height: 16 }
         Text { text: "Changelog"; color: ThemeTokens.text; font.pixelSize: 12 }
     }
 }`
     : `Row {
     spacing: 12
     Text { text: "Components"; color: ThemeTokens.text; font.pixelSize: 13 }
-    ChaSetSeparator { orientation: "vertical"; height: 20 }
+    ChaSetSeparator { orientation: "vertical"; variant: "${variant}"; height: 20 }
     Text { text: "Tokens"; color: ThemeTokens.text; font.pixelSize: 13 }
-    ChaSetSeparator { orientation: "vertical"; height: 20 }
+    ChaSetSeparator { orientation: "vertical"; variant: "${variant}"; height: 20 }
     Text { text: "Showcase"; color: ThemeTokens.text; font.pixelSize: 13 }
 }`;
 
@@ -84,7 +116,7 @@ export function SeparatorDocPage() {
     <DocLayout
       category="Components"
       title="Separator"
-      description="Visually or semantically separates content in a list or section."
+      description="Visually or semantically separates content in a list, form, or section."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },
@@ -100,7 +132,7 @@ export function SeparatorDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Test orientation and accessibility semantics with synchronized previews across Web and Desktop.
+          Test orientation, dashed/dotted line styles, and labeled section dividers across Web and Desktop.
         </p>
 
         <ComponentPreview
@@ -119,6 +151,41 @@ export function SeparatorDocPage() {
                 </Tabs>
               </div>
 
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground text-xs">Style:</span>
+                <Tabs value={variant} onValueChange={(v) => setVariant(v as SeparatorVariant)}>
+                  <TabsList className="h-8">
+                    <TabsTrigger value="solid" className="h-6 px-2.5 text-xs">Solid</TabsTrigger>
+                    <TabsTrigger value="dashed" className="h-6 px-2.5 text-xs">Dashed</TabsTrigger>
+                    <TabsTrigger value="dotted" className="h-6 px-2.5 text-xs">Dotted</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              {orientation === 'horizontal' && (
+                <>
+                  <Checkbox
+                    size="sm"
+                    checked={hasLabel}
+                    onCheckedChange={(val) => setHasLabel(val)}
+                    label="Label"
+                  />
+
+                  {hasLabel && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground text-xs">Position:</span>
+                      <Tabs value={labelPosition} onValueChange={(v) => setLabelPosition(v as SeparatorLabelPosition)}>
+                        <TabsList className="h-8">
+                          <TabsTrigger value="left" className="h-6 px-2.5 text-xs">Left</TabsTrigger>
+                          <TabsTrigger value="center" className="h-6 px-2.5 text-xs">Center</TabsTrigger>
+                          <TabsTrigger value="right" className="h-6 px-2.5 text-xs">Right</TabsTrigger>
+                        </TabsList>
+                      </Tabs>
+                    </div>
+                  )}
+                </>
+              )}
+
               <Checkbox
                 size="sm"
                 checked={decorative}
@@ -130,28 +197,42 @@ export function SeparatorDocPage() {
         >
           <div className="py-6 flex justify-center w-full">
             {orientation === 'horizontal' ? (
-              <div className="w-full max-w-sm space-y-4">
-                <div className="space-y-1">
-                  <h4 className="text-sm font-medium leading-none text-foreground">ChaSet UI</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Cross-stack React & Qt Quick Design System.
-                  </p>
+              hasLabel ? (
+                <div className="w-full max-w-sm space-y-4">
+                  <Button className="w-full" size="sm">Sign in with SSO</Button>
+                  <Separator
+                    orientation="horizontal"
+                    variant={variant}
+                    label={labelText}
+                    labelPosition={labelPosition}
+                    decorative={decorative}
+                  />
+                  <Button variant="outline" className="w-full" size="sm">Sign in with Email</Button>
                 </div>
-                <Separator orientation="horizontal" decorative={decorative} />
-                <div className="flex h-5 items-center space-x-4 text-sm text-muted-foreground">
-                  <span>Docs</span>
-                  <Separator orientation="vertical" />
-                  <span>Source</span>
-                  <Separator orientation="vertical" />
-                  <span>Changelog</span>
+              ) : (
+                <div className="w-full max-w-sm space-y-4">
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-medium leading-none text-foreground">ChaSet UI</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Cross-stack React & Qt Quick Design System.
+                    </p>
+                  </div>
+                  <Separator orientation="horizontal" variant={variant} decorative={decorative} />
+                  <div className="flex h-5 items-center space-x-4 text-sm text-muted-foreground">
+                    <span>Docs</span>
+                    <Separator orientation="vertical" variant={variant} />
+                    <span>Source</span>
+                    <Separator orientation="vertical" variant={variant} />
+                    <span>Changelog</span>
+                  </div>
                 </div>
-              </div>
+              )
             ) : (
               <div className="flex h-10 items-center space-x-4 text-sm text-foreground">
                 <span>Components</span>
-                <Separator orientation="vertical" decorative={decorative} />
+                <Separator orientation="vertical" variant={variant} decorative={decorative} />
                 <span>Tokens</span>
-                <Separator orientation="vertical" />
+                <Separator orientation="vertical" variant={variant} />
                 <span>Showcase</span>
               </div>
             )}
@@ -173,17 +254,19 @@ export function SeparatorDocPage() {
           Anatomy
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Import and place the Separator component horizontally or vertically to segment content.
+          Import and place the Separator component horizontally or vertically to segment content, with optional dashed/dotted styles or embedded labels.
         </p>
         <CodeBlock
           code={`import { Separator } from '@chahu/cha-set';
 
 export function SeparatorDemo() {
   return (
-    <div>
-      <div>Header Content</div>
-      <Separator orientation="horizontal" />
-      <div>Body Content</div>
+    <div className="space-y-4">
+      <div>Section Header</div>
+      <Separator orientation="horizontal" variant="solid" />
+      <div>Content Body</div>
+      <Separator orientation="horizontal" variant="dashed" label="OR" />
+      <div>Alternative Action</div>
     </div>
   );
 }`}
@@ -197,7 +280,7 @@ export function SeparatorDemo() {
           Examples & States
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Common layout patterns using horizontal and vertical separators.
+          Common layout patterns using horizontal, vertical, dashed, dotted, and labeled separators.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Card Content Segmentation */}
@@ -223,6 +306,45 @@ export function SeparatorDemo() {
             </CardFooter>
           </Card>
 
+          {/* Labeled Section & Form Dividers */}
+          <Card className="flex flex-col justify-between p-6">
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">Labeled Dividers</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Embed clear section titles or auth splits with left, center, or right alignment.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <Separator label="Section Start" labelPosition="left" />
+              <Separator label="OR CONTINUE WITH" labelPosition="center" />
+              <Separator label="End of Category" labelPosition="right" />
+            </div>
+          </Card>
+
+          {/* Border Styles (Solid, Dashed, Dotted) */}
+          <Card className="flex flex-col justify-between p-6">
+            <div>
+              <h3 className="font-semibold text-foreground mb-1">Border Styles</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Choose between solid, dashed, or dotted dividers to distinguish hierarchy.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <span className="text-xs text-muted-foreground mb-1 block">Solid (Default)</span>
+                <Separator orientation="horizontal" variant="solid" />
+              </div>
+              <div>
+                <span className="text-xs text-muted-foreground mb-1 block">Dashed</span>
+                <Separator orientation="horizontal" variant="dashed" />
+              </div>
+              <div>
+                <span className="text-xs text-muted-foreground mb-1 block">Dotted</span>
+                <Separator orientation="horizontal" variant="dotted" />
+              </div>
+            </div>
+          </Card>
+
           {/* Inline Navigation & Metadata Bar */}
           <Card className="flex flex-col justify-between p-6">
             <div>
@@ -243,7 +365,6 @@ export function SeparatorDemo() {
       </section>
 
       {/* 5. Props Reference */}
-      
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -265,6 +386,24 @@ export function SeparatorDemo() {
               type: "'horizontal' | 'vertical'",
               default: "'horizontal'",
               description: 'The orientation of the separator line.',
+            },
+            {
+              name: 'variant',
+              type: "'solid' | 'dashed' | 'dotted'",
+              default: "'solid'",
+              description: 'The stroke style of the separator line.',
+            },
+            {
+              name: 'label',
+              type: 'ReactNode',
+              default: 'undefined',
+              description: 'Optional label or annotation text embedded in the divider line.',
+            },
+            {
+              name: 'labelPosition',
+              type: "'left' | 'center' | 'right'",
+              default: "'center'",
+              description: 'Horizontal alignment for the embedded label.',
             },
             {
               name: 'decorative',
