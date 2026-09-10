@@ -318,4 +318,61 @@ describe('Dialog', () => {
     await user.click(closeBtn);
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
+
+  it('applies size classes when draggable is false', () => {
+    const { rerender } = render(
+      <Dialog open={true}>
+        <DialogContent draggable={false} size="sm">
+          <DialogTitle>Small Dialog</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    );
+
+    expect(screen.getByRole('dialog')).toHaveClass('max-w-sm');
+
+    rerender(
+      <Dialog open={true}>
+        <DialogContent draggable={false} size="xl">
+          <DialogTitle>Extra Large Dialog</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    );
+
+    expect(screen.getByRole('dialog')).toHaveClass('max-w-4xl');
+  });
+
+  it('respects closeOnOverlayClick={false}', () => {
+    const onOpenChange = vi.fn();
+
+    render(
+      <Dialog defaultOpen onOpenChange={onOpenChange}>
+        <DialogContent closeOnOverlayClick={false}>
+          <DialogTitle>Persistent Dialog</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    );
+
+    const overlay = document.querySelector('[data-slot="dialog-overlay"]');
+    fireEvent.click(overlay!);
+
+    expect(onOpenChange).not.toHaveBeenCalled();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('respects closeOnEscape={false}', () => {
+    const onOpenChange = vi.fn();
+
+    render(
+      <Dialog defaultOpen onOpenChange={onOpenChange}>
+        <DialogContent closeOnEscape={false}>
+          <DialogTitle>Persistent Dialog</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    );
+
+    fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' });
+
+    expect(onOpenChange).not.toHaveBeenCalled();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
 });

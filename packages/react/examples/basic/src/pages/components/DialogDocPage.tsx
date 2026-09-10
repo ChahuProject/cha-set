@@ -398,6 +398,24 @@ export function DialogDemo() {
               description: 'Event handler called when the open state changes.',
             },
             {
+              name: 'size',
+              type: "'sm' | 'default' | 'lg' | 'xl' | 'full'",
+              default: "'default'",
+              description: 'Tiered size preset controlling modal card width and containment.',
+            },
+            {
+              name: 'closeOnOverlayClick',
+              type: 'boolean',
+              default: 'true',
+              description: 'Whether clicking the backdrop overlay dismisses the dialog.',
+            },
+            {
+              name: 'closeOnEscape',
+              type: 'boolean',
+              default: 'true',
+              description: 'Whether pressing the Escape key dismisses the dialog.',
+            },
+            {
               name: 'draggable',
               type: 'boolean',
               default: 'true',

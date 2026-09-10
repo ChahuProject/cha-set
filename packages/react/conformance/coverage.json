@@ -97,7 +97,8 @@
     "portal": true,
     "overlay": true,
     "closeButton": true,
-    "escapeKey": true
+    "escapeKey": true,
+    "size": true
   },
   "tooltip": {
     "content": true,

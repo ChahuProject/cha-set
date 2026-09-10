@@ -234,10 +234,11 @@ DialogClose.displayName = 'DialogClose';
 export interface DialogOverlayProps
   extends React.HTMLAttributes<HTMLDivElement> {
   forceMount?: boolean;
+  closeOnClick?: boolean;
 }
 
 export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps>(
-  ({ className, onClick, forceMount = false, ...props }, ref) => {
+  ({ className, onClick, forceMount = false, closeOnClick = true, ...props }, ref) => {
     const { open, setOpen } = useDialogContext();
 
     if (!open && !forceMount) {
@@ -246,7 +247,7 @@ export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
       onClick?.(e);
-      if (!e.defaultPrevented) {
+      if (!e.defaultPrevented && closeOnClick) {
         setOpen(false);
       }
     };
@@ -268,8 +269,29 @@ export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps
 );
 DialogOverlay.displayName = 'DialogOverlay';
 
+export type DialogSize = 'sm' | 'default' | 'lg' | 'xl' | 'full';
+
+const sizeClasses: Record<DialogSize, string> = {
+  sm: 'max-w-sm',
+  default: 'max-w-lg',
+  lg: 'max-w-2xl',
+  xl: 'max-w-4xl',
+  full: 'max-w-[calc(100vw-2rem)]',
+};
+
+const defaultSizeWidths: Record<DialogSize, number | undefined> = {
+  sm: 24,
+  default: undefined,
+  lg: 44,
+  xl: 56,
+  full: 68,
+};
+
 export interface DialogContentProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  size?: DialogSize;
+  closeOnOverlayClick?: boolean;
+  closeOnEscape?: boolean;
   overlayClassName?: string;
   forceMount?: boolean;
   container?: HTMLElement | null;
@@ -309,6 +331,9 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
       children,
       forceMount = false,
       container,
+      size = 'default',
+      closeOnOverlayClick = true,
+      closeOnEscape = true,
       draggable = true,
       showCloseButton = true,
       showEscBadge = true,
@@ -343,7 +368,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
     const { open, setOpen, titleId, descriptionId } = useDialogContext();
 
     React.useEffect(() => {
-      if (!open) return;
+      if (!open || !closeOnEscape) return;
 
       const handleKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
@@ -356,14 +381,14 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
       return () => {
         document.removeEventListener('keydown', handleKeyDown);
       };
-    }, [open, setOpen]);
+    }, [open, setOpen, closeOnEscape]);
 
     if (!open && !forceMount) {
       return null;
     }
 
     const effectiveContentClassName = contentClassName ?? 内容类名;
-    const effectiveDefaultWidthRem = defaultWidthRem ?? 默认宽度rem;
+    const effectiveDefaultWidthRem = defaultWidthRem ?? 默认宽度rem ?? defaultSizeWidths[size];
     const effectiveDefaultHeightRem = defaultHeightRem ?? 默认高度rem;
     const effectiveMinWidthRem = minWidthRem ?? 最小宽度rem;
     const effectiveMinHeightRem = minHeightRem ?? 最小高度rem;
@@ -393,7 +418,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
     if (draggable) {
       return (
         <DialogPortal container={container}>
-          <DialogOverlay className={overlayClassName} />
+          <DialogOverlay className={overlayClassName} closeOnClick={closeOnOverlayClick} />
           <div
             data-slot="dialog-content-layer"
             className="fixed inset-0 z-50 pointer-events-none outline-none"
@@ -431,7 +456,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
 
     return (
       <DialogPortal container={container}>
-        <DialogOverlay className={overlayClassName} />
+        <DialogOverlay className={overlayClassName} closeOnClick={closeOnOverlayClick} />
         <div
           ref={ref}
           role="dialog"
@@ -440,7 +465,8 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
           aria-describedby={props['aria-describedby'] ?? descriptionId}
           data-slot="dialog-content"
           className={cn(
-            'fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border border-border bg-background text-foreground p-6 shadow-2xl rounded-xl animate-in zoom-in-95 duration-150 pointer-events-auto',
+            'fixed left-1/2 top-1/2 z-50 grid w-full -translate-x-1/2 -translate-y-1/2 gap-4 border border-border bg-background text-foreground p-6 shadow-2xl rounded-xl animate-in zoom-in-95 duration-150 pointer-events-auto',
+            sizeClasses[size],
             className,
           )}
           onClick={(e) => {

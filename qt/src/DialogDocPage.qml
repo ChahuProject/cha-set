@@ -235,16 +235,22 @@ DocLayout {
                     description: "Header descriptive text displayed beneath the title."
                 },
                 {
+                    name: "size",
+                    type: "\"sm\" | \"default\" | \"lg\" | \"xl\" | \"full\"",
+                    default: "\"default\"",
+                    description: "Tiered size preset controlling modal card width."
+                },
+                {
                     name: "customRadius",
                     type: "int",
                     default: "8",
-                    description: "Corner radius of the modal dialog card in pixels."
+                    description: "Corner radius of the modal dialog card."
                 },
                 {
                     name: "dialogWidth",
                     type: "int",
                     default: "500",
-                    description: "Maximum width of the dialog card."
+                    description: "Explicit width of the dialog card override."
                 },
                 {
                     name: "showCloseButton",
@@ -257,6 +263,18 @@ DocLayout {
                     type: "bool",
                     default: "false",
                     description: "Whether to display the ESC keyboard badge in the top-right header."
+                },
+                {
+                    name: "closeOnOverlayClick",
+                    type: "bool",
+                    default: "true",
+                    description: "Whether clicking the backdrop overlay dismisses the dialog."
+                },
+                {
+                    name: "closeOnEscape",
+                    type: "bool",
+                    default: "true",
+                    description: "Whether pressing Escape key dismisses the dialog."
                 },
                 {
                     name: "draggable",

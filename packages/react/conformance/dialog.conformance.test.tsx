@@ -32,11 +32,17 @@ describe('Dialog conformance (spec contract)', () => {
 
     const contentFixture = {
       customRadius: 8,
+      size: 'lg' as const,
+      closeOnOverlayClick: true,
+      closeOnEscape: true,
     } as const;
     const parsedContent = dialogContentSchema.parse(contentFixture);
     expect(parsedContent.draggable).toBe(true);
     expect(parsedContent.showCloseButton).toBe(true);
     expect(parsedContent.showEscBadge).toBe(true);
+    expect(parsedContent.size).toBe('lg');
+    expect(parsedContent.closeOnOverlayClick).toBe(true);
+    expect(parsedContent.closeOnEscape).toBe(true);
 
     const desktopContentFixture = {
       draggable: true,
@@ -87,7 +93,7 @@ describe('Dialog conformance (spec contract)', () => {
       console.warn('[conformance] coverage.json has no dialog entry yet; skipping earned-capability assertions');
       return;
     }
-    for (const cap of ['open', 'portal', 'overlay', 'closeButton', 'escapeKey'] as const) {
+    for (const cap of ['open', 'portal', 'overlay', 'closeButton', 'escapeKey', 'size'] as const) {
       expect(coverage.dialog?.[cap], `capability "${cap}" must be earned`).toBe(true);
     }
   });

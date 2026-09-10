@@ -121,7 +121,8 @@
       "portal": { "requirement": "must", "description": "renders dialog into portal layer" },
       "overlay": { "requirement": "must", "description": "backdrop overlay behind dialog content" },
       "closeButton": { "requirement": "must", "description": "close button triggers onOpenChange" },
-      "escapeKey": { "requirement": "must", "description": "pressing Escape key closes the dialog" }
+      "escapeKey": { "requirement": "must", "description": "pressing Escape key closes the dialog" },
+      "size": { "requirement": "should", "description": "supports tiered dialog size presets (sm, default, lg, xl, full)" }
     },
     "tooltip": {
       "content": { "requirement": "must", "description": "renders tooltip text content" },

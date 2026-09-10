@@ -6,6 +6,8 @@ import { draggableModalSizeOptionSchema } from './draggable-modal';
  * Single source of truth for Dialog, DialogTrigger, DialogContent, DialogHeader,
  * DialogTitle, DialogDescription, DialogFooter, and DialogClose public surfaces across all stacks.
  */
+export const dialogSizeSchema = z.enum(['sm', 'default', 'lg', 'xl', 'full']);
+
 export const dialogSchema = z.object({
   open: z.boolean().default(false),
   onOpenChange: z.function().optional(),
@@ -20,9 +22,12 @@ export const dialogTriggerSchema = z.object({
 
 export const dialogContentSchema = z.object({
   customRadius: z.number().optional(),
+  size: dialogSizeSchema.default('default'),
   draggable: z.boolean().default(true),
   showCloseButton: z.boolean().default(true),
   showEscBadge: z.boolean().default(true),
+  closeOnOverlayClick: z.boolean().default(true),
+  closeOnEscape: z.boolean().default(true),
   defaultWidthRem: z.number().optional(),
   defaultHeightRem: z.number().optional(),
   minWidthRem: z.number().optional(),

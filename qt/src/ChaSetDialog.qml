@@ -11,14 +11,25 @@ Rectangle {
     color: Qt.rgba(0, 0, 0, 0.6)
 
     property bool open: false
+    property string size: "default"     // "sm" | "default" | "lg" | "xl" | "full"
     property string title: ""
     property string description: ""
     property int customRadius: 8
-    property int dialogWidth: 500
+    property int dialogWidth: {
+        switch (root.size) {
+        case "sm": return 380
+        case "default": return 500
+        case "lg": return 680
+        case "xl": return 840
+        case "full": return Math.min(parent.width - 40, 1100)
+        default: return 500
+        }
+    }
     property bool showCloseButton: true
     property bool showEscBadge: false
     property bool draggable: true
     property bool closeOnEscape: true
+    property bool closeOnOverlayClick: true
 
     signal opened()
     signal closed()
@@ -65,8 +76,10 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            root.open = false
-            root.rejected()
+            if (root.closeOnOverlayClick) {
+                root.open = false
+                root.rejected()
+            }
         }
     }
 
