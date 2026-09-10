@@ -369,6 +369,30 @@ ApplicationWindow {
                 kbFailures++;
             }
 
+            // Verify Input Modality State Machine & Dual-Highlight Elimination
+            if (testDropdown.modality !== "keyboard") {
+                console.log("[qt-scenario] FAIL: testDropdown modality should be 'keyboard', got " + testDropdown.modality);
+                kbFailures++;
+            }
+            // Intentional mouse move switches to pointer modality
+            testDropdown.handlePointerMove(0, 150, 150);
+            if (testDropdown.modality !== "pointer" || testDropdown.highlightedIndex !== 0) {
+                console.log("[qt-scenario] FAIL: intentional pointer move should switch modality to 'pointer'");
+                kbFailures++;
+            }
+            // Keyboard switches back to keyboard modality
+            testDropdown.handleKeyEvent({ key: Qt.Key_Down, accepted: false });
+            if (testDropdown.modality !== "keyboard" || testDropdown.highlightedIndex !== 1) {
+                console.log("[qt-scenario] FAIL: arrow down should switch modality back to 'keyboard'");
+                kbFailures++;
+            }
+            // Stationary pointer (same coords 150, 150) is ignored
+            testDropdown.handlePointerMove(3, 150, 150);
+            if (testDropdown.highlightedIndex !== 1 || testDropdown.modality !== "keyboard") {
+                console.log("[qt-scenario] FAIL: stationary pointer must NOT take over keyboard highlight");
+                kbFailures++;
+            }
+
             // Escape closes menu
             testDropdown.handleKeyEvent({ key: Qt.Key_Escape, accepted: false });
             if (testDropdown.open) {
