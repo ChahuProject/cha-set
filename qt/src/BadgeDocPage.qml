@@ -13,6 +13,7 @@ DocLayout {
         { id: "installation", title: "Installation" },
         { id: "variants", title: "Variants" },
         { id: "sizes", title: "Sizes" },
+        { id: "status-and-tags", title: "Status & Removable" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
@@ -27,21 +28,53 @@ DocLayout {
 
     property string demoVariant: "default"
     property string demoSize: "default"
+    property bool demoDot: false
+    property bool demoRemovable: false
+    property bool demoRemoved: false
 
     // Section 1: Overview
     ComponentPreview {
         id: heroPreview
         width: parent.width
         title: "Badge Sandbox"
-        reactCode: `<Badge variant="${root.demoVariant}" size="${root.demoSize}">\n  ${root.demoVariant.charAt(0).toUpperCase() + root.demoVariant.slice(1)} Badge\n</Badge>`
-        qtCode: `ChaSetBadge {\n    variant: "${root.demoVariant}"\n    size: "${root.demoSize}"\n    text: "${root.demoVariant.charAt(0).toUpperCase() + root.demoVariant.slice(1)} Badge"\n}`
+        reactCode: `<Badge
+  variant="${root.demoVariant}"
+  size="${root.demoSize}"${root.demoDot ? '\n  dot' : ''}${root.demoRemovable ? '\n  removable\n  onRemove={() => console.log("removed")}' : ''}
+>
+  ${root.demoVariant.charAt(0).toUpperCase() + root.demoVariant.slice(1)} Badge
+</Badge>`
+        qtCode: `ChaSetBadge {
+    variant: "${root.demoVariant}"
+    size: "${root.demoSize}"
+    text: "${root.demoVariant.charAt(0).toUpperCase() + root.demoVariant.slice(1)} Badge"${root.demoDot ? '\n    dot: true' : ''}${root.demoRemovable ? '\n    removable: true\n    onRemoved: console.log("removed")' : ''}
+}`
 
         stageData: [
-            ChaSetBadge {
+            Item {
                 anchors.centerIn: parent
-                variant: root.demoVariant
-                size: root.demoSize
-                text: root.demoVariant.charAt(0).toUpperCase() + root.demoVariant.slice(1) + " Badge"
+                width: badgeItem.width
+                height: badgeItem.height
+
+                ChaSetBadge {
+                    id: badgeItem
+                    anchors.centerIn: parent
+                    visible: !root.demoRemoved
+                    variant: root.demoVariant
+                    size: root.demoSize
+                    dot: root.demoDot
+                    removable: root.demoRemovable
+                    text: root.demoVariant.charAt(0).toUpperCase() + root.demoVariant.slice(1) + " Badge"
+                    onRemoved: root.demoRemoved = true
+                }
+
+                ChaSetButton {
+                    anchors.centerIn: parent
+                    visible: root.demoRemoved
+                    variant: "ghost"
+                    size: "sm"
+                    text: "Reset Removed Badge"
+                    onClicked: root.demoRemoved = false
+                }
             }
         ]
 
@@ -61,6 +94,8 @@ DocLayout {
                             ChaSetTabsTrigger { value: "secondary"; text: "Secondary" }
                             ChaSetTabsTrigger { value: "destructive"; text: "Destructive" }
                             ChaSetTabsTrigger { value: "outline"; text: "Outline" }
+                            ChaSetTabsTrigger { value: "ghost"; text: "Ghost" }
+                            ChaSetTabsTrigger { value: "link"; text: "Link" }
                         }
                     }
                 }
@@ -76,6 +111,23 @@ DocLayout {
                             ChaSetTabsTrigger { value: "default"; text: "Default" }
                             ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
                         }
+                    }
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Status Dot"
+                    checked: root.demoDot
+                    onToggled: (v) => root.demoDot = v
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Removable"
+                    checked: root.demoRemovable
+                    onToggled: (v) => {
+                        root.demoRemovable = v
+                        root.demoRemoved = false
                     }
                 }
             }
@@ -99,7 +151,7 @@ DocLayout {
         width: parent.width
         spacing: 8
         Text { text: "Variants"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        Text { text: "Four standard semantic variants aligned with the ChaSet design token system."; color: root.cMutedFg; font.pixelSize: 13 }
+        Text { text: "All six standard semantic variants aligned with the ChaSet design token system."; color: root.cMutedFg; font.pixelSize: 13 }
 
         ChaSetCard {
             width: parent.width
@@ -117,6 +169,8 @@ DocLayout {
                     ChaSetBadge { variant: "secondary"; text: "Secondary" }
                     ChaSetBadge { variant: "destructive"; text: "Destructive" }
                     ChaSetBadge { variant: "outline"; text: "Outline" }
+                    ChaSetBadge { variant: "ghost"; text: "Ghost" }
+                    ChaSetBadge { variant: "link"; text: "Link" }
                 }
             }
         }
@@ -127,7 +181,7 @@ DocLayout {
         width: parent.width
         spacing: 8
         Text { text: "Sizes"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        Text { text: "Choose between standard pill height (22px) and compact micro badge (16px)."; color: root.cMutedFg; font.pixelSize: 13 }
+        Text { text: "Choose between standard pill scale (default) and compact micro badge (sm)."; color: root.cMutedFg; font.pixelSize: 13 }
 
         ChaSetCard {
             width: parent.width
@@ -156,22 +210,55 @@ DocLayout {
         }
     }
 
-    // Section 5: Props Reference
+    // Section 5: Status & Removable Badges
+    Column {
+        width: parent.width
+        spacing: 8
+        Text { text: "Status & Removable Tags"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        Text { text: "Badges support live status indicator dots and dismissible action buttons for filter tags."; color: root.cMutedFg; font.pixelSize: 13 }
+
+        ChaSetCard {
+            width: parent.width
+            height: 70
+            customRadius: root.customRadius
+
+            Item {
+                width: parent.width
+                height: 70
+
+                Row {
+                    anchors.centerIn: parent
+                    spacing: 16
+                    ChaSetBadge { dot: true; dotColor: "#10b981"; variant: "outline"; text: "Online" }
+                    ChaSetBadge { dot: true; dotColor: "#f59e0b"; variant: "outline"; text: "Away" }
+                    ChaSetBadge { dot: true; dotColor: "#ef4444"; variant: "destructive"; text: "Error" }
+                    ChaSetBadge { removable: true; text: "React Tag"; onRemoved: console.log("Removed React Tag") }
+                    ChaSetBadge { removable: true; variant: "secondary"; text: "Qt Quick"; onRemoved: console.log("Removed Qt Quick") }
+                }
+            }
+        }
+    }
+
+    // Section 6: Props Reference
     Column {
         width: parent.width
         spacing: 8
         Text { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
 
-        
-    KeyboardShortcutsTable {
-        componentId: "badge"
-    }
+        KeyboardShortcutsTable {
+            componentId: "badge"
+        }
 
-    PropsTable {
+        PropsTable {
             width: parent.width
             propsModel: [
-                { name: "variant", type: "'default' | 'secondary' | 'destructive' | 'outline'", defaultValue: "'default'", desc: "Visual stylistic variant corresponding to core color tokens." },
-                { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "Size variant determining pill height, padding, and font metrics." },
+                { name: "variant", type: "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'", defaultValue: "'default'", desc: "Visual stylistic variant corresponding to core color tokens." },
+                { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "Size variant determining pill height, padding, and font metrics scale." },
+                { name: "dot", type: "bool", defaultValue: "false", desc: "Whether to display a leading status indicator dot." },
+                { name: "dotColor", type: "color", defaultValue: "accent", desc: "Custom color for the status indicator dot." },
+                { name: "removable", type: "bool", defaultValue: "false", desc: "Whether to display an inline dismiss/remove action button." },
+                { name: "interactive", type: "bool", defaultValue: "false", desc: "Whether the badge responds with interactive cursor and click effects." },
+                { name: "iconSource", type: "string", defaultValue: "''", desc: "Optional leading icon image source URL." },
                 { name: "text", type: "string", defaultValue: "''", desc: "The label text to display inside the badge." }
             ]
         }

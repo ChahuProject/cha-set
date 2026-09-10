@@ -11,12 +11,13 @@ describe('Badge conformance (spec contract)', () => {
     } as const;
     expect(() => badgeSchema.parse(fixture)).not.toThrow();
 
-    for (const v of ['default', 'secondary', 'destructive', 'outline'] as const) {
+    for (const v of ['default', 'secondary', 'destructive', 'outline', 'ghost', 'link'] as const) {
       expect(() => badgeSchema.parse({ variant: v })).not.toThrow();
     }
     for (const s of ['default', 'sm'] as const) {
       expect(() => badgeSchema.parse({ size: s })).not.toThrow();
     }
+    expect(() => badgeSchema.parse({ dot: true, removable: true, interactive: true })).not.toThrow();
   });
 
   it('rejects unknown variants per the contract', () => {

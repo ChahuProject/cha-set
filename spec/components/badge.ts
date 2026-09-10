@@ -18,6 +18,9 @@ export const badgeSizeSchema = z.enum(['default', 'sm']);
 export const badgeSchema = z.object({
   variant: badgeVariantSchema.default('default'),
   size: badgeSizeSchema.default('default'),
+  dot: z.boolean().default(false),
+  removable: z.boolean().default(false),
+  interactive: z.boolean().default(false),
 });
 
 export type BadgeApi = z.infer<typeof badgeSchema>;

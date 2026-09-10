@@ -35,7 +35,9 @@
       "variant": { "requirement": "must", "description": "supports default, secondary, destructive, and outline variants" },
       "size": { "requirement": "must", "description": "supports default and sm sizes" },
       "styling": { "requirement": "must", "description": "pill geometry with semantic color tokens and border" },
-      "customClass": { "requirement": "should", "description": "allows passing custom classes or color overrides" }
+      "customClass": { "requirement": "should", "description": "allows passing custom classes or color overrides" },
+      "dot": { "requirement": "should", "description": "status dot indicator support" },
+      "removable": { "requirement": "should", "description": "dismiss/remove action support" }
     },
     "label": {
       "standard": { "requirement": "must", "description": "renders text label and associates with form controls via htmlFor" },

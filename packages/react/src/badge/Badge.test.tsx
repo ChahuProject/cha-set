@@ -1,5 +1,5 @@
 import React from 'react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Badge } from './Badge';
 
@@ -48,5 +48,31 @@ describe('Badge Component', () => {
 
     rerender(<Badge variant="default" forceActive>Active</Badge>);
     expect(screen.getByText('Active')).toBeInTheDocument();
+  });
+
+  it('renders status dot when dot prop is enabled', () => {
+    const { container } = render(<Badge dot>Online</Badge>);
+    const dot = container.querySelector('span[aria-hidden="true"]');
+    expect(dot).toBeInTheDocument();
+    expect(dot).toHaveClass('size-1.5', 'rounded-full');
+  });
+
+  it('renders remove button and calls onRemove when clicked', async () => {
+    const onRemove = vi.fn();
+    render(<Badge removable onRemove={onRemove}>Tag</Badge>);
+    const removeBtn = screen.getByRole('button', { name: 'Remove' });
+    expect(removeBtn).toBeInTheDocument();
+
+    removeBtn.click();
+    expect(onRemove).toHaveBeenCalledTimes(1);
+  });
+
+  it('supports interactive click handling', () => {
+    const onClick = vi.fn();
+    render(<Badge interactive onClick={onClick}>Clickable</Badge>);
+    const badge = screen.getByText('Clickable');
+    expect(badge).toHaveClass('cursor-pointer');
+    badge.click();
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 });
