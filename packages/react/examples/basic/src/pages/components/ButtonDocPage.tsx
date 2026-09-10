@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Input, Checkbox, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
+import { Button, ButtonGroup, Input, Checkbox, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -12,22 +12,26 @@ export function ButtonDocPage() {
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [fullWidth, setFullWidth] = useState(false);
+  const [pressed, setPressed] = useState(false);
   const [label, setLabel] = useState('Button');
+
+  const isIconSize = size === 'icon' || size === 'icon-xs' || size === 'icon-sm' || size === 'icon-lg';
 
   const reactCode = `<Button
   variant="${variant}"
-  size="${size}"${loading ? '\n  loading' : ''}${disabled ? '\n  disabled' : ''}${fullWidth ? '\n  fullWidth' : ''}
+  size="${size}"${loading ? '\n  loading' : ''}${disabled ? '\n  disabled' : ''}${fullWidth ? '\n  fullWidth' : ''}${pressed ? '\n  pressed' : ''}
 >
-  ${size === 'icon' ? '⚙' : label}
+  ${isIconSize ? '⚙' : label}
 </Button>`;
 
   const qtCode = `ChaSetButton {
     variant: "${variant}"
     size: "${size}"
-    text: "${size === 'icon' ? '' : label}"
+    text: "${isIconSize ? '' : label}"
     loading: ${loading}
     disabled: ${disabled}
     fullWidth: ${fullWidth}
+    pressed: ${pressed}
     onClicked: console.log("clicked")
 }`;
 
@@ -43,6 +47,7 @@ export function ButtonDocPage() {
         { id: 'variants', title: 'Variants' },
         { id: 'sizes', title: 'Sizes' },
         { id: 'states', title: 'States' },
+        { id: 'button-group', title: 'Button Group' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'API Reference' },
       ]}
@@ -73,9 +78,9 @@ export function ButtonDocPage() {
               </div>
 
               {/* Size Selector */}
-              <div className="flex items-center gap-1.5">
+              <div className="flex flex-wrap items-center gap-1.5">
                 <span className="text-muted-foreground font-medium">Size:</span>
-                {(['default', 'sm', 'lg', 'icon'] as ButtonSize[]).map((s) => (
+                {(['xs', 'sm', 'default', 'lg', 'icon', 'icon-xs', 'icon-sm', 'icon-lg'] as ButtonSize[]).map((s) => (
                   <Button
                     key={s}
                     type="button"
@@ -111,8 +116,15 @@ export function ButtonDocPage() {
                 label="Full Width"
               />
 
+              <Checkbox
+                size="sm"
+                checked={pressed}
+                onCheckedChange={(val) => setPressed(val)}
+                label="Pressed"
+              />
+
               {/* Text input */}
-              {size !== 'icon' && (
+              {!isIconSize && (
                 <div className="flex items-center gap-1.5 ml-auto">
                   <span className="text-muted-foreground text-xs">Label:</span>
                   <Input
@@ -133,8 +145,9 @@ export function ButtonDocPage() {
               loading={loading}
               disabled={disabled}
               fullWidth={fullWidth}
+              pressed={pressed}
             >
-              {size === 'icon' ? '⚙' : label}
+              {isIconSize ? '⚙' : label}
             </Button>
           </div>
         </ComponentPreview>
@@ -183,16 +196,17 @@ export function ButtonDocPage() {
         <div id="sizes" className="my-6">
           <h3 className="text-base font-semibold mb-2">Sizes</h3>
           <p className="text-xs text-muted-foreground mb-3">
-            Available in four standardized sizes: <code className="font-mono">sm</code> (32px), <code className="font-mono">default</code> (36px), <code className="font-mono">lg</code> (40px), and <code className="font-mono">icon</code> (36×36px).
+            Available in standardized sizes: <code className="font-mono">xs</code>, <code className="font-mono">sm</code>, <code className="font-mono">default</code>, <code className="font-mono">lg</code>, and icon variants.
           </p>
           <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-3">
-            <Button size="sm">Small (32px)</Button>
-            <Button size="default">Default (36px)</Button>
-            <Button size="lg">Large (40px)</Button>
+            <Button size="xs">Extra Small</Button>
+            <Button size="sm">Small</Button>
+            <Button size="default">Default</Button>
+            <Button size="lg">Large</Button>
             <Button size="icon" aria-label="Settings">⚙</Button>
           </div>
           <CodeBlock
-            code={`<Button size="sm">Small</Button>\n<Button size="default">Default</Button>\n<Button size="lg">Large</Button>\n<Button size="icon" aria-label="Settings">⚙</Button>`}
+            code={`<Button size="xs">Extra Small</Button>\n<Button size="sm">Small</Button>\n<Button size="default">Default</Button>\n<Button size="lg">Large</Button>\n<Button size="icon" aria-label="Settings">⚙</Button>`}
             language="tsx"
             className="mt-3"
           />
@@ -202,14 +216,37 @@ export function ButtonDocPage() {
         <div id="states" className="my-6">
           <h3 className="text-base font-semibold mb-2">States & Loading</h3>
           <p className="text-xs text-muted-foreground mb-3">
-            Buttons handle loading and disabled states automatically, preserving width and blocking pointer events.
+            Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events.
           </p>
           <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-3">
-            <Button loading>Saving Changes</Button>
+            <Button loading loadingText="Saving...">Saving Changes</Button>
+            <Button pressed>Active Toggle</Button>
             <Button disabled>Disabled Button</Button>
           </div>
           <CodeBlock
-            code={`<Button loading>Saving Changes</Button>\n<Button disabled>Disabled Button</Button>`}
+            code={`<Button loading loadingText="Saving...">Saving Changes</Button>\n<Button pressed>Active Toggle</Button>\n<Button disabled>Disabled Button</Button>`}
+            language="tsx"
+            className="mt-3"
+          />
+        </div>
+
+        {/* Button Group & Icons */}
+        <div id="button-group" className="my-6">
+          <h3 className="text-base font-semibold mb-2">Button Group & Icons</h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            Group related buttons cohesively with <code className="font-mono text-primary">ButtonGroup</code>, and enrich buttons with leading or trailing icons.
+          </p>
+          <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-4">
+            <Button leftIcon={<span>←</span>}>Back</Button>
+            <Button rightIcon={<span>→</span>}>Next</Button>
+            <ButtonGroup>
+              <Button variant="outline">Left</Button>
+              <Button variant="outline">Middle</Button>
+              <Button variant="outline">Right</Button>
+            </ButtonGroup>
+          </div>
+          <CodeBlock
+            code={`<Button leftIcon={<span>←</span>}>Back</Button>\n<Button rightIcon={<span>→</span>}>Next</Button>\n\n<ButtonGroup>\n  <Button variant="outline">Left</Button>\n  <Button variant="outline">Middle</Button>\n  <Button variant="outline">Right</Button>\n</ButtonGroup>`}
             language="tsx"
             className="mt-3"
           />
@@ -241,15 +278,39 @@ export function ButtonDocPage() {
             },
             {
               name: 'size',
-              type: "'default' | 'sm' | 'lg' | 'icon'",
+              type: "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'",
               default: "'default'",
-              description: 'Height and padding dimensions.',
+              description: 'Standardized dimensions scale.',
             },
             {
               name: 'loading',
               type: 'boolean',
               default: 'false',
               description: 'Shows spinning indicator and disables user interaction.',
+            },
+            {
+              name: 'loadingText',
+              type: 'ReactNode',
+              default: 'undefined',
+              description: 'Optional content displayed while in loading state.',
+            },
+            {
+              name: 'pressed',
+              type: 'boolean',
+              default: 'false',
+              description: 'Toggle or selected state with active styling and aria-pressed.',
+            },
+            {
+              name: 'leftIcon',
+              type: 'ReactNode',
+              default: 'undefined',
+              description: 'Optional leading icon displayed before children.',
+            },
+            {
+              name: 'rightIcon',
+              type: 'ReactNode',
+              default: 'undefined',
+              description: 'Optional trailing icon displayed after children.',
             },
             {
               name: 'fullWidth',

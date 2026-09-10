@@ -12,8 +12,10 @@ describe('Button conformance (spec contract)', () => {
       fullWidth: false,
       disabled: false,
       type: 'button',
+      pressed: false,
     } as const;
     expect(() => buttonSchema.parse(fixture)).not.toThrow();
+    expect(() => buttonSchema.parse({ pressed: true })).not.toThrow();
 
     // Verify all shadcn variants and sizes
     const variants = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as const;

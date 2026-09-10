@@ -9,12 +9,15 @@ Item {
 
     // ---- API Contract (shadcn/ui aligned) ----
     property string variant: "default"   // default | destructive | outline | secondary | ghost | link
-    property string size: "default"      // default | sm | lg | icon
+    property string size: "default"      // default | sm | lg | icon | xs | icon-xs | icon-sm | icon-lg
     property bool loading: false
+    property string loadingText: ""
     property bool fullWidth: false
     property bool disabled: false
+    property bool pressed: false
     property string text: ""
     property string iconSource: ""
+    property string iconPosition: "left" // left | right
     property int customRadius: 8
 
     property bool forceHover: false
@@ -26,7 +29,7 @@ Item {
     readonly property bool effectiveHovered: (hovered || forceHover) && !effectiveDisabled
     readonly property bool effectiveDown: (down || forceActive) && !effectiveDisabled
 
-    // Height parity: xs/icon-xs: 24px (h-6), sm/icon-sm: 28px (h-7), default/icon: 32px (h-8), lg/icon-lg: 36px (h-9)
+    // Height parity: xs/icon-xs: 24, sm/icon-sm: 28, default/icon: 32, lg/icon-lg: 36
     function buttonHeight() {
         switch (size) {
         case "xs":
@@ -39,7 +42,7 @@ Item {
         }
     }
 
-    // Horizontal padding parity: xs: 8px (px-2), sm: 10px (px-2.5), default: 10px (px-2.5), lg: 12px (px-3), icon*: 0px
+    // Horizontal padding parity: xs: 8, sm: 10, default: 10, lg: 12, icon*: 0
     function paddingH() {
         if (size === "icon" || size === "icon-xs" || size === "icon-sm" || size === "icon-lg") return 0
         switch (size) {
@@ -50,8 +53,8 @@ Item {
         }
     }
 
-    // Font size parity: xs: 11px, sm: 12px (text-xs), default/md/icon: 14px (text-sm), lg: 14px (text-sm)
-    function fontSizePx() {
+    // Font size parity: xs: 11, sm: 12, default/md/icon: 14, lg: 14
+    function fontSize() {
         switch (size) {
         case "xs": return 11
         case "sm": return 12
@@ -74,32 +77,32 @@ Item {
     function bgColor() {
         if (variant === "ghost" || variant === "link") {
             if (variant === "link") return "transparent"
-            if (effectiveDown) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
+            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
             if (effectiveHovered) return cAccentBg
             return "transparent"
         }
 
         if (variant === "outline") {
-            if (effectiveDown) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
+            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
             if (effectiveHovered) return cAccentBg
             return cBackground
         }
 
         if (variant === "secondary") {
-            if (effectiveDown) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(245.0 / 255.0, 248.0 / 255.0, 251.0 / 255.0, 1.0)
+            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(245.0 / 255.0, 248.0 / 255.0, 251.0 / 255.0, 1.0)
             if (effectiveHovered) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
             return cSecondaryBg
         }
 
         if (variant === "destructive") {
-            if (effectiveDown) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.25)
+            if (effectiveDown || (pressed && !effectiveDisabled)) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.25)
             if (effectiveHovered) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.2)
-            return ThemeTokens.dark ? Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.2) : Qt.rgba(252.0 / 255.0, 218.0 / 255.0, 218.0 / 255.0, 1.0)
+            return ThemeTokens.dark ? Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.2) : Qt.rgba(253.0 / 255.0, 236.0 / 255.0, 236.0 / 255.0, 1.0)
         }
 
         // default / primary
         const base = cPrimary
-        if (effectiveDown) return Qt.rgba(74.0 / 255.0, 149.0 / 255.0, 230.0 / 255.0, 1.0)
+        if (effectiveDown || (pressed && !effectiveDisabled)) return Qt.rgba(74.0 / 255.0, 149.0 / 255.0, 230.0 / 255.0, 1.0)
         if (effectiveHovered) return Qt.rgba(51.0 / 255.0, 135.0 / 255.0, 227.0 / 255.0, 1.0)
         return base
     }
@@ -107,9 +110,9 @@ Item {
     function fgColor() {
         switch (variant) {
         case "destructive": return cDestructive
-        case "outline":     return effectiveHovered ? cAccentFg : cFg
+        case "outline":     return (effectiveHovered || (pressed && !effectiveDisabled)) ? cAccentFg : cFg
         case "secondary":   return cSecondaryFg
-        case "ghost":       return effectiveHovered ? cAccentFg : cFg
+        case "ghost":       return (effectiveHovered || (pressed && !effectiveDisabled)) ? cAccentFg : cFg
         case "link":        return cPrimary
         case "default":
         case "primary":
@@ -128,7 +131,7 @@ Item {
     implicitHeight: buttonHeight()
     implicitWidth: isIconButton()
         ? buttonHeight()
-        : ((text !== "" || iconSource !== "" ? contentRow.implicitWidth : fontSizePx()) + paddingH() * 2)
+        : ((text !== "" || iconSource !== "" ? contentRow.implicitWidth : fontSize()) + paddingH() * 2)
     height: buttonHeight()
     width: fullWidth && parent ? parent.width : implicitWidth
 
@@ -148,7 +151,7 @@ Item {
         color: root.hasBorder() || root.variant === "default" || root.variant === "primary" || root.variant === "secondary" || root.variant === "destructive"
                ? Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.25 : 0.06)
                : "transparent"
-        visible: !root.effectiveDown && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link" && root.variant !== "destructive")
+        visible: !root.effectiveDown && !root.pressed && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link" && root.variant !== "destructive")
     }
 
     // Background surface
@@ -164,7 +167,7 @@ Item {
         opacity: root.effectiveDisabled ? 0.5 : 1.0
     }
 
-    // Focus ring (2px offset ring matching focus-visible:ring-2 focus-visible:ring-ring)
+    // Focus ring (offset ring matching focus-visible:ring-2 focus-visible:ring-ring)
     Rectangle {
         anchors.fill: root
         anchors.margins: -2
@@ -215,11 +218,11 @@ Item {
             }
         }
 
-        // Optional Icon
+        // Optional Left Icon
         Image {
-            id: btnIcon
-            visible: !root.loading && root.iconSource !== ""
-            width: visible ? (root.size === "sm" ? 14 : 16) : 0
+            id: btnIconLeft
+            visible: !root.loading && root.iconSource !== "" && root.iconPosition === "left"
+            width: visible ? (root.size === "sm" || root.size === "xs" ? 14 : 16) : 0
             height: width
             anchors.verticalCenter: parent.verticalCenter
             source: root.iconSource
@@ -231,18 +234,31 @@ Item {
         // Label
         Text {
             id: label
-            visible: root.text !== ""
+            visible: root.text !== "" || (root.loading && root.loadingText !== "")
             anchors.verticalCenter: parent.verticalCenter
-            text: root.text
+            text: root.loading && root.loadingText !== "" ? root.loadingText : root.text
             color: root.fgColor()
-            font.pixelSize: root.fontSizePx()
+            font.pixelSize: root.fontSize()
             font.weight: Font.Medium
             font.family: "Segoe UI"
             renderType: Text.NativeRendering
             font.underline: root.variant === "link" && root.effectiveHovered
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            opacity: root.loading ? 0.7 : 1.0
+            opacity: root.loading && root.loadingText === "" ? 0.7 : 1.0
+        }
+
+        // Optional Right Icon
+        Image {
+            id: btnIconRight
+            visible: !root.loading && root.iconSource !== "" && root.iconPosition === "right"
+            width: visible ? (root.size === "sm" || root.size === "xs" ? 14 : 16) : 0
+            height: width
+            anchors.verticalCenter: parent.verticalCenter
+            source: root.iconSource
+            sourceSize.width: width
+            sourceSize.height: height
+            fillMode: Image.PreserveAspectFit
         }
     }
 

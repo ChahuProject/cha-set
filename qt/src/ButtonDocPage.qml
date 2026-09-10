@@ -25,6 +25,7 @@ DocLayout {
     property bool btnLoading: false
     property bool btnDisabled: false
     property bool btnFullWidth: false
+    property bool btnPressed: false
     property int customRadius: 8
     property color cFg: ThemeTokens.text
     property color cMutedFg: ThemeTokens.subduedText
@@ -33,6 +34,8 @@ DocLayout {
     property color cPrimary: ThemeTokens.accent
     property color cAccentBg: ThemeTokens.hover
 
+    readonly property bool isIconSize: btnSize === "icon" || btnSize === "icon-xs" || btnSize === "icon-sm" || btnSize === "icon-lg"
+
     signal logAction(string msg)
 
     // 1. Interactive Preview Hero
@@ -40,17 +43,18 @@ DocLayout {
         title: "Interactive Button Sandbox"
         reactCode: `<Button
   variant="${root.btnVariant}"
-  size="${root.btnSize}"${root.btnLoading ? '\n  loading' : ''}${root.btnDisabled ? '\n  disabled' : ''}${root.btnFullWidth ? '\n  fullWidth' : ''}
+  size="${root.btnSize}"${root.btnLoading ? '\n  loading' : ''}${root.btnDisabled ? '\n  disabled' : ''}${root.btnFullWidth ? '\n  fullWidth' : ''}${root.btnPressed ? '\n  pressed' : ''}
 >
-  ${root.btnSize === 'icon' ? '⚙' : root.btnLabel}
+  ${root.isIconSize ? '⚙' : root.btnLabel}
 </Button>`
         qtCode: `ChaSetButton {
     variant: "${root.btnVariant}"
     size: "${root.btnSize}"
-    text: "${root.btnSize === 'icon' ? '' : root.btnLabel}"
+    text: "${root.isIconSize ? '' : root.btnLabel}"
     loading: ${root.btnLoading}
     disabled: ${root.btnDisabled}
     fullWidth: ${root.btnFullWidth}
+    pressed: ${root.btnPressed}
     onClicked: console.log("clicked")
 }`
 
@@ -63,9 +67,10 @@ DocLayout {
                 anchors.centerIn: parent
                 variant: root.btnVariant
                 size: root.btnSize
-                text: root.btnSize === "icon" ? "" : root.btnLabel
+                text: root.isIconSize ? "" : root.btnLabel
                 loading: root.btnLoading
                 disabled: root.btnDisabled
+                pressed: root.btnPressed
                 width: root.btnFullWidth ? Math.min(parent.width - 48, 360) : implicitWidth
             }
         }
@@ -90,7 +95,7 @@ DocLayout {
                 spacing: 6
                 Text { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Repeater {
-                    model: ["sm", "default", "lg", "icon"]
+                    model: ["xs", "sm", "default", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"]
                     delegate: ChaSetButton {
                         required property var modelData
                         size: "sm"
@@ -120,9 +125,15 @@ DocLayout {
                     checked: root.btnFullWidth
                     onToggled: (val) => root.btnFullWidth = val
                 }
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Pressed"
+                    checked: root.btnPressed
+                    onToggled: (val) => root.btnPressed = val
+                }
             },
             Row {
-                visible: root.btnSize !== "icon"
+                visible: !root.isIconSize
                 spacing: 6
                 Text { text: "Label:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetInput {
@@ -193,7 +204,7 @@ DocLayout {
             width: parent.width
             spacing: 8
             Text { text: "Sizes"; color: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.DemiBold }
-            Text { text: "Available in four standardized sizes: sm (32px), default (36px), lg (40px), and icon (36×36px)."; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+            Text { text: "Available in standardized sizes: xs, sm, default, lg, and icon variants."; color: ThemeTokens.subduedText; font.pixelSize: 12 }
             Rectangle {
                 width: parent.width
                 height: 72
@@ -203,16 +214,17 @@ DocLayout {
                 Row {
                     anchors.centerIn: parent
                     spacing: 10
-                    ChaSetButton { size: "sm"; text: "Small (32px)" }
-                    ChaSetButton { size: "default"; text: "Default (36px)" }
-                    ChaSetButton { size: "lg"; text: "Large (40px)" }
+                    ChaSetButton { size: "xs"; text: "Extra Small" }
+                    ChaSetButton { size: "sm"; text: "Small" }
+                    ChaSetButton { size: "default"; text: "Default" }
+                    ChaSetButton { size: "lg"; text: "Large" }
                     ChaSetButton { size: "icon"; text: "⚙" }
                 }
             }
             CodeBlock {
                 width: parent.width
                 language: "qml"
-                code: "ChaSetButton { size: \"sm\"; text: \"Small\" }\nChaSetButton { size: \"default\"; text: \"Default\" }\nChaSetButton { size: \"lg\"; text: \"Large\" }\nChaSetButton { size: \"icon\"; text: \"⚙\" }"
+                code: "ChaSetButton { size: \"xs\"; text: \"Extra Small\" }\nChaSetButton { size: \"sm\"; text: \"Small\" }\nChaSetButton { size: \"default\"; text: \"Default\" }\nChaSetButton { size: \"lg\"; text: \"Large\" }\nChaSetButton { size: \"icon\"; text: \"⚙\" }"
             }
         }
 
@@ -221,7 +233,7 @@ DocLayout {
             width: parent.width
             spacing: 8
             Text { text: "States & Loading"; color: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.DemiBold }
-            Text { text: "Buttons handle loading and disabled states automatically, preserving width and blocking pointer events."; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+            Text { text: "Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events."; color: ThemeTokens.subduedText; font.pixelSize: 12 }
             Rectangle {
                 width: parent.width
                 height: 72
@@ -231,20 +243,20 @@ DocLayout {
                 Row {
                     anchors.centerIn: parent
                     spacing: 10
-                    ChaSetButton { text: "Saving Changes"; loading: true }
+                    ChaSetButton { text: "Saving Changes"; loading: true; loadingText: "Saving..." }
+                    ChaSetButton { text: "Active Toggle"; pressed: true }
                     ChaSetButton { text: "Disabled Button"; disabled: true }
                 }
             }
             CodeBlock {
                 width: parent.width
                 language: "qml"
-                code: "ChaSetButton { text: \"Saving Changes\"; loading: true }\nChaSetButton { text: \"Disabled Button\"; disabled: true }"
+                code: "ChaSetButton { text: \"Saving Changes\"; loading: true; loadingText: \"Saving...\" }\nChaSetButton { text: \"Active Toggle\"; pressed: true }\nChaSetButton { text: \"Disabled Button\"; disabled: true }"
             }
         }
     }
 
     // 4. API Reference
-    
     KeyboardShortcutsTable {
         componentId: "button"
     }
@@ -254,11 +266,14 @@ DocLayout {
         title: "API Reference"
         propsModel: [
             ["variant", "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", "'default'", "Visual appearance and semantic intent."],
-            ["size", "'default' | 'sm' | 'lg' | 'icon'", "'default'", "Height and padding dimensions."],
+            ["size", "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'", "'default'", "Standardized dimensions scale."],
             ["loading", "bool", "false", "Shows spinning indicator and disables user interaction."],
+            ["loadingText", "string", "\"\"", "Optional label displayed while in loading state."],
+            ["pressed", "bool", "false", "Toggle or selected state with active styling."],
             ["fullWidth", "bool", "false", "Stretches the button to 100% of the parent container width."],
             ["disabled", "bool", "false", "Blocks clicks and applies muted disabled styling."],
             ["iconSource", "string", "\"\"", "Optional icon image source URL."],
+            ["iconPosition", "string", "\"left\"", "Placement of iconSource: left or right."],
             ["text", "string", "\"\"", "Button label text content."]
         ]
     }

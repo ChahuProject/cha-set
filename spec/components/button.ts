@@ -32,6 +32,7 @@ export const buttonSchema = z.object({
   fullWidth: z.boolean().default(false),
   disabled: z.boolean().default(false),
   type: z.enum(['button', 'submit', 'reset']).default('button'),
+  pressed: z.boolean().default(false),
 });
 
 export type ButtonApi = z.infer<typeof buttonSchema>;

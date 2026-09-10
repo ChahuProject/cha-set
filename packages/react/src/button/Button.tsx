@@ -28,7 +28,7 @@ export type ButtonSize =
  * win at runtime, cha-set only ships defaults.
  */
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg text-sm font-medium transition-[color,box-shadow,background-color,transform] select-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:not-aria-[haspopup]:translate-y-px [&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg text-sm font-medium transition-[color,box-shadow,background-color,transform] select-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:not-aria-[haspopup]:translate-y-0.5 [&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -68,8 +68,16 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   /** Show a loading state and block clicks. @default false */
   loading?: boolean;
+  /** Optional content/label to display while loading. */
+  loadingText?: React.ReactNode;
   /** Stretch to fill the parent width. @default false */
   fullWidth?: boolean;
+  /** Toggle or selected state (renders aria-pressed and active styles). @default false */
+  pressed?: boolean;
+  /** Optional icon rendered before label/children. */
+  leftIcon?: React.ReactNode;
+  /** Optional icon rendered after label/children. */
+  rightIcon?: React.ReactNode;
   /**
    * shadcn-compatible prop: when true, merges props onto the immediate child element.
    * In Base UI, this maps directly to the `render` prop.
@@ -104,7 +112,11 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
     variant,
     size,
     loading = false,
+    loadingText,
     fullWidth = false,
+    pressed = false,
+    leftIcon,
+    rightIcon,
     asChild = false,
     forceHover = false,
     forceActive = false,
@@ -119,8 +131,9 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 ) {
   const currentVariant = variant ?? 'default';
   const currentSize = size ?? 'default';
+  const isPressed = pressed || forceActive;
   const forceClass =
-    forceActive
+    isPressed
       ? (forceActiveClasses[currentVariant] ?? '')
       : forceHover
       ? (forceHoverClasses[currentVariant] ?? '')
@@ -142,6 +155,8 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
       className={classes}
       disabled={isDisabled}
       aria-busy={loading || undefined}
+      aria-pressed={pressed ? true : undefined}
+      data-pressed={pressed ? 'true' : undefined}
       render={effectiveRender}
       data-slot="button"
       data-variant={currentVariant}
@@ -153,12 +168,20 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
       ) : (
         <>
           {loading ? (
-            <span
-              className="cs-button__spinner size-4 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent"
-              aria-hidden="true"
-            />
-          ) : null}
-          {children}
+            <>
+              <span
+                className="cs-button__spinner size-4 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent"
+                aria-hidden="true"
+              />
+              {loadingText !== undefined ? loadingText : children}
+            </>
+          ) : (
+            <>
+              {leftIcon}
+              {children}
+              {rightIcon}
+            </>
+          )}
         </>
       )}
     </BaseButton>

@@ -9,7 +9,8 @@
       "clickAction": { "requirement": "must", "description": "clicking triggers action handler" },
       "loading": { "requirement": "should", "description": "loading shows spinner and blocks clicks" },
       "fullWidth": { "requirement": "should", "description": "fullWidth stretches to container" },
-      "a11y": { "requirement": "should", "description": "accessible label support" }
+      "a11y": { "requirement": "should", "description": "accessible label support" },
+      "pressed": { "requirement": "should", "description": "pressed/toggle state with aria-pressed support" }
     },
     "scrollbar": {
       "orientation": { "requirement": "must", "description": "orientation switches between vertical and horizontal" },

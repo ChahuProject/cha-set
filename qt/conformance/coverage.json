@@ -7,7 +7,8 @@
     "clickAction": true,
     "loading": true,
     "fullWidth": true,
-    "a11y": true
+    "a11y": true,
+    "pressed": true
   },
   "scrollbar": {
     "orientation": true,

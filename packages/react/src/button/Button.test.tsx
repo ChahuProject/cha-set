@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { Button } from './Button';
+import { ButtonGroup } from './ButtonGroup';
 
 /**
  * Earned capability coverage: flags flip to true only inside tests that
@@ -20,6 +21,7 @@ const covered: Record<string, boolean> = {
   keyboard: false,
   clickAction: false,
   a11y: false,
+  pressed: false,
 };
 
 afterAll(() => {
@@ -191,6 +193,60 @@ describe('Button', () => {
     expect(element.tagName.toLowerCase()).toBe('a');
     expect(element).toHaveAttribute('href', '/test');
     expect(element).toHaveClass('bg-primary');
+  });
+
+  it('supports pressed/toggle state with aria-pressed', () => {
+    const { rerender } = render(<Button pressed>Toggle Me</Button>);
+    const button = screen.getByRole('button', { name: 'Toggle Me' });
+    expect(button).toHaveAttribute('aria-pressed', 'true');
+    expect(button).toHaveAttribute('data-pressed', 'true');
+    expect(button).toHaveClass('bg-primary/80');
+
+    rerender(<Button pressed={false}>Toggle Me</Button>);
+    expect(button).not.toHaveAttribute('aria-pressed');
+    expect(button).not.toHaveAttribute('data-pressed');
+    covered.pressed = true;
+  });
+
+  it('supports custom loadingText replacing children during loading state', () => {
+    const { rerender } = render(
+      <Button loading loadingText="Submitting...">
+        Save
+      </Button>,
+    );
+    expect(screen.getByText('Submitting...')).toBeInTheDocument();
+    expect(screen.queryByText('Save')).toBeNull();
+
+    rerender(<Button loading={false} loadingText="Submitting...">Save</Button>);
+    expect(screen.getByText('Save')).toBeInTheDocument();
+    expect(screen.queryByText('Submitting...')).toBeNull();
+  });
+
+  it('supports leftIcon and rightIcon slots', () => {
+    render(
+      <Button
+        leftIcon={<span data-testid="left-icon">←</span>}
+        rightIcon={<span data-testid="right-icon">→</span>}
+      >
+        Directions
+      </Button>,
+    );
+    expect(screen.getByTestId('left-icon')).toBeInTheDocument();
+    expect(screen.getByTestId('right-icon')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Directions/ })).toBeInTheDocument();
+  });
+
+  it('renders ButtonGroup with cohesive attached styling', () => {
+    render(
+      <ButtonGroup data-testid="group">
+        <Button>First</Button>
+        <Button>Middle</Button>
+        <Button>Last</Button>
+      </ButtonGroup>,
+    );
+    const group = screen.getByTestId('group');
+    expect(group).toHaveAttribute('role', 'group');
+    expect(group).toHaveClass('inline-flex', 'flex-row');
   });
 
   it('supports shadcn asChild prop for polymorphism', () => {

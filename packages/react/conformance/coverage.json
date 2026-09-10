@@ -7,7 +7,8 @@
     "fullWidth": true,
     "keyboard": true,
     "clickAction": true,
-    "a11y": true
+    "a11y": true,
+    "pressed": true
   },
   "scrollbar": {
     "orientation": true,
