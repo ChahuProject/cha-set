@@ -43,4 +43,90 @@ describe('Input component', () => {
     expect(input.className).toContain('custom-input-class');
     expect(ref.current).toBe(input);
   });
+
+  it('supports invalid error state', () => {
+    render(<Input invalid data-testid="invalid-input" />);
+    const input = screen.getByTestId('invalid-input');
+    expect(input).toHaveAttribute('aria-invalid', 'true');
+    expect(input.className).toContain('border-destructive');
+  });
+
+  it('supports clearable functionality and onClear callback', () => {
+    const handleClear = vi.fn();
+    const handleChange = vi.fn();
+    render(
+      <Input
+        clearable
+        defaultValue="hello world"
+        onClear={handleClear}
+        onChange={handleChange}
+        data-testid="clearable-input"
+      />,
+    );
+
+    const input = screen.getByTestId('clearable-input') as HTMLInputElement;
+    expect(input.value).toBe('hello world');
+
+    const clearBtn = screen.getByRole('button', { name: 'Clear input' });
+    expect(clearBtn).toBeInTheDocument();
+
+    fireEvent.click(clearBtn);
+    expect(handleClear).toHaveBeenCalledTimes(1);
+    expect(input.value).toBe('');
+  });
+
+  it('supports clearing on Escape key when clearable', () => {
+    const handleClear = vi.fn();
+    render(
+      <Input
+        clearable
+        defaultValue="test text"
+        onClear={handleClear}
+        data-testid="esc-input"
+      />,
+    );
+
+    const input = screen.getByTestId('esc-input') as HTMLInputElement;
+    expect(input.value).toBe('test text');
+
+    fireEvent.keyDown(input, { key: 'Escape' });
+    expect(handleClear).toHaveBeenCalledTimes(1);
+    expect(input.value).toBe('');
+  });
+
+  it('supports password visibility toggle', () => {
+    render(
+      <Input
+        type="password"
+        passwordToggle
+        defaultValue="secret123"
+        data-testid="pwd-input"
+      />,
+    );
+
+    const input = screen.getByTestId('pwd-input');
+    expect(input).toHaveAttribute('type', 'password');
+
+    const toggleBtn = screen.getByRole('button', { name: 'Show password' });
+    fireEvent.click(toggleBtn);
+    expect(input).toHaveAttribute('type', 'text');
+
+    const hideBtn = screen.getByRole('button', { name: 'Hide password' });
+    fireEvent.click(hideBtn);
+    expect(input).toHaveAttribute('type', 'password');
+  });
+
+  it('renders left and right icon slots', () => {
+    render(
+      <Input
+        leftIcon={<span data-testid="left-icon">🔍</span>}
+        rightIcon={<span data-testid="right-icon">✓</span>}
+        data-testid="icon-input"
+      />,
+    );
+
+    expect(screen.getByTestId('left-icon')).toBeInTheDocument();
+    expect(screen.getByTestId('right-icon')).toBeInTheDocument();
+  });
 });
+

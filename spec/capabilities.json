@@ -59,11 +59,14 @@
     },
     "input": {
       "textInput": { "requirement": "must", "description": "supports typing and updating value" },
-      "size": { "requirement": "must", "description": "supports default (36px) and sm (32px) heights" },
+      "size": { "requirement": "must", "description": "supports default and sm heights" },
       "disabled": { "requirement": "must", "description": "disabled state blocks typing and dims opacity" },
       "placeholder": { "requirement": "must", "description": "renders placeholder text when empty" },
       "focusRing": { "requirement": "must", "description": "displays focus ring and border highlight on active focus" },
-      "readOnly": { "requirement": "should", "description": "prevents editing while retaining focusable state" }
+      "readOnly": { "requirement": "should", "description": "prevents editing while retaining focusable state" },
+      "invalid": { "requirement": "should", "description": "indicates error state with destructive highlight" },
+      "clearable": { "requirement": "should", "description": "renders a clear button when input has text" },
+      "passwordToggle": { "requirement": "should", "description": "toggles password visibility for password inputs" }
     },
     "checkbox": {
       "checked": { "requirement": "must", "description": "checked state controls toggled representation" },

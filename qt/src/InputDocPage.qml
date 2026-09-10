@@ -28,7 +28,10 @@ DocLayout {
     property string demoSize: "default"
     property string demoType: "text"
     property bool demoDisabled: false
-    property string demoText: ""
+    property bool demoInvalid: false
+    property bool demoClearable: true
+    property bool demoPasswordToggle: true
+    property string demoText: "user@chahu.dev"
     property string demoPlaceholder: "Enter your email..."
 
     // Section 1: Overview
@@ -36,8 +39,8 @@ DocLayout {
         id: heroPreview
         width: parent.width
         title: "Input Sandbox"
-        reactCode: `<Input\n  type="${root.demoType}"\n  size="${root.demoSize}"\n  placeholder="${root.demoPlaceholder}"\n  value="${root.demoText}"\n  disabled={${root.demoDisabled}}\n  onChange={(e) => setValue(e.target.value)}\n/>`
-        qtCode: `ChaSetInput {\n    width: 280\n    size: "${root.demoSize}"\n    type: "${root.demoType}"\n    placeholderText: "${root.demoPlaceholder}"\n    text: "${root.demoText}"\n    disabled: ${root.demoDisabled}\n    onTextEdited: { /* handle text */ }\n}`
+        reactCode: `<Input\n  type="${root.demoType}"\n  size="${root.demoSize}"\n  placeholder="${root.demoPlaceholder}"\n  value="${root.demoText}"\n  disabled={${root.demoDisabled}}\n  invalid={${root.demoInvalid}}\n  clearable={${root.demoClearable}}\n  passwordToggle={${root.demoPasswordToggle}}\n  onChange={(e) => setValue(e.target.value)}\n/>`
+        qtCode: `ChaSetInput {\n    width: 280\n    size: "${root.demoSize}"\n    type: "${root.demoType}"\n    placeholderText: "${root.demoPlaceholder}"\n    text: "${root.demoText}"\n    disabled: ${root.demoDisabled}\n    invalid: ${root.demoInvalid}\n    clearable: ${root.demoClearable}\n    passwordToggle: ${root.demoPasswordToggle}\n    onTextEdited: { /* handle text */ }\n}`
 
         stageData: [
             Column {
@@ -63,12 +66,15 @@ DocLayout {
                     placeholderText: root.demoPlaceholder
                     text: root.demoText
                     disabled: root.demoDisabled
+                    invalid: root.demoInvalid
+                    clearable: root.demoClearable
+                    passwordToggle: root.demoPasswordToggle
                     onTextEdited: root.demoText = text
                 }
 
                 Text {
-                    text: "We will never share your email with anyone else."
-                    color: root.cMutedFg
+                    text: root.demoInvalid ? "Please enter a valid corporate email address." : "We will never share your email with anyone else."
+                    color: root.demoInvalid ? (ThemeTokens.dark ? Qt.rgba(248.0 / 255.0, 113.0 / 255.0, 113.0 / 255.0, 1.0) : Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)) : root.cMutedFg
                     font.pixelSize: 11
                 }
             }
@@ -86,8 +92,8 @@ DocLayout {
                         currentValue: root.demoSize
                         onCurrentValueChanged: root.demoSize = currentValue
                         ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default (36px)" }
-                            ChaSetTabsTrigger { value: "sm"; text: "Small (32px)" }
+                            ChaSetTabsTrigger { value: "default"; text: "Default" }
+                            ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
                         }
                     }
                 }
@@ -106,12 +112,38 @@ DocLayout {
                     }
                 }
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Disabled"
-                    checked: root.demoDisabled
-                    onToggled: (val) => root.demoDisabled = val
+                Row {
+                    spacing: 12
                     anchors.verticalCenter: parent.verticalCenter
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Disabled"
+                        checked: root.demoDisabled
+                        onToggled: (val) => root.demoDisabled = val
+                    }
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Invalid"
+                        checked: root.demoInvalid
+                        onToggled: (val) => root.demoInvalid = val
+                    }
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Clearable"
+                        checked: root.demoClearable
+                        onToggled: (val) => root.demoClearable = val
+                    }
+
+                    ChaSetCheckbox {
+                        visible: root.demoType === "password"
+                        size: "sm"
+                        label: "Password Toggle"
+                        checked: root.demoPasswordToggle
+                        onToggled: (val) => root.demoPasswordToggle = val
+                    }
                 }
             }
         ]
@@ -227,8 +259,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    ChaSetInput { width: parent.width; disabled: true; placeholderText: "Disabled input"; text: "preset value" }
+                    Text { text: "Invalid / Error State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    ChaSetInput { width: parent.width; invalid: true; text: "invalid-email@" }
                 }
             }
 
@@ -243,8 +275,40 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Password Field"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    ChaSetInput { width: parent.width; type: "password"; placeholderText: "Enter password..."; text: "supersecret" }
+                    Text { text: "Clearable Field"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    ChaSetInput { width: parent.width; clearable: true; text: "Click cross to clear" }
+                }
+            }
+
+            Rectangle {
+                width: (parent.width - 16) / 2
+                height: 100
+                radius: 8
+                color: root.cCard
+                border.color: root.cBorder
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 14
+                    spacing: 8
+                    Text { text: "Password with Toggle"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    ChaSetInput { width: parent.width; type: "password"; passwordToggle: true; text: "supersecret123" }
+                }
+            }
+
+            Rectangle {
+                width: (parent.width - 16) / 2
+                height: 100
+                radius: 8
+                color: root.cCard
+                border.color: root.cBorder
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 14
+                    spacing: 8
+                    Text { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    ChaSetInput { width: parent.width; disabled: true; placeholderText: "Disabled input"; text: "preset value" }
                 }
             }
         }
@@ -274,7 +338,7 @@ DocLayout {
                     propName: "size",
                     propType: "\"default\" | \"sm\"",
                     propDefault: "\"default\"",
-                    propDescription: "The height and padding scale of the input (default: 36px, sm: 32px)."
+                    propDescription: "The height and padding scale of the input."
                 },
                 {
                     propName: "type",
@@ -299,6 +363,36 @@ DocLayout {
                     propType: "bool",
                     propDefault: "false",
                     propDescription: "Prevents editing text while keeping focusability."
+                },
+                {
+                    propName: "invalid",
+                    propType: "bool",
+                    propDefault: "false",
+                    propDescription: "Applies destructive error highlight to border and focus ring."
+                },
+                {
+                    propName: "clearable",
+                    propType: "bool",
+                    propDefault: "false",
+                    propDescription: "Renders an interactive clear button when text is present."
+                },
+                {
+                    propName: "passwordToggle",
+                    propType: "bool",
+                    propDefault: "false",
+                    propDescription: "Renders an eye toggle button to reveal or mask passwords."
+                },
+                {
+                    propName: "leftIconSource",
+                    propType: "string",
+                    propDefault: "\"\"",
+                    propDescription: "Image source URI rendered on the leading side of the input."
+                },
+                {
+                    propName: "rightIconSource",
+                    propType: "string",
+                    propDefault: "\"\"",
+                    propDescription: "Image source URI rendered on the trailing side of the input."
                 },
                 {
                     propName: "forceHover",

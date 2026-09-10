@@ -18,7 +18,10 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 export function InputDocPage() {
   const [size, setSize] = useState<InputSize>('default');
   const [disabled, setDisabled] = useState(false);
-  const [value, setValue] = useState('');
+  const [invalid, setInvalid] = useState(false);
+  const [clearable, setClearable] = useState(true);
+  const [passwordToggle, setPasswordToggle] = useState(true);
+  const [value, setValue] = useState('user@chahu.dev');
   const [placeholder, setPlaceholder] = useState('Enter your email...');
   const [type, setType] = useState<'text' | 'password'>('text');
 
@@ -29,6 +32,9 @@ export function InputDocPage() {
     placeholder="${placeholder}"
     value="${value}"
     disabled={${disabled}}
+    invalid={${invalid}}
+    clearable={${clearable}}
+    passwordToggle={${passwordToggle}}
     onChange={(e) => setValue(e.target.value)}
   />
 </div>`;
@@ -40,6 +46,9 @@ export function InputDocPage() {
     placeholderText: "${placeholder}"
     text: "${value}"
     disabled: ${disabled}
+    invalid: ${invalid}
+    clearable: ${clearable}
+    passwordToggle: ${passwordToggle}
     onTextEdited: { /* handle text */ }
 }`;
 
@@ -63,7 +72,7 @@ export function InputDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Explore interactive input behaviors, sizes, states, and responsive token styling across Web and Qt Desktop.
+          Explore interactive input behaviors, sizes, states, clearable action, password toggle, and responsive token styling across Web and Qt Desktop.
         </p>
 
         <ComponentPreview
@@ -77,8 +86,8 @@ export function InputDocPage() {
                 <span className="text-muted-foreground text-xs">Size:</span>
                 <Tabs value={size} onValueChange={(v) => setSize(v as InputSize)}>
                   <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default (36px)</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (32px)</TabsTrigger>
+                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
+                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
@@ -94,13 +103,35 @@ export function InputDocPage() {
                 </Tabs>
               </div>
 
-              {/* Disabled Toggle */}
-              <Checkbox
-                size="sm"
-                checked={disabled}
-                onCheckedChange={(val) => setDisabled(val)}
-                label="Disabled"
-              />
+              {/* Toggles */}
+              <div className="flex items-center gap-4">
+                <Checkbox
+                  size="sm"
+                  checked={disabled}
+                  onCheckedChange={(val) => setDisabled(val)}
+                  label="Disabled"
+                />
+                <Checkbox
+                  size="sm"
+                  checked={invalid}
+                  onCheckedChange={(val) => setInvalid(val)}
+                  label="Invalid"
+                />
+                <Checkbox
+                  size="sm"
+                  checked={clearable}
+                  onCheckedChange={(val) => setClearable(val)}
+                  label="Clearable"
+                />
+                {type === 'password' && (
+                  <Checkbox
+                    size="sm"
+                    checked={passwordToggle}
+                    onCheckedChange={(val) => setPasswordToggle(val)}
+                    label="Password Toggle"
+                  />
+                )}
+              </div>
             </div>
           }
         >
@@ -115,10 +146,17 @@ export function InputDocPage() {
               placeholder={placeholder}
               value={value}
               disabled={disabled}
+              invalid={invalid}
+              clearable={clearable}
+              passwordToggle={passwordToggle}
               onChange={(e) => setValue(e.target.value)}
             />
             <p className="text-[11px] text-muted-foreground">
-              We will never share your email with anyone else.
+              {invalid ? (
+                <span className="text-destructive font-medium">Please enter a valid corporate email address.</span>
+              ) : (
+                'We will never share your email with anyone else.'
+              )}
             </p>
           </div>
         </ComponentPreview>
@@ -144,7 +182,7 @@ export function InputDocPage() {
           code={`import { Input } from '@chahu/cha-set';
 
 export function InputDemo() {
-  return <Input type="email" placeholder="Email" />;
+  return <Input type="email" placeholder="Email" clearable />;
 }`}
           language="tsx"
         />
@@ -167,26 +205,37 @@ export function InputDemo() {
 
           <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
             <span className="text-xs font-medium text-foreground">Small Size (sm)</span>
-            <span className="text-xs text-muted-foreground mb-2">Compact 32px height for tight toolbars</span>
+            <span className="text-xs text-muted-foreground mb-2">Compact height for tight toolbars</span>
             <Input size="sm" placeholder="Compact input..." />
           </div>
 
           <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
-            <span className="text-xs font-medium text-foreground">Disabled State</span>
-            <span className="text-xs text-muted-foreground mb-2">Non-interactive with 50% opacity</span>
-            <Input disabled placeholder="Disabled field" value="preset value" />
+            <span className="text-xs font-medium text-foreground">Invalid / Error State</span>
+            <span className="text-xs text-muted-foreground mb-2">Destructive highlight with error feedback</span>
+            <Input invalid defaultValue="invalid-email@" placeholder="user@example.com" />
           </div>
 
           <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
-            <span className="text-xs font-medium text-foreground">Password Field</span>
-            <span className="text-xs text-muted-foreground mb-2">Masked character input for secure data</span>
-            <Input type="password" placeholder="Enter password..." defaultValue="supersecret" />
+            <span className="text-xs font-medium text-foreground">Clearable Field</span>
+            <span className="text-xs text-muted-foreground mb-2">Clickable clear action or Escape key</span>
+            <Input clearable defaultValue="Click cross to clear" />
+          </div>
+
+          <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
+            <span className="text-xs font-medium text-foreground">Password with Toggle</span>
+            <span className="text-xs text-muted-foreground mb-2">Interactive visibility eye button</span>
+            <Input type="password" passwordToggle defaultValue="supersecret123" />
+          </div>
+
+          <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
+            <span className="text-xs font-medium text-foreground">Disabled State</span>
+            <span className="text-xs text-muted-foreground mb-2">Non-interactive with dimmed opacity</span>
+            <Input disabled placeholder="Disabled field" value="preset value" />
           </div>
         </div>
       </section>
 
-      {/* 5. Props Reference */}
-      
+      {/* 5. Keyboard Navigation */}
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -197,6 +246,7 @@ export function InputDemo() {
         <KeyboardShortcutsTable componentId="input" />
       </section>
 
+      {/* 6. Props Reference */}
       <section id="props" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Props Reference
@@ -207,7 +257,7 @@ export function InputDemo() {
               name: 'size',
               type: "'default' | 'sm'",
               default: "'default'",
-              description: 'The height and padding scale of the input (default: 36px, sm: 32px).',
+              description: 'The height and padding scale of the input.',
             },
             {
               name: 'type',
@@ -232,6 +282,42 @@ export function InputDemo() {
               type: 'boolean',
               default: 'false',
               description: 'Prevents editing value while keeping focusability.',
+            },
+            {
+              name: 'invalid',
+              type: 'boolean',
+              default: 'false',
+              description: 'Applies destructive error styling and aria-invalid attribute.',
+            },
+            {
+              name: 'clearable',
+              type: 'boolean',
+              default: 'false',
+              description: 'Renders a clear button when text is present to wipe content.',
+            },
+            {
+              name: 'passwordToggle',
+              type: 'boolean',
+              default: 'false',
+              description: 'Renders an eye toggle button to reveal or mask passwords.',
+            },
+            {
+              name: 'leftIcon',
+              type: 'ReactNode',
+              default: 'undefined',
+              description: 'Icon element rendered on the leading side of the input.',
+            },
+            {
+              name: 'rightIcon',
+              type: 'ReactNode',
+              default: 'undefined',
+              description: 'Icon element rendered on the trailing side of the input.',
+            },
+            {
+              name: 'onClear',
+              type: '() => void',
+              default: 'undefined',
+              description: 'Callback fired when the clear button is clicked.',
             },
             {
               name: 'forceHover',
