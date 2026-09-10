@@ -68,7 +68,7 @@ T.ScrollBar {
     // ---- Overflow & Visibility ----
     readonly property bool hasOverflow: _scrollTarget
         ? (isVertical ? (_scrollTarget.contentHeight > _scrollTarget.height) : (_scrollTarget.contentWidth > _scrollTarget.width))
-        : (size > 0 && size < 0.9999)
+        : (size > 0 && size < 0.99)
 
     policy: ScrollBar.AsNeeded
     readonly property bool _needed: policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && hasOverflow)
