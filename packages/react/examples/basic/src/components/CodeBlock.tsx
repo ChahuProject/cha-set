@@ -13,7 +13,7 @@ export function CodeBlock({ code, language = 'tsx', className = '' }: CodeBlockP
       <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/60 bg-muted/60 text-muted-foreground text-[0.6875rem]">
         <span className="font-semibold uppercase tracking-wider">{language}</span>
         <CopyButton
-          text={code}
+          text={code || ''}
           label="Copy"
           variant="ghost"
           size="sm"
@@ -29,7 +29,7 @@ export function CodeBlock({ code, language = 'tsx', className = '' }: CodeBlockP
         viewportClassName="p-4"
       >
         <pre className="m-0 leading-relaxed text-foreground/90 font-mono whitespace-pre selection:bg-primary/20">
-          <code>{code.trim()}</code>
+          <code>{(code || '').trim()}</code>
         </pre>
       </ScrollArea>
     </div>

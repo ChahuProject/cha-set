@@ -47,6 +47,8 @@ import { SmoothWheelHandlerDocPage } from '../../examples/basic/src/pages/compon
 import { SettingRowDocPage } from '../../examples/basic/src/pages/components/SettingRowDocPage';
 import { ElidedTextDocPage } from '../../examples/basic/src/pages/components/ElidedTextDocPage';
 import { SplitterHandleDocPage } from '../../examples/basic/src/pages/components/SplitterHandleDocPage';
+import { SidebarDocPage } from '../../examples/basic/src/pages/components/SidebarDocPage';
+import { ViewportConstrainedContainerDocPage } from '../../examples/basic/src/pages/components/ViewportConstrainedContainerDocPage';
 
 const pages = [
   { name: 'AlertDialogDocPage', Component: AlertDialogDocPage },
@@ -94,6 +96,8 @@ const pages = [
   { name: 'SettingRowDocPage', Component: SettingRowDocPage },
   { name: 'ElidedTextDocPage', Component: ElidedTextDocPage },
   { name: 'SplitterHandleDocPage', Component: SplitterHandleDocPage },
+  { name: 'SidebarDocPage', Component: SidebarDocPage },
+  { name: 'ViewportConstrainedContainerDocPage', Component: ViewportConstrainedContainerDocPage },
 ];
 
 describe('Showcase Living Documentation Pages (Smoke & Click Integrity)', () => {

@@ -143,7 +143,7 @@ if (existsSync(showcaseTestFile)) {
       stdio: 'pipe',
       encoding: 'utf8',
     });
-    console.log('[gate] OK — React showcase living documentation pages smoke & click integrity passed (36 pages verified)');
+    console.log('[gate] OK — React showcase living documentation pages smoke & click integrity passed (all showcase pages verified)');
   } catch (err) {
     console.error('[gate] FAIL: React showcase living documentation pages smoke & click integrity check failed');
     if (err.stdout) console.error(err.stdout);

@@ -63,7 +63,7 @@ export function SidebarDocPage() {
       description="Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing."
     >
       <h2 className="text-xl font-semibold mt-8 mb-4">Interactive Preview</h2>
-      <ComponentPreview code={basicUsageCode}>
+      <ComponentPreview reactCode={basicUsageCode}>
         <div className="h-[360px] w-full border rounded-lg overflow-hidden flex bg-background">
           <SidebarProvider defaultOpen={true}>
             <Sidebar collapsible={collapsibleMode} className="border-r">
