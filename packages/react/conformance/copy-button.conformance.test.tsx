@@ -24,5 +24,6 @@ describe('CopyButton conformance (spec contract)', () => {
     };
     expect(coverage.copyButton?.copyText).toBe(true);
     expect(coverage.copyButton?.feedbackState).toBe(true);
+    expect(coverage.copyButton?.label).toBe(true);
   });
 });

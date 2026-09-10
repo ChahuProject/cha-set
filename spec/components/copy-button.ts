@@ -10,6 +10,8 @@ export const copyButtonSchema = z.object({
   size: z.string().default('icon-xs'),
   title: z.string().default('Copy'),
   copiedTitle: z.string().default('Copied'),
+  label: z.string().optional(),
+  copiedLabel: z.string().optional(),
   iconClassName: z.string().default('size-3.5'),
 });
 

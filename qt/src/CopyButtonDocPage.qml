@@ -19,11 +19,8 @@ DocLayout {
 
     ComponentPreview {
         title: "Copy Button Preview"
-        reactCode: `<CopyButton textToCopy="pnpm install @chahu/cha-set" />`
-        qtCode: `ChaSetCopyButton {
-    textToCopy: "pnpm install @chahu/cha-set"
-    onCopiedToClipboard: function(txt) { console.log("Copied: " + txt) }
-}`
+        reactCode: `<div className="flex items-center gap-4">\n  <CopyButton text="pnpm add @chahu/cha-set" />\n  <CopyButton text="https://chahu.design" label="Copy Link" />\n</div>`
+        qtCode: `Row {\n    spacing: 12\n    ChaSetCopyButton {\n        text: "pnpm add @chahu/cha-set"\n        onCopiedToClipboard: function(txt) { console.log("Copied: " + txt) }\n    }\n    ChaSetCopyButton {\n        text: "https://chahu.design"\n        label: "Copy Link"\n    }\n}`
 
         Item {
             anchors.fill: parent
@@ -34,7 +31,7 @@ DocLayout {
 
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 8
+                    spacing: 12
 
                     Rectangle {
                         width: 240
@@ -56,8 +53,17 @@ DocLayout {
                     }
 
                     ChaSetCopyButton {
-                        textToCopy: "pnpm add @chahu/cha-set"
+                        text: "pnpm add @chahu/cha-set"
                         size: "icon-sm"
+                        onCopiedToClipboard: function(txt) {
+                            root.copyStatus = "Successfully copied: " + txt
+                        }
+                    }
+
+                    ChaSetCopyButton {
+                        text: "https://chahu.design"
+                        label: "Copy Link"
+                        variant: "outline"
                         onCopiedToClipboard: function(txt) {
                             root.copyStatus = "Successfully copied: " + txt
                         }
@@ -77,11 +83,10 @@ DocLayout {
 
     CodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetCopyButton { textToCopy: \"Hello\" }"
+        code: "import ChaSet 1.0\n\nChaSetCopyButton { text: \"Hello\"; label: \"Copy\" }"
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "copy-button"
     }
@@ -89,10 +94,12 @@ DocLayout {
     PropsTable {
         title: "Props Reference"
         props: [
-            { name: "textToCopy", type: "string", default: "''", description: "The string content sent to the clipboard when triggered." },
+            { name: "text", type: "string", default: "''", description: "The string content sent to the clipboard when clicked (alias: textToCopy)." },
+            { name: "label", type: "string", default: "''", description: "Optional companion label text displayed next to the copy icon." },
+            { name: "copiedLabel", type: "string", default: "'Copied!'", description: "Feedback label text displayed after successfully copying." },
             { name: "timeout", type: "int", default: "2000", description: "Duration in milliseconds that the success check icon persists." },
-            { name: "variant", type: "string", default: "'outline'", description: "Visual variant style of the underlying button." },
-            { name: "size", type: "string", default: "'icon-xs'", description: "Button sizing preset: 'icon-xs', 'icon-sm', 'icon', 'default'." }
+            { name: "variant", type: "string", default: "'outline'", description: "Visual variant style: 'outline' | 'ghost' | 'default' | 'secondary'." },
+            { name: "size", type: "string", default: "'icon-xs'", description: "Button sizing preset: 'icon-xs', 'icon-sm', 'sm', 'default'." }
         ]
     }
 }

@@ -198,7 +198,8 @@
     },
     "copyButton": {
       "copyText": { "requirement": "must", "description": "copies configured string or callback text to clipboard" },
-      "feedbackState": { "requirement": "must", "description": "temporarily displays copied state icon and tooltip" }
+      "feedbackState": { "requirement": "must", "description": "temporarily displays copied state icon and tooltip" },
+      "label": { "requirement": "should", "description": "supports companion text label alongside copy icon" }
     },
     "panelCard": {
       "container": { "requirement": "must", "description": "renders card container with rounded borders and background" },

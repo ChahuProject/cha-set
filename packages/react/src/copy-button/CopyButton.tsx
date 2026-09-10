@@ -12,6 +12,10 @@ export interface CopyButtonProps extends Omit<ButtonProps, 'children' | 'onClick
   title?: string;
   /** Hover title in copied state (default: "Copied") */
   copiedTitle?: string;
+  /** Optional companion text label alongside the icon */
+  label?: string;
+  /** Optional companion text label when copied (defaults to "Copied!") */
+  copiedLabel?: string;
   /** Class name for inner icons */
   iconClassName?: string;
   /** Optional callback fired when text is copied successfully */
@@ -26,9 +30,11 @@ export function CopyButton({
   text,
   timeout = 2000,
   variant = 'ghost',
-  size = 'icon-xs',
+  size,
   title = 'Copy',
   copiedTitle = 'Copied',
+  label,
+  copiedLabel = 'Copied!',
   iconClassName = 'size-3.5',
   className,
   onCopy,
@@ -38,6 +44,7 @@ export function CopyButton({
 }: CopyButtonProps) {
   const [copied, setCopied] = React.useState(false);
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const effectiveSize = size ?? (label ? 'sm' : 'icon-xs');
 
   React.useEffect(() => {
     return () => {
@@ -65,9 +72,9 @@ export function CopyButton({
     <Button
       type="button"
       variant={variant}
-      size={size}
+      size={effectiveSize}
       title={copied ? copiedTitle : title}
-      aria-label={copied ? copiedTitle : title}
+      aria-label={copied ? (label ? (copiedLabel ?? copiedTitle) : copiedTitle) : (label ?? title)}
       className={cn('transition-all duration-150', className)}
       onClick={handleCopy}
       {...props}
@@ -76,6 +83,15 @@ export function CopyButton({
         children(copied)
       ) : children ? (
         children
+      ) : label ? (
+        <span className="inline-flex items-center gap-1.5 pointer-events-none">
+          {copied ? (
+            <CheckIcon className={cn(iconClassName, 'text-emerald-500 animate-in fade-in zoom-in-75 duration-150')} />
+          ) : (
+            <CopyIcon className={cn(iconClassName, 'text-muted-foreground transition-colors group-hover:text-foreground')} />
+          )}
+          <span className="text-xs">{copied ? copiedLabel : label}</span>
+        </span>
       ) : copied ? (
         <CheckIcon className={cn(iconClassName, 'text-emerald-500 animate-in fade-in zoom-in-75 duration-150')} />
       ) : (

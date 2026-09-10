@@ -65,10 +65,13 @@ export function CopyButtonDocPage() {
         </h2>
         <PropsTable
           props={[
-            { name: 'text', type: 'string', default: "''", description: 'Text string written to clipboard on click.' },
-            { name: 'timeout', type: 'number', default: '2000', description: 'Duration in ms to show the copied checkmark state.' },
+            { name: 'text', type: 'string | (() => string | Promise<string>)', default: "''", description: 'Text string written to clipboard on click.' },
             { name: 'label', type: 'string', default: "''", description: 'Optional companion label alongside the icon.' },
-            { name: 'onCopy', type: '() => void', default: 'undefined', description: 'Callback fired when text is copied.' },
+            { name: 'copiedLabel', type: 'string', default: "'Copied!'", description: 'Label text displayed after successful copy.' },
+            { name: 'timeout', type: 'number', default: '2000', description: 'Duration in ms to show the copied checkmark state.' },
+            { name: 'variant', type: "'ghost' | 'outline' | 'default' | 'secondary'", default: "'ghost'", description: 'Button visual variant.' },
+            { name: 'size', type: "'icon-xs' | 'icon-sm' | 'sm' | 'default'", default: "label ? 'sm' : 'icon-xs'", description: 'Button sizing preset.' },
+            { name: 'onCopy', type: '(copiedText: string) => void', default: 'undefined', description: 'Callback fired when text is copied.' },
           ]}
         />
       </section>

@@ -174,7 +174,8 @@
   },
   "copyButton": {
     "copyText": true,
-    "feedbackState": true
+    "feedbackState": true,
+    "label": true
   },
   "panelCard": {
     "container": true,

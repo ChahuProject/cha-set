@@ -45,4 +45,16 @@ describe('CopyButton', () => {
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith('dynamic string');
     });
   });
+
+  it('renders companion label and transitions copiedLabel correctly', async () => {
+    render(<CopyButton text="npm install" label="Copy Command" copiedLabel="Copied Command!" timeout={500} />);
+    const btn = screen.getByRole('button', { name: 'Copy Command' });
+    expect(btn).toHaveTextContent('Copy Command');
+
+    fireEvent.click(btn);
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Copied Command!' })).toHaveTextContent('Copied Command!');
+    });
+  });
 });
