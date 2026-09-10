@@ -25,8 +25,10 @@ describe('Popover conformance (spec contract)', () => {
         align: 'start',
         side: 'bottom',
         sideOffset: 8,
+        alignOffset: 0,
         movable: false,
         moveLabel: 'Drag',
+        arrow: true,
       }),
     ).not.toThrow();
     expect(() => popoverCloseSchema.parse({})).not.toThrow();
@@ -45,5 +47,7 @@ describe('Popover conformance (spec contract)', () => {
     };
     expect(coverage.popover?.open).toBe(true);
     expect(coverage.popover?.positioning).toBe(true);
+    expect(coverage.popover?.movable).toBe(true);
+    expect(coverage.popover?.arrow).toBe(true);
   });
 });

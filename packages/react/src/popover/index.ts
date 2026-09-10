@@ -7,6 +7,7 @@ export {
   PopoverClose,
   PopoverTitle,
   PopoverDescription,
+  PopoverArrow,
   type PopoverProps,
   type PopoverTriggerProps,
   type PopoverAnchorProps,
@@ -14,4 +15,5 @@ export {
   type PopoverCloseProps,
   type PopoverTitleProps,
   type PopoverDescriptionProps,
+  type PopoverArrowProps,
 } from './Popover';

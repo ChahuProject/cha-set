@@ -95,4 +95,18 @@ describe('Popover', () => {
     await user.keyboard('{Escape}');
     expect(screen.queryByText('Popover Body')).toBeNull();
   });
+
+  it('renders directional arrow indicator when arrow is true', () => {
+    render(
+      <Popover open={true}>
+        <PopoverTrigger>Trigger</PopoverTrigger>
+        <PopoverContent arrow>
+          <p>Arrow Popover</p>
+        </PopoverContent>
+      </Popover>,
+    );
+
+    const arrow = document.querySelector('[data-slot="popover-arrow"]');
+    expect(arrow).toBeInTheDocument();
+  });
 });

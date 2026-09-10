@@ -162,7 +162,8 @@
     "popover": {
       "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
       "positioning": { "requirement": "must", "description": "positions popup relative to trigger or anchor" },
-      "movable": { "requirement": "should", "description": "supports dragging popover position via handle" }
+      "movable": { "requirement": "should", "description": "supports dragging popover position via handle" },
+      "arrow": { "requirement": "should", "description": "renders directional arrow pointer towards trigger or anchor" }
     },
     "contextMenu": {
       "trigger": { "requirement": "must", "description": "right-click opens context menu at cursor position" },

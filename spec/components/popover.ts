@@ -26,8 +26,10 @@ export const popoverContentSchema = z.object({
   align: popoverAlignSchema.default('start'),
   side: popoverSideSchema.default('bottom'),
   sideOffset: z.number().default(8),
+  alignOffset: z.number().default(0),
   movable: z.boolean().default(false),
   moveLabel: z.string().default('Drag to move'),
+  arrow: z.boolean().default(false),
 });
 
 export const popoverCloseSchema = z.object({});

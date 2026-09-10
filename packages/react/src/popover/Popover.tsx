@@ -53,6 +53,7 @@ export interface PopoverContentProps
   alignOffset?: number;
   movable?: boolean;
   moveLabel?: string;
+  arrow?: boolean;
 }
 
 export function PopoverContent({
@@ -63,6 +64,7 @@ export function PopoverContent({
   alignOffset = 0,
   movable = false,
   moveLabel = 'Drag to move',
+  arrow = false,
   children,
   style,
   ...props
@@ -109,7 +111,7 @@ export function PopoverContent({
           style={{
             ...style,
             translate: movable
-              ? `${moveOffset.x}px ${moveOffset.y}px`
+              ? `${(moveOffset.x * 0.0625).toFixed(4)}rem ${(moveOffset.y * 0.0625).toFixed(4)}rem`
               : style?.translate,
           }}
           className={cn(
@@ -120,6 +122,7 @@ export function PopoverContent({
           )}
           {...props}
         >
+          {arrow && <PopoverArrow />}
           {movable && (
             <button
               type="button"
@@ -160,6 +163,26 @@ export function PopoverContent({
         </PopoverPrimitive.Popup>
       </PopoverPrimitive.Positioner>
     </PopoverPrimitive.Portal>
+  );
+}
+
+export interface PopoverArrowProps
+  extends React.ComponentProps<typeof PopoverPrimitive.Arrow> {}
+
+export function PopoverArrow({ className, ...props }: PopoverArrowProps) {
+  return (
+    <PopoverPrimitive.Arrow
+      data-slot="popover-arrow"
+      className={cn(
+        'w-2.5 h-2.5 rotate-45 border border-border bg-popover pointer-events-none',
+        'data-[side=bottom]:-top-1.5 data-[side=bottom]:border-b-0 data-[side=bottom]:border-r-0',
+        'data-[side=top]:-bottom-1.5 data-[side=top]:border-t-0 data-[side=top]:border-l-0',
+        'data-[side=left]:-right-1.5 data-[side=left]:border-b-0 data-[side=left]:border-l-0',
+        'data-[side=right]:-left-1.5 data-[side=right]:border-t-0 data-[side=right]:border-r-0',
+        className,
+      )}
+      {...props}
+    />
   );
 }
 
@@ -206,4 +229,5 @@ export const Popover = Object.assign(PopoverRoot, {
   Close: PopoverClose,
   Title: PopoverTitle,
   Description: PopoverDescription,
+  Arrow: PopoverArrow,
 });

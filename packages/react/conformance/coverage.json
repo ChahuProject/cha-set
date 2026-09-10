@@ -138,7 +138,8 @@
   "popover": {
     "open": true,
     "positioning": true,
-    "movable": true
+    "movable": true,
+    "arrow": true
   },
   "contextMenu": {
     "trigger": true,
