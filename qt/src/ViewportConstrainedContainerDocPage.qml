@@ -76,10 +76,20 @@ DocLayout {
                             border.color: ThemeTokens.border
 
                             Text {
-                                anchors.centerIn: parent
+                                anchors.left: parent.left
+                                anchors.leftMargin: 10
+                                anchors.verticalCenter: parent.verticalCenter
                                 text: "Constrained Item #" + (index + 1)
                                 color: ThemeTokens.text
                                 font.pixelSize: 12
+                            }
+
+                            ChaSetBadge {
+                                text: "Active"
+                                variant: "outline"
+                                anchors.right: parent.right
+                                anchors.rightMargin: 8
+                                anchors.verticalCenter: parent.verticalCenter
                             }
                         }
                     }
@@ -90,11 +100,10 @@ DocLayout {
 
     CodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetViewportConstrainedContainer {\n    maxHeight: 300\n    margin: 16\n    overflow: \"auto\"\n}"
+        code: "import ChaSet 1.0\n\nChaSetViewportConstrainedContainer {\n    maxHeight: 300\n    minHeight: 80\n    margin: 16\n    overflow: \"auto\"\n}"
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "viewport-constrained-container"
     }
@@ -102,7 +111,8 @@ DocLayout {
     PropsTable {
         title: "Props Reference"
         props: [
-            { name: "maxHeight", type: "var", default: "undefined", description: "Optional upper bound on max-height in pixels." },
+            { name: "maxHeight", type: "var", default: "undefined", description: "Optional upper bound on max-height." },
+            { name: "minHeight", type: "var", default: "80", description: "Minimum allowable height lower bound." },
             { name: "margin", type: "real", default: "16", description: "Reserved margin between container bottom and viewport bottom." },
             { name: "overflow", type: "string", default: "'auto'", description: "Overflow behavior ('auto' | 'scroll')." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the container." },
@@ -111,3 +121,4 @@ DocLayout {
         ]
     }
 }
+

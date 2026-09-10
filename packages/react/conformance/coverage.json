@@ -46,7 +46,8 @@
   "collapsible": {
     "standard": true,
     "defaultOpen": true,
-    "disabled": true
+    "disabled": true,
+    "variant": true
   },
   "card": {
     "structure": true,
@@ -165,12 +166,6 @@
     "pulse": true,
     "wave": true,
     "customClass": true
-  },
-  "collapsible": {
-    "standard": true,
-    "defaultOpen": true,
-    "disabled": true,
-    "variant": true
   },
   "copyButton": {
     "copyText": true,

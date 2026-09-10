@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ViewportConstrainedContainer } from '@chahu/cha-set';
+import { ViewportConstrainedContainer, Button, Badge } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -19,13 +19,15 @@ export function ViewportConstrainedContainerDocPage() {
 
   const reactCode = `<ViewportConstrainedContainer
   maxHeight={${limit ?? 'undefined'}}
+  minHeight={80}
   margin={${margin}}
   overflow="auto"
 >
   <div className="p-3 space-y-2">
     {items.map(item => (
-      <div key={item.id} className="p-2 rounded bg-muted/30 text-xs">
-        {item.title}
+      <div key={item.id} className="p-2 rounded bg-muted/30 text-xs flex justify-between">
+        <span>{item.title}</span>
+        <Badge variant="outline" size="sm">{item.format}</Badge>
       </div>
     ))}
   </div>
@@ -54,32 +56,33 @@ export function ViewportConstrainedContainerDocPage() {
 
         <ComponentPreview title="Viewport Constrained Container Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-sm flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant={limit === 180 ? 'default' : 'outline'}
                 onClick={() => setLimit(180)}
-                className={`px-2.5 py-1 text-xs rounded-md border transition-colors ${limit === 180 ? 'bg-primary text-primary-foreground border-primary' : 'bg-background border-border text-foreground'}`}
               >
-                180px Cap
-              </button>
-              <button
-                type="button"
+                180 Limit
+              </Button>
+              <Button
+                size="sm"
+                variant={limit === 260 ? 'default' : 'outline'}
                 onClick={() => setLimit(260)}
-                className={`px-2.5 py-1 text-xs rounded-md border transition-colors ${limit === 260 ? 'bg-primary text-primary-foreground border-primary' : 'bg-background border-border text-foreground'}`}
               >
-                260px Cap
-              </button>
-              <button
-                type="button"
+                260 Limit
+              </Button>
+              <Button
+                size="sm"
+                variant={limit === undefined ? 'default' : 'outline'}
                 onClick={() => setLimit(undefined)}
-                className={`px-2.5 py-1 text-xs rounded-md border transition-colors ${limit === undefined ? 'bg-primary text-primary-foreground border-primary' : 'bg-background border-border text-foreground'}`}
               >
                 Auto Viewport
-              </button>
+              </Button>
             </div>
 
             <ViewportConstrainedContainer
               maxHeight={limit}
+              minHeight={80}
               margin={margin}
               className="w-full max-w-xs"
             >
@@ -93,7 +96,7 @@ export function ViewportConstrainedContainerDocPage() {
                     className="p-2 rounded border border-border/50 bg-card/60 flex items-center justify-between text-xs"
                   >
                     <span className="font-medium text-foreground">{item.title}</span>
-                    <span className="font-mono text-[10px] text-muted-foreground">{item.format}</span>
+                    <Badge variant="outline" size="sm" className="font-mono text-[0.625rem]">{item.format}</Badge>
                   </div>
                 ))}
               </div>
@@ -112,7 +115,7 @@ export function ViewportConstrainedContainerDocPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">Strict 150px Cap</span>
+            <span className="text-xs font-semibold text-foreground">Strict 150 Limit</span>
             <ViewportConstrainedContainer maxHeight={150} className="w-full">
               <div className="p-3 space-y-1.5">
                 {sampleItems.slice(0, 8).map((item) => (
@@ -138,7 +141,7 @@ export function ViewportConstrainedContainerDocPage() {
           </div>
 
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">High Margin (48px)</span>
+            <span className="text-xs font-semibold text-foreground">High Margin (48)</span>
             <ViewportConstrainedContainer margin={48} maxHeight={150} className="w-full">
               <div className="p-3 space-y-1.5">
                 {sampleItems.slice(0, 8).map((item) => (
@@ -159,7 +162,6 @@ export function ViewportConstrainedContainerDocPage() {
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
-      
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -177,6 +179,7 @@ export function ViewportConstrainedContainerDocPage() {
         <PropsTable
           props={[
             { name: 'maxHeight', type: 'number | string', default: 'undefined', description: 'Optional upper limit on container max-height.' },
+            { name: 'minHeight', type: 'number | string', default: '80', description: 'Minimum allowable height lower bound.' },
             { name: 'margin', type: 'number', default: '16', description: 'Reserved margin between container bottom and viewport bottom edge.' },
             { name: 'overflow', type: "'auto' | 'scroll'", default: "'auto'", description: 'Vertical overflow scrolling strategy.' },
             { name: 'className', type: 'string', default: 'undefined', description: 'Custom CSS class names for styling.' },
@@ -187,3 +190,4 @@ export function ViewportConstrainedContainerDocPage() {
     </DocLayout>
   );
 }
+

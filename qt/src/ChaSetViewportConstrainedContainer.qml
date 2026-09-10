@@ -8,6 +8,7 @@ Rectangle {
     id: root
 
     property var maxHeight: undefined
+    property var minHeight: 80
     property real margin: 16
     property string overflow: "auto" // "auto" | "scroll"
     property int customRadius: 6
@@ -28,6 +29,15 @@ Rectangle {
     property alias contentItem: contentContainer
     property alias flickable: flickableItem
 
+    readonly property real minH: {
+        if (typeof root.minHeight === "number" && root.minHeight > 0) return root.minHeight;
+        if (typeof root.minHeight === "string") {
+            var parsed = parseInt(root.minHeight, 10);
+            if (!isNaN(parsed) && parsed > 0) return parsed;
+        }
+        return 80;
+    }
+
     // Calculated bounded height
     readonly property real availableViewportRemaining: {
         var win = root.Window.window;
@@ -42,7 +52,7 @@ Rectangle {
     }
 
     readonly property real calculatedMaxHeight: {
-        var avail = Math.max(80, availableViewportRemaining);
+        var avail = Math.max(root.minH, availableViewportRemaining);
         var upper = root.Window.window ? (root.Window.window.height - 16) : 600;
         var limit = avail;
 
@@ -55,7 +65,7 @@ Rectangle {
             }
         }
 
-        return Math.min(limit, upper, avail);
+        return Math.max(root.minH, Math.min(limit, upper, avail));
     }
 
     implicitWidth: Math.max(contentContainer.implicitWidth, 120)
@@ -67,13 +77,12 @@ Rectangle {
         return contentH > 0 ? Math.min(contentH, calculatedMaxHeight) : calculatedMaxHeight;
     }
 
-    Flickable {
+    ChaSetScrollArea {
         id: flickableItem
         anchors.fill: parent
         clip: true
-        boundsBehavior: Flickable.StopAtBounds
-        contentWidth: contentContainer.width
-        contentHeight: contentContainer.height
+        showHorizontalScrollBar: false
+        showVerticalScrollBar: root.overflow === "scroll" || (contentContainer.implicitHeight > root.height)
 
         Item {
             id: contentContainer
@@ -81,13 +90,6 @@ Rectangle {
             implicitWidth: childrenRect.width
             implicitHeight: childrenRect.height
         }
-
-        ScrollBar.vertical: ScrollBar {
-            id: vBar
-            policy: root.overflow === "scroll" ? ScrollBar.AlwaysOn : (flickableItem.contentHeight > flickableItem.height ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff)
-            anchors.right: flickableItem.right
-            anchors.top: flickableItem.top
-            anchors.bottom: flickableItem.bottom
-        }
     }
 }
+

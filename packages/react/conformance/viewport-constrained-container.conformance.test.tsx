@@ -18,6 +18,7 @@ describe('ViewportConstrainedContainer conformance (spec contract)', () => {
     expect(parsed.margin).toBe(16);
     expect(parsed.overflow).toBe('auto');
     expect(parsed.maxHeight).toBeUndefined();
+    expect(parsed.minHeight).toBe(80);
     expect(parsed.className).toBeUndefined();
   });
 

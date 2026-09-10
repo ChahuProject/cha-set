@@ -169,6 +169,43 @@ describe('ViewportConstrainedContainer', () => {
     expect(container.style.maxHeight).toBe('284px');
   });
 
+  it('enforces minHeight lower bound when available viewport space is small', () => {
+    // window.innerHeight = 800, rect.top = 750, margin = 16 => remaining = 34
+    // minHeight defaults to 80, so boundedHeight should be 80px
+    act(() => {
+      Element.prototype.getBoundingClientRect = vi.fn(() => ({
+        width: 200,
+        height: 100,
+        top: 750,
+        left: 50,
+        bottom: 850,
+        right: 250,
+        x: 50,
+        y: 750,
+        toJSON: () => {},
+      }));
+    });
+
+    render(
+      <ViewportConstrainedContainer aria-label="min-default-container">
+        <div>Content</div>
+      </ViewportConstrainedContainer>,
+    );
+
+    const defaultContainer = screen.getByLabelText('min-default-container');
+    expect(defaultContainer.style.maxHeight).toBe('80px');
+
+    // custom minHeight = 120
+    render(
+      <ViewportConstrainedContainer minHeight={120} aria-label="min-custom-container">
+        <div>Content</div>
+      </ViewportConstrainedContainer>,
+    );
+
+    const customContainer = screen.getByLabelText('min-custom-container');
+    expect(customContainer.style.maxHeight).toBe('120px');
+  });
+
   it('works standalone via useViewportConstraint hook', () => {
     function TestHookComponent() {
       const { ref, boundedHeight } = useViewportConstraint(350, 20);
@@ -184,3 +221,4 @@ describe('ViewportConstrainedContainer', () => {
     expect(elem.textContent).toContain('Height: 350');
   });
 });
+

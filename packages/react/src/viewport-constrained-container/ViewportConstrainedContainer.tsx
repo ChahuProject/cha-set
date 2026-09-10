@@ -4,8 +4,10 @@ import { cn } from '../lib/utils';
 export interface ViewportConstrainedContainerProps
   extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
-  /** Optional custom upper limit for max-height (numeric px or string), clamped against remaining viewport space */
+  /** Optional custom upper limit for max-height, clamped against remaining viewport space */
   maxHeight?: number | string;
+  /** Minimum allowable height lower bound, defaults to 80 */
+  minHeight?: number | string;
   /** Reserved margin from the viewport bottom edge, defaults to 16 */
   margin?: number;
   /** Vertical overflow behavior, defaults to 'auto' */
@@ -23,6 +25,7 @@ const useIsomorphicLayoutEffect =
 export function useViewportConstraint(
   maxHeight?: number | string,
   margin = 16,
+  minHeight: number | string = 80,
 ) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [boundedHeight, setBoundedHeight] = React.useState<number | undefined>(undefined);
@@ -38,7 +41,16 @@ export function useViewportConstraint(
       if (!element) return;
       const rect = element.getBoundingClientRect();
       const viewportRemaining = window.innerHeight - rect.top - margin;
-      const available = Math.max(80, viewportRemaining);
+
+      let minH = 80;
+      if (typeof minHeight === 'number') {
+        minH = minHeight;
+      } else if (typeof minHeight === 'string') {
+        const parsed = Number.parseInt(minHeight, 10);
+        if (Number.isFinite(parsed)) minH = parsed;
+      }
+
+      const available = Math.max(minH, viewportRemaining);
 
       let limitNum: number | undefined;
       if (typeof maxHeight === 'number') {
@@ -51,7 +63,7 @@ export function useViewportConstraint(
       }
 
       const globalUpper = window.innerHeight - 16;
-      const target = Math.min(limitNum, globalUpper, available);
+      const target = Math.max(minH, Math.min(limitNum, globalUpper, available));
       setBoundedHeight(target);
     };
 
@@ -71,7 +83,7 @@ export function useViewportConstraint(
       window.removeEventListener('resize', onUpdate);
       window.removeEventListener('scroll', onUpdate, true);
     };
-  }, [maxHeight, margin]);
+  }, [maxHeight, margin, minHeight]);
 
   return { ref: containerRef, boundedHeight } as const;
 }
@@ -87,6 +99,7 @@ export const ViewportConstrainedContainer = React.forwardRef<
   {
     children,
     maxHeight,
+    minHeight = 80,
     margin = 16,
     overflow = 'auto',
     className,
@@ -95,7 +108,8 @@ export const ViewportConstrainedContainer = React.forwardRef<
   },
   forwardedRef,
 ) {
-  const { ref: internalRef, boundedHeight } = useViewportConstraint(maxHeight, margin);
+  const { ref: internalRef, boundedHeight } = useViewportConstraint(maxHeight, margin, minHeight);
+
 
   React.useImperativeHandle(forwardedRef, () => internalRef.current as HTMLDivElement);
 
