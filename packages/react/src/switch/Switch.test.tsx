@@ -118,4 +118,48 @@ describe('Switch component', () => {
     switchEl = screen.getByTestId('switch');
     expect(switchEl.className).toContain('bg-primary/90');
   });
+
+  it('supports loading state with spinner and interaction blocking', () => {
+    const onCheckedChange = vi.fn();
+    render(<Switch loading onCheckedChange={onCheckedChange} data-testid="switch" />);
+    const switchEl = screen.getByTestId('switch');
+
+    expect(switchEl).toHaveAttribute('aria-busy', 'true');
+    expect(switchEl).toHaveAttribute('data-loading', 'true');
+    expect(switchEl.querySelector('svg.animate-spin')).toBeInTheDocument();
+
+    fireEvent.click(switchEl);
+    expect(onCheckedChange).not.toHaveBeenCalled();
+  });
+
+  it('supports readOnly mode', () => {
+    const onCheckedChange = vi.fn();
+    render(<Switch readOnly onCheckedChange={onCheckedChange} data-testid="switch" />);
+    const switchEl = screen.getByTestId('switch');
+
+    expect(switchEl).toHaveAttribute('aria-readonly', 'true');
+    expect(switchEl).not.toBeDisabled();
+    expect(switchEl.className).toContain('cursor-default');
+
+    fireEvent.click(switchEl);
+    expect(onCheckedChange).not.toHaveBeenCalled();
+  });
+
+  it('renders wrapper with label and helper description', () => {
+    const onCheckedChange = vi.fn();
+    render(
+      <Switch
+        label="Airplane Mode"
+        description="Disables all wireless connections"
+        onCheckedChange={onCheckedChange}
+        data-testid="switch"
+      />,
+    );
+
+    expect(screen.getByText('Airplane Mode')).toBeInTheDocument();
+    expect(screen.getByText('Disables all wireless connections')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Airplane Mode'));
+    expect(onCheckedChange).toHaveBeenCalledWith(true);
+  });
 });

@@ -27,14 +27,17 @@ DocLayout {
     property string demoSize: "default"
     property bool demoChecked: true
     property bool demoDisabled: false
+    property bool demoReadOnly: false
+    property bool demoLoading: false
+    property string demoDescription: ""
 
     // Section 1: Overview
     ComponentPreview {
         id: heroPreview
         width: parent.width
         title: "Switch Sandbox"
-        reactCode: `<Switch\n  size="${root.demoSize}"\n  checked={${root.demoChecked}}\n  disabled={${root.demoDisabled}}\n  onCheckedChange={setChecked}\n  label="Airplane Mode"\n/>`
-        qtCode: `ChaSetSwitch {\n    size: "${root.demoSize}"\n    checked: ${root.demoChecked}\n    disabled: ${root.demoDisabled}\n    label: "Airplane Mode"\n    onToggled: function(checked) {\n        // handle toggle\n    }\n}`
+        reactCode: `<Switch\n  size="${root.demoSize}"\n  checked={${root.demoChecked}}\n  disabled={${root.demoDisabled}}\n  readOnly={${root.demoReadOnly}}\n  loading={${root.demoLoading}}\n  label="Airplane Mode"${root.demoDescription ? `\n  description="${root.demoDescription}"` : ""}\n  onCheckedChange={setChecked}\n/>`
+        qtCode: `ChaSetSwitch {\n    size: "${root.demoSize}"\n    checked: ${root.demoChecked}\n    disabled: ${root.demoDisabled}\n    readOnly: ${root.demoReadOnly}\n    loading: ${root.demoLoading}\n    label: "Airplane Mode"${root.demoDescription ? `\n    description: "${root.demoDescription}"` : ""}\n    onToggled: function(checked) {\n        // handle toggle\n    }\n}`
 
         stageData: [
             Item {
@@ -47,7 +50,10 @@ DocLayout {
                     size: root.demoSize
                     checked: root.demoChecked
                     disabled: root.demoDisabled
+                    readOnly: root.demoReadOnly
+                    loading: root.demoLoading
                     label: "Airplane Mode"
+                    description: root.demoDescription
                     onToggled: function(val) {
                         root.demoChecked = val
                     }
@@ -72,8 +78,8 @@ DocLayout {
                         currentValue: root.demoSize
                         onCurrentValueChanged: root.demoSize = currentValue
                         ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default (36x20)" }
-                            ChaSetTabsTrigger { value: "sm"; text: "Small (28x16)" }
+                            ChaSetTabsTrigger { value: "default"; text: "Default" }
+                            ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
                         }
                     }
                 }
@@ -91,6 +97,30 @@ DocLayout {
                     label: "Disabled"
                     checked: root.demoDisabled
                     onToggled: (val) => root.demoDisabled = val
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Read-Only"
+                    checked: root.demoReadOnly
+                    onToggled: (val) => root.demoReadOnly = val
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Loading"
+                    checked: root.demoLoading
+                    onToggled: (val) => root.demoLoading = val
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Description"
+                    checked: root.demoDescription.length > 0
+                    onToggled: (val) => root.demoDescription = val ? "Disables all wireless connections including Wi-Fi and Bluetooth" : ""
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -235,10 +265,51 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Companion Label Association"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    Text { text: "Async Loading State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    Row {
+                        spacing: 20
+                        ChaSetSwitch { loading: true; checked: false; label: "Connecting..." }
+                        ChaSetSwitch { loading: true; checked: true; label: "Syncing..." }
+                    }
+                }
+            }
+
+            Rectangle {
+                width: (parent.width - 16) / 2
+                height: 100
+                radius: 8
+                color: root.cCard
+                border.color: root.cBorder
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 14
+                    spacing: 8
+                    Text { text: "Read-Only State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    Row {
+                        spacing: 20
+                        ChaSetSwitch { readOnly: true; checked: false; label: "Locked Off" }
+                        ChaSetSwitch { readOnly: true; checked: true; label: "Locked On" }
+                    }
+                }
+            }
+
+            Rectangle {
+                width: parent.width
+                height: 100
+                radius: 8
+                color: root.cCard
+                border.color: root.cBorder
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 14
+                    spacing: 8
+                    Text { text: "With Helper Description"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     ChaSetSwitch {
                         checked: true
-                        label: "Sync data across devices"
+                        label: "Airplane Mode"
+                        description: "Disables all wireless connections including Wi-Fi, Cellular, and Bluetooth"
                     }
                 }
             }
@@ -257,12 +328,11 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        
-    KeyboardShortcutsTable {
-        componentId: "switch"
-    }
+        KeyboardShortcutsTable {
+            componentId: "switch"
+        }
 
-    PropsTable {
+        PropsTable {
             width: parent.width
             propsModel: [
                 {
@@ -275,7 +345,7 @@ DocLayout {
                     name: "size",
                     type: "\"default\" | \"sm\"",
                     default: "\"default\"",
-                    description: "The size scale of the switch track and thumb (default: 36x20, sm: 28x16)."
+                    description: "The size scale of the switch track and thumb (default, sm)."
                 },
                 {
                     name: "disabled",
@@ -284,10 +354,28 @@ DocLayout {
                     description: "Disables user interactions and applies muted opacity."
                 },
                 {
+                    name: "readOnly",
+                    type: "bool",
+                    default: "false",
+                    description: "Whether the switch is read-only (prevents interaction without muted opacity)."
+                },
+                {
+                    name: "loading",
+                    type: "bool",
+                    default: "false",
+                    description: "Shows an animated spinner inside the thumb and prevents toggling."
+                },
+                {
                     name: "label",
                     type: "string",
                     default: "\"\"",
                     description: "Optional companion label text beside the switch."
+                },
+                {
+                    name: "description",
+                    type: "string",
+                    default: "\"\"",
+                    description: "Optional descriptive helper text displayed below the label."
                 },
                 {
                     name: "forceHover",

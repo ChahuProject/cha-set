@@ -9,8 +9,11 @@ Item {
 
     property bool checked: false
     property bool disabled: false
+    property bool readOnly: false
+    property bool loading: false
     property string size: "default" // "default" | "sm"
     property string label: ""
+    property string description: ""
     property bool forceHover: false
     property bool forceFocus: false
 
@@ -18,18 +21,19 @@ Item {
 
     readonly property bool isSm: root.size === "sm"
     readonly property bool isDark: ThemeTokens.dark
-    readonly property bool isFocused: root.forceFocus || root.activeFocus
-    readonly property bool isHovered: root.forceHover || mouseArea.containsMouse
+    readonly property bool isFocused: (root.forceFocus || root.activeFocus) && !root.disabled
+    readonly property bool isHovered: (root.forceHover || mouseArea.containsMouse) && !root.disabled && !root.readOnly && !root.loading
+    readonly property bool hasCompanionContent: root.label !== "" || root.description !== ""
 
-    implicitWidth: root.label !== "" ? (track.width + 8 + labelText.implicitWidth) : track.width
-    implicitHeight: Math.max(track.height, root.label !== "" ? labelText.implicitHeight : 0)
+    implicitWidth: hasCompanionContent ? (track.width + 8 + labelColumn.implicitWidth) : track.width
+    implicitHeight: Math.max(track.height, hasCompanionContent ? labelColumn.implicitHeight : 0)
 
     opacity: root.disabled ? 0.5 : 1.0
 
     activeFocusOnTab: !root.disabled
 
     Keys.onSpacePressed: function(event) {
-        if (!root.disabled) {
+        if (!root.disabled && !root.readOnly && !root.loading) {
             root.checked = !root.checked
             root.toggled(root.checked)
             event.accepted = true
@@ -37,7 +41,7 @@ Item {
     }
 
     Keys.onReturnPressed: function(event) {
-        if (!root.disabled) {
+        if (!root.disabled && !root.readOnly && !root.loading) {
             root.checked = !root.checked
             root.toggled(root.checked)
             event.accepted = true
@@ -50,7 +54,9 @@ Item {
         height: root.isSm ? 16 : 20
         radius: root.isSm ? 8 : 10
         anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenter: root.description !== "" ? undefined : parent.verticalCenter
+        anchors.top: root.description !== "" ? parent.top : undefined
+        anchors.topMargin: root.description !== "" ? 2 : 0
 
         color: root.checked
             ? (root.isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0))
@@ -90,27 +96,62 @@ Item {
                     easing.type: Easing.InOutQuad
                 }
             }
+
+            // Spinner inside thumb when loading
+            Text {
+                id: loadingSpinner
+                visible: root.loading
+                anchors.centerIn: parent
+                text: "◐"
+                font.pixelSize: root.isSm ? 8 : 10
+                color: ThemeTokens.subduedText
+                rotation: 0
+
+                NumberAnimation on rotation {
+                    running: root.loading
+                    from: 0
+                    to: 360
+                    duration: 800
+                    loops: Animation.Infinite
+                }
+            }
         }
     }
 
-    Text {
-        id: labelText
+    // Companion Label and Description
+    Column {
+        id: labelColumn
         anchors.left: track.right
         anchors.leftMargin: 8
-        anchors.verticalCenter: parent.verticalCenter
-        text: root.label
-        visible: root.label !== ""
-        font.pixelSize: root.isSm ? 12 : 14
-        font.weight: Font.Medium
-        color: ThemeTokens.text
+        anchors.verticalCenter: root.description !== "" ? undefined : parent.verticalCenter
+        anchors.top: root.description !== "" ? parent.top : undefined
+        visible: root.hasCompanionContent
+        spacing: 3
+
+        Text {
+            id: labelText
+            visible: root.label !== ""
+            text: root.label
+            font.pixelSize: root.isSm ? 12 : 14
+            font.weight: Font.Medium
+            color: ThemeTokens.text
+        }
+
+        Text {
+            id: descText
+            visible: root.description !== ""
+            text: root.description
+            font.pixelSize: root.isSm ? 11 : 12
+            color: ThemeTokens.subduedText
+        }
     }
 
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        hoverEnabled: !root.disabled
-        enabled: !root.disabled
-        cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
+        hoverEnabled: !root.disabled && !root.readOnly && !root.loading
+        enabled: !root.disabled && !root.readOnly && !root.loading
+        cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly || root.loading ? Qt.ArrowCursor : Qt.PointingHandCursor)
         onClicked: {
             root.forceActiveFocus()
             root.checked = !root.checked

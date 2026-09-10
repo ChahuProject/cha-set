@@ -81,10 +81,13 @@
     },
     "switch": {
       "checked": { "requirement": "must", "description": "checked state controls on/off representation" },
-      "toggle": { "requirement": "must", "description": "clicking or keyboard triggers switch state toggle" },
-      "disabled": { "requirement": "must", "description": "disabled state blocks interaction" },
+      "toggle": { "requirement": "must", "description": "clicking or space key triggers toggle" },
+      "disabled": { "requirement": "must", "description": "disabled state blocks interaction and dims track" },
       "size": { "requirement": "must", "description": "supports default and sm sizes" },
-      "label": { "requirement": "must", "description": "renders accompanying label" }
+      "label": { "requirement": "must", "description": "renders accompanying label" },
+      "loading": { "requirement": "should", "description": "displays async spinner and blocks toggle during operation" },
+      "description": { "requirement": "should", "description": "renders supporting helper text below label" },
+      "readOnly": { "requirement": "should", "description": "prevents toggling while maintaining focusability" }
     },
     "separator": {
       "orientation": { "requirement": "must", "description": "orientation switches between horizontal and vertical" },

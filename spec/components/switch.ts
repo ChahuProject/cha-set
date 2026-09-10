@@ -10,8 +10,11 @@ export const switchSchema = z.object({
   checked: z.boolean().default(false),
   defaultChecked: z.boolean().optional(),
   disabled: z.boolean().default(false),
+  readOnly: z.boolean().default(false),
+  loading: z.boolean().default(false),
   size: switchSizeSchema.default('default'),
   label: z.string().optional(),
+  description: z.string().optional(),
   id: z.string().optional(),
   name: z.string().optional(),
 });

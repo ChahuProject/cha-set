@@ -18,21 +18,28 @@ export function SwitchDocPage() {
   const [size, setSize] = useState<SwitchSize>('default');
   const [checked, setChecked] = useState(true);
   const [disabled, setDisabled] = useState(false);
+  const [readOnly, setReadOnly] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showDesc, setShowDesc] = useState(true);
 
   const heroReactCode = `<Switch
   size="${size}"
   checked={${checked}}
   disabled={${disabled}}
+  readOnly={${readOnly}}
+  loading={${loading}}
   onCheckedChange={setChecked}
   label="Airplane Mode"
-/>`;
+  ${showDesc ? 'description="Disable cellular, Wi-Fi, and Bluetooth radios."\n' : ''}/>`;
 
   const heroQtCode = `ChaSetSwitch {
     size: "${size}"
     checked: ${checked}
     disabled: ${disabled}
+    readOnly: ${readOnly}
+    loading: ${loading}
     label: "Airplane Mode"
-    onToggled: function(checked) {
+    ${showDesc ? 'description: "Disable cellular, Wi-Fi, and Bluetooth radios."\n    ' : ''}onToggled: function(checked) {
         // handle toggle
     }
 }`;
@@ -41,7 +48,7 @@ export function SwitchDocPage() {
     <DocLayout
       category="Components"
       title="Switch"
-      description="A control that allows the user to toggle between checked and not checked states."
+      description="A control that allows the user to toggle between checked and not checked states, with support for async loading, read-only mode, and helper descriptions."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },
@@ -57,7 +64,7 @@ export function SwitchDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Explore interactive switch behaviors, sizes, states, and responsive token styling across Web and Qt Desktop.
+          Explore interactive switch behaviors, async loading, read-only states, descriptions, and sizes across Web and Qt Desktop.
         </p>
 
         <ComponentPreview
@@ -71,27 +78,49 @@ export function SwitchDocPage() {
                 <span className="text-muted-foreground text-xs">Size:</span>
                 <Tabs value={size} onValueChange={(v) => setSize(v as SwitchSize)}>
                   <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default (36x20)</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (28x16)</TabsTrigger>
+                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
+                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
 
-              {/* Checked Toggle */}
-              <Checkbox
-                size="sm"
-                checked={checked}
-                onCheckedChange={(val) => setChecked(val)}
-                label="Checked"
-              />
+              {/* Toggles */}
+              <div className="flex flex-wrap items-center gap-4">
+                <Checkbox
+                  size="sm"
+                  checked={checked}
+                  onCheckedChange={(val) => setChecked(val as boolean)}
+                  label="Checked"
+                />
 
-              {/* Disabled Toggle */}
-              <Checkbox
-                size="sm"
-                checked={disabled}
-                onCheckedChange={(val) => setDisabled(val)}
-                label="Disabled"
-              />
+                <Checkbox
+                  size="sm"
+                  checked={disabled}
+                  onCheckedChange={(val) => setDisabled(val as boolean)}
+                  label="Disabled"
+                />
+
+                <Checkbox
+                  size="sm"
+                  checked={readOnly}
+                  onCheckedChange={(val) => setReadOnly(val as boolean)}
+                  label="Read-Only"
+                />
+
+                <Checkbox
+                  size="sm"
+                  checked={loading}
+                  onCheckedChange={(val) => setLoading(val as boolean)}
+                  label="Loading"
+                />
+
+                <Checkbox
+                  size="sm"
+                  checked={showDesc}
+                  onCheckedChange={(val) => setShowDesc(val as boolean)}
+                  label="Description"
+                />
+              </div>
             </div>
           }
         >
@@ -100,8 +129,11 @@ export function SwitchDocPage() {
               size={size}
               checked={checked}
               disabled={disabled}
+              readOnly={readOnly}
+              loading={loading}
               onCheckedChange={setChecked}
               label="Airplane Mode"
+              description={showDesc ? 'Disable cellular, Wi-Fi, and Bluetooth radios.' : undefined}
             />
           </div>
         </ComponentPreview>
@@ -121,7 +153,7 @@ export function SwitchDocPage() {
           Anatomy
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Import and render Switch standalone or with a companion label in your React JSX or Qt QML tree.
+          Import and render Switch standalone or with companion labels and descriptions in your React JSX or Qt QML tree.
         </p>
         <CodeBlock
           code={`import { Switch } from '@chahu/cha-set';
@@ -134,6 +166,7 @@ export function SwitchDemo() {
       checked={enabled}
       onCheckedChange={setEnabled}
       label="Enable Notifications"
+      description="Receive daily push updates on this device."
     />
   );
 }`}
@@ -151,8 +184,8 @@ export function SwitchDemo() {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Default Toggle</span>
-            <span className="text-xs text-muted-foreground">Standard 36x20 track with smooth spring animation</span>
+            <span className="text-xs font-medium text-foreground">Standard Toggle</span>
+            <span className="text-xs text-muted-foreground">Standard track with smooth spring animation</span>
             <div className="flex items-center gap-6 pt-2">
               <Switch defaultChecked={false} label="Off" />
               <Switch defaultChecked={true} label="On" />
@@ -160,35 +193,47 @@ export function SwitchDemo() {
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Small Size (sm)</span>
-            <span className="text-xs text-muted-foreground">Compact 28x16 track for dense table rows or toolbars</span>
+            <span className="text-xs font-medium text-foreground">Async Loading State</span>
+            <span className="text-xs text-muted-foreground">Busy indicator while awaiting server confirmation</span>
             <div className="flex items-center gap-6 pt-2">
-              <Switch size="sm" defaultChecked={false} label="Compact Off" />
-              <Switch size="sm" defaultChecked={true} label="Compact On" />
+              <Switch loading defaultChecked={false} label="Connecting..." />
+              <Switch loading defaultChecked={true} label="Syncing..." />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Disabled States</span>
-            <span className="text-xs text-muted-foreground">Non-interactive with 50% opacity for locked settings</span>
+            <span className="text-xs font-medium text-foreground">With Helper Description</span>
+            <span className="text-xs text-muted-foreground">Multi-line title and descriptive subtext</span>
+            <div className="pt-2">
+              <Switch
+                defaultChecked={true}
+                label="Automatic cloud synchronization"
+                description="Upload changes in real time when network is available."
+              />
+            </div>
+          </Card>
+
+          <Card className="flex flex-col gap-3 p-5">
+            <span className="text-xs font-medium text-foreground">Disabled & Read-Only States</span>
+            <span className="text-xs text-muted-foreground">Dimmed non-interactive vs locked presentation</span>
             <div className="flex items-center gap-6 pt-2">
               <Switch disabled defaultChecked={false} label="Disabled Off" />
-              <Switch disabled defaultChecked={true} label="Disabled On" />
+              <Switch readOnly defaultChecked={true} label="Read-only On" />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Companion Label Association</span>
-            <span className="text-xs text-muted-foreground">Clicking either label or track toggles the switch</span>
-            <div className="flex items-center gap-4 pt-2">
-              <Switch defaultChecked={true} label="Sync data across devices" />
+            <span className="text-xs font-medium text-foreground">Size Variants</span>
+            <span className="text-xs text-muted-foreground">Default size vs compact toolbar density</span>
+            <div className="flex items-center gap-6 pt-2">
+              <Switch size="default" defaultChecked={true} label="Default size" />
+              <Switch size="sm" defaultChecked={true} label="Small size (sm)" />
             </div>
           </Card>
         </div>
       </section>
 
-      {/* 5. Props Reference */}
-      
+      {/* 5. Keyboard Navigation */}
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -199,6 +244,7 @@ export function SwitchDemo() {
         <KeyboardShortcutsTable componentId="switch" />
       </section>
 
+      {/* 6. Props Reference */}
       <section id="props" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Props Reference
@@ -227,7 +273,7 @@ export function SwitchDemo() {
               name: 'size',
               type: "'default' | 'sm'",
               default: "'default'",
-              description: 'The size scale of the switch track and thumb (default: 36x20, sm: 28x16).',
+              description: 'The size scale of the switch track and thumb.',
             },
             {
               name: 'disabled',
@@ -236,10 +282,28 @@ export function SwitchDemo() {
               description: 'When true, prevents user interaction and applies muted opacity.',
             },
             {
+              name: 'readOnly',
+              type: 'boolean',
+              default: 'false',
+              description: 'Prevents toggling state while retaining focusability and full opacity.',
+            },
+            {
+              name: 'loading',
+              type: 'boolean',
+              default: 'false',
+              description: 'Renders an active spinner inside the thumb and blocks interaction.',
+            },
+            {
               name: 'label',
               type: 'React.ReactNode',
               default: '—',
               description: 'Optional companion label rendered alongside the switch track.',
+            },
+            {
+              name: 'description',
+              type: 'React.ReactNode',
+              default: '—',
+              description: 'Optional helper text rendered below the label.',
             },
             {
               name: 'forceHover',
