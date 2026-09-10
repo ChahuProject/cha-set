@@ -6,13 +6,32 @@ Item {
     id: root
 
     property string keybinding: "Ctrl+K"
+    property string value: keybinding
     property bool recording: false
     property int customRadius: 6
+    property bool clearable: true
+    property string size: "default" // "default" | "sm"
+    property bool disabled: false
 
     signal keybindingRecorded(string newBinding)
 
+    readonly property bool isSm: root.size === "sm"
+
     implicitWidth: 200
-    implicitHeight: 32
+    implicitHeight: root.isSm ? 26 : 32
+    opacity: root.disabled ? 0.5 : 1.0
+
+    onValueChanged: {
+        if (root.keybinding !== root.value) {
+            root.keybinding = root.value
+        }
+    }
+
+    onKeybindingChanged: {
+        if (root.value !== root.keybinding) {
+            root.value = root.keybinding
+        }
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -22,36 +41,58 @@ Item {
         radius: root.customRadius
         focus: root.recording
 
-            Text {
-                id: display
-                anchors.left: parent.left
-                anchors.leftMargin: 10
-                anchors.right: recBtn.left
-                anchors.rightMargin: 8
-                anchors.verticalCenter: parent.verticalCenter
-                text: root.recording ? "Press shortcut keys..." : root.keybinding
-                color: root.recording ? ThemeTokens.accent : ThemeTokens.text
-                font.pixelSize: 12
-                font.family: "monospace"
-                font.weight: root.recording ? Font.DemiBold : Font.Normal
-                elide: Text.ElideRight
+        Text {
+            id: display
+            anchors.left: parent.left
+            anchors.leftMargin: root.isSm ? 8 : 10
+            anchors.right: btnRow.left
+            anchors.rightMargin: 6
+            anchors.verticalCenter: parent.verticalCenter
+            text: root.recording ? "Press shortcut keys..." : (root.keybinding.length > 0 ? root.keybinding : "None")
+            color: root.recording ? ThemeTokens.accent : (root.keybinding.length > 0 ? ThemeTokens.text : ThemeTokens.subduedText)
+            font.pixelSize: root.isSm ? 11 : 12
+            font.family: "monospace"
+            font.weight: root.recording ? Font.DemiBold : Font.Normal
+            elide: Text.ElideRight
+        }
+
+        Row {
+            id: btnRow
+            anchors.right: parent.right
+            anchors.rightMargin: root.isSm ? 4 : 6
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 2
+
+            ChaSetButton {
+                id: clearBtn
+                visible: root.clearable && !root.recording && root.keybinding.length > 0 && !root.disabled
+                text: "✕"
+                variant: "ghost"
+                size: "icon-xs"
+                height: root.isSm ? 20 : 24
+                width: root.isSm ? 20 : 24
+                onClicked: {
+                    root.keybinding = ""
+                    root.value = ""
+                    root.keybindingRecorded("")
+                }
             }
 
             ChaSetButton {
                 id: recBtn
-                anchors.right: parent.right
-                anchors.rightMargin: 8
-                anchors.verticalCenter: parent.verticalCenter
                 text: root.recording ? "Done" : "Record"
                 variant: root.recording ? "default" : "outline"
-                size: "xs"
+                size: root.isSm ? "icon-xs" : "xs"
+                enabled: !root.disabled
+                height: root.isSm ? 20 : 24
                 onClicked: {
                     root.recording = !root.recording
                 }
             }
+        }
 
         Keys.onPressed: function(event) {
-            if (!root.recording) return
+            if (!root.recording || root.disabled) return
             event.accepted = true
 
             let parts = []
@@ -74,6 +115,7 @@ Item {
             if (keyText.length > 0) {
                 parts.push(keyText)
                 root.keybinding = parts.join("+")
+                root.value = root.keybinding
                 root.recording = false
                 root.keybindingRecorded(root.keybinding)
             }
