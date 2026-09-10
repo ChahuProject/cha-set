@@ -13,6 +13,7 @@ DocLayout {
         { id: "installation", title: "Installation" },
         { id: "default-open", title: "Default Open" },
         { id: "disabled", title: "Disabled State" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
 
@@ -212,7 +213,12 @@ DocLayout {
         spacing: 8
         Text { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
 
-        PropsTable {
+        
+    KeyboardShortcutsTable {
+        componentId: "collapsible"
+    }
+
+    PropsTable {
             width: parent.width
             propsModel: [
                 { name: "open", type: "bool", defaultValue: "false", desc: "Whether the collapsible content is currently expanded." },

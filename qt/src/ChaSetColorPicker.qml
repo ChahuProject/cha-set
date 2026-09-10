@@ -1308,9 +1308,20 @@ Item {
         implicitWidth: root.isSm ? 110 : 124
         implicitHeight: root.isSm ? 32 : 36
         radius: 6
-        color: root.disabled ? ThemeTokens.disabled : (triggerMouse.containsMouse ? Qt.rgba(1, 1, 1, 0.08) : "transparent")
-        border.color: ThemeTokens.border
-        border.width: 1
+        color: root.disabled ? ThemeTokens.disabled : (triggerMouse.containsMouse || popoverTrigger.activeFocus ? Qt.rgba(1, 1, 1, 0.08) : "transparent")
+        border.color: popoverTrigger.activeFocus ? ThemeTokens.focus : ThemeTokens.border
+        border.width: popoverTrigger.activeFocus ? 2 : 1
+        activeFocusOnTab: root.mode === "popover" && !root.disabled
+
+        Keys.onReturnPressed: function(event) {
+            event.accepted = true
+            colorPopup.open()
+        }
+
+        Keys.onSpacePressed: function(event) {
+            event.accepted = true
+            colorPopup.open()
+        }
 
         Row {
             anchors.centerIn: parent
@@ -1350,6 +1361,7 @@ Item {
             cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
             hoverEnabled: !root.disabled
             onClicked: {
+                popoverTrigger.forceActiveFocus()
                 colorPopup.open();
             }
         }

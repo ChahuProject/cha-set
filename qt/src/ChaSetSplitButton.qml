@@ -49,6 +49,10 @@ Item {
             disabled: root.disabled
             customRadius: root.customRadius
             onClicked: splitPopup.open()
+            Keys.onDownPressed: function(event) {
+                event.accepted = true
+                splitPopup.open()
+            }
         }
     }
 
@@ -62,6 +66,29 @@ Item {
         focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
+        property int highlightedIndex: -1
+        property string modality: "keyboard"
+        property real lastPointerX: -1
+        property real lastPointerY: -1
+
+        onAboutToShow: {
+            highlightedIndex = 0
+            modality = "keyboard"
+            lastPointerX = -1
+            lastPointerY = -1
+        }
+
+        function triggerItem(idx) {
+            if (idx >= 0 && idx < root.menuItems.length) {
+                let item = root.menuItems[idx]
+                splitPopup.close()
+                if (typeof item.onSelect === "function") {
+                    item.onSelect()
+                }
+                root.menuItemClicked(item.id || item.label)
+            }
+        }
+
         background: Rectangle {
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
@@ -72,15 +99,67 @@ Item {
         contentItem: Column {
             spacing: 2
             width: parent.width
+            focus: true
+
+            Keys.onDownPressed: function(event) {
+                event.accepted = true
+                splitPopup.modality = "keyboard"
+                var len = root.menuItems ? root.menuItems.length : 0
+                if (len > 0) {
+                    splitPopup.highlightedIndex = (splitPopup.highlightedIndex + 1) % len
+                }
+            }
+
+            Keys.onUpPressed: function(event) {
+                event.accepted = true
+                splitPopup.modality = "keyboard"
+                var len = root.menuItems ? root.menuItems.length : 0
+                if (len > 0) {
+                    splitPopup.highlightedIndex = (splitPopup.highlightedIndex - 1 + len) % len
+                }
+            }
+
+            Keys.onPressed: function(event) {
+                if (event.key === Qt.Key_Home) {
+                    event.accepted = true
+                    splitPopup.modality = "keyboard"
+                    splitPopup.highlightedIndex = 0
+                } else if (event.key === Qt.Key_End) {
+                    event.accepted = true
+                    splitPopup.modality = "keyboard"
+                    var len = root.menuItems ? root.menuItems.length : 0
+                    if (len > 0) {
+                        splitPopup.highlightedIndex = len - 1
+                    }
+                }
+            }
+
+            Keys.onReturnPressed: function(event) {
+                event.accepted = true
+                splitPopup.triggerItem(splitPopup.highlightedIndex)
+            }
+
+            Keys.onEnterPressed: function(event) {
+                event.accepted = true
+                splitPopup.triggerItem(splitPopup.highlightedIndex)
+            }
+
+            Keys.onSpacePressed: function(event) {
+                event.accepted = true
+                splitPopup.triggerItem(splitPopup.highlightedIndex)
+            }
 
             Repeater {
                 model: root.menuItems
                 delegate: Rectangle {
                     required property var modelData
+                    required property int index
                     width: parent.width
                     height: 28
                     radius: 4
-                    color: itemMouse.containsMouse ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
+
+                    readonly property bool isHighlighted: (splitPopup.modality === "keyboard" && splitPopup.highlightedIndex === index) || (splitPopup.modality === "pointer" && itemMouse.containsMouse)
+                    color: isHighlighted ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
 
                     Row {
                         anchors.fill: parent
@@ -108,12 +187,19 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            splitPopup.close()
-                            if (typeof parent.modelData.onSelect === "function") {
-                                parent.modelData.onSelect()
+                        onPositionChanged: function(mouse) {
+                            if (splitPopup.modality !== "pointer") {
+                                var dx = Math.abs(mouse.x - splitPopup.lastPointerX)
+                                var dy = Math.abs(mouse.y - splitPopup.lastPointerY)
+                                if (splitPopup.lastPointerX >= 0 && (dx > 1 || dy > 1)) {
+                                    splitPopup.modality = "pointer"
+                                }
                             }
-                            root.menuItemClicked(parent.modelData.id || parent.modelData.label)
+                            splitPopup.lastPointerX = mouse.x
+                            splitPopup.lastPointerY = mouse.y
+                        }
+                        onClicked: {
+                            splitPopup.triggerItem(parent.index)
                         }
                     }
                 }

@@ -48,11 +48,15 @@ export function PresetNumberInput({
   'aria-label': ariaLabel,
 }: PresetNumberInputProps) {
   const [open, setOpen] = React.useState(false);
+  const [highlightedIndex, setHighlightedIndex] = React.useState<number>(-1);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      setHighlightedIndex(-1);
+      return;
+    }
     const handlePointerDown = (e: PointerEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setOpen(false);
@@ -73,6 +77,28 @@ export function PresetNumberInput({
     if (e.key === 'Escape' && open) {
       e.stopPropagation();
       setOpen(false);
+    } else if (e.key === 'ArrowDown') {
+      if (!open) {
+        setOpen(true);
+        setHighlightedIndex(0);
+      } else if (presets.length > 0) {
+        e.preventDefault();
+        setHighlightedIndex((prev) => (prev + 1) % presets.length);
+      }
+    } else if (e.key === 'ArrowUp') {
+      if (!open) {
+        setOpen(true);
+        setHighlightedIndex(presets.length - 1);
+      } else if (presets.length > 0) {
+        e.preventDefault();
+        setHighlightedIndex((prev) => (prev - 1 + presets.length) % presets.length);
+      }
+    } else if (e.key === 'Enter') {
+      if (open && highlightedIndex >= 0 && highlightedIndex < presets.length) {
+        e.preventDefault();
+        onChange?.(String(presets[highlightedIndex]));
+        setOpen(false);
+      }
     }
   };
 
@@ -124,13 +150,18 @@ export function PresetNumberInput({
               <span>{clearLabel}</span>
             </button>
           )}
-          {presets.map((preset) => (
+          {presets.map((preset, idx) => (
             <button
               key={preset}
               type="button"
               role="option"
+              data-highlighted={highlightedIndex === idx ? true : undefined}
               aria-selected={value === String(preset)}
-              className="flex w-full items-center justify-between gap-4 rounded px-2 py-1 text-left text-xs tabular-nums text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
+              className={cn(
+                'flex w-full items-center justify-between gap-4 rounded px-2 py-1 text-left text-xs tabular-nums text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors',
+                highlightedIndex === idx && 'bg-accent text-accent-foreground',
+              )}
+              onPointerEnter={() => setHighlightedIndex(idx)}
               onMouseDown={(e) => {
                 e.preventDefault();
                 onChange?.(String(preset));

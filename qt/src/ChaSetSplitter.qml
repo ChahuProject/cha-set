@@ -40,7 +40,58 @@ Item {
         y: root.isHorizontal ? 0 : firstPane.height
         width: root.isHorizontal ? root.gutterSize : root.width
         height: root.isHorizontal ? root.height : root.gutterSize
-        color: gutterMouse.containsMouse || gutterMouse.drag.active ? ThemeTokens.accent : ThemeTokens.border
+        color: gutterMouse.containsMouse || gutterMouse.drag.active || gutter.activeFocus ? ThemeTokens.accent : ThemeTokens.border
+        border.color: gutter.activeFocus ? ThemeTokens.focus : "transparent"
+        border.width: gutter.activeFocus ? 1 : 0
+        activeFocusOnTab: true
+
+        Keys.onLeftPressed: function(event) {
+            if (root.isHorizontal) {
+                event.accepted = true
+                root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, root.splitRatio - 0.02))
+            }
+        }
+
+        Keys.onRightPressed: function(event) {
+            if (root.isHorizontal) {
+                event.accepted = true
+                root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, root.splitRatio + 0.02))
+            }
+        }
+
+        Keys.onUpPressed: function(event) {
+            if (!root.isHorizontal) {
+                event.accepted = true
+                root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, root.splitRatio - 0.02))
+            }
+        }
+
+        Keys.onDownPressed: function(event) {
+            if (!root.isHorizontal) {
+                event.accepted = true
+                root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, root.splitRatio + 0.02))
+            }
+        }
+
+        Keys.onPressed: function(event) {
+            if (event.key === Qt.Key_Home) {
+                event.accepted = true
+                root.splitRatio = root.minRatio
+            } else if (event.key === Qt.Key_End) {
+                event.accepted = true
+                root.splitRatio = root.maxRatio
+            }
+        }
+
+        Keys.onReturnPressed: function(event) {
+            event.accepted = true
+            root.splitRatio = 0.5
+        }
+
+        Keys.onEnterPressed: function(event) {
+            event.accepted = true
+            root.splitRatio = 0.5
+        }
 
         MouseArea {
             id: gutterMouse
@@ -49,6 +100,7 @@ Item {
             cursorShape: root.isHorizontal ? Qt.SplitHCursor : Qt.SplitVCursor
             drag.target: gutter
             drag.axis: root.isHorizontal ? Drag.XAxis : Drag.YAxis
+            onPressed: gutter.forceActiveFocus()
 
             onPositionChanged: {
                 if (drag.active) {

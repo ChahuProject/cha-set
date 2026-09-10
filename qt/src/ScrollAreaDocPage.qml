@@ -15,6 +15,7 @@ DocLayout {
         { id: "dual-axis", title: "Dual-Axis (Both Axes)" },
         { id: "hotzone", title: "Hot Zone & Dynamic Width" },
         { id: "steppers", title: "Stepper Navigation" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "API Reference" }
     ]
 
@@ -531,7 +532,12 @@ export const CrossStackSpecification = {
             ]
         }
 
-        PropsTable {
+        
+    KeyboardShortcutsTable {
+        componentId: "scroll-area"
+    }
+
+    PropsTable {
             width: parent.width
             title: "ChaSetScrollBar Properties"
             propsModel: [

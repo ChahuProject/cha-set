@@ -47,11 +47,98 @@ Item {
         root.expandedIds = copy
     }
 
+    property int currentIndex: -1
+    property string modality: "keyboard"
+    property real lastPointerX: -1
+    property real lastPointerY: -1
+
+    activeFocusOnTab: true
+
+    Keys.onDownPressed: function(event) {
+        event.accepted = true
+        root.modality = "keyboard"
+        if (root.flatItems.length > 0) {
+            root.currentIndex = Math.min(root.flatItems.length - 1, Math.max(0, root.currentIndex + 1))
+            root.selectedId = root.flatItems[root.currentIndex].id
+            root.nodeSelected(root.selectedId)
+            treeList.positionViewAtIndex(root.currentIndex, ListView.Contain)
+        }
+    }
+
+    Keys.onUpPressed: function(event) {
+        event.accepted = true
+        root.modality = "keyboard"
+        if (root.flatItems.length > 0) {
+            root.currentIndex = Math.max(0, root.currentIndex - 1)
+            root.selectedId = root.flatItems[root.currentIndex].id
+            root.nodeSelected(root.selectedId)
+            treeList.positionViewAtIndex(root.currentIndex, ListView.Contain)
+        }
+    }
+
+    Keys.onRightPressed: function(event) {
+        if (root.currentIndex >= 0 && root.currentIndex < root.flatItems.length) {
+            event.accepted = true
+            let curr = root.flatItems[root.currentIndex]
+            if (curr.hasChildren) {
+                if (!curr.isExpanded) {
+                    root.toggleExpand(curr.id)
+                } else if (root.currentIndex + 1 < root.flatItems.length) {
+                    root.currentIndex += 1
+                    root.selectedId = root.flatItems[root.currentIndex].id
+                    root.nodeSelected(root.selectedId)
+                    treeList.positionViewAtIndex(root.currentIndex, ListView.Contain)
+                }
+            }
+        }
+    }
+
+    Keys.onLeftPressed: function(event) {
+        if (root.currentIndex >= 0 && root.currentIndex < root.flatItems.length) {
+            event.accepted = true
+            let curr = root.flatItems[root.currentIndex]
+            if (curr.hasChildren && curr.isExpanded) {
+                root.toggleExpand(curr.id)
+            } else if (curr.depth > 0) {
+                // Find parent node
+                for (let i = root.currentIndex - 1; i >= 0; i--) {
+                    if (root.flatItems[i].depth === curr.depth - 1) {
+                        root.currentIndex = i
+                        root.selectedId = root.flatItems[i].id
+                        root.nodeSelected(root.selectedId)
+                        treeList.positionViewAtIndex(root.currentIndex, ListView.Contain)
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    Keys.onSpacePressed: function(event) {
+        if (root.currentIndex >= 0 && root.currentIndex < root.flatItems.length) {
+            event.accepted = true
+            let curr = root.flatItems[root.currentIndex]
+            if (curr.hasChildren) {
+                root.toggleExpand(curr.id)
+            }
+        }
+    }
+
+    Keys.onReturnPressed: function(event) {
+        if (root.currentIndex >= 0 && root.currentIndex < root.flatItems.length) {
+            event.accepted = true
+            let curr = root.flatItems[root.currentIndex]
+            if (curr.hasChildren) {
+                root.toggleExpand(curr.id)
+            }
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         color: ThemeTokens.panel
-        border.color: ThemeTokens.border
-        border.width: 1
+        border.color: root.activeFocus ? ThemeTokens.focus : ThemeTokens.border
+        border.width: root.activeFocus ? 2 : 1
         radius: root.customRadius
         clip: true
 
@@ -76,9 +163,12 @@ Item {
 
             delegate: Rectangle {
                 required property var modelData
+                required property int index
                 width: treeList.width
                 height: 28
-                color: root.selectedId === modelData.id ? ThemeTokens.hover : (rowMouse.containsMouse ? ThemeTokens.hover : "transparent")
+
+                readonly property bool isHighlighted: (root.modality === "keyboard" && root.currentIndex === index) || (root.modality === "pointer" && rowMouse.containsMouse)
+                color: root.selectedId === modelData.id ? ThemeTokens.hover : (isHighlighted ? ThemeTokens.hover : "transparent")
 
                 Row {
                     anchors.fill: parent
@@ -107,7 +197,19 @@ Item {
                     anchors.fill: parent
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
+                    onPositionChanged: function(mouse) {
+                        if (root.modality !== "pointer") {
+                            var dx = Math.abs(mouse.x - root.lastPointerX)
+                            var dy = Math.abs(mouse.y - root.lastPointerY)
+                            if (root.lastPointerX >= 0 && (dx > 1 || dy > 1)) {
+                                root.modality = "pointer"
+                            }
+                        }
+                        root.lastPointerX = mouse.x
+                        root.lastPointerY = mouse.y
+                    }
                     onClicked: {
+                        root.currentIndex = parent.index
                         if (parent.modelData.hasChildren) {
                             root.toggleExpand(parent.modelData.id)
                         }

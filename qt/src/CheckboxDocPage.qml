@@ -13,6 +13,7 @@ DocLayout {
         { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
         { id: "examples", title: "Examples & States" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
 
@@ -296,7 +297,12 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        PropsTable {
+        
+    KeyboardShortcutsTable {
+        componentId: "checkbox"
+    }
+
+    PropsTable {
             width: parent.width
             propsModel: [
                 { name: "checked", type: "bool", defaultValue: "false", desc: "Whether the checkbox is currently checked." },

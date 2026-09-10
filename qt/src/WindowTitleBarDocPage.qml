@@ -11,6 +11,7 @@ DocLayout {
     tocItems: [
         { id: "preview", title: "Interactive Preview" },
         { id: "installation", title: "Installation" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "API Reference" }
     ]
 
@@ -86,6 +87,11 @@ DocLayout {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetWindowTitleBar { title: \"App Header\" }"
         language: "qml"
+    }
+
+    
+    KeyboardShortcutsTable {
+        componentId: "window-title-bar"
     }
 
     PropsTable {

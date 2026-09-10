@@ -56,47 +56,85 @@ Item {
         }
     }
 
+    property int selectedRowIndex: -1
+    activeFocusOnTab: true
+
+    Keys.onDownPressed: function(event) {
+        if (root.pageData.length > 0) {
+            event.accepted = true
+            root.selectedRowIndex = Math.min(root.pageData.length - 1, Math.max(0, root.selectedRowIndex + 1))
+        }
+    }
+
+    Keys.onUpPressed: function(event) {
+        if (root.pageData.length > 0) {
+            event.accepted = true
+            root.selectedRowIndex = Math.max(0, root.selectedRowIndex - 1)
+        }
+    }
+
+    Keys.onLeftPressed: function(event) {
+        if (root.currentPage > 1) {
+            event.accepted = true
+            root.currentPage--
+            root.selectedRowIndex = 0
+        }
+    }
+
+    Keys.onRightPressed: function(event) {
+        if (root.currentPage < root.totalPages) {
+            event.accepted = true
+            root.currentPage++
+            root.selectedRowIndex = 0
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         color: ThemeTokens.panel
-        border.color: ThemeTokens.border
-        border.width: 1
+        border.color: root.activeFocus ? ThemeTokens.focus : ThemeTokens.border
+        border.width: root.activeFocus ? 2 : 1
         radius: root.customRadius
         clip: true
 
         Column {
             anchors.fill: parent
 
-            // Toolbar with Search Input
+            // Table Header / Toolbar
             Rectangle {
                 width: parent.width
                 height: 44
                 color: ThemeTokens.panel
+                border.color: ThemeTokens.border
+                border.width: 1
 
-                ChaSetInput {
+                Row {
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: 12
                     anchors.verticalCenter: parent.verticalCenter
-                    width: 220
-                    height: 28
-                    placeholder: "Filter records..."
-                    onTextEdited: {
-                        root.searchFilter = text
-                        root.currentPage = 1
-                    }
-                }
+                    spacing: 8
 
-                Text {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 10
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: root.filteredData.length + " rows"
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: 11
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: "🔍"
+                        font.pixelSize: 12
+                    }
+
+                    ChaSetInput {
+                        width: 180
+                        height: 28
+                        placeholder: "Filter records..."
+                        text: root.searchFilter
+                        onTextEdited: {
+                            root.searchFilter = text
+                            root.currentPage = 1
+                            root.selectedRowIndex = -1
+                        }
+                    }
                 }
             }
 
-            // Header Row
+            // Columns Header
             Rectangle {
                 width: parent.width
                 height: 32
@@ -117,21 +155,22 @@ Item {
                             height: parent.height
 
                             Row {
-                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.fill: parent
                                 spacing: 4
 
                                 Text {
-                                    text: parent.parent.modelData.header || parent.parent.modelData.key
-                                    color: ThemeTokens.text
-                                    font.pixelSize: 12
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: parent.parent.modelData.header || ""
+                                    color: ThemeTokens.subduedText
+                                    font.pixelSize: 11
                                     font.weight: Font.DemiBold
                                 }
 
                                 Text {
-                                    visible: root.sortKey === parent.parent.modelData.key
-                                    text: root.sortAsc ? "▲" : "▼"
-                                    color: ThemeTokens.accent
-                                    font.pixelSize: 9
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: root.sortKey === parent.parent.modelData.key ? (root.sortAsc ? "▲" : "▼") : ""
+                                    color: ThemeTokens.text
+                                    font.pixelSize: 10
                                 }
                             }
 
@@ -158,7 +197,10 @@ Item {
                     required property int index
                     width: bodyList.width
                     height: 32
-                    color: index % 2 === 0 ? ThemeTokens.hover : "transparent"
+                    readonly property bool isSelectedRow: root.selectedRowIndex === index
+                    color: isSelectedRow ? ThemeTokens.hover : (index % 2 === 0 ? ThemeTokens.panel : "transparent")
+                    border.color: isSelectedRow ? ThemeTokens.focus : "transparent"
+                    border.width: isSelectedRow ? 1 : 0
 
                     Row {
                         anchors.fill: parent
@@ -177,10 +219,20 @@ Item {
                                     text: String(parent.parent.parent.modelData[parent.modelData.key] ?? "")
                                     color: ThemeTokens.text
                                     font.pixelSize: 12
+                                    font.weight: parent.parent.parent.isSelectedRow ? Font.Medium : Font.Normal
                                     elide: Text.ElideRight
                                     width: parent.width - 8
                                 }
                             }
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+                            root.selectedRowIndex = parent.index
+                            root.forceActiveFocus()
                         }
                     }
                 }

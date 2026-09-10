@@ -13,6 +13,7 @@ DocLayout {
         { id: "installation", title: "Installation" },
         { id: "sizes", title: "Sizes" },
         { id: "states", title: "States" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
 
@@ -192,7 +193,12 @@ DocLayout {
         spacing: 8
         Text { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
 
-        PropsTable {
+        
+    KeyboardShortcutsTable {
+        componentId: "label"
+    }
+
+    PropsTable {
             width: parent.width
             propsModel: [
                 { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "Text size variant (default = 14px, sm = 12px)." },

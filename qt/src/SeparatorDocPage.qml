@@ -13,6 +13,7 @@ DocLayout {
         { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
         { id: "states", title: "Examples & States" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
 
@@ -290,7 +291,12 @@ DocLayout {
         spacing: 8
         Text { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
 
-        PropsTable {
+        
+    KeyboardShortcutsTable {
+        componentId: "separator"
+    }
+
+    PropsTable {
             width: parent.width
             propsModel: [
                 {

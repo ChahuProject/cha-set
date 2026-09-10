@@ -45,6 +45,59 @@ Item {
             root.value = textInput.text;
         }
 
+        Keys.onDownPressed: function(event) {
+            if (presetPopup.visible) {
+                event.accepted = true
+                presetPopup.modality = "keyboard"
+                var len = root.presets ? root.presets.length : 0
+                if (len > 0) {
+                    presetPopup.highlightedIndex = (presetPopup.highlightedIndex + 1) % len
+                }
+            } else {
+                event.accepted = true
+                var n = parseFloat(root.value) || 0
+                root.value = String(Math.max(0, n - 1))
+            }
+        }
+
+        Keys.onUpPressed: function(event) {
+            if (presetPopup.visible) {
+                event.accepted = true
+                presetPopup.modality = "keyboard"
+                var len = root.presets ? root.presets.length : 0
+                if (len > 0) {
+                    presetPopup.highlightedIndex = (presetPopup.highlightedIndex - 1 + len) % len
+                }
+            } else {
+                event.accepted = true
+                var n = parseFloat(root.value) || 0
+                root.value = String(n + 1)
+            }
+        }
+
+        Keys.onReturnPressed: function(event) {
+            if (presetPopup.visible && presetPopup.highlightedIndex >= 0 && presetPopup.highlightedIndex < root.presets.length) {
+                event.accepted = true
+                root.value = String(root.presets[presetPopup.highlightedIndex])
+                presetPopup.close()
+            }
+        }
+
+        Keys.onEnterPressed: function(event) {
+            if (presetPopup.visible && presetPopup.highlightedIndex >= 0 && presetPopup.highlightedIndex < root.presets.length) {
+                event.accepted = true
+                root.value = String(root.presets[presetPopup.highlightedIndex])
+                presetPopup.close()
+            }
+        }
+
+        Keys.onEscapePressed: function(event) {
+            if (presetPopup.visible) {
+                event.accepted = true
+                presetPopup.close()
+            }
+        }
+
         Connections {
             target: textInput
             function onIsFocusedChanged() {
@@ -59,23 +112,21 @@ Item {
     Rectangle {
         id: arrowBtn
         anchors.right: parent.right
-        anchors.rightMargin: 4
-        anchors.verticalCenter: parent.verticalCenter
-        width: 20
-        height: 20
-        radius: 4
-        color: arrowMouse.containsMouse ? ThemeTokens.hover : "transparent"
-        visible: !root.disabled
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.margins: 1
+        width: 24
+        color: "transparent"
+        radius: root.customRadius - 1
 
         Text {
             anchors.centerIn: parent
-            text: presetPopup.visible ? "▴" : "▾"
+            text: "▾"
             color: ThemeTokens.subduedText
-            font.pixelSize: 10
+            font.pixelSize: 11
         }
 
         MouseArea {
-            id: arrowMouse
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
@@ -98,6 +149,18 @@ Item {
         modal: false
         focus: false
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+        property int highlightedIndex: -1
+        property string modality: "keyboard"
+        property real lastPointerX: -1
+        property real lastPointerY: -1
+
+        onAboutToShow: {
+            highlightedIndex = -1
+            modality = "keyboard"
+            lastPointerX = -1
+            lastPointerY = -1
+        }
 
         background: Rectangle {
             color: ThemeTokens.panel
@@ -145,11 +208,13 @@ Item {
                 model: root.presets
                 delegate: Rectangle {
                     required property var modelData
+                    required property int index
                     width: parent.width
                     height: 26
                     radius: 4
                     readonly property bool isSelected: String(modelData) === String(root.value)
-                    color: isSelected ? ThemeTokens.hover : (itemMouse.containsMouse ? ThemeTokens.hover : "transparent")
+                    readonly property bool isHighlighted: (presetPopup.modality === "keyboard" && presetPopup.highlightedIndex === index) || (presetPopup.modality === "pointer" && itemMouse.containsMouse)
+                    color: isHighlighted ? ThemeTokens.hover : (isSelected ? ThemeTokens.hover : "transparent")
 
                     Text {
                         anchors.left: parent.left
@@ -175,6 +240,17 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
+                        onPositionChanged: function(mouse) {
+                            if (presetPopup.modality !== "pointer") {
+                                var dx = Math.abs(mouse.x - presetPopup.lastPointerX)
+                                var dy = Math.abs(mouse.y - presetPopup.lastPointerY)
+                                if (presetPopup.lastPointerX >= 0 && (dx > 1 || dy > 1)) {
+                                    presetPopup.modality = "pointer"
+                                }
+                            }
+                            presetPopup.lastPointerX = mouse.x
+                            presetPopup.lastPointerY = mouse.y
+                        }
                         onClicked: {
                             root.value = String(parent.modelData);
                             presetPopup.close();

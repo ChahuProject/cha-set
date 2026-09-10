@@ -11,6 +11,7 @@ DocLayout {
     tocItems: [
         { id: "preview", title: "Interactive Preview" },
         { id: "installation", title: "Installation" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "API Reference" }
     ]
 
@@ -55,6 +56,11 @@ DocLayout {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetPresetNumberInput {\n    value: \"1024\"\n    presets: [64, 128, 256, 512, 1024, 2048, 4096]\n}"
         language: "qml"
+    }
+
+    
+    KeyboardShortcutsTable {
+        componentId: "preset-number-input"
     }
 
     PropsTable {

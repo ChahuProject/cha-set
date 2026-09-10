@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
+import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function ButtonDocPage() {
   const [variant, setVariant] = useState<ButtonVariant>('default');
@@ -42,6 +43,7 @@ export function ButtonDocPage() {
         { id: 'variants', title: 'Variants' },
         { id: 'sizes', title: 'Sizes' },
         { id: 'states', title: 'States' },
+        { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'API Reference' },
       ]}
     >
@@ -215,6 +217,17 @@ export function ButtonDocPage() {
       </section>
 
       {/* 4. API Reference */}
+      
+      <section id="keyboard" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Keyboard Navigation
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Keyboard shortcuts and interaction patterns for this component.
+        </p>
+        <KeyboardShortcutsTable componentId="button" />
+      </section>
+
       <section id="props" className="my-10">
         <h2 className="text-xl font-bold tracking-tight mb-2">API Reference</h2>
         <PropsTable

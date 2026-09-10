@@ -14,12 +14,33 @@ Item {
 
     implicitWidth: 360
     implicitHeight: 280
+    activeFocusOnTab: true
+
+    Keys.onUpPressed: function(event) {
+        event.accepted = true
+        gridView.moveCurrentIndexUp()
+    }
+
+    Keys.onDownPressed: function(event) {
+        event.accepted = true
+        gridView.moveCurrentIndexDown()
+    }
+
+    Keys.onLeftPressed: function(event) {
+        event.accepted = true
+        gridView.moveCurrentIndexLeft()
+    }
+
+    Keys.onRightPressed: function(event) {
+        event.accepted = true
+        gridView.moveCurrentIndexRight()
+    }
 
     Rectangle {
         anchors.fill: parent
         color: ThemeTokens.panel
-        border.color: ThemeTokens.border
-        border.width: 1
+        border.color: root.activeFocus ? ThemeTokens.focus : ThemeTokens.border
+        border.width: root.activeFocus ? 2 : 1
         radius: root.customRadius
         clip: true
 

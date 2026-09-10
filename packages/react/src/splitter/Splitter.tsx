@@ -82,12 +82,54 @@ export function Splitter({
     return () => document.body.classList.remove('select-none', cursorClass);
   }, [isDragging, orientation]);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (orientation === 'vertical') {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const next = clamp(currentSize - 2);
+        setInternalSize(next);
+        onChange?.(next);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        const next = clamp(currentSize + 2);
+        setInternalSize(next);
+        onChange?.(next);
+      }
+    } else {
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const next = clamp(currentSize - 2);
+        setInternalSize(next);
+        onChange?.(next);
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = clamp(currentSize + 2);
+        setInternalSize(next);
+        onChange?.(next);
+      }
+    }
+    if (e.key === 'Home') {
+      e.preventDefault();
+      setInternalSize(minSize);
+      onChange?.(minSize);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      setInternalSize(maxSize);
+      onChange?.(maxSize);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      setInternalSize(initialSize);
+      onChange?.(initialSize);
+    }
+  };
+
   return (
     <div
       ref={selfRef}
       role="separator"
       aria-orientation={orientation}
       tabIndex={0}
+      onKeyDown={handleKeyDown}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -99,7 +141,7 @@ export function Splitter({
       data-slot="splitter"
       data-state={isDragging ? 'dragging' : 'idle'}
       className={cn(
-        'group/splitter relative z-10 select-none touch-none',
+        'group/splitter relative z-10 select-none touch-none outline-none focus-visible:ring-2 focus-visible:ring-ring',
         orientation === 'vertical'
           ? 'mx-0.5 w-2 shrink-0 cursor-col-resize'
           : 'my-0.5 h-2 shrink-0 cursor-row-resize',

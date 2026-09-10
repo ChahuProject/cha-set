@@ -13,6 +13,7 @@ DocLayout {
         { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
         { id: "variants", title: "Variants" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
 
@@ -216,7 +217,12 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        PropsTable {
+        
+    KeyboardShortcutsTable {
+        componentId: "card"
+    }
+
+    PropsTable {
             width: parent.width
             propsModel: [
                 {

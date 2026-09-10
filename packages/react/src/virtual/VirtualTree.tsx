@@ -164,11 +164,61 @@ export function VirtualTree<T>({
     },
   });
 
+  const [focusedIndex, setFocusedIndex] = React.useState(0);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (visibleNodes.length === 0) return;
+    const current = visibleNodes[focusedIndex];
+    if (!current) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const next = Math.min(visibleNodes.length - 1, focusedIndex + 1);
+      setFocusedIndex(next);
+      virtualizer.scrollToIndex(next, { align: 'auto' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prev = Math.max(0, focusedIndex - 1);
+      setFocusedIndex(prev);
+      virtualizer.scrollToIndex(prev, { align: 'auto' });
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      if (current.hasChildren && !current.isExpanded) {
+        toggleExpand(current.node, current.depth, current.isExpanded);
+      } else if (current.hasChildren && current.isExpanded) {
+        const next = Math.min(visibleNodes.length - 1, focusedIndex + 1);
+        setFocusedIndex(next);
+        virtualizer.scrollToIndex(next, { align: 'auto' });
+      }
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      if (current.hasChildren && current.isExpanded) {
+        toggleExpand(current.node, current.depth, current.isExpanded);
+      } else if (current.depth > 0) {
+        for (let i = focusedIndex - 1; i >= 0; i--) {
+          if (visibleNodes[i]!.depth === current.depth - 1) {
+            setFocusedIndex(i);
+            virtualizer.scrollToIndex(i, { align: 'auto' });
+            break;
+          }
+        }
+      }
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      if (current.hasChildren) {
+        e.preventDefault();
+        toggleExpand(current.node, current.depth, current.isExpanded);
+      }
+    }
+  };
+
   return (
     <div
       ref={scrollContainerRef}
+      role="tree"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
       data-slot="virtual-tree"
-      className={cn('overflow-y-auto', className)}
+      className={cn('overflow-y-auto outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-md', className)}
     >
       {visibleNodes.length === 0 ? (
         emptyNode ?? null
@@ -180,12 +230,14 @@ export function VirtualTree<T>({
         >
           {virtualizer.getVirtualItems().map((virtualRow) => {
             const flat = visibleNodes[virtualRow.index]!;
+            const isFocused = virtualRow.index === focusedIndex;
             return (
               <div
                 key={virtualRow.key}
                 data-index={virtualRow.index}
+                data-focused={isFocused ? true : undefined}
                 ref={virtualizer.measureElement}
-                className="absolute top-0 left-0 w-full"
+                className={cn('absolute top-0 left-0 w-full', isFocused && 'ring-1 ring-ring/40 rounded')}
                 style={{ transform: `translateY(${virtualRow.start}px)` }}
               >
                 {safeRenderRow({

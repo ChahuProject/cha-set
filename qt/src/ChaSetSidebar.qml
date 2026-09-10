@@ -44,6 +44,11 @@ Item {
         root.toggled(root.collapsed)
     }
 
+    Shortcut {
+        sequence: "Ctrl+B"
+        onActivated: root.toggle()
+    }
+
     Behavior on width {
         enabled: !root.isResizing
         NumberAnimation { duration: 180; easing.type: Easing.OutCubic }

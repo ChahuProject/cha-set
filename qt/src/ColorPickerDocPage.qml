@@ -13,6 +13,7 @@ DocLayout {
         { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
         { id: "examples", title: "Examples & States" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
 
@@ -343,7 +344,12 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        PropsTable {
+        
+    KeyboardShortcutsTable {
+        componentId: "color-picker"
+    }
+
+    PropsTable {
             width: parent.width
             propsModel: [
                 {

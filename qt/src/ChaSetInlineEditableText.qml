@@ -36,12 +36,29 @@ Item {
 
     // Display Mode
     Rectangle {
+        id: displayBox
         visible: !root.editing
         anchors.fill: parent
-        color: hoverMouse.containsMouse ? ThemeTokens.hover : "transparent"
+        color: hoverMouse.containsMouse || displayBox.activeFocus ? ThemeTokens.hover : "transparent"
         radius: 4
-        border.color: hoverMouse.containsMouse ? ThemeTokens.border : "transparent"
-        border.width: 1
+        border.color: displayBox.activeFocus ? ThemeTokens.focus : (hoverMouse.containsMouse ? ThemeTokens.border : "transparent")
+        border.width: displayBox.activeFocus ? 2 : 1
+        activeFocusOnTab: !root.editing
+
+        Keys.onReturnPressed: function(event) {
+            event.accepted = true
+            root.editing = true
+        }
+
+        Keys.onEnterPressed: function(event) {
+            event.accepted = true
+            root.editing = true
+        }
+
+        Keys.onSpacePressed: function(event) {
+            event.accepted = true
+            root.editing = true
+        }
 
         Row {
             anchors.fill: parent
@@ -61,7 +78,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 text: "✏️"
                 font.pixelSize: 10
-                opacity: hoverMouse.containsMouse ? 0.8 : 0.0
+                opacity: hoverMouse.containsMouse || displayBox.activeFocus ? 0.8 : 0.0
             }
         }
 
@@ -71,6 +88,7 @@ Item {
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
             onDoubleClicked: root.editing = true
+            onClicked: displayBox.forceActiveFocus()
         }
     }
 

@@ -40,6 +40,36 @@ Rectangle {
         root.open = false
     }
 
+    Keys.onLeftPressed: function(event) {
+        if (event.modifiers & Qt.AltModifier) {
+            root.x = Math.max(0, root.x - 20)
+            event.accepted = true
+        }
+    }
+
+    Keys.onRightPressed: function(event) {
+        if (event.modifiers & Qt.AltModifier) {
+            if (parent) root.x = Math.min(parent.width - root.width, root.x + 20)
+            else root.x += 20
+            event.accepted = true
+        }
+    }
+
+    Keys.onUpPressed: function(event) {
+        if (event.modifiers & Qt.AltModifier) {
+            root.y = Math.max(0, root.y - 20)
+            event.accepted = true
+        }
+    }
+
+    Keys.onDownPressed: function(event) {
+        if (event.modifiers & Qt.AltModifier) {
+            if (parent) root.y = Math.min(parent.height - root.height, root.y + 20)
+            else root.y += 20
+            event.accepted = true
+        }
+    }
+
     Component.onCompleted: {
         applyInitialPosition()
     }

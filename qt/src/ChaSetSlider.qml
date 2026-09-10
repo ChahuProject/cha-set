@@ -150,6 +150,23 @@ Item {
         }
     }
 
+    Keys.onPressed: function(event) {
+        if (root.disabled) return;
+        if (event.key === Qt.Key_PageUp) {
+            for (var i = 0; i < 10; i++) root.stepUp();
+            event.accepted = true;
+        } else if (event.key === Qt.Key_PageDown) {
+            for (var j = 0; j < 10; j++) root.stepDown();
+            event.accepted = true;
+        } else if (event.key === Qt.Key_Home) {
+            root.value = root.from;
+            event.accepted = true;
+        } else if (event.key === Qt.Key_End) {
+            root.value = root.to;
+            event.accepted = true;
+        }
+    }
+
     // Track
     Rectangle {
         id: track

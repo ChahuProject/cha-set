@@ -15,6 +15,7 @@ DocLayout {
         { id: "variants", title: "Variants" },
         { id: "sizes", title: "Sizes" },
         { id: "states", title: "States" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "API Reference" }
     ]
 
@@ -243,6 +244,11 @@ DocLayout {
     }
 
     // 4. API Reference
+    
+    KeyboardShortcutsTable {
+        componentId: "button"
+    }
+
     PropsTable {
         width: parent.width
         title: "API Reference"

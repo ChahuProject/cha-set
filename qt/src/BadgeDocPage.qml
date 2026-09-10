@@ -13,6 +13,7 @@ DocLayout {
         { id: "installation", title: "Installation" },
         { id: "variants", title: "Variants" },
         { id: "sizes", title: "Sizes" },
+        { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
 
@@ -161,7 +162,12 @@ DocLayout {
         spacing: 8
         Text { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
 
-        PropsTable {
+        
+    KeyboardShortcutsTable {
+        componentId: "badge"
+    }
+
+    PropsTable {
             width: parent.width
             propsModel: [
                 { name: "variant", type: "'default' | 'secondary' | 'destructive' | 'outline'", defaultValue: "'default'", desc: "Visual stylistic variant corresponding to core color tokens." },

@@ -162,6 +162,30 @@ Flickable {
         root.contentY = Math.max(0, Math.min(maxScrollY, root.contentY + deltaPixels))
     }
 
+    Keys.onUpPressed: function(event) {
+        event.accepted = true
+        root.simulateThumbDrag(-40)
+    }
+    Keys.onDownPressed: function(event) {
+        event.accepted = true
+        root.simulateThumbDrag(40)
+    }
+    Keys.onPressed: function(event) {
+        if (event.key === Qt.Key_PageUp) {
+            event.accepted = true
+            root.pageUp()
+        } else if (event.key === Qt.Key_PageDown) {
+            event.accepted = true
+            root.pageDown()
+        } else if (event.key === Qt.Key_Home) {
+            event.accepted = true
+            root.scrollToTop()
+        } else if (event.key === Qt.Key_End) {
+            event.accepted = true
+            root.scrollToBottom()
+        }
+    }
+
     WheelHandler {
         target: null
         orientation: Qt.Vertical

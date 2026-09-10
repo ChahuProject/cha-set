@@ -17,6 +17,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
+import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function LabelDocPage() {
   const [size, setSize] = useState<LabelSize>('default');
@@ -60,6 +61,7 @@ export function LabelDocPage() {
         { id: 'sizes', title: 'Sizes' },
         { id: 'states', title: 'States' },
         { id: 'form-control', title: 'Form Association' },
+        { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
     >
@@ -206,6 +208,17 @@ export function LabelDocPage() {
       </section>
 
       {/* 6. Props Reference */}
+      
+      <section id="keyboard" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Keyboard Navigation
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Keyboard shortcuts and interaction patterns for this component.
+        </p>
+        <KeyboardShortcutsTable componentId="label" />
+      </section>
+
       <section id="props" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Props Reference
