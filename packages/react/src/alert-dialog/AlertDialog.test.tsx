@@ -112,4 +112,74 @@ describe('AlertDialog', () => {
     expect(handleOpenChange).toHaveBeenCalledWith(false, expect.anything());
     expect(screen.queryByText('Confirm Action')).toBeNull();
   });
+
+  it('renders with size variant classes on content', () => {
+    const { rerender } = render(
+      <AlertDialog defaultOpen>
+        <AlertDialogContent size="sm">
+          <AlertDialogTitle>Small Dialog</AlertDialogTitle>
+        </AlertDialogContent>
+      </AlertDialog>,
+    );
+
+    expect(screen.getByRole('alertdialog')).toHaveClass('max-w-md');
+
+    rerender(
+      <AlertDialog defaultOpen>
+        <AlertDialogContent size="lg">
+          <AlertDialogTitle>Large Dialog</AlertDialogTitle>
+        </AlertDialogContent>
+      </AlertDialog>,
+    );
+
+    expect(screen.getByRole('alertdialog')).toHaveClass('max-w-xl');
+  });
+
+  it('renders action with destructive variant', () => {
+    render(
+      <AlertDialog defaultOpen>
+        <AlertDialogContent>
+          <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+          <AlertDialogFooter>
+            <AlertDialogAction variant="destructive">Delete Item</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>,
+    );
+
+    const actionBtn = screen.getByRole('button', { name: 'Delete Item' });
+    expect(actionBtn).toHaveClass('text-destructive');
+  });
+
+  it('respects closeOnOverlayClick setting', async () => {
+    const user = userEvent.setup();
+    const handleOpenChange = vi.fn();
+
+    // Default: closeOnOverlayClick is false
+    const { rerender } = render(
+      <AlertDialog defaultOpen onOpenChange={handleOpenChange}>
+        <AlertDialogContent closeOnOverlayClick={false}>
+          <AlertDialogTitle>Overlay Test</AlertDialogTitle>
+        </AlertDialogContent>
+      </AlertDialog>,
+    );
+
+    const overlay = document.querySelector('[data-slot="alert-dialog-overlay"]') as HTMLElement;
+    expect(overlay).toBeInTheDocument();
+    await user.click(overlay);
+    expect(handleOpenChange).not.toHaveBeenCalled();
+
+    // When closeOnOverlayClick is true
+    rerender(
+      <AlertDialog defaultOpen onOpenChange={handleOpenChange}>
+        <AlertDialogContent closeOnOverlayClick={true}>
+          <AlertDialogTitle>Overlay Test</AlertDialogTitle>
+        </AlertDialogContent>
+      </AlertDialog>,
+    );
+
+    const activeOverlay = document.querySelector('[data-slot="alert-dialog-overlay"]') as HTMLElement;
+    await user.click(activeOverlay);
+    expect(handleOpenChange).toHaveBeenCalledWith(false, expect.anything());
+  });
 });

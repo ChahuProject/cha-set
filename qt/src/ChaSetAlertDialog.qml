@@ -10,14 +10,17 @@ Rectangle {
     color: Qt.rgba(0, 0, 0, 0.6)
 
     property bool open: false
+    property string size: "default"
     property string title: "Are you absolutely sure?"
     property string description: "This action cannot be undone. This will permanently delete your account and remove your data."
     property string confirmText: "Continue"
     property string cancelText: "Cancel"
     property bool destructive: true
+    property string actionVariant: destructive ? "destructive" : "default"
     property int customRadius: 8
-    property int dialogWidth: 460
+    property int dialogWidth: size === "sm" ? 400 : (size === "lg" ? 560 : 460)
     property bool closeOnEscape: true
+    property bool closeOnOverlayClick: false
 
     signal confirmed()
     signal cancelled()
@@ -56,8 +59,10 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            root.open = false
-            root.cancelled()
+            if (root.closeOnOverlayClick) {
+                root.open = false
+                root.cancelled()
+            }
         }
     }
 
@@ -123,7 +128,7 @@ Rectangle {
 
                 ChaSetButton {
                     text: root.confirmText
-                    variant: root.destructive ? "destructive" : "default"
+                    variant: root.actionVariant
                     size: "sm"
                     onClicked: {
                         root.open = false

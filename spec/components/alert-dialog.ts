@@ -6,6 +6,8 @@ import { z } from 'zod';
  * AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogFooter,
  * AlertDialogTitle, AlertDialogDescription, AlertDialogAction, and AlertDialogCancel.
  */
+export const alertDialogSizeSchema = z.enum(['sm', 'default', 'lg']);
+
 export const alertDialogSchema = z.object({
   open: z.boolean().optional(),
   defaultOpen: z.boolean().default(false),
@@ -22,6 +24,8 @@ export const alertDialogOverlaySchema = z.object({});
 
 export const alertDialogContentSchema = z.object({
   customRadius: z.number().optional(),
+  size: alertDialogSizeSchema.default('default'),
+  closeOnOverlayClick: z.boolean().default(false),
 });
 
 export const alertDialogHeaderSchema = z.object({});
@@ -30,6 +34,7 @@ export const alertDialogTitleSchema = z.object({});
 export const alertDialogDescriptionSchema = z.object({});
 export const alertDialogActionSchema = z.object({
   disabled: z.boolean().default(false),
+  variant: z.enum(['default', 'destructive', 'outline', 'secondary', 'ghost', 'link']).default('default'),
 });
 export const alertDialogCancelSchema = z.object({
   disabled: z.boolean().default(false),

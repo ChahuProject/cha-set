@@ -175,7 +175,8 @@
       "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
       "action": { "requirement": "must", "description": "action button confirms and closes alert dialog" },
       "cancel": { "requirement": "must", "description": "cancel button dismisses alert dialog" },
-      "overlay": { "requirement": "must", "description": "renders backdrop overlay behind alert dialog" }
+      "overlay": { "requirement": "must", "description": "renders backdrop overlay behind alert dialog" },
+      "destructive": { "requirement": "should", "description": "supports destructive action styling variant" }
     },
     "sheet": {
       "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },

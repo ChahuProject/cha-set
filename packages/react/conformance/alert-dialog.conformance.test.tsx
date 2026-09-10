@@ -26,12 +26,18 @@ describe('AlertDialog conformance (spec contract)', () => {
     expect(() => alertDialogTriggerSchema.parse({ asChild: false, disabled: false })).not.toThrow();
     expect(() => alertDialogPortalSchema.parse({})).not.toThrow();
     expect(() => alertDialogOverlaySchema.parse({})).not.toThrow();
-    expect(() => alertDialogContentSchema.parse({ customRadius: 12 })).not.toThrow();
+    expect(() =>
+      alertDialogContentSchema.parse({
+        customRadius: 12,
+        size: 'lg',
+        closeOnOverlayClick: false,
+      }),
+    ).not.toThrow();
     expect(() => alertDialogHeaderSchema.parse({})).not.toThrow();
     expect(() => alertDialogFooterSchema.parse({})).not.toThrow();
     expect(() => alertDialogTitleSchema.parse({})).not.toThrow();
     expect(() => alertDialogDescriptionSchema.parse({})).not.toThrow();
-    expect(() => alertDialogActionSchema.parse({ disabled: false })).not.toThrow();
+    expect(() => alertDialogActionSchema.parse({ disabled: false, variant: 'destructive' })).not.toThrow();
     expect(() => alertDialogCancelSchema.parse({ disabled: false })).not.toThrow();
   });
 
@@ -49,5 +55,6 @@ describe('AlertDialog conformance (spec contract)', () => {
     expect(coverage.alertDialog?.action).toBe(true);
     expect(coverage.alertDialog?.cancel).toBe(true);
     expect(coverage.alertDialog?.overlay).toBe(true);
+    expect(coverage.alertDialog?.destructive).toBe(true);
   });
 });

@@ -22,4 +22,5 @@ export {
   type AlertDialogDescriptionProps,
   type AlertDialogActionProps,
   type AlertDialogCancelProps,
+  type AlertDialogSize,
 } from './AlertDialog';

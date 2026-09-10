@@ -151,7 +151,8 @@
     "open": true,
     "action": true,
     "cancel": true,
-    "overlay": true
+    "overlay": true,
+    "destructive": true
   },
   "sheet": {
     "open": true,

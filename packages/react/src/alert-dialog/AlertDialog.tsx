@@ -64,23 +64,46 @@ export function AlertDialogOverlay({
   );
 }
 
+export type AlertDialogSize = 'sm' | 'default' | 'lg';
+
+const alertDialogSizeClasses: Record<AlertDialogSize, string> = {
+  sm: 'max-w-md',
+  default: 'max-w-lg',
+  lg: 'max-w-xl',
+};
+
 export interface AlertDialogContentProps
-  extends React.ComponentProps<typeof AlertDialogPrimitive.Popup> {}
+  extends React.ComponentProps<typeof AlertDialogPrimitive.Popup> {
+  size?: AlertDialogSize;
+  overlayClassName?: string;
+  closeOnOverlayClick?: boolean;
+}
 
 export function AlertDialogContent({
   className,
+  overlayClassName,
+  size = 'default',
+  closeOnOverlayClick = false,
   children,
   ...props
 }: AlertDialogContentProps) {
   return (
     <AlertDialogPortal>
-      <AlertDialogOverlay />
+      {closeOnOverlayClick ? (
+        <AlertDialogPrimitive.Close
+          nativeButton={false}
+          render={<AlertDialogOverlay className={overlayClassName} />}
+        />
+      ) : (
+        <AlertDialogOverlay className={overlayClassName} />
+      )}
       <AlertDialogPrimitive.Popup
         data-slot="alert-dialog-content"
         className={cn(
-          'fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl border border-border bg-background text-foreground p-6 shadow-2xl duration-150 outline-hidden',
+          'fixed left-1/2 top-1/2 z-50 grid w-full -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl border border-border bg-background text-foreground p-6 shadow-2xl duration-150 outline-hidden',
           'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
           'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
+          alertDialogSizeClasses[size],
           className,
         )}
         {...props}
@@ -177,16 +200,19 @@ export function AlertDialogDescription({
 }
 
 export interface AlertDialogActionProps
-  extends React.ComponentProps<typeof AlertDialogPrimitive.Close> {}
+  extends React.ComponentProps<typeof AlertDialogPrimitive.Close> {
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+}
 
 export function AlertDialogAction({
   className,
+  variant = 'default',
   ...props
 }: AlertDialogActionProps) {
   return (
     <AlertDialogPrimitive.Close
       data-slot="alert-dialog-action"
-      className={cn(buttonVariants({ variant: 'default' }), className)}
+      className={cn(buttonVariants({ variant }), className)}
       {...props}
     />
   );
@@ -202,7 +228,7 @@ export function AlertDialogCancel({
   return (
     <AlertDialogPrimitive.Close
       data-slot="alert-dialog-cancel"
-      className={cn(buttonVariants({ variant: 'outline' }), className)}
+      className={cn(buttonVariants({ variant: 'outline' }), 'text-foreground', className)}
       {...props}
     />
   );

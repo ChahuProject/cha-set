@@ -57,9 +57,35 @@ ChaSetAlertDialog {
                 anchors.centerIn: parent
                 spacing: 16
 
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 8
+
+                    ChaSetButton {
+                        text: "sm"
+                        variant: alertDlg.size === "sm" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: alertDlg.size = "sm"
+                    }
+
+                    ChaSetButton {
+                        text: "default"
+                        variant: alertDlg.size === "default" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: alertDlg.size = "default"
+                    }
+
+                    ChaSetButton {
+                        text: "lg"
+                        variant: alertDlg.size === "lg" ? "default" : "outline"
+                        size: "sm"
+                        onClicked: alertDlg.size = "lg"
+                    }
+                }
+
                 ChaSetButton {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Delete Deployment"
+                    text: "Delete Deployment (" + alertDlg.size + ")"
                     variant: "destructive"
                     onClicked: alertDlg.open = true
                 }
@@ -92,7 +118,6 @@ ChaSetAlertDialog {
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "alert-dialog"
     }
@@ -101,11 +126,15 @@ ChaSetAlertDialog {
         title: "Props Reference"
         props: [
             { name: "open", type: "bool", default: "false", description: "Whether the alert dialog modal is visible." },
+            { name: "size", type: "string", default: "'default'", description: "Preset modal width sizing ('sm', 'default', 'lg')." },
             { name: "title", type: "string", default: "'Are you absolutely sure?'", description: "Dialog headline title." },
             { name: "description", type: "string", default: "''", description: "Explanatory content warning the user about action consequences." },
             { name: "confirmText", type: "string", default: "'Continue'", description: "Label for the confirmation button." },
             { name: "cancelText", type: "string", default: "'Cancel'", description: "Label for the cancellation button." },
-            { name: "destructive", type: "bool", default: "true", description: "Whether the confirmation button should display in destructive styling." }
+            { name: "destructive", type: "bool", default: "true", description: "Whether the confirmation button should display in destructive styling." },
+            { name: "actionVariant", type: "string", default: "'destructive'", description: "Custom button variant for confirmation ('destructive', 'default', etc.)." },
+            { name: "closeOnOverlayClick", type: "bool", default: "false", description: "Whether clicking the backdrop automatically dismisses the dialog." },
+            { name: "closeOnEscape", type: "bool", default: "true", description: "Whether pressing the Escape key dismisses the dialog." }
         ]
     }
 }
