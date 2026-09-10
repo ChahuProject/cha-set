@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Splitter } from '@chahu/cha-set';
+import { Splitter, Badge, Button } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -58,10 +58,16 @@ export function SplitterDocPage() {
 
               <div
                 style={{ width: `${100 - size}%` }}
-                className="h-full p-4 text-xs text-muted-foreground flex flex-col justify-center items-center overflow-hidden shrink-0"
+                className="h-full p-4 text-xs text-muted-foreground flex flex-col justify-center items-center gap-2 overflow-hidden shrink-0"
               >
-                <span className="text-foreground font-medium">Editor Workspace ({Math.round(100 - size)}%)</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-foreground font-medium">Editor Workspace</span>
+                  <Badge variant="secondary">{Math.round(100 - size)}%</Badge>
+                </div>
                 <span>Drag splitter handle to resize panes</span>
+                <Button variant="outline" size="xs" onClick={() => setSize(35)}>
+                  Reset (35%)
+                </Button>
               </div>
             </div>
           </div>

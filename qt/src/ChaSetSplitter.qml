@@ -9,7 +9,14 @@ Item {
     property real splitRatio: 0.5
     property real minRatio: 0.15
     property real maxRatio: 0.85
+    property int initialSize: 50
+    property int minSize: Math.round(minRatio * 100)
+    property int maxSize: Math.round(maxRatio * 100)
     property int gutterSize: 6
+
+    function reset() {
+        splitRatio = initialSize / 100.0
+    }
 
     property Component leftItem: null
     property Component rightItem: null

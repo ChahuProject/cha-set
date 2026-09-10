@@ -45,6 +45,7 @@ DocLayout {
                 }
 
                 ChaSetSplitter {
+                    id: splitter
                     width: 420
                     height: 200
                     splitRatio: 0.38
@@ -58,9 +59,9 @@ DocLayout {
 
                             Column {
                                 anchors.centerIn: parent
-                                spacing: 4
+                                spacing: 6
                                 Text { text: "Navigation Tree"; color: ThemeTokens.text; font.pixelSize: 12; font.weight: Font.DemiBold }
-                                Text { text: "38% Width"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                                ChaSetBadge { text: Math.round(splitter.splitRatio * 100) + "% Width"; size: "sm"; variant: "secondary" }
                             }
                         }
                     }
@@ -74,9 +75,15 @@ DocLayout {
 
                             Column {
                                 anchors.centerIn: parent
-                                spacing: 4
+                                spacing: 6
                                 Text { text: "Editor Viewport"; color: ThemeTokens.text; font.pixelSize: 12; font.weight: Font.DemiBold }
-                                Text { text: "62% Width"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                                ChaSetBadge { text: Math.round((1 - splitter.splitRatio) * 100) + "% Width"; size: "sm"; variant: "secondary" }
+                                ChaSetButton {
+                                    text: "Reset (50%)"
+                                    size: "xs"
+                                    variant: "outline"
+                                    onClicked: splitter.splitRatio = 0.5
+                                }
                             }
                         }
                     }
@@ -91,7 +98,6 @@ DocLayout {
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "splitter"
     }
@@ -103,7 +109,7 @@ DocLayout {
             { name: "splitRatio", type: "real", default: "0.5", description: "Proportional width/height distribution of the first pane (0.0 to 1.0)." },
             { name: "minRatio", type: "real", default: "0.15", description: "Minimum allowable constraint ratio." },
             { name: "maxRatio", type: "real", default: "0.85", description: "Maximum allowable constraint ratio." },
-            { name: "gutterSize", type: "int", default: "6", description: "Draggable divider width in pixels." }
+            { name: "gutterSize", type: "int", default: "6", description: "Draggable divider width." }
         ]
     }
 }
