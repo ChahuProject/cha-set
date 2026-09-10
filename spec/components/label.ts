@@ -10,6 +10,10 @@ export const labelSchema = z.object({
   size: labelSizeSchema.default('default'),
   disabled: z.boolean().default(false),
   required: z.boolean().default(false),
+  optional: z.boolean().default(false),
+  invalid: z.boolean().default(false),
+  description: z.string().optional(),
+  tooltip: z.string().optional(),
   htmlFor: z.string().optional(),
   className: z.string().optional(),
 });

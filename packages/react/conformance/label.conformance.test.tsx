@@ -9,6 +9,10 @@ describe('Label conformance (spec contract)', () => {
       size: 'default',
       disabled: false,
       required: false,
+      optional: false,
+      invalid: false,
+      description: 'Helper hint',
+      tooltip: 'Info note',
     } as const;
     expect(() => labelSchema.parse(fixture)).not.toThrow();
 

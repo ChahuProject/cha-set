@@ -44,7 +44,11 @@
       "size": { "requirement": "must", "description": "supports default (text-sm) and sm (text-xs) font sizing" },
       "disabled": { "requirement": "must", "description": "disabled state dims opacity and blocks pointer interactions" },
       "required": { "requirement": "must", "description": "renders required asterisk indicator marker when required" },
-      "styling": { "requirement": "must", "description": "typography, peer-disabled styles and colors aligned with ChaSet tokens" }
+      "styling": { "requirement": "must", "description": "typography, peer-disabled styles and colors aligned with ChaSet tokens" },
+      "optional": { "requirement": "should", "description": "displays optional indicator badge or text" },
+      "invalid": { "requirement": "should", "description": "indicates error state with destructive highlight" },
+      "description": { "requirement": "should", "description": "renders helper description text alongside label" },
+      "tooltip": { "requirement": "should", "description": "renders info icon with help tooltip" }
     },
     "collapsible": {
       "standard": { "requirement": "must", "description": "core expanding and collapsing interaction" },

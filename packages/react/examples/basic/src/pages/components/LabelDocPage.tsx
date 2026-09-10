@@ -23,12 +23,22 @@ export function LabelDocPage() {
   const [size, setSize] = useState<LabelSize>('default');
   const [disabled, setDisabled] = useState(false);
   const [required, setRequired] = useState(false);
+  const [optional, setOptional] = useState(false);
+  const [invalid, setInvalid] = useState(false);
 
   const heroReactCode = `<div className="grid w-full max-w-sm items-center gap-1.5">
-  <Label htmlFor="email" size="${size}"${disabled ? ' disabled' : ''}${required ? ' required' : ''}>
+  <Label
+    htmlFor="email"
+    size="${size}"${disabled ? ' disabled' : ''}${required ? ' required' : ''}${optional ? ' optional' : ''}${invalid ? ' invalid' : ''}
+  >
     Email address
   </Label>
-  <Input type="email" id="email" placeholder="name@example.com" size="${size}"${disabled ? ' disabled' : ''} />
+  <Input
+    type="email"
+    id="email"
+    placeholder="name@example.com"
+    size="${size}"${disabled ? ' disabled' : ''}${invalid ? ' invalid' : ''}
+  />
 </div>`;
 
   const heroQtCode = `Column {
@@ -40,6 +50,8 @@ export function LabelDocPage() {
         size: "${size}"
         disabled: ${disabled}
         required: ${required}
+        optional: ${optional}
+        invalid: ${invalid}
     }
 
     ChaSetInput {
@@ -47,6 +59,7 @@ export function LabelDocPage() {
         placeholder: "name@example.com"
         size: "${size}"
         disabled: ${disabled}
+        invalid: ${invalid}
     }
 }`;
 
@@ -71,7 +84,7 @@ export function LabelDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Adjust size, disabled, and required properties in real time with synchronized preview.
+          Adjust size, required markers, optional indicators, validation states, and disabled appearance in real time.
         </p>
 
         <ComponentPreview
@@ -90,30 +103,45 @@ export function LabelDocPage() {
                 </Tabs>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Disabled:</span>
-                <Tabs value={disabled ? 'true' : 'false'} onValueChange={(v) => setDisabled(v === 'true')}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="false" className="h-6 px-2.5 text-xs">False</TabsTrigger>
-                    <TabsTrigger value="true" className="h-6 px-2.5 text-xs">True</TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </div>
+              <Checkbox
+                size="sm"
+                label="Disabled"
+                checked={disabled}
+                onCheckedChange={(v) => setDisabled(v)}
+              />
 
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Required:</span>
-                <Tabs value={required ? 'true' : 'false'} onValueChange={(v) => setRequired(v === 'true')}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="false" className="h-6 px-2.5 text-xs">False</TabsTrigger>
-                    <TabsTrigger value="true" className="h-6 px-2.5 text-xs">True</TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </div>
+              <Checkbox
+                size="sm"
+                label="Required"
+                checked={required}
+                onCheckedChange={(v) => setRequired(v)}
+              />
+
+              <Checkbox
+                size="sm"
+                label="Optional"
+                checked={optional}
+                onCheckedChange={(v) => setOptional(v)}
+              />
+
+              <Checkbox
+                size="sm"
+                label="Invalid"
+                checked={invalid}
+                onCheckedChange={(v) => setInvalid(v)}
+              />
             </div>
           }
         >
           <div className="grid w-full max-w-sm items-center gap-2 p-4">
-            <Label htmlFor="sandbox-email" size={size} disabled={disabled} required={required}>
+            <Label
+              htmlFor="sandbox-email"
+              size={size}
+              disabled={disabled}
+              required={required}
+              optional={optional}
+              invalid={invalid}
+            >
               Email address
             </Label>
             <Input
@@ -122,6 +150,7 @@ export function LabelDocPage() {
               placeholder="name@example.com"
               size={size}
               disabled={disabled}
+              invalid={invalid}
             />
           </div>
         </ComponentPreview>
@@ -141,17 +170,17 @@ export function LabelDocPage() {
           Sizes
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Choose between standard text size (14px) and compact high-density size (12px).
+          Choose between standard text size and compact high-density size for toolbars or dense forms.
         </p>
         <Card className="p-6">
           <CardContent className="space-y-4 p-0">
             <div className="flex items-center gap-4">
-              <span className="w-20 text-xs text-muted-foreground">Default:</span>
-              <Label size="default">Default Label (14px)</Label>
+              <span className="w-24 text-xs text-muted-foreground">Default:</span>
+              <Label size="default">Default Label</Label>
             </div>
             <div className="flex items-center gap-4">
-              <span className="w-20 text-xs text-muted-foreground">Small (sm):</span>
-              <Label size="sm">Small Label (12px)</Label>
+              <span className="w-24 text-xs text-muted-foreground">Small (sm):</span>
+              <Label size="sm">Small Label</Label>
             </div>
           </CardContent>
         </Card>
@@ -160,27 +189,74 @@ export function LabelDocPage() {
       {/* 4. States */}
       <section id="states" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          States
+          States & Variants
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Standard visual states for label including required marker and disabled appearance.
+          Visual matrix of label states including required asterisk, optional tag, validation error, helper description, and tooltips.
         </p>
-        <Card className="p-6">
-          <CardContent className="space-y-4 p-0">
-            <div className="flex items-center gap-4">
-              <span className="w-24 text-xs text-muted-foreground">Standard:</span>
-              <Label>Project Name</Label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="p-5">
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-medium text-foreground">Required Indicator</span>
+              <span className="text-xs text-muted-foreground">Destructive asterisk denoting mandatory input fields</span>
+              <div className="pt-2">
+                <Label required>Work Email</Label>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="w-24 text-xs text-muted-foreground">Required:</span>
-              <Label required>Required Field</Label>
+          </Card>
+
+          <Card className="p-5">
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-medium text-foreground">Optional Indicator</span>
+              <span className="text-xs text-muted-foreground">Muted tag denoting non-mandatory optional fields</span>
+              <div className="pt-2">
+                <Label optional>Alternative Phone</Label>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="w-24 text-xs text-muted-foreground">Disabled:</span>
-              <Label disabled>Disabled Field</Label>
+          </Card>
+
+          <Card className="p-5">
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-medium text-foreground">Validation Error (Invalid)</span>
+              <span className="text-xs text-muted-foreground">Destructive text color highlighting a field with validation errors</span>
+              <div className="pt-2">
+                <Label invalid>Account Password</Label>
+              </div>
             </div>
-          </CardContent>
-        </Card>
+          </Card>
+
+          <Card className="p-5">
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-medium text-foreground">With Info Tooltip</span>
+              <span className="text-xs text-muted-foreground">Help icon with contextual explanation on hover</span>
+              <div className="pt-2">
+                <Label tooltip="Used for two-factor authentication recovery codes">Recovery Email</Label>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-5">
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-medium text-foreground">With Helper Description</span>
+              <span className="text-xs text-muted-foreground">Supporting guidance subtitle directly below the label</span>
+              <div className="pt-2">
+                <Label description="Enter your company legal name as registered with tax authorities">
+                  Legal Entity Name
+                </Label>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-5">
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-medium text-foreground">Disabled State</span>
+              <span className="text-xs text-muted-foreground">Dimmed opacity for non-interactive form elements</span>
+              <div className="pt-2">
+                <Label disabled>Archived Record ID</Label>
+              </div>
+            </div>
+          </Card>
+        </div>
       </section>
 
       {/* 5. Form Association */}
@@ -208,7 +284,6 @@ export function LabelDocPage() {
       </section>
 
       {/* 6. Props Reference */}
-      
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -229,7 +304,7 @@ export function LabelDocPage() {
               name: 'size',
               type: "'default' | 'sm'",
               default: "'default'",
-              description: 'Text size variant (default = 14px, sm = 12px).',
+              description: 'Text size variant (default or compact sm).',
             },
             {
               name: 'disabled',
@@ -242,6 +317,30 @@ export function LabelDocPage() {
               type: 'boolean',
               default: 'false',
               description: 'Displays a destructive colored asterisk marker.',
+            },
+            {
+              name: 'optional',
+              type: 'boolean',
+              default: 'false',
+              description: 'Displays a muted optional text indicator.',
+            },
+            {
+              name: 'invalid',
+              type: 'boolean',
+              default: 'false',
+              description: 'Displays destructive text color indicating validation error.',
+            },
+            {
+              name: 'description',
+              type: 'ReactNode',
+              default: 'undefined',
+              description: 'Supporting helper text rendered beneath the label.',
+            },
+            {
+              name: 'tooltip',
+              type: 'ReactNode',
+              default: 'undefined',
+              description: 'Contextual help tooltip text or node displayed with info icon.',
             },
             {
               name: 'htmlFor',

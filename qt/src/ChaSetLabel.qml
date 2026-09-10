@@ -11,6 +11,10 @@ Item {
     property string size: "default"     // "default" | "sm"
     property bool disabled: false
     property bool required: false
+    property bool optional: false
+    property bool invalid: false
+    property string description: ""
+    property string tooltip: ""
     property bool forceHover: false
     property bool forceActive: false
     property alias horizontalAlignment: labelText.horizontalAlignment
@@ -21,33 +25,87 @@ Item {
     readonly property int pixelSize: isSm ? 12 : 14
     readonly property bool isDark: ThemeTokens.dark
 
-    implicitWidth: contentRow.implicitWidth
-    implicitHeight: Math.max(isSm ? 16 : 20, contentRow.implicitHeight)
+    implicitWidth: layoutCol.implicitWidth
+    implicitHeight: Math.max(isSm ? 16 : 20, layoutCol.implicitHeight)
 
     opacity: root.disabled ? 0.5 : (root.forceActive ? 0.7 : (root.forceHover ? 0.8 : 1.0))
 
-    Row {
-        id: contentRow
-        spacing: 2
+    Column {
+        id: layoutCol
+        spacing: 3
         anchors.verticalCenter: parent.verticalCenter
 
-        Text {
-            id: labelText
-            text: root.text
-            font.pixelSize: root.pixelSize
-            font.weight: Font.Medium
-            color: root.disabled ? ThemeTokens.disabledText : ThemeTokens.text
-            verticalAlignment: Text.AlignVCenter
+        Row {
+            id: contentRow
+            spacing: 4
+
+            Text {
+                id: labelText
+                text: root.text
+                font.pixelSize: root.pixelSize
+                font.weight: Font.Medium
+                color: root.disabled
+                    ? ThemeTokens.disabledText
+                    : (root.invalid ? ThemeTokens.danger : ThemeTokens.text)
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Text {
+                id: requiredStar
+                text: "*"
+                font.pixelSize: root.pixelSize
+                font.weight: Font.DemiBold
+                color: ThemeTokens.danger
+                visible: root.required
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Text {
+                id: optionalLabel
+                text: "(optional)"
+                font.pixelSize: root.isSm ? 10 : 12
+                font.weight: Font.Normal
+                color: ThemeTokens.subduedText
+                visible: root.optional && !root.required
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Item {
+                id: tooltipIcon
+                visible: root.tooltip !== ""
+                width: root.isSm ? 12 : 14
+                height: root.isSm ? 12 : 14
+                anchors.verticalCenter: parent.verticalCenter
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "ⓘ"
+                    font.pixelSize: root.isSm ? 11 : 13
+                    color: ThemeTokens.subduedText
+                }
+
+                ToolTip {
+                    visible: tooltipMouseArea.containsMouse && root.tooltip !== ""
+                    text: root.tooltip
+                    delay: 300
+                }
+
+                MouseArea {
+                    id: tooltipMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                }
+            }
         }
 
         Text {
-            id: requiredStar
-            text: "*"
-            font.pixelSize: root.pixelSize
-            font.weight: Font.Medium
-            color: ThemeTokens.danger
-            visible: root.required
-            verticalAlignment: Text.AlignVCenter
+            id: descText
+            text: root.description
+            visible: root.description !== ""
+            font.pixelSize: root.isSm ? 10 : 12
+            font.weight: Font.Normal
+            color: ThemeTokens.subduedText
+            wrapMode: Text.WordWrap
         }
     }
 

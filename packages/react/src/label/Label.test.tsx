@@ -79,4 +79,34 @@ describe('Label Component', () => {
     rerender(<Label forceActive>Active</Label>);
     expect(screen.getByText('Active').className).toContain('opacity-70');
   });
+
+  it('renders optional indicator when optional is true and not required', () => {
+    render(<Label optional>Nickname</Label>);
+    expect(screen.getByText('(optional)')).toBeInTheDocument();
+  });
+
+  it('does not render optional indicator when required is true', () => {
+    render(<Label optional required>Email</Label>);
+    expect(screen.queryByText('(optional)')).not.toBeInTheDocument();
+    expect(screen.getByText('*')).toBeInTheDocument();
+  });
+
+  it('applies invalid styling and data-invalid attribute', () => {
+    render(<Label invalid>Password</Label>);
+    const label = screen.getByText('Password').closest('label');
+    expect(label).toHaveAttribute('data-invalid', 'true');
+    expect(label?.className).toContain('text-destructive');
+  });
+
+  it('renders helper description text', () => {
+    render(<Label description="Must be at least 8 characters">Password</Label>);
+    expect(screen.getByText('Password')).toBeInTheDocument();
+    expect(screen.getByText('Must be at least 8 characters')).toBeInTheDocument();
+  });
+
+  it('renders tooltip help trigger', () => {
+    render(<Label tooltip="Enter your official registered company name">Company Name</Label>);
+    const tooltipTrigger = screen.getByTitle('Enter your official registered company name');
+    expect(tooltipTrigger).toBeInTheDocument();
+  });
 });
