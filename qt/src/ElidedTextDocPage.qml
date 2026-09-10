@@ -17,15 +17,17 @@ DocLayout {
 
     property int containerWidth: 240
     property bool alwaysShow: false
+    property bool copyable: true
     readonly property string sampleText: "C:\\Users\\Development\\Projects\\cha-set\\qt\\src\\ChaSetElidedText.qml"
 
     ComponentPreview {
         id: heroPreview
         title: "Interactive Sandbox"
-        reactCode: `<div style={{ width: ${root.containerWidth} }}>
+        reactCode: `<div style={{ width: '${(root.containerWidth / 16).toFixed(3)}rem' }}>
   <ElidedText
     text="${root.sampleText}"
     alwaysShowTooltip={${root.alwaysShow}}
+    copyable={${root.copyable}}
     tooltipPlacement="top"
   />
 </div>`
@@ -37,6 +39,7 @@ DocLayout {
         anchors.fill: parent
         text: "${root.sampleText}"
         alwaysShowTooltip: ${root.alwaysShow}
+        copyable: ${root.copyable}
         tooltipPlacement: "top"
     }
 }`
@@ -60,6 +63,7 @@ DocLayout {
                     anchors.margins: 8
                     text: root.sampleText
                     alwaysShowTooltip: root.alwaysShow
+                    copyable: root.copyable
                     tooltipPlacement: "top"
                 }
             }
@@ -75,7 +79,7 @@ DocLayout {
 
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: "Width: " + root.containerWidth + "px"
+                        text: "Width: " + root.containerWidth
                         color: ThemeTokens.subduedText
                         font.pixelSize: 12
                     }
@@ -96,6 +100,13 @@ DocLayout {
                     variant: root.alwaysShow ? "default" : "outline"
                     text: "Always Show: " + (root.alwaysShow ? "On" : "Off")
                     onClicked: root.alwaysShow = !root.alwaysShow
+                }
+
+                ChaSetButton {
+                    size: "sm"
+                    variant: root.copyable ? "default" : "outline"
+                    text: "Copyable: " + (root.copyable ? "On" : "Off")
+                    onClicked: root.copyable = !root.copyable
                 }
             }
         ]
@@ -171,7 +182,9 @@ DocLayout {
             { name: "tooltipDelay", type: "int", default: "400", description: "Delay in milliseconds before showing tooltip on hover." },
             { name: "alwaysShowTooltip", type: "bool", default: "false", description: "Force tooltip to appear on hover even if text is not elided." },
             { name: "showTooltipWhenElided", type: "bool", default: "true", description: "Enable tooltip reveal whenever overflow truncation is detected." },
-            { name: "maxLines", type: "int", default: "1", description: "Maximum visible lines before truncating (1 = single line, >1 = clamp)." }
+            { name: "maxLines", type: "int", default: "1", description: "Maximum visible lines before truncating (1 = single line, >1 = clamp)." },
+            { name: "copyable", type: "bool", default: "false", description: "Whether clicking the text copies it to clipboard with instant feedback." }
         ]
     }
 }
+

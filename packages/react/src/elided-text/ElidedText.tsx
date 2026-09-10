@@ -11,6 +11,7 @@ export interface ElidedTextProps extends React.HTMLAttributes<HTMLSpanElement> {
   alwaysShowTooltip?: boolean;
   showTooltipWhenElided?: boolean;
   maxLines?: number;
+  copyable?: boolean;
 }
 
 const placementToSideMap: Record<TooltipPlacement, TooltipSide> = {
@@ -31,16 +32,19 @@ export const ElidedText = React.forwardRef<HTMLSpanElement, ElidedTextProps>(
       alwaysShowTooltip = false,
       showTooltipWhenElided = true,
       maxLines = 1,
+      copyable = false,
       className,
       style,
       children,
       onMouseEnter,
+      onClick,
       ...props
     },
     forwardedRef,
   ) => {
     const internalRef = React.useRef<HTMLSpanElement | null>(null);
     const [isTruncated, setIsTruncated] = React.useState(false);
+    const [copied, setCopied] = React.useState(false);
 
     const checkTruncation = React.useCallback(() => {
       const el = internalRef.current;
@@ -74,10 +78,20 @@ export const ElidedText = React.forwardRef<HTMLSpanElement, ElidedTextProps>(
     const displayText = text ?? (typeof children === 'string' ? children : '');
     const resolvedTooltip = tooltipText !== undefined ? tooltipText : displayText;
     const shouldShow =
-      Boolean(resolvedTooltip) &&
-      (alwaysShowTooltip || (showTooltipWhenElided && isTruncated));
+      copied ||
+      (Boolean(resolvedTooltip) &&
+        (alwaysShowTooltip || (showTooltipWhenElided && isTruncated)));
 
     const side: TooltipSide = placementToSideMap[tooltipPlacement] ?? 'top';
+
+    const handleClick = (event: React.MouseEvent<HTMLSpanElement>) => {
+      if (copyable) {
+        navigator.clipboard?.writeText?.(displayText);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      }
+      onClick?.(event);
+    };
 
     const mergedRef = React.useCallback(
       (node: HTMLSpanElement | null) => {
@@ -94,13 +108,18 @@ export const ElidedText = React.forwardRef<HTMLSpanElement, ElidedTextProps>(
     const contentElement = (
       <span
         ref={mergedRef}
+        data-elided="true"
         data-slot="elided-text"
         data-truncated={isTruncated ? 'true' : 'false'}
+        data-copyable={copyable ? 'true' : undefined}
         onMouseEnter={handleMouseEnter}
+        onClick={handleClick}
         className={cn(
+          'min-w-0',
           maxLines > 1
             ? 'overflow-hidden text-ellipsis'
             : 'truncate inline-block max-w-full align-bottom',
+          copyable && 'cursor-pointer hover:opacity-80 active:opacity-60',
           className,
         )}
         style={{
@@ -122,9 +141,9 @@ export const ElidedText = React.forwardRef<HTMLSpanElement, ElidedTextProps>(
 
     return (
       <Tooltip
-        content={resolvedTooltip}
+        content={copied ? 'Copied to clipboard!' : resolvedTooltip}
         side={side}
-        delayDuration={tooltipDelay}
+        delayDuration={copied ? 0 : tooltipDelay}
         disabled={!shouldShow}
       >
         {contentElement}
@@ -132,5 +151,6 @@ export const ElidedText = React.forwardRef<HTMLSpanElement, ElidedTextProps>(
     );
   },
 );
+
 
 ElidedText.displayName = 'ElidedText';

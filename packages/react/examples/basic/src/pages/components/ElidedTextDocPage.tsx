@@ -9,12 +9,14 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 export function ElidedTextDocPage() {
   const [containerWidth, setContainerWidth] = useState(240);
   const [alwaysShow, setAlwaysShow] = useState(false);
+  const [copyable, setCopyable] = useState(true);
   const sampleText = 'C:\\Users\\Development\\Projects\\cha-set\\packages\\react\\src\\elided-text\\ElidedText.tsx';
 
-  const heroReactCode = `<div style={{ width: ${containerWidth} }}>
+  const heroReactCode = `<div style={{ width: '${(containerWidth / 16).toFixed(3)}rem' }}>
   <ElidedText
     text="${sampleText}"
     alwaysShowTooltip={${alwaysShow}}
+    copyable={${copyable}}
     tooltipPlacement="top"
   />
 </div>`;
@@ -27,6 +29,7 @@ export function ElidedTextDocPage() {
         anchors.fill: parent
         text: "${sampleText}"
         alwaysShowTooltip: ${alwaysShow}
+        copyable: ${copyable}
         tooltipPlacement: "top"
     }
 }`;
@@ -35,7 +38,7 @@ export function ElidedTextDocPage() {
     <DocLayout
       category="Data Display"
       title="Elided Text"
-      description="Smart text truncation with automatic overflow detection and contextual tooltip reveal."
+      description="Smart text truncation with automatic overflow detection, click-to-copy, and contextual tooltip reveal."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'multiline', title: 'Multi-Line Clamping' },
@@ -47,7 +50,7 @@ export function ElidedTextDocPage() {
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
         <p className="text-sm text-muted-foreground">
-          Resize the container below using the slider. When the text is clipped with an ellipsis, hovering reveals the full path in a tooltip. When wide enough, no tooltip appears.
+          Resize the container below using the slider. When the text is clipped with an ellipsis, hovering reveals the full path in a tooltip. Click to copy the full path when copyable is enabled.
         </p>
 
         <ComponentPreview
@@ -56,7 +59,7 @@ export function ElidedTextDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-4 text-xs">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Width: {containerWidth}px</span>
+                <span className="text-muted-foreground">Width: {containerWidth}</span>
                 <div className="w-32">
                   <Slider
                     value={[containerWidth]}
@@ -74,18 +77,26 @@ export function ElidedTextDocPage() {
               >
                 Always Show: {alwaysShow ? 'On' : 'Off'}
               </Button>
+              <Button
+                variant={copyable ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setCopyable(!copyable)}
+              >
+                Copyable: {copyable ? 'On' : 'Off'}
+              </Button>
             </div>
           }
         >
           <div className="py-6 flex flex-col items-center justify-center">
             <Card className="p-4 bg-muted/20 border-dashed">
               <div
-                style={{ width: `${containerWidth}px` }}
+                style={{ width: `${(containerWidth / 16).toFixed(3)}rem` }}
                 className="transition-all duration-150 border border-primary/20 p-2 rounded bg-card"
               >
                 <ElidedText
                   text={sampleText}
                   alwaysShowTooltip={alwaysShow}
+                  copyable={copyable}
                   tooltipPlacement="top"
                 />
               </div>
@@ -172,9 +183,17 @@ export function ElidedTextDocPage() {
               required: false,
               description: 'Maximum visible lines before truncating (1 = single line, >1 = clamp).',
             },
+            {
+              name: 'copyable',
+              type: 'boolean',
+              default: 'false',
+              required: false,
+              description: 'Whether clicking the text copies it to clipboard with instant feedback.',
+            },
           ]}
         />
       </section>
     </DocLayout>
   );
 }
+

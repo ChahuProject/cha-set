@@ -14,7 +14,9 @@ export const elidedTextSchema = z.object({
   alwaysShowTooltip: z.boolean().default(false),
   showTooltipWhenElided: z.boolean().default(true),
   maxLines: z.number().default(1),
+  copyable: z.boolean().default(false),
 });
 
 export type TooltipPlacement = z.infer<typeof tooltipPlacementSchema>;
 export type ElidedTextApi = z.infer<typeof elidedTextSchema>;
+
