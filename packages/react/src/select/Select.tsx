@@ -312,7 +312,7 @@ export function SelectItem({
       data-slot="select-item"
       value={value}
       className={cn(
-        'relative flex w-full cursor-pointer items-center gap-1.5 rounded-md py-1.5 pr-8 pl-2 text-sm outline-hidden select-none transition-colors',
+        'relative flex w-full cursor-pointer items-center gap-1.5 rounded-md py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors',
         'focus:bg-accent focus:text-accent-foreground',
         'data-disabled:pointer-events-none data-disabled:opacity-50',
         '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4',

@@ -18,7 +18,7 @@ export function SelectDocPage() {
   const [value, setValue] = useState('apple');
 
   const reactCode = `<Select value={value} onValueChange={setValue}>
-  <SelectTrigger className="w-[180px]">
+  <SelectTrigger className="w-48">
     <SelectValue placeholder="Select a fruit" />
   </SelectTrigger>
   <SelectContent>
@@ -55,7 +55,7 @@ export function SelectDocPage() {
 
         <ComponentPreview title="Select Sandbox" reactCode={reactCode}>
           <Select value={value} onValueChange={setValue}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-48">
               <SelectValue placeholder="Select a fruit" />
             </SelectTrigger>
             <SelectContent>
