@@ -43,7 +43,7 @@ export function PresetNumberInputDocPage() {
         <ComponentPreview title="Preset Number Input Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-xs flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-muted-foreground">Texture Dimension (px)</label>
+              <label className="text-xs font-medium text-muted-foreground">Texture Dimension</label>
               <PresetNumberInput
                 value={value}
                 onChange={setValue}

@@ -22,7 +22,7 @@ Item {
             var k = num / 1024;
             return (num % 1024 === 0 ? k : k.toFixed(1)) + "K";
         }
-        return num + "px";
+        return "";
     }
 
     onValueChanged: {
@@ -155,6 +155,17 @@ Item {
         property real lastPointerX: -1
         property real lastPointerY: -1
 
+        function handlePointerMove(idx, mouseX, mouseY) {
+            var dx = Math.abs(mouseX - lastPointerX)
+            var dy = Math.abs(mouseY - lastPointerY)
+            if (lastPointerX >= 0 && (dx > 1.5 || dy > 1.5)) {
+                modality = "pointer"
+                highlightedIndex = idx
+            }
+            lastPointerX = mouseX
+            lastPointerY = mouseY
+        }
+
         onAboutToShow: {
             highlightedIndex = -1
             modality = "keyboard"
@@ -213,7 +224,7 @@ Item {
                     height: 26
                     radius: 4
                     readonly property bool isSelected: String(modelData) === String(root.value)
-                    readonly property bool isHighlighted: (presetPopup.modality === "keyboard" && presetPopup.highlightedIndex === index) || (presetPopup.modality === "pointer" && itemMouse.containsMouse)
+                    readonly property bool isHighlighted: presetPopup.highlightedIndex === index
                     color: isHighlighted ? ThemeTokens.hover : (isSelected ? ThemeTokens.hover : "transparent")
 
                     Text {
@@ -241,15 +252,7 @@ Item {
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
                         onPositionChanged: function(mouse) {
-                            if (presetPopup.modality !== "pointer") {
-                                var dx = Math.abs(mouse.x - presetPopup.lastPointerX)
-                                var dy = Math.abs(mouse.y - presetPopup.lastPointerY)
-                                if (presetPopup.lastPointerX >= 0 && (dx > 1 || dy > 1)) {
-                                    presetPopup.modality = "pointer"
-                                }
-                            }
-                            presetPopup.lastPointerX = mouse.x
-                            presetPopup.lastPointerY = mouse.y
+                            presetPopup.handlePointerMove(parent.index, mouse.x, mouse.y)
                         }
                         onClicked: {
                             root.value = String(parent.modelData);

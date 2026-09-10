@@ -31,7 +31,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Texture Dimension (px):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+                    Text { text: "Texture Dimension:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
                     ChaSetPresetNumberInput {
                         width: 220
                         value: "1024"

@@ -32,7 +32,7 @@ function formatPresetLabel(val: number): string {
     const k = val / 1024;
     return `${val % 1024 === 0 ? k : k.toFixed(1)}K`;
   }
-  return `${val}px`;
+  return '';
 }
 
 export function PresetNumberInput({
