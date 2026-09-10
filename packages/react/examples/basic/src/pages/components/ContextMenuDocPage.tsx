@@ -15,7 +15,7 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 
 export function ContextMenuDocPage() {
   const reactCode = `<ContextMenu>
-  <ContextMenuTrigger className="flex h-[150px] w-full max-w-[300px] items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+  <ContextMenuTrigger className="flex h-36 w-full max-w-xs items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
     Right click here
   </ContextMenuTrigger>
   <ContextMenuContent className="w-64">
@@ -59,7 +59,7 @@ export function ContextMenuDocPage() {
 
         <ComponentPreview title="Context Menu Sandbox" reactCode={reactCode}>
           <ContextMenu>
-            <ContextMenuTrigger className="flex h-[150px] w-full max-w-[300px] items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground select-none bg-muted/20 hover:bg-muted/40 transition-colors">
+            <ContextMenuTrigger className="flex h-36 w-full max-w-xs items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground select-none bg-muted/20 hover:bg-muted/40 transition-colors">
               Right click here
             </ContextMenuTrigger>
             <ContextMenuContent className="w-64">
