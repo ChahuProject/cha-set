@@ -64,6 +64,23 @@ Only when explicitly asked, for the just-made, unpushed commit with no dependenc
 
 <!-- PENGJ_TEMPLATE_END -->
 
+## ChaSet Project-Specific Pre-Commit Gate
 
-<!-- Project-specific area left empty by default (no commit skill → no content; with commit skill, add your checks here) -->
+Before committing any component changes in this repository, run the project-defined gate:
+
+1. **Dual-Stack Build & Verification Gate**:
+   ```bash
+   cmake --build qt/build && pnpm test && pnpm gate
+   ```
+   - All 96 test files (518+ unit & conformance tests) must pass.
+   - Parity gate must verify all 318 capability checks, 47 living showcase doc pages across React and Qt, and headless Qt scenario tests (`QtChaSetDemo.exe --test-scenario all`).
+
+2. **Mandatory Zero-`px` Verification**:
+   - Verify zero raw `px` units in newly created or modified component files, styles, inline properties, code previews, and `PropsTable` descriptions.
+   - Dynamic measurements must use `rem` (`${val * 0.0625}rem`).
+
+3. **Incremental Pre-Response Commit Gate**:
+   - For multi-component tasks, verify and commit each component individually (`feat(<name>): ...`).
+   - Immediately push (`git push origin main`). Never accumulate uncommitted changes before yielding control to the user.
+
 

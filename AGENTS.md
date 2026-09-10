@@ -50,7 +50,7 @@
         - Component implementation: `qt/src/ChaSet${PascalCase}.qml` registered in `qt/CMakeLists.txt`.
         - Dedicated Living Doc Page: `qt/src/${PascalCase}DocPage.qml` registered in `qt/CMakeLists.txt`.
         - Active routing & dynamic loader mapping in `qt/src/Main.qml` (`getPageSource`).
-   - **Mechanical Automated Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas, verifies dual-stack (React & Qt) component files, living showcase doc pages, route handling, and CMake registrations. It automatically mounts every React DocPage executing interactive click tests (`showcase-pages.test.tsx`) AND executes headless Qt runtime scenario tests (`QtChaSetDemo.exe --test-scenario all`) which physically compiles and instantiates all 39 QML showcase doc pages to guarantee zero runtime crashes, zero QML type/binding errors, and zero white screens across both platforms.
+   - **Mechanical Automated Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas, verifies dual-stack (React & Qt) component files, living showcase doc pages, route handling, and CMake registrations. It automatically mounts every React DocPage executing interactive click tests (`showcase-pages.test.tsx`) AND executes headless Qt runtime scenario tests (`QtChaSetDemo.exe --test-scenario all`) which physically compiles and instantiates all 47 QML showcase doc pages to guarantee zero runtime crashes, zero QML type/binding errors, and zero white screens across both platforms.
 2. **NO Visual-Only Delivery (禁止仅凭静态截图验收)**:
    - An Agent must NEVER declare a UI component task complete based solely on static screenshots or compilation passes. Interactive verification (wheel scrolling, drag tracking, clicks, keyboard shortcuts) is strictly mandatory.
 3. **Strict Tiered Quality Compliance (按组件层级实施针对性检验)**:
@@ -59,7 +59,8 @@
    - **L2 Floating Overlays**, **L3 Desktop Virtualization**, and **L4 Composite Engines** MUST pass their respective behavioral scenarios, token checks, and AST data equivalence tests.
 4. **Mandatory Dogfooding & Showcase Self-Hosting (组件自举与演示置换红线)**:
    - Whenever a new component is implemented in ChaSet (or when modifying existing demo code), an Agent MUST proactively scan all showcase/demo pages, layouts, and dialogs (`packages/react/examples/basic/src/` and `qt/src/`).
-   - If any raw HTML tags, ad-hoc wrappers, or placeholder elements can be replaced by the newly created ChaSet component (e.g. replacing manual copy buttons with `<CopyButton>`, dividers with `<Separator>`, tooltips with `<Tooltip>`, dropdown menus with `<DropdownMenu>`, dialogs with `<Dialog>`, inputs with `<Input>`, badges with `<Badge>`, etc.), **they MUST be replaced immediately**.
+   - If any raw HTML tags, ad-hoc wrappers, or placeholder elements can be replaced by the newly created ChaSet component (e.g. replacing manual copy buttons with `<CopyButton>`, dividers with `<Separator>`, tooltips with `<Tooltip>`, dropdown menus with `<DropdownMenu>`, dialogs with `<Dialog>`, inputs with `<Input>`, badges with `<Badge>`, mode toggles with `<SegmentedControl>`, tables with `<Table>`/`<GenericDataTable>`), **they MUST be replaced immediately**.
+   - In Qt QML, delegates and preview headers must similarly dogfood ChaSet primitives (`ChaSetBadge` for status/telemetry/rules, `ChaSetSegmentedControl` for mode toggles, `ChaSetSeparator` for divider lines, and `ChaSetTable` with `badge: true` for status cells).
    - Never leave raw native tags or ad-hoc custom implementations in the showcase when ChaSet provides that primitive.
 5. **Single Source of Truth for Data (数据单一真理源)**:
    - All showcase datasets, token definitions, navigation structures, and component contracts MUST reside in `spec/showcase/*.json`, `spec/tokens/**`, and `spec/components/*.ts`. Never duplicate hardcoded arrays in React TSX or Qt QML.
@@ -71,7 +72,7 @@
    - **QML Signal Declarations**: NEVER redeclare automatic property change signals (e.g. `property string value` automatically synthesizes `signal valueChanged`; manually redeclaring it causes duplicate signal name errors).
    - **Delegate Properties**: In Qt 6 QML delegates, explicitly declare `required property int index` whenever `index` is referenced.
 7. **Mandatory Behavioral Parity Gate & White-Screen Zero Tolerance (双端零白屏与全量加载门禁)**:
-   - Before finishing any task, run `pnpm gate` which executes full contract validation, living showcase documentation completeness checks, automated showcase DocPage smoke & button click tests, headless Qt interaction scenarios (`--test-scenario all`), and React test suites.
+   - Before finishing any task, run `pnpm gate` which executes full contract validation (318 capability checks), living showcase documentation completeness checks (47 components), automated showcase DocPage smoke & button click tests, headless Qt interaction scenarios (`--test-scenario all`), and React test suites.
    - All showcase preview panels and dynamic routes MUST be guarded by `<ErrorBoundary>` on Web, and verified by physical QML component instantiation on Qt (`runTestScenario("pages")`), ensuring zero unhandled exceptions and zero broken pages.
 8. **Mandatory Color & Contrast Self-Containment (背景与前景色必须成对自洽律 — 浮层与原子原语零继承依赖)**:
    - **Background-Foreground Pairing Mandate**: Whenever a component, variant, or surface declares a background color class (`bg-background`, `bg-card`, `bg-popover`, `bg-primary`, `bg-secondary`, `bg-muted`, etc.) or QML panel color (`ThemeTokens.panel`, `ThemeTokens.card`, etc.), it **MUST** simultaneously declare the corresponding foreground color token (`text-foreground`, `text-card-foreground`, `text-popover-foreground`, `ThemeTokens.text`, etc.). Never leave text colors unstated or relying on ambient browser/DOM `color: inherit`.
@@ -94,6 +95,12 @@
       Every interactive component MUST support its standard keyboard traversal flow (Enter/Space to activate, Escape to dismiss, Arrow keys for spatial navigation, Tab/Shift+Tab for focus cycling).
     - **Mandatory Showcase Documentation (100% 演示文档必须提供快捷键说明)**:
       Every living showcase DocPage (`<Name>DocPage.tsx` and `<Name>DocPage.qml`) MUST provide a dedicated `Keyboard Navigation` section using `<KeyboardShortcutsTable>` with entries linked in the right-side Table of Contents (`tocItems`).
+11. **Mandatory Zero-`px` Units Mandate (禁止使用 `px` 作为单位与度量规范)**:
+    - **Zero `px` in UI Text & Styles**: Raw `px` units are strictly forbidden across all component code, CSS classes, inline styles, doc descriptions, and properties tables.
+    - **Tailwind & CSS**: Use Tailwind semantic scale (`w-32`, `h-9`, `gap-2`, `size-8`) or rem arbitrary values (`w-[6.25rem]`, `h-[0.0625rem]`). Never use `w-[100px]`, `h-[300px]`, `w-px`, `h-px`, or inline `${val}px`.
+    - **Virtualizer & Dynamic Spacers**: Dynamic measurements (virtual list spacer rows, dynamic offsets) must convert pixel calculations to rem: `${val * 0.0625}rem`.
+    - **Neutral Prop Names & Tokens**: Component props and CSS variables must omit `Px` or `pixel` suffixes (`hitThickness`, `visualThickness`, `deltaAmount`, `--sidebar-width` instead of `hitThicknessPx`, `deltaPixels`, `--sidebar-width-px`).
+    - **Documentation & PropsTable**: Doc descriptions, code examples, and props tables must never describe measurements as "in pixels" or "100px". Use neutral units, rem scale, or component tokens.
 
 ---
 

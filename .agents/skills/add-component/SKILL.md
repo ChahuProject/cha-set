@@ -27,8 +27,12 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 3. **Tiered Quality Defense Matrix**:
    - **L1 Atomic Visual Primitives** (`button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`): **MANDATORY Bit-Exact Pixel-Sync** (`pnpm test:pixel --component <name>`). Spatial diff $\le 0.20\%$, surface color $\Delta E \le 4.0$ (solid fill $\Delta E = 0.0$).
    - **L2 Floating Overlays**, **L3 Desktop Virtualization**, and **L4 Composite Engines**: Token conformance, keyboard navigation flows, 60fps virtualization kinetics, and JSON AST serialization round-trips.
-4. **Mandatory Dogfooding & Showcase Migration (零原生标签与全量自举)**: When a component is added to ChaSet, an Agent MUST immediately scan all demo pages, layouts, and dialogs (`packages/react/examples/basic/src/` and `qt/src/`). All corresponding native HTML tags, ad-hoc SVG button implementations (e.g. manual clipboard copying, raw divider lines, hardcoded tooltip wrappers), or ad-hoc QML elements MUST be migrated to the new component. No raw HTML tags or ad-hoc custom implementations are permitted in the showcase when ChaSet provides that primitive.
-5. **Mandatory Gate Verification**: Run `pnpm gate` which verifies capabilities, Living Showcase completeness, and headless Qt scenario tests. For L1 components, also verify `pnpm test:pixel --component <name>`.
+4. **Mandatory Dogfooding & Showcase Migration (零原生标签与全量自举)**:
+   - When a component is added to ChaSet, an Agent MUST immediately scan all demo pages, layouts, and dialogs (`packages/react/examples/basic/src/` and `qt/src/`).
+   - All corresponding native HTML tags or ad-hoc wrappers (e.g. manual copy buttons -> `<CopyButton>`, divider lines -> `<Separator>`, tooltips -> `<Tooltip>`, mode toggles -> `<SegmentedControl>`, status labels -> `<Badge>`, table layouts -> `<Table>` / `<GenericDataTable>`) MUST be migrated immediately.
+   - In Qt QML, delegates and preview headers must similarly dogfood ChaSet primitives (`ChaSetBadge` for status/telemetry/rules, `ChaSetSegmentedControl` for mode toggles, `ChaSetSeparator` for divider lines, and `ChaSetTable` with `badge: true` for status cells).
+   - No raw native tags or ad-hoc custom implementations are permitted in the showcase when ChaSet provides that primitive.
+5. **Mandatory Gate Verification**: Run `pnpm gate` which verifies 318 capabilities, 100% Living Showcase completeness (47 components across React and Qt), automated DocPage smoke/click tests, and headless Qt scenario tests (`QtChaSetDemo.exe --test-scenario all`). For L1 components, also verify `pnpm test:pixel --component <name>`.
 6. **Mandatory Color & Contrast Self-Containment (色彩自洽与背景前景成对配对律)**:
    - Any component, variant, or floating overlay declaring a background surface (`bg-background`, `bg-card`, `bg-popover`, `bg-primary`, `bg-secondary`, `bg-muted`, etc.) MUST explicitly pair it with the corresponding text token (`text-foreground`, `text-card-foreground`, `text-popover-foreground`, `ThemeTokens.text`, etc.).
    - Portal overlays (`AlertDialog`, `Dialog`, `Sheet`, `Popover`, `Tooltip`) MUST NEVER rely on host CSS inheritance for text colors (in dark mode, unassigned text falls back to user-agent black `rgb(0,0,0)`, creating invisible black-on-black text).
@@ -41,6 +45,14 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - **Single Source of Truth for Visual Highlight**: In menus, dropdowns, selects, and lists, visual active highlight MUST be driven exclusively by `highlightedIndex` (Qt) or `[data-highlighted]` / roving focus (React). Never combine hover and keyboard focus with boolean OR (`isHighlighted || containsMouse` is strictly forbidden).
    - **Input Modality State Machine**: Navigational keys (`ArrowDown`, `ArrowUp`, `Home`, `End`, etc.) switch modality to `'keyboard'` and suppress hover highlights on any item under the mouse. Stationary pointer events are discarded; only intentional pointer movements ($\Delta x > 1\text{px} \lor \Delta y > 1\text{px}$) switch modality to `'pointer'`.
    - **100% Showcase Documentation**: Every component DocPage MUST render `<KeyboardShortcutsTable>` linking its shortcut mapping from `spec/showcase/keyboard-shortcuts.json`.
+9. **Mandatory Zero-`px` Units Mandate (禁止使用 `px` 作为单位与度量规范)**:
+   - **Zero `px` in UI & Styles**: Raw `px` units are strictly forbidden across all component code, CSS classes, inline styles, doc descriptions, and properties tables.
+   - **Tailwind & CSS**: Use Tailwind semantic scale (`w-32`, `h-9`, `gap-2`, `size-8`) or rem arbitrary values (`w-[6.25rem]`, `h-[0.0625rem]`). Never use `w-[100px]`, `h-[300px]`, `w-px`, `h-px`, or inline `${val}px`.
+   - **Virtualizer & Dynamic Spacers**: Dynamic measurements (virtual list spacer rows, dynamic offsets) must convert pixel calculations to rem: `${val * 0.0625}rem`.
+   - **Neutral Prop Names & Tokens**: Component props and CSS variables must omit `Px` or `pixel` suffixes (`hitThickness`, `visualThickness`, `deltaAmount`, `--sidebar-width` instead of `hitThicknessPx`, `deltaPixels`, `--sidebar-width-px`).
+   - **Documentation & PropsTable**: Doc descriptions, code examples, and props tables must never describe measurements as "in pixels" or "100px". Use neutral units, rem scale, or component tokens.
+10. **Pre-Response Commit Gate & Incremental Verification (增量提交门禁与验证壁垒)**:
+    - Every component introduced or modified MUST pass full verification (`cmake --build qt/build && pnpm test && pnpm gate`) and be committed immediately with English Conventional Commits (`feat(<name>): ...`) and pushed to origin BEFORE proceeding to the next component or yielding the turn. Never accumulate uncommitted changes.
 
 ---
 
@@ -187,8 +199,8 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Interactive `ComponentPreview` with live preview and controls.
      - Dedicated `KeyboardShortcutsTable` section with `{ id: 'keyboard', title: 'Keyboard Navigation' }` in `tocItems`.
      - Variant showcase section.
-     - Clean TSX / QML `CodeBlock` examples.
-     - Complete `PropsTable`.
+     - Clean TSX / QML `CodeBlock` examples (strictly zero `px` in CSS classes or inline styles).
+     - Complete `PropsTable` (strictly zero `px` or "in pixels" in descriptions; use neutral descriptions).
 2. **Qt Living DocPage Component & Main Route**:
    - Create `qt/src/<Name>DocPage.qml` with interactive preview, variant controls, `KeyboardShortcutsTable`, code blocks, and props table.
    - Register `qt/src/<Name>DocPage.qml` in `qt/CMakeLists.txt` under `QtChaSetDemo` `QML_FILES`.
@@ -210,24 +222,33 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Import `<Name>DocPage`.
      - Add `case '#/components/<name>': return <<Name>DocPage />;` in `renderActivePage()`.
 5. **Full Demo Dogfooding & Migration**:
-   - Scan showcase layouts and dialogs (`Header`, `Sidebar`, `ComponentPreview`, `ExportModal`, `CommandSearchModal`, `ThemeTuner`).
-   - Replace any raw HTML tags (e.g. `<button>`, `<input>`, `<span>` pills) with the newly created ChaSet component.
+   - Scan showcase layouts, toolbars, and dialogs (`Header`, `Sidebar`, `ComponentPreview`, `ExportModal`, `CommandSearchModal`, `ThemeTuner`).
+   - Replace any raw HTML/QML controls:
+     - Mode toggles and filter tabs -> `<SegmentedControl>` / `ChaSetSegmentedControl`.
+     - Status indicators, rule counters, telemetry values -> `<Badge>` / `ChaSetBadge`.
+     - Tables / lists -> `<Table>` with `badge: true` or `<GenericDataTable>`.
+     - Dividers -> `<Separator>` / `ChaSetSeparator`.
+     - Copy actions -> `<CopyButton>` / `ChaSetCopyButton`.
 
 ---
 
 ### Phase 7: Verification Checklist & Commit Gate
 
-1. Verify all suites pass:
+1. **Zero-`px` Verification**:
+   - Verify zero raw `px` units in component implementation, styles, virtualizer spacer calculations (must use rem), code snippets, doc page previews, and PropsTable descriptions.
+2. **Execute Full Suite Verification**:
    ```bash
-   pnpm build
-   pnpm --filter @chaset/example-react-button build
    cmake --build qt/build
    pnpm test
    pnpm gate
-   pnpm test:pixel --component all
    ```
-2. Split commits cleanly per Conventional Commits:
-   - `feat(<name>): implement cross-stack <name> component with spec and conformance`
-   - `test(<name>): add pixel-sync verification matrix and harness`
-   - `refactor(examples): migrate showcase pages to ChaSet <Name>`
-3. Run `git push origin main` and confirm working tree is clean.
+   For L1 Atomic Primitives, also run:
+   ```bash
+   pnpm test:pixel --component <name>
+   ```
+3. **Pre-Response Commit Gate**:
+   - Split commits cleanly per Conventional Commits with English descriptions:
+     - `feat(<name>): implement cross-stack <name> component with spec and conformance`
+     - `test(<name>): add pixel-sync verification matrix and harness`
+     - `refactor(examples): migrate showcase pages to ChaSet <Name>`
+   - Run `git push origin main` and confirm working tree is clean before yielding turn.

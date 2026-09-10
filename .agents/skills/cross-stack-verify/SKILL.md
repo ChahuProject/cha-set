@@ -29,7 +29,8 @@ When developing or modifying components across React and Qt, you MUST follow thi
 
 4. **Mandatory Dogfooding & Showcase Self-Hosting (组件自举与演示置换红线)**
    - Whenever a new component is introduced, scan all demo layouts, headers, sidebars, and dialogs in both React and Qt.
-   - All raw HTML elements, ad-hoc button implementations, custom copy scripts, and raw divider rectangles MUST be replaced immediately with the new ChaSet primitive (e.g. `<CopyButton>`, `<Separator>`, `<DropdownMenu>`, `<Tooltip>`).
+   - All raw HTML elements, ad-hoc button implementations, custom copy scripts, mode buttons, and raw divider rectangles MUST be replaced immediately with the new ChaSet primitive (e.g. `<CopyButton>`, `<Separator>`, `<DropdownMenu>`, `<Tooltip>`, `<SegmentedControl>`, `<Badge>`).
+   - In Qt QML, delegates and preview headers must similarly dogfood ChaSet primitives (`ChaSetBadge` for status/telemetry/rules, `ChaSetSegmentedControl` for mode toggles, `ChaSetSeparator` for divider lines, and `ChaSetTable` with `badge: true` for status cells).
 
 5. **Single Source of Truth for Data (禁止双端手写重复数据)**
    - All component datasets (changelogs, feature matrices, docs hierarchy, token tables) MUST reside in `spec/showcase/*.json` or `spec/tokens/**`.
@@ -41,7 +42,7 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Viewport Bounds**: Ensure `contentHeight` and `contentWidth` are correctly computed or bounded via `childrenRect`.
    - **Layout Attached Properties**: Never use `Layout.fillWidth` or `Layout.fillHeight` inside standard `Row` or `Column`. Only use inside `RowLayout`/`ColumnLayout` or use anchors.
    - **Signal Duplication**: Never redeclare automatic property change signals (`property string value` already generates `signal valueChanged`).
-   - **Component Runtime Instantiation Gate**: Never rely merely on file existence. All Qt doc pages must pass physical instantiation via `QtChaSetDemo.exe --test-scenario all` to verify zero `Component.Error`.
+   - **Component Runtime Instantiation Gate**: Never rely merely on file existence. All 47 Qt doc pages must pass physical instantiation via `QtChaSetDemo.exe --test-scenario all` to verify zero `Component.Error`.
 
 7. **Mandatory Color & Contrast Self-Containment (双端色彩自洽与成对配对律)**
    - Ensure all components, floating overlays, and interactive controls pair surface colors with explicit foreground text colors (`bg-background` + `text-foreground`, `bg-card` + `text-card-foreground`, `ThemeTokens.panel` + `ThemeTokens.text`). Never allow portal overlays or outline buttons to leave text colors unassigned or reliant on ambient DOM inheritance.
@@ -51,22 +52,29 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Zero Dual-Highlight**: Navigational keys switch modality to `'keyboard'`, immediately suppressing hover highlight under the mouse cursor. Stationary mouse events are ignored; only intentional mouse movement ($\Delta > 1\text{px}$) switches modality back to `'pointer'`.
    - **Showcase Completeness**: Every living showcase DocPage must render `<KeyboardShortcutsTable>` backed by `spec/showcase/keyboard-shortcuts.json`.
 
+9. **Mandatory Zero-`px` Units Mandate (零 `px` 跨端度量与样式红线)**
+   - **Strict Zero-`px`**: Raw `px` units are strictly forbidden across all component code, CSS classes, inline styles, doc descriptions, and properties tables.
+   - **Web Scale**: Use Tailwind scale (`w-32`, `h-9`, `gap-2`, `size-8`) or rem arbitrary values (`w-[6.25rem]`, `h-[0.0625rem]`). Never use `w-[100px]`, `w-px`, or inline `${val}px`.
+   - **Virtualization Spacers**: Dynamic height/width calculations in spacers must convert to rem: `${val * 0.0625}rem`.
+   - **Neutral Prop Names**: Omit `Px` suffixes from props and CSS variables (`hitThickness`, `visualThickness`, `deltaAmount`, `--sidebar-width`).
+   - **Docs & Descriptions**: Never write `in pixels` or `100px` in PropsTable descriptions or doc text.
+
 ## 2. Verification Commands Checklist
 
 Before declaring any component task complete, execute:
 
 ```bash
-# 1. Regenerate tokens & showcase datasets
+# 1. Regenerate tokens & showcase datasets (if contracts or tokens modified)
 pnpm build:tokens
 
-# 2. Build Qt project
+# 2. Build Qt desktop project
 cmake --build qt/build
 
-# 3. Run React test suite
-pnpm --filter @chahu/cha-set test
+# 3. Run full React test suite (96 test files, 518 tests)
+pnpm test
 
 # 4. Run full cross-stack behavioral & showcase gate
-# (Checks 242+ capabilities, 100% showcase docs completeness, and Qt scenarios)
+# (Checks 318 capabilities, 100% showcase docs completeness for 47 components, and Qt scenarios)
 pnpm gate
 
 # 5. (For L1 Atomic Primitives) Run targeted bit-exact pixel-sync
