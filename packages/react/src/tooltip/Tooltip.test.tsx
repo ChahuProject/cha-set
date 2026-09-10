@@ -251,4 +251,37 @@ describe('Tooltip Component', () => {
     expect(contentRef.current).toBeInstanceOf(HTMLDivElement);
     expect(contentRef.current).toHaveClass('custom-bubble');
   });
+
+  it('renders keyboard shortcut badge when shortcut prop is provided', () => {
+    render(
+      <Tooltip content="Save changes" shortcut="Ctrl+S" delayDuration={0}>
+        <button type="button">Save</button>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Save' });
+    fireEvent.mouseEnter(trigger);
+
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent('Save changes');
+    const shortcut = tooltip.querySelector('[data-slot="tooltip-shortcut"]');
+    expect(shortcut).toBeInTheDocument();
+    expect(shortcut).toHaveTextContent('Ctrl+S');
+  });
+
+  it('renders directional arrow indicator when arrow is true', () => {
+    render(
+      <Tooltip content="Arrow tip" arrow side="top" delayDuration={0}>
+        <button type="button">Target</button>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Target' });
+    fireEvent.mouseEnter(trigger);
+
+    const tooltip = screen.getByRole('tooltip');
+    const arrow = tooltip.querySelector('[data-slot="tooltip-arrow"]');
+    expect(arrow).toBeInTheDocument();
+  });
 });

@@ -12,6 +12,8 @@ Item {
     property int delay: 200
     property bool active: false
     property bool disabled: false
+    property string shortcut: ""
+    property bool arrow: false
 
     // Optional explicit target item outside this container
     property Item target: null
@@ -136,18 +138,70 @@ Item {
         border.color: ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.15) : Qt.rgba(255, 255, 255, 0.15)
         border.width: 1
 
-        implicitWidth: Math.max(24, bubbleText.implicitWidth + 16)
-        implicitHeight: Math.max(20, bubbleText.implicitHeight + 8)
+        implicitWidth: Math.max(24, contentRow.implicitWidth + 16)
+        implicitHeight: Math.max(20, contentRow.implicitHeight + 8)
 
-        Text {
-            id: bubbleText
+        Row {
+            id: contentRow
             anchors.centerIn: parent
-            text: root.text
-            color: ThemeTokens.dark ? "#020817" : "#f8fafc"
-            font.pixelSize: 11
-            font.weight: Font.Medium
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            spacing: 6
+
+            Text {
+                id: bubbleText
+                text: root.text
+                color: ThemeTokens.dark ? "#020817" : "#f8fafc"
+                font.pixelSize: 11
+                font.weight: Font.Medium
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Rectangle {
+                id: shortcutBadge
+                visible: root.shortcut.length > 0
+                anchors.verticalCenter: parent.verticalCenter
+                radius: 3
+                color: ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.1) : Qt.rgba(255, 255, 255, 0.2)
+                border.color: ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.15) : Qt.rgba(255, 255, 255, 0.2)
+                border.width: 1
+                implicitWidth: shortcutText.implicitWidth + 8
+                implicitHeight: shortcutText.implicitHeight + 4
+
+                Text {
+                    id: shortcutText
+                    anchors.centerIn: parent
+                    text: root.shortcut
+                    color: ThemeTokens.dark ? "#020817" : "#f8fafc"
+                    font.pixelSize: 10
+                    font.family: "monospace"
+                    font.weight: Font.Medium
+                }
+            }
+        }
+
+        Rectangle {
+            id: arrowIndicator
+            visible: root.arrow
+            width: 6
+            height: 6
+            rotation: 45
+            color: bubble.color
+            z: -1
+            x: {
+                switch (root.side) {
+                case "left": return bubble.width - 3
+                case "right": return -3
+                default: return (bubble.width - width) / 2
+                }
+            }
+            y: {
+                switch (root.side) {
+                case "top": return bubble.height - 3
+                case "bottom": return -3
+                default: return (bubble.height - height) / 2
+                }
+            }
         }
     }
 }

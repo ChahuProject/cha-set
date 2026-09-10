@@ -26,7 +26,9 @@ DocLayout {
     property color cAccentBg: ThemeTokens.hover
 
     property string demoSide: "top"
-    property string demoText: "Add to library"
+    property string demoText: "Save document"
+    property string demoShortcut: "Ctrl+S"
+    property bool demoArrow: true
     property int demoDelay: 200
     property bool demoDisabled: false
 
@@ -35,8 +37,8 @@ DocLayout {
         id: heroPreview
         width: parent.width
         title: "Tooltip Sandbox"
-        reactCode: `<Tooltip\n  content="${root.demoText}"\n  side="${root.demoSide}"\n  delayDuration={${root.demoDelay}}\n  disabled={${root.demoDisabled}}\n>\n  <Button variant="outline">Hover or Focus Me</Button>\n</Tooltip>`
-        qtCode: `ChaSetTooltip {\n    text: "${root.demoText}"\n    side: "${root.demoSide}"\n    delay: ${root.demoDelay}\n    disabled: ${root.demoDisabled}\n\n    ChaSetButton {\n        text: "Hover or Focus Me"\n        variant: "outline"\n    }\n}`
+        reactCode: `<Tooltip\n  content="${root.demoText}"\n  shortcut="${root.demoShortcut}"\n  arrow={${root.demoArrow}}\n  side="${root.demoSide}"\n  delayDuration={${root.demoDelay}}\n  disabled={${root.demoDisabled}}\n>\n  <Button variant="outline">Hover or Focus Me</Button>\n</Tooltip>`
+        qtCode: `ChaSetTooltip {\n    text: "${root.demoText}"\n    shortcut: "${root.demoShortcut}"\n    arrow: ${root.demoArrow}\n    side: "${root.demoSide}"\n    delay: ${root.demoDelay}\n    disabled: ${root.demoDisabled}\n\n    ChaSetButton {\n        text: "Hover or Focus Me"\n        variant: "outline"\n    }\n}`
 
         stageData: [
             Item {
@@ -47,6 +49,8 @@ DocLayout {
                 ChaSetTooltip {
                     anchors.centerIn: parent
                     text: root.demoText
+                    shortcut: root.demoShortcut
+                    arrow: root.demoArrow
                     side: root.demoSide
                     delay: root.demoDelay
                     disabled: root.demoDisabled
@@ -107,6 +111,28 @@ DocLayout {
                         onTextEdited: root.demoText = text
                         anchors.verticalCenter: parent.verticalCenter
                     }
+                }
+
+                // Shortcut Input
+                Row {
+                    spacing: 8
+                    Text { text: "Shortcut:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetInput {
+                        width: 90
+                        size: "sm"
+                        text: root.demoShortcut
+                        onTextEdited: root.demoShortcut = text
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+
+                // Arrow Toggle
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Arrow"
+                    checked: root.demoArrow
+                    onToggled: (val) => root.demoArrow = val
+                    anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Disabled Toggle
@@ -295,6 +321,62 @@ DocLayout {
                     }
                 }
             }
+
+            // Keyboard Shortcut Hint
+            Rectangle {
+                width: (parent.width - 16) / 2
+                height: 120
+                radius: 8
+                color: root.cCard
+                border.color: root.cBorder
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 14
+                    spacing: 8
+                    Text { text: "Keyboard Shortcut Hint"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    Item {
+                        width: parent.width
+                        height: 60
+                        ChaSetTooltip {
+                            anchors.centerIn: parent
+                            text: "Save Document"
+                            shortcut: "Ctrl+S"
+                            side: "top"
+                            delay: 0
+                            ChaSetButton { size: "sm"; variant: "secondary"; text: "Save Action" }
+                        }
+                    }
+                }
+            }
+
+            // Directional Arrow
+            Rectangle {
+                width: (parent.width - 16) / 2
+                height: 120
+                radius: 8
+                color: root.cCard
+                border.color: root.cBorder
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 14
+                    spacing: 8
+                    Text { text: "Directional Arrow"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    Item {
+                        width: parent.width
+                        height: 60
+                        ChaSetTooltip {
+                            anchors.centerIn: parent
+                            text: "Anchored Pointer"
+                            arrow: true
+                            side: "top"
+                            delay: 0
+                            ChaSetButton { size: "sm"; variant: "secondary"; text: "With Arrow" }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -323,6 +405,18 @@ DocLayout {
                     type: "string",
                     default: "\"\"",
                     description: "The content text rendered inside the floating tooltip bubble."
+                },
+                {
+                    name: "shortcut",
+                    type: "string",
+                    default: "\"\"",
+                    description: "Keyboard shortcut hint badge rendered inside the tooltip bubble."
+                },
+                {
+                    name: "arrow",
+                    type: "bool",
+                    default: "false",
+                    description: "Whether to render a directional arrow pointing toward the trigger item."
                 },
                 {
                     name: "side",

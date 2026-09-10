@@ -103,7 +103,9 @@
     "content": true,
     "side": true,
     "delay": true,
-    "hoverTrigger": true
+    "hoverTrigger": true,
+    "shortcut": true,
+    "arrow": true
   },
   "table": {
     "header": true,

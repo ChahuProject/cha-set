@@ -21,16 +21,20 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 
 export function TooltipDocPage() {
   const [side, setSide] = useState<TooltipSide>('top');
-  const [text, setText] = useState('Add to library');
+  const [text, setText] = useState('Save document');
+  const [shortcut, setShortcut] = useState('Ctrl+S');
+  const [arrow, setArrow] = useState(true);
   const [delay, setDelay] = useState(200);
   const [disabled, setDisabled] = useState(false);
 
-  const heroReactCode = `<Tooltip content="${text}" side="${side}" delayDuration={${delay}} disabled={${disabled}}>
+  const heroReactCode = `<Tooltip content="${text}" shortcut="${shortcut}" arrow={${arrow}} side="${side}" delayDuration={${delay}} disabled={${disabled}}>
   <Button variant="outline">Hover or Focus Me</Button>
 </Tooltip>`;
 
   const heroQtCode = `ChaSetTooltip {
     text: "${text}"
+    shortcut: "${shortcut}"
+    arrow: ${arrow}
     side: "${side}"
     delay: ${delay}
     disabled: ${disabled}
@@ -61,7 +65,7 @@ export function TooltipDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Test interactive hover delays, side positioning, custom tooltip content, and disabled behavior across Web and Qt Quick Desktop.
+          Test interactive hover delays, side positioning, keyboard shortcut badges, directional arrows, and disabled behavior across Web and Qt Quick Desktop.
         </p>
 
         <ComponentPreview
@@ -106,6 +110,25 @@ export function TooltipDocPage() {
                 />
               </div>
 
+              {/* Shortcut Input */}
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground text-xs">Shortcut:</span>
+                <Input
+                  size="sm"
+                  value={shortcut}
+                  onChange={(e) => setShortcut(e.target.value)}
+                  className="w-24 h-8 text-xs"
+                />
+              </div>
+
+              {/* Arrow Toggle */}
+              <Checkbox
+                size="sm"
+                checked={arrow}
+                onCheckedChange={(val) => setArrow(Boolean(val))}
+                label="Arrow"
+              />
+
               {/* Disabled Toggle */}
               <Checkbox
                 size="sm"
@@ -119,6 +142,8 @@ export function TooltipDocPage() {
           <div className="flex items-center justify-center py-12">
             <Tooltip
               content={text}
+              shortcut={shortcut}
+              arrow={arrow}
               side={side}
               delayDuration={delay}
               disabled={disabled}
@@ -247,6 +272,28 @@ export function ShorthandTooltipDemo() {
               </Tooltip>
             </div>
           </div>
+
+          {/* Keyboard Shortcut */}
+          <div className="flex flex-col gap-2 p-6 rounded-lg border border-border bg-card">
+            <span className="text-xs font-semibold text-foreground">Keyboard Shortcut Hint</span>
+            <span className="text-xs text-muted-foreground mb-3">Productivity hint badge for fast power-user discovery</span>
+            <div className="flex items-center justify-center py-6">
+              <Tooltip content="Save Document" shortcut="Ctrl+S" side="top" delayDuration={0}>
+                <Button variant="secondary" size="sm">Save Action</Button>
+              </Tooltip>
+            </div>
+          </div>
+
+          {/* Directional Arrow */}
+          <div className="flex flex-col gap-2 p-6 rounded-lg border border-border bg-card">
+            <span className="text-xs font-semibold text-foreground">Directional Arrow</span>
+            <span className="text-xs text-muted-foreground mb-3">Pointer triangle anchored directly toward trigger</span>
+            <div className="flex items-center justify-center py-6">
+              <Tooltip content="Anchored Pointer" arrow side="top" delayDuration={0}>
+                <Button variant="secondary" size="sm">With Arrow</Button>
+              </Tooltip>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -273,6 +320,18 @@ export function ShorthandTooltipDemo() {
               type: 'ReactNode | string',
               default: "''",
               description: 'The content rendered inside the floating tooltip bubble.',
+            },
+            {
+              name: 'shortcut',
+              type: 'string',
+              default: "''",
+              description: 'Keyboard shortcut badge rendered inside the tooltip bubble.',
+            },
+            {
+              name: 'arrow',
+              type: 'boolean',
+              default: 'false',
+              description: 'Whether to render a directional arrow pointing toward the trigger element.',
             },
             {
               name: 'side',

@@ -14,6 +14,8 @@ export const tooltipSchema = z.object({
   sideOffset: z.number().default(4),
   delayDuration: z.number().default(200),
   disabled: z.boolean().default(false),
+  shortcut: z.string().optional(),
+  arrow: z.boolean().default(false),
 });
 
 export type TooltipApi = z.infer<typeof tooltipSchema>;

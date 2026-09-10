@@ -279,10 +279,26 @@ export interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement
   align?: TooltipAlign;
   sideOffset?: number;
   alignOffset?: number;
+  shortcut?: string;
+  arrow?: boolean;
 }
 
 export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
-  ({ className, side: propSide, align = 'center', sideOffset, alignOffset, children, style, ...props }, ref) => {
+  (
+    {
+      className,
+      side: propSide,
+      align = 'center',
+      sideOffset,
+      alignOffset,
+      shortcut,
+      arrow = false,
+      children,
+      style,
+      ...props
+    },
+    ref,
+  ) => {
     const { isOpen, side: contextSide, tooltipId } = useTooltip();
     const side = propSide || contextSide || 'top';
 
@@ -292,10 +308,11 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
 
     const computedStyle: React.CSSProperties = { ...style };
     if (sideOffset !== undefined) {
-      if (side === 'top') computedStyle.marginBottom = `${sideOffset}px`;
-      else if (side === 'bottom') computedStyle.marginTop = `${sideOffset}px`;
-      else if (side === 'left') computedStyle.marginRight = `${sideOffset}px`;
-      else if (side === 'right') computedStyle.marginLeft = `${sideOffset}px`;
+      const remVal = `${(sideOffset * 0.0625).toFixed(4)}rem`;
+      if (side === 'top') computedStyle.marginBottom = remVal;
+      else if (side === 'bottom') computedStyle.marginTop = remVal;
+      else if (side === 'left') computedStyle.marginRight = remVal;
+      else if (side === 'right') computedStyle.marginLeft = remVal;
     }
 
     return (
@@ -310,13 +327,33 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
         style={computedStyle}
         className={cn(
           'absolute whitespace-nowrap pointer-events-none select-none',
-          'z-50 overflow-hidden rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md animate-in fade-in-0 zoom-in-95',
+          'z-50 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md animate-in fade-in-0 zoom-in-95 inline-flex items-center gap-2',
           sidePositionClasses[side],
           className,
         )}
         {...props}
       >
-        {children}
+        <span>{children}</span>
+        {shortcut && (
+          <kbd
+            data-slot="tooltip-shortcut"
+            className="inline-flex items-center justify-center rounded px-1.5 py-0.5 text-[0.6875rem] font-mono font-medium tracking-tight bg-primary-foreground/20 text-primary-foreground/90 border border-primary-foreground/20"
+          >
+            {shortcut}
+          </kbd>
+        )}
+        {arrow && (
+          <span
+            data-slot="tooltip-arrow"
+            className={cn(
+              'absolute w-0 h-0 border-solid pointer-events-none',
+              side === 'top' && 'top-full left-1/2 -translate-x-1/2 border-t-[0.25rem] border-t-primary border-x-[0.25rem] border-x-transparent border-b-0',
+              side === 'bottom' && 'bottom-full left-1/2 -translate-x-1/2 border-b-[0.25rem] border-b-primary border-x-[0.25rem] border-x-transparent border-t-0',
+              side === 'left' && 'left-full top-1/2 -translate-y-1/2 border-l-[0.25rem] border-l-primary border-y-[0.25rem] border-y-transparent border-r-0',
+              side === 'right' && 'right-full top-1/2 -translate-y-1/2 border-r-[0.25rem] border-r-primary border-y-[0.25rem] border-y-transparent border-l-0',
+            )}
+          />
+        )}
       </div>
     );
   },
@@ -326,6 +363,10 @@ TooltipContent.displayName = 'TooltipContent';
 
 export interface TooltipProps extends Omit<TooltipRootProps, 'content'> {
   content?: React.ReactNode;
+  shortcut?: string;
+  arrow?: boolean;
+  sideOffset?: number;
+  alignOffset?: number;
 }
 
 const TooltipComponent = React.forwardRef<HTMLDivElement, TooltipProps>(
@@ -333,6 +374,10 @@ const TooltipComponent = React.forwardRef<HTMLDivElement, TooltipProps>(
     {
       children,
       content,
+      shortcut,
+      arrow,
+      sideOffset,
+      alignOffset,
       side = 'top',
       delayDuration,
       disabled = false,
@@ -363,7 +408,15 @@ const TooltipComponent = React.forwardRef<HTMLDivElement, TooltipProps>(
           ) : (
             <TooltipTrigger>{children}</TooltipTrigger>
           )}
-          <TooltipContent side={side}>{content}</TooltipContent>
+          <TooltipContent
+            side={side}
+            shortcut={shortcut}
+            arrow={arrow}
+            sideOffset={sideOffset}
+            alignOffset={alignOffset}
+          >
+            {content}
+          </TooltipContent>
         </TooltipRoot>
       );
     }

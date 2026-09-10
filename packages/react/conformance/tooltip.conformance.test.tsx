@@ -49,7 +49,7 @@ describe('Tooltip conformance (spec contract)', () => {
       console.warn('[conformance] coverage.json has no tooltip entry yet; skipping earned-capability assertions');
       return;
     }
-    for (const cap of ['content', 'side', 'delay', 'hoverTrigger'] as const) {
+    for (const cap of ['content', 'side', 'delay', 'hoverTrigger', 'shortcut', 'arrow'] as const) {
       expect(coverage.tooltip?.[cap], `capability "${cap}" must be earned`).toBe(true);
     }
   });

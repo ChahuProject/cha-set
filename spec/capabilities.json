@@ -127,7 +127,9 @@
       "content": { "requirement": "must", "description": "renders tooltip text content" },
       "side": { "requirement": "must", "description": "positions tooltip relative to trigger" },
       "delay": { "requirement": "must", "description": "supports delay before displaying" },
-      "hoverTrigger": { "requirement": "must", "description": "hover triggers tooltip display" }
+      "hoverTrigger": { "requirement": "must", "description": "hover triggers tooltip display" },
+      "shortcut": { "requirement": "should", "description": "displays keyboard shortcut hint badge inside tooltip" },
+      "arrow": { "requirement": "should", "description": "renders directional arrow pointer towards trigger" }
     },
     "table": {
       "header": { "requirement": "must", "description": "renders table header row and columns" },
