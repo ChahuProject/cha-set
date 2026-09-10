@@ -12,6 +12,7 @@ export const tableColumnSchema = z.object({
   title: z.string(),
   width: z.union([z.number(), z.string()]).optional(),
   align: tableColumnAlignSchema.default('left').optional(),
+  badge: z.boolean().optional(),
 });
 
 export const tableRowSchema = z.record(z.string(), z.any());

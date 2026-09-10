@@ -154,7 +154,27 @@ Rectangle {
                             width: root.getColWidth(index, rowItem.width)
                             height: rowItem.height
 
+                            ChaSetBadge {
+                                visible: Boolean(columnDef && columnDef.badge)
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                anchors.leftMargin: 12
+                                text: {
+                                    if (!rowRecord || !columnDef || columnDef.key === undefined) return "";
+                                    var val = rowRecord[columnDef.key];
+                                    return val !== undefined && val !== null ? String(val) : "";
+                                }
+                                size: "sm"
+                                variant: {
+                                    var t = String(text).toLowerCase();
+                                    if (t === "paid" || t === "complete" || t === "active" || t === "healthy") return "default";
+                                    if (t === "pending" || t === "in review" || t === "planned") return "secondary";
+                                    return "outline";
+                                }
+                            }
+
                             Text {
+                                visible: !Boolean(columnDef && columnDef.badge)
                                 anchors.fill: parent
                                 anchors.leftMargin: 12
                                 anchors.rightMargin: 12

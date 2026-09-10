@@ -56,8 +56,8 @@ DocLayout {
         id: heroPreview
         width: parent.width
         title: "Table Sandbox"
-        reactCode: `<Table>\n  ${root.showCaption ? '<TableCaption>A list of your recent invoices.</TableCaption>\n  ' : ''}<TableHeader>\n    <TableRow>\n      <TableHead className="w-[100px]">Invoice</TableHead>\n      <TableHead>Status</TableHead>\n      <TableHead>Method</TableHead>\n      <TableHead className="text-right">Amount</TableHead>\n    </TableRow>\n  </TableHeader>\n  <TableBody>\n    {invoices.map((inv) => (\n      <TableRow key={inv.id}>\n        <TableCell className="font-medium">{inv.id}</TableCell>\n        <TableCell>{inv.status}</TableCell>\n        <TableCell>{inv.method}</TableCell>\n        <TableCell className="text-right">{inv.amount}</TableCell>\n      </TableRow>\n    ))}\n  </TableBody>\n</Table>`
-        qtCode: `ChaSetTable {\n    width: parent.width\n    caption: ${root.showCaption ? '"A list of your recent invoices."' : '""'}\n    columns: [\n        { key: "id", title: "Invoice", width: 100 },\n        { key: "status", title: "Status", width: 100 },\n        { key: "method", title: "Method" },\n        { key: "amount", title: "Amount", align: "right", width: 120 }\n    ]\n    rows: invoices\n    selectedIndex: 0\n    onRowClicked: (index, rowData) => console.log("Selected:", rowData.id)\n}`
+        reactCode: `<Table>\n  ${root.showCaption ? '<TableCaption>A list of your recent invoices.</TableCaption>\n  ' : ''}<TableHeader>\n    <TableRow>\n      <TableHead className="w-24">Invoice</TableHead>\n      <TableHead>Status</TableHead>\n      <TableHead>Method</TableHead>\n      <TableHead className="text-right">Amount</TableHead>\n    </TableRow>\n  </TableHeader>\n  <TableBody>\n    {invoices.map((inv) => (\n      <TableRow key={inv.id}>\n        <TableCell className="font-medium">{inv.id}</TableCell>\n        <TableCell>{inv.status}</TableCell>\n        <TableCell>{inv.method}</TableCell>\n        <TableCell className="text-right">{inv.amount}</TableCell>\n      </TableRow>\n    ))}\n  </TableBody>\n</Table>`
+        qtCode: `ChaSetTable {\n    width: parent.width\n    caption: ${root.showCaption ? '"A list of your recent invoices."' : '""'}\n    columns: [\n        { key: "id", title: "Invoice", width: 100 },\n        { key: "status", title: "Status", width: 100, badge: true },\n        { key: "method", title: "Method" },\n        { key: "amount", title: "Amount", align: "right", width: 120 }\n    ]\n    rows: invoices\n    selectedIndex: 0\n    onRowClicked: (index, rowData) => console.log("Selected:", rowData.id)\n}`
 
         stageData: [
             Item {
@@ -70,7 +70,7 @@ DocLayout {
                     caption: root.showCaption ? "A list of your recent invoices." : ""
                     columns: [
                         { key: "id", title: "Invoice", width: 90 },
-                        { key: "status", title: "Status", width: 90 },
+                        { key: "status", title: "Status", width: 90, badge: true },
                         { key: "method", title: "Method" },
                         { key: "amount", title: "Amount", align: "right", width: 100 }
                     ]
@@ -230,7 +230,7 @@ DocLayout {
                         selectedIndex: 0
                         columns: [
                             { key: "task", title: "Task" },
-                            { key: "state", title: "State", align: "right" }
+                            { key: "state", title: "State", align: "right", badge: true }
                         ]
                         rows: [
                             { task: "API Integration", state: "Complete" },
@@ -285,13 +285,13 @@ DocLayout {
                     name: "headerHeight",
                     type: "int",
                     default: "36",
-                    description: "Height in pixels for the column header row."
+                    description: "Height for the column header row."
                 },
                 {
                     name: "rowHeight",
                     type: "int",
                     default: "36",
-                    description: "Height in pixels for each table data row."
+                    description: "Height for each table data row."
                 },
                 {
                     name: "selectedIndex",
