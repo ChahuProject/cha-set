@@ -8,9 +8,21 @@ Item {
 
     property alias model: gridView.model
     property alias delegate: gridView.delegate
+    property alias currentIndex: gridView.currentIndex
     property int cellWidth: 160
     property int cellHeight: 120
+    property real minColumnWidthRem: 12
+    property real gapRem: 0.75
+    property int estimateSize: 180
+    property int overscan: 4
     property int customRadius: 6
+
+    function scrollToIndex(index) {
+        if (gridView) {
+            gridView.positionViewAtIndex(index, GridView.Beginning)
+            gridView.currentIndex = index
+        }
+    }
 
     implicitWidth: 360
     implicitHeight: 280
@@ -53,7 +65,7 @@ Item {
             boundsBehavior: Flickable.StopAtBounds
             clip: true
             reuseItems: true
-            cacheBuffer: 200
+            cacheBuffer: root.overscan * (root.estimateSize > 0 ? root.estimateSize : root.cellHeight)
 
             ScrollBar.vertical: ChaSetScrollBar {
                 orientation: Qt.Vertical

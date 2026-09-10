@@ -2,6 +2,11 @@ import * as React from 'react';
 import { observeElementRect, useVirtualizer } from '@tanstack/react-virtual';
 import { cn } from '../lib/utils';
 
+export interface VirtualGridHandle {
+  /** Scroll to a specific item index */
+  scrollToIndex: (index: number, align?: 'start' | 'center' | 'end' | 'auto') => void;
+}
+
 export interface VirtualGridProps<T = any> {
   items?: readonly T[];
   renderCard?: (item: T, index: number) => React.ReactNode;
@@ -13,7 +18,7 @@ export interface VirtualGridProps<T = any> {
   minColumnWidthRem?: number;
   /** Gap between grid items (rem, default: 0.75) */
   gapRem?: number;
-  /** Estimated row height in pixels (default: 180) */
+  /** Estimated row height (default: 180) */
   estimateSize?: number;
   /** Overscan rows (default: 4) */
   overscan?: number;
@@ -21,6 +26,8 @@ export interface VirtualGridProps<T = any> {
   emptyNode?: React.ReactNode;
   /** Class name attached to scroll container */
   className?: string;
+  /** Ref handle for programmatic scrolling */
+  ref?: React.Ref<VirtualGridHandle>;
 }
 
 export function VirtualGrid<T>({
@@ -34,6 +41,7 @@ export function VirtualGrid<T>({
   overscan = 4,
   emptyNode,
   className,
+  ref,
 }: VirtualGridProps<T>) {
   const items = rawItems ?? [];
   const actualRenderCard = React.useMemo(() => {
@@ -98,6 +106,17 @@ export function VirtualGrid<T>({
       });
     },
   });
+
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      scrollToIndex: (index, align = 'auto') => {
+        const rowIndex = Math.floor(index / Math.max(1, columnCount));
+        virtualizer.scrollToIndex(rowIndex, { align });
+      },
+    }),
+    [virtualizer, columnCount],
+  );
 
   return (
     <div

@@ -30,4 +30,22 @@ describe('VirtualGrid', () => {
 
     expect(screen.getByText('No cards available')).toBeInTheDocument();
   });
+
+  it('supports renderItem alias, gapRem, overscan, and ref scrollToIndex', () => {
+    const ref = React.createRef<any>();
+    render(
+      <VirtualGrid
+        ref={ref}
+        items={['Card A', 'Card B']}
+        minColumnWidthRem={8}
+        gapRem={1}
+        overscan={6}
+        renderItem={(item) => <div>{item}</div>}
+      />,
+    );
+
+    expect(screen.getByText('Card A')).toBeInTheDocument();
+    expect(ref.current).toBeDefined();
+    expect(typeof ref.current.scrollToIndex).toBe('function');
+  });
 });

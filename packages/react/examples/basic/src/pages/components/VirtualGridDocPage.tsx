@@ -1,5 +1,5 @@
-import React from 'react';
-import { VirtualGrid, Badge } from '@chahu/cha-set';
+import React, { useRef } from 'react';
+import { VirtualGrid, type VirtualGridHandle, Badge, Button } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -14,9 +14,18 @@ const SAMPLE_ITEMS = Array.from({ length: 60 }, (_, i) => ({
 }));
 
 export function VirtualGridDocPage() {
-  const reactCode = `<VirtualGrid
+  const gridRef = useRef<VirtualGridHandle>(null);
+
+  const reactCode = `const gridRef = useRef<VirtualGridHandle>(null);
+
+// Jump to card index
+gridRef.current?.scrollToIndex(20, 'center');
+
+<VirtualGrid
+  ref={gridRef}
   items={items}
   minColumnWidthRem={10}
+  gapRem={0.75}
   estimateSize={96}
   className="h-72 border rounded-md bg-card overflow-auto p-2"
   renderCard={(item) => (
@@ -47,14 +56,47 @@ export function VirtualGridDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Virtualizing responsive card columns with automatic width calculation and row-based DOM recycling.
+          Virtualizing responsive card columns with automatic width calculation and row-based DOM recycling. Use controls below for programmatic navigation.
         </p>
 
         <ComponentPreview title="Virtual Grid Sandbox" reactCode={reactCode}>
-          <div className="w-full max-w-xl">
+          <div className="w-full max-w-xl space-y-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => gridRef.current?.scrollToIndex(0, 'start')}
+              >
+                Top (#1)
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => gridRef.current?.scrollToIndex(20, 'center')}
+              >
+                Card #20
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => gridRef.current?.scrollToIndex(40, 'center')}
+              >
+                Card #40
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => gridRef.current?.scrollToIndex(59, 'end')}
+              >
+                Bottom (#60)
+              </Button>
+            </div>
+
             <VirtualGrid
+              ref={gridRef}
               items={SAMPLE_ITEMS}
               minColumnWidthRem={10}
+              gapRem={0.75}
               estimateSize={96}
               className="h-72 border border-border rounded-md bg-card overflow-auto p-2"
               renderCard={(item) => (
@@ -83,7 +125,6 @@ export function VirtualGridDocPage() {
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
-      
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -100,11 +141,15 @@ export function VirtualGridDocPage() {
         </h2>
         <PropsTable
           props={[
-            { name: 'rowCount', type: 'number', default: '0', description: 'Total number of rows.' },
-            { name: 'columnCount', type: 'number', default: '0', description: 'Total number of columns.' },
-            { name: 'estimateRowSize', type: '(idx: number) => number', default: '() => 36', description: 'Row height estimator.' },
-            { name: 'estimateColumnSize', type: '(idx: number) => number', default: '() => 80', description: 'Column width estimator.' },
-            { name: 'renderCell', type: '(row: number, col: number) => ReactNode', default: 'undefined', description: 'Cell rendering callback.' },
+            { name: 'items', type: 'readonly T[]', default: '[]', description: 'Array of data items to layout into grid cards.' },
+            { name: 'renderCard', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: 'Callback rendering an individual grid card.' },
+            { name: 'renderItem', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: 'Alias for renderCard.' },
+            { name: 'minColumnWidthRem', type: 'number', default: '12', description: 'Minimum column width before responsive wrapping.' },
+            { name: 'gapRem', type: 'number', default: '0.75', description: 'Grid gap spacing between cards.' },
+            { name: 'estimateSize', type: 'number', default: '180', description: 'Estimated row height for virtual calculation.' },
+            { name: 'overscan', type: 'number', default: '4', description: 'Buffer row count rendered beyond viewport bounds.' },
+            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: 'Content rendered when items array is empty.' },
+            { name: 'ref', type: 'Ref<VirtualGridHandle>', default: 'undefined', description: 'Handle exposing scrollToIndex(index, align).' },
           ]}
         />
       </section>
