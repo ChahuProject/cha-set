@@ -9,13 +9,13 @@ export interface VirtualListHandle {
 
 export interface VirtualListProps<T> {
   items: readonly T[];
-  /** Initial row height estimate (px) */
+  /** Initial row height estimate */
   estimateSize?: number | ((index: number) => number);
   /** Function rendering an individual item */
   renderRow?: (item: T, index: number) => React.ReactNode;
   /** Alias for renderRow */
   renderItem?: (item: T, index: number) => React.ReactNode;
-  /** Vertical gap between items (px) */
+  /** Vertical gap between items */
   gap?: number;
   /** Number of items to render outside of the visible area */
   overscan?: number;
@@ -23,7 +23,7 @@ export interface VirtualListProps<T> {
   emptyNode?: React.ReactNode;
   /** Class name attached to scroll container */
   className?: string;
-  /** Optional scroll callback receiving distance to bottom in pixels */
+  /** Optional scroll callback receiving distance to bottom */
   onScroll?: (distanceToBottom: number) => void;
   /** Ref handle for programmatic scrolling */
   ref?: React.Ref<VirtualListHandle>;

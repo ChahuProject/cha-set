@@ -52,7 +52,41 @@ DocLayout {
                     font.pixelSize: 12
                 }
 
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 8
+
+                    ChaSetButton {
+                        text: "Top (#1)"
+                        variant: "outline"
+                        size: "sm"
+                        onClicked: virtualList.scrollToIndex(0)
+                    }
+
+                    ChaSetButton {
+                        text: "Index #500"
+                        variant: "outline"
+                        size: "sm"
+                        onClicked: virtualList.scrollToIndex(500)
+                    }
+
+                    ChaSetButton {
+                        text: "Index #5,000"
+                        variant: "outline"
+                        size: "sm"
+                        onClicked: virtualList.scrollToIndex(5000)
+                    }
+
+                    ChaSetButton {
+                        text: "Bottom (#10,000)"
+                        variant: "outline"
+                        size: "sm"
+                        onClicked: virtualList.scrollToIndex(9999)
+                    }
+                }
+
                 ChaSetVirtualList {
+                    id: virtualList
                     width: 360
                     height: 240
                     model: 10000
@@ -95,7 +129,6 @@ DocLayout {
         language: "qml"
     }
 
-    
     KeyboardShortcutsTable {
         componentId: "virtual-list"
     }
@@ -105,8 +138,12 @@ DocLayout {
         props: [
             { name: "model", type: "var", default: "null", description: "List model count or array for delegate generation." },
             { name: "delegate", type: "Component", default: "null", description: "Visual delegate instantiated for visible rows." },
-            { name: "itemHeight", type: "int", default: "36", description: "Default estimated height of each row in pixels." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the list viewport container." }
+            { name: "itemHeight", type: "int", default: "36", description: "Default estimated height of each row." },
+            { name: "estimateSize", type: "int", default: "36", description: "Estimated height of each item for virtual measurement." },
+            { name: "gap", type: "int", default: "0", description: "Vertical spacing between adjacent items." },
+            { name: "overscan", type: "int", default: "8", description: "Number of buffer items rendered beyond viewport bounds." },
+            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the list viewport container." },
+            { name: "scrollToIndex(index)", type: "function", default: "function", description: "Programmatically scrolls to the target item index." }
         ]
     }
 }

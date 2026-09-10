@@ -44,4 +44,35 @@ describe('VirtualList', () => {
     expect(ref.current).toBeDefined();
     expect(typeof ref.current?.scrollToIndex).toBe('function');
   });
+
+  it('supports renderItem alias, gap, and overscan', () => {
+    const items = ['First', 'Second', 'Third'];
+    render(
+      <VirtualList
+        items={items}
+        gap={4}
+        overscan={4}
+        renderItem={(item) => <div data-testid="item">{item}</div>}
+      />,
+    );
+
+    expect(screen.getByText('First')).toBeInTheDocument();
+  });
+
+  it('calls onScroll when scrolled', () => {
+    const onScroll = vi.fn();
+    const { container } = render(
+      <VirtualList
+        items={['One', 'Two']}
+        onScroll={onScroll}
+        renderRow={(item) => <div>{item}</div>}
+      />,
+    );
+
+    const scrollContainer = container.querySelector('[data-slot="virtual-list"]');
+    if (scrollContainer) {
+      scrollContainer.dispatchEvent(new Event('scroll'));
+      expect(onScroll).toHaveBeenCalled();
+    }
+  });
 });

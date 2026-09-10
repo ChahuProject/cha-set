@@ -8,8 +8,19 @@ Item {
 
     property alias model: listView.model
     property alias delegate: listView.delegate
+    property alias currentIndex: listView.currentIndex
     property int itemHeight: 36
+    property int estimateSize: 36
+    property int gap: 0
+    property int overscan: 8
     property int customRadius: 6
+
+    function scrollToIndex(index) {
+        if (listView) {
+            listView.positionViewAtIndex(index, ListView.Beginning);
+            listView.currentIndex = index;
+        }
+    }
 
     implicitWidth: 320
     implicitHeight: 280
@@ -55,7 +66,8 @@ Item {
             boundsBehavior: Flickable.StopAtBounds
             clip: true
             reuseItems: true
-            cacheBuffer: 200
+            spacing: root.gap
+            cacheBuffer: root.overscan * (root.estimateSize > 0 ? root.estimateSize : root.itemHeight)
 
             ScrollBar.vertical: ChaSetScrollBar {
                 orientation: Qt.Vertical
