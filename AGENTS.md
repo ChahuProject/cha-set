@@ -81,6 +81,19 @@
    - **Segmented / Default Controls Hug Contents**: Default segmented controls (such as `TabsList variant="default"`) MUST declare `w-fit`. Because compound containers like `TabsRoot` use flex column (`flex flex-col`), default flex cross-axis alignment (`align-items: stretch`) will erroneously stretch segmented button bars across the entire container width unless `w-fit` is explicitly set.
    - **ScrollArea Viewport & Content Containment**: When `showHorizontalScrollBar` is `false` (the default), `ScrollArea` content MUST NOT expand past the viewport width. Base UI's `<BaseScrollArea.Content>` defaults to inline `style="min-width: fit-content;"`, which permits oversized child elements (such as tables, cards, or unconstrained flex containers) to expand the content wrapper indefinitely, breaking parent flex containers and blowing out the entire page layout. When horizontal scrolling is not requested, `ScrollArea.Content` MUST enforce `w-full max-w-full min-w-0` and override inline min-width (`style={{ minWidth: 0, maxWidth: '100%', width: '100%' }}`).
    - **Flex Container Hard Constraints**: Compound and nesting layout containers (such as `TabsContent`) MUST declare `min-w-0` to avoid the CSS Flexbox intrinsic sizing blowout where percentage-width children (`width: 45%`) cause the parent container to compute an enormous intrinsic width (`child_width / percentage`).
+10. **Mandatory Keyboard Navigation & Input Modality Disambiguation (键盘交互系统与输入模态排他律 — 禁止双重高亮)**:
+    - **Single Source of Truth for Visual Highlight (单一视觉高亮真理源)**:
+      In interactive menus, dropdowns, selects, and lists, the visual active highlight MUST be governed exclusively by a single state property (`highlightedIndex` in Qt, `[data-highlighted]` / roving focus in React).
+      **STRICT BAN ON DUAL HIGHLIGHT**: Never combine hover and keyboard focus using boolean OR (such as `isHighlighted || containsMouse` in QML or coupling uncontrolled CSS `:hover` with active descendant styling).
+    - **Input Modality State Machine (输入模态状态机)**:
+      Components must maintain explicit input modality tracking (`modality: 'pointer' | 'keyboard'`).
+      1. When navigational keys (`ArrowDown`, `ArrowUp`, `Home`, `End`, etc.) are pressed, immediately switch modality to `'keyboard'`, move the virtual focus cursor to the target item, and **suppress mouse hover appearance** on any item currently under the stationary cursor.
+      2. Stationary mouse events (e.g. cursor standing still while items scroll or update underneath) MUST be discarded.
+      3. Only when intentional pointer movement occurs ($\Delta x > 1\text{px}$ or $\Delta y > 1\text{px}$) shall the component switch modality back to `'pointer'` and allow hover to claim the highlighted index.
+    - **Full Component Keyboard Parity (全量组件键盘交互对齐)**:
+      Every interactive component MUST support its standard keyboard traversal flow (Enter/Space to activate, Escape to dismiss, Arrow keys for spatial navigation, Tab/Shift+Tab for focus cycling).
+    - **Mandatory Showcase Documentation (100% 演示文档必须提供快捷键说明)**:
+      Every living showcase DocPage (`<Name>DocPage.tsx` and `<Name>DocPage.qml`) MUST provide a dedicated `Keyboard Navigation` section using `<KeyboardShortcutsTable>` with entries linked in the right-side Table of Contents (`tocItems`).
 
 ---
 

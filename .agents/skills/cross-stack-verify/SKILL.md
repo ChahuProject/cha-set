@@ -46,6 +46,11 @@ When developing or modifying components across React and Qt, you MUST follow thi
 7. **Mandatory Color & Contrast Self-Containment (双端色彩自洽与成对配对律)**
    - Ensure all components, floating overlays, and interactive controls pair surface colors with explicit foreground text colors (`bg-background` + `text-foreground`, `bg-card` + `text-card-foreground`, `ThemeTokens.panel` + `ThemeTokens.text`). Never allow portal overlays or outline buttons to leave text colors unassigned or reliant on ambient DOM inheritance.
 
+8. **Mandatory Keyboard Navigation & Input Modality Disambiguation (键盘交互规范与输入模态排他律)**
+   - **Single Source of Truth**: Active highlight is driven strictly by `highlightedIndex` / `[data-highlighted]`. Never combine `isHighlighted || containsMouse` in QML delegates or CSS hover selectors.
+   - **Zero Dual-Highlight**: Navigational keys switch modality to `'keyboard'`, immediately suppressing hover highlight under the mouse cursor. Stationary mouse events are ignored; only intentional mouse movement ($\Delta > 1\text{px}$) switches modality back to `'pointer'`.
+   - **Showcase Completeness**: Every living showcase DocPage must render `<KeyboardShortcutsTable>` backed by `spec/showcase/keyboard-shortcuts.json`.
+
 ## 2. Verification Commands Checklist
 
 Before declaring any component task complete, execute:

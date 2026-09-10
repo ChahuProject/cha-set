@@ -37,6 +37,10 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - **Segmented / Default Controls Hug Contents**: Default segmented controls (such as `TabsList variant="default"`) MUST declare `w-fit`. Because compound containers like `TabsRoot` use flex column (`flex flex-col`), default flex cross-axis alignment (`align-items: stretch`) will erroneously stretch segmented button bars across the entire container width unless `w-fit` is explicitly set.
    - **ScrollArea Viewport & Content Containment**: When `showHorizontalScrollBar` is `false` (the default), `ScrollArea` content MUST NOT expand past the viewport width. Base UI's `<BaseScrollArea.Content>` defaults to inline `style="min-width: fit-content;"`, which permits oversized child elements (such as tables, cards, or unconstrained flex containers) to expand the content wrapper indefinitely, breaking parent flex containers and blowing out the entire page layout. When horizontal scrolling is not requested, `ScrollArea.Content` MUST enforce `w-full max-w-full min-w-0` and override inline min-width (`style={{ minWidth: 0, maxWidth: '100%', width: '100%' }}`).
    - **Flex Container Hard Constraints**: Compound and nesting layout containers (such as `TabsContent`) MUST declare `min-w-0` to avoid the CSS Flexbox intrinsic sizing blowout where percentage-width children (`width: 45%`) cause the parent container to compute an enormous intrinsic width (`child_width / percentage`).
+8. **Mandatory Keyboard Navigation & Input Modality Contract (键盘交互规范与输入模态排他律 — 禁止双重高亮)**:
+   - **Single Source of Truth for Visual Highlight**: In menus, dropdowns, selects, and lists, visual active highlight MUST be driven exclusively by `highlightedIndex` (Qt) or `[data-highlighted]` / roving focus (React). Never combine hover and keyboard focus with boolean OR (`isHighlighted || containsMouse` is strictly forbidden).
+   - **Input Modality State Machine**: Navigational keys (`ArrowDown`, `ArrowUp`, `Home`, `End`, etc.) switch modality to `'keyboard'` and suppress hover highlights on any item under the mouse. Stationary pointer events are discarded; only intentional pointer movements ($\Delta x > 1\text{px} \lor \Delta y > 1\text{px}$) switch modality to `'pointer'`.
+   - **100% Showcase Documentation**: Every component DocPage MUST render `<KeyboardShortcutsTable>` linking its shortcut mapping from `spec/showcase/keyboard-shortcuts.json`.
 
 ---
 
@@ -82,6 +86,8 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - e.g. `variant`, `size`, `styling`, `disabled`, `keyboard`.
 4. **Initialize Conformance Snapshots**:
    Register initial capability flags in `packages/react/conformance/coverage.json` and `qt/conformance/coverage.json`.
+5. **Register Keyboard Interaction Matrix**:
+   Add keyboard interaction specifications to `spec/showcase/keyboard-shortcuts.json` under `"<name>"`, then run `node spec/generators/generate-showcase-data.mjs`.
 
 ---
 
@@ -91,6 +97,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    Create `packages/react/src/<name>/<Name>.tsx`:
    - Follow Tailwind CSS v4 styling matching tokens (`--primary`, `--secondary`, `--border`, `--radius`).
    - Pair surface colors with explicit text tokens (`bg-background` -> `text-foreground`, `bg-card` -> `text-card-foreground`, etc.). Never leave text colors reliant on DOM inheritance.
+   - Follow Input Modality State Machine: bind active highlight strictly to `[data-highlighted]` or roving focus (`[tabindex="0"]`). Never couple raw CSS `:hover` directly to active states in menu/select options to prevent dual-highlighting.
    - Support `forceHover` and `forceActive` boolean props to allow deterministic headless screenshot capture.
    - Support `asChild` (via `@base-ui/react` or Slot) where applicable.
 2. **Module Exports**:
@@ -98,7 +105,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - `packages/react/src/index.ts`: re-export `export * from './<name>';`.
 3. **Behavioral Unit Tests**:
    Create `packages/react/src/<name>/<Name>.test.tsx`:
-   - Test default render, variant classes, custom classNames, click events, disabled state.
+   - Test default render, variant classes, custom classNames, click events, disabled state, and keyboard navigation flows (Enter/Space, Arrows, Escape).
 4. **Contract Conformance Test**:
    Create `packages/react/conformance/<name>.conformance.test.tsx`:
    - Verify that `<Name>` props satisfy `spec/components/<name>.ts`.
@@ -111,8 +118,9 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 1. **QML Component**:
    Create `qt/src/ChaSet<Name>.qml`:
    - Bind colors and radiuses to `ThemeTokens` (`ThemeTokens.accent`, `ThemeTokens.panel`, `ThemeTokens.border`, `ThemeTokens.text`).
+   - Implement Input Modality State Machine: drive active highlight strictly by `isHighlighted: index === root.highlightedIndex`. NEVER combine with `containsMouse` (`isHighlighted || containsMouse` is strictly forbidden). Discard stationary pointer events and only switch to pointer modality on intentional movement ($\Delta > 1\text{px}$).
    - Implement `forceHover` and `forceActive` test hooks.
-   - Adhere to desktop interaction conventions (smooth hover cursors, keyboard focus rings).
+   - Adhere to desktop interaction conventions (smooth hover cursors, keyboard focus rings, auto-scroll active items into view).
 2. **Register in CMake**:
    Update `qt/CMakeLists.txt`:
    - Add `src/ChaSet<Name>.qml` under `qt_add_qml_module(ChaSet ...)`.
@@ -177,11 +185,12 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - Incorporate:
      - Header with title, badge, and description.
      - Interactive `ComponentPreview` with live preview and controls.
+     - Dedicated `KeyboardShortcutsTable` section with `{ id: 'keyboard', title: 'Keyboard Navigation' }` in `tocItems`.
      - Variant showcase section.
      - Clean TSX / QML `CodeBlock` examples.
      - Complete `PropsTable`.
 2. **Qt Living DocPage Component & Main Route**:
-   - Create `qt/src/<Name>DocPage.qml` with interactive preview, variant controls, code blocks, and props table.
+   - Create `qt/src/<Name>DocPage.qml` with interactive preview, variant controls, `KeyboardShortcutsTable`, code blocks, and props table.
    - Register `qt/src/<Name>DocPage.qml` in `qt/CMakeLists.txt` under `QtChaSetDemo` `QML_FILES`.
    - Register `qt/src/ChaSet<Name>.qml` in `qt/CMakeLists.txt` under `ChaSet` `QML_FILES`.
    - Add route mapping in `qt/src/Main.qml` (`getPageSource`).
