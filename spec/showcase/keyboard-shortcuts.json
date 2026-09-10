@@ -1,0 +1,200 @@
+{
+  "button": [
+    { "key": "Space / Enter", "action": "Activate button action handler" },
+    { "key": "Tab", "action": "Move focus to the next focusable element" },
+    { "key": "Shift + Tab", "action": "Move focus to the previous focusable element" }
+  ],
+  "scroll-area": [
+    { "key": "↑ / ↓", "action": "Scroll viewport vertically by one line" },
+    { "key": "PageUp / PageDown", "action": "Scroll viewport vertically by one page" },
+    { "key": "Home / End", "action": "Scroll directly to the top / bottom of the content" }
+  ],
+  "tabs": [
+    { "key": "← / →", "action": "Switch active tab in horizontal orientation" },
+    { "key": "↑ / ↓", "action": "Switch active tab in vertical orientation" },
+    { "key": "Home / End", "action": "Jump directly to the first / last tab" },
+    { "key": "Space / Enter", "action": "Activate tab when in manual activation mode" }
+  ],
+  "badge": [
+    { "key": "Tab", "action": "Move focus to badge if interactive" },
+    { "key": "Space / Enter", "action": "Trigger click action if interactive" }
+  ],
+  "label": [
+    { "key": "Click / Space", "action": "Transfer focus to the associated form control" }
+  ],
+  "card": [
+    { "key": "Tab / Shift + Tab", "action": "Traverse through interactive controls inside card" }
+  ],
+  "input": [
+    { "key": "Typing", "action": "Input and edit text value" },
+    { "key": "Enter", "action": "Submit form or commit value" },
+    { "key": "Escape", "action": "Clear text or remove focus" },
+    { "key": "Tab", "action": "Advance focus to the next element" }
+  ],
+  "checkbox": [
+    { "key": "Space", "action": "Toggle checkbox between checked and unchecked states" },
+    { "key": "Tab / Shift + Tab", "action": "Traverse focus between controls" }
+  ],
+  "switch": [
+    { "key": "Space / Enter", "action": "Toggle switch state on or off" },
+    { "key": "Tab / Shift + Tab", "action": "Traverse focus between controls" }
+  ],
+  "separator": [
+    { "key": "—", "action": "Non-interactive visual and semantic boundary divider" }
+  ],
+  "slider": [
+    { "key": "← / ↓", "action": "Decrease value by one step" },
+    { "key": "→ / ↑", "action": "Increase value by one step" },
+    { "key": "PageDown / PageUp", "action": "Decrease / increase value by 10 steps" },
+    { "key": "Home / End", "action": "Jump directly to the minimum / maximum value" }
+  ],
+  "dialog": [
+    { "key": "Tab / Shift + Tab", "action": "Trap focus strictly within the dialog loop" },
+    { "key": "Escape", "action": "Close dialog and return focus to triggering element" },
+    { "key": "Enter", "action": "Trigger primary action button" }
+  ],
+  "alert-dialog": [
+    { "key": "Tab / Shift + Tab", "action": "Trap focus strictly within alert dialog buttons" },
+    { "key": "Escape", "action": "Dismiss alert dialog if cancelable" },
+    { "key": "Enter", "action": "Confirm destructive action button" }
+  ],
+  "tooltip": [
+    { "key": "Focus", "action": "Display tooltip when trigger element gains keyboard focus" },
+    { "key": "Escape", "action": "Dismiss tooltip immediately" }
+  ],
+  "dropdown-menu": [
+    { "key": "Enter / Space / ↓", "action": "Open menu from trigger and highlight first enabled item" },
+    { "key": "↓ / ↑", "action": "Navigate items with wrapping, suppressing pointer hover" },
+    { "key": "Home / End", "action": "Jump directly to the first / last enabled item" },
+    { "key": "Enter / Space", "action": "Trigger highlighted item and close menu" },
+    { "key": "Escape", "action": "Close menu and return focus to triggering element" },
+    { "key": "Tab", "action": "Close menu and advance focus to next interactive element" }
+  ],
+  "select": [
+    { "key": "Enter / Space / ↓", "action": "Open options popover and highlight current value" },
+    { "key": "↓ / ↑", "action": "Navigate options with wrapping, suppressing pointer hover" },
+    { "key": "Home / End", "action": "Jump directly to the first / last enabled option" },
+    { "key": "Enter / Space", "action": "Select highlighted option and close popover" },
+    { "key": "Escape", "action": "Close options popover without changing selection" },
+    { "key": "A-Z / 0-9", "action": "Typeahead search jumping to first matching item" }
+  ],
+  "context-menu": [
+    { "key": "Shift + F10 / Menu", "action": "Open context menu at focused element position" },
+    { "key": "↓ / ↑", "action": "Navigate items with wrapping, suppressing pointer hover" },
+    { "key": "Enter / Space", "action": "Execute highlighted item action and close menu" },
+    { "key": "Escape", "action": "Dismiss context menu and return focus to trigger" }
+  ],
+  "popover": [
+    { "key": "Enter / Space", "action": "Toggle popover content from trigger" },
+    { "key": "Tab", "action": "Move focus into popover interactive content" },
+    { "key": "Escape", "action": "Close popover and restore focus to trigger" }
+  ],
+  "sheet": [
+    { "key": "Tab / Shift + Tab", "action": "Trap focus strictly within sheet drawer" },
+    { "key": "Escape", "action": "Close sheet drawer and restore focus to trigger" }
+  ],
+  "collapsible": [
+    { "key": "Space / Enter", "action": "Toggle collapsible panel open or closed" },
+    { "key": "Tab", "action": "Traverse focus between triggers and nested controls" }
+  ],
+  "table": [
+    { "key": "Tab / Shift + Tab", "action": "Navigate through interactive elements in table cells" }
+  ],
+  "virtual-list": [
+    { "key": "↑ / ↓", "action": "Navigate items vertically with automatic viewport alignment" },
+    { "key": "PageUp / PageDown", "action": "Jump up / down by visible viewport page height" },
+    { "key": "Home / End", "action": "Jump directly to the first / last item in the list" }
+  ],
+  "virtual-grid": [
+    { "key": "↑ / ↓ / ← / →", "action": "Navigate grid cells across rows and columns in 2D" },
+    { "key": "PageUp / PageDown", "action": "Jump vertically by visible grid page height" },
+    { "key": "Home / End", "action": "Jump directly to the first / last cell in the dataset" }
+  ],
+  "virtual-tree": [
+    { "key": "↑ / ↓", "action": "Traverse visible tree nodes vertically" },
+    { "key": "→", "action": "Expand closed node or move to first child node" },
+    { "key": "←", "action": "Collapse open node or move to parent node" },
+    { "key": "Space / Enter", "action": "Select or toggle active tree node" }
+  ],
+  "generic-data-table": [
+    { "key": "↑ / ↓", "action": "Move row selection cursor up / down" },
+    { "key": "Space", "action": "Toggle selection checkbox of the active row" },
+    { "key": "Enter", "action": "Expand row details or enter cell edit mode" },
+    { "key": "Escape", "action": "Exit cell edit mode and restore table row focus" }
+  ],
+  "color-picker": [
+    { "key": "Tab / Shift + Tab", "action": "Cycle focus between saturation area, hue slider, and inputs" },
+    { "key": "Arrow Keys", "action": "Fine-tune color coordinate points and hue angle" },
+    { "key": "Enter", "action": "Commit color selection" }
+  ],
+  "copy-button": [
+    { "key": "Space / Enter", "action": "Copy target text content to system clipboard" }
+  ],
+  "split-button": [
+    { "key": "Space / Enter", "action": "Trigger primary action on main button segment" },
+    { "key": "↓ / Enter", "action": "Open secondary actions dropdown menu from dropdown segment" }
+  ],
+  "splitter": [
+    { "key": "← / →", "action": "Adjust horizontal splitter ratio by step increment" },
+    { "key": "↑ / ↓", "action": "Adjust vertical splitter ratio by step increment" },
+    { "key": "Home / End", "action": "Snap splitter to minimum / maximum pane limit" },
+    { "key": "Enter", "action": "Reset splitter to default balanced ratio" }
+  ],
+  "resizable": [
+    { "key": "Arrow Keys", "action": "Resize panel dimensions along active drag edge" },
+    { "key": "Home / End", "action": "Snap panel to minimum / maximum allowable size" }
+  ],
+  "draggable-modal": [
+    { "key": "Tab / Shift + Tab", "action": "Trap focus strictly within modal boundaries" },
+    { "key": "Escape", "action": "Close modal and restore focus to trigger" },
+    { "key": "Alt + Arrow Keys", "action": "Reposition modal window offset without mouse" }
+  ],
+  "sidebar": [
+    { "key": "Ctrl + B / ⌘ + B", "action": "Toggle sidebar between expanded and collapsed modes" },
+    { "key": "Tab / Shift + Tab", "action": "Traverse through navigation menu items" }
+  ],
+  "skeleton": [
+    { "key": "—", "action": "Non-interactive placeholder element for loading states" }
+  ],
+  "inline-editable-text": [
+    { "key": "Enter", "action": "Enter editing mode when focused; commit changes when editing" },
+    { "key": "Escape", "action": "Cancel editing and restore original text value" },
+    { "key": "Tab", "action": "Commit current edits and advance focus to next element" }
+  ],
+  "keybinding-recorder": [
+    { "key": "Any Key Combo", "action": "Capture and record pressed modifiers and keys" },
+    { "key": "Backspace / Delete", "action": "Clear current recorded keybinding" },
+    { "key": "Escape", "action": "Cancel recording mode without saving changes" }
+  ],
+  "read-only-input": [
+    { "key": "Tab", "action": "Focus input to allow selecting or reading value" },
+    { "key": "Ctrl + C / ⌘ + C", "action": "Copy current value to system clipboard" }
+  ],
+  "preset-number-input": [
+    { "key": "↑ / ↓", "action": "Increment / decrement numeric value by unit step" },
+    { "key": "PageUp / PageDown", "action": "Increment / decrement numeric value by preset large step" },
+    { "key": "Enter", "action": "Commit parsed numeric value" }
+  ],
+  "range-slider": [
+    { "key": "Tab", "action": "Toggle focus between lower and upper range thumb handles" },
+    { "key": "← / ↓", "action": "Decrease active handle value by step" },
+    { "key": "→ / ↑", "action": "Increase active handle value by step" },
+    { "key": "Home / End", "action": "Snap active handle to minimum / maximum bound" }
+  ],
+  "panel-card": [
+    { "key": "Tab / Shift + Tab", "action": "Traverse interactive controls embedded in panel card" }
+  ],
+  "window-title-bar": [
+    { "key": "Alt + Space", "action": "Open system window control menu" },
+    { "key": "Alt + F4", "action": "Close application window" }
+  ],
+  "query-builder": [
+    { "key": "Tab / Shift + Tab", "action": "Traverse through rule field selectors, operators, and values" },
+    { "key": "Enter", "action": "Add new condition rule or nested subgroup" },
+    { "key": "Delete", "action": "Remove currently focused rule line" }
+  ],
+  "viewport-constrained-container": [
+    { "key": "PageUp / PageDown", "action": "Scroll constrained viewport page up / down" },
+    { "key": "Arrow Keys", "action": "Scroll viewport smoothly by step" }
+  ]
+}

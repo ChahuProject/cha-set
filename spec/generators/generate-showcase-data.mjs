@@ -10,6 +10,7 @@ const showcaseDir = path.resolve(repoRoot, 'spec', 'showcase');
 const changelog = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'changelog.json'), 'utf8'));
 const featureCards = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'feature-cards.json'), 'utf8'));
 const navigation = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'navigation.json'), 'utf8'));
+const keyboardShortcuts = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'keyboard-shortcuts.json'), 'utf8'));
 
 // React Output
 const reactOutDir = path.resolve(repoRoot, 'packages', 'react', 'examples', 'basic', 'src', 'data');
@@ -47,9 +48,15 @@ export interface NavCategory {
   items: NavItem[];
 }
 
+export interface KeyboardShortcutItem {
+  key: string;
+  action: string;
+}
+
 export const CHANGELOG_DATA: ChangelogItem[] = ${JSON.stringify(changelog, null, 2)};
 export const FEATURE_CARDS_DATA: FeatureCardItem[] = ${JSON.stringify(featureCards, null, 2)};
 export const NAVIGATION_DATA: NavCategory[] = ${JSON.stringify(navigation, null, 2)};
+export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = ${JSON.stringify(keyboardShortcuts, null, 2)};
 `;
 
 fs.writeFileSync(path.join(reactOutDir, 'showcaseData.generated.ts'), reactCode, 'utf8');
@@ -67,6 +74,7 @@ QtObject {
     readonly property var changelog: ${JSON.stringify(changelog)}
     readonly property var featureCards: ${JSON.stringify(featureCards)}
     readonly property var navigation: ${JSON.stringify(navigation)}
+    readonly property var keyboardShortcuts: ${JSON.stringify(keyboardShortcuts)}
 }
 `;
 
