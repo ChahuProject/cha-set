@@ -159,4 +159,43 @@ describe('Tabs Component', () => {
     const content = screen.getByTestId('default-tabs-content');
     expect(content.className).toContain('min-w-0');
   });
+
+  it('supports size="sm" with compact styling and data-size attribute', () => {
+    render(
+      <Tabs defaultValue="tab1" size="sm">
+        <TabsList data-testid="sm-tabs-list">
+          <TabsTrigger value="tab1" data-testid="sm-trigger-1">
+            Small Tab
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>,
+    );
+
+    const list = screen.getByTestId('sm-tabs-list');
+    expect(list).toHaveAttribute('data-size', 'sm');
+    expect(list.className).toContain('h-7');
+
+    const trigger = screen.getByTestId('sm-trigger-1');
+    expect(trigger).toHaveAttribute('data-size', 'sm');
+    expect(trigger.className).toContain('text-xs');
+  });
+
+  it('renders badge and icon in trigger', () => {
+    render(
+      <Tabs defaultValue="inbox">
+        <TabsList>
+          <TabsTrigger
+            value="inbox"
+            icon={<span data-testid="test-icon">📬</span>}
+            badge="12"
+          >
+            Inbox
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>,
+    );
+
+    expect(screen.getByTestId('test-icon')).toBeInTheDocument();
+    expect(screen.getByText('12')).toBeInTheDocument();
+  });
 });

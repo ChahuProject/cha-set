@@ -8,18 +8,34 @@ describe('Tabs conformance (spec contract)', () => {
     const rootFixture = {
       defaultValue: 'tab1',
       orientation: 'horizontal',
+      variant: 'default',
+      size: 'default',
     } as const;
     expect(() => tabsSchema.parse(rootFixture)).not.toThrow();
+
+    for (const v of ['default', 'line'] as const) {
+      expect(() => tabsSchema.parse({ variant: v })).not.toThrow();
+    }
+    for (const s of ['default', 'sm'] as const) {
+      expect(() => tabsSchema.parse({ size: s })).not.toThrow();
+    }
 
     const triggerFixture = {
       value: 'tab1',
       disabled: false,
+      variant: 'line',
+      size: 'sm',
+      badge: '3',
     } as const;
     expect(() => tabsTriggerSchema.parse(triggerFixture)).not.toThrow();
   });
 
   it('rejects unknown orientation per the contract', () => {
     expect(() => tabsSchema.parse({ orientation: 'diagonal' })).toThrow();
+  });
+
+  it('rejects unknown variant per the contract', () => {
+    expect(() => tabsSchema.parse({ variant: 'invalid-variant' })).toThrow();
   });
 
   it('earned coverage declares must capabilities', () => {

@@ -8,6 +8,8 @@ Item {
 
     property string currentValue: ""
     property string orientation: "horizontal" // "horizontal" | "vertical"
+    property string variant: "default"         // "default" | "line"
+    property string size: "default"            // "default" | "sm"
 
     signal valueChanged(string value)
 
