@@ -329,7 +329,7 @@ export function GenericDataTable<TData>({
               </TableRow>
             ) : enableVirtualization ? (
               <>
-                <tr style={{ height: `${virtualizer.getVirtualItems()[0]?.start ?? 0}px` }} />
+                <tr style={{ height: `${(virtualizer.getVirtualItems()[0]?.start ?? 0) * 0.0625}rem` }} />
                 {virtualizer.getVirtualItems().map((virtualRow) => {
                   const row = rows[virtualRow.index]!;
                   const isSelected = row.getIsSelected();
@@ -364,9 +364,9 @@ export function GenericDataTable<TData>({
                 <tr
                   style={{
                     height: `${
-                      virtualizer.getTotalSize() -
-                      (virtualizer.getVirtualItems()[virtualizer.getVirtualItems().length - 1]?.end ?? 0)
-                    }px`,
+                      (virtualizer.getTotalSize() -
+                      (virtualizer.getVirtualItems()[virtualizer.getVirtualItems().length - 1]?.end ?? 0)) * 0.0625
+                    }rem`,
                   }}
                 />
               </>

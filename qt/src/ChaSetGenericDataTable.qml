@@ -193,6 +193,7 @@ Item {
                 clip: true
 
                 delegate: Rectangle {
+                    id: rowDelegate
                     required property var modelData
                     required property int index
                     width: bodyList.width
@@ -210,16 +211,33 @@ Item {
                         Repeater {
                             model: root.columns
                             delegate: Item {
+                                id: cellDelegate
                                 required property var modelData
                                 width: modelData.width || 120
                                 height: parent.height
 
-                                Text {
+                                Loader {
                                     anchors.verticalCenter: parent.verticalCenter
-                                    text: String(parent.parent.parent.modelData[parent.modelData.key] ?? "")
+                                    active: cellDelegate.modelData.key === "status"
+                                    visible: active
+                                    sourceComponent: ChaSetBadge {
+                                        variant: {
+                                            const val = String(rowDelegate.modelData["status"] ?? "")
+                                            if (val === "Healthy" || val === "Active") return "default"
+                                            if (val === "Pending" || val === "Degraded") return "secondary"
+                                            return "outline"
+                                        }
+                                        text: String(rowDelegate.modelData["status"] ?? "")
+                                    }
+                                }
+
+                                Text {
+                                    visible: cellDelegate.modelData.key !== "status"
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: String(rowDelegate.modelData[cellDelegate.modelData.key] ?? "")
                                     color: ThemeTokens.text
                                     font.pixelSize: 12
-                                    font.weight: parent.parent.parent.isSelectedRow ? Font.Medium : Font.Normal
+                                    font.weight: rowDelegate.isSelectedRow ? Font.Medium : Font.Normal
                                     elide: Text.ElideRight
                                     width: parent.width - 8
                                 }
