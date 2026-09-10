@@ -4,6 +4,8 @@ import {
   ResizablePanel,
   ResizableHandle,
   Button,
+  Badge,
+  SegmentedControl,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -17,7 +19,7 @@ export function ResizableDocPage() {
   >('horizontal');
   const [playgroundWithHandle, setPlaygroundWithHandle] = useState(true);
 
-  const horizontalCode = `<ResizablePanelGroup direction="horizontal" className="min-h-[220px] rounded-lg border border-border">
+  const horizontalCode = `<ResizablePanelGroup direction="horizontal" className="min-h-56 rounded-lg border border-border">
   <ResizablePanel defaultSize={30} minSize={20} maxSize={50}>
     <div className="flex h-full items-center justify-center p-6 bg-muted/20">
       <span className="font-semibold text-sm">Navigation Sidebar</span>
@@ -31,7 +33,7 @@ export function ResizableDocPage() {
   </ResizablePanel>
 </ResizablePanelGroup>`;
 
-  const nestedCode = `<ResizablePanelGroup direction="horizontal" className="min-h-[260px] rounded-lg border border-border">
+  const nestedCode = `<ResizablePanelGroup direction="horizontal" className="min-h-64 rounded-lg border border-border">
   <ResizablePanel defaultSize={25} minSize={15}>
     <div className="flex h-full items-center justify-center p-4 bg-muted/20 text-xs">
       File Tree
@@ -55,7 +57,7 @@ export function ResizableDocPage() {
   </ResizablePanel>
 </ResizablePanelGroup>`;
 
-  const playgroundReactCode = `<ResizablePanelGroup direction="${playgroundDirection}" className="min-h-[220px] rounded-lg border border-border">
+  const playgroundReactCode = `<ResizablePanelGroup direction="${playgroundDirection}" className="min-h-56 rounded-lg border border-border">
   <ResizablePanel defaultSize={40} minSize={20}>
     <div className="flex h-full items-center justify-center p-4 bg-muted/20 text-sm">
       Panel Alpha
@@ -113,19 +115,19 @@ export function ResizableDocPage() {
           <div className="w-full max-w-2xl">
             <ResizablePanelGroup
               direction="horizontal"
-              className="min-h-[200px] rounded-lg border border-border bg-card overflow-hidden"
+              className="min-h-52 rounded-lg border border-border bg-card overflow-hidden"
             >
               <ResizablePanel defaultSize={30} minSize={20} maxSize={50}>
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/20">
-                  <span className="font-semibold text-foreground mb-1">Explorer Tree</span>
-                  <span>30% Initial Width</span>
+                  <span className="font-semibold text-foreground mb-1.5">Explorer Tree</span>
+                  <Badge variant="outline">30% Initial Width</Badge>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={70}>
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground">
-                  <span className="font-semibold text-foreground mb-1">Source Code Editor</span>
-                  <span>70% Initial Width</span>
+                  <span className="font-semibold text-foreground mb-1.5">Source Code Editor</span>
+                  <Badge variant="secondary">70% Initial Width</Badge>
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
@@ -146,12 +148,12 @@ export function ResizableDocPage() {
           <div className="w-full max-w-2xl">
             <ResizablePanelGroup
               direction="horizontal"
-              className="min-h-[240px] rounded-lg border border-border bg-card overflow-hidden"
+              className="min-h-60 rounded-lg border border-border bg-card overflow-hidden"
             >
               <ResizablePanel defaultSize={28} minSize={18}>
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/20">
-                  <span className="font-semibold text-foreground mb-1">Sidebar</span>
-                  <span>28% Width</span>
+                  <span className="font-semibold text-foreground mb-1.5">Sidebar</span>
+                  <Badge variant="outline">28% Width</Badge>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
@@ -159,15 +161,15 @@ export function ResizableDocPage() {
                 <ResizablePanelGroup direction="vertical">
                   <ResizablePanel defaultSize={65} minSize={30}>
                     <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground">
-                      <span className="font-semibold text-foreground mb-1">Editor Viewport</span>
-                      <span>65% Height</span>
+                      <span className="font-semibold text-foreground mb-1.5">Editor Viewport</span>
+                      <Badge variant="secondary">65% Height</Badge>
                     </div>
                   </ResizablePanel>
                   <ResizableHandle withHandle />
                   <ResizablePanel defaultSize={35} minSize={20}>
                     <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/30">
-                      <span className="font-semibold text-foreground mb-1">Integrated Terminal</span>
-                      <span>35% Height</span>
+                      <span className="font-semibold text-foreground mb-1.5">Integrated Terminal</span>
+                      <Badge variant="outline">35% Height</Badge>
                     </div>
                   </ResizablePanel>
                 </ResizablePanelGroup>
@@ -191,33 +193,18 @@ export function ResizableDocPage() {
           reactCode={playgroundReactCode}
           qtCode={playgroundQtCode}
           controls={
-            <div className="flex flex-wrap items-center gap-3 p-3 bg-muted/20 border-b border-border text-xs">
+            <div className="flex flex-wrap items-center gap-4 p-3 bg-muted/20 border-b border-border text-xs">
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground font-medium">Direction:</span>
-                <div className="inline-flex rounded-md border border-border bg-background p-0.5">
-                  <button
-                    type="button"
-                    onClick={() => setPlaygroundDirection('horizontal')}
-                    className={`px-2.5 py-1 text-xs rounded-sm transition-colors ${
-                      playgroundDirection === 'horizontal'
-                        ? 'bg-primary text-primary-foreground font-medium'
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                  >
-                    Horizontal
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPlaygroundDirection('vertical')}
-                    className={`px-2.5 py-1 text-xs rounded-sm transition-colors ${
-                      playgroundDirection === 'vertical'
-                        ? 'bg-primary text-primary-foreground font-medium'
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                  >
-                    Vertical
-                  </button>
-                </div>
+                <SegmentedControl
+                  size="sm"
+                  value={playgroundDirection}
+                  onValueChange={(val) => setPlaygroundDirection(val as 'horizontal' | 'vertical')}
+                  options={[
+                    { label: 'Horizontal', value: 'horizontal' },
+                    { label: 'Vertical', value: 'vertical' },
+                  ]}
+                />
               </div>
 
               <div className="flex items-center gap-2 ml-auto">
@@ -236,19 +223,19 @@ export function ResizableDocPage() {
             <ResizablePanelGroup
               key={playgroundDirection}
               direction={playgroundDirection}
-              className="min-h-[220px] rounded-lg border border-border bg-card overflow-hidden"
+              className="min-h-56 rounded-lg border border-border bg-card overflow-hidden"
             >
               <ResizablePanel defaultSize={40} minSize={20}>
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/20">
-                  <span className="font-semibold text-foreground mb-1">Panel Alpha</span>
-                  <span>Initial 40%</span>
+                  <span className="font-semibold text-foreground mb-1.5">Panel Alpha</span>
+                  <Badge variant="outline">40% Initial</Badge>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle={playgroundWithHandle} />
               <ResizablePanel defaultSize={60} minSize={20}>
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground">
-                  <span className="font-semibold text-foreground mb-1">Panel Beta</span>
-                  <span>Initial 60%</span>
+                  <span className="font-semibold text-foreground mb-1.5">Panel Beta</span>
+                  <Badge variant="secondary">60% Initial</Badge>
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>

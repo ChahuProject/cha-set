@@ -74,7 +74,7 @@ DocLayout {
 
                         Column {
                             anchors.centerIn: parent
-                            spacing: 4
+                            spacing: 8
                             Text {
                                 text: "Navigation Tree"
                                 color: ThemeTokens.text
@@ -82,10 +82,9 @@ DocLayout {
                                 font.weight: Font.DemiBold
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
-                            Text {
+                            ChaSetBadge {
+                                variant: "outline"
                                 text: "Resizable Panel"
-                                color: ThemeTokens.subduedText
-                                font.pixelSize: 11
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }
@@ -101,7 +100,7 @@ DocLayout {
 
                         Column {
                             anchors.centerIn: parent
-                            spacing: 4
+                            spacing: 8
                             Text {
                                 text: "Editor Viewport"
                                 color: ThemeTokens.text
@@ -109,10 +108,9 @@ DocLayout {
                                 font.weight: Font.DemiBold
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
-                            Text {
+                            ChaSetBadge {
+                                variant: "secondary"
                                 text: "Flexible Pane"
-                                color: ThemeTokens.subduedText
-                                font.pixelSize: 11
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }
@@ -138,7 +136,7 @@ DocLayout {
         props: [
             { name: "orientation", type: "int", default: "Qt.Horizontal", description: "Split layout orientation: Qt.Horizontal or Qt.Vertical." },
             { name: "withHandle", type: "bool", default: "false", description: "Whether to render a tactile 6-dot visual grip indicator on the handle." },
-            { name: "handleThickness", type: "int", default: "4 (or 8 with handle)", description: "Thickness of the divider separator in pixels." },
+            { name: "handleThickness", type: "int", default: "4 (or 8 with handle)", description: "Thickness of the divider separator bound." },
             { name: "handleColor", type: "color", default: "ThemeTokens.border", description: "Idle separator line background color." },
             { name: "handleHoverColor", type: "color", default: "ThemeTokens.accent", description: "Hovered or active separator accent color." },
             { name: "handleGripColor", type: "color", default: "ThemeTokens.subduedText", description: "Grip dot indicator color." }
