@@ -24,7 +24,11 @@ export interface SplitButtonItem {
 }
 
 export interface SplitButtonProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  /** Optional label alias for primary button text */
+  label?: React.ReactNode;
+  /** Optional text alias for primary button text (cross-stack parity with Qt text prop) */
+  text?: React.ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   size?: SplitButtonSize;
@@ -32,7 +36,11 @@ export interface SplitButtonProps {
   title?: string;
   className?: string;
   items?: SplitButtonItem[];
+  /** Optional menuItems alias for items (cross-stack parity with Qt menuItems prop) */
+  menuItems?: SplitButtonItem[];
   dropdownContent?: React.ReactNode;
+  /** Optional menuContent alias for dropdownContent */
+  menuContent?: React.ReactNode;
   onInteract?: (e: React.MouseEvent) => void;
   chevronAriaLabel?: string;
 }
@@ -61,6 +69,8 @@ const separatorColorMap: Partial<Record<SplitButtonVariant, string>> = {
 
 export function SplitButton({
   children,
+  label,
+  text,
   onClick,
   disabled = false,
   size = 'default',
@@ -68,10 +78,15 @@ export function SplitButton({
   title,
   className,
   items,
+  menuItems,
   dropdownContent,
+  menuContent,
   onInteract,
   chevronAriaLabel = 'Show more options',
 }: SplitButtonProps) {
+  const primaryContent = children ?? label ?? text;
+  const effectiveItems = items ?? menuItems;
+  const effectiveDropdown = dropdownContent ?? menuContent;
   const chevronSize = chevronSizeMap[size] ?? 'icon';
   const chevronIconSize = chevronIconSizeMap[size] ?? 'size-4';
   const separatorColor = separatorColorMap[variant] ?? 'border-border';
@@ -93,7 +108,7 @@ export function SplitButton({
           onClick?.(e);
         }}
       >
-        {children}
+        {primaryContent}
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -109,8 +124,8 @@ export function SplitButton({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="min-w-40">
-          {dropdownContent ||
-            (items ?? []).map((item) => (
+          {effectiveDropdown ||
+            (effectiveItems ?? []).map((item) => (
               <React.Fragment key={item.key}>
                 {item.separator && <DropdownMenuSeparator />}
                 <DropdownMenuItem

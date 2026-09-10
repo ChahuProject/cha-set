@@ -78,6 +78,20 @@ Item {
             lastPointerY = -1
         }
 
+        function handlePointerMove(idx, mouseX, mouseY) {
+            if (lastPointerX >= 0) {
+                var dx = Math.abs(mouseX - lastPointerX)
+                var dy = Math.abs(mouseY - lastPointerY)
+                if (dx < 1.5 && dy < 1.5) {
+                    return
+                }
+            }
+            lastPointerX = mouseX
+            lastPointerY = mouseY
+            modality = "pointer"
+            highlightedIndex = idx
+        }
+
         function triggerItem(idx) {
             if (idx >= 0 && idx < root.menuItems.length) {
                 let item = root.menuItems[idx]
@@ -158,7 +172,7 @@ Item {
                     height: 28
                     radius: 4
 
-                    readonly property bool isHighlighted: (splitPopup.modality === "keyboard" && splitPopup.highlightedIndex === index) || (splitPopup.modality === "pointer" && itemMouse.containsMouse)
+                    readonly property bool isHighlighted: index === splitPopup.highlightedIndex
                     color: isHighlighted ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
 
                     Row {
@@ -188,15 +202,12 @@ Item {
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
                         onPositionChanged: function(mouse) {
-                            if (splitPopup.modality !== "pointer") {
-                                var dx = Math.abs(mouse.x - splitPopup.lastPointerX)
-                                var dy = Math.abs(mouse.y - splitPopup.lastPointerY)
-                                if (splitPopup.lastPointerX >= 0 && (dx > 1 || dy > 1)) {
-                                    splitPopup.modality = "pointer"
-                                }
+                            splitPopup.handlePointerMove(parent.index, mouse.x, mouse.y)
+                        }
+                        onEntered: {
+                            if (splitPopup.modality === "pointer") {
+                                splitPopup.highlightedIndex = parent.index
                             }
-                            splitPopup.lastPointerX = mouse.x
-                            splitPopup.lastPointerY = mouse.y
                         }
                         onClicked: {
                             splitPopup.triggerItem(parent.index)
