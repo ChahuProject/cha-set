@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { QueryBuilder, type QueryRuleGroup, type QueryField } from '@chahu/cha-set';
+import { QueryBuilder, Badge, type QueryRuleGroup, type QueryField } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
@@ -56,6 +56,15 @@ export function QueryBuilderDocPage() {
               query={query}
               onQueryChange={setQuery}
             />
+
+            <div className="flex items-center gap-2">
+              <Badge variant="outline">
+                Rules: {query.rules?.length ?? 0}
+              </Badge>
+              <Badge variant="secondary">
+                Combinator: {String(query.combinator).toUpperCase()}
+              </Badge>
+            </div>
 
             <div className="p-3 bg-muted/40 rounded-md border border-border">
               <span className="text-[0.65rem] font-semibold uppercase tracking-wider text-muted-foreground block mb-1">

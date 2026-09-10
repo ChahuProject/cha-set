@@ -60,6 +60,18 @@ DocLayout {
                     }
                 }
 
+                Row {
+                    spacing: 8
+                    ChaSetBadge {
+                        text: "Rules: " + qb.rules.length
+                        variant: "outline"
+                    }
+                    ChaSetBadge {
+                        text: "Combinator: " + qb.connector
+                        variant: "secondary"
+                    }
+                }
+
                 Rectangle {
                     width: parent.width
                     height: 50

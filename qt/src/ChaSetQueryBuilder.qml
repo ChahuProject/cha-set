@@ -103,22 +103,19 @@ Rectangle {
                         spacing: 8
 
                         // Field
-                        Text {
+                        ChaSetBadge {
                             anchors.verticalCenter: parent.verticalCenter
                             text: parent.parent.modelData.field
-                            color: ThemeTokens.text
-                            font.pixelSize: 12
-                            font.family: "monospace"
-                            width: 70
+                            variant: "outline"
+                            size: "sm"
                         }
 
                         // Operator
-                        Text {
+                        ChaSetBadge {
                             anchors.verticalCenter: parent.verticalCenter
                             text: parent.parent.modelData.operator
-                            color: ThemeTokens.accent
-                            font.pixelSize: 11
-                            width: 80
+                            variant: "secondary"
+                            size: "sm"
                         }
 
                         // Value
