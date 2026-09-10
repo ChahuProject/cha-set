@@ -42,8 +42,6 @@ Item {
     property bool showCmykSliders: false
     property bool showLabSliders: false
 
-    property bool showCopied: false
-
     readonly property var currentCmyk: root.rgbToCmyk(Math.round(root.value.r * 255), Math.round(root.value.g * 255), Math.round(root.value.b * 255))
     readonly property var currentLab: root.rgbToLab(Math.round(root.value.r * 255), Math.round(root.value.g * 255), Math.round(root.value.b * 255))
 
@@ -1017,39 +1015,14 @@ Item {
                         }
 
                         // Copy button
-                        Rectangle {
+                        ChaSetCopyButton {
                             id: copyBtn
-                            width: 24
-                            height: 24
-                            radius: 4
                             anchors.right: parent.right
                             anchors.rightMargin: 2
                             anchors.verticalCenter: parent.verticalCenter
-                            color: copyMouse.containsMouse ? (root.isDark ? Qt.rgba(1, 1, 1, 0.1) : Qt.rgba(0, 0, 0, 0.06)) : "transparent"
-
-                            Text {
-                                anchors.centerIn: parent
-                                text: root.showCopied ? "✓" : "📋"
-                                font.pixelSize: 11
-                                color: root.showCopied ? "#10b981" : ThemeTokens.subduedText
-                            }
-
-                            MouseArea {
-                                id: copyMouse
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: {
-                                    root.showCopied = true;
-                                    copiedTimer.restart();
-                                }
-                            }
-
-                            Timer {
-                                id: copiedTimer
-                                interval: 1500
-                                onTriggered: root.showCopied = false
-                            }
+                            text: root.hex
+                            size: "icon-xs"
+                            variant: "ghost"
                         }
                     }
                 }

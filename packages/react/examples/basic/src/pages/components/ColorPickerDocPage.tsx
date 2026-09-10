@@ -144,7 +144,7 @@ export function ColorPickerDocPage() {
             </div>
           }
         >
-          <div className="flex flex-col items-center justify-center p-8 gap-4 min-h-[360px]">
+          <div className="flex flex-col items-center justify-center p-8 gap-4 min-h-96">
             <ColorPicker
               value={color}
               mode={mode}

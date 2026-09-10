@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { CopyButton } from '../copy-button/CopyButton';
 import { cn } from '../lib/utils';
 import {
   clamp,
@@ -73,43 +74,6 @@ export interface ColorPickerProps
   onChange?: (hex: string) => void;
   onValueChange?: (hex: string) => void;
   title?: React.ReactNode;
-}
-
-function CopyIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-    </svg>
-  );
-}
-
-function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
 }
 
 function ChevronDownIcon({ className }: { className?: string }) {
@@ -373,15 +337,15 @@ function ColorChannelSlider({
   const rowGapClass = density === 'dense' ? 'gap-1' : 'gap-1.5';
   const inputHeightClass =
     density === 'dense'
-      ? 'h-4.5 text-[9px] px-1'
+      ? 'h-4.5 text-[0.6rem] px-1'
       : density === 'compact'
-        ? 'h-5 text-[10px] px-1'
-        : 'h-6 text-[11px] px-1.5';
+        ? 'h-5 text-[0.625rem] px-1'
+        : 'h-6 text-[0.6875rem] px-1.5';
   const labelTextClass =
     density === 'dense'
-      ? 'text-[10px]'
+      ? 'text-[0.625rem]'
       : density === 'compact'
-        ? 'text-[11px]'
+        ? 'text-[0.6875rem]'
         : 'text-xs';
 
   return (
@@ -460,7 +424,6 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
     const [showLabSliders, setShowLabSliders] = React.useState<boolean>(false);
 
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
-    const [copied, setCopied] = React.useState<boolean>(false);
 
     // Movable drag displacement
     const [dragOffset, setDragOffset] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -540,19 +503,6 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
       },
       [isControlled, onChange, onValueChange],
     );
-
-    const handleCopy = async () => {
-      if (disabled) return;
-      try {
-        if (navigator?.clipboard?.writeText) {
-          await navigator.clipboard.writeText(activeHex);
-        }
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
-      } catch {
-        // Fallback or ignore
-      }
-    };
 
     // 2D Square Saturation & Value interaction
     const updateSquareFromCoords = (clientX: number, clientY: number) => {
@@ -747,23 +697,15 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
               </div>
             </div>
 
-            <button
-              type="button"
-              disabled={disabled}
-              onClick={handleCopy}
+            <CopyButton
+              text={activeHex}
+              variant="ghost"
+              size="icon-xs"
               title="Copy hex code"
               aria-label="Copy hex code"
-              className={cn(
-                'flex size-7 items-center justify-center rounded-md border border-border/60 bg-secondary/50 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground active:scale-95',
-                disabled && 'cursor-not-allowed opacity-50',
-              )}
-            >
-              {copied ? (
-                <CheckIcon className="size-3.5 text-emerald-500" />
-              ) : (
-                <CopyIcon className="size-3.5" />
-              )}
-            </button>
+              disabled={disabled}
+              className="border border-border/60 bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
+            />
           </div>
         )}
 
@@ -787,7 +729,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                 activePanel === p.value
                   ? 'bg-background text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground',
-                isSm ? 'text-[11px]' : 'text-xs',
+                isSm ? 'text-[0.6875rem]' : 'text-xs',
               )}
             >
               {p.label}
@@ -796,7 +738,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
         </div>
 
         {/* 3. Panel Body */}
-        <div className="flex items-center justify-center min-h-[200px]">
+        <div className="flex items-center justify-center min-h-52">
           {activePanel === 'square' && (
             <HueRing
               hue={hsva.h}
@@ -1010,19 +952,15 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
               />
-              <button
-                type="button"
-                disabled={disabled}
-                onClick={handleCopy}
+              <CopyButton
+                text={activeHex}
+                variant="ghost"
+                size="icon-xs"
                 title="Copy HEX color"
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded hover:bg-muted/50 cursor-pointer"
-              >
-                {copied ? (
-                  <CheckIcon className="size-3 text-emerald-500" />
-                ) : (
-                  <CopyIcon className="size-3" />
-                )}
-              </button>
+                aria-label="Copy HEX color"
+                disabled={disabled}
+                className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              />
             </div>
           </div>
         )}
@@ -1042,7 +980,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
               onClick={ch.toggle}
               aria-pressed={ch.active}
               className={cn(
-                'flex-1 rounded py-1 text-center font-semibold text-[11px] transition-all select-none border',
+                'flex-1 rounded py-1 text-center font-semibold text-[0.6875rem] transition-all select-none border',
                 ch.active
                   ? 'border-primary/40 bg-primary/10 text-primary shadow-2xs font-bold'
                   : 'border-transparent text-muted-foreground hover:bg-muted hover:text-foreground',
@@ -1251,7 +1189,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
             disabled={disabled}
             onClick={() => !disabled && setIsOpen(!isOpen)}
             className={cn(
-              'inline-flex items-center gap-2 rounded-md border border-border bg-background px-3 font-mono shadow-xs transition-colors hover:bg-muted/50 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring select-none cursor-pointer',
+              'inline-flex items-center gap-2 rounded-md border border-border bg-background text-foreground px-3 font-mono shadow-xs transition-colors hover:bg-muted/50 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring select-none cursor-pointer',
               isSm ? 'h-8 text-xs' : 'h-9 text-sm',
               disabled && 'cursor-not-allowed opacity-50 pointer-events-none',
             )}
