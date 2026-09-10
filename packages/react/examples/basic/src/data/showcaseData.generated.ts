@@ -1188,7 +1188,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "dropdown-menu",
         "title": "Dropdown Menu",
         "href": "#/components/dropdown-menu",
-        "badge": "Stage 1",
         "desc": "Displays a menu to the user triggered by a button with item groups and shortcuts.",
         "description": "Displays a menu to the user triggered by a button with item groups and shortcuts."
       },
@@ -1196,7 +1195,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "select",
         "title": "Select",
         "href": "#/components/select",
-        "badge": "Stage 1",
         "desc": "Displays a list of options for the user to pick from with trigger and indicator.",
         "description": "Displays a list of options for the user to pick from with trigger and indicator."
       },
@@ -1204,7 +1202,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "popover",
         "title": "Popover",
         "href": "#/components/popover",
-        "badge": "Stage 1",
         "desc": "Displays rich interactive content in a floating portal anchored to a trigger.",
         "description": "Displays rich interactive content in a floating portal anchored to a trigger."
       },
@@ -1212,7 +1209,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "context-menu",
         "title": "Context Menu",
         "href": "#/components/context-menu",
-        "badge": "Stage 1",
         "desc": "Displays a menu located at the pointer coordinates on right-click or context gesture.",
         "description": "Displays a menu located at the pointer coordinates on right-click or context gesture."
       },
@@ -1220,7 +1216,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "alert-dialog",
         "title": "Alert Dialog",
         "href": "#/components/alert-dialog",
-        "badge": "Stage 1",
         "desc": "A modal dialog that interrupts the user with important content and requires confirmation.",
         "description": "A modal dialog that interrupts the user with important content and requires confirmation."
       },
@@ -1228,7 +1223,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "sheet",
         "title": "Sheet",
         "href": "#/components/sheet",
-        "badge": "Stage 1",
         "desc": "Extends the dialog component to display content that slides in from any screen edge.",
         "description": "Extends the dialog component to display content that slides in from any screen edge."
       },
@@ -1236,7 +1230,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "skeleton",
         "title": "Skeleton",
         "href": "#/components/skeleton",
-        "badge": "Stage 1",
         "desc": "Used to show a placeholder while content is loading with pulse animations.",
         "description": "Used to show a placeholder while content is loading with pulse animations."
       },
@@ -1256,7 +1249,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "copy-button",
         "title": "Copy Button",
         "href": "#/components/copy-button",
-        "badge": "Stage 2",
         "desc": "One-click clipboard copy button with transient feedback icons and custom timeouts.",
         "description": "One-click clipboard copy button with transient feedback icons and custom timeouts."
       },
@@ -1264,7 +1256,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "panel-card",
         "title": "Panel Card",
         "href": "#/components/panel-card",
-        "badge": "Stage 2",
         "desc": "Card surface with integrated collapsible sections and header action slots.",
         "description": "Card surface with integrated collapsible sections and header action slots."
       },
@@ -1272,7 +1263,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "split-button",
         "title": "Split Button",
         "href": "#/components/split-button",
-        "badge": "Stage 2",
         "desc": "Dual-action button with primary direct click and secondary dropdown chevron.",
         "description": "Dual-action button with primary direct click and secondary dropdown chevron."
       },
@@ -1280,7 +1270,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "inline-editable-text",
         "title": "Inline Editable Text",
         "href": "#/components/inline-editable-text",
-        "badge": "Stage 2",
         "desc": "Text element that switches seamlessly to an input field on double-click or edit trigger.",
         "description": "Text element that switches seamlessly to an input field on double-click or edit trigger."
       },
@@ -1288,7 +1277,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "range-slider",
         "title": "Range Slider",
         "href": "#/components/range-slider",
-        "badge": "Stage 2",
         "desc": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention.",
         "description": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention."
       },
@@ -1296,7 +1284,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "read-only-input",
         "title": "Read-Only Input",
         "href": "#/components/read-only-input",
-        "badge": "Stage 2",
         "desc": "Protected input field for tokens and IDs with integrated copy-to-clipboard action.",
         "description": "Protected input field for tokens and IDs with integrated copy-to-clipboard action."
       },
@@ -1304,7 +1291,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "preset-number-input",
         "title": "Preset Number Input",
         "href": "#/components/preset-number-input",
-        "badge": "Stage 2",
         "desc": "Numeric input field with quick-select preset dropdown panel and clear actions.",
         "description": "Numeric input field with quick-select preset dropdown panel and clear actions."
       },
@@ -1312,7 +1298,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "keybinding-recorder",
         "title": "Keybinding Recorder",
         "href": "#/components/keybinding-recorder",
-        "badge": "Stage 2",
         "desc": "Interactive recorder that captures accelerator keyboard sequences for desktop apps.",
         "description": "Interactive recorder that captures accelerator keyboard sequences for desktop apps."
       },
@@ -1320,7 +1305,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "viewport-constrained-container",
         "title": "Viewport Constrained Container",
         "href": "#/components/viewport-constrained-container",
-        "badge": "Stage 2",
         "desc": "Container that dynamically bounds max-height based on available viewport space below the anchor.",
         "description": "Container that dynamically bounds max-height based on available viewport space below the anchor."
       },
@@ -1328,7 +1312,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "segmented-control",
         "title": "Segmented Control",
         "href": "#/components/segmented-control",
-        "badge": "Stage 2",
         "desc": "Compact pill segmented switch for toolbars, menus, and view toggles.",
         "description": "Compact pill segmented switch for toolbars, menus, and view toggles."
       },
@@ -1336,7 +1319,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "setting-row",
         "title": "Setting Row",
         "href": "#/components/setting-row",
-        "badge": "Stage 2",
         "desc": "Settings form item layout with title, description, control slot, and anchor flash.",
         "description": "Settings form item layout with title, description, control slot, and anchor flash."
       },
@@ -1344,7 +1326,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "elided-text",
         "title": "Elided Text",
         "href": "#/components/elided-text",
-        "badge": "Stage 2",
         "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated.",
         "description": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
       }
@@ -1357,7 +1338,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "virtual-list",
         "title": "Virtual List",
         "href": "#/components/virtual-list",
-        "badge": "Stage 3",
         "desc": "High-performance windowed 100k+ row list with dynamic or fixed item measurements.",
         "description": "High-performance windowed 100k+ row list with dynamic or fixed item measurements."
       },
@@ -1365,7 +1345,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "virtual-tree",
         "title": "Virtual Tree",
         "href": "#/components/virtual-tree",
-        "badge": "Stage 3",
         "desc": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation.",
         "description": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
       },
@@ -1373,7 +1352,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "virtual-grid",
         "title": "Virtual Grid",
         "href": "#/components/virtual-grid",
-        "badge": "Stage 3",
         "desc": "2D windowed grid virtualizer for massive dataset visualization.",
         "description": "2D windowed grid virtualizer for massive dataset visualization."
       },
@@ -1381,7 +1359,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "draggable-modal",
         "title": "Draggable Modal",
         "href": "#/components/draggable-modal",
-        "badge": "Stage 3",
         "desc": "Desktop floating window with dragging title bar and bound viewport constraints.",
         "description": "Desktop floating window with dragging title bar and bound viewport constraints."
       },
@@ -1389,7 +1366,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "splitter",
         "title": "Splitter",
         "href": "#/components/splitter",
-        "badge": "Stage 3",
         "desc": "Multi-pane resizable layout container with draggable gutters and collapse limits.",
         "description": "Multi-pane resizable layout container with draggable gutters and collapse limits."
       },
@@ -1397,7 +1373,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "splitter-handle",
         "title": "Splitter Handle",
         "href": "#/components/splitter-handle",
-        "badge": "Stage 3",
         "desc": "Edge resize handle with reference item coordinate stabilization and min/max clamping.",
         "description": "Edge resize handle with reference item coordinate stabilization and min/max clamping."
       },
@@ -1405,7 +1380,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "resizable",
         "title": "Resizable",
         "href": "#/components/resizable",
-        "badge": "Stage 3",
         "desc": "Accessible resizable panel groups and layout splitters.",
         "description": "Accessible resizable panel groups and layout splitters."
       },
@@ -1413,7 +1387,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "window-title-bar",
         "title": "Window Title Bar",
         "href": "#/components/window-title-bar",
-        "badge": "Stage 3",
         "desc": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons.",
         "description": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons."
       },
@@ -1421,7 +1394,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "sidebar",
         "title": "Sidebar",
         "href": "#/components/sidebar",
-        "badge": "Stage 3",
         "desc": "Composable, responsive and resizable desktop-grade sidebar navigation system.",
         "description": "Composable, responsive and resizable desktop-grade sidebar navigation system."
       },
@@ -1429,7 +1401,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "smooth-wheel-handler",
         "title": "Smooth Wheel Handler",
         "href": "#/components/smooth-wheel-handler",
-        "badge": "Stage 3",
         "desc": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex.",
         "description": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex."
       }
@@ -1442,7 +1413,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "generic-data-table",
         "title": "Generic Data Table",
         "href": "#/components/generic-data-table",
-        "badge": "Stage 4",
         "desc": "Full-featured data table with column sorting, filtering, selection, and pagination.",
         "description": "Full-featured data table with column sorting, filtering, selection, and pagination."
       },
@@ -1450,7 +1420,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "query-builder",
         "title": "Query Builder",
         "href": "#/components/query-builder",
-        "badge": "Stage 4",
         "desc": "Visual rule tree builder for structured query generation with nested logic groups.",
         "description": "Visual rule tree builder for structured query generation with nested logic groups."
       }

@@ -120,49 +120,42 @@
         "id": "dropdown-menu",
         "title": "Dropdown Menu",
         "href": "#/components/dropdown-menu",
-        "badge": "Stage 1",
         "desc": "Displays a menu to the user triggered by a button with item groups and shortcuts."
       },
       {
         "id": "select",
         "title": "Select",
         "href": "#/components/select",
-        "badge": "Stage 1",
         "desc": "Displays a list of options for the user to pick from with trigger and indicator."
       },
       {
         "id": "popover",
         "title": "Popover",
         "href": "#/components/popover",
-        "badge": "Stage 1",
         "desc": "Displays rich interactive content in a floating portal anchored to a trigger."
       },
       {
         "id": "context-menu",
         "title": "Context Menu",
         "href": "#/components/context-menu",
-        "badge": "Stage 1",
         "desc": "Displays a menu located at the pointer coordinates on right-click or context gesture."
       },
       {
         "id": "alert-dialog",
         "title": "Alert Dialog",
         "href": "#/components/alert-dialog",
-        "badge": "Stage 1",
         "desc": "A modal dialog that interrupts the user with important content and requires confirmation."
       },
       {
         "id": "sheet",
         "title": "Sheet",
         "href": "#/components/sheet",
-        "badge": "Stage 1",
         "desc": "Extends the dialog component to display content that slides in from any screen edge."
       },
       {
         "id": "skeleton",
         "title": "Skeleton",
         "href": "#/components/skeleton",
-        "badge": "Stage 1",
         "desc": "Used to show a placeholder while content is loading with pulse animations."
       },
       {
@@ -180,84 +173,72 @@
         "id": "copy-button",
         "title": "Copy Button",
         "href": "#/components/copy-button",
-        "badge": "Stage 2",
         "desc": "One-click clipboard copy button with transient feedback icons and custom timeouts."
       },
       {
         "id": "panel-card",
         "title": "Panel Card",
         "href": "#/components/panel-card",
-        "badge": "Stage 2",
         "desc": "Card surface with integrated collapsible sections and header action slots."
       },
       {
         "id": "split-button",
         "title": "Split Button",
         "href": "#/components/split-button",
-        "badge": "Stage 2",
         "desc": "Dual-action button with primary direct click and secondary dropdown chevron."
       },
       {
         "id": "inline-editable-text",
         "title": "Inline Editable Text",
         "href": "#/components/inline-editable-text",
-        "badge": "Stage 2",
         "desc": "Text element that switches seamlessly to an input field on double-click or edit trigger."
       },
       {
         "id": "range-slider",
         "title": "Range Slider",
         "href": "#/components/range-slider",
-        "badge": "Stage 2",
         "desc": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention."
       },
       {
         "id": "read-only-input",
         "title": "Read-Only Input",
         "href": "#/components/read-only-input",
-        "badge": "Stage 2",
         "desc": "Protected input field for tokens and IDs with integrated copy-to-clipboard action."
       },
       {
         "id": "preset-number-input",
         "title": "Preset Number Input",
         "href": "#/components/preset-number-input",
-        "badge": "Stage 2",
         "desc": "Numeric input field with quick-select preset dropdown panel and clear actions."
       },
       {
         "id": "keybinding-recorder",
         "title": "Keybinding Recorder",
         "href": "#/components/keybinding-recorder",
-        "badge": "Stage 2",
         "desc": "Interactive recorder that captures accelerator keyboard sequences for desktop apps."
       },
       {
         "id": "viewport-constrained-container",
         "title": "Viewport Constrained Container",
         "href": "#/components/viewport-constrained-container",
-        "badge": "Stage 2",
         "desc": "Container that dynamically bounds max-height based on available viewport space below the anchor."
       },
       {
         "id": "segmented-control",
         "title": "Segmented Control",
         "href": "#/components/segmented-control",
-        "badge": "Stage 2",
         "desc": "Compact pill segmented switch for toolbars, menus, and view toggles."
       },
       {
         "id": "setting-row",
         "title": "Setting Row",
         "href": "#/components/setting-row",
-        "badge": "Stage 2",
         "desc": "Settings form item layout with title, description, control slot, and anchor flash."
       },
       {
         "id": "elided-text",
         "title": "Elided Text",
         "href": "#/components/elided-text",
-        "badge": "Stage 2",
         "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
       }
     ]
@@ -269,70 +250,60 @@
         "id": "virtual-list",
         "title": "Virtual List",
         "href": "#/components/virtual-list",
-        "badge": "Stage 3",
         "desc": "High-performance windowed 100k+ row list with dynamic or fixed item measurements."
       },
       {
         "id": "virtual-tree",
         "title": "Virtual Tree",
         "href": "#/components/virtual-tree",
-        "badge": "Stage 3",
         "desc": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
       },
       {
         "id": "virtual-grid",
         "title": "Virtual Grid",
         "href": "#/components/virtual-grid",
-        "badge": "Stage 3",
         "desc": "2D windowed grid virtualizer for massive dataset visualization."
       },
       {
         "id": "draggable-modal",
         "title": "Draggable Modal",
         "href": "#/components/draggable-modal",
-        "badge": "Stage 3",
         "desc": "Desktop floating window with dragging title bar and bound viewport constraints."
       },
       {
         "id": "splitter",
         "title": "Splitter",
         "href": "#/components/splitter",
-        "badge": "Stage 3",
         "desc": "Multi-pane resizable layout container with draggable gutters and collapse limits."
       },
       {
         "id": "splitter-handle",
         "title": "Splitter Handle",
         "href": "#/components/splitter-handle",
-        "badge": "Stage 3",
         "desc": "Edge resize handle with reference item coordinate stabilization and min/max clamping."
       },
       {
         "id": "resizable",
         "title": "Resizable",
         "href": "#/components/resizable",
-        "badge": "Stage 3",
         "desc": "Accessible resizable panel groups and layout splitters."
       },
       {
         "id": "window-title-bar",
         "title": "Window Title Bar",
         "href": "#/components/window-title-bar",
-        "badge": "Stage 3",
         "desc": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons."
       },
       {
         "id": "sidebar",
         "title": "Sidebar",
         "href": "#/components/sidebar",
-        "badge": "Stage 3",
         "desc": "Composable, responsive and resizable desktop-grade sidebar navigation system."
       },
       {
         "id": "smooth-wheel-handler",
         "title": "Smooth Wheel Handler",
         "href": "#/components/smooth-wheel-handler",
-        "badge": "Stage 3",
         "desc": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex."
       }
     ]
@@ -344,14 +315,12 @@
         "id": "generic-data-table",
         "title": "Generic Data Table",
         "href": "#/components/generic-data-table",
-        "badge": "Stage 4",
         "desc": "Full-featured data table with column sorting, filtering, selection, and pagination."
       },
       {
         "id": "query-builder",
         "title": "Query Builder",
         "href": "#/components/query-builder",
-        "badge": "Stage 4",
         "desc": "Visual rule tree builder for structured query generation with nested logic groups."
       }
     ]
