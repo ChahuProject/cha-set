@@ -204,7 +204,8 @@
     "panelCard": {
       "container": { "requirement": "must", "description": "renders card container with rounded borders and background" },
       "tintedHeader": { "requirement": "must", "description": "supports tinted header background styling" },
-      "size": { "requirement": "should", "description": "supports default and compact sm sizing variants" }
+      "size": { "requirement": "should", "description": "supports default and compact sm sizing variants" },
+      "collapsible": { "requirement": "should", "description": "supports collapsible toggle and content collapse" }
     },
     "splitButton": {
       "mainAction": { "requirement": "must", "description": "renders main primary action button triggering callback" },

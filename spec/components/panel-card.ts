@@ -7,6 +7,12 @@ export const panelCardSizeSchema = z.enum(['default', 'sm']);
 
 export const panelCardSchema = z.object({
   size: panelCardSizeSchema.default('default'),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  badgeText: z.string().optional(),
+  collapsible: z.boolean().default(false),
+  collapsed: z.boolean().optional(),
+  defaultCollapsed: z.boolean().default(false),
 });
 
 export const panelCardHeaderSchema = z.object({

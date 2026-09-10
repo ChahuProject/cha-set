@@ -90,11 +90,13 @@ export function PanelCardDocPage() {
         <PropsTable
           props={[
             { name: 'title', type: 'ReactNode', default: 'undefined', description: 'Panel header title text or element.' },
+            { name: 'badgeText', type: 'string', default: 'undefined', description: 'Optional badge text displayed next to the title.' },
             { name: 'collapsible', type: 'boolean', default: 'false', description: 'Whether the panel content can be toggled collapsed.' },
             { name: 'collapsed', type: 'boolean', default: 'undefined', description: 'Controlled collapsed state.' },
             { name: 'defaultCollapsed', type: 'boolean', default: 'false', description: 'Initial collapsed state for uncontrolled mode.' },
             { name: 'onCollapsedChange', type: '(c: boolean) => void', default: 'undefined', description: 'Collapse change handler.' },
             { name: 'actions', type: 'ReactNode', default: 'undefined', description: 'Right-aligned header action elements.' },
+            { name: 'size', type: "'default' | 'sm'", default: "'default'", description: 'Sizing scale of the card panel.' },
           ]}
         />
       </section>

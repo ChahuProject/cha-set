@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import {
   PanelCard,
   PanelCardHeader,
@@ -38,5 +38,29 @@ describe('PanelCard', () => {
 
     const card = container.querySelector('[data-slot="panel-card"]');
     expect(card).toHaveAttribute('data-size', 'sm');
+  });
+
+  it('supports convenience props and collapsible toggling', () => {
+    const onCollapsedChange = vi.fn();
+    const { rerender } = render(
+      <PanelCard
+        title="Diagnostics"
+        badgeText="Active"
+        collapsible
+        defaultCollapsed={false}
+        onCollapsedChange={onCollapsedChange}
+      >
+        <span>Telemetry Data</span>
+      </PanelCard>,
+    );
+
+    expect(screen.getByText('Diagnostics')).toBeInTheDocument();
+    expect(screen.getByText('Active')).toBeInTheDocument();
+    expect(screen.getByText('Telemetry Data')).toBeInTheDocument();
+
+    const toggleBtn = screen.getByRole('button', { name: 'Collapse panel' });
+    fireEvent.click(toggleBtn);
+    expect(onCollapsedChange).toHaveBeenCalledWith(true);
+    expect(screen.queryByText('Telemetry Data')).not.toBeInTheDocument();
   });
 });

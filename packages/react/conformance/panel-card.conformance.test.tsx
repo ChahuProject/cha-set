@@ -18,5 +18,6 @@ describe('PanelCard conformance (spec contract)', () => {
     };
     expect(coverage.panelCard?.container).toBe(true);
     expect(coverage.panelCard?.tintedHeader).toBe(true);
+    expect(coverage.panelCard?.collapsible).toBe(true);
   });
 });

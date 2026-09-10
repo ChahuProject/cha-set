@@ -1,12 +1,59 @@
 import * as React from 'react';
+import { Badge } from '../badge/Badge';
+import { Button } from '../button/Button';
+import { ChevronDownIcon } from '../lib/icons';
 import { cn } from '../lib/utils';
 
-export interface PanelCardProps extends React.ComponentProps<'div'> {
+export interface PanelCardProps extends Omit<React.ComponentProps<'div'>, 'title'> {
   /** Size variant: standard or compact */
   size?: 'default' | 'sm';
+  /** Optional convenience title */
+  title?: React.ReactNode;
+  /** Optional icon displayed in convenience header */
+  icon?: React.ReactNode;
+  /** Optional description displayed in convenience header */
+  description?: React.ReactNode;
+  /** Optional badge text displayed next to convenience title */
+  badgeText?: string;
+  /** Whether the panel can be collapsed */
+  collapsible?: boolean;
+  /** Controlled collapsed state */
+  collapsed?: boolean;
+  /** Initial collapsed state */
+  defaultCollapsed?: boolean;
+  /** Callback fired on collapse state change */
+  onCollapsedChange?: (collapsed: boolean) => void;
+  /** Optional action slot in convenience header */
+  actions?: React.ReactNode;
 }
 
-export function PanelCard({ className, size = 'default', ...props }: PanelCardProps) {
+export function PanelCard({
+  className,
+  size = 'default',
+  title,
+  icon,
+  description,
+  badgeText,
+  collapsible = false,
+  collapsed: controlledCollapsed,
+  defaultCollapsed = false,
+  onCollapsedChange,
+  actions,
+  children,
+  ...props
+}: PanelCardProps) {
+  const [uncontrolledCollapsed, setUncontrolledCollapsed] = React.useState(defaultCollapsed);
+  const isCollapsed = controlledCollapsed !== undefined ? controlledCollapsed : uncontrolledCollapsed;
+
+  const handleToggle = () => {
+    if (!collapsible) return;
+    const next = !isCollapsed;
+    setUncontrolledCollapsed(next);
+    onCollapsedChange?.(next);
+  };
+
+  const hasConvenienceHeader = title !== undefined || collapsible || badgeText !== undefined;
+
   return (
     <div
       data-slot="panel-card"
@@ -17,7 +64,53 @@ export function PanelCard({ className, size = 'default', ...props }: PanelCardPr
         className,
       )}
       {...props}
-    />
+    >
+      {hasConvenienceHeader ? (
+        <>
+          <PanelCardHeader
+            icon={icon}
+            title={
+              <div className="flex items-center gap-2">
+                {title}
+                {badgeText && (
+                  <Badge variant="secondary" size="sm">
+                    {badgeText}
+                  </Badge>
+                )}
+              </div>
+            }
+            description={description}
+            action={
+              <div className="flex items-center gap-1.5">
+                {actions}
+                {collapsible && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon-xs"
+                    aria-label={isCollapsed ? 'Expand panel' : 'Collapse panel'}
+                    onClick={handleToggle}
+                    className="size-6 text-muted-foreground hover:text-foreground"
+                  >
+                    <ChevronDownIcon
+                      className={cn(
+                        'size-3.5 transition-transform duration-200',
+                        isCollapsed && '-rotate-90',
+                      )}
+                    />
+                  </Button>
+                )}
+              </div>
+            }
+          />
+          {!isCollapsed && (
+            <PanelCardContent className="p-4">{children}</PanelCardContent>
+          )}
+        </>
+      ) : (
+        children
+      )}
+    </div>
   );
 }
 

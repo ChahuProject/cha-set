@@ -180,7 +180,8 @@
   "panelCard": {
     "container": true,
     "tintedHeader": true,
-    "size": true
+    "size": true,
+    "collapsible": true
   },
   "splitButton": {
     "mainAction": true,
