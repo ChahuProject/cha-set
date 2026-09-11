@@ -41,4 +41,13 @@ describe('WindowTitleBar', () => {
 
     expect(onMaximize).toHaveBeenCalledTimes(1);
   });
+
+  it('attaches data-tauri-drag-region by default and respects dragRegion prop', () => {
+    const { container, rerender } = render(<WindowTitleBar title="Window" />);
+    const dragRegion = container.querySelector('[data-slot="window-drag-region"]');
+    expect(dragRegion).toHaveAttribute('data-tauri-drag-region');
+
+    rerender(<WindowTitleBar title="Window" dragRegion={false} />);
+    expect(dragRegion).not.toHaveAttribute('data-tauri-drag-region');
+  });
 });

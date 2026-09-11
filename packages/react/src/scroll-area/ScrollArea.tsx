@@ -287,8 +287,9 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
           >
             <BaseScrollArea.Content
               ref={contentRef}
-              className={cn(!showHorizontalScrollBar && 'w-full max-w-full min-w-0', contentClassName)}
+              className={cn('min-h-full', !showHorizontalScrollBar && 'w-full max-w-full min-w-0', contentClassName)}
               style={{
+                minHeight: '100%',
                 ...(!showHorizontalScrollBar ? { minWidth: 0, maxWidth: '100%', width: '100%' } : undefined),
                 ...contentStyle,
               }}

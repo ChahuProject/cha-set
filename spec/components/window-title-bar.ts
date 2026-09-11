@@ -9,6 +9,7 @@ export const windowTitleBarSchema = z.object({
   isMaximized: z.boolean().default(false),
   isFocused: z.boolean().default(true),
   showControls: z.boolean().default(true),
+  dragRegion: z.boolean().default(true).optional(),
 });
 
 export type WindowTitleBarApi = z.infer<typeof windowTitleBarSchema>;

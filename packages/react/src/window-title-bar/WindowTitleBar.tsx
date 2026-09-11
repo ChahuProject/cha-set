@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
 
-export interface WindowTitleBarProps {
+export interface WindowTitleBarProps extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
   /** Application or window title */
   title?: React.ReactNode;
   /** Leading app icon */
@@ -34,6 +34,8 @@ export interface WindowTitleBarProps {
   showControls?: boolean;
   /** Extra controls to render before the caption buttons */
   extraControls?: React.ReactNode;
+  /** Whether to enable desktop drag region (e.g. data-tauri-drag-region). Defaults to true. */
+  dragRegion?: boolean;
   className?: string;
 }
 
@@ -54,7 +56,9 @@ export function WindowTitleBar({
   closeTitle = 'Close',
   showControls = true,
   extraControls,
+  dragRegion = true,
   className,
+  ...props
 }: WindowTitleBarProps) {
   const handleDoubleClick = (e: React.MouseEvent) => {
     onDoubleClick?.(e);
@@ -72,10 +76,12 @@ export function WindowTitleBar({
         isFocused ? 'opacity-100' : 'opacity-60',
         className,
       )}
+      {...props}
     >
       {/* Left title info & drag region */}
       <div
         data-slot="window-drag-region"
+        {...(dragRegion ? { 'data-tauri-drag-region': '' } : {})}
         className="flex h-full flex-1 items-center gap-2 px-3 text-xs text-muted-foreground min-w-0"
       >
         {icon && <div className="pointer-events-none flex shrink-0 items-center justify-center">{icon}</div>}
