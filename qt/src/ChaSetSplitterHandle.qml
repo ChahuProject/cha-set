@@ -60,10 +60,10 @@ Item {
         opacity: root.active ? 1.0 : 0.75
 
         Behavior on color {
-            ColorAnimation { duration: 100 }
+            ColorAnimation { duration: ThemeTokens.motionQuick }
         }
         Behavior on opacity {
-            NumberAnimation { duration: 100 }
+            NumberAnimation { duration: ThemeTokens.motionQuick }
         }
     }
 

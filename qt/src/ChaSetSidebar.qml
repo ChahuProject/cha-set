@@ -51,7 +51,7 @@ Item {
 
     Behavior on width {
         enabled: !root.isResizing
-        NumberAnimation { duration: 180; easing.type: Easing.OutCubic }
+        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutCubic }
     }
 
     Rectangle {
@@ -109,7 +109,7 @@ Item {
         opacity: railMouse.containsMouse || root.isResizing ? 0.75 : 0.0
 
         Behavior on opacity {
-            NumberAnimation { duration: 150 }
+            NumberAnimation { duration: ThemeTokens.motionShort }
         }
 
         MouseArea {

@@ -186,6 +186,78 @@ DocLayout {
                         Text { text: "24px (Pill)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
                     }
                 }
+
+                Rectangle { width: parent.width; height: 1; color: ThemeTokens.border }
+
+                // 5. Motion & Animations
+                Column {
+                    width: parent.width
+                    spacing: 12
+
+                    Row {
+                        width: parent.width
+                        Text {
+                            text: "MOTION & ANIMATIONS"
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: 11
+                            font.weight: Font.Bold
+                            font.letterSpacing: 0.5
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Item { width: Math.max(10, parent.width - 240); height: 1 }
+                        ChaSetSwitch {
+                            checked: ThemeTokens.animationsEnabled
+                            onToggled: function(val) {
+                                ThemeTokens.animationsEnabled = val
+                                root.logAction("Animations: " + (val ? "ON" : "OFF"))
+                            }
+                        }
+                    }
+
+                    Column {
+                        width: parent.width
+                        spacing: 6
+                        opacity: ThemeTokens.animationsEnabled ? 1.0 : 0.4
+                        enabled: ThemeTokens.animationsEnabled
+
+                        Row {
+                            width: parent.width
+                            Text {
+                                text: "ANIMATION SPEED DURATION FACTOR"
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: 11
+                                font.weight: Font.Bold
+                                font.letterSpacing: 0.5
+                            }
+                            Item { width: Math.max(10, parent.width - 320); height: 1 }
+                            ChaSetBadge {
+                                size: "sm"
+                                variant: "secondary"
+                                text: (Math.round(ThemeTokens.animSpeed * 1000)) + "ms (" + (Math.round(0.2 / ThemeTokens.animSpeed * 10) / 10) + "x)"
+                            }
+                        }
+
+                        ChaSetSlider {
+                            width: parent.width
+                            min: 0.05
+                            max: 0.8
+                            step: 0.05
+                            value: ThemeTokens.animSpeed
+                            onValueMoved: function(val) {
+                                ThemeTokens.animSpeed = Math.round(val * 100) / 100
+                            }
+                        }
+
+                        Row {
+                            width: parent.width
+                            Text { text: "0.05s (Fast)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                            Item { width: parent.width - 230; height: 1 }
+                            Text { text: "0.20s (Default)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                            Item { width: 40; height: 1 }
+                            Text { text: "0.80s (Slow)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                        }
+                    }
+                }
             }
         }
     }

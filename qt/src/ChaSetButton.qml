@@ -210,7 +210,7 @@ Item {
             RotationAnimation {
                 target: spinner
                 property: "rotation"
-                running: root.loading
+                running: ThemeTokens.animationsEnabled && root.loading
                 loops: Animation.Infinite
                 from: 0
                 to: 360

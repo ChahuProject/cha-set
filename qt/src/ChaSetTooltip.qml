@@ -130,7 +130,7 @@ Item {
         opacity: visible ? 1.0 : 0.0
 
         Behavior on opacity {
-            NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
+            NumberAnimation { duration: ThemeTokens.motionShort; easing.type: Easing.OutQuad }
         }
 
         radius: 4

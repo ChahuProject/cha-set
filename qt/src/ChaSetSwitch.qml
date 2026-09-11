@@ -63,7 +63,7 @@ Item {
             : (root.isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0))
 
         Behavior on color {
-            ColorAnimation { duration: 120 }
+            ColorAnimation { duration: ThemeTokens.motionShort }
         }
 
         // Outer focus ring: 1px offset Rectangle (margins: -1, radius + 1), visible when focused
@@ -92,7 +92,7 @@ Item {
 
             Behavior on x {
                 NumberAnimation {
-                    duration: 120
+                    duration: ThemeTokens.motionShort
                     easing.type: Easing.InOutQuad
                 }
             }
@@ -108,7 +108,7 @@ Item {
                 rotation: 0
 
                 NumberAnimation on rotation {
-                    running: root.loading
+                    running: ThemeTokens.animationsEnabled && root.loading
                     from: 0
                     to: 360
                     duration: 800

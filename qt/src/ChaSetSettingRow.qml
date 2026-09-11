@@ -39,12 +39,12 @@ Item {
         visible: opacity > 0
 
         SequentialAnimation on opacity {
-            running: root.highlight
-            NumberAnimation { from: 1; to: 0.25; duration: 180 }
-            NumberAnimation { from: 0.25; to: 1; duration: 180 }
-            NumberAnimation { from: 1; to: 0.25; duration: 180 }
-            NumberAnimation { from: 0.25; to: 1; duration: 180 }
-            NumberAnimation { from: 1; to: 0; duration: 400 }
+            running: ThemeTokens.animationsEnabled && root.highlight
+            NumberAnimation { from: 1; to: 0.25; duration: ThemeTokens.motionMedium }
+            NumberAnimation { from: 0.25; to: 1; duration: ThemeTokens.motionMedium }
+            NumberAnimation { from: 1; to: 0.25; duration: ThemeTokens.motionMedium }
+            NumberAnimation { from: 0.25; to: 1; duration: ThemeTokens.motionMedium }
+            NumberAnimation { from: 1; to: 0; duration: Math.max(10, ThemeTokens.motionMedium * 2) }
             onRunningChanged: {
                 if (!running && root.highlight) {
                     root.highlightFinished(root.highlightId);
@@ -53,7 +53,7 @@ Item {
         }
 
         Behavior on opacity {
-            NumberAnimation { duration: 120 }
+            NumberAnimation { duration: ThemeTokens.motionShort }
         }
     }
 

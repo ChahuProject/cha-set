@@ -10,6 +10,14 @@ QtObject {
     id: root
 
     property bool dark: false
+    property bool animationsEnabled: true
+    property real animSpeed: 0.2
+
+    function motionDuration(baseMs) {
+        if (!animationsEnabled) return 0;
+        const factor = (animSpeed > 0.01) ? (animSpeed / 0.2) : 1.0;
+        return Math.max(0, Math.round(baseMs / factor));
+    }
 
     function color(name) {
         // qmlcachegen does not support object literals in property bindings; use switch-case direct returns.
@@ -197,9 +205,9 @@ QtObject {
     readonly property int space5: 16
     readonly property int space6: 24
 
-    readonly property int motionQuick: 90
-    readonly property int motionShort: 120
-    readonly property int motionMedium: 180
+    readonly property int motionQuick: motionDuration(90)
+    readonly property int motionShort: motionDuration(120)
+    readonly property int motionMedium: motionDuration(180)
 
     readonly property int radiusSmall: 2
     readonly property int controlHeight: 28

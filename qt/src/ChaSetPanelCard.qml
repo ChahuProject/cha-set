@@ -23,7 +23,7 @@ Rectangle {
     clip: true
 
     Behavior on implicitHeight {
-        NumberAnimation { duration: 180; easing.type: Easing.OutQuad }
+        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
     }
 
     Column {

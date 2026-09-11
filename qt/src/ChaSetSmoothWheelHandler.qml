@@ -25,8 +25,8 @@ Item {
     /// Intercept and consume wheel event
     property bool consumeEvent: true
 
-    /// Animation duration in milliseconds
-    property int duration: 200
+    /// Animation duration in milliseconds (defaults to ThemeTokens.motionMedium, 0 when animations disabled)
+    property int duration: ThemeTokens.animationsEnabled ? ThemeTokens.motionMedium : 0
 
     /// Easing curve
     property int easingType: Easing.OutCubic

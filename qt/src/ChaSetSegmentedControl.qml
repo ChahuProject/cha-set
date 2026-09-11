@@ -188,7 +188,7 @@ Item {
                 border.color: isSelected ? ThemeTokens.border : "transparent"
                 border.width: isSelected ? 1 : 0
 
-                Behavior on color { ColorAnimation { duration: 100 } }
+                Behavior on color { ColorAnimation { duration: ThemeTokens.motionQuick } }
 
                 Row {
                     anchors.centerIn: parent

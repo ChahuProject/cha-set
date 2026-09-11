@@ -43,7 +43,7 @@ Item {
         radius: root.customRadius
 
         Behavior on border.color {
-            ColorAnimation { duration: 120 }
+            ColorAnimation { duration: ThemeTokens.motionShort }
         }
 
         Item {

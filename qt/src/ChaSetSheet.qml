@@ -45,7 +45,7 @@ Rectangle {
     focus: root.open
 
     Behavior on opacity {
-        NumberAnimation { duration: 200; easing.type: Easing.OutQuad }
+        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
     }
 
     Shortcut {
@@ -95,10 +95,10 @@ Rectangle {
         height: (root.side === "top" || root.side === "bottom") ? root.sheetSize : root.height
 
         Behavior on x {
-            NumberAnimation { duration: 220; easing.type: Easing.OutCubic }
+            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutCubic }
         }
         Behavior on y {
-            NumberAnimation { duration: 220; easing.type: Easing.OutCubic }
+            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutCubic }
         }
 
         MouseArea {

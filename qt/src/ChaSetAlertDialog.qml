@@ -30,7 +30,7 @@ Rectangle {
     focus: root.open
 
     Behavior on opacity {
-        NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
+        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
     }
 
     onOpenChanged: {
@@ -78,7 +78,7 @@ Rectangle {
         scale: root.open ? 1.0 : 0.95
 
         Behavior on scale {
-            NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
+            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
         }
 
         MouseArea {

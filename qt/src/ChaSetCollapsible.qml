@@ -118,7 +118,7 @@ Rectangle {
                 transformOrigin: Item.Center
 
                 Behavior on rotation {
-                    NumberAnimation { duration: 180; easing.type: Easing.OutQuad }
+                    NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
                 }
             }
 
@@ -147,7 +147,7 @@ Rectangle {
             visible: height > 0
 
             Behavior on height {
-                NumberAnimation { duration: 200; easing.type: Easing.OutQuad }
+                NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
             }
 
             Item {

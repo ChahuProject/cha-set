@@ -39,6 +39,9 @@
   --cs-sidebar-selected-foreground: var(--sidebar-foreground);
   --cs-font-weight-medium: 500;
   --cs-font-weight-semibold: 600;
+  --cs-motion-quick: 90ms;
+  --cs-motion-short: 120ms;
+  --cs-motion-medium: 180ms;
 }
 
 .dark {
@@ -80,6 +83,18 @@
   --cs-sidebar-selected-foreground: var(--sidebar-foreground);
   --cs-font-weight-medium: 500;
   --cs-font-weight-semibold: 600;
+  --cs-motion-quick: 90ms;
+  --cs-motion-short: 120ms;
+  --cs-motion-medium: 180ms;
+}
+
+/* == accessibility: reduce motion == */
+@media (prefers-reduced-motion: reduce) {
+  :root, .dark {
+    --cs-motion-quick: 0ms;
+    --cs-motion-short: 0ms;
+    --cs-motion-medium: 0ms;
+  }
 }
 
 /* == accent themes (switch via [data-theme] on <html>) == */

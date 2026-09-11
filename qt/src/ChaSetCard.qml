@@ -23,8 +23,8 @@ Rectangle {
     border.color: (root.interactive && mouseArea.containsMouse) ? ThemeTokens.accent : cBorder
 
     scale: (root.interactive && mouseArea.pressed) ? 0.995 : 1.0
-    Behavior on scale { NumberAnimation { duration: 100 } }
-    Behavior on border.color { ColorAnimation { duration: 150 } }
+    Behavior on scale { NumberAnimation { duration: ThemeTokens.motionShort } }
+    Behavior on border.color { ColorAnimation { duration: ThemeTokens.motionShort } }
 
     color: {
         if (root.variant === "secondary") {

@@ -16,7 +16,7 @@ Rectangle {
     opacity: root.animate && root.animation === "pulse" ? 0.6 : 0.85
 
     SequentialAnimation on opacity {
-        running: root.animate && root.animation === "pulse"
+        running: ThemeTokens.animationsEnabled && root.animate && root.animation === "pulse"
         loops: Animation.Infinite
         NumberAnimation { to: 0.3; duration: 800; easing.type: Easing.InOutQuad }
         NumberAnimation { to: 0.7; duration: 800; easing.type: Easing.InOutQuad }
@@ -36,7 +36,7 @@ Rectangle {
         }
 
         NumberAnimation on x {
-            running: root.animate && root.animation === "wave"
+            running: ThemeTokens.animationsEnabled && root.animate && root.animation === "wave"
             from: -waveHighlight.width
             to: root.width
             duration: 1200

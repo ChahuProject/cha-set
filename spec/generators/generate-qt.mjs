@@ -265,6 +265,7 @@ const rgbaLiteral = (mode, field) => {
   return `Qt.rgba(${fmtChannel(r)}, ${fmtChannel(g)}, ${fmtChannel(b)}, ${fmtChannel(a)})`;
 };
 const intProps = (order, table) => order.map((f) => `    readonly property int ${f}: ${table[f]}`).join('\n');
+const motionProps = (order, table) => order.map((f) => `    readonly property int ${f}: motionDuration(${table[f]})`).join('\n');
 
 const qml = `pragma Singleton
 import QtQuick
@@ -278,6 +279,14 @@ QtObject {
     id: root
 
     property bool dark: false
+    property bool animationsEnabled: true
+    property real animSpeed: 0.2
+
+    function motionDuration(baseMs) {
+        if (!animationsEnabled) return 0;
+        const factor = (animSpeed > 0.01) ? (animSpeed / 0.2) : 1.0;
+        return Math.max(0, Math.round(baseMs / factor));
+    }
 
     function color(name) {
         // qmlcachegen does not support object literals in property bindings; use switch-case direct returns.
@@ -297,7 +306,7 @@ ${COLOR_ORDER.map((f) => `    readonly property color ${f}: color("${f}")`).join
 
 ${intProps(SPACE_ORDER, derivedQt.space)}
 
-${intProps(MOTION_ORDER, derivedQt.motion)}
+${motionProps(MOTION_ORDER, derivedQt.motion)}
 
 ${intProps(SIZE_ORDER, derivedQt.size)}
 }

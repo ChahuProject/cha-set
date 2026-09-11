@@ -134,7 +134,7 @@ T.ScrollBar {
         implicitHeight: control.horizontal ? control.hitThickness : 0
         color: control._isExpanded ? (ThemeTokens.dark ? Qt.rgba(255/255, 255/255, 255/255, 0.05) : Qt.rgba(241/255, 245/255, 249/255, 0.3)) : "transparent"
         radius: 0
-        Behavior on color { enabled: !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: 120 } }
+        Behavior on color { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: ThemeTokens.motionShort } }
     }
 
     // Centered Thumb Item with Min Length Clamping
@@ -162,9 +162,9 @@ T.ScrollBar {
                    (control.hovered || control.forceHover) ? (ThemeTokens.dark ? Qt.rgba(83/255, 96/255, 115/255, 1.0) : Qt.rgba(175/255, 184/255, 196/255, 1.0)) :
                    (ThemeTokens.dark ? "#1e293b" : "#e2e8f0")
 
-            Behavior on width { enabled: !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: 120; easing.type: Easing.OutQuad } }
-            Behavior on height { enabled: !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: 120; easing.type: Easing.OutQuad } }
-            Behavior on color { enabled: !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: 120 } }
+            Behavior on width { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: ThemeTokens.motionShort; easing.type: Easing.OutQuad } }
+            Behavior on height { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: ThemeTokens.motionShort; easing.type: Easing.OutQuad } }
+            Behavior on color { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: ThemeTokens.motionShort } }
         }
     }
 
@@ -189,8 +189,8 @@ T.ScrollBar {
                _isHovered ? (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8)) : "transparent"
 
         opacity: !isEnabled ? 0.20 : (control._isExpanded ? 1.0 : 0.0)
-        Behavior on opacity { NumberAnimation { duration: 120 } }
-        Behavior on color { ColorAnimation { duration: 120 } }
+        Behavior on opacity { enabled: ThemeTokens.animationsEnabled; NumberAnimation { duration: ThemeTokens.motionShort } }
+        Behavior on color { enabled: ThemeTokens.animationsEnabled; ColorAnimation { duration: ThemeTokens.motionShort } }
 
         readonly property color iconColor: !isEnabled ? (ThemeTokens.dark ? "#64748b" : "#94a3b8") :
                                           ((_isPressed || _isHovered) ? (ThemeTokens.dark ? "#f8fafc" : "#020817") :

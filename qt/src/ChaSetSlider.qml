@@ -282,7 +282,7 @@ Item {
 
         scale: root.isDragging && !root.readOnly ? 0.95 : (root.isHovered ? 1.05 : 1.0)
         Behavior on scale {
-            NumberAnimation { duration: 100 }
+            NumberAnimation { duration: ThemeTokens.motionShort }
         }
 
         // Focus ring
