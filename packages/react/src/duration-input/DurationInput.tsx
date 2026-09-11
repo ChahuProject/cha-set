@@ -4,7 +4,31 @@ import type {
   DurationInputSize,
 } from '@chahu/spec/duration-input';
 
-import { defaultDurationPresetGroups } from '@chahu/spec/duration-input';
+export const defaultDurationPresetGroups: DurationPresetGroup[] = [
+  {
+    label: 'Seconds',
+    items: [{ label: '30s', seconds: 30 }],
+  },
+  {
+    label: 'Minutes',
+    items: [
+      { label: '1m', seconds: 60 },
+      { label: '5m', seconds: 300 },
+      { label: '15m', seconds: 900 },
+      { label: '30m', seconds: 1800 },
+    ],
+  },
+  {
+    label: 'Hours',
+    items: [
+      { label: '1h', seconds: 3600 },
+      { label: '2h', seconds: 7200 },
+      { label: '6h', seconds: 21600 },
+      { label: '12h', seconds: 43200 },
+    ],
+  },
+];
+
 
 
 

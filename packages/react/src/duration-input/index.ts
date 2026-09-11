@@ -5,4 +5,3 @@ export type {
   DurationInputSize,
   DurationInputApi,
 } from '@chahu/spec/duration-input';
-export { defaultDurationPresetGroups } from '@chahu/spec/duration-input';
