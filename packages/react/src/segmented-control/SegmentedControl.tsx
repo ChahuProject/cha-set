@@ -1,7 +1,15 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/utils';
-import type { SegmentedControlOption, SegmentedControlSize } from '@chahu/spec/segmented-control';
+import type { SegmentedControlSize } from '@chahu/spec/segmented-control';
+
+export interface SegmentedControlOption {
+  label: React.ReactNode;
+  value: string | number;
+  icon?: React.ReactNode;
+  badge?: React.ReactNode;
+  disabled?: boolean;
+}
 
 export const segmentedControlVariants = cva(
   'inline-flex items-center rounded-lg bg-muted p-0.5 text-muted-foreground select-none border border-border/50',
