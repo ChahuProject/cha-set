@@ -95,7 +95,9 @@ ApplicationWindow {
         case "setting-row": return "SettingRowDocPage.qml";
         case "elided-text": return "ElidedTextDocPage.qml";
         case "splitter-handle": return "SplitterHandleDocPage.qml";
+        case "duration-input": return "DurationInputDocPage.qml";
         default: return "ButtonDocPage.qml";
+
         }
     }
 

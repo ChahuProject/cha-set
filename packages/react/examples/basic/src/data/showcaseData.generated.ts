@@ -1328,6 +1328,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/elided-text",
         "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated.",
         "description": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
+      },
+      {
+        "id": "duration-input",
+        "title": "Duration Input",
+        "href": "#/components/duration-input",
+        "desc": "Segmented duration input with step buttons, keyboard arrow jumping, and preset menu.",
+        "description": "Segmented duration input with step buttons, keyboard arrow jumping, and preset menu."
       }
     ]
   },
@@ -2020,6 +2027,24 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Hover / Focus",
       "action": "Display full untruncated text in tooltip if elided"
+    }
+  ],
+  "duration-input": [
+    {
+      "key": "↑ / ↓",
+      "action": "Increment / decrement focused time segment (hours, minutes, seconds)"
+    },
+    {
+      "key": "← / →",
+      "action": "Navigate between adjacent time segments"
+    },
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Move focus between time segments and preset dropdown"
+    },
+    {
+      "key": "Mouse Wheel",
+      "action": "Adjust focused segment value up or down"
     }
   ]
 };

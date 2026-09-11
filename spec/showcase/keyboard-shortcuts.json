@@ -217,5 +217,12 @@
   ],
   "elided-text": [
     { "key": "Hover / Focus", "action": "Display full untruncated text in tooltip if elided" }
+  ],
+  "duration-input": [
+    { "key": "↑ / ↓", "action": "Increment / decrement focused time segment (hours, minutes, seconds)" },
+    { "key": "← / →", "action": "Navigate between adjacent time segments" },
+    { "key": "Tab / Shift + Tab", "action": "Move focus between time segments and preset dropdown" },
+    { "key": "Mouse Wheel", "action": "Adjust focused segment value up or down" }
   ]
 }
+

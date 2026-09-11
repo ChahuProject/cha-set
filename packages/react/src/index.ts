@@ -45,6 +45,7 @@ export * from './smooth-wheel-handler';
 export * from './setting-row';
 export * from './elided-text';
 export * from './splitter-handle';
+export * from './duration-input';
 export * from './lib/splitFixedFooter';
 export {
   CheckIcon,
@@ -57,5 +58,7 @@ export {
   ArrowUpDownIcon,
   Maximize2Icon,
   PanelLeftIcon,
+  ClockIcon,
 } from './lib/icons';
+
 

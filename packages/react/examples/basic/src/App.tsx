@@ -70,7 +70,9 @@ import { SmoothWheelHandlerDocPage } from './pages/components/SmoothWheelHandler
 import { SettingRowDocPage } from './pages/components/SettingRowDocPage';
 import { ElidedTextDocPage } from './pages/components/ElidedTextDocPage';
 import { SplitterHandleDocPage } from './pages/components/SplitterHandleDocPage';
+import { DurationInputDocPage } from './pages/components/DurationInputDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
+
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
 
@@ -610,7 +612,10 @@ export function App() {
         return <ElidedTextDocPage />;
       case '#/components/splitter-handle':
         return <SplitterHandleDocPage />;
+      case '#/components/duration-input':
+        return <DurationInputDocPage />;
       case '#/components/button':
+
       default:
         return <ButtonDocPage />;
     }

@@ -51,7 +51,8 @@
     "./smooth-wheel-handler": "./components/smooth-wheel-handler.ts",
     "./setting-row": "./components/setting-row.ts",
     "./elided-text": "./components/elided-text.ts",
-    "./splitter-handle": "./components/splitter-handle.ts"
+    "./splitter-handle": "./components/splitter-handle.ts",
+    "./duration-input": "./components/duration-input.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

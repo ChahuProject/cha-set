@@ -240,6 +240,12 @@
         "title": "Elided Text",
         "href": "#/components/elided-text",
         "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
+      },
+      {
+        "id": "duration-input",
+        "title": "Duration Input",
+        "href": "#/components/duration-input",
+        "desc": "Segmented duration input with step buttons, keyboard arrow jumping, and preset menu."
       }
     ]
   },

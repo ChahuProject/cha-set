@@ -93,7 +93,9 @@ qt_add_qml_module(ChaSet
         src/ChaSetSettingRow.qml
         src/ChaSetElidedText.qml
         src/ChaSetSplitterHandle.qml
+        src/ChaSetDurationInput.qml
         src/ThemeTokens.generated.qml
+
         src/ShowcaseData.generated.qml
     NO_GENERATE_EXTRA_QMLDIRS
 )
@@ -182,7 +184,9 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/SettingRowDocPage.qml
             src/ElidedTextDocPage.qml
             src/SplitterHandleDocPage.qml
+            src/DurationInputDocPage.qml
             src/CommandSearchModal.qml
+
             src/ExportModal.qml
         NO_RESOURCE_TARGET_PATH
         NO_GENERATE_EXTRA_QMLDIRS

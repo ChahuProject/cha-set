@@ -269,5 +269,9 @@
   "splitterHandle": {
     "resize": true,
     "edgeOrientation": true
+  },
+  "durationInput": {
+    "timeSegments": true,
+    "presets": true
   }
 }

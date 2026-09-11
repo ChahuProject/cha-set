@@ -311,6 +311,10 @@
     "splitterHandle": {
       "resize": { "requirement": "must", "description": "drags to resize container dimension with reference item coordinate stabilization" },
       "edgeOrientation": { "requirement": "must", "description": "supports left, right, top, bottom edge anchors and cursor styling" }
+    },
+    "durationInput": {
+      "timeSegments": { "requirement": "must", "description": "renders hours, minutes, and seconds segments with step buttons" },
+      "presets": { "requirement": "must", "description": "provides dropdown menu with grouped duration presets" }
     }
   }
 }
