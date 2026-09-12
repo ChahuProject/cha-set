@@ -234,8 +234,15 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
       return React.cloneElement(child, {
         ...props,
         ...child.props,
-        ref,
-        'data-slot': 'tooltip-trigger',
+        ref: (node: HTMLElement | null) => {
+          if (typeof ref === 'function') ref(node);
+          else if (ref && 'current' in ref) (ref as any).current = node;
+
+          const childRef = (child.props as any)?.ref ?? (child as any).ref;
+          if (typeof childRef === 'function') childRef(node);
+          else if (childRef && 'current' in childRef) childRef.current = node;
+        },
+        'data-slot': child.props['data-slot'] || 'tooltip-trigger',
         'aria-describedby': combinedDescribedBy || undefined,
         onMouseEnter: composeEventHandlers(child.props.onMouseEnter, handleTriggerMouseEnter),
         onMouseLeave: composeEventHandlers(child.props.onMouseLeave, handleTriggerMouseLeave),

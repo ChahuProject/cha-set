@@ -65,4 +65,16 @@ describe('ElidedText', () => {
     fireEvent.click(elem);
     expect(writeTextMock).toHaveBeenCalledWith('0x71C6793138A55f32D0804CEb9B');
   });
+
+  it('constrains root container width and applies truncation classes', () => {
+    const { container } = render(
+      <div style={{ width: '200px' }}>
+        <ElidedText text="A very long file path that exceeds the container width" />
+      </div>
+    );
+    const rootElem = container.querySelector('[data-slot="tooltip-root"]');
+    expect(rootElem).toHaveClass('max-w-full', 'min-w-0', 'w-full');
+    const textElem = container.querySelector('[data-slot="elided-text"]');
+    expect(textElem).toHaveClass('truncate', 'min-w-0', 'max-w-full');
+  });
 });

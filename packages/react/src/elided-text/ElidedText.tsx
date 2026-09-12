@@ -115,10 +115,10 @@ export const ElidedText = React.forwardRef<HTMLSpanElement, ElidedTextProps>(
         onMouseEnter={handleMouseEnter}
         onClick={handleClick}
         className={cn(
-          'min-w-0',
+          'min-w-0 max-w-full',
           maxLines > 1
-            ? 'overflow-hidden text-ellipsis'
-            : 'truncate inline-block max-w-full align-bottom',
+            ? 'overflow-hidden text-ellipsis block'
+            : 'truncate block align-bottom',
           copyable && 'cursor-pointer hover:opacity-80 active:opacity-60',
           className,
         )}
@@ -141,6 +141,7 @@ export const ElidedText = React.forwardRef<HTMLSpanElement, ElidedTextProps>(
 
     return (
       <Tooltip
+        className="max-w-full min-w-0 w-full inline-flex"
         content={copied ? 'Copied to clipboard!' : resolvedTooltip}
         side={side}
         delayDuration={copied ? 0 : tooltipDelay}
