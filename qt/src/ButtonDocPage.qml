@@ -15,6 +15,7 @@ DocLayout {
         { id: "variants", title: "Variants" },
         { id: "sizes", title: "Sizes" },
         { id: "states", title: "States" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "API Reference" }
     ]
@@ -254,6 +255,20 @@ DocLayout {
                 code: "ChaSetButton { text: \"Saving Changes\"; loading: true; loadingText: \"Saving...\" }\nChaSetButton { text: \"Active Toggle\"; pressed: true }\nChaSetButton { text: \"Disabled Button\"; disabled: true }"
             }
         }
+    }
+
+    // Animations
+    Column {
+        width: parent.width
+        spacing: 12
+
+        Text { text: "Animations"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+
+        Text { text: "Motion behavior and timing driven by ThemeTokens for interactive state changes."; color: root.cMutedFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+
+        Text { text: "• Background color, shadow, and label-color changes interpolate via Behavior, using ThemeTokens.motionQuick with the easeStandard curve."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• Pressing nudges the label down slightly to convey the pressed state."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
     }
 
     // 4. API Reference

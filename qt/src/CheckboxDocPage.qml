@@ -13,6 +13,7 @@ DocLayout {
         { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
         { id: "examples", title: "Examples & States" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
@@ -366,6 +367,20 @@ DocLayout {
                 }
             }
         }
+    }
+
+    // Animations
+    Column {
+        width: parent.width
+        spacing: 12
+
+        Text { text: "Animations"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+
+        Text { text: "Motion behavior and timing driven by ThemeTokens for state transitions."; color: root.cMutedFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+
+        Text { text: "• The check-mark SVG stays mounted and cross-fades its opacity and scale when checked, using ThemeTokens.motionQuick with the easeEntrance curve on opacity/scale and easeStandard on colors."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• The box border color interpolates across hover, focus, checked, and invalid states."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
     }
 
     // Section 5: Props Reference

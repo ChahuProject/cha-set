@@ -94,6 +94,7 @@ export function DialogDocPage() {
       description="A modal window that interrupts the user with critical content and prompts for user action."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'installation', title: 'Installation' },
         { id: 'anatomy', title: 'Anatomy' },
@@ -167,6 +168,36 @@ export function DialogDocPage() {
             </span>
           </div>
         </ComponentPreview>
+      </section>
+
+      {/* Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Motion behavior and timing for the overlay and content on open and close.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            The backdrop overlay fades in and out using{' '}
+            <code className="text-xs bg-muted px-1 rounded">animate-fade-in</code> /
+            <code className="text-xs bg-muted px-1 rounded">animate-fade-out</code>, over{' '}
+            <code className="text-xs bg-muted px-1 rounded">duration-short</code> with the{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-entrance</code> curve.
+          </li>
+          <li>
+            The content card cross-fades with opacity only (transform-positioned elements avoid
+            scale animation to prevent conflicts), and exit uses
+            <code className="text-xs bg-muted px-1 rounded">useExitAnimation</code> to delay
+            unmounting.
+          </li>
+          <li>
+            Durations and easing resolve from theme tokens, so{' '}
+            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
+            <code>ThemeTokens.animationsEnabled</code>).
+          </li>
+        </ul>
       </section>
 
       {/* Keyboard Navigation */}

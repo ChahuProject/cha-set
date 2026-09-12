@@ -10,6 +10,7 @@ DocLayout {
     description: "A modal window that interrupts the user with critical content and prompts for user action."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
@@ -54,6 +55,20 @@ DocLayout {
                 }
             }
         ]
+    }
+
+    // Animations
+    Column {
+        width: parent.width
+        spacing: 12
+
+        Text { text: "Animations"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+
+        Text { text: "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close."; color: root.cMutedFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+
+        Text { text: "• The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
     }
 
     KeyboardShortcutsTable {
