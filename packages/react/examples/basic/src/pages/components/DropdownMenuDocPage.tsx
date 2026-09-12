@@ -3,6 +3,7 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -21,20 +22,22 @@ export function DropdownMenuDocPage() {
     <Button variant="outline">Options ▾</Button>
   </DropdownMenuTrigger>
   <DropdownMenuContent className="w-56">
-    <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
-    <DropdownMenuSeparator />
-    <DropdownMenuItem>
-      Profile
-      <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-    </DropdownMenuItem>
-    <DropdownMenuItem>
-      Billing
-      <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-    </DropdownMenuItem>
-    <DropdownMenuItem>
-      Keyboard shortcuts
-      <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-    </DropdownMenuItem>
+    <DropdownMenuGroup>
+      <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>
+        Profile
+        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        Billing
+        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        Keyboard shortcuts
+        <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+      </DropdownMenuItem>
+    </DropdownMenuGroup>
     <DropdownMenuSeparator />
     <DropdownMenuItem variant="destructive">
       Log out
@@ -69,20 +72,22 @@ export function DropdownMenuDocPage() {
               <Button variant="outline">Options ▾</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                Profile
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Billing
-                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Keyboard shortcuts
-                <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-              </DropdownMenuItem>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  Profile
+                  <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  Billing
+                  <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  Keyboard shortcuts
+                  <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem variant="destructive">
                 Log out

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DraggableModal, Button } from '@chahu/cha-set';
+import { DraggableModal, Button, Badge } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { CodeBlock } from '../../components/CodeBlock';
