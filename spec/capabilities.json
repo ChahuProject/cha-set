@@ -315,6 +315,18 @@
     "durationInput": {
       "timeSegments": { "requirement": "must", "description": "renders hours, minutes, and seconds segments with step buttons" },
       "presets": { "requirement": "must", "description": "provides dropdown menu with grouped duration presets" }
+    },
+    "codeBlock": {
+      "code": { "requirement": "must", "description": "renders the provided source text losslessly, preserving whitespace and newlines" },
+      "syntaxHighlight": { "requirement": "must", "description": "tokenizes the source with the spec-driven lexer and colors each token type per the language" },
+      "copy": { "requirement": "must", "description": "copies the full source to the clipboard with transient feedback" },
+      "languageLabel": { "requirement": "must", "description": "displays the resolved language label or filename in the header" },
+      "lineNumbers": { "requirement": "should", "description": "renders a non-selectable line-number gutter aligned to the source lines" },
+      "wrap": { "requirement": "should", "description": "wraps long lines instead of scrolling horizontally" },
+      "horizontalScroll": { "requirement": "should", "description": "scrolls long lines horizontally when wrapping is disabled" },
+      "maxHeight": { "requirement": "should", "description": "bounds content height and enables vertical scrolling beyond it" },
+      "embedded": { "requirement": "should", "description": "renders without card chrome for inline prose embedding" },
+      "multiFile": { "requirement": "should", "description": "groups multiple files behind tabs with per-file language" }
     }
   }
 }

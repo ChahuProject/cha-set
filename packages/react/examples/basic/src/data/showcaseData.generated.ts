@@ -1429,6 +1429,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/query-builder",
         "desc": "Visual rule tree builder for structured query generation with nested logic groups.",
         "description": "Visual rule tree builder for structured query generation with nested logic groups."
+      },
+      {
+        "id": "code-block",
+        "title": "Code Block",
+        "href": "#/components/code-block",
+        "desc": "Spec-driven syntax-highlighted code viewer composed from scroll, copy, and tab primitives.",
+        "description": "Spec-driven syntax-highlighted code viewer composed from scroll, copy, and tab primitives."
       }
     ]
   }
@@ -2045,6 +2052,20 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Mouse Wheel",
       "action": "Adjust focused segment value up or down"
+    }
+  ],
+  "code-block": [
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Traverse between file tabs and the copy button in the header"
+    },
+    {
+      "key": "← / →",
+      "action": "Switch the active file tab in a multi-file code block"
+    },
+    {
+      "key": "Space / Enter",
+      "action": "Copy the active file source to the system clipboard"
     }
   ]
 };

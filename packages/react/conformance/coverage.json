@@ -286,5 +286,17 @@
   "durationInput": {
     "timeSegments": true,
     "presets": true
+  },
+  "codeBlock": {
+    "code": true,
+    "syntaxHighlight": true,
+    "copy": true,
+    "languageLabel": true,
+    "lineNumbers": true,
+    "wrap": true,
+    "horizontalScroll": true,
+    "maxHeight": true,
+    "embedded": true,
+    "multiFile": true
   }
 }
