@@ -1,4 +1,5 @@
 import './styles/tokens.css';
+import './styles/motion.css';
 import './styles/theme.css';
 export * from './button';
 export * from './scroll-area';

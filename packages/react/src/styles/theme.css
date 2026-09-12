@@ -63,4 +63,14 @@
   --radius-md: calc(var(--radius, var(--cs-radius)) - 0.125rem);
   --radius-lg: var(--radius, var(--cs-radius));
   --radius-xl: calc(var(--radius, var(--cs-radius)) + 0.25rem);
+
+  /* Motion scale: duration + easing map onto Tailwind utility namespaces
+   * (duration-* / ease-*). Resolves to tokens.css defaults at runtime so
+   * prefers-reduced-motion zeroing (--cs-motion-*) propagates automatically. */
+  --duration-quick: var(--cs-motion-quick);
+  --duration-short: var(--cs-motion-short);
+  --duration-medium: var(--cs-motion-medium);
+  --ease-standard: var(--cs-ease-standard);
+  --ease-emphasized: var(--cs-ease-emphasized);
+  --ease-entrance: var(--cs-ease-entrance);
 }
