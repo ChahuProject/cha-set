@@ -23,10 +23,13 @@ ChaSetCard {
         width: parent.width
 
         // Tab Navigation Header (38px height)
+        // React: `border-b border-border bg-muted/40`. Tint the hover token at a
+        // fraction of ITS OWN alpha — a literal alpha here would drop the token's
+        // 0.06/0.09 opacity and render an opaque gray band in both themes.
         Rectangle {
             width: parent.width
             height: 38
-            color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.5)
+            color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.4)
             border.color: ThemeTokens.border
             border.width: 0.5
 
@@ -83,7 +86,8 @@ ChaSetCard {
                 visible: controlsContainer.children.length > 0
                 width: parent.width
                 implicitHeight: controlsContainer.implicitHeight + 24
-                color: ThemeTokens.hover
+                // React: `bg-muted/20` controls bar.
+                color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.3)
                 border.color: ThemeTokens.border
                 border.width: 0.5
 

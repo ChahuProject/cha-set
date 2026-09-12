@@ -417,7 +417,7 @@ DocLayout {
                             width: parent.width
                             height: 38
                             radius: 6
-                            color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.4)
+                            color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.6)
                             border.color: root.cBorder
                             border.width: 1
 
