@@ -140,7 +140,7 @@ Item {
                     return;
                 }
 
-                ctx.strokeStyle = ThemeTokens.onAccent;
+                ctx.strokeStyle = "#ffffff";
                 ctx.lineWidth = root.isSm ? 1.75 : 2.0;
                 ctx.lineCap = "round";
                 ctx.lineJoin = "round";

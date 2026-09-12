@@ -314,6 +314,10 @@ ${COLOR_ORDER.map((f) => `            case "${f}":\n                return ${rgb
     }
 
 ${COLOR_ORDER.map((f) => `    readonly property color ${f}: color("${f}")`).join('\n')}
+    // Aliases for onAccent: QML reserves on<CapitalLetter> for signal handlers, so
+    // property onAccent evaluates to invalid/black. Expose primaryForeground and onAccentColor.
+    readonly property color primaryForeground: color("onAccent")
+    readonly property color onAccentColor: color("onAccent")
 
 ${intProps(SPACE_ORDER, derivedQt.space)}
 

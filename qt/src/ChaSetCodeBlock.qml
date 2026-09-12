@@ -64,11 +64,12 @@ Rectangle {
     color: root.embedded ? "transparent" : cCard
     border.color: root.embedded ? "transparent" : cBorder
     border.width: root.embedded ? 0 : 1
-    radius: root.embedded ? 0 : 8
+    radius: root.embedded ? 0 : 12
     clip: true
 
     implicitWidth: 640
     implicitHeight: root.headerHeight + (root.maxHeight > 0 ? root.maxHeight : root.naturalBodyHeight)
+    height: implicitHeight
 
     // Motion (Golden Rule 11): selecting another file cross-fades the body so the
     // swap reads as a transition instead of a hard cut. Duration/easing come from
@@ -103,9 +104,15 @@ Rectangle {
             width: parent.width
             height: root.headerHeight
             visible: !root.embedded
-            color: root.cHeaderBg
-            border.color: root.cBorder
-            border.width: 0.5
+            color: "transparent"
+
+            // 1px bottom border matching React's border-b border-border
+            Rectangle {
+                anchors.bottom: parent.bottom
+                width: parent.width
+                height: 1
+                color: root.cBorder
+            }
 
             Row {
                 id: tabStrip
@@ -113,23 +120,49 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.leftMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 2
+                spacing: 0
 
                 Repeater {
                     model: root.multiFile ? root.files : []
 
-                    delegate: ChaSetButton {
+                    delegate: Item {
+                        id: tabItem
                         required property var modelData
                         required property int index
-                        text: String(modelData.name)
-                        size: "sm"
-                        variant: index === root.currentIndex ? "secondary" : "ghost"
-                        onClicked: root.currentIndex = index
+                        height: root.headerHeight
+                        width: tabLabel.implicitWidth + 24
 
-                        // Keyboard parity with React's Tabs primitive: ←/→ move the
-                        // active file while a tab holds focus.
-                        Keys.onLeftPressed: root.currentIndex = (index - 1 + root.files.length) % root.files.length
-                        Keys.onRightPressed: root.currentIndex = (index + 1) % root.files.length
+                        Rectangle {
+                            id: tabActiveLine
+                            anchors.bottom: parent.bottom
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            height: 2
+                            color: ThemeTokens.accent
+                            visible: tabItem.index === root.currentIndex
+                            z: 2
+                        }
+
+                        Text {
+                            id: tabLabel
+                            anchors.centerIn: parent
+                            text: String(tabItem.modelData.name)
+                            color: tabItem.index === root.currentIndex
+                                ? (root.isDark ? Qt.rgba(248.0 / 255.0, 250.0 / 255.0, 252.0 / 255.0, 1.0) : Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0))
+                                : root.cMutedFg
+                            font.pixelSize: 12
+                            font.weight: tabItem.index === root.currentIndex ? Font.DemiBold : Font.Normal
+                            font.family: "Segoe UI, -apple-system, sans-serif"
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: root.currentIndex = tabItem.index
+                        }
+
+                        Keys.onLeftPressed: root.currentIndex = (tabItem.index - 1 + root.files.length) % root.files.length
+                        Keys.onRightPressed: root.currentIndex = (tabItem.index + 1) % root.files.length
                     }
                 }
             }
@@ -140,11 +173,13 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
-                text: root.label
+                text: root.label.toUpperCase()
                 color: root.cMutedFg
+                font.family: "Consolas, monospace"
                 font.pixelSize: 11
-                font.bold: true
-                font.letterSpacing: 0.5
+                font.weight: Font.DemiBold
+                font.capitalization: Font.AllUppercase
+                font.letterSpacing: 1.0
             }
 
             ChaSetCopyButton {
@@ -153,7 +188,8 @@ Rectangle {
                 anchors.rightMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.activeCode
-                label: root.copyLabel
+                label: root.copyLabel !== "" ? root.copyLabel : "Copy"
+                copiedLabel: "Copied!"
                 variant: "ghost"
                 size: "sm"
             }
@@ -164,7 +200,7 @@ Rectangle {
             id: body
             width: parent.width
             height: root.maxHeight > 0 ? root.maxHeight : root.naturalBodyHeight
-            color: root.cCard
+            color: "transparent"
 
             ChaSetScrollArea {
                 id: scroll

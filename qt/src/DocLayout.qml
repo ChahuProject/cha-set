@@ -14,14 +14,6 @@ Item {
     property var tocItems: []
     default property alias contentData: pageContentCol.data
 
-    property bool copiedLink: false
-
-    Timer {
-        id: copyTimer
-        interval: 2000
-        onTriggered: root.copiedLink = false
-    }
-
     Row {
         id: layoutRow
         anchors.horizontalCenter: parent.horizontalCenter
@@ -64,17 +56,15 @@ Item {
                         font.letterSpacing: -0.5
                     }
 
-                    ChaSetButton {
+                    ChaSetCopyButton {
                         id: copyBtn
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         variant: "outline"
                         size: "sm"
-                        text: root.copiedLink ? "✓ Copied" : "📋 Copy Link"
-                        onClicked: {
-                            root.copiedLink = true
-                            copyTimer.restart()
-                        }
+                        label: "Copy Link"
+                        copiedLabel: "Copied!"
+                        text: "https://cha-set.dev/#" + root.pageTitle.toLowerCase().replace(/ /g, "-")
                     }
                 }
 
@@ -107,9 +97,9 @@ Item {
 
             Text {
                 text: "ON THIS PAGE"
-                color: ThemeTokens.text
+                color: ThemeTokens.subduedText
                 font.pixelSize: 11
-                font.weight: Font.Bold
+                font.weight: Font.DemiBold
                 font.letterSpacing: 0.5
             }
 
