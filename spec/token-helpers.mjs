@@ -50,6 +50,8 @@ export const ORDER = {
     'background','border','canvas.grid','canvas.grid-major','canvas.loading-backdrop','canvas.loading-border',
     'canvas.loading-text','canvas.marquee','canvas.marquee-border','card','card-foreground',
     'chart-1','chart-2','chart-3','chart-4','chart-5','chrome.down','chrome.hover','chrome.icon','chrome.surface',
+    'code-attribute','code-comment','code-constant','code-function','code-keyword','code-number',
+    'code-operator','code-property','code-punctuation','code-string','code-tag','code-type','code-variable',
     'destructive','destructive-foreground','foreground','input','interaction.disabled','interaction.disabled-text',
     'interaction.hover','interaction.pressed','muted','muted-foreground','overlay.info-bar','overlay.scrim',
     'popover','popover-foreground','primary','primary-foreground','radius','ring','secondary','secondary-foreground',

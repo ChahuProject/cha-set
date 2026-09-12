@@ -316,3 +316,72 @@ const qmlOut = resolve(repoRoot, 'qt', 'src', 'ThemeTokens.generated.qml');
 mkdirSync(dirname(qmlOut), { recursive: true });
 writeFileSync(qmlOut, qml, 'utf8');
 console.log(`[gen:qt] emitted ${qmlOut}`);
+
+// ---------------- QML singleton for the syntax palette (cha-set/qt) ----------------
+// Deliberately a SEPARATE artifact from ThemeTokens.generated.qml: theme_tokens.generated.h
+// and the 33-field qt.color contract are frozen downstream (dt-a ThemeManager::Tokens), so
+// the code-* colors must never enter qt-mapping.json.colors. They are additive semantic
+// tokens (spec/tokens/semantic/core.json) flattened here for the dunting preset only.
+//
+// Token type <X> resolves to semantic token `code-<X>`; `plain` is intentionally absent
+// because plain text uses the host's foreground and is never wrapped in a span.
+const languagesPath = resolve(repoRoot, 'spec', 'highlight', 'languages.json');
+const highlightSpec = JSON.parse(readFileSync(languagesPath, 'utf8'));
+const codeTypes = (highlightSpec.tokenTypes ?? []).filter((t) => t !== 'plain');
+if (codeTypes.length === 0) {
+  console.error('[gen:qt] code palette: spec/highlight/languages.json declares no tokenTypes');
+  process.exit(1);
+}
+
+const codeColorLiteral = (mode, type) => {
+  const tokenName = `code-${type}`;
+  const sem = spec.semantic?.[tokenName];
+  const hex = sem?.presets?.dunting?.[mode];
+  if (!hex) {
+    console.error(`[gen:qt] code palette: missing semantic token "${tokenName}" dunting.${mode}`);
+    process.exit(1);
+  }
+  const [r, g, b, a] = hexToRgbf(hex);
+  return `Qt.rgba(${fmtChannel(r)}, ${fmtChannel(g)}, ${fmtChannel(b)}, ${fmtChannel(a)}) /* ${hex} */`;
+};
+
+const codeCase = (mode) =>
+  codeTypes.map((t) => `            case "${t}":\n                return ${codeColorLiteral(mode, t)}`).join('\n');
+
+const codeQml = `pragma Singleton
+import QtQuick
+
+// GENERATED FILE - DO NOT EDIT.
+// Source: cha-set spec/tokens/semantic/core.json (dunting preset) + tokenTypes from
+//         spec/highlight/languages.json, via spec/generators/generate-qt.mjs
+// Refresh: \`pnpm gen:qt\` regenerates this file in place.
+// Syntax palette consumed by ChaSetHighlightedCode. Token type <X> maps to the
+// semantic token \`code-<X>\`; \`plain\` is absent on purpose (plain text uses the
+// host foreground). Flip \`dark\` at runtime to switch every color live.
+QtObject {
+    id: root
+
+    property bool dark: false
+
+    function colorFor(type) {
+        // qmlcachegen does not support object literals in property bindings; use switch-case direct returns.
+        if (dark) {
+            switch (type) {
+${codeCase('dark')}
+            }
+        } else {
+            switch (type) {
+${codeCase('light')}
+            }
+        }
+        return Qt.rgba(0, 0, 0, 1)
+    }
+
+${codeTypes.map((t) => `    readonly property color ${t}: colorFor("${t}")`).join('\n')}
+}
+`;
+
+const codeQmlOut = resolve(repoRoot, 'qt', 'src', 'CodeTokens.generated.qml');
+mkdirSync(dirname(codeQmlOut), { recursive: true });
+writeFileSync(codeQmlOut, codeQml, 'utf8');
+console.log(`[gen:qt] emitted ${codeQmlOut} (${codeTypes.length} syntax token types)`);

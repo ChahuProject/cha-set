@@ -42,6 +42,22 @@
   --color-input: var(--input, var(--cs-input));
   --color-ring: var(--ring, var(--cs-ring));
 
+  /* Syntax palette for CodeBlock. One entry per non-plain token type declared in
+   * spec/highlight/languages.json (type X -> --code-X -> library default --cs-code-X). */
+  --color-code-attribute: var(--code-attribute, var(--cs-code-attribute));
+  --color-code-comment: var(--code-comment, var(--cs-code-comment));
+  --color-code-constant: var(--code-constant, var(--cs-code-constant));
+  --color-code-function: var(--code-function, var(--cs-code-function));
+  --color-code-keyword: var(--code-keyword, var(--cs-code-keyword));
+  --color-code-number: var(--code-number, var(--cs-code-number));
+  --color-code-operator: var(--code-operator, var(--cs-code-operator));
+  --color-code-property: var(--code-property, var(--cs-code-property));
+  --color-code-punctuation: var(--code-punctuation, var(--cs-code-punctuation));
+  --color-code-string: var(--code-string, var(--cs-code-string));
+  --color-code-tag: var(--code-tag, var(--cs-code-tag));
+  --color-code-type: var(--code-type, var(--cs-code-type));
+  --color-code-variable: var(--code-variable, var(--cs-code-variable));
+
   /* Radius scale derives from the single --radius token (shadcn convention). */
   --radius-sm: calc(var(--radius, var(--cs-radius)) - 0.25rem);
   --radius-md: calc(var(--radius, var(--cs-radius)) - 0.125rem);
