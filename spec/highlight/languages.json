@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "comment": "Single source of truth for syntax highlighting rules across React and Qt. Consumed by spec/highlight/engine.mjs and emitted to both stacks by spec/generators/generate-highlight.mjs. Never import a third-party highlighter: the rules must be plain data so both stacks tokenize identically. Patterns must stay ES5-compatible (no lookbehind) so Qt's V4 engine can run them.",
+  "tokenTypes": [
+    "plain",
+    "keyword",
+    "constant",
+    "type",
+    "string",
+    "number",
+    "comment",
+    "function",
+    "property",
+    "operator",
+    "punctuation",
+    "variable",
+    "tag",
+    "attribute"
+  ],
+  "aliases": {
+    "js": "ts",
+    "jsx": "ts",
+    "ts": "ts",
+    "tsx": "ts",
+    "mjs": "ts",
+    "cjs": "ts",
+    "typescript": "ts",
+    "javascript": "ts",
+    "qml": "qml",
+    "json": "json",
+    "jsonc": "json",
+    "bash": "bash",
+    "sh": "bash",
+    "shell": "bash",
+    "zsh": "bash",
+    "console": "bash",
+    "css": "css",
+    "scss": "css",
+    "less": "css",
+    "html": "html",
+    "xml": "html",
+    "svg": "html",
+    "vue": "html",
+    "python": "python",
+    "py": "python",
+    "yaml": "yaml",
+    "yml": "yaml",
+    "text": "text",
+    "txt": "text",
+    "plain": "text",
+    "plaintext": "text",
+    "md": "text",
+    "markdown": "text"
+  },
+  "languages": {
+    "ts": {
+      "displayName": "TSX",
+      "lineComment": ["//"],
+      "blockComment": [["/*", "*/"]],
+      "strings": [
+        { "open": "`", "close": "`", "escape": true, "multiline": true },
+        { "open": "'", "close": "'", "escape": true },
+        { "open": "\"", "close": "\"", "escape": true }
+      ],
+      "identifier": "[A-Za-z_$][A-Za-z0-9_$]*",
+      "number": "0[xX][0-9a-fA-F_]+|0[bB][01_]+|0[oO][0-7_]+|\\d[\\d_]*(?:\\.\\d[\\d_]*)?(?:[eE][+-]?\\d+)?n?",
+      "operator": "=>|\\.\\.\\.|\\?\\?|\\?\\.|&&|\\|\\||[+\\-*/%=<>!&|^~?:]",
+      "punctuation": "[{}()\\[\\],;.]",
+      "keywords": [
+        "abstract", "as", "async", "await", "break", "case", "catch", "class", "const",
+        "continue", "declare", "default", "delete", "do", "else", "enum", "export",
+        "extends", "finally", "for", "from", "function", "get", "if", "implements",
+        "import", "in", "instanceof", "interface", "keyof", "let", "namespace", "new",
+        "of", "private", "protected", "public", "readonly", "return", "satisfies", "set",
+        "static", "super", "switch", "this", "throw", "try", "type", "typeof", "var",
+        "void", "while", "yield"
+      ],
+      "constants": ["true", "false", "null", "undefined", "NaN", "Infinity"],
+      "types": [
+        "any", "bigint", "boolean", "never", "number", "object", "string", "symbol",
+        "unknown", "Array", "Promise", "Record", "Map", "Set", "Date", "Error",
+        "React", "HTMLElement", "JSX"
+      ],
+      "builtins": [
+        "console", "JSON", "Math", "Object", "String", "Number", "Boolean", "document",
+        "window", "process", "require", "parseInt", "parseFloat", "setTimeout",
+        "setInterval", "fetch", "clsx"
+      ],
+      "classifyUpperAsType": true
+    },
+    "qml": {
+      "displayName": "QML",
+      "lineComment": ["//"],
+      "blockComment": [["/*", "*/"]],
+      "strings": [
+        { "open": "`", "close": "`", "escape": true, "multiline": true },
+        { "open": "'", "close": "'", "escape": true },
+        { "open": "\"", "close": "\"", "escape": true }
+      ],
+      "identifier": "[A-Za-z_$][A-Za-z0-9_$]*",
+      "number": "\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?",
+      "operator": "=>|\\.\\.\\.|\\?\\?|===|!==|&&|\\|\\||[+\\-*/%=<>!&|^~?:]",
+      "punctuation": "[{}()\\[\\],;.]",
+      "keywords": [
+        "as", "alias", "break", "case", "catch", "continue", "default", "do", "else",
+        "enum", "finally", "for", "function", "id", "if", "import", "in", "instanceof",
+        "new", "on", "property", "readonly", "required", "return", "signal", "switch",
+        "this", "throw", "try", "typeof", "var", "while", "with"
+      ],
+      "constants": ["true", "false", "null", "undefined", "Infinity", "NaN"],
+      "types": [
+        "QtObject", "Item", "Rectangle", "Text", "Column", "Row", "Grid", "Flow", "Repeater",
+        "ItemDelegate", "ListView", "GridView", "Flickable", "Timer", "Component",
+        "Connections", "Loader", "MouseArea", "TextEdit", "TextField", "Image", "Font",
+        "Qt", "Math", "Console", "JSON"
+      ],
+      "builtins": ["anchors", "parent", "children"],
+      "extra": [
+        { "type": "function", "pattern": "on[A-Z][A-Za-z0-9_]*" },
+        { "type": "number", "pattern": "#[0-9a-fA-F]{3,8}\\b" }
+      ],
+      "classifyUpperAsType": true
+    },
+    "json": {
+      "displayName": "JSON",
+      "strings": [{ "open": "\"", "close": "\"", "escape": true, "multiline": true }],
+      "identifier": "[A-Za-z_$][A-Za-z0-9_$]*",
+      "number": "-?\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?",
+      "punctuation": "[{}\\[\\],:]",
+      "constants": ["true", "false", "null"],
+      "propertyLookahead": true
+    },
+    "bash": {
+      "displayName": "BASH",
+      "lineComment": ["#"],
+      "strings": [
+        { "open": "'", "close": "'", "escape": false, "multiline": true },
+        { "open": "\"", "close": "\"", "escape": true, "multiline": true }
+      ],
+      "identifier": "[A-Za-z_][A-Za-z0-9_]*",
+      "number": "\\b\\d+\\b",
+      "operator": "\\|\\||&&|>>|<<|[|&<>]",
+      "punctuation": "[{}()\\[\\];,]",
+      "keywords": [
+        "if", "then", "else", "elif", "fi", "for", "while", "until", "do", "done", "case",
+        "esac", "in", "function", "return", "local", "export", "declare", "readonly", "set",
+        "unset", "source", "alias", "exit", "shift", "exec", "trap", "eval", "test"
+      ],
+      "constants": ["true", "false"],
+      "builtins": [
+        "echo", "cd", "ls", "cat", "rm", "cp", "mv", "mkdir", "touch", "grep", "sed", "awk",
+        "find", "git", "node", "npm", "pnpm", "yarn", "npx", "python", "pip", "docker",
+        "curl", "chmod", "sudo", "make", "cmake", "lefthook"
+      ],
+      "extra": [
+        { "type": "variable", "pattern": "\\$\\{[^}]*\\}" },
+        { "type": "variable", "pattern": "\\$[A-Za-z_][A-Za-z0-9_]*" },
+        { "type": "variable", "pattern": "\\$[0-9@*?#]" },
+        { "type": "operator", "pattern": "-{1,2}[A-Za-z][A-Za-z0-9-]*" }
+      ],
+      "classifyLineStartAsFunction": true
+    },
+    "css": {
+      "displayName": "CSS",
+      "blockComment": [["/*", "*/"]],
+      "strings": [
+        { "open": "\"", "close": "\"", "escape": true },
+        { "open": "'", "close": "'", "escape": true }
+      ],
+      "identifier": "-?[A-Za-z_][A-Za-z0-9_-]*",
+      "number": "\\d+(?:\\.\\d+)?(?:px|em|rem|vh|vw|vmin|vmax|%|s|ms|deg|fr|ch|ex|pt)?",
+      "punctuation": "[{}:;,.]",
+      "keywords": ["important", "media", "supports", "keyframes", "import", "charset", "layer", "container"],
+      "properties": [
+        "align-items", "background", "background-color", "border", "border-radius", "bottom",
+        "box-shadow", "color", "content", "cursor", "display", "flex", "flex-direction",
+        "font", "font-family", "font-size", "font-weight", "gap", "grid", "height",
+        "justify-content", "left", "line-height", "margin", "max-height", "max-width",
+        "min-height", "min-width", "opacity", "overflow", "padding", "position", "right",
+        "top", "transform", "transition", "width", "z-index"
+      ],
+      "extra": [
+        { "type": "keyword", "pattern": "@[A-Za-z-]+" },
+        { "type": "constant", "pattern": "#[0-9a-fA-F]{3,8}\\b" },
+        { "type": "type", "pattern": "\\.[A-Za-z_-][A-Za-z0-9_-]*" },
+        { "type": "variable", "pattern": "--[A-Za-z_-][A-Za-z0-9_-]*" }
+      ]
+    },
+    "html": {
+      "displayName": "HTML",
+      "strings": [
+        { "open": "\"", "close": "\"", "escape": false },
+        { "open": "'", "close": "'", "escape": false }
+      ],
+      "blockComment": [["<!--", "-->"]],
+      "identifier": "[A-Za-z_][A-Za-z0-9_:.-]*",
+      "number": "\\b\\d+(?:\\.\\d+)?\\b",
+      "punctuation": "[<>/=]",
+      "tagPosition": true,
+      "attributeFollowsEquals": true
+    },
+    "python": {
+      "displayName": "PYTHON",
+      "lineComment": ["#"],
+      "strings": [
+        { "open": "\"\"\"", "close": "\"\"\"", "escape": true, "multiline": true },
+        { "open": "'''", "close": "'''", "escape": true, "multiline": true },
+        { "open": "\"", "close": "\"", "escape": true },
+        { "open": "'", "close": "'", "escape": true }
+      ],
+      "identifier": "[A-Za-z_][A-Za-z0-9_]*",
+      "number": "0[xX][0-9a-fA-F_]+|0[bB][01_]+|\\d[\\d_]*(?:\\.\\d[\\d_]*)?(?:[eE][+-]?\\d+)?j?",
+      "operator": "\\*\\*|//|->|:=|==|!=|<=|>=|[+\\-*/%=<>!&|^~]",
+      "punctuation": "[{}()\\[\\],;.:@]",
+      "keywords": [
+        "and", "as", "assert", "async", "await", "break", "class", "continue", "def", "del",
+        "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in",
+        "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while",
+        "with", "yield"
+      ],
+      "constants": ["True", "False", "None"],
+      "types": ["str", "int", "float", "bool", "bytes", "list", "dict", "set", "tuple", "object", "Exception"],
+      "builtins": [
+        "print", "len", "range", "open", "super", "self", "isinstance", "enumerate",
+        "zip", "sum", "min", "max", "abs", "sorted", "reversed"
+      ],
+      "classifyUpperAsType": true
+    },
+    "yaml": {
+      "displayName": "YAML",
+      "lineComment": ["#"],
+      "strings": [
+        { "open": "\"", "close": "\"", "escape": true },
+        { "open": "'", "close": "'", "escape": false }
+      ],
+      "identifier": "[A-Za-z_][A-Za-z0-9_.-]*",
+      "number": "\\b\\d+(?:\\.\\d+)?\\b",
+      "punctuation": "[:\\-?]",
+      "constants": ["true", "false", "null", "yes", "no", "on", "off"],
+      "propertyLookahead": true
+    },
+    "text": {
+      "displayName": "TEXT",
+      "plain": true
+    }
+  }
+}
