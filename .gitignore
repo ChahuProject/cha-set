@@ -12,6 +12,7 @@
 
 # Build artifacts and dependencies
 dist/
+/build/
 **/node_modules/
 /packages/*/dist
 /packages/*/*/dist
