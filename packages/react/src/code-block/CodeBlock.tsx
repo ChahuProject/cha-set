@@ -91,9 +91,16 @@ export function CodeBlock({
   const [activeName, setActiveName] = React.useState(() => entries[0]!.name);
   const activeEntry = entries.find((entry) => entry.name === activeName) ?? entries[0]!;
 
-  const label = showLanguage ? activeEntry.name || languageLabel(activeEntry.language) : undefined;
+  const activeFileName = activeEntry.name || languageLabel(activeEntry.language);
+
+  // Qt parity: in multi-file mode the tab strip already names the active file, so
+  // the header label slot stays empty (ChaSetCodeBlock gates it on `!multiFile`).
+  // The accessible copy label still names the file so screen readers keep context.
+  const label = showLanguage && !isMultiFile ? activeFileName : undefined;
 
   const bodyStyle = maxHeight === undefined ? undefined : { maxHeight: toLength(maxHeight) };
+
+  const accessibleCopyLabel = copyLabel ?? `Copy ${activeFileName} to clipboard`;
 
   const renderBody = (entry: CodeBlockEntry) => (
     <ScrollArea
@@ -125,7 +132,12 @@ export function CodeBlock({
   if (!isMultiFile) {
     return (
       <Card data-slot="code-block" className={cn('overflow-hidden', className)}>
-        <CodeBlockHeader label={label} code={activeEntry.code} showCopy={showCopy} copyLabel={copyLabel} />
+        <CodeBlockHeader
+          label={label}
+          code={activeEntry.code}
+          showCopy={showCopy}
+          copyLabel={accessibleCopyLabel}
+        />
         {renderBody(activeEntry)}
       </Card>
     );
@@ -134,7 +146,12 @@ export function CodeBlock({
   return (
     <Card data-slot="code-block" data-multi-file="true" className={cn('overflow-hidden', className)}>
       <Tabs value={activeEntry.name} onValueChange={setActiveName} className="gap-0">
-        <CodeBlockHeader label={label} code={activeEntry.code} showCopy={showCopy} copyLabel={copyLabel}>
+        <CodeBlockHeader
+          label={label}
+          code={activeEntry.code}
+          showCopy={showCopy}
+          copyLabel={accessibleCopyLabel}
+        >
           <TabsList className="mr-2 h-6 gap-0.5 bg-transparent p-0">
             {entries.map((entry) => (
               <TabsTrigger key={entry.name} value={entry.name} className="h-6 rounded px-2 font-mono text-[0.6875rem]">
@@ -144,7 +161,15 @@ export function CodeBlock({
           </TabsList>
         </CodeBlockHeader>
         {entries.map((entry) => (
-          <TabsContent key={entry.name} value={entry.name} className="mt-0">
+          <TabsContent
+            key={entry.name}
+            value={entry.name}
+            // Motion: Base UI unmounts an inactive panel (keepMounted defaults to
+            // false), so a mount-scoped enter animation replays on every tab switch
+            // and the file swap cross-fades. Duration/easing come from the motion
+            // tokens (short + entrance); prefers-reduced-motion zeroes them.
+            className="mt-0 animate-in fade-in-0"
+          >
             {renderBody(entry)}
           </TabsContent>
         ))}

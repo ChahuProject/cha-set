@@ -82,6 +82,7 @@ export function CodeBlockDocPage() {
         { id: 'variants', title: 'Variants & Options' },
         { id: 'multi-file', title: 'Multi-File Tabs' },
         { id: 'installation', title: 'Installation' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -166,6 +167,33 @@ export function CodeBlockDocPage() {
           Installation
         </h2>
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
+      </section>
+
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Motion behavior and timing for file switching and the header affordances.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            Switching the active file cross-fades the body in over{' '}
+            <code className="text-xs bg-muted px-1 rounded">animate-in fade-in-0</code> — the duration
+            resolves to the <code className="text-xs bg-muted px-1 rounded">short</code> motion token with
+            the <code className="text-xs bg-muted px-1 rounded">entrance</code> curve.
+          </li>
+          <li>
+            The header affordances inherit token motion from their primitives: tab triggers interpolate
+            color and border over <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-standard</code>, as do the copy button and
+            the scroll bars.
+          </li>
+          <li>
+            Durations and easing resolve from theme tokens, so <code>prefers-reduced-motion</code> zeroes
+            them automatically (Qt: governed by <code>ThemeTokens.animationsEnabled</code>).
+          </li>
+        </ul>
       </section>
 
       <section id="keyboard" className="scroll-mt-20 my-10">
