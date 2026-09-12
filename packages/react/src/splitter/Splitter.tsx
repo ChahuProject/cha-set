@@ -150,7 +150,7 @@ export function Splitter({
     >
       <div
         className={cn(
-          'absolute rounded-full opacity-0 transition-opacity',
+          'absolute rounded-full opacity-0 transition-[opacity,background-color] duration-quick ease-standard',
           orientation === 'vertical'
             ? 'inset-y-0 left-1/2 w-0.5 -translate-x-1/2'
             : 'inset-x-0 top-1/2 h-0.5 -translate-y-1/2',

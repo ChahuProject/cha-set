@@ -21,6 +21,11 @@ SplitView {
         implicitHeight: root.orientation === Qt.Vertical ? root.handleThickness : root.height
         color: SplitHandle.pressed || SplitHandle.hovered ? root.handleHoverColor : root.handleColor
 
+        Behavior on color {
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
+
         Item {
             id: gripContainer
             visible: root.withHandle
@@ -34,6 +39,11 @@ SplitView {
                 color: ThemeTokens.panel
                 border.color: handleDelegate.SplitHandle.hovered || handleDelegate.SplitHandle.pressed ? ThemeTokens.accent : ThemeTokens.border
                 border.width: 1
+
+                Behavior on border.color {
+                    enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                    ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                }
 
                 Row {
                     anchors.centerIn: parent

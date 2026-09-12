@@ -102,7 +102,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           ...style,
         }}
         className={cn(
-          'group absolute select-none touch-none transition-colors duration-150 z-20 flex',
+          'group absolute select-none touch-none transition-colors duration-short ease-standard z-20 flex',
           !hasOverflow && 'hidden',
           isVertical
             ? 'flex-col items-center hover:bg-muted/30'
@@ -115,7 +115,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         {showButtons && (
           <div
             className={cn(
-              'opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto shrink-0',
+              'opacity-0 group-hover:opacity-100 transition-opacity duration-short ease-standard z-30 pointer-events-none group-hover:pointer-events-auto shrink-0',
               isExpanded && 'opacity-100 pointer-events-auto',
               isVertical ? 'h-5 w-full' : 'w-5 h-full',
             )}
@@ -156,7 +156,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
             {children ?? (
               <div
                 className={cn(
-                  'rounded-full bg-border transition-[width,height,background-color] duration-150',
+                  'rounded-full bg-border transition-[width,height,background-color] duration-short ease-standard',
                   'group-hover:bg-muted-foreground/50 active:bg-foreground/60',
                   isVertical ? 'h-full w-1 group-hover:w-2' : 'w-full h-1 group-hover:h-2',
                   isExpanded && (isVertical ? 'w-2' : 'h-2'),
@@ -171,7 +171,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         {showButtons && (
           <div
             className={cn(
-              'opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-30 pointer-events-none group-hover:pointer-events-auto shrink-0',
+              'opacity-0 group-hover:opacity-100 transition-opacity duration-short ease-standard z-30 pointer-events-none group-hover:pointer-events-auto shrink-0',
               isExpanded && 'opacity-100 pointer-events-auto',
               isVertical ? 'h-5 w-full' : 'w-5 h-full',
             )}

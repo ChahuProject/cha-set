@@ -60,10 +60,12 @@ Item {
         opacity: root.active ? 1.0 : 0.75
 
         Behavior on color {
-            ColorAnimation { duration: ThemeTokens.motionQuick }
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
         }
         Behavior on opacity {
-            NumberAnimation { duration: ThemeTokens.motionQuick }
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
         }
     }
 

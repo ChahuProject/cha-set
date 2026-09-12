@@ -51,6 +51,11 @@ Rectangle {
             height: parent.height
             color: minMouse.containsMouse ? ThemeTokens.hover : "transparent"
 
+            Behavior on color {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+            }
+
             Text {
                 anchors.centerIn: parent
                 text: "—"
@@ -71,6 +76,11 @@ Rectangle {
             width: 44
             height: parent.height
             color: maxMouse.containsMouse ? ThemeTokens.hover : "transparent"
+
+            Behavior on color {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+            }
 
             Text {
                 anchors.centerIn: parent
@@ -95,6 +105,11 @@ Rectangle {
             width: 44
             height: parent.height
             color: closeMouse.containsMouse ? Qt.rgba(239/255, 68/255, 68/255, 0.85) : "transparent"
+
+            Behavior on color {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+            }
 
             Text {
                 anchors.centerIn: parent

@@ -193,7 +193,7 @@ export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandlePro
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         className={cn(
-          'relative select-none touch-none transition-colors outline-none z-10',
+          'relative select-none touch-none transition-colors duration-quick ease-standard outline-none z-10',
           disabled ? 'cursor-not-allowed opacity-50' : isVertical ? 'cursor-col-resize' : 'cursor-row-resize',
           'focus-visible:ring-1 focus-visible:ring-primary',
           className,
@@ -208,7 +208,7 @@ export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandlePro
         <div
           data-slot="splitter-handle-visual"
           className={cn(
-            'absolute transition-all duration-100 pointer-events-none',
+            'absolute transition-[background-color,opacity] duration-quick ease-standard pointer-events-none',
             isActive ? 'bg-primary opacity-100' : 'bg-border opacity-75',
           )}
           style={{
