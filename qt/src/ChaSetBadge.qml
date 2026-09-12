@@ -80,6 +80,11 @@ Rectangle {
         return "transparent"
     }
 
+    Behavior on color {
+        enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
+        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+    }
+
     Row {
         id: contentRow
         anchors.centerIn: parent

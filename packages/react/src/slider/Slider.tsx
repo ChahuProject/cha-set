@@ -332,7 +332,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           aria-disabled={disabled}
           aria-readonly={readOnly || undefined}
           className={cn(
-            'block rounded-full border-2 border-primary bg-background shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:scale-105 active:scale-95',
+            'block rounded-full border-2 border-primary bg-background shadow-xs transition-[scale,box-shadow] duration-quick ease-standard focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:scale-105 active:scale-95',
             readOnly ? 'cursor-default' : 'cursor-grab active:cursor-grabbing',
             isSm ? 'size-3' : 'size-4',
             isDragging && !readOnly && 'cursor-grabbing scale-95',

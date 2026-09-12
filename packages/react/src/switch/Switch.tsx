@@ -104,7 +104,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         data-loading={loading || undefined}
         disabled={disabled}
         className={cn(
-          'peer inline-flex shrink-0 items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 select-none',
+          'peer inline-flex shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-short ease-standard focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 select-none',
           readOnly ? 'cursor-default' : 'cursor-pointer',
           isSm ? 'h-4 w-7' : 'h-5 w-9',
           isChecked ? 'bg-primary' : 'bg-input',
@@ -119,7 +119,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           data-slot="switch-thumb"
           data-state={state}
           className={cn(
-            'pointer-events-none flex items-center justify-center rounded-full bg-background shadow-lg ring-0 transition-transform',
+            'pointer-events-none flex items-center justify-center rounded-full bg-background shadow-lg ring-0 transition-[translate] duration-short ease-standard',
             isSm ? 'size-3' : 'size-4',
             isChecked ? (isSm ? 'translate-x-3' : 'translate-x-4') : 'translate-x-0',
           )}

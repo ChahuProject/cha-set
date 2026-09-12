@@ -62,6 +62,15 @@ Rectangle {
     border.width: isLine ? 0 : (isSelected ? 1 : 0)
     border.color: ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 0.8)
 
+    Behavior on color {
+        enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
+        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+    }
+    Behavior on border.color {
+        enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
+        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+    }
+
     Row {
         id: contentRow
         anchors.centerIn: parent
@@ -89,6 +98,11 @@ Rectangle {
                 return ThemeTokens.dark ? Qt.rgba(148.0 / 255.0, 163.0 / 255.0, 184.0 / 255.0, 1.0) : Qt.rgba(100.0 / 255.0, 116.0 / 255.0, 139.0 / 255.0, 1.0);
             }
             verticalAlignment: Text.AlignVCenter
+
+            Behavior on color {
+                enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
+                ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+            }
         }
 
         Rectangle {
