@@ -24,5 +24,6 @@ if (existsSync(tokensDir)) {
 
 run('generate-css.mjs');
 run('generate-qt.mjs');
+run('generate-highlight.mjs');
 run('generate-showcase-data.mjs');
 console.log('[gen:all] all generators completed');
