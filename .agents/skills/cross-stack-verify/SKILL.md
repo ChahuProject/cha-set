@@ -9,7 +9,7 @@ description: >-
 
 When developing or modifying components across React and Qt, you MUST follow this protocol to prevent regression, behavioral drift, and "superficial visual sync".
 
-## 1. The 5 Golden Red Lines
+## 1. Golden Red Lines
 
 1. **NO Half-Baked Delivery (100% 双端演示文档与路由必须就绪 — React & Qt)**
    - An Agent must NEVER stop after only implementing component core code and unit tests.
@@ -65,6 +65,14 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Deterministic headless runs**: `QtChaSetDemo.exe --test-scenario all` / `--harness` / shot captures force `ThemeTokens.animationsEnabled = false` in `qt/src/Main.qml`. Every QML `Behavior` MUST gate on `ThemeTokens.animationsEnabled` (+ force/harness exclusions when those props exist); otherwise scenario assertions and pixel sampling race the animation and turn flaky.
    - **Never animate kinematics**: scroll offsets/contentY and drag positions (virtual lists, scroll areas, splitter, Rnd) must not receive `Behavior`/transition — animating these breaks the 60fps and determinism red lines.
 
+11. **Mandatory Cascade-Layer Order & Dev-Mode Style Gate (Tailwind 层序与 dev 样式红线)**
+   - **Declare the layer order first**: any library CSS entry under `packages/react/src/styles/*.css` that opens a bare `@layer <name> { ... }` block MUST declare the canonical order
+     `@layer properties, theme, base, components, utilities;` **before** that block.
+     Per the CSS Cascade Layers spec a layer's position is fixed by its **first appearance in the whole document**, so with `motion.css` imported before `theme.css` an undeclared `utilities` block pins utilities to the BOTTOM of the order — the `@layer base` preflight (`button { background-color: transparent; border-radius: 0 }`) then silently outranks every Tailwind utility, stripping colour, radius and borders from all components. `properties` must be included in the declaration too: it holds `* { --tw-*: initial }`, which would otherwise float to the top and reset `--tw-shadow` / `--tw-ring-*`.
+   - **Verify in dev, never only in build**: `vite build` concatenates all CSS with theme.css's statement first, so this entire regression class is invisible under `build` / `preview`. Acceptance for any style-touching change MUST include a `pnpm showcase` (dev server) check that a known utility really applies, e.g. `getComputedStyle(document.querySelector('button.bg-primary'))` reports the accent colour and a non-zero `borderRadius`.
+   - **Layer-ladder probe**: to prove the order, inject one colour per layer on the same selector (`@layer properties{...hotpink} @layer theme{...red} @layer base{...blue} @layer components{...green} @layer utilities{...yellow}`) — `utilities` must win. If `components` wins instead, the order is polluted.
+   - **Cold-start check**: re-run the probe after `rm -rf packages/react/examples/basic/node_modules/.vite`; a warm cache can mask stylesheet-injection ordering bugs.
+
 ## 2. Verification Commands Checklist
 
 Before declaring any component task complete, execute:
@@ -76,11 +84,11 @@ pnpm build:tokens
 # 2. Build Qt desktop project
 cmake --build qt/build
 
-# 3. Run full React test suite (96 test files, 518 tests)
+# 3. Run full React test suite
 pnpm test
 
 # 4. Run full cross-stack behavioral & showcase gate
-# (Checks 318 capabilities, 100% showcase docs completeness for 47 components, and Qt scenarios)
+# (Checks capability coverage, 100% showcase docs completeness for every component, and Qt scenarios)
 pnpm gate
 
 # 5. (For L1 Atomic Primitives) Run targeted bit-exact pixel-sync
