@@ -48,6 +48,11 @@
     "motionShort": "primitives.motion.short",
     "motionMedium": "primitives.motion.medium"
   },
+  "easing": {
+    "standard": "primitives.easing.standard.qt",
+    "emphasized": "primitives.easing.emphasized.qt",
+    "entrance": "primitives.easing.entrance.qt"
+  },
   "size": {
     "radiusSmall": "primitives.size.radiusSmall",
     "controlHeight": "primitives.size.controlHeight",

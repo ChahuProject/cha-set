@@ -209,6 +209,10 @@ QtObject {
     readonly property int motionShort: motionDuration(120)
     readonly property int motionMedium: motionDuration(180)
 
+    readonly property int easeStandard: Easing.OutQuad
+    readonly property int easeEmphasized: Easing.OutCubic
+    readonly property int easeEntrance: Easing.OutCubic
+
     readonly property int radiusSmall: 2
     readonly property int controlHeight: 28
     readonly property int gap: 8

@@ -55,6 +55,9 @@
   --cs-motion-quick: 90ms;
   --cs-motion-short: 120ms;
   --cs-motion-medium: 180ms;
+  --cs-ease-standard: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --cs-ease-emphasized: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --cs-ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dark {
@@ -112,6 +115,9 @@
   --cs-motion-quick: 90ms;
   --cs-motion-short: 120ms;
   --cs-motion-medium: 180ms;
+  --cs-ease-standard: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --cs-ease-emphasized: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --cs-ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* == accessibility: reduce motion == */
