@@ -25,16 +25,29 @@ Item {
     readonly property real gutterGap: root.showLineNumbers ? 12 : 0
     readonly property real codeWidth: Math.max(0, root.width - (root.showLineNumbers ? gutterWidth + gutterGap : 0))
 
-    // One token array per source line — the same stream React's HighlightedCode consumes.
-    readonly property var tokenLines: {
+    // Tokenized data structures
+    readonly property var allTokens: {
         if (highlight && Highlighter.isHighlightable(language)) {
-            return Highlighter.toLines(Highlighter.tokenize(code, language))
+            return Highlighter.tokenize(code, language)
         }
-        return Highlighter.toLines([{ t: "plain", v: code }])
+        return [{ t: "plain", v: code }]
     }
 
-    readonly property int lineCount: tokenLines.length
+    readonly property var tokenLines: {
+        return Highlighter.toLines(allTokens)
+    }
+
+    readonly property int lineCount: Math.max(1, tokenLines.length)
     readonly property real gutterWidth: root.showLineNumbers ? gutterMetrics.implicitWidth : 0
+    readonly property string richText: Highlighter.buildRichText(allTokens, root.colorForToken)
+
+    FontMetrics {
+        id: codeFontMetrics
+        font.family: root.fontFamily
+        font.pixelSize: root.fontSize
+    }
+
+    readonly property real lineSpacing: codeEdit.lineCount > 0 ? (codeEdit.contentHeight / codeEdit.lineCount) : codeFontMetrics.lineSpacing
 
     // Bridges the generated palette (QColor) to the CSS color string the shared
     // engine's buildRichText() expects, so both stacks emit the same markup shape.
@@ -42,8 +55,8 @@ Item {
         return CodeTokens.colorFor(type).toString()
     }
 
-    implicitWidth: linesColumn.implicitWidth
-    implicitHeight: linesColumn.implicitHeight
+    implicitWidth: root.showLineNumbers ? (root.gutterWidth + root.gutterGap + codeEdit.contentWidth) : codeEdit.contentWidth
+    implicitHeight: Math.max(root.showLineNumbers ? gutterCol.implicitHeight : 0, codeEdit.contentHeight)
 
     // Hidden reference text reserving a stable gutter width for the widest line number.
     Text {
@@ -54,48 +67,64 @@ Item {
         font.pixelSize: root.fontSize
     }
 
-    Column {
-        id: linesColumn
-        width: root.wrap ? root.width : implicitWidth
+    Row {
+        id: mainRow
         spacing: 0
+        width: root.wrap ? root.width : implicitWidth
 
-        Repeater {
-            model: root.tokenLines
+        // Non-selectable Line Numbers Gutter
+        Column {
+            id: gutterCol
+            visible: root.showLineNumbers
+            width: root.showLineNumbers ? (root.gutterWidth + root.gutterGap) : 0
+            spacing: 0
 
-            delegate: Row {
-                id: lineRow
-                required property var modelData
-                required property int index
-                spacing: 0
+            Repeater {
+                model: root.lineCount
+                delegate: Item {
+                    required property int index
+                    width: root.gutterWidth + root.gutterGap
+                    height: root.lineSpacing
 
-                Text {
-                    id: lineGutter
-                    visible: root.showLineNumbers
-                    width: visible ? root.gutterWidth : 0
-                    text: String(lineRow.index + 1)
-                    color: root.gutterColor
-                    opacity: 0.65
-                    horizontalAlignment: Text.AlignRight
-                    font.family: root.fontFamily
-                    font.pixelSize: root.fontSize
-                }
-
-                Item {
-                    width: root.gutterGap
-                    height: 1
-                }
-
-                Text {
-                    textFormat: Text.RichText
-                    text: Highlighter.buildRichText(lineRow.modelData, root.colorForToken)
-                    color: root.textColor
-                    wrapMode: root.wrap ? Text.WrapAnywhere : Text.NoWrap
-                    width: root.wrap ? root.codeWidth : implicitWidth
-                    lineHeight: root.lineHeight
-                    font.family: root.fontFamily
-                    font.pixelSize: root.fontSize
+                    Text {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.rightMargin: root.gutterGap
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: String(index + 1)
+                        color: root.gutterColor
+                        opacity: 0.65
+                        horizontalAlignment: Text.AlignRight
+                        font.family: root.fontFamily
+                        font.pixelSize: root.fontSize
+                    }
                 }
             }
+        }
+
+        // Selectable Multi-line RichText Code Editor
+        TextEdit {
+            id: codeEdit
+            readOnly: true
+            selectByMouse: true
+            selectByKeyboard: true
+            cursorVisible: false
+            activeFocusOnPress: true
+            textFormat: TextEdit.RichText
+            textMargin: 0
+            padding: 0
+            topPadding: 0
+            bottomPadding: 0
+            leftPadding: 0
+            rightPadding: 0
+            font.family: root.fontFamily
+            font.pixelSize: root.fontSize
+            color: root.textColor
+            selectionColor: ThemeTokens.dark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 0.4) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 0.3)
+            selectedTextColor: root.textColor
+            wrapMode: root.wrap ? TextEdit.WrapAnywhere : TextEdit.NoWrap
+            width: root.wrap ? Math.max(0, root.width - (root.showLineNumbers ? (root.gutterWidth + root.gutterGap) : 0)) : implicitWidth
+            text: root.richText
         }
     }
 }
