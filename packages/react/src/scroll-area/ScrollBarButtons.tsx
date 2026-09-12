@@ -20,7 +20,7 @@ export const ScrollBarButton = React.forwardRef<HTMLButtonElement, ScrollBarButt
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
         className={cn(
-          'inline-flex items-center justify-center size-2 rounded-[2px] text-muted-foreground/80 hover:text-foreground hover:bg-accent/80 active:bg-accent focus:outline-none transition-all duration-100 disabled:opacity-20 disabled:pointer-events-none cursor-pointer',
+          'inline-flex items-center justify-center size-2 rounded-[2px] text-muted-foreground/80 hover:text-foreground hover:bg-accent/80 active:bg-accent focus:outline-none transition-colors duration-quick ease-standard disabled:opacity-20 disabled:pointer-events-none cursor-pointer',
           forceHover && !forceActive && 'bg-accent/80 text-foreground',
           forceActive && 'bg-accent text-foreground',
           className,

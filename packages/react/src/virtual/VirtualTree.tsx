@@ -79,7 +79,7 @@ export function VirtualTree<T>({
       (({ node, depth, hasChildren, isExpanded, isSelected, toggleExpand, selectNode }) => (
         <div
           className={cn(
-            'flex items-center gap-2 px-2 py-1 text-xs cursor-pointer rounded select-none transition-colors',
+            'flex items-center gap-2 px-2 py-1 text-xs cursor-pointer rounded select-none transition-colors duration-quick ease-standard',
             isSelected
               ? 'bg-primary/15 text-primary font-medium'
               : 'hover:bg-muted/50 text-foreground',

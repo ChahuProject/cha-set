@@ -52,6 +52,11 @@ Item {
         border.width: gutter.activeFocus ? 1 : 0
         activeFocusOnTab: true
 
+        Behavior on color {
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
+
         Keys.onLeftPressed: function(event) {
             if (root.isHorizontal) {
                 event.accepted = true

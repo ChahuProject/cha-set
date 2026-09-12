@@ -72,7 +72,7 @@ export function WindowTitleBar({
       data-slot="window-title-bar"
       onDoubleClick={handleDoubleClick}
       className={cn(
-        'flex h-10 select-none items-center justify-between bg-transparent flex-shrink-0 transition-opacity duration-200',
+        'flex h-10 select-none items-center justify-between bg-transparent flex-shrink-0 transition-opacity duration-short ease-standard',
         isFocused ? 'opacity-100' : 'opacity-60',
         className,
       )}
@@ -112,7 +112,7 @@ export function WindowTitleBar({
           <>
             <button
               type="button"
-              className="flex h-full w-[2.875rem] cursor-default items-center justify-center border-none bg-transparent text-foreground/70 transition-colors hover:bg-muted/70 hover:text-foreground"
+              className="flex h-full w-[2.875rem] cursor-default items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-muted/70 hover:text-foreground"
               title={minimizeTitle}
               aria-label={minimizeTitle}
               onClick={onMinimize}
@@ -125,7 +125,7 @@ export function WindowTitleBar({
 
             <button
               type="button"
-              className="flex h-full w-[2.875rem] cursor-default items-center justify-center border-none bg-transparent text-foreground/70 transition-colors hover:bg-muted/70 hover:text-foreground"
+              className="flex h-full w-[2.875rem] cursor-default items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-muted/70 hover:text-foreground"
               title={isMaximized ? restoreTitle : maximizeTitle}
               aria-label={isMaximized ? restoreTitle : maximizeTitle}
               onClick={onMaximize}
@@ -145,7 +145,7 @@ export function WindowTitleBar({
 
             <button
               type="button"
-              className="flex h-full w-[2.875rem] cursor-default items-center justify-center border-none bg-transparent text-foreground/70 transition-colors hover:bg-[#e81123] hover:text-white"
+              className="flex h-full w-[2.875rem] cursor-default items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-[#e81123] hover:text-white"
               title={closeTitle}
               aria-label={closeTitle}
               onClick={onClose}
