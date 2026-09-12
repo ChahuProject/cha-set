@@ -125,6 +125,10 @@ Item {
             wrapMode: root.wrap ? TextEdit.WrapAnywhere : TextEdit.NoWrap
             width: root.wrap ? Math.max(0, root.width - (root.showLineNumbers ? (root.gutterWidth + root.gutterGap) : 0)) : implicitWidth
             text: root.richText
+
+            HoverHandler {
+                cursorShape: Qt.IBeamCursor
+            }
         }
     }
 }

@@ -299,7 +299,7 @@ export function DurationInput({
                   'focus-within:border-ring focus-within:ring-1 focus-within:ring-ring',
                 forceHover && 'border-ring',
                 forceActive && 'ring-1 ring-ring',
-                disabled && 'opacity-50 cursor-not-allowed',
+                disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-text',
               )}
             >
               <input

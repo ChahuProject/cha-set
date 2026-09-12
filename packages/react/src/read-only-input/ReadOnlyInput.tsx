@@ -76,7 +76,7 @@ export function ReadOnlyInput({
       className={cn(
         'group relative flex min-w-0 items-center rounded-md border bg-background/60 transition-colors duration-quick ease-standard',
         isSm ? 'h-7 px-1.5' : 'h-8 px-2',
-        disabled && 'pointer-events-none opacity-50',
+        disabled ? 'cursor-not-allowed opacity-50' : 'cursor-text',
         scheme.border,
         className,
       )}

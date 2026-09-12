@@ -217,13 +217,18 @@ Rectangle {
         }
     }
 
-    // Background click area: clicking container margins/padding focuses the input and keeps IBeam cursor
+    // HoverHandler: sets IBeamCursor across the entire input geometry (including over TextInput)
+    HoverHandler {
+        id: hoverHandler
+        cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor)
+    }
+
+    // Background click area: clicking container margins/padding focuses the input
     MouseArea {
         id: containerClickArea
         anchors.fill: parent
         z: -1
-        hoverEnabled: !root.disabled
-        cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
+        hoverEnabled: false
         onClicked: {
             if (!root.disabled) {
                 inputInner.forceActiveFocus();

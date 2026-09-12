@@ -128,9 +128,8 @@ Item {
         MouseArea {
             id: hoverMouse
             anchors.fill: parent
-            hoverEnabled: !root.disabled
-            enabled: !root.disabled
-            cursorShape: root.disabled ? Qt.ArrowCursor : Qt.PointingHandCursor
+            hoverEnabled: true
+            cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
             onDoubleClicked: {
                 if (!root.disabled) root.editing = true
             }

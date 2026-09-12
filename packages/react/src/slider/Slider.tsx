@@ -241,8 +241,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
         className={cn(
           'relative flex touch-none select-none items-center',
           orientation === 'horizontal' ? 'w-full h-4' : 'h-full w-4 flex-col justify-center',
-          disabled && 'opacity-50 cursor-not-allowed',
-          readOnly && 'cursor-default',
+          disabled ? 'opacity-50 cursor-not-allowed' : (readOnly ? 'cursor-default' : 'cursor-pointer'),
           className,
         )}
         onPointerDown={handlePointerDown}
@@ -336,7 +335,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           aria-readonly={readOnly || undefined}
           className={cn(
             'block rounded-full border-2 border-primary bg-background shadow-xs transition-[scale,box-shadow] duration-quick ease-standard focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:scale-105 active:scale-95',
-            readOnly ? 'cursor-default' : 'cursor-grab active:cursor-grabbing',
+            disabled ? 'cursor-not-allowed' : (readOnly ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'),
             isSm ? 'size-3' : 'size-4',
             isDragging && !readOnly && 'cursor-grabbing scale-95',
             forceHover && 'scale-105',

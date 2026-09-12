@@ -140,8 +140,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div
         data-slot="input-container"
         data-size={size}
+        onClick={() => inputRef.current?.focus()}
         className={`flex items-center w-full rounded-md border bg-transparent dark:bg-input/20 shadow-xs transition-[color,background-color,border-color,box-shadow] duration-quick ease-standard text-foreground ${addonContainerSizeStyles[size]} ${containerForcedClass} ${
-          disabled ? 'cursor-not-allowed opacity-50' : ''
+          disabled ? 'cursor-not-allowed opacity-50' : 'cursor-text'
         } ${className}`.trim()}
       >
         {leftIcon && (

@@ -197,17 +197,16 @@ export function RangeSlider({
       data-slot="range-slider"
       className={cn(
         'relative w-full select-none touch-none',
-        disabled && 'pointer-events-none opacity-50',
-        readOnly && 'cursor-default',
+        disabled ? 'cursor-not-allowed opacity-50' : (readOnly ? 'cursor-default' : ''),
         className,
       )}
     >
       <div
         ref={trackRef}
         className={cn(
-          'relative cursor-pointer',
+          'relative',
           isSm ? 'h-4' : 'h-6',
-          readOnly && 'cursor-default',
+          disabled ? 'cursor-not-allowed' : (readOnly ? 'cursor-default' : 'cursor-pointer'),
         )}
         onPointerDown={handleTrackPointerDown}
         onPointerMove={handlePointerMove}
