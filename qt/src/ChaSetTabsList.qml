@@ -33,9 +33,7 @@ Rectangle {
     implicitHeight: isVert
         ? (contentLayout.implicitHeight + padding * 2)
         : (isLine ? (isSm ? 32 : 36) : (isSm ? 28 : 36))
-    implicitWidth: isVert
-        ? (contentLayout.implicitWidth + padding * 2)
-        : (isLine ? undefined : (contentLayout.implicitWidth + padding * 2))
+    implicitWidth: contentLayout.implicitWidth + padding * 2
 
     radius: customRadius
     color: isLine
