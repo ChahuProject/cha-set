@@ -681,4 +681,15 @@ Item {
             }
         }
     }
+
+    MouseArea {
+        id: disabledArea
+        anchors.fill: parent
+        z: 99
+        visible: root.disabled
+        hoverEnabled: true
+        cursorShape: Qt.ForbiddenCursor
+        acceptedButtons: Qt.AllButtons
+        onPressed: (mouse) => mouse.accepted = true
+    }
 }

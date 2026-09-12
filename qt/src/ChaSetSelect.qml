@@ -180,8 +180,8 @@ Item {
         MouseArea {
             id: triggerMouse
             anchors.fill: parent
-            hoverEnabled: !root.disabled
-            cursorShape: root.disabled ? Qt.ArrowCursor : Qt.PointingHandCursor
+            hoverEnabled: true
+            cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
             onClicked: {
                 if (root.disabled) return
                 root.forceActiveFocus()
@@ -237,7 +237,7 @@ Item {
                 delegate: Rectangle {
                     required property var modelData
                     required property int index
-                    width: parent.width
+                    width: parent ? parent.width : 0
                     height: 28
                     radius: 4
                     readonly property bool isSelected: String(modelData.value) === String(root.value)
@@ -277,19 +277,20 @@ Item {
                     MouseArea {
                         id: optMouse
                         anchors.fill: parent
-                        hoverEnabled: !parent.modelData.disabled
-                        cursorShape: parent.modelData.disabled ? Qt.ArrowCursor : Qt.PointingHandCursor
+                        hoverEnabled: true
+                        cursorShape: (parent && parent.modelData && parent.modelData.disabled) ? Qt.ForbiddenCursor : Qt.PointingHandCursor
                         onPositionChanged: (mouse) => {
+                            if (parent && parent.modelData && parent.modelData.disabled) return
                             var p = optMouse.mapToItem(null, mouse.x, mouse.y)
                             root.handlePointerMove(parent.index, p.x, p.y)
                         }
                         onEntered: {
-                            if (root.modality === "pointer" && !parent.modelData.disabled) {
+                            if (root.modality === "pointer" && parent && parent.modelData && !parent.modelData.disabled) {
                                 root.highlightedIndex = parent.index
                             }
                         }
                         onClicked: {
-                            if (parent.modelData.disabled) return
+                            if (parent && parent.modelData && parent.modelData.disabled) return
                             root.value = String(parent.modelData.value)
                             root.valueChanged()
                             selectPopup.close()

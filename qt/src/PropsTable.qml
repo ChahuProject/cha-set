@@ -23,6 +23,7 @@ Column {
 
     ChaSetTable {
         width: parent.width
+        interactive: false
         columns: [
             { key: "prop", title: "PROP", width: 160 },
             { key: "type", title: "TYPE", width: 140 },

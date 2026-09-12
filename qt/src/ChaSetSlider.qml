@@ -335,8 +335,7 @@ Item {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        hoverEnabled: !root.disabled
-        enabled: !root.disabled
+        hoverEnabled: true
         cursorShape: root.disabled
             ? Qt.ForbiddenCursor
             : (root.readOnly
@@ -344,17 +343,20 @@ Item {
                 : (mouseArea.pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor))
 
         onPressed: function(mouse) {
+            if (root.disabled || root.readOnly) return;
             root.forceActiveFocus();
             root.updateFromMouse(mouse.x, mouse.y);
         }
 
         onPositionChanged: function(mouse) {
+            if (root.disabled || root.readOnly) return;
             if (pressed) {
                 root.updateFromMouse(mouse.x, mouse.y);
             }
         }
 
         onReleased: function() {
+            if (root.disabled || root.readOnly) return;
             root.updateThumbFromValue();
         }
     }

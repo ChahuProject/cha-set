@@ -228,7 +228,7 @@ Item {
             anchors.fill: parent
             hoverEnabled: !root.disabled
             enabled: !root.disabled && !root.readOnly
-            cursorShape: root.readOnly ? Qt.ArrowCursor : Qt.PointingHandCursor
+            cursorShape: root.readOnly ? Qt.ArrowCursor : (pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor)
             drag.target: thumb1
             drag.axis: Drag.XAxis
             drag.minimumX: track.x - thumb1.width / 2
@@ -321,7 +321,7 @@ Item {
             anchors.fill: parent
             hoverEnabled: !root.disabled
             enabled: !root.disabled && !root.readOnly
-            cursorShape: root.readOnly ? Qt.ArrowCursor : Qt.PointingHandCursor
+            cursorShape: root.readOnly ? Qt.ArrowCursor : (pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor)
             drag.target: thumb2
             drag.axis: Drag.XAxis
             drag.minimumX: track.x - thumb2.width / 2
@@ -342,5 +342,16 @@ Item {
                 }
             }
         }
+    }
+
+    MouseArea {
+        id: disabledOverlay
+        anchors.fill: parent
+        z: 99
+        visible: root.disabled
+        hoverEnabled: true
+        cursorShape: Qt.ForbiddenCursor
+        acceptedButtons: Qt.AllButtons
+        onPressed: (mouse) => mouse.accepted = true
     }
 }

@@ -74,9 +74,8 @@ Item {
         objectName: "splitterMouseArea"
         anchors.fill: parent
         hoverEnabled: true
-        enabled: !root.disabled
         preventStealing: true
-        cursorShape: root.isVertical ? Qt.SizeHorCursor : Qt.SizeVerCursor
+        cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.isVertical ? Qt.SizeHorCursor : Qt.SizeVerCursor)
 
         property point pressRefPos: Qt.point(0, 0)
         property real startSize: 0
@@ -87,12 +86,14 @@ Item {
         }
 
         onPressed: (mouse) => {
+            if (root.disabled) return;
             root.forceActiveFocus();
             pressRefPos = getRefPoint(mouse);
             startSize = root.targetSize;
         }
 
         onPositionChanged: (mouse) => {
+            if (root.disabled) return;
             if (!pressed)
                 return;
 

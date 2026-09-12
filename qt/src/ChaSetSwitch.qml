@@ -151,10 +151,10 @@ Item {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        hoverEnabled: !root.disabled && !root.readOnly && !root.loading
-        enabled: !root.disabled && !root.readOnly && !root.loading
+        hoverEnabled: true
         cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly || root.loading ? Qt.ArrowCursor : Qt.PointingHandCursor)
         onClicked: {
+            if (root.disabled || root.readOnly || root.loading) return
             root.forceActiveFocus()
             root.checked = !root.checked
             root.toggled(root.checked)

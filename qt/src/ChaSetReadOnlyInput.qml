@@ -138,8 +138,25 @@ Item {
         MouseArea {
             id: hoverArea
             anchors.fill: parent
+            z: -1
             hoverEnabled: !root.disabled
-            acceptedButtons: Qt.NoButton
+            cursorShape: Qt.IBeamCursor
+            onClicked: {
+                if (!root.disabled) {
+                    valInput.forceActiveFocus()
+                }
+            }
+        }
+
+        MouseArea {
+            id: disabledArea
+            anchors.fill: parent
+            z: 99
+            visible: root.disabled
+            hoverEnabled: true
+            cursorShape: Qt.ForbiddenCursor
+            acceptedButtons: Qt.AllButtons
+            onPressed: (mouse) => mouse.accepted = true
         }
     }
 }

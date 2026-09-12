@@ -258,14 +258,15 @@ Item {
                 MouseArea {
                     id: mouseArea
                     anchors.fill: parent
-                    hoverEnabled: !segItem.isItemDisabled
-                    cursorShape: segItem.isItemDisabled ? Qt.ArrowCursor : Qt.PointingHandCursor
+                    hoverEnabled: true
+                    cursorShape: segItem.isItemDisabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
                     acceptedButtons: Qt.LeftButton
 
                     property real lastX: 0
                     property real lastY: 0
 
                     onPositionChanged: function(mouse) {
+                        if (segItem.isItemDisabled) return;
                         if (Math.abs(mouse.x - lastX) > 1 || Math.abs(mouse.y - lastY) > 1) {
                             root.modality = "pointer";
                             root.highlightedIndex = index;
@@ -275,6 +276,7 @@ Item {
                     }
 
                     onClicked: {
+                        if (segItem.isItemDisabled) return;
                         root.modality = "pointer";
                         root.highlightedIndex = index;
                         root.selectIndex(index);

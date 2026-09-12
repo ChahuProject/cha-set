@@ -37,7 +37,7 @@ Rectangle {
 
     readonly property bool isSm: root.size === "sm"
     readonly property bool isFocused: root.forceFocus || inputInner.activeFocus
-    readonly property bool isHovered: root.forceHover || mouseArea.containsMouse
+    readonly property bool isHovered: root.forceHover || containerClickArea.containsMouse
     readonly property bool isDark: ThemeTokens.dark
     readonly property color destructiveColor: isDark ? Qt.rgba(248.0 / 255.0, 113.0 / 255.0, 113.0 / 255.0, 1.0) : Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)
 
@@ -184,6 +184,8 @@ Rectangle {
         enabled: !root.disabled
         readOnly: root.readOnly
 
+        selectByMouse: true
+
         font.pixelSize: root.isSm ? 12 : 14
         color: isDark ? Qt.rgba(248.0 / 255.0, 250.0 / 255.0, 252.0 / 255.0, 1.0) : Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0)
         selectedTextColor: "#ffffff"
@@ -215,11 +217,29 @@ Rectangle {
         }
     }
 
+    // Background click area: clicking container margins/padding focuses the input and keeps IBeam cursor
     MouseArea {
-        id: mouseArea
+        id: containerClickArea
         anchors.fill: parent
+        z: -1
         hoverEnabled: !root.disabled
-        acceptedButtons: Qt.NoButton
-        cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor)
+        cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
+        onClicked: {
+            if (!root.disabled) {
+                inputInner.forceActiveFocus();
+            }
+        }
+    }
+
+    // Disabled overlay: intercepts all hover and press events when disabled, enforcing ForbiddenCursor
+    MouseArea {
+        id: disabledOverlay
+        anchors.fill: parent
+        z: 99
+        visible: root.disabled
+        hoverEnabled: true
+        cursorShape: Qt.ForbiddenCursor
+        acceptedButtons: Qt.AllButtons
+        onPressed: (mouse) => mouse.accepted = true
     }
 }
