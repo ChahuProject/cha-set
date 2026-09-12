@@ -36,21 +36,13 @@ Item {
         onTriggered: root.copied = false
     }
 
-    TextEdit {
-        id: clipboardHelper
-        visible: false
-        width: 0
-        height: 0
-    }
-
     function copyToClipboard() {
         if (!root.copyable) return;
         var content = root.effectiveTooltipText;
         if (content && content.length > 0) {
-            clipboardHelper.text = content;
-            clipboardHelper.selectAll();
-            clipboardHelper.copy();
-            clipboardHelper.deselect();
+            if (typeof ChaSetClipboard !== "undefined" && ChaSetClipboard.setText) {
+                ChaSetClipboard.setText(content);
+            }
         }
         root.copied = true;
         resetTimer.restart();
