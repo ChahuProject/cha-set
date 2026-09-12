@@ -75,6 +75,7 @@ export interface SidebarContextProps {
   concealTemporarySidebar: () => void;
   resizing: boolean;
   setResizing: (resizing: boolean) => void;
+  container?: boolean;
 }
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
@@ -91,12 +92,14 @@ export interface SidebarProviderProps extends React.ComponentProps<'div'> {
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  container?: boolean;
 }
 
 export function SidebarProvider({
   defaultOpen = true,
   open: openProp,
   onOpenChange: setOpenProp,
+  container = false,
   className,
   style,
   children,
@@ -259,6 +262,7 @@ export function SidebarProvider({
       concealTemporarySidebar,
       resizing,
       setResizing,
+      container,
     }),
     [
       state,
@@ -278,6 +282,7 @@ export function SidebarProvider({
       concealTemporarySidebar,
       resizing,
       setResizing,
+      container,
     ],
   );
 
@@ -294,6 +299,7 @@ export function SidebarProvider({
         }
         className={cn(
           'group/sidebar-wrapper flex h-full min-h-0 w-full has-data-[variant=inset]:bg-sidebar',
+          container && 'relative overflow-hidden',
           className,
         )}
         {...props}
@@ -308,18 +314,22 @@ export interface SidebarProps extends React.ComponentProps<'div'> {
   side?: 'left' | 'right';
   variant?: 'sidebar' | 'floating' | 'inset';
   collapsible?: 'offcanvas' | 'icon' | 'none';
+  container?: boolean;
 }
 
 export function Sidebar({
   side = 'left',
   variant = 'sidebar',
   collapsible = 'offcanvas',
+  container,
   className,
   children,
   ...props
 }: SidebarProps) {
+  const context = useSidebar();
   const { isMobile, state, setOpen, hidden, temporaryOpen, revealTemporarySidebar, concealTemporarySidebar, resizing } =
-    useSidebar();
+    context;
+  const isContained = container ?? context.container ?? false;
 
   React.useEffect(() => {
     if (isMobile) {
@@ -377,7 +387,9 @@ export function Sidebar({
           }
         }}
         className={cn(
-          'fixed top-10 bottom-0 z-10 flex h-[calc(100svh-2.5rem)] w-(--sidebar-width) bg-sidebar text-sidebar-foreground border-r border-sidebar-border/50 transition-[left,right,width,transform] duration-200 ease-out data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] group-data-[resizing=true]:transition-none',
+          isContained
+            ? 'absolute inset-y-0 z-10 flex h-full w-(--sidebar-width) bg-sidebar text-sidebar-foreground border-r border-sidebar-border/50 transition-[left,right,width,transform] duration-200 ease-out data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] group-data-[resizing=true]:transition-none'
+            : 'fixed top-10 bottom-0 z-10 flex h-[calc(100svh-2.5rem)] w-(--sidebar-width) bg-sidebar text-sidebar-foreground border-r border-sidebar-border/50 transition-[left,right,width,transform] duration-200 ease-out data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] group-data-[resizing=true]:transition-none',
           variant === 'floating' || variant === 'inset'
             ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+0.125rem)]'
             : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)',
@@ -457,7 +469,8 @@ export function SidebarEdgeRevealZone({
   'aria-label': ariaLabel,
   ...props
 }: SidebarEdgeRevealZoneProps) {
-  const { hidden, setHidden, temporaryOpen, revealTemporarySidebar, concealTemporarySidebar } = useSidebar();
+  const { hidden, setHidden, temporaryOpen, revealTemporarySidebar, concealTemporarySidebar, container: isContained } =
+    useSidebar();
 
   if (!hidden) {
     return null;
@@ -470,7 +483,8 @@ export function SidebarEdgeRevealZone({
       aria-label={ariaLabel ?? label}
       aria-expanded={temporaryOpen}
       className={cn(
-        'fixed inset-y-0 left-0 z-50 hidden touch-none bg-transparent outline-none transition-opacity duration-150 after:absolute after:inset-y-0 after:left-0 after:w-(--sidebar-edge-reveal-line-width) after:bg-sidebar-ring after:opacity-0 after:shadow-[0_0_16px_hsl(var(--sidebar-ring)/0.55)] after:transition-opacity after:duration-150 hover:after:opacity-100 focus-visible:after:opacity-100 md:block',
+        isContained ? 'absolute inset-y-0' : 'fixed inset-y-0',
+        'left-0 z-50 hidden touch-none bg-transparent outline-none transition-opacity duration-150 after:absolute after:inset-y-0 after:left-0 after:w-(--sidebar-edge-reveal-line-width) after:bg-sidebar-ring after:opacity-0 after:shadow-[0_0_16px_hsl(var(--sidebar-ring)/0.55)] after:transition-opacity after:duration-150 hover:after:opacity-100 focus-visible:after:opacity-100 md:block',
         className,
       )}
       style={

@@ -308,5 +308,22 @@ describe('Sidebar Component System', () => {
       expect(screen.getByTestId('separator')).toHaveAttribute('data-slot', 'sidebar-separator');
       expect(screen.getByTestId('skeleton')).toHaveAttribute('data-slot', 'sidebar-menu-skeleton');
     });
+
+    it('applies container-scoped classes when container prop is enabled', () => {
+      const { container } = render(
+        <SidebarProvider container defaultOpen={true}>
+          <Sidebar>
+            <SidebarContent>Content</SidebarContent>
+          </Sidebar>
+        </SidebarProvider>,
+      );
+
+      const wrapper = container.querySelector('[data-slot="sidebar-wrapper"]');
+      const sidebarContainer = container.querySelector('[data-slot="sidebar-container"]');
+      expect(wrapper?.className).toContain('relative');
+      expect(wrapper?.className).toContain('overflow-hidden');
+      expect(sidebarContainer?.className).toContain('absolute');
+      expect(sidebarContainer?.className).not.toContain('fixed');
+    });
   });
 });
