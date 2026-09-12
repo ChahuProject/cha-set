@@ -175,7 +175,7 @@ function GroupRenderer<TRecord>({
       data-slot="query-group"
       data-depth={depth}
       className={cn(
-        'flex flex-col gap-2 rounded-md transition-colors',
+        'flex flex-col gap-2 rounded-md transition-colors duration-quick ease-standard',
         depth > 0 && 'border border-border/60 bg-muted/20 p-3',
       )}
     >
@@ -307,7 +307,7 @@ function ConditionRenderer<TRecord>({
   return (
     <div
       data-slot="query-condition"
-      className="flex flex-wrap items-center gap-2 rounded-md bg-background/80 p-1.5 border border-border/40"
+      className="animate-fade-in flex flex-wrap items-center gap-2 rounded-md bg-background/80 p-1.5 border border-border/40"
     >
       {/* Field selector */}
       <Select

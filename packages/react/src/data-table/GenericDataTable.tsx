@@ -289,7 +289,7 @@ export function GenericDataTable<TData>({
                       {header.isPlaceholder ? null : (
                         <div
                           className={cn(
-                            'flex items-center gap-1.5 select-none',
+                            'flex items-center gap-1.5 select-none transition-colors duration-quick ease-standard',
                             canSort && 'cursor-pointer hover:text-foreground',
                           )}
                           onClick={header.column.getToggleSortingHandler()}
@@ -298,13 +298,13 @@ export function GenericDataTable<TData>({
                             {flexRender(header.column.columnDef.header, header.getContext())}
                           </span>
                           {canSort && (
-                            <span className="shrink-0 text-muted-foreground">
+                            <span className="shrink-0 text-muted-foreground transition-colors duration-quick ease-standard">
                               {sorted === 'asc' ? (
                                 <ChevronUpIcon className="size-3.5 text-primary" />
                               ) : sorted === 'desc' ? (
                                 <ChevronDownIcon className="size-3.5 text-primary" />
                               ) : (
-                                <ArrowUpDownIcon className="size-3 opacity-40 hover:opacity-100" />
+                                <ArrowUpDownIcon className="size-3 opacity-40 transition-opacity duration-quick ease-standard hover:opacity-100" />
                               )}
                             </span>
                           )}
