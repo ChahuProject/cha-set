@@ -59,6 +59,12 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Neutral Prop Names**: Omit `Px` suffixes from props and CSS variables (`hitThickness`, `visualThickness`, `deltaAmount`, `--sidebar-width`).
    - **Docs & Descriptions**: Never write `in pixels` or `100px` in PropsTable descriptions or doc text.
 
+10. **Mandatory Motion Token & Animation Determinism Contract (双端动效统一与测试确定性红线)**
+   - **Token-driven only**: Durations (`--cs-motion-quick/short/medium`) and easings (`--cs-ease-standard/emphasized/entrance`, each with a Qt `Easing.*` counterpart) live in `spec/tokens/primitives.json` and are regenerated via `pnpm gen:css && pnpm gen:qt`. Components MUST consume them — `duration-quick`/`ease-*` utilities on React, `ThemeTokens.motion*`/`ThemeTokens.ease*` in QML. Hardcoded `duration-100/150/200`, `ease-in-out`, raw `Easing.*`, or numeric animation durations are forbidden (they silently bypass reduced-motion handling).
+   - **animation-aware DocPages**: Every living DocPage MUST include an `Animations` section (React: `<section id="animations">` + `tocItems` entry; Qt: matching text block) describing motion points and the tokens used.
+   - **Deterministic headless runs**: `QtChaSetDemo.exe --test-scenario all` / `--harness` / shot captures force `ThemeTokens.animationsEnabled = false` in `qt/src/Main.qml`. Every QML `Behavior` MUST gate on `ThemeTokens.animationsEnabled` (+ force/harness exclusions when those props exist); otherwise scenario assertions and pixel sampling race the animation and turn flaky.
+   - **Never animate kinematics**: scroll offsets/contentY and drag positions (virtual lists, scroll areas, splitter, Rnd) must not receive `Behavior`/transition — animating these breaks the 60fps and determinism red lines.
+
 ## 2. Verification Commands Checklist
 
 Before declaring any component task complete, execute:
