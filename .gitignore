@@ -20,6 +20,7 @@ dist/
 .playwright-mcp/
 .pixel-diff/
 .omo/
+.trae/
 *-shot*.png
 *.png
 *.tgz
