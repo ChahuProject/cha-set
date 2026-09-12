@@ -55,11 +55,11 @@ Rectangle {
 
     color: isLine
         ? "transparent"
-        : (isSelected
+        : (isSelected && !parentList
             ? (ThemeTokens.dark ? Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0))
             : "transparent")
 
-    border.width: isLine ? 0 : (isSelected ? 1 : 0)
+    border.width: isLine ? 0 : ((isSelected && !parentList) ? 1 : 0)
     border.color: ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 0.8)
 
     Behavior on color {
@@ -127,7 +127,7 @@ Rectangle {
 
     Rectangle {
         id: lineIndicator
-        visible: root.isLine && root.isSelected
+        visible: root.isLine && root.isSelected && !root.parentList
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right

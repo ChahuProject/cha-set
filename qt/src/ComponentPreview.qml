@@ -33,27 +33,19 @@ ChaSetCard {
             border.color: ThemeTokens.border
             border.width: 0.5
 
-            ChaSetTabs {
+            ChaSetSegmentedControl {
                 anchors.left: parent.left
                 anchors.leftMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
-                currentValue: root.activeTab
-                onCurrentValueChanged: root.activeTab = currentValue
-
-                ChaSetTabsList {
-                    ChaSetTabsTrigger {
-                        value: "preview"
-                        text: "Preview"
-                    }
-                    ChaSetTabsTrigger {
-                        value: "code"
-                        text: "React Code"
-                    }
-                    ChaSetTabsTrigger {
-                        visible: root.qtCode !== ""
-                        value: "qt"
-                        text: "Qt QML"
-                    }
+                size: "sm"
+                value: root.activeTab
+                options: [
+                    { label: "Preview", value: "preview" },
+                    { label: "React Code", value: "code" },
+                    ...(root.qtCode !== "" ? [{ label: "Qt QML", value: "qt" }] : [])
+                ]
+                onValueSelected: function(val) {
+                    root.activeTab = val
                 }
             }
 
