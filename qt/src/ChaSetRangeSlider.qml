@@ -129,11 +129,39 @@ Item {
             radius: parent.radius
             color: ThemeTokens.accent
         }
+
+        MouseArea {
+            id: trackMouse
+            anchors.fill: parent
+            anchors.margins: -8
+            enabled: !root.disabled && !root.readOnly
+            cursorShape: root.readOnly ? Qt.ArrowCursor : Qt.PointingHandCursor
+            onPressed: function(mouse) {
+                root.forceActiveFocus()
+                let clickPos = mouse.x - 8
+                let clickVal = root.valForPos(clickPos)
+                let dist1 = Math.abs(clickVal - root.firstValue)
+                let dist2 = Math.abs(clickVal - root.secondValue)
+                if (dist1 <= dist2) {
+                    root.activeThumb = 1
+                    let maxAllowed = root.secondValue - root.minGap
+                    let newVal = Math.min(maxAllowed, Math.max(root.from, clickVal))
+                    root.firstValue = Math.round(newVal / root.stepSize) * root.stepSize
+                } else {
+                    root.activeThumb = 2
+                    let minAllowed = root.firstValue + root.minGap
+                    let newVal = Math.max(minAllowed, Math.min(root.to, clickVal))
+                    root.secondValue = Math.round(newVal / root.stepSize) * root.stepSize
+                }
+                root.valuesChanged(root.firstValue, root.secondValue)
+            }
+        }
     }
 
     // Thumb 1
     Rectangle {
         id: thumb1
+        z: 2
         width: root.isSm ? 12 : 16
         height: root.isSm ? 12 : 16
         radius: root.isSm ? 6 : 8
@@ -141,6 +169,10 @@ Item {
         border.color: ThemeTokens.accent
         border.width: 2
         x: track.x + posForVal(root.firstValue) - width / 2
+        Binding on x {
+            when: !thumb1Mouse.drag.active
+            value: track.x + root.posForVal(root.firstValue) - thumb1.width / 2
+        }
         anchors.verticalCenter: track.verticalCenter
 
         // Focus ring for thumb 1
@@ -222,6 +254,7 @@ Item {
     // Thumb 2
     Rectangle {
         id: thumb2
+        z: 2
         width: root.isSm ? 12 : 16
         height: root.isSm ? 12 : 16
         radius: root.isSm ? 6 : 8
@@ -229,6 +262,10 @@ Item {
         border.color: ThemeTokens.accent
         border.width: 2
         x: track.x + posForVal(root.secondValue) - width / 2
+        Binding on x {
+            when: !thumb2Mouse.drag.active
+            value: track.x + root.posForVal(root.secondValue) - thumb2.width / 2
+        }
         anchors.verticalCenter: track.verticalCenter
 
         // Focus ring for thumb 2

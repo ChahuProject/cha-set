@@ -61,11 +61,11 @@ export function ElidedTextDocPage() {
                 <span className="text-muted-foreground">Width: {containerWidth}</span>
                 <div className="w-32">
                   <Slider
-                    value={[containerWidth]}
+                    value={containerWidth}
                     min={120}
                     max={480}
                     step={10}
-                    onValueChange={(vals) => setContainerWidth(vals[0] ?? 240)}
+                    onValueChange={(val) => setContainerWidth(val)}
                   />
                 </div>
               </div>
