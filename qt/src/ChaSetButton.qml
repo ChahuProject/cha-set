@@ -19,6 +19,8 @@ Item {
     property string iconSource: ""
     property string iconPosition: "left" // left | right
     property int customRadius: 8
+    property bool roundLeft: true
+    property bool roundRight: true
 
     property bool forceHover: false
     property bool forceActive: false
@@ -152,6 +154,23 @@ Item {
                ? Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.25 : 0.06)
                : "transparent"
         visible: !root.effectiveDown && !root.pressed && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link" && root.variant !== "destructive")
+
+        Rectangle {
+            visible: !root.roundRight && root.customRadius > 0
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: root.customRadius
+            color: parent.color
+        }
+        Rectangle {
+            visible: !root.roundLeft && root.customRadius > 0
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: root.customRadius
+            color: parent.color
+        }
     }
 
     // Background surface
@@ -168,6 +187,55 @@ Item {
             ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
         }
         opacity: root.effectiveDisabled ? 0.5 : 1.0
+
+        Rectangle {
+            visible: !root.roundRight && root.customRadius > 0
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: root.customRadius
+            color: parent.color
+        }
+        Rectangle {
+            visible: !root.roundLeft && root.customRadius > 0
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: root.customRadius
+            color: parent.color
+        }
+        Rectangle {
+            visible: root.hasBorder() && !root.roundRight && root.customRadius > 0
+            anchors.right: parent.right
+            anchors.top: parent.top
+            width: root.customRadius
+            height: 1
+            color: root.cBorder
+        }
+        Rectangle {
+            visible: root.hasBorder() && !root.roundRight && root.customRadius > 0
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            width: root.customRadius
+            height: 1
+            color: root.cBorder
+        }
+        Rectangle {
+            visible: root.hasBorder() && !root.roundLeft && root.customRadius > 0
+            anchors.left: parent.left
+            anchors.top: parent.top
+            width: root.customRadius
+            height: 1
+            color: root.cBorder
+        }
+        Rectangle {
+            visible: root.hasBorder() && !root.roundLeft && root.customRadius > 0
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            width: root.customRadius
+            height: 1
+            color: root.cBorder
+        }
     }
 
     // Focus ring (offset ring matching focus-visible:ring-2 focus-visible:ring-ring)

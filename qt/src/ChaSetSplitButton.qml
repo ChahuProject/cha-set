@@ -30,6 +30,7 @@ Item {
             size: root.size
             disabled: root.disabled
             customRadius: root.customRadius
+            roundRight: false
             onClicked: root.clicked()
         }
 
@@ -37,8 +38,12 @@ Item {
         Rectangle {
             width: 1
             height: mainBtn.height
-            color: ThemeTokens.border
-            opacity: 0.8
+            color: {
+                if (root.variant === "outline" || root.variant === "ghost") return ThemeTokens.border;
+                if (root.variant === "destructive") return Qt.rgba(1, 1, 1, 0.3);
+                if (root.variant === "secondary") return ThemeTokens.dark ? Qt.rgba(1, 1, 1, 0.2) : Qt.rgba(0, 0, 0, 0.15);
+                return Qt.rgba(1, 1, 1, 0.25);
+            }
         }
 
         ChaSetButton {
@@ -48,6 +53,7 @@ Item {
             size: root.size === "sm" ? "icon-sm" : (root.size === "lg" ? "icon-lg" : "icon")
             disabled: root.disabled
             customRadius: root.customRadius
+            roundLeft: false
             onClicked: splitPopup.open()
             Keys.onDownPressed: function(event) {
                 event.accepted = true
