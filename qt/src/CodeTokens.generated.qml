@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import ChaSet
 
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens/semantic/core.json (dunting preset) + tokenTypes from
@@ -7,11 +8,17 @@ import QtQuick
 // Refresh: `pnpm gen:qt` regenerates this file in place.
 // Syntax palette consumed by ChaSetHighlightedCode. Token type <X> maps to the
 // semantic token `code-<X>`; `plain` is absent on purpose (plain text uses the
-// host foreground). Flip `dark` at runtime to switch every color live.
+// host foreground). Theme mode is read live from ThemeTokens so every color
+// follows the active theme without any extra wiring.
+//
+// Only `colorFor(type)` is exposed: per-type properties cannot be declared here
+// because token types like `function`, `property` and `operator` are reserved
+// QML identifiers.
 QtObject {
     id: root
 
-    property bool dark: false
+    // Bound (not copied) so the palette tracks ThemeTokens live at runtime.
+    readonly property bool dark: ThemeTokens.dark
 
     function colorFor(type) {
         // qmlcachegen does not support object literals in property bindings; use switch-case direct returns.
@@ -76,18 +83,4 @@ QtObject {
         }
         return Qt.rgba(0, 0, 0, 1)
     }
-
-    readonly property color keyword: colorFor("keyword")
-    readonly property color constant: colorFor("constant")
-    readonly property color type: colorFor("type")
-    readonly property color string: colorFor("string")
-    readonly property color number: colorFor("number")
-    readonly property color comment: colorFor("comment")
-    readonly property color function: colorFor("function")
-    readonly property color property: colorFor("property")
-    readonly property color operator: colorFor("operator")
-    readonly property color punctuation: colorFor("punctuation")
-    readonly property color variable: colorFor("variable")
-    readonly property color tag: colorFor("tag")
-    readonly property color attribute: colorFor("attribute")
 }
