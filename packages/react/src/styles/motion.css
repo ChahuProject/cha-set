@@ -1,0 +1,229 @@
+/* @chahu/cha-set — minimal, self-hosted enter/exit + loop animation set.
+ *
+ * Rationale: the library used to ship `animate-in / fade-in-0 / zoom-in-95`
+ * classes that had NO definitions anywhere (no tailwindcss-animate, no
+ * tw-animate-css plugin) — they were dead classes. This file backfills the
+ * shadcn/tw-animate vocabulary in a self-contained, token-driven way:
+ *
+ *   - Duration comes from `--cs-motion-*` (defaults to short) so the existing
+ *     `prefers-reduced-motion` zeroing in tokens.css propagates automatically
+ *     (0ms => animations complete instantly).
+ *   - Easing comes from `--cs-ease-entrance`.
+ *   - Like tw-animate, a single pair of keyframes (cs-enter / cs-exit) consumes
+ *     per-variant CSS variables set by `fade-in-0`, `zoom-in-95`,
+ *     `slide-in-from-*-10`, ... modifiers. This keeps payload tiny and lets the
+ *     exact shadcn class vocabulary (`animate-in fade-in-0 zoom-in-95
+ *     data-open:animate-in ...`) keep working unchanged.
+ *
+ * NOTE: `data-open:` / `data-closed:` variants are handled by Tailwind.
+ * `duration-*` utilities control *transitions* only; enter/exit animation
+ * duration is the token default (motion short), so components need not repeat
+ * a duration class unless they want a different tier.
+ */
+
+@keyframes cs-enter {
+  from {
+    opacity: var(--tw-enter-opacity, 1);
+    transform: translate3d(
+        var(--tw-enter-translate-x, 0),
+        var(--tw-enter-translate-y, 0),
+        0
+      )
+      scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), 1)
+      rotate(var(--tw-enter-rotate, 0));
+  }
+}
+
+@keyframes cs-exit {
+  to {
+    opacity: var(--tw-exit-opacity, 1);
+    transform: translate3d(
+        var(--tw-exit-translate-x, 0),
+        var(--tw-exit-translate-y, 0),
+        0
+      )
+      scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), 1)
+      rotate(var(--tw-exit-rotate, 0));
+  }
+}
+
+@keyframes cs-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Pure-opacity enter/exit for surfaces that position themselves with
+ * transform (centered modals via -translate-x/y-1/2, Rnd-dragged windows).
+ * A scale/translate keyframe would fight their positioning transform, so
+ * these never touch `transform`. */
+@keyframes cs-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes cs-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@layer utilities {
+  .animate-in {
+    animation: cs-enter var(--cs-motion-short, 120ms) var(--cs-ease-entrance, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  }
+
+  .animate-out {
+    animation: cs-exit var(--cs-motion-short, 120ms) var(--cs-ease-entrance, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  }
+
+  /* Opacity-only enter/exit (safe on transform-positioned surfaces). */
+  .animate-fade-in {
+    animation: cs-fade-in var(--cs-motion-short, 120ms) var(--cs-ease-entrance, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  }
+
+  .animate-fade-out {
+    animation: cs-fade-out var(--cs-motion-short, 120ms) var(--cs-ease-entrance, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  }
+
+  /* Enter/exit duration tiers — opt-in overrides of the short default. */
+  .animate-in-quick {
+    animation-duration: var(--cs-motion-quick, 90ms);
+  }
+  .animate-out-quick {
+    animation-duration: var(--cs-motion-quick, 90ms);
+  }
+  .animate-in-medium {
+    animation-duration: var(--cs-motion-medium, 180ms);
+  }
+  .animate-out-medium {
+    animation-duration: var(--cs-motion-medium, 180ms);
+  }
+
+  /* Shimmer: skeleton wave sweep. Disabled under prefers-reduced-motion
+   * because --cs-motion-short resolves to 0ms (animation is not infinite,
+   * so it simply runs once instantly and stalls — kept simple per spec:
+   * components opting into wave should gate via `animate-[none]` there). */
+  .animate-shimmer {
+    animation: cs-shimmer 1.6s var(--cs-ease-emphasized, cubic-bezier(0.215, 0.61, 0.355, 1)) infinite;
+  }
+
+  /* Enter/modifier variables (tw-animate vocabulary). */
+  .fade-in-0 {
+    --tw-enter-opacity: 0;
+  }
+  .fade-in-25 {
+    --tw-enter-opacity: 0.25;
+  }
+  .fade-in-50 {
+    --tw-enter-opacity: 0.5;
+  }
+  .fade-in-75 {
+    --tw-enter-opacity: 0.75;
+  }
+
+  .fade-out-0 {
+    --tw-exit-opacity: 0;
+  }
+  .fade-out-25 {
+    --tw-exit-opacity: 0.25;
+  }
+  .fade-out-50 {
+    --tw-exit-opacity: 0.5;
+  }
+  .fade-out-75 {
+    --tw-exit-opacity: 0.75;
+  }
+
+  .zoom-in-50 {
+    --tw-enter-scale: 0.5;
+  }
+  .zoom-in-75 {
+    --tw-enter-scale: 0.75;
+  }
+  .zoom-in-90 {
+    --tw-enter-scale: 0.9;
+  }
+  .zoom-in-95 {
+    --tw-enter-scale: 0.95;
+  }
+
+  .zoom-out-50 {
+    --tw-exit-scale: 0.5;
+  }
+  .zoom-out-75 {
+    --tw-exit-scale: 0.75;
+  }
+  .zoom-out-90 {
+    --tw-exit-scale: 0.9;
+  }
+  .zoom-out-95 {
+    --tw-exit-scale: 0.95;
+  }
+
+  /* Slide translations (spacing-scaled: N = N * 0.25rem, matching Tailwind
+   * spacing utilities). */
+  .slide-in-from-top-10 {
+    --tw-enter-translate-y: -2.5rem;
+  }
+  .slide-in-from-top-12 {
+    --tw-enter-translate-y: -3rem;
+  }
+  .slide-in-from-bottom-10 {
+    --tw-enter-translate-y: 2.5rem;
+  }
+  .slide-in-from-bottom-12 {
+    --tw-enter-translate-y: 3rem;
+  }
+  .slide-in-from-left-10 {
+    --tw-enter-translate-x: -2.5rem;
+  }
+  .slide-in-from-left-12 {
+    --tw-enter-translate-x: -3rem;
+  }
+  .slide-in-from-right-10 {
+    --tw-enter-translate-x: 2.5rem;
+  }
+  .slide-in-from-right-12 {
+    --tw-enter-translate-x: 3rem;
+  }
+
+  .slide-out-to-top-10 {
+    --tw-exit-translate-y: -2.5rem;
+  }
+  .slide-out-to-top-12 {
+    --tw-exit-translate-y: -3rem;
+  }
+  .slide-out-to-bottom-10 {
+    --tw-exit-translate-y: 2.5rem;
+  }
+  .slide-out-to-bottom-12 {
+    --tw-exit-translate-y: 3rem;
+  }
+  .slide-out-to-left-10 {
+    --tw-exit-translate-x: -2.5rem;
+  }
+  .slide-out-to-left-12 {
+    --tw-exit-translate-x: -3rem;
+  }
+  .slide-out-to-right-10 {
+    --tw-exit-translate-x: 2.5rem;
+  }
+  .slide-out-to-right-12 {
+    --tw-exit-translate-x: 3rem;
+  }
+}
+
+/* Accessibility: kill looping and sweeping animations entirely when the user
+ * prefers reduced motion. Duration zeroing (--cs-motion-*) already handles
+ * one-shot enter/exit; loops must be switched off explicitly because their
+ * keyframe duration is a fixed 1.6s, not a motion token. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer {
+    animation: none;
+  }
+}
