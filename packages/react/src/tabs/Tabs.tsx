@@ -51,7 +51,7 @@ export interface TabsListProps
 }
 
 export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
-  function TabsList({ className, variant: variantProp, size: sizeProp, ...props }, ref) {
+  function TabsList({ className, variant: variantProp, size: sizeProp, children, ...props }, ref) {
     const context = useContext(TabsContext);
     const variant = variantProp ?? context.variant;
     const size = sizeProp ?? context.size;
@@ -63,6 +63,7 @@ export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
         data-variant={variant}
         data-size={size}
         className={cn(
+          'relative',
           variant === 'line'
             ? cn(
                 'inline-flex items-center justify-start border-b border-border bg-transparent p-0 text-muted-foreground w-full gap-4 rounded-none',
@@ -75,7 +76,27 @@ export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
           className,
         )}
         {...props}
-      />
+      >
+        <BaseTabs.Indicator
+          data-slot="tabs-indicator"
+          className={cn(
+            'absolute pointer-events-none transition-[left,width,top,height] duration-200 ease-standard z-0',
+            variant === 'line'
+              ? 'bottom-0 h-0.5 bg-primary'
+              : cn(
+                  'rounded-md bg-background shadow-xs',
+                  size === 'sm' && 'rounded',
+                ),
+          )}
+          style={{
+            left: 'var(--active-tab-left)',
+            top: 'var(--active-tab-top)',
+            width: 'var(--active-tab-width)',
+            height: 'var(--active-tab-height)',
+          }}
+        />
+        {children}
+      </BaseTabs.List>
     );
   },
 );
@@ -135,7 +156,7 @@ export const TabsTrigger = forwardRef<HTMLElement, TabsTriggerProps>(
         data-variant={variant}
         data-size={size}
         className={cn(
-          'inline-flex items-center justify-center gap-1.5 whitespace-nowrap font-medium ring-offset-background transition-[border-color,color,background-color,box-shadow] duration-quick ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer',
+          'relative z-10 inline-flex items-center justify-center gap-1.5 whitespace-nowrap font-medium ring-offset-background transition-[border-color,color,background-color,box-shadow] duration-quick ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer',
           'text-muted-foreground hover:text-foreground',
           '[&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:shrink-0',
           variant === 'line' ? lineVariantClasses : defaultVariantClasses,
@@ -177,10 +198,13 @@ export const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(
   },
 );
 
+export const TabsIndicator = BaseTabs.Indicator;
+
 // Compound component pattern support
 export const Tabs = Object.assign(TabsRoot, {
   List: TabsList,
   Trigger: TabsTrigger,
   Content: TabsContent,
+  Indicator: TabsIndicator,
 });
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent, Card, CodeBlock } from '@chahu/cha-set';
+import { Tabs, TabsContent, Card, CodeBlock, SegmentedControl } from '@chahu/cha-set';
 import { ErrorBoundary } from './ErrorBoundary';
 
 export interface ComponentPreviewProps {
@@ -26,19 +26,16 @@ export function ComponentPreview({
       <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as any)} className="gap-0">
         {/* Tab Navigation Header */}
         <div className="flex items-center justify-between border-b border-border bg-muted/40 px-3 py-2">
-          <TabsList className="h-8 p-0.5 bg-muted/70 border border-border/50">
-            <TabsTrigger value="preview" className="h-7 px-3 text-xs font-medium">
-              Preview
-            </TabsTrigger>
-            <TabsTrigger value="code" className="h-7 px-3 text-xs font-medium">
-              React Code
-            </TabsTrigger>
-            {qtCode && (
-              <TabsTrigger value="qt" className="h-7 px-3 text-xs font-medium">
-                Qt QML
-              </TabsTrigger>
-            )}
-          </TabsList>
+          <SegmentedControl
+            size="sm"
+            value={activeTab}
+            onValueChange={(val) => setActiveTab(val as 'preview' | 'code' | 'qt')}
+            options={[
+              { label: 'Preview', value: 'preview' },
+              { label: 'React Code', value: 'code' },
+              ...(qtCode ? [{ label: 'Qt QML', value: 'qt' }] : []),
+            ]}
+          />
 
           {title && <span className="text-xs font-medium text-muted-foreground hidden sm:inline">{title}</span>}
         </div>
