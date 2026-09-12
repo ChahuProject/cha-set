@@ -128,9 +128,15 @@ Item {
         y: Math.round(root.calculatedY)
         visible: root.shouldShow
         opacity: visible ? 1.0 : 0.0
+        scale: visible ? 1.0 : 0.95
 
         Behavior on opacity {
-            NumberAnimation { duration: ThemeTokens.motionShort; easing.type: Easing.OutQuad }
+            enabled: ThemeTokens.animationsEnabled && !root.forceHover && (typeof harnessMode === "undefined" || harnessMode === "")
+            NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
+        }
+        Behavior on scale {
+            enabled: ThemeTokens.animationsEnabled && !root.forceHover && (typeof harnessMode === "undefined" || harnessMode === "")
+            NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
         }
 
         radius: 4

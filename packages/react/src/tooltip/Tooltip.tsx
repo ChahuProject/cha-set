@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
+import { useExitAnimation } from '../lib/useExitAnimation';
 
 export type TooltipSide = 'top' | 'bottom' | 'left' | 'right';
 
@@ -301,8 +302,9 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
   ) => {
     const { isOpen, side: contextSide, tooltipId } = useTooltip();
     const side = propSide || contextSide || 'top';
+    const { visible, exiting } = useExitAnimation(isOpen);
 
-    if (!isOpen) {
+    if (!visible) {
       return null;
     }
 
@@ -323,11 +325,12 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
         data-slot="tooltip-content"
         data-side={side}
         data-align={align}
-        data-state={isOpen ? 'open' : 'closed'}
+        data-state={visible ? (exiting ? 'closed' : 'open') : 'closed'}
         style={computedStyle}
         className={cn(
           'absolute whitespace-nowrap pointer-events-none select-none',
-          'z-50 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md animate-in fade-in-0 zoom-in-95 inline-flex items-center gap-2',
+          'z-50 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md inline-flex items-center gap-2',
+          exiting ? 'animate-out fade-out-0 zoom-out-95' : 'animate-in fade-in-0 zoom-in-95',
           sidePositionClasses[side],
           className,
         )}

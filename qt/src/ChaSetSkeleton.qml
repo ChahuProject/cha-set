@@ -41,7 +41,7 @@ Rectangle {
             to: root.width
             duration: 1200
             loops: Animation.Infinite
-            easing.type: Easing.InOutQuad
+            easing.type: Easing.Linear
         }
     }
 }

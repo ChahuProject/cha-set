@@ -103,13 +103,33 @@ Item {
             return ThemeTokens.border
         }
 
+        Behavior on color {
+            enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
+        Behavior on border.color {
+            enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
+
         // Indicator Canvas (Checkmark or Dash)
         Canvas {
             id: indicatorCanvas
             anchors.fill: parent
             antialiasing: true
             renderTarget: Canvas.Image
-            visible: root.isCheckedOrIndeterminate
+            opacity: root.isCheckedOrIndeterminate ? 1.0 : 0.0
+            scale: root.isCheckedOrIndeterminate ? 1.0 : 0.5
+            visible: opacity > 0.01
+
+            Behavior on opacity {
+                enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeEntrance }
+            }
+            Behavior on scale {
+                enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeEntrance }
+            }
 
             onPaint: {
                 var ctx = getContext("2d");

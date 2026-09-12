@@ -53,8 +53,12 @@ describe('Tooltip Component', () => {
     expect(tooltip).toBeInTheDocument();
     expect(tooltip).toHaveTextContent('Helpful information');
 
-    // mouseLeave should immediately hide the tooltip
+    // mouseLeave triggers the exit animation; the bubble stays mounted until
+    // it finishes, then unmounts.
     fireEvent.mouseLeave(trigger);
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 
@@ -95,6 +99,9 @@ describe('Tooltip Component', () => {
     expect(screen.getByRole('tooltip')).toHaveTextContent('Focused tooltip');
 
     fireEvent.blur(trigger);
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 

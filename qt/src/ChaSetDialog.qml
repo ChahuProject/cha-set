@@ -43,7 +43,8 @@ Rectangle {
     focus: root.open
 
     Behavior on opacity {
-        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
+        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+        NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
     }
 
     onOpenChanged: {
@@ -98,7 +99,8 @@ Rectangle {
         scale: root.open ? 1.0 : 0.95
 
         Behavior on scale {
-            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
         }
 
         // Intercept clicks to prevent dismissal when clicking inside the card
