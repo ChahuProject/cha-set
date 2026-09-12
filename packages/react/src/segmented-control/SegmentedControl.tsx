@@ -55,6 +55,8 @@ export interface SegmentedControlProps
   title?: string;
   disabled?: boolean;
   fullWidth?: boolean;
+  equalWidth?: boolean;
+  itemWidth?: number | string;
 }
 
 export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>(
@@ -69,6 +71,8 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
       title,
       disabled = false,
       fullWidth = false,
+      equalWidth = false,
+      itemWidth,
       className,
       ...props
     },
@@ -142,7 +146,7 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
 
     React.useLayoutEffect(() => {
       updateIndicator();
-    }, [updateIndicator, options, size]);
+    }, [updateIndicator, options, size, equalWidth, itemWidth]);
 
     React.useEffect(() => {
       const container = containerRef.current;
@@ -153,6 +157,9 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
       observer.observe(container);
       return () => observer.disconnect();
     }, [updateIndicator]);
+
+    const formattedItemWidth =
+      typeof itemWidth === 'number' ? `${itemWidth * 0.0625}rem` : itemWidth;
 
     return (
       <div
@@ -208,10 +215,15 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
                 disabled={isOptionDisabled}
                 tabIndex={-1}
                 onClick={() => handleSelect(option.value)}
+                style={
+                  formattedItemWidth
+                    ? { width: formattedItemWidth, flexShrink: 0 }
+                    : undefined
+                }
                 className={cn(
                   segmentedItemVariants({ size }),
-                  'relative z-10',
-                  fullWidth && 'flex-1',
+                  'relative z-10 min-w-0',
+                  (fullWidth || equalWidth) && 'flex-1',
                   isSelected
                     ? (!indicatorStyle ? 'bg-background shadow-xs ' : '') + 'text-foreground font-semibold'
                     : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
@@ -222,12 +234,12 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
                     {option.icon}
                   </span>
                 )}
-                <span>{option.label}</span>
+                <span className="truncate min-w-0">{option.label}</span>
                 {option.badge !== undefined && (
                   <span
                     data-slot="segmented-badge"
                     className={cn(
-                      'inline-flex items-center justify-center rounded-full px-1.5 text-[0.625rem] font-semibold leading-tight',
+                      'inline-flex shrink-0 items-center justify-center rounded-full px-1.5 text-[0.625rem] font-semibold leading-tight',
                       isSelected
                         ? 'bg-primary/10 text-primary'
                         : 'bg-muted-foreground/15 text-muted-foreground'

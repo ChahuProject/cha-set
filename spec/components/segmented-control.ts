@@ -22,6 +22,8 @@ export const segmentedControlSchema = z.object({
   disabled: z.boolean().default(false),
   title: z.string().optional(),
   fullWidth: z.boolean().default(false),
+  equalWidth: z.boolean().default(false),
+  itemWidth: z.number().optional(),
 });
 
 export type SegmentedControlOption = z.infer<typeof segmentedControlOptionSchema>;
