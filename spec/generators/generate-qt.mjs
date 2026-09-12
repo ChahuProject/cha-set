@@ -51,6 +51,7 @@ const COLOR_ORDER = [
 ];
 const SPACE_ORDER = ['space0','space1','space2','space3','space4','space5','space6'];
 const MOTION_ORDER = ['motionQuick','motionShort','motionMedium'];
+const EASING_ORDER = ['standard','emphasized','entrance'];
 const SIZE_ORDER = [
   'radiusSmall','controlHeight','gap','pageInset','dockInset','dividerThickness',
   'minimumPaneExtent','panelRadius','rowRadius','radiusLarge','radiusXl','separatorHeight',
@@ -146,6 +147,15 @@ export function deriveQt(specTokens, mappingTable, snapshotRgbfOpt) {
     }
     motion[qtKey] = v;
   }
+  const easing = {};
+  for (const [qtKey, primPath] of Object.entries(map.easing ?? {})) {
+    const v = getByPath(specTokens, primPath);
+    if (v === undefined) {
+      console.error(`[gen:qt] unknown token: missing primitives path "${primPath}" for easing "${qtKey}"`);
+      process.exit(1);
+    }
+    easing[qtKey] = v;
+  }
   const size = {};
   for (const [qtKey, primPath] of Object.entries(map.size ?? {})) {
     const v = getByPath(specTokens, primPath);
@@ -190,7 +200,7 @@ export function deriveQt(specTokens, mappingTable, snapshotRgbfOpt) {
     }
   }
 
-  return { colors, rgbf, space, motion, size, note };
+  return { colors, rgbf, space, motion, easing, size, note };
 }
 
 const derivedQt = deriveQt(spec, mapping);
@@ -266,6 +276,7 @@ const rgbaLiteral = (mode, field) => {
 };
 const intProps = (order, table) => order.map((f) => `    readonly property int ${f}: ${table[f]}`).join('\n');
 const motionProps = (order, table) => order.map((f) => `    readonly property int ${f}: motionDuration(${table[f]})`).join('\n');
+const easingProps = (order, table) => order.map((f) => `    readonly property int ease${f[0].toUpperCase()}${f.slice(1)}: Easing.${table[f]}`).join('\n');
 
 const qml = `pragma Singleton
 import QtQuick
@@ -307,6 +318,8 @@ ${COLOR_ORDER.map((f) => `    readonly property color ${f}: color("${f}")`).join
 ${intProps(SPACE_ORDER, derivedQt.space)}
 
 ${motionProps(MOTION_ORDER, derivedQt.motion)}
+
+${easingProps(EASING_ORDER, derivedQt.easing)}
 
 ${intProps(SIZE_ORDER, derivedQt.size)}
 }

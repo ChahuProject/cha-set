@@ -119,6 +119,13 @@ function selectorBlock(selector, decls) {
   for (const [k, v] of Object.entries(motion)) light.push(decl(`--cs-motion-${k}`, `${v}ms`));
   for (const [k, v] of Object.entries(motion)) dark.push(decl(`--cs-motion-${k}`, `${v}ms`));
 
+  const easing = spec.primitives.easing ?? {};
+  for (const [k, v] of Object.entries(easing)) {
+    const curve = v.curve ?? v;
+    light.push(decl(`--cs-ease-${k}`, curve));
+    dark.push(decl(`--cs-ease-${k}`, curve));
+  }
+
   // Accent themes: [data-theme] overrides let consumers switch accent hue at
   // runtime (document.documentElement.dataset.theme = 'violet'). Values are
   // the launcher preset's accent overrides, verbatim.
