@@ -48,6 +48,9 @@ qt_add_qml_module(ChaSet
     URI ChaSet
     VERSION 1.0
     OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/ChaSet"
+    SOURCES
+        src/ChaSetClipboard.h
+        src/ChaSetClipboard.cpp
     QML_FILES
         src/ChaSetScrollBar.qml
         src/ChaSetScrollArea.qml

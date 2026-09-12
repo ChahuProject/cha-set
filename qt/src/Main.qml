@@ -422,6 +422,32 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 8: Native Clipboard & Copy Button Conformance
+        if (scenario === "all" || scenario === "clipboard") {
+            console.log("[qt-scenario] Running native clipboard copy scenario...");
+            var clipFailures = 0;
+            if (typeof ChaSetClipboard !== "undefined" && ChaSetClipboard.setText) {
+                var testToken = "chaset-test-clip-" + Date.now();
+                ChaSetClipboard.setText(testToken);
+                var fetched = ChaSetClipboard.text();
+                if (fetched === testToken) {
+                    console.log("[qt-scenario] PASS: Native ChaSetClipboard set/get parity (" + testToken + ")");
+                } else {
+                    console.log("[qt-scenario] FAIL: Native ChaSetClipboard text mismatch (got '" + fetched + "', expected '" + testToken + "')");
+                    clipFailures++;
+                }
+            } else {
+                console.log("[qt-scenario] FAIL: ChaSetClipboard singleton not available in QML runtime");
+                clipFailures++;
+            }
+
+            if (clipFailures === 0) {
+                console.log("[qt-scenario] PASS: Native clipboard and ChaSetClipboard verified");
+            } else {
+                failures += clipFailures;
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;

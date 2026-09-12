@@ -27,21 +27,12 @@ Item {
         onTriggered: root.copied = false
     }
 
-    // Hidden helper for real clipboard access in Qt Quick
-    TextEdit {
-        id: clipboardHelper
-        visible: false
-        width: 0
-        height: 0
-    }
-
     function copy() {
         var content = root.text.length > 0 ? root.text : root.textToCopy
         if (content && content.length > 0) {
-            clipboardHelper.text = content
-            clipboardHelper.selectAll()
-            clipboardHelper.copy()
-            clipboardHelper.deselect()
+            if (typeof ChaSetClipboard !== "undefined" && ChaSetClipboard.setText) {
+                ChaSetClipboard.setText(content)
+            }
         }
         root.copied = true
         resetTimer.restart()
