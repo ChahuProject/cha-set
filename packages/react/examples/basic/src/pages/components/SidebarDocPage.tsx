@@ -65,8 +65,8 @@ export function SidebarDocPage() {
     >
       <h2 className="text-xl font-semibold mt-8 mb-4">Interactive Preview</h2>
       <ComponentPreview reactCode={basicUsageCode}>
-        <div className="h-[22.5rem] w-full border rounded-lg overflow-hidden flex bg-background">
-          <SidebarProvider defaultOpen={true}>
+        <div className="relative h-[22.5rem] w-full border rounded-lg overflow-hidden flex bg-background">
+          <SidebarProvider defaultOpen={true} container>
             <Sidebar collapsible={collapsibleMode} className="border-r">
               <SidebarHeader className="border-b border-border/50 p-2">
                 <div className="flex items-center justify-between px-2">
