@@ -21,6 +21,8 @@ describe('KeybindingRecorder conformance (spec contract)', () => {
       value: { code: 'KeyA' },
     });
     expect(parsed.placeholder).toBe('No keybinding set');
+    // `value` accepts either a serialized string or a modifier object.
+    if (typeof parsed.value === 'string') throw new Error('expected an object keybinding value');
     expect(parsed.value.ctrl).toBe(false);
   });
 
