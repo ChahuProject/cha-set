@@ -7,7 +7,6 @@ ChaSetCard {
     id: root
     width: parent ? parent.width : 760
     implicitHeight: previewContainer.implicitHeight
-    customRadius: 8
     clip: true
 
     property string title: ""
@@ -22,22 +21,25 @@ ChaSetCard {
         id: previewContainer
         width: parent.width
 
-        // Tab Navigation Header (38px height)
-        // React: `border-b border-border bg-muted/40`. Tint the hover token at a
-        // fraction of ITS OWN alpha — a literal alpha here would drop the token's
-        // 0.06/0.09 opacity and render an opaque gray band in both themes.
+        // Tab Navigation Header (44px height matching React px-3 py-2 with default size SegmentedControl)
         Rectangle {
             width: parent.width
-            height: 38
-            color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.4)
-            border.color: ThemeTokens.border
-            border.width: 0.5
+            height: 44
+            color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.4) : Qt.rgba(241/255, 245/255, 249/255, 0.4)
+
+            // Bottom border matching React border-b border-border
+            Rectangle {
+                anchors.bottom: parent.bottom
+                width: parent.width
+                height: 1
+                color: root.cBorder
+            }
 
             ChaSetSegmentedControl {
                 anchors.left: parent.left
-                anchors.leftMargin: 8
+                anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
-                size: "sm"
+                size: "default"
                 value: root.activeTab
                 options: [
                     { label: "Preview", value: "preview" },
@@ -56,7 +58,7 @@ ChaSetCard {
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.title
                 color: ThemeTokens.subduedText
-                font.pixelSize: 11
+                font.pixelSize: 12
             }
         }
 
@@ -73,15 +75,20 @@ ChaSetCard {
                 clip: true
             }
 
-            // Controls Bar
+            // Controls Bar (matching React border-t border-border/40 bg-muted/20)
             Rectangle {
                 visible: controlsContainer.children.length > 0
                 width: parent.width
                 implicitHeight: controlsContainer.implicitHeight + 24
-                // React: `bg-muted/20` controls bar.
-                color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.3)
-                border.color: ThemeTokens.border
-                border.width: 0.5
+                color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.2) : Qt.rgba(241/255, 245/255, 249/255, 0.2)
+
+                // Top border divider matching React border-t
+                Rectangle {
+                    anchors.top: parent.top
+                    width: parent.width
+                    height: 1
+                    color: root.cBorder
+                }
 
                 Flow {
                     id: controlsContainer
