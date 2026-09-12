@@ -11,6 +11,13 @@ export default defineConfig({
         find: /^@chahu\/cha-set$/,
         replacement: path.resolve(import.meta.dirname, '../../src/index.ts'),
       },
+      {
+        // Keep dev off the built artifact: a fresh clone has no dist/, and the
+        // built CSS would also lag behind source edits. Matches the subpath
+        // export declared in packages/react/package.json.
+        find: '@chahu/cha-set/styles.css',
+        replacement: path.resolve(import.meta.dirname, '../../src/styles/index.css'),
+      },
     ],
   },
   server: {

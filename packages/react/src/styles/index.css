@@ -1,0 +1,14 @@
+/* Aggregated stylesheet entry for @chahu/cha-set.
+ *
+ * Single source of truth for both consumption paths:
+ *  - `src/index.ts` imports this file so the library build (`cssFileName:
+ *    'styles'`) emits dist/styles.css;
+ *  - the example dev server aliases `@chahu/cha-set/styles.css` here, so a
+ *    fresh clone (no dist/) gets the same rules without a prebuild.
+ *
+ * Import order is significant — see motion.css, whose layer statement must
+ * stay ahead of any bare `@layer` block that would otherwise pin the order.
+ */
+@import './tokens.css';
+@import './motion.css';
+@import './theme.css';

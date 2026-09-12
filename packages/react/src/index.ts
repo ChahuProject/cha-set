@@ -1,6 +1,4 @@
-import './styles/tokens.css';
-import './styles/motion.css';
-import './styles/theme.css';
+import './styles/index.css';
 export * from './button';
 export * from './scroll-area';
 export * from './tabs';
