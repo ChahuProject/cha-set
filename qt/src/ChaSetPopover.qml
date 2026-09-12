@@ -81,6 +81,17 @@ Item {
             border.color: ThemeTokens.border
             border.width: 1
             radius: root.customRadius
+            opacity: popup.visible ? 1.0 : 0.0
+            scale: popup.visible ? 1.0 : 0.95
+
+            Behavior on opacity {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
+            }
+            Behavior on scale {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
+            }
 
             Rectangle {
                 id: arrowIndicator

@@ -43,7 +43,8 @@ Item {
         radius: root.customRadius
 
         Behavior on border.color {
-            ColorAnimation { duration: ThemeTokens.motionShort }
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
         }
 
         Item {

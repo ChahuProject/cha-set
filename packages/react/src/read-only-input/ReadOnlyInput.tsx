@@ -74,7 +74,7 @@ export function ReadOnlyInput({
     <div
       data-slot="read-only-input"
       className={cn(
-        'group relative flex min-w-0 items-center rounded-md border bg-background/60 transition-colors',
+        'group relative flex min-w-0 items-center rounded-md border bg-background/60 transition-colors duration-quick ease-standard',
         isSm ? 'h-7 px-1.5' : 'h-8 px-2',
         disabled && 'pointer-events-none opacity-50',
         scheme.border,
@@ -146,7 +146,7 @@ export function ReadOnlyInput({
             variant="ghost"
             disabled={disabled}
             onCopy={onCopy}
-            className="text-muted-foreground/70 opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 focus-visible:opacity-100"
+            className="text-muted-foreground/70 opacity-0 transition-opacity duration-quick ease-standard hover:text-foreground group-hover:opacity-100 focus-visible:opacity-100"
           />
         )}
       </div>

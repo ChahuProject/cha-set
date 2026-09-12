@@ -94,7 +94,7 @@ export function PanelCard({
                   >
                     <ChevronDownIcon
                       className={cn(
-                        'size-3.5 transition-transform duration-200',
+                        'size-3.5 transition-transform duration-short ease-standard',
                         isCollapsed && '-rotate-90',
                       )}
                     />

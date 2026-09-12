@@ -203,7 +203,7 @@ export function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        'flex w-full items-center justify-between gap-1.5 rounded-lg border border-input bg-background text-foreground py-1.5 pr-2 pl-3 text-sm transition-colors outline-hidden select-none cursor-pointer',
+        'flex w-full items-center justify-between gap-1.5 rounded-lg border border-input bg-background text-foreground py-1.5 pr-2 pl-3 text-sm transition-colors duration-quick ease-standard outline-hidden select-none cursor-pointer',
         'focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50',
         'disabled:cursor-not-allowed disabled:opacity-50',
         'aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20',
@@ -248,7 +248,7 @@ export function SelectContent({
           data-slot="select-content"
           data-align-trigger={position === 'item-aligned'}
           className={cn(
-            'relative z-50 max-h-(--available-height) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-100 outline-none',
+            'relative z-50 max-h-(--available-height) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
             'data-[align-trigger=true]:animate-none',
             'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
             'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
@@ -312,7 +312,7 @@ export function SelectItem({
       data-slot="select-item"
       value={value}
       className={cn(
-        'relative flex w-full cursor-pointer items-center gap-1.5 rounded-md py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors',
+        'relative flex w-full cursor-pointer items-center gap-1.5 rounded-md py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-disabled:pointer-events-none data-disabled:opacity-50',
         '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4',

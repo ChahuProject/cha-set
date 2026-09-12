@@ -210,7 +210,7 @@ export function KeybindingRecorder({
       onBlur={stopRecording}
       onKeyDown={handleKeyDown}
       className={cn(
-        'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-md border border-input bg-background text-foreground transition-colors',
+        'relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-md border border-input bg-background text-foreground transition-colors duration-quick ease-standard',
         isSm ? 'min-h-7 px-2 py-1 text-xs' : 'min-h-9 px-3 py-1.5 text-sm',
         isRecording
           ? 'animate-pulse border-primary bg-primary/5 ring-2 ring-primary/30'

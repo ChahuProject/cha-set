@@ -23,7 +23,8 @@ Rectangle {
     clip: true
 
     Behavior on implicitHeight {
-        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
+        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: ThemeTokens.easeEmphasized }
     }
 
     Column {

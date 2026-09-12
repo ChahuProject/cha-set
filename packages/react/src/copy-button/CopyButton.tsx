@@ -75,7 +75,7 @@ export function CopyButton({
       size={effectiveSize}
       title={copied ? copiedTitle : title}
       aria-label={copied ? (label ? (copiedLabel ?? copiedTitle) : copiedTitle) : (label ?? title)}
-      className={cn('transition-all duration-150', className)}
+      className={cn('transition-colors duration-quick ease-standard', className)}
       onClick={handleCopy}
       {...props}
     >
@@ -86,14 +86,14 @@ export function CopyButton({
       ) : label ? (
         <span className="inline-flex items-center gap-1.5 pointer-events-none">
           {copied ? (
-            <CheckIcon className={cn(iconClassName, 'text-emerald-500 animate-in fade-in zoom-in-75 duration-150')} />
+            <CheckIcon className={cn(iconClassName, 'text-emerald-500 animate-in fade-in-0 zoom-in-75 duration-short')} />
           ) : (
             <CopyIcon className={cn(iconClassName, 'text-muted-foreground transition-colors group-hover:text-foreground')} />
           )}
           <span className="text-xs">{copied ? copiedLabel : label}</span>
         </span>
       ) : copied ? (
-        <CheckIcon className={cn(iconClassName, 'text-emerald-500 animate-in fade-in zoom-in-75 duration-150')} />
+        <CheckIcon className={cn(iconClassName, 'text-emerald-500 animate-in fade-in-0 zoom-in-75 duration-short')} />
       ) : (
         <CopyIcon className={cn(iconClassName, 'text-muted-foreground transition-colors hover:text-foreground')} />
       )}

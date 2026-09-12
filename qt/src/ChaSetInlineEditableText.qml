@@ -67,6 +67,15 @@ Item {
         border.width: displayBox.activeFocus ? 2 : 1
         activeFocusOnTab: !root.disabled && !root.editing
 
+        Behavior on color {
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
+        Behavior on border.color {
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
+
         Keys.onReturnPressed: function(event) {
             if (!root.disabled) {
                 event.accepted = true
@@ -108,6 +117,11 @@ Item {
                 text: "✏️"
                 font.pixelSize: root.isSm ? 9 : 10
                 opacity: (!root.disabled && (hoverMouse.containsMouse || displayBox.activeFocus)) ? 0.8 : 0.0
+
+                Behavior on opacity {
+                    enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                    NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                }
             }
         }
 

@@ -108,6 +108,17 @@ Item {
             border.color: ThemeTokens.border
             border.width: 1
             radius: root.customRadius
+            opacity: splitPopup.visible ? 1.0 : 0.0
+            scale: splitPopup.visible ? 1.0 : 0.95
+
+            Behavior on opacity {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
+            }
+            Behavior on scale {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
+            }
         }
 
         contentItem: Column {
@@ -174,6 +185,11 @@ Item {
 
                     readonly property bool isHighlighted: index === splitPopup.highlightedIndex
                     color: isHighlighted ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
+
+                    Behavior on color {
+                        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                    }
 
                     Row {
                         anchors.fill: parent

@@ -359,7 +359,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
                   data-slot="dropdown-menu-trigger"
                   title={effectiveTooltip}
                   aria-label={effectiveTooltip}
-                  className="flex size-7 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                  className="flex size-7 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors duration-quick ease-standard hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                 >
                   <Maximize2Icon className="size-3.5" />
                 </button>

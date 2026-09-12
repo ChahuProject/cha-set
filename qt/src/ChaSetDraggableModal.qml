@@ -28,6 +28,12 @@ Rectangle {
     radius: root.customRadius
     visible: root.open
     clip: true
+    opacity: root.open ? 1.0 : 0.0
+
+    Behavior on opacity {
+        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+        NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
+    }
 
     Shortcut {
         sequence: "Escape"
