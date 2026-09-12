@@ -21,6 +21,26 @@
  * a duration class unless they want a different tier.
  */
 
+/* Cascade-layer order. MUST be declared before the first `@layer utilities`
+ * block in this file.
+ *
+ * This stylesheet is imported BEFORE theme.css (see src/index.ts), so the bare
+ * `@layer utilities { ... }` block below used to be the first mention of
+ * `utilities` in the document. Per the CSS Cascade Layers spec a layer's
+ * position is fixed by its FIRST appearance, so `utilities` got pinned to the
+ * BOTTOM of the order and Tailwind's utilities ended up losing to the
+ * preflight in `@layer base` (e.g. `button { background-color: transparent;
+ * border-radius: 0 }`) — every component's colour, radius and border was
+ * stripped. It only reproduced in dev, because `vite build` concatenates the
+ * CSS files with theme.css's statement first.
+ *
+ * Declaring the canonical Tailwind order here (identical to theme.css, plus
+ * `properties` which Tailwind always declares first) makes the result
+ * independent of stylesheet injection order: `properties` stays the LOWEST
+ * layer, so its `* { --tw-*: initial }` reset cannot outrank the utilities
+ * that assign those variables (`--tw-shadow`, `--tw-ring-*`, ...). */
+@layer properties, theme, base, components, utilities;
+
 @keyframes cs-enter {
   from {
     opacity: var(--tw-enter-opacity, 1);
