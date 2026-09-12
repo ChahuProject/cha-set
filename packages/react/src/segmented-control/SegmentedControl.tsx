@@ -117,6 +117,43 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
       }
     };
 
+    const containerRef = React.useRef<HTMLDivElement | null>(null);
+    const itemRefs = React.useRef<Map<string | number, HTMLButtonElement>>(new Map());
+    const [indicatorStyle, setIndicatorStyle] = React.useState<{
+      left: number;
+      top: number;
+      width: number;
+      height: number;
+    } | null>(null);
+
+    const updateIndicator = React.useCallback(() => {
+      const el = itemRefs.current.get(activeValue);
+      if (!el) {
+        setIndicatorStyle(null);
+        return;
+      }
+      setIndicatorStyle({
+        left: el.offsetLeft,
+        top: el.offsetTop,
+        width: el.offsetWidth,
+        height: el.offsetHeight,
+      });
+    }, [activeValue]);
+
+    React.useLayoutEffect(() => {
+      updateIndicator();
+    }, [updateIndicator, options, size]);
+
+    React.useEffect(() => {
+      const container = containerRef.current;
+      if (!container || typeof ResizeObserver === 'undefined') return;
+      const observer = new ResizeObserver(() => {
+        updateIndicator();
+      });
+      observer.observe(container);
+      return () => observer.disconnect();
+    }, [updateIndicator]);
+
     return (
       <div
         ref={ref}
@@ -129,16 +166,31 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
           </span>
         )}
         <div
+          ref={containerRef}
           role="radiogroup"
           aria-disabled={disabled}
           tabIndex={disabled ? -1 : 0}
           onKeyDown={handleKeyDown}
           className={cn(
             segmentedControlVariants({ size }),
+            'relative',
             fullWidth && 'w-full flex',
             disabled && 'opacity-50 pointer-events-none'
           )}
         >
+          {indicatorStyle && (
+            <span
+              data-slot="segmented-indicator"
+              aria-hidden="true"
+              className="absolute rounded-[0.3125rem] bg-background shadow-xs pointer-events-none transition-[left,top,width,height] duration-200 ease-standard"
+              style={{
+                left: `${indicatorStyle.left * 0.0625}rem`,
+                top: `${indicatorStyle.top * 0.0625}rem`,
+                width: `${indicatorStyle.width * 0.0625}rem`,
+                height: `${indicatorStyle.height * 0.0625}rem`,
+              }}
+            />
+          )}
           {options.map((option) => {
             const isSelected = option.value === activeValue;
             const isOptionDisabled = disabled || option.disabled;
@@ -146,6 +198,10 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
             return (
               <button
                 key={String(option.value)}
+                ref={(node) => {
+                  if (node) itemRefs.current.set(option.value, node);
+                  else itemRefs.current.delete(option.value);
+                }}
                 type="button"
                 role="radio"
                 aria-checked={isSelected}
@@ -154,9 +210,10 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
                 onClick={() => handleSelect(option.value)}
                 className={cn(
                   segmentedItemVariants({ size }),
+                  'relative z-10',
                   fullWidth && 'flex-1',
                   isSelected
-                    ? 'bg-background text-foreground shadow-xs font-semibold'
+                    ? (!indicatorStyle ? 'bg-background shadow-xs ' : '') + 'text-foreground font-semibold'
                     : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
                 )}
               >

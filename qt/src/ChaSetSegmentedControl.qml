@@ -156,6 +156,30 @@ Item {
             ? (track.width - 6 - (root.options.length - 1) * segSpacing) / root.options.length
             : 0
 
+        // Sliding indicator pill
+        Rectangle {
+            id: indicator
+            readonly property int selIdx: root.getSelectedIndex()
+            visible: selIdx >= 0
+            y: (track.height - root.itemHeight) / 2
+            x: selIdx >= 0 ? 3 + selIdx * (track.segWidth + track.segSpacing) : 0
+            width: track.segWidth
+            height: root.itemHeight
+            radius: root.itemRadius
+            color: ThemeTokens.dark ? ThemeTokens.panel : "#ffffff"
+            border.color: ThemeTokens.border
+            border.width: 1
+
+            Behavior on x {
+                enabled: ThemeTokens.animationsEnabled
+                NumberAnimation { duration: 180; easing.type: Easing.OutCubic }
+            }
+            Behavior on width {
+                enabled: ThemeTokens.animationsEnabled
+                NumberAnimation { duration: 180; easing.type: Easing.OutCubic }
+            }
+        }
+
         Repeater {
             model: root.options
             delegate: Rectangle {
@@ -176,17 +200,14 @@ Item {
                 radius: root.itemRadius
 
                 color: {
-                    if (isSelected) {
-                        return ThemeTokens.dark ? ThemeTokens.panel : "#ffffff";
-                    }
-                    if (isHighlighted) {
+                    if (isHighlighted && !isSelected) {
                         return ThemeTokens.dark ? Qt.rgba(255, 255, 255, 0.08) : Qt.rgba(0, 0, 0, 0.05);
                     }
                     return "transparent";
                 }
 
-                border.color: isSelected ? ThemeTokens.border : "transparent"
-                border.width: isSelected ? 1 : 0
+                border.color: "transparent"
+                border.width: 0
 
                 Behavior on color { ColorAnimation { duration: ThemeTokens.motionQuick } }
 
