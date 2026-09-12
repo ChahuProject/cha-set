@@ -89,10 +89,18 @@ Rectangle {
                     required property int index
                     width: parent.width
                     height: 32
+                    opacity: 0
                     color: ThemeTokens.hover
                     border.color: ThemeTokens.border
                     border.width: 1
                     radius: 4
+
+                    // Fade new rules in as they are added.
+                    Behavior on opacity {
+                        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                        NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
+                    }
+                    Component.onCompleted: opacity = 1
 
                     Row {
                         anchors.left: parent.left

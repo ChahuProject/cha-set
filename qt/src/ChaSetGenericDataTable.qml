@@ -203,6 +203,15 @@ Item {
                     border.color: isSelectedRow ? ThemeTokens.focus : "transparent"
                     border.width: isSelectedRow ? 1 : 0
 
+                    Behavior on color {
+                        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                    }
+                    Behavior on border.color {
+                        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                    }
+
                     Row {
                         anchors.fill: parent
                         anchors.leftMargin: 12
