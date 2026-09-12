@@ -101,6 +101,26 @@
     - **Virtualizer & Dynamic Spacers**: Dynamic measurements (virtual list spacer rows, dynamic offsets) must convert pixel calculations to rem: `${val * 0.0625}rem`.
     - **Neutral Prop Names & Tokens**: Component props and CSS variables must omit `Px` or `pixel` suffixes (`hitThickness`, `visualThickness`, `deltaAmount`, `--sidebar-width` instead of `hitThicknessPx`, `deltaPixels`, `--sidebar-width-px`).
     - **Documentation & PropsTable**: Doc descriptions, code examples, and props tables must never describe measurements as "in pixels" or "100px". Use neutral units, rem scale, or component tokens.
+12. **Mandatory Mouse Cursor Semantics & Text Selectability Contract (鼠标光标语义与文本可选性全景规约 — 工字光标与禁用态零缺失红线)**:
+    - **Single Source of Truth for Cursor Shapes (光标语义跨端严格对齐表)**:
+      - **Action Controls (可操作项)**: Buttons, split-buttons, copy-buttons, menu items, tabs triggers, segmented control options, checkboxes, switches, select triggers, links, pagination, and clickable table rows MUST use `cursor-pointer` (React) and `Qt.PointingHandCursor` (Qt).
+      - **Editable & Selectable Text (文本输入与划选区域)**: `Input`, `DurationInput` segment fields, `PresetNumberInput`, `InlineEditableText` (edit mode), `ReadOnlyInput`, `ColorPicker` channel/hex inputs, and `CodeBlock` / `HighlightedCode` code areas MUST use `cursor-text` (React) and `Qt.IBeamCursor` (Qt).
+      - **Disabled State Parity (禁用态禁止光标)**: Any interactive control in disabled state MUST show `cursor-not-allowed` (React) and `Qt.ForbiddenCursor` (Qt). **STRICT BAN ON POINTER-EVENTS-NONE DROPPING CURSORS**: Never use bare `pointer-events-none` on interactive elements without preserving `cursor-not-allowed`, which erroneously causes mouse cursor to fall back to the default arrow.
+      - **Sliders & Continuous Drag (数值滑块与拖拽)**: Tracks and click areas show `cursor-pointer` / `Qt.PointingHandCursor`. Active drag states show `cursor-grabbing` / `Qt.ClosedHandCursor`.
+      - **Window & Modal Drag (窗口与弹窗拖拽)**: Header drag handles show `cursor-move` / `Qt.SizeAllCursor` (or `cursor-grab`).
+      - **Splitters & Resizing (分栏调整手柄)**: Horizontal splitters (column adjustment) show `cursor-col-resize` / `Qt.SizeHorCursor` (`Qt.SplitHCursor`). Vertical splitters (row adjustment) show `cursor-row-resize` / `Qt.SizeVerCursor` (`Qt.SplitVCursor`).
+    - **Qt Quick Input Robustness Mandate (QML 输入控件 HoverHandler 强制嵌入律)**:
+      - Qt Quick's `QQuickTextInput` and `QQuickTextEdit` DO NOT implement hover cursors by default, and sitting at `z: 0` they fully mask lower-level `MouseArea` items (at `z: -1`).
+      - **STRICT MANDATE**: Every QML text input, numeric field, and code viewer (`ChaSetInput`, `ChaSetDurationInput`, `ChaSetReadOnlyInput`, `ChaSetColorPicker` inputs, `ChaSetHighlightedCode`) **MUST attach an explicit Qt 6 `HoverHandler`** directly on or inside the item:
+        ```qml
+        HoverHandler {
+            cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor)
+        }
+        ```
+        `HoverHandler` operates at the PointerHandler level, monitors hover across the entire geometry without intercepting mouse clicks, double clicks, focus, or drag selection.
+    - **Code Block & Selectable Text Gutter Decoupling (代码块文本划选与行号解耦律)**:
+      - Code viewers (`CodeBlock`, `HighlightedCode`) MUST support cross-line mouse drag selection (`selectByMouse: true`, `selectByKeyboard: true`), double-click word selection, triple-click line selection, and pure-text `Ctrl+C` copying.
+      - Line numbers must reside in a separate non-selectable gutter (`Column`), strictly decoupled from the selectable code area, showing `ArrowCursor` and never contaminating copied text.
 
 ---
 
