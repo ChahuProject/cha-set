@@ -6,6 +6,7 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -97,23 +98,25 @@ export function Header({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
-              <DropdownMenuLabel>Featured Engines</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => { window.location.hash = '#/components/generic-data-table'; }}>
-                📊 Generic Data Table
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => { window.location.hash = '#/components/query-builder'; }}>
-                🔍 Query Builder
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => { window.location.hash = '#/components/virtual-list'; }}>
-                📜 Virtual List
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => { window.location.hash = '#/components/draggable-modal'; }}>
-                🪟 Draggable Modal
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => { window.location.hash = '#/components/splitter'; }}>
-                ✂️ Splitter
-              </DropdownMenuItem>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Featured Engines</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => { window.location.hash = '#/components/generic-data-table'; }}>
+                  📊 Generic Data Table
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => { window.location.hash = '#/components/query-builder'; }}>
+                  🔍 Query Builder
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => { window.location.hash = '#/components/virtual-list'; }}>
+                  📜 Virtual List
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => { window.location.hash = '#/components/draggable-modal'; }}>
+                  🪟 Draggable Modal
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => { window.location.hash = '#/components/splitter'; }}>
+                  ✂️ Splitter
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
 
