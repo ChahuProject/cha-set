@@ -161,7 +161,7 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
@@ -186,7 +186,7 @@ DocLayout {
             font.pixelSize: 13
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: `import ChaSet\n\nChaSetInput {\n    width: 240\n    placeholderText: "Enter email..."\n    onAccepted: console.log("Submitted:", text)\n}`

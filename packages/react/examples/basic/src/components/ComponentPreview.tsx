@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent, Card } from '@chahu/cha-set';
-import { CodeBlock } from './CodeBlock';
+import { Tabs, TabsList, TabsTrigger, TabsContent, Card, CodeBlock } from '@chahu/cha-set';
 import { ErrorBoundary } from './ErrorBoundary';
 
 export interface ComponentPreviewProps {

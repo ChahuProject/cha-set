@@ -151,7 +151,7 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
@@ -176,7 +176,7 @@ DocLayout {
             font.pixelSize: 13
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetCheckbox {\n    label: \"Remember me\"\n    checked: true\n    onToggled: (checked) => console.log(\"Checkbox state:\", checked)\n}"

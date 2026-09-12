@@ -202,7 +202,7 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
@@ -227,7 +227,7 @@ DocLayout {
             font.pixelSize: 13
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: `import ChaSet\n\nChaSetSlider {\n    width: 240\n    value: 50\n    min: 0\n    max: 100\n    step: 1\n    showTooltip: true\n    formatValue: function(v) {\n        return v + "%"\n    }\n    onValueMoved: function(val) {\n        console.log("Slider moved:", val)\n    }\n}`

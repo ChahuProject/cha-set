@@ -116,7 +116,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetVirtualTree { nodes: [...] }"
         language: "qml"

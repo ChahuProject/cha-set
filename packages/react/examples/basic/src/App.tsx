@@ -71,6 +71,7 @@ import { SettingRowDocPage } from './pages/components/SettingRowDocPage';
 import { ElidedTextDocPage } from './pages/components/ElidedTextDocPage';
 import { SplitterHandleDocPage } from './pages/components/SplitterHandleDocPage';
 import { DurationInputDocPage } from './pages/components/DurationInputDocPage';
+import { CodeBlockDocPage } from './pages/components/CodeBlockDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 
 import { TokensPage } from './pages/get-started/TokensPage';
@@ -614,6 +615,8 @@ export function App() {
         return <SplitterHandleDocPage />;
       case '#/components/duration-input':
         return <DurationInputDocPage />;
+      case '#/components/code-block':
+        return <CodeBlockDocPage />;
       case '#/components/button':
 
       default:

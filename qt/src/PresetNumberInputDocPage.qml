@@ -52,7 +52,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetPresetNumberInput {\n    value: \"1024\"\n    presets: [64, 128, 256, 512, 1024, 2048, 4096]\n}"
         language: "qml"

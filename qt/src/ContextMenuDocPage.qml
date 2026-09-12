@@ -108,7 +108,7 @@ DocLayout {
         componentId: "context-menu"
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetContextMenu { ... }"
         language: "qml"

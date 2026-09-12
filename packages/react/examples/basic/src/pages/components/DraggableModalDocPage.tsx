@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { DraggableModal, Button, Badge } from '@chahu/cha-set';
+import { DraggableModal, Button, Badge, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

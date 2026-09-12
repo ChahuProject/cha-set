@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
-import {
-  ColorPicker,
-  type ColorPickerMode,
-  type ColorPickerSize,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  Checkbox,
-  Card,
-} from '@chahu/cha-set';
+import { ColorPicker, type ColorPickerMode, type ColorPickerSize, Tabs, TabsList, TabsTrigger, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Skeleton, Card, type SkeletonAnimation } from '@chahu/cha-set';
+import { Skeleton, Card, type SkeletonAnimation, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

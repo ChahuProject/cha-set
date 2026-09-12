@@ -247,7 +247,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetSidebar {\n    sidebarWidth: 256\n    collapsible: \"icon\"\n    // content...\n}"
         language: "qml"

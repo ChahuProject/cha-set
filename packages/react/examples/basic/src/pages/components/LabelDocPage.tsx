@@ -1,21 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Label,
-  type LabelSize,
-  Input,
-  Checkbox,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from '@chahu/cha-set';
+import { Label, type LabelSize, Input, Checkbox, Tabs, TabsList, TabsTrigger, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

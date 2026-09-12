@@ -147,7 +147,7 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
@@ -172,7 +172,7 @@ DocLayout {
             font.pixelSize: 13
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: `ChaSetCard {\n    ChaSetCardHeader {\n        ChaSetCardTitle { text: "Card Title" }\n        ChaSetCardDescription { text: "Card Description" }\n    }\n    ChaSetCardContent {\n        Text { text: "Main content area" }\n    }\n    ChaSetCardFooter {\n        Text { text: "Footer actions" }\n    }\n}`

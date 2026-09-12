@@ -1,21 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Card,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  Checkbox,
-  Input,
-  Tooltip,
-  TooltipProvider,
-  TooltipTrigger,
-  TooltipContent,
-  type TooltipSide,
-} from '@chahu/cha-set';
+import { Button, Card, Tabs, TabsList, TabsTrigger, Checkbox, Input, Tooltip, TooltipProvider, TooltipTrigger, TooltipContent, type TooltipSide, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

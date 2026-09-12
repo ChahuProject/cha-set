@@ -1,21 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  type CardVariant,
-  Button,
-  Badge,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-} from '@chahu/cha-set';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, type CardVariant, Button, Badge, Tabs, TabsList, TabsTrigger, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

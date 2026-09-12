@@ -1,24 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Separator,
-  type SeparatorOrientation,
-  type SeparatorVariant,
-  type SeparatorLabelPosition,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  Button,
-  Checkbox,
-} from '@chahu/cha-set';
+import { Separator, type SeparatorOrientation, type SeparatorVariant, type SeparatorLabelPosition, Tabs, TabsList, TabsTrigger, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Checkbox, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

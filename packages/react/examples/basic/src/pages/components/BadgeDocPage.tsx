@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Badge, type BadgeVariant, type BadgeSize, Tabs, TabsList, TabsTrigger, Checkbox, Card } from '@chahu/cha-set';
+import { Badge, type BadgeVariant, type BadgeSize, Tabs, TabsList, TabsTrigger, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { InlineEditableText, Card } from '@chahu/cha-set';
+import { InlineEditableText, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

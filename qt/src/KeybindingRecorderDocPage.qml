@@ -81,7 +81,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetKeybindingRecorder {\n    value: \"Ctrl+S\"\n    clearable: true\n}"
         language: "qml"

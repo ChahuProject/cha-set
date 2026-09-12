@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-import {
-  SmoothWheelHandler,
-  Card,
-  Badge,
-  SegmentedControl,
-} from '@chahu/cha-set';
+import { SmoothWheelHandler, Card, Badge, SegmentedControl, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

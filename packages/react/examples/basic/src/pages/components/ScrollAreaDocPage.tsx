@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { ScrollArea, Button, Checkbox } from '@chahu/cha-set';
+import { ScrollArea, Button, Checkbox, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { CHANGELOG_DATA, FEATURE_CARDS_DATA } from '../../data/showcaseData.generated';

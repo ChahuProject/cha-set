@@ -8,6 +8,7 @@ import { ButtonDocPage } from '../../examples/basic/src/pages/components/ButtonD
 import { CardDocPage } from '../../examples/basic/src/pages/components/CardDocPage';
 import { CheckboxDocPage } from '../../examples/basic/src/pages/components/CheckboxDocPage';
 import { ColorPickerDocPage } from '../../examples/basic/src/pages/components/ColorPickerDocPage';
+import { CodeBlockDocPage } from '../../examples/basic/src/pages/components/CodeBlockDocPage';
 import { ContextMenuDocPage } from '../../examples/basic/src/pages/components/ContextMenuDocPage';
 import { CopyButtonDocPage } from '../../examples/basic/src/pages/components/CopyButtonDocPage';
 import { DialogDocPage } from '../../examples/basic/src/pages/components/DialogDocPage';
@@ -57,6 +58,7 @@ const pages = [
   { name: 'CardDocPage', Component: CardDocPage },
   { name: 'CheckboxDocPage', Component: CheckboxDocPage },
   { name: 'ColorPickerDocPage', Component: ColorPickerDocPage },
+  { name: 'CodeBlockDocPage', Component: CodeBlockDocPage },
   { name: 'ContextMenuDocPage', Component: ContextMenuDocPage },
   { name: 'CopyButtonDocPage', Component: CopyButtonDocPage },
   { name: 'DialogDocPage', Component: DialogDocPage },

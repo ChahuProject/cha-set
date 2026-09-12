@@ -1,22 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-  Button,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  type CollapsibleVariant,
-} from '@chahu/cha-set';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, Tabs, TabsList, TabsTrigger, type CollapsibleVariant, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

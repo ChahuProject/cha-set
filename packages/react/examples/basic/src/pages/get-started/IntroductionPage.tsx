@@ -1,8 +1,6 @@
 import React from 'react';
-import { ScrollArea, Card, CardTitle, CardDescription } from '@chahu/cha-set';
+import { ScrollArea, Card, CardTitle, CardDescription, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { CodeBlock } from '../../components/CodeBlock';
-
 export function IntroductionPage() {
   return (
     <DocLayout

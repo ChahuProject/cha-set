@@ -72,7 +72,7 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
@@ -97,7 +97,7 @@ DocLayout {
             font.pixelSize: 13
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: `import ChaSet\n\nChaSetDialog {\n    id: myModal\n    title: "Dialog Title"\n    description: "Brief contextual description."\n\n    Text { text: "Dialog body content"; color: ThemeTokens.text }\n\n    Row {\n        anchors.right: parent.right\n        ChaSetButton { text: "Dismiss"; onClicked: myModal.closeDialog() }\n    }\n}`

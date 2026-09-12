@@ -26,6 +26,18 @@ set_source_files_properties(src/ShowcaseData.generated.qml PROPERTIES
     QT_QML_SOURCE_TYPENAME ShowcaseData
 )
 
+# Shared syntax lexer + its palette (emitted from spec/highlight/* and
+# spec/tokens/semantic/core.json by pnpm gen:highlight / gen:qt).
+set_source_files_properties(src/Highlighter.generated.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME Highlighter
+)
+
+set_source_files_properties(src/CodeTokens.generated.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME CodeTokens
+)
+
 # -------------------------------------------------------------
 # 1. Main Reusable Component Library (Target: ChaSet / ChaSet::ChaSet)
 # -------------------------------------------------------------
@@ -94,9 +106,15 @@ qt_add_qml_module(ChaSet
         src/ChaSetElidedText.qml
         src/ChaSetSplitterHandle.qml
         src/ChaSetDurationInput.qml
+        src/ChaSetHighlightedCode.qml
+        src/ChaSetCodeBlock.qml
         src/ThemeTokens.generated.qml
 
         src/ShowcaseData.generated.qml
+
+        src/Highlighter.generated.qml
+
+        src/CodeTokens.generated.qml
     NO_GENERATE_EXTRA_QMLDIRS
 )
 
@@ -130,7 +148,6 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
         QML_FILES
             src/Main.qml
             src/DocLayout.qml
-            src/CodeBlock.qml
             src/PropsTable.qml
             src/KeyboardShortcutsTable.qml
             src/ComponentPreview.qml
@@ -185,6 +202,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/ElidedTextDocPage.qml
             src/SplitterHandleDocPage.qml
             src/DurationInputDocPage.qml
+            src/CodeBlockDocPage.qml
             src/CommandSearchModal.qml
 
             src/ExportModal.qml
