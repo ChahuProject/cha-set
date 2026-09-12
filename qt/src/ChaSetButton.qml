@@ -341,9 +341,9 @@ Item {
 
     HoverHandler {
         id: hoverHandler
-        enabled: !root.effectiveDisabled
-        cursorShape: root.effectiveDisabled ? Qt.ArrowCursor : Qt.PointingHandCursor
-        onHoveredChanged: root.hovered = hoverHandler.hovered
+        enabled: true
+        cursorShape: root.effectiveDisabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
+        onHoveredChanged: root.hovered = (!root.effectiveDisabled && hoverHandler.hovered)
     }
 
     TapHandler {

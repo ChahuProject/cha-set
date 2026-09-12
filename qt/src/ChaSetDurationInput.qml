@@ -177,6 +177,10 @@ Item {
                     inputMethodHints: Qt.ImhDigitsOnly
                     validator: RegularExpressionValidator { regularExpression: /^[0-9]{1,3}$/ }
 
+                    HoverHandler {
+                        cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
+                    }
+
                     onTextEdited: {
                         root.isEditing = true;
                         root.syncValueFromInputs();
@@ -305,6 +309,10 @@ Item {
                     inputMethodHints: Qt.ImhDigitsOnly
                     validator: RegularExpressionValidator { regularExpression: /^[0-9]{1,2}$/ }
 
+                    HoverHandler {
+                        cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
+                    }
+
                     onTextEdited: {
                         root.isEditing = true;
                         root.syncValueFromInputs();
@@ -431,6 +439,10 @@ Item {
                     selectByMouse: true
                     inputMethodHints: Qt.ImhDigitsOnly
                     validator: RegularExpressionValidator { regularExpression: /^[0-9]{1,2}$/ }
+
+                    HoverHandler {
+                        cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
+                    }
 
                     onTextEdited: {
                         root.isEditing = true;

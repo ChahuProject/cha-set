@@ -420,6 +420,11 @@ Item {
                 color: ThemeTokens.text
                 enabled: !root.disabled
                 selectByMouse: true
+
+                HoverHandler {
+                    cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
+                }
+
                 onEditingFinished: {
                     var parsed = parseFloat(text);
                     if (!isNaN(parsed)) {
@@ -1019,6 +1024,10 @@ Item {
                             color: ThemeTokens.text
                             enabled: !root.disabled
                             selectByMouse: true
+
+                            HoverHandler {
+                                cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
+                            }
 
                             onEditingFinished: {
                                 root.setFromHex(hexInput.text);

@@ -177,7 +177,7 @@ export function InlineEditableText({
       onPointerDown={disabled ? undefined : (e) => e.stopPropagation()}
       className={cn(
         'group/editable-text flex min-w-0 max-w-full items-center gap-1.5 rounded-md px-1 text-left transition-colors duration-quick ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
-        !disabled && 'cursor-text hover:bg-muted/60',
+        disabled ? 'cursor-not-allowed opacity-50' : 'cursor-text hover:bg-muted/60',
         className,
       )}
     >

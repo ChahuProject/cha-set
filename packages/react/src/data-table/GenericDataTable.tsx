@@ -341,7 +341,7 @@ export function GenericDataTable<TData>({
                       ref={virtualizer.measureElement}
                       data-state={isSelected ? 'selected' : undefined}
                       className={cn(
-                        selectionMode === 'single' && 'cursor-pointer',
+                        (selectionMode !== 'none' || Boolean(onRowClick)) && 'cursor-pointer',
                         isSelected && 'bg-muted/50',
                         getRowClassName?.(row.original),
                       )}
@@ -379,7 +379,7 @@ export function GenericDataTable<TData>({
                     key={row.id}
                     data-state={isSelected ? 'selected' : undefined}
                     className={cn(
-                      selectionMode === 'single' && 'cursor-pointer',
+                      (selectionMode !== 'none' || Boolean(onRowClick)) && 'cursor-pointer',
                       isSelected && 'bg-muted/50',
                       getRowClassName?.(row.original),
                     )}

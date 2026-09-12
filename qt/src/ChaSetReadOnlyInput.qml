@@ -135,12 +135,15 @@ Item {
             }
         }
 
+        HoverHandler {
+            cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
+        }
+
         MouseArea {
             id: hoverArea
             anchors.fill: parent
             z: -1
-            hoverEnabled: !root.disabled
-            cursorShape: Qt.IBeamCursor
+            hoverEnabled: false
             onClicked: {
                 if (!root.disabled) {
                     valInput.forceActiveFocus()
