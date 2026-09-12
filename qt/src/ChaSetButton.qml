@@ -163,7 +163,10 @@ Item {
         border.color: root.hasBorder() ? root.cBorder : "transparent"
         border.width: root.hasBorder() ? 1 : 0
 
-        Behavior on color { ColorAnimation { duration: ThemeTokens.motionQuick } }
+        Behavior on color {
+            enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
         opacity: root.effectiveDisabled ? 0.5 : 1.0
     }
 
@@ -246,6 +249,11 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             opacity: root.loading && root.loadingText === "" ? 0.7 : 1.0
+
+            Behavior on color {
+                enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
+                ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+            }
         }
 
         // Optional Right Icon

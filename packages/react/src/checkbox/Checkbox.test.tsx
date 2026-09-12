@@ -14,7 +14,7 @@ describe('Checkbox component', () => {
     expect(checkbox).toHaveAttribute('data-slot', 'checkbox');
     expect(checkbox).toHaveAttribute('data-state', 'unchecked');
     expect(checkbox).toHaveAttribute('data-size', 'default');
-    expect(checkbox.querySelector('svg')).toBeNull();
+    expect(checkbox.querySelector('svg')?.getAttribute('class')).toContain('opacity-0');
   });
 
   it('handles click toggling in uncontrolled mode', () => {
@@ -27,12 +27,12 @@ describe('Checkbox component', () => {
     fireEvent.click(checkbox);
     expect(checkbox).toHaveAttribute('aria-checked', 'true');
     expect(checkbox).toHaveAttribute('data-state', 'checked');
-    expect(checkbox.querySelector('svg')).toBeInTheDocument();
+    expect(checkbox.querySelector('svg')?.getAttribute('class')).toContain('opacity-100');
 
     fireEvent.click(checkbox);
     expect(checkbox).toHaveAttribute('aria-checked', 'false');
     expect(checkbox).toHaveAttribute('data-state', 'unchecked');
-    expect(checkbox.querySelector('svg')).toBeNull();
+    expect(checkbox.querySelector('svg')?.getAttribute('class')).toContain('opacity-0');
   });
 
   it('notifies onCheckedChange in controlled mode', () => {

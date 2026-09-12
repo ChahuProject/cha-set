@@ -104,6 +104,20 @@
     animation-duration: var(--cs-motion-medium, 180ms);
   }
 
+  /* Easing tiers — opt-in overrides of the entrance default. */
+  .animate-in-standard {
+    animation-timing-function: var(--cs-ease-standard, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+  }
+  .animate-out-standard {
+    animation-timing-function: var(--cs-ease-standard, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+  }
+  .animate-in-emphasized {
+    animation-timing-function: var(--cs-ease-emphasized, cubic-bezier(0.215, 0.61, 0.355, 1));
+  }
+  .animate-out-emphasized {
+    animation-timing-function: var(--cs-ease-emphasized, cubic-bezier(0.215, 0.61, 0.355, 1));
+  }
+
   /* Shimmer: skeleton wave sweep. Disabled under prefers-reduced-motion
    * because --cs-motion-short resolves to 0ms (animation is not infinite,
    * so it simply runs once instantly and stalls — kept simple per spec:

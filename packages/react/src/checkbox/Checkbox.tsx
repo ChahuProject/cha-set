@@ -108,7 +108,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
         data-state={isExplicitIndeterminate ? 'indeterminate' : isChecked ? 'checked' : 'unchecked'}
         data-size={size}
         className={cn(
-          'inline-flex items-center justify-center shrink-0 border transition-colors',
+          'inline-flex items-center justify-center shrink-0 border transition-colors duration-quick ease-standard',
           readOnly ? 'cursor-default' : 'cursor-pointer',
           'focus-visible:outline-hidden focus-visible:ring-1',
           focusRingClass,
@@ -121,37 +121,28 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
         onClick={handleClick}
         {...props}
       >
-        {isExplicitIndeterminate ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className={cn(size === 'sm' ? 'size-2.5' : 'size-3')}
-            aria-hidden="true"
-            data-slot="checkbox-indicator"
-          >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          data-slot="checkbox-indicator"
+          className={cn(
+            size === 'sm' ? 'size-2.5' : 'size-3',
+            'transition-[opacity,scale] duration-quick ease-entrance',
+            isChecked || isExplicitIndeterminate ? 'opacity-100 scale-100' : 'opacity-0 scale-50',
+          )}
+        >
+          {isExplicitIndeterminate ? (
             <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-        ) : isChecked ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className={cn(size === 'sm' ? 'size-2.5' : 'size-3')}
-            aria-hidden="true"
-            data-slot="checkbox-indicator"
-          >
+          ) : isChecked ? (
             <polyline points="20 6 9 17 4 12" />
-          </svg>
-        ) : null}
+          ) : null}
+        </svg>
       </button>
     );
 

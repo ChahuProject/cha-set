@@ -45,7 +45,8 @@ Rectangle {
     focus: root.open
 
     Behavior on opacity {
-        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
+        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: ThemeTokens.easeEmphasized }
     }
 
     Shortcut {
@@ -95,10 +96,12 @@ Rectangle {
         height: (root.side === "top" || root.side === "bottom") ? root.sheetSize : root.height
 
         Behavior on x {
-            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutCubic }
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: ThemeTokens.easeEmphasized }
         }
         Behavior on y {
-            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutCubic }
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: ThemeTokens.easeEmphasized }
         }
 
         MouseArea {
