@@ -58,15 +58,15 @@ DocLayout {
                 }
 
                 ChaSetResizable {
-                    width: 440
-                    height: 220
+                    width: 520
+                    height: 240
                     orientation: Qt.Horizontal
                     withHandle: true
 
                     Rectangle {
-                        SplitView.preferredWidth: 140
-                        SplitView.minimumWidth: 90
-                        SplitView.maximumWidth: 260
+                        SplitView.preferredWidth: 180
+                        SplitView.minimumWidth: 80
+                        SplitView.maximumWidth: 380
                         color: ThemeTokens.panel
                         border.color: ThemeTokens.border
                         border.width: 1
