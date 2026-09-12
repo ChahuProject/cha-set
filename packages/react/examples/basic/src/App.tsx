@@ -478,7 +478,9 @@ export function App() {
   }
 
   const { currentHash, navigate } = useRouter();
-  const [mode, setMode] = useState(() => localStorage.getItem('cs-mode') ?? 'light');
+  // ?theme=light|dark deep link wins over the persisted toggle so visual-diff
+  // runs (and shared links) can pin the workbench theme deterministically.
+  const [mode, setMode] = useState(() => searchParams?.get('theme') ?? localStorage.getItem('cs-mode') ?? 'light');
   const [accent, setAccent] = useState(() => localStorage.getItem('cs-accent') ?? '');
   const [overrides, setOverrides] = useState<ThemeOverrides>(() => {
     try {

@@ -94,6 +94,20 @@ const testCases = [
     variant: '',
     size: '',
     label: '',
+    theme: 'light',
+    width: 1100,
+    height: 1200,
+    maxDiffPercent: 6.0,
+  },
+  {
+    // Dark-mode conformance: guards against theme-blind colors (hardcoded
+    // light surfaces / dropped alpha tokens) that only break under `.dark`.
+    name: 'studio-workbench-dark',
+    harness: '',
+    variant: '',
+    size: '',
+    label: '',
+    theme: 'dark',
     width: 1100,
     height: 1200,
     maxDiffPercent: 6.0,
@@ -170,16 +184,16 @@ try {
 
     // A. Capture React
     let targetUrl = `http://127.0.0.1:${port}/`;
+    const params = new URLSearchParams();
+    if (tc.theme) params.set('theme', tc.theme);
     if (tc.harness) {
-      const query = new URLSearchParams({
-        harness: tc.harness,
-        variant: tc.variant,
-        size: tc.size,
-        label: tc.label,
-        disabled: tc.disabled ? 'true' : 'false',
-      }).toString();
-      targetUrl += `?${query}`;
+      params.set('harness', tc.harness);
+      params.set('variant', tc.variant);
+      params.set('size', tc.size);
+      params.set('label', tc.label);
+      params.set('disabled', tc.disabled ? 'true' : 'false');
     }
+    if ([...params.keys()].length > 0) targetUrl += `?${params.toString()}`;
 
     await sendCdp('Page.navigate', { url: targetUrl });
     await new Promise((r) => setTimeout(r, 350));
@@ -197,6 +211,7 @@ try {
 
     // B. Capture Qt
     const qtArgs = [];
+    qtArgs.push(tc.theme === 'dark' ? '--dark' : '--light');
     if (tc.harness) {
       qtArgs.push('--harness', tc.harness);
       qtArgs.push('--variant', tc.variant);
