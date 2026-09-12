@@ -8,6 +8,7 @@ import {
 import { XIcon } from '../lib/icons';
 import { splitFixedFooter } from '../lib/splitFixedFooter';
 import { cn } from '../lib/utils';
+import { useExitAnimation } from '../lib/useExitAnimation';
 
 export type { DraggableModalSizeOption as DialogSizeOption, DraggableModalSizeOption as 弹窗尺寸选项 };
 
@@ -240,8 +241,9 @@ export interface DialogOverlayProps
 export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps>(
   ({ className, onClick, forceMount = false, closeOnClick = true, ...props }, ref) => {
     const { open, setOpen } = useDialogContext();
+    const { visible, exiting } = useExitAnimation(open);
 
-    if (!open && !forceMount) {
+    if (!visible && !forceMount) {
       return null;
     }
 
@@ -256,8 +258,10 @@ export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps
       <div
         ref={ref}
         data-slot="dialog-overlay"
+        data-exiting={exiting ? 'true' : undefined}
         className={cn(
-          'fixed inset-0 z-50 bg-black/60 backdrop-blur-xs duration-100 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0',
+          'fixed inset-0 z-50 bg-black/60 backdrop-blur-xs',
+          exiting ? 'animate-fade-out' : 'animate-fade-in',
           className,
         )}
         onClick={handleClick}
@@ -366,6 +370,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
     ref,
   ) => {
     const { open, setOpen, titleId, descriptionId } = useDialogContext();
+    const { visible, exiting } = useExitAnimation(open);
 
     React.useEffect(() => {
       if (!open || !closeOnEscape) return;
@@ -383,9 +388,11 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
       };
     }, [open, setOpen, closeOnEscape]);
 
-    if (!open && !forceMount) {
+    if (!visible && !forceMount) {
       return null;
     }
+
+    const contentAnim = exiting ? 'animate-fade-out' : 'animate-fade-in';
 
     const effectiveContentClassName = contentClassName ?? 内容类名;
     const effectiveDefaultWidthRem = defaultWidthRem ?? 默认宽度rem ?? defaultSizeWidths[size];
@@ -421,7 +428,10 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
           <DialogOverlay className={overlayClassName} closeOnClick={closeOnOverlayClick} />
           <div
             data-slot="dialog-content-layer"
-            className="fixed inset-0 z-50 pointer-events-none outline-none"
+            className={cn(
+              'fixed inset-0 z-50 pointer-events-none outline-none',
+              contentAnim,
+            )}
           >
             <DraggableModal
               ref={ref}
@@ -465,7 +475,8 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
           aria-describedby={props['aria-describedby'] ?? descriptionId}
           data-slot="dialog-content"
           className={cn(
-            'fixed left-1/2 top-1/2 z-50 grid w-full -translate-x-1/2 -translate-y-1/2 gap-4 border border-border bg-background text-foreground p-6 shadow-2xl rounded-xl animate-in zoom-in-95 duration-150 pointer-events-auto',
+            'fixed left-1/2 top-1/2 z-50 grid w-full -translate-x-1/2 -translate-y-1/2 gap-4 border border-border bg-background text-foreground p-6 shadow-2xl rounded-xl pointer-events-auto',
+            contentAnim,
             sizeClasses[size],
             className,
           )}
