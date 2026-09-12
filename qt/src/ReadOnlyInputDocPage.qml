@@ -53,7 +53,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetReadOnlyInput { value: \"token_123\"; masked: true }"
         language: "qml"

@@ -154,7 +154,7 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "structure"
             code: "spec/                     single source of truth\n  tokens/**               shards: colors, space, motion, typography\n  tokens.json             committed token snapshot\n  components/*.ts         component API contracts (zod schemas)\n  capabilities.json       capability manifest (must / should)\npackages/react/           React implementation (@chahu/cha-set)\nqt/                       Qt 6 / QML implementation (QtChaSetDemo)"
@@ -179,7 +179,7 @@ DocLayout {
             font.pixelSize: 12
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
@@ -191,7 +191,7 @@ DocLayout {
             font.pixelSize: 12
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetScrollArea {\n    width: 400\n    height: 300\n    showButtons: true\n\n    ChaSetButton {\n        variant: \"default\"\n        size: \"default\"\n        text: \"Launch Workspace\"\n        onClicked: console.log(\"Clicked!\")\n    }\n}"

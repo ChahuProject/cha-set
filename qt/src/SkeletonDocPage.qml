@@ -110,7 +110,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetSkeleton { width: 200; height: 20; rounded: 'md' }"
         language: "qml"

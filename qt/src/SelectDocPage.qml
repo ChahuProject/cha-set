@@ -77,7 +77,7 @@ DocLayout {
         componentId: "select"
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetSelect { ... }"
         language: "qml"

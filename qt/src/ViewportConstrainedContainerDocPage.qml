@@ -98,7 +98,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetViewportConstrainedContainer {\n    maxHeight: 300\n    minHeight: 80\n    margin: 16\n    overflow: \"auto\"\n}"
         language: "qml"

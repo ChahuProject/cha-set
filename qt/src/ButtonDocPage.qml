@@ -153,9 +153,9 @@ DocLayout {
         spacing: 10
 
         Text { text: "Installation"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
-        CodeBlock { width: parent.width; language: "bash"; code: "pnpm add @chahu/cha-set" }
+        ChaSetCodeBlock { width: parent.width; language: "bash"; code: "pnpm add @chahu/cha-set" }
         Text { text: "Import component in your application entry:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetButton {\n    variant: \"default\"\n    size: \"default\"\n    text: \"Create Project\"\n    onClicked: console.log(\"Clicked!\")\n}"
@@ -192,7 +192,7 @@ DocLayout {
                     ChaSetButton { variant: "link"; text: "Link" }
                 }
             }
-            CodeBlock {
+            ChaSetCodeBlock {
                 width: parent.width
                 language: "qml"
                 code: "ChaSetButton { variant: \"default\"; text: \"Default\" }\nChaSetButton { variant: \"secondary\"; text: \"Secondary\" }\nChaSetButton { variant: \"outline\"; text: \"Outline\" }\nChaSetButton { variant: \"ghost\"; text: \"Ghost\" }\nChaSetButton { variant: \"destructive\"; text: \"Destructive\" }\nChaSetButton { variant: \"link\"; text: \"Link\" }"
@@ -221,7 +221,7 @@ DocLayout {
                     ChaSetButton { size: "icon"; text: "⚙" }
                 }
             }
-            CodeBlock {
+            ChaSetCodeBlock {
                 width: parent.width
                 language: "qml"
                 code: "ChaSetButton { size: \"xs\"; text: \"Extra Small\" }\nChaSetButton { size: \"sm\"; text: \"Small\" }\nChaSetButton { size: \"default\"; text: \"Default\" }\nChaSetButton { size: \"lg\"; text: \"Large\" }\nChaSetButton { size: \"icon\"; text: \"⚙\" }"
@@ -248,7 +248,7 @@ DocLayout {
                     ChaSetButton { text: "Disabled Button"; disabled: true }
                 }
             }
-            CodeBlock {
+            ChaSetCodeBlock {
                 width: parent.width
                 language: "qml"
                 code: "ChaSetButton { text: \"Saving Changes\"; loading: true; loadingText: \"Saving...\" }\nChaSetButton { text: \"Active Toggle\"; pressed: true }\nChaSetButton { text: \"Disabled Button\"; disabled: true }"

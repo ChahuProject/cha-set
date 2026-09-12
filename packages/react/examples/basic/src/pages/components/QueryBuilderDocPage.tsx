@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { QueryBuilder, Badge, type QueryRuleGroup, type QueryField } from '@chahu/cha-set';
+import { QueryBuilder, Badge, type QueryRuleGroup, type QueryField, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

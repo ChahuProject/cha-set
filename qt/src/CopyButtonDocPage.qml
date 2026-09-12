@@ -81,7 +81,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetCopyButton { text: \"Hello\"; label: \"Copy\" }"
         language: "qml"

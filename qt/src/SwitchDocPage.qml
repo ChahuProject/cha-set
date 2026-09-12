@@ -139,7 +139,7 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
@@ -164,7 +164,7 @@ DocLayout {
             font.pixelSize: 13
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: `import ChaSet\n\nChaSetSwitch {\n    checked: false\n    label: "Enable notifications"\n    onToggled: function(checked) {\n        console.log("Switch state:", checked)\n    }\n}`

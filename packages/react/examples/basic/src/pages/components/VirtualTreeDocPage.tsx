@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { VirtualTree, type TreeNode, type VirtualTreeHandle, Button } from '@chahu/cha-set';
+import { VirtualTree, type TreeNode, type VirtualTreeHandle, Button, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

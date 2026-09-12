@@ -74,7 +74,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetSplitButton { text: \"Deploy\"; menuItems: [...] }"
         language: "qml"

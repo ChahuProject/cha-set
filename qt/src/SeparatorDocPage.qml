@@ -193,7 +193,7 @@ DocLayout {
         width: parent.width
         spacing: 8
         Text { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
@@ -207,7 +207,7 @@ DocLayout {
         Text { text: "Anatomy"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
         Text { text: "Import and place ChaSetSeparator horizontally or vertically to segment content."; color: root.cMutedFg; font.pixelSize: 13 }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: "ChaSetSeparator {\n    orientation: \"horizontal\"\n    width: parent.width\n}"

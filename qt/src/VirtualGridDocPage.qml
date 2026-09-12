@@ -129,7 +129,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetVirtualGrid { model: 1000; delegate: ... }"
         language: "qml"

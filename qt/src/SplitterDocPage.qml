@@ -92,7 +92,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetSplitter { splitRatio: 0.5 }"
         language: "qml"

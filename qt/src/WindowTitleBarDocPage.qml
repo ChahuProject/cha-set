@@ -105,7 +105,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetWindowTitleBar { title: \"App Header\" }"
         language: "qml"

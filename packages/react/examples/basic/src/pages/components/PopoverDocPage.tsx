@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Button,
-  Input,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  Checkbox,
-} from '@chahu/cha-set';
+import { Popover, PopoverTrigger, PopoverContent, Button, Input, Tabs, TabsList, TabsTrigger, Checkbox, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

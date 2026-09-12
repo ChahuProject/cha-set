@@ -96,6 +96,7 @@ ApplicationWindow {
         case "elided-text": return "ElidedTextDocPage.qml";
         case "splitter-handle": return "SplitterHandleDocPage.qml";
         case "duration-input": return "DurationInputDocPage.qml";
+        case "code-block": return "CodeBlockDocPage.qml";
         default: return "ButtonDocPage.qml";
 
         }

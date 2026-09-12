@@ -192,7 +192,7 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
@@ -217,7 +217,7 @@ DocLayout {
             font.pixelSize: 13
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: `import ChaSet\n\nChaSetColorPicker {\n    value: "#1d7ae0"\n    mode: "inline"\n    onHexChanged: function(newHex) {\n        console.log("Color selected:", newHex)\n    }\n}`

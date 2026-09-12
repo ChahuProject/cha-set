@@ -159,7 +159,7 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
@@ -184,7 +184,7 @@ DocLayout {
             font.pixelSize: 13
         }
 
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "qml"
             code: `import ChaSet\n\n// Option 1: Wrap children directly\nChaSetTooltip {\n    text: "Save document"\n    side: "top"\n\n    ChaSetButton {\n        text: "Save"\n    }\n}\n\n// Option 2: Attach inside a parent item\nChaSetButton {\n    text: "Submit"\n    ChaSetTooltip {\n        text: "Submit form"\n        side: "bottom"\n    }\n}`

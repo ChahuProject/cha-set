@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Input,
-  type InputSize,
-  Button,
-  Badge,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  Checkbox,
-} from '@chahu/cha-set';
+import { Input, type InputSize, Button, Badge, Tabs, TabsList, TabsTrigger, Checkbox, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { CodeBlock } from '../../components/CodeBlock';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 

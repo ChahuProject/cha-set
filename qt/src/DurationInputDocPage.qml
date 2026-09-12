@@ -58,7 +58,7 @@ DocLayout {
         }
     }
 
-    CodeBlock {
+    ChaSetCodeBlock {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetDurationInput {\n    value: 3600\n    showPresets: true\n    showLabels: true\n}"
         language: "qml"

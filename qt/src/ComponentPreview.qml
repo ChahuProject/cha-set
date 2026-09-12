@@ -101,7 +101,7 @@ ChaSetCard {
         }
 
         // React Code Tab
-        CodeBlock {
+        ChaSetCodeBlock {
             visible: root.activeTab === "code"
             width: parent.width
             code: root.reactCode
@@ -110,7 +110,7 @@ ChaSetCard {
         }
 
         // Qt QML Code Tab
-        CodeBlock {
+        ChaSetCodeBlock {
             visible: root.activeTab === "qt"
             width: parent.width
             code: root.qtCode

@@ -139,7 +139,7 @@ DocLayout {
         width: parent.width
         spacing: 8
         Text { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        CodeBlock {
+        ChaSetCodeBlock {
             width: parent.width
             language: "bash"
             code: "pnpm add @chahu/cha-set"
