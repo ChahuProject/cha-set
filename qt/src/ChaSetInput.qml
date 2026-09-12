@@ -59,6 +59,11 @@ Rectangle {
         return isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
     }
 
+    Behavior on border.color {
+        enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
+        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+    }
+
     // Focus ring (1px offset matching Tailwind ring-1)
     Rectangle {
         id: focusRing

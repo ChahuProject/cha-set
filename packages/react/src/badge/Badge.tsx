@@ -93,7 +93,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         data-variant={variant}
         data-size={size}
         onClick={onClick}
-        className={`inline-flex items-center justify-center border font-medium transition-colors focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 [&>svg]:size-3! [&>svg]:shrink-0 select-none ${isClickable ? 'cursor-pointer' : ''} ${variantStyles[variant]} ${sizeStyles[size]} ${forcedStateClass} ${className}`.trim()}
+        className={`inline-flex items-center justify-center border font-medium transition-colors duration-quick ease-standard focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 [&>svg]:size-3! [&>svg]:shrink-0 select-none ${isClickable ? 'cursor-pointer' : ''} ${variantStyles[variant]} ${sizeStyles[size]} ${forcedStateClass} ${className}`.trim()}
         {...props}
       >
         {dot && (
@@ -111,7 +111,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
               e.stopPropagation();
               onRemove?.();
             }}
-            className="inline-flex items-center justify-center -mr-1 ml-0.5 size-3.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer transition-colors"
+            className="inline-flex items-center justify-center -mr-1 ml-0.5 size-3.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer transition-colors duration-quick ease-standard"
           >
             <svg
               className="size-2.5"

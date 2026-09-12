@@ -282,7 +282,8 @@ Item {
 
         scale: root.isDragging && !root.readOnly ? 0.95 : (root.isHovered ? 1.05 : 1.0)
         Behavior on scale {
-            NumberAnimation { duration: ThemeTokens.motionShort }
+            enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
+            NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
         }
 
         // Focus ring

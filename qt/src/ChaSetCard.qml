@@ -23,8 +23,14 @@ Rectangle {
     border.color: (root.interactive && mouseArea.containsMouse) ? ThemeTokens.accent : cBorder
 
     scale: (root.interactive && mouseArea.pressed) ? 0.995 : 1.0
-    Behavior on scale { NumberAnimation { duration: ThemeTokens.motionShort } }
-    Behavior on border.color { ColorAnimation { duration: ThemeTokens.motionShort } }
+    Behavior on scale {
+        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+        NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+    }
+    Behavior on border.color {
+        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+    }
 
     color: {
         if (root.variant === "secondary") {

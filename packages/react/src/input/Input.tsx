@@ -122,7 +122,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           defaultValue={defaultValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          className={`flex w-full rounded-md border border-input bg-transparent dark:bg-input/20 shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 text-foreground ${sizeStyles[size]} ${forcedStateClass} ${className}`.trim()}
+          className={`flex w-full rounded-md border border-input bg-transparent dark:bg-input/20 shadow-xs transition-[color,background-color,border-color,box-shadow] duration-quick ease-standard file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 text-foreground ${sizeStyles[size]} ${forcedStateClass} ${className}`.trim()}
           {...props}
         />
       );
@@ -140,7 +140,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div
         data-slot="input-container"
         data-size={size}
-        className={`flex items-center w-full rounded-md border bg-transparent dark:bg-input/20 shadow-xs transition-colors text-foreground ${addonContainerSizeStyles[size]} ${containerForcedClass} ${
+        className={`flex items-center w-full rounded-md border bg-transparent dark:bg-input/20 shadow-xs transition-[color,background-color,border-color,box-shadow] duration-quick ease-standard text-foreground ${addonContainerSizeStyles[size]} ${containerForcedClass} ${
           disabled ? 'cursor-not-allowed opacity-50' : ''
         } ${className}`.trim()}
       >
@@ -171,7 +171,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               tabIndex={-1}
               aria-label="Clear input"
               onClick={handleClear}
-              className="p-0.5 rounded text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              className="p-0.5 rounded text-muted-foreground hover:text-foreground transition-colors duration-quick ease-standard cursor-pointer"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -196,7 +196,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               tabIndex={-1}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
               onClick={() => setShowPassword(!showPassword)}
-              className="p-0.5 rounded text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              className="p-0.5 rounded text-muted-foreground hover:text-foreground transition-colors duration-quick ease-standard cursor-pointer"
             >
               {showPassword ? (
                 <svg

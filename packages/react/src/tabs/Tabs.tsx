@@ -135,7 +135,7 @@ export const TabsTrigger = forwardRef<HTMLElement, TabsTriggerProps>(
         data-variant={variant}
         data-size={size}
         className={cn(
-          'inline-flex items-center justify-center gap-1.5 whitespace-nowrap font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer',
+          'inline-flex items-center justify-center gap-1.5 whitespace-nowrap font-medium ring-offset-background transition-[border-color,color,background-color,box-shadow] duration-quick ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer',
           'text-muted-foreground hover:text-foreground',
           '[&_svg]:pointer-events-none [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:shrink-0',
           variant === 'line' ? lineVariantClasses : defaultVariantClasses,

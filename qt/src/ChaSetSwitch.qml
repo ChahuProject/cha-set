@@ -63,7 +63,8 @@ Item {
             : (root.isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0))
 
         Behavior on color {
-            ColorAnimation { duration: ThemeTokens.motionShort }
+            enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
         }
 
         // Outer focus ring: 1px offset Rectangle (margins: -1, radius + 1), visible when focused
@@ -91,9 +92,10 @@ Item {
             border.color: Qt.rgba(0, 0, 0, 0.06)
 
             Behavior on x {
+                enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
                 NumberAnimation {
                     duration: ThemeTokens.motionShort
-                    easing.type: Easing.InOutQuad
+                    easing.type: ThemeTokens.easeStandard
                 }
             }
 

@@ -30,7 +30,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         data-size={size}
         data-interactive={interactive ? 'true' : undefined}
         style={spacingStyle}
-        className={`rounded-xl border transition-all ${variantStyles[variant]} ${size === 'sm' ? 'text-xs' : ''} ${interactive ? 'cursor-pointer hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5' : ''} ${className}`.trim()}
+        className={`rounded-xl border transition-[border-color,box-shadow,translate] duration-quick ease-standard ${variantStyles[variant]} ${size === 'sm' ? 'text-xs' : ''} ${interactive ? 'cursor-pointer hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5' : ''} ${className}`.trim()}
         {...props}
       >
         {children}

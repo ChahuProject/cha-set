@@ -225,7 +225,7 @@ export function RangeSlider({
           aria-readonly={readOnly}
           aria-orientation="horizontal"
           className={cn(
-            'absolute top-1/2 -translate-x-1/2 -translate-y-1/2 touch-none rounded-full border-2 border-primary bg-background shadow-xs outline-none transition-shadow',
+            'absolute top-1/2 -translate-x-1/2 -translate-y-1/2 touch-none rounded-full border-2 border-primary bg-background shadow-xs outline-none transition-shadow duration-quick ease-standard',
             isSm ? 'size-3' : 'size-4',
             readOnly
               ? 'cursor-default'
@@ -258,7 +258,7 @@ export function RangeSlider({
           aria-readonly={readOnly}
           aria-orientation="horizontal"
           className={cn(
-            'absolute top-1/2 -translate-x-1/2 -translate-y-1/2 touch-none rounded-full border-2 border-primary bg-background shadow-xs outline-none transition-shadow',
+            'absolute top-1/2 -translate-x-1/2 -translate-y-1/2 touch-none rounded-full border-2 border-primary bg-background shadow-xs outline-none transition-shadow duration-quick ease-standard',
             isSm ? 'size-3' : 'size-4',
             readOnly
               ? 'cursor-default'
