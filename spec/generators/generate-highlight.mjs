@@ -37,6 +37,12 @@ const engineSource = readFileSync(enginePath, 'utf8');
 // ---------------------------------------------------------------------------
 const declaredTypes = new Set(languages.tokenTypes ?? []);
 if (!declaredTypes.size) fail('languages.json: tokenTypes is empty');
+for (const t of languages.tokenTypes) {
+  // They are emitted as a TypeScript string-literal union, so they must be
+  // identifier-safe. A bare identifier union would silently degrade to an
+  // undefined-type union in the published .d.ts.
+  if (!/^[a-z][a-z0-9-]*$/.test(t)) fail(`languages.json: token type "${t}" is not identifier-safe`);
+}
 
 for (const [key, target] of Object.entries(languages.aliases ?? {})) {
   if (!languages.languages?.[target]) {
@@ -134,6 +140,9 @@ engineBody = engineBody.replace(/^(?:\s*\/\/[^\n]*\n)+/, '');
 engineBody = engineBody.replace(/^(\s*\n)+/, '');
 
 const languagesJson = JSON.stringify(languages, null, 2);
+// Emit a string-literal union: `'plain' | 'keyword' | ...`. Interpolating the
+// raw names would produce a union of undefined type references.
+const tokenTypeUnion = languages.tokenTypes.map((t) => `'${t}'`).join('\n  | ');
 const header = (comment) => `// GENERATED FILE - DO NOT EDIT.
 // Source: spec/highlight/languages.json + spec/highlight/engine.mjs
 //         via spec/generators/generate-highlight.mjs
@@ -150,7 +159,7 @@ ${header(`The embedded lexer is authored once in ES5 so Qt's V4 engine can run t
 // checked; everything above it is shared, untransformed logic.`)}
 
 export type TokenType =
-  | ${languages.tokenTypes.join('\n  | ')};
+  | ${tokenTypeUnion};
 
 export interface Token {
   t: TokenType;

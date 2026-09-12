@@ -9,20 +9,20 @@
 // checked; everything above it is shared, untransformed logic.
 
 export type TokenType =
-  | plain
-  | keyword
-  | constant
-  | type
-  | string
-  | number
-  | comment
-  | function
-  | property
-  | operator
-  | punctuation
-  | variable
-  | tag
-  | attribute;
+  | 'plain'
+  | 'keyword'
+  | 'constant'
+  | 'type'
+  | 'string'
+  | 'number'
+  | 'comment'
+  | 'function'
+  | 'property'
+  | 'operator'
+  | 'punctuation'
+  | 'variable'
+  | 'tag'
+  | 'attribute';
 
 export interface Token {
   t: TokenType;
