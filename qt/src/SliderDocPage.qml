@@ -155,36 +155,42 @@ DocLayout {
                     }
                 }
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Disabled"
-                    checked: root.demoDisabled
-                    onToggled: (val) => root.demoDisabled = val
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+                // Flow forbids anchors on its direct children (QML warns and
+                // disables the whole Flow layout), so the toggles live in one Row.
+                Row {
+                    spacing: 16
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Read-Only"
-                    checked: root.demoReadOnly
-                    onToggled: (val) => root.demoReadOnly = val
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Disabled"
+                        checked: root.demoDisabled
+                        onToggled: (val) => root.demoDisabled = val
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Tooltip"
-                    checked: root.demoShowTooltip
-                    onToggled: (val) => root.demoShowTooltip = val
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Read-Only"
+                        checked: root.demoReadOnly
+                        onToggled: (val) => root.demoReadOnly = val
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Ticks"
-                    checked: root.demoShowTicks
-                    onToggled: (val) => root.demoShowTicks = val
-                    anchors.verticalCenter: parent.verticalCenter
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Tooltip"
+                        checked: root.demoShowTooltip
+                        onToggled: (val) => root.demoShowTooltip = val
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Ticks"
+                        checked: root.demoShowTicks
+                        onToggled: (val) => root.demoShowTicks = val
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
                 }
             }
         ]

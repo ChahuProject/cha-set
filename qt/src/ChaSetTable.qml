@@ -20,7 +20,11 @@ Rectangle {
     readonly property bool isDark: ThemeTokens.dark
     readonly property color cBg: ThemeTokens.panel
     readonly property color cBorder: customBorderColor
-    readonly property color cHeaderBg: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.4)
+    // Header strip = React `bg-muted/50`. Scale the token's own alpha instead of
+    // passing a literal: hover is an alpha-carrying token (0.06 light / 0.09 dark),
+    // and Qt.rgba(r, g, b, <literal>) would discard it and paint an opaque band
+    // that flips to near-white in dark mode.
+    readonly property color cHeaderBg: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.5)
     readonly property color cText: ThemeTokens.text
     readonly property color cSubduedText: ThemeTokens.subduedText
     readonly property color cHover: ThemeTokens.hover

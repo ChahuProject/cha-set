@@ -227,7 +227,7 @@ DocLayout {
                 Rectangle {
                     width: parent.width
                     height: 36
-                    color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.6)
+                    color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.8)
                     border.color: ThemeTokens.border
                     border.width: 0.5
 
@@ -254,7 +254,7 @@ DocLayout {
                         required property int index
                         width: parent ? parent.width : 760
                         height: 44
-                        color: index % 2 === 0 ? "transparent" : Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.2)
+                        color: index % 2 === 0 ? "transparent" : Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.6)
 
                         Rectangle {
                             anchors.bottom: parent.bottom

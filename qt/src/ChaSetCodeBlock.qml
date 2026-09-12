@@ -51,8 +51,18 @@ Rectangle {
     readonly property int bodyPadding: root.embedded ? 0 : 12
     readonly property real naturalBodyHeight: highlighter.implicitHeight + root.bodyPadding * 2
 
-    color: root.embedded ? "transparent" : ThemeTokens.hover
-    border.color: root.embedded ? "transparent" : ThemeTokens.border
+    // React contract: Card (bg-card) + header strip (border-b, transparent bg)
+    // + body over the same card surface; label uses text-muted-foreground.
+    // Same slate parity palette ChaSetCard uses — ThemeTokens is the dunting
+    // launcher palette and does not match the showcase chrome in either theme.
+    readonly property bool isDark: ThemeTokens.dark
+    readonly property color cCard: root.isDark ? Qt.rgba(15.0 / 255.0, 23.0 / 255.0, 42.0 / 255.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
+    readonly property color cBorder: root.isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
+    readonly property color cHeaderBg: root.isDark ? Qt.rgba(8.0 / 255.0, 15.0 / 255.0, 33.0 / 255.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
+    readonly property color cMutedFg: root.isDark ? Qt.rgba(148.0 / 255.0, 163.0 / 255.0, 184.0 / 255.0, 1.0) : Qt.rgba(100.0 / 255.0, 116.0 / 255.0, 139.0 / 255.0, 1.0)
+
+    color: root.embedded ? "transparent" : cCard
+    border.color: root.embedded ? "transparent" : cBorder
     border.width: root.embedded ? 0 : 1
     radius: root.embedded ? 0 : 8
     clip: true
@@ -93,8 +103,8 @@ Rectangle {
             width: parent.width
             height: root.headerHeight
             visible: !root.embedded
-            color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, 0.8)
-            border.color: ThemeTokens.border
+            color: root.cHeaderBg
+            border.color: root.cBorder
             border.width: 0.5
 
             Row {
@@ -131,7 +141,7 @@ Rectangle {
                 anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.label
-                color: ThemeTokens.subduedText
+                color: root.cMutedFg
                 font.pixelSize: 11
                 font.bold: true
                 font.letterSpacing: 0.5
@@ -154,7 +164,7 @@ Rectangle {
             id: body
             width: parent.width
             height: root.maxHeight > 0 ? root.maxHeight : root.naturalBodyHeight
-            color: ThemeTokens.background
+            color: root.cCard
 
             ChaSetScrollArea {
                 id: scroll
