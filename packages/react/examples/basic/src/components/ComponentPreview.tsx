@@ -27,7 +27,6 @@ export function ComponentPreview({
         {/* Tab Navigation Header */}
         <div className="flex items-center justify-between border-b border-border bg-muted/40 px-3 py-2">
           <SegmentedControl
-            size="sm"
             value={activeTab}
             onValueChange={(val) => setActiveTab(val as 'preview' | 'code' | 'qt')}
             options={[
