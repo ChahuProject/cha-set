@@ -164,6 +164,9 @@ pnpm gate --pixel
 ## 5. Red Lines for AI Agents
 
 1. **NEVER accept visual drift on interactive states**: Hover and active states are first-class citizens. When a button is hovered or clicked, the resulting color MUST match across React and Qt.
-2. **DO NOT probe font glyphs for color match**: Font anti-aliasing differs across rendering engines. Background surface colors must be sampled in padding areas, while font rendering is verified via `pixelmatch` spatial tolerance (<= 2.8%).
-3. **Always lock DPI**: Never run visual captures without `QT_ENABLE_HIGHDPI_SCALING=0` and `QT_SCALE_FACTOR=1`.
-4. **Selective Gate Preservation**: Keep standard `pnpm gate` fast. Always use `pnpm gate:pixel` or `pnpm gate --pixel` for targeted visual conformance.
+2. **Animation determinism is a soft requirement — but difference-on-animation is NOT**: L1 samples are captured headless with events (not screenshots at wall-clock), so animating properties must be at their terminal value, never mid-flight. Two guards enforce this:
+   - Qt: captures run with `--test-scenario`/`--harness`/shot paths, which force `ThemeTokens.animationsEnabled = false` in `qt/src/Main.qml` (Component.onCompleted). Any L1 QML component that adds a `Behavior` MUST gate it on `ThemeTokens.animationsEnabled` — otherwise immediate-then-animated value drift makes sampling flaky.
+   - React: states are injected via className (`forceHover`/`forceActive`) without relying on CSS transitions to reach the target; transition utilities resolve to the terminal state at capture time. Never capture an intermediate transition frame.
+3. **DO NOT probe font glyphs for color match**: Font anti-aliasing differs across rendering engines. Background surface colors must be sampled in padding areas, while font rendering is verified via `pixelmatch` spatial tolerance (<= 2.8%).
+4. **Always lock DPI**: Never run visual captures without `QT_ENABLE_HIGHDPI_SCALING=0` and `QT_SCALE_FACTOR=1`.
+5. **Selective Gate Preservation**: Keep standard `pnpm gate` fast. Always use `pnpm gate:pixel` or `pnpm gate --pixel` for targeted visual conformance.

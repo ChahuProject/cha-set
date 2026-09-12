@@ -53,6 +53,19 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - **Documentation & PropsTable**: Doc descriptions, code examples, and props tables must never describe measurements as "in pixels" or "100px". Use neutral units, rem scale, or component tokens.
 10. **Pre-Response Commit Gate & Incremental Verification (增量提交门禁与验证壁垒)**:
     - Every component introduced or modified MUST pass full verification (`cmake --build qt/build && pnpm test && pnpm gate`) and be committed immediately with English Conventional Commits (`feat(<name>): ...`) and pushed to origin BEFORE proceeding to the next component or yielding the turn. Never accumulate uncommitted changes.
+11. **Mandatory Motion Tokens & Animation Contract (动效令牌统一约束律 — 新组件必带动画)**:
+    - No component ships without motion. Every interactive state transition (hover/pressed/focus/checked/selected/expanded and enter/exit of overlays) MUST be a smooth animation driven by the shared motion tokens — never instant jumps, never component-local hardcoded durations/easings.
+    - **Single Source of Truth**: durations `--cs-motion-quick 90ms / short 120ms / medium 180ms` and easings `--cs-ease-standard / emphasized / entrance` are defined in `spec/tokens/primitives.json`; easings carry both a CSS `cubic-bezier(...)` and a Qt `Easing.*` name. Both stacks read from this one spec.
+    - **React (Tailwind v4)**: use `duration-quick|short|medium` + `ease-standard|emphasized|entrance` utilities. Assignment rules:
+      - Hover/focus/pressed/checked micro-interactions (color, border, shadow, translate, scale): `duration-quick ease-standard`.
+      - Enter/exit of overlays (fade + zoom): `animate-in`/`animate-out` + modifiers (`fade-in-0`, `zoom-in-95`, `slide-in-from-*-10`, `slide-out-to-*-10`), `duration-short ease-entrance` (via `animate-in-medium`/`animate-in-emphasized` when slower). Surfaces positioned via `transform` (centered modals, Rnd windows) MUST use the pure-opacity `animate-fade-in/out` instead of scale.
+      - Sliding panels / collapsing height (sheet, collapsible): `duration-medium ease-emphasized`.
+      - Loop animations (skeleton shimmer): `.animate-shimmer` (project-defined keyframes in `packages/react/src/styles/motion.css`).
+      - Strictly forbidden: hardcoded `duration-100/150/200`, `ease-in-out` — they bypass `prefers-reduced-motion` zeroing and token theming. Convert them to the token utilities above.
+    - **Qt (QML)**: use the ScrollBar guard pattern — `Behavior on <prop> { enabled: <animationsEnabled && harnessMode guard>; NumberAnimation|ColorAnimation { duration: ThemeTokens.motionQuick|Short|Medium; easing.type: ThemeTokens.easeStandard|Emphasized|Entrance } }`. Every `Behavior` MUST gate on `ThemeTokens.animationsEnabled` (plus `!forceHover && !forceActive && (typeof harnessMode === "undefined" || harnessMode === "")` when those props exist) so headless scenario/pixel runs stay deterministic. Hardcoded `Easing.*` enum values or numeric durations are forbidden — use `ThemeTokens.ease*` / `ThemeTokens.motion*` (these resolve to 0 when animations are disabled, which is the reduced-motion mechanism).
+    - **Never animate**: scroll offsets/contentY (virtual lists, scroll areas), drag positions (splitter, Rnd) — motion on these breaks 60fps kinematics and is a gate-blocking red line.
+    - **Exit animations (React)**: for custom (non-Base-UI) overlays that unmount on close, keep the subtree mounted during the exit phase with `useExitAnimation` (`packages/react/src/lib/useExitAnimation.ts`) + `animate-fade-out`; never hard-`return null` on close for a surface with an exit animation.
+    - **DocPages**: every Living DocPage MUST include an `Animations` section (`{ id: 'animations', title: 'Animations' }` in `tocItems`, plus a `<section id="animations">` on React / matching text block on Qt) describing the component's motion points and the tokens used. `prefers-reduced-motion` (React) and `ThemeTokens.animationsEnabled` (Qt) must be mentioned as the kill switch.
 
 ---
 
@@ -112,6 +125,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - Follow Input Modality State Machine: bind active highlight strictly to `[data-highlighted]` or roving focus (`[tabindex="0"]`). Never couple raw CSS `:hover` directly to active states in menu/select options to prevent dual-highlighting.
    - Support `forceHover` and `forceActive` boolean props to allow deterministic headless screenshot capture.
    - Support `asChild` (via `@base-ui/react` or Slot) where applicable.
+   - **Add motion per Golden Rule 11**: token utilities `duration-quick/short/medium` + `ease-standard/emphasized/entrance`; overlays enter/exit via `animate-in`/`animate-out` (+ modifiers) or `animate-fade-in/out` when `transform`-positioned; custom overlays that unmount on close MUST use `useExitAnimation`. Never hardcode `duration-100/150/200` or `ease-in-out`.
 2. **Module Exports**:
    - `packages/react/src/<name>/index.ts`: export components and types.
    - `packages/react/src/index.ts`: re-export `export * from './<name>';`.
@@ -133,6 +147,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - Implement Input Modality State Machine: drive active highlight strictly by `isHighlighted: index === root.highlightedIndex`. NEVER combine with `containsMouse` (`isHighlighted || containsMouse` is strictly forbidden). Discard stationary pointer events and only switch to pointer modality on intentional movement ($\Delta > 1\text{px}$).
    - Implement `forceHover` and `forceActive` test hooks.
    - Adhere to desktop interaction conventions (smooth hover cursors, keyboard focus rings, auto-scroll active items into view).
+   - **Add motion per Golden Rule 11**: every interactive state transition uses `Behavior on <prop>` gated on `ThemeTokens.animationsEnabled` (+ `!forceHover && !forceActive && harnessMode` guard) with `NumberAnimation`/`ColorAnimation` durations `ThemeTokens.motionQuick|Short|Medium` and `easing.type: ThemeTokens.easeStandard|Emphasized|Entrance`. Overlay surfaces animate opacity (+ mild scale); sliding panels animate x/y with `easeEmphasized`. NEVER animate scroll offsets or drag positions. Never hardcode `Easing.*` or numeric durations.
 2. **Register in CMake**:
    Update `qt/CMakeLists.txt`:
    - Add `src/ChaSet<Name>.qml` under `qt_add_qml_module(ChaSet ...)`.
@@ -198,6 +213,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Header with title, badge, and description.
      - Interactive `ComponentPreview` with live preview and controls.
      - Dedicated `KeyboardShortcutsTable` section with `{ id: 'keyboard', title: 'Keyboard Navigation' }` in `tocItems`.
+     - **Dedicated `Animations` section**: `{ id: 'animations', title: 'Animations' }` in `tocItems` and a `<section id="animations">` describing the component's motion points (which states animate, which duration/easing tokens they use), mentioning `prefers-reduced-motion` and `ThemeTokens.animationsEnabled` as the kill switch.
      - Variant showcase section.
      - Clean TSX / QML `CodeBlock` examples (strictly zero `px` in CSS classes or inline styles).
      - Complete `PropsTable` (strictly zero `px` or "in pixels" in descriptions; use neutral descriptions).
@@ -236,7 +252,11 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 
 1. **Zero-`px` Verification**:
    - Verify zero raw `px` units in component implementation, styles, virtualizer spacer calculations (must use rem), code snippets, doc page previews, and PropsTable descriptions.
-2. **Execute Full Suite Verification**:
+2. **Motion Token Verification**:
+   - Grep the new component files for forbidden hardcoded motion: `duration-100|150|200`, `ease-in-out` (React) and raw `Easing.` / numeric animation durations (Qt). Replace with token utilities/`ThemeTokens.motion*|ease*`.
+   - Verify every Qt `Behavior` guards on `ThemeTokens.animationsEnabled` (+ force/harness exclusions) and references `ThemeTokens.motion*`/`ThemeTokens.ease*`.
+   - Verify the DocPage contains the `Animations` section and `tocItems` entry.
+3. **Execute Full Suite Verification**:
    ```bash
    cmake --build qt/build
    pnpm test
