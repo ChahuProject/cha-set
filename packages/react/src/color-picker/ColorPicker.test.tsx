@@ -78,7 +78,8 @@ describe('ColorPicker component', () => {
     // Press Escape to dismiss
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByTestId('color-hex-input')).not.toBeInTheDocument();
+    // Panel runs a short exit animation before unmounting
+    expect(screen.queryByTestId('color-hex-input')).toBeInTheDocument();
   });
 
   it('blocks interaction and applies disabled styling when disabled', () => {

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { CopyButton } from '../copy-button/CopyButton';
+import { useExitAnimation } from '../lib/useExitAnimation';
 import { cn } from '../lib/utils';
 import {
   clamp,
@@ -288,7 +289,7 @@ function CircleWheel({
       />
       {/* 3. Dark overlay for value (brightness) */}
       <div
-        className="absolute inset-0 rounded-full pointer-events-none bg-black transition-opacity"
+        className="absolute inset-0 rounded-full pointer-events-none bg-black transition-opacity duration-quick ease-standard"
         style={{
           opacity: 1 - hsva.v / 100,
         }}
@@ -424,6 +425,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
     const [showLabSliders, setShowLabSliders] = React.useState<boolean>(false);
 
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
+    const { visible: panelVisible, exiting: panelExiting } = useExitAnimation(isOpen);
 
     // Movable drag displacement
     const [dragOffset, setDragOffset] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -673,7 +675,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
               : undefined,
         }}
         className={cn(
-          'flex flex-col gap-3 rounded-lg border border-border bg-card p-3.5 text-card-foreground shadow-sm transition-shadow',
+          'flex flex-col gap-3 rounded-lg border border-border bg-card p-3.5 text-card-foreground shadow-sm transition-shadow duration-quick ease-standard',
           isSm ? 'w-64 text-xs' : 'w-72 text-sm',
           movable && 'cursor-grab active:cursor-grabbing',
           disabled && 'opacity-50 pointer-events-none select-none',
@@ -725,7 +727,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
               disabled={disabled}
               onClick={() => setActivePanel(p.value)}
               className={cn(
-                'flex-1 rounded py-1 text-center font-medium transition-all select-none',
+                'flex-1 rounded py-1 text-center font-medium transition-all duration-quick ease-standard select-none',
                 activePanel === p.value
                   ? 'bg-background text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground',
@@ -876,7 +878,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                     title={color}
                     onClick={() => commitHex(color)}
                     className={cn(
-                      'group relative size-6 rounded-md border transition-all hover:scale-110 active:scale-95 flex items-center justify-center',
+                      'group relative size-6 rounded-md border transition-all duration-quick ease-standard hover:scale-110 active:scale-95 flex items-center justify-center',
                       isSelected
                         ? 'border-primary ring-2 ring-primary/40 shadow-xs'
                         : 'border-border/60 hover:border-border',
@@ -907,7 +909,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                   title={color}
                   onClick={() => commitHex(color)}
                   className={cn(
-                    'size-5 rounded-md border transition-transform hover:scale-115 active:scale-95',
+                    'size-5 rounded-md border transition-transform duration-quick ease-standard hover:scale-115 active:scale-95',
                     isSelected
                       ? 'border-primary ring-1.5 ring-primary'
                       : 'border-border/50',
@@ -948,7 +950,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                   }
                 }}
                 className={cn(
-                  'h-8 w-full rounded-md border border-border bg-background px-2.5 pr-8 font-mono text-xs uppercase text-foreground outline-hidden transition-colors focus:border-primary focus:ring-1 focus:ring-primary',
+                  'h-8 w-full rounded-md border border-border bg-background px-2.5 pr-8 font-mono text-xs uppercase text-foreground outline-hidden transition-colors duration-quick ease-standard focus:border-primary focus:ring-1 focus:ring-primary',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
               />
@@ -980,7 +982,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
               onClick={ch.toggle}
               aria-pressed={ch.active}
               className={cn(
-                'flex-1 rounded py-1 text-center font-semibold text-[0.6875rem] transition-all select-none border',
+                'flex-1 rounded py-1 text-center font-semibold text-[0.6875rem] transition-all duration-quick ease-standard select-none border',
                 ch.active
                   ? 'border-primary/40 bg-primary/10 text-primary shadow-2xs font-bold'
                   : 'border-transparent text-muted-foreground hover:bg-muted hover:text-foreground',
@@ -1189,7 +1191,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
             disabled={disabled}
             onClick={() => !disabled && setIsOpen(!isOpen)}
             className={cn(
-              'inline-flex items-center gap-2 rounded-md border border-border bg-background text-foreground px-3 font-mono shadow-xs transition-colors hover:bg-muted/50 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring select-none cursor-pointer',
+              'inline-flex items-center gap-2 rounded-md border border-border bg-background text-foreground px-3 font-mono shadow-xs transition-colors duration-quick ease-standard hover:bg-muted/50 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring select-none cursor-pointer',
               isSm ? 'h-8 text-xs' : 'h-9 text-sm',
               disabled && 'cursor-not-allowed opacity-50 pointer-events-none',
             )}
@@ -1205,8 +1207,15 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
           </button>
 
           {/* Floating dropdown card */}
-          {isOpen && (
-            <div className="absolute left-0 top-full z-50 mt-1.5 animate-in fade-in-0 zoom-in-95">
+          {panelVisible && (
+            <div
+              className={cn(
+                'absolute left-0 top-full z-50 mt-1.5',
+                panelExiting
+                  ? 'animate-out fade-out-0 zoom-out-95'
+                  : 'animate-in fade-in-0 zoom-in-95',
+              )}
+            >
               {panelContent}
             </div>
           )}

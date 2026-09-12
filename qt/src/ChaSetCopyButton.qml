@@ -91,6 +91,17 @@ Item {
                 font.bold: true
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
+                opacity: root.copied ? 1.0 : 0.0
+                scale: root.copied ? 1.0 : 0.5
+
+                Behavior on opacity {
+                    enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                    NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeEntrance }
+                }
+                Behavior on scale {
+                    enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                    NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeEntrance }
+                }
             }
         }
 
@@ -133,6 +144,17 @@ Item {
                     font.bold: true
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
+                    opacity: root.copied ? 1.0 : 0.0
+                    scale: root.copied ? 1.0 : 0.5
+
+                    Behavior on opacity {
+                        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                        NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeEntrance }
+                    }
+                    Behavior on scale {
+                        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                        NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeEntrance }
+                    }
                 }
             }
 

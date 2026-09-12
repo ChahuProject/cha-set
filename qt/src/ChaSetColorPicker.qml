@@ -29,6 +29,9 @@ Item {
     property real dragOffsetX: 0
     property real dragOffsetY: 0
 
+    // Popover floating dropdown open state (for entrance animation)
+    property bool popoverOpen: false
+
     // Internal HSV state (0.0 to 1.0)
     property real currentH: 0.58
     property real currentS: 0.87
@@ -440,6 +443,17 @@ Item {
             color: root.isDark ? ThemeTokens.panel : "#ffffff"
             border.color: ThemeTokens.border
             border.width: 1
+            opacity: (root.mode === "popover" && !root.popoverOpen) ? 0.0 : 1.0
+            scale: (root.mode === "popover" && !root.popoverOpen) ? 0.95 : 1.0
+
+            Behavior on opacity {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
+            }
+            Behavior on scale {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
+            }
 
             x: root.movable ? root.dragOffsetX : 0
             y: root.movable ? root.dragOffsetY : 0
@@ -1286,6 +1300,15 @@ Item {
         border.width: popoverTrigger.activeFocus ? 2 : 1
         activeFocusOnTab: root.mode === "popover" && !root.disabled
 
+        Behavior on color {
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
+        Behavior on border.color {
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
+
         Keys.onReturnPressed: function(event) {
             event.accepted = true
             colorPopup.open()
@@ -1347,6 +1370,7 @@ Item {
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         padding: 0
         background: Item {}
+        onVisibleChanged: root.popoverOpen = colorPopup.visible
 
         Loader {
             sourceComponent: pickerCardComponent

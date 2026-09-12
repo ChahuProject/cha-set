@@ -30,7 +30,8 @@ Rectangle {
     focus: root.open
 
     Behavior on opacity {
-        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
+        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: ThemeTokens.easeEmphasized }
     }
 
     onOpenChanged: {
@@ -78,7 +79,8 @@ Rectangle {
         scale: root.open ? 1.0 : 0.95
 
         Behavior on scale {
-            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutQuad }
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: ThemeTokens.easeEmphasized }
         }
 
         MouseArea {

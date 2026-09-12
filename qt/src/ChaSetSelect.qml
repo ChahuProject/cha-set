@@ -148,6 +148,11 @@ Item {
         border.width: 1
         opacity: root.disabled ? 0.5 : 1.0
 
+        Behavior on border.color {
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
+
         Row {
             anchors.fill: parent
             anchors.leftMargin: 10
@@ -208,6 +213,17 @@ Item {
             border.color: ThemeTokens.border
             border.width: 1
             radius: root.customRadius
+            opacity: selectPopup.visible ? 1.0 : 0.0
+            scale: selectPopup.visible ? 1.0 : 0.95
+
+            Behavior on opacity {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
+            }
+            Behavior on scale {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
+            }
         }
 
         contentItem: Column {
@@ -228,6 +244,11 @@ Item {
                     readonly property bool isHighlighted: index === root.highlightedIndex
                     color: isHighlighted ? ThemeTokens.hover : "transparent"
                     opacity: modelData.disabled ? 0.4 : 1.0
+
+                    Behavior on color {
+                        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                    }
 
                     Text {
                         anchors.left: parent.left

@@ -176,7 +176,7 @@ export function InlineEditableText({
       }}
       onPointerDown={disabled ? undefined : (e) => e.stopPropagation()}
       className={cn(
-        'group/editable-text flex min-w-0 max-w-full items-center gap-1.5 rounded-md px-1 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+        'group/editable-text flex min-w-0 max-w-full items-center gap-1.5 rounded-md px-1 text-left transition-colors duration-quick ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
         !disabled && 'cursor-text hover:bg-muted/60',
         className,
       )}
@@ -187,7 +187,7 @@ export function InlineEditableText({
       {!disabled && (
         <PencilIcon
           className={cn(
-            'shrink-0 text-muted-foreground/0 transition-colors group-hover/editable-text:text-muted-foreground/70',
+            'shrink-0 text-muted-foreground/0 transition-colors duration-quick ease-standard group-hover/editable-text:text-muted-foreground/70',
             isSm ? 'size-3' : 'size-3.5',
           )}
         />
