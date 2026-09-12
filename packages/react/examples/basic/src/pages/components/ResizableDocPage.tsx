@@ -11,14 +11,14 @@ export function ResizableDocPage() {
   >('horizontal');
   const [playgroundWithHandle, setPlaygroundWithHandle] = useState(true);
 
-  const horizontalCode = `<ResizablePanelGroup direction="horizontal" className="min-h-56 rounded-lg border border-border">
-  <ResizablePanel defaultSize={30} minSize={20} maxSize={50}>
+  const horizontalCode = `<ResizablePanelGroup direction="horizontal" className="min-h-64 rounded-lg border border-border">
+  <ResizablePanel defaultSize={35} minSize={15} maxSize={85}>
     <div className="flex h-full items-center justify-center p-6 bg-muted/20">
       <span className="font-semibold text-sm">Navigation Sidebar</span>
     </div>
   </ResizablePanel>
   <ResizableHandle withHandle />
-  <ResizablePanel defaultSize={70}>
+  <ResizablePanel defaultSize={65} minSize={15}>
     <div className="flex h-full items-center justify-center p-6">
       <span className="font-semibold text-sm">Editor Workspace</span>
     </div>
@@ -104,22 +104,22 @@ export function ResizableDocPage() {
         </p>
 
         <ComponentPreview title="Horizontal Resizable Group" reactCode={horizontalCode}>
-          <div className="w-full max-w-2xl">
+          <div className="w-full">
             <ResizablePanelGroup
               direction="horizontal"
-              className="min-h-52 rounded-lg border border-border bg-card overflow-hidden"
+              className="min-h-64 rounded-lg border border-border bg-card overflow-hidden"
             >
-              <ResizablePanel defaultSize={30} minSize={20} maxSize={50}>
-                <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/20">
-                  <span className="font-semibold text-foreground mb-1.5">Explorer Tree</span>
-                  <Badge variant="outline">30% Initial Width</Badge>
+              <ResizablePanel defaultSize={35} minSize={15} maxSize={85}>
+                <div className="flex h-full flex-col justify-center items-center p-6 text-xs text-muted-foreground bg-muted/20">
+                  <span className="font-semibold text-foreground mb-1.5 text-sm">Explorer Tree</span>
+                  <Badge variant="outline">35% Initial Width</Badge>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={70}>
-                <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground">
-                  <span className="font-semibold text-foreground mb-1.5">Source Code Editor</span>
-                  <Badge variant="secondary">70% Initial Width</Badge>
+              <ResizablePanel defaultSize={65} minSize={15}>
+                <div className="flex h-full flex-col justify-center items-center p-6 text-xs text-muted-foreground">
+                  <span className="font-semibold text-foreground mb-1.5 text-sm">Source Code Editor</span>
+                  <Badge variant="secondary">65% Initial Width</Badge>
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
