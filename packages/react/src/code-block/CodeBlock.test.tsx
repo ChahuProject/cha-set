@@ -138,4 +138,45 @@ describe('CodeBlock (React)', () => {
     const entries = tokenize('const a = 1;', 'js');
     expect(entries.some((t) => t.t === 'keyword')).toBe(true);
   });
+
+  it('cross-fades the body on a file switch using token-driven motion classes', async () => {
+    const files = [
+      { name: 'a.ts', code: 'const a = 1;' },
+      { name: 'b.ts', code: 'const b = 2;' },
+    ];
+    const { container } = render(<CodeBlock language="ts" files={files} />);
+
+    const panels = () =>
+      Array.from(container.querySelectorAll<HTMLElement>('[data-slot="tabs-content"]'));
+    const hasMotion = () =>
+      panels().length > 0 &&
+      panels().every((p) => p.classList.contains('animate-in') && p.classList.contains('fade-in-0'));
+
+    // Motion is declared through the shared enter-animation vocabulary (never a
+    // component-local duration), so the tokens stay the single source of truth.
+    expect(hasMotion()).toBe(true);
+
+    fireEvent.click(screen.getByRole('tab', { name: 'b.ts' }));
+    await waitFor(() => expect(codeEl(container).textContent).toBe('const b = 2;'));
+
+    // The freshly mounted panel carries the same class, which is what replays the fade.
+    expect(hasMotion()).toBe(true);
+  });
+
+  it('reserves the header label for single-file mode so the tab strip is not duplicated', () => {
+    const files = [
+      { name: 'a.ts', code: 'const a = 1;' },
+      { name: 'b.ts', code: 'const b = 2;' },
+    ];
+    const { container, unmount } = render(<CodeBlock language="ts" files={files} />);
+
+    // Qt parity: the active tab already names the file, so no label span is emitted…
+    expect(container.querySelector('[data-slot="code-block-label"]')).toBeNull();
+    // …but the copy affordance still announces which file it will copy.
+    expect(screen.getByRole('button', { name: 'Copy a.ts to clipboard' })).toBeInTheDocument();
+
+    unmount();
+    const single = render(<CodeBlock code="x" language="qml" />);
+    expect(single.container.querySelector('[data-slot="code-block-label"]')).not.toBeNull();
+  });
 });

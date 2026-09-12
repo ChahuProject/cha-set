@@ -12,6 +12,7 @@ DocLayout {
         { id: "preview", title: "Interactive Preview" },
         { id: "variants", title: "Variants & Options" },
         { id: "installation", title: "Installation" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "API Reference" }
     ]
@@ -97,6 +98,20 @@ DocLayout {
         title: "Installation"
         language: "bash"
         code: "pnpm add @chahu/cha-set"
+    }
+
+    // Animations
+    Column {
+        width: parent.width
+        spacing: 12
+
+        Text { text: "Animations"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+
+        Text { text: "Motion behavior and timing driven by ThemeTokens for file switching and the header affordances."; color: ThemeTokens.subduedText; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+
+        Text { text: "• Switching the active file cross-fades the body over ThemeTokens.motionShort with the easeEntrance curve."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• The header affordances inherit token motion from their primitives: file tabs interpolate color and border over ThemeTokens.motionQuick with the easeStandard curve, as do the copy button and the scroll bars."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
     }
 
     KeyboardShortcutsTable {

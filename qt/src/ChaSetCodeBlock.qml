@@ -60,6 +60,28 @@ Rectangle {
     implicitWidth: 640
     implicitHeight: root.headerHeight + (root.maxHeight > 0 ? root.maxHeight : root.naturalBodyHeight)
 
+    // Motion (Golden Rule 11): selecting another file cross-fades the body so the
+    // swap reads as a transition instead of a hard cut. Duration/easing come from
+    // the shared motion tokens — ThemeTokens.motionShort resolves to 0 when
+    // animations are disabled, which is the reduced-motion kill switch. The
+    // harness guard keeps headless scenario/pixel runs deterministic.
+    NumberAnimation {
+        id: fileSwapFade
+        target: body
+        property: "opacity"
+        from: 0
+        to: 1
+        duration: ThemeTokens.motionShort
+        easing.type: ThemeTokens.easeEntrance
+    }
+
+    onCurrentIndexChanged: {
+        if (root.multiFile && ThemeTokens.animationsEnabled
+                && (typeof harnessMode === "undefined" || harnessMode === "")) {
+            fileSwapFade.restart()
+        }
+    }
+
     Column {
         id: layout
         width: parent.width
@@ -93,6 +115,11 @@ Rectangle {
                         size: "sm"
                         variant: index === root.currentIndex ? "secondary" : "ghost"
                         onClicked: root.currentIndex = index
+
+                        // Keyboard parity with React's Tabs primitive: ←/→ move the
+                        // active file while a tab holds focus.
+                        Keys.onLeftPressed: root.currentIndex = (index - 1 + root.files.length) % root.files.length
+                        Keys.onRightPressed: root.currentIndex = (index + 1) % root.files.length
                     }
                 }
             }
