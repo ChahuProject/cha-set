@@ -137,7 +137,7 @@
         { "open": "'", "close": "'", "escape": false, "multiline": true },
         { "open": "\"", "close": "\"", "escape": true, "multiline": true }
       ],
-      "identifier": "[A-Za-z_][A-Za-z0-9_]*",
+      "identifier": "[@A-Za-z_][A-Za-z0-9_./-]*",
       "number": "\\b\\d+\\b",
       "operator": "\\|\\||&&|>>|<<|[|&<>]",
       "punctuation": "[{}()\\[\\];,]",
@@ -156,7 +156,7 @@
         { "type": "variable", "pattern": "\\$\\{[^}]*\\}" },
         { "type": "variable", "pattern": "\\$[A-Za-z_][A-Za-z0-9_]*" },
         { "type": "variable", "pattern": "\\$[0-9@*?#]" },
-        { "type": "operator", "pattern": "-{1,2}[A-Za-z][A-Za-z0-9-]*" }
+        { "type": "operator", "pattern": "-{1,2}[A-Za-z][A-Za-z0-9-]*", "wordBoundaryBefore": true }
       ],
       "classifyLineStartAsFunction": true
     },

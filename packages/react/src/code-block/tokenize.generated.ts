@@ -389,7 +389,7 @@ const LANGUAGES: LanguageTable = {
           "multiline": true
         }
       ],
-      "identifier": "[A-Za-z_][A-Za-z0-9_]*",
+      "identifier": "[@A-Za-z_][A-Za-z0-9_./-]*",
       "number": "\\b\\d+\\b",
       "operator": "\\|\\||&&|>>|<<|[|&<>]",
       "punctuation": "[{}()\\[\\];,]",
@@ -473,7 +473,8 @@ const LANGUAGES: LanguageTable = {
         },
         {
           "type": "operator",
-          "pattern": "-{1,2}[A-Za-z][A-Za-z0-9-]*"
+          "pattern": "-{1,2}[A-Za-z][A-Za-z0-9-]*",
+          "wordBoundaryBefore": true
         }
       ],
       "classifyLineStartAsFunction": true
@@ -815,7 +816,13 @@ function hlBuildRules(lang) {
     for (var k = 0; k < lang.extra.length; k++) {
       var entry = lang.extra[k];
       var compiled = hlCompile(entry.pattern);
-      if (compiled) rules.extra.push({ type: entry.type, re: compiled });
+      if (compiled) {
+        rules.extra.push({
+          type: entry.type,
+          re: compiled,
+          wordBoundaryBefore: !!entry.wordBoundaryBefore
+        });
+      }
     }
   }
   return rules;
@@ -878,6 +885,12 @@ function hlIsLineStart(source, pos) {
     i -= 1;
   }
   return true;
+}
+
+function hlIsWordBoundaryBefore(source, pos) {
+  if (pos <= 0) return true;
+  var prev = source.charAt(pos - 1);
+  return /[ \t\r\n;|<>&()]/.test(prev);
 }
 
 function hlIsUpperFirst(text) {
@@ -1026,6 +1039,9 @@ function hlTokenize(languages, source, language) {
     var matchedExtra = false;
     for (var i = 0; i < rules.extra.length; i++) {
       var extra = rules.extra[i];
+      if (extra.wordBoundaryBefore && !hlIsWordBoundaryBefore(code, pos)) {
+        continue;
+      }
       var value = hlMatch(extra.re, code, pos);
       if (value) {
         hlPush(out, extra.type, value);

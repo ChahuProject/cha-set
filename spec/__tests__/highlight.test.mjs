@@ -123,6 +123,17 @@ describe('highlight lexer', () => {
       expect(map.get('# trailing note')).toBe('comment');
     });
 
+    it('does not erroneously split hyphenated packages or highlight set keyword in bash', () => {
+      const tokens = tokenize(languages, 'pnpm add @chahu/cha-set --save-dev', 'bash');
+      const nonPlain = tokens.filter((t) => t.t !== 'plain');
+      expect(nonPlain).toEqual([
+        { t: 'function', v: 'pnpm' },
+        { t: 'operator', v: '--save-dev' },
+      ]);
+      const setToken = tokens.find((t) => t.v === 'set' || t.v === '-set');
+      expect(setToken).toBeUndefined();
+    });
+
     it('classifies bash variables outside of quotes', () => {
       const map = kinds('echo $HOME && echo ${PATH} && echo "$QUOTED"', 'bash');
       expect(map.get('$HOME')).toBe('variable');
