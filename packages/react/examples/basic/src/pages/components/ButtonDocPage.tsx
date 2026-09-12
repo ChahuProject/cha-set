@@ -47,6 +47,7 @@ export function ButtonDocPage() {
         { id: 'sizes', title: 'Sizes' },
         { id: 'states', title: 'States' },
         { id: 'button-group', title: 'Button Group' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'API Reference' },
       ]}
@@ -254,6 +255,30 @@ export function ButtonDocPage() {
 
       {/* 4. API Reference */}
       
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Motion behavior and timing for interactive states.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            Color, shadow, and translate changes animate over{' '}
+            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+          </li>
+          <li>
+            Pressing nudges the label down slightly (<code>active:translate-y-0.5</code>).
+          </li>
+          <li>
+            Durations and easing resolve from theme tokens, so{' '}
+            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
+            <code>ThemeTokens.animationsEnabled</code>).
+          </li>
+        </ul>
+      </section>
+
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation

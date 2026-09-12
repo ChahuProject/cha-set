@@ -11,6 +11,7 @@ DocLayout {
     tocItems: [
         { id: "preview", title: "Interactive Preview" },
         { id: "installation", title: "Installation" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "API Reference" }
     ]
@@ -176,6 +177,20 @@ ChaSetSheet {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetSheet { ... }"
         language: "qml"
+    }
+
+    // Animations
+    Column {
+        width: parent.width
+        spacing: 12
+
+        Text { text: "Animations"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+
+        Text { text: "Motion behavior and timing driven by ThemeTokens for the backdrop and sliding panel."; color: ThemeTokens.subduedText; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+
+        Text { text: "• The panel translates along its entry edge while the backdrop cross-fades its opacity."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• Transitions use ThemeTokens.motionMedium with the easeEmphasized curve for a deliberate slide."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
     }
 
     KeyboardShortcutsTable {

@@ -41,6 +41,7 @@ export function TooltipDocPage() {
         { id: 'installation', title: 'Installation' },
         { id: 'anatomy', title: 'Anatomy' },
         { id: 'examples', title: 'Examples & States' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -283,8 +284,38 @@ export function ShorthandTooltipDemo() {
         </div>
       </section>
 
-      {/* 5. Props Reference */}
-      
+      {/* Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Motion behavior and timing for the tooltip bubble on open and close.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            Opening fades and zooms in using{' '}
+            <code className="text-xs bg-muted px-1 rounded">animate-in</code> with{' '}
+            <code className="text-xs bg-muted px-1 rounded">fade-in-0</code> and{' '}
+            <code className="text-xs bg-muted px-1 rounded">zoom-in-95</code>, over{' '}
+            <code className="text-xs bg-muted px-1 rounded">duration-short</code> with the{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-entrance</code> curve.
+          </li>
+          <li>
+            Closing fades and zooms out using{' '}
+            <code className="text-xs bg-muted px-1 rounded">animate-out</code> with{' '}
+            <code className="text-xs bg-muted px-1 rounded">fade-out-0</code> and{' '}
+            <code className="text-xs bg-muted px-1 rounded">zoom-out-95</code>, delaying
+            unmount until the exit animation finishes.
+          </li>
+          <li>
+            Durations and easing resolve from theme tokens, so{' '}
+            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
+            <code>ThemeTokens.animationsEnabled</code>).
+          </li>
+        </ul>
+      </section>
+
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
@@ -295,6 +326,7 @@ export function ShorthandTooltipDemo() {
         <KeyboardShortcutsTable componentId="tooltip" />
       </section>
 
+      {/* 5. Props Reference */}
       <section id="props" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Props Reference

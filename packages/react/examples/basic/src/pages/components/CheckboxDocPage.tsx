@@ -49,6 +49,7 @@ export function CheckboxDocPage() {
         { id: 'installation', title: 'Installation' },
         { id: 'anatomy', title: 'Anatomy' },
         { id: 'states', title: 'Examples & States' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -258,7 +259,33 @@ export function CheckboxDemo() {
         </div>
       </section>
 
-      {/* 5. Keyboard Navigation */}
+      {/* 5. Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Motion behavior and timing for the checked, indeterminate, and state transitions.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            The check-mark SVG stays mounted and, when checked, fades in from opacity 0 to 1
+            while scaling from 0.5 to 1 over{' '}
+            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-entrance</code> curve.
+          </li>
+          <li>
+            The box border color cross-fades on hover, focus, checked, and invalid state changes.
+          </li>
+          <li>
+            Durations and easing resolve from theme tokens, so{' '}
+            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
+            <code>ThemeTokens.animationsEnabled</code>).
+          </li>
+        </ul>
+      </section>
+
+      {/* 6. Keyboard Navigation */}
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation

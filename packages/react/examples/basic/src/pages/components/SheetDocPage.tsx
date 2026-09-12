@@ -47,6 +47,7 @@ export function SheetDocPage() {
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -148,6 +149,35 @@ export function SheetDocPage() {
           Installation
         </h2>
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
+      </section>
+
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Motion behavior and timing for the backdrop and sliding panel.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            The backdrop overlay cross-fades with{' '}
+            <code className="text-xs bg-muted px-1 rounded">animate-fade-in</code> /
+            <code className="text-xs bg-muted px-1 rounded">animate-fade-out</code>.
+          </li>
+          <li>
+            The panel slides in and out from its edge using{' '}
+            <code className="text-xs bg-muted px-1 rounded">slide-in-from-{'{side}'}-10</code> and{' '}
+            <code className="text-xs bg-muted px-1 rounded">slide-out-to-{'{side}'}-10</code>,
+            animated over{' '}
+            <code className="text-xs bg-muted px-1 rounded">duration-medium</code> with the{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-emphasized</code> curve.
+          </li>
+          <li>
+            Durations and easing resolve from theme tokens, so{' '}
+            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
+            <code>ThemeTokens.animationsEnabled</code>).
+          </li>
+        </ul>
       </section>
 
       <section id="keyboard" className="scroll-mt-20 my-10">

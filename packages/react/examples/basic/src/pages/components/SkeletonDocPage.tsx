@@ -24,6 +24,7 @@ export function SkeletonDocPage() {
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -82,6 +83,31 @@ export function SkeletonDocPage() {
           Installation
         </h2>
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
+      </section>
+
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Motion behavior and timing for the skeletographic placeholder effects.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            <code className="text-xs bg-muted px-1 rounded">pulse</code> uses the default{' '}
+            <code className="text-xs bg-muted px-1 rounded">animate-pulse</code> keyframes.
+          </li>
+          <li>
+            <code className="text-xs bg-muted px-1 rounded">wave</code> uses the custom{' '}
+            <code className="text-xs bg-muted px-1 rounded">cs-shimmer</code> keyframes via the{' '}
+            <code className="text-xs bg-muted px-1 rounded">animate-shimmer</code> utility.
+          </li>
+          <li>
+            When <code>prefers-reduced-motion</code> is set, animations resolve to{' '}
+            <code>animation: none</code> automatically (Qt: governed by{' '}
+            <code>ThemeTokens.animationsEnabled</code>).
+          </li>
+        </ul>
       </section>
 
       <section id="keyboard" className="scroll-mt-20 my-10">
