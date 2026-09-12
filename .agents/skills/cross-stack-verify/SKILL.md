@@ -73,6 +73,16 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Layer-ladder probe**: to prove the order, inject one colour per layer on the same selector (`@layer properties{...hotpink} @layer theme{...red} @layer base{...blue} @layer components{...green} @layer utilities{...yellow}`) — `utilities` must win. If `components` wins instead, the order is polluted.
    - **Cold-start check**: re-run the probe after `rm -rf packages/react/examples/basic/node_modules/.vite`; a warm cache can mask stylesheet-injection ordering bugs.
 
+12. **Mandatory Mouse Cursor Semantics & Text Selectability Contract (鼠标指针语义与文本可选性红线)**
+   - **Cross-Stack Cursor Alignment**:
+     - Action items (`Button`, `SplitButton`, `TabsTrigger`, `SegmentedControl`, `Checkbox`, `Switch`, `DropdownMenuItem`, `SelectTrigger`, links, pagination, clickable table rows) MUST show `cursor-pointer` (React) and `Qt.PointingHandCursor` (Qt).
+     - Text inputs (`Input`, `DurationInput`, `PresetNumberInput`, `InlineEditableText`, `ReadOnlyInput`, `ColorPicker` channel/hex inputs) and code viewers (`CodeBlock`, `HighlightedCode`) MUST show `cursor-text` (React) and `Qt.IBeamCursor` (Qt).
+     - Disabled controls MUST show `cursor-not-allowed` (React) and `Qt.ForbiddenCursor` (Qt). Never allow `pointer-events-none` to silently fall back to the default arrow.
+     - Sliders: Tracks show `cursor-pointer` / `Qt.PointingHandCursor`; thumbs show `cursor-grab` (active: `cursor-grabbing`) in React and `Qt.PointingHandCursor` (pressed: `Qt.ClosedHandCursor`) in Qt.
+     - Splitters: Column splitters show `cursor-col-resize` / `Qt.SizeHorCursor`; row splitters show `cursor-row-resize` / `Qt.SizeVerCursor`.
+   - **QML `HoverHandler` Rule**: Always attach `HoverHandler { cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor) }` directly to `TextInput` / `TextEdit` items in Qt to eliminate hover occlusion from `QQuickTextInput`/`QQuickTextEdit`.
+   - **Text Selectability & Clipboard Integrity**: Code viewers (`CodeBlock`, `HighlightedCode`) MUST support multi-line drag selection (`selectByMouse: true`) and `Ctrl+C` copying, while line numbers reside in a separate non-selectable gutter (`ArrowCursor`).
+
 ## 2. Verification Commands Checklist
 
 Before declaring any component task complete, execute:
@@ -95,4 +105,10 @@ pnpm gate
 pnpm test:pixel --component <name>
 # OR run all L1 components:
 pnpm gate:pixel
+
+# 6. Interactive Cursor & Text Selection Verification
+# - Verify hover over input boxes, text fields, and code blocks displays IBeamCursor / cursor-text
+# - Verify clicking margins/padding of input containers focuses the input
+# - Verify code blocks allow multi-line drag selection without selecting line numbers
+# - Verify disabled controls display ForbiddenCursor / cursor-not-allowed
 ```
