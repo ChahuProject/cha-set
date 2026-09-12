@@ -328,6 +328,12 @@
         "title": "Query Builder",
         "href": "#/components/query-builder",
         "desc": "Visual rule tree builder for structured query generation with nested logic groups."
+      },
+      {
+        "id": "code-block",
+        "title": "Code Block",
+        "href": "#/components/code-block",
+        "desc": "Spec-driven syntax-highlighted code viewer composed from scroll, copy, and tab primitives."
       }
     ]
   }

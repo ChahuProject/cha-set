@@ -52,7 +52,8 @@
     "./setting-row": "./components/setting-row.ts",
     "./elided-text": "./components/elided-text.ts",
     "./splitter-handle": "./components/splitter-handle.ts",
-    "./duration-input": "./components/duration-input.ts"
+    "./duration-input": "./components/duration-input.ts",
+    "./code-block": "./components/code-block.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"
