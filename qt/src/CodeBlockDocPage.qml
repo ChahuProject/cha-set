@@ -11,10 +11,11 @@ DocLayout {
     tocItems: [
         { id: "preview", title: "Interactive Preview" },
         { id: "variants", title: "Variants & Options" },
+        { id: "multi-file", title: "Multi-File Tabs" },
         { id: "installation", title: "Installation" },
         { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string sampleCode: "import { useState } from 'react';\n\ninterface CounterProps {\n  initial?: number;\n}\n\n/**\n * A tiny counter with a clamped floor.\n * Demonstrates the shared spec lexer across React and Qt.\n */\nexport function Counter({ initial = 0 }: CounterProps) {\n  const [count, setCount] = useState(initial);\n  const bump = () => setCount((c) => Math.max(0, c + 1));\n\n  return (\n    <button onClick={bump} data-testid=\"counter\">\n      Count: {count}\n    </button>\n  );\n}"
@@ -60,44 +61,132 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
+    // Section: Variants & Options
+    Column {
         width: parent.width
-        title: "Multi-File Tabs"
-        files: root.multiFileSample
-        showLineNumbers: true
-        maxHeight: 220
+        spacing: 16
+
+        Text {
+            text: "Variants & Options"
+            color: ThemeTokens.text
+            font.pixelSize: 18
+            font.weight: Font.DemiBold
+        }
+        Text {
+            text: "Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and chrome-less embedding for inline prose."
+            color: ThemeTokens.subduedText
+            font.pixelSize: 13
+        }
+
+        // Variant 1: showLineNumbers
+        Column {
+            width: parent.width
+            spacing: 8
+            Row {
+                spacing: 8
+                ChaSetBadge { variant: "secondary"; text: "showLineNumbers" }
+                Text { text: "Gutter with right-aligned line numbers"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+            }
+            ChaSetCodeBlock {
+                width: parent.width
+                language: "tsx"
+                code: root.sampleCode
+                showLineNumbers: true
+                maxHeight: 220
+            }
+        }
+
+        // Variant 2: wrap
+        Column {
+            width: parent.width
+            spacing: 8
+            Row {
+                spacing: 8
+                ChaSetBadge { variant: "secondary"; text: "wrap" }
+                Text { text: "Soft-wrap long lines instead of horizontal scroll"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+            }
+            ChaSetCodeBlock {
+                width: parent.width
+                language: "ts"
+                code: root.longLineCode
+                wrap: true
+            }
+        }
+
+        // Variant 3: highlight={false}
+        Column {
+            width: parent.width
+            spacing: 8
+            Row {
+                spacing: 8
+                ChaSetBadge { variant: "secondary"; text: "highlight={false}" }
+                Text { text: "Monochrome fallback using the same layout"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+            }
+            ChaSetCodeBlock {
+                width: parent.width
+                language: "tsx"
+                code: root.sampleCode
+                highlight: false
+                showLineNumbers: true
+            }
+        }
+
+        // Variant 4: embedded
+        Column {
+            width: parent.width
+            spacing: 8
+            Row {
+                spacing: 8
+                ChaSetBadge { variant: "secondary"; text: "embedded" }
+                Text { text: "Drop the card chrome and header for inline embedding"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+            }
+            ChaSetCodeBlock {
+                width: parent.width
+                language: "ts"
+                code: "export const VERSION = '1.4.0';"
+                embedded: true
+            }
+        }
     }
 
-    ChaSetCodeBlock {
+    // Section: Multi-File Tabs
+    Column {
         width: parent.width
-        title: "Wrapped Long Lines"
-        language: "ts"
-        code: root.longLineCode
-        wrap: true
+        spacing: 12
+        Text {
+            text: "Multi-File Tabs"
+            color: ThemeTokens.text
+            font.pixelSize: 18
+            font.weight: Font.DemiBold
+        }
+        Text {
+            text: "Pass a files array to render a tabbed group. Each tab carries its own language, and the copy button always targets the active file."
+            color: ThemeTokens.subduedText
+            font.pixelSize: 13
+        }
+        ChaSetCodeBlock {
+            width: parent.width
+            files: root.multiFileSample
+            showLineNumbers: true
+            maxHeight: 220
+        }
     }
 
-    ChaSetCodeBlock {
+    // Section: Installation
+    Column {
         width: parent.width
-        title: "Monochrome (highlight: false)"
-        language: "ts"
-        code: root.monochromeCode
-        highlight: false
-        showLineNumbers: true
-    }
-
-    ChaSetCodeBlock {
-        width: parent.width
-        title: "Embedded (chrome-less)"
-        language: "ts"
-        code: "export const VERSION = '1.4.0';"
-        embedded: true
-    }
-
-    ChaSetCodeBlock {
-        width: parent.width
-        title: "Installation"
-        language: "bash"
-        code: "pnpm add @chahu/cha-set"
+        spacing: 12
+        Text {
+            text: "Installation"
+            color: ThemeTokens.text
+            font.pixelSize: 18
+            font.weight: Font.DemiBold
+        }
+        ChaSetCodeBlock {
+            width: parent.width
+            language: "bash"
+            code: "pnpm add @chahu/cha-set"
+        }
     }
 
     // Animations

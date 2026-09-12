@@ -67,6 +67,7 @@ Item {
 
     // Colors matching Web Tailwind token classes (shadcn standard)
     readonly property color cPrimary: ThemeTokens.dark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
+    readonly property color cPrimaryFg: ThemeTokens.primaryForeground ? ThemeTokens.primaryForeground : Qt.rgba(1.0, 1.0, 1.0, 1.0)
     readonly property color cDestructive: Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)
     readonly property color cBackground: ThemeTokens.dark ? Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
     readonly property color cBorder: ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
@@ -118,7 +119,7 @@ Item {
         case "link":        return cPrimary
         case "default":
         case "primary":
-        default:            return ThemeTokens.onAccent
+        default:            return cPrimaryFg
         }
     }
 
@@ -310,7 +311,7 @@ Item {
             text: root.loading && root.loadingText !== "" ? root.loadingText : root.text
             color: root.fgColor()
             font.pixelSize: root.fontSize()
-            font.weight: Font.Medium
+            font.weight: Font.DemiBold
             font.family: "Segoe UI"
             renderType: Text.NativeRendering
             font.underline: root.variant === "link" && root.effectiveHovered

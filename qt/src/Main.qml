@@ -11,6 +11,7 @@ ApplicationWindow {
     visible: true
     title: "ChaSet Studio"
     color: win.cBg
+    font.family: "Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif"
 
     // ---- Reactive Theme State ----
     property string activePage: (typeof startupPage !== "undefined" && startupPage !== "") ? startupPage : "intro"   // "intro" | "tokens" | "theme-tuner" | "button" | "scroll-area"
@@ -878,7 +879,7 @@ ApplicationWindow {
                                     text: modelData.title ? modelData.title.toUpperCase() : ""
                                     color: win.cMutedFg
                                     font.pixelSize: 11
-                                    font.weight: Font.Bold
+                                    font.weight: Font.DemiBold
                                     font.family: "Segoe UI, sans-serif"
                                 }
 
@@ -903,7 +904,7 @@ ApplicationWindow {
                                             elide: Text.ElideRight
                                             text: navItemRect.modelData.title || ""
                                             color: win.activePage === navItemRect.modelData.id ? win.cFg : win.cMutedFg
-                                            font.pixelSize: 13
+                                            font.pixelSize: 12
                                             font.weight: win.activePage === navItemRect.modelData.id ? Font.DemiBold : Font.Normal
                                         }
 

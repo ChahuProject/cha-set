@@ -17,7 +17,7 @@ Item {
     property bool showLineNumbers: false
     property bool wrap: false
     property int fontSize: 12
-    property real lineHeight: 1.5
+    property real lineHeight: 1.4
     property color textColor: ThemeTokens.text
     property color gutterColor: ThemeTokens.subduedText
 

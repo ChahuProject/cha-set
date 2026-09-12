@@ -233,7 +233,7 @@ DocLayout {
             text: "Interactive Feedback & Density"
             color: root.cFg
             font.pixelSize: 16
-            font.weight: Font.SemiBold
+            font.weight: Font.DemiBold
         }
 
         Text {

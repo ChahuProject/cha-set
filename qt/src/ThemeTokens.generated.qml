@@ -196,6 +196,10 @@ QtObject {
     readonly property color chromeIcon: color("chromeIcon")
     readonly property color chromeHover: color("chromeHover")
     readonly property color chromeDown: color("chromeDown")
+    // Aliases for onAccent: QML reserves on<CapitalLetter> for signal handlers, so
+    // property onAccent evaluates to invalid/black. Expose primaryForeground and onAccentColor.
+    readonly property color primaryForeground: color("onAccent")
+    readonly property color onAccentColor: color("onAccent")
 
     readonly property int space0: 0
     readonly property int space1: 2
