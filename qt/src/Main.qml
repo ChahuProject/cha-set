@@ -123,6 +123,12 @@ ApplicationWindow {
         if (typeof startupDark !== "undefined" && startupDark === true) ThemeTokens.dark = true
         else if (typeof startupLight !== "undefined" && startupLight === true) ThemeTokens.dark = false
         else ThemeTokens.dark = false
+        // Deterministic headless runs: scenario/pixel tests must not race with
+        // animations (Behavior durations would make assertions / grabs flaky).
+        if ((typeof testScenario !== "undefined" && testScenario !== "")
+            || (typeof shotPath !== "undefined" && shotPath !== "")) {
+            ThemeTokens.animationsEnabled = false
+        }
         if (typeof reqScrollY !== "undefined" && reqScrollY > 0) {
             contentScroll.contentY = reqScrollY
         }
