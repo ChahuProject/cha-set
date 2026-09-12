@@ -126,7 +126,6 @@ Rectangle {
                 id: triggerMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
-                enabled: !root.disabled
                 cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
                 onClicked: {
                     if (!root.disabled) {

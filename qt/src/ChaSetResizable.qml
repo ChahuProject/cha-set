@@ -26,6 +26,10 @@ SplitView {
             ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
         }
 
+        HoverHandler {
+            cursorShape: root.orientation === Qt.Horizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor
+        }
+
         Item {
             id: gripContainer
             visible: root.withHandle

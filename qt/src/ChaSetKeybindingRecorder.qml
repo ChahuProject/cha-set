@@ -100,6 +100,19 @@ Item {
             }
         }
 
+        MouseArea {
+            id: recorderClickArea
+            anchors.fill: parent
+            anchors.rightMargin: btnRow.width + 10
+            hoverEnabled: true
+            cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
+            onClicked: {
+                if (!root.disabled) {
+                    root.recording = !root.recording
+                }
+            }
+        }
+
         Keys.onPressed: function(event) {
             if (!root.recording || root.disabled) return
             event.accepted = true
@@ -129,5 +142,16 @@ Item {
                 root.keybindingRecorded(root.keybinding)
             }
         }
+    }
+
+    MouseArea {
+        id: disabledOverlay
+        anchors.fill: parent
+        z: 99
+        visible: root.disabled
+        hoverEnabled: true
+        cursorShape: Qt.ForbiddenCursor
+        acceptedButtons: Qt.AllButtons
+        onPressed: (mouse) => mouse.accepted = true
     }
 }

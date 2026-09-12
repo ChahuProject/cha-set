@@ -138,10 +138,10 @@ Rectangle {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        hoverEnabled: !root.disabled
-        cursorShape: root.disabled ? Qt.ArrowCursor : Qt.PointingHandCursor
-        enabled: !root.disabled
+        hoverEnabled: true
+        cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
         onClicked: {
+            if (root.disabled) return;
             if (root.parentTabs) {
                 root.parentTabs.currentValue = root.value;
             }

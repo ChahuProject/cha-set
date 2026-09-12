@@ -185,7 +185,7 @@ Item {
                 delegate: Rectangle {
                     required property var modelData
                     required property int index
-                    width: parent.width
+                    width: parent ? parent.width : 0
                     height: 28
                     radius: 4
 
@@ -222,16 +222,18 @@ Item {
                         id: itemMouse
                         anchors.fill: parent
                         hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
+                        cursorShape: (parent && parent.modelData && parent.modelData.disabled) ? Qt.ForbiddenCursor : Qt.PointingHandCursor
                         onPositionChanged: function(mouse) {
+                            if (parent && parent.modelData && parent.modelData.disabled) return
                             splitPopup.handlePointerMove(parent.index, mouse.x, mouse.y)
                         }
                         onEntered: {
-                            if (splitPopup.modality === "pointer") {
+                            if (splitPopup.modality === "pointer" && parent && parent.modelData && !parent.modelData.disabled) {
                                 splitPopup.highlightedIndex = parent.index
                             }
                         }
                         onClicked: {
+                            if (parent && parent.modelData && parent.modelData.disabled) return
                             splitPopup.triggerItem(parent.index)
                         }
                     }

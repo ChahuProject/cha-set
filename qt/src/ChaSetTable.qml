@@ -14,6 +14,7 @@ Rectangle {
     property int selectedIndex: -1
     property int customRadius: 8
     property color customBorderColor: ThemeTokens.border
+    property bool interactive: true
 
     signal rowClicked(int index, var rowData)
 
@@ -200,11 +201,14 @@ Rectangle {
                 MouseArea {
                     id: rowMouseArea
                     anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: root.interactive
+                    enabled: root.interactive
+                    cursorShape: root.interactive ? Qt.PointingHandCursor : Qt.ArrowCursor
                     onClicked: {
-                        root.selectedIndex = rowItem.index;
-                        root.rowClicked(rowItem.index, rowItem.modelData);
+                        if (root.interactive) {
+                            root.selectedIndex = rowItem.index;
+                            root.rowClicked(rowItem.index, rowItem.modelData);
+                        }
                     }
                 }
             }

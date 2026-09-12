@@ -220,7 +220,7 @@ Item {
                 delegate: Rectangle {
                     required property var modelData
                     required property int index
-                    width: parent.width
+                    width: parent ? parent.width : 0
                     height: 26
                     radius: 4
                     readonly property bool isSelected: String(modelData) === String(root.value)
