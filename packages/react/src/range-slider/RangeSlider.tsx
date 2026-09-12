@@ -5,7 +5,9 @@ export type RangeSliderSize = 'default' | 'sm';
 
 export interface RangeSliderProps {
   /** Range value as a [low, high] tuple */
-  value: [number, number];
+  value?: [number, number];
+  /** Default range value for uncontrolled mode */
+  defaultValue?: [number, number];
   /** Minimum range boundary (default: 0) */
   min?: number;
   /** Maximum range boundary (default: 100) */
@@ -36,6 +38,7 @@ export interface RangeSliderProps {
 
 export function RangeSlider({
   value,
+  defaultValue,
   min = 0,
   max = 100,
   step,
@@ -55,11 +58,12 @@ export function RangeSlider({
   const [activeDragging, setActiveDragging] = React.useState<'low' | 'high' | null>(null);
   const [hoveredThumb, setHoveredThumb] = React.useState<'low' | 'high' | null>(null);
   const [focusedThumb, setFocusedThumb] = React.useState<'low' | 'high' | null>(null);
-  const currentValueRef = React.useRef(value);
-
-  React.useEffect(() => {
-    currentValueRef.current = value;
-  }, [value]);
+  
+  const isControlled = value !== undefined;
+  const [internalValue, setInternalValue] = React.useState<[number, number]>(
+    value ?? defaultValue ?? [min, max],
+  );
+  const currentRange = isControlled ? value : internalValue;
 
   const isValid = max > min;
   const isInteractive = !disabled && !readOnly && isValid;
@@ -88,25 +92,33 @@ export function RangeSlider({
 
   const setLow = (v: number) => {
     if (!isInteractive) return;
-    const [_, currentHigh] = currentValueRef.current;
+    const [_, currentHigh] = currentRange;
     const maxLow = currentHigh - minGap;
     const newLow = snap(clamp(Math.min(v, maxLow)));
-    notifyChange([newLow, currentHigh]);
+    const next: [number, number] = [newLow, currentHigh];
+    if (!isControlled) {
+      setInternalValue(next);
+    }
+    notifyChange(next);
   };
 
   const setHigh = (v: number) => {
     if (!isInteractive) return;
-    const [currentLow, _] = currentValueRef.current;
+    const [currentLow, _] = currentRange;
     const minHigh = currentLow + minGap;
     const newHigh = snap(clamp(Math.max(v, minHigh)));
-    notifyChange([currentLow, newHigh]);
+    const next: [number, number] = [currentLow, newHigh];
+    if (!isControlled) {
+      setInternalValue(next);
+    }
+    notifyChange(next);
   };
 
   const handleTrackPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isInteractive) return;
     e.preventDefault();
     const v = getValueFromClientX(e.clientX);
-    const [currentLow, currentHigh] = currentValueRef.current;
+    const [currentLow, currentHigh] = currentRange;
     const distLow = Math.abs(v - currentLow);
     const distHigh = Math.abs(v - currentHigh);
 
@@ -148,7 +160,7 @@ export function RangeSlider({
 
   const handleKeyDown = (which: 'low' | 'high') => (e: React.KeyboardEvent) => {
     if (!isInteractive) return;
-    const [currentLow, currentHigh] = currentValueRef.current;
+    const [currentLow, currentHigh] = currentRange;
 
     if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
       e.preventDefault();
@@ -169,8 +181,8 @@ export function RangeSlider({
     }
   };
 
-  const lowRatio = getRatio(value[0]);
-  const highRatio = getRatio(value[1]);
+  const lowRatio = getRatio(currentRange[0]);
+  const highRatio = getRatio(currentRange[1]);
   const isSm = size === 'sm';
 
   const showLowTooltip =
@@ -220,8 +232,8 @@ export function RangeSlider({
           tabIndex={disabled ? -1 : 0}
           aria-label={ariaLabel ? `${ariaLabel} low` : 'Low value'}
           aria-valuemin={min}
-          aria-valuemax={value[1]}
-          aria-valuenow={value[0]}
+          aria-valuemax={currentRange[1]}
+          aria-valuenow={currentRange[0]}
           aria-readonly={readOnly}
           aria-orientation="horizontal"
           className={cn(
@@ -244,7 +256,7 @@ export function RangeSlider({
         >
           {showLowTooltip && (
             <div className="absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-popover px-1.5 py-0.5 text-[0.6875rem] font-medium text-popover-foreground shadow-sm border border-border pointer-events-none tabular-nums whitespace-nowrap">
-              {formatValue ? formatValue(value[0]) : value[0]}
+              {formatValue ? formatValue(currentRange[0]) : currentRange[0]}
             </div>
           )}
         </div>
@@ -252,9 +264,9 @@ export function RangeSlider({
           role="slider"
           tabIndex={disabled ? -1 : 0}
           aria-label={ariaLabel ? `${ariaLabel} high` : 'High value'}
-          aria-valuemin={value[0]}
+          aria-valuemin={currentRange[0]}
           aria-valuemax={max}
-          aria-valuenow={value[1]}
+          aria-valuenow={currentRange[1]}
           aria-readonly={readOnly}
           aria-orientation="horizontal"
           className={cn(
@@ -277,7 +289,7 @@ export function RangeSlider({
         >
           {showHighTooltip && (
             <div className="absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-popover px-1.5 py-0.5 text-[0.6875rem] font-medium text-popover-foreground shadow-sm border border-border pointer-events-none tabular-nums whitespace-nowrap">
-              {formatValue ? formatValue(value[1]) : value[1]}
+              {formatValue ? formatValue(currentRange[1]) : currentRange[1]}
             </div>
           )}
         </div>

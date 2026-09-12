@@ -65,27 +65,27 @@ export function RangeSliderDocPage() {
 
         <ComponentPreview
           title="Sizes & States Preview"
-          reactCode={`<RangeSlider size="default" value={[20, 80]} showTooltip />
-<RangeSlider size="sm" value={[30, 70]} showTooltip />
-<RangeSlider size="sm" value={[25, 75]} readOnly />
-<RangeSlider size="sm" value={[10, 90]} disabled />`}
+          reactCode={`<RangeSlider size="default" defaultValue={[20, 80]} showTooltip />
+<RangeSlider size="sm" defaultValue={[30, 70]} showTooltip />
+<RangeSlider size="sm" defaultValue={[25, 75]} readOnly />
+<RangeSlider size="sm" defaultValue={[10, 90]} disabled />`}
         >
           <div className="w-full max-w-sm flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <span className="text-xs text-muted-foreground">Default with Tooltips</span>
-              <RangeSlider size="default" value={[20, 80]} showTooltip />
+              <RangeSlider size="default" defaultValue={[20, 80]} showTooltip />
             </div>
             <div className="flex flex-col gap-2">
               <span className="text-xs text-muted-foreground">Compact sm Tier</span>
-              <RangeSlider size="sm" value={[30, 70]} showTooltip />
+              <RangeSlider size="sm" defaultValue={[30, 70]} showTooltip />
             </div>
             <div className="flex flex-col gap-2">
               <span className="text-xs text-muted-foreground">Read Only</span>
-              <RangeSlider size="sm" value={[25, 75]} readOnly />
+              <RangeSlider size="sm" defaultValue={[25, 75]} readOnly />
             </div>
             <div className="flex flex-col gap-2">
               <span className="text-xs text-muted-foreground">Disabled</span>
-              <RangeSlider size="sm" value={[10, 90]} disabled />
+              <RangeSlider size="sm" defaultValue={[10, 90]} disabled />
             </div>
           </div>
         </ComponentPreview>

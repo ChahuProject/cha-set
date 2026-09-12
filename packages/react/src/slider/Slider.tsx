@@ -137,15 +137,18 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
       [orientation, min, max, commitValue],
     );
 
+    const updateFromCoordsRef = React.useRef(updateFromCoords);
+    updateFromCoordsRef.current = updateFromCoords;
+
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
       if (disabled || readOnly || e.button !== 0) return;
       e.preventDefault();
       thumbRef.current?.focus();
       setIsDragging(true);
-      updateFromCoords(e.clientX, e.clientY);
+      updateFromCoordsRef.current(e.clientX, e.clientY);
 
       const onPointerMove = (moveEvt: PointerEvent) => {
-        updateFromCoords(moveEvt.clientX, moveEvt.clientY);
+        updateFromCoordsRef.current(moveEvt.clientX, moveEvt.clientY);
       };
 
       const onPointerUp = () => {
@@ -162,10 +165,10 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
       if (e.defaultPrevented || disabled || readOnly || e.button !== 0) return;
       thumbRef.current?.focus();
       setIsDragging(true);
-      updateFromCoords(e.clientX, e.clientY);
+      updateFromCoordsRef.current(e.clientX, e.clientY);
 
       const onMouseMove = (moveEvt: MouseEvent) => {
-        updateFromCoords(moveEvt.clientX, moveEvt.clientY);
+        updateFromCoordsRef.current(moveEvt.clientX, moveEvt.clientY);
       };
 
       const onMouseUp = () => {
