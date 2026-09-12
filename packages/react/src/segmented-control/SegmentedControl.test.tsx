@@ -119,4 +119,25 @@ describe('SegmentedControl', () => {
     fireEvent.click(screen.getByRole('radio', { name: /list/i }));
     expect(handleValueChange).not.toHaveBeenCalled();
   });
+
+  it('supports equalWidth and itemWidth with label truncation', () => {
+    const longOptions = [
+      { label: 'Very Long Option Text That Exceeds Segment Boundary', value: 'long' },
+      { label: 'Short', value: 'short' },
+    ];
+
+    const { container: eqContainer } = render(
+      <SegmentedControl options={longOptions} equalWidth />
+    );
+    const buttons = eqContainer.querySelectorAll('button[role="radio"]');
+    expect(buttons[0]).toHaveClass('flex-1', 'min-w-0');
+    expect(buttons[0]?.querySelector('span.truncate')).toBeInTheDocument();
+
+    const { container: fixedContainer } = render(
+      <SegmentedControl options={longOptions} itemWidth={100} />
+    );
+    const fixedBtn = fixedContainer.querySelector('button[role="radio"]') as HTMLElement;
+    expect(fixedBtn).toHaveStyle({ width: '6.25rem' });
+    expect(fixedBtn?.querySelector('span.truncate')).toBeInTheDocument();
+  });
 });

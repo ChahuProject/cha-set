@@ -11,6 +11,7 @@ DocLayout {
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
         { id: "sizes", title: "Sizes" },
+        { id: "fixed-width", title: "Fixed Width & Truncation" },
         { id: "menu", title: "Menu & Inline Title" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
@@ -167,6 +168,57 @@ DocLayout {
         }
     }
 
+    // Fixed Width & Truncation
+    Text {
+        text: "Fixed Width & Truncation"
+        font.pixelSize: 18
+        font.bold: true
+        color: ThemeTokens.text
+    }
+
+    ChaSetCard {
+        width: parent.width
+
+        ChaSetCardContent {
+            topPadding: 16
+            bottomPadding: 16
+            horizontalPadding: 16
+            Column {
+                spacing: 16
+                width: parent.width
+
+                Column {
+                    spacing: 6
+                    Text { text: "Auto-fit width (hugs content)"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    ChaSetSegmentedControl {
+                        options: [
+                            { label: "Compact", value: "compact" },
+                            { label: "Very Long Option Text That Fits Comfortably", value: "long" },
+                            { label: "Settings", value: "settings" }
+                        ]
+                        value: "compact"
+                    }
+                }
+
+                ChaSetSeparator { width: parent.width }
+
+                Column {
+                    spacing: 6
+                    Text { text: "Fixed width with truncation (itemWidth: 120)"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    ChaSetSegmentedControl {
+                        itemWidth: 120
+                        options: [
+                            { label: "Compact", value: "compact" },
+                            { label: "Very Long Option Text That Truncates", value: "long" },
+                            { label: "Settings", value: "settings" }
+                        ]
+                        value: "compact"
+                    }
+                }
+            }
+        }
+    }
+
     // Menu & Inline Title
     Text {
         text: "Menu & Inline Title"
@@ -216,7 +268,9 @@ DocLayout {
             { name: "size", type: "string", default: "'default'", description: "Size variant: 'sm', 'default', or 'lg'" },
             { name: "title", type: "string", default: "''", description: "Optional inline label displayed before the segments" },
             { name: "disabled", type: "bool", default: "false", description: "Whether the segmented control is disabled" },
-            { name: "fullWidth", type: "bool", default: "false", description: "Whether segments expand equally across container width" }
+            { name: "fullWidth", type: "bool", default: "false", description: "Whether segments expand equally across container width" },
+            { name: "equalWidth", type: "bool", default: "false", description: "Whether all segments share an identical fixed width while hugging content" },
+            { name: "itemWidth", type: "real", default: "undefined", description: "Explicit fixed width allocated to each segment option" }
         ]
     }
 }

@@ -12,6 +12,8 @@ Item {
     property string title: ""
     property bool disabled: false
     property bool fullWidth: false
+    property bool equalWidth: false
+    property real itemWidth: 0
 
     signal valueSelected(var val)
 
@@ -53,11 +55,86 @@ Item {
 
     readonly property int itemRadius: controlRadius - 1
 
+    FontMetrics {
+        id: textFontMetrics
+        font.pixelSize: root.itemFontSize
+        font.bold: true
+    }
+
+    FontMetrics {
+        id: badgeFontMetrics
+        font.pixelSize: Math.max(8, root.itemFontSize - 2)
+        font.bold: true
+    }
+
+    function calculateItemContentWidth(opt) {
+        if (!opt) return 40;
+        var pad = root.size === "sm" ? 16 : (root.size === "lg" ? 24 : 20);
+        var label = opt.label !== undefined ? String(opt.label) : "";
+        var w = textFontMetrics.advanceWidth(label) + pad;
+        if (opt.icon !== undefined && String(opt.icon).length > 0) {
+            w += (root.itemFontSize + 4);
+        }
+        if (opt.badge !== undefined && String(opt.badge).length > 0) {
+            w += (badgeFontMetrics.advanceWidth(String(opt.badge)) + 12);
+        }
+        return Math.ceil(w);
+    }
+
+    readonly property var naturalWidths: {
+        var arr = [];
+        if (!options || options.length === 0) return arr;
+        for (var i = 0; i < options.length; i++) {
+            arr.push(calculateItemContentWidth(options[i]));
+        }
+        return arr;
+    }
+
+    readonly property real totalNaturalWidth: {
+        var sum = 0;
+        for (var i = 0; i < naturalWidths.length; i++) {
+            sum += naturalWidths[i];
+        }
+        return sum;
+    }
+
+    function getItemWidth(idx) {
+        if (idx < 0 || !options || idx >= options.length) return 0;
+        if (root.itemWidth > 0) {
+            return root.itemWidth;
+        }
+        if (root.equalWidth || root.fullWidth) {
+            var totalSpacing = (options.length - 1) * track.segSpacing;
+            return Math.max(20, (track.width - 6 - totalSpacing) / options.length);
+        }
+        return naturalWidths[idx] || 40;
+    }
+
+    function getItemX(idx) {
+        if (idx <= 0) return 3;
+        var x = 3;
+        for (var i = 0; i < idx; i++) {
+            x += getItemWidth(i) + track.segSpacing;
+        }
+        return x;
+    }
+
     implicitHeight: effectiveHeight
     implicitWidth: {
         var base = hasTitle ? titleWidth : 0;
         if (root.fullWidth) return parent ? parent.width : 200;
-        return base + (options.length * 60) + 8;
+        if (root.itemWidth > 0) {
+            return base + 6 + (options.length * root.itemWidth) + ((options.length - 1) * track.segSpacing);
+        }
+        if (root.equalWidth) {
+            var maxW = 40;
+            for (var i = 0; i < naturalWidths.length; i++) {
+                if (naturalWidths[i] > maxW) maxW = naturalWidths[i];
+            }
+            return base + 6 + (options.length * maxW) + ((options.length - 1) * track.segSpacing);
+        }
+        var totalSpacing = options.length > 1 ? (options.length - 1) * track.segSpacing : 0;
+        return base + 6 + totalNaturalWidth + totalSpacing;
     }
 
     opacity: root.disabled ? 0.5 : 1.0
@@ -152,9 +229,6 @@ Item {
         border.width: 1
 
         readonly property real segSpacing: 2
-        readonly property real segWidth: root.options.length > 0
-            ? (track.width - 6 - (root.options.length - 1) * segSpacing) / root.options.length
-            : 0
 
         // Sliding indicator pill
         Rectangle {
@@ -162,8 +236,8 @@ Item {
             readonly property int selIdx: root.getSelectedIndex()
             visible: selIdx >= 0
             y: (track.height - root.itemHeight) / 2
-            x: selIdx >= 0 ? 3 + selIdx * (track.segWidth + track.segSpacing) : 0
-            width: track.segWidth
+            x: selIdx >= 0 ? root.getItemX(selIdx) : 0
+            width: selIdx >= 0 ? root.getItemWidth(selIdx) : 0
             height: root.itemHeight
             radius: root.itemRadius
             color: ThemeTokens.dark ? ThemeTokens.panel : "#ffffff"
@@ -193,11 +267,12 @@ Item {
                     ? (root.highlightedIndex === index)
                     : (mouseArea.containsMouse && !isItemDisabled)
 
-                x: 3 + index * (track.segWidth + track.segSpacing)
+                x: root.getItemX(index)
                 y: (track.height - root.itemHeight) / 2
-                width: track.segWidth
+                width: root.getItemWidth(index)
                 height: root.itemHeight
                 radius: root.itemRadius
+                clip: true
 
                 color: {
                     if (isHighlighted && !isSelected) {
@@ -216,6 +291,7 @@ Item {
                     spacing: 4
 
                     Text {
+                        id: iconItem
                         visible: modelData && modelData.icon !== undefined && String(modelData.icon).length > 0
                         anchors.verticalCenter: parent.verticalCenter
                         text: modelData && modelData.icon ? String(modelData.icon) : ""
@@ -224,10 +300,18 @@ Item {
                     }
 
                     Text {
+                        id: labelItem
                         anchors.verticalCenter: parent.verticalCenter
                         text: modelData && modelData.label ? String(modelData.label) : ""
                         font.pixelSize: root.itemFontSize
                         font.bold: segItem.isSelected
+                        elide: Text.ElideRight
+                        width: {
+                            var avail = segItem.width - 12;
+                            if (iconItem.visible) avail -= (iconItem.implicitWidth + 4);
+                            if (badgeItem.visible) avail -= (badgeItem.width + 4);
+                            return Math.max(10, Math.min(implicitWidth, avail));
+                        }
                         color: {
                             if (segItem.isItemDisabled) return ThemeTokens.subduedText;
                             if (segItem.isSelected) return ThemeTokens.text;
@@ -237,6 +321,7 @@ Item {
                     }
 
                     Rectangle {
+                        id: badgeItem
                         visible: modelData && modelData.badge !== undefined && String(modelData.badge).length > 0
                         anchors.verticalCenter: parent.verticalCenter
                         radius: 8

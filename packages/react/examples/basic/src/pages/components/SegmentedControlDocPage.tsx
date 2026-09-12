@@ -54,6 +54,7 @@ export function SegmentedControlDocPage() {
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'sizes', title: 'Sizes' },
+        { id: 'fixed-width', title: 'Width & Ellipsis' },
         { id: 'menu-mode', title: 'Menu & Inline Title' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'code', title: 'Implementation Code' },
@@ -119,6 +120,38 @@ export function SegmentedControlDocPage() {
           <div className="space-y-2">
             <div className="text-xs font-semibold text-muted-foreground">Large (lg - Prominent tabs style)</div>
             <SegmentedControl size="lg" options={viewOptions} defaultValue="grid" />
+          </div>
+        </Card>
+      </section>
+
+      <section id="fixed-width" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Content-Adaptive & Fixed Width with Ellipsis</h2>
+        <p className="text-sm text-muted-foreground">
+          By default, segments auto-adapt to their content length. When <code>equalWidth</code>, <code>fullWidth</code>, or <code>itemWidth</code> is configured, segments enforce equal or fixed dimensions and truncate overflowing text with an ellipsis.
+        </p>
+        <Card className="p-6 space-y-6">
+          <div className="space-y-2">
+            <div className="text-xs font-semibold text-muted-foreground">Auto-Adaptive Content Width (Default)</div>
+            <SegmentedControl
+              options={[
+                { label: 'Short', value: 'short' },
+                { label: 'Variable Length Title', value: 'var' },
+                { label: 'Long Description Tab', value: 'long' },
+              ]}
+              defaultValue="var"
+            />
+          </div>
+          <div className="space-y-2">
+            <div className="text-xs font-semibold text-muted-foreground">Fixed Width per Item with Ellipsis (itemWidth=110)</div>
+            <SegmentedControl
+              itemWidth={110}
+              options={[
+                { label: 'Compact', value: 'compact' },
+                { label: 'Very Long Option Text That Truncates', value: 'long' },
+                { label: 'Settings', value: 'settings' },
+              ]}
+              defaultValue="compact"
+            />
           </div>
         </Card>
       </section>
@@ -205,6 +238,19 @@ export function SegmentedControlDocPage() {
               default: 'false',
               required: false,
               description: 'Whether segments expand equally to fill the parent container.',
+            },
+            {
+              name: 'equalWidth',
+              type: 'boolean',
+              default: 'false',
+              required: false,
+              description: 'Whether all segments share an identical fixed width while hugging content.',
+            },
+            {
+              name: 'itemWidth',
+              type: 'number',
+              required: false,
+              description: 'Explicit fixed width allocated to each segment option.',
             },
           ]}
         />
