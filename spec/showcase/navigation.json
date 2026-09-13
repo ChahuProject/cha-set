@@ -258,6 +258,12 @@
         "title": "Scale OSD",
         "href": "#/components/scale-osd",
         "desc": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
+      },
+      {
+        "id": "task-hud",
+        "title": "Task HUD",
+        "href": "#/components/task-hud",
+        "desc": "Floating task progress and notification HUD stack for background executions."
       }
     ]
   },

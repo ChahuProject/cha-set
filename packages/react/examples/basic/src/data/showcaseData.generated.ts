@@ -1349,6 +1349,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/scale-osd",
         "desc": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.",
         "description": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
+      },
+      {
+        "id": "task-hud",
+        "title": "Task HUD",
+        "href": "#/components/task-hud",
+        "desc": "Floating task progress and notification HUD stack for background executions.",
+        "description": "Floating task progress and notification HUD stack for background executions."
       }
     ]
   },
@@ -1596,25 +1603,25 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
   "snap-slider": [
     {
       "key": "← / ↓",
-      "action": "Step to previous discrete snap stop"
+      "action": "Step to previous discrete stop"
     },
     {
       "key": "→ / ↑",
-      "action": "Step to next discrete snap stop"
+      "action": "Step to next discrete stop"
     },
     {
       "key": "Home / End",
-      "action": "Jump directly to the first / last snap stop"
+      "action": "Jump directly to the first or last stop"
     }
   ],
   "scale-osd": [
     {
-      "key": "Space / Enter",
-      "action": "Activate focused step or reset button"
+      "key": "Tab / Shift + Tab",
+      "action": "Cycle focus between zoom in, zoom out, and reset buttons"
     },
     {
-      "key": "Tab / Shift + Tab",
-      "action": "Cycle keyboard focus through zoom controls"
+      "key": "Space / Enter",
+      "action": "Activate the focused zoom button"
     }
   ],
   "dialog": [
@@ -2129,6 +2136,16 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Tab / Shift + Tab",
       "action": "Move focus between job list, action buttons, and log console"
+    }
+  ],
+  "task-hud": [
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Focus through task dismiss buttons in the stack"
+    },
+    {
+      "key": "Space / Enter",
+      "action": "Dismiss the currently focused task notification"
     }
   ]
 };

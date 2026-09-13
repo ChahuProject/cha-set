@@ -54,6 +54,7 @@ import { InlineEditableTextDocPage } from './pages/components/InlineEditableText
 import { RangeSliderDocPage } from './pages/components/RangeSliderDocPage';
 import { SnapSliderDocPage } from './pages/components/SnapSliderDocPage';
 import { ScaleOsdDocPage } from './pages/components/ScaleOsdDocPage';
+import { TaskHudDocPage } from './pages/components/TaskHudDocPage';
 import { ReadOnlyInputDocPage } from './pages/components/ReadOnlyInputDocPage';
 import { PresetNumberInputDocPage } from './pages/components/PresetNumberInputDocPage';
 import { KeybindingRecorderDocPage } from './pages/components/KeybindingRecorderDocPage';
@@ -642,6 +643,8 @@ export function App() {
         return <SnapSliderDocPage />;
       case '#/components/scale-osd':
         return <ScaleOsdDocPage />;
+      case '#/components/task-hud':
+        return <TaskHudDocPage />;
       case '#/components/read-only-input':
         return <ReadOnlyInputDocPage />;
       case '#/components/preset-number-input':

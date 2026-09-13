@@ -307,5 +307,13 @@
     "autoHide": true,
     "keyboard": true,
     "placement": true
+  },
+  "taskHud": {
+    "rendersTasks": true,
+    "status": true,
+    "determinateProgress": true,
+    "indeterminateProgress": true,
+    "dismiss": true,
+    "autoHide": true
   }
 }
