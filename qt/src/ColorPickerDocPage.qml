@@ -37,7 +37,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        stageHeight: root.demoMode === "popover" ? 280 : 580
+        stageHeight: root.demoMode === "popover" ? 280 : 660
         title: "ColorPicker Sandbox"
         reactCode: `<ColorPicker\n  value="${root.demoColor}"\n  mode="${root.demoMode}"\n  size="${root.demoSize}"\n  disabled={${root.demoDisabled}}\n  movable={${root.demoMovable}}\n  showPreview={${root.demoShowPreview}}\n  showHex={${root.demoShowHex}}\n  showSwatches={${root.demoShowSwatches}}\n  onChange={setColor}\n/>`
         qtCode: `ChaSetColorPicker {\n    value: "${root.demoColor}"\n    mode: "${root.demoMode}"\n    size: "${root.demoSize}"\n    disabled: ${root.demoDisabled}\n    movable: ${root.demoMovable}\n    showPreview: ${root.demoShowPreview}\n    showHex: ${root.demoShowHex}\n    showSwatches: ${root.demoShowSwatches}\n    onHexChanged: function(newHex) {\n        // handle color change\n    }\n}`
@@ -46,9 +46,10 @@ DocLayout {
             Item {
                 anchors.centerIn: parent
                 width: 320
-                height: root.demoMode === "popover" ? 100 : 540
+                height: root.demoMode === "popover" ? 100 : pickerCol.implicitHeight
 
                 Column {
+                    id: pickerCol
                     anchors.centerIn: parent
                     spacing: 12
 
@@ -72,9 +73,10 @@ DocLayout {
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 8
                         DocText {
-                            text: "Selected:"
+                            text: "Selected Color:"
                             color: root.cMutedFg
                             font.pixelSize: Typography.sizeSmall
+                            anchors.verticalCenter: parent.verticalCenter
                         }
                         Rectangle {
                             width: 14; height: 14; radius: 3
