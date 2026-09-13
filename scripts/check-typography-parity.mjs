@@ -220,6 +220,36 @@ export function verifyTypographyParity({ quiet = false } = {}) {
     });
   }
 
+  // ---- Qt: no manual renderType overrides ---------------------------------
+  for (const file of qtFilesAll) {
+    const rel = relative(repoRoot, file).replace(/\\/g, '/');
+    const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+    lines.forEach((line, i) => {
+      if (/renderType\s*:/.test(line)) {
+        checked += 1;
+        errors.push(
+          `${rel}:${i + 1}: manual renderType override — "${line.trim()}". Text rendering is managed globally via QQuickWindow::NativeTextRendering and QGuiApplication::setFont.`,
+        );
+      }
+    });
+  }
+
+  // ---- CSS: no raw ui-monospace bypassing var(--cs-font-mono) ------------
+  const cssFiles = walk(resolve(repoRoot, 'packages/react'), (n) => n.endsWith('.css'));
+  for (const file of cssFiles) {
+    if (file.endsWith('tokens.css')) continue; // tokens.css defines the canonical token
+    const rel = relative(repoRoot, file).replace(/\\/g, '/');
+    const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+    lines.forEach((line, i) => {
+      if (line.includes('ui-monospace') && !line.includes('var(--cs-font-mono)')) {
+        checked += 1;
+        errors.push(
+          `${rel}:${i + 1}: raw font-family bypassing var(--cs-font-mono) — "${line.trim()}". Hardcoded monospace causes Windows font fallback degradation.`,
+        );
+      }
+    });
+  }
+
   return { ok: errors.length === 0, errors, warnings, checkedCount: checked, source };
 }
 

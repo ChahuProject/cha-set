@@ -225,7 +225,26 @@ if (existsSync(cursorTestFile)) {
   }
 }
 
-// 4. Optional Targeted Pixel Conformance Gate (selective opt-in)
+// 5.5 Cross-Stack Typography Conformance Check
+const typographyTestFile = resolve(root, 'packages/react/src/__tests__/typography-conformance.test.tsx');
+if (existsSync(typographyTestFile)) {
+  const { execSync } = await import('node:child_process');
+  try {
+    execSync('pnpm --filter @chahu/cha-set exec vitest run src/__tests__/typography-conformance.test.tsx', {
+      cwd: root,
+      stdio: 'pipe',
+      encoding: 'utf8',
+    });
+    console.log('[gate] OK — Cross-stack typography conformance passed');
+  } catch (err) {
+    console.error('[gate] FAIL: Cross-stack typography conformance check failed');
+    if (err.stdout) console.error(err.stdout);
+    if (err.stderr) console.error(err.stderr);
+    process.exit(1);
+  }
+}
+
+// 6. Optional Targeted Pixel Conformance Gate (selective opt-in)
 if (process.argv.includes('--pixel')) {
   const compIndex = process.argv.indexOf('--component');
   const comp = compIndex !== -1 ? process.argv[compIndex + 1] : 'all';
