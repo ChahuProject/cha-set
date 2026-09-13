@@ -26,6 +26,7 @@ export function SplitterDocPage() {
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -80,7 +81,31 @@ export function SplitterDocPage() {
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
-      
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Motion tokens and kinematic timing contracts for Splitter divider gutters.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            Gutter indicator color and opacity transitions animate smoothly over{' '}
+            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> (150ms) using{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve (Qt counterpart:{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.motionQuick</code> and{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.easeStandard</code>).
+          </li>
+          <li>
+            Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.
+          </li>
+          <li>
+            Respects <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> in Qt.
+          </li>
+        </ul>
+      </section>
+
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation
