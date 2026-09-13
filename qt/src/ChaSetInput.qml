@@ -229,6 +229,7 @@ Rectangle {
         anchors.fill: parent
         z: -1
         hoverEnabled: false
+        cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor)
         onClicked: {
             if (!root.disabled) {
                 inputInner.forceActiveFocus();

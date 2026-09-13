@@ -282,8 +282,9 @@ T.ScrollBar {
             id: _ma
             anchors.fill: parent
             hoverEnabled: true
-            enabled: btn.isEnabled
-            cursorShape: btn.isEnabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+            visible: control._isExpanded
+            enabled: btn.isEnabled && control._isExpanded
+            cursorShape: (btn.isEnabled && control._isExpanded) ? Qt.PointingHandCursor : undefined
             acceptedButtons: Qt.LeftButton
 
             onPressed: {
@@ -310,7 +311,7 @@ T.ScrollBar {
         id: btnStartTo
         objectName: "btnStartTo"
         kind: 0
-        visible: control._hasSpaceForButtons && control.hasOverflow
+        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow && control._isExpanded
         isEnabled: control.canScrollBack
         tooltipText: control.vertical ? qsTr("到顶") : qsTr("到最左")
         x: 0
@@ -322,7 +323,7 @@ T.ScrollBar {
         id: btnStartPage
         objectName: "btnStartPage"
         kind: 1
-        visible: control._hasSpaceForButtons && control.hasOverflow
+        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow && control._isExpanded
         isEnabled: control.canScrollBack
         tooltipText: control.vertical ? qsTr("向上翻一页") : qsTr("向左翻一页")
         x: control.vertical ? 0 : control.buttonLength
@@ -335,7 +336,7 @@ T.ScrollBar {
         id: btnEndPage
         objectName: "btnEndPage"
         kind: 2
-        visible: control._hasSpaceForButtons && control.hasOverflow
+        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow && control._isExpanded
         isEnabled: control.canScrollForward
         tooltipText: control.vertical ? qsTr("向下翻一页") : qsTr("向右翻一页")
         x: control.vertical ? 0 : (control.width - control.buttonLength * 2)
@@ -347,7 +348,7 @@ T.ScrollBar {
         id: btnEndTo
         objectName: "btnEndTo"
         kind: 3
-        visible: control._hasSpaceForButtons && control.hasOverflow
+        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow && control._isExpanded
         isEnabled: control.canScrollForward
         tooltipText: control.vertical ? qsTr("到底") : qsTr("到最右")
         x: control.vertical ? 0 : (control.width - control.buttonLength)

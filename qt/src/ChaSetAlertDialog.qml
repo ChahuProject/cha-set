@@ -85,6 +85,7 @@ Rectangle {
 
         MouseArea {
             anchors.fill: parent
+            z: -1
             // prevent scrim dismiss when clicking inside dialog
         }
 
