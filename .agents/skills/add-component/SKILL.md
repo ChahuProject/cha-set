@@ -76,13 +76,15 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
     - **Exit animations (React)**: for custom (non-Base-UI) overlays that unmount on close, keep the subtree mounted during the exit phase with `useExitAnimation` (`packages/react/src/lib/useExitAnimation.ts`) + `animate-fade-out`; never hard-`return null` on close for a surface with an exit animation.
     - **DocPages**: every Living DocPage MUST include an `Animations` section (`{ id: 'animations', title: 'Animations' }` in `tocItems`, plus a `<section id="animations">` on React / matching text block on Qt) describing the component's motion points and the tokens used. `prefers-reduced-motion` (React) and `ThemeTokens.animationsEnabled` (Qt) must be mentioned as the kill switch.
 12. **Mandatory Mouse Cursor Semantics & Text Selectability Contract (鼠标光标语义与文本可选性规约)**:
+    - **Single Source of Truth Contract**: All component cursor behaviors must conform to `spec/cursor-contract.json`. When introducing a component, register its semantic cursor role (`action`, `text`, `slider`, `resize-col`, `resize-row`, `window-move`).
     - **Universal Cursor Mapping**:
       - Action controls (`Button`, `TabsTrigger`, `Checkbox`, `Switch`, `DropdownMenuItem`, `SelectTrigger`, clickable table rows, links) MUST declare `cursor-pointer` (React) and `Qt.PointingHandCursor` (Qt).
       - Text inputs (`Input`, `DurationInput`, `ReadOnlyInput`, `ColorPicker` text fields, `InlineEditableText`) and code viewers (`CodeBlock`, `HighlightedCode`) MUST declare `cursor-text` (React) and `Qt.IBeamCursor` (Qt).
-      - Disabled controls MUST display `cursor-not-allowed` (React) and `Qt.ForbiddenCursor` (Qt). Never allow bare `pointer-events-none` on interactive elements to silently drop the cursor back to the default arrow.
+      - Disabled controls MUST display `cursor-not-allowed` (React) and `Qt.ForbiddenCursor` (Qt). **STRICT BAN ON BARE POINTER-EVENTS-NONE**: Never allow bare `pointer-events-none` on interactive elements to silently drop the cursor back to the default arrow; always preserve `cursor-not-allowed`.
       - Sliders: Tracks declare `cursor-pointer` / `Qt.PointingHandCursor`; thumbs declare `cursor-grab` (active: `cursor-grabbing`) in React and `Qt.PointingHandCursor` (pressed: `Qt.ClosedHandCursor`) in Qt.
       - Splitters / Resizers: Horizontal splitters declare `cursor-col-resize` / `Qt.SizeHorCursor`; vertical splitters declare `cursor-row-resize` / `Qt.SizeVerCursor`.
-    - **QML `HoverHandler` Rule**: Because `QQuickTextInput` and `QQuickTextEdit` do not show hover cursors and occlude underlying `MouseArea` items (at `z: -1`), always attach `HoverHandler { cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor) }` directly on or inside the item.
+    - **QML Root Item Geometry Mandate**: Every custom QML component implemented as a root `Item` MUST explicitly bind `width: implicitWidth` and `height: implicitHeight`. Qt Quick `Row` and `Column` position items without assigning sizes; omitting explicit width/height collapses the root item to `0x0`, making inner `MouseArea { anchors.fill: parent }` or `HoverHandler` completely dead and unable to display hover cursors or register clicks.
+    - **QML `HoverHandler` Rule**: Because `QQuickTextInput` and `QQuickTextEdit` do not show hover cursors and occlude underlying `MouseArea` items (at `z: -1`), always attach `HoverHandler { cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor) }` directly on or inside the item. Remember: `HoverHandler` is a `QQuickPointerHandler`, NOT an `Item` — NEVER assign `anchors` to it.
     - **Code Selectability**: Code blocks must support full multi-line mouse drag selection (`selectByMouse: true`) and `Ctrl+C` clipboard copy, with line number gutters completely decoupled in a separate non-selectable column.
 
 ---
@@ -162,10 +164,11 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 
 1. **QML Component**:
    Create `qt/src/ChaSet<Name>.qml`:
-   - Bind colors and radiuses to `ThemeTokens` (`ThemeTokens.accent`, `ThemeTokens.panel`, `ThemeTokens.border`, `ThemeTokens.text`).
-   - Implement Input Modality State Machine: drive active highlight strictly by `isHighlighted: index === root.highlightedIndex`. NEVER combine with `containsMouse` (`isHighlighted || containsMouse` is strictly forbidden). Discard stationary pointer events and only switch to pointer modality on intentional movement ($\Delta > 1\text{px}$).
-   - Implement `forceHover` and `forceActive` test hooks.
-   - **Cursor & Selection Standards per Golden Rule 12**:
+    - Bind colors and radiuses to `ThemeTokens` (`ThemeTokens.accent`, `ThemeTokens.panel`, `ThemeTokens.border`, `ThemeTokens.text`).
+    - **Bind Root Geometry**: Always explicitly set `width: implicitWidth` and `height: implicitHeight` on the root `Item` to ensure child `MouseArea` and `HoverHandler` do not collapse to `0x0` within layout containers.
+    - Implement Input Modality State Machine: drive active highlight strictly by `isHighlighted: index === root.highlightedIndex`. NEVER combine with `containsMouse` (`isHighlighted || containsMouse` is strictly forbidden). Discard stationary pointer events and only switch to pointer modality on intentional movement ($\Delta > 1\text{px}$).
+    - Implement `forceHover` and `forceActive` test hooks.
+    - **Cursor & Selection Standards per Golden Rule 12**:
      - Action controls and clickable items declare `cursorShape: Qt.PointingHandCursor`;
      - Disabled states declare `cursorShape: Qt.ForbiddenCursor`;
      - Text inputs, numeric fields, and code blocks MUST mount `HoverHandler { cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor) }` directly on the item to avoid `QQuickTextInput`/`QQuickTextEdit` hover masking;
