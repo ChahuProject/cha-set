@@ -93,6 +93,24 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **QML `HoverHandler` Rule**:
      - Always attach `HoverHandler { cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor) }` directly to `TextInput` / `TextEdit` items in Qt to eliminate hover occlusion from `QQuickTextInput`/`QQuickTextEdit`.
      - **PointerHandler vs Item**: `HoverHandler` is a `QQuickPointerHandler`, NOT an `Item`. NEVER assign `anchors` to it.
+   - **Container Cursor Masking Anti-Pattern & Mandatory Fix (容器级光标遮罩与层级隔离红线)**:
+     - When container components (`ChaSetCard`, `ChaSetDialog`, `ChaSetAlertDialog`, `ChaSetSheet`) provide interactive behaviors (e.g. `interactive: true` for clickable cards, or backdrop click-to-dismiss for modal dialogs), their internal `MouseArea` MUST be strictly guarded:
+       - **Clickable cards (`ChaSetCard`)**: `visible: root.interactive` and `cursorShape: root.interactive ? Qt.PointingHandCursor : undefined`. Never leave an invisible/non-interactive `MouseArea` at the top of the scene graph with default `cursorShape: Qt.ArrowCursor`, which intercepts pointer hover and masks all child buttons, inputs, tabs, checkboxes, and segmented controls across living showcase pages.
+       - **Modal dialogs & sheets (`ChaSetDialog`, `ChaSetAlertDialog`, `ChaSetSheet`)**: Internal backdrop-blocking `MouseArea` items must sit behind the card content (`z: -1`), never covering child controls.
+       - **Input containers (`ChaSetInput`, `ChaSetReadOnlyInput`)**: Internal `containerClickArea` / `hoverArea` (`z: -1`) must define matching cursorShape: `cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor)`.
+   - **Authentic C++ Pointer Raycasting Protocol (真实物理指针射线投射测试标准)**:
+     - Unit tests inspecting isolated offscreen controls (`testBtn`, `testCheckbox`) cannot catch composite container occlusion or clipping regressions.
+     - The cross-stack verification suite (`QtChaSetDemo.exe --test-scenario cursor` / `all`) executes an authentic physical pointer raycast across all 52 showcase pages:
+       1. Dynamically discovers and mounts all registered showcase pages via `getAllPageIds()`.
+       2. Dispatches real physical mouse movement via `QTest::mouseMove(window, scenePoint.toPoint())`.
+       3. Queries `window->cursor().shape()` directly from the native OS window handle.
+       4. Compares the physical window cursor shape against `spec/cursor-contract.json`.
+       5. Asserts 0 discrepancies across all on-screen interactive controls.
+   - **Showcase Stage & Flow Containment Standards (演示沙盒舞台与流式布局边界律)**:
+     - **`ComponentPreview` Stage Height**: Default `stageHeight` is 280. For tall components (such as `ColorPicker` at 540px, or `VirtualList` at 312px), the living DocPage must declare explicit `stageHeight` (e.g. `stageHeight: root.demoMode === "popover" ? 280 : 580`) so content is not clipped by `stageContainer { clip: true }`.
+     - **`Flow` vs `Row` in Showcases**: Never place an outer `Row` inside `controlsData` (`Flow`). `Flow` cannot break `Row` children, causing layout blowouts past the content column into the TOC. Direct items must omit `anchors` inside `Flow`.
+     - **Closed Popover Card Lazy Loading**: Popovers (`ChaSetColorPicker`, `ChaSetSelect`) must use lazy loading (`Loader { active: root.mode === "popover" && colorPopup.visible }`) or `visible: false` rather than `opacity: 0.0` or always-active loaders to prevent phantom hit testing and cursor collisions from closed dialogs.
+     - **Test Viewport Reset**: Any kinematic tests (such as mouse drag on scrollbars) must reset `flickable->setProperty("contentY", 0.0)` at the end of the test so subsequent tests and raycasts operate from the canonical top-of-page coordinate space.
    - **Text Selectability & Clipboard Integrity**: Code viewers (`CodeBlock`, `HighlightedCode`) MUST support multi-line drag selection (`selectByMouse: true`) and `Ctrl+C` copying, while line numbers reside in a separate non-selectable gutter (`ArrowCursor`).
 
 13. **Mandatory Dual-Stack Showcase Structural, Semantic & Code Authenticity Contract (SPAS — 双端演示文档结构、元数据与代码保真度全景规约)**
