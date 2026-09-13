@@ -50,7 +50,7 @@ DocLayout {
 
                 Row {
                     width: parent.width
-                    Text {
+                    DocText {
                         text: "Email address"
                         color: root.cMutedFg
                         font.pixelSize: 12
@@ -72,7 +72,7 @@ DocLayout {
                     onTextEdited: root.demoText = text
                 }
 
-                Text {
+                DocText {
                     text: root.demoInvalid ? "Please enter a valid corporate email address." : "We will never share your email with anyone else."
                     color: root.demoInvalid ? (ThemeTokens.dark ? Qt.rgba(248.0 / 255.0, 113.0 / 255.0, 113.0 / 255.0, 1.0) : Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)) : root.cMutedFg
                     font.pixelSize: 11
@@ -86,7 +86,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoSize
@@ -100,7 +100,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "Type:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Type:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoType
@@ -154,7 +154,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Installation"
             color: root.cFg
             font.pixelSize: 18
@@ -173,14 +173,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Anatomy"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Import and render ChaSetInput directly in your QML scene."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -198,14 +198,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Examples & States"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Visual matrix of common input configurations and states in Qt Quick."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -227,7 +227,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Default Input"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Default Input"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     ChaSetInput { width: parent.width; placeholderText: "Enter username..." }
                 }
             }
@@ -243,7 +243,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Small Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Small Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     ChaSetInput { width: parent.width; size: "sm"; placeholderText: "Compact input..." }
                 }
             }
@@ -259,7 +259,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Invalid / Error State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Invalid / Error State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     ChaSetInput { width: parent.width; invalid: true; text: "invalid-email@" }
                 }
             }
@@ -275,7 +275,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Clearable Field"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Clearable Field"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     ChaSetInput { width: parent.width; clearable: true; text: "Click cross to clear" }
                 }
             }
@@ -291,7 +291,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Password with Toggle"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Password with Toggle"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     ChaSetInput { width: parent.width; type: "password"; passwordToggle: true; text: "supersecret123" }
                 }
             }
@@ -307,7 +307,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     ChaSetInput { width: parent.width; disabled: true; placeholderText: "Disabled input"; text: "preset value" }
                 }
             }
@@ -319,7 +319,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Props Reference"
             color: root.cFg
             font.pixelSize: 18
@@ -335,76 +335,76 @@ DocLayout {
             width: parent.width
             propsModel: [
                 {
-                    propName: "size",
-                    propType: "\"default\" | \"sm\"",
-                    propDefault: "\"default\"",
-                    propDescription: "The height and padding scale of the input."
+                    name: "size",
+                    type: "\"default\" | \"sm\"",
+                    defaultValue: "\"default\"",
+                    description: "The height and padding scale of the input."
                 },
                 {
-                    propName: "type",
-                    propType: "string",
-                    propDefault: "\"text\"",
-                    propDescription: "Input type: \"text\" | \"password\" | \"email\" | \"search\" | \"number\"."
+                    name: "type",
+                    type: "string",
+                    defaultValue: "\"text\"",
+                    description: "Input type: \"text\" | \"password\" | \"email\" | \"search\" | \"number\"."
                 },
                 {
-                    propName: "placeholderText",
-                    propType: "string",
-                    propDefault: "\"\"",
-                    propDescription: "Placeholder hint text displayed when input is empty."
+                    name: "placeholderText",
+                    type: "string",
+                    defaultValue: "\"\"",
+                    description: "Placeholder hint text displayed when input is empty."
                 },
                 {
-                    propName: "disabled",
-                    propType: "bool",
-                    propDefault: "false",
-                    propDescription: "Disables user interactions and applies 50% opacity."
+                    name: "disabled",
+                    type: "bool",
+                    defaultValue: "false",
+                    description: "Disables user interactions and applies 50% opacity."
                 },
                 {
-                    propName: "readOnly",
-                    propType: "bool",
-                    propDefault: "false",
-                    propDescription: "Prevents editing text while keeping focusability."
+                    name: "readOnly",
+                    type: "bool",
+                    defaultValue: "false",
+                    description: "Prevents editing text while keeping focusability."
                 },
                 {
-                    propName: "invalid",
-                    propType: "bool",
-                    propDefault: "false",
-                    propDescription: "Applies destructive error highlight to border and focus ring."
+                    name: "invalid",
+                    type: "bool",
+                    defaultValue: "false",
+                    description: "Applies destructive error highlight to border and focus ring."
                 },
                 {
-                    propName: "clearable",
-                    propType: "bool",
-                    propDefault: "false",
-                    propDescription: "Renders an interactive clear button when text is present."
+                    name: "clearable",
+                    type: "bool",
+                    defaultValue: "false",
+                    description: "Renders an interactive clear button when text is present."
                 },
                 {
-                    propName: "passwordToggle",
-                    propType: "bool",
-                    propDefault: "false",
-                    propDescription: "Renders an eye toggle button to reveal or mask passwords."
+                    name: "passwordToggle",
+                    type: "bool",
+                    defaultValue: "false",
+                    description: "Renders an eye toggle button to reveal or mask passwords."
                 },
                 {
-                    propName: "leftIconSource",
-                    propType: "string",
-                    propDefault: "\"\"",
-                    propDescription: "Image source URI rendered on the leading side of the input."
+                    name: "leftIconSource",
+                    type: "string",
+                    defaultValue: "\"\"",
+                    description: "Image source URI rendered on the leading side of the input."
                 },
                 {
-                    propName: "rightIconSource",
-                    propType: "string",
-                    propDefault: "\"\"",
-                    propDescription: "Image source URI rendered on the trailing side of the input."
+                    name: "rightIconSource",
+                    type: "string",
+                    defaultValue: "\"\"",
+                    description: "Image source URI rendered on the trailing side of the input."
                 },
                 {
-                    propName: "forceHover",
-                    propType: "bool",
-                    propDefault: "false",
-                    propDescription: "Visual testing aid to force hover state."
+                    name: "forceHover",
+                    type: "bool",
+                    defaultValue: "false",
+                    description: "Visual testing aid to force hover state."
                 },
                 {
-                    propName: "forceFocus",
-                    propType: "bool",
-                    propDefault: "false",
-                    propDescription: "Visual testing aid to force focus ring."
+                    name: "forceFocus",
+                    type: "bool",
+                    defaultValue: "false",
+                    description: "Visual testing aid to force focus ring."
                 }
             ]
         }
