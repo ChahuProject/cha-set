@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url';
 import { validateSpec } from '../validate-tokens.mjs';
 import { loadTokensSync } from '../load-tokens.mjs';
 import mapping from '../qt-mapping.json' with { type: 'json' };
-import { hexToRgbf, fmtChannel, camelProp, FONT_FAMILY_ORDER, FONT_SIZE_ORDER, LINE_HEIGHT_ORDER, LETTER_SPACING_ORDER } from '../token-helpers.mjs';
+import { hexToRgbf, fmtChannel, camelProp, toKebab, FONT_FAMILY_ORDER, FONT_SIZE_ORDER, LINE_HEIGHT_ORDER, LETTER_SPACING_ORDER } from '../token-helpers.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const snapshotPath = resolve(repoRoot, 'spec', 'tokens.json');
@@ -470,8 +470,18 @@ const trackingProps = LETTER_SPACING_ORDER.map(
   (l) => `    readonly property real tracking${camel(l)}: ${num(typographyPrim.letterSpacing[l])}`,
 ).join('\n');
 
-const sizeSwitch = FONT_SIZE_ORDER.map((s) => `            case "${s}": return ${num(typographyPrim.fontSize[s])}`).join('\n');
-const leadingSwitch = LINE_HEIGHT_ORDER.map((l) => `            case "${l}": return ${num(typographyPrim.lineHeight[l])}`).join('\n');
+const sizeSwitch = FONT_SIZE_ORDER.map((s) => {
+  const k = toKebab(s);
+  return k !== s
+    ? `            case "${s}":\n            case "${k}": return ${num(typographyPrim.fontSize[s])}`
+    : `            case "${s}": return ${num(typographyPrim.fontSize[s])}`;
+}).join('\n');
+const leadingSwitch = LINE_HEIGHT_ORDER.map((l) => {
+  const k = toKebab(l);
+  return k !== l
+    ? `            case "${l}":\n            case "${k}": return ${num(typographyPrim.lineHeight[l])}`
+    : `            case "${l}": return ${num(typographyPrim.lineHeight[l])}`;
+}).join('\n');
 const trackingSwitch = LETTER_SPACING_ORDER.map((l) => `            case "${l}": return ${num(typographyPrim.letterSpacing[l])}`).join('\n');
 const weightSwitch = Object.entries(spec.primitives.fontWeight ?? {})
   .map(([k, v]) => `            case "${k}": return ${num(v)}`)

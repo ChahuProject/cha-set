@@ -63,7 +63,10 @@
   --cs-text-body: 0.875rem;
   --cs-text-heading: 1rem;
   --cs-text-subheading: 1.125rem;
+  --cs-text-title-sm: 1.25rem;
+  --cs-text-title-md: 1.5rem;
   --cs-text-title: 1.75rem;
+  --cs-text-display: 2.25rem;
   --cs-leading-none: 1;
   --cs-leading-tight: 1.25;
   --cs-leading-snug: 1.375;
@@ -77,7 +80,10 @@
   --cs-leading-body: 1.4285714;
   --cs-leading-heading: 1.5;
   --cs-leading-subheading: 1.5555556;
+  --cs-leading-title-sm: 1.4;
+  --cs-leading-title-md: 1.3333333;
   --cs-leading-title: 1.25;
+  --cs-leading-display: 1.1111111;
   --cs-tracking-tighter: -0.05em;
   --cs-tracking-tight: -0.025em;
   --cs-tracking-normal: 0;
@@ -155,7 +161,10 @@
   --cs-text-body: 0.875rem;
   --cs-text-heading: 1rem;
   --cs-text-subheading: 1.125rem;
+  --cs-text-title-sm: 1.25rem;
+  --cs-text-title-md: 1.5rem;
   --cs-text-title: 1.75rem;
+  --cs-text-display: 2.25rem;
   --cs-leading-none: 1;
   --cs-leading-tight: 1.25;
   --cs-leading-snug: 1.375;
@@ -169,7 +178,10 @@
   --cs-leading-body: 1.4285714;
   --cs-leading-heading: 1.5;
   --cs-leading-subheading: 1.5555556;
+  --cs-leading-title-sm: 1.4;
+  --cs-leading-title-md: 1.3333333;
   --cs-leading-title: 1.25;
+  --cs-leading-display: 1.1111111;
   --cs-tracking-tighter: -0.05em;
   --cs-tracking-tight: -0.025em;
   --cs-tracking-normal: 0;

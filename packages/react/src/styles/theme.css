@@ -110,8 +110,16 @@
   --text-base--line-height: var(--cs-leading-heading);
   --text-lg: var(--cs-text-subheading);
   --text-lg--line-height: var(--cs-leading-subheading);
+  --text-xl: var(--cs-text-title-sm);
+  --text-xl--line-height: var(--cs-leading-title-sm);
+  --text-2xl: var(--cs-text-title-md);
+  --text-2xl--line-height: var(--cs-leading-title-md);
+  --text-3xl: var(--cs-text-title);
+  --text-3xl--line-height: var(--cs-leading-title);
+  --text-4xl: var(--cs-text-display);
+  --text-4xl--line-height: var(--cs-leading-display);
 
-  /* ChaSet-named sizes for new markup: text-nano … text-title. */
+  /* ChaSet-named sizes for new markup: text-nano … text-display. */
   --text-nano: var(--cs-text-nano);
   --text-nano--line-height: var(--cs-leading-nano);
   --text-micro: var(--cs-text-micro);
@@ -126,8 +134,14 @@
   --text-heading--line-height: var(--cs-leading-heading);
   --text-subheading: var(--cs-text-subheading);
   --text-subheading--line-height: var(--cs-leading-subheading);
+  --text-title-sm: var(--cs-text-title-sm);
+  --text-title-sm--line-height: var(--cs-leading-title-sm);
+  --text-title-md: var(--cs-text-title-md);
+  --text-title-md--line-height: var(--cs-leading-title-md);
   --text-title: var(--cs-text-title);
   --text-title--line-height: var(--cs-leading-title);
+  --text-display: var(--cs-text-display);
+  --text-display--line-height: var(--cs-leading-display);
 
   /* Leading scale: leading-none … leading-code (unitless ratios). */
   --leading-none: var(--cs-leading-none);
