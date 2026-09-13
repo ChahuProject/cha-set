@@ -19,6 +19,7 @@ import { Select, SelectTrigger, SelectValue } from '../select';
 import { Slider } from '../slider';
 import { RangeSlider } from '../range-slider';
 import { SnapSlider } from '../snap-slider';
+import { ScaleOsd } from '../scale-osd';
 import { Collapsible, CollapsibleTrigger } from '../collapsible';
 import { Badge } from '../badge';
 import { Card } from '../card';
@@ -276,6 +277,21 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
 
       rerender(<Badge>Passive Badge</Badge>);
       expect(screen.getByText('Passive Badge').className).not.toContain('cursor-pointer');
+    });
+
+    it('ScaleOsd buttons exhibit cursor-pointer and disabled cursor-not-allowed', () => {
+      const { rerender } = render(<ScaleOsd visible value={1.0} />);
+      const buttons = screen.getAllByRole('button');
+      expect(buttons.length).toBeGreaterThan(0);
+      buttons.forEach((btn) => {
+        expect(btn.className).toContain('cursor-pointer');
+      });
+
+      rerender(<ScaleOsd visible value={1.0} disabled />);
+      const disabledButtons = screen.getAllByRole('button');
+      disabledButtons.forEach((btn) => {
+        expect(btn.className).toContain('disabled:cursor-not-allowed');
+      });
     });
 
     it('Card when interactive exhibits cursor-pointer', () => {

@@ -300,5 +300,12 @@
     "ticks": true,
     "keyboard": true,
     "disabled": true
+  },
+  "scaleOsd": {
+    "display": true,
+    "stepControls": true,
+    "autoHide": true,
+    "keyboard": true,
+    "placement": true
   }
 }

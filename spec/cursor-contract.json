@@ -97,6 +97,7 @@
     "splitter-handle": { "semantic": "resize-col", "supportsDisabled": true },
     "draggable-modal": { "semantic": "window-move" },
     "window-title-bar": { "semantic": "window-move" },
+    "scale-osd": { "semantic": "action", "supportsDisabled": true },
     "pipeline-view": { "semantic": "action", "supportsDisabled": true }
   }
 }

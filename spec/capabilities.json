@@ -342,6 +342,13 @@
       "ticks": { "requirement": "must", "description": "displays tick marks for stops" },
       "keyboard": { "requirement": "must", "description": "arrow key step navigation" },
       "disabled": { "requirement": "must", "description": "disabled state prevents interaction" }
+    },
+    "scaleOsd": {
+      "display": { "requirement": "must", "description": "displays percentage/scale readout" },
+      "stepControls": { "requirement": "must", "description": "zoom in, zoom out, and reset buttons" },
+      "autoHide": { "requirement": "must", "description": "auto-hides after duration with hover pause" },
+      "keyboard": { "requirement": "must", "description": "button keyboard activation" },
+      "placement": { "requirement": "should", "description": "configurable screen/viewport anchoring" }
     }
   }
 }

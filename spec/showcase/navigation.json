@@ -252,6 +252,12 @@
         "title": "Snap Slider",
         "href": "#/components/snap-slider",
         "desc": "Stepped discrete slider that snaps to defined stops with ticks and label row."
+      },
+      {
+        "id": "scale-osd",
+        "title": "Scale OSD",
+        "href": "#/components/scale-osd",
+        "desc": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
       }
     ]
   },
