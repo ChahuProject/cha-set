@@ -111,6 +111,9 @@ qt_add_qml_module(ChaSet
         src/ChaSetDurationInput.qml
         src/ChaSetHighlightedCode.qml
         src/ChaSetCodeBlock.qml
+        src/ChaSetStepTimeline.qml
+        src/ChaSetLogConsole.qml
+        src/ChaSetPipelineView.qml
         src/ThemeTokens.generated.qml
 
         src/ShowcaseData.generated.qml
@@ -206,6 +209,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/SplitterHandleDocPage.qml
             src/DurationInputDocPage.qml
             src/CodeBlockDocPage.qml
+            src/PipelineViewDocPage.qml
             src/CommandSearchModal.qml
 
             src/ExportModal.qml

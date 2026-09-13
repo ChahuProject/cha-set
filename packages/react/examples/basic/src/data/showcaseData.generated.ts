@@ -1436,6 +1436,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/code-block",
         "desc": "Spec-driven syntax-highlighted code viewer composed from scroll, copy, and tab primitives.",
         "description": "Spec-driven syntax-highlighted code viewer composed from scroll, copy, and tab primitives."
+      },
+      {
+        "id": "pipeline-view",
+        "title": "Pipeline View",
+        "href": "#/components/pipeline-view",
+        "desc": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console.",
+        "description": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
       }
     ]
   }
@@ -2066,6 +2073,24 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Space / Enter",
       "action": "Copy the active file source to the system clipboard"
+    }
+  ],
+  "pipeline-view": [
+    {
+      "key": "↑ / ↓",
+      "action": "Navigate through jobs in the job list"
+    },
+    {
+      "key": "Home / End",
+      "action": "Jump to the first / last job in the list"
+    },
+    {
+      "key": "Space / Enter",
+      "action": "Select the focused job to inspect steps and logs"
+    },
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Move focus between job list, action buttons, and log console"
     }
   ]
 };

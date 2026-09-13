@@ -113,6 +113,7 @@ ApplicationWindow {
         case "splitter-handle": return "SplitterHandleDocPage.qml";
         case "duration-input": return "DurationInputDocPage.qml";
         case "code-block": return "CodeBlockDocPage.qml";
+        case "pipeline-view": return "PipelineViewDocPage.qml";
         default: return "ButtonDocPage.qml";
 
         }

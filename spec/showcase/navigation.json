@@ -334,6 +334,12 @@
         "title": "Code Block",
         "href": "#/components/code-block",
         "desc": "Spec-driven syntax-highlighted code viewer composed from scroll, copy, and tab primitives."
+      },
+      {
+        "id": "pipeline-view",
+        "title": "Pipeline View",
+        "href": "#/components/pipeline-view",
+        "desc": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
       }
     ]
   }

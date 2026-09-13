@@ -285,5 +285,13 @@
     "maxHeight": true,
     "embedded": true,
     "multiFile": true
+  },
+  "pipelineView": {
+    "jobTracking": true,
+    "stepTimeline": true,
+    "logConsole": true,
+    "statusSummary": true,
+    "cancellation": true,
+    "filtering": true
   }
 }
