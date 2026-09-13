@@ -28,7 +28,7 @@ Item {
     id: emptyLabel
     visible: !root.steps || root.steps.length === 0
     text: root.emptyText
-    font.pixelSize: 12
+    font.pixelSize: Typography.sizeSmall
     color: ThemeTokens.subduedText
     anchors.centerIn: parent
   }
@@ -97,7 +97,7 @@ Item {
             Text {
               width: parent.width
               text: stepDelegate.stepItem ? (stepDelegate.stepItem.name || "") : ""
-              font.pixelSize: 12
+              font.pixelSize: Typography.sizeSmall
               font.weight: Font.Medium
               color: ThemeTokens.text
               elide: Text.ElideRight
@@ -106,8 +106,8 @@ Item {
             Text {
               visible: stepDelegate.durationText !== ""
               text: stepDelegate.durationText
-              font.pixelSize: 11
-              font.family: "monospace"
+              font.pixelSize: Typography.sizeCaption
+              font.family: Typography.familyMono
               color: ThemeTokens.subduedText
             }
           }

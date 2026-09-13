@@ -120,7 +120,7 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 10
             text: root.jobsTitle
-            font.pixelSize: 12
+            font.pixelSize: Typography.sizeSmall
             font.weight: Font.DemiBold
             color: ThemeTokens.subduedText
           }
@@ -167,7 +167,7 @@ Item {
               // Job name
               Text {
                 text: jobItemRect.modelData ? (jobItemRect.modelData.name || "") : ""
-                font.pixelSize: 12
+                font.pixelSize: Typography.sizeSmall
                 font.weight: jobItemRect.isSelected ? Font.Medium : Font.Normal
                 color: ThemeTokens.text
                 elide: Text.ElideRight
@@ -179,8 +179,8 @@ Item {
               Text {
                 visible: jobItemRect.jobDur !== ""
                 text: jobItemRect.jobDur
-                font.pixelSize: 11
-                font.family: "monospace"
+                font.pixelSize: Typography.sizeCaption
+                font.family: Typography.familyMono
                 color: ThemeTokens.subduedText
                 anchors.verticalCenter: parent.verticalCenter
               }
@@ -259,7 +259,7 @@ Item {
 
               Text {
                 text: root.getStatusLabel(root.status)
-                font.pixelSize: 11
+                font.pixelSize: Typography.sizeCaption
                 font.weight: Font.Medium
                 anchors.verticalCenter: parent.verticalCenter
                 color: {
@@ -303,8 +303,8 @@ Item {
 
             Text {
               text: root.totalDurationText
-              font.pixelSize: 12
-              font.family: "monospace"
+              font.pixelSize: Typography.sizeSmall
+              font.family: Typography.familyMono
               color: ThemeTokens.subduedText
               anchors.verticalCenter: parent.verticalCenter
             }

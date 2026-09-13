@@ -56,7 +56,7 @@ Rectangle {
     id: emptyLabel
     visible: !root.lines || root.lines.length === 0
     text: root.emptyText
-    font.pixelSize: 12
+    font.pixelSize: Typography.sizeSmall
     color: ThemeTokens.subduedText
     anchors.centerIn: parent
   }
@@ -79,8 +79,8 @@ Rectangle {
       width: listView.width
       readOnly: true
       selectByMouse: true
-      font.family: "monospace"
-      font.pixelSize: 12
+      font.family: Typography.familyMono
+      font.pixelSize: Typography.sizeSmall
       color: ThemeTokens.text
       textFormat: TextEdit.RichText
       text: root.ansiToStyledText(modelData)
@@ -122,7 +122,7 @@ Rectangle {
       Text {
         visible: root.showLineCount
         text: (root.lines ? root.lines.length : 0) + " lines"
-        font.pixelSize: 10
+        font.pixelSize: Typography.sizeMicro
         color: ThemeTokens.subduedText
         anchors.verticalCenter: parent.verticalCenter
       }
