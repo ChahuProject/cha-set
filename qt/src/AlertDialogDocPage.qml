@@ -18,7 +18,7 @@ DocLayout {
     property string alertFeedback: "Dialog is idle."
 
     ComponentPreview {
-        title: "Alert Dialog Preview"
+        title: "Alert Dialog Sandbox"
         reactCode: `<AlertDialog>
   <AlertDialogTrigger asChild>
     <Button variant="destructive">Delete Account</Button>

@@ -31,7 +31,7 @@ DocLayout {
 
     // 1. Interactive Preview Hero
     ComponentPreview {
-        title: "Interactive Tabs Sandbox"
+        title: "Tabs Sandbox"
         reactCode: `<Tabs defaultValue="account" variant="${root.demoVariant}" size="${root.demoSize}" orientation="${root.demoOrientation}">
   <TabsList>
     <TabsTrigger value="account">Account</TabsTrigger>

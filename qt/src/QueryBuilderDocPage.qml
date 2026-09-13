@@ -16,7 +16,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Query Builder Preview"
+        title: "Query Builder Sandbox"
         reactCode: `<QueryBuilder
   fields={fields}
   query={query}

@@ -16,7 +16,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Draggable Modal Preview"
+        title: "Draggable Modal Sandbox"
         reactCode: `<DraggableModal
   title="Floating Tools"
   initialPositionMode="center"

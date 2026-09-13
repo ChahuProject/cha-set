@@ -21,7 +21,8 @@ export function KeybindingRecorderDocPage() {
       description="Interactive keyboard sequence recorder that captures desktop accelerator combinations (Ctrl, Alt, Shift, Meta)."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-{ id: 'installation', title: 'Installation' },
+        { id: 'variants', title: 'Sizes & States' },
+        { id: 'installation', title: 'Installation' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}

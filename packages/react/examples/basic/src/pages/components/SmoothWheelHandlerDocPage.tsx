@@ -63,7 +63,7 @@ export function SmoothWheelHandlerDocPage() {
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
-        <ComponentPreview
+        <ComponentPreview title="Smooth Wheel Handler Sandbox"
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={

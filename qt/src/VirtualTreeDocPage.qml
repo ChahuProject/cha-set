@@ -18,7 +18,7 @@ DocLayout {
     property string selectedPath: "None"
 
     ComponentPreview {
-        title: "Virtual Tree Preview"
+        title: "Virtual Tree Sandbox"
         reactCode: `<VirtualTree
   rootNodes={treeData}
   getChildren={(n) => n.children}

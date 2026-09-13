@@ -18,7 +18,7 @@ DocLayout {
     property string lastAction: "Right-click the target area below"
 
     ComponentPreview {
-        title: "Context Menu Preview"
+        title: "Context Menu Sandbox"
         reactCode: `<ContextMenu>
   <ContextMenuTrigger className="border-dashed p-12">
     Right click here

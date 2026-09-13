@@ -27,7 +27,7 @@ DocLayout {
 
     ComponentPreview {
         id: heroPreview
-        title: "Interactive Sandbox"
+        title: "Splitter Handle Sandbox"
         reactCode: `<div className="flex h-64 border rounded overflow-hidden">
   <div style={{ width: ${Math.round(root.sidebarWidth)} }} className="bg-muted/30 p-4">
     Sidebar (${Math.round(root.sidebarWidth)}px)

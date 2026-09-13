@@ -36,7 +36,7 @@ DocLayout {
 
     ComponentPreview {
         id: heroPreview
-        title: "Interactive Sandbox"
+        title: "Segmented Control Sandbox"
         reactCode: `<SegmentedControl
   size="${root.currentSize}"
   options={[

@@ -16,7 +16,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Duration Input Preview"
+        title: "Duration Input Sandbox"
         reactCode: `<DurationInput value={3665} onChange={(v) => console.log(v)} />`
         qtCode: `ChaSetDurationInput {
     value: 3665

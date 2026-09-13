@@ -10,6 +10,7 @@ DocLayout {
     description: "Interactive keyboard accelerator recorder that captures modifier sequences (Ctrl, Shift, Alt, Cmd) and hotkeys for desktop applications."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
+        { id: "variants", title: "Sizes & States" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
@@ -19,12 +20,11 @@ DocLayout {
     property string compactKey: "Ctrl+K"
 
     ComponentPreview {
-        title: "Keybinding Recorder Preview"
+        title: "Keybinding Recorder Sandbox"
         reactCode: `<KeybindingRecorder
   value={binding}
-  size="default"
-  clearable
-  onChange={(val) => setBinding(val)}
+  onValueChange={setBinding}
+  placeholder="Click to record shortcut..."
 />`
         qtCode: `ChaSetKeybindingRecorder {
     width: 240
@@ -44,7 +44,7 @@ DocLayout {
                 Column {
                     spacing: 6
                     anchors.horizontalCenter: parent.horizontalCenter
-                    Text { text: "Default Size:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+                    Text { text: "Click recorder box and press shortcut combination:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
                     ChaSetKeybindingRecorder {
                         width: 240
                         value: root.boundKey
@@ -55,27 +55,62 @@ DocLayout {
                     }
                 }
 
-                Column {
-                    spacing: 6
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    Text { text: "Compact Size (sm):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
-                    ChaSetKeybindingRecorder {
-                        width: 200
-                        size: "sm"
-                        value: root.compactKey
-                        clearable: true
-                        onKeybindingRecorded: function(val) {
-                            root.compactKey = val
-                        }
-                    }
-                }
-
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Active Desktop Accelerator: " + root.boundKey
+                    text: "Recorded accelerator: " + root.boundKey
                     color: ThemeTokens.text
                     font.pixelSize: 12
                     font.family: "monospace"
+                }
+            }
+        }
+    }
+
+    ComponentPreview {
+        title: "Sizes & States Preview"
+        reactCode: `<KeybindingRecorder value="Ctrl+K" size="default" />
+<KeybindingRecorder value="Ctrl+Shift+P" size="sm" />
+<KeybindingRecorder value="Alt+F4" clearable={false} />
+<KeybindingRecorder value="Ctrl+C" disabled />`
+        qtCode: `ChaSetKeybindingRecorder { value: "Ctrl+K"; size: "default" }
+ChaSetKeybindingRecorder { value: "Ctrl+Shift+P"; size: "sm" }
+ChaSetKeybindingRecorder { value: "Alt+F4"; clearable: false }
+ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`
+
+        Item {
+            anchors.fill: parent
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 14
+                width: 260
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Default Size (with Clear)"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetKeybindingRecorder { width: parent.width; value: "Ctrl+K"; size: "default"; clearable: true }
+                }
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Compact sm Tier"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetKeybindingRecorder { width: parent.width; value: "Ctrl+Shift+P"; size: "sm"; clearable: true }
+                }
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Without Clear Button"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetKeybindingRecorder { width: parent.width; value: "Alt+F4"; clearable: false }
+                }
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Disabled State"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetKeybindingRecorder { width: parent.width; value: "Ctrl+C"; enabled: false }
                 }
             }
         }

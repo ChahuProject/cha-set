@@ -19,7 +19,7 @@ DocLayout {
     property string animationMode: "pulse"
 
     ComponentPreview {
-        title: "Skeleton Preview"
+        title: "Skeleton Sandbox"
         reactCode: `<div className="flex items-center space-x-4">
   <Skeleton animation="${root.animationMode}" rounded="full" className="size-12" />
   <div className="space-y-2">

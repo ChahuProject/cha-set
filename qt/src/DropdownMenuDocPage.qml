@@ -18,7 +18,7 @@ DocLayout {
     property string lastAction: "None"
 
     ComponentPreview {
-        title: "Dropdown Menu Preview"
+        title: "Dropdown Menu Sandbox"
         reactCode: `<DropdownMenu items={items}>
   <Button variant="outline">Options ▾</Button>
 </DropdownMenu>`

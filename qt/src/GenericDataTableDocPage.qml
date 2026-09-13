@@ -16,7 +16,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Data Table Preview"
+        title: "Generic Data Table Sandbox"
         reactCode: `<GenericDataTable
   columns={[
     { key: "id", header: "ID" },

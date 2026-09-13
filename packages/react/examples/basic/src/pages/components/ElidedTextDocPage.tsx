@@ -52,7 +52,7 @@ export function ElidedTextDocPage() {
           Resize the container below using the slider. When the text is clipped with an ellipsis, hovering reveals the full path in a tooltip. Click to copy the full path when copyable is enabled.
         </p>
 
-        <ComponentPreview
+        <ComponentPreview title="Elided Text Sandbox"
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={

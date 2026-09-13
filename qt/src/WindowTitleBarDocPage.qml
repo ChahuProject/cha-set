@@ -18,7 +18,7 @@ DocLayout {
     property string lastAction: "Idle"
 
     ComponentPreview {
-        title: "Window Title Bar Preview"
+        title: "Window Title Bar Sandbox"
         reactCode: `<WindowTitleBar
   title="Render Debugger"
   icon="🍵"

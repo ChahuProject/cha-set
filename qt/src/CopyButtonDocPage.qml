@@ -18,7 +18,7 @@ DocLayout {
     property string copyStatus: "Click the copy button to test"
 
     ComponentPreview {
-        title: "Copy Button Preview"
+        title: "Copy Button Sandbox"
         reactCode: `<div className="flex items-center gap-4">\n  <CopyButton text="pnpm add @chahu/cha-set" />\n  <CopyButton text="https://chahu.design" label="Copy Link" />\n</div>`
         qtCode: `Row {\n    spacing: 12\n    ChaSetCopyButton {\n        text: "pnpm add @chahu/cha-set"\n        onCopiedToClipboard: function(txt) { console.log("Copied: " + txt) }\n    }\n    ChaSetCopyButton {\n        text: "https://chahu.design"\n        label: "Copy Link"\n    }\n}`
 
