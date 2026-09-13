@@ -228,6 +228,7 @@ Item {
             anchors.fill: parent
             hoverEnabled: !root.disabled
             enabled: !root.disabled && !root.readOnly
+            preventStealing: true
             cursorShape: root.readOnly ? Qt.ArrowCursor : (pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor)
             drag.target: thumb1
             drag.axis: Drag.XAxis
@@ -321,6 +322,7 @@ Item {
             anchors.fill: parent
             hoverEnabled: !root.disabled
             enabled: !root.disabled && !root.readOnly
+            preventStealing: true
             cursorShape: root.readOnly ? Qt.ArrowCursor : (pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor)
             drag.target: thumb2
             drag.axis: Drag.XAxis

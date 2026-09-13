@@ -62,7 +62,8 @@ ChaSetCard {
                 }
             }
 
-            Text {
+            TextEdit {
+                id: previewTitleText
                 visible: root.title !== ""
                 anchors.right: parent.right
                 anchors.rightMargin: 14
@@ -70,6 +71,19 @@ ChaSetCard {
                 text: root.title
                 color: ThemeTokens.subduedText
                 font.pixelSize: 12
+                readOnly: true
+                selectByMouse: true
+                selectByKeyboard: true
+                cursorVisible: false
+                activeFocusOnPress: true
+                textMargin: 0
+                padding: 0
+                selectionColor: ThemeTokens.accent
+                selectedTextColor: "#ffffff"
+
+                HoverHandler {
+                    cursorShape: Qt.IBeamCursor
+                }
             }
         }
 
