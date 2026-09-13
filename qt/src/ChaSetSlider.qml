@@ -336,6 +336,7 @@ Item {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
+        preventStealing: true
         cursorShape: root.disabled
             ? Qt.ForbiddenCursor
             : (root.readOnly

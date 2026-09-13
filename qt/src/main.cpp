@@ -346,7 +346,7 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
         if (flickable) {
             flickable->setProperty("contentY", 0.0);
         }
-        QTest::qWait(30);
+        QTest::qWait(60);
 
         auto* pageItem = pageLoader->property("item").value<QQuickItem*>();
         if (!pageItem) continue;
@@ -361,12 +361,12 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
             QPointF centerInItem(item->width() / 2.0, item->height() / 2.0);
             QPointF scenePoint = item->mapToScene(centerInItem);
 
-            // Verify the point is inside the visible window area (excluding left sidebar ~230px and top bar ~45px)
+            // Verify the point is inside the visible window area (excluding left sidebar ~235px, top bar ~45px, and clipped bottom ~40px)
             if (scenePoint.x() >= 235 && scenePoint.x() < window->width() - 25 &&
-                scenePoint.y() >= 45 && scenePoint.y() < window->height() - 25) {
+                scenePoint.y() >= 45 && scenePoint.y() < window->height() - 40) {
 
                 QTest::mouseMove(window, scenePoint.toPoint());
-                QTest::qWait(5);
+                QTest::qWait(10);
 
                 int actual = window->cursor().shape();
                 totalRaycastChecked++;

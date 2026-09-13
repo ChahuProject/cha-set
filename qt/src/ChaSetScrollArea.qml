@@ -32,6 +32,7 @@ Flickable {
 
     boundsBehavior: Flickable.StopAtBounds
     clip: true
+    interactive: false
 
     contentWidth: contentItem.childrenRect.width > 0 ? contentItem.childrenRect.width : width
     contentHeight: contentItem.childrenRect.height > 0 ? contentItem.childrenRect.height : height

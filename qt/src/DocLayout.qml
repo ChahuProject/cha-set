@@ -45,7 +45,7 @@ Item {
                     width: parent.width
                     height: Math.max(titleText.implicitHeight, copyBtn.height)
 
-                    Text {
+                    TextEdit {
                         id: titleText
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
@@ -54,6 +54,20 @@ Item {
                         font.pixelSize: 32
                         font.weight: Font.Bold
                         font.letterSpacing: -0.5
+                        height: contentHeight
+                        readOnly: true
+                        selectByMouse: true
+                        selectByKeyboard: true
+                        cursorVisible: false
+                        activeFocusOnPress: true
+                        textMargin: 0
+                        padding: 0
+                        selectionColor: ThemeTokens.accent
+                        selectedTextColor: "#ffffff"
+
+                        HoverHandler {
+                            cursorShape: Qt.IBeamCursor
+                        }
                     }
 
                     ChaSetCopyButton {
@@ -68,13 +82,28 @@ Item {
                     }
                 }
 
-                Text {
+                TextEdit {
+                    id: descText
+                    visible: root.description !== ""
                     text: root.description
                     color: ThemeTokens.subduedText
                     font.pixelSize: 14
-                    lineHeight: 1.4
-                    wrapMode: Text.WordWrap
+                    wrapMode: TextEdit.WordWrap
                     width: parent.width
+                    height: contentHeight
+                    readOnly: true
+                    selectByMouse: true
+                    selectByKeyboard: true
+                    cursorVisible: false
+                    activeFocusOnPress: true
+                    textMargin: 0
+                    padding: 0
+                    selectionColor: ThemeTokens.accent
+                    selectedTextColor: "#ffffff"
+
+                    HoverHandler {
+                        cursorShape: Qt.IBeamCursor
+                    }
                 }
 
                 ChaSetSeparator {}
