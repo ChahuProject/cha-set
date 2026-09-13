@@ -52,6 +52,7 @@ import { PanelCardDocPage } from './pages/components/PanelCardDocPage';
 import { SplitButtonDocPage } from './pages/components/SplitButtonDocPage';
 import { InlineEditableTextDocPage } from './pages/components/InlineEditableTextDocPage';
 import { RangeSliderDocPage } from './pages/components/RangeSliderDocPage';
+import { SnapSliderDocPage } from './pages/components/SnapSliderDocPage';
 import { ReadOnlyInputDocPage } from './pages/components/ReadOnlyInputDocPage';
 import { PresetNumberInputDocPage } from './pages/components/PresetNumberInputDocPage';
 import { KeybindingRecorderDocPage } from './pages/components/KeybindingRecorderDocPage';
@@ -636,6 +637,8 @@ export function App() {
         return <InlineEditableTextDocPage />;
       case '#/components/range-slider':
         return <RangeSliderDocPage />;
+      case '#/components/snap-slider':
+        return <SnapSliderDocPage />;
       case '#/components/read-only-input':
         return <ReadOnlyInputDocPage />;
       case '#/components/preset-number-input':

@@ -48,6 +48,11 @@
     { "key": "PageDown / PageUp", "action": "Decrease / increase value by 10 steps" },
     { "key": "Home / End", "action": "Jump directly to the minimum / maximum value" }
   ],
+  "snap-slider": [
+    { "key": "← / ↓", "action": "Step to previous discrete snap stop" },
+    { "key": "→ / ↑", "action": "Step to next discrete snap stop" },
+    { "key": "Home / End", "action": "Jump directly to the first / last snap stop" }
+  ],
   "dialog": [
     { "key": "Tab / Shift + Tab", "action": "Trap focus strictly within the dialog loop" },
     { "key": "Escape", "action": "Close dialog and return focus to triggering element" },

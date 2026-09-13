@@ -246,6 +246,12 @@
         "title": "Duration Input",
         "href": "#/components/duration-input",
         "desc": "Segmented duration input with step buttons, keyboard arrow jumping, and preset menu."
+      },
+      {
+        "id": "snap-slider",
+        "title": "Snap Slider",
+        "href": "#/components/snap-slider",
+        "desc": "Stepped discrete slider that snaps to defined stops with ticks and label row."
       }
     ]
   },

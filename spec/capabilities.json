@@ -335,6 +335,13 @@
       "statusSummary": { "requirement": "must", "description": "header summary badge, elapsed duration, and action slots" },
       "cancellation": { "requirement": "should", "description": "triggers cancellation callback with disabled states" },
       "filtering": { "requirement": "should", "description": "filters pipelines by status and keyword search" }
+    },
+    "snapSlider": {
+      "stops": { "requirement": "must", "description": "snaps to discrete stops" },
+      "labels": { "requirement": "must", "description": "renders left, active, and right label annotations" },
+      "ticks": { "requirement": "must", "description": "displays tick marks for stops" },
+      "keyboard": { "requirement": "must", "description": "arrow key step navigation" },
+      "disabled": { "requirement": "must", "description": "disabled state prevents interaction" }
     }
   }
 }
