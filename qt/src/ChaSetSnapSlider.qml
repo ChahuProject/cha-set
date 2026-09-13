@@ -42,7 +42,7 @@ Item {
         step: 1
         value: root.currentIndex
         showTicks: root.showTicks
-        disabled: root.disabled
+        disabled: root.disabled || !root.enabled
         readOnly: root.readOnly
         size: root.size
         onValueMoved: function(val) {
@@ -60,6 +60,7 @@ Item {
         anchors.topMargin: 2
         height: root.labelRowHeight
         visible: root.hasLabels
+        opacity: (root.disabled || !root.enabled) ? 0.5 : 1.0
 
         Text {
             text: root.leftLabel

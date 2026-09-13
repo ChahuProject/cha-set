@@ -11,6 +11,8 @@ export const scaleOsdPlacementSchema = z.enum([
   'top-right',
 ]);
 
+export const scaleOsdSizeSchema = z.enum(['default', 'lg']);
+
 export const scaleOsdSchema = z.object({
   value: z.number().default(1),
   step: z.number().default(0.1),
@@ -21,7 +23,10 @@ export const scaleOsdSchema = z.object({
   showControls: z.boolean().default(true),
   placement: scaleOsdPlacementSchema.default('bottom-center'),
   disabled: z.boolean().default(false),
+  size: scaleOsdSizeSchema.default('default'),
+  animated: z.boolean().default(true),
 });
 
 export type ScaleOsdApi = z.infer<typeof scaleOsdSchema>;
 export type ScaleOsdPlacement = z.infer<typeof scaleOsdPlacementSchema>;
+export type ScaleOsdSize = z.infer<typeof scaleOsdSizeSchema>;

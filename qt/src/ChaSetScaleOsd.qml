@@ -15,12 +15,16 @@ Item {
     property bool showControls: true
     property bool disabled: false
     property var format: null
+    property string size: "default" // "default" | "lg"
+    property bool animated: true
 
     signal stepTriggered(real delta)
     signal resetTriggered()
 
     property bool osdVisible: true
     property bool pointerOver: false
+
+    readonly property bool isLg: root.size === "lg"
 
     function show() {
         root.osdVisible = true;
@@ -76,15 +80,15 @@ Item {
     }
 
     implicitWidth: pill.implicitWidth
-    implicitHeight: 40
+    implicitHeight: isLg ? 42 : 40
     width: implicitWidth
     height: implicitHeight
 
-    visible: osdVisible
+    visible: root.animated ? (opacity > 0.01) : root.osdVisible
     opacity: osdVisible ? 1.0 : 0.0
 
     Behavior on opacity {
-        enabled: ThemeTokens.animationsEnabled
+        enabled: root.animated && ThemeTokens.animationsEnabled
         NumberAnimation {
             duration: ThemeTokens.motionShort
             easing.type: ThemeTokens.easeStandard
@@ -94,11 +98,11 @@ Item {
     Rectangle {
         id: pill
         anchors.fill: parent
-        radius: height / 2
+        radius: isLg ? 21 : height / 2
         color: ThemeTokens.panelRaised
         border.color: ThemeTokens.border
         border.width: 1
-        implicitWidth: contentRow.implicitWidth + 24
+        implicitWidth: contentRow.implicitWidth + (isLg ? 27 : 24)
 
         HoverHandler {
             onHoveredChanged: root.pointerOver = hovered
@@ -107,21 +111,23 @@ Item {
         Row {
             id: contentRow
             anchors.centerIn: parent
-            spacing: 8
+            spacing: isLg ? 6 : 8
 
             Text {
                 id: labelText
                 anchors.verticalCenter: parent.verticalCenter
+                width: isLg ? 180 : implicitWidth
                 text: root.format ? root.format(root.value) : qsTr("%1%").arg(Math.round(root.value * 100))
                 color: ThemeTokens.text
-                font.pixelSize: Typography.sizeBody
-                font.weight: Typography.weightSemibold
+                font.pixelSize: isLg ? Typography.sizeTitle : Typography.sizeBody
+                font.weight: isLg ? Typography.weightMedium : Typography.weightSemibold
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
             }
 
             Rectangle {
-                visible: root.showControls
+                visible: root.showControls && !root.isLg
                 width: 1
                 height: 18
                 color: ThemeTokens.border
@@ -132,11 +138,11 @@ Item {
             Rectangle {
                 id: minusBtn
                 visible: root.showControls
-                width: 28
-                height: 28
-                radius: 14
+                width: root.isLg ? 42 : 28
+                height: root.isLg ? 42 : 28
+                radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
-                color: minusHover.hovered && !minusDisabled ? ThemeTokens.hover : "transparent"
+                color: minusHover.hovered && !minusDisabled ? (root.isLg ? ThemeTokens.panelRaised : ThemeTokens.hover) : "transparent"
                 readonly property bool minusDisabled: root.disabled || root.value <= root.min
                 opacity: minusDisabled ? 0.4 : 1.0
 
@@ -144,7 +150,7 @@ Item {
                     anchors.centerIn: parent
                     text: "−"
                     color: ThemeTokens.text
-                    font.pixelSize: Typography.sizeHeading
+                    font.pixelSize: root.isLg ? 21 : Typography.sizeHeading
                     font.weight: Typography.weightBold
                 }
 
@@ -163,11 +169,11 @@ Item {
             Rectangle {
                 id: plusBtn
                 visible: root.showControls
-                width: 28
-                height: 28
-                radius: 14
+                width: root.isLg ? 42 : 28
+                height: root.isLg ? 42 : 28
+                radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
-                color: plusHover.hovered && !plusDisabled ? ThemeTokens.hover : "transparent"
+                color: plusHover.hovered && !plusDisabled ? (root.isLg ? ThemeTokens.panelRaised : ThemeTokens.hover) : "transparent"
                 readonly property bool plusDisabled: root.disabled || root.value >= root.max
                 opacity: plusDisabled ? 0.4 : 1.0
 
@@ -175,7 +181,7 @@ Item {
                     anchors.centerIn: parent
                     text: "+"
                     color: ThemeTokens.text
-                    font.pixelSize: Typography.sizeHeading
+                    font.pixelSize: root.isLg ? 21 : Typography.sizeHeading
                     font.weight: Typography.weightBold
                 }
 
@@ -194,18 +200,18 @@ Item {
             Rectangle {
                 id: resetBtn
                 visible: root.showControls
-                width: 28
-                height: 28
-                radius: 14
+                width: root.isLg ? 42 : 28
+                height: root.isLg ? 42 : 28
+                radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
-                color: resetHover.hovered && !root.disabled ? ThemeTokens.hover : "transparent"
+                color: resetHover.hovered && !root.disabled ? (root.isLg ? ThemeTokens.panelRaised : ThemeTokens.hover) : "transparent"
                 opacity: root.disabled ? 0.4 : 1.0
 
                 Text {
                     anchors.centerIn: parent
                     text: "⟳"
                     color: ThemeTokens.text
-                    font.pixelSize: Typography.sizeBody
+                    font.pixelSize: root.isLg ? 18 : Typography.sizeBody
                 }
 
                 HoverHandler {

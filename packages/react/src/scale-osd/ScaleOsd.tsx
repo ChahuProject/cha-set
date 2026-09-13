@@ -27,7 +27,10 @@ export interface ScaleOsdProps
   showControls?: boolean;
   /** Floating anchor placement */
   placement?: ScaleOsdPlacement;
-  disabled?: boolean;
+  /** Visual sizing preset ('default' or 'lg') */
+  size?: 'default' | 'lg';
+  /** Whether visibility and value changes animate */
+  animated?: boolean;
   /** Callbacks */
   onChange?: (value: number) => void;
   onStep?: (delta: number) => void;
@@ -58,6 +61,8 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       showControls = true,
       placement = 'bottom-center',
       disabled = false,
+      size = 'default',
+      animated = true,
       onChange,
       onStep,
       onReset,
@@ -168,6 +173,8 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
     const defaultFormat = (v: number) => `${Math.round(v * 100)}%`;
     const labelText = format ? format(currentValue) : defaultFormat(currentValue);
 
+    const isLg = size === 'lg';
+
     return (
       <div
         ref={ref}
@@ -175,9 +182,10 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
         role="region"
         aria-label="Scale OSD"
         className={cn(
-          'z-50 flex items-center gap-1.5 h-10 px-3.5 select-none rounded-full',
+          'z-50 flex items-center select-none rounded-full',
+          isLg ? 'gap-1.5 h-11 px-4' : 'gap-1.5 h-10 px-3.5',
           'bg-card text-card-foreground border border-border shadow-md',
-          'transition-all duration-short ease-standard',
+          animated ? 'transition-all duration-short ease-standard' : 'transition-none',
           placementClasses[placement],
           disabled && 'opacity-60 pointer-events-none',
           className,
@@ -188,20 +196,24 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       >
         <span
           data-slot="scale-readout"
-          className="font-medium tabular-nums text-sm text-foreground px-1.5 min-w-[3.5rem] text-center"
+          className={cn(
+            'font-medium tabular-nums text-foreground px-1.5 text-center',
+            isLg ? 'text-lg min-w-[11.25rem]' : 'text-sm min-w-[3.5rem]'
+          )}
         >
           {labelText}
         </span>
 
         {showControls && (
-          <div className="flex items-center gap-1 pl-1 border-l border-border/60">
+          <div className={cn('flex items-center', isLg ? 'gap-1.5' : 'gap-1 pl-1 border-l border-border/60')}>
             <button
               type="button"
               aria-label="Zoom Out"
               disabled={disabled || currentValue <= min}
               onClick={() => handleStep(-step)}
               className={cn(
-                'size-7 rounded-full flex items-center justify-center text-sm font-semibold',
+                'rounded-full flex items-center justify-center font-semibold',
+                isLg ? 'size-10 text-lg' : 'size-7 text-sm',
                 'cursor-pointer hover:bg-muted text-foreground transition-colors duration-quick ease-standard',
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
                 'disabled:cursor-not-allowed disabled:opacity-40',
@@ -215,7 +227,8 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
               disabled={disabled || currentValue >= max}
               onClick={() => handleStep(+step)}
               className={cn(
-                'size-7 rounded-full flex items-center justify-center text-sm font-semibold',
+                'rounded-full flex items-center justify-center font-semibold',
+                isLg ? 'size-10 text-lg' : 'size-7 text-sm',
                 'cursor-pointer hover:bg-muted text-foreground transition-colors duration-quick ease-standard',
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
                 'disabled:cursor-not-allowed disabled:opacity-40',
@@ -229,7 +242,8 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
               disabled={disabled}
               onClick={handleReset}
               className={cn(
-                'size-7 rounded-full flex items-center justify-center text-xs',
+                'rounded-full flex items-center justify-center',
+                isLg ? 'size-10 text-base' : 'size-7 text-xs',
                 'cursor-pointer hover:bg-muted text-foreground transition-colors duration-quick ease-standard',
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
                 'disabled:cursor-not-allowed disabled:opacity-40',
