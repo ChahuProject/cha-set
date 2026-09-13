@@ -64,9 +64,10 @@ DocLayout {
                     withHandle: true
 
                     Rectangle {
+                        id: navPanel
                         SplitView.preferredWidth: 180
-                        SplitView.minimumWidth: 80
-                        SplitView.maximumWidth: 380
+                        SplitView.minimumWidth: 40
+                        SplitView.maximumWidth: 460
                         color: ThemeTokens.panel
                         border.color: ThemeTokens.border
                         border.width: 1
@@ -84,15 +85,16 @@ DocLayout {
                             }
                             ChaSetBadge {
                                 variant: "outline"
-                                text: "Resizable Panel"
+                                text: ((navPanel.width + editorPanel.width > 0) ? Math.round((navPanel.width / (navPanel.width + editorPanel.width)) * 100) : 35) + "% Width"
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }
                     }
 
                     Rectangle {
+                        id: editorPanel
                         SplitView.fillWidth: true
-                        SplitView.minimumWidth: 120
+                        SplitView.minimumWidth: 40
                         color: ThemeTokens.background
                         border.color: ThemeTokens.border
                         border.width: 1
@@ -110,7 +112,7 @@ DocLayout {
                             }
                             ChaSetBadge {
                                 variant: "secondary"
-                                text: "Flexible Pane"
+                                text: ((navPanel.width + editorPanel.width > 0) ? Math.round((editorPanel.width / (navPanel.width + editorPanel.width)) * 100) : 65) + "% Width"
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }

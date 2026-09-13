@@ -7,8 +7,8 @@ Item {
 
     property string orientation: "horizontal" // "horizontal" | "vertical"
     property real splitRatio: 0.5
-    property real minRatio: 0.15
-    property real maxRatio: 0.85
+    property real minRatio: 0.05
+    property real maxRatio: 0.95
     property int initialSize: 50
     property int minSize: Math.round(minRatio * 100)
     property int maxSize: Math.round(maxRatio * 100)
@@ -47,7 +47,7 @@ Item {
         y: root.isHorizontal ? 0 : firstPane.height
         width: root.isHorizontal ? root.gutterSize : root.width
         height: root.isHorizontal ? root.height : root.gutterSize
-        color: gutterMouse.containsMouse || gutterMouse.drag.active || gutter.activeFocus ? ThemeTokens.accent : ThemeTokens.border
+        color: gutterMouse.containsMouse || gutterMouse.dragging || gutter.activeFocus ? ThemeTokens.accent : ThemeTokens.border
         border.color: gutter.activeFocus ? ThemeTokens.focus : "transparent"
         border.width: gutter.activeFocus ? 1 : 0
         activeFocusOnTab: true
@@ -110,17 +110,34 @@ Item {
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: root.isHorizontal ? Qt.SplitHCursor : Qt.SplitVCursor
-            drag.target: gutter
-            drag.axis: root.isHorizontal ? Drag.XAxis : Drag.YAxis
-            onPressed: gutter.forceActiveFocus()
+            property bool dragging: false
+            property real dragOffset: 0
 
-            onPositionChanged: {
-                if (drag.active) {
+            onPressed: function(mouse) {
+                gutter.forceActiveFocus()
+                dragging = true
+                var pt = mapToItem(root, mouse.x, mouse.y)
+                dragOffset = root.isHorizontal ? (pt.x - gutter.x) : (pt.y - gutter.y)
+            }
+
+            onReleased: {
+                dragging = false
+            }
+
+            onCanceled: {
+                dragging = false
+            }
+
+            onPositionChanged: function(mouse) {
+                if (dragging) {
+                    var pt = mapToItem(root, mouse.x, mouse.y)
                     if (root.isHorizontal) {
-                        let ratio = (gutter.x + root.gutterSize / 2) / root.width
+                        var targetX = pt.x - dragOffset + root.gutterSize / 2
+                        var ratio = targetX / root.width
                         root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, ratio))
                     } else {
-                        let ratio = (gutter.y + root.gutterSize / 2) / root.height
+                        var targetY = pt.y - dragOffset + root.gutterSize / 2
+                        var ratio = targetY / root.height
                         root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, ratio))
                     }
                 }
@@ -136,8 +153,8 @@ Item {
         id: secondPane
         x: root.isHorizontal ? (gutter.x + root.gutterSize) : 0
         y: root.isHorizontal ? 0 : (gutter.y + root.gutterSize)
-        width: root.isHorizontal ? (root.width - x) : root.width
-        height: root.isHorizontal ? root.height : (root.height - y)
+        width: root.isHorizontal ? Math.max(0, root.width - x) : root.width
+        height: root.isHorizontal ? root.height : Math.max(0, root.height - y)
         clip: true
 
         Loader {

@@ -11,14 +11,20 @@ export function ResizableDocPage() {
   >('horizontal');
   const [playgroundWithHandle, setPlaygroundWithHandle] = useState(true);
 
+  // Dynamic real-time panel sizes
+  const [horizLeft, setHorizLeft] = useState(35);
+  const [nestedSidebar, setNestedSidebar] = useState(28);
+  const [nestedEditor, setNestedEditor] = useState(65);
+  const [playgroundFirst, setPlaygroundFirst] = useState(40);
+
   const horizontalCode = `<ResizablePanelGroup direction="horizontal" className="min-h-64 rounded-lg border border-border">
-  <ResizablePanel defaultSize={35} minSize={15} maxSize={85}>
+  <ResizablePanel defaultSize={35} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-6 bg-muted/20">
       <span className="font-semibold text-sm">Navigation Sidebar</span>
     </div>
   </ResizablePanel>
   <ResizableHandle withHandle />
-  <ResizablePanel defaultSize={65} minSize={15}>
+  <ResizablePanel defaultSize={65} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-6">
       <span className="font-semibold text-sm">Editor Workspace</span>
     </div>
@@ -26,21 +32,21 @@ export function ResizableDocPage() {
 </ResizablePanelGroup>`;
 
   const nestedCode = `<ResizablePanelGroup direction="horizontal" className="min-h-64 rounded-lg border border-border">
-  <ResizablePanel defaultSize={25} minSize={15}>
+  <ResizablePanel defaultSize={28} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-4 bg-muted/20 text-xs">
       File Tree
     </div>
   </ResizablePanel>
   <ResizableHandle withHandle />
-  <ResizablePanel defaultSize={75}>
+  <ResizablePanel defaultSize={72} minSize={5} maxSize={95}>
     <ResizablePanelGroup direction="vertical">
-      <ResizablePanel defaultSize={65} minSize={30}>
+      <ResizablePanel defaultSize={65} minSize={5} maxSize={95}>
         <div className="flex h-full items-center justify-center p-4 text-xs font-mono">
           main.rs (Code Editor)
         </div>
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={35} minSize={20}>
+      <ResizablePanel defaultSize={35} minSize={5} maxSize={95}>
         <div className="flex h-full items-center justify-center p-4 bg-muted/30 text-xs font-mono">
           Terminal Console / Output
         </div>
@@ -50,13 +56,13 @@ export function ResizableDocPage() {
 </ResizablePanelGroup>`;
 
   const playgroundReactCode = `<ResizablePanelGroup direction="${playgroundDirection}" className="min-h-56 rounded-lg border border-border">
-  <ResizablePanel defaultSize={40} minSize={20}>
+  <ResizablePanel defaultSize={40} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-4 bg-muted/20 text-sm">
       Panel Alpha
     </div>
   </ResizablePanel>
   <ResizableHandle withHandle={${playgroundWithHandle}} />
-  <ResizablePanel defaultSize={60} minSize={20}>
+  <ResizablePanel defaultSize={60} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-4 text-sm">
       Panel Beta
     </div>
@@ -71,7 +77,7 @@ export function ResizableDocPage() {
 
     Rectangle {
         SplitView.preferredWidth: 150
-        SplitView.minimumWidth: 80
+        SplitView.minimumWidth: 40
         color: ThemeTokens.panel
     }
     Rectangle {
@@ -109,17 +115,25 @@ export function ResizableDocPage() {
               direction="horizontal"
               className="min-h-64 rounded-lg border border-border bg-card overflow-hidden"
             >
-              <ResizablePanel defaultSize={35} minSize={15} maxSize={85}>
+              <ResizablePanel
+                defaultSize={35}
+                minSize={5}
+                maxSize={95}
+                onResize={(size) => {
+                  const p = typeof size === 'number' ? size : size?.asPercentage;
+                  if (typeof p === 'number') setHorizLeft(Math.round(p));
+                }}
+              >
                 <div className="flex h-full flex-col justify-center items-center p-6 text-xs text-muted-foreground bg-muted/20">
                   <span className="font-semibold text-foreground mb-1.5 text-sm">Explorer Tree</span>
-                  <Badge variant="outline">35% Initial Width</Badge>
+                  <Badge variant="outline">{horizLeft}% Width</Badge>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={65} minSize={15}>
+              <ResizablePanel defaultSize={65} minSize={5} maxSize={95}>
                 <div className="flex h-full flex-col justify-center items-center p-6 text-xs text-muted-foreground">
                   <span className="font-semibold text-foreground mb-1.5 text-sm">Source Code Editor</span>
-                  <Badge variant="secondary">65% Initial Width</Badge>
+                  <Badge variant="secondary">{100 - horizLeft}% Width</Badge>
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
@@ -142,26 +156,42 @@ export function ResizableDocPage() {
               direction="horizontal"
               className="min-h-60 rounded-lg border border-border bg-card overflow-hidden"
             >
-              <ResizablePanel defaultSize={28} minSize={18}>
+              <ResizablePanel
+                defaultSize={28}
+                minSize={5}
+                maxSize={95}
+                onResize={(size) => {
+                  const p = typeof size === 'number' ? size : size?.asPercentage;
+                  if (typeof p === 'number') setNestedSidebar(Math.round(p));
+                }}
+              >
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/20">
                   <span className="font-semibold text-foreground mb-1.5">Sidebar</span>
-                  <Badge variant="outline">28% Width</Badge>
+                  <Badge variant="outline">{nestedSidebar}% Width</Badge>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={72}>
+              <ResizablePanel defaultSize={72} minSize={5} maxSize={95}>
                 <ResizablePanelGroup direction="vertical">
-                  <ResizablePanel defaultSize={65} minSize={30}>
+                  <ResizablePanel
+                    defaultSize={65}
+                    minSize={5}
+                    maxSize={95}
+                    onResize={(size) => {
+                      const p = typeof size === 'number' ? size : size?.asPercentage;
+                      if (typeof p === 'number') setNestedEditor(Math.round(p));
+                    }}
+                  >
                     <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground">
                       <span className="font-semibold text-foreground mb-1.5">Editor Viewport</span>
-                      <Badge variant="secondary">65% Height</Badge>
+                      <Badge variant="secondary">{nestedEditor}% Height</Badge>
                     </div>
                   </ResizablePanel>
                   <ResizableHandle withHandle />
-                  <ResizablePanel defaultSize={35} minSize={20}>
+                  <ResizablePanel defaultSize={35} minSize={5} maxSize={95}>
                     <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/30">
                       <span className="font-semibold text-foreground mb-1.5">Integrated Terminal</span>
-                      <Badge variant="outline">35% Height</Badge>
+                      <Badge variant="outline">{100 - nestedEditor}% Height</Badge>
                     </div>
                   </ResizablePanel>
                 </ResizablePanelGroup>
@@ -189,7 +219,7 @@ export function ResizableDocPage() {
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground font-medium">Direction:</span>
                 <SegmentedControl
-                  size="sm"
+                  size="default"
                   value={playgroundDirection}
                   onValueChange={(val) => setPlaygroundDirection(val as 'horizontal' | 'vertical')}
                   options={[
@@ -217,17 +247,29 @@ export function ResizableDocPage() {
               direction={playgroundDirection}
               className="min-h-56 rounded-lg border border-border bg-card overflow-hidden"
             >
-              <ResizablePanel defaultSize={40} minSize={20}>
+              <ResizablePanel
+                defaultSize={40}
+                minSize={5}
+                maxSize={95}
+                onResize={(size) => {
+                  const p = typeof size === 'number' ? size : size?.asPercentage;
+                  if (typeof p === 'number') setPlaygroundFirst(Math.round(p));
+                }}
+              >
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/20">
                   <span className="font-semibold text-foreground mb-1.5">Panel Alpha</span>
-                  <Badge variant="outline">40% Initial</Badge>
+                  <Badge variant="outline">
+                    {playgroundFirst}% {playgroundDirection === 'horizontal' ? 'Width' : 'Height'}
+                  </Badge>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle={playgroundWithHandle} />
-              <ResizablePanel defaultSize={60} minSize={20}>
+              <ResizablePanel defaultSize={60} minSize={5} maxSize={95}>
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground">
                   <span className="font-semibold text-foreground mb-1.5">Panel Beta</span>
-                  <Badge variant="secondary">60% Initial</Badge>
+                  <Badge variant="secondary">
+                    {100 - playgroundFirst}% {playgroundDirection === 'horizontal' ? 'Width' : 'Height'}
+                  </Badge>
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
