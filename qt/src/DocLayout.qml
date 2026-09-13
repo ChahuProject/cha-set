@@ -14,6 +14,12 @@ Item {
     property var tocItems: []
     default property alias contentData: pageContentCol.data
 
+    MouseArea {
+        anchors.fill: parent
+        z: -1
+        onClicked: SelectionHub.clearAll()
+    }
+
     Row {
         id: layoutRow
         anchors.horizontalCenter: parent.horizontalCenter
@@ -28,6 +34,7 @@ Item {
 
             // Breadcrumb
             TextEdit {
+                id: breadcrumbText
                 text: "Docs / " + root.category + " / " + root.pageTitle
                 color: ThemeTokens.subduedText
                 font.pixelSize: 12
@@ -46,28 +53,39 @@ Item {
                 HoverHandler {
                     cursorShape: Qt.IBeamCursor
                 }
+
+                onSelectedTextChanged: {
+                    if (selectedText.length > 0) SelectionHub.claim(breadcrumbText);
+                    else if (SelectionHub.activeOwner === breadcrumbText) SelectionHub.clear(breadcrumbText);
+                }
             }
 
-            // Page Header with Copy Link
+            // Page Header with Copy Link (Single RichText flow allowing continuous drag-selection)
             Column {
                 width: parent.width
                 spacing: 8
 
                 Item {
                     width: parent.width
-                    height: Math.max(titleText.implicitHeight, copyBtn.height)
+                    implicitHeight: Math.max(headerText.implicitHeight, copyBtn.height)
 
                     TextEdit {
-                        id: titleText
+                        id: headerText
                         anchors.left: parent.left
                         anchors.right: copyBtn.left
                         anchors.rightMargin: 16
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: root.pageTitle
-                        color: ThemeTokens.text
-                        font.pixelSize: 32
-                        font.weight: Font.Bold
-                        font.letterSpacing: -0.5
+                        anchors.top: parent.top
+                        textFormat: TextEdit.RichText
+                        wrapMode: TextEdit.WordWrap
+                        text: {
+                            var html = "<div style='line-height: 1.25;'>";
+                            html += "<span style='font-size: 24pt; font-weight: bold; color: " + ThemeTokens.text + ";'>" + root.pageTitle + "</span>";
+                            if (root.description) {
+                                html += "<div style='margin-top: 6pt; font-size: 10.5pt; line-height: 1.5; color: " + ThemeTokens.subduedText + ";'>" + root.description + "</div>";
+                            }
+                            html += "</div>";
+                            return html;
+                        }
                         height: contentHeight
                         readOnly: true
                         selectByMouse: true
@@ -82,41 +100,22 @@ Item {
                         HoverHandler {
                             cursorShape: Qt.IBeamCursor
                         }
+
+                        onSelectedTextChanged: {
+                            if (selectedText.length > 0) SelectionHub.claim(headerText);
+                            else if (SelectionHub.activeOwner === headerText) SelectionHub.clear(headerText);
+                        }
                     }
 
                     ChaSetCopyButton {
                         id: copyBtn
+                        anchors.top: parent.top
                         anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
                         variant: "outline"
                         size: "sm"
                         label: "Copy Link"
                         copiedLabel: "Copied!"
                         text: "https://cha-set.dev/#" + root.pageTitle.toLowerCase().replace(/ /g, "-")
-                    }
-                }
-
-                TextEdit {
-                    id: descText
-                    visible: root.description !== ""
-                    text: root.description
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: 14
-                    wrapMode: TextEdit.WordWrap
-                    width: parent.width
-                    height: contentHeight
-                    readOnly: true
-                    selectByMouse: true
-                    selectByKeyboard: true
-                    cursorVisible: false
-                    activeFocusOnPress: true
-                    textMargin: 0
-                    padding: 0
-                    selectionColor: ThemeTokens.accent
-                    selectedTextColor: "#ffffff"
-
-                    HoverHandler {
-                        cursorShape: Qt.IBeamCursor
                     }
                 }
 

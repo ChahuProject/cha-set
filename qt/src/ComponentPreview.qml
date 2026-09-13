@@ -84,6 +84,11 @@ ChaSetCard {
                 HoverHandler {
                     cursorShape: Qt.IBeamCursor
                 }
+
+                onSelectedTextChanged: {
+                    if (selectedText.length > 0) SelectionHub.claim(previewTitleText);
+                    else if (SelectionHub.activeOwner === previewTitleText) SelectionHub.clear(previewTitleText);
+                }
             }
         }
 

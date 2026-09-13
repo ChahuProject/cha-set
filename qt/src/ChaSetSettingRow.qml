@@ -95,6 +95,7 @@ Item {
                 spacing: 6
 
                 TextEdit {
+                    id: rowNameText
                     text: root.name
                     color: ThemeTokens.text
                     font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
@@ -114,6 +115,11 @@ Item {
                     HoverHandler {
                         cursorShape: Qt.IBeamCursor
                     }
+
+                    onSelectedTextChanged: {
+                        if (selectedText.length > 0) SelectionHub.claim(rowNameText);
+                        else if (SelectionHub.activeOwner === rowNameText) SelectionHub.clear(rowNameText);
+                    }
                 }
 
                 ChaSetBadge {
@@ -126,6 +132,7 @@ Item {
             }
 
             TextEdit {
+                id: rowDescText
                 width: parent.width
                 text: root.description
                 visible: root.description.length > 0
@@ -145,6 +152,11 @@ Item {
 
                 HoverHandler {
                     cursorShape: Qt.IBeamCursor
+                }
+
+                onSelectedTextChanged: {
+                    if (selectedText.length > 0) SelectionHub.claim(rowDescText);
+                    else if (SelectionHub.activeOwner === rowDescText) SelectionHub.clear(rowDescText);
                 }
             }
         }

@@ -20,6 +20,9 @@ Item {
     property int padding: isSm ? 16 : 24
     property int spacing: isSm ? 4 : 6
 
+    property string title: ""
+    property string description: ""
+
     default property alias contentData: col.data
 
     implicitWidth: col.implicitWidth + padding * 2
@@ -35,5 +38,47 @@ Item {
         anchors.rightMargin: root.padding
         anchors.topMargin: root.padding
         spacing: root.spacing
+
+        TextEdit {
+            id: richHeaderText
+            visible: root.title !== "" || root.description !== ""
+            width: parent.width
+            textFormat: TextEdit.RichText
+            wrapMode: TextEdit.WordWrap
+            text: {
+                if (!root.title && !root.description) return "";
+                var isDark = ThemeTokens.dark;
+                var titleCol = isDark ? "rgb(248, 250, 252)" : "rgb(2, 8, 23)";
+                var descCol = isDark ? "rgb(148, 163, 184)" : "rgb(100, 116, 139)";
+                var html = "<div style='line-height: 1.25;'>";
+                if (root.title) {
+                    html += "<div style='font-size: 13.5pt; font-weight: 600; color: " + titleCol + ";'>" + root.title + "</div>";
+                }
+                if (root.description) {
+                    html += "<div style='margin-top: 3pt; font-size: 10.5pt; line-height: 1.4; color: " + descCol + ";'>" + root.description + "</div>";
+                }
+                html += "</div>";
+                return html;
+            }
+            height: visible ? contentHeight : 0
+            readOnly: true
+            selectByMouse: true
+            selectByKeyboard: true
+            cursorVisible: false
+            activeFocusOnPress: true
+            textMargin: 0
+            padding: 0
+            selectionColor: ThemeTokens.accent
+            selectedTextColor: "#ffffff"
+
+            HoverHandler {
+                cursorShape: Qt.IBeamCursor
+            }
+
+            onSelectedTextChanged: {
+                if (selectedText.length > 0) SelectionHub.claim(richHeaderText);
+                else if (SelectionHub.activeOwner === richHeaderText) SelectionHub.clear(richHeaderText);
+            }
+        }
     }
 }

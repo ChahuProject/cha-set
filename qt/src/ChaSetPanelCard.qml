@@ -46,6 +46,7 @@ Rectangle {
                 spacing: 8
 
                 TextEdit {
+                    id: panelTitleText
                     text: root.title
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeBody
@@ -64,6 +65,11 @@ Rectangle {
 
                     HoverHandler {
                         cursorShape: Qt.IBeamCursor
+                    }
+
+                    onSelectedTextChanged: {
+                        if (selectedText.length > 0) SelectionHub.claim(panelTitleText);
+                        else if (SelectionHub.activeOwner === panelTitleText) SelectionHub.clear(panelTitleText);
                     }
                 }
 

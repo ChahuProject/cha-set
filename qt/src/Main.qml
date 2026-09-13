@@ -518,6 +518,56 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 10: SelectionHub Global Mutual Exclusion & Deselection
+        if (scenario === "all" || scenario === "selection") {
+            console.log("[qt-scenario] Running SelectionHub global mutual exclusion & deselection scenario...");
+            var selFailures = 0;
+
+            var mockItemA = {
+                deselectCount: 0,
+                deselect: function() { this.deselectCount++; }
+            };
+            var mockItemB = {
+                deselectCount: 0,
+                deselect: function() { this.deselectCount++; }
+            };
+
+            // 1. Claim A
+            SelectionHub.claim(mockItemA);
+            if (SelectionHub.activeOwner !== mockItemA) {
+                console.log("[qt-scenario] FAIL: SelectionHub activeOwner is not mockItemA");
+                selFailures++;
+            }
+
+            // 2. Claim B should trigger mockItemA.deselect()
+            SelectionHub.claim(mockItemB);
+            if (SelectionHub.activeOwner !== mockItemB) {
+                console.log("[qt-scenario] FAIL: SelectionHub activeOwner is not mockItemB");
+                selFailures++;
+            }
+            if (mockItemA.deselectCount !== 1) {
+                console.log("[qt-scenario] FAIL: mockItemA.deselect was not invoked on switch (count=" + mockItemA.deselectCount + ")");
+                selFailures++;
+            }
+
+            // 3. ClearAll should trigger mockItemB.deselect() and nullify activeOwner
+            SelectionHub.clearAll();
+            if (SelectionHub.activeOwner !== null) {
+                console.log("[qt-scenario] FAIL: SelectionHub activeOwner is not null after clearAll()");
+                selFailures++;
+            }
+            if (mockItemB.deselectCount !== 1) {
+                console.log("[qt-scenario] FAIL: mockItemB.deselect was not invoked on clearAll (count=" + mockItemB.deselectCount + ")");
+                selFailures++;
+            }
+
+            if (selFailures === 0) {
+                console.log("[qt-scenario] PASS: SelectionHub global mutual exclusion & single-selection verified");
+            } else {
+                failures += selFailures;
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;

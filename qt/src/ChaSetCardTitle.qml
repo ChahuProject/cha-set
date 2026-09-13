@@ -13,8 +13,8 @@ TextEdit {
     // React pins `leading-none`, i.e. a line box exactly as tall as the font size.
     // Qt would otherwise use the font's own metrics (≈21px at 16px), so the block
     // is one line-taller than the Web twin. See docs/architecture/typography-system.md.
-    lineHeight: Typography.lineHeightPx(Typography.sizeHeading, "none")
-    lineHeightMode: Text.FixedHeight
+    property real lineHeight: Typography.lineHeightPx(Typography.sizeHeading, "none")
+    property int lineHeightMode: 0
     color: isDark ? Qt.rgba(248/255, 250/255, 252/255, 1.0) : Qt.rgba(2/255, 8/255, 23/255, 1.0)
     wrapMode: TextEdit.Wrap
     width: parent ? parent.width : contentWidth
@@ -32,5 +32,10 @@ TextEdit {
 
     HoverHandler {
         cursorShape: Qt.IBeamCursor
+    }
+
+    onSelectedTextChanged: {
+        if (selectedText.length > 0) SelectionHub.claim(root);
+        else if (SelectionHub.activeOwner === root) SelectionHub.clear(root);
     }
 }

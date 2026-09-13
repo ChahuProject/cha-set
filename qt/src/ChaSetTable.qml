@@ -101,6 +101,7 @@ Rectangle {
                         height: headerRow.height
 
                         TextEdit {
+                            id: headerCellText
                             anchors.fill: parent
                             anchors.leftMargin: 12
                             anchors.rightMargin: 12
@@ -123,6 +124,11 @@ Rectangle {
                             HoverHandler {
                                 enabled: !root.interactive
                                 cursorShape: Qt.IBeamCursor
+                            }
+
+                            onSelectedTextChanged: {
+                                if (selectedText.length > 0) SelectionHub.claim(headerCellText);
+                                else if (SelectionHub.activeOwner === headerCellText) SelectionHub.clear(headerCellText);
                             }
                         }
                     }
@@ -261,6 +267,7 @@ Rectangle {
 
                             // Standard Text / Code rendering
                             TextEdit {
+                                id: bodyCellText
                                 visible: !Boolean(columnDef && (columnDef.badge || columnDef.kbd))
                                 anchors.fill: parent
                                 anchors.leftMargin: 12
@@ -289,6 +296,11 @@ Rectangle {
                                 HoverHandler {
                                     enabled: !root.interactive
                                     cursorShape: Qt.IBeamCursor
+                                }
+
+                                onSelectedTextChanged: {
+                                    if (selectedText.length > 0) SelectionHub.claim(bodyCellText);
+                                    else if (SelectionHub.activeOwner === bodyCellText) SelectionHub.clear(bodyCellText);
                                 }
                             }
                         }

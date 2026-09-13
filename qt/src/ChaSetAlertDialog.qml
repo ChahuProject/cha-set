@@ -100,6 +100,7 @@ Rectangle {
                 spacing: 6
 
                 TextEdit {
+                    id: alertTitleText
                     text: root.title
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeHeading
@@ -119,9 +120,15 @@ Rectangle {
                     HoverHandler {
                         cursorShape: Qt.IBeamCursor
                     }
+
+                    onSelectedTextChanged: {
+                        if (selectedText.length > 0) SelectionHub.claim(alertTitleText);
+                        else if (SelectionHub.activeOwner === alertTitleText) SelectionHub.clear(alertTitleText);
+                    }
                 }
 
                 TextEdit {
+                    id: alertDescText
                     text: root.description
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeBody
@@ -140,6 +147,11 @@ Rectangle {
 
                     HoverHandler {
                         cursorShape: Qt.IBeamCursor
+                    }
+
+                    onSelectedTextChanged: {
+                        if (selectedText.length > 0) SelectionHub.claim(alertDescText);
+                        else if (SelectionHub.activeOwner === alertDescText) SelectionHub.clear(alertDescText);
                     }
                 }
             }

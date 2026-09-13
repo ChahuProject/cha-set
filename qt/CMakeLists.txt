@@ -47,6 +47,11 @@ set_source_files_properties(src/Typography.generated.qml PROPERTIES
     QT_QML_SOURCE_TYPENAME Typography
 )
 
+set_source_files_properties(src/SelectionHub.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME SelectionHub
+)
+
 # -------------------------------------------------------------
 # 1. Main Reusable Component Library (Target: ChaSet / ChaSet::ChaSet)
 # -------------------------------------------------------------
@@ -131,8 +136,9 @@ qt_add_qml_module(ChaSet
         src/Highlighter.generated.qml
 
         src/CodeTokens.generated.qml
-
         src/Typography.generated.qml
+
+        src/SelectionHub.qml
     NO_GENERATE_EXTRA_QMLDIRS
 )
 
