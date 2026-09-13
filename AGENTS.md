@@ -121,6 +121,22 @@
     - **Code Block & Selectable Text Gutter Decoupling (代码块文本划选与行号解耦律)**:
       - Code viewers (`CodeBlock`, `HighlightedCode`) MUST support cross-line mouse drag selection (`selectByMouse: true`, `selectByKeyboard: true`), double-click word selection, triple-click line selection, and pure-text `Ctrl+C` copying.
       - Line numbers must reside in a separate non-selectable gutter (`Column`), strictly decoupled from the selectable code area, showing `ArrowCursor` and never contaminating copied text.
+13. **Mandatory Dual-Stack Showcase Structural, Semantic & Code Authenticity Contract (双端演示文档结构、元数据与代码保真度全景规约 — SPAS 零漂移红线)**:
+    - **Single Source of Truth for Metadata (元数据单一真理源)**:
+      Component DocPage metadata (`title`, `category`, `description`) MUST strictly match `spec/showcase/navigation.json`. React `<DocLayout title=...>` and Qt `DocLayout { pageTitle: ... }` must display the official component name. It is strictly forbidden to displace the component title with sandbox mock card text.
+    - **Canonical Table of Contents Standard (TOC 五大标准锚点律)**:
+      Every living DocPage on both React and Qt MUST provide the identical 5 canonical sections with matching IDs and titles:
+      1. `overview`: **Interactive Overview** (strict ban on legacy `preview` / `Interactive Preview`)
+      2. `installation`: **Installation**
+      3. `animations`: **Animations** (motion tokens, transitions, reduced motion per Golden Red Line 10)
+      4. `keyboard`: **Keyboard Navigation** (backed by `spec/showcase/keyboard-shortcuts.json`)
+      5. `props`: **Props Reference** (strict ban on legacy `api` / `API Reference`)
+    - **Authentic Code Snippet Contract (Qt 演示页真实 React 代码契约)**:
+      Qt's `ComponentPreview` `reactCode` property MUST provide authentic, valid React JSX conforming to the component's actual TypeScript API contract. Speculative, synthetically hallucinated, or placeholder JSX in QML is strictly forbidden.
+    - **Sandbox Visual & Content Equivalence (沙盒内容与状态等价律)**:
+      Interactive preview sandboxes across React and Qt MUST implement identical layouts, pane titles, mock datasets (e.g. file trees, table rows), badge calculations, and reset actions/initial values.
+    - **Showcase Parity Automated Gate (SPAS 门禁)**:
+      Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`). `pnpm gate` mechanically runs SPAS validation across all registered components to guarantee zero structural, metadata, or code divergence.
 
 ---
 
