@@ -87,7 +87,7 @@ Item {
     readonly property int sliderSpacing: sliderDensity === "dense" ? (isSm ? 2 : 3) :
                                          sliderDensity === "compact" ? (isSm ? 3 : 4) : (isSm ? 4 : 6)
 
-    implicitWidth: mode === "popover" ? popoverTrigger.implicitWidth : cardWidth
+    implicitWidth: mode === "popover" ? popoverTrigger.implicitWidth : (panelLoader.item ? panelLoader.item.width : cardWidth)
     implicitHeight: mode === "popover" ? popoverTrigger.implicitHeight : (panelLoader.item ? panelLoader.item.height : 540)
     width: implicitWidth
     height: implicitHeight
@@ -514,7 +514,6 @@ Item {
                 anchors.top: parent.top
                 anchors.margins: 12
                 spacing: 10
-                height: implicitHeight
 
                 // 1. Preview Header
                 Row {
@@ -1110,13 +1109,11 @@ Item {
                 // 6. Channel Sliders Section with Dynamic Density & Color Tracks
                 Column {
                     width: parent.width
-                    height: implicitHeight
                     spacing: root.sliderSpacing
 
                     // RGB Group
                     Column {
                         width: parent.width
-                        height: implicitHeight
                         spacing: root.sliderSpacing
                         visible: root.showRgbSliders
 
@@ -1157,7 +1154,6 @@ Item {
                     // HSV Group
                     Column {
                         width: parent.width
-                        height: implicitHeight
                         spacing: root.sliderSpacing
                         visible: root.showHsvSliders
 
@@ -1203,7 +1199,6 @@ Item {
                     // CMYK Group
                     Column {
                         width: parent.width
-                        height: implicitHeight
                         spacing: root.sliderSpacing
                         visible: root.showCmykSliders
 
@@ -1267,7 +1262,6 @@ Item {
                     // LAB Group
                     Column {
                         width: parent.width
-                        height: implicitHeight
                         spacing: root.sliderSpacing
                         visible: root.showLabSliders
 
@@ -1405,8 +1399,6 @@ Item {
         Loader {
             active: root.mode === "popover" && colorPopup.visible
             sourceComponent: pickerCardComponent
-            width: item ? item.width : root.cardWidth
-            height: item ? item.height : 0
         }
     }
 
@@ -1415,8 +1407,6 @@ Item {
         id: panelLoader
         active: root.mode === "inline"
         visible: root.mode === "inline"
-        width: item ? item.width : root.cardWidth
-        height: item ? item.height : 0
         sourceComponent: pickerCardComponent
     }
 }
