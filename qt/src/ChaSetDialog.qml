@@ -158,6 +158,11 @@ Rectangle {
                         HoverHandler {
                             cursorShape: Qt.IBeamCursor
                         }
+
+                        onSelectedTextChanged: {
+                            if (selectedText.length > 0) SelectionHub.claim(titleText);
+                            else if (SelectionHub.activeOwner === titleText) SelectionHub.clear(titleText);
+                        }
                     }
 
                     Row {
@@ -223,6 +228,11 @@ Rectangle {
 
                     HoverHandler {
                         cursorShape: Qt.IBeamCursor
+                    }
+
+                    onSelectedTextChanged: {
+                        if (selectedText.length > 0) SelectionHub.claim(descText);
+                        else if (SelectionHub.activeOwner === descText) SelectionHub.clear(descText);
                     }
                 }
             }

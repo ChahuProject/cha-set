@@ -11,8 +11,8 @@ TextEdit {
     font.pixelSize: Typography.sizeBody
     font.weight: Font.Normal
     // React twin: text-sm -> 14px on a 20px line box.
-    lineHeight: Typography.lineHeightPx(Typography.sizeBody, "body")
-    lineHeightMode: Text.FixedHeight
+    property real lineHeight: Typography.lineHeightPx(Typography.sizeBody, "body")
+    property int lineHeightMode: 0
     color: isDark ? Qt.rgba(148/255, 163/255, 184/255, 1.0) : Qt.rgba(100/255, 116/255, 139/255, 1.0)
     wrapMode: TextEdit.Wrap
     width: parent ? parent.width : contentWidth
@@ -30,5 +30,10 @@ TextEdit {
 
     HoverHandler {
         cursorShape: Qt.IBeamCursor
+    }
+
+    onSelectedTextChanged: {
+        if (selectedText.length > 0) SelectionHub.claim(root);
+        else if (SelectionHub.activeOwner === root) SelectionHub.clear(root);
     }
 }

@@ -32,4 +32,9 @@ TextEdit {
     HoverHandler {
         cursorShape: Qt.IBeamCursor
     }
+
+    onSelectedTextChanged: {
+        if (selectedText.length > 0) SelectionHub.claim(root);
+        else if (SelectionHub.activeOwner === root) SelectionHub.clear(root);
+    }
 }
