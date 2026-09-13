@@ -100,7 +100,7 @@ export function SplitButton({
       <Button
         size={size}
         variant={variant}
-        className="rounded-none rounded-l-lg !rounded-r-none border-r-0"
+        className="rounded-l-lg rounded-r-none border-r-0"
         style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
         disabled={disabled}
         title={title}
@@ -116,7 +116,7 @@ export function SplitButton({
           <Button
             size={chevronSize}
             variant={variant}
-            className={cn('rounded-none rounded-r-lg !rounded-l-none border-l px-1.5', separatorColor)}
+            className={cn('rounded-r-lg rounded-l-none border-l px-1.5', separatorColor)}
             style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
             disabled={disabled}
             aria-label={chevronAriaLabel}
