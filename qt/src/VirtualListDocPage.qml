@@ -46,7 +46,7 @@ DocLayout {
                 anchors.centerIn: parent
                 spacing: 12
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Rendering 10,000 Virtual Items with Native Wheel Flicking:"
                     color: ThemeTokens.subduedText
@@ -96,7 +96,7 @@ DocLayout {
                         height: 36
                         color: index % 2 === 0 ? ThemeTokens.hover : "transparent"
 
-                        Text {
+                        DocText {
                             anchors.left: parent.left
                             anchors.leftMargin: 12
                             anchors.right: badgeItem.left

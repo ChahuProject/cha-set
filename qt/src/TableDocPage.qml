@@ -97,7 +97,7 @@ DocLayout {
                 Row {
                     spacing: 8
                     anchors.verticalCenter: parent.verticalCenter
-                    Text { text: "Status:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Status:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.statusFilter
@@ -127,7 +127,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Installation"
             color: root.cFg
             font.pixelSize: 18
@@ -146,14 +146,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Anatomy"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Import ChaSetTable and declare column schemas and row datasets."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -171,14 +171,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Examples & States"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Common configurations and visual states in Qt Quick."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -248,7 +248,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Props Reference"
             color: root.cFg
             font.pixelSize: 18

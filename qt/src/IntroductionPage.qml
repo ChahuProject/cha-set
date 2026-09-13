@@ -64,7 +64,7 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 6
-                        Text { text: "🎯"; font.pixelSize: 22 }
+                        DocText { text: "🎯"; font.pixelSize: 22 }
                         DocText { text: "One Source of Truth"; textColor: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
                         DocText {
                             text: "Design tokens and API contracts reside in spec/ and emit synchronized tokens for Web & Qt."
@@ -92,7 +92,7 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 6
-                        Text { text: "⚡"; font.pixelSize: 22 }
+                        DocText { text: "⚡"; font.pixelSize: 22 }
                         DocText { text: "Native Ergonomics"; textColor: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
                         DocText {
                             text: "Tailwind CSS v4 & Base UI on React; pure QML Quick Controls on Qt — no electron bloat or foreign wrappers."
@@ -120,7 +120,7 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 6
-                        Text { text: "🔒"; font.pixelSize: 22 }
+                        DocText { text: "🔒"; font.pixelSize: 22 }
                         DocText { text: "Automated Parity Gate"; textColor: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
                         DocText {
                             text: "CI enforces that all required capabilities and visual rendering match 100% across stacks."

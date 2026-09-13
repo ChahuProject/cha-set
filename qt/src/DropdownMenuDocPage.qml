@@ -68,7 +68,7 @@ DocLayout {
                     }
                 }
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Action: " + root.lastAction
                     color: ThemeTokens.subduedText

@@ -48,14 +48,14 @@ DocLayout {
                 Item {
                     width: parent.width
                     height: 16
-                    Text {
+                    DocText {
                         anchors.left: parent.left
                         text: "Min: " + Math.round(root.minPrice)
                         color: ThemeTokens.subduedText
                         font.pixelSize: 12
                         font.family: Typography.familyMono
                     }
-                    Text {
+                    DocText {
                         anchors.right: parent.right
                         text: "Max: " + Math.round(root.maxPrice)
                         color: ThemeTokens.subduedText
@@ -102,28 +102,28 @@ ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false 
                 Column {
                     spacing: 4
                     width: parent.width
-                    Text { text: "Default with Tooltips"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Default with Tooltips"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                     ChaSetRangeSlider { width: parent.width; size: "default"; firstValue: 20; secondValue: 80; showTooltip: true }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    Text { text: "Compact sm Tier"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Compact sm Tier"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                     ChaSetRangeSlider { width: parent.width; size: "sm"; firstValue: 30; secondValue: 70; showTooltip: true }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    Text { text: "Read Only"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Read Only"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                     ChaSetRangeSlider { width: parent.width; size: "sm"; firstValue: 25; secondValue: 75; readOnly: true }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    Text { text: "Disabled"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Disabled"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                     ChaSetRangeSlider { width: parent.width; size: "sm"; firstValue: 10; secondValue: 90; enabled: false }
                 }
             }

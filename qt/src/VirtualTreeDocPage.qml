@@ -19,6 +19,7 @@ DocLayout {
 
     ComponentPreview {
         title: "Virtual Tree Sandbox"
+        stageHeight: 340
         reactCode: `<VirtualTree
   rootNodes={treeData}
   getChildren={(n) => n.children}
@@ -105,7 +106,7 @@ DocLayout {
                     }
                 }
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Selected Node ID: " + root.selectedPath
                     color: ThemeTokens.text

@@ -75,7 +75,7 @@ DocLayout {
                             border.width: 1
                             border.color: ThemeTokens.border
 
-                            Text {
+                            DocText {
                                 anchors.left: parent.left
                                 anchors.leftMargin: 10
                                 anchors.verticalCenter: parent.verticalCenter

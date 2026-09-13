@@ -72,7 +72,7 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: 8
-                Text { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetTabs {
                     anchors.verticalCenter: parent.verticalCenter
                     currentValue: root.demoSize
@@ -136,7 +136,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Installation"
             color: root.cFg
             font.pixelSize: 18
@@ -155,14 +155,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Anatomy"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Import and render ChaSetCheckbox in your QML scene graph with declarative properties and signals."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -180,14 +180,14 @@ DocLayout {
         width: parent.width
         spacing: 16
 
-        Text {
+        DocText {
             text: "Examples & States"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Visual showcase of common checkbox states, sizes, and hierarchical groupings."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -211,8 +211,8 @@ DocLayout {
                         anchors.margins: 16
                         spacing: 8
 
-                        Text { text: "Unchecked & Checked"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                        Text { text: "Standard interactive toggle states"; font.pixelSize: 11; color: root.cMutedFg }
+                        DocText { text: "Unchecked & Checked"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        DocText { text: "Standard interactive toggle states"; font.pixelSize: 11; color: root.cMutedFg }
 
                         Column {
                             spacing: 8
@@ -237,8 +237,8 @@ DocLayout {
                         anchors.margins: 16
                         spacing: 8
 
-                        Text { text: "Indeterminate State"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                        Text { text: "Represents partially selected sub-options"; font.pixelSize: 11; color: root.cMutedFg }
+                        DocText { text: "Indeterminate State"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        DocText { text: "Represents partially selected sub-options"; font.pixelSize: 11; color: root.cMutedFg }
 
                         Column {
                             spacing: 6
@@ -267,8 +267,8 @@ DocLayout {
                         anchors.margins: 16
                         spacing: 8
 
-                        Text { text: "With Helper Description"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                        Text { text: "Detailed multi-line label and subtext"; font.pixelSize: 11; color: root.cMutedFg }
+                        DocText { text: "With Helper Description"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        DocText { text: "Detailed multi-line label and subtext"; font.pixelSize: 11; color: root.cMutedFg }
 
                         ChaSetCheckbox {
                             checked: true
@@ -293,8 +293,8 @@ DocLayout {
                         anchors.margins: 16
                         spacing: 8
 
-                        Text { text: "Invalid / Error State"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                        Text { text: "Highlights unchecked required confirmation"; font.pixelSize: 11; color: root.cMutedFg }
+                        DocText { text: "Invalid / Error State"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        DocText { text: "Highlights unchecked required confirmation"; font.pixelSize: 11; color: root.cMutedFg }
 
                         ChaSetCheckbox {
                             invalid: true
@@ -320,8 +320,8 @@ DocLayout {
                         anchors.margins: 16
                         spacing: 8
 
-                        Text { text: "Disabled & Read-Only States"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                        Text { text: "Dimmed non-interactive vs locked presentation"; font.pixelSize: 11; color: root.cMutedFg }
+                        DocText { text: "Disabled & Read-Only States"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        DocText { text: "Dimmed non-interactive vs locked presentation"; font.pixelSize: 11; color: root.cMutedFg }
 
                         Column {
                             spacing: 8
@@ -346,8 +346,8 @@ DocLayout {
                         anchors.margins: 16
                         spacing: 8
 
-                        Text { text: "Size Variants"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
-                        Text { text: "Default vs Compact size"; font.pixelSize: 11; color: root.cMutedFg }
+                        DocText { text: "Size Variants"; font.pixelSize: 13; font.weight: Font.Bold; color: root.cFg }
+                        DocText { text: "Default vs Compact size"; font.pixelSize: 11; color: root.cMutedFg }
 
                         Column {
                             spacing: 8
@@ -365,13 +365,13 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text { text: "Animations"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+        DocText { text: "Animations"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
 
-        Text { text: "Motion behavior and timing driven by ThemeTokens for state transitions."; color: root.cMutedFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        DocText { text: "Motion behavior and timing driven by ThemeTokens for state transitions."; color: root.cMutedFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        Text { text: "• The check-mark SVG stays mounted and cross-fades its opacity and scale when checked, using ThemeTokens.motionQuick with the easeEntrance curve on opacity/scale and easeStandard on colors."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: "• The box border color interpolates across hover, focus, checked, and invalid states."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        DocText { text: "• The check-mark SVG stays mounted and cross-fades its opacity and scale when checked, using ThemeTokens.motionQuick with the easeEntrance curve on opacity/scale and easeStandard on colors."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• The box border color interpolates across hover, focus, checked, and invalid states."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     // Section 5: Props Reference
@@ -379,7 +379,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Props Reference"
             color: root.cFg
             font.pixelSize: 18

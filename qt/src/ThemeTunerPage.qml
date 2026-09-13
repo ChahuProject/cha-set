@@ -55,7 +55,7 @@ DocLayout {
                     width: parent.width
                     Row {
                         spacing: 8
-                        Text { text: "🎨"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter }
+                        DocText { text: "🎨"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter }
                         DocText { text: "Theme & Style Tuner"; textColor: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.Bold; anchors.verticalCenter: parent.verticalCenter }
                     }
 
@@ -89,7 +89,7 @@ DocLayout {
                 // 1. Appearance & Mode
                 Column {
                     spacing: 6
-                    Text { text: "APPEARANCE & MODE"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+                    DocText { text: "APPEARANCE & MODE"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                     ChaSetTabs {
                         currentValue: ThemeTokens.dark ? "dark" : "light"
                         onCurrentValueChanged: {
@@ -109,7 +109,7 @@ DocLayout {
                 // 2. Accent Presets (9 Presets)
                 Column {
                     spacing: 6
-                    Text { text: "ACCENT THEME PRESET"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+                    DocText { text: "ACCENT THEME PRESET"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                     Flow {
                         width: parent.width
                         spacing: 6
@@ -136,7 +136,7 @@ DocLayout {
                 // 3. Custom Color Override
                 Column {
                     spacing: 6
-                    Text { text: "CUSTOM COLOR OVERRIDE"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+                    DocText { text: "CUSTOM COLOR OVERRIDE"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                     ChaSetColorPicker {
                         id: tunerColorPicker
                         mode: "popover"
@@ -155,7 +155,7 @@ DocLayout {
                     spacing: 6
                     Row {
                         width: parent.width
-                        Text { text: "CORNER RADIUS (--RADIUS)"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+                        DocText { text: "CORNER RADIUS (--RADIUS)"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                         Item { width: Math.max(10, parent.width - 320); height: 1 }
                         ChaSetBadge {
                             size: "sm"
@@ -177,13 +177,13 @@ DocLayout {
 
                     Row {
                         width: parent.width
-                        Text { text: "0px (Sharp)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                        DocText { text: "0px (Sharp)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
                         Item { width: parent.width - 240; height: 1 }
-                        Text { text: "8px"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                        DocText { text: "8px"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
                         Item { width: 50; height: 1 }
-                        Text { text: "16px"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                        DocText { text: "16px"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
                         Item { width: 50; height: 1 }
-                        Text { text: "24px (Pill)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                        DocText { text: "24px (Pill)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
                     }
                 }
 
@@ -196,7 +196,7 @@ DocLayout {
 
                     Row {
                         width: parent.width
-                        Text {
+                        DocText {
                             text: "MOTION & ANIMATIONS"
                             color: ThemeTokens.subduedText
                             font.pixelSize: 11
@@ -222,7 +222,7 @@ DocLayout {
 
                         Row {
                             width: parent.width
-                            Text {
+                            DocText {
                                 text: "ANIMATION SPEED DURATION FACTOR"
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: 11
@@ -250,11 +250,11 @@ DocLayout {
 
                         Row {
                             width: parent.width
-                            Text { text: "0.05s (Fast)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                            DocText { text: "0.05s (Fast)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
                             Item { width: parent.width - 230; height: 1 }
-                            Text { text: "0.20s (Default)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                            DocText { text: "0.20s (Default)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
                             Item { width: 40; height: 1 }
-                            Text { text: "0.80s (Slow)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
+                            DocText { text: "0.80s (Slow)"; color: ThemeTokens.subduedText; font.pixelSize: 10 }
                         }
                     }
                 }
@@ -269,8 +269,8 @@ DocLayout {
 
         Column {
             spacing: 4
-            Text { text: "Live Component Sandbox"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
-            Text { text: "Interact with components rendering live under your current style settings:"; color: ThemeTokens.subduedText; font.pixelSize: 13 }
+            DocText { text: "Live Component Sandbox"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+            DocText { text: "Interact with components rendering live under your current style settings:"; color: ThemeTokens.subduedText; font.pixelSize: 13 }
         }
 
         Rectangle {
@@ -291,7 +291,7 @@ DocLayout {
                 // Buttons Column
                 Column {
                     spacing: 12
-                    Text { text: "BUTTONS"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+                    DocText { text: "BUTTONS"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                     Row {
                         spacing: 8
                         ChaSetButton { variant: "default"; size: "default"; text: "Default Action"; onClicked: root.logAction("Clicked sandbox default") }
@@ -313,7 +313,7 @@ DocLayout {
                 // Mini Scroll Viewport Column
                 Column {
                     spacing: 12
-                    Text { text: "MINI SCROLL VIEWPORT"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+                    DocText { text: "MINI SCROLL VIEWPORT"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
                     ChaSetScrollArea {
                         width: 240
                         height: 100
@@ -329,7 +329,7 @@ DocLayout {
                                 delegate: Rectangle {
                                     required property int index
                                     width: 220; height: 24; radius: 4; color: ThemeTokens.hover
-                                    Text { anchors.centerIn: parent; text: "Item #" + (index + 1); color: ThemeTokens.text; font.pixelSize: 11 }
+                                    DocText { anchors.centerIn: parent; text: "Item #" + (index + 1); color: ThemeTokens.text; font.pixelSize: 11 }
                                 }
                             }
                         }

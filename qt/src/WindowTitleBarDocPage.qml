@@ -72,7 +72,7 @@ DocLayout {
                                 anchors.centerIn: parent
                                 spacing: 8
 
-                                Text {
+                                DocText {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     text: "Desktop Mock Window Frame"
                                     color: ThemeTokens.text
@@ -84,7 +84,7 @@ DocLayout {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     spacing: 8
 
-                                    Text {
+                                    DocText {
                                         anchors.verticalCenter: parent.verticalCenter
                                         text: "Caption Event:"
                                         color: ThemeTokens.subduedText

@@ -42,7 +42,7 @@ DocLayout {
                 anchors.centerIn: parent
                 spacing: 12
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Rendering 1,000 Grid Cards with Responsive Recycling:"
                     color: ThemeTokens.subduedText
@@ -106,7 +106,7 @@ DocLayout {
                                 anchors.centerIn: parent
                                 spacing: 4
 
-                                Text {
+                                DocText {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     text: "Asset #" + (index + 1)
                                     color: ThemeTokens.text
@@ -114,7 +114,7 @@ DocLayout {
                                     font.weight: Font.DemiBold
                                 }
 
-                                Text {
+                                DocText {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     text: "1920x1080 • PNG"
                                     color: ThemeTokens.subduedText

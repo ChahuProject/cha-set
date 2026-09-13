@@ -52,7 +52,7 @@ DocLayout {
                 border.width: 1
                 radius: 8
 
-                Text {
+                DocText {
                     anchors.centerIn: parent
                     text: "Drag the modal around within this bounded canvas"
                     color: ThemeTokens.subduedText
@@ -80,7 +80,7 @@ DocLayout {
 
                         Row {
                             spacing: 8
-                            Text {
+                            DocText {
                                 text: "Active Pass:"
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: 12
@@ -93,8 +93,8 @@ DocLayout {
                             }
                         }
 
-                        Text { text: "Format: R32G32B32A32_FLOAT"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
-                        Text { text: "Dimensions: 2560 x 1440"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                        DocText { text: "Format: R32G32B32A32_FLOAT"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
+                        DocText { text: "Dimensions: 2560 x 1440"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                         ChaSetButton { text: "Export Buffer"; size: "xs"; variant: "outline" }
                     }
                 }

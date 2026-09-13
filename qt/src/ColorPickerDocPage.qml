@@ -71,7 +71,7 @@ DocLayout {
                     Row {
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 8
-                        Text {
+                        DocText {
                             text: "Selected:"
                             color: root.cMutedFg
                             font.pixelSize: 12
@@ -83,7 +83,7 @@ DocLayout {
                             border.width: 1
                             anchors.verticalCenter: parent.verticalCenter
                         }
-                        Text {
+                        DocText {
                             text: root.demoColor
                             color: root.cFg
                             font.family: Typography.familyMono
@@ -99,7 +99,7 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: 8
-                Text {
+                DocText {
                     text: "Mode:"
                     color: root.cMutedFg
                     font.pixelSize: 12
@@ -118,7 +118,7 @@ DocLayout {
 
             Row {
                 spacing: 8
-                Text {
+                DocText {
                     text: "Size:"
                     color: root.cMutedFg
                     font.pixelSize: 12
@@ -177,7 +177,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Installation"
             color: root.cFg
             font.pixelSize: 18
@@ -196,14 +196,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Anatomy"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Import and render ChaSetColorPicker directly in your QML scene."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -221,14 +221,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Examples & States"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Visual matrix of color picker configurations, modes, and states in Qt Quick."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -250,8 +250,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Popover Dropdown Mode"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Compact swatch trigger opening floating overlay"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Popover Dropdown Mode"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Compact swatch trigger opening floating overlay"; color: root.cMutedFg; font.pixelSize: 11 }
                     ChaSetColorPicker {
                         mode: "popover"
                         value: "#ef4444"
@@ -270,8 +270,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Smaller footprint suitable for toolbars and palettes"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Smaller footprint suitable for toolbars and palettes"; color: root.cMutedFg; font.pixelSize: 11 }
                     ChaSetColorPicker {
                         mode: "popover"
                         size: "sm"
@@ -291,8 +291,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Non-interactive with 50% opacity"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Non-interactive with 50% opacity"; color: root.cMutedFg; font.pixelSize: 11 }
                     ChaSetColorPicker {
                         mode: "popover"
                         disabled: true
@@ -312,8 +312,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Custom Swatches Palette"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Configured with specialized palette colors"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Custom Swatches Palette"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Configured with specialized palette colors"; color: root.cMutedFg; font.pixelSize: 11 }
                     ChaSetColorPicker {
                         mode: "popover"
                         value: "#f59e0b"
@@ -329,7 +329,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Props Reference"
             color: root.cFg
             font.pixelSize: 18

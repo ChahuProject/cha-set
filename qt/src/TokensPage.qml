@@ -103,7 +103,7 @@ DocLayout {
                                 anchors.centerIn: parent
                                 width: 72; height: 22; radius: 11
                                 color: Qt.rgba(0, 0, 0, 0.75)
-                                Text { anchors.centerIn: parent; text: "✓ Copied"; color: "#10b981"; font.pixelSize: 10; font.weight: Font.Bold }
+                                DocText { anchors.centerIn: parent; text: "✓ Copied"; color: "#10b981"; font.pixelSize: 10; font.weight: Font.Bold }
                             }
                         }
 
@@ -111,14 +111,14 @@ DocLayout {
                             x: 8
                             y: 6
                             spacing: 2
-                            Text {
+                            DocText {
                                 text: "--" + modelData[0]
                                 color: ThemeTokens.text
                                 font.pixelSize: 11
                                 font.family: Typography.familyMono
                                 font.weight: Font.Bold
                             }
-                            Text {
+                            DocText {
                                 text: "" + modelData[1]
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: 10
@@ -171,8 +171,8 @@ DocLayout {
                     Column {
                         anchors.centerIn: parent
                         spacing: 2
-                        Text { text: modelData[0]; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Bold; font.family: Typography.familyMono; anchors.horizontalCenter: parent.horizontalCenter }
-                        Text { text: modelData[2]; color: ThemeTokens.subduedText; font.pixelSize: 10; anchors.horizontalCenter: parent.horizontalCenter }
+                        DocText { text: modelData[0]; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Bold; font.family: Typography.familyMono; anchors.horizontalCenter: parent.horizontalCenter }
+                        DocText { text: modelData[2]; color: ThemeTokens.subduedText; font.pixelSize: 10; anchors.horizontalCenter: parent.horizontalCenter }
                     }
                 }
             }
@@ -192,15 +192,15 @@ DocLayout {
                 anchors.fill: parent
                 anchors.margins: 14
                 spacing: 8
-                Text { text: "Medium 500 — Tea Set ChaSet, cross-stack component library"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Medium }
-                Text { text: "Semibold 600 — Tea Set ChaSet, cross-stack component library"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.DemiBold }
+                DocText { text: "Medium 500 — Tea Set ChaSet, cross-stack component library"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Medium }
+                DocText { text: "Semibold 600 — Tea Set ChaSet, cross-stack component library"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.DemiBold }
             }
         }
 
         // Chart Bars
         Column {
             spacing: 6
-            Text { text: "CHART PALETTE (FOLLOWS ACCENT)"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+            DocText { text: "CHART PALETTE (FOLLOWS ACCENT)"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
             Row {
                 spacing: 10
                 Repeater {
@@ -218,7 +218,7 @@ DocLayout {
                         radius: 4
                         color: modelData[1]
                         anchors.bottom: parent ? parent.bottom : undefined
-                        Text {
+                        DocText {
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.bottom: parent.top
                             anchors.bottomMargin: 4
