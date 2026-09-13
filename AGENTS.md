@@ -125,9 +125,11 @@
     - **Code Block & Selectable Text Gutter Decoupling (代码块文本划选与行号解耦律)**:
       - Code viewers (`CodeBlock`, `HighlightedCode`) MUST support cross-line mouse drag selection (`selectByMouse: true`, `selectByKeyboard: true`), double-click word selection, triple-click line selection, and pure-text `Ctrl+C` copying.
       - Line numbers must reside in a separate non-selectable gutter (`Column`), strictly decoupled from the selectable code area, showing `ArrowCursor` and never contaminating copied text.
-    - **Automated Verification Gate (自动化对齐门禁)**:
+    - **Container Cursor Masking Anti-Pattern & Mandatory Guard (容器级光标遮罩与层级隔离红线)**:
+      - When container components (`ChaSetCard`, `ChaSetDialog`, `ChaSetAlertDialog`, `ChaSetSheet`) declare click or dismiss behavior, internal `MouseArea` items MUST be conditionally visible (`visible: root.interactive` with `cursorShape: root.interactive ? Qt.PointingHandCursor : undefined`) or pushed behind content (`z: -1`). Never leave non-interactive `MouseArea` items at default `ArrowCursor` hovering over child buttons, inputs, or tabs.
+    - **Automated Verification Gate & Physical Raycasting Protocol (自动化对齐门禁与全量射线物理投射)**:
       - React cursor parity is mechanically enforced via `pnpm --filter @chahu/cha-set exec vitest run src/__tests__/cursor-conformance.test.tsx`.
-      - Qt cursor parity is mechanically verified via `QtChaSetDemo.exe --test-scenario cursor` (running authentic C++ QTest mouse cursor and geometry queries). Both checks are embedded directly inside `pnpm gate`.
+      - Qt cursor parity is mechanically verified via `QtChaSetDemo.exe --test-scenario cursor` and `--test-scenario all` running authentic C++ physical pointer raycasting across all 52 living showcase pages via `QTest::mouseMove` directly evaluating `window->cursor().shape()` against `spec/cursor-contract.json`. Both checks are embedded directly inside `pnpm gate`.
 
 13. **Mandatory Dual-Stack Showcase Structural, Semantic & Code Authenticity Contract (双端演示文档结构、元数据与代码保真度全景规约 — SPAS 零漂移红线)**:
     - **Single Source of Truth for Metadata (元数据单一真理源)**:
