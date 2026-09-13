@@ -28,7 +28,7 @@ DocLayout {
 
     ComponentPreview {
         id: heroPreview
-        title: "Interactive Kinematics Sandbox"
+        title: "Smooth Wheel Handler Sandbox"
         reactCode: `<SmoothWheelHandler
   scrollOrientation="vertical"
   speedMultiplier={${root.demoSpeed}}

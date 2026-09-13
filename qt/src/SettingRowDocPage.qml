@@ -43,7 +43,7 @@ ChaSetSettingRow {
 
     ComponentPreview {
         id: heroPreview
-        title: "Interactive Setting Row Sandbox"
+        title: "Setting Row Sandbox"
         reactCode: `<SettingRow
   name="Hardware Acceleration"
   description="Enable GPU-accelerated rasterization and smooth rendering."

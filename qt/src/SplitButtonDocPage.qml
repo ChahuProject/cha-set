@@ -18,7 +18,7 @@ DocLayout {
     property string lastTriggered: "None"
 
     ComponentPreview {
-        title: "Split Button Preview"
+        title: "Split Button Sandbox"
         reactCode: `<SplitButton
   text="Deploy to Production"
   variant="default"

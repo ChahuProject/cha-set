@@ -16,7 +16,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Panel Card Preview"
+        title: "Panel Card Sandbox"
         reactCode: `<PanelCard title="System Diagnostics" badgeText="Healthy" collapsible>
   <div className="p-4 space-y-2">
     <p>CPU Utilization: 24%</p>

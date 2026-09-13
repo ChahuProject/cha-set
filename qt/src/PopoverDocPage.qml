@@ -23,7 +23,7 @@ DocLayout {
     property bool demoMovable: false
 
     ComponentPreview {
-        title: "Popover Preview"
+        title: "Popover Sandbox"
         reactCode: `<Popover>
   <PopoverTrigger asChild>
     <Button variant="outline">Open Popover</Button>

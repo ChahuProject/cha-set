@@ -16,7 +16,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Virtual Grid Preview"
+        title: "Virtual Grid Sandbox"
         reactCode: `<VirtualGrid
   items={items}
   minColumnWidthRem={10}

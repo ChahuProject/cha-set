@@ -20,7 +20,8 @@ export function ReadOnlyInputDocPage() {
       description="Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-{ id: 'installation', title: 'Installation' },
+        { id: 'variants', title: 'Sizes & Color Schemes' },
+        { id: 'installation', title: 'Installation' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}

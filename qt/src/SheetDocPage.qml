@@ -20,7 +20,7 @@ DocLayout {
     property string sheetSizePreset: "default"
 
     ComponentPreview {
-        title: "Sheet Preview"
+        title: "Sheet Sandbox"
         reactCode: `<Sheet>
   <SheetTrigger asChild>
     <Button variant="outline">Open Right Sheet</Button>

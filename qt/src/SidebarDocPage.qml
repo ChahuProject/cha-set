@@ -20,7 +20,7 @@ DocLayout {
     property string demoCollapsible: "icon"
 
     ComponentPreview {
-        title: "Sidebar Interactive Sandbox"
+        title: "Sidebar Sandbox"
         reactCode: `<SidebarProvider defaultOpen={true}>
   <Sidebar collapsible="icon" variant="sidebar">
     <SidebarHeader>

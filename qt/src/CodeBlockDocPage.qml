@@ -43,7 +43,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Code Block Preview"
+        title: "Code Block Sandbox"
         reactCode: `<CodeBlock\n  code={source}\n  language="tsx"\n  showLineNumbers\n  showCopy\n/>`
         qtCode: `ChaSetCodeBlock {\n    language: "tsx"\n    showLineNumbers: true\n    code: source\n}`
 

@@ -18,7 +18,7 @@ DocLayout {
     property string selectedFruit: "apple"
 
     ComponentPreview {
-        title: "Select Preview"
+        title: "Select Sandbox"
         reactCode: `<Select value={value} onValueChange={setValue}>
   <SelectTrigger className="w-48">
     <SelectValue placeholder="Choose fruit..." />

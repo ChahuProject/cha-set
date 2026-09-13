@@ -10,6 +10,7 @@ DocLayout {
     description: "Seamless inline text label that dynamically transforms into an input field on double-click or edit trigger."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
+        { id: "variants", title: "Sizes & Interaction Triggers" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
@@ -18,7 +19,7 @@ DocLayout {
     property string currentTitle: "Project Apollo Architecture"
 
     ComponentPreview {
-        title: "Inline Editable Text Preview"
+        title: "Inline Editable Text Sandbox"
         reactCode: `<InlineEditableText
   value={text}
   onSave={(val) => setText(val)}
@@ -52,19 +53,62 @@ DocLayout {
                     }
                 }
 
-                ChaSetInlineEditableText {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: 260
-                    size: "sm"
-                    value: "Compact Tag: release-v1.4"
-                }
-
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Persisted Value: \"" + root.currentTitle + "\""
                     color: ThemeTokens.text
                     font.pixelSize: 12
                     font.family: "monospace"
+                }
+            }
+        }
+    }
+
+    ComponentPreview {
+        title: "Sizes & Triggers Preview"
+        reactCode: `<InlineEditableText value="Single Click to Edit" trigger="click" size="default" />
+<InlineEditableText value="Double Click to Edit" trigger="doubleClick" size="default" />
+<InlineEditableText value="Compact sm Tier Label" size="sm" />
+<InlineEditableText value="Read-only Disabled Text" disabled />`
+        qtCode: `ChaSetInlineEditableText { value: "Project Architecture Doc"; trigger: "click"; size: "default" }
+ChaSetInlineEditableText { value: "Database Connection URI"; trigger: "doubleClick"; size: "default" }
+ChaSetInlineEditableText { value: "Sprint-42-Review"; size: "sm" }
+ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`
+
+        Item {
+            anchors.fill: parent
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 14
+                width: 280
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Single Click Activation (Default)"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetInlineEditableText { width: parent.width; value: "Project Architecture Doc"; trigger: "click"; size: "default" }
+                }
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Double Click Activation"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetInlineEditableText { width: parent.width; value: "Database Connection URI"; trigger: "doubleClick"; size: "default" }
+                }
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Compact sm Size"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetInlineEditableText { width: parent.width; value: "Sprint-42-Review"; size: "sm" }
+                }
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Disabled State"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetInlineEditableText { width: parent.width; value: "System Protected File"; disabled: true }
                 }
             }
         }

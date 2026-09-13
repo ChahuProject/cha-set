@@ -16,7 +16,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Viewport Constrained Container Preview"
+        title: "Viewport Constrained Container Sandbox"
         reactCode: `<ViewportConstrainedContainer maxHeight={240} margin={16}>
   <div className="p-3 flex flex-col gap-2">
     {items.map(item => <div key={item}>{item}</div>)}

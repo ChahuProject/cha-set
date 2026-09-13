@@ -16,7 +16,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Virtual List Preview"
+        title: "Virtual List Sandbox"
         reactCode: `<VirtualList
   items={items}
   estimateSize={36}

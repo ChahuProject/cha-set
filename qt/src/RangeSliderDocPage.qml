@@ -10,32 +10,29 @@ DocLayout {
     description: "Dual-thumb slider control for selecting continuous or stepped numeric min-max intervals with collision prevention."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
+        { id: "variants", title: "Sizes & States" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
 
-    property real minPrice: 25.0
-    property real maxPrice: 75.0
+    property real minPrice: 20.0
+    property real maxPrice: 80.0
 
     ComponentPreview {
-        title: "Range Slider Preview"
+        title: "Range Slider Sandbox"
         reactCode: `<RangeSlider
   min={0}
   max={100}
   step={1}
-  value={[minPrice, maxPrice]}
-  showTooltip
-  onValueChange={([min, max]) => {
-    setMinPrice(min);
-    setMaxPrice(max);
-  }}
+  value={range}
+  onValueChange={setRange}
 />`
         qtCode: `ChaSetRangeSlider {
     from: 0
     to: 100
-    firstValue: 25
-    secondValue: 75
+    firstValue: 20
+    secondValue: 80
     showTooltip: true
     onValuesChanged: function(f, s) { console.log(f, s) }
 }`
@@ -48,61 +45,86 @@ DocLayout {
                 spacing: 20
                 width: 280
 
-                Column {
-                    spacing: 6
+                Item {
                     width: parent.width
-
+                    height: 16
                     Text {
-                        text: "Default Density with Tooltips:"
+                        anchors.left: parent.left
+                        text: "Min: " + Math.round(root.minPrice)
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 12
-                    }
-
-                    ChaSetRangeSlider {
-                        width: parent.width
-                        from: 0
-                        to: 100
-                        firstValue: root.minPrice
-                        secondValue: root.maxPrice
-                        showTooltip: true
-                        onValuesChanged: function(f, s) {
-                            root.minPrice = f
-                            root.maxPrice = s
-                        }
-                    }
-                }
-
-                Column {
-                    spacing: 6
-                    width: parent.width
-
-                    Text {
-                        text: "Compact (sm) Variant:"
-                        color: ThemeTokens.subduedText
-                        font.pixelSize: 12
-                    }
-
-                    ChaSetRangeSlider {
-                        width: parent.width
-                        size: "sm"
-                        from: 0
-                        to: 100
-                        firstValue: 30
-                        secondValue: 70
-                        showTooltip: true
-                    }
-                }
-
-                Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 12
-
-                    Text {
-                        text: "Selected Interval: [" + Math.round(root.minPrice) + " - " + Math.round(root.maxPrice) + "]"
-                        color: ThemeTokens.text
                         font.pixelSize: 12
                         font.family: "monospace"
                     }
+                    Text {
+                        anchors.right: parent.right
+                        text: "Max: " + Math.round(root.maxPrice)
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: 12
+                        font.family: "monospace"
+                    }
+                }
+
+                ChaSetRangeSlider {
+                    width: parent.width
+                    from: 0
+                    to: 100
+                    firstValue: root.minPrice
+                    secondValue: root.maxPrice
+                    showTooltip: true
+                    onValuesChanged: function(f, s) {
+                        root.minPrice = f
+                        root.maxPrice = s
+                    }
+                }
+            }
+        }
+    }
+
+    ComponentPreview {
+        title: "Sizes & States Preview"
+        reactCode: `<RangeSlider size="default" defaultValue={[20, 80]} showTooltip />
+<RangeSlider size="sm" defaultValue={[30, 70]} showTooltip />
+<RangeSlider size="sm" defaultValue={[25, 75]} readOnly />
+<RangeSlider size="sm" defaultValue={[10, 90]} disabled />`
+        qtCode: `ChaSetRangeSlider { size: "default"; firstValue: 20; secondValue: 80; showTooltip: true }
+ChaSetRangeSlider { size: "sm"; firstValue: 30; secondValue: 70; showTooltip: true }
+ChaSetRangeSlider { size: "sm"; firstValue: 25; secondValue: 75; readOnly: true }
+ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false }`
+
+        Item {
+            anchors.fill: parent
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 16
+                width: 280
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Default with Tooltips"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetRangeSlider { width: parent.width; size: "default"; firstValue: 20; secondValue: 80; showTooltip: true }
+                }
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Compact sm Tier"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetRangeSlider { width: parent.width; size: "sm"; firstValue: 30; secondValue: 70; showTooltip: true }
+                }
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Read Only"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetRangeSlider { width: parent.width; size: "sm"; firstValue: 25; secondValue: 75; readOnly: true }
+                }
+
+                Column {
+                    spacing: 4
+                    width: parent.width
+                    Text { text: "Disabled"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    ChaSetRangeSlider { width: parent.width; size: "sm"; firstValue: 10; secondValue: 90; enabled: false }
                 }
             }
         }

@@ -21,7 +21,8 @@ export function InlineEditableTextDocPage() {
       description="Text element that switches seamlessly to an input field on double-click or edit trigger, supporting Enter to save and Escape to cancel."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-{ id: 'installation', title: 'Installation' },
+        { id: 'variants', title: 'Sizes & Interaction Triggers' },
+        { id: 'installation', title: 'Installation' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}

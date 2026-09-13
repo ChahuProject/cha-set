@@ -33,7 +33,7 @@ ChaSetElidedText {
 
     ComponentPreview {
         id: heroPreview
-        title: "Interactive Sandbox"
+        title: "Elided Text Sandbox"
         reactCode: `<div style={{ width: '${(root.containerWidth / 16).toFixed(3)}rem' }}>
   <ElidedText
     text="${root.sampleText}"

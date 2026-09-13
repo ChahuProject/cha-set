@@ -77,7 +77,7 @@ export function SplitterHandleDocPage() {
           Drag the right edge handle to resize the sidebar. Double click or press Enter to reset to 200.
         </p>
 
-        <ComponentPreview
+        <ComponentPreview title="Splitter Handle Sandbox"
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={

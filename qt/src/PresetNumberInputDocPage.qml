@@ -16,7 +16,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Preset Number Input Preview"
+        title: "Preset Number Input Sandbox"
         reactCode: `<PresetNumberInput value="1024" onChange={(v) => console.log(v)} />`
         qtCode: `ChaSetPresetNumberInput {
     value: "1024"
