@@ -91,7 +91,7 @@ export function JobList({
                   />
                   <span className="truncate flex-1 select-text">{job.name}</span>
                   {job.durationMs !== null && (
-                    <span className="ml-auto shrink-0 tabular-nums text-[0.6875rem] text-muted-foreground">
+                    <span className="ml-auto shrink-0 tabular-nums text-caption text-muted-foreground">
                       {formatDuration(job.durationMs)}
                     </span>
                   )}

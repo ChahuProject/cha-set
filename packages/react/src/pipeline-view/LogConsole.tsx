@@ -46,7 +46,7 @@ export function LogConsole({
       {lines.length > 0 && (showCopy || showLineCount) && (
         <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5 rounded-md border border-border/60 bg-background/85 px-1.5 py-0.5 shadow-2xs backdrop-blur-xs select-none">
           {showLineCount && (
-            <span className="tabular-nums text-[0.6875rem] text-muted-foreground">
+            <span className="tabular-nums text-caption text-muted-foreground">
               {lines.length} lines
             </span>
           )}

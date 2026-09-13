@@ -46,7 +46,7 @@ export function StepTimeline({
                 {step.name}
               </div>
               {step.durationMs !== null && (
-                <div className="tabular-nums text-[0.6875rem] text-muted-foreground">
+                <div className="tabular-nums text-caption text-muted-foreground">
                   {formatDuration(step.durationMs)}
                 </div>
               )}

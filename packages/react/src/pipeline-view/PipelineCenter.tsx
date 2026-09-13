@@ -91,7 +91,7 @@ export function PipelineCenter({
               <LayersIcon className="size-3.5 text-primary" />
               {title}
             </span>
-            <span className="text-[0.6875rem] text-muted-foreground">
+            <span className="text-caption text-muted-foreground">
               {filteredPipelines.length} runs
             </span>
           </div>
@@ -103,7 +103,7 @@ export function PipelineCenter({
                 size="sm"
                 variant={statusFilter === opt.id ? 'secondary' : 'ghost'}
                 className={cn(
-                  'h-6 px-2 text-[0.6875rem] cursor-pointer',
+                  'h-6 px-2 text-caption cursor-pointer',
                   statusFilter === opt.id && 'font-medium shadow-2xs',
                 )}
                 onClick={() => setStatusFilter(opt.id)}
@@ -167,7 +167,7 @@ export function PipelineCenter({
                     </div>
                     <span
                       className={cn(
-                        'inline-flex shrink-0 items-center rounded-sm border px-1 py-0.2 text-[0.625rem]',
+                        'inline-flex shrink-0 items-center rounded-sm border px-1 py-0.2 text-micro',
                         badgeClass,
                       )}
                     >
@@ -175,12 +175,12 @@ export function PipelineCenter({
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between text-[0.6875rem] text-muted-foreground">
+                  <div className="flex items-center justify-between text-caption text-muted-foreground">
                     <span className="flex items-center gap-1">
                       {item.group && (
                         <Badge
                           variant="outline"
-                          className="h-4 px-1 text-[0.625rem] font-normal border-border/80"
+                          className="h-4 px-1 text-micro font-normal border-border/80"
                         >
                           {item.group}
                         </Badge>
