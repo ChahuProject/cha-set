@@ -2,7 +2,7 @@
 // Parity gate: validates capabilities, living showcase docs completeness, and behavioral/pixel parity.
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const capabilities = JSON.parse(readFileSync(resolve(root, 'spec', 'capabilities.json'), 'utf8'));
@@ -139,6 +139,21 @@ if (existsSync(componentsDir) && existsSync(navPath)) {
   console.log(`[gate] OK — 100% Dual-Stack Living Showcase documentation coverage (${specFiles.length} components registered across React & Qt)`);
 }
 
+// 2.5 Mandatory Cross-Stack Showcase Semantic & Structural Parity Gate (SPAS)
+const verifyShowcaseParityPath = resolve(root, 'scripts/verify-showcase-parity.mjs');
+if (existsSync(verifyShowcaseParityPath)) {
+  const { verifyShowcaseParity } = await import(pathToFileURL(verifyShowcaseParityPath).href);
+  const parityRes = verifyShowcaseParity({ targetComponent: 'all' });
+  if (!parityRes.ok) {
+    console.error(`[gate] FAIL: Cross-Stack Showcase Parity Gate failed (${parityRes.errors.length} errors):`);
+    for (const err of parityRes.errors) {
+      console.error(`  - ${err}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Cross-Stack Showcase Parity Gate passed (${parityRes.checkedCount} components verified 1:1 across React & Qt)`);
+}
+
 // 3. Executable Behavioral Parity Checks
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');
 if (existsSync(qtExe)) {
@@ -158,7 +173,7 @@ const showcaseTestFile = resolve(root, 'packages/react/src/__tests__/showcase-pa
 if (existsSync(showcaseTestFile)) {
   const { execSync } = await import('node:child_process');
   try {
-    execSync('pnpm --filter @chahu/cha-set exec vitest run src/__tests__/showcase-pages.test.tsx src/__tests__/showcase-sidebar.test.tsx', {
+    execSync('pnpm --filter @chahu/cha-set exec vitest run src/__tests__/showcase-parity.test.tsx src/__tests__/showcase-pages.test.tsx src/__tests__/showcase-sidebar.test.tsx', {
       cwd: root,
       stdio: 'pipe',
       encoding: 'utf8',

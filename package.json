@@ -22,6 +22,8 @@
     "showcase": "pnpm --filter @chaset/example-react-button dev",
     "showcase:qt": "node scripts/run-qt-showcase.mjs",
     "build:qt": "node scripts/run-qt-showcase.mjs --build-only",
+    "check:showcase": "node scripts/verify-showcase-parity.mjs",
+    "test:showcase": "node scripts/verify-showcase-parity.mjs",
     "test:visual": "node scripts/visual-diff.mjs",
     "gate:visual": "node scripts/visual-diff.mjs",
     "test:pixel": "node scripts/pixel-sync-test.mjs",
