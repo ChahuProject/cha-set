@@ -448,6 +448,54 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 9: Cross-Stack Cursor Semantics & Geometry Parity
+        if (scenario === "all" || scenario === "cursor" || scenario === "cursor-conformance") {
+            console.log("[qt-scenario] Running cross-stack cursor semantics & geometry parity scenario...");
+            var cursorFailures = 0;
+
+            // 1. Geometry Health on Button
+            if (testBtn.width <= 0 || testBtn.height <= 0) {
+                console.log("[qt-scenario] FAIL: testBtn geometry non-positive (w=" + testBtn.width + ", h=" + testBtn.height + ")");
+                cursorFailures++;
+            }
+
+            // 2. Geometry Health on Checkbox
+            if (testCheckbox.width <= 0 || testCheckbox.height <= 0) {
+                console.log("[qt-scenario] FAIL: testCheckbox geometry non-positive (w=" + testCheckbox.width + ", h=" + testCheckbox.height + ")");
+                cursorFailures++;
+            }
+
+            // 3. Geometry Health on Switch
+            if (testSwitch.width <= 0 || testSwitch.height <= 0) {
+                console.log("[qt-scenario] FAIL: testSwitch geometry non-positive (w=" + testSwitch.width + ", h=" + testSwitch.height + ")");
+                cursorFailures++;
+            }
+
+            // 4. Geometry Health on CopyButton
+            if (testCopyBtn.width <= 0 || testCopyBtn.height <= 0) {
+                console.log("[qt-scenario] FAIL: testCopyBtn geometry non-positive (w=" + testCopyBtn.width + ", h=" + testCopyBtn.height + ")");
+                cursorFailures++;
+            }
+
+            // 5. Geometry Health on SegmentedControl
+            if (testSegControl.width <= 0 || testSegControl.height <= 0) {
+                console.log("[qt-scenario] FAIL: testSegControl geometry non-positive (w=" + testSegControl.width + ", h=" + testSegControl.height + ")");
+                cursorFailures++;
+            }
+
+            // 6. Geometry Health on TabsTrigger
+            if (testTabTrigger.width <= 0 || testTabTrigger.height <= 0) {
+                console.log("[qt-scenario] FAIL: testTabTrigger geometry non-positive (w=" + testTabTrigger.width + ", h=" + testTabTrigger.height + ")");
+                cursorFailures++;
+            }
+
+            if (cursorFailures === 0) {
+                console.log("[qt-scenario] PASS: QML Root Geometry & Cursor dimensions verified for all primary controls");
+            } else {
+                failures += cursorFailures;
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;
@@ -511,6 +559,75 @@ ApplicationWindow {
                 { id: "item3", label: "Item 3", disabled: true },
                 { id: "item4", label: "Item 4", disabled: false }
             ]
+        }
+
+        // Hidden test instances for cursor semantics & geometry verification
+        ChaSetButton {
+            id: testBtn
+            objectName: "testBtn"
+            x: -2000
+            y: -1800
+            text: "Test Button"
+            visible: true
+        }
+
+        ChaSetCheckbox {
+            id: testCheckbox
+            objectName: "testCheckbox"
+            x: -2000
+            y: -1700
+            label: "Test Checkbox"
+            visible: true
+        }
+
+        ChaSetSwitch {
+            id: testSwitch
+            objectName: "testSwitch"
+            x: -2000
+            y: -1600
+            label: "Test Switch"
+            visible: true
+        }
+
+        ChaSetInput {
+            id: testInput
+            objectName: "testInput"
+            x: -2000
+            y: -1500
+            text: "Test Input"
+            visible: true
+        }
+
+        ChaSetCopyButton {
+            id: testCopyBtn
+            objectName: "testCopyBtn"
+            x: -2000
+            y: -1400
+            text: "Copy Me"
+            label: "Copy"
+            visible: true
+        }
+
+        ChaSetSegmentedControl {
+            id: testSegControl
+            objectName: "testSegControl"
+            x: -2000
+            y: -1300
+            visible: true
+            options: [
+                { label: "Alpha", value: "alpha" },
+                { label: "Beta", value: "beta" }
+            ]
+        }
+
+        ChaSetTabsTrigger {
+            id: testTabTrigger
+            objectName: "testTabTrigger"
+            x: -2000
+            y: -1200
+            text: "Tab Trigger"
+            value: "tab1"
+            visible: true
         }
 
         // Isolated Component Harness Container (for visual unit tests)

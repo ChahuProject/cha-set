@@ -187,6 +187,25 @@ if (existsSync(showcaseTestFile)) {
   }
 }
 
+// 5. Cross-Stack Mouse Cursor Semantics Conformance Check
+const cursorTestFile = resolve(root, 'packages/react/src/__tests__/cursor-conformance.test.tsx');
+if (existsSync(cursorTestFile)) {
+  const { execSync } = await import('node:child_process');
+  try {
+    execSync('pnpm --filter @chahu/cha-set exec vitest run src/__tests__/cursor-conformance.test.tsx', {
+      cwd: root,
+      stdio: 'pipe',
+      encoding: 'utf8',
+    });
+    console.log('[gate] OK — Cross-stack mouse cursor semantics conformance passed');
+  } catch (err) {
+    console.error('[gate] FAIL: Cross-stack mouse cursor semantics conformance check failed');
+    if (err.stdout) console.error(err.stdout);
+    if (err.stderr) console.error(err.stderr);
+    process.exit(1);
+  }
+}
+
 // 4. Optional Targeted Pixel Conformance Gate (selective opt-in)
 if (process.argv.includes('--pixel')) {
   const compIndex = process.argv.indexOf('--component');

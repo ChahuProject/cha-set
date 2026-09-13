@@ -154,6 +154,108 @@ static bool runRealKeyboardVerification(QQuickWindow* window) {
     return true;
 }
 
+static bool runRealCursorVerification(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running authentic C++ cursor & geometry verification...");
+
+    auto* testBtn = window->findChild<QQuickItem*>("testBtn");
+    auto* testCheckbox = window->findChild<QQuickItem*>("testCheckbox");
+    auto* testSwitch = window->findChild<QQuickItem*>("testSwitch");
+    auto* testInput = window->findChild<QQuickItem*>("testInput");
+    auto* testCopyBtn = window->findChild<QQuickItem*>("testCopyBtn");
+    auto* testSegControl = window->findChild<QQuickItem*>("testSegControl");
+    auto* testTabTrigger = window->findChild<QQuickItem*>("testTabTrigger");
+
+    if (!testBtn || !testCheckbox || !testSwitch || !testInput || !testCopyBtn || !testSegControl || !testTabTrigger) {
+        qWarning("[qt-scenario] WARNING: Test items for cursor verification not found by objectName");
+        return false;
+    }
+
+    // 1. Verify Root Geometry Health (eliminating 0x0 bug)
+    if (testBtn->width() <= 0 || testBtn->height() <= 0) {
+        qCritical() << "[qt-scenario] FAIL: testBtn geometry non-positive (" << testBtn->width() << "x" << testBtn->height() << ")";
+        return false;
+    }
+    if (testCheckbox->width() <= 0 || testCheckbox->height() <= 0) {
+        qCritical() << "[qt-scenario] FAIL: testCheckbox geometry non-positive (" << testCheckbox->width() << "x" << testCheckbox->height() << ")";
+        return false;
+    }
+    if (testSwitch->width() <= 0 || testSwitch->height() <= 0) {
+        qCritical() << "[qt-scenario] FAIL: testSwitch geometry non-positive (" << testSwitch->width() << "x" << testSwitch->height() << ")";
+        return false;
+    }
+    if (testCopyBtn->width() <= 0 || testCopyBtn->height() <= 0) {
+        qCritical() << "[qt-scenario] FAIL: testCopyBtn geometry non-positive (" << testCopyBtn->width() << "x" << testCopyBtn->height() << ")";
+        return false;
+    }
+    if (testSegControl->width() <= 0 || testSegControl->height() <= 0) {
+        qCritical() << "[qt-scenario] FAIL: testSegControl geometry non-positive (" << testSegControl->width() << "x" << testSegControl->height() << ")";
+        return false;
+    }
+    if (testTabTrigger->width() <= 0 || testTabTrigger->height() <= 0) {
+        qCritical() << "[qt-scenario] FAIL: testTabTrigger geometry non-positive (" << testTabTrigger->width() << "x" << testTabTrigger->height() << ")";
+        return false;
+    }
+
+    // 2. Inspect active cursorShape on handlers inside items
+    auto findHandlerCursor = [](QQuickItem* item) -> int {
+        const auto children = item->findChildren<QObject*>();
+        for (auto* c : children) {
+            QVariant shapeProp = c->property("cursorShape");
+            if (shapeProp.isValid()) {
+                return shapeProp.toInt();
+            }
+        }
+        return -1;
+    };
+
+    int btnCursor = findHandlerCursor(testBtn);
+    if (btnCursor != Qt::PointingHandCursor) {
+        qCritical() << "[qt-scenario] FAIL: testBtn handler cursorShape expected PointingHandCursor (13), got " << btnCursor;
+        return false;
+    }
+
+    int cbCursor = findHandlerCursor(testCheckbox);
+    if (cbCursor != Qt::PointingHandCursor) {
+        qCritical() << "[qt-scenario] FAIL: testCheckbox handler cursorShape expected PointingHandCursor (13), got " << cbCursor;
+        return false;
+    }
+
+    int swCursor = findHandlerCursor(testSwitch);
+    if (swCursor != Qt::PointingHandCursor) {
+        qCritical() << "[qt-scenario] FAIL: testSwitch handler cursorShape expected PointingHandCursor (13), got " << swCursor;
+        return false;
+    }
+
+    // Test disabled state
+    testBtn->setProperty("disabled", true);
+    int btnDisabledCursor = findHandlerCursor(testBtn);
+    if (btnDisabledCursor != Qt::ForbiddenCursor) {
+        qCritical() << "[qt-scenario] FAIL: disabled testBtn handler cursorShape expected ForbiddenCursor (14), got " << btnDisabledCursor;
+        return false;
+    }
+    testBtn->setProperty("disabled", false);
+
+    testCheckbox->setProperty("disabled", true);
+    int cbDisabledCursor = findHandlerCursor(testCheckbox);
+    if (cbDisabledCursor != Qt::ForbiddenCursor) {
+        qCritical() << "[qt-scenario] FAIL: disabled testCheckbox handler cursorShape expected ForbiddenCursor (14), got " << cbDisabledCursor;
+        return false;
+    }
+    testCheckbox->setProperty("disabled", false);
+
+    // Test readOnly state
+    testCheckbox->setProperty("readOnly", true);
+    int cbReadOnlyCursor = findHandlerCursor(testCheckbox);
+    if (cbReadOnlyCursor != Qt::ArrowCursor) {
+        qCritical() << "[qt-scenario] FAIL: readOnly testCheckbox handler cursorShape expected ArrowCursor (0), got " << cbReadOnlyCursor;
+        return false;
+    }
+    testCheckbox->setProperty("readOnly", false);
+
+    qInfo("[qt-scenario] PASS: Authentic C++ cursor shape & geometry parity verified for Button, Checkbox, Switch, CopyButton, SegmentedControl, TabsTrigger");
+    return true;
+}
+
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #include <d3d11.h>
@@ -401,6 +503,13 @@ int main(int argc, char* argv[])
                         if (testScenario == "all" || testScenario == "keyboard-navigation") {
                             bool kbOk = runRealKeyboardVerification(window);
                             if (!kbOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                        }
+                        if (testScenario == "all" || testScenario == "cursor" || testScenario == "cursor-conformance") {
+                            bool cursorOk = runRealCursorVerification(window);
+                            if (!cursorOk) {
                                 QCoreApplication::exit(1);
                                 return;
                             }

@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": 1,
+  "semanticTypes": {
+    "action": {
+      "description": "Clickable controls, buttons, toggles, menu items, tabs",
+      "web": {
+        "idle": "cursor-pointer",
+        "disabled": "cursor-not-allowed",
+        "readonly": "cursor-default"
+      },
+      "qt": {
+        "idle": "PointingHandCursor",
+        "disabled": "ForbiddenCursor",
+        "readonly": "ArrowCursor"
+      }
+    },
+    "text": {
+      "description": "Editable and selectable text inputs and code viewers",
+      "web": {
+        "idle": "cursor-text",
+        "disabled": "cursor-not-allowed",
+        "readonly": "cursor-default"
+      },
+      "qt": {
+        "idle": "IBeamCursor",
+        "disabled": "ForbiddenCursor",
+        "readonly": "ArrowCursor"
+      }
+    },
+    "slider": {
+      "description": "Continuous slider track and thumb",
+      "web": {
+        "idle": "cursor-pointer",
+        "active": "cursor-grabbing",
+        "disabled": "cursor-not-allowed"
+      },
+      "qt": {
+        "idle": "PointingHandCursor",
+        "active": "ClosedHandCursor",
+        "disabled": "ForbiddenCursor"
+      }
+    },
+    "resize-col": {
+      "description": "Horizontal column splitter and resize handle",
+      "web": {
+        "idle": "cursor-col-resize",
+        "disabled": "cursor-not-allowed"
+      },
+      "qt": {
+        "idle": "SizeHorCursor",
+        "disabled": "ForbiddenCursor"
+      }
+    },
+    "resize-row": {
+      "description": "Vertical row splitter and resize handle",
+      "web": {
+        "idle": "cursor-row-resize",
+        "disabled": "cursor-not-allowed"
+      },
+      "qt": {
+        "idle": "SizeVerCursor",
+        "disabled": "ForbiddenCursor"
+      }
+    },
+    "window-move": {
+      "description": "Window and modal header drag area",
+      "web": {
+        "idle": "cursor-move"
+      },
+      "qt": {
+        "idle": "SizeAllCursor"
+      }
+    }
+  },
+  "components": {
+    "button": { "semantic": "action", "supportsDisabled": true },
+    "split-button": { "semantic": "action", "supportsDisabled": true },
+    "copy-button": { "semantic": "action", "supportsDisabled": true },
+    "checkbox": { "semantic": "action", "supportsDisabled": true, "supportsReadOnly": true },
+    "switch": { "semantic": "action", "supportsDisabled": true, "supportsReadOnly": true },
+    "tabs-trigger": { "semantic": "action", "supportsDisabled": true },
+    "segmented-control": { "semantic": "action", "supportsDisabled": true },
+    "select": { "semantic": "action", "supportsDisabled": true },
+    "dropdown-menu": { "semantic": "action", "supportsDisabled": true },
+    "context-menu": { "semantic": "action", "supportsDisabled": true },
+    "collapsible": { "semantic": "action", "supportsDisabled": true },
+    "input": { "semantic": "text", "supportsDisabled": true, "supportsReadOnly": true },
+    "duration-input": { "semantic": "text", "supportsDisabled": true, "supportsReadOnly": true },
+    "preset-number-input": { "semantic": "text", "supportsDisabled": true, "supportsReadOnly": true },
+    "read-only-input": { "semantic": "text", "supportsDisabled": true, "supportsReadOnly": true },
+    "slider": { "semantic": "slider", "supportsDisabled": true },
+    "range-slider": { "semantic": "slider", "supportsDisabled": true },
+    "scrollbar": { "semantic": "slider", "supportsDisabled": true },
+    "splitter": { "semantic": "resize-col", "supportsDisabled": true },
+    "splitter-handle": { "semantic": "resize-col", "supportsDisabled": true },
+    "draggable-modal": { "semantic": "window-move" },
+    "window-title-bar": { "semantic": "window-move" }
+  }
+}

@@ -27,6 +27,8 @@ Item {
 
     implicitWidth: hasCompanionContent ? (track.width + 8 + labelColumn.implicitWidth) : track.width
     implicitHeight: Math.max(track.height, hasCompanionContent ? labelColumn.implicitHeight : 0)
+    width: implicitWidth
+    height: implicitHeight
 
     opacity: root.disabled ? 0.5 : 1.0
 

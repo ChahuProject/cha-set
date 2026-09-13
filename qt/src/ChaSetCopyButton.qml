@@ -19,6 +19,8 @@ Item {
 
     implicitWidth: root.label.length > 0 ? (labelRow.implicitWidth + 24) : btn.implicitWidth
     implicitHeight: btn.implicitHeight
+    width: implicitWidth
+    height: implicitHeight
 
     Timer {
         id: resetTimer

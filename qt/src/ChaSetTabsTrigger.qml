@@ -50,6 +50,7 @@ Rectangle {
     height: isLine ? (isSm ? 32 : 36) : (isSm ? 24 : 28)
     implicitHeight: height
     implicitWidth: Math.max(isSm ? 28 : 36, contentRow.implicitWidth + (isLine ? (isSm ? 12 : 16) : (isSm ? 16 : 24)))
+    width: implicitWidth
     radius: isLine ? 0 : (isSm ? 4 : 6)
     opacity: disabled ? 0.5 : 1.0
 

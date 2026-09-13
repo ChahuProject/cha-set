@@ -32,6 +32,8 @@ Rectangle {
     readonly property bool isSm: root.size === "sm"
     implicitHeight: isSm ? 16 : 20
     implicitWidth: Math.max(isSm ? 16 : 20, contentRow.implicitWidth + (isSm ? 12 : 16))
+    height: implicitHeight
+    width: implicitWidth
     radius: isSm ? 4 : 10
 
     // Background Color
