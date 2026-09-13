@@ -18,6 +18,7 @@ Item {
 
     readonly property int taskCount: {
         if (!tasks) return 0;
+        if (typeof tasks.rowCount === "function") return tasks.rowCount();
         if (typeof tasks.count !== "undefined") return tasks.count;
         if (typeof tasks.length !== "undefined") return tasks.length;
         return 0;
@@ -111,7 +112,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        implicitHeight: stack.implicitHeight
+        implicitHeight: Math.min(stack.implicitHeight, 420)
         height: implicitHeight
         clip: true
 
@@ -130,6 +131,28 @@ Item {
             anchors.bottom: parent.bottom
             spacing: 10
 
+            move: Transition {
+                NumberAnimation {
+                    properties: "y"
+                    duration: ThemeTokens.motionMedium
+                    easing.type: ThemeTokens.easeStandard
+                }
+            }
+            add: Transition {
+                ParallelAnimation {
+                    NumberAnimation {
+                        property: "opacity"; from: 0; to: 1
+                        duration: ThemeTokens.motionMedium
+                        easing.type: ThemeTokens.easeStandard
+                    }
+                    NumberAnimation {
+                        property: "x"; from: 20; to: 0
+                        duration: ThemeTokens.motionMedium
+                        easing.type: ThemeTokens.easeStandard
+                    }
+                }
+            }
+
             Repeater {
                 id: repeater
                 model: {
@@ -142,14 +165,16 @@ Item {
 
                 delegate: Rectangle {
                     id: card
-                    required property var modelData
+                    property var modelData: null
                     required property int index
 
-                    readonly property var taskObj: modelData || {}
-                    readonly property string _id: String(taskObj.id || "")
-                    readonly property string _title: String(taskObj.title || "")
-                    readonly property string _detail: String(taskObj.detail || "")
-                    readonly property var _rawStatus: taskObj.status !== undefined ? taskObj.status : "running"
+                    visible: index < root.maxVisible
+
+                    readonly property var itemObj: (typeof modelData !== "undefined" && modelData !== null) ? modelData : ((typeof model !== "undefined" && model !== null) ? model : {})
+                    readonly property string _id: String((itemObj && itemObj.id !== undefined) ? itemObj.id : ((typeof model !== "undefined" && model?.id !== undefined) ? model.id : ""))
+                    readonly property string _title: String((itemObj && itemObj.title !== undefined) ? itemObj.title : ((typeof model !== "undefined" && model?.title !== undefined) ? model.title : ""))
+                    readonly property string _detail: String((itemObj && itemObj.detail !== undefined) ? itemObj.detail : ((typeof model !== "undefined" && model?.detail !== undefined) ? model.detail : ""))
+                    readonly property var _rawStatus: (itemObj && itemObj.status !== undefined) ? itemObj.status : ((typeof model !== "undefined" && model?.status !== undefined) ? model.status : "running")
                     readonly property string _statusStr: {
                         if (typeof _rawStatus === "number") {
                             if (_rawStatus === 1) return "success";
@@ -165,11 +190,11 @@ Item {
                     readonly property bool isSuccess: _statusStr === "success"
                     readonly property bool isWarning: _statusStr === "warning"
                     readonly property bool isError: _statusStr === "failure" || _statusStr === "error"
-                    readonly property bool isIndeterminate: Boolean(taskObj.indeterminate && isRunning)
-                    readonly property double _progress: typeof taskObj.progress === "number" ? taskObj.progress : -1
-                    readonly property int _total: typeof taskObj.total === "number" ? taskObj.total : -1
-                    readonly property int _done: typeof taskObj.done === "number" ? taskObj.done : 0
-                    readonly property int _elapsedMs: typeof taskObj.elapsedMs === "number" ? taskObj.elapsedMs : 0
+                    readonly property bool isIndeterminate: Boolean((itemObj && itemObj.indeterminate !== undefined) ? itemObj.indeterminate : ((typeof model !== "undefined" && model?.indeterminate !== undefined) ? model.indeterminate : false)) && isRunning
+                    readonly property double _progress: typeof (itemObj && itemObj.progress) === "number" ? itemObj.progress : (typeof model !== "undefined" && typeof model?.progress === "number" ? model.progress : -1)
+                    readonly property int _total: typeof (itemObj && itemObj.total) === "number" ? itemObj.total : (typeof model !== "undefined" && typeof model?.total === "number" ? model.total : -1)
+                    readonly property int _done: typeof (itemObj && itemObj.done) === "number" ? itemObj.done : (typeof model !== "undefined" && typeof model?.done === "number" ? model.done : 0)
+                    readonly property int _elapsedMs: typeof (itemObj && itemObj.elapsedMs) === "number" ? itemObj.elapsedMs : (typeof model !== "undefined" && typeof model?.elapsedMs === "number" ? model.elapsedMs : 0)
 
                     width: stack.width
                     implicitHeight: cardContent.implicitHeight + 14 + (showProgress ? 12 : 0)
@@ -197,6 +222,20 @@ Item {
 
                     HoverHandler {
                         id: cardHover
+                    }
+
+                    // Bottom line pseudo-shadow
+                    Rectangle {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        anchors.leftMargin: 8
+                        anchors.rightMargin: 8
+                        height: 1
+                        radius: 1
+                        opacity: 0.18
+                        color: "black"
+                        visible: !card.isError && !card.isSuccess
                     }
 
                     // Content Container

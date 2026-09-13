@@ -109,4 +109,19 @@ describe('ScaleOsd', () => {
     );
     expect(screen.getByText('1.5x Speed')).toBeInTheDocument();
   });
+
+  it('renders with size="lg" and animated={false}', () => {
+    render(
+      <ScaleOsd
+        visible
+        value={1.0}
+        size="lg"
+        animated={false}
+      />,
+    );
+    const osd = screen.getByRole('region');
+    expect(osd).toHaveClass('h-11');
+    expect(osd).toHaveClass('transition-none');
+    expect(screen.getByText('100%')).toHaveClass('min-w-[11.25rem]');
+  });
 });

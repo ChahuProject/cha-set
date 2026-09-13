@@ -15,17 +15,36 @@ Item {
     property bool canGoForward: false
     property bool showNavButtons: true
     property bool showRefresh: true
+    property bool showSearch: false
+    property string searchQuery: ""
+    property string searchPlaceholder: qsTr("搜索...")
     property bool disabled: false
     property var suggestions: []
     property bool editing: false
+    property int highlightedIndex: -1
 
     signal navigateRequested(string path)
     signal backRequested()
     signal forwardRequested()
     signal upRequested()
     signal refreshRequested()
+    signal searchRequested(string query)
 
     property string editValue: path
+
+    readonly property var filteredSuggestions: {
+        if (!root.suggestions || !root.suggestions.length) return [];
+        if (!root.editValue) return root.suggestions;
+        var lower = root.editValue.toLowerCase();
+        var result = [];
+        for (var i = 0; i < root.suggestions.length; i++) {
+            var item = String(root.suggestions[i]);
+            if (item.toLowerCase().indexOf(lower) >= 0) {
+                result.push(item);
+            }
+        }
+        return result;
+    }
 
     onPathChanged: {
         if (!editing) {
@@ -93,6 +112,7 @@ Item {
         if (disabled) return;
         editing = true;
         editValue = path;
+        highlightedIndex = -1;
         editInput.selectAll();
         editInput.forceActiveFocus();
     }
@@ -100,6 +120,7 @@ Item {
     function commitEdit(targetPath) {
         var trimmed = (targetPath !== undefined ? targetPath : editValue).trim();
         editing = false;
+        highlightedIndex = -1;
         if (trimmed !== root.path) {
             root.path = trimmed;
             root.navigateRequested(trimmed);
@@ -108,6 +129,7 @@ Item {
 
     function cancelEdit() {
         editing = false;
+        highlightedIndex = -1;
         editValue = path;
     }
 
@@ -370,8 +392,24 @@ Item {
                         root.editValue = text;
                     }
 
+                    Keys.onDownPressed: {
+                        if (root.filteredSuggestions.length > 0) {
+                            root.highlightedIndex = Math.min(root.filteredSuggestions.length - 1, root.highlightedIndex + 1);
+                        }
+                    }
+
+                    Keys.onUpPressed: {
+                        if (root.filteredSuggestions.length > 0) {
+                            root.highlightedIndex = Math.max(-1, root.highlightedIndex - 1);
+                        }
+                    }
+
                     Keys.onReturnPressed: {
-                        root.commitEdit(editInput.text);
+                        if (root.highlightedIndex >= 0 && root.highlightedIndex < root.filteredSuggestions.length) {
+                            root.commitEdit(root.filteredSuggestions[root.highlightedIndex]);
+                        } else {
+                            root.commitEdit(editInput.text);
+                        }
                     }
 
                     Keys.onEscapePressed: {
@@ -384,5 +422,175 @@ Item {
                 }
             }
         }
+
+        // Search Input Box
+        Rectangle {
+            id: searchBox
+            visible: root.showSearch
+            Layout.preferredWidth: 140
+            Layout.preferredHeight: 26
+            Layout.alignment: Qt.AlignVCenter
+            radius: 4
+            color: searchInput.activeFocus ? ThemeTokens.panel : ThemeTokens.panelRaised
+            border.width: 1
+            border.color: searchInput.activeFocus ? ThemeTokens.accent : ThemeTokens.border
+
+            RowLayout {
+                anchors.fill: parent
+                anchors.leftMargin: 6
+                anchors.rightMargin: 6
+                spacing: 4
+
+                Text {
+                    text: "⌕"
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: Typography.sizeSmall
+                }
+
+                TextInput {
+                    id: searchInput
+                    Layout.fillWidth: true
+                    verticalAlignment: TextInput.AlignVCenter
+                    text: root.searchQuery
+                    font.pixelSize: Typography.sizeSmall
+                    color: ThemeTokens.text
+                    selectionColor: ThemeTokens.accent
+                    selectedTextColor: ThemeTokens.text
+                    selectByMouse: true
+
+                    Text {
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        text: root.searchPlaceholder
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeSmall
+                        visible: !searchInput.text && !searchInput.activeFocus
+                    }
+
+                    onTextChanged: {
+                        root.searchQuery = text;
+                        root.searchRequested(text);
+                    }
+
+                    Keys.onReturnPressed: {
+                        root.searchRequested(root.searchQuery);
+                    }
+                }
+
+                // Clear button
+                Rectangle {
+                    visible: root.searchQuery.length > 0
+                    Layout.preferredWidth: 16
+                    Layout.preferredHeight: 16
+                    radius: 8
+                    color: clearHover.hovered ? ThemeTokens.hover : "transparent"
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: "✕"
+                        font.pixelSize: Typography.sizeMicro
+                        color: ThemeTokens.subduedText
+                    }
+
+                    HoverHandler {
+                        id: clearHover
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
+                    TapHandler {
+                        onTapped: {
+                            searchInput.text = "";
+                            root.searchQuery = "";
+                            root.searchRequested("");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Suggestions Popover
+    Rectangle {
+        id: suggestionsDropdown
+        visible: root.editing && root.filteredSuggestions.length > 0
+        z: 999
+        anchors.top: parent.bottom
+        anchors.topMargin: 4
+        anchors.left: parent.left
+        anchors.right: parent.right
+        implicitHeight: Math.min(sugCol.implicitHeight + 8, 200)
+        height: implicitHeight
+        radius: 6
+        color: ThemeTokens.panelRaised
+        border.width: 1
+        border.color: ThemeTokens.border
+        clip: true
+
+        Flickable {
+            anchors.fill: parent
+            anchors.margins: 4
+            contentWidth: width
+            contentHeight: sugCol.implicitHeight
+            clip: true
+
+            Column {
+                id: sugCol
+                width: parent.width
+                spacing: 2
+
+                Repeater {
+                    model: root.filteredSuggestions
+                    delegate: Rectangle {
+                        id: sugRow
+                        required property var modelData
+                        required property int index
+
+                        width: sugCol.width
+                        height: 28
+                        radius: 4
+                        color: (root.highlightedIndex === index || sugRowHover.hovered)
+                               ? ThemeTokens.hover : "transparent"
+
+                        Text {
+                            anchors.fill: parent
+                            anchors.leftMargin: 8
+                            anchors.rightMargin: 8
+                            verticalAlignment: Text.AlignVCenter
+                            text: sugRow.modelData
+                            color: ThemeTokens.text
+                            font.pixelSize: Typography.sizeSmall
+                            font.family: Typography.familyMono
+                            elide: Text.ElideMiddle
+                        }
+
+                        HoverHandler {
+                            id: sugRowHover
+                            cursorShape: Qt.PointingHandCursor
+                            onHoveredChanged: {
+                                if (hovered) root.highlightedIndex = sugRow.index;
+                            }
+                        }
+
+                        TapHandler {
+                            onTapped: {
+                                root.commitEdit(sugRow.modelData);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Shortcut {
+        sequence: "Alt+D"
+        enabled: !root.disabled
+        onActivated: root.startEditing()
+    }
+
+    Shortcut {
+        sequence: "Ctrl+L"
+        enabled: !root.disabled
+        onActivated: root.startEditing()
     }
 }
