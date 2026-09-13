@@ -98,7 +98,7 @@ Rectangle {
                     id: headerTitle
                     text: root.title
                     color: ThemeTokens.text
-                    font.pixelSize: Typography.sizeBodyLarge
+                    font.pixelSize: Typography.sizeBody
                     font.weight: Font.Medium
                     elide: Text.ElideRight
                     anchors.verticalCenter: parent.verticalCenter

@@ -26,7 +26,7 @@ Rectangle {
 
         Text {
             text: root.icon
-            font.pixelSize: Typography.sizeBodyLarge
+            font.pixelSize: Typography.sizeBody
             anchors.verticalCenter: parent.verticalCenter
         }
 

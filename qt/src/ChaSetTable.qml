@@ -261,7 +261,7 @@ Rectangle {
                                 }
                                 color: Boolean(columnDef && columnDef.code) ? ThemeTokens.accent : root.cText
                                 font.family: (columnDef && columnDef.code) ? Typography.familyMono : ""
-                                font.bold: Boolean(columnDef && columnDef.code)
+                                font.weight: Boolean(columnDef && columnDef.code) ? Typography.weightMedium : Font.Normal
                                 font.pixelSize: Typography.sizeSmall
                                 elide: Text.ElideRight
                             }
