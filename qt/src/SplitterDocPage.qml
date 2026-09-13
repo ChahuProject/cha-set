@@ -9,7 +9,8 @@ DocLayout {
     pageTitle: "Splitter"
     description: "Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits."
     tocItems: [
-        { id: "overview", title: "Interactive Overview" },
+        { id: "overview", title: "Horizontal Splitter" },
+        { id: "vertical", title: "Vertical Splitter" },
         { id: "installation", title: "Installation" },
         { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
@@ -17,7 +18,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Splitter Sandbox"
+        title: "Horizontal Splitter Sandbox"
         reactCode: `<div className="flex h-48 border rounded-md">
   <div style={{ width: \`\${size}%\` }} className="p-4 text-xs">
     Left Pane (Sidebar)
@@ -138,6 +139,139 @@ DocLayout {
                                         size: "xs"
                                         variant: "outline"
                                         onClicked: splitter.reset()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ComponentPreview {
+        title: "Vertical Splitter Sandbox"
+        reactCode: `<div className="flex flex-col h-64 border rounded-md">
+  <div style={{ height: \`\${verticalSize}%\` }} className="p-4 text-xs">
+    Top Pane (Editor Canvas)
+  </div>
+  <Splitter size={verticalSize} onChange={setVerticalSize} orientation="horizontal" />
+  <div style={{ height: \`\${100 - verticalSize}%\` }} className="p-4 text-xs">
+    Bottom Pane (Terminal Console)
+  </div>
+</div>`
+        qtCode: `ChaSetSplitter {
+    width: 480
+    height: 220
+    orientation: "vertical"
+    initialSize: 65
+    minRatio: 0.20
+    maxRatio: 0.80
+    leftItem: Component { ... }
+    rightItem: Component { ... }
+}`
+
+        Item {
+            anchors.fill: parent
+            implicitHeight: 270
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 12
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Top and bottom pane split with horizontal divider line. Drag vertically to resize console output."
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: 12
+                }
+
+                Rectangle {
+                    width: 480
+                    height: 220
+                    radius: 6
+                    border.color: ThemeTokens.border
+                    border.width: 1
+                    color: ThemeTokens.panel
+                    clip: true
+
+                    ChaSetSplitter {
+                        id: verticalSplitter
+                        anchors.fill: parent
+                        orientation: "vertical"
+                        initialSize: 65
+                        minRatio: 0.20
+                        maxRatio: 0.80
+                        splitRatio: 0.65
+
+                        leftItem: Component {
+                            Rectangle {
+                                color: ThemeTokens.panel
+                                border.color: "transparent"
+
+                                Column {
+                                    anchors.centerIn: parent
+                                    spacing: 6
+
+                                    Row {
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        spacing: 8
+                                        Text {
+                                            text: "Editor Canvas"
+                                            color: ThemeTokens.text
+                                            font.pixelSize: 12
+                                            font.weight: Font.DemiBold
+                                            anchors.verticalCenter: parent.verticalCenter
+                                        }
+                                        ChaSetBadge {
+                                            text: Math.round(verticalSplitter.splitRatio * 100) + "%"
+                                            size: "sm"
+                                            variant: "secondary"
+                                            anchors.verticalCenter: parent.verticalCenter
+                                        }
+                                    }
+                                    Text {
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        text: "Drag splitter handle vertically to resize"
+                                        color: ThemeTokens.subduedText
+                                        font.pixelSize: 11
+                                    }
+                                }
+                            }
+                        }
+
+                        rightItem: Component {
+                            Rectangle {
+                                color: ThemeTokens.panelRaised
+                                border.color: "transparent"
+
+                                Column {
+                                    anchors.centerIn: parent
+                                    spacing: 6
+
+                                    Row {
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        spacing: 8
+                                        Text {
+                                            text: "Terminal Console"
+                                            color: ThemeTokens.text
+                                            font.pixelSize: 12
+                                            font.weight: Font.DemiBold
+                                            anchors.verticalCenter: parent.verticalCenter
+                                        }
+                                        ChaSetBadge {
+                                            text: Math.round((1 - verticalSplitter.splitRatio) * 100) + "%"
+                                            size: "sm"
+                                            variant: "outline"
+                                            anchors.verticalCenter: parent.verticalCenter
+                                        }
+                                    }
+                                    ChaSetButton {
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        text: "Reset (65%)"
+                                        size: "xs"
+                                        variant: "outline"
+                                        onClicked: verticalSplitter.reset()
                                     }
                                 }
                             }
