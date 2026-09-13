@@ -105,6 +105,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetRangeSlider.qml
         src/ChaSetSnapSlider.qml
         src/ChaSetScaleOsd.qml
+        src/ChaSetTaskHud.qml
         src/ChaSetReadOnlyInput.qml
         src/ChaSetPresetNumberInput.qml
         src/ChaSetKeybindingRecorder.qml
@@ -211,6 +212,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/RangeSliderDocPage.qml
             src/SnapSliderDocPage.qml
             src/ScaleOsdDocPage.qml
+            src/TaskHudDocPage.qml
             src/ReadOnlyInputDocPage.qml
             src/PresetNumberInputDocPage.qml
             src/KeybindingRecorderDocPage.qml

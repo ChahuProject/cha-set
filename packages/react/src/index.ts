@@ -29,6 +29,7 @@ export * from './inline-editable-text';
 export * from './range-slider';
 export * from './snap-slider';
 export * from './scale-osd';
+export * from './task-hud';
 export * from './read-only-input';
 export * from './preset-number-input';
 export * from './keybinding-recorder';

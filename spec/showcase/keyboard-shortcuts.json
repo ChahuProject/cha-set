@@ -243,6 +243,19 @@
     { "key": "Home / End", "action": "Jump to the first / last job in the list" },
     { "key": "Space / Enter", "action": "Select the focused job to inspect steps and logs" },
     { "key": "Tab / Shift + Tab", "action": "Move focus between job list, action buttons, and log console" }
+  ],
+  "snap-slider": [
+    { "key": "← / ↓", "action": "Step to previous discrete stop" },
+    { "key": "→ / ↑", "action": "Step to next discrete stop" },
+    { "key": "Home / End", "action": "Jump directly to the first or last stop" }
+  ],
+  "scale-osd": [
+    { "key": "Tab / Shift + Tab", "action": "Cycle focus between zoom in, zoom out, and reset buttons" },
+    { "key": "Space / Enter", "action": "Activate the focused zoom button" }
+  ],
+  "task-hud": [
+    { "key": "Tab / Shift + Tab", "action": "Focus through task dismiss buttons in the stack" },
+    { "key": "Space / Enter", "action": "Dismiss the currently focused task notification" }
   ]
 }
 
