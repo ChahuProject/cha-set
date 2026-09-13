@@ -115,10 +115,10 @@ Rectangle {
                             spacing: 2
                             Row {
                                 spacing: 6
-                                Text { text: parent.parent.parent.parent.modelData.title; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold; anchors.verticalCenter: parent.verticalCenter }
+                                Text { text: parent.parent.parent.parent.modelData.title; color: ThemeTokens.text; font.family: Typography.familySans; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; renderType: Text.NativeRendering; anchors.verticalCenter: parent.verticalCenter }
                                 ChaSetBadge { size: "sm"; variant: "outline"; text: parent.parent.parent.parent.modelData.category; anchors.verticalCenter: parent.verticalCenter }
                             }
-                            Text { text: parent.parent.parent.modelData.desc; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                            Text { text: parent.parent.parent.modelData.desc; color: ThemeTokens.subduedText; font.family: Typography.familySans; font.pixelSize: Typography.sizeCaption; renderType: Text.NativeRendering }
                         }
                     }
 

@@ -16,9 +16,11 @@ Column {
         visible: root.title !== ""
         text: root.title
         color: ThemeTokens.text
-        font.pixelSize: 15
-        font.weight: Font.Bold
+        font.family: Typography.familySans
+        font.pixelSize: Typography.sizeHeading
+        font.weight: Typography.weightSemibold
         font.letterSpacing: -0.2
+        renderType: TextEdit.NativeRendering
         readOnly: true
         selectByMouse: true
         selectByKeyboard: true
@@ -39,9 +41,9 @@ Column {
         width: parent.width
         interactive: false
         columns: [
-            { key: "prop", title: "PROP", width: 160 },
-            { key: "type", title: "TYPE", width: 140 },
-            { key: "defaultVal", title: "DEFAULT", width: 90 },
+            { key: "prop", title: "PROP", width: 170, code: true },
+            { key: "type", title: "TYPE", width: 180, badge: true },
+            { key: "defaultVal", title: "DEFAULT", width: 100, code: true },
             { key: "description", title: "DESCRIPTION" }
         ]
         rows: {

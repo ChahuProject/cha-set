@@ -869,7 +869,7 @@ ApplicationWindow {
                 ChaSetCardContent {
                     Text {
                         text: "·"
-                        font.pixelSize: 13
+                        font.pixelSize: Typography.sizeBody
                         color: ThemeTokens.dark ? Qt.rgba(248/255, 250/255, 252/255, 1.0) : Qt.rgba(2/255, 8/255, 23/255, 1.0)
                     }
                 }
@@ -979,15 +979,15 @@ ApplicationWindow {
 
                         Text {
                             text: "🍵"
-                            font.pixelSize: 20
+                            font.pixelSize: Typography.sizeTitleSm
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
                         Text {
                             text: "ChaSet"
                             color: win.cFg
-                            font.pixelSize: 16
-                            font.weight: Font.Bold
+                            font.pixelSize: Typography.sizeHeading
+                            font.weight: Typography.weightBold
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
@@ -1014,13 +1014,13 @@ ApplicationWindow {
                             anchors.rightMargin: 8
                             spacing: 8
 
-                            Text { text: "🔍"; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
-                            Text { text: "Search components & docs..."; color: win.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                            Text { text: "🔍"; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                            Text { text: "Search components & docs..."; color: win.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                             Item { width: parent.width - 240; height: 1 }
                             Rectangle {
                                 width: 32; height: 18; radius: 3; color: win.cCard; border.color: win.cBorder
                                 anchors.verticalCenter: parent.verticalCenter
-                                Text { anchors.centerIn: parent; text: "⌘K"; color: win.cMutedFg; font.pixelSize: 10; font.family: Typography.familyMono }
+                                Text { anchors.centerIn: parent; text: "⌘K"; color: win.cMutedFg; font.pixelSize: Typography.sizeMicro; font.family: Typography.familyMono }
                             }
                         }
 
@@ -1130,8 +1130,8 @@ ApplicationWindow {
                                 Text {
                                     text: modelData.title ? modelData.title.toUpperCase() : ""
                                     color: win.cMutedFg
-                                    font.pixelSize: 11
-                                    font.weight: Font.DemiBold
+                                    font.pixelSize: Typography.sizeCaption
+                                    font.weight: Typography.weightSemibold
                                     font.family: Typography.familySans
                                 }
 
@@ -1164,8 +1164,8 @@ ApplicationWindow {
                                             elide: Text.ElideRight
                                             text: navItemRect.modelData.title || ""
                                             color: (navItemRect.isActive || navItemRect.isHovered) ? win.cFg : win.cMutedFg
-                                            font.pixelSize: 12
-                                            font.weight: navItemRect.isActive ? Font.DemiBold : Font.Normal
+                                            font.pixelSize: Typography.sizeSmall
+                                            font.weight: navItemRect.isActive ? Typography.weightSemibold : Typography.weightRegular
                                         }
 
                                         ChaSetBadge {

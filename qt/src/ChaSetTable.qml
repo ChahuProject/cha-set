@@ -99,6 +99,7 @@ Rectangle {
 
                         width: root.getColWidth(index, headerRow.width)
                         height: headerRow.height
+                        clip: true
 
                         TextEdit {
                             id: headerCellText
@@ -109,9 +110,12 @@ Rectangle {
                             horizontalAlignment: root.getAlignment(modelData ? modelData.align : "left")
                             text: modelData ? (modelData.title || "") : ""
                             color: root.cSubduedText
+                            font.family: Typography.familySans
                             font.pixelSize: Typography.sizeSmall
-                            font.bold: true
+                            font.weight: Typography.weightSemibold
+                            renderType: TextEdit.NativeRendering
                             readOnly: true
+                            clip: true
                             selectByMouse: !root.interactive
                             selectByKeyboard: true
                             cursorVisible: false
@@ -184,6 +188,7 @@ Rectangle {
 
                             width: root.getColWidth(index, rowItem.width)
                             height: rowItem.height
+                            clip: true
 
                             // Badge rendering
                             ChaSetBadge {
@@ -234,7 +239,9 @@ Rectangle {
                                                 visible: comboRow.index > 0
                                                 text: "or"
                                                 color: root.cSubduedText
+                                                font.family: Typography.familySans
                                                 font.pixelSize: Typography.sizeCaption
+                                                renderType: Text.NativeRendering
                                                 anchors.verticalCenter: parent.verticalCenter
                                             }
 
@@ -257,7 +264,8 @@ Rectangle {
                                                         color: root.cText
                                                         font.pixelSize: Typography.sizeMicro
                                                         font.family: Typography.familyMono
-                                                        font.bold: true
+                                                        font.weight: Typography.weightSemibold
+                                                        renderType: Text.NativeRendering
                                                     }
                                                 }
                                             }
@@ -280,10 +288,13 @@ Rectangle {
                                     return val !== undefined && val !== null ? String(val) : "";
                                 }
                                 color: Boolean(columnDef && columnDef.code) ? ThemeTokens.accent : root.cText
-                                font.family: (columnDef && columnDef.code) ? Typography.familyMono : ""
-                                font.weight: Boolean(columnDef && columnDef.code) ? Typography.weightMedium : Font.Normal
+                                font.family: (columnDef && columnDef.code) ? Typography.familyMono : Typography.familySans
+                                font.weight: Boolean(columnDef && columnDef.code) ? Typography.weightMedium : Typography.weightRegular
                                 font.pixelSize: Typography.sizeSmall
+                                renderType: TextEdit.NativeRendering
                                 readOnly: true
+                                clip: true
+                                wrapMode: (columnDef && columnDef.wrap) ? TextEdit.WordWrap : TextEdit.NoWrap
                                 selectByMouse: !root.interactive
                                 selectByKeyboard: true
                                 cursorVisible: false

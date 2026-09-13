@@ -305,8 +305,10 @@ Item {
                         id: labelItem
                         anchors.verticalCenter: parent.verticalCenter
                         text: modelData && modelData.label ? String(modelData.label) : ""
+                        font.family: Typography.familySans
                         font.pixelSize: root.itemFontSize
-                        font.bold: segItem.isSelected
+                        font.weight: segItem.isSelected ? Typography.weightMedium : Typography.weightRegular
+                        renderType: Text.NativeRendering
                         elide: Text.ElideRight
                         width: {
                             var avail = segItem.width - 12;
@@ -338,8 +340,10 @@ Item {
                             // React twin: text-micro — a fixed size, NOT derived from
                             // the item size (the old `itemFontSize - 2` drifted to 9px
                             // at size="sm" and 12px at size="lg").
+                            font.family: Typography.familyMono
                             font.pixelSize: Typography.sizeMicro
-                            font.bold: true
+                            font.weight: Typography.weightSemibold
+                            renderType: Text.NativeRendering
                             color: segItem.isSelected ? ThemeTokens.accent : ThemeTokens.subduedText
                         }
                     }

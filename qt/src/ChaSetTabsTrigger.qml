@@ -90,8 +90,9 @@ Rectangle {
             id: textItem
             text: root.text
             font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
-            font.weight: root.isSelected ? Font.Medium : Font.Normal
+            font.weight: root.isSelected ? Typography.weightMedium : Typography.weightRegular
             font.family: Typography.familySans
+            renderType: Text.NativeRendering
             color: {
                 if (root.isSelected || root.isHovered) {
                     return ThemeTokens.dark ? Qt.rgba(248.0 / 255.0, 250.0 / 255.0, 252.0 / 255.0, 1.0) : Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0);

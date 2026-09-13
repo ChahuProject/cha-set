@@ -28,9 +28,11 @@ Column {
         visible: root.title !== ""
         text: root.title
         color: ThemeTokens.text
-        font.pixelSize: 15
-        font.weight: Font.Bold
+        font.family: Typography.familySans
+        font.pixelSize: Typography.sizeHeading
+        font.weight: Typography.weightSemibold
         font.letterSpacing: -0.2
+        renderType: TextEdit.NativeRendering
         readOnly: true
         selectByMouse: true
         selectByKeyboard: true
@@ -51,7 +53,7 @@ Column {
         width: parent.width
         interactive: false
         columns: [
-            { key: "key", title: "KEY SHORTCUT", width: 220, kbd: true },
+            { key: "key", title: "KEY SHORTCUT", width: 256, kbd: true },
             { key: "action", title: "ACTION / BEHAVIOR" }
         ]
         rows: {
