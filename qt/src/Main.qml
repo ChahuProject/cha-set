@@ -44,6 +44,21 @@ ApplicationWindow {
         clickLogs = []
     }
 
+    function getAllPageIds() {
+        var list = [];
+        if (ShowcaseData && ShowcaseData.navigation) {
+            for (var i = 0; i < ShowcaseData.navigation.length; i++) {
+                var grp = ShowcaseData.navigation[i];
+                if (grp.items) {
+                    for (var j = 0; j < grp.items.length; j++) {
+                        list.push(grp.items[j].id);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
     function getPageSource(pageId) {
         switch (pageId) {
         case "intro": return "IntroductionPage.qml";
@@ -1113,6 +1128,7 @@ ApplicationWindow {
 
                         Loader {
                             id: pageLoader
+                            objectName: "pageLoader"
                             width: parent.width
                             source: win.getPageSource(win.activePage)
                             onLoaded: {

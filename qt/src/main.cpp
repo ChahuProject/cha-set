@@ -49,6 +49,10 @@ static bool runRealMouseDragVerification(QQuickWindow* window) {
     double draggedY = flickable->property("contentY").toDouble();
     qInfo() << "[qt-scenario] Real C++ QTest Drag result: initialY=" << initialY << ", draggedY=" << draggedY;
 
+    // Reset contentY back to 0 after test
+    flickable->setProperty("contentY", 0.0);
+    QTest::qWait(50);
+
     if (draggedY > 0) {
         qInfo("[qt-scenario] PASS: Real C++ QTest mouse drag verified (contentY delta > 0)");
         return true;
@@ -267,6 +271,137 @@ static bool runRealCursorVerification(QQuickWindow* window) {
     }
 
     qInfo("[qt-scenario] PASS: Authentic C++ cursor shape & geometry parity verified for Button, Checkbox, Switch, CopyButton, SegmentedControl, TabsTrigger, ScrollBar");
+    return true;
+}
+
+static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running authentic C++ physical pointer raycasting audit on showcase pages...");
+
+    auto* pageLoader = window->findChild<QQuickItem*>("pageLoader");
+    if (!pageLoader) {
+        qCritical("[qt-scenario] FAIL: pageLoader item not found by objectName");
+        return false;
+    }
+
+    QVariant pageIdsVar;
+    QMetaObject::invokeMethod(window, "getAllPageIds", Q_RETURN_ARG(QVariant, pageIdsVar));
+    QStringList pageList = pageIdsVar.toStringList();
+    if (pageList.isEmpty()) {
+        pageList = { "button", "checkbox", "switch", "input", "tabs", "slider", "card", "copy-button", "segmented-control" };
+    }
+
+    auto findExpectedCursor = [](QQuickItem* item, QQuickItem* pageRoot) -> int {
+        // 1. First find if item or its direct children has an interactive shape
+        int shape = -1;
+        QVariant directShape = item->property("cursorShape");
+        if (directShape.isValid() && directShape.toInt() != 0) {
+            shape = directShape.toInt();
+        } else {
+            const auto directChildren = item->findChildren<QObject*>(QString(), Qt::FindDirectChildrenOnly);
+            for (auto* h : directChildren) {
+                QVariant visibleProp = h->property("visible");
+                if (visibleProp.isValid() && !visibleProp.toBool()) {
+                    continue;
+                }
+                QVariant enabledProp = h->property("enabled");
+                if (enabledProp.isValid() && !enabledProp.toBool()) {
+                    continue;
+                }
+                QVariant shapeProp = h->property("cursorShape");
+                if (shapeProp.isValid()) {
+                    int s = shapeProp.toInt();
+                    if (s != 0) {
+                        shape = s;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (shape == -1) {
+            return -1; // Non-interactive element (e.g. plain Row, Column, Text, non-interactive Card)
+        }
+
+        // 2. If it IS an interactive element, check if it or an ancestor is explicitly disabled
+        QObject* curr = item;
+        while (curr && curr != pageRoot) {
+            QVariant disProp = curr->property("disabled");
+            if (disProp.isValid() && disProp.toBool()) {
+                return Qt::ForbiddenCursor;
+            }
+            curr = curr->parent();
+        }
+
+        return shape;
+    };
+
+    int totalRaycastChecked = 0;
+    int totalDiscrepancies = 0;
+
+    auto* contentScroll = window->findChild<QQuickItem*>("contentScroll");
+    auto* flickable = contentScroll ? contentScroll->property("flickableItem").value<QQuickItem*>() : nullptr;
+
+    for (const QString& pageId : pageList) {
+        window->setProperty("activePage", pageId);
+        if (flickable) {
+            flickable->setProperty("contentY", 0.0);
+        }
+        QTest::qWait(30);
+
+        auto* pageItem = pageLoader->property("item").value<QQuickItem*>();
+        if (!pageItem) continue;
+
+        const auto allDescendants = pageItem->findChildren<QQuickItem*>();
+        for (auto* item : allDescendants) {
+            if (!item->isVisible() || item->width() <= 2 || item->height() <= 2) continue;
+
+            int expected = findExpectedCursor(item, pageItem);
+            if (expected == -1) continue;
+
+            QPointF centerInItem(item->width() / 2.0, item->height() / 2.0);
+            QPointF scenePoint = item->mapToScene(centerInItem);
+
+            // Verify the point is inside the visible window area (excluding left sidebar ~230px and top bar ~45px)
+            if (scenePoint.x() >= 235 && scenePoint.x() < window->width() - 25 &&
+                scenePoint.y() >= 45 && scenePoint.y() < window->height() - 25) {
+
+                QTest::mouseMove(window, scenePoint.toPoint());
+                QTest::qWait(5);
+
+                int actual = window->cursor().shape();
+                totalRaycastChecked++;
+
+                if (actual != expected) {
+                    auto* topItem = window->contentItem()->childAt(scenePoint.x(), scenePoint.y());
+                    qWarning() << "[qt-scenario] Pointer Raycast mismatch on page" << pageId
+                               << "item:" << item->metaObject()->className()
+                               << "name:" << item->objectName()
+                               << "parent:" << (item->parentItem() ? item->parentItem()->metaObject()->className() : "none")
+                               << "visible:" << item->isVisible()
+                               << "itemVisibleProp:" << item->property("visible")
+                               << "topItem:" << (topItem ? topItem->metaObject()->className() : "none")
+                               << "topItemName:" << (topItem ? topItem->objectName() : "none")
+                               << "at scene (" << scenePoint.x() << "," << scenePoint.y() << "):"
+                               << "expected" << expected << ", got window cursor" << actual;
+                    totalDiscrepancies++;
+                }
+            }
+        }
+    }
+
+    qInfo() << "[qt-scenario] Showcase pointer raycasting completed:" << totalRaycastChecked
+            << "on-screen controls verified across" << pageList.size() << "pages with" << totalDiscrepancies << "discrepancies.";
+
+    // Reset back to button page
+    window->setProperty("activePage", "button");
+    QTest::qWait(20);
+
+    if (totalDiscrepancies > 0) {
+        qCritical() << "[qt-scenario] FAIL: Pointer raycasting detected" << totalDiscrepancies << "cursor discrepancies on showcase pages!";
+        return false;
+    }
+
+    qInfo("[qt-scenario] PASS: Authentic C++ showcase physical pointer raycasting verified with ZERO discrepancies");
     return true;
 }
 
@@ -521,9 +656,14 @@ int main(int argc, char* argv[])
                                 return;
                             }
                         }
-                        if (testScenario == "all" || testScenario == "cursor" || testScenario == "cursor-conformance") {
+                        if (testScenario == "all" || testScenario == "cursor" || testScenario == "cursor-conformance" || testScenario == "cursor-showcase" || testScenario == "cursor-audit") {
                             bool cursorOk = runRealCursorVerification(window);
                             if (!cursorOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                            bool raycastOk = runShowcaseCursorRaycasting(window);
+                            if (!raycastOk) {
                                 QCoreApplication::exit(1);
                                 return;
                             }
