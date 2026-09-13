@@ -39,7 +39,6 @@ Item {
                 color: ThemeTokens.subduedText
                 font.family: Typography.familySans
                 font.pixelSize: Typography.sizeSmall
-                renderType: TextEdit.NativeRendering
                 readOnly: true
                 selectByMouse: true
                 selectByKeyboard: true
@@ -69,28 +68,19 @@ Item {
 
                 Item {
                     width: parent.width
-                    implicitHeight: Math.max(headerText.implicitHeight, copyBtn.height)
+                    implicitHeight: Math.max(titleText.implicitHeight, copyBtn.height)
 
                     TextEdit {
-                        id: headerText
+                        id: titleText
                         anchors.left: parent.left
                         anchors.right: copyBtn.left
                         anchors.rightMargin: 16
-                        anchors.top: parent.top
-                        textFormat: TextEdit.RichText
-                        wrapMode: TextEdit.WordWrap
+                        anchors.verticalCenter: copyBtn.verticalCenter
+                        text: root.pageTitle
+                        color: ThemeTokens.text
                         font.family: Typography.familySans
-                        renderType: TextEdit.NativeRendering
-                        text: {
-                            var html = "<div>";
-                            html += "<div style='font-family: Segoe UI; font-size: " + Typography.sizeTitle + "px; font-weight: bold; line-height: " + Typography.lineHeightPx(Typography.sizeTitle, "title") + "px; color: " + ThemeTokens.text + ";'>" + root.pageTitle + "</div>";
-                            if (root.description) {
-                                html += "<div style='margin-top: 8px; font-family: Segoe UI; font-size: " + Typography.sizeBody + "px; line-height: " + Typography.lineHeightPx(Typography.sizeBody, "body") + "px; color: " + ThemeTokens.subduedText + ";'>" + root.description + "</div>";
-                            }
-                            html += "</div>";
-                            return html;
-                        }
-                        height: contentHeight
+                        font.pixelSize: Typography.sizeDisplay
+                        font.weight: Typography.weightBold
                         readOnly: true
                         selectByMouse: true
                         selectByKeyboard: true
@@ -100,37 +90,69 @@ Item {
                         padding: 0
                         selectionColor: ThemeTokens.accent
                         selectedTextColor: "#ffffff"
+                        height: contentHeight
 
                         HoverHandler {
                             cursorShape: Qt.IBeamCursor
                         }
 
                         onSelectedTextChanged: {
-                            if (selectedText.length > 0) SelectionHub.claim(headerText);
-                            else if (SelectionHub.activeOwner === headerText) SelectionHub.clear(headerText);
+                            if (selectedText.length > 0) SelectionHub.claim(titleText);
+                            else if (SelectionHub.activeOwner === titleText) SelectionHub.clear(titleText);
                         }
                     }
 
                     ChaSetCopyButton {
                         id: copyBtn
-                        anchors.top: parent.top
                         anchors.right: parent.right
+                        anchors.top: parent.top
+                        text: "qt-page://" + root.pageTitle.toLowerCase().replace(/\s+/g, '-')
+                        label: "Copy Link"
                         variant: "outline"
                         size: "sm"
-                        label: "Copy Link"
-                        copiedLabel: "Copied!"
-                        text: "https://cha-set.dev/#" + root.pageTitle.toLowerCase().replace(/ /g, "-")
                     }
                 }
 
-                ChaSetSeparator {}
+                TextEdit {
+                    id: descText
+                    visible: root.description !== ""
+                    width: parent.width
+                    text: root.description
+                    color: ThemeTokens.subduedText
+                    font.family: Typography.familySans
+                    font.pixelSize: Typography.sizeHeading
+                    wrapMode: TextEdit.WordWrap
+                    readOnly: true
+                    selectByMouse: true
+                    selectByKeyboard: true
+                    cursorVisible: false
+                    activeFocusOnPress: true
+                    textMargin: 0
+                    padding: 0
+                    selectionColor: ThemeTokens.accent
+                    selectedTextColor: "#ffffff"
+
+                    HoverHandler {
+                        cursorShape: Qt.IBeamCursor
+                    }
+
+                    onSelectedTextChanged: {
+                        if (selectedText.length > 0) SelectionHub.claim(descText);
+                        else if (SelectionHub.activeOwner === descText) SelectionHub.clear(descText);
+                    }
+                }
             }
 
-            // Page Dynamic Content
+            // Divider matching React's Separator mb-8
+            ChaSetSeparator {
+                width: parent.width
+            }
+
+            // Page Body Content Slot
             Column {
                 id: pageContentCol
                 width: parent.width
-                spacing: 28
+                spacing: 32
             }
         }
 
@@ -147,7 +169,7 @@ Item {
                 font.family: Typography.familySans
                 font.pixelSize: Typography.sizeCaption
                 font.weight: Typography.weightSemibold
-                font.letterSpacing: 0.5
+                font.letterSpacing: Typography.trackingPx(Typography.sizeCaption, "wider")
             }
 
             Repeater {
@@ -158,7 +180,6 @@ Item {
                     color: ThemeTokens.subduedText
                     font.family: Typography.familySans
                     font.pixelSize: Typography.sizeSmall
-                    renderType: Text.NativeRendering
                     wrapMode: Text.WordWrap
                     width: tocCol.width
                     MouseArea {

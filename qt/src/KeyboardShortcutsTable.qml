@@ -32,7 +32,6 @@ Column {
         font.pixelSize: Typography.sizeHeading
         font.weight: Typography.weightSemibold
         font.letterSpacing: -0.2
-        renderType: TextEdit.NativeRendering
         readOnly: true
         selectByMouse: true
         selectByKeyboard: true

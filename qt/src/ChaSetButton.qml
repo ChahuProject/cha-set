@@ -314,7 +314,6 @@ Item {
             font.pixelSize: root.fontSize()
             font.weight: Typography.weightMedium
             font.family: Typography.familySans
-            renderType: Text.NativeRendering
             font.underline: root.variant === "link" && root.effectiveHovered
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter

@@ -123,7 +123,6 @@ Rectangle {
             font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeSmall
             font.weight: Typography.weightMedium
             font.family: root.isSm ? Typography.familyMono : Typography.familySans
-            renderType: Text.NativeRendering
             font.underline: root.variant === "link"
             anchors.verticalCenter: parent.verticalCenter
             color: {

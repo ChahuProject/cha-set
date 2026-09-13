@@ -568,6 +568,56 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 11: Cross-Stack Typography Hierarchy & Metric Invariants
+        if (scenario === "all" || scenario === "typography") {
+            console.log("[qt-scenario] Running typography metrics and token validation scenario...");
+            var typoFailures = 0;
+
+            // 1. Validate Typography scale invariants against spec/tokens/primitives.json
+            if (Typography.sizeDisplay !== 36) {
+                console.log("[qt-scenario] FAIL: Typography.sizeDisplay expected 36, got " + Typography.sizeDisplay);
+                typoFailures++;
+            }
+            if (Typography.sizeHeading !== 16) {
+                console.log("[qt-scenario] FAIL: Typography.sizeHeading expected 16, got " + Typography.sizeHeading);
+                typoFailures++;
+            }
+            if (Typography.sizeBody !== 14) {
+                console.log("[qt-scenario] FAIL: Typography.sizeBody expected 14, got " + Typography.sizeBody);
+                typoFailures++;
+            }
+            if (Typography.sizeSmall !== 12) {
+                console.log("[qt-scenario] FAIL: Typography.sizeSmall expected 12, got " + Typography.sizeSmall);
+                typoFailures++;
+            }
+            if (Typography.sizeCaption !== 11) {
+                console.log("[qt-scenario] FAIL: Typography.sizeCaption expected 11, got " + Typography.sizeCaption);
+                typoFailures++;
+            }
+
+            // 2. Validate font family tokens
+            if (!Typography.familySans || Typography.familySans.indexOf("Segoe UI") === -1) {
+                console.log("[qt-scenario] FAIL: Typography.familySans missing Segoe UI: " + Typography.familySans);
+                typoFailures++;
+            }
+            if (!Typography.familyMono || Typography.familyMono.indexOf("Consolas") === -1) {
+                console.log("[qt-scenario] FAIL: Typography.familyMono missing Consolas: " + Typography.familyMono);
+                typoFailures++;
+            }
+
+            // 3. Validate weight mappings
+            if (Typography.weightRegular !== 400 || Typography.weightMedium !== 500 || Typography.weightSemibold !== 600 || Typography.weightBold !== 700) {
+                console.log("[qt-scenario] FAIL: Typography weights mismatch: reg=" + Typography.weightRegular + ", med=" + Typography.weightMedium + ", semi=" + Typography.weightSemibold + ", bold=" + Typography.weightBold);
+                typoFailures++;
+            }
+
+            if (typoFailures === 0) {
+                console.log("[qt-scenario] PASS: Cross-Stack Typography Hierarchy & Metric Invariants verified");
+            } else {
+                failures += typoFailures;
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;

@@ -432,6 +432,50 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
     return true;
 }
 
+bool runRealTypographyVerification(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running authentic C++ typography and font rendering verification...");
+    const QFont appFont = QGuiApplication::font();
+    if (!(appFont.styleStrategy() & QFont::NoSubpixelAntialias)) {
+        qCritical("[qt-scenario] FAIL: QGuiApplication font missing NoSubpixelAntialias strategy!");
+        return false;
+    }
+    if (!(appFont.styleStrategy() & QFont::PreferQuality)) {
+        qCritical("[qt-scenario] FAIL: QGuiApplication font missing PreferQuality strategy!");
+        return false;
+    }
+    if (appFont.hintingPreference() != QFont::PreferVerticalHinting) {
+        qCritical("[qt-scenario] FAIL: QGuiApplication font hintingPreference is not PreferVerticalHinting!");
+        return false;
+    }
+    if (QQuickWindow::textRenderType() != QQuickWindow::NativeTextRendering) {
+        qCritical("[qt-scenario] FAIL: QQuickWindow textRenderType is not NativeTextRendering!");
+        return false;
+    }
+
+    int verifiedCount = 0;
+    std::function<bool(QQuickItem*)> scanItems = [&](QQuickItem* item) -> bool {
+        if (!item) return true;
+        const QString className = QString::fromLatin1(item->metaObject()->className());
+        if (className.contains(QStringLiteral("Text")) || className.contains(QStringLiteral("TextInput")) || className.contains(QStringLiteral("TextEdit"))) {
+            QVariant rt = item->property("renderType");
+            // NativeRendering enum value is 1 across Text, TextEdit, TextInput
+            if (rt.isValid() && rt.toInt() != 1) {
+                qCritical() << "[qt-scenario] FAIL: Text item" << className << "has non-native renderType:" << rt.toInt();
+                return false;
+            }
+            verifiedCount++;
+        }
+        for (QQuickItem* child : item->childItems()) {
+            if (!scanItems(child)) return false;
+        }
+        return true;
+    };
+
+    if (!scanItems(window->contentItem())) return false;
+    qInfo() << "[qt-scenario] PASS: Verified global typography and native grayscale antialiasing across" << verifiedCount << "active text nodes";
+    return true;
+}
+
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #include <d3d11.h>
@@ -557,7 +601,10 @@ int main(int argc, char* argv[])
     QGuiApplication app(argc, argv);
 
     QFont appFont(QStringLiteral("Segoe UI"));
-    appFont.setStyleStrategy(QFont::PreferAntialias);
+    appFont.setStyleStrategy(static_cast<QFont::StyleStrategy>(
+        QFont::PreferAntialias | QFont::PreferQuality | QFont::NoSubpixelAntialias
+    ));
+    appFont.setHintingPreference(QFont::PreferVerticalHinting);
     appFont.setPixelSize(14);
     appFont.setWeight(QFont::Normal);
     QGuiApplication::setFont(appFont);
@@ -702,6 +749,13 @@ int main(int argc, char* argv[])
                             }
                             bool raycastOk = runShowcaseCursorRaycasting(window);
                             if (!raycastOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                        }
+                        if (testScenario == "all" || testScenario == "typography" || testScenario == "font") {
+                            bool typoOk = runRealTypographyVerification(window);
+                            if (!typoOk) {
                                 QCoreApplication::exit(1);
                                 return;
                             }
