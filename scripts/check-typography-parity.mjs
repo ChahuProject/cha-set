@@ -31,6 +31,7 @@ import {
   ratioValue,
   emValue,
   camelProp,
+  toKebab,
   FONT_FAMILY_ORDER,
   FONT_SIZE_ORDER,
   LINE_HEIGHT_ORDER,
@@ -108,15 +109,15 @@ export function verifyTypographyParity({ quiet = false } = {}) {
     expectedQml.set(`weight${camelProp(k)}`, String(v));
   }
   for (const [k, v] of Object.entries(typo.fontSize ?? {})) {
-    expectedCss.set(`--cs-text-${k}`, pxToRem(v));
+    expectedCss.set(`--cs-text-${toKebab(k)}`, pxToRem(v));
     expectedQml.set(`size${camelProp(k)}`, String(v));
   }
   for (const [k, v] of Object.entries(typo.lineHeight ?? {})) {
-    expectedCss.set(`--cs-leading-${k}`, ratioValue(v));
+    expectedCss.set(`--cs-leading-${toKebab(k)}`, ratioValue(v));
     expectedQml.set(`leading${camelProp(k)}`, String(v));
   }
   for (const [k, v] of Object.entries(typo.letterSpacing ?? {})) {
-    expectedCss.set(`--cs-tracking-${k}`, emValue(v));
+    expectedCss.set(`--cs-tracking-${toKebab(k)}`, emValue(v));
     expectedQml.set(`tracking${camelProp(k)}`, String(v));
   }
 
@@ -192,16 +193,19 @@ export function verifyTypographyParity({ quiet = false } = {}) {
     if (arbitraryText.length > 12) warnings.push(`  … ${arbitraryText.length - 12} more`);
   }
 
-  // ---- Qt library components: no bare numeric font size -------------------
-  // A raw number here is a value Qt can never learn from the shared scale, which
-  // is how the Code Block line-height and the 13px-vs-14px body drifted apart.
+  // ---- Qt components & showcase doc pages: no bare numeric font size -------
   const allow = JSON.parse(readFileSync(ALLOWLIST_PATH, 'utf8')).qtFontSizeLiterals ?? [];
   const isAllowed = (rel, line) => allow.some((a) => a.file === rel && line.includes(a.contains));
-  const qtLibrary = walk(resolve(repoRoot, 'qt/src'), (n) => n.startsWith('ChaSet') && n.endsWith('.qml'));
-  for (const file of qtLibrary) {
+  const qtFilesAll = walk(resolve(repoRoot, 'qt/src'), (n) => n.endsWith('.qml'));
+  for (const file of qtFilesAll) {
     const rel = relative(repoRoot, file).replace(/\\/g, '/');
     const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+    let inBackticks = false;
     lines.forEach((line, i) => {
+      const tickCount = (line.split('`').length - 1);
+      if (tickCount % 2 === 1) inBackticks = !inBackticks;
+      if (inBackticks || line.includes('qtCode:') || line.includes('code:') || line.includes('reactCode:')) return;
+
       const isFontSize =
         /font\.pixelSize\s*:/.test(line) ||
         /readonly\s+property\s+int\s+(fontSize|labelFontSize|sliderLabelFontSize|itemFontSize|pixelSize)\s*:/.test(line);

@@ -81,7 +81,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Selected value: " + root.selectedView
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
             }
         }
@@ -93,7 +93,7 @@ DocLayout {
                 DocText {
                     text: "Size:"
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 11
+                    font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Repeater {
@@ -122,7 +122,7 @@ DocLayout {
     // Sizes
     DocText {
         text: "Sizes & Badges"
-        font.pixelSize: 18
+        font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
     }
@@ -140,7 +140,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    DocText { text: "Small (sm) - Compact menus & toolbars"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    DocText { text: "Small (sm) - Compact menus & toolbars"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "sm"
                         options: root.viewOptions
@@ -152,7 +152,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    DocText { text: "Default - Standard controls"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    DocText { text: "Default - Standard controls"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "default"
                         options: root.viewOptions
@@ -164,7 +164,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    DocText { text: "Large (lg) - Prominent tabs switch"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    DocText { text: "Large (lg) - Prominent tabs switch"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "lg"
                         options: root.viewOptions
@@ -178,7 +178,7 @@ DocLayout {
     // Fixed Width & Truncation
     DocText {
         text: "Fixed Width & Truncation"
-        font.pixelSize: 18
+        font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
     }
@@ -196,7 +196,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    DocText { text: "Auto-fit width (hugs content)"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    DocText { text: "Auto-fit width (hugs content)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         options: [
                             { label: "Compact", value: "compact" },
@@ -211,7 +211,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    DocText { text: "Fixed width with truncation (itemWidth: 120)"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    DocText { text: "Fixed width with truncation (itemWidth: 120)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         itemWidth: 120
                         options: [
@@ -229,7 +229,7 @@ DocLayout {
     // Menu & Inline Title
     DocText {
         text: "Menu & Inline Title"
-        font.pixelSize: 18
+        font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
     }
@@ -257,7 +257,7 @@ DocLayout {
     // Keyboard Navigation
     DocText {
         text: "Keyboard Navigation"
-        font.pixelSize: 18
+        font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
     }

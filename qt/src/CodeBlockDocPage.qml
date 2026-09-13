@@ -69,13 +69,13 @@ DocLayout {
         DocText {
             text: "Variants & Options"
             color: ThemeTokens.text
-            font.pixelSize: 18
-            font.weight: Font.DemiBold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightSemibold
         }
         DocText {
             text: "Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and chrome-less embedding for inline prose."
             color: ThemeTokens.subduedText
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         // Variant 1: showLineNumbers
@@ -85,7 +85,7 @@ DocLayout {
             Row {
                 spacing: 8
                 ChaSetBadge { variant: "secondary"; text: "showLineNumbers" }
-                DocText { text: "Gutter with right-aligned line numbers"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Gutter with right-aligned line numbers"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
                 width: parent.width
@@ -103,7 +103,7 @@ DocLayout {
             Row {
                 spacing: 8
                 ChaSetBadge { variant: "secondary"; text: "wrap" }
-                DocText { text: "Soft-wrap long lines instead of horizontal scroll"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Soft-wrap long lines instead of horizontal scroll"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
                 width: parent.width
@@ -120,7 +120,7 @@ DocLayout {
             Row {
                 spacing: 8
                 ChaSetBadge { variant: "secondary"; text: "highlight={false}" }
-                DocText { text: "Monochrome fallback using the same layout"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Monochrome fallback using the same layout"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
                 width: parent.width
@@ -138,7 +138,7 @@ DocLayout {
             Row {
                 spacing: 8
                 ChaSetBadge { variant: "secondary"; text: "embedded" }
-                DocText { text: "Drop the card chrome and header for inline embedding"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Drop the card chrome and header for inline embedding"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
                 width: parent.width
@@ -156,13 +156,13 @@ DocLayout {
         DocText {
             text: "Multi-File Tabs"
             color: ThemeTokens.text
-            font.pixelSize: 18
-            font.weight: Font.DemiBold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightSemibold
         }
         DocText {
             text: "Pass a files array to render a tabbed group. Each tab carries its own language, and the copy button always targets the active file."
             color: ThemeTokens.subduedText
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
         ChaSetCodeBlock {
             width: parent.width
@@ -179,8 +179,8 @@ DocLayout {
         DocText {
             text: "Installation"
             color: ThemeTokens.text
-            font.pixelSize: 18
-            font.weight: Font.DemiBold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightSemibold
         }
         ChaSetCodeBlock {
             width: parent.width
@@ -194,13 +194,13 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        DocText { text: "Animations"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+        DocText { text: "Animations"; color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        DocText { text: "Motion behavior and timing driven by ThemeTokens for file switching and the header affordances."; color: ThemeTokens.subduedText; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "Motion behavior and timing driven by ThemeTokens for file switching and the header affordances."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        DocText { text: "• Switching the active file cross-fades the body over ThemeTokens.motionShort with the easeEntrance curve."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• The header affordances inherit token motion from their primitives: file tabs interpolate color and border over ThemeTokens.motionQuick with the easeStandard curve, as do the copy button and the scroll bars."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• Switching the active file cross-fades the body over ThemeTokens.motionShort with the easeEntrance curve."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• The header affordances inherit token motion from their primitives: file tabs interpolate color and border over ThemeTokens.motionQuick with the easeStandard curve, as do the copy button and the scroll bars."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     KeyboardShortcutsTable {

@@ -58,14 +58,14 @@ DocLayout {
                         DocText {
                             text: "Value:"
                             color: root.cMutedFg
-                            font.pixelSize: 12
+                            font.pixelSize: Typography.sizeSmall
                         }
                         Item { width: Math.max(0, parent.width - 80); height: 1 }
                         DocText {
                             text: root.demoValue.toString()
                             color: root.cFg
-                            font.pixelSize: 12
-                            font.weight: Font.DemiBold
+                            font.pixelSize: Typography.sizeSmall
+                            font.weight: Typography.weightSemibold
                         }
                     }
 
@@ -101,7 +101,7 @@ DocLayout {
                     DocText {
                         text: "Size:"
                         color: root.cMutedFg
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     ChaSetTabs {
@@ -120,7 +120,7 @@ DocLayout {
                     DocText {
                         text: "Step:"
                         color: root.cMutedFg
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     ChaSetTabs {
@@ -141,7 +141,7 @@ DocLayout {
                     DocText {
                         text: "Orientation:"
                         color: root.cMutedFg
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     ChaSetTabs {
@@ -204,8 +204,8 @@ DocLayout {
         DocText {
             text: "Installation"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         ChaSetCodeBlock {
@@ -223,14 +223,14 @@ DocLayout {
         DocText {
             text: "Anatomy"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "Import and render ChaSetSlider directly in your QML scene."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         ChaSetCodeBlock {
@@ -248,14 +248,14 @@ DocLayout {
         DocText {
             text: "Examples & States"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "Visual matrix of common slider configurations, size scales, tooltips, and interactive states in Qt Quick."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         Grid {
@@ -274,8 +274,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Floating Value Tooltip"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    DocText { text: "Interactive formatted indicator on thumb drag and hover"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Floating Value Tooltip"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: "Interactive formatted indicator on thumb drag and hover"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: 6 }
                     ChaSetSlider {
                         width: parent.width
@@ -300,8 +300,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    DocText { text: "Reduced track thickness and thumb size for toolbars"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: "Reduced track thickness and thumb size for toolbars"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: 6 }
                     ChaSetSlider {
                         width: parent.width
@@ -324,8 +324,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Read-Only State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    DocText { text: "Locked value without dimmed 50% opacity"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Read-Only State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: "Locked value without dimmed 50% opacity"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: 6 }
                     ChaSetSlider {
                         width: parent.width
@@ -348,8 +348,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Discrete Stops with Ticks"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    DocText { text: "Quantized stops with tick indicators and label marks"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Discrete Stops with Ticks"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: "Quantized stops with tick indicators and label marks"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: 6 }
                     ChaSetSlider {
                         width: parent.width
@@ -374,8 +374,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    DocText { text: "Non-interactive with dimmed opacity for disabled controls"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: "Non-interactive with dimmed opacity for disabled controls"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: 6 }
                     ChaSetSlider {
                         width: parent.width
@@ -398,8 +398,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Custom Range (20 to 80)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    DocText { text: "Bounded custom minimum and maximum limits with step=5"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Custom Range (20 to 80)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: "Bounded custom minimum and maximum limits with step=5"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: 6 }
                     ChaSetSlider {
                         width: parent.width
@@ -421,8 +421,8 @@ DocLayout {
         DocText {
             text: "Keyboard Navigation"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         KeyboardShortcutsTable {
@@ -434,8 +434,8 @@ DocLayout {
         DocText {
             text: "Props Reference"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         PropsTable {

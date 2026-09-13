@@ -51,7 +51,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset."
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
 
                 Rectangle {
@@ -85,15 +85,15 @@ DocLayout {
                                     DocText {
                                         text: "Navigation Tree"
                                         color: ThemeTokens.text
-                                        font.pixelSize: 12
-                                        font.weight: Font.DemiBold
+                                        font.pixelSize: Typography.sizeSmall
+                                        font.weight: Typography.weightSemibold
                                     }
 
                                     Column {
                                         spacing: 4
-                                        DocText { text: "▾ src"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
-                                        DocText { text: "  ▸ components"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
-                                        DocText { text: "  ▸ layout"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
+                                        DocText { text: "▾ src"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
+                                        DocText { text: "  ▸ components"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
+                                        DocText { text: "  ▸ layout"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
                                     }
                                 }
                             }
@@ -114,8 +114,8 @@ DocLayout {
                                         DocText {
                                             text: "Editor Workspace"
                                             color: ThemeTokens.text
-                                            font.pixelSize: 12
-                                            font.weight: Font.DemiBold
+                                            font.pixelSize: Typography.sizeSmall
+                                            font.weight: Typography.weightSemibold
                                             anchors.verticalCenter: parent.verticalCenter
                                         }
                                         ChaSetBadge {
@@ -130,7 +130,7 @@ DocLayout {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         text: "Drag splitter handle to resize panes"
                                         color: ThemeTokens.subduedText
-                                        font.pixelSize: 11
+                                        font.pixelSize: Typography.sizeCaption
                                     }
 
                                     ChaSetButton {
@@ -183,7 +183,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Top and bottom pane split with horizontal divider line. Drag vertically to resize console output."
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
 
                 Rectangle {
@@ -219,8 +219,8 @@ DocLayout {
                                         DocText {
                                             text: "Editor Canvas"
                                             color: ThemeTokens.text
-                                            font.pixelSize: 12
-                                            font.weight: Font.DemiBold
+                                            font.pixelSize: Typography.sizeSmall
+                                            font.weight: Typography.weightSemibold
                                             anchors.verticalCenter: parent.verticalCenter
                                         }
                                         ChaSetBadge {
@@ -234,7 +234,7 @@ DocLayout {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         text: "Drag splitter handle vertically to resize"
                                         color: ThemeTokens.subduedText
-                                        font.pixelSize: 11
+                                        font.pixelSize: Typography.sizeCaption
                                     }
                                 }
                             }
@@ -255,8 +255,8 @@ DocLayout {
                                         DocText {
                                             text: "Terminal Console"
                                             color: ThemeTokens.text
-                                            font.pixelSize: 12
-                                            font.weight: Font.DemiBold
+                                            font.pixelSize: Typography.sizeSmall
+                                            font.weight: Typography.weightSemibold
                                             anchors.verticalCenter: parent.verticalCenter
                                         }
                                         ChaSetBadge {
@@ -296,14 +296,14 @@ DocLayout {
         DocText {
             text: "Animations"
             color: ThemeTokens.text
-            font.pixelSize: 18
+            font.pixelSize: Typography.sizeTitleSm
             font.bold: true
         }
 
         DocText {
             text: "Motion tokens and kinematic timing contracts for Splitter divider gutters."
             color: ThemeTokens.subduedText
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
@@ -311,21 +311,21 @@ DocLayout {
         DocText {
             text: "• Gutter indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve."
             color: ThemeTokens.text
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
         DocText {
             text: "• Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
             color: ThemeTokens.text
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
         DocText {
             text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."
             color: ThemeTokens.text
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }

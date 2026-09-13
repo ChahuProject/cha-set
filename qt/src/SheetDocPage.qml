@@ -145,14 +145,14 @@ ChaSetSheet {
                     Column {
                         width: parent.width
                         spacing: 6
-                        DocText { text: "Display Name"; color: ThemeTokens.text; font.pixelSize: 12 }
+                        DocText { text: "Display Name"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                         ChaSetInput { width: parent.width; height: 32; text: "Alex Developer" }
                     }
 
                     Column {
                         width: parent.width
                         spacing: 6
-                        DocText { text: "Organization Role"; color: ThemeTokens.text; font.pixelSize: 12 }
+                        DocText { text: "Organization Role"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                         ChaSetInput { width: parent.width; height: 32; text: "Staff Infrastructure Architect" }
                     }
 
@@ -184,13 +184,13 @@ ChaSetSheet {
         width: parent.width
         spacing: 12
 
-        DocText { text: "Animations"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+        DocText { text: "Animations"; color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        DocText { text: "Motion behavior and timing driven by ThemeTokens for the backdrop and sliding panel."; color: ThemeTokens.subduedText; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "Motion behavior and timing driven by ThemeTokens for the backdrop and sliding panel."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        DocText { text: "• The panel translates along its entry edge while the backdrop cross-fades its opacity."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• Transitions use ThemeTokens.motionMedium with the easeEmphasized curve for a deliberate slide."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• The panel translates along its entry edge while the backdrop cross-fades its opacity."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• Transitions use ThemeTokens.motionMedium with the easeEmphasized curve for a deliberate slide."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     KeyboardShortcutsTable {

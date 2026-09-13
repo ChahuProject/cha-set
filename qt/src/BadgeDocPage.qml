@@ -81,7 +81,7 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: 8
-                DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetTabs {
                     anchors.verticalCenter: parent.verticalCenter
                     currentValue: root.demoVariant
@@ -99,7 +99,7 @@ DocLayout {
 
             Row {
                 spacing: 8
-                DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetTabs {
                     anchors.verticalCenter: parent.verticalCenter
                     currentValue: root.demoSize
@@ -134,7 +134,7 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        DocText { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Installation"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
         ChaSetCodeBlock {
             width: parent.width
             language: "bash"
@@ -146,8 +146,8 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        DocText { text: "Variants"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        DocText { text: "All six standard semantic variants aligned with the ChaSet design token system."; color: root.cMutedFg; font.pixelSize: 13 }
+        DocText { text: "Variants"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "All six standard semantic variants aligned with the ChaSet design token system."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -176,8 +176,8 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        DocText { text: "Sizes"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        DocText { text: "Choose between standard pill scale (default) and compact micro badge (sm)."; color: root.cMutedFg; font.pixelSize: 13 }
+        DocText { text: "Sizes"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "Choose between standard pill scale (default) and compact micro badge (sm)."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -193,12 +193,12 @@ DocLayout {
                     spacing: 20
                     Row {
                         spacing: 8
-                        DocText { anchors.verticalCenter: parent.verticalCenter; text: "Default:"; color: root.cMutedFg; font.pixelSize: 12 }
+                        DocText { anchors.verticalCenter: parent.verticalCenter; text: "Default:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
                         ChaSetBadge { size: "default"; text: "Badge Default" }
                     }
                     Row {
                         spacing: 8
-                        DocText { anchors.verticalCenter: parent.verticalCenter; text: "Small:"; color: root.cMutedFg; font.pixelSize: 12 }
+                        DocText { anchors.verticalCenter: parent.verticalCenter; text: "Small:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
                         ChaSetBadge { size: "sm"; text: "NEW" }
                     }
                 }
@@ -210,8 +210,8 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        DocText { text: "Status & Removable Tags"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        DocText { text: "Badges support live status indicator dots and dismissible action buttons for filter tags."; color: root.cMutedFg; font.pixelSize: 13 }
+        DocText { text: "Status & Removable Tags"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "Badges support live status indicator dots and dismissible action buttons for filter tags."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -239,7 +239,7 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        DocText { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Props Reference"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
 
         KeyboardShortcutsTable {
             componentId: "badge"

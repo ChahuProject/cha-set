@@ -122,12 +122,12 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        DocText { text: "Animations"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+        DocText { text: "Animations"; color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        DocText { text: "Motion behavior for the loading placeholder effects."; color: ThemeTokens.subduedText; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "Motion behavior for the loading placeholder effects."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        DocText { text: "• pulse animates a SequentialAnimation over opacity; wave moves a linear NumberAnimation over x for the shimmer sweep."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All animations stop when ThemeTokens.animationsEnabled is false, keeping the skeleton static."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• pulse animates a SequentialAnimation over opacity; wave moves a linear NumberAnimation over x for the shimmer sweep."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• All animations stop when ThemeTokens.animationsEnabled is false, keeping the skeleton static."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     KeyboardShortcutsTable {

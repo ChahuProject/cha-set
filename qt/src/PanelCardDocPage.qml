@@ -55,14 +55,14 @@ DocLayout {
 
                     Row {
                         spacing: 8
-                        DocText { text: "Node Count:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
-                        DocText { text: "16 Dedicated Replicas"; color: ThemeTokens.text; font.pixelSize: 12; font.weight: Font.DemiBold }
+                        DocText { text: "Node Count:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                        DocText { text: "16 Dedicated Replicas"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     }
 
                     Row {
                         spacing: 8
-                        DocText { text: "Avg Latency:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
-                        DocText { text: "12ms (p99: 45ms)"; color: ThemeTokens.text; font.pixelSize: 12 }
+                        DocText { text: "Avg Latency:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                        DocText { text: "12ms (p99: 45ms)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                     }
 
                     Row {

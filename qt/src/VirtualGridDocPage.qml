@@ -46,7 +46,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Rendering 1,000 Grid Cards with Responsive Recycling:"
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
 
                 Row {
@@ -110,15 +110,15 @@ DocLayout {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     text: "Asset #" + (index + 1)
                                     color: ThemeTokens.text
-                                    font.pixelSize: 12
-                                    font.weight: Font.DemiBold
+                                    font.pixelSize: Typography.sizeSmall
+                                    font.weight: Typography.weightSemibold
                                 }
 
                                 DocText {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     text: "1920x1080 • PNG"
                                     color: ThemeTokens.subduedText
-                                    font.pixelSize: 10
+                                    font.pixelSize: Typography.sizeMicro
                                     font.family: Typography.familyMono
                                 }
                             }

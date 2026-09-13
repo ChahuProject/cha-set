@@ -109,8 +109,8 @@ DocLayout {
     Text {
       text: "Installation"
       color: ThemeTokens.text
-      font.pixelSize: 18
-      font.weight: Font.DemiBold
+      font.pixelSize: Typography.sizeTitleSm
+      font.weight: Typography.weightSemibold
     }
     ChaSetCodeBlock {
       width: parent.width
@@ -124,11 +124,11 @@ DocLayout {
     width: parent.width
     spacing: 12
 
-    Text { text: "Animations"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
-    Text { text: "Execution transitions and status node states are governed by shared motion tokens:"; color: ThemeTokens.subduedText; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
-    Text { text: "• Active execution nodes (running, compiling, retrying) display continuous rotation animations."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
-    Text { text: "• Job list selection and hover states interpolate smoothly using ThemeTokens.motionQuick."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
-    Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero."; color: ThemeTokens.text; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+    Text { text: "Animations"; color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+    Text { text: "Execution transitions and status node states are governed by shared motion tokens:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+    Text { text: "• Active execution nodes (running, compiling, retrying) display continuous rotation animations."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+    Text { text: "• Job list selection and hover states interpolate smoothly using ThemeTokens.motionQuick."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+    Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
   }
 
   KeyboardShortcutsTable {

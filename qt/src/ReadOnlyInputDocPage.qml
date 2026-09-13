@@ -41,7 +41,7 @@ DocLayout {
                 Column {
                     spacing: 6
                     width: parent.width
-                    DocText { text: "API Secret Key (Masked with Copy):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+                    DocText { text: "API Secret Key (Masked with Copy):"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetReadOnlyInput {
                         width: parent.width
                         value: "cs_live_94817264810294827104"
@@ -53,7 +53,7 @@ DocLayout {
                 Column {
                     spacing: 6
                     width: parent.width
-                    DocText { text: "GitHub Personal Access Token (Masked):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+                    DocText { text: "GitHub Personal Access Token (Masked):"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetReadOnlyInput {
                         width: parent.width
                         value: "ghp_3847291847291048291048291840"

@@ -50,7 +50,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Rendering 10,000 Virtual Items with Native Wheel Flicking:"
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
 
                 Row {
@@ -104,7 +104,7 @@ DocLayout {
                             anchors.verticalCenter: parent.verticalCenter
                             text: "Dataset Record #" + (index + 1)
                             color: ThemeTokens.text
-                            font.pixelSize: 12
+                            font.pixelSize: Typography.sizeSmall
                             font.family: Typography.familyMono
                             elide: Text.ElideRight
                         }

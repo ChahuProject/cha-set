@@ -112,15 +112,15 @@ DocLayout {
 
                             DocText {
                                 text: "🍵"
-                                font.pixelSize: 18
+                                font.pixelSize: Typography.sizeTitleSm
                             }
 
                             DocText {
                                 visible: !demoSidebar.collapsed
                                 text: "ChaSet Studio"
                                 color: ThemeTokens.text
-                                font.pixelSize: 14
-                                font.weight: Font.Bold
+                                font.pixelSize: Typography.sizeBody
+                                font.weight: Typography.weightBold
                             }
                         }
 
@@ -203,8 +203,8 @@ DocLayout {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: "Main Viewport Inset"
                             color: ThemeTokens.text
-                            font.pixelSize: 16
-                            font.weight: Font.DemiBold
+                            font.pixelSize: Typography.sizeHeading
+                            font.weight: Typography.weightSemibold
                         }
 
                         Row {
@@ -215,7 +215,7 @@ DocLayout {
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: "Sidebar Width:"
                                 color: ThemeTokens.subduedText
-                                font.pixelSize: 12
+                                font.pixelSize: Typography.sizeSmall
                             }
 
                             ChaSetBadge {

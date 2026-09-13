@@ -92,7 +92,7 @@ ChaSetElidedText {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "Width: " + root.containerWidth
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                     }
 
                     ChaSetSlider {
@@ -126,7 +126,7 @@ ChaSetElidedText {
     // Multi-Line Clamping
     DocText {
         text: "Multi-Line Clamping"
-        font.pixelSize: 18
+        font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
     }
@@ -148,7 +148,7 @@ ChaSetElidedText {
                     wrapMode: TextEdit.Wrap
                     text: "Using maxLines: 2 to clamp overflowing multiline paragraphs with trailing ellipsis."
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
 
                 Rectangle {
@@ -174,7 +174,7 @@ ChaSetElidedText {
     // Keyboard Navigation
     DocText {
         text: "Keyboard Navigation"
-        font.pixelSize: 18
+        font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
     }

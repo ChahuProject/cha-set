@@ -41,8 +41,8 @@ DocLayout {
         qtCode: root.demoOrientation === "horizontal"
             ? (root.demoHasLabel
                 ? `Column {\n    width: 280\n    spacing: 12\n    ChaSetButton { text: "Sign in with SSO"; size: "sm"; width: parent.width }\n    ChaSetSeparator {\n        orientation: "horizontal"\n        variant: "${root.demoVariant}"\n        label: "Continue with"\n        labelPosition: "${root.demoLabelPosition}"\n        width: parent.width\n    }\n    ChaSetButton { variant: "outline"; text: "Sign in with Email"; size: "sm"; width: parent.width }\n}`
-                : `Column {\n    width: 280\n    spacing: 12\n    Column {\n        spacing: 4\n        Text { text: "ChaSet UI"; font.bold: true; color: ThemeTokens.text }\n        Text { text: "Cross-stack React & Qt Quick Design System."; color: ThemeTokens.subduedText; font.pixelSize: 12 }\n    }\n    ChaSetSeparator { orientation: "horizontal"; variant: "${root.demoVariant}" }\n    Row {\n        spacing: 12\n        Text { text: "Docs"; color: ThemeTokens.text; font.pixelSize: 12 }\n        ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 16 }\n        Text { text: "Source"; color: ThemeTokens.text; font.pixelSize: 12 }\n        ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 16 }\n        Text { text: "Changelog"; color: ThemeTokens.text; font.pixelSize: 12 }\n    }\n}`)
-            : `Row {\n    spacing: 12\n    Text { text: "Components"; color: ThemeTokens.text; font.pixelSize: 13 }\n    ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 20 }\n    Text { text: "Tokens"; color: ThemeTokens.text; font.pixelSize: 13 }\n    ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 20 }\n    Text { text: "Showcase"; color: ThemeTokens.text; font.pixelSize: 13 }\n}`
+                : `Column {\n    width: 280\n    spacing: 12\n    Column {\n        spacing: 4\n        Text { text: "ChaSet UI"; font.bold: true; color: ThemeTokens.text }\n        Text { text: "Cross-stack React & Qt Quick Design System."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }\n    }\n    ChaSetSeparator { orientation: "horizontal"; variant: "${root.demoVariant}" }\n    Row {\n        spacing: 12\n        Text { text: "Docs"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }\n        ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 16 }\n        Text { text: "Source"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }\n        ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 16 }\n        Text { text: "Changelog"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }\n    }\n}`)
+            : `Row {\n    spacing: 12\n    Text { text: "Components"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody }\n    ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 20 }\n    Text { text: "Tokens"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody }\n    ChaSetSeparator { orientation: "vertical"; variant: "${root.demoVariant}"; height: 20 }\n    Text { text: "Showcase"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody }\n}`
 
         stageData: [
             Item {
@@ -87,13 +87,13 @@ DocLayout {
                         DocText {
                             text: "ChaSet UI"
                             font.bold: true
-                            font.pixelSize: 14
+                            font.pixelSize: Typography.sizeBody
                             color: root.cFg
                         }
                         DocText {
                             text: "Cross-stack React & Qt Quick Design System."
                             color: root.cMutedFg
-                            font.pixelSize: 12
+                            font.pixelSize: Typography.sizeSmall
                         }
                     }
 
@@ -105,11 +105,11 @@ DocLayout {
 
                     Row {
                         spacing: 12
-                        DocText { text: "Docs"; color: root.cMutedFg; font.pixelSize: 12 }
+                        DocText { text: "Docs"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
                         ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 14 }
-                        DocText { text: "Source"; color: root.cMutedFg; font.pixelSize: 12 }
+                        DocText { text: "Source"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
                         ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 14 }
-                        DocText { text: "Changelog"; color: root.cMutedFg; font.pixelSize: 12 }
+                        DocText { text: "Changelog"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
                     }
                 }
 
@@ -118,11 +118,11 @@ DocLayout {
                     anchors.centerIn: parent
                     spacing: 12
 
-                    DocText { text: "Components"; color: root.cFg; font.pixelSize: 13; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Components"; color: root.cFg; font.pixelSize: Typography.sizeBody; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 18; anchors.verticalCenter: parent.verticalCenter }
-                    DocText { text: "Tokens"; color: root.cFg; font.pixelSize: 13; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Tokens"; color: root.cFg; font.pixelSize: Typography.sizeBody; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 18; anchors.verticalCenter: parent.verticalCenter }
-                    DocText { text: "Showcase"; color: root.cFg; font.pixelSize: 13; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Showcase"; color: root.cFg; font.pixelSize: Typography.sizeBody; anchors.verticalCenter: parent.verticalCenter }
                 }
             }
         ]
@@ -133,7 +133,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "Orientation:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Orientation:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoOrientation
@@ -147,7 +147,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "Style:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Style:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoVariant
@@ -172,7 +172,7 @@ DocLayout {
                 Row {
                     visible: root.demoOrientation === "horizontal" && root.demoHasLabel
                     spacing: 8
-                    DocText { text: "Position:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Position:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoLabelPosition
@@ -192,7 +192,7 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        DocText { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Installation"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
         ChaSetCodeBlock {
             width: parent.width
             language: "bash"
@@ -204,8 +204,8 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        DocText { text: "Anatomy"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        DocText { text: "Import and place ChaSetSeparator horizontally or vertically to segment content."; color: root.cMutedFg; font.pixelSize: 13 }
+        DocText { text: "Anatomy"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "Import and place ChaSetSeparator horizontally or vertically to segment content."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCodeBlock {
             width: parent.width
@@ -218,8 +218,8 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 12
-        DocText { text: "Examples & States"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        DocText { text: "Common layout patterns using horizontal and vertical separators."; color: root.cMutedFg; font.pixelSize: 13 }
+        DocText { text: "Examples & States"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "Common layout patterns using horizontal and vertical separators."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         Grid {
             width: parent.width
@@ -249,15 +249,15 @@ DocLayout {
                         Item {
                             width: parent.width
                             implicitHeight: Math.max(tStatusLbl.implicitHeight, tStatusVal.implicitHeight)
-                            DocText { id: tStatusLbl; text: "Status"; color: root.cMutedFg; font.pixelSize: 13; anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter }
-                            DocText { id: tStatusVal; text: "Active"; color: root.cFg; font.weight: Font.DemiBold; font.pixelSize: 13; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter }
+                            DocText { id: tStatusLbl; text: "Status"; color: root.cMutedFg; font.pixelSize: Typography.sizeBody; anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter }
+                            DocText { id: tStatusVal; text: "Active"; color: root.cFg; font.weight: Typography.weightSemibold; font.pixelSize: Typography.sizeBody; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter }
                         }
 
                         Item {
                             width: parent.width
                             implicitHeight: Math.max(tPlanLbl.implicitHeight, tPlanVal.implicitHeight)
-                            DocText { id: tPlanLbl; text: "Plan"; color: root.cMutedFg; font.pixelSize: 13; anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter }
-                            DocText { id: tPlanVal; text: "Enterprise"; color: root.cFg; font.weight: Font.DemiBold; font.pixelSize: 13; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter }
+                            DocText { id: tPlanLbl; text: "Plan"; color: root.cMutedFg; font.pixelSize: Typography.sizeBody; anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter }
+                            DocText { id: tPlanVal; text: "Enterprise"; color: root.cFg; font.weight: Typography.weightSemibold; font.pixelSize: Typography.sizeBody; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter }
                         }
                     }
                 }
@@ -299,14 +299,14 @@ DocLayout {
 
                         DocText {
                             text: "Labeled Dividers"
-                            font.pixelSize: 15
-                            font.weight: Font.Bold
+                            font.pixelSize: Typography.sizeHeading
+                            font.weight: Typography.weightBold
                             color: root.cFg
                         }
 
                         DocText {
                             text: "Embed section titles or auth splits with left, center, or right alignment."
-                            font.pixelSize: 13
+                            font.pixelSize: Typography.sizeBody
                             color: root.cMutedFg
                             wrapMode: TextEdit.WordWrap
                             width: parent.width
@@ -353,14 +353,14 @@ DocLayout {
 
                         DocText {
                             text: "Border Styles"
-                            font.pixelSize: 15
-                            font.weight: Font.Bold
+                            font.pixelSize: Typography.sizeHeading
+                            font.weight: Typography.weightBold
                             color: root.cFg
                         }
 
                         DocText {
                             text: "Choose between solid, dashed, or dotted dividers to distinguish hierarchy."
-                            font.pixelSize: 13
+                            font.pixelSize: Typography.sizeBody
                             color: root.cMutedFg
                             wrapMode: TextEdit.WordWrap
                             width: parent.width
@@ -370,13 +370,13 @@ DocLayout {
                             width: parent.width
                             spacing: 8
 
-                            DocText { text: "Solid (Default)"; color: root.cMutedFg; font.pixelSize: 11 }
+                            DocText { text: "Solid (Default)"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                             ChaSetSeparator { variant: "solid"; width: parent.width }
 
-                            DocText { text: "Dashed"; color: root.cMutedFg; font.pixelSize: 11 }
+                            DocText { text: "Dashed"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                             ChaSetSeparator { variant: "dashed"; width: parent.width }
 
-                            DocText { text: "Dotted"; color: root.cMutedFg; font.pixelSize: 11 }
+                            DocText { text: "Dotted"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                             ChaSetSeparator { variant: "dotted"; width: parent.width }
                         }
                     }
@@ -400,14 +400,14 @@ DocLayout {
 
                         DocText {
                             text: "Navigation Divider"
-                            font.pixelSize: 15
-                            font.weight: Font.Bold
+                            font.pixelSize: Typography.sizeHeading
+                            font.weight: Typography.weightBold
                             color: root.cFg
                         }
 
                         DocText {
                             text: "Vertical dividers between inline list items or metadata tags."
-                            font.pixelSize: 13
+                            font.pixelSize: Typography.sizeBody
                             color: root.cMutedFg
                             wrapMode: TextEdit.WordWrap
                             width: parent.width
@@ -427,8 +427,8 @@ DocLayout {
 
                                 DocText {
                                     text: "v0.2.0"
-                                    font.weight: Font.DemiBold
-                                    font.pixelSize: 12
+                                    font.weight: Typography.weightSemibold
+                                    font.pixelSize: Typography.sizeSmall
                                     color: root.cFg
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
@@ -439,7 +439,7 @@ DocLayout {
                                 }
                                 DocText {
                                     text: "MIT License"
-                                    font.pixelSize: 12
+                                    font.pixelSize: Typography.sizeSmall
                                     color: root.cMutedFg
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
@@ -450,7 +450,7 @@ DocLayout {
                                 }
                                 DocText {
                                     text: "React 19 & Qt 6"
-                                    font.pixelSize: 12
+                                    font.pixelSize: Typography.sizeSmall
                                     color: root.cMutedFg
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
@@ -466,7 +466,7 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        DocText { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Props Reference"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
 
         KeyboardShortcutsTable {
             componentId: "separator"
