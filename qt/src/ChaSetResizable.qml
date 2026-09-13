@@ -19,27 +19,35 @@ SplitView {
         id: handleDelegate
         implicitWidth: root.orientation === Qt.Horizontal ? root.handleThickness : root.width
         implicitHeight: root.orientation === Qt.Vertical ? root.handleThickness : root.height
-        color: SplitHandle.pressed || SplitHandle.hovered ? root.handleHoverColor : root.handleColor
-
-        Behavior on color {
-            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
-            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
-        }
+        color: "transparent"
 
         HoverHandler {
             cursorShape: root.orientation === Qt.Horizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor
+        }
+
+        // Centered 1px hairline
+        Rectangle {
+            anchors.centerIn: parent
+            width: root.orientation === Qt.Horizontal ? 1 : parent.width
+            height: root.orientation === Qt.Vertical ? 1 : parent.height
+            color: handleDelegate.SplitHandle.pressed || handleDelegate.SplitHandle.hovered ? root.handleHoverColor : root.handleColor
+
+            Behavior on color {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+            }
         }
 
         Item {
             id: gripContainer
             visible: root.withHandle
             anchors.centerIn: parent
-            width: root.orientation === Qt.Horizontal ? 12 : 20
-            height: root.orientation === Qt.Horizontal ? 20 : 12
+            width: root.orientation === Qt.Horizontal ? 12 : 16
+            height: root.orientation === Qt.Horizontal ? 16 : 12
 
             Rectangle {
                 anchors.fill: parent
-                radius: 3
+                radius: 2
                 color: ThemeTokens.panel
                 border.color: handleDelegate.SplitHandle.hovered || handleDelegate.SplitHandle.pressed ? ThemeTokens.accent : ThemeTokens.border
                 border.width: 1

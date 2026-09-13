@@ -18,6 +18,13 @@ export interface SplitterHandleProps extends React.HTMLAttributes<HTMLDivElement
   onDoubleClicked?: () => void;
 }
 
+const edgePositionClasses: Record<SplitterEdge, string> = {
+  left: 'absolute inset-y-0 left-0',
+  right: 'absolute inset-y-0 right-0',
+  top: 'absolute inset-x-0 top-0',
+  bottom: 'absolute inset-x-0 bottom-0',
+};
+
 export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandleProps>(
   (
     {
@@ -193,7 +200,8 @@ export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandlePro
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         className={cn(
-          'relative select-none touch-none transition-colors duration-quick ease-standard outline-none z-10',
+          'select-none touch-none transition-colors duration-quick ease-standard outline-none z-10',
+          edgePositionClasses[edge],
           disabled ? 'cursor-not-allowed opacity-50' : isVertical ? 'cursor-col-resize' : 'cursor-row-resize',
           'focus-visible:ring-1 focus-visible:ring-primary',
           className,

@@ -31,6 +31,23 @@ export function ResizableDocPage() {
   </ResizablePanel>
 </ResizablePanelGroup>`;
 
+  const horizontalQtCode = `ChaSetResizable {
+  width: 520
+  height: 220
+  orientation: Qt.Horizontal
+  withHandle: true
+
+  Rectangle {
+    SplitView.preferredWidth: 180
+    SplitView.minimumWidth: 40
+    color: ThemeTokens.panel
+  }
+  Rectangle {
+    SplitView.fillWidth: true
+    color: ThemeTokens.background
+  }
+}`;
+
   const nestedCode = `<ResizablePanelGroup direction="horizontal" className="min-h-64 rounded-lg border border-border">
   <ResizablePanel defaultSize={28} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-4 bg-muted/20 text-xs">
@@ -55,6 +72,32 @@ export function ResizableDocPage() {
   </ResizablePanel>
 </ResizablePanelGroup>`;
 
+  const nestedQtCode = `ChaSetResizable {
+  width: 520
+  height: 240
+  orientation: Qt.Horizontal
+  withHandle: true
+
+  Rectangle {
+    SplitView.preferredWidth: 140
+    color: ThemeTokens.panel
+  }
+  ChaSetResizable {
+    SplitView.fillWidth: true
+    orientation: Qt.Vertical
+    withHandle: true
+
+    Rectangle {
+      SplitView.preferredHeight: 140
+      color: ThemeTokens.background
+    }
+    Rectangle {
+      SplitView.fillHeight: true
+      color: ThemeTokens.panelRaised
+    }
+  }
+}`;
+
   const playgroundReactCode = `<ResizablePanelGroup direction="${playgroundDirection}" className="min-h-56 rounded-lg border border-border">
   <ResizablePanel defaultSize={40} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-4 bg-muted/20 text-sm">
@@ -70,32 +113,33 @@ export function ResizableDocPage() {
 </ResizablePanelGroup>`;
 
   const playgroundQtCode = `ChaSetResizable {
-    width: parent.width
-    height: 220
-    orientation: ${playgroundDirection === 'horizontal' ? 'Qt.Horizontal' : 'Qt.Vertical'}
-    withHandle: ${playgroundWithHandle}
+  width: parent.width
+  height: 220
+  orientation: ${playgroundDirection === 'horizontal' ? 'Qt.Horizontal' : 'Qt.Vertical'}
+  withHandle: ${playgroundWithHandle}
 
-    Rectangle {
-        SplitView.preferredWidth: 150
-        SplitView.minimumWidth: 40
-        color: ThemeTokens.panel
-    }
-    Rectangle {
-        SplitView.fillWidth: true
-        color: ThemeTokens.background
-    }
+  Rectangle {
+    SplitView.preferredWidth: 150
+    SplitView.minimumWidth: 40
+    color: ThemeTokens.panel
+  }
+  Rectangle {
+    SplitView.fillWidth: true
+    color: ThemeTokens.background
+  }
 }`;
 
   return (
     <DocLayout
       category="Desktop & Virtualization"
       title="Resizable"
-      description="Accessible resizable panel groups and layout splitters with keyboard navigation and nested container support."
+      description="Accessible resizable panel groups and layout splitters."
       tocItems={[
         { id: 'overview', title: 'Horizontal Split' },
         { id: 'nested', title: 'Nested Splitters' },
         { id: 'playground', title: 'Variants Playground' },
         { id: 'installation', title: 'Installation' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -109,7 +153,11 @@ export function ResizableDocPage() {
           Panels automatically adapt to available width and provide interactive drag handles with boundary limits.
         </p>
 
-        <ComponentPreview title="Horizontal Resizable Group" reactCode={horizontalCode}>
+        <ComponentPreview
+          title="Horizontal Resizable Group"
+          reactCode={horizontalCode}
+          qtCode={horizontalQtCode}
+        >
           <div className="w-full">
             <ResizablePanelGroup
               direction="horizontal"
@@ -150,7 +198,11 @@ export function ResizableDocPage() {
           Embed vertical panel groups inside horizontal panels to construct multi-pane IDE workbenches and docking surfaces.
         </p>
 
-        <ComponentPreview title="Nested Resizable Layout" reactCode={nestedCode}>
+        <ComponentPreview
+          title="Nested Resizable Layout"
+          reactCode={nestedCode}
+          qtCode={nestedQtCode}
+        >
           <div className="w-full max-w-2xl">
             <ResizablePanelGroup
               direction="horizontal"
@@ -285,8 +337,33 @@ export function ResizableDocPage() {
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
-      {/* 5. Props Reference */}
-      
+      {/* 5. Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Motion tokens and kinematic timing contracts for Resizable dividers and handles.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            Separator grip indicator border and hover highlight color transitions animate smoothly over{' '}
+            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> (150ms) using{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve (Qt counterpart:{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.motionQuick</code> and{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.easeStandard</code>).
+          </li>
+          <li>
+            Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.
+          </li>
+          <li>
+            Respects <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> in Qt.
+          </li>
+        </ul>
+      </section>
+
+      {/* 6. Keyboard Navigation */}
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Keyboard Navigation

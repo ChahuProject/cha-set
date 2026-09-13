@@ -10,17 +10,17 @@ export function SplitterHandleDocPage() {
   const [bottomHeight, setBottomHeight] = useState(120);
 
   const heroReactCode = `<div className="flex h-64 border rounded overflow-hidden">
-  <div style={{ width: \`\${sidebarWidth * 0.0625}rem\` }} className="bg-muted/30 p-4">
+  <div style={{ width: \`\${sidebarWidth * 0.0625}rem\` }} className="relative bg-muted/30 p-4">
     Sidebar Content (\${sidebarWidth})
+    <SplitterHandle
+      edge="right"
+      targetSize={sidebarWidth}
+      minSize={140}
+      maxSize={400}
+      onSizeChanging={setSidebarWidth}
+      onSizeChanged={setSidebarWidth}
+    />
   </div>
-  <SplitterHandle
-    edge="right"
-    targetSize={sidebarWidth}
-    minSize={140}
-    maxSize={400}
-    onSizeChanging={setSidebarWidth}
-    onSizeChanged={setSidebarWidth}
-  />
   <div className="flex-1 p-4">
     Main Viewport Area
   </div>
@@ -65,10 +65,11 @@ export function SplitterHandleDocPage() {
       description="Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
         { id: 'vertical', title: 'Vertical Edge Handle' },
+        { id: 'installation', title: 'Installation' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
-{ id: 'props', title: 'Props Reference' },
+        { id: 'props', title: 'Props Reference' },
       ]}
     >
       <section id="overview" className="space-y-4">
@@ -99,20 +100,20 @@ export function SplitterHandleDocPage() {
             <Card className="flex h-64 border rounded-md overflow-hidden bg-card">
               <div
                 style={{ width: `${sidebarWidth * 0.0625}rem` }}
-                className="bg-muted/40 p-4 flex flex-col justify-center items-center text-sm font-medium shrink-0 border-r border-border/20"
+                className="relative bg-muted/40 p-4 flex flex-col justify-center items-center text-sm font-medium shrink-0"
               >
                 <span>Sidebar</span>
                 <Badge variant="secondary" className="mt-1">{sidebarWidth}</Badge>
+                <SplitterHandle
+                  edge="right"
+                  targetSize={sidebarWidth}
+                  minSize={140}
+                  maxSize={400}
+                  defaultSize={200}
+                  onSizeChanging={setSidebarWidth}
+                  onSizeChanged={setSidebarWidth}
+                />
               </div>
-              <SplitterHandle
-                edge="right"
-                targetSize={sidebarWidth}
-                minSize={140}
-                maxSize={400}
-                defaultSize={200}
-                onSizeChanging={setSidebarWidth}
-                onSizeChanged={setSidebarWidth}
-              />
               <div className="flex-1 p-6 flex flex-col justify-center items-center text-sm text-muted-foreground">
                 <span>Main Content Viewport</span>
                 <span className="text-xs text-muted-foreground/70">Focus handle and use arrow keys to resize</span>
@@ -122,13 +123,8 @@ export function SplitterHandleDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
       <section id="vertical" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Vertical Edge (Bottom Panel)</h2>
+        <h2 className="text-xl font-semibold text-foreground">Vertical Edge Handle</h2>
         <p className="text-sm text-muted-foreground">
           Handles can also be attached to horizontal edges (<code>top</code> or <code>bottom</code>) for bottom console or drawer resizing.
         </p>
@@ -136,23 +132,51 @@ export function SplitterHandleDocPage() {
           <div className="flex-1 p-4 text-sm text-muted-foreground">
             Editor / Log Canvas Area
           </div>
-          <SplitterHandle
-            edge="top"
-            targetSize={bottomHeight}
-            minSize={60}
-            maxSize={180}
-            defaultSize={120}
-            onSizeChanging={setBottomHeight}
-            onSizeChanged={setBottomHeight}
-          />
           <div
             style={{ height: `${bottomHeight * 0.0625}rem` }}
-            className="bg-muted/40 p-3 text-xs flex items-center justify-between shrink-0 border-t border-border/20"
+            className="relative bg-muted/40 p-3 text-xs flex items-center justify-between shrink-0"
           >
             <span className="font-semibold">Terminal / Output Console</span>
             <Badge variant="secondary">{bottomHeight}</Badge>
+            <SplitterHandle
+              edge="top"
+              targetSize={bottomHeight}
+              minSize={60}
+              maxSize={180}
+              defaultSize={120}
+              onSizeChanging={setBottomHeight}
+              onSizeChanged={setBottomHeight}
+            />
           </div>
         </Card>
+      </section>
+
+      <section id="installation" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
+        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
+      </section>
+
+      <section id="animations" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Animations</h2>
+        <p className="text-sm text-muted-foreground">
+          Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            Active indicator color and opacity transitions animate smoothly over{' '}
+            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> (150ms) using{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve (Qt counterpart:{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.motionQuick</code> and{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.easeStandard</code>).
+          </li>
+          <li>
+            Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.
+          </li>
+          <li>
+            Respects <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> in Qt.
+          </li>
+        </ul>
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">

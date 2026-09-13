@@ -19,6 +19,17 @@ export function SplitterDocPage() {
   </div>
 </div>`;
 
+  const horizontalQtCode = `ChaSetSplitter {
+    width: 480
+    height: 192
+    orientation: "vertical"
+    initialSize: 35
+    minRatio: 0.20
+    maxRatio: 0.80
+    leftItem: Component { ... }
+    rightItem: Component { ... }
+}`;
+
   const verticalReactCode = `<div className="flex flex-col h-64 border rounded-md">
   <div style={{ height: \`\${verticalSize}%\` }} className="p-4 text-xs">
     Top Pane (Editor Canvas)
@@ -28,6 +39,17 @@ export function SplitterDocPage() {
     Bottom Pane (Terminal Console)
   </div>
 </div>`;
+
+  const verticalQtCode = `ChaSetSplitter {
+    width: 480
+    height: 220
+    orientation: "horizontal"
+    initialSize: 65
+    minRatio: 0.20
+    maxRatio: 0.80
+    leftItem: Component { ... }
+    rightItem: Component { ... }
+}`;
 
   return (
     <DocLayout
@@ -51,7 +73,11 @@ export function SplitterDocPage() {
           Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset.
         </p>
 
-        <ComponentPreview title="Horizontal Splitter Sandbox" reactCode={horizontalReactCode}>
+        <ComponentPreview
+          title="Horizontal Splitter Sandbox"
+          reactCode={horizontalReactCode}
+          qtCode={horizontalQtCode}
+        >
           <div className="w-full max-w-lg">
             <div className="flex h-48 border border-border rounded-md bg-card overflow-hidden">
               <div
@@ -94,7 +120,11 @@ export function SplitterDocPage() {
           Top and bottom pane split with horizontal divider line. Drag vertically to resize console output.
         </p>
 
-        <ComponentPreview title="Vertical Splitter Sandbox" reactCode={verticalReactCode}>
+        <ComponentPreview
+          title="Vertical Splitter Sandbox"
+          reactCode={verticalReactCode}
+          qtCode={verticalQtCode}
+        >
           <div className="w-full max-w-lg">
             <div className="flex flex-col h-64 border border-border rounded-md bg-card overflow-hidden">
               <div

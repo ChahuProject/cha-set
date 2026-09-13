@@ -5,14 +5,35 @@ import ChaSet
 Item {
     id: root
 
-    property string orientation: "horizontal" // "horizontal" | "vertical"
+    // Orientation follows spec/components/splitter.ts:
+    // "vertical" (default): vertical divider line, separating left & right panes
+    // "horizontal": horizontal divider line, separating top & bottom panes
+    property string orientation: "vertical"
     property real splitRatio: 0.5
     property real minRatio: 0.05
     property real maxRatio: 0.95
     property int initialSize: 50
     property int minSize: Math.round(minRatio * 100)
     property int maxSize: Math.round(maxRatio * 100)
-    property int gutterSize: 6
+    property int gutterSize: 8
+
+    property real size: Math.round(splitRatio * 100)
+    signal change(real newSize)
+
+    onSizeChanged: {
+        var targetRatio = Math.max(minRatio, Math.min(maxRatio, root.size / 100.0))
+        if (Math.abs(splitRatio - targetRatio) > 0.005) {
+            splitRatio = targetRatio
+        }
+    }
+
+    onSplitRatioChanged: {
+        var computedSize = Math.round(splitRatio * 100)
+        if (Math.round(root.size) !== computedSize) {
+            root.size = computedSize
+            root.change(computedSize)
+        }
+    }
 
     function reset() {
         splitRatio = initialSize / 100.0
@@ -24,14 +45,14 @@ Item {
     implicitWidth: 400
     implicitHeight: 240
 
-    readonly property bool isHorizontal: root.orientation === "horizontal"
+    readonly property bool isVertical: root.orientation === "vertical"
 
     Item {
         id: firstPane
         x: 0
         y: 0
-        width: root.isHorizontal ? (root.width * root.splitRatio - root.gutterSize / 2) : root.width
-        height: root.isHorizontal ? root.height : (root.height * root.splitRatio - root.gutterSize / 2)
+        width: root.isVertical ? Math.max(0, root.width * root.splitRatio - root.gutterSize / 2) : root.width
+        height: root.isVertical ? root.height : Math.max(0, root.height * root.splitRatio - root.gutterSize / 2)
         clip: true
 
         Loader {
@@ -43,43 +64,56 @@ Item {
     // Gutter Separator
     Rectangle {
         id: gutter
-        x: root.isHorizontal ? firstPane.width : 0
-        y: root.isHorizontal ? 0 : firstPane.height
-        width: root.isHorizontal ? root.gutterSize : root.width
-        height: root.isHorizontal ? root.height : root.gutterSize
-        color: gutterMouse.containsMouse || gutterMouse.dragging || gutter.activeFocus ? ThemeTokens.accent : ThemeTokens.border
-        border.color: gutter.activeFocus ? ThemeTokens.focus : "transparent"
-        border.width: gutter.activeFocus ? 1 : 0
+        x: root.isVertical ? firstPane.width : 0
+        y: root.isVertical ? 0 : firstPane.height
+        width: root.isVertical ? root.gutterSize : root.width
+        height: root.isVertical ? root.height : root.gutterSize
+        color: "transparent"
         activeFocusOnTab: true
 
-        Behavior on color {
-            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
-            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        Rectangle {
+            id: gutterIndicator
+            anchors.horizontalCenter: root.isVertical ? parent.horizontalCenter : undefined
+            anchors.verticalCenter: !root.isVertical ? parent.verticalCenter : undefined
+            anchors.top: root.isVertical ? parent.top : undefined
+            anchors.bottom: root.isVertical ? parent.bottom : undefined
+            anchors.left: !root.isVertical ? parent.left : undefined
+            anchors.right: !root.isVertical ? parent.right : undefined
+            width: root.isVertical ? 2 : parent.width
+            height: root.isVertical ? parent.height : 2
+            radius: 1
+            color: ThemeTokens.accent
+            opacity: gutterMouse.dragging ? 1.0 : (gutterMouse.containsMouse || gutter.activeFocus ? 0.7 : 0.0)
+
+            Behavior on opacity {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+            }
         }
 
         Keys.onLeftPressed: function(event) {
-            if (root.isHorizontal) {
+            if (root.isVertical) {
                 event.accepted = true
                 root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, root.splitRatio - 0.02))
             }
         }
 
         Keys.onRightPressed: function(event) {
-            if (root.isHorizontal) {
+            if (root.isVertical) {
                 event.accepted = true
                 root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, root.splitRatio + 0.02))
             }
         }
 
         Keys.onUpPressed: function(event) {
-            if (!root.isHorizontal) {
+            if (!root.isVertical) {
                 event.accepted = true
                 root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, root.splitRatio - 0.02))
             }
         }
 
         Keys.onDownPressed: function(event) {
-            if (!root.isHorizontal) {
+            if (!root.isVertical) {
                 event.accepted = true
                 root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, root.splitRatio + 0.02))
             }
@@ -109,7 +143,7 @@ Item {
             id: gutterMouse
             anchors.fill: parent
             hoverEnabled: true
-            cursorShape: root.isHorizontal ? Qt.SplitHCursor : Qt.SplitVCursor
+            cursorShape: root.isVertical ? Qt.SizeHorCursor : Qt.SizeVerCursor
             property bool dragging: false
             property real dragOffset: 0
 
@@ -117,7 +151,7 @@ Item {
                 gutter.forceActiveFocus()
                 dragging = true
                 var pt = mapToItem(root, mouse.x, mouse.y)
-                dragOffset = root.isHorizontal ? (pt.x - gutter.x) : (pt.y - gutter.y)
+                dragOffset = root.isVertical ? (pt.x - gutter.x) : (pt.y - gutter.y)
             }
 
             onReleased: {
@@ -131,7 +165,7 @@ Item {
             onPositionChanged: function(mouse) {
                 if (dragging) {
                     var pt = mapToItem(root, mouse.x, mouse.y)
-                    if (root.isHorizontal) {
+                    if (root.isVertical) {
                         var targetX = pt.x - dragOffset + root.gutterSize / 2
                         var ratio = targetX / root.width
                         root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, ratio))
@@ -151,10 +185,10 @@ Item {
 
     Item {
         id: secondPane
-        x: root.isHorizontal ? (gutter.x + root.gutterSize) : 0
-        y: root.isHorizontal ? 0 : (gutter.y + root.gutterSize)
-        width: root.isHorizontal ? Math.max(0, root.width - x) : root.width
-        height: root.isHorizontal ? root.height : Math.max(0, root.height - y)
+        x: root.isVertical ? (gutter.x + root.gutterSize) : 0
+        y: root.isVertical ? 0 : (gutter.y + root.gutterSize)
+        width: root.isVertical ? Math.max(0, root.width - x) : root.width
+        height: root.isVertical ? root.height : Math.max(0, root.height - y)
         clip: true
 
         Loader {

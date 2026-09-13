@@ -7,12 +7,13 @@ DocLayout {
     id: root
     category: "Desktop & Virtualization"
     pageTitle: "Resizable"
-    description: "Accessible resizable panel groups and layout splitters based on QtQuick.Controls SplitView with interactive grip handles."
+    description: "Accessible resizable panel groups and layout splitters."
     tocItems: [
         { id: "overview", title: "Horizontal Split" },
         { id: "nested", title: "Nested Splitters" },
         { id: "playground", title: "Variants Playground" },
         { id: "installation", title: "Installation" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
@@ -55,21 +56,20 @@ DocLayout {
 
         Item {
             anchors.fill: parent
+            implicitHeight: 250
 
-            Column {
+            Rectangle {
                 anchors.centerIn: parent
-                spacing: 12
-
-                Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Panels automatically adapt to available width and provide interactive drag handles with boundary limits:"
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: 12
-                }
+                width: 520
+                height: 220
+                radius: 6
+                border.color: ThemeTokens.border
+                border.width: 1
+                color: ThemeTokens.panel
+                clip: true
 
                 ChaSetResizable {
-                    width: 520
-                    height: 220
+                    anchors.fill: parent
                     orientation: Qt.Horizontal
                     withHandle: true
 
@@ -79,9 +79,6 @@ DocLayout {
                         SplitView.minimumWidth: 40
                         SplitView.maximumWidth: 460
                         color: ThemeTokens.panel
-                        border.color: ThemeTokens.border
-                        border.width: 1
-                        radius: 4
 
                         Column {
                             anchors.centerIn: parent
@@ -89,7 +86,7 @@ DocLayout {
                             Text {
                                 text: "Explorer Tree"
                                 color: ThemeTokens.text
-                                font.pixelSize: 12
+                                font.pixelSize: 13
                                 font.weight: Font.DemiBold
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
@@ -106,9 +103,6 @@ DocLayout {
                         SplitView.fillWidth: true
                         SplitView.minimumWidth: 40
                         color: ThemeTokens.background
-                        border.color: ThemeTokens.border
-                        border.width: 1
-                        radius: 4
 
                         Column {
                             anchors.centerIn: parent
@@ -116,7 +110,7 @@ DocLayout {
                             Text {
                                 text: "Source Code Editor"
                                 color: ThemeTokens.text
-                                font.pixelSize: 12
+                                font.pixelSize: 13
                                 font.weight: Font.DemiBold
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
@@ -186,21 +180,20 @@ DocLayout {
 
         Item {
             anchors.fill: parent
+            implicitHeight: 270
 
-            Column {
+            Rectangle {
                 anchors.centerIn: parent
-                spacing: 12
-
-                Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Embed vertical panel groups inside horizontal panels to construct multi-pane IDE workbenches:"
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: 12
-                }
+                width: 520
+                height: 240
+                radius: 6
+                border.color: ThemeTokens.border
+                border.width: 1
+                color: ThemeTokens.panel
+                clip: true
 
                 ChaSetResizable {
-                    width: 520
-                    height: 240
+                    anchors.fill: parent
                     orientation: Qt.Horizontal
                     withHandle: true
 
@@ -209,9 +202,6 @@ DocLayout {
                         SplitView.preferredWidth: 140
                         SplitView.minimumWidth: 50
                         color: ThemeTokens.panel
-                        border.color: ThemeTokens.border
-                        border.width: 1
-                        radius: 4
 
                         Column {
                             anchors.centerIn: parent
@@ -219,13 +209,13 @@ DocLayout {
                             Text {
                                 text: "Sidebar"
                                 color: ThemeTokens.text
-                                font.pixelSize: 12
+                                font.pixelSize: 13
                                 font.weight: Font.DemiBold
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                             ChaSetBadge {
                                 variant: "outline"
-                                text: "File Tree"
+                                text: ((nestedSidebar.width + nestedInner.width > 0) ? Math.round((nestedSidebar.width / (nestedSidebar.width + nestedInner.width)) * 100) : 28) + "% Width"
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }
@@ -240,12 +230,9 @@ DocLayout {
 
                         Rectangle {
                             id: nestedEditor
-                            SplitView.preferredHeight: 130
+                            SplitView.preferredHeight: 155
                             SplitView.minimumHeight: 40
                             color: ThemeTokens.background
-                            border.color: ThemeTokens.border
-                            border.width: 1
-                            radius: 4
 
                             Column {
                                 anchors.centerIn: parent
@@ -253,13 +240,13 @@ DocLayout {
                                 Text {
                                     text: "Editor Viewport"
                                     color: ThemeTokens.text
-                                    font.pixelSize: 12
+                                    font.pixelSize: 13
                                     font.weight: Font.DemiBold
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
                                 ChaSetBadge {
                                     variant: "secondary"
-                                    text: "main.rs"
+                                    text: ((nestedEditor.height + nestedTerminal.height > 0) ? Math.round((nestedEditor.height / (nestedEditor.height + nestedTerminal.height)) * 100) : 65) + "% Height"
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
                             }
@@ -270,9 +257,6 @@ DocLayout {
                             SplitView.fillHeight: true
                             SplitView.minimumHeight: 40
                             color: ThemeTokens.panelRaised
-                            border.color: ThemeTokens.border
-                            border.width: 1
-                            radius: 4
 
                             Column {
                                 anchors.centerIn: parent
@@ -280,13 +264,13 @@ DocLayout {
                                 Text {
                                     text: "Integrated Terminal"
                                     color: ThemeTokens.text
-                                    font.pixelSize: 12
+                                    font.pixelSize: 13
                                     font.weight: Font.DemiBold
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
                                 ChaSetBadge {
                                     variant: "outline"
-                                    text: "bash"
+                                    text: ((nestedEditor.height + nestedTerminal.height > 0) ? Math.round((nestedTerminal.height / (nestedEditor.height + nestedTerminal.height)) * 100) : 35) + "% Height"
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
                             }
@@ -365,41 +349,55 @@ DocLayout {
         Item {
             anchors.fill: parent
 
-            Column {
+            Rectangle {
                 anchors.centerIn: parent
-                spacing: 12
-
-                Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Toggle between horizontal and vertical orientations and test visual grip handle styles dynamically:"
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: 12
-                }
+                width: 520
+                height: 220
+                radius: 6
+                border.color: ThemeTokens.border
+                border.width: 1
+                color: ThemeTokens.panel
+                clip: true
 
                 ChaSetResizable {
                     id: playgroundResizable
-                    width: 520
-                    height: 220
+                    anchors.fill: parent
                     orientation: root.playgroundDirection === "horizontal" ? Qt.Horizontal : Qt.Vertical
                     withHandle: root.playgroundWithHandle
 
                     Rectangle {
                         id: playPanel1
-                        SplitView.preferredWidth: root.playgroundDirection === "horizontal" ? 200 : 520
-                        SplitView.preferredHeight: root.playgroundDirection === "horizontal" ? 220 : 100
-                        SplitView.minimumWidth: 50
+                        SplitView.preferredWidth: root.playgroundDirection === "horizontal" ? 208 : 520
+                        SplitView.preferredHeight: root.playgroundDirection === "horizontal" ? 220 : 88
+                        SplitView.minimumWidth: 40
                         SplitView.minimumHeight: 40
                         color: ThemeTokens.panel
-                        border.color: ThemeTokens.border
-                        border.width: 1
-                        radius: 4
 
-                        Text {
+                        Column {
                             anchors.centerIn: parent
-                            text: "Panel Alpha"
-                            color: ThemeTokens.text
-                            font.pixelSize: 13
-                            font.weight: Font.DemiBold
+                            spacing: 6
+                            Text {
+                                text: "Panel Alpha"
+                                color: ThemeTokens.text
+                                font.pixelSize: 13
+                                font.weight: Font.DemiBold
+                                anchors.horizontalCenter: parent.horizontalCenter
+                            }
+                            ChaSetBadge {
+                                variant: "outline"
+                                text: {
+                                    if (root.playgroundDirection === "horizontal") {
+                                        var totalW = playPanel1.width + playPanel2.width
+                                        var pctW = totalW > 0 ? Math.round((playPanel1.width / totalW) * 100) : 40
+                                        return pctW + "% Width"
+                                    } else {
+                                        var totalH = playPanel1.height + playPanel2.height
+                                        var pctH = totalH > 0 ? Math.round((playPanel1.height / totalH) * 100) : 40
+                                        return pctH + "% Height"
+                                    }
+                                }
+                                anchors.horizontalCenter: parent.horizontalCenter
+                            }
                         }
                     }
 
@@ -407,19 +405,35 @@ DocLayout {
                         id: playPanel2
                         SplitView.fillWidth: true
                         SplitView.fillHeight: true
-                        SplitView.minimumWidth: 50
+                        SplitView.minimumWidth: 40
                         SplitView.minimumHeight: 40
                         color: ThemeTokens.background
-                        border.color: ThemeTokens.border
-                        border.width: 1
-                        radius: 4
 
-                        Text {
+                        Column {
                             anchors.centerIn: parent
-                            text: "Panel Beta"
-                            color: ThemeTokens.text
-                            font.pixelSize: 13
-                            font.weight: Font.DemiBold
+                            spacing: 6
+                            Text {
+                                text: "Panel Beta"
+                                color: ThemeTokens.text
+                                font.pixelSize: 13
+                                font.weight: Font.DemiBold
+                                anchors.horizontalCenter: parent.horizontalCenter
+                            }
+                            ChaSetBadge {
+                                variant: "secondary"
+                                text: {
+                                    if (root.playgroundDirection === "horizontal") {
+                                        var totalW = playPanel1.width + playPanel2.width
+                                        var pctW = totalW > 0 ? Math.round((playPanel2.width / totalW) * 100) : 60
+                                        return pctW + "% Width"
+                                    } else {
+                                        var totalH = playPanel1.height + playPanel2.height
+                                        var pctH = totalH > 0 ? Math.round((playPanel2.height / totalH) * 100) : 60
+                                        return pctH + "% Height"
+                                    }
+                                }
+                                anchors.horizontalCenter: parent.horizontalCenter
+                            }
                         }
                     }
                 }
@@ -431,6 +445,49 @@ DocLayout {
         title: "Installation"
         code: "import ChaSet 1.0\n\nChaSetResizable {\n    orientation: Qt.Horizontal\n    withHandle: true\n}"
         language: "qml"
+    }
+
+    // Animations Section
+    Column {
+        width: parent.width
+        spacing: 12
+
+        Text {
+            text: "Animations"
+            color: ThemeTokens.text
+            font.pixelSize: 18
+            font.bold: true
+        }
+
+        Text {
+            text: "Motion tokens and kinematic timing contracts for Resizable dividers and handles."
+            color: ThemeTokens.subduedText
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
+
+        Text {
+            text: "• Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (ThemeTokens.motionQuick and ThemeTokens.easeStandard)."
+            color: ThemeTokens.text
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
+        Text {
+            text: "• Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
+            color: ThemeTokens.text
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
+        Text {
+            text: "• Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt."
+            color: ThemeTokens.text
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
     }
 
     KeyboardShortcutsTable {

@@ -31,7 +31,7 @@ DocLayout {
         qtCode: `ChaSetSplitter {
     width: 480
     height: 192
-    orientation: "horizontal"
+    orientation: "vertical"
     initialSize: 35
     minRatio: 0.20
     maxRatio: 0.80
@@ -66,7 +66,7 @@ DocLayout {
                     ChaSetSplitter {
                         id: splitter
                         anchors.fill: parent
-                        orientation: "horizontal"
+                        orientation: "vertical"
                         initialSize: 35
                         minRatio: 0.20
                         maxRatio: 0.80
@@ -101,7 +101,7 @@ DocLayout {
 
                         rightItem: Component {
                             Rectangle {
-                                color: ThemeTokens.panelRaised
+                                color: ThemeTokens.background
                                 border.color: "transparent"
 
                                 Column {
@@ -163,7 +163,7 @@ DocLayout {
         qtCode: `ChaSetSplitter {
     width: 480
     height: 220
-    orientation: "vertical"
+    orientation: "horizontal"
     initialSize: 65
     minRatio: 0.20
     maxRatio: 0.80
@@ -198,7 +198,7 @@ DocLayout {
                     ChaSetSplitter {
                         id: verticalSplitter
                         anchors.fill: parent
-                        orientation: "vertical"
+                        orientation: "horizontal"
                         initialSize: 65
                         minRatio: 0.20
                         maxRatio: 0.80
@@ -284,7 +284,7 @@ DocLayout {
 
     ChaSetCodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSplitter {\n    orientation: \"horizontal\"\n    initialSize: 35\n}"
+        code: "import ChaSet 1.0\n\nChaSetSplitter {\n    orientation: \"vertical\"\n    initialSize: 35\n}"
         language: "qml"
     }
 
@@ -297,7 +297,7 @@ DocLayout {
             text: "Animations"
             color: ThemeTokens.text
             font.pixelSize: 18
-            font.weight: Font.Bold
+            font.bold: true
         }
 
         Text {
@@ -338,14 +338,12 @@ DocLayout {
     PropsTable {
         title: "Props Reference"
         props: [
-            { name: "orientation", type: "string", default: "'horizontal'", description: "Split axis: 'horizontal' (vertical divider) or 'vertical' (horizontal divider)." },
-            { name: "splitRatio", type: "real", default: "0.5", description: "Proportional distribution of the first pane (0.0 to 1.0, corresponding to size in React)." },
+            { name: "orientation", type: "string", default: "'vertical'", description: "Divider orientation: 'vertical' (separates left/right panes) or 'horizontal' (separates top/bottom panes)." },
+            { name: "size", type: "real", default: "50", description: "Controlled percentage width/height (0-100)." },
             { name: "initialSize", type: "int", default: "50", description: "Initial size percentage for default layout distribution." },
-            { name: "minSize", type: "int", default: "5", description: "Minimum allowed percentage bound." },
-            { name: "maxSize", type: "int", default: "95", description: "Maximum allowed percentage bound." },
-            { name: "minRatio", type: "real", default: "0.05", description: "Minimum allowable constraint ratio (0.0 to 1.0)." },
-            { name: "maxRatio", type: "real", default: "0.95", description: "Maximum allowable constraint ratio (0.0 to 1.0)." },
-            { name: "gutterSize", type: "int", default: "6", description: "Draggable divider thickness in pixels." },
+            { name: "minSize", type: "int", default: "0", description: "Minimum allowed percentage bound." },
+            { name: "maxSize", type: "int", default: "100", description: "Maximum allowed percentage bound." },
+            { name: "gutterSize", type: "int", default: "8", description: "Interactive divider gutter thickness." },
             { name: "leftItem", type: "Component", default: "null", description: "First pane content component." },
             { name: "rightItem", type: "Component", default: "null", description: "Second pane content component." }
         ]

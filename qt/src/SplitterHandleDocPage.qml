@@ -10,52 +10,57 @@ DocLayout {
     description: "Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
         { id: "vertical", title: "Vertical Edge Handle" },
+        { id: "installation", title: "Installation" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
 
-    property real sidebarWidth: 220
-    property real bottomHeight: 100
-
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSplitterHandle { orientation: Qt.Horizontal }"
-        language: "qml"
-    }
+    property real sidebarWidth: 200
+    property real bottomHeight: 120
 
     ComponentPreview {
         id: heroPreview
         title: "Splitter Handle Sandbox"
         reactCode: `<div className="flex h-64 border rounded overflow-hidden">
-  <div style={{ width: ${Math.round(root.sidebarWidth)} }} className="bg-muted/30 p-4">
-    Sidebar (${Math.round(root.sidebarWidth)}px)
+  <div style={{ width: \`\${sidebarWidth * 0.0625}rem\` }} className="relative bg-muted/30 p-4">
+    Sidebar Content (\${sidebarWidth})
+    <SplitterHandle
+      edge="right"
+      targetSize={sidebarWidth}
+      minSize={140}
+      maxSize={400}
+      onSizeChanging={setSidebarWidth}
+      onSizeChanged={setSidebarWidth}
+    />
   </div>
-  <SplitterHandle
-    edge="right"
-    targetSize={${Math.round(root.sidebarWidth)}}
-    minSize={140}
-    maxSize={380}
-    onSizeChanging={setSidebarWidth}
-  />
-  <div className="flex-1 p-4">Main Content</div>
+  <div className="flex-1 p-4">
+    Main Viewport Area
+  </div>
 </div>`
         qtCode: `Row {
     width: parent.width
-    height: 240
+    height: 260
 
     Rectangle {
         width: root.sidebarWidth
         height: parent.height
-        color: ThemeTokens.panel
+        color: ThemeTokens.card
+
+        Text {
+            anchors.centerIn: parent
+            text: "Sidebar (" + root.sidebarWidth + ")"
+            color: ThemeTokens.text
+        }
 
         ChaSetSplitterHandle {
             edge: "right"
             targetSize: root.sidebarWidth
             minSize: 140
-            maxSize: 380
+            maxSize: 400
             onSizeChanging: (newSize) => root.sidebarWidth = newSize
+            onSizeChanged: (finalSize) => root.sidebarWidth = finalSize
         }
     }
 
@@ -96,7 +101,7 @@ DocLayout {
 
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text: "Sidebar Panel"
+                                text: "Sidebar"
                                 color: ThemeTokens.text
                                 font.pixelSize: 13
                                 font.bold: true
@@ -113,8 +118,8 @@ DocLayout {
                             edge: "right"
                             targetSize: root.sidebarWidth
                             minSize: 140
-                            maxSize: 360
-                            defaultSize: 220
+                            maxSize: 400
+                            defaultSize: 200
                             onSizeChanging: function(newSize) { root.sidebarWidth = newSize; }
                             onSizeChanged: function(finalSize) { root.sidebarWidth = finalSize; }
                         }
@@ -138,7 +143,7 @@ DocLayout {
 
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text: "Focus handle and use Left/Right arrows or drag border"
+                                text: "Focus handle and use arrow keys to resize"
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: 11
                             }
@@ -157,7 +162,7 @@ DocLayout {
                     anchors.verticalCenter: parent.verticalCenter
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: "Width:"
+                        text: "Current Width:"
                         color: ThemeTokens.subduedText
                         font.pixelSize: 12
                     }
@@ -171,16 +176,16 @@ DocLayout {
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Reset to 220"
-                    onClicked: root.sidebarWidth = 220
+                    text: "Reset to 200"
+                    onClicked: root.sidebarWidth = 200
                 }
             }
         ]
     }
 
-    // Vertical Edge (Bottom Panel)
+    // Vertical Edge Handle
     Text {
-        text: "Vertical Edge (Bottom Panel)"
+        text: "Vertical Edge Handle"
         font.pixelSize: 18
         font.bold: true
         color: ThemeTokens.text
@@ -201,7 +206,7 @@ DocLayout {
                 Text {
                     width: parent.width
                     wrapMode: Text.Wrap
-                    text: "Handles can also be attached to top or bottom edges to control vertical drawers or console panes."
+                    text: "Handles can also be attached to horizontal edges (top or bottom) for bottom console or drawer resizing."
                     color: ThemeTokens.subduedText
                     font.pixelSize: 12
                 }
@@ -225,7 +230,7 @@ DocLayout {
 
                             Text {
                                 anchors.centerIn: parent
-                                text: "Editor Canvas"
+                                text: "Editor / Log Canvas Area"
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: 12
                             }
@@ -239,9 +244,9 @@ DocLayout {
                             ChaSetSplitterHandle {
                                 edge: "top"
                                 targetSize: root.bottomHeight
-                                minSize: 50
-                                maxSize: 130
-                                defaultSize: 90
+                                minSize: 60
+                                maxSize: 180
+                                defaultSize: 120
                                 onSizeChanging: function(newSize) { root.bottomHeight = newSize; }
                                 onSizeChanged: function(finalSize) { root.bottomHeight = finalSize; }
                             }
@@ -252,9 +257,10 @@ DocLayout {
 
                                 Text {
                                     anchors.verticalCenter: parent.verticalCenter
-                                    text: "Console"
+                                    text: "Terminal / Output Console"
                                     color: ThemeTokens.text
                                     font.pixelSize: 12
+                                    font.bold: true
                                 }
 
                                 ChaSetBadge {
@@ -267,6 +273,55 @@ DocLayout {
                     }
                 }
             }
+        }
+    }
+
+    ChaSetCodeBlock {
+        title: "Installation"
+        code: "import ChaSet 1.0\n\nChaSetSplitterHandle { edge: \"right\" }"
+        language: "qml"
+    }
+
+    // Animations Section
+    Column {
+        width: parent.width
+        spacing: 12
+
+        Text {
+            text: "Animations"
+            color: ThemeTokens.text
+            font.pixelSize: 18
+            font.bold: true
+        }
+
+        Text {
+            text: "Motion tokens and kinematic timing contracts for SplitterHandle edge indicators."
+            color: ThemeTokens.subduedText
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
+
+        Text {
+            text: "• Active indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve."
+            color: ThemeTokens.text
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
+        Text {
+            text: "• Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
+            color: ThemeTokens.text
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
+        Text {
+            text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."
+            color: ThemeTokens.text
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
         }
     }
 
