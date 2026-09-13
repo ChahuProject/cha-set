@@ -27,6 +27,7 @@ export * from './panel-card';
 export * from './split-button';
 export * from './inline-editable-text';
 export * from './range-slider';
+export * from './snap-slider';
 export * from './read-only-input';
 export * from './preset-number-input';
 export * from './keybinding-recorder';

@@ -306,5 +306,12 @@
     "statusSummary": true,
     "cancellation": true,
     "filtering": true
+  },
+  "snapSlider": {
+    "stops": true,
+    "labels": true,
+    "ticks": true,
+    "keyboard": true,
+    "disabled": true
   }
 }

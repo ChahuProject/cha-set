@@ -1335,6 +1335,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/duration-input",
         "desc": "Segmented duration input with step buttons, keyboard arrow jumping, and preset menu.",
         "description": "Segmented duration input with step buttons, keyboard arrow jumping, and preset menu."
+      },
+      {
+        "id": "snap-slider",
+        "title": "Snap Slider",
+        "href": "#/components/snap-slider",
+        "desc": "Stepped discrete slider that snaps to defined stops with ticks and label row.",
+        "description": "Stepped discrete slider that snaps to defined stops with ticks and label row."
       }
     ]
   },
@@ -1577,6 +1584,20 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Home / End",
       "action": "Jump directly to the minimum / maximum value"
+    }
+  ],
+  "snap-slider": [
+    {
+      "key": "← / ↓",
+      "action": "Step to previous discrete snap stop"
+    },
+    {
+      "key": "→ / ↑",
+      "action": "Step to next discrete snap stop"
+    },
+    {
+      "key": "Home / End",
+      "action": "Jump directly to the first / last snap stop"
     }
   ],
   "dialog": [

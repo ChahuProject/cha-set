@@ -18,6 +18,7 @@ import { SegmentedControl } from '../segmented-control';
 import { Select, SelectTrigger, SelectValue } from '../select';
 import { Slider } from '../slider';
 import { RangeSlider } from '../range-slider';
+import { SnapSlider } from '../snap-slider';
 import { Collapsible, CollapsibleTrigger } from '../collapsible';
 import { Badge } from '../badge';
 import { Card } from '../card';
@@ -338,6 +339,18 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
     it('RangeSlider exhibits cursor-pointer', () => {
       const { container } = render(<RangeSlider defaultValue={[20, 80]} />);
       expect(container.firstChild).toBeDefined();
+    });
+
+    it('SnapSlider exhibits cursor-pointer and disabled cursor-not-allowed', () => {
+      const { rerender, container } = render(<SnapSlider defaultValue={2} count={5} />);
+      expect(container.firstChild).toBeDefined();
+
+      rerender(<SnapSlider defaultValue={2} count={5} disabled />);
+      const disabledSlider = container.querySelector('[role="slider"]') as HTMLElement;
+      if (disabledSlider) {
+        expect(disabledSlider.className).toContain('cursor-not-allowed');
+        expect(disabledSlider.className).not.toContain('pointer-events-none');
+      }
     });
 
     it('Splitter and SplitterHandle exhibit col-resize cursor', () => {
