@@ -132,6 +132,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetLogConsole.qml
         src/ChaSetStatusIcon.qml
         src/ChaSetPipelineView.qml
+        src/ChaSetAddressBar.qml
         src/ThemeTokens.generated.qml
 
         src/ShowcaseData.generated.qml
@@ -235,6 +236,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/DurationInputDocPage.qml
             src/CodeBlockDocPage.qml
             src/PipelineViewDocPage.qml
+            src/AddressBarDocPage.qml
             src/CommandSearchModal.qml
 
             src/ExportModal.qml

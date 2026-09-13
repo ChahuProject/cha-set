@@ -117,6 +117,7 @@ ApplicationWindow {
         case "duration-input": return "DurationInputDocPage.qml";
         case "code-block": return "CodeBlockDocPage.qml";
         case "pipeline-view": return "PipelineViewDocPage.qml";
+        case "address-bar": return "AddressBarDocPage.qml";
         default: return "ButtonDocPage.qml";
 
         }

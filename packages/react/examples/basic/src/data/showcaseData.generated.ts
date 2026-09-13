@@ -1464,6 +1464,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/pipeline-view",
         "desc": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console.",
         "description": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
+      },
+      {
+        "id": "address-bar",
+        "title": "Address Bar",
+        "href": "#/components/address-bar",
+        "desc": "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing.",
+        "description": "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing."
       }
     ]
   }
@@ -2146,6 +2153,32 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Space / Enter",
       "action": "Dismiss the currently focused task notification"
+    }
+  ],
+  "address-bar": [
+    {
+      "key": "Alt + D / Ctrl + L",
+      "action": "Switch to path edit mode and select all text"
+    },
+    {
+      "key": "Enter",
+      "action": "Commit edited path and trigger navigation"
+    },
+    {
+      "key": "Escape",
+      "action": "Cancel edit mode and revert to breadcrumb display"
+    },
+    {
+      "key": "Alt + Left / Alt + Right",
+      "action": "Trigger backward or forward history navigation"
+    },
+    {
+      "key": "Alt + Up",
+      "action": "Navigate to the parent directory level"
+    },
+    {
+      "key": "F5 / Ctrl + R",
+      "action": "Refresh the active location"
     }
   ]
 };

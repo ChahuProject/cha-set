@@ -357,6 +357,13 @@
       "indeterminateProgress": { "requirement": "must", "description": "animated shimmer progress bar for running indeterminate tasks" },
       "dismiss": { "requirement": "must", "description": "dismiss button with callback event" },
       "autoHide": { "requirement": "should", "description": "auto-hides when task queue is empty" }
+    },
+    "addressBar": {
+      "breadcrumbs": { "requirement": "must", "description": "renders path parsed into interactive breadcrumb segments" },
+      "editMode": { "requirement": "must", "description": "switches between breadcrumbs and full editable input on click or shortcut" },
+      "navigationControls": { "requirement": "must", "description": "back, forward, up, and refresh navigation buttons" },
+      "keyboard": { "requirement": "must", "description": "Alt+D or Ctrl+L to edit, Esc to cancel, Enter to navigate" },
+      "suggestions": { "requirement": "should", "description": "dropdown popover with path suggestions and history" }
     }
   }
 }
