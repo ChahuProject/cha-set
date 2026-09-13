@@ -12,13 +12,27 @@ Column {
     property var propsModel: []
     property alias props: root.propsModel
 
-    Text {
+    TextEdit {
         visible: root.title !== ""
         text: root.title
         color: ThemeTokens.text
         font.pixelSize: 15
         font.weight: Font.Bold
         font.letterSpacing: -0.2
+        readOnly: true
+        selectByMouse: true
+        selectByKeyboard: true
+        cursorVisible: false
+        activeFocusOnPress: false
+        textMargin: 0
+        padding: 0
+        selectionColor: ThemeTokens.accent
+        selectedTextColor: "#ffffff"
+        height: contentHeight
+
+        HoverHandler {
+            cursorShape: Qt.IBeamCursor
+        }
     }
 
     ChaSetTable {

@@ -1095,7 +1095,15 @@ ApplicationWindow {
                                         width: parent.width
                                         height: 32
                                         radius: 6
-                                        color: win.activePage === navItemRect.modelData.id ? win.cAccentBg : "transparent"
+
+                                        readonly property bool isActive: win.activePage === navItemRect.modelData.id
+                                        readonly property bool isHovered: navItemMouse.containsMouse
+
+                                        color: isActive ? win.cAccentBg : (isHovered ? ThemeTokens.hover : "transparent")
+
+                                        Behavior on color {
+                                            ColorAnimation { duration: 100 }
+                                        }
 
                                         Text {
                                             anchors.left: parent.left
@@ -1105,9 +1113,9 @@ ApplicationWindow {
                                             anchors.verticalCenter: parent.verticalCenter
                                             elide: Text.ElideRight
                                             text: navItemRect.modelData.title || ""
-                                            color: win.activePage === navItemRect.modelData.id ? win.cFg : win.cMutedFg
+                                            color: (navItemRect.isActive || navItemRect.isHovered) ? win.cFg : win.cMutedFg
                                             font.pixelSize: 12
-                                            font.weight: win.activePage === navItemRect.modelData.id ? Font.DemiBold : Font.Normal
+                                            font.weight: navItemRect.isActive ? Font.DemiBold : Font.Normal
                                         }
 
                                         ChaSetBadge {
@@ -1122,7 +1130,9 @@ ApplicationWindow {
                                         }
 
                                         MouseArea {
+                                            id: navItemMouse
                                             anchors.fill: parent
+                                            hoverEnabled: true
                                             cursorShape: Qt.PointingHandCursor
                                             onClicked: win.activePage = navItemRect.modelData.id
                                         }

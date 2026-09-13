@@ -56,7 +56,7 @@ DocLayout {
                     Row {
                         spacing: 8
                         Text { text: "🎨"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter }
-                        Text { text: "Theme & Style Tuner"; color: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.Bold; anchors.verticalCenter: parent.verticalCenter }
+                        DocText { text: "Theme & Style Tuner"; textColor: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.Bold; anchors.verticalCenter: parent.verticalCenter }
                     }
 
                     Item { width: Math.max(10, parent.width - 340); height: 1 }

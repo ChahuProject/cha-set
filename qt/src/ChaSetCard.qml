@@ -45,6 +45,7 @@ Rectangle {
 
     implicitWidth: contentColumn.implicitWidth
     implicitHeight: contentColumn.implicitHeight
+    height: implicitHeight
 
     Column {
         id: contentColumn

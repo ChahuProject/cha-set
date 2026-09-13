@@ -166,6 +166,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
         QML_FILES
             src/Main.qml
             src/DocLayout.qml
+            src/DocText.qml
             src/PropsTable.qml
             src/KeyboardShortcutsTable.qml
             src/ComponentPreview.qml

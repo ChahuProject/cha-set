@@ -30,19 +30,17 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Design Philosophy"
-            color: ThemeTokens.text
+            textColor: ThemeTokens.text
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "ChaSet is part of the ChahuProject ecosystem. In traditional multi-platform apps, Web and Desktop design systems drift apart quickly. ChaSet solves this by establishing a neutral, machine-readable specification and token shard layer that drives both React and Qt simultaneously with pixel-perfect and behavioral parity."
-            color: ThemeTokens.subduedText
+            isMuted: true
             font.pixelSize: 13
-            lineHeight: 1.4
-            wrapMode: Text.WordWrap
             width: parent.width
         }
 
@@ -67,13 +65,11 @@ DocLayout {
                         anchors.margins: 14
                         spacing: 6
                         Text { text: "🎯"; font.pixelSize: 22 }
-                        Text { text: "One Source of Truth"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                        Text {
+                        DocText { text: "One Source of Truth"; textColor: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                        DocText {
                             text: "Design tokens and API contracts reside in spec/ and emit synchronized tokens for Web & Qt."
-                            color: ThemeTokens.subduedText
+                            isMuted: true
                             font.pixelSize: 11
-                            lineHeight: 1.3
-                            wrapMode: Text.WordWrap
                             width: parent.width
                         }
                     }
@@ -97,13 +93,11 @@ DocLayout {
                         anchors.margins: 14
                         spacing: 6
                         Text { text: "⚡"; font.pixelSize: 22 }
-                        Text { text: "Native Ergonomics"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                        Text {
+                        DocText { text: "Native Ergonomics"; textColor: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                        DocText {
                             text: "Tailwind CSS v4 & Base UI on React; pure QML Quick Controls on Qt — no electron bloat or foreign wrappers."
-                            color: ThemeTokens.subduedText
+                            isMuted: true
                             font.pixelSize: 11
-                            lineHeight: 1.3
-                            wrapMode: Text.WordWrap
                             width: parent.width
                         }
                     }
@@ -127,13 +121,11 @@ DocLayout {
                         anchors.margins: 14
                         spacing: 6
                         Text { text: "🔒"; font.pixelSize: 22 }
-                        Text { text: "Automated Parity Gate"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                        Text {
+                        DocText { text: "Automated Parity Gate"; textColor: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                        DocText {
                             text: "CI enforces that all required capabilities and visual rendering match 100% across stacks."
-                            color: ThemeTokens.subduedText
+                            isMuted: true
                             font.pixelSize: 11
-                            lineHeight: 1.3
-                            wrapMode: Text.WordWrap
                             width: parent.width
                         }
                     }
@@ -147,9 +139,9 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "How It Works"
-            color: ThemeTokens.text
+            textColor: ThemeTokens.text
             font.pixelSize: 18
             font.weight: Font.Bold
         }
@@ -166,16 +158,16 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Quick Start"
-            color: ThemeTokens.text
+            textColor: ThemeTokens.text
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Install the package and peer dependencies:"
-            color: ThemeTokens.subduedText
+            isMuted: true
             font.pixelSize: 12
         }
 
@@ -185,9 +177,9 @@ DocLayout {
             code: "pnpm add @chahu/cha-set"
         }
 
-        Text {
+        DocText {
             text: "Use in your application:"
-            color: ThemeTokens.subduedText
+            isMuted: true
             font.pixelSize: 12
         }
 
@@ -203,9 +195,9 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Packages"
-            color: ThemeTokens.text
+            textColor: ThemeTokens.text
             font.pixelSize: 18
             font.weight: Font.Bold
         }

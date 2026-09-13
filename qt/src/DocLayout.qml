@@ -27,13 +27,24 @@ Item {
             spacing: 24
 
             // Breadcrumb
-            Row {
-                spacing: 6
-                Text { text: "Docs"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
-                Text { text: "/"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
-                Text { text: root.category; color: ThemeTokens.subduedText; font.pixelSize: 12 }
-                Text { text: "/"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
-                Text { text: root.pageTitle; color: ThemeTokens.text; font.pixelSize: 12; font.weight: Font.DemiBold }
+            TextEdit {
+                text: "Docs / " + root.category + " / " + root.pageTitle
+                color: ThemeTokens.subduedText
+                font.pixelSize: 12
+                readOnly: true
+                selectByMouse: true
+                selectByKeyboard: true
+                cursorVisible: false
+                activeFocusOnPress: false
+                textMargin: 0
+                padding: 0
+                selectionColor: ThemeTokens.accent
+                selectedTextColor: "#ffffff"
+                height: contentHeight
+
+                HoverHandler {
+                    cursorShape: Qt.IBeamCursor
+                }
             }
 
             // Page Header with Copy Link

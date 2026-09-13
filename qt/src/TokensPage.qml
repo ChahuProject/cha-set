@@ -49,8 +49,8 @@ DocLayout {
 
         Column {
             spacing: 4
-            Text { text: "Palette · Semantic Core Tokens"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
-            Text { text: "All derived from spec/tokens.json. Click any swatch to copy its CSS variable expression."; color: ThemeTokens.subduedText; font.pixelSize: 13 }
+            DocText { text: "Palette · Semantic Core Tokens"; textColor: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+            DocText { text: "All derived from spec/tokens.json. Click any swatch to copy its CSS variable expression."; isMuted: true; font.pixelSize: 13 }
         }
 
         Grid {
@@ -144,8 +144,8 @@ DocLayout {
 
         Column {
             spacing: 4
-            Text { text: "Typography / Radius / Charts"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
-            Text { text: "Radii derived from --radius (same sm/md/lg/xl derivation as shadcn); font weights map to tokens.json primitives (500/600); chart five colors follow the accent."; color: ThemeTokens.subduedText; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+            DocText { text: "Typography / Radius / Charts"; textColor: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+            DocText { text: "Radii derived from --radius (same sm/md/lg/xl derivation as shadcn); font weights map to tokens.json primitives (500/600); chart five colors follow the accent."; isMuted: true; font.pixelSize: 13; width: parent.width }
         }
 
         // Radius Boxes

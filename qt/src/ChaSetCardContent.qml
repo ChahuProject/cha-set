@@ -23,9 +23,10 @@ Item {
 
     default property alias contentData: col.data
 
-    implicitWidth: col.implicitWidth + horizontalPadding * 2
-    implicitHeight: col.implicitHeight + topPadding + bottomPadding
+    implicitWidth: Math.max(col.implicitWidth, col.childrenRect.width) + horizontalPadding * 2
+    implicitHeight: Math.max(col.implicitHeight, col.childrenRect.height) + topPadding + bottomPadding
     width: parent ? parent.width : implicitWidth
+    height: implicitHeight
 
     Column {
         id: col
@@ -35,7 +36,6 @@ Item {
         anchors.leftMargin: root.horizontalPadding
         anchors.rightMargin: root.horizontalPadding
         anchors.topMargin: root.topPadding
-        anchors.bottomMargin: root.bottomPadding
         spacing: 0
     }
 }

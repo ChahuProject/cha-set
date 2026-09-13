@@ -50,7 +50,7 @@ Item {
     }
 
     Behavior on width {
-        enabled: !root.isResizing
+        enabled: !root.isResizing && ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
         NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: Easing.OutCubic }
     }
 
@@ -75,18 +75,11 @@ Item {
         }
 
         // Inner layout container
-        Column {
+        Item {
+            id: contentHost
             anchors.fill: parent
             anchors.margins: root.variant === "floating" ? 8 : 0
-            spacing: 0
-
-            // Content host for injected QML elements
-            Item {
-                id: contentHost
-                width: parent.width
-                height: parent.height
-                clip: true
-            }
+            clip: true
         }
     }
 
@@ -109,6 +102,7 @@ Item {
         opacity: railMouse.containsMouse || root.isResizing ? 0.75 : 0.0
 
         Behavior on opacity {
+            enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
             NumberAnimation { duration: ThemeTokens.motionShort }
         }
 

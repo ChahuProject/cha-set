@@ -89,6 +89,8 @@ Item {
 
     implicitWidth: mode === "popover" ? popoverTrigger.implicitWidth : cardWidth
     implicitHeight: mode === "popover" ? popoverTrigger.implicitHeight : (panelLoader.item ? panelLoader.item.height : 540)
+    width: implicitWidth
+    height: implicitHeight
 
     opacity: root.disabled ? 0.5 : 1.0
 
@@ -325,11 +327,12 @@ Item {
     }
 
     // Reusable Channel Slider Row Component
-    component ChannelSliderRow: Row {
+    component ChannelSliderRow: Item {
         id: row
         width: parent ? parent.width : 0
         height: root.sliderRowHeight
-        spacing: 6
+        implicitWidth: width
+        implicitHeight: height
 
         required property string label
         required property color labelColor
@@ -344,19 +347,24 @@ Item {
         readonly property real progress: Math.max(0.0, Math.min(1.0, (curVal - fromVal) / rangeSpan))
 
         Text {
+            id: rowLabel
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
             width: root.sliderDensity === "dense" ? 10 : 14
             text: row.label
             color: row.labelColor
             font.pixelSize: root.sliderLabelFontSize
             font.weight: Font.Bold
-            anchors.verticalCenter: parent.verticalCenter
         }
 
         Item {
             id: trackContainer
-            width: parent.width - (root.sliderDensity === "dense" ? 10 : 14) - root.sliderInputWidth - 12
-            height: root.sliderRowHeight
+            anchors.left: rowLabel.right
+            anchors.leftMargin: 6
+            anchors.right: numInputBox.left
+            anchors.rightMargin: 6
             anchors.verticalCenter: parent.verticalCenter
+            height: root.sliderRowHeight
 
             readonly property real maxTravel: Math.max(0, width - thumb.width)
 
@@ -385,6 +393,7 @@ Item {
 
             MouseArea {
                 anchors.fill: parent
+                hoverEnabled: true
                 enabled: !root.disabled
                 cursorShape: Qt.PointingHandCursor
 
@@ -402,13 +411,15 @@ Item {
         }
 
         Rectangle {
+            id: numInputBox
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
             width: root.sliderInputWidth
             height: root.sliderInputHeight
             radius: 3
             color: root.isDark ? Qt.rgba(1, 1, 1, 0.06) : Qt.rgba(0, 0, 0, 0.04)
             border.color: numIn.activeFocus ? ThemeTokens.accent : ThemeTokens.border
             border.width: 1
-            anchors.verticalCenter: parent.verticalCenter
 
             TextInput {
                 id: numIn
@@ -503,6 +514,7 @@ Item {
                 anchors.top: parent.top
                 anchors.margins: 12
                 spacing: 10
+                height: implicitHeight
 
                 // 1. Preview Header
                 Row {
@@ -573,6 +585,7 @@ Item {
                                 }
                                 MouseArea {
                                     anchors.fill: parent
+                                    hoverEnabled: true
                                     cursorShape: Qt.PointingHandCursor
                                     onClicked: root.activePanel = modelData.id
                                 }
@@ -1086,6 +1099,7 @@ Item {
 
                             MouseArea {
                                 anchors.fill: parent
+                                hoverEnabled: true
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: modelData.toggle()
                             }
@@ -1096,11 +1110,13 @@ Item {
                 // 6. Channel Sliders Section with Dynamic Density & Color Tracks
                 Column {
                     width: parent.width
+                    height: implicitHeight
                     spacing: root.sliderSpacing
 
                     // RGB Group
                     Column {
                         width: parent.width
+                        height: implicitHeight
                         spacing: root.sliderSpacing
                         visible: root.showRgbSliders
 
@@ -1141,6 +1157,7 @@ Item {
                     // HSV Group
                     Column {
                         width: parent.width
+                        height: implicitHeight
                         spacing: root.sliderSpacing
                         visible: root.showHsvSliders
 
@@ -1186,6 +1203,7 @@ Item {
                     // CMYK Group
                     Column {
                         width: parent.width
+                        height: implicitHeight
                         spacing: root.sliderSpacing
                         visible: root.showCmykSliders
 
@@ -1249,6 +1267,7 @@ Item {
                     // LAB Group
                     Column {
                         width: parent.width
+                        height: implicitHeight
                         spacing: root.sliderSpacing
                         visible: root.showLabSliders
 
