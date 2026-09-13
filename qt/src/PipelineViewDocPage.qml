@@ -78,19 +78,24 @@ DocLayout {
     return []
   }
 
+  property string activeJobId: "job-2"
+
   ComponentPreview {
     title: "Pipeline View Sandbox"
+    stageHeight: 472
     reactCode: `<PipelineView\n  status="running"\n  startMs={0}\n  endMs={null}\n  jobs={jobs}\n  activeJobId={activeJobId}\n  onSelectJob={setActiveJobId}\n  getLogs={jobId => logs[jobId] ?? []}\n/>`
     qtCode: `ChaSetPipelineView {\n    width: parent.width\n    status: "running"\n    jobs: root.sampleJobs\n    activeJobId: "job-2"\n    logsSupplier: function(jobId) { return root.getLogsForJob(jobId) }\n}`
 
     Item {
       anchors.fill: parent
+      anchors.margins: 12
 
       ChaSetPipelineView {
         anchors.fill: parent
         status: "running"
         jobs: root.sampleJobs
-        activeJobId: "job-2"
+        activeJobId: root.activeJobId
+        onJobSelected: function(jobId) { root.activeJobId = jobId }
         logsSupplier: function(jobId) { return root.getLogsForJob(jobId) }
       }
     }

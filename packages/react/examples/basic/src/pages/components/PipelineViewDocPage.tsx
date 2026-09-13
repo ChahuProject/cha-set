@@ -79,6 +79,14 @@ export function PipelineViewDocPage() {
   getLogs={jobId => logs[jobId] ?? []}
 />`;
 
+  const qtCode = `ChaSetPipelineView {
+    width: parent.width
+    status: "running"
+    jobs: root.sampleJobs
+    activeJobId: "job-2"
+    logsSupplier: function(jobId) { return root.getLogsForJob(jobId) }
+}`;
+
   return (
     <DocLayout
       category="Composite Engines"
@@ -102,7 +110,7 @@ export function PipelineViewDocPage() {
           can also be consumed independently.
         </p>
 
-        <ComponentPreview title="Pipeline View Sandbox" reactCode={reactCode}>
+        <ComponentPreview title="Pipeline View Sandbox" reactCode={reactCode} qtCode={qtCode}>
           <div className="w-full h-[28rem] flex flex-col">
             <PipelineView
               status="running"
