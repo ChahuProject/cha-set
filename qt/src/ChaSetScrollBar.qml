@@ -135,6 +135,10 @@ T.ScrollBar {
         color: control._isExpanded ? (ThemeTokens.dark ? Qt.rgba(255/255, 255/255, 255/255, 0.05) : Qt.rgba(241/255, 245/255, 249/255, 0.3)) : "transparent"
         radius: 0
         Behavior on color { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: ThemeTokens.motionShort } }
+
+        HoverHandler {
+            cursorShape: Qt.PointingHandCursor
+        }
     }
 
     // Centered Thumb Item with Min Length Clamping
@@ -165,6 +169,10 @@ T.ScrollBar {
             Behavior on width { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: ThemeTokens.motionShort; easing.type: Easing.OutQuad } }
             Behavior on height { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: ThemeTokens.motionShort; easing.type: Easing.OutQuad } }
             Behavior on color { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: ThemeTokens.motionShort } }
+
+            HoverHandler {
+                cursorShape: control.pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor
+            }
         }
     }
 

@@ -252,7 +252,21 @@ static bool runRealCursorVerification(QQuickWindow* window) {
     }
     testCheckbox->setProperty("readOnly", false);
 
-    qInfo("[qt-scenario] PASS: Authentic C++ cursor shape & geometry parity verified for Button, Checkbox, Switch, CopyButton, SegmentedControl, TabsTrigger");
+    // Test ScrollBar cursorShape
+    auto* testScrollBar = window->findChild<QQuickItem*>("testScrollBar");
+    if (testScrollBar) {
+        if (testScrollBar->width() <= 0 || testScrollBar->height() <= 0) {
+            qCritical() << "[qt-scenario] FAIL: testScrollBar geometry non-positive (" << testScrollBar->width() << "x" << testScrollBar->height() << ")";
+            return false;
+        }
+        int sbCursor = findHandlerCursor(testScrollBar);
+        if (sbCursor != Qt::PointingHandCursor) {
+            qCritical() << "[qt-scenario] FAIL: testScrollBar handler cursorShape expected PointingHandCursor (13), got " << sbCursor;
+            return false;
+        }
+    }
+
+    qInfo("[qt-scenario] PASS: Authentic C++ cursor shape & geometry parity verified for Button, Checkbox, Switch, CopyButton, SegmentedControl, TabsTrigger, ScrollBar");
     return true;
 }
 

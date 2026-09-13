@@ -96,7 +96,7 @@ export function ContextMenuItem({
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive',
-        'data-disabled:pointer-events-none data-disabled:opacity-50',
+        'data-disabled:cursor-not-allowed data-disabled:opacity-50',
         '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4',
         className,
       )}
@@ -171,7 +171,7 @@ export function ContextMenuCheckboxItem({
         'relative flex cursor-pointer items-center gap-1.5 rounded-md py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
-        'data-disabled:pointer-events-none data-disabled:opacity-50',
+        'data-disabled:cursor-not-allowed data-disabled:opacity-50',
         '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4',
         className,
       )}
@@ -224,7 +224,7 @@ export function ContextMenuRadioItem({
         'relative flex cursor-pointer items-center gap-1.5 rounded-md py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
-        'data-disabled:pointer-events-none data-disabled:opacity-50',
+        'data-disabled:cursor-not-allowed data-disabled:opacity-50',
         '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4',
         className,
       )}

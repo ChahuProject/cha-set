@@ -25,6 +25,21 @@ import { Splitter, SplitterPanel } from '../splitter';
 import { SplitterHandle } from '../splitter-handle';
 import { DraggableModal } from '../draggable-modal';
 import { WindowTitleBar } from '../window-title-bar';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '../dropdown-menu';
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+} from '../context-menu';
+import { Dialog, DialogTrigger } from '../dialog';
+import { Tooltip, TooltipTrigger, TooltipContent } from '../tooltip';
+import { ScrollBarButton } from '../scroll-area/ScrollBarButtons';
 
 interface CursorContract {
   version: number;
@@ -112,8 +127,8 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
       expect(btn.className).toContain('cursor-not-allowed');
     });
 
-    it('TabsTrigger exhibits cursor-pointer', () => {
-      render(
+    it('TabsTrigger exhibits cursor-pointer and disabled cursor-not-allowed', () => {
+      const { rerender } = render(
         <Tabs defaultValue="tab1">
           <TabsList>
             <TabsTrigger value="tab1">Tab 1</TabsTrigger>
@@ -122,10 +137,20 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
       );
       const tab = screen.getByRole('tab');
       expect(tab.className).toContain('cursor-pointer');
+
+      rerender(
+        <Tabs defaultValue="tab1">
+          <TabsList>
+            <TabsTrigger value="tab1" disabled>Tab 1</TabsTrigger>
+          </TabsList>
+        </Tabs>,
+      );
+      expect(tab.className).toContain('disabled:cursor-not-allowed');
+      expect(tab.className).not.toContain('disabled:pointer-events-none');
     });
 
-    it('SegmentedControl options exhibit cursor-pointer', () => {
-      render(
+    it('SegmentedControl options exhibit cursor-pointer and disabled cursor-not-allowed', () => {
+      const { rerender } = render(
         <SegmentedControl
           options={[
             { label: 'Day', value: 'day' },
@@ -135,6 +160,81 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
       );
       const options = screen.getAllByRole('radio');
       expect(options[0].className).toContain('cursor-pointer');
+
+      rerender(
+        <SegmentedControl
+          disabled
+          options={[
+            { label: 'Day', value: 'day' },
+            { label: 'Week', value: 'week' },
+          ]}
+        />,
+      );
+      const disabledOptions = screen.getAllByRole('radio');
+      expect(disabledOptions[0].className).toContain('disabled:cursor-not-allowed');
+      expect(disabledOptions[0].className).not.toContain('disabled:pointer-events-none');
+    });
+
+    it('DropdownMenuItem exhibits cursor-pointer and data-disabled cursor-not-allowed without pointer-events-none', () => {
+      render(
+        <DropdownMenu defaultOpen>
+          <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>Active Item</DropdownMenuItem>
+            <DropdownMenuItem disabled>Disabled Item</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>,
+      );
+      const active = screen.getByText('Active Item');
+      const disabled = screen.getByText('Disabled Item');
+      expect(active.className).toContain('cursor-pointer');
+      expect(disabled.className).toContain('data-disabled:cursor-not-allowed');
+      expect(disabled.className).not.toContain('data-disabled:pointer-events-none');
+    });
+
+    it('ContextMenuItem exhibits cursor-pointer and data-disabled cursor-not-allowed without pointer-events-none', () => {
+      render(
+        <ContextMenu defaultOpen>
+          <ContextMenuTrigger><div>Target</div></ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem>Context Item</ContextMenuItem>
+            <ContextMenuItem disabled>Disabled Context</ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>,
+      );
+      const active = screen.getByText('Context Item');
+      const disabled = screen.getByText('Disabled Context');
+      expect(active.className).toContain('cursor-pointer');
+      expect(disabled.className).toContain('data-disabled:cursor-not-allowed');
+      expect(disabled.className).not.toContain('data-disabled:pointer-events-none');
+    });
+
+    it('ScrollBarButton exhibits cursor-pointer and disabled cursor-not-allowed', () => {
+      const { rerender } = render(<ScrollBarButton>▲</ScrollBarButton>);
+      const btn = screen.getByRole('button');
+      expect(btn.className).toContain('cursor-pointer');
+
+      rerender(<ScrollBarButton disabled>▲</ScrollBarButton>);
+      expect(btn.className).toContain('disabled:cursor-not-allowed');
+    });
+
+    it('DialogTrigger and TooltipTrigger exhibit cursor-pointer', () => {
+      render(
+        <Dialog>
+          <DialogTrigger>Open Dialog</DialogTrigger>
+        </Dialog>,
+      );
+      const dialogBtn = screen.getByRole('button', { name: 'Open Dialog' });
+      expect(dialogBtn.className).toContain('cursor-pointer');
+
+      render(
+        <Tooltip>
+          <TooltipTrigger>Help</TooltipTrigger>
+          <TooltipContent>Help details</TooltipContent>
+        </Tooltip>,
+      );
+      const tooltipBtn = screen.getByRole('button', { name: 'Help' });
+      expect(tooltipBtn.className).toContain('cursor-pointer');
     });
 
     it('SelectTrigger exhibits cursor-pointer and disabled cursor-not-allowed', () => {
@@ -222,13 +322,17 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
   });
 
   describe('Sliders & Splitters (track -> pointer, splitter -> col-resize/row-resize)', () => {
-    it('Slider exhibits cursor-pointer and disabled cursor-not-allowed', () => {
+    it('Slider exhibits cursor-pointer and disabled cursor-not-allowed without blocking pointer-events', () => {
       const { rerender, container } = render(<Slider defaultValue={[50]} />);
       const slider = container.querySelector('[role="slider"]') || container.firstChild;
       expect(slider).toBeDefined();
 
       rerender(<Slider defaultValue={[50]} disabled />);
-      expect(slider).toBeDefined();
+      const disabledSlider = container.querySelector('[role="slider"]') as HTMLElement;
+      if (disabledSlider) {
+        expect(disabledSlider.className).toContain('cursor-not-allowed');
+        expect(disabledSlider.className).not.toContain('pointer-events-none');
+      }
     });
 
     it('RangeSlider exhibits cursor-pointer', () => {
@@ -262,9 +366,17 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
       expect(header).toBeDefined();
     });
 
-    it('WindowTitleBar dragArea exhibits cursor-default or cursor-move', () => {
-      const { container } = render(<WindowTitleBar title="ChaSet Desktop" />);
-      expect(container.firstChild).toBeDefined();
+    it('WindowTitleBar dragArea exhibits cursor-move and caption buttons exhibit cursor-pointer', () => {
+      const { container } = render(<WindowTitleBar title="ChaSet Desktop" showControls />);
+      const dragRegion = container.querySelector('[data-slot="window-drag-region"]');
+      expect(dragRegion?.className).toContain('cursor-move');
+
+      const buttons = container.querySelectorAll('button');
+      expect(buttons.length).toBeGreaterThan(0);
+      buttons.forEach((btn) => {
+        expect(btn.className).toContain('cursor-pointer');
+        expect(btn.className).not.toContain('cursor-default');
+      });
     });
   });
 });

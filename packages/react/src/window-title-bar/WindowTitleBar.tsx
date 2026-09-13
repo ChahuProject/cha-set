@@ -82,7 +82,7 @@ export function WindowTitleBar({
       <div
         data-slot="window-drag-region"
         {...(dragRegion ? { 'data-tauri-drag-region': '' } : {})}
-        className="flex h-full flex-1 items-center gap-2 px-3 text-xs text-muted-foreground min-w-0"
+        className="flex h-full flex-1 items-center gap-2 px-3 text-xs text-muted-foreground min-w-0 cursor-move"
       >
         {icon && <div className="pointer-events-none flex shrink-0 items-center justify-center">{icon}</div>}
         {title && (
@@ -112,7 +112,7 @@ export function WindowTitleBar({
           <>
             <button
               type="button"
-              className="flex h-full w-[2.875rem] cursor-default items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-muted/70 hover:text-foreground"
+              className="flex h-full w-[2.875rem] cursor-pointer items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-muted/70 hover:text-foreground"
               title={minimizeTitle}
               aria-label={minimizeTitle}
               onClick={onMinimize}
@@ -125,7 +125,7 @@ export function WindowTitleBar({
 
             <button
               type="button"
-              className="flex h-full w-[2.875rem] cursor-default items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-muted/70 hover:text-foreground"
+              className="flex h-full w-[2.875rem] cursor-pointer items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-muted/70 hover:text-foreground"
               title={isMaximized ? restoreTitle : maximizeTitle}
               aria-label={isMaximized ? restoreTitle : maximizeTitle}
               onClick={onMaximize}
@@ -145,7 +145,7 @@ export function WindowTitleBar({
 
             <button
               type="button"
-              className="flex h-full w-[2.875rem] cursor-default items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-[#e81123] hover:text-white"
+              className="flex h-full w-[2.875rem] cursor-pointer items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-[#e81123] hover:text-white"
               title={closeTitle}
               aria-label={closeTitle}
               onClick={onClose}
