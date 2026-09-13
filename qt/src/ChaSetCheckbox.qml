@@ -44,6 +44,8 @@ Item {
 
     implicitWidth: box.width + (hasCompanionContent ? 8 + labelColumn.implicitWidth : 0)
     implicitHeight: Math.max(box.height, hasCompanionContent ? labelColumn.implicitHeight : 0)
+    width: implicitWidth
+    height: implicitHeight
 
     opacity: root.disabled ? 0.5 : 1.0
 

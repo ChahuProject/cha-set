@@ -136,6 +136,8 @@ Item {
         var totalSpacing = options.length > 1 ? (options.length - 1) * track.segSpacing : 0;
         return base + 6 + totalNaturalWidth + totalSpacing;
     }
+    width: implicitWidth
+    height: implicitHeight
 
     opacity: root.disabled ? 0.5 : 1.0
     activeFocusOnTab: !root.disabled

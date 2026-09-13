@@ -39,8 +39,15 @@ Rectangle {
         }
     }
 
+    HoverHandler {
+        id: dragHover
+        cursorShape: Qt.SizeAllCursor
+    }
+
     // Caption Action Buttons
     Row {
+        id: captionButtons
+        z: 10
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
@@ -67,6 +74,7 @@ Rectangle {
                 id: minMouse
                 anchors.fill: parent
                 hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
                 onClicked: root.minimizeClicked()
             }
         }
@@ -93,6 +101,7 @@ Rectangle {
                 id: maxMouse
                 anchors.fill: parent
                 hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
                 onClicked: {
                     root.maximized = !root.maximized
                     root.maximizeClicked()
@@ -122,6 +131,7 @@ Rectangle {
                 id: closeMouse
                 anchors.fill: parent
                 hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
                 onClicked: root.closeClicked()
             }
         }
