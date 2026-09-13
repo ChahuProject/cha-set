@@ -206,7 +206,7 @@ Rectangle {
                 id: scroll
                 anchors.fill: parent
                 anchors.margins: root.bodyPadding
-                showVerticalScrollBar: root.maxHeight > 0
+                showVerticalScrollBar: true
                 showHorizontalScrollBar: !root.wrap
                 showButtons: false
                 contentWidth: root.wrap ? width : Math.max(width, highlighter.implicitWidth)
