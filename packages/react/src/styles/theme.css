@@ -184,3 +184,10 @@
   font-size: var(--cs-text-caption);
   line-height: var(--cs-leading-caption);
 }
+
+@layer base {
+  *, ::before, ::after {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
