@@ -250,7 +250,9 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - `{ id: 'keyboard', title: 'Keyboard Navigation' }` (backed by `spec/showcase/keyboard-shortcuts.json`).
    - `{ id: 'props', title: 'Props Reference' }` (strict ban on legacy `api` / `API Reference`).
 
-3. **Authentic Code Snippets & Sandbox Equivalence**:
+3. **Authentic Code Snippets, Multi-Example Cardinality & Sandbox Equivalence**:
+   - **Multi-Example Cardinality & Sequence Parity**: Every interactive example (`ComponentPreview`) in React MUST have an identical counterpart in Qt. `ComponentPreview` count (`previews.length`), sequence, and preview titles (`title="..."`) MUST match 1:1 bit-for-bit across stacks.
+   - **Section & Sub-Anchor Parity**: When a DocPage introduces multiple example sections (e.g. `nested`, `playground`, `variants`, `vertical`), those section IDs and headings MUST be reflected identically in the Table of Contents (`tocItems`) and page structure on both React and Qt.
    - Qt's `ComponentPreview` `reactCode` property MUST contain authentic, valid React JSX conforming to the real ChaSet React component API. NEVER fabricate or speculate synthetic JSX.
    - Sandbox layouts, pane titles, mock items (e.g. navigation trees, headers), badge calculations, and reset buttons MUST match 1:1 between React and Qt showcases.
 

@@ -135,8 +135,12 @@
       Qt's `ComponentPreview` `reactCode` property MUST provide authentic, valid React JSX conforming to the component's actual TypeScript API contract. Speculative, synthetically hallucinated, or placeholder JSX in QML is strictly forbidden.
     - **Sandbox Visual & Content Equivalence (沙盒内容与状态等价律)**:
       Interactive preview sandboxes across React and Qt MUST implement identical layouts, pane titles, mock datasets (e.g. file trees, table rows), badge calculations, and reset actions/initial values.
+    - **Multi-Example Cardinality & Sequence Parity (多示例数量与顺序强等价律 — SPAS 2.0 红线)**:
+      Every interactive example (`ComponentPreview`) in React MUST have an identical counterpart in Qt. It is strictly forbidden for React to display multiple interactive previews (e.g. horizontal, vertical, nested, variants) while Qt displays only one basic preview. `ComponentPreview` count (`previews.length`), sequence, and preview titles (`title="..."`) MUST match 1:1 bit-for-bit across stacks.
+    - **Section & Sub-Anchor Parity (子示例章节与锚点对齐律)**:
+      When a DocPage introduces multiple example sections (e.g. `nested`, `playground`, `variants`, `vertical`), those section IDs and headings MUST be reflected identically in the Table of Contents (`tocItems`) and page structure on both React and Qt.
     - **Showcase Parity Automated Gate (SPAS 门禁)**:
-      Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`). `pnpm gate` mechanically runs SPAS validation across all registered components to guarantee zero structural, metadata, or code divergence.
+      Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`). `pnpm gate` mechanically runs SPAS 2.0 validation across all registered components to guarantee zero structural, metadata, multi-example, or code divergence.
 
 ---
 

@@ -93,7 +93,9 @@ When developing or modifying components across React and Qt, you MUST follow thi
      5. `props`: **Props Reference** (strict ban on legacy `api` / `API Reference`)
    - **Authentic Code Snippet Contract**: Qt's `ComponentPreview` `reactCode` property MUST contain authentic, valid React JSX conforming to the real ChaSet React component API. Speculative, invalid, or hallucinated React JSX in QML is strictly forbidden.
    - **Sandbox Equivalence**: Sandbox layouts, pane titles, mock items, badge calculations, and reset actions MUST match 1:1 between React and Qt showcases.
-   - **Automated Verification**: Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`) and `pnpm gate` (Stage 2.5) to mechanically enforce structural and code parity.
+   - **Multi-Example Cardinality & Sequence Parity (多示例强等价律)**: Every interactive example (`ComponentPreview`) in React MUST have an identical counterpart in Qt. `ComponentPreview` count (`previews.length`), sequence, and preview titles (`title="..."`) MUST match 1:1 bit-for-bit across stacks.
+   - **Section & Sub-Anchor Parity (子示例章节与锚点对齐律)**: When a DocPage introduces multiple example sections (e.g. `nested`, `playground`, `variants`, `vertical`), those section IDs and headings MUST be reflected identically in the Table of Contents (`tocItems`) and page structure on both React and Qt.
+   - **Automated Verification**: Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`) and `pnpm gate` (Stage 2.5) to mechanically enforce structural, multi-example, and code parity.
 
 ## 2. Verification Commands Checklist
 
