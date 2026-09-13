@@ -93,7 +93,7 @@ DocLayout {
                             }
                         }
 
-                        Text { text: "Format: R32G32B32A32_FLOAT"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: "monospace" }
+                        Text { text: "Format: R32G32B32A32_FLOAT"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
                         Text { text: "Dimensions: 2560 x 1440"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                         ChaSetButton { text: "Export Buffer"; size: "xs"; variant: "outline" }
                     }

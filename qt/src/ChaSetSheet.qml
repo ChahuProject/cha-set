@@ -126,14 +126,14 @@ Rectangle {
                     Text {
                         text: root.title
                         color: ThemeTokens.text
-                        font.pixelSize: 16
+                        font.pixelSize: Typography.sizeHeading
                         font.weight: Font.DemiBold
                     }
 
                     Text {
                         text: root.description
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                         wrapMode: Text.WordWrap
                         width: parent.width
                     }

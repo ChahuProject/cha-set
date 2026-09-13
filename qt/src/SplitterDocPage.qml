@@ -91,9 +91,9 @@ DocLayout {
 
                                     Column {
                                         spacing: 4
-                                        Text { text: "▾ src"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: "monospace" }
-                                        Text { text: "  ▸ components"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: "monospace" }
-                                        Text { text: "  ▸ layout"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: "monospace" }
+                                        Text { text: "▾ src"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
+                                        Text { text: "  ▸ components"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
+                                        Text { text: "  ▸ layout"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
                                     }
                                 }
                             }

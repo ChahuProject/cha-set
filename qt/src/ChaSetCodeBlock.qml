@@ -150,9 +150,10 @@ Rectangle {
                             color: tabItem.index === root.currentIndex
                                 ? (root.isDark ? Qt.rgba(248.0 / 255.0, 250.0 / 255.0, 252.0 / 255.0, 1.0) : Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0))
                                 : root.cMutedFg
-                            font.pixelSize: 12
-                            font.weight: tabItem.index === root.currentIndex ? Font.DemiBold : Font.Normal
-                            font.family: "Segoe UI, -apple-system, sans-serif"
+                            // Same role as React's `cs-code-label` (mono, caption size).
+                            font.family: Typography.familyMono
+                            font.pixelSize: Typography.sizeCaption
+                            font.weight: tabItem.index === root.currentIndex ? Typography.weightSemibold : Typography.weightRegular
                         }
 
                         MouseArea {
@@ -175,11 +176,15 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.label.toUpperCase()
                 color: root.cMutedFg
-                font.family: "Consolas, monospace"
-                font.pixelSize: 11
-                font.weight: Font.DemiBold
+                // Mirrors React's `cs-code-label font-semibold uppercase tracking-wider`:
+                // mono family, caption size and the `wider` tracking token. The old
+                // literal `letterSpacing: 1.0` was 0.091em at 11px against React's
+                // 0.05em — a visible drift now carried by the shared token.
+                font.family: Typography.familyMono
+                font.pixelSize: Typography.sizeCaption
+                font.weight: Typography.weightSemibold
                 font.capitalization: Font.AllUppercase
-                font.letterSpacing: 1.0
+                font.letterSpacing: Typography.trackingPx(Typography.sizeCaption, "wider")
             }
 
             ChaSetCopyButton {

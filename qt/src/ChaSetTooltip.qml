@@ -156,7 +156,7 @@ Item {
                 id: bubbleText
                 text: root.text
                 color: ThemeTokens.dark ? "#020817" : "#f8fafc"
-                font.pixelSize: 11
+                font.pixelSize: Typography.sizeCaption
                 font.weight: Font.Medium
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -179,8 +179,8 @@ Item {
                     anchors.centerIn: parent
                     text: root.shortcut
                     color: ThemeTokens.dark ? "#020817" : "#f8fafc"
-                    font.pixelSize: 10
-                    font.family: "monospace"
+                    font.pixelSize: Typography.sizeMicro
+                    font.family: Typography.familyMono
                     font.weight: Font.Medium
                 }
             }

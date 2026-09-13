@@ -75,7 +75,7 @@ Item {
             Text {
                 anchors.centerIn: parent
                 text: root.icon
-                font.pixelSize: root.isSm ? 12 : 14
+                font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
                 color: ThemeTokens.text
             }
         }
@@ -92,7 +92,7 @@ Item {
                 Text {
                     text: root.name
                     color: ThemeTokens.text
-                    font.pixelSize: root.isSm ? 12 : 13
+                    font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
                     font.bold: true
                 }
 
@@ -110,7 +110,7 @@ Item {
                 text: root.description
                 visible: root.description.length > 0
                 color: ThemeTokens.subduedText
-                font.pixelSize: root.isSm ? 10 : 11
+                font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeCaption
                 wrapMode: Text.Wrap
             }
         }

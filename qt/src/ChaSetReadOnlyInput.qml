@@ -74,16 +74,16 @@ Item {
                     default:            return ThemeTokens.text
                     }
                 }
-                font.pixelSize: 12
-                font.family: "monospace"
+                font.pixelSize: Typography.sizeSmall
+                font.family: Typography.familyMono
 
                 Text {
                     anchors.fill: parent
                     visible: root.value.length === 0 && root.placeholder.length > 0
                     text: root.placeholder
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
-                    font.family: "monospace"
+                    font.pixelSize: Typography.sizeSmall
+                    font.family: Typography.familyMono
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
                 }
@@ -107,7 +107,7 @@ Item {
                     Text {
                         anchors.centerIn: parent
                         text: root.revealed ? "👁" : "👁‍🗨"
-                        font.pixelSize: 11
+                        font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.subduedText
                     }
 

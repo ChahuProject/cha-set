@@ -173,7 +173,7 @@ export function PresetNumberInput({
               }}
             >
               <span>{preset}</span>
-              <span className="text-[0.65rem] text-muted-foreground/70">
+              <span className="text-micro text-muted-foreground/70">
                 {formatPresetLabel(preset)}
               </span>
             </button>

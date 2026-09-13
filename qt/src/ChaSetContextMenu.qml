@@ -185,14 +185,14 @@ Item {
                             visible: !!parent.parent.modelData.icon
                             text: parent.parent.modelData.icon || ""
                             color: parent.parent.modelData.destructive ? ThemeTokens.danger : ThemeTokens.text
-                            font.pixelSize: 12
+                            font.pixelSize: Typography.sizeSmall
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
                         Text {
                             text: parent.parent.modelData.label || ""
                             color: parent.parent.modelData.destructive ? ThemeTokens.danger : ThemeTokens.text
-                            font.pixelSize: 12
+                            font.pixelSize: Typography.sizeSmall
                             anchors.verticalCenter: parent.verticalCenter
                         }
                     }
@@ -205,8 +205,8 @@ Item {
                         visible: !!parent.modelData.shortcut
                         text: parent.modelData.shortcut || ""
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 10
-                        font.family: "monospace"
+                        font.pixelSize: Typography.sizeMicro
+                        font.family: Typography.familyMono
                     }
 
                     MouseArea {

@@ -347,7 +347,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
       {(showEscBadge || (effectiveSizeOptions && effectiveSizeOptions.length > 0) || finalTopControls) && (
         <div className="absolute top-3.5 right-3.5 z-30 flex items-center gap-1.5 pointer-events-auto">
           {showEscBadge && (
-            <kbd className="pointer-events-none hidden sm:inline-flex h-5.5 select-none items-center rounded-md border border-border/60 bg-muted/60 px-1.5 font-mono text-[0.625rem] text-muted-foreground/80">
+            <kbd className="pointer-events-none hidden sm:inline-flex h-5.5 select-none items-center rounded-md border border-border/60 bg-muted/60 px-1.5 font-mono text-micro text-muted-foreground/80">
               ESC
             </kbd>
           )}

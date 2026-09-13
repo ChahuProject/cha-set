@@ -53,14 +53,14 @@ DocLayout {
                         text: "Min: " + Math.round(root.minPrice)
                         color: ThemeTokens.subduedText
                         font.pixelSize: 12
-                        font.family: "monospace"
+                        font.family: Typography.familyMono
                     }
                     Text {
                         anchors.right: parent.right
                         text: "Max: " + Math.round(root.maxPrice)
                         color: ThemeTokens.subduedText
                         font.pixelSize: 12
-                        font.family: "monospace"
+                        font.family: Typography.familyMono
                     }
                 }
 

@@ -108,14 +108,14 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.text.length > 0 ? root.text : root.placeholder
                 color: root.text.length > 0 ? ThemeTokens.text : ThemeTokens.subduedText
-                font.pixelSize: root.isSm ? 12 : 13
+                font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
                 font.weight: Font.Medium
             }
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
                 text: "✏️"
-                font.pixelSize: root.isSm ? 9 : 10
+                font.pixelSize: root.isSm ? Typography.sizeNano : Typography.sizeMicro
                 opacity: (!root.disabled && (hoverMouse.containsMouse || displayBox.activeFocus)) ? 0.8 : 0.0
 
                 Behavior on opacity {

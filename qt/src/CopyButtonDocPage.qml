@@ -48,7 +48,7 @@ DocLayout {
                             text: "pnpm add @chahu/cha-set"
                             color: ThemeTokens.text
                             font.pixelSize: 12
-                            font.family: "monospace"
+                            font.family: Typography.familyMono
                         }
                     }
 
@@ -75,7 +75,7 @@ DocLayout {
                     text: root.copyStatus
                     color: ThemeTokens.subduedText
                     font.pixelSize: 12
-                    font.family: "monospace"
+                    font.family: Typography.familyMono
                 }
             }
         }

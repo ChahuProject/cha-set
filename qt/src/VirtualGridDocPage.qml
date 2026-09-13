@@ -119,7 +119,7 @@ DocLayout {
                                     text: "1920x1080 • PNG"
                                     color: ThemeTokens.subduedText
                                     font.pixelSize: 10
-                                    font.family: "monospace"
+                                    font.family: Typography.familyMono
                                 }
                             }
                         }

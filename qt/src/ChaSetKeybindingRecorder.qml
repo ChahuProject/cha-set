@@ -59,8 +59,8 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             text: root.recording ? "Press shortcut keys..." : (root.keybinding.length > 0 ? root.keybinding : "None")
             color: root.recording ? ThemeTokens.accent : (root.keybinding.length > 0 ? ThemeTokens.text : ThemeTokens.subduedText)
-            font.pixelSize: root.isSm ? 11 : 12
-            font.family: "monospace"
+            font.pixelSize: root.isSm ? Typography.sizeCaption : Typography.sizeSmall
+            font.family: Typography.familyMono
             font.weight: root.recording ? Font.DemiBold : Font.Normal
             elide: Text.ElideRight
         }

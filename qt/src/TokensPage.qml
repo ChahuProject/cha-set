@@ -115,14 +115,14 @@ DocLayout {
                                 text: "--" + modelData[0]
                                 color: ThemeTokens.text
                                 font.pixelSize: 11
-                                font.family: "Consolas, monospace"
+                                font.family: Typography.familyMono
                                 font.weight: Font.Bold
                             }
                             Text {
                                 text: "" + modelData[1]
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: 10
-                                font.family: "Consolas, monospace"
+                                font.family: Typography.familyMono
                             }
                         }
                     }
@@ -171,7 +171,7 @@ DocLayout {
                     Column {
                         anchors.centerIn: parent
                         spacing: 2
-                        Text { text: modelData[0]; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Bold; font.family: "Consolas, monospace"; anchors.horizontalCenter: parent.horizontalCenter }
+                        Text { text: modelData[0]; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Bold; font.family: Typography.familyMono; anchors.horizontalCenter: parent.horizontalCenter }
                         Text { text: modelData[2]; color: ThemeTokens.subduedText; font.pixelSize: 10; anchors.horizontalCenter: parent.horizontalCenter }
                     }
                 }
@@ -225,7 +225,7 @@ DocLayout {
                             text: "--chart-" + parent.modelData[0]
                             color: ThemeTokens.subduedText
                             font.pixelSize: 9
-                            font.family: "Consolas, monospace"
+                            font.family: Typography.familyMono
                         }
                     }
                 }

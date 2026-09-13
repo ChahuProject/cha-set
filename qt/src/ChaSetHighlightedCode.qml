@@ -16,12 +16,21 @@ Item {
     property bool highlight: true
     property bool showLineNumbers: false
     property bool wrap: false
-    property int fontSize: 12
-    property real lineHeight: 1.4
+    property int fontSize: Typography.sizeSmall
+    // Line-height ROLE, not a raw number: the ratio lives in the shared
+    // typography tokens (spec/tokens/primitives.json -> primitives.typography),
+    // so React's `leading-code` and this item resolve the same 1.4.
+    // See docs/architecture/typography-system.md.
+    property string lineHeight: "code"
     property color textColor: ThemeTokens.text
     property color gutterColor: ThemeTokens.subduedText
 
-    readonly property string fontFamily: "Consolas, monospace"
+    readonly property string fontFamily: Typography.familyMono
+
+    // Absolute px line height. Qt text items take px, while CSS `line-height`
+    // is a ratio multiplied by the font size — `Typography.lineHeightPx()` is
+    // the single bridge so both engines land on the same number (12 × 1.4 = 16.8).
+    readonly property real lineHeightPx: Typography.lineHeightPx(root.fontSize, root.lineHeight)
     readonly property real gutterGap: root.showLineNumbers ? 12 : 0
     readonly property real codeWidth: Math.max(0, root.width - (root.showLineNumbers ? gutterWidth + gutterGap : 0))
 
@@ -40,6 +49,16 @@ Item {
     readonly property int lineCount: Math.max(1, tokenLines.length)
     readonly property real gutterWidth: root.showLineNumbers ? gutterMetrics.implicitWidth : 0
     readonly property string richText: Highlighter.buildRichText(allTokens, root.colorForToken)
+
+    // Qt rich text resolves `line-height:<percentage>` against the FONT'S
+    // DEFAULT line spacing, not the font size (CSS resolves percentages against
+    // the font size), so a percentage would silently disagree with React. The
+    // absolute px form is unambiguous; the <p> wrapper is what carries it — a
+    // bare run of <span>/<br/> inherits the font's default line spacing, which
+    // is exactly the 14px-vs-16.8px bug this replaces. `<p>` defaults to
+    // margin 0 in Qt, but it is spelled out so the parity contract is explicit.
+    readonly property string styledRichText:
+        "<p style=\"margin:0;line-height:" + root.lineHeightPx + "px\">" + root.richText + "</p>"
 
     FontMetrics {
         id: codeFontMetrics
@@ -124,7 +143,7 @@ Item {
             selectedTextColor: root.textColor
             wrapMode: root.wrap ? TextEdit.WrapAnywhere : TextEdit.NoWrap
             width: root.wrap ? Math.max(0, root.width - (root.showLineNumbers ? (root.gutterWidth + root.gutterGap) : 0)) : implicitWidth
-            text: root.richText
+            text: root.styledRichText
 
             HoverHandler {
                 cursorShape: Qt.IBeamCursor

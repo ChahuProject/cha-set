@@ -29,21 +29,52 @@ export const COLOR_ORDER = [
 
 export const SPACE_ORDER = ['space0','space1','space2','space3','space4','space5','space6'];
 export const MOTION_ORDER = ['motionQuick','motionShort','motionMedium'];
-export const SIZE_ORDER = [
+
+// Purely dimensional primitives (radii, control heights, insets, columns).
+// Font sizes live in primitives.typography.fontSize so they have exactly one
+// home; the Qt side still receives them through qt-mapping.json under the
+// frozen `fontSize*` field names (see SIZE_ORDER below).
+export const DIMENSION_ORDER = [
   'radiusSmall','controlHeight','gap','pageInset','dockInset','dividerThickness',
   'minimumPaneExtent','panelRadius','rowRadius','radiusLarge','radiusXl','separatorHeight',
-  'separatorLine','checkCol','iconCol','cascadeGap','chevronW',
+  'separatorLine','checkCol','iconCol','cascadeGap','chevronW'
+];
+
+// The 21 frozen Qt `size` fields (dt-a ThemeManager::Tokens). Keep font sizes
+// in the same positions as the committed snapshot/header to avoid churn.
+export const SIZE_ORDER = [
+  ...DIMENSION_ORDER,
   'fontSizeTitle','fontSizeHeading','fontSizeBody','fontSizeSmall'
 ];
+
+// --- typography -----------------------------------------------------------
+// families: single canonical name per stack (Qt never resolves comma lists,
+// so `qt` is one family and `css` keeps the full web fallback stack).
+export const FONT_FAMILY_ORDER = ['sans','mono'];
+// Ascending scale, smallest first.
+export const FONT_SIZE_ORDER = ['nano','micro','caption','small','body','heading','subheading','title'];
+// Unitless ratios. Mode names mirror Tailwind's leading-* scale so existing
+// markup stays meaningful; size names mirror FONT_SIZE_ORDER; `code` is the
+// code-block role and is size-independent by design.
+export const LINE_HEIGHT_ORDER = [
+  'none','tight','snug','normal','relaxed','code',
+  'nano','micro','caption','small','body','heading','subheading','title'
+];
+export const LETTER_SPACING_ORDER = ['tighter','tight','normal','wide','wider','widest'];
 
 export const ORDER = {
   top: ['meta','primitives','semantic','composite','themes','qt'],
   meta: ['schemaVersion','description','sources','conventions'],
-  primitives: ['space','motion','size','fontWeight'],
+  primitives: ['space','motion','size','typography','fontWeight'],
   primitives_space: [...SPACE_ORDER],
   primitives_motion: ['quick','short','medium'],
-  primitives_size: [...SIZE_ORDER],
-  primitives_fontWeight: ['medium','semibold'],
+  primitives_size: [...DIMENSION_ORDER],
+  primitives_typography: ['fontFamily','fontSize','lineHeight','letterSpacing'],
+  primitives_typography_fontFamily: [...FONT_FAMILY_ORDER],
+  primitives_typography_fontSize: [...FONT_SIZE_ORDER],
+  primitives_typography_lineHeight: [...LINE_HEIGHT_ORDER],
+  primitives_typography_letterSpacing: [...LETTER_SPACING_ORDER],
+  primitives_fontWeight: ['regular','medium','semibold','bold'],
   // semantic alphabetical grouping (W3C DTCG inspired, deterministic)
   semantic: [
     'accent','accent-foreground','accent.blocked','accent.conflict','accent.nest','accent.pending',
@@ -78,6 +109,22 @@ export const ORDER = {
   qt_motion: [...MOTION_ORDER],
   qt_size: [...SIZE_ORDER],
 };
+
+// ---------------------------------------------------------------------------
+// Typography value formatting — ONE implementation, shared by the CSS emitter
+// (spec/generators/generate-css.mjs), the Qt emitter (generate-qt.mjs) and the
+// typography parity checker (scripts/check-typography-parity.mjs). If these
+// drift apart the two stacks silently disagree, so they must never be
+// re-implemented at a call site.
+// ---------------------------------------------------------------------------
+/** px integer -> rem string. Repo rule: no raw px in CSS (AGENTS.md). */
+export const pxToRem = (px) => `${Number((px * 0.0625).toFixed(4))}rem`;
+/** Unitless line-height ratio -> CSS value (stays unitless on purpose). */
+export const ratioValue = (n) => String(n);
+/** em-ratio letter spacing -> CSS value. */
+export const emValue = (n) => (n === 0 ? '0' : `${n}em`);
+/** "body" -> "Body" (QML property suffix). */
+export const camelProp = (name) => name.charAt(0).toUpperCase() + name.slice(1);
 
 // ---------------------------------------------------------------------------
 // hex helpers
@@ -144,6 +191,11 @@ function orderForKey(key, value) {
   if (key === '') return ORDER.top;
   if (key === 'meta') return ORDER.meta;
   if (key === 'primitives') return ORDER.primitives;
+  if (key === 'typography') return ORDER.primitives_typography;
+  if (key === 'fontFamily') return ORDER.primitives_typography_fontFamily;
+  if (key === 'fontSize') return ORDER.primitives_typography_fontSize;
+  if (key === 'lineHeight') return ORDER.primitives_typography_lineHeight;
+  if (key === 'letterSpacing') return ORDER.primitives_typography_letterSpacing;
   if (key === 'semantic') return ORDER.semantic;
   if (key === 'composite') return ORDER.composite;
   if (key === 'launcher' && value && typeof value === 'object' && 'app-material-strength' in value) return ORDER.composite_launcher;

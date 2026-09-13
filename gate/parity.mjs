@@ -154,6 +154,25 @@ if (existsSync(verifyShowcaseParityPath)) {
   console.log(`[gate] OK — Cross-Stack Showcase Parity Gate passed (${parityRes.checkedCount} components verified 1:1 across React & Qt)`);
 }
 
+// 2.6 Mandatory Cross-Stack Typography Contract Gate
+// React and Qt must resolve identical families, sizes, weights, line heights and
+// letter spacings, and no library component may hard-code a font size Qt cannot
+// learn from the shared scale. See docs/architecture/typography-system.md.
+const typographyCheckPath = resolve(root, 'scripts/check-typography-parity.mjs');
+if (existsSync(typographyCheckPath)) {
+  const { verifyTypographyParity } = await import(pathToFileURL(typographyCheckPath).href);
+  const typoRes = verifyTypographyParity({ quiet: true });
+  for (const warn of typoRes.warnings) console.warn(`[gate] WARN ${warn}`);
+  if (!typoRes.ok) {
+    console.error(`[gate] FAIL: Cross-Stack Typography Contract Gate failed (${typoRes.errors.length} drift(s)):`);
+    for (const err of typoRes.errors) {
+      console.error(`  - ${err}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Cross-Stack Typography Contract Gate passed (${typoRes.checkedCount} values agree across tokens.css, Typography.generated.qml and qt/src)`);
+}
+
 // 3. Executable Behavioral Parity Checks
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');
 if (existsSync(qtExe)) {

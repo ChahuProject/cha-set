@@ -11,7 +11,7 @@ ApplicationWindow {
     visible: true
     title: "ChaSet Studio"
     color: win.cBg
-    font.family: "Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif"
+    font.family: Typography.familySans
 
     // ---- Reactive Theme State ----
     property string activePage: (typeof startupPage !== "undefined" && startupPage !== "") ? startupPage : "intro"   // "intro" | "tokens" | "theme-tuner" | "button" | "scroll-area"
@@ -945,7 +945,7 @@ ApplicationWindow {
                             Rectangle {
                                 width: 32; height: 18; radius: 3; color: win.cCard; border.color: win.cBorder
                                 anchors.verticalCenter: parent.verticalCenter
-                                Text { anchors.centerIn: parent; text: "⌘K"; color: win.cMutedFg; font.pixelSize: 10; font.family: "Consolas" }
+                                Text { anchors.centerIn: parent; text: "⌘K"; color: win.cMutedFg; font.pixelSize: 10; font.family: Typography.familyMono }
                             }
                         }
 
@@ -1057,7 +1057,7 @@ ApplicationWindow {
                                     color: win.cMutedFg
                                     font.pixelSize: 11
                                     font.weight: Font.DemiBold
-                                    font.family: "Segoe UI, sans-serif"
+                                    font.family: Typography.familySans
                                 }
 
                                 Item { width: 1; height: 4 }

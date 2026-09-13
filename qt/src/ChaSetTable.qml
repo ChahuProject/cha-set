@@ -108,7 +108,7 @@ Rectangle {
                             horizontalAlignment: root.getAlignment(modelData ? modelData.align : "left")
                             text: modelData ? (modelData.title || "") : ""
                             color: root.cSubduedText
-                            font.pixelSize: 12
+                            font.pixelSize: Typography.sizeSmall
                             font.bold: true
                             elide: Text.ElideRight
                         }
@@ -215,7 +215,7 @@ Rectangle {
                                                 visible: comboRow.index > 0
                                                 text: "or"
                                                 color: root.cSubduedText
-                                                font.pixelSize: 11
+                                                font.pixelSize: Typography.sizeCaption
                                                 anchors.verticalCenter: parent.verticalCenter
                                             }
 
@@ -236,8 +236,8 @@ Rectangle {
                                                         anchors.centerIn: parent
                                                         text: chipRect.modelData ? String(chipRect.modelData) : ""
                                                         color: root.cText
-                                                        font.pixelSize: 10
-                                                        font.family: "monospace"
+                                                        font.pixelSize: Typography.sizeMicro
+                                                        font.family: Typography.familyMono
                                                         font.bold: true
                                                     }
                                                 }
@@ -260,9 +260,9 @@ Rectangle {
                                     return val !== undefined && val !== null ? String(val) : "";
                                 }
                                 color: Boolean(columnDef && columnDef.code) ? ThemeTokens.accent : root.cText
-                                font.family: (columnDef && columnDef.code) ? "Consolas, monospace" : ""
+                                font.family: (columnDef && columnDef.code) ? Typography.familyMono : ""
                                 font.bold: Boolean(columnDef && columnDef.code)
-                                font.pixelSize: 12
+                                font.pixelSize: Typography.sizeSmall
                                 elide: Text.ElideRight
                             }
                         }
@@ -298,7 +298,7 @@ Rectangle {
                 anchors.centerIn: parent
                 text: "No data available"
                 color: root.cSubduedText
-                font.pixelSize: 12
+                font.pixelSize: Typography.sizeSmall
             }
         }
 
@@ -314,7 +314,7 @@ Rectangle {
                 anchors.centerIn: parent
                 text: root.caption
                 color: root.cSubduedText
-                font.pixelSize: 12
+                font.pixelSize: Typography.sizeSmall
             }
         }
     }

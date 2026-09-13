@@ -91,9 +91,9 @@ export function VirtualTree<T>({
           }}
         >
           {hasChildren ? (
-            <span className="text-[10px] w-3.5 text-muted-foreground">{isExpanded ? '▼' : '▶'}</span>
+            <span className="text-micro w-3.5 text-muted-foreground">{isExpanded ? '▼' : '▶'}</span>
           ) : (
-            <span className="w-3.5 text-[10px] text-muted-foreground/50">•</span>
+            <span className="w-3.5 text-micro text-muted-foreground/50">•</span>
           )}
           <span className="font-mono">
             {(node as any)?.label ?? (node as any)?.name ?? (node as any)?.title ?? String(node)}

@@ -117,7 +117,7 @@ Item {
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "🔍"
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                     }
 
                     ChaSetInput {
@@ -162,7 +162,7 @@ Item {
                                     anchors.verticalCenter: parent.verticalCenter
                                     text: parent.parent.modelData.header || ""
                                     color: ThemeTokens.subduedText
-                                    font.pixelSize: 11
+                                    font.pixelSize: Typography.sizeCaption
                                     font.weight: Font.DemiBold
                                 }
 
@@ -170,7 +170,7 @@ Item {
                                     anchors.verticalCenter: parent.verticalCenter
                                     text: root.sortKey === parent.parent.modelData.key ? (root.sortAsc ? "▲" : "▼") : ""
                                     color: ThemeTokens.text
-                                    font.pixelSize: 10
+                                    font.pixelSize: Typography.sizeMicro
                                 }
                             }
 
@@ -245,7 +245,7 @@ Item {
                                     anchors.verticalCenter: parent.verticalCenter
                                     text: String(rowDelegate.modelData[cellDelegate.modelData.key] ?? "")
                                     color: ThemeTokens.text
-                                    font.pixelSize: 12
+                                    font.pixelSize: Typography.sizeSmall
                                     font.weight: rowDelegate.isSelectedRow ? Font.Medium : Font.Normal
                                     elide: Text.ElideRight
                                     width: parent.width - 8
@@ -279,7 +279,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     text: "Page " + root.currentPage + " of " + root.totalPages
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 11
+                    font.pixelSize: Typography.sizeCaption
                 }
 
                 Row {

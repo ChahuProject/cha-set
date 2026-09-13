@@ -89,9 +89,9 @@ Rectangle {
         Text {
             id: textItem
             text: root.text
-            font.pixelSize: root.isSm ? 12 : 13
+            font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
             font.weight: root.isSelected ? Font.Medium : Font.Normal
-            font.family: "Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif"
+            font.family: Typography.familySans
             color: {
                 if (root.isSelected || root.isHovered) {
                     return ThemeTokens.dark ? Qt.rgba(248.0 / 255.0, 250.0 / 255.0, 252.0 / 255.0, 1.0) : Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0);
@@ -119,7 +119,7 @@ Rectangle {
                 id: badgeText
                 anchors.centerIn: parent
                 text: root.badge
-                font.pixelSize: root.isSm ? 10 : 11
+                font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeCaption
                 font.weight: Font.Medium
                 color: root.isSelected ? ThemeTokens.text : ThemeTokens.subduedText
             }

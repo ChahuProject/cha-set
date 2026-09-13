@@ -526,14 +526,14 @@ Item {
                         Text {
                             text: "Color"
                             color: ThemeTokens.text
-                            font.pixelSize: 12
+                            font.pixelSize: Typography.sizeSmall
                             font.weight: Font.DemiBold
                         }
                         Text {
                             text: root.hex
                             color: ThemeTokens.subduedText
-                            font.family: "monospace"
-                            font.pixelSize: 11
+                            font.family: Typography.familyMono
+                            font.pixelSize: Typography.sizeCaption
                         }
                     }
                 }
@@ -567,7 +567,7 @@ Item {
                                 Text {
                                     anchors.centerIn: parent
                                     text: modelData.label
-                                    font.pixelSize: root.isSm ? 10 : 11
+                                    font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeCaption
                                     font.weight: root.activePanel === modelData.id ? Font.DemiBold : Font.Normal
                                     color: root.activePanel === modelData.id ? ThemeTokens.text : ThemeTokens.subduedText
                                 }
@@ -998,7 +998,7 @@ Item {
                     Text {
                         text: "HEX"
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 11
+                        font.pixelSize: Typography.sizeCaption
                         font.weight: Font.DemiBold
                         anchors.verticalCenter: parent.verticalCenter
                     }
@@ -1021,8 +1021,8 @@ Item {
                             anchors.rightMargin: 4
                             verticalAlignment: TextInput.AlignVCenter
                             text: root.hex
-                            font.family: "monospace"
-                            font.pixelSize: 12
+                            font.family: Typography.familyMono
+                            font.pixelSize: Typography.sizeSmall
                             color: ThemeTokens.text
                             enabled: !root.disabled
                             selectByMouse: true
@@ -1079,7 +1079,7 @@ Item {
                             Text {
                                 anchors.centerIn: parent
                                 text: modelData.label
-                                font.pixelSize: 10
+                                font.pixelSize: Typography.sizeMicro
                                 font.weight: modelData.active ? Font.DemiBold : Font.Normal
                                 color: modelData.active ? ThemeTokens.text : ThemeTokens.subduedText
                             }
@@ -1347,8 +1347,8 @@ Item {
             Text {
                 text: root.hex
                 color: ThemeTokens.text
-                font.family: "monospace"
-                font.pixelSize: root.isSm ? 11 : 12
+                font.family: Typography.familyMono
+                font.pixelSize: root.isSm ? Typography.sizeCaption : Typography.sizeSmall
                 font.weight: Font.DemiBold
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -1356,7 +1356,7 @@ Item {
             Text {
                 text: "▾"
                 color: ThemeTokens.subduedText
-                font.pixelSize: 10
+                font.pixelSize: Typography.sizeMicro
                 anchors.verticalCenter: parent.verticalCenter
             }
         }

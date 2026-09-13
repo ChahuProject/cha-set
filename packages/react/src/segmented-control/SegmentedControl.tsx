@@ -32,7 +32,7 @@ export const segmentedItemVariants = cva(
   {
     variants: {
       size: {
-        sm: 'h-[1.125rem] px-2 text-[0.6875rem] leading-none',
+        sm: 'h-[1.125rem] px-2 text-caption leading-none',
         default: 'h-6 px-2.5 text-xs',
         lg: 'h-8 px-3 text-sm',
       },
@@ -239,7 +239,7 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
                   <span
                     data-slot="segmented-badge"
                     className={cn(
-                      'inline-flex shrink-0 items-center justify-center rounded-full px-1.5 text-[0.625rem] font-semibold leading-tight',
+                      'inline-flex shrink-0 items-center justify-center rounded-full px-1.5 text-micro font-semibold leading-tight',
                       isSelected
                         ? 'bg-primary/10 text-primary'
                         : 'bg-muted-foreground/15 text-muted-foreground'

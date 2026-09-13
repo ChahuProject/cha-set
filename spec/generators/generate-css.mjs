@@ -16,7 +16,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateSpec } from '../validate-tokens.mjs';
 import { loadTokensSync } from '../load-tokens.mjs';
-import { selectorFor, ORDER } from '../token-helpers.mjs';
+import { selectorFor, ORDER, pxToRem, ratioValue, emValue } from '../token-helpers.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -107,13 +107,39 @@ function selectorBlock(selector, decls) {
   return `${selector} {\n${decls.join('\n')}\n}`;
 }
 
+// --- typography emission ---------------------------------------------------
+// Formatting lives in spec/token-helpers.mjs so the parity checker validates the
+// exact strings emitted here (see scripts/check-typography-parity.mjs).
+
+/**
+ * Emit the mode-invariant typography custom properties into a declaration list.
+ * Values are identical in :root and .dark — typography never varies by mode,
+ * but both blocks must carry them so a host that only imports .dark still
+ * resolves every reference.
+ */
+function typographyDecls(prefix, primitives) {
+  const out = [];
+  const typo = primitives.typography ?? {};
+
+  for (const [fam, def] of Object.entries(typo.fontFamily ?? {})) {
+    out.push(decl(`${prefix}font-${fam}`, def.css));
+  }
+  const weight = primitives.fontWeight ?? {};
+  for (const [k, v] of Object.entries(weight)) out.push(decl(`${prefix}font-weight-${k}`, String(v)));
+
+  for (const [k, v] of Object.entries(typo.fontSize ?? {})) out.push(decl(`${prefix}text-${k}`, pxToRem(v)));
+  for (const [k, v] of Object.entries(typo.lineHeight ?? {})) out.push(decl(`${prefix}leading-${k}`, ratioValue(v)));
+  for (const [k, v] of Object.entries(typo.letterSpacing ?? {})) out.push(decl(`${prefix}tracking-${k}`, emValue(v)));
+  return out;
+}
+
 // ---------------- Flavor 1: library (--cs-*) ----------------
 {
   const { light, dark } = semanticBlocks('--cs-');
-  const weight = spec.primitives.fontWeight ?? {};
-  for (const [k, v] of Object.entries(weight)) light.push(decl(`--cs-font-weight-${k}`, String(v)));
-  // keep .dark block aligned (weights are mode-invariant)
-  for (const [k, v] of Object.entries(weight)) dark.push(decl(`--cs-font-weight-${k}`, String(v)));
+  // Typography is mode-invariant, so both blocks carry the same declarations.
+  const typo = typographyDecls('--cs-', spec.primitives);
+  light.push(...typo);
+  dark.push(...typo);
 
   const motion = spec.primitives.motion ?? {};
   for (const [k, v] of Object.entries(motion)) light.push(decl(`--cs-motion-${k}`, `${v}ms`));

@@ -4,7 +4,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { HEX8, OKLCH_RE, COLOR_MIX_RE, VAR_RE, hexToRgbf } from './token-helpers.mjs';
+import { HEX8, OKLCH_RE, COLOR_MIX_RE, VAR_RE, hexToRgbf, DIMENSION_ORDER, FONT_FAMILY_ORDER, FONT_SIZE_ORDER, LINE_HEIGHT_ORDER, LETTER_SPACING_ORDER } from './token-helpers.mjs';
 
 function hasBalancedParens(s) {
   let d = 0;
@@ -42,6 +42,69 @@ export function validateSpec(spec) {
     }
   }
   const semanticKeys = new Set(Object.keys(spec.semantic ?? {}));
+
+  // --- primitives ---------------------------------------------------------
+  // `size` is dimensional only; font sizes have exactly one home in
+  // `typography.fontSize` (qt-mapping re-exports them under the frozen
+  // fontSize* field names, so the Qt contract is unaffected).
+  const primSize = spec.primitives?.size ?? {};
+  for (const k of DIMENSION_ORDER) {
+    if (typeof primSize[k] !== 'number') fail(`primitives.size.${k}: missing or not a number`);
+  }
+  for (const k of Object.keys(primSize)) {
+    if (!DIMENSION_ORDER.includes(k)) {
+      fail(`primitives.size.${k}: unknown key — font sizes belong in primitives.typography.fontSize`);
+    }
+  }
+
+  const typo = spec.primitives?.typography;
+  if (!typo || typeof typo !== 'object') {
+    fail('primitives.typography: missing');
+  } else {
+    // Families: `css` is a fallback stack, `qt` must be ONE family name —
+    // Qt does not resolve comma-separated lists (see docs/architecture/typography-system.md).
+    for (const fam of FONT_FAMILY_ORDER) {
+      const def = typo.fontFamily?.[fam];
+      if (!def || typeof def !== 'object') { fail(`primitives.typography.fontFamily.${fam}: missing`); continue; }
+      if (typeof def.css !== 'string' || !def.css.trim()) fail(`primitives.typography.fontFamily.${fam}.css: must be a non-empty string`);
+      if (typeof def.qt !== 'string' || !def.qt.trim()) fail(`primitives.typography.fontFamily.${fam}.qt: must be a non-empty string`);
+      else if (def.qt.includes(',')) fail(`primitives.typography.fontFamily.${fam}.qt: "${def.qt}" must be a single family name — Qt does not resolve comma lists`);
+    }
+    for (const fam of Object.keys(typo.fontFamily ?? {})) {
+      if (!FONT_FAMILY_ORDER.includes(fam)) fail(`primitives.typography.fontFamily.${fam}: unknown family (expected ${FONT_FAMILY_ORDER.join(', ')})`);
+    }
+    // Sizes: positive px integers, emitted as rem on CSS and px on Qt.
+    const fs = typo.fontSize ?? {};
+    for (const k of FONT_SIZE_ORDER) {
+      const v = fs[k];
+      if (typeof v !== 'number' || !(v > 0)) fail(`primitives.typography.fontSize.${k}: missing or not a positive number`);
+      else if (!Number.isInteger(v)) fail(`primitives.typography.fontSize.${k}: ${v} must be an integer px value (CSS emits it as rem via ×0.0625)`);
+    }
+    for (const k of Object.keys(fs)) if (!FONT_SIZE_ORDER.includes(k)) fail(`primitives.typography.fontSize.${k}: unknown size`);
+    // Line heights: unitless ratios; Qt multiplies by the resolved font size.
+    const lh = typo.lineHeight ?? {};
+    for (const k of LINE_HEIGHT_ORDER) {
+      const v = lh[k];
+      if (typeof v !== 'number' || !(v > 0)) fail(`primitives.typography.lineHeight.${k}: missing or not a positive number`);
+    }
+    for (const k of Object.keys(lh)) if (!LINE_HEIGHT_ORDER.includes(k)) fail(`primitives.typography.lineHeight.${k}: unknown line height`);
+    // Letter spacing: em ratios (Tailwind tracking-* scale semantics).
+    const ls = typo.letterSpacing ?? {};
+    for (const k of LETTER_SPACING_ORDER) {
+      const v = ls[k];
+      if (typeof v !== 'number') fail(`primitives.typography.letterSpacing.${k}: missing or not a number`);
+      else if (Math.abs(v) > 0.5) fail(`primitives.typography.letterSpacing.${k}: ${v} looks like px — the scale is em ratios`);
+    }
+    for (const k of Object.keys(ls)) if (!LETTER_SPACING_ORDER.includes(k)) fail(`primitives.typography.letterSpacing.${k}: unknown letter spacing`);
+  }
+
+  const fw = spec.primitives?.fontWeight ?? {};
+  for (const [name, want] of [['regular', 400], ['medium', 500], ['semibold', 600], ['bold', 700]]) {
+    const v = fw[name];
+    if (typeof v !== 'number') fail(`primitives.fontWeight.${name}: missing or not a number`);
+    else if (Math.round(v) !== want) fail(`primitives.fontWeight.${name}: ${v} must be ${want}`);
+  }
+
   for (const [name, def] of Object.entries(spec.semantic ?? {})) {
     if (!def.$type) fail(`semantic.${name}: missing $type`);
     if (!def.presets || typeof def.presets !== 'object') { fail(`semantic.${name}: missing presets`); continue; }

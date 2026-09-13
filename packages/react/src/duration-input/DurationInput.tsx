@@ -256,7 +256,7 @@ export function DurationInput({
       stepper: 'w-3.5',
       icon: 'size-2.5',
       button: 'h-7 px-1.5 text-xs',
-      unit: 'w-12 text-[0.5625rem]',
+      unit: 'w-12 text-nano',
     },
     default: {
       box: 'h-8',
@@ -264,7 +264,7 @@ export function DurationInput({
       stepper: 'w-4',
       icon: 'size-3',
       button: 'h-8 px-2 text-xs',
-      unit: 'w-14 text-[0.625rem]',
+      unit: 'w-14 text-micro',
     },
     lg: {
       box: 'h-9',
@@ -385,7 +385,7 @@ export function DurationInput({
               {presets.map((group, gIdx) => (
                 <React.Fragment key={group.label}>
                   {gIdx > 0 && <DropdownMenuSeparator />}
-                  <DropdownMenuLabel className="text-[0.6875rem] text-muted-foreground">
+                  <DropdownMenuLabel className="text-caption text-muted-foreground">
                     {group.label}
                   </DropdownMenuLabel>
                   {group.items.map((item) => (

@@ -73,7 +73,7 @@ DocLayout {
                     text: "Action: " + root.lastAction
                     color: ThemeTokens.subduedText
                     font.pixelSize: 12
-                    font.family: "monospace"
+                    font.family: Typography.familyMono
                 }
             }
         }

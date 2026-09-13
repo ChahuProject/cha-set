@@ -8,8 +8,11 @@ Text {
 
     property bool isDark: ThemeTokens.dark
 
-    font.pixelSize: 14
+    font.pixelSize: Typography.sizeBody
     font.weight: Font.Normal
+    // React twin: text-sm -> 14px on a 20px line box.
+    lineHeight: Typography.lineHeightPx(Typography.sizeBody, "body")
+    lineHeightMode: Text.FixedHeight
     color: isDark ? Qt.rgba(148/255, 163/255, 184/255, 1.0) : Qt.rgba(100/255, 116/255, 139/255, 1.0)
     wrapMode: Text.Wrap
     width: parent ? parent.width : implicitWidth

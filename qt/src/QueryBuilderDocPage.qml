@@ -87,7 +87,7 @@ DocLayout {
                         text: JSON.stringify({ connector: qb.connector, rules: qb.rules })
                         color: ThemeTokens.subduedText
                         font.pixelSize: 10
-                        font.family: "monospace"
+                        font.family: Typography.familyMono
                         wrapMode: Text.WrapAnywhere
                     }
                 }

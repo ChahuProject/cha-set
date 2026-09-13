@@ -347,7 +347,7 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
         {shortcut && (
           <kbd
             data-slot="tooltip-shortcut"
-            className="inline-flex items-center justify-center rounded px-1.5 py-0.5 text-[0.6875rem] font-mono font-medium tracking-tight bg-primary-foreground/20 text-primary-foreground/90 border border-primary-foreground/20"
+            className="inline-flex items-center justify-center rounded px-1.5 py-0.5 text-caption font-mono font-medium tracking-tight bg-primary-foreground/20 text-primary-foreground/90 border border-primary-foreground/20"
           >
             {shortcut}
           </kbd>

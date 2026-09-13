@@ -60,7 +60,7 @@ DocLayout {
                     text: "Recorded accelerator: " + root.boundKey
                     color: ThemeTokens.text
                     font.pixelSize: 12
-                    font.family: "monospace"
+                    font.family: Typography.familyMono
                 }
             }
         }

@@ -110,7 +110,7 @@ DocLayout {
                     text: "Selected Node ID: " + root.selectedPath
                     color: ThemeTokens.text
                     font.pixelSize: 12
-                    font.family: "monospace"
+                    font.family: Typography.familyMono
                 }
             }
         }

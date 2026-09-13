@@ -236,6 +236,6 @@ QtObject {
     readonly property int chevronW: 14
     readonly property int fontSizeTitle: 28
     readonly property int fontSizeHeading: 16
-    readonly property int fontSizeBody: 13
+    readonly property int fontSizeBody: 14
     readonly property int fontSizeSmall: 12
 }

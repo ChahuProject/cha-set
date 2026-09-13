@@ -1,0 +1,25 @@
+{
+  "$comment": "Deliberate, reviewed exceptions to the cross-stack typography gate (scripts/check-typography-parity.mjs). Every entry must state WHY the literal cannot use a Typography token. Keep this list short and shrinking — it is a debt ledger, not a dumping ground.",
+  "qtFontSizeLiterals": [
+    {
+      "file": "qt/src/ChaSetDurationInput.qml",
+      "contains": "font.pixelSize: 8",
+      "reason": "Stepper caret glyph (▴/▾) standing in for a React <svg class=\"size-2.5\">. It is an icon, not a text role, and has no React font-size counterpart."
+    },
+    {
+      "file": "qt/src/ChaSetSwitch.qml",
+      "contains": "? 8 :",
+      "reason": "Loading spinner glyph (◐) drawn as a Text inside the switch thumb — an icon stand-in, not a text role."
+    },
+    {
+      "file": "qt/src/ChaSetSegmentedControl.qml",
+      "contains": "Math.max(8,",
+      "reason": "FontMetrics badge measurement used only to compute content width; never painted. The floor is a guard against negative deltas, not a type size."
+    },
+    {
+      "file": "qt/src/ChaSetColorPicker.qml",
+      "contains": "? 8 : 9",
+      "reason": "Dense-mode slider label: 8/9px sub-nano jitter below the scale floor (Typography.sizeNano = 9). Pending a design call on whether dense mode should snap to 9."
+    }
+  ]
+}

@@ -44,7 +44,7 @@ const variantStyles: Record<BadgeVariant, string> = {
 
 const sizeStyles: Record<BadgeSize, string> = {
   default: 'h-5 px-2 text-xs rounded-4xl gap-1',
-  sm: 'h-4 px-1.5 text-[0.625rem] font-mono rounded-4xl gap-0.5',
+  sm: 'h-4 px-1.5 text-micro font-mono rounded-4xl gap-0.5',
 };
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(

@@ -254,7 +254,7 @@ export function RangeSlider({
           onKeyDown={handleKeyDown('low')}
         >
           {showLowTooltip && (
-            <div className="absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-popover px-1.5 py-0.5 text-[0.6875rem] font-medium text-popover-foreground shadow-sm border border-border pointer-events-none tabular-nums whitespace-nowrap">
+            <div className="absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-popover px-1.5 py-0.5 text-caption font-medium text-popover-foreground shadow-sm border border-border pointer-events-none tabular-nums whitespace-nowrap">
               {formatValue ? formatValue(currentRange[0]) : currentRange[0]}
             </div>
           )}
@@ -287,7 +287,7 @@ export function RangeSlider({
           onKeyDown={handleKeyDown('high')}
         >
           {showHighTooltip && (
-            <div className="absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-popover px-1.5 py-0.5 text-[0.6875rem] font-medium text-popover-foreground shadow-sm border border-border pointer-events-none tabular-nums whitespace-nowrap">
+            <div className="absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-popover px-1.5 py-0.5 text-caption font-medium text-popover-foreground shadow-sm border border-border pointer-events-none tabular-nums whitespace-nowrap">
               {formatValue ? formatValue(currentRange[1]) : currentRange[1]}
             </div>
           )}

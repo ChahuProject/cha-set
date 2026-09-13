@@ -120,7 +120,7 @@ Item {
             id: labelText
             text: root.label
             color: ThemeTokens.subduedText
-            font.pixelSize: 12
+            font.pixelSize: Typography.sizeSmall
             font.weight: Font.Medium
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: root.labelPosition === "left" ? leftLineWrapper.right : undefined

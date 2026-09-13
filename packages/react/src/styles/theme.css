@@ -73,4 +73,100 @@
   --ease-standard: var(--cs-ease-standard);
   --ease-emphasized: var(--cs-ease-emphasized);
   --ease-entrance: var(--cs-ease-entrance);
+
+  /* -------------------------------------------------------------------------
+   * Typography — one contract for React and Qt.
+   *
+   * Every value below resolves to a generated tokens.css custom property
+   * (spec/tokens/primitives.json -> primitives.typography / primitives.fontWeight
+   * via pnpm gen:css). The Qt side reads the same numbers from
+   * qt/src/Typography.generated.qml, so families, sizes, weights, line heights
+   * and letter spacings cannot drift between the stacks.
+   * See docs/architecture/typography-system.md.
+   *
+   * The CORE Tailwind namespaces (font-*, text-*, leading-*, tracking-*) are
+   * REDEFINED to point at the tokens instead of being duplicated, so existing
+   * markup (`text-xs`, `font-mono`, `leading-normal`, `tracking-wider`) silently
+   * becomes token-driven while resolving to the exact values it already had.
+   * No markup churn, no visual change on Web.
+   * ---------------------------------------------------------------------- */
+
+  /* Families. `--font-mono` carries the code-block stack; `--font-sans` is UI. */
+  --font-sans: var(--cs-font-sans);
+  --font-mono: var(--cs-font-mono);
+
+  /* Weights: font-regular / font-medium / font-semibold / font-bold. */
+  --font-weight-regular: var(--cs-font-weight-regular);
+  --font-weight-medium: var(--cs-font-weight-medium);
+  --font-weight-semibold: var(--cs-font-weight-semibold);
+  --font-weight-bold: var(--cs-font-weight-bold);
+
+  /* Core size scale pinned to the token values (identical computed px). */
+  --text-xs: var(--cs-text-small);
+  --text-xs--line-height: var(--cs-leading-small);
+  --text-sm: var(--cs-text-body);
+  --text-sm--line-height: var(--cs-leading-body);
+  --text-base: var(--cs-text-heading);
+  --text-base--line-height: var(--cs-leading-heading);
+  --text-lg: var(--cs-text-subheading);
+  --text-lg--line-height: var(--cs-leading-subheading);
+
+  /* ChaSet-named sizes for new markup: text-nano … text-title. */
+  --text-nano: var(--cs-text-nano);
+  --text-nano--line-height: var(--cs-leading-nano);
+  --text-micro: var(--cs-text-micro);
+  --text-micro--line-height: var(--cs-leading-micro);
+  --text-caption: var(--cs-text-caption);
+  --text-caption--line-height: var(--cs-leading-caption);
+  --text-small: var(--cs-text-small);
+  --text-small--line-height: var(--cs-leading-small);
+  --text-body: var(--cs-text-body);
+  --text-body--line-height: var(--cs-leading-body);
+  --text-heading: var(--cs-text-heading);
+  --text-heading--line-height: var(--cs-leading-heading);
+  --text-subheading: var(--cs-text-subheading);
+  --text-subheading--line-height: var(--cs-leading-subheading);
+  --text-title: var(--cs-text-title);
+  --text-title--line-height: var(--cs-leading-title);
+
+  /* Leading scale: leading-none … leading-code (unitless ratios). */
+  --leading-none: var(--cs-leading-none);
+  --leading-tight: var(--cs-leading-tight);
+  --leading-snug: var(--cs-leading-snug);
+  --leading-normal: var(--cs-leading-normal);
+  --leading-relaxed: var(--cs-leading-relaxed);
+  --leading-code: var(--cs-leading-code);
+
+  /* Tracking scale: tracking-tighter … tracking-widest (em ratios). */
+  --tracking-tighter: var(--cs-tracking-tighter);
+  --tracking-tight: var(--cs-tracking-tight);
+  --tracking-normal: var(--cs-tracking-normal);
+  --tracking-wide: var(--cs-tracking-wide);
+  --tracking-wider: var(--cs-tracking-wider);
+  --tracking-widest: var(--cs-tracking-widest);
+}
+
+/* ---------------------------------------------------------------------------
+ * Composite typography roles.
+ *
+ * A role atom sets family + size + line-height in one class, so a component
+ * never depends on the emitted order of `text-*` versus `leading-*` (both write
+ * `line-height`, and utility order is not a contract). Every value is a
+ * generated token, so the Qt twin — Typography.generated.qml — resolves the
+ * same family, size and line height. See docs/architecture/typography-system.md.
+ * ------------------------------------------------------------------------ */
+
+/* Code body: mono, small (12px), code leading (1.4 -> 16.8px). */
+@utility cs-code {
+  font-family: var(--cs-font-mono);
+  font-size: var(--cs-text-small);
+  font-weight: var(--cs-font-weight-regular);
+  line-height: var(--cs-leading-code);
+}
+
+/* Code chrome (block header label, file tabs): mono, caption (11px). */
+@utility cs-code-label {
+  font-family: var(--cs-font-mono);
+  font-size: var(--cs-text-caption);
+  line-height: var(--cs-leading-caption);
 }

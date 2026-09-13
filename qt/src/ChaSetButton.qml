@@ -56,12 +56,13 @@ Item {
     }
 
     // Font size parity: xs: 11, sm: 12, default/md/icon: 14, lg: 14
+    // (React twin: text-xs / text-xs / text-sm / text-sm -> the shared scale).
     function fontSize() {
         switch (size) {
-        case "xs": return 11
-        case "sm": return 12
-        case "lg": return 14
-        default:   return 14
+        case "xs": return Typography.sizeCaption
+        case "sm": return Typography.sizeSmall
+        case "lg": return Typography.sizeBody
+        default:   return Typography.sizeBody
         }
     }
 
@@ -312,7 +313,7 @@ Item {
             color: root.fgColor()
             font.pixelSize: root.fontSize()
             font.weight: Font.DemiBold
-            font.family: "Segoe UI"
+            font.family: Typography.familySans
             renderType: Text.NativeRendering
             font.underline: root.variant === "link" && root.effectiveHovered
             horizontalAlignment: Text.AlignHCenter

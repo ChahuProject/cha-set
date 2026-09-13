@@ -123,7 +123,7 @@ Item {
             anchors.centerIn: parent
             text: "▾"
             color: ThemeTokens.subduedText
-            font.pixelSize: 11
+            font.pixelSize: Typography.sizeCaption
         }
 
         MouseArea {
@@ -199,7 +199,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     text: root.clearLabel
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
 
                 MouseArea {
@@ -233,7 +233,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         text: String(parent.modelData)
                         color: ThemeTokens.text
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                         font.weight: parent.isSelected ? Font.DemiBold : Font.Normal
                     }
 
@@ -243,7 +243,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         text: root.formatPresetTag(parent.modelData)
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 10
+                        font.pixelSize: Typography.sizeMicro
                     }
 
                     MouseArea {

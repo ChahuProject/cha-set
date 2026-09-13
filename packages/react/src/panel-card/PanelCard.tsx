@@ -151,7 +151,7 @@ export function PanelCardHeader({
               {title && <span className="truncate">{title}</span>}
             </div>
             {description && (
-              <p className="text-[0.6875rem] text-muted-foreground leading-normal">
+              <p className="text-caption text-muted-foreground leading-normal">
                 {description}
               </p>
             )}
