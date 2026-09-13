@@ -79,6 +79,8 @@ Rectangle {
             width: parent.width
             height: root.headerHeight
             color: root.cHeaderBg
+            topLeftRadius: Math.max(0, root.radius - 1)
+            topRightRadius: Math.max(0, root.radius - 1)
 
             Rectangle {
                 anchors.bottom: parent.bottom
@@ -128,6 +130,10 @@ Rectangle {
                 width: mainLayout.width
                 height: root.rowHeight
 
+                property bool isLastRow: index === (root.rows.length - 1) && (!root.caption || root.caption.length === 0)
+                bottomLeftRadius: isLastRow ? Math.max(0, root.radius - 1) : 0
+                bottomRightRadius: isLastRow ? Math.max(0, root.radius - 1) : 0
+
                 property bool isSelected: root.selectedIndex === index
                 property bool isHovered: rowMouseArea.containsMouse
 
@@ -143,6 +149,7 @@ Rectangle {
                     height: 1
                     color: root.cBorder
                     opacity: 0.7
+                    visible: !rowItem.isLastRow
                 }
 
                 Row {
@@ -159,6 +166,7 @@ Rectangle {
                             width: root.getColWidth(index, rowItem.width)
                             height: rowItem.height
 
+                            // Badge rendering
                             ChaSetBadge {
                                 visible: Boolean(columnDef && columnDef.badge)
                                 anchors.verticalCenter: parent.verticalCenter
@@ -178,8 +186,69 @@ Rectangle {
                                 }
                             }
 
+                            // Key Combo Chips rendering (kbd)
+                            Row {
+                                id: kbdContainer
+                                visible: Boolean(columnDef && columnDef.kbd)
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                anchors.leftMargin: 12
+                                spacing: 6
+
+                                readonly property string rawKeyStr: {
+                                    if (!rowRecord || !columnDef || columnDef.key === undefined) return "";
+                                    var val = rowRecord[columnDef.key];
+                                    return val !== undefined && val !== null ? String(val) : "";
+                                }
+
+                                readonly property var comboList: rawKeyStr.length > 0 ? rawKeyStr.split(" / ") : []
+
+                                    Repeater {
+                                        model: kbdContainer.comboList
+                                        delegate: Row {
+                                            id: comboRow
+                                            required property var modelData
+                                            required property int index
+                                            spacing: 4
+
+                                            Text {
+                                                visible: comboRow.index > 0
+                                                text: "or"
+                                                color: root.cSubduedText
+                                                font.pixelSize: 11
+                                                anchors.verticalCenter: parent.verticalCenter
+                                            }
+
+                                            Repeater {
+                                                model: comboRow.modelData ? String(comboRow.modelData).split(" + ") : []
+                                                delegate: Rectangle {
+                                                    id: chipRect
+                                                    required property var modelData
+                                                    height: 20
+                                                    width: Math.max(18, keyChipLabel.implicitWidth + 10)
+                                                    radius: 4
+                                                    color: ThemeTokens.dark ? Qt.rgba(1, 1, 1, 0.08) : Qt.rgba(0, 0, 0, 0.05)
+                                                    border.color: root.cBorder
+                                                    border.width: 1
+
+                                                    Text {
+                                                        id: keyChipLabel
+                                                        anchors.centerIn: parent
+                                                        text: chipRect.modelData ? String(chipRect.modelData) : ""
+                                                        color: root.cText
+                                                        font.pixelSize: 10
+                                                        font.family: "monospace"
+                                                        font.bold: true
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                            }
+
+                            // Standard Text / Code rendering
                             Text {
-                                visible: !Boolean(columnDef && columnDef.badge)
+                                visible: !Boolean(columnDef && (columnDef.badge || columnDef.kbd))
                                 anchors.fill: parent
                                 anchors.leftMargin: 12
                                 anchors.rightMargin: 12
@@ -190,7 +259,9 @@ Rectangle {
                                     var val = rowRecord[columnDef.key];
                                     return val !== undefined && val !== null ? String(val) : "";
                                 }
-                                color: root.cText
+                                color: Boolean(columnDef && columnDef.code) ? ThemeTokens.accent : root.cText
+                                font.family: (columnDef && columnDef.code) ? "Consolas, monospace" : ""
+                                font.bold: Boolean(columnDef && columnDef.code)
                                 font.pixelSize: 12
                                 elide: Text.ElideRight
                             }
@@ -220,6 +291,8 @@ Rectangle {
             width: parent.width
             height: 60
             color: "transparent"
+            bottomLeftRadius: (!root.caption || root.caption.length === 0) ? Math.max(0, root.radius - 1) : 0
+            bottomRightRadius: (!root.caption || root.caption.length === 0) ? Math.max(0, root.radius - 1) : 0
 
             Text {
                 anchors.centerIn: parent

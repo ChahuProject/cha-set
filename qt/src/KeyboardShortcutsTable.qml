@@ -35,8 +35,9 @@ Column {
 
     ChaSetTable {
         width: parent.width
+        interactive: false
         columns: [
-            { key: "key", title: "KEY SHORTCUT", width: 220 },
+            { key: "key", title: "KEY SHORTCUT", width: 220, kbd: true },
             { key: "action", title: "ACTION / BEHAVIOR" }
         ]
         rows: {

@@ -8,6 +8,8 @@ export {
   TableCell,
   TableCaption,
   type TableProps,
+  type TableColumn,
+  type TableColumnAlign,
   type TableHeaderProps,
   type TableBodyProps,
   type TableFooterProps,

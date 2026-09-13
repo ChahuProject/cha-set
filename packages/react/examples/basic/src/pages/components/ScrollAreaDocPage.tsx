@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
-import { ScrollArea, Button, Checkbox, CodeBlock } from '@chahu/cha-set';
+import { ScrollArea, Button, Checkbox, CodeBlock, Table, type TableColumn } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+
+const MATRIX_COLUMNS: TableColumn[] = [
+  { key: 'id', title: 'ID', width: 80, code: true },
+  { key: 'name', title: 'Feature Name', width: 220 },
+  { key: 'category', title: 'Category', width: 140, badge: true },
+  { key: 'stack', title: 'Target Stack', width: 160 },
+  { key: 'status', title: 'Status', width: 120, badge: true },
+  { key: 'hash', title: 'Commit', width: 100, code: true },
+];
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
@@ -268,38 +277,7 @@ export function ScrollAreaDocPage() {
                     </h4>
                     <span className="text-[0.625rem] text-muted-foreground font-mono">100 items</span>
                   </div>
-                  <table className="w-full text-left text-xs border-collapse font-mono">
-                    <thead>
-                      <tr className="border-b border-border bg-muted/40 text-[0.6875rem] text-muted-foreground">
-                        <th className="p-2">ID</th>
-                        <th className="p-2">Feature Name</th>
-                        <th className="p-2">Category</th>
-                        <th className="p-2">Target Stack</th>
-                        <th className="p-2">Status</th>
-                        <th className="p-2">Commit</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border/40 text-[0.6875rem]">
-                      {SAMPLE_MATRIX_ROWS.map((row) => (
-                        <tr key={row.id} className="hover:bg-muted/20">
-                          <td className="p-2 font-semibold text-muted-foreground">{row.id}</td>
-                          <td className="p-2 text-foreground font-sans">{row.name}</td>
-                          <td className="p-2">
-                            <span className="text-[0.625rem] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">
-                              {row.category}
-                            </span>
-                          </td>
-                          <td className="p-2 text-foreground/80">{row.stack}</td>
-                          <td className="p-2">
-                            <span className={row.status === 'Verified' ? 'text-emerald-500 font-semibold' : 'text-primary'}>
-                              {row.status}
-                            </span>
-                          </td>
-                          <td className="p-2 text-muted-foreground">{row.hash}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <Table columns={MATRIX_COLUMNS} data={SAMPLE_MATRIX_ROWS} interactive />
                 </div>
               </ScrollArea>
             )}

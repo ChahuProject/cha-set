@@ -1,6 +1,18 @@
 import React from 'react';
-import { ScrollArea, Card, CardTitle, CardDescription, CodeBlock } from '@chahu/cha-set';
+import { Card, CardTitle, CardDescription, CodeBlock, Table, type TableColumn } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+
+const PACKAGE_COLUMNS: TableColumn[] = [
+  { key: 'pkg', title: 'Package', width: 180, code: true },
+  { key: 'target', title: 'Target', width: 140 },
+  { key: 'desc', title: 'Description' },
+];
+
+const PACKAGE_ROWS = [
+  { pkg: '@chahu/cha-set', target: 'React / Web', desc: 'React component library published to npm.' },
+  { pkg: 'QtChaSetDemo', target: 'Qt 6 / C++ / QML', desc: 'Qt reference implementation with native QML components.' },
+  { pkg: '@chahu/spec', target: 'Internal Spec', desc: 'Neutral token generator and contract schemas.' },
+];
 export function IntroductionPage() {
   return (
     <DocLayout
@@ -90,39 +102,7 @@ export function MyView() {
 
       <section id="packages" className="my-10">
         <h2 className="text-xl font-bold tracking-tight mb-3">Packages</h2>
-        <ScrollArea
-          showVerticalScrollBar={false}
-          showHorizontalScrollBar={true}
-          showButtons={false}
-          className="rounded-lg border border-border w-full"
-        >
-          <table className="w-full text-left text-xs">
-            <thead>
-              <tr className="border-b border-border bg-muted/40 font-semibold text-muted-foreground uppercase">
-                <th className="py-2.5 px-4">Package</th>
-                <th className="py-2.5 px-4">Target</th>
-                <th className="py-2.5 px-4">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border/60">
-              <tr>
-                <td className="py-3 px-4 font-mono font-medium text-primary">@chahu/cha-set</td>
-                <td className="py-3 px-4">React / Web</td>
-                <td className="py-3 px-4 text-muted-foreground">React component library published to npm.</td>
-              </tr>
-              <tr>
-                <td className="py-3 px-4 font-mono font-medium text-primary">QtChaSetDemo</td>
-                <td className="py-3 px-4">Qt 6 / C++ / QML</td>
-                <td className="py-3 px-4 text-muted-foreground">Qt reference implementation with native QML components.</td>
-              </tr>
-              <tr>
-                <td className="py-3 px-4 font-mono font-medium text-primary">@chahu/spec</td>
-                <td className="py-3 px-4">Internal Spec</td>
-                <td className="py-3 px-4 text-muted-foreground">Neutral token generator and contract schemas.</td>
-              </tr>
-            </tbody>
-          </table>
-        </ScrollArea>
+        <Table columns={PACKAGE_COLUMNS} data={PACKAGE_ROWS} bordered />
       </section>
     </DocLayout>
   );
