@@ -329,6 +329,10 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
             if (disProp.isValid() && disProp.toBool()) {
                 return Qt::ForbiddenCursor;
             }
+            QVariant enProp = curr->property("enabled");
+            if (enProp.isValid() && !enProp.toBool()) {
+                return -1; // Disabled by ancestor container
+            }
             curr = curr->parent();
         }
 
@@ -355,6 +359,15 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
         for (auto* item : allDescendants) {
             if (!item->isVisible() || item->width() <= 2 || item->height() <= 2) continue;
 
+            bool effectivelyVisible = true;
+            for (QQuickItem* p = item; p && p != pageItem; p = p->parentItem()) {
+                if (!p->isVisible() || p->opacity() <= 0.001 || p->width() <= 0 || p->height() <= 0) {
+                    effectivelyVisible = false;
+                    break;
+                }
+            }
+            if (!effectivelyVisible) continue;
+
             int expected = findExpectedCursor(item, pageItem);
             if (expected == -1) continue;
 
@@ -372,17 +385,30 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
                 totalRaycastChecked++;
 
                 if (actual != expected) {
-                    auto* topItem = window->contentItem()->childAt(scenePoint.x(), scenePoint.y());
+                    QQuickItem* deepest = window->contentItem();
+                    while (deepest) {
+                        QPointF local = deepest->mapFromScene(scenePoint);
+                        QQuickItem* child = deepest->childAt(local.x(), local.y());
+                        if (!child || child == deepest) break;
+                        deepest = child;
+                    }
+                    QString deepestPath;
+                    for (QQuickItem* dp = deepest; dp; dp = dp->parentItem()) {
+                        deepestPath.prepend(QString("%1(pos:%2,%3 size:%4x%5) / ")
+                            .arg(dp->metaObject()->className())
+                            .arg(dp->x()).arg(dp->y()).arg(dp->width()).arg(dp->height()));
+                    }
+                    QString itemPath;
+                    for (QQuickItem* ip = item; ip; ip = ip->parentItem()) {
+                        itemPath.prepend(QString("%1(pos:%2,%3 size:%4x%5) / ")
+                            .arg(ip->metaObject()->className())
+                            .arg(ip->x()).arg(ip->y()).arg(ip->width()).arg(ip->height()));
+                    }
                     qWarning() << "[qt-scenario] Pointer Raycast mismatch on page" << pageId
-                               << "item:" << item->metaObject()->className()
-                               << "name:" << item->objectName()
-                               << "parent:" << (item->parentItem() ? item->parentItem()->metaObject()->className() : "none")
-                               << "visible:" << item->isVisible()
-                               << "itemVisibleProp:" << item->property("visible")
-                               << "topItem:" << (topItem ? topItem->metaObject()->className() : "none")
-                               << "topItemName:" << (topItem ? topItem->objectName() : "none")
-                               << "at scene (" << scenePoint.x() << "," << scenePoint.y() << "):"
-                               << "expected" << expected << ", got window cursor" << actual;
+                               << "\n    itemPath:" << itemPath
+                               << "\n    deepestPath:" << deepestPath
+                               << "\n    at scene (" << scenePoint.x() << "," << scenePoint.y() << "):"
+                               << "expected cursor" << expected << ", got" << actual;
                     totalDiscrepancies++;
                 }
             }

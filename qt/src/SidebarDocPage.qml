@@ -21,6 +21,7 @@ DocLayout {
 
     ComponentPreview {
         title: "Sidebar Sandbox"
+        stageHeight: 420
         reactCode: `<SidebarProvider defaultOpen={true}>
   <Sidebar collapsible="icon" variant="sidebar">
     <SidebarHeader>
@@ -96,20 +97,22 @@ DocLayout {
                         root.demoCollapsed = isCollapsed
                     }
 
-                    Column {
+                    Item {
                         anchors.fill: parent
                         anchors.margins: 12
-                        spacing: 12
 
                         // Header Bar
                         Row {
-                            width: parent.width
+                            id: sidebarHeaderBar
+                            anchors.top: parent.top
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            height: 24
                             spacing: 8
 
                             Text {
                                 text: "🍵"
                                 font.pixelSize: 18
-                                anchors.verticalCenter: parent.verticalCenter
                             }
 
                             Text {
@@ -118,51 +121,59 @@ DocLayout {
                                 color: ThemeTokens.text
                                 font.pixelSize: 14
                                 font.weight: Font.Bold
-                                anchors.verticalCenter: parent.verticalCenter
                             }
                         }
 
                         Rectangle {
-                            width: parent.width
+                            id: sidebarSepLine
+                            anchors.top: sidebarHeaderBar.bottom
+                            anchors.topMargin: 12
+                            anchors.left: parent.left
+                            anchors.right: parent.right
                             height: 1
                             color: ThemeTokens.border
                         }
 
                         // Navigation Items
-                        Column {
-                            width: parent.width
-                            spacing: 6
-
-                            ChaSetButton {
-                                width: parent.width
-                                text: demoSidebar.collapsed ? "🏠" : "  🏠  Overview"
-                                variant: "default"
-                                size: "sm"
-                            }
-
-                            ChaSetButton {
-                                width: parent.width
-                                text: demoSidebar.collapsed ? "📂" : "  📂  Projects"
-                                variant: "ghost"
-                                size: "sm"
-                            }
-
-                            ChaSetButton {
-                                width: parent.width
-                                text: demoSidebar.collapsed ? "⚙️" : "  ⚙️  Preferences"
-                                variant: "ghost"
-                                size: "sm"
-                            }
+                        ChaSetButton {
+                            id: navBtnOverview
+                            anchors.top: sidebarSepLine.bottom
+                            anchors.topMargin: 12
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            text: demoSidebar.collapsed ? "🏠" : "  🏠  Overview"
+                            variant: "default"
+                            size: "sm"
                         }
 
-                        Item {
-                            width: 1
-                            height: parent.height - 230
+                        ChaSetButton {
+                            id: navBtnProjects
+                            anchors.top: navBtnOverview.bottom
+                            anchors.topMargin: 6
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            text: demoSidebar.collapsed ? "📂" : "  📂  Projects"
+                            variant: "ghost"
+                            size: "sm"
+                        }
+
+                        ChaSetButton {
+                            id: navBtnPreferences
+                            anchors.top: navBtnProjects.bottom
+                            anchors.topMargin: 6
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            text: demoSidebar.collapsed ? "⚙️" : "  ⚙️  Preferences"
+                            variant: "ghost"
+                            size: "sm"
                         }
 
                         // Footer Toggle Trigger
                         ChaSetButton {
-                            width: parent.width
+                            id: navBtnFooter
+                            anchors.bottom: parent.bottom
+                            anchors.left: parent.left
+                            anchors.right: parent.right
                             text: demoSidebar.collapsed ? "▶" : "◀ Collapse"
                             variant: "outline"
                             size: "sm"

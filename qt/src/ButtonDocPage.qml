@@ -153,9 +153,9 @@ DocLayout {
         width: parent.width
         spacing: 10
 
-        Text { text: "Installation"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+        DocText { text: "Installation"; textColor: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
         ChaSetCodeBlock { width: parent.width; language: "bash"; code: "pnpm add @chahu/cha-set" }
-        Text { text: "Import component in your application entry:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+        DocText { text: "Import component in your application entry:"; isMuted: true; font.pixelSize: 12 }
         ChaSetCodeBlock {
             width: parent.width
             language: "qml"
@@ -168,14 +168,14 @@ DocLayout {
         width: parent.width
         spacing: 20
 
-        Text { text: "Examples"; color: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
+        DocText { text: "Examples"; textColor: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
 
         // Variants Example
         Column {
             width: parent.width
             spacing: 8
-            Text { text: "Variants"; color: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.DemiBold }
-            Text { text: "Use the variant prop to change the visual hierarchy."; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+            DocText { text: "Variants"; textColor: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.DemiBold }
+            DocText { text: "Use the variant prop to change the visual hierarchy."; isMuted: true; font.pixelSize: 12 }
             Rectangle {
                 width: parent.width
                 height: 72
@@ -204,8 +204,8 @@ DocLayout {
         Column {
             width: parent.width
             spacing: 8
-            Text { text: "Sizes"; color: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.DemiBold }
-            Text { text: "Available in standardized sizes: xs, sm, default, lg, and icon variants."; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+            DocText { text: "Sizes"; textColor: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.DemiBold }
+            DocText { text: "Available in standardized sizes: xs, sm, default, lg, and icon variants."; isMuted: true; font.pixelSize: 12 }
             Rectangle {
                 width: parent.width
                 height: 72
@@ -233,8 +233,8 @@ DocLayout {
         Column {
             width: parent.width
             spacing: 8
-            Text { text: "States & Loading"; color: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.DemiBold }
-            Text { text: "Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events."; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+            DocText { text: "States & Loading"; textColor: ThemeTokens.text; font.pixelSize: 15; font.weight: Font.DemiBold }
+            DocText { text: "Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events."; isMuted: true; font.pixelSize: 12 }
             Rectangle {
                 width: parent.width
                 height: 72
@@ -262,13 +262,13 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text { text: "Animations"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+        DocText { text: "Animations"; textColor: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
 
-        Text { text: "Motion behavior and timing driven by ThemeTokens for interactive state changes."; color: root.cMutedFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        DocText { text: "Motion behavior and timing driven by ThemeTokens for interactive state changes."; isMuted: true; font.pixelSize: 13; width: parent.width }
 
-        Text { text: "• Background color, shadow, and label-color changes interpolate via Behavior, using ThemeTokens.motionQuick with the easeStandard curve."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: "• Pressing nudges the label down slightly to convey the pressed state."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        DocText { text: "• Background color, shadow, and label-color changes interpolate via Behavior, using ThemeTokens.motionQuick with the easeStandard curve."; textColor: root.cFg; font.pixelSize: 13; width: parent.width }
+        DocText { text: "• Pressing nudges the label down slightly to convey the pressed state."; textColor: root.cFg; font.pixelSize: 13; width: parent.width }
+        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; textColor: root.cFg; font.pixelSize: 13; width: parent.width }
     }
 
     // 4. API Reference

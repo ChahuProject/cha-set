@@ -100,17 +100,30 @@ Rectangle {
                         width: root.getColWidth(index, headerRow.width)
                         height: headerRow.height
 
-                        Text {
+                        TextEdit {
                             anchors.fill: parent
                             anchors.leftMargin: 12
                             anchors.rightMargin: 12
-                            verticalAlignment: Text.AlignVCenter
+                            verticalAlignment: TextEdit.AlignVCenter
                             horizontalAlignment: root.getAlignment(modelData ? modelData.align : "left")
                             text: modelData ? (modelData.title || "") : ""
                             color: root.cSubduedText
                             font.pixelSize: Typography.sizeSmall
                             font.bold: true
-                            elide: Text.ElideRight
+                            readOnly: true
+                            selectByMouse: !root.interactive
+                            selectByKeyboard: true
+                            cursorVisible: false
+                            activeFocusOnPress: false
+                            textMargin: 0
+                            padding: 0
+                            selectionColor: ThemeTokens.accent
+                            selectedTextColor: "#ffffff"
+
+                            HoverHandler {
+                                enabled: !root.interactive
+                                cursorShape: Qt.IBeamCursor
+                            }
                         }
                     }
                 }
@@ -247,12 +260,12 @@ Rectangle {
                             }
 
                             // Standard Text / Code rendering
-                            Text {
+                            TextEdit {
                                 visible: !Boolean(columnDef && (columnDef.badge || columnDef.kbd))
                                 anchors.fill: parent
                                 anchors.leftMargin: 12
                                 anchors.rightMargin: 12
-                                verticalAlignment: Text.AlignVCenter
+                                verticalAlignment: TextEdit.AlignVCenter
                                 horizontalAlignment: root.getAlignment(columnDef ? columnDef.align : "left")
                                 text: {
                                     if (!rowRecord || !columnDef || columnDef.key === undefined) return "";
@@ -263,7 +276,20 @@ Rectangle {
                                 font.family: (columnDef && columnDef.code) ? Typography.familyMono : ""
                                 font.weight: Boolean(columnDef && columnDef.code) ? Typography.weightMedium : Font.Normal
                                 font.pixelSize: Typography.sizeSmall
-                                elide: Text.ElideRight
+                                readOnly: true
+                                selectByMouse: !root.interactive
+                                selectByKeyboard: true
+                                cursorVisible: false
+                                activeFocusOnPress: false
+                                textMargin: 0
+                                padding: 0
+                                selectionColor: ThemeTokens.accent
+                                selectedTextColor: "#ffffff"
+
+                                HoverHandler {
+                                    enabled: !root.interactive
+                                    cursorShape: Qt.IBeamCursor
+                                }
                             }
                         }
                     }

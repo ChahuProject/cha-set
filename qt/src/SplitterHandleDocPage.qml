@@ -202,6 +202,7 @@ DocLayout {
             Column {
                 spacing: 12
                 width: parent.width
+                height: implicitHeight
 
                 Text {
                     width: parent.width
@@ -214,18 +215,21 @@ DocLayout {
                 Rectangle {
                     width: Math.min(parent.width, 440)
                     height: 180
+                    implicitHeight: 180
                     color: ThemeTokens.background
                     radius: 6
                     border.color: ThemeTokens.border
                     border.width: 1
                     clip: true
 
-                    Column {
+                    Item {
                         anchors.fill: parent
 
                         Rectangle {
-                            width: parent.width
-                            height: parent.height - root.bottomHeight
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.top: parent.top
+                            anchors.bottom: bottomBox.top
                             color: "transparent"
 
                             Text {
@@ -237,7 +241,10 @@ DocLayout {
                         }
 
                         Rectangle {
-                            width: parent.width
+                            id: bottomBox
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.bottom: parent.bottom
                             height: root.bottomHeight
                             color: ThemeTokens.panel
 
