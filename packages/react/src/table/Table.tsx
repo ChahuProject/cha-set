@@ -61,7 +61,7 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
                     {keys.map((k) => (
                       <kbd
                         key={k}
-                        className="inline-flex items-center justify-center px-1.5 py-0.5 text-[0.6875rem] font-mono font-semibold rounded border border-border bg-muted/60 text-foreground shadow-xs"
+                        className="inline-flex items-center justify-center px-1.5 py-0.5 text-caption font-mono font-semibold rounded border border-border bg-muted/60 text-foreground shadow-xs"
                       >
                         {k}
                       </kbd>
