@@ -11,7 +11,7 @@ Item {
     property string size: "default"
     property bool disabled: false
     property var menuItems: [] // [{ id, label, icon, destructive, onSelect }]
-    property int customRadius: 6
+    property int customRadius: 8
 
     signal clicked()
     signal menuItemClicked(string itemId)
