@@ -48,8 +48,9 @@ DocLayout {
                 collapsible: true
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 16
+                    width: parent.width - 32
+                    x: 16
+                    y: 12
                     spacing: 10
 
                     Row {

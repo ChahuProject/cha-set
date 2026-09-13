@@ -37,6 +37,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
+        stageHeight: root.demoMode === "popover" ? 280 : 580
         title: "ColorPicker Sandbox"
         reactCode: `<ColorPicker\n  value="${root.demoColor}"\n  mode="${root.demoMode}"\n  size="${root.demoSize}"\n  disabled={${root.demoDisabled}}\n  movable={${root.demoMovable}}\n  showPreview={${root.demoShowPreview}}\n  showHex={${root.demoShowHex}}\n  showSwatches={${root.demoShowSwatches}}\n  onChange={setColor}\n/>`
         qtCode: `ChaSetColorPicker {\n    value: "${root.demoColor}"\n    mode: "${root.demoMode}"\n    size: "${root.demoSize}"\n    disabled: ${root.demoDisabled}\n    movable: ${root.demoMovable}\n    showPreview: ${root.demoShowPreview}\n    showHex: ${root.demoShowHex}\n    showSwatches: ${root.demoShowSwatches}\n    onHexChanged: function(newHex) {\n        // handle color change\n    }\n}`
@@ -97,85 +98,76 @@ DocLayout {
 
         controlsData: [
             Row {
-                spacing: 16
-
-                Row {
-                    spacing: 8
-                    Text {
-                        text: "Mode:"
-                        color: root.cMutedFg
-                        font.pixelSize: 12
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                    ChaSetTabs {
-                        anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoMode
-                        onCurrentValueChanged: root.demoMode = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "inline"; text: "Inline" }
-                            ChaSetTabsTrigger { value: "popover"; text: "Popover" }
-                        }
+                spacing: 8
+                Text {
+                    text: "Mode:"
+                    color: root.cMutedFg
+                    font.pixelSize: 12
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                ChaSetTabs {
+                    anchors.verticalCenter: parent.verticalCenter
+                    currentValue: root.demoMode
+                    onCurrentValueChanged: root.demoMode = currentValue
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "inline"; text: "Inline" }
+                        ChaSetTabsTrigger { value: "popover"; text: "Popover" }
                     }
                 }
+            },
 
-                Row {
-                    spacing: 8
-                    Text {
-                        text: "Size:"
-                        color: root.cMutedFg
-                        font.pixelSize: 12
-                        anchors.verticalCenter: parent.verticalCenter
+            Row {
+                spacing: 8
+                Text {
+                    text: "Size:"
+                    color: root.cMutedFg
+                    font.pixelSize: 12
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                ChaSetTabs {
+                    anchors.verticalCenter: parent.verticalCenter
+                    currentValue: root.demoSize
+                    onCurrentValueChanged: root.demoSize = currentValue
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "default"; text: "Default" }
+                        ChaSetTabsTrigger { value: "sm"; text: "SM" }
                     }
-                    ChaSetTabs {
-                        anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoSize
-                        onCurrentValueChanged: root.demoSize = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default" }
-                            ChaSetTabsTrigger { value: "sm"; text: "SM" }
-                        }
-                    }
                 }
+            },
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Disabled"
-                    checked: root.demoDisabled
-                    onToggled: (val) => root.demoDisabled = val
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+            ChaSetCheckbox {
+                size: "sm"
+                label: "Disabled"
+                checked: root.demoDisabled
+                onToggled: (val) => root.demoDisabled = val
+            },
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Movable"
-                    checked: root.demoMovable
-                    onToggled: (val) => root.demoMovable = val
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+            ChaSetCheckbox {
+                size: "sm"
+                label: "Movable"
+                checked: root.demoMovable
+                onToggled: (val) => root.demoMovable = val
+            },
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Preview"
-                    checked: root.demoShowPreview
-                    onToggled: (val) => root.demoShowPreview = val
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+            ChaSetCheckbox {
+                size: "sm"
+                label: "Preview"
+                checked: root.demoShowPreview
+                onToggled: (val) => root.demoShowPreview = val
+            },
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "HEX"
-                    checked: root.demoShowHex
-                    onToggled: (val) => root.demoShowHex = val
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+            ChaSetCheckbox {
+                size: "sm"
+                label: "HEX"
+                checked: root.demoShowHex
+                onToggled: (val) => root.demoShowHex = val
+            },
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Swatches"
-                    checked: root.demoShowSwatches
-                    onToggled: (val) => root.demoShowSwatches = val
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+            ChaSetCheckbox {
+                size: "sm"
+                label: "Swatches"
+                checked: root.demoShowSwatches
+                onToggled: (val) => root.demoShowSwatches = val
             }
         ]
     }
