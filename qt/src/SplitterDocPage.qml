@@ -7,31 +7,40 @@ DocLayout {
     id: root
     category: "Desktop & Virtualization"
     pageTitle: "Splitter"
-    description: "Multi-pane resizable layout container with a draggable gutter divider, ratio boundary clamps, and double-click reset."
+    description: "Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     ComponentPreview {
-        title: "Splitter Preview"
-        reactCode: `<Splitter orientation="horizontal" defaultRatio={0.4}>
-  <PaneOne />
-  <PaneTwo />
-</Splitter>`
+        title: "Splitter Sandbox"
+        reactCode: `<div className="flex h-48 border rounded-md">
+  <div style={{ width: \`\${size}%\` }} className="p-4 text-xs">
+    Left Pane (Sidebar)
+  </div>
+  <Splitter size={size} onChange={setSize} orientation="vertical" />
+  <div style={{ width: \`\${100 - size}%\` }} className="p-4 text-xs">
+    Right Pane (Main Content)
+  </div>
+</div>`
         qtCode: `ChaSetSplitter {
-    width: 400
-    height: 200
+    width: 480
+    height: 192
     orientation: "horizontal"
-    splitRatio: 0.4
+    initialSize: 35
+    minRatio: 0.20
+    maxRatio: 0.80
     leftItem: Component { ... }
     rightItem: Component { ... }
 }`
 
         Item {
             anchors.fill: parent
+            implicitHeight: 250
 
             Column {
                 anchors.centerIn: parent
@@ -39,50 +48,97 @@ DocLayout {
 
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Drag the center bar to resize panes (Double-click gutter to reset to 50%):"
+                    text: "Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset."
                     color: ThemeTokens.subduedText
                     font.pixelSize: 12
                 }
 
-                ChaSetSplitter {
-                    id: splitter
-                    width: 420
-                    height: 200
-                    splitRatio: 0.38
+                Rectangle {
+                    width: 480
+                    height: 192
+                    radius: 6
+                    border.color: ThemeTokens.border
+                    border.width: 1
+                    color: ThemeTokens.panel
+                    clip: true
 
-                    leftItem: Component {
-                        Rectangle {
-                            color: ThemeTokens.panel
-                            border.color: ThemeTokens.border
-                            border.width: 1
-                            radius: 4
+                    ChaSetSplitter {
+                        id: splitter
+                        anchors.fill: parent
+                        orientation: "horizontal"
+                        initialSize: 35
+                        minRatio: 0.20
+                        maxRatio: 0.80
+                        splitRatio: 0.35
 
-                            Column {
-                                anchors.centerIn: parent
-                                spacing: 6
-                                Text { text: "Navigation Tree"; color: ThemeTokens.text; font.pixelSize: 12; font.weight: Font.DemiBold }
-                                ChaSetBadge { text: Math.round(splitter.splitRatio * 100) + "% Width"; size: "sm"; variant: "secondary" }
+                        leftItem: Component {
+                            Rectangle {
+                                color: ThemeTokens.panel
+                                border.color: "transparent"
+
+                                Column {
+                                    anchors.fill: parent
+                                    anchors.margins: 16
+                                    spacing: 8
+
+                                    Text {
+                                        text: "Navigation Tree"
+                                        color: ThemeTokens.text
+                                        font.pixelSize: 12
+                                        font.weight: Font.DemiBold
+                                    }
+
+                                    Column {
+                                        spacing: 4
+                                        Text { text: "▾ src"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: "monospace" }
+                                        Text { text: "  ▸ components"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: "monospace" }
+                                        Text { text: "  ▸ layout"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: "monospace" }
+                                    }
+                                }
                             }
                         }
-                    }
 
-                    rightItem: Component {
-                        Rectangle {
-                            color: ThemeTokens.hover
-                            border.color: ThemeTokens.border
-                            border.width: 1
-                            radius: 4
+                        rightItem: Component {
+                            Rectangle {
+                                color: ThemeTokens.panelRaised
+                                border.color: "transparent"
 
-                            Column {
-                                anchors.centerIn: parent
-                                spacing: 6
-                                Text { text: "Editor Viewport"; color: ThemeTokens.text; font.pixelSize: 12; font.weight: Font.DemiBold }
-                                ChaSetBadge { text: Math.round((1 - splitter.splitRatio) * 100) + "% Width"; size: "sm"; variant: "secondary" }
-                                ChaSetButton {
-                                    text: "Reset (50%)"
-                                    size: "xs"
-                                    variant: "outline"
-                                    onClicked: splitter.splitRatio = 0.5
+                                Column {
+                                    anchors.centerIn: parent
+                                    spacing: 8
+
+                                    Row {
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        spacing: 8
+                                        Text {
+                                            text: "Editor Workspace"
+                                            color: ThemeTokens.text
+                                            font.pixelSize: 12
+                                            font.weight: Font.DemiBold
+                                            anchors.verticalCenter: parent.verticalCenter
+                                        }
+                                        ChaSetBadge {
+                                            text: Math.round((1 - splitter.splitRatio) * 100) + "%"
+                                            size: "sm"
+                                            variant: "secondary"
+                                            anchors.verticalCenter: parent.verticalCenter
+                                        }
+                                    }
+
+                                    Text {
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        text: "Drag splitter handle to resize panes"
+                                        color: ThemeTokens.subduedText
+                                        font.pixelSize: 11
+                                    }
+
+                                    ChaSetButton {
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        text: "Reset (35%)"
+                                        size: "xs"
+                                        variant: "outline"
+                                        onClicked: splitter.reset()
+                                    }
                                 }
                             }
                         }
@@ -94,8 +150,51 @@ DocLayout {
 
     ChaSetCodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSplitter { splitRatio: 0.5 }"
+        code: "import ChaSet 1.0\n\nChaSetSplitter {\n    orientation: \"horizontal\"\n    initialSize: 35\n}"
         language: "qml"
+    }
+
+    // Animations Section
+    Column {
+        width: parent.width
+        spacing: 12
+
+        Text {
+            text: "Animations"
+            color: ThemeTokens.text
+            font.pixelSize: 18
+            font.weight: Font.Bold
+        }
+
+        Text {
+            text: "Motion tokens and kinematic timing contracts for Splitter divider gutters."
+            color: ThemeTokens.subduedText
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
+
+        Text {
+            text: "• Gutter indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve."
+            color: ThemeTokens.text
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
+        Text {
+            text: "• Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
+            color: ThemeTokens.text
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
+        Text {
+            text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."
+            color: ThemeTokens.text
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
     }
 
     KeyboardShortcutsTable {
@@ -105,11 +204,16 @@ DocLayout {
     PropsTable {
         title: "Props Reference"
         props: [
-            { name: "orientation", type: "string", default: "'horizontal'", description: "Split axis: 'horizontal' or 'vertical'." },
-            { name: "splitRatio", type: "real", default: "0.5", description: "Proportional width/height distribution of the first pane (0.0 to 1.0)." },
-            { name: "minRatio", type: "real", default: "0.15", description: "Minimum allowable constraint ratio." },
-            { name: "maxRatio", type: "real", default: "0.85", description: "Maximum allowable constraint ratio." },
-            { name: "gutterSize", type: "int", default: "6", description: "Draggable divider width." }
+            { name: "orientation", type: "string", default: "'horizontal'", description: "Split axis: 'horizontal' (vertical divider) or 'vertical' (horizontal divider)." },
+            { name: "splitRatio", type: "real", default: "0.5", description: "Proportional distribution of the first pane (0.0 to 1.0, corresponding to size in React)." },
+            { name: "initialSize", type: "int", default: "50", description: "Initial size percentage for default layout distribution." },
+            { name: "minSize", type: "int", default: "5", description: "Minimum allowed percentage bound." },
+            { name: "maxSize", type: "int", default: "95", description: "Maximum allowed percentage bound." },
+            { name: "minRatio", type: "real", default: "0.05", description: "Minimum allowable constraint ratio (0.0 to 1.0)." },
+            { name: "maxRatio", type: "real", default: "0.95", description: "Maximum allowable constraint ratio (0.0 to 1.0)." },
+            { name: "gutterSize", type: "int", default: "6", description: "Draggable divider thickness in pixels." },
+            { name: "leftItem", type: "Component", default: "null", description: "First pane content component." },
+            { name: "rightItem", type: "Component", default: "null", description: "Second pane content component." }
         ]
     }
 }

@@ -97,12 +97,12 @@ Item {
 
         Keys.onReturnPressed: function(event) {
             event.accepted = true
-            root.splitRatio = 0.5
+            root.reset()
         }
 
         Keys.onEnterPressed: function(event) {
             event.accepted = true
-            root.splitRatio = 0.5
+            root.reset()
         }
 
         MouseArea {
@@ -144,7 +144,7 @@ Item {
             }
 
             onDoubleClicked: {
-                root.splitRatio = 0.5
+                root.reset()
             }
         }
     }
