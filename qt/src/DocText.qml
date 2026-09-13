@@ -41,7 +41,6 @@ TextEdit {
     font.family: (role === "code" || isMono) ? Typography.familyMono : Typography.familySans
     font.pixelSize: rolePixelSize > 0 ? rolePixelSize : Typography.sizeSmall
     font.weight: roleWeight > 0 ? roleWeight : Typography.weightRegular
-    renderType: TextEdit.NativeRendering
 
     readOnly: true
     selectByMouse: true

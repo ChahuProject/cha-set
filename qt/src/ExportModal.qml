@@ -74,7 +74,6 @@ ChaSetDialog {
                 color: ThemeTokens.text
                 font.family: Typography.familyMono
                 font.pixelSize: Typography.sizeSmall
-                renderType: Text.NativeRendering
             }
         }
     }

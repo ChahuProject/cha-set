@@ -308,7 +308,6 @@ Item {
                         font.family: Typography.familySans
                         font.pixelSize: root.itemFontSize
                         font.weight: segItem.isSelected ? Typography.weightMedium : Typography.weightRegular
-                        renderType: Text.NativeRendering
                         elide: Text.ElideRight
                         width: {
                             var avail = segItem.width - 12;
@@ -343,7 +342,6 @@ Item {
                             font.family: Typography.familyMono
                             font.pixelSize: Typography.sizeMicro
                             font.weight: Typography.weightSemibold
-                            renderType: Text.NativeRendering
                             color: segItem.isSelected ? ThemeTokens.accent : ThemeTokens.subduedText
                         }
                     }

@@ -113,7 +113,6 @@ Rectangle {
                             font.family: Typography.familySans
                             font.pixelSize: Typography.sizeSmall
                             font.weight: Typography.weightSemibold
-                            renderType: TextEdit.NativeRendering
                             readOnly: true
                             clip: true
                             selectByMouse: !root.interactive
@@ -241,7 +240,6 @@ Rectangle {
                                                 color: root.cSubduedText
                                                 font.family: Typography.familySans
                                                 font.pixelSize: Typography.sizeCaption
-                                                renderType: Text.NativeRendering
                                                 anchors.verticalCenter: parent.verticalCenter
                                             }
 
@@ -265,7 +263,6 @@ Rectangle {
                                                         font.pixelSize: Typography.sizeMicro
                                                         font.family: Typography.familyMono
                                                         font.weight: Typography.weightSemibold
-                                                        renderType: Text.NativeRendering
                                                     }
                                                 }
                                             }
@@ -291,7 +288,6 @@ Rectangle {
                                 font.family: (columnDef && columnDef.code) ? Typography.familyMono : Typography.familySans
                                 font.weight: Boolean(columnDef && columnDef.code) ? Typography.weightMedium : Typography.weightRegular
                                 font.pixelSize: Typography.sizeSmall
-                                renderType: TextEdit.NativeRendering
                                 readOnly: true
                                 clip: true
                                 wrapMode: (columnDef && columnDef.wrap) ? TextEdit.WordWrap : TextEdit.NoWrap
