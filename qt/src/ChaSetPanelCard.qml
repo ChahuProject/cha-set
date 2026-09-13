@@ -45,12 +45,26 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 8
 
-                Text {
+                TextEdit {
                     text: root.title
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeBody
                     font.weight: Font.DemiBold
+                    height: contentHeight
+                    readOnly: true
+                    selectByMouse: true
+                    selectByKeyboard: true
+                    cursorVisible: false
+                    activeFocusOnPress: false
+                    textMargin: 0
+                    padding: 0
+                    selectionColor: ThemeTokens.accent
+                    selectedTextColor: "#ffffff"
                     anchors.verticalCenter: parent.verticalCenter
+
+                    HoverHandler {
+                        cursorShape: Qt.IBeamCursor
+                    }
                 }
 
                 ChaSetBadge {

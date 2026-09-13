@@ -99,19 +99,48 @@ Rectangle {
                 width: parent.width
                 spacing: 6
 
-                Text {
+                TextEdit {
                     text: root.title
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeHeading
                     font.weight: Font.DemiBold
+                    width: parent.width
+                    height: contentHeight
+                    readOnly: true
+                    selectByMouse: true
+                    selectByKeyboard: true
+                    cursorVisible: false
+                    activeFocusOnPress: false
+                    textMargin: 0
+                    padding: 0
+                    selectionColor: ThemeTokens.accent
+                    selectedTextColor: "#ffffff"
+
+                    HoverHandler {
+                        cursorShape: Qt.IBeamCursor
+                    }
                 }
 
-                Text {
+                TextEdit {
                     text: root.description
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeBody
-                    wrapMode: Text.WordWrap
+                    wrapMode: TextEdit.WordWrap
                     width: parent.width
+                    height: contentHeight
+                    readOnly: true
+                    selectByMouse: true
+                    selectByKeyboard: true
+                    cursorVisible: false
+                    activeFocusOnPress: false
+                    textMargin: 0
+                    padding: 0
+                    selectionColor: ThemeTokens.accent
+                    selectedTextColor: "#ffffff"
+
+                    HoverHandler {
+                        cursorShape: Qt.IBeamCursor
+                    }
                 }
             }
 

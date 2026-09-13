@@ -3,7 +3,7 @@
 import QtQuick 6.10
 import ChaSet
 
-Text {
+TextEdit {
     id: root
 
     property bool isDark: ThemeTokens.dark
@@ -14,6 +14,21 @@ Text {
     lineHeight: Typography.lineHeightPx(Typography.sizeBody, "body")
     lineHeightMode: Text.FixedHeight
     color: isDark ? Qt.rgba(148/255, 163/255, 184/255, 1.0) : Qt.rgba(100/255, 116/255, 139/255, 1.0)
-    wrapMode: Text.Wrap
-    width: parent ? parent.width : implicitWidth
+    wrapMode: TextEdit.Wrap
+    width: parent ? parent.width : contentWidth
+    height: contentHeight
+
+    readOnly: true
+    selectByMouse: true
+    selectByKeyboard: true
+    cursorVisible: false
+    activeFocusOnPress: false
+    textMargin: 0
+    padding: 0
+    selectionColor: ThemeTokens.accent
+    selectedTextColor: "#ffffff"
+
+    HoverHandler {
+        cursorShape: Qt.IBeamCursor
+    }
 }
