@@ -228,3 +228,28 @@ React pins `leading-*` on 23 elements; Qt previously had no way to express them 
 
 - **Showcase doc pages** (`qt/src/*DocPage.qml`, `Main.qml`) still hold ~550 bare `font.pixelSize` numbers, including 15/20/22/32 which the scale cannot express. They are demo prose, not library surface, so the gate deliberately scopes rule 3 to `ChaSet*.qml`. Tokenising them is the natural next increment and will require widening `fontSize` to the Tailwind `xl`/`2xl`/`3xl` steps.
 - React `text-xl/2xl/3xl` are **not** yet aliased to tokens (only `xs/sm/base/lg`); they are used in demo pages only.
+
+---
+
+## 9. Rasterization, Antialiasing & Rendering Engine Invariants
+
+Even with identical font metrics and tokens, visual discrepancy ("像素感" / blocky rasterization / color fringing) can arise from differing glyph rasterization engines between DirectWrite / Qt Quick Scene Graph and Chromium / Webkit.
+
+### Engine Configuration Invariants
+
+1. **Grayscale Alpha Antialiasing (`QFont::NoSubpixelAntialias`)**:
+   - DirectWrite's default ClearType RGB subpixel antialiasing introduces visible red/orange left and blue/cyan right fringes at 9px–14px on contrasting dark/light backgrounds.
+   - Setting `QFont::NoSubpixelAntialias | QFont::PreferQuality | QFont::PreferAntialias` globally via `QGuiApplication::setFont(appFont)` in `qt/src/main.cpp` forces DirectWrite to use pure alpha grayscale antialiasing (`DWRITE_TEXT_ANTIALIAS_MODE_GRAYSCALE`), matching Chrome/Edge's `-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`.
+
+2. **Vertical Hinting Preservation (`QFont::PreferVerticalHinting`)**:
+   - `QFont::PreferDefaultHinting` in TrueType rasterization snaps small glyph curves aggressively to full integer pixel grid boundaries, producing jagged pixelated staircases.
+   - Setting `appFont.setHintingPreference(QFont::PreferVerticalHinting)` preserves vertical baseline alignment while allowing smooth vector antialiasing along horizontal curves.
+
+3. **Window-Level Render Type Single Truth**:
+   - Text rendering is configured globally via `QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering)` and inherited uniformly across all QML text items.
+   - Manual `renderType:` overrides in QML components are strictly forbidden and mechanically checked by `scripts/check-typography-parity.mjs`.
+
+4. **Web Monospace Font Fallback Integrity**:
+   - Raw CSS declarations such as `ui-monospace, monospace` without `Consolas` fall back on Windows Chromium to bitmap-infused `NSimSun` at small font sizes.
+   - All code snippets, tuner badges, and log views MUST reference `var(--cs-font-mono)` which specifies `Consolas` explicitly before generic `monospace`.
+
