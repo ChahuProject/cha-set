@@ -52,13 +52,13 @@ export const SIZE_ORDER = [
 // so `qt` is one family and `css` keeps the full web fallback stack).
 export const FONT_FAMILY_ORDER = ['sans','mono'];
 // Ascending scale, smallest first.
-export const FONT_SIZE_ORDER = ['nano','micro','caption','small','body','heading','subheading','title'];
+export const FONT_SIZE_ORDER = ['nano','micro','caption','small','body','heading','subheading','titleSm','titleMd','title','display'];
 // Unitless ratios. Mode names mirror Tailwind's leading-* scale so existing
 // markup stays meaningful; size names mirror FONT_SIZE_ORDER; `code` is the
 // code-block role and is size-independent by design.
 export const LINE_HEIGHT_ORDER = [
   'none','tight','snug','normal','relaxed','code',
-  'nano','micro','caption','small','body','heading','subheading','title'
+  'nano','micro','caption','small','body','heading','subheading','titleSm','titleMd','title','display'
 ];
 export const LETTER_SPACING_ORDER = ['tighter','tight','normal','wide','wider','widest'];
 
@@ -125,6 +125,8 @@ export const ratioValue = (n) => String(n);
 export const emValue = (n) => (n === 0 ? '0' : `${n}em`);
 /** "body" -> "Body" (QML property suffix). */
 export const camelProp = (name) => name.charAt(0).toUpperCase() + name.slice(1);
+/** "titleSm" -> "title-sm" (CSS custom property suffix). */
+export const toKebab = (str) => str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 
 // ---------------------------------------------------------------------------
 // hex helpers

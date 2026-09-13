@@ -41,7 +41,10 @@ QtObject {
     readonly property int sizeBody: 14
     readonly property int sizeHeading: 16
     readonly property int sizeSubheading: 18
+    readonly property int sizeTitleSm: 20
+    readonly property int sizeTitleMd: 24
     readonly property int sizeTitle: 28
+    readonly property int sizeDisplay: 36
 
     // --- line heights (unitless ratios, multiplied by the px font size) ---
     readonly property real leadingNone: 1
@@ -57,7 +60,10 @@ QtObject {
     readonly property real leadingBody: 1.4285714
     readonly property real leadingHeading: 1.5
     readonly property real leadingSubheading: 1.5555556
+    readonly property real leadingTitleSm: 1.4
+    readonly property real leadingTitleMd: 1.3333333
     readonly property real leadingTitle: 1.25
+    readonly property real leadingDisplay: 1.1111111
 
     // --- letter spacing (em ratios, multiplied by the px font size) ------
     readonly property real trackingTighter: -0.05
@@ -77,7 +83,12 @@ QtObject {
             case "body": return 14
             case "heading": return 16
             case "subheading": return 18
+            case "titleSm":
+            case "title-sm": return 20
+            case "titleMd":
+            case "title-md": return 24
             case "title": return 28
+            case "display": return 36
         }
         return 12
     }
@@ -97,7 +108,12 @@ QtObject {
             case "body": return 1.4285714
             case "heading": return 1.5
             case "subheading": return 1.5555556
+            case "titleSm":
+            case "title-sm": return 1.4
+            case "titleMd":
+            case "title-md": return 1.3333333
             case "title": return 1.25
+            case "display": return 1.1111111
         }
         return 1.5
     }

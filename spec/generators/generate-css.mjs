@@ -16,7 +16,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateSpec } from '../validate-tokens.mjs';
 import { loadTokensSync } from '../load-tokens.mjs';
-import { selectorFor, ORDER, pxToRem, ratioValue, emValue } from '../token-helpers.mjs';
+import { selectorFor, ORDER, pxToRem, ratioValue, emValue, toKebab } from '../token-helpers.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -127,9 +127,9 @@ function typographyDecls(prefix, primitives) {
   const weight = primitives.fontWeight ?? {};
   for (const [k, v] of Object.entries(weight)) out.push(decl(`${prefix}font-weight-${k}`, String(v)));
 
-  for (const [k, v] of Object.entries(typo.fontSize ?? {})) out.push(decl(`${prefix}text-${k}`, pxToRem(v)));
-  for (const [k, v] of Object.entries(typo.lineHeight ?? {})) out.push(decl(`${prefix}leading-${k}`, ratioValue(v)));
-  for (const [k, v] of Object.entries(typo.letterSpacing ?? {})) out.push(decl(`${prefix}tracking-${k}`, emValue(v)));
+  for (const [k, v] of Object.entries(typo.fontSize ?? {})) out.push(decl(`${prefix}text-${toKebab(k)}`, pxToRem(v)));
+  for (const [k, v] of Object.entries(typo.lineHeight ?? {})) out.push(decl(`${prefix}leading-${toKebab(k)}`, ratioValue(v)));
+  for (const [k, v] of Object.entries(typo.letterSpacing ?? {})) out.push(decl(`${prefix}tracking-${toKebab(k)}`, emValue(v)));
   return out;
 }
 
