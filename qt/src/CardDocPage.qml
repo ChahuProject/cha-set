@@ -72,7 +72,7 @@ DocLayout {
                     DocText {
                         text: "Your project will be deployed to the edge network automatically."
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 13
+                        font.pixelSize: Typography.sizeBody
                         wrapMode: TextEdit.WordWrap
                         width: parent.width
                     }
@@ -98,7 +98,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoVariant
@@ -113,7 +113,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoSize
@@ -143,8 +143,8 @@ DocLayout {
         DocText {
             text: "Installation"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         ChaSetCodeBlock {
@@ -162,14 +162,14 @@ DocLayout {
         DocText {
             text: "Anatomy"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "Card is composed of modular building blocks for flexible layouts."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         ChaSetCodeBlock {
@@ -187,14 +187,14 @@ DocLayout {
         DocText {
             text: "Variants"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "Three semantic variants styled with design tokens for consistent elevation and contrast."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         Row {
@@ -205,7 +205,7 @@ DocLayout {
                 width: (parent.width - 24) / 3
                 variant: "default"
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Default Card"; font.pixelSize: 15 }
+                    ChaSetCardTitle { text: "Default Card"; font.pixelSize: Typography.sizeHeading }
                     ChaSetCardDescription { text: "Elevated surface with panel background" }
                 }
             }
@@ -214,7 +214,7 @@ DocLayout {
                 width: (parent.width - 24) / 3
                 variant: "secondary"
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Secondary Card"; font.pixelSize: 15 }
+                    ChaSetCardTitle { text: "Secondary Card"; font.pixelSize: Typography.sizeHeading }
                     ChaSetCardDescription { text: "Subtle contrast for grouped items" }
                 }
             }
@@ -223,7 +223,7 @@ DocLayout {
                 width: (parent.width - 24) / 3
                 variant: "outline"
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Outline Card"; font.pixelSize: 15 }
+                    ChaSetCardTitle { text: "Outline Card"; font.pixelSize: Typography.sizeHeading }
                     ChaSetCardDescription { text: "Transparent background with crisp border" }
                 }
             }
@@ -232,14 +232,14 @@ DocLayout {
         DocText {
             text: "Interactive Feedback & Density"
             color: root.cFg
-            font.pixelSize: 16
-            font.weight: Font.DemiBold
+            font.pixelSize: Typography.sizeHeading
+            font.weight: Typography.weightSemibold
         }
 
         DocText {
             text: "Enable interactive hover/press elevation feedback, or use compact density for constrained spaces."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         Row {
@@ -250,14 +250,14 @@ DocLayout {
                 width: (parent.width - 12) / 2
                 interactive: true
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Interactive Card"; font.pixelSize: 15 }
+                    ChaSetCardTitle { text: "Interactive Card"; font.pixelSize: Typography.sizeHeading }
                     ChaSetCardDescription { text: "Hover over me to see cursor and elevation changes" }
                 }
                 ChaSetCardContent {
                     DocText {
                         text: "Clickable surface for dashboards and selectable items."
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                     }
                 }
             }
@@ -266,14 +266,14 @@ DocLayout {
                 width: (parent.width - 12) / 2
                 size: "sm"
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Compact Card (sm)"; font.pixelSize: 15 }
+                    ChaSetCardTitle { text: "Compact Card (sm)"; font.pixelSize: Typography.sizeHeading }
                     ChaSetCardDescription { text: "Reduced padding for tight sidebars and sheets" }
                 }
                 ChaSetCardContent {
                     DocText {
                         text: "Streamlined layout with denser inner padding."
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                     }
                 }
             }
@@ -288,8 +288,8 @@ DocLayout {
         DocText {
             text: "Props Reference"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         KeyboardShortcutsTable {

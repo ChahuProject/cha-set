@@ -60,7 +60,7 @@ DocLayout {
                 // Side Selector
                 Row {
                     spacing: 8
-                    DocText { text: "Side:"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Side:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoSide
@@ -77,7 +77,7 @@ DocLayout {
                 // Align Selector
                 Row {
                     spacing: 8
-                    DocText { text: "Align:"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Align:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoAlign
@@ -137,14 +137,14 @@ DocLayout {
                             DocText {
                                 text: "Dimensions Settings"
                                 color: ThemeTokens.text
-                                font.pixelSize: 13
-                                font.weight: Font.DemiBold
+                                font.pixelSize: Typography.sizeBody
+                                font.weight: Typography.weightSemibold
                             }
 
                             DocText {
                                 text: "Set the width and height layers for the active canvas."
                                 color: ThemeTokens.subduedText
-                                font.pixelSize: 11
+                                font.pixelSize: Typography.sizeCaption
                                 wrapMode: TextEdit.WordWrap
                                 width: parent.width
                             }
@@ -156,7 +156,7 @@ DocLayout {
                                 DocText {
                                     text: "Width:"
                                     color: ThemeTokens.text
-                                    font.pixelSize: 12
+                                    font.pixelSize: Typography.sizeSmall
                                     anchors.verticalCenter: parent.verticalCenter
                                     width: 50
                                 }
@@ -176,7 +176,7 @@ DocLayout {
                                 DocText {
                                     text: "Height:"
                                     color: ThemeTokens.text
-                                    font.pixelSize: 12
+                                    font.pixelSize: Typography.sizeSmall
                                     anchors.verticalCenter: parent.verticalCenter
                                     width: 50
                                 }

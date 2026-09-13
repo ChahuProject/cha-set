@@ -81,7 +81,7 @@ DocLayout {
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: "Constrained Item #" + (index + 1)
                                 color: ThemeTokens.text
-                                font.pixelSize: 12
+                                font.pixelSize: Typography.sizeSmall
                             }
 
                             ChaSetBadge {

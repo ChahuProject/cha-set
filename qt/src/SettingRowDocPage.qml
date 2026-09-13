@@ -132,7 +132,7 @@ ChaSetSettingRow {
     // Anchor Jump & Flash
     DocText {
         text: "Anchor Jump & Flash"
-        font.pixelSize: 18
+        font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
     }
@@ -154,7 +154,7 @@ ChaSetSettingRow {
                     wrapMode: TextEdit.Wrap
                     text: "Setting rows support an anchor targeting mechanism. When highlightTarget matches highlightId, the border triggers a 3-cycle pulse flash animation, guiding the user's attention from dialogs or keyboard shortcuts."
                     color: ThemeTokens.text
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
             }
         }
@@ -163,7 +163,7 @@ ChaSetSettingRow {
     // Keyboard Navigation
     DocText {
         text: "Keyboard Navigation"
-        font.pixelSize: 18
+        font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
     }

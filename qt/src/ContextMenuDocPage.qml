@@ -79,15 +79,15 @@ DocLayout {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text: "🖱️ Right Click Inside This Area"
                                 color: ThemeTokens.text
-                                font.pixelSize: 13
-                                font.weight: Font.DemiBold
+                                font.pixelSize: Typography.sizeBody
+                                font.weight: Typography.weightSemibold
                             }
 
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text: "A native contextual popup will appear at pointer coordinates."
                                 color: ThemeTokens.subduedText
-                                font.pixelSize: 11
+                                font.pixelSize: Typography.sizeCaption
                             }
                         }
                     }
@@ -97,7 +97,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: root.lastAction
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono
                 }
             }

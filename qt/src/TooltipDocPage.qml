@@ -68,7 +68,7 @@ DocLayout {
             // Side Selector
             Row {
                 spacing: 8
-                DocText { text: "Side:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Side:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetTabs {
                     anchors.verticalCenter: parent.verticalCenter
                     currentValue: root.demoSide
@@ -85,7 +85,7 @@ DocLayout {
             // Delay Selector
             Row {
                 spacing: 8
-                DocText { text: "Delay:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Delay:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetTabs {
                     anchors.verticalCenter: parent.verticalCenter
                     currentValue: String(root.demoDelay)
@@ -101,7 +101,7 @@ DocLayout {
             // Text Input
             Row {
                 spacing: 8
-                DocText { text: "Text:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Text:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetInput {
                     width: 140
                     size: "sm"
@@ -113,7 +113,7 @@ DocLayout {
             // Shortcut Input
             Row {
                 spacing: 8
-                DocText { text: "Shortcut:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Shortcut:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetInput {
                     width: 90
                     size: "sm"
@@ -148,8 +148,8 @@ DocLayout {
         DocText {
             text: "Installation"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         ChaSetCodeBlock {
@@ -167,14 +167,14 @@ DocLayout {
         DocText {
             text: "Anatomy"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "ChaSetTooltip can wrap child items directly or attach to an existing parent item."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         ChaSetCodeBlock {
@@ -192,14 +192,14 @@ DocLayout {
         DocText {
             text: "Examples & States"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "Visual matrix of Tooltip directional placements in Qt Quick Desktop."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         Grid {
@@ -219,7 +219,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Top Placement (Default)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Top Placement (Default)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width
                         height: 60
@@ -246,7 +246,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Bottom Placement"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Bottom Placement"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width
                         height: 60
@@ -273,7 +273,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Left Placement"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Left Placement"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width
                         height: 60
@@ -300,7 +300,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Right Placement"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Right Placement"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width
                         height: 60
@@ -327,7 +327,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Keyboard Shortcut Hint"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Keyboard Shortcut Hint"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width
                         height: 60
@@ -355,7 +355,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Directional Arrow"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Directional Arrow"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width
                         height: 60
@@ -378,13 +378,13 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        DocText { text: "Animations"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+        DocText { text: "Animations"; color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        DocText { text: "Motion behavior and timing driven by ThemeTokens for the tooltip bubble on open and close."; color: root.cMutedFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "Motion behavior and timing driven by ThemeTokens for the tooltip bubble on open and close."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        DocText { text: "• The bubble cross-fades its opacity and scales it slightly on entry and exit to signal appearance."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• The bubble cross-fades its opacity and scales it slightly on entry and exit to signal appearance."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     // Section 5: Props Reference
@@ -395,8 +395,8 @@ DocLayout {
         DocText {
             text: "Props Reference"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         

@@ -76,8 +76,8 @@ DocLayout {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     text: "Desktop Mock Window Frame"
                                     color: ThemeTokens.text
-                                    font.pixelSize: 13
-                                    font.weight: Font.DemiBold
+                                    font.pixelSize: Typography.sizeBody
+                                    font.weight: Typography.weightSemibold
                                 }
 
                                 Row {
@@ -88,7 +88,7 @@ DocLayout {
                                         anchors.verticalCenter: parent.verticalCenter
                                         text: "Caption Event:"
                                         color: ThemeTokens.subduedText
-                                        font.pixelSize: 12
+                                        font.pixelSize: Typography.sizeSmall
                                     }
 
                                     ChaSetBadge {

@@ -33,14 +33,14 @@ DocLayout {
         DocText {
             text: "Design Philosophy"
             textColor: ThemeTokens.text
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "ChaSet is part of the ChahuProject ecosystem. In traditional multi-platform apps, Web and Desktop design systems drift apart quickly. ChaSet solves this by establishing a neutral, machine-readable specification and token shard layer that drives both React and Qt simultaneously with pixel-perfect and behavioral parity."
             isMuted: true
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
             width: parent.width
         }
 
@@ -64,12 +64,12 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 6
-                        DocText { text: "🎯"; font.pixelSize: 22 }
-                        DocText { text: "One Source of Truth"; textColor: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                        DocText { text: "🎯"; font.pixelSize: Typography.sizeTitleMd }
+                        DocText { text: "One Source of Truth"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
                             text: "Design tokens and API contracts reside in spec/ and emit synchronized tokens for Web & Qt."
                             isMuted: true
-                            font.pixelSize: 11
+                            font.pixelSize: Typography.sizeCaption
                             width: parent.width
                         }
                     }
@@ -92,12 +92,12 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 6
-                        DocText { text: "⚡"; font.pixelSize: 22 }
-                        DocText { text: "Native Ergonomics"; textColor: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                        DocText { text: "⚡"; font.pixelSize: Typography.sizeTitleMd }
+                        DocText { text: "Native Ergonomics"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
                             text: "Tailwind CSS v4 & Base UI on React; pure QML Quick Controls on Qt — no electron bloat or foreign wrappers."
                             isMuted: true
-                            font.pixelSize: 11
+                            font.pixelSize: Typography.sizeCaption
                             width: parent.width
                         }
                     }
@@ -120,12 +120,12 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 6
-                        DocText { text: "🔒"; font.pixelSize: 22 }
-                        DocText { text: "Automated Parity Gate"; textColor: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                        DocText { text: "🔒"; font.pixelSize: Typography.sizeTitleMd }
+                        DocText { text: "Automated Parity Gate"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
                             text: "CI enforces that all required capabilities and visual rendering match 100% across stacks."
                             isMuted: true
-                            font.pixelSize: 11
+                            font.pixelSize: Typography.sizeCaption
                             width: parent.width
                         }
                     }
@@ -142,8 +142,8 @@ DocLayout {
         DocText {
             text: "How It Works"
             textColor: ThemeTokens.text
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         ChaSetCodeBlock {
@@ -161,14 +161,14 @@ DocLayout {
         DocText {
             text: "Quick Start"
             textColor: ThemeTokens.text
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "Install the package and peer dependencies:"
             isMuted: true
-            font.pixelSize: 12
+            font.pixelSize: Typography.sizeSmall
         }
 
         ChaSetCodeBlock {
@@ -180,7 +180,7 @@ DocLayout {
         DocText {
             text: "Use in your application:"
             isMuted: true
-            font.pixelSize: 12
+            font.pixelSize: Typography.sizeSmall
         }
 
         ChaSetCodeBlock {
@@ -198,8 +198,8 @@ DocLayout {
         DocText {
             text: "Packages"
             textColor: ThemeTokens.text
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         ChaSetTable {

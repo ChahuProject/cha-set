@@ -70,7 +70,7 @@ ChaSetCard {
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.title
                 color: ThemeTokens.subduedText
-                font.pixelSize: 12
+                font.pixelSize: Typography.sizeSmall
                 readOnly: true
                 selectByMouse: true
                 selectByKeyboard: true

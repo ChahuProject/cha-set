@@ -47,7 +47,7 @@ DocLayout {
                             anchors.leftMargin: 10
                             text: "pnpm add @chahu/cha-set"
                             color: ThemeTokens.text
-                            font.pixelSize: 12
+                            font.pixelSize: Typography.sizeSmall
                             font.family: Typography.familyMono
                         }
                     }
@@ -74,7 +74,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: root.copyStatus
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono
                 }
             }

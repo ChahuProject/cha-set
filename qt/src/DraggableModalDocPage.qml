@@ -56,7 +56,7 @@ DocLayout {
                     anchors.centerIn: parent
                     text: "Drag the modal around within this bounded canvas"
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
 
                 ChaSetDraggableModal {
@@ -83,7 +83,7 @@ DocLayout {
                             DocText {
                                 text: "Active Pass:"
                                 color: ThemeTokens.subduedText
-                                font.pixelSize: 12
+                                font.pixelSize: Typography.sizeSmall
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                             ChaSetBadge {
@@ -93,8 +93,8 @@ DocLayout {
                             }
                         }
 
-                        DocText { text: "Format: R32G32B32A32_FLOAT"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
-                        DocText { text: "Dimensions: 2560 x 1440"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                        DocText { text: "Format: R32G32B32A32_FLOAT"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
+                        DocText { text: "Dimensions: 2560 x 1440"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                         ChaSetButton { text: "Export Buffer"; size: "xs"; variant: "outline" }
                     }
                 }

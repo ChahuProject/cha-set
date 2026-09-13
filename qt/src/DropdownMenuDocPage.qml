@@ -72,7 +72,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Action: " + root.lastAction
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono
                 }
             }

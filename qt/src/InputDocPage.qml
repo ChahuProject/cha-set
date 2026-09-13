@@ -53,7 +53,7 @@ DocLayout {
                     DocText {
                         text: "Email address"
                         color: root.cMutedFg
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                     }
                     Item { width: 1; height: 1 }
                 }
@@ -75,7 +75,7 @@ DocLayout {
                 DocText {
                     text: root.demoInvalid ? "Please enter a valid corporate email address." : "We will never share your email with anyone else."
                     color: root.demoInvalid ? (ThemeTokens.dark ? Qt.rgba(248.0 / 255.0, 113.0 / 255.0, 113.0 / 255.0, 1.0) : Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)) : root.cMutedFg
-                    font.pixelSize: 11
+                    font.pixelSize: Typography.sizeCaption
                 }
             }
         ]
@@ -86,7 +86,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoSize
@@ -100,7 +100,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "Type:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Type:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoType
@@ -157,8 +157,8 @@ DocLayout {
         DocText {
             text: "Installation"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         ChaSetCodeBlock {
@@ -176,14 +176,14 @@ DocLayout {
         DocText {
             text: "Anatomy"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "Import and render ChaSetInput directly in your QML scene."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         ChaSetCodeBlock {
@@ -201,14 +201,14 @@ DocLayout {
         DocText {
             text: "Examples & States"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "Visual matrix of common input configurations and states in Qt Quick."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         Grid {
@@ -227,7 +227,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Default Input"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Default Input"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetInput { width: parent.width; placeholderText: "Enter username..." }
                 }
             }
@@ -243,7 +243,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Small Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Small Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetInput { width: parent.width; size: "sm"; placeholderText: "Compact input..." }
                 }
             }
@@ -259,7 +259,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Invalid / Error State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Invalid / Error State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetInput { width: parent.width; invalid: true; text: "invalid-email@" }
                 }
             }
@@ -275,7 +275,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Clearable Field"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Clearable Field"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetInput { width: parent.width; clearable: true; text: "Click cross to clear" }
                 }
             }
@@ -291,7 +291,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Password with Toggle"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Password with Toggle"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetInput { width: parent.width; type: "password"; passwordToggle: true; text: "supersecret123" }
                 }
             }
@@ -307,7 +307,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetInput { width: parent.width; disabled: true; placeholderText: "Disabled input"; text: "preset value" }
                 }
             }
@@ -322,8 +322,8 @@ DocLayout {
         DocText {
             text: "Props Reference"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         

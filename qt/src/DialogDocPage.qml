@@ -49,7 +49,7 @@ DocLayout {
                 DocText {
                     text: "Current profile: " + nameInput.text + " (" + usernameInput.text + ")"
                     color: root.cMutedFg
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                     horizontalAlignment: Text.AlignHCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
@@ -62,13 +62,13 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        DocText { text: "Animations"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+        DocText { text: "Animations"; color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        DocText { text: "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close."; color: root.cMutedFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        DocText { text: "• The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     KeyboardShortcutsTable {
@@ -83,8 +83,8 @@ DocLayout {
         DocText {
             text: "Installation"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         ChaSetCodeBlock {
@@ -102,14 +102,14 @@ DocLayout {
         DocText {
             text: "Anatomy"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "Import and configure ChaSetDialog in your QML scene."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         ChaSetCodeBlock {
@@ -127,14 +127,14 @@ DocLayout {
         DocText {
             text: "Examples & States"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         DocText {
             text: "Common modal dialog patterns: confirmation dialogs, forms, and informational notices."
             color: root.cMutedFg
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
         }
 
         Grid {
@@ -157,14 +157,14 @@ DocLayout {
                     DocText {
                         text: "Destructive Confirmation"
                         color: root.cFg
-                        font.pixelSize: 13
-                        font.weight: Font.DemiBold
+                        font.pixelSize: Typography.sizeBody
+                        font.weight: Typography.weightSemibold
                     }
 
                     DocText {
                         text: "Dialog for destructive actions requiring explicit user confirmation."
                         color: root.cMutedFg
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                         wrapMode: TextEdit.WordWrap
                         width: parent.width
                     }
@@ -193,14 +193,14 @@ DocLayout {
                     DocText {
                         text: "Informational Notice"
                         color: root.cFg
-                        font.pixelSize: 13
-                        font.weight: Font.DemiBold
+                        font.pixelSize: Typography.sizeBody
+                        font.weight: Typography.weightSemibold
                     }
 
                     DocText {
                         text: "Lightweight alert modal for system notices and scheduled maintenance."
                         color: root.cMutedFg
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                         wrapMode: TextEdit.WordWrap
                         width: parent.width
                     }
@@ -224,8 +224,8 @@ DocLayout {
         DocText {
             text: "Props Reference"
             color: root.cFg
-            font.pixelSize: 18
-            font.weight: Font.Bold
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
         }
 
         PropsTable {
@@ -349,7 +349,7 @@ DocLayout {
                     text: "Name"
                     width: 70
                     color: root.cFg
-                    font.pixelSize: 13
+                    font.pixelSize: Typography.sizeBody
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 ChaSetInput {
@@ -366,7 +366,7 @@ DocLayout {
                     text: "Username"
                     width: 70
                     color: root.cFg
-                    font.pixelSize: 13
+                    font.pixelSize: Typography.sizeBody
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 ChaSetInput {
@@ -433,7 +433,7 @@ DocLayout {
         DocText {
             text: "Expected downtime is under 10 minutes. All data remains encrypted and safe."
             color: root.cMutedFg
-            font.pixelSize: 12
+            font.pixelSize: Typography.sizeSmall
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }

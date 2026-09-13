@@ -67,7 +67,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Event: " + root.lastTriggered
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono
                 }
             }

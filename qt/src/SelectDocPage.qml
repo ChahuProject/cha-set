@@ -66,7 +66,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Selected value: " + root.selectedFruit
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono
                 }
             }

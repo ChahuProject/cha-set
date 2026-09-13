@@ -114,7 +114,7 @@ DocLayout {
                                     anchors.verticalCenter: parent.verticalCenter
                                     text: "Kinematic Scroll Item #" + (index + 1)
                                     color: ThemeTokens.text
-                                    font.pixelSize: 12
+                                    font.pixelSize: Typography.sizeSmall
                                     font.bold: true
                                 }
 
@@ -137,7 +137,7 @@ DocLayout {
                 DocText {
                     text: "Speed Multiplier:"
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 11
+                    font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Repeater {
@@ -156,7 +156,7 @@ DocLayout {
                 DocText {
                     text: "Damping Duration:"
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 11
+                    font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Repeater {
@@ -176,7 +176,7 @@ DocLayout {
     // Kinematic Architecture
     DocText {
         text: "Kinematic Architecture"
-        font.pixelSize: 18
+        font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
     }
@@ -198,21 +198,21 @@ DocLayout {
                     wrapMode: TextEdit.Wrap
                     text: "• Momentum Accumulation: Consecutive wheel clicks accumulate linearly to targetPos rather than interrupting or jerking the active transition."
                     color: ThemeTokens.text
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
                 DocText {
                     width: parent.width
                     wrapMode: TextEdit.Wrap
                     text: "• Gesture Decoupling: Automatically listens to targetItem.moving and targetItem.flicking. When the user touches or drags the view, smooth animations abort instantly to prevent motion fight."
                     color: ThemeTokens.text
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
                 DocText {
                     width: parent.width
                     wrapMode: TextEdit.Wrap
                     text: "• Universal Drop-In: Targets any Flickable / ListView / GridView or ChaSetScrollArea without modifying existing visual hierarchies."
                     color: ThemeTokens.text
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                 }
             }
         }
@@ -221,7 +221,7 @@ DocLayout {
     // Keyboard & Wheel Navigation
     DocText {
         text: "Keyboard & Wheel Navigation"
-        font.pixelSize: 18
+        font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
     }

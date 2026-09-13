@@ -86,8 +86,8 @@ DocLayout {
                             DocText {
                                 text: "Explorer Tree"
                                 color: ThemeTokens.text
-                                font.pixelSize: 13
-                                font.weight: Font.DemiBold
+                                font.pixelSize: Typography.sizeBody
+                                font.weight: Typography.weightSemibold
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                             ChaSetBadge {
@@ -110,8 +110,8 @@ DocLayout {
                             DocText {
                                 text: "Source Code Editor"
                                 color: ThemeTokens.text
-                                font.pixelSize: 13
-                                font.weight: Font.DemiBold
+                                font.pixelSize: Typography.sizeBody
+                                font.weight: Typography.weightSemibold
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                             ChaSetBadge {
@@ -209,8 +209,8 @@ DocLayout {
                             DocText {
                                 text: "Sidebar"
                                 color: ThemeTokens.text
-                                font.pixelSize: 13
-                                font.weight: Font.DemiBold
+                                font.pixelSize: Typography.sizeBody
+                                font.weight: Typography.weightSemibold
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                             ChaSetBadge {
@@ -240,8 +240,8 @@ DocLayout {
                                 DocText {
                                     text: "Editor Viewport"
                                     color: ThemeTokens.text
-                                    font.pixelSize: 13
-                                    font.weight: Font.DemiBold
+                                    font.pixelSize: Typography.sizeBody
+                                    font.weight: Typography.weightSemibold
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
                                 ChaSetBadge {
@@ -264,8 +264,8 @@ DocLayout {
                                 DocText {
                                     text: "Integrated Terminal"
                                     color: ThemeTokens.text
-                                    font.pixelSize: 13
-                                    font.weight: Font.DemiBold
+                                    font.pixelSize: Typography.sizeBody
+                                    font.weight: Typography.weightSemibold
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
                                 ChaSetBadge {
@@ -324,7 +324,7 @@ DocLayout {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "Direction:"
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                     }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
@@ -379,8 +379,8 @@ DocLayout {
                             DocText {
                                 text: "Panel Alpha"
                                 color: ThemeTokens.text
-                                font.pixelSize: 13
-                                font.weight: Font.DemiBold
+                                font.pixelSize: Typography.sizeBody
+                                font.weight: Typography.weightSemibold
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                             ChaSetBadge {
@@ -415,8 +415,8 @@ DocLayout {
                             DocText {
                                 text: "Panel Beta"
                                 color: ThemeTokens.text
-                                font.pixelSize: 13
-                                font.weight: Font.DemiBold
+                                font.pixelSize: Typography.sizeBody
+                                font.weight: Typography.weightSemibold
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                             ChaSetBadge {
@@ -455,14 +455,14 @@ DocLayout {
         DocText {
             text: "Animations"
             color: ThemeTokens.text
-            font.pixelSize: 18
+            font.pixelSize: Typography.sizeTitleSm
             font.bold: true
         }
 
         DocText {
             text: "Motion tokens and kinematic timing contracts for Resizable dividers and handles."
             color: ThemeTokens.subduedText
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
@@ -470,21 +470,21 @@ DocLayout {
         DocText {
             text: "• Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (ThemeTokens.motionQuick and ThemeTokens.easeStandard)."
             color: ThemeTokens.text
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
         DocText {
             text: "• Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
             color: ThemeTokens.text
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
         DocText {
             text: "• Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt."
             color: ThemeTokens.text
-            font.pixelSize: 13
+            font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }

@@ -44,7 +44,7 @@ DocLayout {
                 Column {
                     spacing: 6
                     anchors.horizontalCenter: parent.horizontalCenter
-                    DocText { text: "Click recorder box and press shortcut combination:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+                    DocText { text: "Click recorder box and press shortcut combination:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetKeybindingRecorder {
                         width: 240
                         value: root.boundKey
@@ -59,7 +59,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Recorded accelerator: " + root.boundKey
                     color: ThemeTokens.text
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono
                 }
             }
@@ -88,28 +88,28 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Default Size (with Clear)"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Default Size (with Clear)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetKeybindingRecorder { width: parent.width; value: "Ctrl+K"; size: "default"; clearable: true }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Compact sm Tier"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Compact sm Tier"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetKeybindingRecorder { width: parent.width; value: "Ctrl+Shift+P"; size: "sm"; clearable: true }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Without Clear Button"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Without Clear Button"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetKeybindingRecorder { width: parent.width; value: "Alt+F4"; clearable: false }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Disabled State"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Disabled State"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetKeybindingRecorder { width: parent.width; value: "Ctrl+C"; enabled: false }
                 }
             }

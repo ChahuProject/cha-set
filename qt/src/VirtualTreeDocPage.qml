@@ -110,7 +110,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Selected Node ID: " + root.selectedPath
                     color: ThemeTokens.text
-                    font.pixelSize: 12
+                    font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono
                 }
             }
