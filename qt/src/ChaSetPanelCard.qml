@@ -86,6 +86,7 @@ Rectangle {
             visible: !root.collapsed
             width: parent.width
             implicitHeight: childrenRect.height
+            height: childrenRect.height
             anchors.margins: 12
         }
     }

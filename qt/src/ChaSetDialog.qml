@@ -106,6 +106,7 @@ Rectangle {
         // Intercept clicks to prevent dismissal when clicking inside the card
         MouseArea {
             anchors.fill: parent
+            z: -1
             onClicked: {}
         }
 

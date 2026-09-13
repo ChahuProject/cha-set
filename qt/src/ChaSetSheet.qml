@@ -106,6 +106,7 @@ Rectangle {
 
         MouseArea {
             anchors.fill: parent
+            z: -1
             // prevent dismissing sheet when clicking sheet interior
         }
 

@@ -448,6 +448,7 @@ Item {
             color: root.isDark ? ThemeTokens.panel : "#ffffff"
             border.color: ThemeTokens.border
             border.width: 1
+            visible: root.mode !== "popover" || root.popoverOpen
             opacity: (root.mode === "popover" && !root.popoverOpen) ? 0.0 : 1.0
             scale: (root.mode === "popover" && !root.popoverOpen) ? 0.95 : 1.0
 
@@ -467,8 +468,9 @@ Item {
             MouseArea {
                 id: cardDragArea
                 anchors.fill: parent
+                visible: root.movable
                 enabled: root.movable && !root.disabled
-                cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
+                cursorShape: root.movable ? (pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor) : undefined
                 property real startMouseX: 0
                 property real startMouseY: 0
                 property real startOffsetX: 0
@@ -1382,6 +1384,7 @@ Item {
         onVisibleChanged: root.popoverOpen = colorPopup.visible
 
         Loader {
+            active: root.mode === "popover" && colorPopup.visible
             sourceComponent: pickerCardComponent
             width: item ? item.width : root.cardWidth
             height: item ? item.height : 0
@@ -1391,6 +1394,7 @@ Item {
     // Inline Card Loader
     Loader {
         id: panelLoader
+        active: root.mode === "inline"
         visible: root.mode === "inline"
         width: item ? item.width : root.cardWidth
         height: item ? item.height : 0
