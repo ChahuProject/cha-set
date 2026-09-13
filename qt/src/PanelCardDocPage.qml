@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Panel Card"
     description: "Structured card container with a distinguished tinted header bar, optional badge indicators, and collapsible content toggling."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     ComponentPreview {

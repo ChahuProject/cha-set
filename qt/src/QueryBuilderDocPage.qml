@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Query Builder"
     description: "Visual rule tree builder for structured query generation with AND/OR logic toggling, field and operator predicates, and dynamic condition management."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     ComponentPreview {

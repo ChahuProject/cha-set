@@ -54,7 +54,7 @@ export function CardDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Base Primitives"
       title="Card"
       description="Displays a card with header, title, description, content, and footer actions."
       tocItems={[

@@ -60,6 +60,7 @@ export function SidebarDocPage() {
 
   return (
     <DocLayout
+      category="Desktop & Virtualization"
       title="Sidebar"
       description="Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing."
     >

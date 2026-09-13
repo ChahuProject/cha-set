@@ -5,18 +5,18 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Scroll Area"
     description: "Augments native scroll functionality with custom cross-browser styling, dynamic hot-zone expansion, and interactive stepper navigation buttons."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "horizontal-example", title: "Horizontal Scrolling" },
         { id: "dual-axis", title: "Dual-Axis (Both Axes)" },
         { id: "hotzone", title: "Hot Zone & Dynamic Width" },
         { id: "steppers", title: "Stepper Navigation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string heroMode: "vertical"

@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Window Title Bar"
     description: "Frameless desktop application window header with app branding, icon, drag region, and caption control buttons."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string lastAction: "Idle"

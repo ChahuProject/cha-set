@@ -48,7 +48,7 @@ export function SegmentedControlDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Interactive Controls"
       title="Segmented Control"
       description="A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support."
       tocItems={[

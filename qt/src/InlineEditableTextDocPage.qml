@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Inline Editable Text"
     description: "Seamless inline text label that dynamically transforms into an input field on double-click or edit trigger."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string currentTitle: "Project Apollo Architecture"

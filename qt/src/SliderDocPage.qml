@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Slider"
     description: "An interactive control that allows the user to select a numeric value along a track."
     tocItems: [

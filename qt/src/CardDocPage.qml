@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Card"
     description: "Displays a card with header, title, description, content, and footer actions."
     tocItems: [

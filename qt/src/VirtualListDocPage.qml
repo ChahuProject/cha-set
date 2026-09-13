@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Virtual List"
     description: "High-performance windowed virtualized list for handling 100k+ rows with native desktop wheel kinematics and delegate recycling."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     ComponentPreview {

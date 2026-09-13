@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Read-Only Input"
     description: "Protected display field for non-editable cryptographic tokens, resource IDs, and keys with an integrated one-click copy button."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     ComponentPreview {

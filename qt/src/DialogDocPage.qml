@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Dialog"
     description: "A modal window that interrupts the user with critical content and prompts for user action."
     tocItems: [

@@ -9,11 +9,11 @@ DocLayout {
     pageTitle: "Sheet"
     description: "Extends the dialog component to display content that complements the main screen via smooth sliding transitions from any viewport edge."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string sheetSide: "right"

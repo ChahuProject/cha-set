@@ -97,7 +97,7 @@ export function SeparatorDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Base Primitives"
       title="Separator"
       description="Visually or semantically separates content in a list, form, or section."
       tocItems={[

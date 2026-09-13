@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Label"
     description: "Renders an accessible label associated with form controls."
     tocItems: [

@@ -36,7 +36,7 @@ export function ButtonDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Base Primitives"
       title="Button"
       description="Displays a button or a component that looks like a button with multiple variants, sizes, and states."
       tocItems={[
@@ -49,7 +49,7 @@ export function ButtonDocPage() {
         { id: 'button-group', title: 'Button Group' },
         { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'API Reference' },
+        { id: 'props', title: 'Props Reference' },
       ]}
     >
       {/* 1. Interactive Preview Hero */}
@@ -289,8 +289,10 @@ export function ButtonDocPage() {
         <KeyboardShortcutsTable componentId="button" />
       </section>
 
-      <section id="props" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">API Reference</h2>
+      <section id="props" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Props Reference
+        </h2>
         <PropsTable
           title="ButtonProps"
           props={[

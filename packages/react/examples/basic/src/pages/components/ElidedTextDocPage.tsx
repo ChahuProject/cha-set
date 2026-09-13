@@ -35,7 +35,7 @@ export function ElidedTextDocPage() {
 
   return (
     <DocLayout
-      category="Data Display"
+      category="Interactive Controls"
       title="Elided Text"
       description="Smart text truncation with automatic overflow detection, click-to-copy, and contextual tooltip reveal."
       tocItems={[

@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Badge"
     description: "Displays a badge or a component that looks like a badge to highlight status, tags, and counts."
     tocItems: [

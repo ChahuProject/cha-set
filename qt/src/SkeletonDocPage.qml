@@ -9,11 +9,11 @@ DocLayout {
     pageTitle: "Skeleton"
     description: "Used to show a placeholder while content is loading, utilizing a subtle looping pulse animation."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string animationMode: "pulse"

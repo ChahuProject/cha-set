@@ -7,7 +7,7 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 
 export function PanelCardDocPage() {
   const reactCode = `<PanelCard
-  title="Inspector Panel"
+  title="Panel Card"
   collapsible
   defaultCollapsed={false}
   actions={<Button variant="ghost" size="xs">Refresh</Button>}

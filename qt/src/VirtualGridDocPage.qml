@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Virtual Grid"
     description: "2D windowed grid virtualizer for high-performance visualization of massive visual card and thumbnail matrices."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     ComponentPreview {

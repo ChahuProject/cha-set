@@ -51,7 +51,7 @@ export function LabelDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Base Primitives"
       title="Label"
       description="Renders an accessible label associated with form controls."
       tocItems={[

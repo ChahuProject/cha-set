@@ -9,7 +9,7 @@ DocLayout {
     pageTitle: "Code Block"
     description: "Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "variants", title: "Variants & Options" },
         { id: "multi-file", title: "Multi-File Tabs" },
         { id: "installation", title: "Installation" },

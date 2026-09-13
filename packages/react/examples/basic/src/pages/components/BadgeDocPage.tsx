@@ -27,7 +27,7 @@ export function BadgeDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Base Primitives"
       title="Badge"
       description="Displays a badge or a component that looks like a badge to highlight status, tags, and counts."
       tocItems={[

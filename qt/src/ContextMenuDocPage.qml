@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Context Menu"
     description: "Displays a contextual popup menu at pointer coordinates triggered by right-click interaction."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "installation", title: "Installation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string lastAction: "Right-click the target area below"

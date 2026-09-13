@@ -107,7 +107,7 @@ export function ScrollAreaDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Base Primitives"
       title="Scroll Area"
       description="Augments native scroll functionality with custom cross-browser styling, dynamic hot-zone expansion, and interactive stepper navigation buttons."
       tocItems={[
@@ -118,7 +118,7 @@ export function ScrollAreaDocPage() {
         { id: 'hotzone', title: 'Hot Zone & Dynamic Width' },
         { id: 'steppers', title: 'Stepper Navigation' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'API Reference' },
+        { id: 'props', title: 'Props Reference' },
       ]}
     >
       {/* 1. Interactive Preview Hero */}
@@ -507,8 +507,8 @@ export const CrossStackSpecification = {
         <KeyboardShortcutsTable componentId="scroll-area" />
       </section>
 
-      <section id="props" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">API Reference</h2>
+      <section id="props" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-2">Props Reference</h2>
         <PropsTable
           title="ScrollAreaProps"
           props={[

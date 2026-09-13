@@ -61,7 +61,7 @@ export function TabsDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Base Primitives"
       title="Tabs"
       description="A set of layered content sections known as tab panels, displayed one at a time."
       tocItems={[

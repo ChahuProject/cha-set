@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Alert Dialog"
     description: "A modal dialog that interrupts the user with important content and expects a confirmation or cancellation action."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string alertFeedback: "Dialog is idle."
