@@ -53,12 +53,12 @@ export function SegmentedControlDocPage() {
       description="A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
+        { id: 'installation', title: 'Installation' },
         { id: 'sizes', title: 'Sizes' },
-        { id: 'fixed-width', title: 'Width & Ellipsis' },
-        { id: 'menu-mode', title: 'Menu & Inline Title' },
+        { id: 'fixed-width', title: 'Fixed Width & Truncation' },
+        { id: 'menu', title: 'Menu & Inline Title' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'code', title: 'Implementation Code' },
-        { id: 'props', title: 'Props Reference' },
+{ id: 'props', title: 'Props Reference' },
       ]}
     >
       <section id="overview" className="space-y-4">
@@ -104,6 +104,11 @@ export function SegmentedControlDocPage() {
             </div>
           </div>
         </ComponentPreview>
+      </section>
+
+      <section id="installation" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
+        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
       <section id="sizes" className="space-y-4 pt-6">
@@ -156,7 +161,7 @@ export function SegmentedControlDocPage() {
         </Card>
       </section>
 
-      <section id="menu-mode" className="space-y-4 pt-6">
+      <section id="menu" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Menu & Inline Title</h2>
         <p className="text-sm text-muted-foreground">
           Supports an optional prefix title to seamlessly embed within context menu rows and parameter settings panels.

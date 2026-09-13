@@ -16,10 +16,10 @@ import {
   SidebarInset,
   Badge,
   SegmentedControl,
+  CodeBlock,
 } from "@chahu/cha-set";
 import { DocLayout } from "../../layout/DocLayout";
 import { ComponentPreview } from "../../components/ComponentPreview";
-import { CodeBlock } from "../../components/CodeBlock";
 import { PropsTable } from "../../components/PropsTable";
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -63,8 +63,17 @@ export function SidebarDocPage() {
       category="Desktop & Virtualization"
       title="Sidebar"
       description="Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing."
+      tocItems={[
+        { id: 'overview', title: 'Interactive Overview' },
+        { id: 'installation', title: 'Installation' },
+        { id: 'keyboard', title: 'Keyboard Navigation' },
+        { id: 'props', title: 'Props Reference' },
+      ]}
     >
-      <h2 className="text-xl font-semibold mt-8 mb-4">Interactive Preview</h2>
+      <section id="overview" className="scroll-mt-20">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Interactive Overview
+        </h2>
       <ComponentPreview reactCode={basicUsageCode}>
         <div className="relative h-[22.5rem] w-full border rounded-lg overflow-hidden flex bg-background">
           <SidebarProvider defaultOpen={true} container>
@@ -155,8 +164,14 @@ export function SidebarDocPage() {
           </SidebarProvider>
         </div>
       </ComponentPreview>
+      </section>
 
-      <h2 className="text-xl font-semibold mt-8 mb-4">Props Reference</h2>
+      <section id="installation" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Installation
+        </h2>
+        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
+      </section>
       
       <section id="keyboard" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -168,8 +183,12 @@ export function SidebarDocPage() {
         <KeyboardShortcutsTable componentId="sidebar" />
       </section>
 
-      <PropsTable
-        props={[
+      <section id="props" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          Props Reference
+        </h2>
+        <PropsTable
+          props={[
           {
             name: "collapsible",
             type: "'offcanvas' | 'icon' | 'none'",
@@ -195,7 +214,8 @@ export function SidebarDocPage() {
             description: "Initial expanded state on SidebarProvider.",
           },
         ]}
-      />
+        />
+      </section>
     </DocLayout>
   );
 }

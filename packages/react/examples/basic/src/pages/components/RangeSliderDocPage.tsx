@@ -23,8 +23,7 @@ export function RangeSliderDocPage() {
       description="Dual-thumb slider for selecting numeric min-max intervals with collision prevention and keyboard accessibility."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'variants', title: 'Sizes & Tooltips' },
-        { id: 'installation', title: 'Installation' },
+{ id: 'installation', title: 'Installation' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}

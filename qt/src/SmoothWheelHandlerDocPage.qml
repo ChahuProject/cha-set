@@ -10,6 +10,7 @@ DocLayout {
     description: "Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
+        { id: "installation", title: "Installation" },
         { id: "kinematics", title: "Kinematic Architecture" },
         { id: "keyboard", title: "Keyboard & Wheel Navigation" },
         { id: "props", title: "Props Reference" }
@@ -18,6 +19,12 @@ DocLayout {
     property real demoSpeed: 1.2
     property int demoDuration: 200
     property bool demoMapShift: false
+
+    ChaSetCodeBlock {
+        title: "Installation"
+        code: "import ChaSet 1.0\n\nChaSetSmoothWheelHandler { target: flickable }"
+        language: "qml"
+    }
 
     ComponentPreview {
         id: heroPreview

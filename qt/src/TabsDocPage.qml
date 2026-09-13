@@ -13,7 +13,7 @@ DocLayout {
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
-        { id: "disabled", title: "Disabled State" },
+        { id: "examples", title: "Examples & Variants" },
         { id: "props", title: "Props Reference" }
     ]
 

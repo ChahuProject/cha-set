@@ -65,7 +65,12 @@ export function extractReactDocMetadata(content) {
   const descMatch = layoutAttrs.match(/description=(?:["']([^"']+)["']|\{["']([^"']+)["']\})/);
   if (descMatch) meta.description = descMatch[1] || descMatch[2];
 
-  const tocMatches = [...content.matchAll(/\{\s*id[:=]\s*["']([^"']+)["'],\s*title[:=]\s*["']([^"']+)["']/g)];
+  let tocBlock = '';
+  const tocBlockMatch = content.match(/tocItems=\{?\s*\[([^\]]*)\]\}?/s);
+  if (tocBlockMatch) {
+    tocBlock = tocBlockMatch[1];
+  }
+  const tocMatches = [...tocBlock.matchAll(/\{\s*id[:=]\s*["']([^"']+)["'],\s*title[:=]\s*["']([^"']+)["']/g)];
   meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] }));
 
   const prevTitleMatch = content.match(/ComponentPreview\s*\{?[^>]*?title[:=]\s*["']([^"']+)["']/s);
@@ -100,7 +105,12 @@ export function extractQtDocMetadata(content) {
   const descMatch = layoutProps.match(/description:\s*["']([^"']+)["']/);
   if (descMatch) meta.description = descMatch[1];
 
-  const tocMatches = [...content.matchAll(/\{\s*id:\s*["']([^"']+)["'],\s*title:\s*["']([^"']+)["']/g)];
+  let tocBlock = '';
+  const tocBlockMatch = content.match(/tocItems:\s*\[([^\]]*)\]/s);
+  if (tocBlockMatch) {
+    tocBlock = tocBlockMatch[1];
+  }
+  const tocMatches = [...tocBlock.matchAll(/\{\s*id:\s*["']([^"']+)["'],\s*title:\s*["']([^"']+)["']/g)];
   meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] }));
 
   const prevTitleMatch = content.match(/ComponentPreview\s*\{[^}]*?title:\s*["']([^"']+)["']/s);
@@ -186,14 +196,31 @@ export function verifyShowcaseParity(options = {}) {
     const reactTocIds = reactMeta.tocItems.map(t => t.id);
     const qtTocIds = qtMeta.tocItems.map(t => t.id);
 
-    if (qtTocIds.includes('preview') && reactTocIds.includes('overview')) {
+    if (reactTocIds.length === 0) {
+      errors.push(`[${base}] React TOC is empty or missing tocItems`);
+    }
+    if (qtTocIds.length === 0) {
+      errors.push(`[${base}] Qt TOC is empty or missing tocItems`);
+    }
+
+    if (reactTocIds.includes('preview')) {
+      errors.push(`[${base}] React TOC uses legacy id "preview" instead of standard "overview" (Interactive Overview)`);
+    }
+    if (qtTocIds.includes('preview')) {
       errors.push(`[${base}] Qt TOC uses legacy id "preview" instead of standard "overview" (Interactive Overview)`);
     }
-    if (qtTocIds.includes('props') && reactTocIds.includes('props')) {
-      const qPropsTitle = qtMeta.tocItems.find(t => t.id === 'props')?.title;
-      const rPropsTitle = reactMeta.tocItems.find(t => t.id === 'props')?.title;
-      if (qPropsTitle !== rPropsTitle) {
-        errors.push(`[${base}] Props TOC title mismatch: React="${rPropsTitle}" vs Qt="${qPropsTitle}" (standardize on "Props Reference")`);
+
+    // Strict 1:1 TOC ID Equivalence Check
+    if (reactTocIds.join(',') !== qtTocIds.join(',')) {
+      errors.push(`[${base}] TOC IDs mismatch across stacks: React=[${reactTocIds.join(', ')}] vs Qt=[${qtTocIds.join(', ')}]`);
+    }
+
+    // Title matching for identical IDs
+    for (let i = 0; i < Math.min(reactMeta.tocItems.length, qtMeta.tocItems.length); i++) {
+      const rItem = reactMeta.tocItems[i];
+      const qItem = qtMeta.tocItems[i];
+      if (rItem.id === qItem.id && rItem.title !== qItem.title) {
+        errors.push(`[${base}] TOC title mismatch for id "${rItem.id}": React="${rItem.title}" vs Qt="${qItem.title}"`);
       }
     }
 

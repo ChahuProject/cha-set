@@ -12,7 +12,7 @@ DocLayout {
         { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
-        { id: "examples", title: "Examples & States" },
+        { id: "states", title: "Examples & States" },
         { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }

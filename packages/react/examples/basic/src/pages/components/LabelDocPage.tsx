@@ -59,8 +59,7 @@ export function LabelDocPage() {
         { id: 'installation', title: 'Installation' },
         { id: 'sizes', title: 'Sizes' },
         { id: 'states', title: 'States' },
-        { id: 'form-control', title: 'Form Association' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
+{ id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
     >

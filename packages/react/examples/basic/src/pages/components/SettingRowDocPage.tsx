@@ -48,10 +48,10 @@ export function SettingRowDocPage() {
       description="Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
+        { id: 'installation', title: 'Installation' },
         { id: 'anchor', title: 'Anchor Jump & Flash' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'code', title: 'Implementation Code' },
-        { id: 'props', title: 'Props Reference' },
+{ id: 'props', title: 'Props Reference' },
       ]}
     >
       <section id="overview" className="space-y-4">
@@ -101,6 +101,11 @@ export function SettingRowDocPage() {
             </Card>
           </div>
         </ComponentPreview>
+      </section>
+
+      <section id="installation" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
+        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
       <section id="anchor" className="space-y-4 pt-6">
