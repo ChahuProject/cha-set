@@ -136,15 +136,28 @@ Rectangle {
                         cursorShape: Qt.SizeAllCursor
                     }
 
-                    Text {
+                    TextEdit {
                         id: titleText
                         width: parent.width - (headerActions.width + (headerActions.visible ? 8 : 0))
                         text: root.title
                         color: ThemeTokens.text
                         font.pixelSize: Typography.sizeHeading
                         font.weight: Font.Bold
-                        elide: Text.ElideRight
+                        height: contentHeight
+                        readOnly: true
+                        selectByMouse: true
+                        selectByKeyboard: true
+                        cursorVisible: false
+                        activeFocusOnPress: false
+                        textMargin: 0
+                        padding: 0
+                        selectionColor: ThemeTokens.accent
+                        selectedTextColor: "#ffffff"
                         anchors.verticalCenter: parent.verticalCenter
+
+                        HoverHandler {
+                            cursorShape: Qt.IBeamCursor
+                        }
                     }
 
                     Row {
@@ -189,14 +202,28 @@ Rectangle {
                     }
                 }
 
-                Text {
+                TextEdit {
                     id: descText
                     width: parent.width
                     text: root.description
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeBody
-                    wrapMode: Text.WordWrap
+                    wrapMode: TextEdit.WordWrap
+                    height: contentHeight
                     visible: text !== ""
+                    readOnly: true
+                    selectByMouse: true
+                    selectByKeyboard: true
+                    cursorVisible: false
+                    activeFocusOnPress: false
+                    textMargin: 0
+                    padding: 0
+                    selectionColor: ThemeTokens.accent
+                    selectedTextColor: "#ffffff"
+
+                    HoverHandler {
+                        cursorShape: Qt.IBeamCursor
+                    }
                 }
             }
 

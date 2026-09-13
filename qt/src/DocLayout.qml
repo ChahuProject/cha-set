@@ -40,6 +40,7 @@ Item {
                 padding: 0
                 selectionColor: ThemeTokens.accent
                 selectedTextColor: "#ffffff"
+                width: contentWidth
                 height: contentHeight
 
                 HoverHandler {
@@ -59,6 +60,8 @@ Item {
                     TextEdit {
                         id: titleText
                         anchors.left: parent.left
+                        anchors.right: copyBtn.left
+                        anchors.rightMargin: 16
                         anchors.verticalCenter: parent.verticalCenter
                         text: root.pageTitle
                         color: ThemeTokens.text
@@ -135,9 +138,9 @@ Item {
             width: 180
             spacing: 12
 
-            Text {
+            DocText {
                 text: "ON THIS PAGE"
-                color: ThemeTokens.subduedText
+                textColor: ThemeTokens.subduedText
                 font.pixelSize: 11
                 font.weight: Font.DemiBold
                 font.letterSpacing: 0.5

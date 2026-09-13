@@ -58,7 +58,12 @@ Item {
     }
 
     Row {
-        anchors.fill: parent
+        id: _leftRow
+        anchors.left: parent.left
+        anchors.right: _controlZone.left
+        anchors.rightMargin: 12
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
         anchors.topMargin: root.isSm ? 6 : 10
         anchors.bottomMargin: root.isSm ? 6 : 10
         spacing: root.isSm ? 8 : 12
@@ -82,18 +87,33 @@ Item {
 
         Column {
             id: _labelColumn
-            width: Math.min(parent.width * 0.55, 340)
+            width: _leftRow.width - (_iconBox.visible ? (_iconBox.width + _leftRow.spacing) : 0)
             anchors.verticalCenter: parent.verticalCenter
             spacing: 2
 
             Row {
                 spacing: 6
 
-                Text {
+                TextEdit {
                     text: root.name
                     color: ThemeTokens.text
                     font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
                     font.bold: true
+                    width: contentWidth
+                    height: contentHeight
+                    readOnly: true
+                    selectByMouse: true
+                    selectByKeyboard: true
+                    cursorVisible: false
+                    activeFocusOnPress: false
+                    textMargin: 0
+                    padding: 0
+                    selectionColor: ThemeTokens.accent
+                    selectedTextColor: "#ffffff"
+
+                    HoverHandler {
+                        cursorShape: Qt.IBeamCursor
+                    }
                 }
 
                 ChaSetBadge {
@@ -105,22 +125,37 @@ Item {
                 }
             }
 
-            Text {
+            TextEdit {
                 width: parent.width
                 text: root.description
                 visible: root.description.length > 0
                 color: ThemeTokens.subduedText
                 font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeCaption
-                wrapMode: Text.Wrap
+                wrapMode: TextEdit.Wrap
+                height: visible ? contentHeight : 0
+                readOnly: true
+                selectByMouse: true
+                selectByKeyboard: true
+                cursorVisible: false
+                activeFocusOnPress: false
+                textMargin: 0
+                padding: 0
+                selectionColor: ThemeTokens.accent
+                selectedTextColor: "#ffffff"
+
+                HoverHandler {
+                    cursorShape: Qt.IBeamCursor
+                }
             }
         }
+    }
 
-        Item {
-            id: _controlZone
-            width: parent.width - _labelColumn.width - (_iconBox.visible ? _iconBox.width + 12 : 0) - 12
-            height: parent.height
-            anchors.verticalCenter: parent.verticalCenter
-        }
+    Item {
+        id: _controlZone
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        width: Math.min(140, Math.max(100, parent.width * 0.35))
+        height: parent.height - (root.isSm ? 12 : 20)
     }
 }
 
