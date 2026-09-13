@@ -315,5 +315,12 @@
     "indeterminateProgress": true,
     "dismiss": true,
     "autoHide": true
+  },
+  "addressBar": {
+    "breadcrumbs": true,
+    "editMode": true,
+    "navigationControls": true,
+    "keyboard": true,
+    "suggestions": true
   }
 }

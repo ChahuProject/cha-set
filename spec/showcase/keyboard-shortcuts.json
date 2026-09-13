@@ -256,6 +256,14 @@
   "task-hud": [
     { "key": "Tab / Shift + Tab", "action": "Focus through task dismiss buttons in the stack" },
     { "key": "Space / Enter", "action": "Dismiss the currently focused task notification" }
+  ],
+  "address-bar": [
+    { "key": "Alt + D / Ctrl + L", "action": "Switch to path edit mode and select all text" },
+    { "key": "Enter", "action": "Commit edited path and trigger navigation" },
+    { "key": "Escape", "action": "Cancel edit mode and revert to breadcrumb display" },
+    { "key": "Alt + Left / Alt + Right", "action": "Trigger backward or forward history navigation" },
+    { "key": "Alt + Up", "action": "Navigate to the parent directory level" },
+    { "key": "F5 / Ctrl + R", "action": "Refresh the active location" }
   ]
 }
 

@@ -99,6 +99,7 @@
     "window-title-bar": { "semantic": "window-move" },
     "scale-osd": { "semantic": "action", "supportsDisabled": true },
     "pipeline-view": { "semantic": "action", "supportsDisabled": true },
-    "task-hud": { "semantic": "action", "supportsDisabled": true }
+    "task-hud": { "semantic": "action", "supportsDisabled": true },
+    "address-bar": { "semantic": "action", "supportsDisabled": true }
   }
 }

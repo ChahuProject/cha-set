@@ -358,6 +358,12 @@
         "title": "Pipeline View",
         "href": "#/components/pipeline-view",
         "desc": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
+      },
+      {
+        "id": "address-bar",
+        "title": "Address Bar",
+        "href": "#/components/address-bar",
+        "desc": "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing."
       }
     ]
   }

@@ -50,6 +50,7 @@ export * from './splitter-handle';
 export * from './duration-input';
 export * from './code-block';
 export * from './pipeline-view';
+export * from './address-bar';
 export * from './lib/splitFixedFooter';
 export {
   CheckIcon,
