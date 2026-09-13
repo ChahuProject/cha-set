@@ -139,7 +139,23 @@ pnpm build:tokens
 pnpm check:showcase
 
 # 3. Build Qt desktop project
-cmake --build qt/build
+#    The QML components are compiled into QtChaSetDemo.exe, so ANY edit under
+#    qt/src/ requires a rebuild before the gate/pixel runs mean anything.
+#    `cmake --build qt/build` alone FAILS on a cold shell: cl is not on PATH, and
+#    CMake then silently picks MinGW gcc. Load the VS dev shell in the SAME
+#    process that runs cmake, and pin the compiler explicitly. From the Bash
+#    tool, invoke PowerShell with this block (a bare `cmd.exe /c ...` is blocked
+#    by the host's command validation, and PowerShell stdout capture is
+#    unreliable — redirect cmake to a log file and read that instead):
+#
+#   Import-Module 'C:\Program Files\Microsoft Visual Studio\18\Community\Common7\Tools\Microsoft.VisualStudio.DevShell.dll'
+#   Enter-VsDevShell -VsInstallPath 'C:\Program Files\Microsoft Visual Studio\18\Community' -SkipAutomaticLocation -DevCmdArguments '-arch=x64 -host_arch=x64'
+#   $env:PATH = 'D:\pengj\qt\6.10.1\msvc2022_64\bin;' + $env:PATH
+#   cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH='D:\pengj\qt\6.10.1\msvc2022_64' -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl *> $env:TEMP\chaset-qt-build.log
+#   cmake --build qt/build *>> $env:TEMP\chaset-qt-build.log
+#
+#   An incremental rebuild of one ChaSet*.qml is ~10-20s (qmlcache recompile +
+#   relink), so repeat build/capture cycles during a pixel investigation are cheap.
 
 # 4. Run full React test suite & cursor conformance
 pnpm test
@@ -155,6 +171,9 @@ pnpm gate
 
 # 7. (For L1 Atomic Primitives) Run targeted bit-exact pixel-sync
 pnpm test:pixel --component <name>
+# `code-block` is a text-dense case: it asserts line pitch geometrically rather
+# than by mismatch rate (see .agents/skills/pixel-sync). Report a `Line Pitch`
+# column of `<react>px/<qt>px`; aligned renders print `17/17px ok`.
 # OR run all L1 components:
 pnpm gate:pixel
 
@@ -164,3 +183,29 @@ pnpm gate:pixel
 # - Verify code blocks allow multi-line drag selection without selecting line numbers
 # - Verify disabled controls display ForbiddenCursor / cursor-not-allowed
 ```
+
+### Known-red check: `--test-scenario all` pointer raycasting
+
+On this machine the *Pointer Raycasting* scenario inside `QtChaSetDemo.exe --test-scenario all`
+fails with ~12-14 cursor discrepancies (pages `color-picker`, `theme-tuner`,
+`splitter-handle`, `sidebar`), each reporting `got window cursor 0`. It also
+varies run to run (776/777 controls, 12/14 discrepancies), so it is environment-
+dependent rather than deterministic — the window cursor is never updated for
+those items.
+
+`pnpm gate` runs this scenario as step 3 and `process.exit(1)`s there, which
+means gate steps 4 and 5 (React showcase pages, cursor conformance) **never run**.
+Do not treat a red `pnpm gate` as your regression until you have ruled this out:
+
+1. Run the failing suite directly and compare against a pristine build — back your
+   files up first, since `git checkout --` / `git stash` are the destructive part:
+   `cp qt/src/Main.qml $TEMP/Main.qml.mine` then
+   `git show HEAD:qt/src/Main.qml > qt/src/Main.qml`, rebuild, run
+   `--test-scenario all`, copy your file back and rebuild.
+2. Normalise the output before diffing, because QML auto-numbers type instances
+   (`ChaSetSlider_QMLTYPE_116` vs `_103`) and those numbers shift whenever the QML
+   type registry changes — that is noise, not a regression:
+   `sed 's/_QMLTYPE_[0-9]*//; s/_QML_[0-9]*//g'`
+3. Re-run gate steps 4 and 5 by hand:
+   `pnpm --filter @chahu/cha-set exec vitest run src/__tests__/showcase-parity.test.tsx src/__tests__/showcase-pages.test.tsx src/__tests__/showcase-sidebar.test.tsx src/__tests__/cursor-conformance.test.tsx`
+
