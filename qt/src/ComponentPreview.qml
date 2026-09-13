@@ -13,6 +13,7 @@ ChaSetCard {
     property string reactCode: ""
     property string qtCode: ""
     property string activeTab: "preview"
+    property int stageHeight: 280
 
     default property alias stageData: stageContainer.data
     property alias controlsData: controlsContainer.data
@@ -81,7 +82,7 @@ ChaSetCard {
             Item {
                 id: stageContainer
                 width: parent.width
-                height: 280
+                height: root.stageHeight
                 clip: true
             }
 

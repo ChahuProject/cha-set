@@ -80,55 +80,51 @@ DocLayout {
 
         controlsData: [
             Row {
-                spacing: 16
-
-                Row {
-                    spacing: 8
-                    Text { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
-                        anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoVariant
-                        onCurrentValueChanged: root.demoVariant = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default" }
-                            ChaSetTabsTrigger { value: "secondary"; text: "Secondary" }
-                            ChaSetTabsTrigger { value: "destructive"; text: "Destructive" }
-                            ChaSetTabsTrigger { value: "outline"; text: "Outline" }
-                            ChaSetTabsTrigger { value: "ghost"; text: "Ghost" }
-                            ChaSetTabsTrigger { value: "link"; text: "Link" }
-                        }
+                spacing: 8
+                Text { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetTabs {
+                    anchors.verticalCenter: parent.verticalCenter
+                    currentValue: root.demoVariant
+                    onCurrentValueChanged: root.demoVariant = currentValue
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "default"; text: "Default" }
+                        ChaSetTabsTrigger { value: "secondary"; text: "Secondary" }
+                        ChaSetTabsTrigger { value: "destructive"; text: "Destructive" }
+                        ChaSetTabsTrigger { value: "outline"; text: "Outline" }
+                        ChaSetTabsTrigger { value: "ghost"; text: "Ghost" }
+                        ChaSetTabsTrigger { value: "link"; text: "Link" }
                     }
                 }
+            },
 
-                Row {
-                    spacing: 8
-                    Text { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
-                        anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoSize
-                        onCurrentValueChanged: root.demoSize = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default" }
-                            ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
-                        }
+            Row {
+                spacing: 8
+                Text { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetTabs {
+                    anchors.verticalCenter: parent.verticalCenter
+                    currentValue: root.demoSize
+                    onCurrentValueChanged: root.demoSize = currentValue
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "default"; text: "Default" }
+                        ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
                     }
                 }
+            },
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Status Dot"
-                    checked: root.demoDot
-                    onToggled: (v) => root.demoDot = v
-                }
+            ChaSetCheckbox {
+                size: "sm"
+                label: "Status Dot"
+                checked: root.demoDot
+                onToggled: (v) => root.demoDot = v
+            },
 
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Removable"
-                    checked: root.demoRemovable
-                    onToggled: (v) => {
-                        root.demoRemovable = v
-                        root.demoRemoved = false
-                    }
+            ChaSetCheckbox {
+                size: "sm"
+                label: "Removable"
+                checked: root.demoRemovable
+                onToggled: (v) => {
+                    root.demoRemovable = v
+                    root.demoRemoved = false
                 }
             }
         ]

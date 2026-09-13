@@ -17,6 +17,7 @@ DocLayout {
 
     ComponentPreview {
         title: "Virtual List Sandbox"
+        stageHeight: 340
         reactCode: `<VirtualList
   items={items}
   estimateSize={36}

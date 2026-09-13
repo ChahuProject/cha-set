@@ -65,85 +65,77 @@ DocLayout {
         ]
 
         controlsData: [
+            // Side Selector
             Row {
-                spacing: 16
-
-                // Side Selector
-                Row {
-                    spacing: 8
-                    Text { text: "Side:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
-                        anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoSide
-                        onCurrentValueChanged: root.demoSide = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "top"; text: "Top" }
-                            ChaSetTabsTrigger { value: "bottom"; text: "Bottom" }
-                            ChaSetTabsTrigger { value: "left"; text: "Left" }
-                            ChaSetTabsTrigger { value: "right"; text: "Right" }
-                        }
-                    }
-                }
-
-                // Delay Selector
-                Row {
-                    spacing: 8
-                    Text { text: "Delay:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
-                        anchors.verticalCenter: parent.verticalCenter
-                        currentValue: String(root.demoDelay)
-                        onCurrentValueChanged: root.demoDelay = parseInt(currentValue)
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "0"; text: "0ms" }
-                            ChaSetTabsTrigger { value: "200"; text: "200ms" }
-                            ChaSetTabsTrigger { value: "500"; text: "500ms" }
-                        }
-                    }
-                }
-
-                // Text Input
-                Row {
-                    spacing: 8
-                    Text { text: "Text:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetInput {
-                        width: 140
-                        size: "sm"
-                        text: root.demoText
-                        onTextEdited: root.demoText = text
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
-
-                // Shortcut Input
-                Row {
-                    spacing: 8
-                    Text { text: "Shortcut:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetInput {
-                        width: 90
-                        size: "sm"
-                        text: root.demoShortcut
-                        onTextEdited: root.demoShortcut = text
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
-
-                // Arrow Toggle
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Arrow"
-                    checked: root.demoArrow
-                    onToggled: (val) => root.demoArrow = val
+                spacing: 8
+                Text { text: "Side:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetTabs {
                     anchors.verticalCenter: parent.verticalCenter
+                    currentValue: root.demoSide
+                    onCurrentValueChanged: root.demoSide = currentValue
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "top"; text: "Top" }
+                        ChaSetTabsTrigger { value: "bottom"; text: "Bottom" }
+                        ChaSetTabsTrigger { value: "left"; text: "Left" }
+                        ChaSetTabsTrigger { value: "right"; text: "Right" }
+                    }
                 }
+            },
 
-                // Disabled Toggle
-                ChaSetCheckbox {
-                    size: "sm"
-                    label: "Disabled"
-                    checked: root.demoDisabled
-                    onToggled: (val) => root.demoDisabled = val
+            // Delay Selector
+            Row {
+                spacing: 8
+                Text { text: "Delay:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetTabs {
                     anchors.verticalCenter: parent.verticalCenter
+                    currentValue: String(root.demoDelay)
+                    onCurrentValueChanged: root.demoDelay = parseInt(currentValue)
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "0"; text: "0ms" }
+                        ChaSetTabsTrigger { value: "200"; text: "200ms" }
+                        ChaSetTabsTrigger { value: "500"; text: "500ms" }
+                    }
                 }
+            },
+
+            // Text Input
+            Row {
+                spacing: 8
+                Text { text: "Text:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetInput {
+                    width: 140
+                    size: "sm"
+                    text: root.demoText
+                    onTextEdited: root.demoText = text
+                }
+            },
+
+            // Shortcut Input
+            Row {
+                spacing: 8
+                Text { text: "Shortcut:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetInput {
+                    width: 90
+                    size: "sm"
+                    text: root.demoShortcut
+                    onTextEdited: root.demoShortcut = text
+                }
+            },
+
+            // Arrow Toggle
+            ChaSetCheckbox {
+                size: "sm"
+                label: "Arrow"
+                checked: root.demoArrow
+                onToggled: (val) => root.demoArrow = val
+            },
+
+            // Disabled Toggle
+            ChaSetCheckbox {
+                size: "sm"
+                label: "Disabled"
+                checked: root.demoDisabled
+                onToggled: (val) => root.demoDisabled = val
             }
         ]
     }

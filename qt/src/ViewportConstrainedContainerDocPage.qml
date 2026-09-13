@@ -68,7 +68,7 @@ DocLayout {
                     Repeater {
                         model: 12
                         Rectangle {
-                            width: parent.width - 24
+                            width: parent ? parent.width - 24 : 200
                             height: 32
                             radius: 4
                             color: ThemeTokens.color("panelRaised")
