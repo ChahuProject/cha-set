@@ -186,6 +186,15 @@ The typography drift check (`scripts/check-typography-parity.mjs`, wired into `p
 
 A literal can only be exempted by adding an entry to `scripts/typography-allowlist.json` with a written justification. The file is a debt ledger: four entries today, all icon-glyph or metric cases that have no text-role counterpart.
 
+### Code Block line-pitch gate
+
+The Code Block was the component whose line-height originally diverged, so it gets a dedicated end-to-end gate rather than only a static one. Both stacks expose an isolated harness rendering the *same* 5-line TypeScript sample (`--harness code-block`; source kept byte-identical in `App.tsx` and `Main.qml`), captured at 1.0 device-pixel ratio and compared by `scripts/pixel-sync-test.mjs`:
+
+- **Gross layout** — `pixelmatch` mismatch rate ≤ 4% (card chrome, header strip, body padding, blank-body detection).
+- **Typography contract** — the vertical **line pitch** of both captures must agree geometrically, measured by autocorrelation of the per-row ink profile (`pitchTolerance: 1px`).
+
+The geometric assertion is the load-bearing one. `pixelmatch` runs with `includeAA: false`, and at 12px mono most glyph pixels are stroke edges, so a line-height regression is largely classified as anti-aliasing and discarded: reverting Qt to a 14px line pitch moved the mismatch rate only **2.61% → 3.08%**, far too thin to gate on. The autocorrelation metric separates the states decisively — **17/17px ok** when aligned versus **17/14px DRIFT** when not — while both healthy ends agree to 0px. Run it with `pnpm test:pixel --component code-block`; it is also part of `pnpm gate:pixel` (`--component all`).
+
 ---
 
 ## 8. What the migration actually changed

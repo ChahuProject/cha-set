@@ -22,10 +22,11 @@ Static screenshot comparison by "human eyeballing" is unreliable and leads to su
 3. **Dual Spatial & Color Probe Assertions**:
    - **Spatial Pixel Diff (`pixelmatch`)**: Overall image mismatch rate must be <= 0.20% for standard variants and states using the zero-variance Unicode Middle Dot (`·`, U+00B7) benchmark (achieving literal 0.00% across 13/16 scenarios).
    - **Surface Color Probe (Delta E <= 4.0)**: Background fill and interactive state colors sampled inside component padding must match within mathematical Delta E <= 4.0 (flat solid fills achieve bit-exact Delta E = 0.0 across all states).
+   - **Geometric Typography Assertion (line pitch, `pitchTolerance`)**: For text-dense components, both engines must *resolve the same line pitch in px*, measured geometrically from the captures. Text rasterization differs between Skia and DirectWrite, and `pixelmatch` runs with `includeAA: false` — which discards exactly the glyph-edge pixels that carry line-height information. On the CodeBlock harness, a real 16.8px -> 14px regression moves the mismatch rate only 2.61% -> 3.08%, far too thin to gate on. Autocorrelation of the per-row ink profile separates the two states cleanly and decisively instead (`17/17px ok` vs `17/14px DRIFT`). The mismatch rate is retained for such cases as a *gross layout* guard only (missing border, wrong padding, blank body).
 4. **Zero-Variance Unicode Benchmark Lexicon**:
    - To completely eliminate kerning pair accumulation and font styling variances across OS text rasterizers, visual unit conformance uses the standard Unicode Middle Dot (`·`, U+00B7), which renders with integer-aligned center geometry across Chromium Skia and Qt DirectWrite.
 5. **Selective Targeted Execution (Opt-in)**:
-   - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for all L1 Atomic Visual Primitives: `button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`).
+   - High-precision pixel testing launches headless browsers and native Qt processes (~10-15s). To maintain fast developer loops, pixel-level gates are **selective and opt-in** (targeted per-component, currently active for all L1 Atomic Visual Primitives: `button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, plus the text-dense `code-block`).
 
 ---
 
@@ -36,6 +37,7 @@ Pixel-sync is a high-cost, high-precision instrument. We apply it where it yield
 | Component Category | Target Components | Pixel-Sync Policy | Rationale |
 | :--- | :--- | :--- | :--- |
 | **L1: Atomic Visual Primitives** | `button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider` | **MANDATORY** | Self-contained boxes with deterministic geometry, fixed borders, shadows, and color states. 100% bit-exact parity is required. |
+| **L1.5: Text-Dense Primitives** | `code-block` | **MANDATORY (geometric)** | Chrome/padding parity is diffed like L1, but the typography contract (line pitch) is asserted geometrically via `pitchTolerance`, because AA exclusion blinds the mismatch rate here. See principle 1.3. |
 | **L2: Floating Overlays** | `dialog`, `tooltip`, `dropdown-menu`, `popover`, `select`, `context-menu`, `sheet`, `alert-dialog` | **EXCLUDED** from static diff | Floating coordinates, blur filters, and OS popup windowing produce fragile false positive diffs across Skia and Qt DirectWrite. Tested via token checks and interactive scenarios. |
 | **L3: Virtualization & Shell** | `virtual-list`, `virtual-tree`, `virtual-grid`, `draggable-modal`, `splitter`, `window-title-bar` | **EXCLUDED** from static diff | Dynamic viewport clipping, scroll offsets, and gutter dragging require kinematic stress tests, not static screenshots. |
 | **L4: Composite Engines** | `generic-data-table`, `query-builder` | **EXCLUDED** from static diff | Composed of L1/L2 elements; verified through JSON AST serialization and filter/sort function equality. |
@@ -106,6 +108,16 @@ Both stacks expose an isolated rendering harness centered in a minimal canvas:
 - **Separator**:
   - React: `http://127.0.0.1:5299/?harness=separator&orientation={horizontal|vertical}&theme={light|dark}&width=220&height=80`
   - Qt: `QtChaSetDemo.exe --harness separator --orientation {horizontal|vertical} [--dark] --width 220 --height 80 --shot {path}`
+- **CodeBlock**:
+  - React: `http://127.0.0.1:5299/?harness=code-block&theme={light|dark}&lineNumbers={true|false}&wrap={true|false}&width=360&height=160`
+  - Qt: `QtChaSetDemo.exe --harness code-block [--line-numbers] [--dark] --width 360 --height 160 --shot {path}`
+  - The 5-line TypeScript sample is duplicated verbatim in
+    `packages/react/examples/basic/src/App.tsx` (`CODE_BLOCK_HARNESS_SOURCE`) and
+    `qt/src/Main.qml` (`codeBlockHarnessContainer.harnessSource`). **Keep the two
+    byte-identical** — the harness diffs rendered output, so identical input is
+    what makes a delta mean "typography drift" rather than "different sample".
+    Both ends render with `showCopy: false`, because the copy pill's glyph run is
+    not part of the typography contract under test.
 
 ### Step 3: Headless Image Acquisition
 - Use Edge/Chromium via Chrome DevTools Protocol (`Page.navigate`, `Emulation.setDeviceMetricsOverride`, `Page.captureScreenshot`).
@@ -150,7 +162,10 @@ pnpm test:pixel --component input
 # 7. Run targeted pixel test for separator (horizontal & vertical, light & dark)
 pnpm test:pixel --component separator
 
-# 8. Run targeted pixel test for all supported L1 components
+# 8. Run targeted pixel test for code-block (line pitch geometry, light & dark)
+pnpm test:pixel --component code-block
+
+# 9. Run targeted pixel test for all supported L1 components
 pnpm test:pixel --component all
 
 # 9. Run cross-stack parity gate including targeted pixel gate
@@ -167,6 +182,6 @@ pnpm gate --pixel
 2. **Animation determinism is a soft requirement — but difference-on-animation is NOT**: L1 samples are captured headless with events (not screenshots at wall-clock), so animating properties must be at their terminal value, never mid-flight. Two guards enforce this:
    - Qt: captures run with `--test-scenario`/`--harness`/shot paths, which force `ThemeTokens.animationsEnabled = false` in `qt/src/Main.qml` (Component.onCompleted). Any L1 QML component that adds a `Behavior` MUST gate it on `ThemeTokens.animationsEnabled` — otherwise immediate-then-animated value drift makes sampling flaky.
    - React: states are injected via className (`forceHover`/`forceActive`) without relying on CSS transitions to reach the target; transition utilities resolve to the terminal state at capture time. Never capture an intermediate transition frame.
-3. **DO NOT probe font glyphs for color match**: Font anti-aliasing differs across rendering engines. Background surface colors must be sampled in padding areas, while font rendering is verified via `pixelmatch` spatial tolerance (<= 2.8%).
+3. **DO NOT probe font glyphs for color match**: Font anti-aliasing differs across rendering engines. Background surface colors must be sampled in padding areas, while font rendering is verified via `pixelmatch` spatial tolerance (<= 2.8%). For text-dense components, do **not** rely on the mismatch rate to catch line-height drift — assert the line pitch geometrically (`pitchTolerance`) instead, per principle 1.3.
 4. **Always lock DPI**: Never run visual captures without `QT_ENABLE_HIGHDPI_SCALING=0` and `QT_SCALE_FACTOR=1`.
 5. **Selective Gate Preservation**: Keep standard `pnpm gate` fast. Always use `pnpm gate:pixel` or `pnpm gate --pixel` for targeted visual conformance.
