@@ -49,8 +49,8 @@ DocLayout {
 
         Column {
             spacing: 4
-            DocText { text: "Palette · Semantic Core Tokens"; textColor: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
-            DocText { text: "All derived from spec/tokens.json. Click any swatch to copy its CSS variable expression."; isMuted: true; font.pixelSize: 13 }
+            DocText { text: "Palette · Semantic Core Tokens"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+            DocText { text: "All derived from spec/tokens.json. Click any swatch to copy its CSS variable expression."; isMuted: true; font.pixelSize: Typography.sizeBody }
         }
 
         Grid {
@@ -103,7 +103,7 @@ DocLayout {
                                 anchors.centerIn: parent
                                 width: 72; height: 22; radius: 11
                                 color: Qt.rgba(0, 0, 0, 0.75)
-                                DocText { anchors.centerIn: parent; text: "✓ Copied"; color: "#10b981"; font.pixelSize: 10; font.weight: Font.Bold }
+                                DocText { anchors.centerIn: parent; text: "✓ Copied"; color: "#10b981"; font.pixelSize: Typography.sizeMicro; font.weight: Typography.weightBold }
                             }
                         }
 
@@ -114,14 +114,14 @@ DocLayout {
                             DocText {
                                 text: "--" + modelData[0]
                                 color: ThemeTokens.text
-                                font.pixelSize: 11
+                                font.pixelSize: Typography.sizeCaption
                                 font.family: Typography.familyMono
-                                font.weight: Font.Bold
+                                font.weight: Typography.weightBold
                             }
                             DocText {
                                 text: "" + modelData[1]
                                 color: ThemeTokens.subduedText
-                                font.pixelSize: 10
+                                font.pixelSize: Typography.sizeMicro
                                 font.family: Typography.familyMono
                             }
                         }
@@ -144,8 +144,8 @@ DocLayout {
 
         Column {
             spacing: 4
-            DocText { text: "Typography / Radius / Charts"; textColor: ThemeTokens.text; font.pixelSize: 18; font.weight: Font.Bold }
-            DocText { text: "Radii derived from --radius (same sm/md/lg/xl derivation as shadcn); font weights map to tokens.json primitives (500/600); chart five colors follow the accent."; isMuted: true; font.pixelSize: 13; width: parent.width }
+            DocText { text: "Typography / Radius / Charts"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+            DocText { text: "Radii derived from --radius (same sm/md/lg/xl derivation as shadcn); font weights map to tokens.json primitives (500/600); chart five colors follow the accent."; isMuted: true; font.pixelSize: Typography.sizeBody; width: parent.width }
         }
 
         // Radius Boxes
@@ -171,8 +171,8 @@ DocLayout {
                     Column {
                         anchors.centerIn: parent
                         spacing: 2
-                        DocText { text: modelData[0]; color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Bold; font.family: Typography.familyMono; anchors.horizontalCenter: parent.horizontalCenter }
-                        DocText { text: modelData[2]; color: ThemeTokens.subduedText; font.pixelSize: 10; anchors.horizontalCenter: parent.horizontalCenter }
+                        DocText { text: modelData[0]; color: ThemeTokens.text; font.pixelSize: Typography.sizeCaption; font.weight: Typography.weightBold; font.family: Typography.familyMono; anchors.horizontalCenter: parent.horizontalCenter }
+                        DocText { text: modelData[2]; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeMicro; anchors.horizontalCenter: parent.horizontalCenter }
                     }
                 }
             }
@@ -192,15 +192,15 @@ DocLayout {
                 anchors.fill: parent
                 anchors.margins: 14
                 spacing: 8
-                DocText { text: "Medium 500 — Tea Set ChaSet, cross-stack component library"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Medium }
-                DocText { text: "Semibold 600 — Tea Set ChaSet, cross-stack component library"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.DemiBold }
+                DocText { text: "Medium 500 — Tea Set ChaSet, cross-stack component library"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightMedium }
+                DocText { text: "Semibold 600 — Tea Set ChaSet, cross-stack component library"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightSemibold }
             }
         }
 
         // Chart Bars
         Column {
             spacing: 6
-            DocText { text: "CHART PALETTE (FOLLOWS ACCENT)"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5 }
+            DocText { text: "CHART PALETTE (FOLLOWS ACCENT)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.weight: Typography.weightBold; font.letterSpacing: 0.5 }
             Row {
                 spacing: 10
                 Repeater {
@@ -224,7 +224,7 @@ DocLayout {
                             anchors.bottomMargin: 4
                             text: "--chart-" + parent.modelData[0]
                             color: ThemeTokens.subduedText
-                            font.pixelSize: 9
+                            font.pixelSize: Typography.sizeNano
                             font.family: Typography.familyMono
                         }
                     }

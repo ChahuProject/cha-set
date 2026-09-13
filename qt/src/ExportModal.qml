@@ -72,8 +72,9 @@ ChaSetDialog {
                     return '{\n  \"theme\": {\n    \"mode\": \"' + (ThemeTokens.dark ? 'dark' : 'light') + '\",\n    \"radius\": ' + root.customRadius + '\n  }\n}';
                 }
                 color: ThemeTokens.text
-                font.family: 'Consolas, monospace'
-                font.pixelSize: 12
+                font.family: Typography.familyMono
+                font.pixelSize: Typography.sizeSmall
+                renderType: Text.NativeRendering
             }
         }
     }

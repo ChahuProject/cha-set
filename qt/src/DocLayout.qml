@@ -37,7 +37,9 @@ Item {
                 id: breadcrumbText
                 text: "Docs / " + root.category + " / " + root.pageTitle
                 color: ThemeTokens.subduedText
-                font.pixelSize: 12
+                font.family: Typography.familySans
+                font.pixelSize: Typography.sizeSmall
+                renderType: TextEdit.NativeRendering
                 readOnly: true
                 selectByMouse: true
                 selectByKeyboard: true
@@ -77,11 +79,13 @@ Item {
                         anchors.top: parent.top
                         textFormat: TextEdit.RichText
                         wrapMode: TextEdit.WordWrap
+                        font.family: Typography.familySans
+                        renderType: TextEdit.NativeRendering
                         text: {
-                            var html = "<div style='line-height: 1.25;'>";
-                            html += "<span style='font-size: 24pt; font-weight: bold; color: " + ThemeTokens.text + ";'>" + root.pageTitle + "</span>";
+                            var html = "<div>";
+                            html += "<div style='font-family: Segoe UI; font-size: " + Typography.sizeTitle + "px; font-weight: bold; line-height: " + Typography.lineHeightPx(Typography.sizeTitle, "title") + "px; color: " + ThemeTokens.text + ";'>" + root.pageTitle + "</div>";
                             if (root.description) {
-                                html += "<div style='margin-top: 6pt; font-size: 10.5pt; line-height: 1.5; color: " + ThemeTokens.subduedText + ";'>" + root.description + "</div>";
+                                html += "<div style='margin-top: 8px; font-family: Segoe UI; font-size: " + Typography.sizeBody + "px; line-height: " + Typography.lineHeightPx(Typography.sizeBody, "body") + "px; color: " + ThemeTokens.subduedText + ";'>" + root.description + "</div>";
                             }
                             html += "</div>";
                             return html;
@@ -140,8 +144,9 @@ Item {
             DocText {
                 text: "ON THIS PAGE"
                 textColor: ThemeTokens.subduedText
-                font.pixelSize: 11
-                font.weight: Font.DemiBold
+                font.family: Typography.familySans
+                font.pixelSize: Typography.sizeCaption
+                font.weight: Typography.weightSemibold
                 font.letterSpacing: 0.5
             }
 
@@ -151,7 +156,9 @@ Item {
                     required property var modelData
                     text: modelData.title
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 12
+                    font.family: Typography.familySans
+                    font.pixelSize: Typography.sizeSmall
+                    renderType: Text.NativeRendering
                     wrapMode: Text.WordWrap
                     width: tocCol.width
                     MouseArea {

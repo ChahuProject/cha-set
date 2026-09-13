@@ -4,6 +4,7 @@
 #include <QQuickWindow>
 #include <QQuickItem>
 #include <QSGRendererInterface>
+#include <QFont>
 #include <QTimer>
 #include <QDebug>
 #include <QTest>
@@ -550,7 +551,16 @@ int main(int argc, char* argv[])
 #endif
     }
 
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+    QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
+
     QGuiApplication app(argc, argv);
+
+    QFont appFont(QStringLiteral("Segoe UI"));
+    appFont.setStyleStrategy(QFont::PreferAntialias);
+    appFont.setPixelSize(14);
+    appFont.setWeight(QFont::Normal);
+    QGuiApplication::setFont(appFont);
 
     const QStringList args = app.arguments();
     
