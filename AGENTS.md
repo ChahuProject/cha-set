@@ -102,13 +102,17 @@
     - **Neutral Prop Names & Tokens**: Component props and CSS variables must omit `Px` or `pixel` suffixes (`hitThickness`, `visualThickness`, `deltaAmount`, `--sidebar-width` instead of `hitThicknessPx`, `deltaPixels`, `--sidebar-width-px`).
     - **Documentation & PropsTable**: Doc descriptions, code examples, and props tables must never describe measurements as "in pixels" or "100px". Use neutral units, rem scale, or component tokens.
 12. **Mandatory Mouse Cursor Semantics & Text Selectability Contract (鼠标光标语义与文本可选性全景规约 — 工字光标与禁用态零缺失红线)**:
-    - **Single Source of Truth for Cursor Shapes (光标语义跨端严格对齐表)**:
+    - **Single Source of Truth for Cursor Shapes (光标语义跨端单一真理源与严格对齐表)**:
+      - All cursor semantics are codified in `spec/cursor-contract.json` mapping semantic types (`action`, `text`, `slider`, `resize-col`, `resize-row`, `window-move`, `disabled`) across Web CSS classes and Qt cursor enums.
       - **Action Controls (可操作项)**: Buttons, split-buttons, copy-buttons, menu items, tabs triggers, segmented control options, checkboxes, switches, select triggers, links, pagination, and clickable table rows MUST use `cursor-pointer` (React) and `Qt.PointingHandCursor` (Qt).
       - **Editable & Selectable Text (文本输入与划选区域)**: `Input`, `DurationInput` segment fields, `PresetNumberInput`, `InlineEditableText` (edit mode), `ReadOnlyInput`, `ColorPicker` channel/hex inputs, and `CodeBlock` / `HighlightedCode` code areas MUST use `cursor-text` (React) and `Qt.IBeamCursor` (Qt).
       - **Disabled State Parity (禁用态禁止光标)**: Any interactive control in disabled state MUST show `cursor-not-allowed` (React) and `Qt.ForbiddenCursor` (Qt). **STRICT BAN ON POINTER-EVENTS-NONE DROPPING CURSORS**: Never use bare `pointer-events-none` on interactive elements without preserving `cursor-not-allowed`, which erroneously causes mouse cursor to fall back to the default arrow.
       - **Sliders & Continuous Drag (数值滑块与拖拽)**: Tracks and click areas show `cursor-pointer` / `Qt.PointingHandCursor`. Active drag states show `cursor-grabbing` / `Qt.ClosedHandCursor`.
       - **Window & Modal Drag (窗口与弹窗拖拽)**: Header drag handles show `cursor-move` / `Qt.SizeAllCursor` (or `cursor-grab`).
       - **Splitters & Resizing (分栏调整手柄)**: Horizontal splitters (column adjustment) show `cursor-col-resize` / `Qt.SizeHorCursor` (`Qt.SplitHCursor`). Vertical splitters (row adjustment) show `cursor-row-resize` / `Qt.SizeVerCursor` (`Qt.SplitVCursor`).
+    - **QML Root Item Geometry Mandate (QML 根 Item 尺寸显式绑定律 — 防 0x0 塌陷红线)**:
+      - In Qt Quick, `Row` and `Column` position items without assigning sizes to unconstrained children.
+      - Any custom component whose root is an `Item` MUST explicitly bind `width: implicitWidth` and `height: implicitHeight`. Omitting these causes the root item to compute a rendered geometry of `0x0`, causing inner `MouseArea { anchors.fill: parent }` or `HoverHandler` to have zero area, permanently breaking hover detection, cursor shape changes, and mouse clicks.
     - **Qt Quick Input Robustness Mandate (QML 输入控件 HoverHandler 强制嵌入律)**:
       - Qt Quick's `QQuickTextInput` and `QQuickTextEdit` DO NOT implement hover cursors by default, and sitting at `z: 0` they fully mask lower-level `MouseArea` items (at `z: -1`).
       - **STRICT MANDATE**: Every QML text input, numeric field, and code viewer (`ChaSetInput`, `ChaSetDurationInput`, `ChaSetReadOnlyInput`, `ChaSetColorPicker` inputs, `ChaSetHighlightedCode`) **MUST attach an explicit Qt 6 `HoverHandler`** directly on or inside the item:
@@ -117,10 +121,14 @@
             cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor)
         }
         ```
-        `HoverHandler` operates at the PointerHandler level, monitors hover across the entire geometry without intercepting mouse clicks, double clicks, focus, or drag selection.
+        `HoverHandler` operates at the PointerHandler level, monitors hover across the entire geometry without intercepting mouse clicks, double clicks, focus, or drag selection. **NEVER assign `anchors` to `HoverHandler`** (it is a `QQuickPointerHandler`, not an `Item`).
     - **Code Block & Selectable Text Gutter Decoupling (代码块文本划选与行号解耦律)**:
       - Code viewers (`CodeBlock`, `HighlightedCode`) MUST support cross-line mouse drag selection (`selectByMouse: true`, `selectByKeyboard: true`), double-click word selection, triple-click line selection, and pure-text `Ctrl+C` copying.
       - Line numbers must reside in a separate non-selectable gutter (`Column`), strictly decoupled from the selectable code area, showing `ArrowCursor` and never contaminating copied text.
+    - **Automated Verification Gate (自动化对齐门禁)**:
+      - React cursor parity is mechanically enforced via `pnpm --filter @chahu/cha-set exec vitest run src/__tests__/cursor-conformance.test.tsx`.
+      - Qt cursor parity is mechanically verified via `QtChaSetDemo.exe --test-scenario cursor` (running authentic C++ QTest mouse cursor and geometry queries). Both checks are embedded directly inside `pnpm gate`.
+
 13. **Mandatory Dual-Stack Showcase Structural, Semantic & Code Authenticity Contract (双端演示文档结构、元数据与代码保真度全景规约 — SPAS 零漂移红线)**:
     - **Single Source of Truth for Metadata (元数据单一真理源)**:
       Component DocPage metadata (`title`, `category`, `description`) MUST strictly match `spec/showcase/navigation.json`. React `<DocLayout title=...>` and Qt `DocLayout { pageTitle: ... }` must display the official component name. It is strictly forbidden to displace the component title with sandbox mock card text.
