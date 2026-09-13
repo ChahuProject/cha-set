@@ -23,9 +23,19 @@ ChaSetCard {
 
         // Tab Navigation Header (44px height matching React px-3 py-2 with default size SegmentedControl)
         Rectangle {
+            id: headerRect
             width: parent.width
             height: 44
             color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.4) : Qt.rgba(241/255, 245/255, 249/255, 0.4)
+            radius: root.radius
+
+            // Square bottom corners so only top-left and top-right follow the card radius
+            Rectangle {
+                anchors.bottom: parent.bottom
+                width: parent.width
+                height: parent.radius
+                color: parent.color
+            }
 
             // Bottom border matching React border-b border-border
             Rectangle {
@@ -77,10 +87,20 @@ ChaSetCard {
 
             // Controls Bar (matching React border-t border-border/40 bg-muted/20)
             Rectangle {
+                id: controlsBar
                 visible: controlsContainer.children.length > 0
                 width: parent.width
                 implicitHeight: controlsContainer.implicitHeight + 24
                 color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.2) : Qt.rgba(241/255, 245/255, 249/255, 0.2)
+                radius: root.radius
+
+                // Square top corners so only bottom-left and bottom-right follow the card radius
+                Rectangle {
+                    anchors.top: parent.top
+                    width: parent.width
+                    height: parent.radius
+                    color: parent.color
+                }
 
                 // Top border divider matching React border-t
                 Rectangle {
