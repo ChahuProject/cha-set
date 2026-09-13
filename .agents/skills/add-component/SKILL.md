@@ -14,8 +14,17 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 ## 1. Golden Rules for New Components
 
 1. **Single Source of Truth First**: Never write React TSX or Qt QML before formalizing the API contract in `spec/components/<name>.ts` and capability declarations in `spec/capabilities.json`.
-2. **100% Dual-Stack Living Showcase Coverage Mandate (双端全量演示与路由零盲区)**: Every component MUST have:
-   - Registration in `spec/showcase/navigation.json` under its group.
+2. **100% Dual-Stack Living Showcase Structural, Content & Parity Mandate (SPAS — 双端全量演示文档结构与内容对齐红线)**: Every component MUST have:
+   - Registration in `spec/showcase/navigation.json` under its category.
+   - **Single Source of Truth for Metadata**: `category`, `title` (React) / `pageTitle` (Qt), and `description` MUST strictly match `spec/showcase/navigation.json`. Never place sandbox preview item strings (e.g. card titles, modal headlines) into `DocLayout` titles.
+   - **Canonical Table of Contents (TOC) Contract**: Every DocPage MUST implement the 5 standard sections with identical anchor IDs and titles across both stacks:
+     - `overview`: **Interactive Overview** (strict ban on legacy `preview` / `Interactive Preview`)
+     - `installation`: **Installation**
+     - `animations`: **Animations** (motion tokens per Golden Rule 11)
+     - `keyboard`: **Keyboard Navigation** (backed by `spec/showcase/keyboard-shortcuts.json`)
+     - `props`: **Props Reference** (strict ban on legacy `api` / `API Reference`)
+   - **Authentic Code Snippet Contract**: Qt's `ComponentPreview` `reactCode` MUST contain real, valid, runnable React JSX conforming to the component's actual API contract. Speculative, invalid, or hallucinated React tags in QML are strictly forbidden.
+   - **Sandbox Visual & Content Equivalence**: Sandbox layouts, pane titles, mock items (e.g. file trees), badge calculations, and reset buttons/values MUST match 1:1 between React and Qt.
    - **Web (React)**:
      - Dedicated living doc page `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx` with interactive preview, variant playground, code snippets, and token reference.
      - Active route and page rendering wired into `packages/react/examples/basic/src/App.tsx`.
@@ -23,7 +32,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Component implementation `qt/src/ChaSet<Name>.qml` registered in `qt/CMakeLists.txt` (`ChaSet` module).
      - Living doc page `qt/src/<Name>DocPage.qml` registered in `qt/CMakeLists.txt` (`QtChaSetDemo` module).
      - Route mapping in `qt/src/Main.qml` (`getPageSource`).
-   - **Mechanical Gate**: `pnpm gate` mechanically scans all `spec/components/*.ts` schemas and halts with a hard error if any component lacks living documentation or route mapping on either React or Qt.
+   - **Mechanical Gate**: `pnpm gate` (Stage 2.5) mechanically executes the SPAS validator (`pnpm check:showcase`), halting with a hard error if any component lacks living documentation, route mapping, or exhibits metadata/TOC/code divergence between React and Qt.
 3. **Tiered Quality Defense Matrix**:
    - **L1 Atomic Visual Primitives** (`button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`): **MANDATORY Bit-Exact Pixel-Sync** (`pnpm test:pixel --component <name>`). Spatial diff $\le 0.20\%$, surface color $\Delta E \le 4.0$ (solid fill $\Delta E = 0.0$).
    - **L2 Floating Overlays**, **L3 Desktop Virtualization**, and **L4 Composite Engines**: Token conformance, keyboard navigation flows, 60fps virtualization kinetics, and JSON AST serialization round-trips.
@@ -217,22 +226,45 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 
 ---
 
-### Phase 6: Showcase, Living Documentation & Migration (100% MANDATORY)
+### Phase 6: Showcase, Living Documentation & Parity Verification (100% MANDATORY)
 
 > [!IMPORTANT]
-> **Zero Blindspots**: An Agent is strictly forbidden from finishing a task without creating the living showcase documentation. `pnpm gate` mechanically enforces this rule and will fail if skipped!
+> **Zero Blindspots & 1:1 Showcase Parity (SPAS)**: An Agent is strictly forbidden from finishing a task without creating the living showcase documentation on both React and Qt, and verifying they pass the Showcase Parity Assurance System (`pnpm check:showcase`). `pnpm gate` mechanically enforces this rule and will fail if skipped!
 
-1. **React Living DocPage Component**:
-   - Create `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx`.
+1. **Metadata & Single Source of Truth**:
+   - Register the component in `spec/showcase/navigation.json` under its category:
+     ```json
+     { "id": "<name>", "title": "<Display Name>", "href": "#/components/<name>", "desc": "<Short Description>" }
+     ```
+   - Run `node spec/generators/generate-showcase-data.mjs` to regenerate `qt/src/ShowcaseData.generated.qml`.
+   - **Strict Metadata Alignment**: Both React `<DocLayout>` and Qt `DocLayout` MUST strictly mirror `navigation.json`:
+     - `title` (React) / `pageTitle` (Qt) === `title` from `navigation.json` (NEVER use sandbox/card titles).
+     - `category` === `category` from `navigation.json`.
+     - `description` === `desc` from `navigation.json`.
+
+2. **Canonical Table of Contents (TOC) Standard (5 Standard Sections)**:
+   Both React `tocItems` and Qt `tocItems` MUST define the identical 5 canonical sections with identical anchor IDs:
+   - `{ id: 'overview', title: 'Interactive Overview' }` (strict ban on legacy `preview` / `Interactive Preview`).
+   - `{ id: 'installation', title: 'Installation' }`.
+   - `{ id: 'animations', title: 'Animations' }` (documenting motion tokens per Golden Rule 11, reduced motion, and kill switch).
+   - `{ id: 'keyboard', title: 'Keyboard Navigation' }` (backed by `spec/showcase/keyboard-shortcuts.json`).
+   - `{ id: 'props', title: 'Props Reference' }` (strict ban on legacy `api` / `API Reference`).
+
+3. **Authentic Code Snippets & Sandbox Equivalence**:
+   - Qt's `ComponentPreview` `reactCode` property MUST contain authentic, valid React JSX conforming to the real ChaSet React component API. NEVER fabricate or speculate synthetic JSX.
+   - Sandbox layouts, pane titles, mock items (e.g. navigation trees, headers), badge calculations, and reset buttons MUST match 1:1 between React and Qt showcases.
+
+4. **React Living DocPage Component (`packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx`)**:
    - Incorporate:
-     - Header with title, badge, and description.
+     - Header with title, badge, and description from `navigation.json`.
      - Interactive `ComponentPreview` with live preview and controls.
-     - Dedicated `KeyboardShortcutsTable` section with `{ id: 'keyboard', title: 'Keyboard Navigation' }` in `tocItems`.
-     - **Dedicated `Animations` section**: `{ id: 'animations', title: 'Animations' }` in `tocItems` and a `<section id="animations">` describing the component's motion points (which states animate, which duration/easing tokens they use), mentioning `prefers-reduced-motion` and `ThemeTokens.animationsEnabled` as the kill switch.
-     - Variant showcase section.
-     - Clean TSX / QML `CodeBlock` examples (strictly zero `px` in CSS classes or inline styles).
-     - Complete `PropsTable` (strictly zero `px` or "in pixels" in descriptions; use neutral descriptions).
-2. **Qt Living DocPage Component & Main Route**:
+     - Section `#installation` with package install and import snippet.
+     - Section `#animations` describing motion tokens, transitions, and `prefers-reduced-motion`.
+     - Section `#keyboard` with `<KeyboardShortcutsTable componentId="<name>" />`.
+     - Section `#props` with `<PropsTable>` (strictly zero `px` or "in pixels" in descriptions).
+     - Variant showcase sections.
+
+5. **Qt Living DocPage Component & Main Route (`qt/src/<Name>DocPage.qml`)**:
    - Create `qt/src/<Name>DocPage.qml` with interactive preview, variant controls, `KeyboardShortcutsTable`, code blocks, and props table.
    - Register `qt/src/<Name>DocPage.qml` in `qt/CMakeLists.txt` under `QtChaSetDemo` `QML_FILES`.
    - Register `qt/src/ChaSet<Name>.qml` in `qt/CMakeLists.txt` under `ChaSet` `QML_FILES`.
@@ -242,17 +274,13 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Never declare duplicate signals for existing properties (e.g. `property string value` already generates `signal valueChanged`).
      - In delegates, explicitly declare `required property int index` if `index` is referenced.
      - Run `.\qt\build\QtChaSetDemo.exe --test-scenario all` to physically verify component compilation and instantiation with 0 errors.
-3. **Showcase Navigation Registration**:
-   - Add navigation entry to `spec/showcase/navigation.json` under its category:
-     ```json
-     { "id": "<name>", "title": "<Display Name>", "href": "#/components/<name>", "desc": "<Short Description>" }
-     ```
-   - Run `node spec/generators/generate-showcase-data.mjs` to regenerate `qt/src/ShowcaseData.generated.qml`.
-4. **Application Routing Registration**:
+
+6. **Application Routing Registration**:
    - In `packages/react/examples/basic/src/App.tsx`:
      - Import `<Name>DocPage`.
      - Add `case '#/components/<name>': return <<Name>DocPage />;` in `renderActivePage()`.
-5. **Full Demo Dogfooding & Migration**:
+
+7. **Full Demo Dogfooding & Migration**:
    - Scan showcase layouts, toolbars, and dialogs (`Header`, `Sidebar`, `ComponentPreview`, `ExportModal`, `CommandSearchModal`, `ThemeTuner`).
    - Replace any raw HTML/QML controls:
      - Mode toggles and filter tabs -> `<SegmentedControl>` / `ChaSetSegmentedControl`.
@@ -261,18 +289,24 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Dividers -> `<Separator>` / `ChaSetSeparator`.
      - Copy actions -> `<CopyButton>` / `ChaSetCopyButton`.
 
+8. **Showcase Parity Verification**:
+   - Run `pnpm check:showcase --component <name>` to guarantee zero structural, metadata, or code snippet drift before entering gate verification.
+
 ---
 
 ### Phase 7: Verification Checklist & Commit Gate
 
-1. **Zero-`px` Verification**:
+1. **Showcase Parity Verification**:
+   - Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`) and ensure all 5 canonical sections, authentic React snippets, metadata, and keyboard shortcut IDs are 100% aligned across React and Qt.
+2. **Zero-`px` Verification**:
    - Verify zero raw `px` units in component implementation, styles, virtualizer spacer calculations (must use rem), code snippets, doc page previews, and PropsTable descriptions.
-2. **Motion Token Verification**:
+3. **Motion Token Verification**:
    - Grep the new component files for forbidden hardcoded motion: `duration-100|150|200`, `ease-in-out` (React) and raw `Easing.` / numeric animation durations (Qt). Replace with token utilities/`ThemeTokens.motion*|ease*`.
    - Verify every Qt `Behavior` guards on `ThemeTokens.animationsEnabled` (+ force/harness exclusions) and references `ThemeTokens.motion*`/`ThemeTokens.ease*`.
    - Verify the DocPage contains the `Animations` section and `tocItems` entry.
-3. **Execute Full Suite Verification**:
+4. **Execute Full Suite Verification**:
    ```bash
+   pnpm check:showcase
    cmake --build qt/build
    pnpm test
    pnpm gate

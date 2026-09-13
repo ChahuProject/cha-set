@@ -83,6 +83,18 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **QML `HoverHandler` Rule**: Always attach `HoverHandler { cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor) }` directly to `TextInput` / `TextEdit` items in Qt to eliminate hover occlusion from `QQuickTextInput`/`QQuickTextEdit`.
    - **Text Selectability & Clipboard Integrity**: Code viewers (`CodeBlock`, `HighlightedCode`) MUST support multi-line drag selection (`selectByMouse: true`) and `Ctrl+C` copying, while line numbers reside in a separate non-selectable gutter (`ArrowCursor`).
 
+13. **Mandatory Dual-Stack Showcase Structural, Semantic & Code Authenticity Contract (SPAS — 双端演示文档结构、元数据与代码保真度全景规约)**
+   - **Single Source of Truth for Metadata**: Showcase page titles, categories, and descriptions MUST strictly mirror `spec/showcase/navigation.json`. React `<DocLayout title=...>` and Qt `DocLayout { pageTitle: ... }` must display the official component name. Never displace component titles with sandbox-specific preview card text.
+   - **Canonical Table of Contents (TOC) Standard**: Every DocPage on React and Qt MUST define the identical 5 canonical sections with identical anchor IDs:
+     1. `overview`: **Interactive Overview** (strict ban on legacy `preview` / `Interactive Preview`)
+     2. `installation`: **Installation**
+     3. `animations`: **Animations** (motion tokens, transitions, reduced motion per Red Line 10)
+     4. `keyboard`: **Keyboard Navigation** (backed by `spec/showcase/keyboard-shortcuts.json`)
+     5. `props`: **Props Reference** (strict ban on legacy `api` / `API Reference`)
+   - **Authentic Code Snippet Contract**: Qt's `ComponentPreview` `reactCode` property MUST contain authentic, valid React JSX conforming to the real ChaSet React component API. Speculative, invalid, or hallucinated React JSX in QML is strictly forbidden.
+   - **Sandbox Equivalence**: Sandbox layouts, pane titles, mock items, badge calculations, and reset actions MUST match 1:1 between React and Qt showcases.
+   - **Automated Verification**: Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`) and `pnpm gate` (Stage 2.5) to mechanically enforce structural and code parity.
+
 ## 2. Verification Commands Checklist
 
 Before declaring any component task complete, execute:
@@ -91,22 +103,25 @@ Before declaring any component task complete, execute:
 # 1. Regenerate tokens & showcase datasets (if contracts or tokens modified)
 pnpm build:tokens
 
-# 2. Build Qt desktop project
+# 2. Run showcase parity assurance system (SPAS)
+pnpm check:showcase
+
+# 3. Build Qt desktop project
 cmake --build qt/build
 
-# 3. Run full React test suite
+# 4. Run full React test suite
 pnpm test
 
-# 4. Run full cross-stack behavioral & showcase gate
-# (Checks capability coverage, 100% showcase docs completeness for every component, and Qt scenarios)
+# 5. Run full cross-stack behavioral & showcase gate
+# (Checks capability coverage, 100% showcase docs completeness for every component, SPAS parity, and Qt scenarios)
 pnpm gate
 
-# 5. (For L1 Atomic Primitives) Run targeted bit-exact pixel-sync
+# 6. (For L1 Atomic Primitives) Run targeted bit-exact pixel-sync
 pnpm test:pixel --component <name>
 # OR run all L1 components:
 pnpm gate:pixel
 
-# 6. Interactive Cursor & Text Selection Verification
+# 7. Interactive Cursor & Text Selection Verification
 # - Verify hover over input boxes, text fields, and code blocks displays IBeamCursor / cursor-text
 # - Verify clicking margins/padding of input containers focuses the input
 # - Verify code blocks allow multi-line drag selection without selecting line numbers
