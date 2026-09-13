@@ -92,8 +92,10 @@ export function ResizableDocPage() {
       title="Resizable"
       description="Accessible resizable panel groups and layout splitters with keyboard navigation and nested container support."
       tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-{ id: 'installation', title: 'Installation' },
+        { id: 'overview', title: 'Horizontal Split' },
+        { id: 'nested', title: 'Nested Splitters' },
+        { id: 'playground', title: 'Variants Playground' },
+        { id: 'installation', title: 'Installation' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
