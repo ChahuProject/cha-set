@@ -489,6 +489,12 @@ ApplicationWindow {
                 cursorFailures++;
             }
 
+            // 7. Geometry Health on ScrollBar
+            if (testScrollBar.width <= 0 || testScrollBar.height <= 0) {
+                console.log("[qt-scenario] FAIL: testScrollBar geometry non-positive (w=" + testScrollBar.width + ", h=" + testScrollBar.height + ")");
+                cursorFailures++;
+            }
+
             if (cursorFailures === 0) {
                 console.log("[qt-scenario] PASS: QML Root Geometry & Cursor dimensions verified for all primary controls");
             } else {
@@ -627,6 +633,18 @@ ApplicationWindow {
             y: -1200
             text: "Tab Trigger"
             value: "tab1"
+            visible: true
+        }
+
+        ChaSetScrollBar {
+            id: testScrollBar
+            objectName: "testScrollBar"
+            x: -2000
+            y: -1100
+            width: 12
+            height: 100
+            size: 0.3
+            position: 0.2
             visible: true
         }
 

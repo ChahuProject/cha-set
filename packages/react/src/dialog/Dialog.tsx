@@ -138,7 +138,7 @@ export const DialogTrigger = React.forwardRef<HTMLButtonElement, DialogTriggerPr
         data-slot="dialog-trigger"
         aria-haspopup="dialog"
         aria-expanded={open}
-        className={cn(className)}
+        className={cn('cursor-pointer', className)}
         onClick={handleClick}
         {...props}
       >
@@ -219,7 +219,7 @@ export const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>
         type="button"
         data-slot="dialog-close"
         className={cn(
-          'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer',
+          'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer',
           className,
         )}
         onClick={handleClick}

@@ -262,7 +262,7 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
         onMouseLeave={handleTriggerMouseLeave}
         onFocus={handleTriggerFocus}
         onBlur={handleTriggerBlur}
-        className={cn('inline-flex items-center justify-center', className)}
+        className={cn('inline-flex items-center justify-center cursor-pointer', className)}
         {...props}
       >
         {children}

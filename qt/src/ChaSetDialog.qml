@@ -130,6 +130,11 @@ Rectangle {
                     width: parent.width
                     spacing: 8
 
+                    HoverHandler {
+                        enabled: root.draggable
+                        cursorShape: Qt.SizeAllCursor
+                    }
+
                     Text {
                         id: titleText
                         width: parent.width - (headerActions.width + (headerActions.visible ? 8 : 0))
