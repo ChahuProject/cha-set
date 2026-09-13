@@ -69,11 +69,11 @@ DocLayout {
                 }
 
                 ChaSetCardContent {
-                    Text {
+                    DocText {
                         text: "Your project will be deployed to the edge network automatically."
                         color: ThemeTokens.subduedText
                         font.pixelSize: 13
-                        wrapMode: Text.WordWrap
+                        wrapMode: TextEdit.WordWrap
                         width: parent.width
                     }
                 }
@@ -98,7 +98,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoVariant
@@ -113,7 +113,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoSize
@@ -140,7 +140,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Installation"
             color: root.cFg
             font.pixelSize: 18
@@ -159,14 +159,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Anatomy"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Card is composed of modular building blocks for flexible layouts."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -184,14 +184,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Variants"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Three semantic variants styled with design tokens for consistent elevation and contrast."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -229,14 +229,14 @@ DocLayout {
             }
         }
 
-        Text {
+        DocText {
             text: "Interactive Feedback & Density"
             color: root.cFg
             font.pixelSize: 16
             font.weight: Font.DemiBold
         }
 
-        Text {
+        DocText {
             text: "Enable interactive hover/press elevation feedback, or use compact density for constrained spaces."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -254,7 +254,7 @@ DocLayout {
                     ChaSetCardDescription { text: "Hover over me to see cursor and elevation changes" }
                 }
                 ChaSetCardContent {
-                    Text {
+                    DocText {
                         text: "Clickable surface for dashboards and selectable items."
                         color: ThemeTokens.subduedText
                         font.pixelSize: 12
@@ -270,7 +270,7 @@ DocLayout {
                     ChaSetCardDescription { text: "Reduced padding for tight sidebars and sheets" }
                 }
                 ChaSetCardContent {
-                    Text {
+                    DocText {
                         text: "Streamlined layout with denser inner padding."
                         color: ThemeTokens.subduedText
                         font.pixelSize: 12
@@ -285,7 +285,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Props Reference"
             color: root.cFg
             font.pixelSize: 18
@@ -300,34 +300,34 @@ DocLayout {
             width: parent.width
             propsModel: [
                 {
-                    propName: "variant",
-                    propType: "\"default\" | \"secondary\" | \"outline\"",
-                    propDefault: "\"default\"",
-                    propDescription: "Visual presentation style of the card container."
+                    name: "variant",
+                    type: "\"default\" | \"secondary\" | \"outline\"",
+                    defaultValue: "\"default\"",
+                    description: "Visual presentation style of the card container."
                 },
                 {
-                    propName: "size",
-                    propType: "\"default\" | \"sm\"",
-                    propDefault: "\"default\"",
-                    propDescription: "Density and spacing scale of the card."
+                    name: "size",
+                    type: "\"default\" | \"sm\"",
+                    defaultValue: "\"default\"",
+                    description: "Density and spacing scale of the card."
                 },
                 {
-                    propName: "interactive",
-                    propType: "bool",
-                    propDefault: "false",
-                    propDescription: "Whether the card exhibits hover and press feedback with click interaction."
+                    name: "interactive",
+                    type: "bool",
+                    defaultValue: "false",
+                    description: "Whether the card exhibits hover and press feedback with click interaction."
                 },
                 {
-                    propName: "customRadius",
-                    propType: "int",
-                    propDefault: "-1",
-                    propDescription: "Explicit corner radius override (defaults to ThemeTokens.radius)."
+                    name: "customRadius",
+                    type: "int",
+                    defaultValue: "-1",
+                    description: "Explicit corner radius override (defaults to ThemeTokens.radius)."
                 },
                 {
-                    propName: "contentData",
-                    propType: "list<QtObject>",
-                    propDefault: "[]",
-                    propDescription: "Card composite subcomponents or custom elements."
+                    name: "contentData",
+                    type: "list<QtObject>",
+                    defaultValue: "[]",
+                    description: "Card composite subcomponents or custom elements."
                 }
             ]
         }

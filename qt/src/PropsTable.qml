@@ -49,11 +49,11 @@ Column {
             if (!root.propsModel) return res
             for (var i = 0; i < root.propsModel.length; i++) {
                 var m = root.propsModel[i]
-                var name = m.name || m[0] || ""
+                var name = m.name || m.propName || m[0] || ""
                 var req = !!(m.required || m[4])
-                var type = m.type || m[1] || ""
-                var def = (m.default || m.defaultValue || m[2]) ? (m.default || m.defaultValue || m[2]) : "—"
-                var desc = m.description || m[3] || ""
+                var type = m.type || m.propType || m[1] || ""
+                var def = (m.default !== undefined) ? m.default : (m.defaultValue !== undefined ? m.defaultValue : (m.propDefault !== undefined ? m.propDefault : (m[2] !== undefined ? m[2] : "—")))
+                var desc = m.description || m.propDescription || m[3] || ""
                 res.push({
                     prop: name + (req ? " *" : ""),
                     type: type,
