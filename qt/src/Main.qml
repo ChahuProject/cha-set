@@ -867,6 +867,31 @@ ApplicationWindow {
             }
         }
 
+        // Isolated CodeBlock Harness Container (typography / line-height parity)
+        //
+        // The sample is duplicated verbatim in
+        // packages/react/examples/basic/src/App.tsx (CODE_BLOCK_HARNESS_SOURCE);
+        // keep them identical so a pixel delta means typography drift, not
+        // different input.
+        Rectangle {
+            id: codeBlockHarnessContainer
+            visible: typeof harnessMode !== "undefined" && harnessMode === "code-block"
+            anchors.fill: parent
+            color: ThemeTokens.dark ? "#020817" : "#ffffff"
+
+            readonly property string harnessSource: "const answer = 42;\nfunction greet(name: string) {\n  // say hi\n  return `hi ${name}`;\n}"
+
+            ChaSetCodeBlock {
+                width: parent.width
+                code: codeBlockHarnessContainer.harnessSource
+                language: "tsx"
+                // Mirrors the React harness: the copy pill's glyph run is not part
+                // of the typography contract under test.
+                showCopy: false
+                showLineNumbers: typeof harnessLineNumbers !== "undefined" && harnessLineNumbers === true
+            }
+        }
+
         Item {
             id: studioContainer
             visible: typeof harnessMode === "undefined" || harnessMode === ""

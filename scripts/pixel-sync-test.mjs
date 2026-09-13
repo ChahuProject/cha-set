@@ -149,6 +149,99 @@ const separatorMatrix = [
   { id: 'sep-vert-dark', component: 'separator', orientation: 'vertical', theme: 'dark', width: 220, height: 80, probeX: 110, probeY: 40, maxDiff: 0.15 },
 ];
 
+/**
+ * Estimate the vertical line pitch (px) of rendered text from an image, via
+ * autocorrelation of its per-row "ink" profile (dominant colour = background;
+ * rows are scored by how many pixels sit meaningfully off it).
+ *
+ * ## Why the pixelmatch rate is not sufficient for CodeBlock
+ *
+ * `pixelmatch` below runs with `includeAA: false`, which deliberately discards
+ * anti-aliased pixels. At 12px mono, *most* glyph pixels are stroke edges, so a
+ * line that drifts vertically mostly produces pixels pixelmatch classifies as AA
+ * and ignores. Measured on this repo, a 16.8px -> 14px line-pitch regression
+ * (the exact CodeBlock bug this suite exists for) moved the overall mismatch rate
+ * only 2.61% -> 3.08%. That is a real difference, but it is ~0.2pp of margin —
+ * far too thin to gate a typography contract on.
+ *
+ * The line pitch *is* the contract that `primitives.typography.lineHeight.code`
+ * (1.4) encodes, so we measure it directly and geometrically rather than
+ * inferring it from a rasterization diff. Autocorrelation is used because it is
+ * robust to the per-glyph fragmentation of the profile (ascenders/descenders,
+ * blank-looking comment lines) that makes naive text-band detection unstable.
+ *
+ * Observed on the code-block harness: React `17`, aligned Qt `17`, and `14` when
+ * the Qt side fails to apply the token — a 3px separation against ~0 noise.
+ *
+ * @returns {number|null} best-scoring lag in px, or null for an ink-free image.
+ */
+function measureLinePitch(img, minLag = 8, maxLag = 26) {
+  const { width, height, data } = img;
+
+  const counts = new Map();
+  for (let i = 0; i < width * height; i++) {
+    const key = (data[i * 4] << 16) | (data[i * 4 + 1] << 8) | data[i * 4 + 2];
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  let bgKey = 0;
+  let bestCount = -1;
+  for (const [key, n] of counts) {
+    if (n > bestCount) {
+      bestCount = n;
+      bgKey = key;
+    }
+  }
+  const bgR = (bgKey >> 16) & 255;
+  const bgG = (bgKey >> 8) & 255;
+  const bgB = bgKey & 255;
+
+  const rows = new Array(height).fill(0);
+  for (let y = 0; y < height; y++) {
+    let ink = 0;
+    for (let x = 0; x < width; x++) {
+      const i = (y * width + x) * 4;
+      const dr = data[i] - bgR;
+      const dg = data[i + 1] - bgG;
+      const db = data[i + 2] - bgB;
+      if (dr * dr + dg * dg + db * db > 3600) ink++;
+    }
+    rows[y] = ink;
+  }
+
+  const mean = rows.reduce((a, c) => a + c, 0) / height;
+  const centred = rows.map((v) => v - mean);
+  const norm = centred.reduce((a, c) => a + c * c, 0);
+  if (norm === 0) return null;
+
+  let bestLag = null;
+  let bestScore = -Infinity;
+  for (let lag = minLag; lag <= maxLag; lag++) {
+    let sum = 0;
+    for (let y = 0; y + lag < height; y++) sum += centred[y] * centred[y + lag];
+    const score = sum / norm;
+    if (score > bestScore) {
+      bestScore = score;
+      bestLag = lag;
+    }
+  }
+  return bestLag;
+}
+
+// Definitive CodeBlock test matrix.
+//
+// This is the component whose line-height historically diverged (React
+// `leading-[1.4]` = 16.8px/line vs Qt's un-applied lineHeight falling back to
+// fontMetrics 14px/line) — the original defect this typography system was built
+// to kill. Text rasterization legitimately differs between Chromium's Skia and
+// Qt's DirectWrite path, so the mismatch budget is a *gross layout* guard only
+// (missing border, wrong padding, blank body); the typography contract itself is
+// pinned geometrically by `pitchTolerance` over the 5-line sample.
+const codeBlockMatrix = [
+  { id: 'code-single-light', component: 'code-block', state: 'idle', theme: 'light', width: 360, height: 160, probeX: 180, probeY: 100, maxDiff: 4.0, pitchTolerance: 1 },
+  { id: 'code-single-dark', component: 'code-block', state: 'idle', theme: 'dark', width: 360, height: 160, probeX: 180, probeY: 100, maxDiff: 4.0, pitchTolerance: 1 },
+  { id: 'code-linenumbers', component: 'code-block', state: 'idle', lineNumbers: true, theme: 'light', width: 380, height: 160, probeX: 200, probeY: 100, maxDiff: 4.0, pitchTolerance: 1 },
+];
+
 let testCases = [];
 if (componentArg === 'button') {
   testCases = buttonMatrix;
@@ -172,8 +265,10 @@ if (componentArg === 'button') {
   if (stateFilter) testCases = testCases.filter((tc) => tc.state === stateFilter);
 } else if (componentArg === 'separator') {
   testCases = separatorMatrix;
+} else if (componentArg === 'code-block' || componentArg === 'codeblock' || componentArg === 'code') {
+  testCases = codeBlockMatrix;
 } else if (componentArg === 'all') {
-  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix, ...cardMatrix, ...inputMatrix, ...separatorMatrix];
+  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix, ...cardMatrix, ...inputMatrix, ...separatorMatrix, ...codeBlockMatrix];
 } else {
   console.log(`[pixel-sync] Component "${componentArg}" is not enabled for selective pixel sync. Skipping.`);
   process.exit(0);
@@ -213,6 +308,36 @@ await new Promise((r) => setTimeout(r, 1500));
 
 const results = [];
 
+/**
+ * Poll until the *current* navigation has finished loading.
+ *
+ * The capture loop used to sleep a flat 200ms after `Page.navigate`, which is a
+ * race: on the first iteration (cold module graph) a component that imports
+ * several lazy chunks — CodeBlock pulls Card + ScrollArea + Tabs + the generated
+ * lexer — could still be bootstrapping when the screenshot was taken. The
+ * resulting blank-but-legal PNG then produced nonsense diffs (97% on a case that
+ * scores 2.6% once warm). Waiting on document state instead of on the clock makes
+ * every case deterministic regardless of its position in the matrix.
+ *
+ * `expectSearch` guards the obvious race where the poll sees the *previous*
+ * document's already-`complete` state before the new navigation commits.
+ */
+async function waitForDocumentReady(sendCdp, expectSearch = null, timeoutMs = 6000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const res = await sendCdp('Runtime.evaluate', {
+      expression: 'document.readyState + "|" + location.search',
+      returnByValue: true,
+    });
+    const [readyState, search] = String(res?.result?.value ?? '').split('|');
+    // `location.search` only reports the new query once the new document has
+    // committed, so matching on it plus `complete` cannot latch onto the old page.
+    if (readyState === 'complete' && (!expectSearch || search === expectSearch)) return true;
+    await new Promise((r) => setTimeout(r, 50));
+  }
+  return false;
+}
+
 try {
   const res = await fetch(`http://127.0.0.1:${cdpPort}/json`);
   const tabs = await res.json();
@@ -239,6 +364,14 @@ try {
   }
 
   console.log('[4/4] Executing paired pixel-diff capture and state conformance...\n');
+
+  // Warm-up: the first navigate races Vite's module graph, so a heavy component
+  // (CodeBlock pulls Card + ScrollArea + Tabs + the generated lexer) could be
+  // captured mid-bootstrap and diff against a blank Qt frame. Load once and
+  // wait for the document to settle before the measured loop starts.
+  await sendCdp('Page.navigate', { url: `http://127.0.0.1:${port}/?harness=button&label=%C2%B7` });
+  await waitForDocumentReady(sendCdp, '?harness=button&label=%C2%B7');
+  await new Promise((r) => setTimeout(r, 400));
 
   for (const tc of testCases) {
     const reactPngPath = join(outDir, `${tc.id}-react.png`);
@@ -306,6 +439,15 @@ try {
         width: String(tc.width),
         height: String(tc.height),
       }).toString();
+    } else if (tc.component === 'code-block') {
+      query = new URLSearchParams({
+        harness: 'code-block',
+        theme: tc.theme ?? 'light',
+        lineNumbers: tc.lineNumbers ? 'true' : 'false',
+        wrap: tc.wrap ? 'true' : 'false',
+        width: String(tc.width),
+        height: String(tc.height),
+      }).toString();
     } else {
       query = new URLSearchParams({
         harness: 'button',
@@ -320,7 +462,7 @@ try {
     const targetUrl = `http://127.0.0.1:${port}/?${query}`;
 
     await sendCdp('Page.navigate', { url: targetUrl });
-    await new Promise((r) => setTimeout(r, 200));
+    await waitForDocumentReady(sendCdp, `?${query}`);
     await sendCdp('Emulation.setDeviceMetricsOverride', {
       width: tc.width,
       height: tc.height,
@@ -403,6 +545,15 @@ try {
         '--shot', qtPngPath,
         ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
       ];
+    } else if (tc.component === 'code-block') {
+      qtArgs = [
+        '--harness', 'code-block',
+        '--width', String(tc.width),
+        '--height', String(tc.height),
+        '--shot', qtPngPath,
+        ...(tc.lineNumbers ? ['--line-numbers'] : []),
+        ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
+      ];
     } else {
       qtArgs = [
         '--harness', 'button',
@@ -468,7 +619,23 @@ try {
 
     const totalPixels = width * height;
     const diffPercent = (mismatchedPixels / totalPixels) * 100;
-    const passed = diffPercent <= tc.maxDiff && colorMatch;
+
+    // Geometric typography assertion (opt-in per case): both engines must resolve
+    // the same line pitch. See `measureLinePitch` for why the mismatch rate alone
+    // cannot gate this.
+    let linePitchReact = null;
+    let linePitchQt = null;
+    let pitchMatch = true;
+    if (tc.pitchTolerance != null) {
+      linePitchReact = measureLinePitch(imgReact);
+      linePitchQt = measureLinePitch(imgQt);
+      pitchMatch =
+        linePitchReact != null &&
+        linePitchQt != null &&
+        Math.abs(linePitchReact - linePitchQt) <= tc.pitchTolerance;
+    }
+
+    const passed = diffPercent <= tc.maxDiff && colorMatch && pitchMatch;
 
     results.push({
       id: tc.id,
@@ -485,6 +652,10 @@ try {
       totalPixels,
       diffPercent: diffPercent.toFixed(2),
       maxAllowed: tc.maxDiff.toFixed(2),
+      linePitchReact,
+      linePitchQt,
+      pitchTolerance: tc.pitchTolerance ?? null,
+      pitchMatch,
       status: passed ? 'PASS' : 'FAIL',
     });
   }
@@ -496,9 +667,9 @@ try {
 }
 
 // Print Results Table
-console.log('┌──────────────────────┬─────────────┬───────────┬────────────────────┬────────────────────┬───────────┬────────┐');
-console.log('│ Target Scenario      │ Variant/St  │ Res (px)  │ React Center Color │ Qt Center Color    │ Diff Rate │ Status │');
-console.log('├──────────────────────┼─────────────┼───────────┼────────────────────┼────────────────────┼───────────┼────────┤');
+console.log('┌──────────────────────┬─────────────┬───────────┬────────────────────┬────────────────────┬───────────┬────────────┬────────┐');
+console.log('│ Target Scenario      │ Variant/St  │ Res (px)  │ React Center Color │ Qt Center Color    │ Diff Rate │ Line Pitch │ Status │');
+console.log('├──────────────────────┼─────────────┼───────────┼────────────────────┼────────────────────┼───────────┼────────────┼────────┤');
 
 let allPassed = true;
 for (const r of results) {
@@ -508,11 +679,15 @@ for (const r of results) {
   const padRColor = r.colorReact.padEnd(18);
   const padQColor = r.colorQt.padEnd(18);
   const padRate = `${r.diffPercent}% (≤${r.maxAllowed}%)`.padEnd(9);
+  const pitchCell =
+    r.linePitchReact == null
+      ? '·'.padEnd(10)
+      : `${r.linePitchReact}/${r.linePitchQt}px${r.pitchMatch ? ' ok' : ' DRIFT'}`.padEnd(10);
   const padStatus = r.status === 'PASS' ? ' \x1b[32mPASS\x1b[0m ' : ' \x1b[31mFAIL\x1b[0m ';
   if (r.status !== 'PASS') allPassed = false;
-  console.log(`│ ${padName} │ ${padVar} │ ${padRes} │ ${padRColor} │ ${padQColor} │ ${padRate} │ ${padStatus} │`);
+  console.log(`│ ${padName} │ ${padVar} │ ${padRes} │ ${padRColor} │ ${padQColor} │ ${padRate} │ ${pitchCell} │ ${padStatus} │`);
 }
-console.log('└──────────────────────┴─────────────┴───────────┴────────────────────┴────────────────────┴───────────┴────────┘\n');
+console.log('└──────────────────────┴─────────────┴───────────┴────────────────────┴────────────────────┴───────────┴────────────┴────────┘\n');
 
 // Generate HTML Summary Report
 const htmlReport = `<!DOCTYPE html>
@@ -555,6 +730,7 @@ const htmlReport = `<!DOCTYPE html>
           <span>React Color: <code>${r.colorReact}</code></span>
           <span>Qt Color: <code>${r.colorQt}</code> (Δ ${r.colorDelta})</span>
           <span>Mismatched: ${r.mismatchedPixels} / ${r.totalPixels} px</span>
+          ${r.linePitchReact == null ? '' : `<span>Line Pitch: React <code>${r.linePitchReact}px</code> vs Qt <code>${r.linePitchQt}px</code> (tolerance ±${r.pitchTolerance}px) — ${r.pitchMatch ? 'match' : 'DRIFT'}</span>`}
         </div>
       </div>
     `).join('')}
