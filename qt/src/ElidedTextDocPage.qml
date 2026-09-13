@@ -88,7 +88,7 @@ ChaSetElidedText {
                     spacing: 8
                     anchors.verticalCenter: parent.verticalCenter
 
-                    Text {
+                    DocText {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "Width: " + root.containerWidth
                         color: ThemeTokens.subduedText
@@ -124,7 +124,7 @@ ChaSetElidedText {
     }
 
     // Multi-Line Clamping
-    Text {
+    DocText {
         text: "Multi-Line Clamping"
         font.pixelSize: 18
         font.bold: true
@@ -143,9 +143,9 @@ ChaSetElidedText {
                 spacing: 12
                 width: parent.width
 
-                Text {
+                DocText {
                     width: parent.width
-                    wrapMode: Text.Wrap
+                    wrapMode: TextEdit.Wrap
                     text: "Using maxLines: 2 to clamp overflowing multiline paragraphs with trailing ellipsis."
                     color: ThemeTokens.subduedText
                     font.pixelSize: 12
@@ -172,7 +172,7 @@ ChaSetElidedText {
     }
 
     // Keyboard Navigation
-    Text {
+    DocText {
         text: "Keyboard Navigation"
         font.pixelSize: 18
         font.bold: true

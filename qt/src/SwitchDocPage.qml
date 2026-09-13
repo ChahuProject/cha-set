@@ -67,7 +67,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text {
+                    DocText {
                         text: "Size:"
                         color: root.cMutedFg
                         font.pixelSize: 12
@@ -132,7 +132,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Installation"
             color: root.cFg
             font.pixelSize: 18
@@ -151,14 +151,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Anatomy"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Import and render ChaSetSwitch directly in your QML scene."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -176,14 +176,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Examples & States"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Visual matrix of common switch configurations and interactive states in Qt Quick."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -205,7 +205,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Default Toggle"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Default Toggle"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     Row {
                         spacing: 20
                         ChaSetSwitch { checked: false; label: "Off" }
@@ -225,7 +225,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Small Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Small Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     Row {
                         spacing: 20
                         ChaSetSwitch { size: "sm"; checked: false; label: "Compact Off" }
@@ -245,7 +245,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     Row {
                         spacing: 20
                         ChaSetSwitch { disabled: true; checked: false; label: "Disabled Off" }
@@ -265,7 +265,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Async Loading State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Async Loading State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     Row {
                         spacing: 20
                         ChaSetSwitch { loading: true; checked: false; label: "Connecting..." }
@@ -285,7 +285,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "Read-Only State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Read-Only State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     Row {
                         spacing: 20
                         ChaSetSwitch { readOnly: true; checked: false; label: "Locked Off" }
@@ -305,7 +305,7 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 8
-                    Text { text: "With Helper Description"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "With Helper Description"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
                     ChaSetSwitch {
                         checked: true
                         label: "Airplane Mode"
@@ -321,7 +321,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Props Reference"
             color: root.cFg
             font.pixelSize: 18

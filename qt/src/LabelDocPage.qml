@@ -71,7 +71,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoSize
@@ -128,7 +128,7 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        Text { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
         ChaSetCodeBlock {
             width: parent.width
             language: "bash"
@@ -140,8 +140,8 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        Text { text: "Sizes"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        Text { text: "Choose between standard text size and compact high-density size for dense layouts."; color: root.cMutedFg; font.pixelSize: 13 }
+        DocText { text: "Sizes"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Choose between standard text size and compact high-density size for dense layouts."; color: root.cMutedFg; font.pixelSize: 13 }
 
         ChaSetCard {
             width: parent.width
@@ -156,12 +156,12 @@ DocLayout {
 
                 Row {
                     spacing: 16
-                    Text { width: 80; text: "Default:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { width: 80; text: "Default:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetLabel { size: "default"; text: "Default Label" }
                 }
                 Row {
                     spacing: 16
-                    Text { width: 80; text: "Small (sm):"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { width: 80; text: "Small (sm):"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetLabel { size: "sm"; text: "Small Label" }
                 }
             }
@@ -172,8 +172,8 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        Text { text: "States & Variants"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        Text { text: "Visual matrix of label states including required asterisk, optional tag, validation error, helper description, and tooltips."; color: root.cMutedFg; font.pixelSize: 13 }
+        DocText { text: "States & Variants"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Visual matrix of label states including required asterisk, optional tag, validation error, helper description, and tooltips."; color: root.cMutedFg; font.pixelSize: 13 }
 
         Grid {
             width: parent.width
@@ -191,8 +191,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 6
-                    Text { text: "Required Indicator"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Destructive asterisk denoting mandatory input fields"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Required Indicator"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Destructive asterisk denoting mandatory input fields"; color: root.cMutedFg; font.pixelSize: 11 }
                     ChaSetLabel { text: "Work Email"; required: true }
                 }
             }
@@ -208,8 +208,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 6
-                    Text { text: "Optional Indicator"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Muted tag denoting non-mandatory optional fields"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Optional Indicator"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Muted tag denoting non-mandatory optional fields"; color: root.cMutedFg; font.pixelSize: 11 }
                     ChaSetLabel { text: "Alternative Phone"; optional: true }
                 }
             }
@@ -225,8 +225,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 6
-                    Text { text: "Validation Error (Invalid)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Destructive text color highlighting validation error"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Validation Error (Invalid)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Destructive text color highlighting validation error"; color: root.cMutedFg; font.pixelSize: 11 }
                     ChaSetLabel { text: "Account Password"; invalid: true }
                 }
             }
@@ -242,8 +242,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 6
-                    Text { text: "With Info Tooltip"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Help icon with contextual explanation on hover"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "With Info Tooltip"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Help icon with contextual explanation on hover"; color: root.cMutedFg; font.pixelSize: 11 }
                     ChaSetLabel { text: "Recovery Email"; tooltip: "Used for two-factor authentication recovery codes" }
                 }
             }
@@ -259,8 +259,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 6
-                    Text { text: "With Helper Description"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Supporting guidance subtitle directly below label"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "With Helper Description"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Supporting guidance subtitle directly below label"; color: root.cMutedFg; font.pixelSize: 11 }
                     ChaSetLabel { text: "Legal Entity Name"; description: "Enter your official company legal name" }
                 }
             }
@@ -276,8 +276,8 @@ DocLayout {
                     anchors.fill: parent
                     anchors.margins: 14
                     spacing: 6
-                    Text { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                    Text { text: "Dimmed opacity for non-interactive form elements"; color: root.cMutedFg; font.pixelSize: 11 }
+                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                    DocText { text: "Dimmed opacity for non-interactive form elements"; color: root.cMutedFg; font.pixelSize: 11 }
                     ChaSetLabel { text: "Archived Record ID"; disabled: true }
                 }
             }
@@ -288,7 +288,7 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        Text { text: "Keyboard Navigation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Keyboard Navigation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
 
         KeyboardShortcutsTable {
             componentId: "label"
@@ -296,7 +296,7 @@ DocLayout {
 
         Item { width: parent.width; height: 12 }
 
-        Text { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
 
         PropsTable {
             width: parent.width

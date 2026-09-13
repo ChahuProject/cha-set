@@ -110,12 +110,12 @@ DocLayout {
                             height: 24
                             spacing: 8
 
-                            Text {
+                            DocText {
                                 text: "🍵"
                                 font.pixelSize: 18
                             }
 
-                            Text {
+                            DocText {
                                 visible: !demoSidebar.collapsed
                                 text: "ChaSet Studio"
                                 color: ThemeTokens.text
@@ -199,7 +199,7 @@ DocLayout {
                         anchors.centerIn: parent
                         spacing: 12
 
-                        Text {
+                        DocText {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: "Main Viewport Inset"
                             color: ThemeTokens.text
@@ -211,7 +211,7 @@ DocLayout {
                             anchors.horizontalCenter: parent.horizontalCenter
                             spacing: 8
 
-                            Text {
+                            DocText {
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: "Sidebar Width:"
                                 color: ThemeTokens.subduedText

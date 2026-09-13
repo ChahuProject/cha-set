@@ -37,7 +37,7 @@ DocLayout {
                 anchors.centerIn: parent
                 spacing: 16
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Click or double-click the label below to edit in place:"
                     color: ThemeTokens.subduedText
@@ -53,7 +53,7 @@ DocLayout {
                     }
                 }
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Persisted Value: \"" + root.currentTitle + "\""
                     color: ThemeTokens.text
@@ -86,28 +86,28 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`
                 Column {
                     spacing: 4
                     width: parent.width
-                    Text { text: "Single Click Activation (Default)"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Single Click Activation (Default)"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                     ChaSetInlineEditableText { width: parent.width; value: "Project Architecture Doc"; trigger: "click"; size: "default" }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    Text { text: "Double Click Activation"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Double Click Activation"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                     ChaSetInlineEditableText { width: parent.width; value: "Database Connection URI"; trigger: "doubleClick"; size: "default" }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    Text { text: "Compact sm Size"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Compact sm Size"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                     ChaSetInlineEditableText { width: parent.width; value: "Sprint-42-Review"; size: "sm" }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    Text { text: "Disabled State"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Disabled State"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                     ChaSetInlineEditableText { width: parent.width; value: "System Protected File"; disabled: true }
                 }
             }

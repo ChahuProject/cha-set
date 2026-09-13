@@ -114,14 +114,14 @@ DocLayout {
                         anchors.centerIn: parent
                         spacing: 4
 
-                        Text {
+                        DocText {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: root.demoTab === "account" ? "Account Information" : (root.demoTab === "password" ? "Security Credentials" : "App Settings")
                             font.pixelSize: 13
                             font.weight: Font.Bold
                             color: root.cFg
                         }
-                        Text {
+                        DocText {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: root.demoTab === "account" ? "Make changes to your account here." : (root.demoTab === "password" ? "Change your password credentials." : "Manage your notification preferences.")
                             font.pixelSize: 11
@@ -139,7 +139,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoVariant
@@ -153,7 +153,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoSize
@@ -167,7 +167,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "Orientation:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Orientation:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoOrientation
@@ -197,7 +197,7 @@ DocLayout {
             width: parent.width
             spacing: 8
 
-            Text { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+            DocText { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
             ChaSetCodeBlock {
                 width: parent.width
                 language: "bash"
@@ -217,8 +217,8 @@ DocLayout {
             width: parent.width
             spacing: 8
 
-            Text { text: "Anatomy"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-            Text { text: "Tabs components follow the shadcn compound structure:"; font.pixelSize: 13; color: root.cMutedFg }
+            DocText { text: "Anatomy"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+            DocText { text: "Tabs components follow the shadcn compound structure:"; font.pixelSize: 13; color: root.cMutedFg }
             ChaSetCodeBlock {
                 width: parent.width
                 language: "qml"
@@ -248,8 +248,8 @@ DocLayout {
             width: parent.width
             spacing: 12
 
-            Text { text: "Examples & Variants"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-            Text { text: "Visual matrix of tab variants, sizes, badges, and disabled states."; font.pixelSize: 13; color: root.cMutedFg }
+            DocText { text: "Examples & Variants"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+            DocText { text: "Visual matrix of tab variants, sizes, badges, and disabled states."; font.pixelSize: 13; color: root.cMutedFg }
 
             Grid {
                 width: parent.width
@@ -267,8 +267,8 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 8
-                        Text { text: "Line Variant (Underline)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                        Text { text: "Full-width bottom accent border for navigation headers"; color: root.cMutedFg; font.pixelSize: 11 }
+                        DocText { text: "Line Variant (Underline)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                        DocText { text: "Full-width bottom accent border for navigation headers"; color: root.cMutedFg; font.pixelSize: 11 }
                         ChaSetTabs {
                             currentValue: "all"
                             variant: "line"
@@ -292,8 +292,8 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 8
-                        Text { text: "With Badges & Counts"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                        Text { text: "Integrated status counters and notification count tags"; color: root.cMutedFg; font.pixelSize: 11 }
+                        DocText { text: "With Badges & Counts"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                        DocText { text: "Integrated status counters and notification count tags"; color: root.cMutedFg; font.pixelSize: 11 }
                         ChaSetTabs {
                             currentValue: "inbox"
                             ChaSetTabsList {
@@ -316,8 +316,8 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 8
-                        Text { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                        Text { text: "High-density tab triggers for compact headers and toolbars"; color: root.cMutedFg; font.pixelSize: 11 }
+                        DocText { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                        DocText { text: "High-density tab triggers for compact headers and toolbars"; color: root.cMutedFg; font.pixelSize: 11 }
                         ChaSetTabs {
                             currentValue: "code"
                             size: "sm"
@@ -341,8 +341,8 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 8
-                        Text { text: "Disabled Trigger"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
-                        Text { text: "Individual tab triggers blocked with 50% opacity"; color: root.cMutedFg; font.pixelSize: 11 }
+                        DocText { text: "Disabled Trigger"; color: root.cFg; font.pixelSize: 12; font.weight: Font.DemiBold }
+                        DocText { text: "Individual tab triggers blocked with 50% opacity"; color: root.cMutedFg; font.pixelSize: 11 }
                         ChaSetTabs {
                             currentValue: "active"
                             ChaSetTabsList {
@@ -367,7 +367,7 @@ DocLayout {
             width: parent.width
             spacing: 8
 
-            Text { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+            DocText { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
 
             PropsTable {
                 width: parent.width

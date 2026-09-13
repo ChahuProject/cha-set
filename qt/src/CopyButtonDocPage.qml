@@ -41,7 +41,7 @@ DocLayout {
                         border.width: 1
                         radius: 6
 
-                        Text {
+                        DocText {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.left
                             anchors.leftMargin: 10
@@ -70,7 +70,7 @@ DocLayout {
                     }
                 }
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: root.copyStatus
                     color: ThemeTokens.subduedText

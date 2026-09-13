@@ -47,7 +47,7 @@ DocLayout {
                 anchors.centerIn: parent
                 spacing: 12
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset."
                     color: ThemeTokens.subduedText
@@ -82,7 +82,7 @@ DocLayout {
                                     anchors.margins: 16
                                     spacing: 8
 
-                                    Text {
+                                    DocText {
                                         text: "Navigation Tree"
                                         color: ThemeTokens.text
                                         font.pixelSize: 12
@@ -91,9 +91,9 @@ DocLayout {
 
                                     Column {
                                         spacing: 4
-                                        Text { text: "▾ src"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
-                                        Text { text: "  ▸ components"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
-                                        Text { text: "  ▸ layout"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
+                                        DocText { text: "▾ src"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
+                                        DocText { text: "  ▸ components"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
+                                        DocText { text: "  ▸ layout"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.family: Typography.familyMono }
                                     }
                                 }
                             }
@@ -111,7 +111,7 @@ DocLayout {
                                     Row {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         spacing: 8
-                                        Text {
+                                        DocText {
                                             text: "Editor Workspace"
                                             color: ThemeTokens.text
                                             font.pixelSize: 12
@@ -126,7 +126,7 @@ DocLayout {
                                         }
                                     }
 
-                                    Text {
+                                    DocText {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         text: "Drag splitter handle to resize panes"
                                         color: ThemeTokens.subduedText
@@ -179,7 +179,7 @@ DocLayout {
                 anchors.centerIn: parent
                 spacing: 12
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Top and bottom pane split with horizontal divider line. Drag vertically to resize console output."
                     color: ThemeTokens.subduedText
@@ -216,7 +216,7 @@ DocLayout {
                                     Row {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         spacing: 8
-                                        Text {
+                                        DocText {
                                             text: "Editor Canvas"
                                             color: ThemeTokens.text
                                             font.pixelSize: 12
@@ -230,7 +230,7 @@ DocLayout {
                                             anchors.verticalCenter: parent.verticalCenter
                                         }
                                     }
-                                    Text {
+                                    DocText {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         text: "Drag splitter handle vertically to resize"
                                         color: ThemeTokens.subduedText
@@ -252,7 +252,7 @@ DocLayout {
                                     Row {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         spacing: 8
-                                        Text {
+                                        DocText {
                                             text: "Terminal Console"
                                             color: ThemeTokens.text
                                             font.pixelSize: 12
@@ -293,40 +293,40 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Animations"
             color: ThemeTokens.text
             font.pixelSize: 18
             font.bold: true
         }
 
-        Text {
+        DocText {
             text: "Motion tokens and kinematic timing contracts for Splitter divider gutters."
             color: ThemeTokens.subduedText
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
 
-        Text {
+        DocText {
             text: "• Gutter indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve."
             color: ThemeTokens.text
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
-        Text {
+        DocText {
             text: "• Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
             color: ThemeTokens.text
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
-        Text {
+        DocText {
             text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."
             color: ThemeTokens.text
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
     }

@@ -93,7 +93,7 @@ DocLayout {
                     }
                 }
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: root.lastAction
                     color: ThemeTokens.subduedText

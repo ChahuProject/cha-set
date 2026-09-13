@@ -62,7 +62,7 @@ DocLayout {
                             radius: 4
                             color: ThemeTokens.hover
 
-                            Text {
+                            DocText {
                                 anchors.centerIn: parent
                                 text: "@radix-ui/primitives"
                                 color: ThemeTokens.text
@@ -76,7 +76,7 @@ DocLayout {
                             radius: 4
                             color: ThemeTokens.hover
 
-                            Text {
+                            DocText {
                                 anchors.centerIn: parent
                                 text: "@stitches/react"
                                 color: ThemeTokens.text
@@ -94,7 +94,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "State:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "State:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoOpen ? "true" : "false"
@@ -108,7 +108,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoVariant
@@ -123,7 +123,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    Text { text: "Disabled:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Disabled:"; color: root.cMutedFg; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoDisabled ? "true" : "false"
@@ -142,7 +142,7 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        Text { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Installation"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
         ChaSetCodeBlock {
             width: parent.width
             language: "bash"
@@ -154,8 +154,8 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        Text { text: "Default Open"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        Text { text: "Use defaultOpen to initialize the collapsible in an expanded state."; color: root.cMutedFg; font.pixelSize: 13 }
+        DocText { text: "Default Open"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Use defaultOpen to initialize the collapsible in an expanded state."; color: root.cMutedFg; font.pixelSize: 13 }
 
         ChaSetCard {
             width: parent.width
@@ -183,7 +183,7 @@ DocLayout {
                             radius: 4
                             color: ThemeTokens.hover
 
-                            Text {
+                            DocText {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.left: parent.left
                                 anchors.leftMargin: 8
@@ -202,8 +202,8 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        Text { text: "Disabled State"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
-        Text { text: "Prevents clicking and interaction with a dimmed appearance."; color: root.cMutedFg; font.pixelSize: 13 }
+        DocText { text: "Disabled State"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Prevents clicking and interaction with a dimmed appearance."; color: root.cMutedFg; font.pixelSize: 13 }
 
         ChaSetCard {
             width: parent.width
@@ -228,7 +228,7 @@ DocLayout {
     Column {
         width: parent.width
         spacing: 8
-        Text { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
+        DocText { text: "Props Reference"; font.pixelSize: 18; font.weight: Font.Bold; color: root.cFg }
 
         
     KeyboardShortcutsTable {

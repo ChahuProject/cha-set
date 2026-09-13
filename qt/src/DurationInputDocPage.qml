@@ -31,7 +31,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Timer Duration (Default):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+                    DocText { text: "Timer Duration (Default):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
                     ChaSetDurationInput {
                         value: 3665
                     }
@@ -39,7 +39,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Compact Size (sm):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+                    DocText { text: "Compact Size (sm):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
                     ChaSetDurationInput {
                         size: "sm"
                         value: 300
@@ -48,7 +48,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Disabled State:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+                    DocText { text: "Disabled State:"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
                     ChaSetDurationInput {
                         value: 900
                         disabled: true

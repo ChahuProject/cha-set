@@ -60,7 +60,7 @@ DocLayout {
                 // Side Selector
                 Row {
                     spacing: 8
-                    Text { text: "Side:"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Side:"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoSide
@@ -77,7 +77,7 @@ DocLayout {
                 // Align Selector
                 Row {
                     spacing: 8
-                    Text { text: "Align:"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: "Align:"; color: ThemeTokens.subduedText; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter
                         currentValue: root.demoAlign
@@ -134,18 +134,18 @@ DocLayout {
                             anchors.fill: parent
                             spacing: 12
 
-                            Text {
+                            DocText {
                                 text: "Dimensions Settings"
                                 color: ThemeTokens.text
                                 font.pixelSize: 13
                                 font.weight: Font.DemiBold
                             }
 
-                            Text {
+                            DocText {
                                 text: "Set the width and height layers for the active canvas."
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: 11
-                                wrapMode: Text.WordWrap
+                                wrapMode: TextEdit.WordWrap
                                 width: parent.width
                             }
 
@@ -153,7 +153,7 @@ DocLayout {
                                 spacing: 8
                                 width: parent.width
 
-                                Text {
+                                DocText {
                                     text: "Width:"
                                     color: ThemeTokens.text
                                     font.pixelSize: 12
@@ -173,7 +173,7 @@ DocLayout {
                                 spacing: 8
                                 width: parent.width
 
-                                Text {
+                                DocText {
                                     text: "Height:"
                                     color: ThemeTokens.text
                                     font.pixelSize: 12

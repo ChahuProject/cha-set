@@ -46,7 +46,7 @@ DocLayout {
                     onClicked: profileDialog.open = true
                 }
 
-                Text {
+                DocText {
                     text: "Current profile: " + nameInput.text + " (" + usernameInput.text + ")"
                     color: root.cMutedFg
                     font.pixelSize: 12
@@ -62,13 +62,13 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text { text: "Animations"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
+        DocText { text: "Animations"; color: root.cFg; font.pixelSize: 18; font.weight: Font.Bold }
 
-        Text { text: "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close."; color: root.cMutedFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        DocText { text: "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close."; color: root.cMutedFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        Text { text: "• The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: 13; wrapMode: Text.WordWrap; width: parent.width }
+        DocText { text: "• The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: 13; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     KeyboardShortcutsTable {
@@ -80,7 +80,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Installation"
             color: root.cFg
             font.pixelSize: 18
@@ -99,14 +99,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Anatomy"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Import and configure ChaSetDialog in your QML scene."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -124,14 +124,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Examples & States"
             color: root.cFg
             font.pixelSize: 18
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Common modal dialog patterns: confirmation dialogs, forms, and informational notices."
             color: root.cMutedFg
             font.pixelSize: 13
@@ -154,18 +154,18 @@ DocLayout {
                     anchors.margins: 16
                     spacing: 8
 
-                    Text {
+                    DocText {
                         text: "Destructive Confirmation"
                         color: root.cFg
                         font.pixelSize: 13
                         font.weight: Font.DemiBold
                     }
 
-                    Text {
+                    DocText {
                         text: "Dialog for destructive actions requiring explicit user confirmation."
                         color: root.cMutedFg
                         font.pixelSize: 12
-                        wrapMode: Text.WordWrap
+                        wrapMode: TextEdit.WordWrap
                         width: parent.width
                     }
 
@@ -190,18 +190,18 @@ DocLayout {
                     anchors.margins: 16
                     spacing: 8
 
-                    Text {
+                    DocText {
                         text: "Informational Notice"
                         color: root.cFg
                         font.pixelSize: 13
                         font.weight: Font.DemiBold
                     }
 
-                    Text {
+                    DocText {
                         text: "Lightweight alert modal for system notices and scheduled maintenance."
                         color: root.cMutedFg
                         font.pixelSize: 12
-                        wrapMode: Text.WordWrap
+                        wrapMode: TextEdit.WordWrap
                         width: parent.width
                     }
 
@@ -221,7 +221,7 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Props Reference"
             color: root.cFg
             font.pixelSize: 18
@@ -345,7 +345,7 @@ DocLayout {
             Row {
                 width: parent.width
                 spacing: 10
-                Text {
+                DocText {
                     text: "Name"
                     width: 70
                     color: root.cFg
@@ -362,7 +362,7 @@ DocLayout {
             Row {
                 width: parent.width
                 spacing: 10
-                Text {
+                DocText {
                     text: "Username"
                     width: 70
                     color: root.cFg
@@ -430,11 +430,11 @@ DocLayout {
         description: "The cloud service will be undergoing scheduled infrastructure updates tonight at 02:00 UTC."
         dialogWidth: 440
 
-        Text {
+        DocText {
             text: "Expected downtime is under 10 minutes. All data remains encrypted and safe."
             color: root.cMutedFg
             font.pixelSize: 12
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
 

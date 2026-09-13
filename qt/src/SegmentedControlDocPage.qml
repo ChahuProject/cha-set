@@ -77,7 +77,7 @@ DocLayout {
                     onValueSelected: function(v) { root.selectedView = v; }
                 }
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Selected value: " + root.selectedView
                     color: ThemeTokens.subduedText
@@ -90,7 +90,7 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: 12
-                Text {
+                DocText {
                     text: "Size:"
                     color: ThemeTokens.subduedText
                     font.pixelSize: 11
@@ -120,7 +120,7 @@ DocLayout {
     }
 
     // Sizes
-    Text {
+    DocText {
         text: "Sizes & Badges"
         font.pixelSize: 18
         font.bold: true
@@ -140,7 +140,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Small (sm) - Compact menus & toolbars"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    DocText { text: "Small (sm) - Compact menus & toolbars"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "sm"
                         options: root.viewOptions
@@ -152,7 +152,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Default - Standard controls"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    DocText { text: "Default - Standard controls"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "default"
                         options: root.viewOptions
@@ -164,7 +164,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Large (lg) - Prominent tabs switch"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    DocText { text: "Large (lg) - Prominent tabs switch"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "lg"
                         options: root.viewOptions
@@ -176,7 +176,7 @@ DocLayout {
     }
 
     // Fixed Width & Truncation
-    Text {
+    DocText {
         text: "Fixed Width & Truncation"
         font.pixelSize: 18
         font.bold: true
@@ -196,7 +196,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Auto-fit width (hugs content)"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    DocText { text: "Auto-fit width (hugs content)"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
                     ChaSetSegmentedControl {
                         options: [
                             { label: "Compact", value: "compact" },
@@ -211,7 +211,7 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    Text { text: "Fixed width with truncation (itemWidth: 120)"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
+                    DocText { text: "Fixed width with truncation (itemWidth: 120)"; color: ThemeTokens.subduedText; font.pixelSize: 12; font.bold: true }
                     ChaSetSegmentedControl {
                         itemWidth: 120
                         options: [
@@ -227,7 +227,7 @@ DocLayout {
     }
 
     // Menu & Inline Title
-    Text {
+    DocText {
         text: "Menu & Inline Title"
         font.pixelSize: 18
         font.bold: true
@@ -255,7 +255,7 @@ DocLayout {
     }
 
     // Keyboard Navigation
-    Text {
+    DocText {
         text: "Keyboard Navigation"
         font.pixelSize: 18
         font.bold: true

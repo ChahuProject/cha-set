@@ -63,7 +63,7 @@ DocLayout {
                     }
                 }
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Event: " + root.lastTriggered
                     color: ThemeTokens.subduedText

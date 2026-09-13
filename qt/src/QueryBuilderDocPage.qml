@@ -80,7 +80,7 @@ DocLayout {
                     border.width: 1
                     radius: 4
 
-                    Text {
+                    DocText {
                         id: serializedText
                         anchors.fill: parent
                         anchors.margins: 8
@@ -88,7 +88,7 @@ DocLayout {
                         color: ThemeTokens.subduedText
                         font.pixelSize: 10
                         font.family: Typography.familyMono
-                        wrapMode: Text.WrapAnywhere
+                        wrapMode: TextEdit.WrapAnywhere
                     }
                 }
             }

@@ -99,7 +99,7 @@ DocLayout {
                             anchors.centerIn: parent
                             spacing: 6
 
-                            Text {
+                            DocText {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text: "Sidebar"
                                 color: ThemeTokens.text
@@ -134,14 +134,14 @@ DocLayout {
                             anchors.centerIn: parent
                             spacing: 4
 
-                            Text {
+                            DocText {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text: "Main Content Viewport"
                                 color: ThemeTokens.text
                                 font.pixelSize: 13
                             }
 
-                            Text {
+                            DocText {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 text: "Focus handle and use arrow keys to resize"
                                 color: ThemeTokens.subduedText
@@ -160,7 +160,7 @@ DocLayout {
                 Row {
                     spacing: 8
                     anchors.verticalCenter: parent.verticalCenter
-                    Text {
+                    DocText {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "Current Width:"
                         color: ThemeTokens.subduedText
@@ -184,7 +184,7 @@ DocLayout {
     }
 
     // Vertical Edge Handle
-    Text {
+    DocText {
         text: "Vertical Edge Handle"
         font.pixelSize: 18
         font.bold: true
@@ -204,9 +204,9 @@ DocLayout {
                 width: parent.width
                 height: implicitHeight
 
-                Text {
+                DocText {
                     width: parent.width
-                    wrapMode: Text.Wrap
+                    wrapMode: TextEdit.Wrap
                     text: "Handles can also be attached to horizontal edges (top or bottom) for bottom console or drawer resizing."
                     color: ThemeTokens.subduedText
                     font.pixelSize: 12
@@ -232,7 +232,7 @@ DocLayout {
                             anchors.bottom: bottomBox.top
                             color: "transparent"
 
-                            Text {
+                            DocText {
                                 anchors.centerIn: parent
                                 text: "Editor / Log Canvas Area"
                                 color: ThemeTokens.subduedText
@@ -262,7 +262,7 @@ DocLayout {
                                 anchors.centerIn: parent
                                 spacing: 8
 
-                                Text {
+                                DocText {
                                     anchors.verticalCenter: parent.verticalCenter
                                     text: "Terminal / Output Console"
                                     color: ThemeTokens.text
@@ -294,46 +294,46 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Animations"
             color: ThemeTokens.text
             font.pixelSize: 18
             font.bold: true
         }
 
-        Text {
+        DocText {
             text: "Motion tokens and kinematic timing contracts for SplitterHandle edge indicators."
             color: ThemeTokens.subduedText
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
 
-        Text {
+        DocText {
             text: "• Active indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve."
             color: ThemeTokens.text
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
-        Text {
+        DocText {
             text: "• Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
             color: ThemeTokens.text
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
-        Text {
+        DocText {
             text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."
             color: ThemeTokens.text
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
     }
 
     // Keyboard Navigation
-    Text {
+    DocText {
         text: "Keyboard Navigation"
         font.pixelSize: 18
         font.bold: true

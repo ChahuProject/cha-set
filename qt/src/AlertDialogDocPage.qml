@@ -90,7 +90,7 @@ ChaSetAlertDialog {
                     onClicked: alertDlg.open = true
                 }
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: root.alertFeedback
                     color: ThemeTokens.subduedText

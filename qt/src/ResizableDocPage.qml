@@ -83,7 +83,7 @@ DocLayout {
                         Column {
                             anchors.centerIn: parent
                             spacing: 8
-                            Text {
+                            DocText {
                                 text: "Explorer Tree"
                                 color: ThemeTokens.text
                                 font.pixelSize: 13
@@ -107,7 +107,7 @@ DocLayout {
                         Column {
                             anchors.centerIn: parent
                             spacing: 8
-                            Text {
+                            DocText {
                                 text: "Source Code Editor"
                                 color: ThemeTokens.text
                                 font.pixelSize: 13
@@ -206,7 +206,7 @@ DocLayout {
                         Column {
                             anchors.centerIn: parent
                             spacing: 6
-                            Text {
+                            DocText {
                                 text: "Sidebar"
                                 color: ThemeTokens.text
                                 font.pixelSize: 13
@@ -237,7 +237,7 @@ DocLayout {
                             Column {
                                 anchors.centerIn: parent
                                 spacing: 6
-                                Text {
+                                DocText {
                                     text: "Editor Viewport"
                                     color: ThemeTokens.text
                                     font.pixelSize: 13
@@ -261,7 +261,7 @@ DocLayout {
                             Column {
                                 anchors.centerIn: parent
                                 spacing: 6
-                                Text {
+                                DocText {
                                     text: "Integrated Terminal"
                                     color: ThemeTokens.text
                                     font.pixelSize: 13
@@ -320,7 +320,7 @@ DocLayout {
                 Row {
                     spacing: 8
                     anchors.verticalCenter: parent.verticalCenter
-                    Text {
+                    DocText {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "Direction:"
                         color: ThemeTokens.subduedText
@@ -376,7 +376,7 @@ DocLayout {
                         Column {
                             anchors.centerIn: parent
                             spacing: 6
-                            Text {
+                            DocText {
                                 text: "Panel Alpha"
                                 color: ThemeTokens.text
                                 font.pixelSize: 13
@@ -412,7 +412,7 @@ DocLayout {
                         Column {
                             anchors.centerIn: parent
                             spacing: 6
-                            Text {
+                            DocText {
                                 text: "Panel Beta"
                                 color: ThemeTokens.text
                                 font.pixelSize: 13
@@ -452,40 +452,40 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Animations"
             color: ThemeTokens.text
             font.pixelSize: 18
             font.bold: true
         }
 
-        Text {
+        DocText {
             text: "Motion tokens and kinematic timing contracts for Resizable dividers and handles."
             color: ThemeTokens.subduedText
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
 
-        Text {
+        DocText {
             text: "• Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (ThemeTokens.motionQuick and ThemeTokens.easeStandard)."
             color: ThemeTokens.text
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
-        Text {
+        DocText {
             text: "• Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
             color: ThemeTokens.text
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
-        Text {
+        DocText {
             text: "• Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt."
             color: ThemeTokens.text
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
     }

@@ -62,7 +62,7 @@ DocLayout {
                     onValueChanged: root.selectedFruit = value
                 }
 
-                Text {
+                DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Selected value: " + root.selectedFruit
                     color: ThemeTokens.subduedText

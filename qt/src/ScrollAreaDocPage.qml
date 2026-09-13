@@ -94,9 +94,9 @@ DocLayout {
                             border.color: ThemeTokens.border; border.width: 0.5
                             Row {
                                 anchors.fill: parent; anchors.margins: 8; spacing: 10
-                                Text { text: parent.parent.modelData.version; color: ThemeTokens.accent; font.pixelSize: 12; font.family: Typography.familyMono; font.weight: Font.Bold; width: 140 }
-                                Text { text: parent.parent.modelData.summary; color: ThemeTokens.subduedText; font.pixelSize: 11; width: 340; elide: Text.ElideRight }
-                                Text { text: parent.parent.modelData.date; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                                DocText { text: parent.parent.modelData.version; color: ThemeTokens.accent; font.pixelSize: 12; font.family: Typography.familyMono; font.weight: Font.Bold; width: 140 }
+                                DocText { text: parent.parent.modelData.summary; color: ThemeTokens.subduedText; font.pixelSize: 11; width: 340; elide: Text.ElideRight }
+                                DocText { text: parent.parent.modelData.date; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                             }
                         }
                     }
@@ -131,16 +131,16 @@ DocLayout {
                                 anchors.fill: parent; anchors.margins: 14; spacing: 8
                                 Row {
                                     width: parent.width
-                                    Text { text: parent.parent.parent.modelData.icon; font.pixelSize: 22 }
+                                    DocText { text: parent.parent.parent.modelData.icon; font.pixelSize: 22 }
                                     Item { width: 10; height: 1 }
                                     Rectangle {
                                         width: 44; height: 18; radius: 9
                                         color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.15)
-                                        Text { anchors.centerIn: parent; text: parent.parent.parent.parent.modelData.badge; color: ThemeTokens.accent; font.pixelSize: 10; font.weight: Font.Bold }
+                                        DocText { anchors.centerIn: parent; text: parent.parent.parent.parent.modelData.badge; color: ThemeTokens.accent; font.pixelSize: 10; font.weight: Font.Bold }
                                     }
                                 }
-                                Text { text: parent.parent.modelData.title; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                                Text { text: parent.parent.modelData.desc; color: ThemeTokens.subduedText; font.pixelSize: 11; wrapMode: Text.WordWrap; width: parent.width }
+                                DocText { text: parent.parent.modelData.title; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                                DocText { text: parent.parent.modelData.desc; color: ThemeTokens.subduedText; font.pixelSize: 11; wrapMode: TextEdit.WordWrap; width: parent.width }
                             }
                         }
                     }
@@ -170,7 +170,7 @@ DocLayout {
                             width: 88; height: 60; radius: 6
                             color: ThemeTokens.panel
                             border.color: ThemeTokens.border
-                            Text { anchors.centerIn: parent; text: "Cell " + (parent.index + 1); color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Medium }
+                            DocText { anchors.centerIn: parent; text: "Cell " + (parent.index + 1); color: ThemeTokens.text; font.pixelSize: 11; font.weight: Font.Medium }
                         }
                     }
                 }
@@ -181,7 +181,7 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: 6
-                Text { text: "Mode:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Mode:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Repeater {
                     model: [["vertical", "Vertical"], ["horizontal", "Horizontal"], ["both", "2D Dual-Axis"]]
                     delegate: ChaSetButton {
@@ -195,7 +195,7 @@ DocLayout {
             },
             Row {
                 spacing: 6
-                Text { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Repeater {
                     model: [["default", "Default"], ["sm", "Compact (sm)"]]
                     delegate: ChaSetButton {
@@ -232,7 +232,7 @@ DocLayout {
         width: parent.width
         spacing: 10
 
-        Text {
+        DocText {
             text: "Installation"
             color: ThemeTokens.text
             font.pixelSize: 20
@@ -247,12 +247,12 @@ DocLayout {
             border.color: ThemeTokens.border
             Row {
                 anchors.fill: parent; anchors.margins: 14; spacing: 10
-                Text { text: "$"; color: ThemeTokens.subduedText; font.family: Typography.familyMono; font.pixelSize: 13 }
-                Text { text: "pnpm add @chahu/cha-set"; color: ThemeTokens.text; font.family: Typography.familyMono; font.pixelSize: 13; font.weight: Font.Bold }
+                DocText { text: "$"; color: ThemeTokens.subduedText; font.family: Typography.familyMono; font.pixelSize: 13 }
+                DocText { text: "pnpm add @chahu/cha-set"; color: ThemeTokens.text; font.family: Typography.familyMono; font.pixelSize: 13; font.weight: Font.Bold }
             }
         }
 
-        Text { text: "Import in QML (Qt Quick):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
+        DocText { text: "Import in QML (Qt Quick):"; color: ThemeTokens.subduedText; font.pixelSize: 12 }
 
         Rectangle {
             width: parent.width
@@ -279,14 +279,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Horizontal Scrolling Example"
             color: ThemeTokens.text
             font.pixelSize: 20
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Hover over the bottom scrollbar to reveal the left (⏪ / ◀) and right (▶ / ⏩) stepper buttons."
             color: ThemeTokens.subduedText
             font.pixelSize: 13
@@ -322,16 +322,16 @@ DocLayout {
                                 anchors.fill: parent; anchors.margins: 14; spacing: 8
                                 Row {
                                     width: parent.width
-                                    Text { text: parent.parent.parent.modelData.icon; font.pixelSize: 22 }
+                                    DocText { text: parent.parent.parent.modelData.icon; font.pixelSize: 22 }
                                     Item { width: 10; height: 1 }
                                     Rectangle {
                                         width: 44; height: 18; radius: 9
                                         color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.15)
-                                        Text { anchors.centerIn: parent; text: parent.parent.parent.parent.modelData.badge; color: ThemeTokens.accent; font.pixelSize: 10; font.weight: Font.Bold }
+                                        DocText { anchors.centerIn: parent; text: parent.parent.parent.parent.modelData.badge; color: ThemeTokens.accent; font.pixelSize: 10; font.weight: Font.Bold }
                                     }
                                 }
-                                Text { text: parent.parent.modelData.title; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                                Text { text: parent.parent.modelData.desc; color: ThemeTokens.subduedText; font.pixelSize: 11; wrapMode: Text.WordWrap; width: parent.width }
+                                DocText { text: parent.parent.modelData.title; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                                DocText { text: parent.parent.modelData.desc; color: ThemeTokens.subduedText; font.pixelSize: 11; wrapMode: TextEdit.WordWrap; width: parent.width }
                             }
                         }
                     }
@@ -347,14 +347,14 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Dual-Axis (Both Axes with Corner)"
             color: ThemeTokens.text
             font.pixelSize: 20
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "When content exceeds both width and height, both scrollbars render with a synchronized corner piece."
             color: ThemeTokens.subduedText
             font.pixelSize: 13
@@ -425,18 +425,18 @@ export const CrossStackSpecification = {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Dual-Box Hot Zone & Dynamic Width"
             color: ThemeTokens.text
             font.pixelSize: 20
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces an interaction hot-zone paired with an animated visual indicator that expands from slim idle to expanded hover with 150ms cubic easing."
             color: ThemeTokens.subduedText
             font.pixelSize: 13
-            wrapMode: Text.WordWrap
+            wrapMode: TextEdit.WordWrap
             width: parent.width
         }
 
@@ -452,17 +452,17 @@ export const CrossStackSpecification = {
                 Row {
                     spacing: 8
                     Rectangle { width: 8; height: 8; radius: 4; color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
-                    Text { text: "Idle State: Slim indicator bar, non-intrusive and lightweight."; color: ThemeTokens.text; font.pixelSize: 12 }
+                    DocText { text: "Idle State: Slim indicator bar, non-intrusive and lightweight."; color: ThemeTokens.text; font.pixelSize: 12 }
                 }
                 Row {
                     spacing: 8
                     Rectangle { width: 8; height: 8; radius: 4; color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
-                    Text { text: "Hover State: Expands with high visual affordance."; color: ThemeTokens.text; font.pixelSize: 12 }
+                    DocText { text: "Hover State: Expands with high visual affordance."; color: ThemeTokens.text; font.pixelSize: 12 }
                 }
                 Row {
                     spacing: 8
                     Rectangle { width: 8; height: 8; radius: 4; color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
-                    Text { text: "Hit Area: Compact trigger box prevents accidental cursor capture."; color: ThemeTokens.text; font.pixelSize: 12 }
+                    DocText { text: "Hit Area: Compact trigger box prevents accidental cursor capture."; color: ThemeTokens.text; font.pixelSize: 12 }
                 }
             }
         }
@@ -475,14 +475,14 @@ export const CrossStackSpecification = {
         width: parent.width
         spacing: 12
 
-        Text {
+        DocText {
             text: "Two-End Stepper Navigation"
             color: ThemeTokens.text
             font.pixelSize: 20
             font.weight: Font.Bold
         }
 
-        Text {
+        DocText {
             text: "Hovering the scrollbar reveals two-end stepper action buttons:"
             color: ThemeTokens.subduedText
             font.pixelSize: 13
@@ -501,10 +501,10 @@ export const CrossStackSpecification = {
 
                 Column {
                     anchors.fill: parent; anchors.margins: 14; spacing: 6
-                    Text { text: "Vertical Cluster"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                    Text { text: "• Top: ⏫ To Top & 🔼 Page Up (85% viewport step)"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
-                    Text { text: "• Bottom: 🔽 Page Down & ⏬ To Bottom"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
-                    Text { text: "• Auto-disabled when at boundary limits."; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Vertical Cluster"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                    DocText { text: "• Top: ⏫ To Top & 🔼 Page Up (85% viewport step)"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "• Bottom: 🔽 Page Down & ⏬ To Bottom"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "• Auto-disabled when at boundary limits."; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                 }
             }
 
@@ -517,10 +517,10 @@ export const CrossStackSpecification = {
 
                 Column {
                     anchors.fill: parent; anchors.margins: 14; spacing: 6
-                    Text { text: "Horizontal Cluster"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
-                    Text { text: "• Left: ⏪ To Start & ◀ Page Left"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
-                    Text { text: "• Right: ▶ Page Right & ⏩ To End"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
-                    Text { text: "• Supports smooth animated interpolation."; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "Horizontal Cluster"; color: ThemeTokens.text; font.pixelSize: 13; font.weight: Font.Bold }
+                    DocText { text: "• Left: ⏪ To Start & ◀ Page Left"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "• Right: ▶ Page Right & ⏩ To End"; color: ThemeTokens.subduedText; font.pixelSize: 11 }
+                    DocText { text: "• Supports smooth animated interpolation."; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                 }
             }
         }
@@ -533,7 +533,7 @@ export const CrossStackSpecification = {
         width: parent.width
         spacing: 14
 
-        Text {
+        DocText {
             text: "API Reference"
             color: ThemeTokens.text
             font.pixelSize: 20

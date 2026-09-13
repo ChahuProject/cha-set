@@ -80,7 +80,7 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: 6
-                Text { text: "Variant:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Variant:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Repeater {
                     model: ["default", "secondary", "outline", "ghost", "destructive", "link"]
                     delegate: ChaSetButton {
@@ -94,7 +94,7 @@ DocLayout {
             },
             Row {
                 spacing: 6
-                Text { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 Repeater {
                     model: ["xs", "sm", "default", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"]
                     delegate: ChaSetButton {
@@ -136,7 +136,7 @@ DocLayout {
             Row {
                 visible: !root.isIconSize
                 spacing: 6
-                Text { text: "Label:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: "Label:"; color: ThemeTokens.subduedText; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetInput {
                     width: 100
                     size: "sm"
