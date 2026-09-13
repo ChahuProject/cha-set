@@ -1,6 +1,7 @@
 // ChaSetPipelineView.qml — Cross-stack Pipeline Execution View in Qt Quick
 import QtQuick 6.10
 import QtQuick.Controls 6.10
+import QtQuick.Shapes
 import ChaSet
 
 Item {
@@ -20,7 +21,7 @@ Item {
   signal cancelClicked()
 
   implicitWidth: 780
-  implicitHeight: 480
+  implicitHeight: 448
   width: implicitWidth
   height: implicitHeight
 
@@ -46,14 +47,18 @@ Item {
     return str || "Queued"
   }
 
-  function getStatusColor(s) {
+  function normalize(s) {
     var str = (s || "").toLowerCase()
-    if (str === "success" || str === "成功") return "#10b981"
-    if (str === "failure" || str === "failed" || str === "失败") return ThemeTokens.destructive
-    if (str === "running" || str === "compiling" || str === "运行中" || str === "编译中") return ThemeTokens.accent
-    if (str === "retrying" || str === "重试中") return "#f59e0b"
-    return ThemeTokens.textMuted
+    if (str === "success" || str === "成功") return "success"
+    if (str === "failure" || str === "failed" || str === "失败") return "failure"
+    if (str === "running" || str === "运行中") return "running"
+    if (str === "compiling" || str === "编译中") return "compiling"
+    if (str === "retrying" || str === "重试中") return "retrying"
+    if (str === "cancelled" || str === "已取消") return "cancelled"
+    return "queued"
   }
+
+  readonly property string normStatus: normalize(root.status)
 
   function getActiveJob() {
     if (!root.jobs || root.jobs.length === 0) return null
@@ -84,11 +89,11 @@ Item {
     anchors.fill: parent
     spacing: 12
 
-    // Left Job List Column
+    // Left Job List Column (Width: 288 matching React w-[18rem])
     Rectangle {
-      width: 240
+      width: 288
       height: parent.height
-      color: ThemeTokens.card
+      color: ThemeTokens.panel
       border.color: ThemeTokens.border
       border.width: 1
       radius: 8
@@ -100,10 +105,8 @@ Item {
         // Header
         Rectangle {
           width: parent.width
-          height: 32
+          height: 33
           color: "transparent"
-          border.color: ThemeTokens.border
-          border.width: 0
 
           Rectangle {
             anchors.bottom: parent.bottom
@@ -119,7 +122,7 @@ Item {
             text: root.jobsTitle
             font.pixelSize: 12
             font.weight: Font.DemiBold
-            color: ThemeTokens.textMuted
+            color: ThemeTokens.subduedText
           }
         }
 
@@ -127,10 +130,12 @@ Item {
         ListView {
           id: jobListView
           width: parent.width
-          height: parent.height - 32
+          height: parent.height - 33
           clip: true
           model: root.jobs
           boundsBehavior: Flickable.StopAtBounds
+
+          ScrollBar.vertical: ChaSetScrollBar {}
 
           delegate: Rectangle {
             id: jobItemRect
@@ -138,26 +143,25 @@ Item {
             required property var modelData
 
             readonly property bool isSelected: modelData && (modelData.id === root.activeJobId || (root.activeJobId === "" && index === 0))
-            readonly property color jobColor: root.getStatusColor(modelData ? modelData.status : "")
             readonly property string jobDur: root.formatDuration(modelData ? modelData.durationMs : null)
 
-            width: jobListView.width
+            width: jobListView.width - 8
             height: 32
-            color: isSelected ? (ThemeTokens.dark ? Qt.rgba(0.2, 0.25, 0.35, 0.6) : Qt.rgba(0.92, 0.94, 0.97, 1)) : (jobMouse.containsMouse ? (ThemeTokens.dark ? Qt.rgba(0.15, 0.2, 0.28, 0.4) : Qt.rgba(0.96, 0.97, 0.98, 1)) : "transparent")
-            radius: 4
+            anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
+            color: isSelected ? (ThemeTokens.dark ? Qt.rgba(0.2, 0.25, 0.35, 0.6) : Qt.rgba(0.92, 0.94, 0.97, 1)) : (jobMouse.containsMouse ? ThemeTokens.hover : "transparent")
+            radius: 6
 
             Row {
               anchors.fill: parent
-              anchors.margins: 6
-              spacing: 6
+              anchors.leftMargin: 8
+              anchors.rightMargin: 8
+              spacing: 8
 
-              // Status dot
-              Rectangle {
-                width: 8
-                height: 8
-                radius: 4
+              // Status Icon matching React
+              ChaSetStatusIcon {
+                size: 14
+                status: jobItemRect.modelData ? jobItemRect.modelData.status : "queued"
                 anchors.verticalCenter: parent.verticalCenter
-                color: jobItemRect.jobColor
               }
 
               // Job name
@@ -167,7 +171,7 @@ Item {
                 font.weight: jobItemRect.isSelected ? Font.Medium : Font.Normal
                 color: ThemeTokens.text
                 elide: Text.ElideRight
-                width: parent.width - 20 - (jobItemRect.jobDur !== "" ? 45 : 0)
+                width: parent.width - 22 - (jobItemRect.jobDur !== "" ? 45 : 0)
                 anchors.verticalCenter: parent.verticalCenter
               }
 
@@ -175,9 +179,9 @@ Item {
               Text {
                 visible: jobItemRect.jobDur !== ""
                 text: jobItemRect.jobDur
-                font.pixelSize: 10
+                font.pixelSize: 11
                 font.family: "monospace"
-                color: ThemeTokens.textMuted
+                color: ThemeTokens.subduedText
                 anchors.verticalCenter: parent.verticalCenter
               }
             }
@@ -200,56 +204,135 @@ Item {
     }
 
     // Right Section
-    Column {
-      width: parent.width - 252
+    Item {
+      width: parent.width - 300
       height: parent.height
-      spacing: 8
 
       // Header row
-      Row {
-        width: parent.width
+      Item {
+        id: rightHeader
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
         height: 28
-        spacing: 8
 
-        ChaSetBadge {
-          text: root.getStatusLabel(root.status)
-          variant: (root.status === "success" || root.status === "成功") ? "secondary" : ((root.status === "failure" || root.status === "失败") ? "destructive" : "default")
+        Row {
+          id: leftHeaderRow
+          anchors.left: parent.left
           anchors.verticalCenter: parent.verticalCenter
+          spacing: 8
+
+          // Status Badge matching React styling
+          Rectangle {
+            height: 22
+            radius: 11
+            border.width: 1
+            anchors.verticalCenter: parent.verticalCenter
+            width: badgeContentRow.implicitWidth + 14
+
+            color: {
+              if (root.normStatus === "running" || root.normStatus === "compiling") return Qt.rgba(0.23, 0.51, 0.96, 0.15)
+              if (root.normStatus === "success") return Qt.rgba(0.06, 0.72, 0.51, 0.15)
+              if (root.normStatus === "failure") return Qt.rgba(0.94, 0.27, 0.27, 0.15)
+              if (root.normStatus === "retrying") return Qt.rgba(0.96, 0.62, 0.04, 0.15)
+              return ThemeTokens.hover
+            }
+
+            border.color: {
+              if (root.normStatus === "running" || root.normStatus === "compiling") return Qt.rgba(0.23, 0.51, 0.96, 0.3)
+              if (root.normStatus === "success") return Qt.rgba(0.06, 0.72, 0.51, 0.3)
+              if (root.normStatus === "failure") return Qt.rgba(0.94, 0.27, 0.27, 0.3)
+              if (root.normStatus === "retrying") return Qt.rgba(0.96, 0.62, 0.04, 0.3)
+              return ThemeTokens.border
+            }
+
+            Row {
+              id: badgeContentRow
+              anchors.centerIn: parent
+              spacing: 5
+
+              ChaSetStatusIcon {
+                size: 12
+                status: root.status
+                anchors.verticalCenter: parent.verticalCenter
+              }
+
+              Text {
+                text: root.getStatusLabel(root.status)
+                font.pixelSize: 11
+                font.weight: Font.Medium
+                anchors.verticalCenter: parent.verticalCenter
+                color: {
+                  if (root.normStatus === "running" || root.normStatus === "compiling") return "#60a5fa"
+                  if (root.normStatus === "success") return "#34d399"
+                  if (root.normStatus === "failure") return "#f87171"
+                  if (root.normStatus === "retrying") return "#fbbf24"
+                  return ThemeTokens.subduedText
+                }
+              }
+            }
+          }
+
+          // Total duration with Clock icon
+          Row {
+            visible: root.totalDurationText !== ""
+            spacing: 4
+            anchors.verticalCenter: parent.verticalCenter
+
+            Shape {
+              id: clockIcon
+              width: 12
+              height: 12
+              scale: 0.5
+              transformOrigin: Item.Center
+              anchors.verticalCenter: parent.verticalCenter
+              asynchronous: false
+
+              ShapePath {
+                strokeColor: ThemeTokens.subduedText
+                strokeWidth: 2.0
+                fillColor: "transparent"
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                PathSvg {
+                  path: "M 2 12 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0 M 12 6 v 6 l 4 2"
+                }
+              }
+            }
+
+            Text {
+              text: root.totalDurationText
+              font.pixelSize: 12
+              font.family: "monospace"
+              color: ThemeTokens.subduedText
+              anchors.verticalCenter: parent.verticalCenter
+            }
+          }
         }
 
-        Text {
-          visible: root.totalDurationText !== ""
-          text: root.totalDurationText
-          font.pixelSize: 12
-          font.family: "monospace"
-          color: ThemeTokens.textMuted
-          anchors.verticalCenter: parent.verticalCenter
-        }
-
-        Item {
-          width: 1
-          height: 1
-          // Spacer
-        }
-
+        // Cancel Button on the right
         ChaSetButton {
           text: "Cancel"
           variant: "outline"
           size: "sm"
           disabled: root.cancelDisabled
-          anchors.verticalCenter: parent.verticalCenter
           anchors.right: parent.right
+          anchors.verticalCenter: parent.verticalCenter
           onClicked: root.cancelClicked()
         }
       }
 
       // Step Timeline Card
       Rectangle {
+        id: timelineCard
         visible: root.activeJob && root.activeJob.steps && root.activeJob.steps.length > 0
-        width: parent.width
-        implicitHeight: timelineItem.implicitHeight + 20
-        height: implicitHeight
-        color: ThemeTokens.card
+        anchors.top: rightHeader.bottom
+        anchors.topMargin: 8
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: (timelineItem.implicitHeight > 0 ? timelineItem.implicitHeight + 24 : 0)
+        color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
         radius: 8
@@ -257,15 +340,18 @@ Item {
         ChaSetStepTimeline {
           id: timelineItem
           anchors.fill: parent
-          anchors.margins: 10
+          anchors.margins: 12
           steps: (root.activeJob && root.activeJob.steps) ? root.activeJob.steps : []
         }
       }
 
       // Log Console
       ChaSetLogConsole {
-        width: parent.width
-        height: parent.height - 36 - ((root.activeJob && root.activeJob.steps && root.activeJob.steps.length > 0) ? (timelineItem.implicitHeight + 28) : 0)
+        anchors.top: timelineCard.visible ? timelineCard.bottom : rightHeader.bottom
+        anchors.topMargin: 8
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
         lines: root.activeLogs
       }
     }

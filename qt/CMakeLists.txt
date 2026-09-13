@@ -113,6 +113,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetCodeBlock.qml
         src/ChaSetStepTimeline.qml
         src/ChaSetLogConsole.qml
+        src/ChaSetStatusIcon.qml
         src/ChaSetPipelineView.qml
         src/ThemeTokens.generated.qml
 

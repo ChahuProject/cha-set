@@ -57,7 +57,7 @@ Rectangle {
     visible: !root.lines || root.lines.length === 0
     text: root.emptyText
     font.pixelSize: 12
-    color: ThemeTokens.textMuted
+    color: ThemeTokens.subduedText
     anchors.centerIn: parent
   }
 
@@ -82,7 +82,7 @@ Rectangle {
       font.family: "monospace"
       font.pixelSize: 12
       color: ThemeTokens.text
-      textFormat: Text.StyledText
+      textFormat: TextEdit.RichText
       text: root.ansiToStyledText(modelData)
 
       HoverHandler {
@@ -109,7 +109,7 @@ Rectangle {
     height: 22
     width: controlsRow.implicitWidth + 8
     radius: 4
-    color: ThemeTokens.dark ? Qt.rgba(0.08, 0.12, 0.18, 0.85) : Qt.rgba(1, 1, 1, 0.9)
+    color: ThemeTokens.dark ? Qt.rgba(0.08, 0.12, 0.18, 0.85) : Qt.rgba(1, 1, 1, 0.85)
     border.color: ThemeTokens.border
     border.width: 1
     z: 10
@@ -123,7 +123,7 @@ Rectangle {
         visible: root.showLineCount
         text: (root.lines ? root.lines.length : 0) + " lines"
         font.pixelSize: 10
-        color: ThemeTokens.textMuted
+        color: ThemeTokens.subduedText
         anchors.verticalCenter: parent.verticalCenter
       }
 
