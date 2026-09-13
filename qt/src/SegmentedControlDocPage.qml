@@ -10,6 +10,7 @@ DocLayout {
     description: "A compact pill-style segmented switch for toolbars, menus, and view toggles."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
+        { id: "installation", title: "Installation" },
         { id: "sizes", title: "Sizes" },
         { id: "fixed-width", title: "Fixed Width & Truncation" },
         { id: "menu", title: "Menu & Inline Title" },
@@ -26,6 +27,12 @@ DocLayout {
     property var selectedView: "grid"
     property string currentSize: "default"
     property bool disabledState: false
+
+    ChaSetCodeBlock {
+        title: "Installation"
+        code: "import ChaSet 1.0\n\nChaSetSegmentedControl {\n    options: [\n        { label: \"Grid\", value: \"grid\", icon: \"⊞\" },\n        { label: \"List\", value: \"list\", icon: \"☰\" }\n    ]\n    value: \"grid\"\n}"
+        language: "qml"
+    }
 
     ComponentPreview {
         id: heroPreview

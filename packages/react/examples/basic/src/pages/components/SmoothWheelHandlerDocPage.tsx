@@ -55,10 +55,10 @@ export function SmoothWheelHandlerDocPage() {
       description="Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'kinematics', title: 'Kinematic Features' },
+        { id: 'installation', title: 'Installation' },
+        { id: 'kinematics', title: 'Kinematic Architecture' },
         { id: 'keyboard', title: 'Keyboard & Wheel Navigation' },
-        { id: 'code', title: 'Implementation Code' },
-        { id: 'props', title: 'Props Reference' },
+{ id: 'props', title: 'Props Reference' },
       ]}
     >
       <section id="overview" className="space-y-4">
@@ -119,6 +119,11 @@ export function SmoothWheelHandlerDocPage() {
             </SmoothWheelHandler>
           </div>
         </ComponentPreview>
+      </section>
+
+      <section id="installation" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
+        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
       <section id="kinematics" className="space-y-4 pt-6">

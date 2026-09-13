@@ -10,6 +10,7 @@ DocLayout {
     description: "Smart text truncation with automatic overflow detection and contextual tooltip reveal."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
+        { id: "installation", title: "Installation" },
         { id: "multiline", title: "Multi-Line Clamping" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
@@ -19,6 +20,16 @@ DocLayout {
     property bool alwaysShow: false
     property bool copyable: true
     readonly property string sampleText: "C:\\Users\\Development\\Projects\\cha-set\\qt\\src\\ChaSetElidedText.qml"
+
+    ChaSetCodeBlock {
+        title: "Installation"
+        code: `import ChaSet 1.0
+
+ChaSetElidedText {
+    text: "Sample text..."
+}`
+        language: "qml"
+    }
 
     ComponentPreview {
         id: heroPreview

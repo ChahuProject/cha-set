@@ -10,6 +10,7 @@ DocLayout {
     description: "Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
+        { id: "installation", title: "Installation" },
         { id: "anchor", title: "Anchor Jump & Flash" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
@@ -27,6 +28,17 @@ DocLayout {
     function triggerJump(id) {
         root.activeHighlightTarget = id;
         resetTimer.restart();
+    }
+
+    ChaSetCodeBlock {
+        title: "Installation"
+        code: `import ChaSet 1.0
+
+ChaSetSettingRow {
+    label: "Setting"
+    description: "Description"
+}`
+        language: "qml"
     }
 
     ComponentPreview {

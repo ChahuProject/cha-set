@@ -65,10 +65,10 @@ export function SplitterHandleDocPage() {
       description="Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'vertical', title: 'Vertical Edge (Top/Bottom)' },
+        { id: 'installation', title: 'Installation' },
+        { id: 'vertical', title: 'Vertical Edge Handle' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'code', title: 'Implementation Code' },
-        { id: 'props', title: 'Props Reference' },
+{ id: 'props', title: 'Props Reference' },
       ]}
     >
       <section id="overview" className="space-y-4">
@@ -120,6 +120,11 @@ export function SplitterHandleDocPage() {
             </Card>
           </div>
         </ComponentPreview>
+      </section>
+
+      <section id="installation" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
+        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
       <section id="vertical" className="space-y-4 pt-6">

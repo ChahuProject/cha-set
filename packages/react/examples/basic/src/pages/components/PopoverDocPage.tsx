@@ -68,8 +68,7 @@ export function PopoverDocPage() {
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },
-        { id: 'examples', title: 'Examples & States' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
+{ id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
     >

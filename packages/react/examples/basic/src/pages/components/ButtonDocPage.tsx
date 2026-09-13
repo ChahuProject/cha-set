@@ -40,20 +40,19 @@ export function ButtonDocPage() {
       title="Button"
       description="Displays a button or a component that looks like a button with multiple variants, sizes, and states."
       tocItems={[
-        { id: 'preview', title: 'Interactive Preview' },
+        { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },
         { id: 'examples', title: 'Examples' },
         { id: 'variants', title: 'Variants' },
         { id: 'sizes', title: 'Sizes' },
         { id: 'states', title: 'States' },
-        { id: 'button-group', title: 'Button Group' },
         { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
     >
       {/* 1. Interactive Preview Hero */}
-      <section id="preview">
+      <section id="overview">
         <ComponentPreview
           title="Interactive Button Sandbox"
           reactCode={reactCode}

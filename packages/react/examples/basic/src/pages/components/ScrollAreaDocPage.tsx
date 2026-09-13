@@ -111,7 +111,7 @@ export function ScrollAreaDocPage() {
       title="Scroll Area"
       description="Augments native scroll functionality with custom cross-browser styling, dynamic hot-zone expansion, and interactive stepper navigation buttons."
       tocItems={[
-        { id: 'preview', title: 'Interactive Preview' },
+        { id: 'overview', title: 'Interactive Overview' },
         { id: 'installation', title: 'Installation' },
         { id: 'horizontal-example', title: 'Horizontal Scrolling' },
         { id: 'dual-axis', title: 'Dual-Axis (Both Axes)' },
@@ -122,7 +122,7 @@ export function ScrollAreaDocPage() {
       ]}
     >
       {/* 1. Interactive Preview Hero */}
-      <section id="preview">
+      <section id="overview">
         <ComponentPreview
           title="ScrollArea Showcase"
           description="Interactive playground demonstrating cross-stack scrollbar styling, stepper pagination, and dynamic hot-zone expansion."

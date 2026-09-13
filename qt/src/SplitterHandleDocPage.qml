@@ -10,13 +10,20 @@ DocLayout {
     description: "Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
-        { id: "vertical", title: "Vertical Edge (Bottom Panel)" },
+        { id: "installation", title: "Installation" },
+        { id: "vertical", title: "Vertical Edge Handle" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
 
     property real sidebarWidth: 220
     property real bottomHeight: 100
+
+    ChaSetCodeBlock {
+        title: "Installation"
+        code: "import ChaSet 1.0\n\nChaSetSplitterHandle { orientation: Qt.Horizontal }"
+        language: "qml"
+    }
 
     ComponentPreview {
         id: heroPreview

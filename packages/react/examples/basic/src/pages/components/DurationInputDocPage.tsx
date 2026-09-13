@@ -32,8 +32,7 @@ export function DurationInputDocPage() {
       description="Segmented duration input control for hours, minutes, and seconds with stepper buttons, mouse wheel adjustments, keyboard arrow jumping, and preset menu."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'variants', title: 'Variants & Configurations' },
-        { id: 'installation', title: 'Installation' },
+{ id: 'installation', title: 'Installation' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}

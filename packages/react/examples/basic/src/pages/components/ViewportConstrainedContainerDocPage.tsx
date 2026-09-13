@@ -39,8 +39,7 @@ export function ViewportConstrainedContainerDocPage() {
       description="Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'variants', title: 'Variants & Limits' },
-        { id: 'installation', title: 'Installation' },
+{ id: 'installation', title: 'Installation' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}

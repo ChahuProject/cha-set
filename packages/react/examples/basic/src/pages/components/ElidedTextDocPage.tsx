@@ -40,10 +40,10 @@ export function ElidedTextDocPage() {
       description="Smart text truncation with automatic overflow detection, click-to-copy, and contextual tooltip reveal."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
+        { id: 'installation', title: 'Installation' },
         { id: 'multiline', title: 'Multi-Line Clamping' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'code', title: 'Implementation Code' },
-        { id: 'props', title: 'Props Reference' },
+{ id: 'props', title: 'Props Reference' },
       ]}
     >
       <section id="overview" className="space-y-4">
@@ -102,6 +102,11 @@ export function ElidedTextDocPage() {
             </Card>
           </div>
         </ComponentPreview>
+      </section>
+
+      <section id="installation" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
+        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
       <section id="multiline" className="space-y-4 pt-6">
