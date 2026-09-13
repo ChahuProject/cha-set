@@ -46,6 +46,7 @@ export * from './elided-text';
 export * from './splitter-handle';
 export * from './duration-input';
 export * from './code-block';
+export * from './pipeline-view';
 export * from './lib/splitFixedFooter';
 export {
   CheckIcon,

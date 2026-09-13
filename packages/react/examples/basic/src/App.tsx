@@ -72,6 +72,7 @@ import { ElidedTextDocPage } from './pages/components/ElidedTextDocPage';
 import { SplitterHandleDocPage } from './pages/components/SplitterHandleDocPage';
 import { DurationInputDocPage } from './pages/components/DurationInputDocPage';
 import { CodeBlockDocPage } from './pages/components/CodeBlockDocPage';
+import { PipelineViewDocPage } from './pages/components/PipelineViewDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 
 import { TokensPage } from './pages/get-started/TokensPage';
@@ -619,6 +620,8 @@ export function App() {
         return <DurationInputDocPage />;
       case '#/components/code-block':
         return <CodeBlockDocPage />;
+      case '#/components/pipeline-view':
+        return <PipelineViewDocPage />;
       case '#/components/button':
 
       default:

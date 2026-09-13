@@ -53,7 +53,8 @@
     "./elided-text": "./components/elided-text.ts",
     "./splitter-handle": "./components/splitter-handle.ts",
     "./duration-input": "./components/duration-input.ts",
-    "./code-block": "./components/code-block.ts"
+    "./code-block": "./components/code-block.ts",
+    "./pipeline-view": "./components/pipeline-view.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

@@ -327,6 +327,14 @@
       "maxHeight": { "requirement": "should", "description": "bounds content height and enables vertical scrolling beyond it" },
       "embedded": { "requirement": "should", "description": "renders without card chrome for inline prose embedding" },
       "multiFile": { "requirement": "should", "description": "groups multiple files behind tabs with per-file language" }
+    },
+    "pipelineView": {
+      "jobTracking": { "requirement": "must", "description": "displays job list with status indicators and selection" },
+      "stepTimeline": { "requirement": "must", "description": "vertical timeline showing execution steps with status icons and durations" },
+      "logConsole": { "requirement": "must", "description": "virtualized terminal log viewer with auto-scroll and copy" },
+      "statusSummary": { "requirement": "must", "description": "header summary badge, elapsed duration, and action slots" },
+      "cancellation": { "requirement": "should", "description": "triggers cancellation callback with disabled states" },
+      "filtering": { "requirement": "should", "description": "filters pipelines by status and keyword search" }
     }
   }
 }
