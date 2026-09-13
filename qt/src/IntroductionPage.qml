@@ -210,93 +210,19 @@ DocLayout {
             font.weight: Font.Bold
         }
 
-        Rectangle {
+        ChaSetTable {
             width: parent.width
-            implicitHeight: pkgCol.implicitHeight
-            radius: 8
-            color: ThemeTokens.panel
-            border.color: ThemeTokens.border
-            border.width: 1
-            clip: true
-
-            Column {
-                id: pkgCol
-                width: parent.width
-
-                // Header
-                Rectangle {
-                    width: parent.width
-                    height: 36
-                    color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.8)
-                    border.color: ThemeTokens.border
-                    border.width: 0.5
-
-                    Row {
-                        anchors.fill: parent
-                        anchors.leftMargin: 16
-                        anchors.rightMargin: 16
-                        spacing: 12
-                        Text { text: "PACKAGE"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5; width: 160; anchors.verticalCenter: parent.verticalCenter }
-                        Text { text: "TARGET"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5; width: 140; anchors.verticalCenter: parent.verticalCenter }
-                        Text { text: "DESCRIPTION"; color: ThemeTokens.subduedText; font.pixelSize: 11; font.weight: Font.Bold; font.letterSpacing: 0.5; width: parent.width - 330; anchors.verticalCenter: parent.verticalCenter }
-                    }
-                }
-
-                // Rows
-                Repeater {
-                    model: [
-                        ["@chahu/cha-set", "React / Web", "React component library published to npm."],
-                        ["QtChaSetDemo", "Qt 6 / C++ / QML", "Qt reference implementation with native QML components."],
-                        ["@chahu/spec", "Internal Spec", "Neutral token generator and contract schemas."]
-                    ]
-                    delegate: Rectangle {
-                        required property var modelData
-                        required property int index
-                        width: parent ? parent.width : 760
-                        height: 44
-                        color: index % 2 === 0 ? "transparent" : Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.6)
-
-                        Rectangle {
-                            anchors.bottom: parent.bottom
-                            width: parent.width
-                            height: 1
-                            color: ThemeTokens.border
-                            opacity: 0.6
-                        }
-
-                        Row {
-                            anchors.fill: parent
-                            anchors.leftMargin: 16
-                            anchors.rightMargin: 16
-                            spacing: 12
-
-                            Text {
-                                text: modelData[0]
-                                color: ThemeTokens.accent
-                                font.family: "Consolas, monospace"
-                                font.pixelSize: 12
-                                font.weight: Font.DemiBold
-                                width: 160
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Text {
-                                text: modelData[1]
-                                color: ThemeTokens.text
-                                font.pixelSize: 12
-                                width: 140
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Text {
-                                text: modelData[2]
-                                color: ThemeTokens.subduedText
-                                font.pixelSize: 12
-                                width: parent.width - 330
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                }
-            }
+            interactive: false
+            columns: [
+                { key: "pkg", title: "PACKAGE", width: 180, code: true },
+                { key: "target", title: "TARGET", width: 140 },
+                { key: "desc", title: "DESCRIPTION" }
+            ]
+            rows: [
+                { pkg: "@chahu/cha-set", target: "React / Web", desc: "React component library published to npm." },
+                { pkg: "QtChaSetDemo", target: "Qt 6 / C++ / QML", desc: "Qt reference implementation with native QML components." },
+                { pkg: "@chahu/spec", target: "Internal Spec", desc: "Neutral token generator and contract schemas." }
+            ]
         }
     }
 }

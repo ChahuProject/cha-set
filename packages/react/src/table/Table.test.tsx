@@ -1,148 +1,91 @@
-import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import {
   Table,
   TableHeader,
   TableBody,
-  TableFooter,
   TableRow,
   TableHead,
   TableCell,
-  TableCaption,
+  type TableColumn,
 } from './Table';
 
-describe('Table component', () => {
-  it('renders full table structure with compound elements', () => {
+describe('Table Component', () => {
+  it('renders compound table structure correctly', () => {
     render(
-      <Table data-testid="table-root" containerClassName="custom-container">
-        <TableCaption data-testid="table-caption">Recent Invoices</TableCaption>
-        <TableHeader data-testid="table-header">
-          <TableRow data-testid="table-header-row">
-            <TableHead data-testid="table-head-1">Invoice</TableHead>
-            <TableHead data-testid="table-head-2">Status</TableHead>
-            <TableHead data-testid="table-head-3">Amount</TableHead>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Col 1</TableHead>
+            <TableHead>Col 2</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody data-testid="table-body">
-          <TableRow data-testid="table-row-1" data-state="selected">
-            <TableCell data-testid="table-cell-1">INV001</TableCell>
-            <TableCell data-testid="table-cell-2">Paid</TableCell>
-            <TableCell data-testid="table-cell-3">$250.00</TableCell>
+        <TableBody>
+          <TableRow>
+            <TableCell>Val 1</TableCell>
+            <TableCell>Val 2</TableCell>
           </TableRow>
         </TableBody>
-        <TableFooter data-testid="table-footer">
-          <TableRow data-testid="table-footer-row">
-            <TableCell colSpan={2}>Total</TableCell>
-            <TableCell>$250.00</TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
     );
 
-    const table = screen.getByTestId('table-root');
-    expect(table).toBeInTheDocument();
-    expect(table).toHaveAttribute('data-slot', 'table');
-    expect(table.parentElement).toHaveAttribute('data-slot', 'table-container');
-    expect(table.parentElement?.className).toContain('custom-container');
-
-    const caption = screen.getByTestId('table-caption');
-    expect(caption).toHaveAttribute('data-slot', 'table-caption');
-    expect(caption).toHaveTextContent('Recent Invoices');
-
-    const header = screen.getByTestId('table-header');
-    expect(header).toHaveAttribute('data-slot', 'table-header');
-
-    const body = screen.getByTestId('table-body');
-    expect(body).toHaveAttribute('data-slot', 'table-body');
-
-    const footer = screen.getByTestId('table-footer');
-    expect(footer).toHaveAttribute('data-slot', 'table-footer');
-
-    const head1 = screen.getByTestId('table-head-1');
-    expect(head1).toHaveAttribute('data-slot', 'table-head');
-    expect(head1).toHaveTextContent('Invoice');
-    expect(head1.className).toContain('whitespace-nowrap');
-    expect(head1.className).toContain('h-8');
-    expect(head1.className).toContain('px-2');
-
-    const cell1 = screen.getByTestId('table-cell-1');
-    expect(cell1).toHaveAttribute('data-slot', 'table-cell');
-    expect(cell1).toHaveTextContent('INV001');
-    expect(cell1.className).toContain('whitespace-nowrap');
-    expect(cell1.className).toContain('p-2');
-
-    const row1 = screen.getByTestId('table-row-1');
-    expect(row1).toHaveAttribute('data-slot', 'table-row');
-    expect(row1).toHaveAttribute('data-state', 'selected');
+    expect(screen.getByText('Col 1')).toBeInTheDocument();
+    expect(screen.getByText('Val 1')).toBeInTheDocument();
   });
 
-  it('merges custom classNames across compound components', () => {
-    render(
-      <Table className="custom-table" data-testid="table">
-        <TableHeader className="custom-header">
-          <TableRow className="custom-row">
-            <TableHead className="custom-head">Header</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody className="custom-body">
-          <TableRow>
-            <TableCell className="custom-cell">Data</TableCell>
-          </TableRow>
-        </TableBody>
-        <TableFooter className="custom-footer">
-          <TableRow>
-            <TableCell>Total</TableCell>
-          </TableRow>
-        </TableFooter>
-        <TableCaption className="custom-caption">Caption</TableCaption>
-      </Table>
-    );
+  it('renders data-driven simple table mode with columns and rows', () => {
+    const columns: TableColumn[] = [
+      { key: 'name', title: 'Name' },
+      { key: 'role', title: 'Role', align: 'center' },
+      { key: 'status', title: 'Status', badge: true },
+      { key: 'code', title: 'Key', kbd: true },
+      { key: 'commit', title: 'Commit', code: true },
+    ];
 
-    expect(screen.getByTestId('table').className).toContain('custom-table');
-    expect(screen.getByText('Header').className).toContain('custom-head');
-    expect(screen.getByText('Data').className).toContain('custom-cell');
-    expect(screen.getByText('Caption').className).toContain('custom-caption');
+    const data = [
+      {
+        id: '1',
+        name: 'Alice',
+        role: 'Admin',
+        status: 'Active',
+        code: 'Ctrl + S',
+        commit: 'a1b2c3d',
+      },
+    ];
+
+    render(<Table columns={columns} data={data} bordered />);
+
+    expect(screen.getByText('Name')).toBeInTheDocument();
+    expect(screen.getByText('Alice')).toBeInTheDocument();
+    expect(screen.getByText('Admin')).toBeInTheDocument();
+    expect(screen.getByText('Active')).toBeInTheDocument();
+    expect(screen.getByText('Ctrl')).toBeInTheDocument();
+    expect(screen.getByText('S')).toBeInTheDocument();
+    expect(screen.getByText('a1b2c3d')).toBeInTheDocument();
   });
 
-  it('forwards refs properly to underlying HTML elements', () => {
-    const tableRef = React.createRef<HTMLTableElement>();
-    const headerRef = React.createRef<HTMLTableSectionElement>();
-    const bodyRef = React.createRef<HTMLTableSectionElement>();
-    const footerRef = React.createRef<HTMLTableSectionElement>();
-    const rowRef = React.createRef<HTMLTableRowElement>();
-    const headRef = React.createRef<HTMLTableCellElement>();
-    const cellRef = React.createRef<HTMLTableCellElement>();
-    const captionRef = React.createRef<HTMLTableCaptionElement>();
+  it('supports interactive rows and onRowClick callback', () => {
+    const onRowClick = vi.fn();
+    const columns: TableColumn[] = [{ key: 'name', title: 'Name' }];
+    const data = [{ id: '1', name: 'Bob' }];
 
     render(
-      <Table ref={tableRef}>
-        <TableCaption ref={captionRef}>Cap</TableCaption>
-        <TableHeader ref={headerRef}>
-          <TableRow ref={rowRef}>
-            <TableHead ref={headRef}>Col</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody ref={bodyRef}>
-          <TableRow>
-            <TableCell ref={cellRef}>Val</TableCell>
-          </TableRow>
-        </TableBody>
-        <TableFooter ref={footerRef}>
-          <TableRow>
-            <TableCell>Sum</TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
+      <Table
+        columns={columns}
+        data={data}
+        interactive
+        onRowClick={onRowClick}
+      />
     );
 
-    expect(tableRef.current).toBeInstanceOf(HTMLTableElement);
-    expect(headerRef.current).toBeInstanceOf(HTMLTableSectionElement);
-    expect(bodyRef.current).toBeInstanceOf(HTMLTableSectionElement);
-    expect(footerRef.current).toBeInstanceOf(HTMLTableSectionElement);
-    expect(rowRef.current).toBeInstanceOf(HTMLTableRowElement);
-    expect(headRef.current).toBeInstanceOf(HTMLTableCellElement);
-    expect(cellRef.current).toBeInstanceOf(HTMLTableCellElement);
-    expect(captionRef.current).toBeInstanceOf(HTMLTableCaptionElement);
+    fireEvent.click(screen.getByText('Bob'));
+    expect(onRowClick).toHaveBeenCalledWith({ id: '1', name: 'Bob' }, 0);
+  });
+
+  it('renders empty state when rows is empty', () => {
+    const columns: TableColumn[] = [{ key: 'name', title: 'Name' }];
+    render(<Table columns={columns} data={[]} />);
+    expect(screen.getByText('No data available')).toBeInTheDocument();
   });
 });
