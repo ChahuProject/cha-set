@@ -18,6 +18,7 @@
 - `branch-sync` — see `.agents/skills/branch-sync/SKILL.md`
 - `caveman` — see `.agents/skills/caveman/SKILL.md`
 - `commit` — see `.agents/skills/commit/SKILL.md`
+- `component-scout` — see `.agents/skills/component-scout/SKILL.md`
 - `grill-me` — see `.agents/skills/grill-me/SKILL.md`
 - `subrepo-sync` — see `.agents/skills/subrepo-sync/SKILL.md`
 - `write-a-skill` — see `.agents/skills/write-a-skill/SKILL.md`
@@ -37,6 +38,7 @@
 > See `.agents/skills/add-component/SKILL.md` for the standard operating procedure to introduce new cross-stack components.
 > See `.agents/skills/cross-stack-verify/SKILL.md` for full protocol and verification commands.
 > See `.agents/skills/pixel-sync/SKILL.md` for the scientific pixel-level synchronization protocol.
+> See `.agents/skills/component-scout/SKILL.md` for scouting external components, evaluating generalization feasibility, and generating adoption decision reports.
 
 ### Golden Red Lines for AI Agents
 
