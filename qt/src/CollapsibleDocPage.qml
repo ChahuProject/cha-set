@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Collapsible"
     description: "An interactive component which expands and collapses a panel of content."
     tocItems: [

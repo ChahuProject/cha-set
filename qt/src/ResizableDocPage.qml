@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Resizable"
     description: "Accessible resizable panel groups and layout splitters based on QtQuick.Controls SplitView with interactive grip handles."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     ComponentPreview {

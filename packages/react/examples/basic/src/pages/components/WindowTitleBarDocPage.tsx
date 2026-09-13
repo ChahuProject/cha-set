@@ -9,7 +9,7 @@ export function WindowTitleBarDocPage() {
   const [lastAction, setLastAction] = useState('Idle');
 
   const reactCode = `<WindowTitleBar
-  title="ChaSet Desktop Studio"
+  title="Window Title Bar"
   icon={<span className="text-base">🍵</span>}
   onMinimize={() => setLastAction('Minimize clicked')}
   onMaximize={() => setLastAction('Maximize / Restore clicked')}

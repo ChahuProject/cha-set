@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Select"
     description: "Displays a list of options for the user to pick from — triggered by a button with chevron and checked indicators."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "installation", title: "Installation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string selectedFruit: "apple"

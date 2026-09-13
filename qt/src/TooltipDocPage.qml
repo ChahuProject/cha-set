@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Tooltip"
     description: "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it."
     tocItems: [

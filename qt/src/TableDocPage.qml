@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Table"
     description: "A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics."
     tocItems: [

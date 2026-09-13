@@ -89,7 +89,7 @@ export function DialogDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Base Primitives"
       title="Dialog"
       description="A modal window that interrupts the user with critical content and prompts for user action."
       tocItems={[

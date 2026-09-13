@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Range Slider"
     description: "Dual-thumb slider control for selecting continuous or stepped numeric min-max intervals with collision prevention."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property real minPrice: 25.0

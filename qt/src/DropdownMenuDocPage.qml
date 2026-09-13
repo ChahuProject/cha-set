@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Dropdown Menu"
     description: "Displays a menu to the user triggered by a button with item groups, icons, shortcuts, and destructive actions."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "installation", title: "Installation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string lastAction: "None"

@@ -5,14 +5,14 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Navigation"
+    category: "Desktop & Virtualization"
     pageTitle: "Sidebar"
     description: "Composable, responsive and resizable desktop-grade sidebar navigation system supporting expanded, icon collapsed, and offcanvas modes."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property bool demoCollapsed: false

@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Copy Button"
     description: "One-click clipboard copy button with transient feedback state and configurable timeouts."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string copyStatus: "Click the copy button to test"

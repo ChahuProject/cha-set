@@ -5,11 +5,11 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Button"
     description: "Displays a button or a component that looks like a button with multiple variants, sizes, and states."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "examples", title: "Examples" },
         { id: "variants", title: "Variants" },
@@ -17,7 +17,7 @@ DocLayout {
         { id: "states", title: "States" },
         { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string btnVariant: "default"
@@ -278,7 +278,7 @@ DocLayout {
 
     PropsTable {
         width: parent.width
-        title: "API Reference"
+        title: "Props Reference"
         propsModel: [
             ["variant", "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", "'default'", "Visual appearance and semantic intent."],
             ["size", "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'", "'default'", "Standardized dimensions scale."],

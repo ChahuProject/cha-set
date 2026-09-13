@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Split Button"
     description: "Combines a primary direct action button with an adjoining chevron menu trigger for secondary options."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     property string lastTriggered: "None"

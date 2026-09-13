@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Viewport Constrained Container"
     description: "Container that dynamically bounds max-height based on available viewport space below the anchor, enabling smooth scrolling."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     ComponentPreview {

@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Layout & Surface"
+    category: "Desktop & Virtualization"
     pageTitle: "Splitter Handle"
     description: "Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
     tocItems: [

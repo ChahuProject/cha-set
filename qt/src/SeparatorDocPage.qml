@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Separator"
     description: "Visually or semantically separates content in a list or section."
     tocItems: [

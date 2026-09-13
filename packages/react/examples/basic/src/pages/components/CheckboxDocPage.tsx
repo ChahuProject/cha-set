@@ -41,7 +41,7 @@ export function CheckboxDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Base Primitives"
       title="Checkbox"
       description="A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, helper descriptions, and companion labels."
       tocItems={[

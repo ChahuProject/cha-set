@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Components"
+    category: "Base Primitives"
     pageTitle: "Tabs"
     description: "A set of layered content sections known as tab panels, displayed one at a time."
     tocItems: [

@@ -44,7 +44,7 @@ export function InputDocPage() {
 
   return (
     <DocLayout
-      category="Components"
+      category="Base Primitives"
       title="Input"
       description="Displays a form text input field or a component that looks like an input field."
       tocItems={[

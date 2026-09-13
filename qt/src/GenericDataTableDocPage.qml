@@ -9,10 +9,10 @@ DocLayout {
     pageTitle: "Generic Data Table"
     description: "Enterprise data table with column header sorting, live search filter querying, responsive row virtualization, and paginated navigation."
     tocItems: [
-        { id: "preview", title: "Interactive Preview" },
+        { id: "overview", title: "Interactive Overview" },
         { id: "installation", title: "Installation" },
         { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "API Reference" }
+        { id: "props", title: "Props Reference" }
     ]
 
     ComponentPreview {
