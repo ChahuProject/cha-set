@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+// @ts-expect-error - .mjs helper script without types
 import { verifyShowcaseParity } from '../../../../scripts/verify-showcase-parity.mjs';
 
 describe('Showcase Parity Assurance System (SPAS)', () => {
@@ -19,6 +20,7 @@ describe('Showcase Parity Assurance System (SPAS)', () => {
   });
 
   it('detects metadata and TOC divergences accurately when given synthetic mismatched content', async () => {
+    // @ts-expect-error - .mjs helper script without types
     const { extractReactDocMetadata, extractQtDocMetadata } = await import('../../../../scripts/verify-showcase-parity.mjs');
     
     const syntheticReact = `<DocLayout category="WrongCategory" title="WrongTitle" description="Desc" tocItems={[{ id: 'overview', title: 'Interactive Overview' }]}><div>content</div></DocLayout>`;
