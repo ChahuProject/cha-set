@@ -1342,6 +1342,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/snap-slider",
         "desc": "Stepped discrete slider that snaps to defined stops with ticks and label row.",
         "description": "Stepped discrete slider that snaps to defined stops with ticks and label row."
+      },
+      {
+        "id": "scale-osd",
+        "title": "Scale OSD",
+        "href": "#/components/scale-osd",
+        "desc": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.",
+        "description": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
       }
     ]
   },
@@ -1598,6 +1605,16 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Home / End",
       "action": "Jump directly to the first / last snap stop"
+    }
+  ],
+  "scale-osd": [
+    {
+      "key": "Space / Enter",
+      "action": "Activate focused step or reset button"
+    },
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Cycle keyboard focus through zoom controls"
     }
   ],
   "dialog": [

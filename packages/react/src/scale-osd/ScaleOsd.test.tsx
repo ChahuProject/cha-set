@@ -1,0 +1,112 @@
+import * as React from 'react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, fireEvent, act } from '@testing-library/react';
+import { ScaleOsd } from './ScaleOsd';
+
+describe('ScaleOsd', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('renders scale readout when visible', () => {
+    render(<ScaleOsd visible value={1.25} />);
+    expect(screen.getByText('125%')).toBeInTheDocument();
+  });
+
+  it('triggers step buttons on click', () => {
+    const onChange = vi.fn();
+    const onStep = vi.fn();
+    render(
+      <ScaleOsd
+        visible
+        value={1.0}
+        step={0.1}
+        onChange={onChange}
+        onStep={onStep}
+      />,
+    );
+
+    const zoomIn = screen.getByLabelText('Zoom In');
+    const zoomOut = screen.getByLabelText('Zoom Out');
+
+    fireEvent.click(zoomIn);
+    expect(onChange).toHaveBeenCalledWith(1.1);
+    expect(onStep).toHaveBeenCalledWith(0.1);
+
+    fireEvent.click(zoomOut);
+    expect(onChange).toHaveBeenCalledWith(0.9);
+    expect(onStep).toHaveBeenCalledWith(-0.1);
+  });
+
+  it('triggers reset button to 100%', () => {
+    const onChange = vi.fn();
+    const onReset = vi.fn();
+    render(<ScaleOsd visible value={1.5} onChange={onChange} onReset={onReset} />);
+
+    const resetBtn = screen.getByLabelText('Reset Zoom');
+    fireEvent.click(resetBtn);
+    expect(onChange).toHaveBeenCalledWith(1.0);
+    expect(onReset).toHaveBeenCalled();
+  });
+
+  it('auto-hides after autoHideDuration and pauses on hover', () => {
+    const onVisibilityChange = vi.fn();
+    const { rerender } = render(
+      <ScaleOsd
+        value={1.0}
+        autoHideDuration={1400}
+        onVisibilityChange={onVisibilityChange}
+      />,
+    );
+
+    // Change value to trigger automatic reveal
+    rerender(
+      <ScaleOsd
+        value={1.2}
+        autoHideDuration={1400}
+        onVisibilityChange={onVisibilityChange}
+      />,
+    );
+
+    expect(screen.getByText('120%')).toBeInTheDocument();
+
+    // Hover pauses timer
+    const osd = screen.getByRole('region');
+    fireEvent.mouseEnter(osd);
+
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+    // Still in the document because of hover pause
+    expect(screen.getByText('120%')).toBeInTheDocument();
+
+    // Mouse leave restarts timer
+    fireEvent.mouseLeave(osd);
+
+    act(() => {
+      vi.advanceTimersByTime(1300);
+    });
+    expect(screen.getByText('120%')).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(200);
+    });
+    // Now hidden
+    expect(screen.queryByText('120%')).not.toBeInTheDocument();
+  });
+
+  it('supports custom format function', () => {
+    render(
+      <ScaleOsd
+        visible
+        value={1.5}
+        format={(v) => `${v.toFixed(1)}x Speed`}
+      />,
+    );
+    expect(screen.getByText('1.5x Speed')).toBeInTheDocument();
+  });
+});

@@ -53,6 +53,10 @@
     { "key": "→ / ↑", "action": "Step to next discrete snap stop" },
     { "key": "Home / End", "action": "Jump directly to the first / last snap stop" }
   ],
+  "scale-osd": [
+    { "key": "Space / Enter", "action": "Activate focused step or reset button" },
+    { "key": "Tab / Shift + Tab", "action": "Cycle keyboard focus through zoom controls" }
+  ],
   "dialog": [
     { "key": "Tab / Shift + Tab", "action": "Trap focus strictly within the dialog loop" },
     { "key": "Escape", "action": "Close dialog and return focus to triggering element" },

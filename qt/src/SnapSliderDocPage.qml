@@ -74,7 +74,7 @@ DocLayout {
 
             DocText {
                 text: "Installation"
-                font.pixelSize: Typography.sizeLarge
+                font.pixelSize: Typography.sizeTitleSm
                 font.bold: true
                 color: ThemeTokens.text
             }
@@ -99,7 +99,7 @@ DocLayout {
 
             DocText {
                 text: "Animations"
-                font.pixelSize: Typography.sizeLarge
+                font.pixelSize: Typography.sizeTitleSm
                 font.bold: true
                 color: ThemeTokens.text
             }
@@ -124,7 +124,7 @@ DocLayout {
 
             DocText {
                 text: "Keyboard Navigation"
-                font.pixelSize: Typography.sizeLarge
+                font.pixelSize: Typography.sizeTitleSm
                 font.bold: true
                 color: ThemeTokens.text
             }
@@ -154,7 +154,7 @@ DocLayout {
 
             DocText {
                 text: "Props Reference"
-                font.pixelSize: Typography.sizeLarge
+                font.pixelSize: Typography.sizeTitleSm
                 font.bold: true
                 color: ThemeTokens.text
             }
