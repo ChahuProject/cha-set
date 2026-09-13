@@ -15,6 +15,7 @@ import {
   CardFooter,
   Input,
   Separator,
+  CodeBlock,
 } from '@chahu/cha-set';
 import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
@@ -77,6 +78,23 @@ import { IntroductionPage } from './pages/get-started/IntroductionPage';
 
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
+
+/**
+ * Deterministic CodeBlock harness source. Mirrored verbatim in
+ * qt/src/Main.qml (`harnessCodeBlockSource`); keep the two in sync — the pixel
+ * harness diffs rendered output, so identical input is what makes a delta mean
+ * "typography drift" instead of "different sample".
+ *
+ * Exercises keyword / number / string / comment token roles on 5 short lines so
+ * line pitch (the original Code Block drift) is measurable as cumulative offset.
+ */
+export const CODE_BLOCK_HARNESS_SOURCE = [
+  'const answer = 42;',
+  'function greet(name: string) {',
+  '  // say hi',
+  '  return `hi ${name}`;',
+  '}',
+].join('\n');
 
 function applyTheme(mode: string, accent: string, overrides: ThemeOverrides) {
   const html = document.documentElement;
@@ -474,6 +492,46 @@ export function App() {
         >
           <Separator orientation={orientation} className={isVert ? 'h-full w-[1px]' : 'w-full h-[1px]'} />
         </div>
+      </div>
+    );
+  }
+
+  // Isolated CodeBlock Visual Test Harness (typography / line-height parity)
+  //
+  // The code sample is duplicated verbatim in qt/src/Main.qml — the two ends must
+  // receive byte-identical source so any pixel delta comes from typography
+  // (family / size / weight / line pitch) rather than from different content.
+  if (harness === 'code-block') {
+    const theme = searchParams?.get('theme') ?? 'light';
+    const width = Number(searchParams?.get('width') ?? 360);
+    const height = Number(searchParams?.get('height') ?? 160);
+    const showLineNumbers = searchParams?.get('lineNumbers') === 'true';
+    const wrap = searchParams?.get('wrap') === 'true';
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+
+    return (
+      <div
+        style={{
+          width,
+          height,
+          background: theme === 'dark' ? '#020817' : '#ffffff',
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <CodeBlock
+          code={CODE_BLOCK_HARNESS_SOURCE}
+          language="tsx"
+          // The copy button renders a labelled pill whose glyph run is not part of
+          // the typography contract under test; excluding it removes unrelated
+          // rasterization noise from the diff.
+          showCopy={false}
+          showLineNumbers={showLineNumbers}
+          wrap={wrap}
+        />
       </div>
     );
   }

@@ -552,6 +552,7 @@ int main(int argc, char* argv[])
 
     const bool harnessLoading = args.contains("--loading");
     const bool harnessDisabled = args.contains("--disabled");
+    const bool harnessLineNumbers = args.contains("--line-numbers");
     const bool testScrollMode = args.contains("--test-scroll");
 
     const int scenarioIdx = static_cast<int>(args.indexOf("--test-scenario"));
@@ -589,6 +590,7 @@ int main(int argc, char* argv[])
     engine.rootContext()->setContextProperty("harnessState", harnessState);
     engine.rootContext()->setContextProperty("harnessLoading", harnessLoading);
     engine.rootContext()->setContextProperty("harnessDisabled", harnessDisabled);
+    engine.rootContext()->setContextProperty("harnessLineNumbers", harnessLineNumbers);
     engine.rootContext()->setContextProperty("harnessOrientation", harnessOrientation);
     engine.rootContext()->setContextProperty("harnessShowButtons", !harnessNoButtons);
     engine.rootContext()->setContextProperty("harnessTabIndex", harnessTabIndex);
