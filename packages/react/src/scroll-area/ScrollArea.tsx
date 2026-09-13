@@ -283,7 +283,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
         >
           <BaseScrollArea.Viewport
             ref={viewportRef}
-            className={cn('size-full rounded-[inherit]', viewportClassName)}
+            className={cn('size-full max-h-[inherit] max-w-[inherit] rounded-[inherit]', viewportClassName)}
           >
             <BaseScrollArea.Content
               ref={contentRef}

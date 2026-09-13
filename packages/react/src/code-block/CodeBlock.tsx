@@ -105,7 +105,7 @@ export function CodeBlock({
   const renderBody = (entry: CodeBlockEntry) => (
     <ScrollArea
       data-slot="code-block-body"
-      showVerticalScrollBar={maxHeight !== undefined}
+      showVerticalScrollBar={true}
       showHorizontalScrollBar={!wrap}
       showButtons={false}
       className="w-full"
