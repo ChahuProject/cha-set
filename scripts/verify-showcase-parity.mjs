@@ -73,8 +73,18 @@ export function extractReactDocMetadata(content) {
   const tocMatches = [...tocBlock.matchAll(/\{\s*id[:=]\s*["']([^"']+)["'],\s*title[:=]\s*["']([^"']+)["']/g)];
   meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] }));
 
-  const prevTitleMatch = content.match(/ComponentPreview\s*\{?[^>]*?title[:=]\s*["']([^"']+)["']/s);
-  if (prevTitleMatch) meta.previewTitle = prevTitleMatch[1];
+  meta.previews = [];
+  const rRegex = /<ComponentPreview\b([\s\S]*?)>/g;
+  let rMatch;
+  while ((rMatch = rRegex.exec(content)) !== null) {
+    const attrs = rMatch[1];
+    const titleMatch = attrs.match(/title=(?:["']([^"']+)["']|\{["']([^"']+)["']\})/);
+    const title = titleMatch ? (titleMatch[1] || titleMatch[2]) : '';
+    const hasReactCode = /reactCode=/.test(attrs);
+    const hasControls = /controls=/.test(attrs);
+    meta.previews.push({ title, hasReactCode, hasControls });
+  }
+  meta.previewTitle = meta.previews[0]?.title || '';
 
   const kbMatch = content.match(/KeyboardShortcutsTable\s*\{?[^>]*?componentId[:=]\s*["']([^"']+)["']/);
   if (kbMatch) meta.keyboardComponentId = kbMatch[1];
@@ -113,14 +123,24 @@ export function extractQtDocMetadata(content) {
   const tocMatches = [...tocBlock.matchAll(/\{\s*id:\s*["']([^"']+)["'],\s*title:\s*["']([^"']+)["']/g)];
   meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] }));
 
-  const prevTitleMatch = content.match(/ComponentPreview\s*\{[^}]*?title:\s*["']([^"']+)["']/s);
-  if (prevTitleMatch) meta.previewTitle = prevTitleMatch[1];
+  meta.previews = [];
+  const qPreviewRegex = /\bComponentPreview\s*\{/g;
+  let qMatch;
+  while ((qMatch = qPreviewRegex.exec(content)) !== null) {
+    const startIndex = qMatch.index + qMatch[0].length;
+    const snippet = content.slice(startIndex, startIndex + 1500);
+    const titleMatch = snippet.match(/title\s*:\s*["']([^"']+)["']/);
+    const title = titleMatch ? titleMatch[1] : '';
+    const reactCodeMatch = snippet.match(/reactCode\s*:\s*(?:`([^`]+)`|["']([^"']+)["']|([^\n\r]+))/);
+    const reactCode = reactCodeMatch ? (reactCodeMatch[1] || reactCodeMatch[2] || reactCodeMatch[3] || '').trim() : '';
+    const hasControls = /controlsData\s*:/.test(snippet);
+    meta.previews.push({ title, reactCode, hasControls });
+  }
+  meta.previewTitle = meta.previews[0]?.title || '';
+  meta.reactCode = meta.previews[0]?.reactCode || '';
 
   const kbMatch = content.match(/KeyboardShortcutsTable\s*\{[^}]*?componentId:\s*["']([^"']+)["']/s);
   if (kbMatch) meta.keyboardComponentId = kbMatch[1];
-
-  const reactCodeMatch = content.match(/reactCode:\s*(?:`([^`]+)`|["']([^"']+)["'])/);
-  if (reactCodeMatch) meta.reactCode = reactCodeMatch[1] || reactCodeMatch[2] || '';
 
   return meta;
 }
@@ -224,15 +244,54 @@ export function verifyShowcaseParity(options = {}) {
       }
     }
 
-    // 4. Splitter Component-Specific Parity
+    // 4. ComponentPreview Cardinality & Title Equivalence Checks
+    if (reactMeta.previews.length === 0) {
+      errors.push(`[${base}] React doc page has no <ComponentPreview> components`);
+    }
+    if (qtMeta.previews.length === 0) {
+      errors.push(`[${base}] Qt doc page has no ComponentPreview items`);
+    }
+
+    if (reactMeta.previews.length !== qtMeta.previews.length) {
+      const rTitles = reactMeta.previews.map(p => `"${p.title || '(no-title)'}"`).join(', ');
+      const qTitles = qtMeta.previews.map(p => `"${p.title || '(no-title)'}"`).join(', ');
+      errors.push(
+        `[${base}] ComponentPreview count mismatch: React has ${reactMeta.previews.length} preview(s) [${rTitles}], but Qt has ${qtMeta.previews.length} preview(s) [${qTitles}]`
+      );
+    }
+
+    const minPreviews = Math.min(reactMeta.previews.length, qtMeta.previews.length);
+    for (let i = 0; i < minPreviews; i++) {
+      const rPrev = reactMeta.previews[i];
+      const qPrev = qtMeta.previews[i];
+
+      if (!rPrev.title) {
+        errors.push(`[${base}] React ComponentPreview[${i}] is missing a 'title' prop`);
+      }
+      if (!qPrev.title) {
+        errors.push(`[${base}] Qt ComponentPreview[${i}] is missing a 'title' property`);
+      }
+
+      if (rPrev.title && qPrev.title && rPrev.title !== qPrev.title) {
+        errors.push(
+          `[${base}] ComponentPreview[${i}] title mismatch: React="${rPrev.title}" vs Qt="${qPrev.title}"`
+        );
+      }
+    }
+
+    for (let i = 0; i < qtMeta.previews.length; i++) {
+      const qPrev = qtMeta.previews[i];
+      if (!qPrev.reactCode || qPrev.reactCode.trim() === '') {
+        errors.push(`[${base}] Qt ComponentPreview[${i}] is missing 'reactCode' property`);
+      }
+    }
+
+    // 5. Component-Specific Parity Gates
     if (base === 'splitter') {
       const rIds = reactTocIds.join(',');
       const qIds = qtTocIds.join(',');
       if (rIds !== qIds) {
         errors.push(`[splitter] TOC IDs must match exactly: React=[${rIds}] vs Qt=[${qIds}]`);
-      }
-      if (reactMeta.previewTitle !== qtMeta.previewTitle) {
-        errors.push(`[splitter] ComponentPreview title mismatch: React="${reactMeta.previewTitle}" vs Qt="${qtMeta.previewTitle}"`);
       }
       if (!qtContent.includes('Editor Workspace')) {
         errors.push(`[splitter] Qt sandbox must include "Editor Workspace" header to match React`);
