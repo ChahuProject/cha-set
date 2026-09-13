@@ -39,9 +39,9 @@ Item {
 
     readonly property int itemFontSize: {
         switch (root.size) {
-        case "sm": return 11;
-        case "lg": return 13;
-        default:   return 12;
+        case "sm": return Typography.sizeCaption;
+        case "lg": return Typography.sizeBody;
+        default:   return Typography.sizeSmall;
         }
     }
 
@@ -335,7 +335,10 @@ Item {
                             id: badgeText
                             anchors.centerIn: parent
                             text: modelData && modelData.badge !== undefined ? String(modelData.badge) : ""
-                            font.pixelSize: root.itemFontSize - 2
+                            // React twin: text-micro — a fixed size, NOT derived from
+                            // the item size (the old `itemFontSize - 2` drifted to 9px
+                            // at size="sm" and 12px at size="lg").
+                            font.pixelSize: Typography.sizeMicro
                             font.bold: true
                             color: segItem.isSelected ? ThemeTokens.accent : ThemeTokens.subduedText
                         }

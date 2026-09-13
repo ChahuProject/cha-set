@@ -6,7 +6,8 @@
 
 ```
 Tier 0 primitives   Scale constants: space(0..6=0/2/4/8/12/16/24px), motion(90/120/180ms),
-                    size(21 control sizes), fontWeight — theme-independent constants.
+                    size(17 dimensional control sizes), typography(fontFamily/fontSize/
+                    lineHeight/letterSpacing), fontWeight — theme-independent constants.
 Tier 1 semantic     Role aliases, each token with presets:
                       launcher: {light, dark}   ← Web UI variable preset (OKLCH format)
                       dunting:  {light, dark}   ← Desktop Native / Quick Controls preset (#RRGGBBAA format)
@@ -65,7 +66,7 @@ SoT is shards; `spec/tokens.json` is the committed snapshot aggregated by `spec/
 | # | File | Contents | Top-level key | Lines / size |
 |---|------|----------|---------------|--------------|
 | 1 | `spec/tokens/meta.json` | schemaVersion, description, sources, conventions | `meta` | ~40 lines |
-| 2 | `spec/tokens/primitives.json` | space(7), motion(3), size(21), fontWeight(2) | `primitives` | ~45 lines |
+| 2 | `spec/tokens/primitives.json` | space(7), motion(3), size(17 dimensions), typography(2 families / 8 sizes / 14 line heights / 6 letter spacings), fontWeight(4) | `primitives` | ~90 lines |
 | 3 | `spec/tokens/semantic/core.json` | core shadcn-compatible tokens ~22: background/foreground/card/popover/primary etc | `semantic` | ~260 lines |
 | 4 | `spec/tokens/semantic/launcher.json` | launcher-specific: sidebar*, chart-1..5 | `semantic` | ~120 lines |
 | 5 | `spec/tokens/semantic/dunting.json` | dunting namespaces: chrome.*, canvas.*, overlay.*, accent.nest/pending/conflict/blocked | `semantic` | ~220 lines |
@@ -202,7 +203,15 @@ space / motion / size mappings (`spec/qt-mapping.json: space/motion/size`):
 
 - space: `space0..space6 → primitives.space.space0..space6` (7 entries)
 - motion: `motionQuick/Short/Medium → primitives.motion.quick/short/medium` (3 entries)
-- size: `radiusSmall/controlHeight/gap/pageInset/dockInset/dividerThickness/minimumPaneExtent/panelRadius/rowRadius/radiusLarge/radiusXl/separatorHeight/separatorLine/checkCol/iconCol/cascadeGap/chevronW/fontSizeTitle/fontSizeHeading/fontSizeBody/fontSizeSmall → primitives.size.*` (21 entries)
+- size: `radiusSmall/controlHeight/gap/pageInset/dockInset/dividerThickness/minimumPaneExtent/panelRadius/rowRadius/radiusLarge/radiusXl/separatorHeight/separatorLine/checkCol/iconCol/cascadeGap/chevronW → primitives.size.*` (17 dimensional entries)
+  plus `fontSizeTitle/Heading/Body/Small → primitives.typography.fontSize.title/heading/body/small` (4 entries).
+  The Qt field names are unchanged — only the primitive path they resolve through moved, so
+  `ThemeTokens` / `theme_tokens.generated.h` stay byte-identical (21 `size` fields).
+  Font sizes live once, under `primitives.typography`; see
+  [`architecture/typography-system.md`](architecture/typography-system.md).
+  Typography is **not** re-exported through `qt-mapping.json` beyond those four legacy names:
+  Qt consumes it through the separate `Typography` singleton
+  (`qt/src/Typography.generated.qml`), so `ThemeTokens` keeps its frozen 64-field shape.
 
 Derivation details: `hexToRgbf(hex)` splits `#RRGGBBAA` bytes /255 to floats; `fmtChannel` emits `"<byte>.0 / 255.0"` for byte-origin channels to ensure bit-exact QColor at Qt 16-bit storage; for chrome and other float origins, if hex-derived rgbf diverges from snapshot rgbf by >1e-9, the entire table falls back to snapshot rgbf for byte-identical output (same logic in `load-tokens.mjs` and `generate-qt.mjs`).
 

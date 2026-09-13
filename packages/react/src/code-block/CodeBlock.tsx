@@ -154,7 +154,7 @@ export function CodeBlock({
         >
           <TabsList className="mr-2 h-6 gap-0.5 bg-transparent p-0">
             {entries.map((entry) => (
-              <TabsTrigger key={entry.name} value={entry.name} className="h-6 rounded px-2 font-mono text-[0.6875rem]">
+              <TabsTrigger key={entry.name} value={entry.name} className="h-6 rounded px-2 cs-code-label">
                 {entry.name}
               </TabsTrigger>
             ))}

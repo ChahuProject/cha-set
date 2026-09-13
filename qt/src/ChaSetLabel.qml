@@ -22,7 +22,7 @@ Item {
     signal clicked()
 
     readonly property bool isSm: root.size === "sm"
-    readonly property int pixelSize: isSm ? 12 : 14
+    readonly property int pixelSize: isSm ? Typography.sizeSmall : Typography.sizeBody
     readonly property bool isDark: ThemeTokens.dark
 
     implicitWidth: layoutCol.implicitWidth
@@ -63,7 +63,7 @@ Item {
             Text {
                 id: optionalLabel
                 text: "(optional)"
-                font.pixelSize: root.isSm ? 10 : 12
+                font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeSmall
                 font.weight: Font.Normal
                 color: ThemeTokens.subduedText
                 visible: root.optional && !root.required
@@ -80,7 +80,7 @@ Item {
                 Text {
                     anchors.centerIn: parent
                     text: "ⓘ"
-                    font.pixelSize: root.isSm ? 11 : 13
+                    font.pixelSize: root.isSm ? Typography.sizeCaption : Typography.sizeBody
                     color: ThemeTokens.subduedText
                 }
 
@@ -102,7 +102,7 @@ Item {
             id: descText
             text: root.description
             visible: root.description !== ""
-            font.pixelSize: root.isSm ? 10 : 12
+            font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeSmall
             font.weight: Font.Normal
             color: ThemeTokens.subduedText
             wrapMode: Text.WordWrap

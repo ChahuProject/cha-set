@@ -40,7 +40,7 @@ export function CodeBlockHeader({
         {label ? (
           <span
             data-slot="code-block-label"
-            className="truncate font-mono text-[0.6875rem] font-semibold uppercase tracking-wider text-muted-foreground"
+            className="truncate cs-code-label font-semibold uppercase tracking-wider text-muted-foreground"
           >
             {label}
           </span>
@@ -57,7 +57,7 @@ export function CodeBlockHeader({
           variant="ghost"
           size="sm"
           aria-label={copyLabel ?? (label ? `Copy ${label} to clipboard` : 'Copy code to clipboard')}
-          className="h-6 shrink-0 gap-1 px-2 text-[0.6875rem] text-muted-foreground hover:text-foreground"
+          className="h-6 shrink-0 gap-1 px-2 text-caption text-muted-foreground hover:text-foreground"
         />
       )}
     </div>

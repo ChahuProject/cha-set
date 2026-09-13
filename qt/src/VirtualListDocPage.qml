@@ -105,7 +105,7 @@ DocLayout {
                             text: "Dataset Record #" + (index + 1)
                             color: ThemeTokens.text
                             font.pixelSize: 12
-                            font.family: "monospace"
+                            font.family: Typography.familyMono
                             elide: Text.ElideRight
                         }
 

@@ -162,7 +162,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.title
                 color: ThemeTokens.text
-                font.pixelSize: 13
+                font.pixelSize: Typography.sizeBody
                 font.weight: Font.DemiBold
                 elide: Text.ElideRight
                 z: 1
@@ -192,8 +192,8 @@ Rectangle {
                         anchors.centerIn: parent
                         text: "ESC"
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 10
-                        font.family: "monospace"
+                        font.pixelSize: Typography.sizeMicro
+                        font.family: Typography.familyMono
                         font.weight: Font.DemiBold
                     }
                 }

@@ -71,9 +71,9 @@
     "iconCol": "primitives.size.iconCol",
     "cascadeGap": "primitives.size.cascadeGap",
     "chevronW": "primitives.size.chevronW",
-    "fontSizeTitle": "primitives.size.fontSizeTitle",
-    "fontSizeHeading": "primitives.size.fontSizeHeading",
-    "fontSizeBody": "primitives.size.fontSizeBody",
-    "fontSizeSmall": "primitives.size.fontSizeSmall"
+    "fontSizeTitle": "primitives.typography.fontSize.title",
+    "fontSizeHeading": "primitives.typography.fontSize.heading",
+    "fontSizeBody": "primitives.typography.fontSize.body",
+    "fontSizeSmall": "primitives.typography.fontSize.small"
   }
 }

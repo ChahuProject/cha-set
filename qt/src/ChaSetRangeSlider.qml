@@ -206,8 +206,8 @@ Item {
                 anchors.centerIn: parent
                 text: (typeof root.formatValue === "function") ? root.formatValue(root.firstValue) : Math.round(root.firstValue).toString()
                 color: ThemeTokens.text
-                font.pixelSize: 11
-                font.family: "monospace"
+                font.pixelSize: Typography.sizeCaption
+                font.family: Typography.familyMono
                 font.weight: Font.Medium
             }
         }
@@ -300,8 +300,8 @@ Item {
                 anchors.centerIn: parent
                 text: (typeof root.formatValue === "function") ? root.formatValue(root.secondValue) : Math.round(root.secondValue).toString()
                 color: ThemeTokens.text
-                font.pixelSize: 11
-                font.family: "monospace"
+                font.pixelSize: Typography.sizeCaption
+                font.family: Typography.familyMono
                 font.weight: Font.Medium
             }
         }

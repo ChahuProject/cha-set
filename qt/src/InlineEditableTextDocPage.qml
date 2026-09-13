@@ -58,7 +58,7 @@ DocLayout {
                     text: "Persisted Value: \"" + root.currentTitle + "\""
                     color: ThemeTokens.text
                     font.pixelSize: 12
-                    font.family: "monospace"
+                    font.family: Typography.familyMono
                 }
             }
         }

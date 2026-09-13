@@ -80,7 +80,7 @@ Item {
                 visible: root.copied
                 text: "✓"
                 color: "#10b981"
-                font.pixelSize: 13
+                font.pixelSize: Typography.sizeBody
                 font.bold: true
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
@@ -133,7 +133,7 @@ Item {
                     visible: root.copied
                     text: "✓"
                     color: "#10b981"
-                    font.pixelSize: 13
+                    font.pixelSize: Typography.sizeBody
                     font.bold: true
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
@@ -155,7 +155,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.copied ? (root.copiedLabel ? root.copiedLabel : "Copied!") : root.label
                 color: btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText
-                font.pixelSize: 12
+                font.pixelSize: Typography.sizeSmall
             }
         }
     }

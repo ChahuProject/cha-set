@@ -189,7 +189,7 @@ export function KeybindingRecorder({
             variant="secondary"
             className={cn(
               'font-mono font-semibold shadow-2xs',
-              isSm ? 'px-1.5 py-0 text-[0.6875rem]' : 'px-2 py-0.5 text-xs',
+              isSm ? 'px-1.5 py-0 text-caption' : 'px-2 py-0.5 text-xs',
             )}
           >
             {label}

@@ -250,7 +250,7 @@ Item {
                         visible: root.marks && index < root.marks.length && root.marks[index].length > 0
                         text: visible ? root.marks[index] : ""
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 10
+                        font.pixelSize: Typography.sizeMicro
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.top: parent.bottom
                         anchors.topMargin: 4
@@ -325,8 +325,8 @@ Item {
                 anchors.centerIn: parent
                 text: (typeof root.formatValue === "function") ? root.formatValue(root.value) : root.value.toString()
                 color: ThemeTokens.text
-                font.pixelSize: 11
-                font.family: "monospace"
+                font.pixelSize: Typography.sizeCaption
+                font.family: Typography.familyMono
                 font.weight: Font.Medium
             }
         }

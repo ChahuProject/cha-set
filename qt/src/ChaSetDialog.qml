@@ -141,7 +141,7 @@ Rectangle {
                         width: parent.width - (headerActions.width + (headerActions.visible ? 8 : 0))
                         text: root.title
                         color: ThemeTokens.text
-                        font.pixelSize: 16
+                        font.pixelSize: Typography.sizeHeading
                         font.weight: Font.Bold
                         elide: Text.ElideRight
                         anchors.verticalCenter: parent.verticalCenter
@@ -167,7 +167,7 @@ Rectangle {
                                 anchors.centerIn: parent
                                 text: "ESC"
                                 color: ThemeTokens.subduedText
-                                font.pixelSize: 10
+                                font.pixelSize: Typography.sizeMicro
                                 font.weight: Font.DemiBold
                             }
                         }
@@ -194,7 +194,7 @@ Rectangle {
                     width: parent.width
                     text: root.description
                     color: ThemeTokens.subduedText
-                    font.pixelSize: 13
+                    font.pixelSize: Typography.sizeBody
                     wrapMode: Text.WordWrap
                     visible: text !== ""
                 }

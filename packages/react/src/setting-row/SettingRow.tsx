@@ -92,7 +92,7 @@ export const SettingRow = React.forwardRef<HTMLDivElement, SettingRowProps>(
               <div
                 className={cn(
                   'text-muted-foreground leading-normal',
-                  isSm ? 'text-[0.6875rem]' : 'text-xs'
+                  isSm ? 'text-caption' : 'text-xs'
                 )}
               >
                 {description}

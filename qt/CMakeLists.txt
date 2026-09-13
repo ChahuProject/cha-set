@@ -38,6 +38,15 @@ set_source_files_properties(src/CodeTokens.generated.qml PROPERTIES
     QT_QML_SOURCE_TYPENAME CodeTokens
 )
 
+# Cross-platform typography contract (emitted from
+# spec/tokens/primitives.json -> primitives.typography by pnpm gen:qt).
+# Separate from ThemeTokens.generated.qml because that struct mirrors
+# dt-a's ThemeManager::Tokens and is frozen downstream.
+set_source_files_properties(src/Typography.generated.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME Typography
+)
+
 # -------------------------------------------------------------
 # 1. Main Reusable Component Library (Target: ChaSet / ChaSet::ChaSet)
 # -------------------------------------------------------------
@@ -122,6 +131,8 @@ qt_add_qml_module(ChaSet
         src/Highlighter.generated.qml
 
         src/CodeTokens.generated.qml
+
+        src/Typography.generated.qml
     NO_GENERATE_EXTRA_QMLDIRS
 )
 

@@ -26,14 +26,14 @@ Rectangle {
 
         Text {
             text: root.icon
-            font.pixelSize: 14
+            font.pixelSize: Typography.sizeBodyLarge
             anchors.verticalCenter: parent.verticalCenter
         }
 
         Text {
             text: root.title
             color: ThemeTokens.text
-            font.pixelSize: 12
+            font.pixelSize: Typography.sizeSmall
             font.weight: Font.DemiBold
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -67,7 +67,7 @@ Rectangle {
                 anchors.centerIn: parent
                 text: "—"
                 color: ThemeTokens.text
-                font.pixelSize: 11
+                font.pixelSize: Typography.sizeCaption
             }
 
             MouseArea {
@@ -94,7 +94,7 @@ Rectangle {
                 anchors.centerIn: parent
                 text: root.maximized ? "❐" : "▢"
                 color: ThemeTokens.text
-                font.pixelSize: 12
+                font.pixelSize: Typography.sizeSmall
             }
 
             MouseArea {
@@ -124,7 +124,7 @@ Rectangle {
                 anchors.centerIn: parent
                 text: "✕"
                 color: closeMouse.containsMouse ? "#ffffff" : ThemeTokens.text
-                font.pixelSize: 12
+                font.pixelSize: Typography.sizeSmall
             }
 
             MouseArea {

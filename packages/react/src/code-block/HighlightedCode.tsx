@@ -57,7 +57,7 @@ export function HighlightedCode({
   return (
     <pre
       data-slot="code-block-code"
-      className={cn('m-0 p-3 font-mono text-xs leading-[1.4] text-foreground', className)}
+      className={cn('m-0 p-3 cs-code text-foreground', className)}
     >
       <code className="block">
         {lines.map((line, index) => (

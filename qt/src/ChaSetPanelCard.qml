@@ -48,7 +48,7 @@ Rectangle {
                 Text {
                     text: root.title
                     color: ThemeTokens.text
-                    font.pixelSize: 13
+                    font.pixelSize: Typography.sizeBody
                     font.weight: Font.DemiBold
                     anchors.verticalCenter: parent.verticalCenter
                 }

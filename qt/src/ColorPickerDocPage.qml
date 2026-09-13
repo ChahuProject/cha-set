@@ -86,7 +86,7 @@ DocLayout {
                         Text {
                             text: root.demoColor
                             color: root.cFg
-                            font.family: "monospace"
+                            font.family: Typography.familyMono
                             font.pixelSize: 12
                             font.weight: Font.DemiBold
                             anchors.verticalCenter: parent.verticalCenter

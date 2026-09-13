@@ -46,8 +46,8 @@ Item {
     readonly property int boxHeight: size === "sm" ? 28 : (size === "lg" ? 36 : 32)
     readonly property int inputWidth: size === "sm" ? 32 : (size === "lg" ? 48 : 40)
     readonly property int stepperWidth: size === "sm" ? 14 : (size === "lg" ? 18 : 16)
-    readonly property int fontSize: size === "sm" ? 11 : (size === "lg" ? 13 : 12)
-    readonly property int labelFontSize: size === "sm" ? 9 : (size === "lg" ? 11 : 10)
+    readonly property int fontSize: size === "sm" ? Typography.sizeCaption : (size === "lg" ? Typography.sizeBody : Typography.sizeSmall)
+    readonly property int labelFontSize: size === "sm" ? Typography.sizeNano : (size === "lg" ? Typography.sizeCaption : Typography.sizeMicro)
     readonly property int segmentBoxWidth: inputWidth + stepperWidth
 
     property bool isEditing: false
@@ -171,7 +171,7 @@ Item {
                     verticalAlignment: TextInput.AlignVCenter
                     color: ThemeTokens.text
                     font.pixelSize: root.fontSize
-                    font.family: "monospace"
+                    font.family: Typography.familyMono
                     enabled: !root.disabled
                     selectByMouse: true
                     inputMethodHints: Qt.ImhDigitsOnly
@@ -303,7 +303,7 @@ Item {
                     verticalAlignment: TextInput.AlignVCenter
                     color: ThemeTokens.text
                     font.pixelSize: root.fontSize
-                    font.family: "monospace"
+                    font.family: Typography.familyMono
                     enabled: !root.disabled
                     selectByMouse: true
                     inputMethodHints: Qt.ImhDigitsOnly
@@ -434,7 +434,7 @@ Item {
                     verticalAlignment: TextInput.AlignVCenter
                     color: ThemeTokens.text
                     font.pixelSize: root.fontSize
-                    font.family: "monospace"
+                    font.family: Typography.familyMono
                     enabled: !root.disabled
                     selectByMouse: true
                     inputMethodHints: Qt.ImhDigitsOnly
@@ -651,7 +651,7 @@ Item {
                     Text {
                         text: modelData.label
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 10
+                        font.pixelSize: Typography.sizeMicro
                         font.weight: Font.DemiBold
                         leftPadding: 4
                         topPadding: 2
@@ -674,7 +674,7 @@ Item {
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: modelData.label
                                 color: ThemeTokens.text
-                                font.pixelSize: 11
+                                font.pixelSize: Typography.sizeCaption
                             }
 
                             MouseArea {

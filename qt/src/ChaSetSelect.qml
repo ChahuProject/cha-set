@@ -166,14 +166,14 @@ Item {
                 elide: Text.ElideRight
                 text: root.currentOption ? root.currentOption.label : root.placeholder
                 color: root.currentOption ? ThemeTokens.text : ThemeTokens.subduedText
-                font.pixelSize: 13
+                font.pixelSize: Typography.sizeBody
             }
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
                 text: selectPopup.visible ? "▴" : "▾"
                 color: ThemeTokens.subduedText
-                font.pixelSize: 11
+                font.pixelSize: Typography.sizeCaption
             }
         }
 
@@ -258,7 +258,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         text: parent.modelData.label || ""
                         color: ThemeTokens.text
-                        font.pixelSize: 12
+                        font.pixelSize: Typography.sizeSmall
                         font.weight: parent.isSelected ? Font.DemiBold : Font.Normal
                         elide: Text.ElideRight
                     }
@@ -271,7 +271,7 @@ Item {
                         visible: parent.isSelected
                         text: "✓"
                         color: ThemeTokens.accent
-                        font.pixelSize: 11
+                        font.pixelSize: Typography.sizeCaption
                     }
 
                     MouseArea {

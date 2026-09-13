@@ -68,7 +68,7 @@ DocLayout {
                     text: "Event: " + root.lastTriggered
                     color: ThemeTokens.subduedText
                     font.pixelSize: 12
-                    font.family: "monospace"
+                    font.family: Typography.familyMono
                 }
             }
         }

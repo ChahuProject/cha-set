@@ -196,7 +196,7 @@ Item {
             id: labelText
             visible: root.label !== ""
             text: root.label
-            font.pixelSize: root.isSm ? 12 : 14
+            font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
             font.weight: Font.Medium
             color: ThemeTokens.text
         }
@@ -205,7 +205,7 @@ Item {
             id: descText
             visible: root.description !== ""
             text: root.description
-            font.pixelSize: root.isSm ? 11 : 12
+            font.pixelSize: root.isSm ? Typography.sizeCaption : Typography.sizeSmall
             color: ThemeTokens.subduedText
         }
     }

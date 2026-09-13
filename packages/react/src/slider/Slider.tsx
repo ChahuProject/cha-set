@@ -304,7 +304,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           <div
             data-slot="slider-marks"
             className={cn(
-              'absolute flex text-[10px] text-muted-foreground select-none pointer-events-none',
+              'absolute flex text-micro text-muted-foreground select-none pointer-events-none',
               orientation === 'horizontal' ? 'w-full -bottom-4' : 'h-full -right-6 flex-col-reverse',
             )}
           >

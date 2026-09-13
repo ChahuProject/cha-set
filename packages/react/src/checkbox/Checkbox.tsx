@@ -185,7 +185,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
               )}
               <span
                 data-slot="checkbox-description"
-                className={cn('text-muted-foreground font-normal mt-1 leading-normal', size === 'sm' ? 'text-[11px]' : 'text-xs')}
+                className={cn('text-muted-foreground font-normal mt-1 leading-normal', size === 'sm' ? 'text-caption' : 'text-xs')}
               >
                 {description}
               </span>

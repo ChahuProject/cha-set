@@ -94,7 +94,7 @@ DocLayout {
                             border.color: ThemeTokens.border; border.width: 0.5
                             Row {
                                 anchors.fill: parent; anchors.margins: 8; spacing: 10
-                                Text { text: parent.parent.modelData.version; color: ThemeTokens.accent; font.pixelSize: 12; font.family: "Consolas"; font.weight: Font.Bold; width: 140 }
+                                Text { text: parent.parent.modelData.version; color: ThemeTokens.accent; font.pixelSize: 12; font.family: Typography.familyMono; font.weight: Font.Bold; width: 140 }
                                 Text { text: parent.parent.modelData.summary; color: ThemeTokens.subduedText; font.pixelSize: 11; width: 340; elide: Text.ElideRight }
                                 Text { text: parent.parent.modelData.date; color: ThemeTokens.subduedText; font.pixelSize: 11 }
                             }
@@ -247,8 +247,8 @@ DocLayout {
             border.color: ThemeTokens.border
             Row {
                 anchors.fill: parent; anchors.margins: 14; spacing: 10
-                Text { text: "$"; color: ThemeTokens.subduedText; font.family: "Consolas"; font.pixelSize: 13 }
-                Text { text: "pnpm add @chahu/cha-set"; color: ThemeTokens.text; font.family: "Consolas"; font.pixelSize: 13; font.weight: Font.Bold }
+                Text { text: "$"; color: ThemeTokens.subduedText; font.family: Typography.familyMono; font.pixelSize: 13 }
+                Text { text: "pnpm add @chahu/cha-set"; color: ThemeTokens.text; font.family: Typography.familyMono; font.pixelSize: 13; font.weight: Font.Bold }
             }
         }
 
@@ -265,7 +265,7 @@ DocLayout {
                 readOnly: true
                 text: "import QtQuick 6.10\nimport ChaSet"
                 color: ThemeTokens.text
-                font.family: "Consolas, monospace"
+                font.family: Typography.familyMono
                 font.pixelSize: 12
                 background: null
             }
@@ -409,7 +409,7 @@ export const CrossStackSpecification = {
   }
 };`
                         color: ThemeTokens.text
-                        font.family: "Consolas, monospace"
+                        font.family: Typography.familyMono
                         font.pixelSize: 12
                         background: null
                     }

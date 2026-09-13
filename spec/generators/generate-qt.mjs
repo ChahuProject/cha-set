@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url';
 import { validateSpec } from '../validate-tokens.mjs';
 import { loadTokensSync } from '../load-tokens.mjs';
 import mapping from '../qt-mapping.json' with { type: 'json' };
-import { hexToRgbf, fmtChannel } from '../token-helpers.mjs';
+import { hexToRgbf, fmtChannel, camelProp, FONT_FAMILY_ORDER, FONT_SIZE_ORDER, LINE_HEIGHT_ORDER, LETTER_SPACING_ORDER } from '../token-helpers.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const snapshotPath = resolve(repoRoot, 'spec', 'tokens.json');
@@ -407,3 +407,162 @@ const codeQmlOut = resolve(repoRoot, 'qt', 'src', 'CodeTokens.generated.qml');
 mkdirSync(dirname(codeQmlOut), { recursive: true });
 writeFileSync(codeQmlOut, codeQml, 'utf8');
 console.log(`[gen:qt] emitted ${codeQmlOut} (${codeTypes.length} syntax token types)`);
+
+// ---------------- QML singleton for typography (cha-set/qt) ----------------
+// Deliberately a SEPARATE artifact from theme_tokens.generated.h: that header's
+// struct mirrors dt-a's ThemeManager::Tokens (33 colors + 7 space + 3 motion +
+// 21 size) and is frozen downstream, so the typography scale must not be added
+// to it. Same rationale as CodeTokens.generated.qml.
+//
+// The Qt side needs two things CSS gets for free:
+//   1. ONE family name per role — Qt does not resolve comma-separated
+//      `font.family` lists, so `css` fallback stacks are meaningless here.
+//   2. Absolute px line heights — CSS `line-height: <ratio>` multiplies by the
+//      element's font-size, while Qt's `Text.lineHeight` / rich-text
+//      `line-height` take px (and rich-text percentages are relative to the
+//      font's default line spacing, not the font size; see
+//      docs/architecture/typography-system.md §4).
+// `lineHeightPx()` below is the single bridge from the ratio scale to either
+// Qt text engine, so both stacks agree on the same absolute px value.
+const typographyPrim = spec.primitives?.typography;
+if (!typographyPrim) {
+  console.error('[gen:qt] typography: spec/tokens/primitives.json has no `typography` group');
+  process.exit(1);
+}
+{
+  const missingFamily = FONT_FAMILY_ORDER.filter((f) => !typographyPrim.fontFamily?.[f]?.qt);
+  const missingSize = FONT_SIZE_ORDER.filter((s) => typeof typographyPrim.fontSize?.[s] !== 'number');
+  const missingLeading = LINE_HEIGHT_ORDER.filter((l) => typeof typographyPrim.lineHeight?.[l] !== 'number');
+  const missingTracking = LETTER_SPACING_ORDER.filter((l) => typeof typographyPrim.letterSpacing?.[l] !== 'number');
+  if (missingFamily.length || missingSize.length || missingLeading.length || missingTracking.length) {
+    console.error(
+      `[gen:qt] typography: incomplete primitives (family: ${missingFamily.join(',') || '-'}; size: ${missingSize.join(',') || '-'}; leading: ${missingLeading.join(',') || '-'}; tracking: ${missingTracking.join(',') || '-'})`,
+    );
+    process.exit(1);
+  }
+}
+
+const num = (n) => String(n);
+const qmlString = (s) => `"${String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+const camel = camelProp;
+
+const familyProps = FONT_FAMILY_ORDER.map(
+  (f) =>
+    `    readonly property string family${camel(f)}: ${qmlString(typographyPrim.fontFamily[f].qt)}` +
+    `\n    // web stack: ${typographyPrim.fontFamily[f].css}`,
+).join('\n');
+
+// Qt maps 400/500/600/700 onto Font.Normal/Medium/DemiBold/Bold.
+const QT_WEIGHT_ENUM = { 400: 'Font.Normal', 500: 'Font.Medium', 600: 'Font.DemiBold', 700: 'Font.Bold' };
+const weightProps = Object.entries(spec.primitives.fontWeight ?? {})
+  .map(([k, v]) => `    readonly property int weight${camel(k)}: ${num(v)} // ${QT_WEIGHT_ENUM[v] ?? 'custom'}`)
+  .join('\n');
+
+const sizeProps = FONT_SIZE_ORDER.map(
+  (s) => `    readonly property int size${camel(s)}: ${num(typographyPrim.fontSize[s])}`,
+).join('\n');
+
+const leadingProps = LINE_HEIGHT_ORDER.map(
+  (l) => `    readonly property real leading${camel(l)}: ${num(typographyPrim.lineHeight[l])}`,
+).join('\n');
+
+const trackingProps = LETTER_SPACING_ORDER.map(
+  (l) => `    readonly property real tracking${camel(l)}: ${num(typographyPrim.letterSpacing[l])}`,
+).join('\n');
+
+const sizeSwitch = FONT_SIZE_ORDER.map((s) => `            case "${s}": return ${num(typographyPrim.fontSize[s])}`).join('\n');
+const leadingSwitch = LINE_HEIGHT_ORDER.map((l) => `            case "${l}": return ${num(typographyPrim.lineHeight[l])}`).join('\n');
+const trackingSwitch = LETTER_SPACING_ORDER.map((l) => `            case "${l}": return ${num(typographyPrim.letterSpacing[l])}`).join('\n');
+const weightSwitch = Object.entries(spec.primitives.fontWeight ?? {})
+  .map(([k, v]) => `            case "${k}": return ${num(v)}`)
+  .join('\n');
+
+const typographyQml = `pragma Singleton
+import QtQuick
+
+// GENERATED FILE - DO NOT EDIT.
+// Source: cha-set spec/tokens/primitives.json -> primitives.typography / primitives.fontWeight
+//         (schemaVersion ${spec.meta.schemaVersion}) via spec/generators/generate-qt.mjs
+// Refresh: \`pnpm gen:qt\` regenerates this file in place.
+//
+// Cross-platform typography contract. The React side reads the SAME numbers
+// from \`--cs-font-*\` / \`--cs-text-*\` / \`--cs-leading-*\` / \`--cs-tracking-*\`
+// in packages/react/src/styles/tokens.css, so both stacks resolve identical
+// families, sizes, weights, line heights and letter spacings.
+//
+// Two Qt-specific facts this singleton exists to encode:
+//   1. \`font.family\` is a SINGLE family name here. Qt does not resolve
+//      comma-separated lists the way CSS does, so the web fallback stacks are
+//      deliberately absent — use \`familySans\`/\`familyMono\` verbatim.
+//   2. Line heights are unitless RATIOS; Qt text items need absolute px.
+//      Always convert through \`lineHeightPx()\` instead of multiplying inline,
+//      so both engines land on the same rounded value.
+QtObject {
+    id: root
+
+    // --- font families ---------------------------------------------------
+${familyProps}
+
+    // --- font weights ----------------------------------------------------
+${weightProps}
+
+    // --- font sizes (px; CSS emits the same numbers as rem at a 16px root) ---
+${sizeProps}
+
+    // --- line heights (unitless ratios, multiplied by the px font size) ---
+${leadingProps}
+
+    // --- letter spacing (em ratios, multiplied by the px font size) ------
+${trackingProps}
+
+    // --- named-role accessors (avoid re-typing the scale in QML) ---------
+    function size(name) {
+        switch (name) {
+${sizeSwitch}
+        }
+        return ${num(typographyPrim.fontSize.small)}
+    }
+
+    function leading(name) {
+        switch (name) {
+${leadingSwitch}
+        }
+        return ${num(typographyPrim.lineHeight.normal)}
+    }
+
+    function weight(name) {
+        switch (name) {
+${weightSwitch}
+        }
+        return ${num(spec.primitives.fontWeight?.regular ?? 400)}
+    }
+
+    function tracking(name) {
+        switch (name) {
+${trackingSwitch}
+        }
+        return 0
+    }
+
+    // Absolute px line height for a (sizePx, leadingName) pair.
+    // Snapped to 1/64 px — Qt's layout unit — so a Text with
+    // \`lineHeightMode: Text.FixedHeight\` and a RichText \`line-height: <px>px\`
+    // resolve the very same line box, and the same number CSS computes as
+    // \`font-size × line-height\`.
+    function lineHeightPx(sizePx, leadingName) {
+        return Math.round(sizePx * root.leading(leadingName) * 64) / 64
+    }
+
+    // Absolute px letter spacing for a (sizePx, trackingName) pair.
+    function trackingPx(sizePx, trackingName) {
+        return sizePx * root.tracking(trackingName)
+    }
+}
+`;
+
+const typographyQmlOut = resolve(repoRoot, 'qt', 'src', 'Typography.generated.qml');
+mkdirSync(dirname(typographyQmlOut), { recursive: true });
+writeFileSync(typographyQmlOut, typographyQml, 'utf8');
+console.log(
+  `[gen:qt] emitted ${typographyQmlOut} (${FONT_FAMILY_ORDER.length} families, ${FONT_SIZE_ORDER.length} sizes, ${LINE_HEIGHT_ORDER.length} line heights, ${LETTER_SPACING_ORDER.length} letter spacings)`,
+);

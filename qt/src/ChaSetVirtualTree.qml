@@ -234,15 +234,15 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         text: modelData.hasChildren ? (modelData.isExpanded ? "▾" : "▸") : "•"
                         color: ThemeTokens.subduedText
-                        font.pixelSize: 11
+                        font.pixelSize: Typography.sizeCaption
                     }
 
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: modelData.label
                         color: ThemeTokens.text
-                        font.pixelSize: 12
-                        font.family: "monospace"
+                        font.pixelSize: Typography.sizeSmall
+                        font.family: Typography.familyMono
                     }
                 }
 

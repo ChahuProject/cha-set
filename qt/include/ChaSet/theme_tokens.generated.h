@@ -144,7 +144,7 @@ inline const ThemeTokens kDark{
     14,
     28,
     16,
-    13,
+    14,
     12,
 };
 
@@ -211,7 +211,7 @@ inline const ThemeTokens kLight{
     14,
     28,
     16,
-    13,
+    14,
     12,
 };
 

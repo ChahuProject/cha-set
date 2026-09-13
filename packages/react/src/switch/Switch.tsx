@@ -179,7 +179,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
               data-slot="switch-description"
               className={cn(
                 'text-muted-foreground font-normal mt-1 leading-normal cursor-pointer',
-                isSm ? 'text-[11px]' : 'text-xs',
+                isSm ? 'text-caption' : 'text-xs',
                 readOnly && 'cursor-default',
               )}
             >

@@ -112,7 +112,7 @@ Rectangle {
             Text {
                 anchors.centerIn: parent
                 text: "×"
-                font.pixelSize: root.isSm ? 12 : 14
+                font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
                 font.bold: true
                 color: clearMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText
             }
@@ -145,7 +145,7 @@ Rectangle {
             Text {
                 anchors.centerIn: parent
                 text: root.showPassword ? "👁" : "🔒"
-                font.pixelSize: root.isSm ? 10 : 12
+                font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeSmall
                 color: eyeMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText
             }
 
@@ -186,7 +186,7 @@ Rectangle {
 
         selectByMouse: true
 
-        font.pixelSize: root.isSm ? 12 : 14
+        font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
         color: isDark ? Qt.rgba(248.0 / 255.0, 250.0 / 255.0, 252.0 / 255.0, 1.0) : Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0)
         selectedTextColor: "#ffffff"
         selectionColor: isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
@@ -211,7 +211,7 @@ Rectangle {
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
             text: root.placeholderText
-            font.pixelSize: root.isSm ? 12 : 14
+            font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
             color: isDark ? Qt.rgba(148.0 / 255.0, 163.0 / 255.0, 184.0 / 255.0, 1.0) : Qt.rgba(100.0 / 255.0, 116.0 / 255.0, 139.0 / 255.0, 1.0)
             visible: inputInner.text === "" && !inputInner.activeFocus
         }

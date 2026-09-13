@@ -338,15 +338,15 @@ function ColorChannelSlider({
   const rowGapClass = density === 'dense' ? 'gap-1' : 'gap-1.5';
   const inputHeightClass =
     density === 'dense'
-      ? 'h-4.5 text-[0.6rem] px-1'
+      ? 'h-4.5 text-micro px-1'
       : density === 'compact'
-        ? 'h-5 text-[0.625rem] px-1'
-        : 'h-6 text-[0.6875rem] px-1.5';
+        ? 'h-5 text-micro px-1'
+        : 'h-6 text-caption px-1.5';
   const labelTextClass =
     density === 'dense'
-      ? 'text-[0.625rem]'
+      ? 'text-micro'
       : density === 'compact'
-        ? 'text-[0.6875rem]'
+        ? 'text-caption'
         : 'text-xs';
 
   return (
@@ -731,7 +731,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
                 activePanel === p.value
                   ? 'bg-background text-foreground shadow-xs'
                   : 'text-muted-foreground hover:text-foreground',
-                isSm ? 'text-[0.6875rem]' : 'text-xs',
+                isSm ? 'text-caption' : 'text-xs',
               )}
             >
               {p.label}
@@ -982,7 +982,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
               onClick={ch.toggle}
               aria-pressed={ch.active}
               className={cn(
-                'flex-1 rounded py-1 text-center font-semibold text-[0.6875rem] transition-all duration-quick ease-standard select-none border',
+                'flex-1 rounded py-1 text-center font-semibold text-caption transition-all duration-quick ease-standard select-none border',
                 ch.active
                   ? 'border-primary/40 bg-primary/10 text-primary shadow-2xs font-bold'
                   : 'border-transparent text-muted-foreground hover:bg-muted hover:text-foreground',

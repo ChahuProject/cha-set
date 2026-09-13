@@ -45,15 +45,59 @@
       "checkCol": 18,
       "iconCol": 18,
       "cascadeGap": 2,
-      "chevronW": 14,
-      "fontSizeTitle": 28,
-      "fontSizeHeading": 16,
-      "fontSizeBody": 13,
-      "fontSizeSmall": 12
+      "chevronW": 14
+    },
+    "typography": {
+      "fontFamily": {
+        "sans": {
+          "css": "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif",
+          "qt": "Segoe UI"
+        },
+        "mono": {
+          "css": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+          "qt": "Consolas"
+        }
+      },
+  "fontSize": {
+    "nano": 9,
+    "micro": 10,
+    "caption": 11,
+    "small": 12,
+    "body": 14,
+    "heading": 16,
+    "subheading": 18,
+    "title": 28
+  },
+  "lineHeight": {
+    "none": 1,
+    "tight": 1.25,
+    "snug": 1.375,
+    "normal": 1.5,
+    "relaxed": 1.625,
+    "code": 1.4,
+    "nano": 1.7777778,
+    "micro": 1.6,
+    "caption": 1.4545455,
+    "small": 1.3333333,
+    "body": 1.4285714,
+    "heading": 1.5,
+    "subheading": 1.5555556,
+    "title": 1.25
+  },
+      "letterSpacing": {
+        "tighter": -0.05,
+        "tight": -0.025,
+        "normal": 0,
+        "wide": 0.025,
+        "wider": 0.05,
+        "widest": 0.1
+      }
     },
     "fontWeight": {
+      "regular": 400,
       "medium": 500,
-      "semibold": 600
+      "semibold": 600,
+      "bold": 700
     }
   }
 }

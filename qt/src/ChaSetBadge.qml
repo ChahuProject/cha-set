@@ -120,7 +120,7 @@ Rectangle {
         Text {
             id: badgeText
             text: root.text
-            font.pixelSize: root.isSm ? 10 : 12
+            font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeSmall
             font.weight: Font.DemiBold
             font.family: root.isSm ? "monospace, Consolas, 'Courier New'" : "inherit"
             font.underline: root.variant === "link"
@@ -153,7 +153,7 @@ Rectangle {
             Text {
                 anchors.centerIn: parent
                 text: "×"
-                font.pixelSize: root.isSm ? 11 : 13
+                font.pixelSize: root.isSm ? Typography.sizeCaption : Typography.sizeBody
                 font.weight: Font.Bold
                 color: badgeText.color
                 opacity: removeTap.pressed ? 1.0 : (removeHover.hovered ? 0.9 : 0.6)

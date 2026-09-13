@@ -98,7 +98,7 @@ Rectangle {
                     id: headerTitle
                     text: root.title
                     color: ThemeTokens.text
-                    font.pixelSize: 14
+                    font.pixelSize: Typography.sizeBodyLarge
                     font.weight: Font.Medium
                     elide: Text.ElideRight
                     anchors.verticalCenter: parent.verticalCenter
@@ -112,7 +112,7 @@ Rectangle {
                 anchors.rightMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
                 text: "▼"
-                font.pixelSize: 10
+                font.pixelSize: Typography.sizeMicro
                 color: ThemeTokens.subduedText
                 rotation: root.open ? 180 : 0
                 transformOrigin: Item.Center

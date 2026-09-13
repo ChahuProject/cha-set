@@ -67,7 +67,7 @@ DocLayout {
                     text: "Selected value: " + root.selectedFruit
                     color: ThemeTokens.subduedText
                     font.pixelSize: 12
-                    font.family: "monospace"
+                    font.family: Typography.familyMono
                 }
             }
         }
