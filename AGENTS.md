@@ -19,6 +19,7 @@
 - `caveman` — see `.agents/skills/caveman/SKILL.md`
 - `commit` — see `.agents/skills/commit/SKILL.md`
 - `grill-me` — see `.agents/skills/grill-me/SKILL.md`
+- `subrepo-sync` — see `.agents/skills/subrepo-sync/SKILL.md`
 - `write-a-skill` — see `.agents/skills/write-a-skill/SKILL.md`
 
 ### Skill extension convention
