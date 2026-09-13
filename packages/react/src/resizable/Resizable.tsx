@@ -29,18 +29,39 @@ export function ResizablePanelGroup({
   );
 }
 
-export type ResizablePanelProps = React.ComponentProps<
-  typeof ResizablePrimitive.Panel
->;
+function normalizeSize(size: number | string | undefined): string | undefined {
+  if (typeof size === 'number') {
+    return `${size}%`;
+  }
+  return size;
+}
+
+export type ResizablePanelProps = Omit<
+  React.ComponentProps<typeof ResizablePrimitive.Panel>,
+  'defaultSize' | 'minSize' | 'maxSize' | 'collapsedSize'
+> & {
+  defaultSize?: number | string;
+  minSize?: number | string;
+  maxSize?: number | string;
+  collapsedSize?: number | string;
+};
 
 export function ResizablePanel({
   className,
+  defaultSize,
+  minSize,
+  maxSize,
+  collapsedSize,
   ...props
 }: ResizablePanelProps) {
   return (
     <ResizablePrimitive.Panel
       data-slot="resizable-panel"
       className={className}
+      defaultSize={normalizeSize(defaultSize) as any}
+      minSize={normalizeSize(minSize) as any}
+      maxSize={normalizeSize(maxSize) as any}
+      collapsedSize={normalizeSize(collapsedSize) as any}
       {...props}
     />
   );
@@ -63,7 +84,7 @@ export function ResizableHandle({
       {...props}
       data-slot="resizable-handle"
       className={cn(
-        'relative flex w-[0.0625rem] items-center justify-center bg-border after:absolute after:inset-y-0 after:left-1/2 after:w-2 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-hidden aria-[orientation=horizontal]:h-[0.0625rem] aria-[orientation=horizontal]:w-full aria-[orientation=horizontal]:after:left-0 aria-[orientation=horizontal]:after:h-2 aria-[orientation=horizontal]:after:w-full aria-[orientation=horizontal]:after:translate-x-0 aria-[orientation=horizontal]:after:-translate-y-1/2 [&[aria-orientation=horizontal]>div]:rotate-90 z-20 cursor-col-resize aria-[orientation=horizontal]:cursor-row-resize',
+        'relative flex w-[0.0625rem] items-center justify-center bg-border after:absolute after:inset-y-0 after:left-1/2 after:w-3 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-hidden aria-[orientation=horizontal]:h-[0.0625rem] aria-[orientation=horizontal]:w-full aria-[orientation=horizontal]:after:left-0 aria-[orientation=horizontal]:after:h-3 aria-[orientation=horizontal]:after:w-full aria-[orientation=horizontal]:after:translate-x-0 aria-[orientation=horizontal]:after:-translate-y-1/2 [&[aria-orientation=horizontal]>div]:rotate-90 z-20 cursor-col-resize aria-[orientation=horizontal]:cursor-row-resize',
         className,
       )}
       onPointerDown={(e) => {
