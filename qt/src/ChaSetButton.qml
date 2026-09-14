@@ -81,20 +81,20 @@ Item {
     function bgColor() {
         if (variant === "ghost" || variant === "link") {
             if (variant === "link") return "transparent"
-            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
+            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
             if (effectiveHovered) return cAccentBg
             return "transparent"
         }
 
         if (variant === "outline") {
-            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
+            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
             if (effectiveHovered) return cAccentBg
             return cBackground
         }
 
         if (variant === "secondary") {
-            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(245.0 / 255.0, 248.0 / 255.0, 251.0 / 255.0, 1.0)
-            if (effectiveHovered) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(244.0 / 255.0, 247.0 / 255.0, 250.0 / 255.0, 1.0)
+            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(203.0 / 255.0, 213.0 / 255.0, 225.0 / 255.0, 1.0)
+            if (effectiveHovered) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
             return cSecondaryBg
         }
 
@@ -106,8 +106,8 @@ Item {
 
         // default / primary
         const base = cPrimary
-        if (effectiveDown || (pressed && !effectiveDisabled)) return Qt.rgba(74.0 / 255.0, 149.0 / 255.0, 230.0 / 255.0, 1.0)
-        if (effectiveHovered) return Qt.rgba(51.0 / 255.0, 135.0 / 255.0, 227.0 / 255.0, 1.0)
+        if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(74.0 / 255.0, 149.0 / 255.0, 230.0 / 255.0, 1.0) : Qt.rgba(21.0 / 255.0, 101.0 / 255.0, 192.0 / 255.0, 1.0)
+        if (effectiveHovered) return ThemeTokens.dark ? Qt.rgba(51.0 / 255.0, 135.0 / 255.0, 227.0 / 255.0, 1.0) : Qt.rgba(25.0 / 255.0, 110.0 / 255.0, 205.0 / 255.0, 1.0)
         return base
     }
 
@@ -128,6 +128,14 @@ Item {
         return variant === "outline"
     }
 
+    function borderColor() {
+        if (!hasBorder()) return "transparent"
+        if (effectiveHovered || (pressed && !effectiveDisabled)) {
+            return ThemeTokens.dark ? Qt.lighter(cBorder, 1.4) : Qt.darker(cBorder, 1.18)
+        }
+        return cBorder
+    }
+
     function isIconButton() {
         return size === "icon" || size === "icon-xs" || size === "icon-sm" || size === "icon-lg"
     }
@@ -138,6 +146,12 @@ Item {
         : ((text !== "" || iconSource !== "" ? contentRow.implicitWidth : fontSize()) + paddingH() * 2)
     height: buttonHeight()
     width: fullWidth && parent ? parent.width : implicitWidth
+
+    scale: (root.effectiveDown || (root.pressed && !root.effectiveDisabled)) ? 0.985 : 1.0
+    Behavior on scale {
+        enabled: ThemeTokens.animationsEnabled && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
+        NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+    }
 
     property bool down: false
     property bool hovered: false
@@ -181,10 +195,14 @@ Item {
         anchors.fill: root
         radius: root.customRadius
         color: root.bgColor()
-        border.color: root.hasBorder() ? root.cBorder : "transparent"
+        border.color: root.borderColor()
         border.width: root.hasBorder() ? 1 : 0
 
         Behavior on color {
+            enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
+            ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+        }
+        Behavior on border.color {
             enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
             ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
         }
@@ -314,6 +332,7 @@ Item {
             font.pixelSize: root.fontSize()
             font.weight: Typography.weightMedium
             font.family: Typography.familySans
+            font.families: Typography.familiesSans
             font.underline: root.variant === "link" && root.effectiveHovered
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter

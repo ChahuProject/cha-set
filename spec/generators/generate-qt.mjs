@@ -513,6 +513,10 @@ QtObject {
     // --- font families ---------------------------------------------------
 ${familyProps}
 
+    // --- font fallback chains (Qt 6 font.families support) ----------------
+    readonly property var familiesSans: ["Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans SC", "sans-serif"]
+    readonly property var familiesMono: ["Consolas", "Courier New", "monospace"]
+
     // --- font weights ----------------------------------------------------
 ${weightProps}
 
