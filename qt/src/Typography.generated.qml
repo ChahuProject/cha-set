@@ -27,6 +27,10 @@ QtObject {
     readonly property string familyMono: "Consolas"
     // web stack: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace
 
+    // --- font fallback chains (Qt 6 font.families support) ----------------
+    readonly property var familiesSans: ["Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans SC", "sans-serif"]
+    readonly property var familiesMono: ["Consolas", "Courier New", "monospace"]
+
     // --- font weights ----------------------------------------------------
     readonly property int weightRegular: 400 // Font.Normal
     readonly property int weightMedium: 500 // Font.Medium

@@ -116,11 +116,13 @@ Item {
             Text {
                 id: labelText
                 anchors.verticalCenter: parent.verticalCenter
-                width: isLg ? 180 : implicitWidth
+                width: isLg ? Math.max(180, implicitWidth) : implicitWidth
                 text: root.format ? root.format(root.value) : qsTr("%1%").arg(Math.round(root.value * 100))
                 color: ThemeTokens.text
                 font.pixelSize: isLg ? Typography.sizeTitle : Typography.sizeBody
                 font.weight: isLg ? Typography.weightMedium : Typography.weightSemibold
+                font.family: Typography.familySans
+                font.families: Typography.familiesSans
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight

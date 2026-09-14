@@ -153,28 +153,29 @@ Item {
             ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
         }
 
-        Row {
-            anchors.fill: parent
+        Text {
+            id: labelText
+            anchors.left: parent.left
             anchors.leftMargin: 10
+            anchors.right: arrowText.left
+            anchors.rightMargin: 6
+            anchors.verticalCenter: parent.verticalCenter
+            elide: Text.ElideRight
+            text: root.currentOption ? root.currentOption.label : root.placeholder
+            color: root.currentOption ? ThemeTokens.text : ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            font.family: Typography.familySans
+            font.families: Typography.familiesSans
+        }
+
+        Text {
+            id: arrowText
+            anchors.right: parent.right
             anchors.rightMargin: 10
-            spacing: 6
-
-            Text {
-                id: labelText
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width - 20
-                elide: Text.ElideRight
-                text: root.currentOption ? root.currentOption.label : root.placeholder
-                color: root.currentOption ? ThemeTokens.text : ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeBody
-            }
-
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                text: selectPopup.visible ? "▴" : "▾"
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeCaption
-            }
+            anchors.verticalCenter: parent.verticalCenter
+            text: selectPopup.visible ? "▴" : "▾"
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeCaption
         }
 
         MouseArea {
@@ -259,6 +260,8 @@ Item {
                         text: parent.modelData.label || ""
                         color: ThemeTokens.text
                         font.pixelSize: Typography.sizeSmall
+                        font.family: Typography.familySans
+                        font.families: Typography.familiesSans
                         font.weight: parent.isSelected ? Font.DemiBold : Font.Normal
                         elide: Text.ElideRight
                     }

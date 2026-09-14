@@ -15,6 +15,7 @@ Item {
     property string highlightTarget: ""
     property bool highlight: highlightTarget !== "" && highlightTarget === highlightId
     property bool disabled: false
+    property real controlWidth: -1
 
     readonly property bool isSm: root.size === "sm"
 
@@ -166,7 +167,20 @@ Item {
         id: _controlZone
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        width: Math.min(140, Math.max(100, parent.width * 0.35))
+        width: {
+            if (root.controlWidth > 0) return root.controlWidth;
+            var maxW = 0;
+            for (var i = 0; i < _controlZone.children.length; i++) {
+                var c = _controlZone.children[i];
+                if (c && c.visible !== false) {
+                    var w = c.implicitWidth > 0 ? c.implicitWidth : c.width;
+                    if (w > maxW) maxW = w;
+                }
+            }
+            var maxAllowed = root.width > 0 ? Math.max(140, root.width - 180) : 500;
+            if (maxW > 0) return Math.min(maxAllowed, Math.max(100, maxW));
+            return Math.max(100, Math.min(140, root.width > 0 ? root.width * 0.35 : 140));
+        }
         height: parent.height - (root.isSm ? 12 : 20)
     }
 }
