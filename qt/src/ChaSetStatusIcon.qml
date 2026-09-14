@@ -111,35 +111,47 @@ Item {
   }
 
   // Spinning arc for running / compiling / retrying
-  Shape {
-    id: spinnerShape
+  Item {
+    id: spinnerContainer
     visible: root.isSpinning
-    anchors.fill: parent
-    asynchronous: false
-    antialiasing: true
+    anchors.centerIn: parent
+    width: root.width
+    height: root.height
+    transformOrigin: Item.Center
 
-    ShapePath {
-      strokeColor: root.statusColor
-      strokeWidth: 1.6
-      fillColor: "transparent"
-      capStyle: ShapePath.RoundCap
+    Shape {
+      anchors.fill: parent
+      asynchronous: false
+      antialiasing: true
 
-      PathAngleArc {
-        centerX: root.width / 2
-        centerY: root.height / 2
-        radiusX: (root.width - 2.5) / 2
-        radiusY: (root.height - 2.5) / 2
-        startAngle: 0
-        sweepAngle: 280
+      ShapePath {
+        strokeColor: root.statusColor
+        strokeWidth: 1.6
+        fillColor: "transparent"
+        capStyle: ShapePath.RoundCap
+        startX: (root.width / 2) + ((root.width - 2.5) / 2)
+        startY: root.height / 2
+
+        PathAngleArc {
+          centerX: root.width / 2
+          centerY: root.height / 2
+          radiusX: (root.width - 2.5) / 2
+          radiusY: (root.height - 2.5) / 2
+          startAngle: 0
+          sweepAngle: 280
+        }
       }
     }
 
-    RotationAnimation on rotation {
+    // motion-hygiene: ok continuous spinner rotation guarded by animationsEnabled
+    RotationAnimation {
+      target: spinnerContainer
+      property: "rotation"
       loops: Animation.Infinite
       from: 0
       to: 360
       duration: 1000
-      running: root.isSpinning && ThemeTokens.animationsEnabled
+      running: root.isSpinning && (typeof ThemeTokens !== "undefined" && ThemeTokens ? ThemeTokens.animationsEnabled : true)
     }
   }
 }

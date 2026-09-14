@@ -122,7 +122,6 @@ Item {
                 font.pixelSize: isLg ? Typography.sizeTitle : Typography.sizeBody
                 font.weight: isLg ? Typography.weightMedium : Typography.weightSemibold
                 font.family: Typography.familySans
-                font.families: Typography.familiesSans
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight
