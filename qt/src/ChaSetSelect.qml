@@ -165,7 +165,6 @@ Item {
             color: root.currentOption ? ThemeTokens.text : ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             font.family: Typography.familySans
-            font.families: Typography.familiesSans
         }
 
         Text {
@@ -261,7 +260,6 @@ Item {
                         color: ThemeTokens.text
                         font.pixelSize: Typography.sizeSmall
                         font.family: Typography.familySans
-                        font.families: Typography.familiesSans
                         font.weight: parent.isSelected ? Font.DemiBold : Font.Normal
                         elide: Text.ElideRight
                     }
