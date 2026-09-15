@@ -69,6 +69,13 @@ export function validateSpec(spec) {
       if (typeof def.css !== 'string' || !def.css.trim()) fail(`primitives.typography.fontFamily.${fam}.css: must be a non-empty string`);
       if (typeof def.qt !== 'string' || !def.qt.trim()) fail(`primitives.typography.fontFamily.${fam}.qt: must be a non-empty string`);
       else if (def.qt.includes(',')) fail(`primitives.typography.fontFamily.${fam}.qt: "${def.qt}" must be a single family name — Qt does not resolve comma lists`);
+      if (def.qtFamilies !== undefined) {
+        if (!Array.isArray(def.qtFamilies) || def.qtFamilies.length === 0) {
+          fail(`primitives.typography.fontFamily.${fam}.qtFamilies: must be a non-empty array of strings`);
+        } else if (def.qtFamilies[0] !== def.qt) {
+          fail(`primitives.typography.fontFamily.${fam}.qtFamilies[0]: first entry must match primary family "${def.qt}"`);
+        }
+      }
     }
     for (const fam of Object.keys(typo.fontFamily ?? {})) {
       if (!FONT_FAMILY_ORDER.includes(fam)) fail(`primitives.typography.fontFamily.${fam}: unknown family (expected ${FONT_FAMILY_ORDER.join(', ')})`);

@@ -8,6 +8,7 @@ import { Button } from '../button';
 import { Badge } from '../badge';
 import { Tabs, TabsList, TabsTrigger } from '../tabs';
 import { SegmentedControl } from '../segmented-control';
+import { defaultSansFontStack, defaultMonoFontStack } from '../typography';
 
 const repoRoot = resolve(__dirname, '../../../../');
 const tokensCssPath = resolve(repoRoot, 'packages/react/src/styles/tokens.css');
@@ -25,6 +26,8 @@ describe('Typography Conformance & Token Parity', () => {
     expect(css).toContain('--cs-font-mono:');
     expect(css).toContain('Consolas');
     expect(css).toContain('Segoe UI');
+    expect(css).toContain('Microsoft YaHei');
+    expect(css).toContain('PingFang SC');
 
     // Key scale sizes
     expect(css).toContain('--cs-text-display:');
@@ -46,12 +49,14 @@ describe('Typography Conformance & Token Parity', () => {
     expect(css).toContain('--cs-font-weight-bold: 700');
   });
 
-  it('theme.css applies antialiased font smoothing at @layer base', () => {
+  it('theme.css applies antialiased font smoothing and fallback variables', () => {
     expect(existsSync(themeCssPath)).toBe(true);
     const css = readFileSync(themeCssPath, 'utf8');
 
     expect(css).toContain('-webkit-font-smoothing: antialiased');
     expect(css).toContain('-moz-osx-font-smoothing: grayscale');
+    expect(css).toContain('--font-sans: var(--font-sans, var(--cs-font-sans));');
+    expect(css).toContain('--font-mono: var(--font-mono, var(--cs-font-mono));');
   });
 
   it('spec/tokens primitives define expected typography scales', () => {
@@ -113,5 +118,12 @@ describe('Typography Conformance & Token Parity', () => {
     const buttons = container.querySelectorAll('button');
     expect(buttons.length).toBe(2);
     expect(buttons[0]?.className).toMatch(/text-sm|text-xs/);
+  });
+
+  it('exports defaultSansFontStack and defaultMonoFontStack with CJK fallback', () => {
+    expect(defaultSansFontStack).toContain('Microsoft YaHei');
+    expect(defaultSansFontStack).toContain('PingFang SC');
+    expect(defaultMonoFontStack).toContain('Microsoft YaHei');
+    expect(defaultMonoFontStack).toContain('PingFang SC');
   });
 });

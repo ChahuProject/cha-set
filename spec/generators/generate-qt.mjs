@@ -452,6 +452,9 @@ const familyProps = FONT_FAMILY_ORDER.map(
     `\n    // web stack: ${typographyPrim.fontFamily[f].css}`,
 ).join('\n');
 
+const sansFamilies = typographyPrim.fontFamily?.sans?.qtFamilies ?? ['Segoe UI', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', 'sans-serif'];
+const monoFamilies = typographyPrim.fontFamily?.mono?.qtFamilies ?? ['Consolas', 'Cascadia Code', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', 'monospace'];
+
 // Qt maps 400/500/600/700 onto Font.Normal/Medium/DemiBold/Bold.
 const QT_WEIGHT_ENUM = { 400: 'Font.Normal', 500: 'Font.Medium', 600: 'Font.DemiBold', 700: 'Font.Bold' };
 const weightProps = Object.entries(spec.primitives.fontWeight ?? {})
@@ -514,8 +517,8 @@ QtObject {
 ${familyProps}
 
     // --- font fallback chains (Qt 6 font.families support) ----------------
-    readonly property var familiesSans: ["Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans SC", "sans-serif"]
-    readonly property var familiesMono: ["Consolas", "Courier New", "monospace"]
+    readonly property var familiesSans: ${JSON.stringify(sansFamilies)}
+    readonly property var familiesMono: ${JSON.stringify(monoFamilies)}
 
     // --- font weights ----------------------------------------------------
 ${weightProps}

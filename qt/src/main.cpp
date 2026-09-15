@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QDebug>
 #include <QTest>
+#include "ChaSetFontSystem.h"
 
 static bool runRealMouseDragVerification(QQuickWindow* window) {
     qInfo("[qt-scenario] Running authentic C++ QTest mouse drag injection...");
@@ -452,6 +453,25 @@ bool runRealTypographyVerification(QQuickWindow* window) {
         return false;
     }
 
+    const QStringList segoeSubst = QFont::substitutes(QStringLiteral("Segoe UI"));
+    if (!segoeSubst.contains(QStringLiteral("Microsoft YaHei UI"), Qt::CaseInsensitive) &&
+        !segoeSubst.contains(QStringLiteral("Microsoft YaHei"), Qt::CaseInsensitive) &&
+        !segoeSubst.contains(QStringLiteral("PingFang SC"), Qt::CaseInsensitive)) {
+        qCritical("[qt-scenario] FAIL: QFont Segoe UI substitutes missing CJK fallback fonts!");
+        return false;
+    }
+    const QStringList consolasSubst = QFont::substitutes(QStringLiteral("Consolas"));
+    if (!consolasSubst.contains(QStringLiteral("Microsoft YaHei UI"), Qt::CaseInsensitive) &&
+        !consolasSubst.contains(QStringLiteral("Microsoft YaHei"), Qt::CaseInsensitive) &&
+        !consolasSubst.contains(QStringLiteral("PingFang SC"), Qt::CaseInsensitive)) {
+        qCritical("[qt-scenario] FAIL: QFont Consolas substitutes missing CJK fallback fonts!");
+        return false;
+    }
+    if (appFont.families().isEmpty()) {
+        qCritical("[qt-scenario] FAIL: QGuiApplication font families list is empty!");
+        return false;
+    }
+
     int verifiedCount = 0;
     std::function<bool(QQuickItem*)> scanItems = [&](QQuickItem* item) -> bool {
         if (!item) return true;
@@ -600,14 +620,7 @@ int main(int argc, char* argv[])
 
     QGuiApplication app(argc, argv);
 
-    QFont appFont(QStringLiteral("Segoe UI"));
-    appFont.setStyleStrategy(static_cast<QFont::StyleStrategy>(
-        QFont::PreferAntialias | QFont::PreferQuality | QFont::NoSubpixelAntialias
-    ));
-    appFont.setHintingPreference(QFont::PreferVerticalHinting);
-    appFont.setPixelSize(14);
-    appFont.setWeight(QFont::Normal);
-    QGuiApplication::setFont(appFont);
+    ChaSet::FontSystem::initialize(&app);
 
     const QStringList args = app.arguments();
     

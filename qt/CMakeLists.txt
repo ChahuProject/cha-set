@@ -65,6 +65,8 @@ qt_add_qml_module(ChaSet
     SOURCES
         src/ChaSetClipboard.h
         src/ChaSetClipboard.cpp
+        src/ChaSetFontSystem.h
+        src/ChaSetFontSystem.cpp
     QML_FILES
         src/ChaSetScrollBar.qml
         src/ChaSetScrollArea.qml

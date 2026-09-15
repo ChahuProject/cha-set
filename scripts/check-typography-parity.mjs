@@ -71,12 +71,13 @@ function parseCssVars(text) {
 function parseQmlProps(text) {
   const map = new Map();
   for (const line of text.split(/\r?\n/)) {
-    const m = line.match(/^\s*readonly\s+property\s+(?:string|int|real)\s+(\w+)\s*:\s*(.+?)\s*$/);
+    const m = line.match(/^\s*readonly\s+property\s+(?:string|int|real|var)\s+(\w+)\s*:\s*(.+?)\s*$/);
     if (!m) continue;
     let value = m[2];
     const comment = value.indexOf('//');
     if (comment !== -1) value = value.slice(0, comment);
-    value = value.trim().replace(/^"|"$/g, '');
+    value = value.trim();
+    if (value.startsWith('"') && value.endsWith('"')) value = value.slice(1, -1);
     if (!map.has(m[1])) map.set(m[1], value);
   }
   return map;
@@ -103,6 +104,9 @@ export function verifyTypographyParity({ quiet = false } = {}) {
     if (!def) continue;
     expectedCss.set(`--cs-font-${fam}`, def.css);
     expectedQml.set(`family${camelProp(fam)}`, def.qt);
+    if (def.qtFamilies) {
+      expectedQml.set(`families${camelProp(fam)}`, JSON.stringify(def.qtFamilies));
+    }
   }
   for (const [k, v] of Object.entries(weights)) {
     expectedCss.set(`--cs-font-weight-${k}`, String(v));
