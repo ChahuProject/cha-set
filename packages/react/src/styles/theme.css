@@ -92,8 +92,8 @@
    * ---------------------------------------------------------------------- */
 
   /* Families. `--font-mono` carries the code-block stack; `--font-sans` is UI. */
-  --font-sans: var(--cs-font-sans);
-  --font-mono: var(--cs-font-mono);
+  --font-sans: var(--font-sans, var(--cs-font-sans));
+  --font-mono: var(--font-mono, var(--cs-font-mono));
 
   /* Weights: font-regular / font-medium / font-semibold / font-bold. */
   --font-weight-regular: var(--cs-font-weight-regular);

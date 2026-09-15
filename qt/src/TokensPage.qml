@@ -178,10 +178,10 @@ DocLayout {
             }
         }
 
-        // Typography Weight Samples
+        // Typography Weight & CJK Font Fallback Samples
         Rectangle {
             width: parent.width
-            implicitHeight: typeCol.implicitHeight + 24
+            implicitHeight: typeCol.implicitHeight + 28
             radius: 8
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
@@ -191,9 +191,96 @@ DocLayout {
                 id: typeCol
                 anchors.fill: parent
                 anchors.margins: 14
-                spacing: 8
-                DocText { text: "Medium 500 — Tea Set ChaSet, cross-stack component library"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightMedium }
-                DocText { text: "Semibold 600 — Tea Set ChaSet, cross-stack component library"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightSemibold }
+                spacing: 12
+
+                Row {
+                    spacing: 8
+                    DocText { text: "Font System · CJK Fallback & Typography Scale"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
+                    ChaSetBadge { text: "Zero-SimSun Guarantee"; variant: "secondary" }
+                }
+
+                DocText {
+                    text: "Fallback Stack (Sans): " + Typography.familiesSans.join("  →  ")
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: Typography.sizeCaption
+                    font.family: Typography.familyMono
+                }
+
+                Column {
+                    spacing: 6
+                    width: parent.width
+
+                    DocText {
+                        text: "Regular 400 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
+                        color: ThemeTokens.text
+                        font.family: Typography.familySans
+                        font.pixelSize: Typography.sizeBody
+                        font.weight: Typography.weightRegular
+                    }
+                    DocText {
+                        text: "Medium 500 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
+                        color: ThemeTokens.text
+                        font.family: Typography.familySans
+                        font.pixelSize: Typography.sizeBody
+                        font.weight: Typography.weightMedium
+                    }
+                    DocText {
+                        text: "Semibold 600 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
+                        color: ThemeTokens.text
+                        font.family: Typography.familySans
+                        font.pixelSize: Typography.sizeBody
+                        font.weight: Typography.weightSemibold
+                    }
+                    DocText {
+                        text: "Bold 700 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
+                        color: ThemeTokens.text
+                        font.family: Typography.familySans
+                        font.pixelSize: Typography.sizeBody
+                        font.weight: Typography.weightBold
+                    }
+                }
+
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: ThemeTokens.border
+                }
+
+                DocText {
+                    text: "Fallback Stack (Mono): " + Typography.familiesMono.join("  →  ")
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: Typography.sizeCaption
+                    font.family: Typography.familyMono
+                }
+
+                Rectangle {
+                    width: parent.width
+                    implicitHeight: monoCol.implicitHeight + 16
+                    color: ThemeTokens.panelRaised
+                    radius: 6
+                    border.color: ThemeTokens.border
+                    border.width: 1
+
+                    Column {
+                        id: monoCol
+                        anchors.fill: parent
+                        anchors.margins: 10
+                        spacing: 4
+
+                        DocText {
+                            text: "const fontSystem = ChaSet.FontSystem; // 自动处理中文字体回退，消除宋体锯齿"
+                            color: ThemeTokens.text
+                            font.family: Typography.familyMono
+                            font.pixelSize: Typography.sizeSmall
+                        }
+                        DocText {
+                            text: "console.log(`[ChaSet] CJK glyphs: 字体平滑清晰, zero raster artifacts`);"
+                            color: ThemeTokens.subduedText
+                            font.family: Typography.familyMono
+                            font.pixelSize: Typography.sizeSmall
+                        }
+                    }
+                }
             }
         }
 

@@ -253,3 +253,58 @@ Even with identical font metrics and tokens, visual discrepancy ("像素感" / b
    - Raw CSS declarations such as `ui-monospace, monospace` without `Consolas` fall back on Windows Chromium to bitmap-infused `NSimSun` at small font sizes.
    - All code snippets, tuner badges, and log views MUST reference `var(--cs-font-mono)` which specifies `Consolas` explicitly before generic `monospace`.
 
+---
+
+## 10. Cross-Stack Font System & CJK Fallback Architecture
+
+### 10.1 The Zero-SimSun Guarantee
+
+Western fonts (`Segoe UI`, `Consolas`) lack CJK glyphs. On Windows, if no explicit fallback chain or substitution table is registered with Qt, the DirectWrite / GDI font subsystem falls back to `SimSun` (宋体, `simsun.ttc`). At 11px–16px, SimSun produces harsh bitmap strikes, completely breaking modern UI aesthetics.
+
+The ChaSet Font System provides an end-to-end guarantee against SimSun degradation through three coordinated mechanisms:
+
+1. **DirectWrite Font Substitutions (`QFont::insertSubstitutions`)**:
+   Injected globally into `QFontDatabase` by `ChaSet::FontSystem::initialize()`. Whenever any QML item asks for `font.family: "Segoe UI"` or `font.family: "Consolas"` and encounters Chinese characters, Qt directly routes glyph lookup to the prioritized CJK chain (`Microsoft YaHei UI` / `Microsoft YaHei` / `PingFang SC` / `Noto Sans SC`) before reaching OS defaults.
+2. **Application-Level Ordered Fallback (`appFont.setFamilies`)**:
+   Sets the complete prioritized fallback sequence for the application.
+3. **Spec Single Source of Truth (`spec/tokens/primitives.json`)**:
+   `fontFamily.sans.qtFamilies` and `fontFamily.mono.qtFamilies` define the ordered chains compiled directly into `Typography.familiesSans` and `Typography.familiesMono`.
+
+### 10.2 Host Application Integration (C++ / Qt)
+
+Host applications linking against `ChaSet::ChaSet` initialize the entire font subsystem with one line:
+
+```cpp
+#include <ChaSet/ChaSetFontSystem.h>
+
+int main(int argc, char* argv[]) {
+    QGuiApplication app(argc, argv);
+    ChaSet::FontSystem::initialize(&app);
+    ...
+}
+```
+
+This single call configures:
+- `QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering)`
+- Pure alpha grayscale antialiasing (`QFont::NoSubpixelAntialias`)
+- Vertical curve hinting (`QFont::PreferVerticalHinting`)
+- DirectWrite CJK substitution tables (`Segoe UI`, `Consolas`, `sans-serif`, `monospace`)
+- Application font with 14px body size and ordered fallback families
+
+### 10.3 Dynamic Font Loading & Customization
+
+The Font System also exposes runtime customization APIs:
+- `ChaSet::FontSystem::setSansFamilies(QStringList)`: Override UI sans-serif fallback chain.
+- `ChaSet::FontSystem::setMonoFamilies(QStringList)`: Override code monospace fallback chain.
+- `ChaSet::FontSystem::loadFontFromFile(QString)`: Dynamically load custom `.ttf` / `.otf` fonts via `QFontDatabase`.
+- `ChaSet::FontSystem::isFontAvailable(QString)`: Query whether a font family is installed in the system.
+
+### 10.4 Web CSS Overridability
+
+In `packages/react/src/styles/theme.css`:
+```css
+--font-sans: var(--font-sans, var(--cs-font-sans));
+--font-mono: var(--font-mono, var(--cs-font-mono));
+```
+Host React applications can override `--font-sans: 'Inter', var(--cs-font-sans);` while automatically inheriting the full Chinese fallback chain (`PingFang SC`, `Microsoft YaHei`, `Noto Sans SC`).
+

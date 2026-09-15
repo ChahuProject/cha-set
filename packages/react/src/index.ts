@@ -51,6 +51,7 @@ export * from './duration-input';
 export * from './code-block';
 export * from './pipeline-view';
 export * from './address-bar';
+export * from './typography';
 export * from './lib/splitFixedFooter';
 export {
   CheckIcon,

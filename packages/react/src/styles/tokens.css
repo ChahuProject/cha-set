@@ -50,8 +50,8 @@
   --cs-sidebar-ring: oklch(0.708 0 0);
   --cs-sidebar-selected: oklch(0 0 0 / 0.065);
   --cs-sidebar-selected-foreground: var(--sidebar-foreground);
-  --cs-font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-  --cs-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --cs-font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', 'WenQuanYi Micro Hei', 'Helvetica Neue', Arial, sans-serif;
+  --cs-font-mono: ui-monospace, SFMono-Regular, 'Cascadia Code', Menlo, Monaco, Consolas, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Liberation Mono', 'Courier New', monospace;
   --cs-font-weight-regular: 400;
   --cs-font-weight-medium: 500;
   --cs-font-weight-semibold: 600;
@@ -148,8 +148,8 @@
   --cs-sidebar-ring: oklch(0.556 0 0);
   --cs-sidebar-selected: oklch(1 0 0 / 0.105);
   --cs-sidebar-selected-foreground: var(--sidebar-foreground);
-  --cs-font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-  --cs-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --cs-font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', 'WenQuanYi Micro Hei', 'Helvetica Neue', Arial, sans-serif;
+  --cs-font-mono: ui-monospace, SFMono-Regular, 'Cascadia Code', Menlo, Monaco, Consolas, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Liberation Mono', 'Courier New', monospace;
   --cs-font-weight-regular: 400;
   --cs-font-weight-medium: 500;
   --cs-font-weight-semibold: 600;
