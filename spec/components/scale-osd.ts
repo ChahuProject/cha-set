@@ -19,6 +19,7 @@ export const scaleOsdSchema = z.object({
   min: z.number().default(0.2),
   max: z.number().default(3),
   visible: z.boolean().optional(),
+  defaultVisible: z.boolean().default(false),
   autoHideDuration: z.number().default(1400),
   showControls: z.boolean().default(true),
   placement: scaleOsdPlacementSchema.default('bottom-center'),

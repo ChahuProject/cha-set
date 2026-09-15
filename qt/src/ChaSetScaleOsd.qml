@@ -21,10 +21,16 @@ Item {
     signal stepTriggered(real delta)
     signal resetTriggered()
 
-    property bool osdVisible: true
+    property bool defaultVisible: false
+    property bool osdVisible: defaultVisible
     property bool pointerOver: false
+    property bool _initialized: false
 
     readonly property bool isLg: root.size === "lg"
+
+    Component.onCompleted: {
+        _initialized = true;
+    }
 
     function show() {
         root.osdVisible = true;
@@ -54,7 +60,9 @@ Item {
     }
 
     onValueChanged: {
-        root.show();
+        if (_initialized) {
+            root.show();
+        }
     }
 
     Timer {
