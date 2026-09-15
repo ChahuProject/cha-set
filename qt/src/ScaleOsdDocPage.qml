@@ -78,6 +78,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     value: root.demoScale
                     autoHideDuration: 2500
+                    defaultVisible: true
                     onValueChanged: function(val) {
                         root.demoScale = val
                     }

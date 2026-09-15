@@ -31,6 +31,8 @@ export interface ScaleOsdProps
   size?: 'default' | 'lg';
   /** Whether visibility and value changes animate */
   animated?: boolean;
+  /** Whether controls are disabled */
+  disabled?: boolean;
   /** Callbacks */
   onChange?: (value: number) => void;
   onStep?: (delta: number) => void;
