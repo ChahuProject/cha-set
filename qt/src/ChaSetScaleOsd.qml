@@ -32,6 +32,10 @@ Item {
         _initialized = true;
     }
 
+    Component.onDestruction: {
+        hideTimer.stop();
+    }
+
     function show() {
         root.osdVisible = true;
         if (root.autoHideDuration > 0 && !root.pointerOver) {
@@ -71,6 +75,7 @@ Item {
         repeat: false
         running: false
         onTriggered: {
+            if (!root) return;
             if (!root.pointerOver) {
                 root.osdVisible = false;
             } else {
