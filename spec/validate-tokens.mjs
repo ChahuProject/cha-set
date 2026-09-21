@@ -142,14 +142,21 @@ export function validateSpec(spec) {
     }
   }
   const axes = spec.themes?.axes ?? {};
-  if ((axes.accentTheme ?? []).length !== 8) fail('themes.axes.accentTheme must list 8 ids');
+  // accentTheme is the canonical launcher palette: neutral + 8 hues + custom.
+  // `neutral` is a reset-to-base accent (crd ships no [data-theme="neutral"] block);
+  // `custom` is a runtime-derived ramp driven by palette.customHex, not a static block.
+  const ACCENT_THEME_IDS = ['neutral', 'slate', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'rose', 'custom'];
+  const accentTheme = axes.accentTheme ?? [];
+  if (accentTheme.length !== ACCENT_THEME_IDS.length) fail(`themes.axes.accentTheme must list ${ACCENT_THEME_IDS.length} ids (neutral + 8 hues + custom), got ${accentTheme.length}`);
+  else if (JSON.stringify(accentTheme) !== JSON.stringify(ACCENT_THEME_IDS)) fail(`themes.axes.accentTheme must be exactly [${ACCENT_THEME_IDS.join(', ')}], got [${accentTheme.join(', ')}]`);
   if ((axes.windowTint ?? []).length !== 6) fail('themes.axes.windowTint must list 6 ids');
   if ((axes.interfaceStyle ?? []).length !== 2) fail('themes.axes.interfaceStyle must list 2 ids');
   const deltas = spec.themes?.deltas;
   const overrides = spec.themes?.overrides;
   if (Array.isArray(deltas) && Array.isArray(overrides)) fail('themes: cannot have both deltas and overrides');
   if (Array.isArray(deltas)) {
-    if (deltas.length !== 30) fail(`themes.deltas must have 30 blocks (16 accent + 12 tint + 2 interface-style), got ${deltas.length}`);
+    // 20 accent (10 ids x 2 modes) + 12 tint + 2 interface-style
+    if (deltas.length !== 34) fail(`themes.deltas must have 34 blocks (20 accent + 12 tint + 2 interface-style), got ${deltas.length}`);
     const seen = new Set();
     const allowed = new Set(['preset', 'mode', 'accentTheme', 'windowTint', 'interfaceStyle', 'tokens']);
     for (let i = 0; i < deltas.length; i++) {
@@ -176,7 +183,7 @@ export function validateSpec(spec) {
       else seen.add(tup);
     }
   } else if (Array.isArray(overrides)) {
-    if (overrides.length !== 30) fail(`themes.overrides must have 30 blocks (16 accent + 12 tint + 2 interface-style), got ${overrides.length}`);
+    if (overrides.length !== 34) fail(`themes.overrides must have 34 blocks (20 accent + 12 tint + 2 interface-style), got ${overrides.length}`);
     const seen = new Set();
     for (let i = 0; i < overrides.length; i++) {
       const o = overrides[i];

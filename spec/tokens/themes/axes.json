@@ -6,6 +6,7 @@
         "dark"
       ],
       "accentTheme": [
+        "neutral",
         "slate",
         "red",
         "orange",
@@ -13,7 +14,8 @@
         "green",
         "blue",
         "violet",
-        "rose"
+        "rose",
+        "custom"
       ],
       "windowTint": [
         "slate",

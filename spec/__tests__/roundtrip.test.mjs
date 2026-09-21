@@ -190,12 +190,15 @@ describe('cha-token roundtrip (Task2)', () => {
     }
   });
 
-  it('selector derivation 30/30 via selectorFor', () => {
+  it('selector derivation N/N via selectorFor', () => {
     const origSelectors = origParsed.themes.overrides.map(o => o.selector);
     const derivedSelectors = rebuilt.themes.overrides.map(o => o.selector);
-    expect(derivedSelectors.length).toBe(30);
-    expect(origSelectors.length).toBe(30);
-    for (let i = 0; i < 30; i++) {
+    // Derived from the declaration rather than hard-coded: the count grows whenever a
+    // theme axis grows (10 accent ids x 2 modes + 12 tint + 2 interface-style = 34).
+    const expectedCount = shards['themes/deltas.json'].themes.deltas.length;
+    expect(derivedSelectors.length).toBe(expectedCount);
+    expect(origSelectors.length).toBe(expectedCount);
+    for (let i = 0; i < expectedCount; i++) {
       expect(derivedSelectors[i]).toBe(origSelectors[i]);
     }
     // also test individual selectorFor synthesis

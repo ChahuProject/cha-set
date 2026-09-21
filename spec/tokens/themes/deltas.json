@@ -122,6 +122,36 @@
         }
       },
       {
+        "accentTheme": "neutral",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+          "chart-1": "oklch(0.87 0 0)",
+          "chart-2": "oklch(0.556 0 0)",
+          "chart-3": "oklch(0.439 0 0)",
+          "chart-4": "oklch(0.371 0 0)",
+          "chart-5": "oklch(0.269 0 0)",
+          "primary": "oklch(0.205 0 0)",
+          "primary-foreground": "oklch(0.985 0 0)",
+          "ring": "color-mix(in oklch, var(--foreground) 12%, transparent)"
+        }
+      },
+      {
+        "accentTheme": "custom",
+        "mode": "light",
+        "preset": "launcher",
+        "tokens": {
+        "chart-1": "var(--chaset-custom-accent, oklch(0.5 0 0))",
+        "chart-2": "var(--chaset-custom-accent-2, oklch(0.55 0 0))",
+        "chart-3": "var(--chaset-custom-accent-3, oklch(0.45 0 0))",
+        "chart-4": "var(--chaset-custom-accent-4, oklch(0.6 0 0))",
+        "chart-5": "var(--chaset-custom-accent-5, oklch(0.4 0 0))",
+        "primary": "var(--chaset-custom-accent, oklch(0.5 0 0))",
+        "primary-foreground": "var(--chaset-custom-accent-foreground, oklch(0.985 0 0))",
+        "ring": "var(--chaset-custom-accent-ring, var(--chaset-custom-accent, oklch(0.5 0 0)))"
+        }
+      },
+      {
         "accentTheme": "slate",
         "mode": "dark",
         "preset": "launcher",
@@ -200,6 +230,26 @@
           "primary-foreground": "oklch(0.145 0.014 12)",
           "ring": "oklch(0.65 0.115 12)"
         }
+      },
+      {
+        "accentTheme": "neutral",
+        "mode": "dark",
+        "preset": "launcher",
+        "tokens": {
+          "primary": "oklch(0.922 0 0)",
+          "primary-foreground": "oklch(0.205 0 0)",
+          "ring": "color-mix(in oklch, var(--foreground) 14%, transparent)"
+        }
+      },
+      {
+        "accentTheme": "custom",
+        "mode": "dark",
+        "preset": "launcher",
+      "tokens": {
+        "primary": "var(--chaset-custom-accent, oklch(0.5 0 0))",
+        "primary-foreground": "var(--chaset-custom-accent-foreground, oklch(0.985 0 0))",
+        "ring": "var(--chaset-custom-accent-ring, var(--chaset-custom-accent, oklch(0.5 0 0)))"
+      }
       },
       {
         "mode": "light",
