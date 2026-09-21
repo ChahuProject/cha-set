@@ -22,6 +22,7 @@ dist/
 .pixel-diff/
 .omo/
 .trae/
+.workbuddy/
 *-shot*.png
 *.png
 *.tgz
