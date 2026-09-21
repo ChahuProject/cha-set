@@ -1,0 +1,100 @@
+{
+  "common": {
+    "reset": "重置",
+    "export": "导出",
+    "import": "导入",
+    "cancel": "取消",
+    "apply": "应用",
+    "save": "保存",
+    "close": "关闭",
+    "copy": "复制",
+    "copied": "已复制"
+  },
+  "theme": {
+    "settings": {
+      "title": "主题配置",
+      "reset": "重置",
+      "export": "导出 JSON",
+      "import": "导入",
+      "importHint": "粘贴 JSON 主题配置：",
+      "cancel": "取消",
+      "apply": "应用",
+      "mode": {
+        "title": "外观模式",
+        "desc": "切换浅色、深色或跟随系统外观"
+      },
+      "palette": {
+        "title": "强调色调色板",
+        "desc": "从 10 档规范色板中选取或自定义强调色"
+      },
+      "style": {
+        "title": "界面风格",
+        "desc": "极简扁平呈现或富表现力分层质感"
+      },
+      "decoration": {
+        "title": "装饰程度",
+        "desc": "控制圆角、阴影与动效强度的全局滑块 (0-100)"
+      },
+      "uiscale": {
+        "title": "界面缩放",
+        "desc": "全局显示密度与界面缩放系数"
+      }
+    },
+    "mode": {
+      "light": "浅色",
+      "dark": "深色",
+      "system": "跟随系统"
+    },
+    "palette": {
+      "neutral": "中性蓝",
+      "slate": "板岩灰",
+      "red": "绯红",
+      "orange": "活力橙",
+      "yellow": "明黄",
+      "green": "翡翠绿",
+      "blue": "极客蓝",
+      "violet": "紫罗兰",
+      "rose": "玫瑰红",
+      "custom": "自定义"
+    },
+    "style": {
+      "simple": "极简",
+      "expressive": "表现力"
+    },
+    "overrides": {
+      "custom": "微调",
+      "hide": "收起",
+      "radius": "圆角强度",
+      "shadow": "阴影层级",
+      "motion": "动效时长"
+    }
+  },
+  "language": {
+    "title": "语言偏好",
+    "desc": "切换界面显示语言，支持即时生效与系统语言检测",
+    "current": "当前",
+    "label": "显示语言",
+    "followSystem": "跟随系统",
+    "systemDetected": "系统检测",
+    "followSystemDesc": "当系统语言在受支持列表中时自动跟随，否则默认使用英语",
+    "fixedNotice": "固定语言选项",
+    "systemHint": "当前已设置为跟随系统，正在以 {{language}} 呈现界面",
+    "fixedHint": "当前已固定为 {{language}}，不受系统语言变化影响"
+  },
+  "showcase": {
+    "searchPlaceholder": "搜索组件与文档...",
+    "studioTuner": "调色工作台",
+    "exportTheme": "导出配置",
+    "jumpTo": "快速跳转",
+    "switchLanguage": "切换语言",
+    "categories": {
+      "Get Started": "起步与主题",
+      "Base Primitives": "通用与原子",
+      "Forms & Inputs": "表单与输入",
+      "Surfaces & Layout": "表面与布局",
+      "Overlays & Feedback": "浮层与反馈",
+      "Desktop & Virtualization": "桌面与虚拟化",
+      "Composite Engines": "复合套件与系统"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "defaultLocale": "zh-CN",
+  "fallbackLocale": "en-US",
+  "storageKey": "chaset.locale",
+  "locales": {
+    "zh-CN": {
+      "code": "zh-CN",
+      "nativeName": "简体中文",
+      "englishName": "Simplified Chinese",
+      "matches": ["zh", "zh-CN", "zh-Hans"],
+      "quote": {
+        "text": "床前明月光，疑是地上霜。",
+        "author": "李白"
+      }
+    },
+    "en-US": {
+      "code": "en-US",
+      "nativeName": "English",
+      "englishName": "English (US)",
+      "matches": ["en", "en-US", "en-GB"],
+      "quote": {
+        "text": "Shall I compare thee to a summer's day?",
+        "author": "William Shakespeare"
+      }
+    }
+  },
+  "namespaces": ["common", "theme", "language", "showcase"]
+}

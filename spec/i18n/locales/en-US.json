@@ -1,0 +1,100 @@
+{
+  "common": {
+    "reset": "Reset",
+    "export": "Export",
+    "import": "Import",
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "save": "Save",
+    "close": "Close",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "theme": {
+    "settings": {
+      "title": "Theme Configuration",
+      "reset": "Reset",
+      "export": "Export JSON",
+      "import": "Import",
+      "importHint": "Paste JSON configuration:",
+      "cancel": "Cancel",
+      "apply": "Apply",
+      "mode": {
+        "title": "Appearance Mode",
+        "desc": "Switch between Light, Dark, or System OS appearance"
+      },
+      "palette": {
+        "title": "Accent Palette",
+        "desc": "Choose from 10 canonical theme palettes or custom accent"
+      },
+      "style": {
+        "title": "Interface Style",
+        "desc": "Simple flat presentation or expressive rich layered styling"
+      },
+      "decoration": {
+        "title": "Decoration Level",
+        "desc": "Master slider (0-100) driving corner radii, shadows, and motion"
+      },
+      "uiscale": {
+        "title": "Interface Scale",
+        "desc": "Global display density and UI scaling factor"
+      }
+    },
+    "mode": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "palette": {
+      "neutral": "Neutral",
+      "slate": "Slate",
+      "red": "Red",
+      "orange": "Orange",
+      "yellow": "Yellow",
+      "green": "Green",
+      "blue": "Blue",
+      "violet": "Violet",
+      "rose": "Rose",
+      "custom": "Custom"
+    },
+    "style": {
+      "simple": "Simple",
+      "expressive": "Expressive"
+    },
+    "overrides": {
+      "custom": "Tune",
+      "hide": "Details",
+      "radius": "Corner Radius",
+      "shadow": "Shadow Elevation",
+      "motion": "Motion Duration"
+    }
+  },
+  "language": {
+    "title": "Language Preference",
+    "desc": "Switch UI display language with instant effect and system language detection.",
+    "current": "Current",
+    "label": "Display Language",
+    "followSystem": "Follow System",
+    "systemDetected": "System detected",
+    "followSystemDesc": "Automatically matches your system language if supported, otherwise defaults to English",
+    "fixedNotice": "Fixed Languages",
+    "systemHint": "Currently following system, rendering UI in {{language}}",
+    "fixedHint": "Currently fixed to {{language}}, ignoring system language changes"
+  },
+  "showcase": {
+    "searchPlaceholder": "Search components & docs...",
+    "studioTuner": "Studio Tuner",
+    "exportTheme": "Export",
+    "jumpTo": "Jump to",
+    "switchLanguage": "Switch Language",
+    "categories": {
+      "Get Started": "Get Started",
+      "Base Primitives": "Base Primitives",
+      "Forms & Inputs": "Forms & Inputs",
+      "Surfaces & Layout": "Surfaces & Layout",
+      "Overlays & Feedback": "Overlays & Feedback",
+      "Desktop & Virtualization": "Desktop & Virtualization",
+      "Composite Engines": "Composite Engines"
+    }
+  }
+}
