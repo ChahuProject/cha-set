@@ -2,6 +2,7 @@ import * as React from 'react';
 import { cn } from '../lib/utils';
 import { SettingRow } from '../setting-row';
 import { SegmentedControl } from '../segmented-control';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../select';
 import { ColorPicker } from '../color-picker';
 import { Slider } from '../slider';
 import { Button } from '../button';
@@ -678,19 +679,30 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
               name={t('theme.settings.uiscale.title', 'Interface Scale')}
               description={t('theme.settings.uiscale.desc', 'Global display density and UI scaling factor')}
             >
-              <SegmentedControl
-                size="sm"
-                value={config.uiScale}
-                onChange={handleUiScaleChange}
+              <Select
+                value={String(config.uiScale)}
+                onValueChange={(val) => {
+                  const num = Number(val);
+                  if (!isNaN(num) && num > 0) {
+                    handleUiScaleChange(num);
+                  }
+                }}
                 disabled={disabled}
-                options={[
-                  { label: '75%', value: 0.75 },
-                  { label: '90%', value: 0.9 },
-                  { label: '100%', value: 1.0 },
-                  { label: '125%', value: 1.25 },
-                  { label: '150%', value: 1.5 },
-                ]}
-              />
+              >
+                <SelectTrigger className="w-28 h-8">
+                  <SelectValue placeholder="Scale" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0.75">75%</SelectItem>
+                  <SelectItem value="0.9">90%</SelectItem>
+                  <SelectItem value="1">100%</SelectItem>
+                  <SelectItem value="1.1">110%</SelectItem>
+                  <SelectItem value="1.25">125%</SelectItem>
+                  <SelectItem value="1.5">150%</SelectItem>
+                  <SelectItem value="1.75">175%</SelectItem>
+                  <SelectItem value="2">200%</SelectItem>
+                </SelectContent>
+              </Select>
             </SettingRow>
           </>
         )}

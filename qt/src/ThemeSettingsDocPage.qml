@@ -29,6 +29,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         title: "Interactive Theme Settings"
+        stageHeight: Math.max(620, settingsComp.implicitHeight + 48)
         reactCode: `<ThemeSettings
   config={demoConfig}
   onChange={(next) => setDemoConfig(next)}
@@ -36,7 +37,7 @@ DocLayout {
 />`
         qtCode: `ChaSetThemeSettings {
     config: root.demoConfig
-    onConfigChanged: function(next) {
+    onConfigModified: function(next) {
         console.log("Theme updated:", JSON.stringify(next))
     }
 }`
@@ -46,13 +47,16 @@ DocLayout {
             color: "transparent"
 
             Column {
-                anchors.centerIn: parent
+                anchors.top: parent.top
+                anchors.topMargin: 24
+                anchors.horizontalCenter: parent.horizontalCenter
                 width: Math.min(parent.width - 48, 520)
 
                 ChaSetThemeSettings {
+                    id: settingsComp
                     width: parent.width
                     config: root.demoConfig
-                    onConfigChanged: function(next) {
+                    onConfigModified: function(next) {
                         root.demoConfig = next;
                     }
                 }
@@ -67,7 +71,7 @@ DocLayout {
 
 ChaSetThemeSettings {
     config: currentConfig
-    onConfigChanged: function(next) {
+    onConfigModified: function(next) {
         themeManager.applyThemeConfig(next)
     }
 }`

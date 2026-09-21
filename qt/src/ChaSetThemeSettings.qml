@@ -26,7 +26,7 @@ Item {
 
     property bool showOverrides: false
 
-    signal configChanged(var nextConfig)
+    signal configModified(var nextConfig)
     signal resetRequested()
     signal exportRequested(string jsonString)
 
@@ -67,7 +67,7 @@ Item {
 
         mutator(current);
         root.config = current;
-        root.configChanged(current);
+        root.configModified(current);
     }
 
     function requestReset() {
@@ -82,7 +82,7 @@ Item {
         };
         root.config = defaultConfig;
         root.resetRequested();
-        root.configChanged(defaultConfig);
+        root.configModified(defaultConfig);
     }
 
     function exportConfig() {
@@ -122,6 +122,7 @@ Item {
     }
 
     width: parent ? parent.width : implicitWidth
+    height: implicitHeight
     implicitWidth: 480
     implicitHeight: _card.implicitHeight
 
@@ -132,6 +133,7 @@ Item {
     Rectangle {
         id: _card
         width: parent.width
+        height: implicitHeight
         implicitHeight: _contentCol.implicitHeight + (root.isEmbedded ? 0 : 32)
         radius: root.isEmbedded ? 0 : 12
         color: root.isEmbedded ? "transparent" : ThemeTokens.panel
@@ -146,13 +148,15 @@ Item {
             spacing: 14
 
             // Header Section (Only rendered in card mode)
-            Row {
+            Item {
                 width: parent.width
+                implicitHeight: 32
                 visible: !root.isEmbedded && (root.showReset || root.showExport || root.showImport)
 
                 Row {
-                    spacing: 8
+                    anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
+                    spacing: 8
 
                     Text {
                         text: root.trText("theme.settings.title", "Theme Configuration")
@@ -170,15 +174,10 @@ Item {
                     }
                 }
 
-                Item {
-                    width: Math.max(8, parent.width - 280)
-                    height: 1
-                }
-
                 Row {
-                    spacing: 6
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    spacing: 6
 
                     ChaSetButton {
                         visible: root.showReset
@@ -230,7 +229,7 @@ Item {
                             width: 78
                             height: 68
                             radius: 8
-                            color: isSelected ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08) : ThemeTokens.card
+                            color: isSelected ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08) : ThemeTokens.panel
                             border.width: isSelected ? 2 : 1
                             border.color: isSelected ? ThemeTokens.accent : ThemeTokens.border
 
@@ -620,21 +619,28 @@ Item {
             ChaSetSettingRow {
                 name: root.trText("theme.settings.uiscale.title", "Interface Scale")
                 description: root.trText("theme.settings.uiscale.desc", "Global display density and UI scaling factor")
-                controlWidth: 260
+                controlWidth: 160
 
-                ChaSetSegmentedControl {
-                    size: "sm"
-                    width: 250
-                    value: root.config?.uiScale || 1.0
+                ChaSetSelect {
+                    width: 140
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    value: String(root.config?.uiScale || 1.0)
                     options: [
-                        { label: "75%", value: 0.75 },
-                        { label: "90%", value: 0.9 },
-                        { label: "100%", value: 1.0 },
-                        { label: "125%", value: 1.25 },
-                        { label: "150%", value: 1.5 }
+                        { label: "75%", value: "0.75" },
+                        { label: "90%", value: "0.9" },
+                        { label: "100%", value: "1" },
+                        { label: "110%", value: "1.1" },
+                        { label: "125%", value: "1.25" },
+                        { label: "150%", value: "1.5" },
+                        { label: "175%", value: "1.75" },
+                        { label: "200%", value: "2" }
                     ]
-                    onValueSelected: function(val) {
-                        root.updateConfig(function(cfg) { cfg.uiScale = Number(val); });
+                    onValueChanged: {
+                        var num = Number(value);
+                        if (!isNaN(num) && num > 0 && num !== (root.config?.uiScale || 1.0)) {
+                            root.updateConfig(function(cfg) { cfg.uiScale = num; });
+                        }
                     }
                 }
             }

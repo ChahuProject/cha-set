@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup, Input, Checkbox, type ButtonVariant, type ButtonSize, CodeBlock } from '@chahu/cha-set';
+import { Button, ButtonGroup, Input, Checkbox, SegmentedControl, type ButtonVariant, type ButtonSize, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { PropsTable } from '../../components/PropsTable';
@@ -61,36 +61,40 @@ export function ButtonDocPage() {
             <div className="flex flex-wrap items-center gap-4 w-full">
               {/* Variant Selector */}
               <div className="flex items-center gap-1.5">
-                <span className="text-muted-foreground font-medium">Variant:</span>
-                {(['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'] as ButtonVariant[]).map((v) => (
-                  <Button
-                    key={v}
-                    type="button"
-                    variant={variant === v ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setVariant(v)}
-                    className="h-6 px-2 text-[0.6875rem] capitalize font-medium"
-                  >
-                    {v}
-                  </Button>
-                ))}
+                <span className="text-muted-foreground font-medium text-xs">Variant:</span>
+                <SegmentedControl
+                  size="sm"
+                  value={variant}
+                  onChange={(v) => setVariant(v as ButtonVariant)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Secondary', value: 'secondary' },
+                    { label: 'Outline', value: 'outline' },
+                    { label: 'Ghost', value: 'ghost' },
+                    { label: 'Destructive', value: 'destructive' },
+                    { label: 'Link', value: 'link' },
+                  ]}
+                />
               </div>
 
               {/* Size Selector */}
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-muted-foreground font-medium">Size:</span>
-                {(['xs', 'sm', 'default', 'lg', 'icon', 'icon-xs', 'icon-sm', 'icon-lg'] as ButtonSize[]).map((s) => (
-                  <Button
-                    key={s}
-                    type="button"
-                    variant={size === s ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setSize(s)}
-                    className="h-6 px-2 text-[0.6875rem] uppercase font-medium"
-                  >
-                    {s}
-                  </Button>
-                ))}
+                <span className="text-muted-foreground font-medium text-xs">Size:</span>
+                <SegmentedControl
+                  size="sm"
+                  value={size}
+                  onChange={(s) => setSize(s as ButtonSize)}
+                  options={[
+                    { label: 'XS', value: 'xs' },
+                    { label: 'SM', value: 'sm' },
+                    { label: 'Default', value: 'default' },
+                    { label: 'LG', value: 'lg' },
+                    { label: 'Icon', value: 'icon' },
+                    { label: 'Icon-XS', value: 'icon-xs' },
+                    { label: 'Icon-SM', value: 'icon-sm' },
+                    { label: 'Icon-LG', value: 'icon-lg' },
+                  ]}
+                />
               </div>
 
               {/* Toggles */}

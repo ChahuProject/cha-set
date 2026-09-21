@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardTitle, CardDescription, CodeBlock, Table, type TableColumn } from '@chahu/cha-set';
+import { Card, CardTitle, CardDescription, CodeBlock, Table, type TableColumn, ScrollArea, CheckIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 
 const PACKAGE_COLUMNS: TableColumn[] = [
@@ -13,6 +13,7 @@ const PACKAGE_ROWS = [
   { pkg: 'QtChaSetDemo', target: 'Qt 6 / C++ / QML', desc: 'Qt reference implementation with native QML components.' },
   { pkg: '@chahu/spec', target: 'Internal Spec', desc: 'Neutral token generator and contract schemas.' },
 ];
+
 export function IntroductionPage() {
   return (
     <DocLayout
@@ -33,23 +34,41 @@ export function IntroductionPage() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
-          <Card className="p-4">
-            <span className="text-2xl mb-2 block">🎯</span>
-            <CardTitle className="font-semibold text-sm mb-1">One Source of Truth</CardTitle>
+          <Card className="p-4 flex flex-col items-start gap-2">
+            <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center ring-1 ring-primary/20">
+              <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="m4.93 4.93 4.24 4.24" />
+                <path d="m14.83 9.17 4.24-4.24" />
+                <path d="m14.83 14.83 4.24 4.24" />
+                <path d="m9.17 14.83-4.24 4.24" />
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+            </div>
+            <CardTitle className="font-semibold text-sm">One Source of Truth</CardTitle>
             <CardDescription className="text-xs leading-relaxed">
               Design tokens and API contracts reside in <code className="font-mono text-primary">spec/</code> and emit synchronized tokens for Web & Qt.
             </CardDescription>
           </Card>
-          <Card className="p-4">
-            <span className="text-2xl mb-2 block">⚡</span>
-            <CardTitle className="font-semibold text-sm mb-1">Native Ergonomics</CardTitle>
+          <Card className="p-4 flex flex-col items-start gap-2">
+            <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center ring-1 ring-primary/20">
+              <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+            </div>
+            <CardTitle className="font-semibold text-sm">Native Ergonomics</CardTitle>
             <CardDescription className="text-xs leading-relaxed">
               Tailwind CSS v4 & Base UI on React; pure QML Quick Controls on Qt — no electron bloat or foreign wrappers.
             </CardDescription>
           </Card>
-          <Card className="p-4">
-            <span className="text-2xl mb-2 block">🔒</span>
-            <CardTitle className="font-semibold text-sm mb-1">Automated Parity Gate</CardTitle>
+          <Card className="p-4 flex flex-col items-start gap-2">
+            <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center ring-1 ring-primary/20">
+              <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </div>
+            <CardTitle className="font-semibold text-sm">Automated Parity Gate</CardTitle>
             <CardDescription className="text-xs leading-relaxed">
               CI enforces that all required capabilities and visual rendering match 100% across stacks.
             </CardDescription>

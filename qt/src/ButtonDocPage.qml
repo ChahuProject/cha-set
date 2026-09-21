@@ -81,29 +81,37 @@ DocLayout {
             Row {
                 spacing: 6
                 DocText { text: "Variant:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
-                Repeater {
-                    model: ["default", "secondary", "outline", "ghost", "destructive", "link"]
-                    delegate: ChaSetButton {
-                        required property var modelData
-                        size: "sm"
-                        variant: root.btnVariant === modelData ? "default" : "outline"
-                        text: modelData
-                        onClicked: root.btnVariant = modelData
-                    }
+                ChaSetSegmentedControl {
+                    size: "sm"
+                    value: root.btnVariant
+                    options: [
+                        { label: "Default", value: "default" },
+                        { label: "Secondary", value: "secondary" },
+                        { label: "Outline", value: "outline" },
+                        { label: "Ghost", value: "ghost" },
+                        { label: "Destructive", value: "destructive" },
+                        { label: "Link", value: "link" }
+                    ]
+                    onValueSelected: function(v) { root.btnVariant = String(v); }
                 }
             },
             Row {
                 spacing: 6
                 DocText { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
-                Repeater {
-                    model: ["xs", "sm", "default", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"]
-                    delegate: ChaSetButton {
-                        required property var modelData
-                        size: "sm"
-                        variant: root.btnSize === modelData ? "default" : "outline"
-                        text: modelData.toUpperCase()
-                        onClicked: root.btnSize = modelData
-                    }
+                ChaSetSegmentedControl {
+                    size: "sm"
+                    value: root.btnSize
+                    options: [
+                        { label: "XS", value: "xs" },
+                        { label: "SM", value: "sm" },
+                        { label: "Default", value: "default" },
+                        { label: "LG", value: "lg" },
+                        { label: "Icon", value: "icon" },
+                        { label: "Icon-XS", value: "icon-xs" },
+                        { label: "Icon-SM", value: "icon-sm" },
+                        { label: "Icon-LG", value: "icon-lg" }
+                    ]
+                    onValueSelected: function(s) { root.btnSize = String(s); }
                 }
             },
             Row {
