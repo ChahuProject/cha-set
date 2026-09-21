@@ -31,7 +31,7 @@ export function ContextMenuDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Overlays & Feedback"
       title="Context Menu"
       description="Displays a menu located at the pointer coordinates on right-click or desktop context gesture."
       tocItems={[

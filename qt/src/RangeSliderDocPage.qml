@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Forms & Inputs"
     pageTitle: "Range Slider"
     description: "Dual-thumb slider control for selecting continuous or stepped numeric min-max intervals with collision prevention."
     tocItems: [

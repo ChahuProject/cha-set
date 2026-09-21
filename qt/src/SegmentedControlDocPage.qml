@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Forms & Inputs"
     pageTitle: "Segmented Control"
     description: "A compact pill-style segmented switch for toolbars, menus, and view toggles."
     tocItems: [

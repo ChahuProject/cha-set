@@ -16,7 +16,7 @@ export function InlineEditableTextDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Forms & Inputs"
       title="Inline Editable Text"
       description="Text element that switches seamlessly to an input field on double-click or edit trigger, supporting Enter to save and Escape to cancel."
       tocItems={[

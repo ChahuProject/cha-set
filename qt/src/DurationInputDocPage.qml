@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Forms & Inputs"
     pageTitle: "Duration Input"
     description: "Segmented duration input control for hours, minutes, and seconds with stepper buttons, mouse wheel adjustments, keyboard arrow jumping, and preset menu."
     tocItems: [

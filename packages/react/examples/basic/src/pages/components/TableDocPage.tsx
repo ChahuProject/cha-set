@@ -86,7 +86,7 @@ export function TableDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Composite Engines"
       title="Table"
       description="A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics."
       tocItems={[

@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Base Primitives"
     pageTitle: "Elided Text"
     description: "Smart text truncation with automatic overflow detection and contextual tooltip reveal."
     tocItems: [

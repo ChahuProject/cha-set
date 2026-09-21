@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Base Primitives"
+    category: "Surfaces & Layout"
     pageTitle: "Scroll Area"
     description: "Augments native scroll functionality with custom cross-browser styling, dynamic hot-zone expansion, and interactive stepper navigation buttons."
     tocItems: [

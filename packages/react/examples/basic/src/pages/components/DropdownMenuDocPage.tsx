@@ -37,7 +37,7 @@ export function DropdownMenuDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Overlays & Feedback"
       title="Dropdown Menu"
       description="Displays a menu to the user triggered by a button, supporting items, labels, separators, shortcuts, and destructive actions."
       tocItems={[

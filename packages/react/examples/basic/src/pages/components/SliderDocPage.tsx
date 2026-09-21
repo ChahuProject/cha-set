@@ -56,7 +56,7 @@ export function SliderDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Forms & Inputs"
       title="Slider"
       description="An interactive control that allows the user to select a numeric value along a track."
       tocItems={[

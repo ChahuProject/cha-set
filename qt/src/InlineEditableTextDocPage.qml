@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Forms & Inputs"
     pageTitle: "Inline Editable Text"
     description: "Seamless inline text label that dynamically transforms into an input field on double-click or edit trigger."
     tocItems: [

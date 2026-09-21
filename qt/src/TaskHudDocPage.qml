@@ -4,7 +4,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Overlays & Feedback"
     pageTitle: "Task HUD"
     description: "Floating task progress and notification HUD stack for background executions."
 

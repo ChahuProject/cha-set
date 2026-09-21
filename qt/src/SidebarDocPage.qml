@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Desktop & Virtualization"
+    category: "Surfaces & Layout"
     pageTitle: "Sidebar"
     description: "Composable, responsive and resizable desktop-grade sidebar navigation system supporting expanded, icon collapsed, and offcanvas modes."
     tocItems: [

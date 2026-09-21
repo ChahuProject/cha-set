@@ -96,7 +96,7 @@ export function TaskHudDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Overlays & Feedback"
       title="Task HUD"
       description="Floating task progress and notification HUD stack for background executions."
       tocItems={[

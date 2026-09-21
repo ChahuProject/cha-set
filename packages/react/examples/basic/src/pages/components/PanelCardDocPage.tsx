@@ -19,7 +19,7 @@ export function PanelCardDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Surfaces & Layout"
       title="Panel Card"
       description="Card surface with integrated collapsible sections and header action slots for desktop sidebars and inspectors."
       tocItems={[

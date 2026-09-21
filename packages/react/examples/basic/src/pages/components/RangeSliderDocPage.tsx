@@ -18,7 +18,7 @@ export function RangeSliderDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Forms & Inputs"
       title="Range Slider"
       description="Dual-thumb slider for selecting numeric min-max intervals with collision prevention and keyboard accessibility."
       tocItems={[

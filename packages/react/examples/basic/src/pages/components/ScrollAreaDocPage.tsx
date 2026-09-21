@@ -116,7 +116,7 @@ export function ScrollAreaDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Surfaces & Layout"
       title="Scroll Area"
       description="Augments native scroll functionality with custom cross-browser styling, dynamic hot-zone expansion, and interactive stepper navigation buttons."
       tocItems={[

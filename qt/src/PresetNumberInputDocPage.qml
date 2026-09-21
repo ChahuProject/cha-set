@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Forms & Inputs"
     pageTitle: "Preset Number Input"
     description: "High-density numeric input field with a quick-select dropdown panel for common dimension presets, unit tags, and optional clear action."
     tocItems: [

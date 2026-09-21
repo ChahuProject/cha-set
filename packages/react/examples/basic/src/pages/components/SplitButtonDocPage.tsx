@@ -29,7 +29,7 @@ export function SplitButtonDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Base Primitives"
       title="Split Button"
       description="Dual-action button with primary direct click and secondary attached dropdown menu."
       tocItems={[

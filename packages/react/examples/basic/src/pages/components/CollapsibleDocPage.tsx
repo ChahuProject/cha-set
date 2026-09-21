@@ -77,7 +77,7 @@ export function CollapsibleDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Surfaces & Layout"
       title="Collapsible"
       description="An interactive component which expands and collapses a panel of content."
       tocItems={[

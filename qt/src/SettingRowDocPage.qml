@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Surfaces & Layout"
     pageTitle: "Setting Row"
     description: "Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight."
     tocItems: [

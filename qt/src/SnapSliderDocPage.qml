@@ -6,7 +6,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Forms & Inputs"
     pageTitle: "Snap Slider"
     description: "Stepped discrete slider that snaps to defined stops with ticks and label row."
     tocItems: [

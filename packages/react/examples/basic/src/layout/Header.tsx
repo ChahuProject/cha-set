@@ -11,6 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   Separator,
+  useChaSetI18n,
 } from '@chahu/cha-set';
 
 export interface HeaderProps {
@@ -30,6 +31,9 @@ export function Header({
   showTuner,
   onOpenExport,
 }: HeaderProps) {
+  const { preference, setPreference, supportedLocales, locale, t } = useChaSetI18n();
+  const activeLocaleMeta = supportedLocales.find((l) => l.code === locale) || { nativeName: locale, code: locale };
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md">
       <div className="flex h-14 items-center justify-between px-4 md:px-6">
@@ -57,7 +61,7 @@ export function Header({
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.3-4.3" />
             </svg>
-            <span>Search components & docs...</span>
+            <span>{t('showcase.searchPlaceholder', 'Search components & docs...')}</span>
           </div>
           <kbd className="rounded border border-border bg-background px-1.5 py-0.5 font-mono text-[0.625rem] text-muted-foreground">
             ⌘K
@@ -66,6 +70,35 @@ export function Header({
 
         {/* Right Actions */}
         <div className="flex items-center gap-2">
+          {/* Language Switcher Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="inline-flex items-center gap-1.5" aria-label={t('showcase.switchLanguage', 'Switch Language')}>
+                <span>🌐</span>
+                <span className="hidden sm:inline font-medium">{activeLocaleMeta.nativeName}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>{t('showcase.switchLanguage', 'Switch Language')}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setPreference('system')}>
+                  <span className={preference === 'system' ? 'font-semibold text-primary' : ''}>
+                    💻 {t('language.followSystem', 'Follow System')}
+                  </span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                {supportedLocales.map((loc) => (
+                  <DropdownMenuItem key={loc.code} onClick={() => setPreference(loc.code)}>
+                    <span className={preference === loc.code ? 'font-semibold text-primary' : ''}>
+                      {loc.nativeName} ({loc.code})
+                    </span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Tooltip content="Toggle theme controls" side="bottom">
             <Button
               type="button"
@@ -74,7 +107,7 @@ export function Header({
               onClick={onToggleTuner}
             >
               <span>🎨</span>
-              <span className="hidden md:inline">Studio Tuner</span>
+              <span className="hidden md:inline">{t('showcase.studioTuner', 'Studio Tuner')}</span>
             </Button>
           </Tooltip>
 
@@ -86,7 +119,7 @@ export function Header({
               onClick={onOpenExport}
             >
               <span>📋</span>
-              <span className="hidden md:inline">Export</span>
+              <span className="hidden md:inline">{t('showcase.exportTheme', 'Export')}</span>
             </Button>
           </Tooltip>
 
@@ -94,7 +127,7 @@ export function Header({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="hidden lg:inline-flex items-center gap-1.5">
-                <span>⚡ Jump to</span>
+                <span>⚡ {t('showcase.jumpTo', 'Jump to')}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">

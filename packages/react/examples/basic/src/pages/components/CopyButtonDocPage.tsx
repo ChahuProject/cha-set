@@ -13,7 +13,7 @@ export function CopyButtonDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Base Primitives"
       title="Copy Button"
       description="One-click clipboard copy button with transient success checkmark feedback and customizable timeout."
       tocItems={[

@@ -6,7 +6,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Overlays & Feedback"
     pageTitle: "Scale OSD"
     description: "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
     tocItems: [

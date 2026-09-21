@@ -60,7 +60,7 @@ export function SplitterHandleDocPage() {
 
   return (
     <DocLayout
-      category="Desktop & Virtualization"
+      category="Surfaces & Layout"
       title="Splitter Handle"
       description="Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
       tocItems={[

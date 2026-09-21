@@ -20,7 +20,7 @@ export function SnapSliderDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Forms & Inputs"
       title="Snap Slider"
       description="Stepped discrete slider that snaps to defined stops with ticks and label row."
       tocItems={[

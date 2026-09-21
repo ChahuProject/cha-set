@@ -27,7 +27,7 @@ export function DurationInputDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Forms & Inputs"
       title="Duration Input"
       description="Segmented duration input control for hours, minutes, and seconds with stepper buttons, mouse wheel adjustments, keyboard arrow jumping, and preset menu."
       tocItems={[

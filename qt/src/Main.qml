@@ -119,6 +119,7 @@ ApplicationWindow {
         case "pipeline-view": return "PipelineViewDocPage.qml";
         case "address-bar": return "AddressBarDocPage.qml";
         case "theme-settings": return "ThemeSettingsDocPage.qml";
+        case "language-settings": return "LanguageSettingsDocPage.qml";
         default: return "ButtonDocPage.qml";
 
         }
@@ -1070,7 +1071,7 @@ ApplicationWindow {
                             spacing: 8
 
                             Text { text: "🔍"; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                            Text { text: "Search components & docs..."; color: win.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                            Text { text: ChaSetI18n.tr("showcase.searchPlaceholder", "Search components & docs..."); color: win.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                             Item { width: parent.width - 240; height: 1 }
                             Rectangle {
                                 width: 32; height: 18; radius: 3; color: win.cCard; border.color: win.cBorder
@@ -1092,6 +1093,42 @@ ApplicationWindow {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: 8
 
+                        // Language Switcher Dropdown Menu
+                        Item {
+                            width: 90
+                            height: 32
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            ChaSetButton {
+                                id: langBtn
+                                anchors.fill: parent
+                                variant: "outline"
+                                size: "sm"
+                                text: "🌐 " + (ChaSetI18n.locale === "zh-CN" ? "中文" : "EN")
+                                onClicked: langMenu.open()
+                            }
+
+                            Menu {
+                                id: langMenu
+                                y: langBtn.height + 4
+                                width: 160
+
+                                MenuItem {
+                                    text: "💻 " + ChaSetI18n.tr("language.followSystem", "Follow System")
+                                    onTriggered: ChaSetI18n.setPreference("system")
+                                }
+                                MenuSeparator {}
+                                Repeater {
+                                    model: ChaSetI18n.supportedLocales
+                                    delegate: MenuItem {
+                                        required property var modelData
+                                        text: modelData.nativeName + " (" + modelData.code + ")"
+                                        onTriggered: ChaSetI18n.setPreference(modelData.code)
+                                    }
+                                }
+                            }
+                        }
+
                         // Style Tuner Button
                         ChaSetTooltip {
                             text: "Toggle theme controls"
@@ -1099,7 +1136,7 @@ ApplicationWindow {
                             ChaSetButton {
                                 variant: win.activePage === "theme-tuner" ? "default" : "secondary"
                                 size: "sm"
-                                text: "🎨 Studio Tuner"
+                                text: "🎨 " + ChaSetI18n.tr("showcase.studioTuner", "Studio Tuner")
                                 onClicked: win.activePage = "theme-tuner"
                             }
                         }
@@ -1111,7 +1148,7 @@ ApplicationWindow {
                             ChaSetButton {
                                 variant: "secondary"
                                 size: "sm"
-                                text: "📋 Export"
+                                text: "📋 " + ChaSetI18n.tr("showcase.exportTheme", "Export")
                                 onClicked: win.exportModalOpen = true
                             }
                         }
@@ -1183,7 +1220,7 @@ ApplicationWindow {
                                 spacing: 4
 
                                 Text {
-                                    text: modelData.title ? modelData.title.toUpperCase() : ""
+                                    text: modelData.title ? ChaSetI18n.tr("showcase.categories." + modelData.title, modelData.title).toUpperCase() : ""
                                     color: win.cMutedFg
                                     font.pixelSize: Typography.sizeCaption
                                     font.weight: Typography.weightSemibold

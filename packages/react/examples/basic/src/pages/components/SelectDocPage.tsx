@@ -26,7 +26,7 @@ export function SelectDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Forms & Inputs"
       title="Select"
       description="Displays a list of options for the user to pick from, triggered by a button with item indicators and scroll buttons."
       tocItems={[

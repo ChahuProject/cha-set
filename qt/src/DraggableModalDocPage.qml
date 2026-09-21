@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Desktop & Virtualization"
+    category: "Overlays & Feedback"
     pageTitle: "Draggable Modal"
     description: "Desktop floating panel window with a draggable header bar, bounded parent viewport constraints, and size mode switching."
     tocItems: [

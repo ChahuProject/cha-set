@@ -34,7 +34,7 @@ export function ViewportConstrainedContainerDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Surfaces & Layout"
       title="Viewport Constrained Container"
       description="Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling."
       tocItems={[

@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Base Primitives"
+    category: "Overlays & Feedback"
     pageTitle: "Dropdown Menu"
     description: "Displays a menu to the user triggered by a button with item groups, icons, shortcuts, and destructive actions."
     tocItems: [

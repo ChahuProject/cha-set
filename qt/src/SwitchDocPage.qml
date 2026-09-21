@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Base Primitives"
+    category: "Forms & Inputs"
     pageTitle: "Switch"
     description: "A control that allows the user to toggle between checked and not checked states."
     tocItems: [

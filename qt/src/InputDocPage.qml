@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Base Primitives"
+    category: "Forms & Inputs"
     pageTitle: "Input"
     description: "Displays a form text input field or a component that looks like an input field."
     tocItems: [

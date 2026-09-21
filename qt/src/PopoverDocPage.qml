@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Base Primitives"
+    category: "Overlays & Feedback"
     pageTitle: "Popover"
     description: "Displays rich interactive content in a floating portal anchored to a trigger button."
     tocItems: [

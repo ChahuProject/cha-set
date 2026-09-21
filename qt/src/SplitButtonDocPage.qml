@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Base Primitives"
     pageTitle: "Split Button"
     description: "Combines a primary direct action button with an adjoining chevron menu trigger for secondary options."
     tocItems: [

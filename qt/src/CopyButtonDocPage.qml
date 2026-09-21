@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Base Primitives"
     pageTitle: "Copy Button"
     description: "One-click clipboard copy button with transient feedback state and configurable timeouts."
     tocItems: [

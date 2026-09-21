@@ -33,7 +33,7 @@ export function AlertDialogDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Overlays & Feedback"
       title="Alert Dialog"
       description="A modal dialog that interrupts the user with important content and requires confirmation."
       tocItems={[

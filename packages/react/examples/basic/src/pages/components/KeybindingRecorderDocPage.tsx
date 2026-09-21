@@ -16,7 +16,7 @@ export function KeybindingRecorderDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Forms & Inputs"
       title="Keybinding Recorder"
       description="Interactive keyboard sequence recorder that captures desktop accelerator combinations (Ctrl, Alt, Shift, Meta)."
       tocItems={[

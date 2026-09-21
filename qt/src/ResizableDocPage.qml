@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Desktop & Virtualization"
+    category: "Surfaces & Layout"
     pageTitle: "Resizable"
     description: "Accessible resizable panel groups and layout splitters."
     tocItems: [

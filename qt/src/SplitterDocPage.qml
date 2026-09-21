@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Desktop & Virtualization"
+    category: "Surfaces & Layout"
     pageTitle: "Splitter"
     description: "Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits."
     tocItems: [

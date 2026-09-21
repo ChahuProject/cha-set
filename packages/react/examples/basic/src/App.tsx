@@ -16,6 +16,7 @@ import {
   Input,
   Separator,
   CodeBlock,
+  ChaSetI18nProvider,
 } from '@chahu/cha-set';
 import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
@@ -79,6 +80,7 @@ import { CodeBlockDocPage } from './pages/components/CodeBlockDocPage';
 import { PipelineViewDocPage } from './pages/components/PipelineViewDocPage';
 import { AddressBarDocPage } from './pages/components/AddressBarDocPage';
 import { ThemeSettingsDocPage } from './pages/components/ThemeSettingsDocPage';
+import { LanguageSettingsDocPage } from './pages/components/LanguageSettingsDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 
 import { TokensPage } from './pages/get-started/TokensPage';
@@ -695,6 +697,8 @@ export function App() {
         return <AddressBarDocPage />;
       case '#/components/theme-settings':
         return <ThemeSettingsDocPage />;
+      case '#/components/language-settings':
+        return <LanguageSettingsDocPage />;
       case '#/components/button':
 
       default:
@@ -703,45 +707,82 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20">
-      {/* Top Navbar */}
-      <Header
-        mode={mode}
-        onToggleMode={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
-        onOpenSearch={() => setSearchModalOpen(true)}
-        onToggleTuner={() => setShowTuner((v) => !v)}
-        showTuner={showTuner}
-        onOpenExport={() => setExportModalOpen(true)}
-      />
+    <ChaSetI18nProvider>
+      <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20">
+        {/* Top Navbar */}
+        <Header
+          mode={mode}
+          onToggleMode={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
+          onOpenSearch={() => setSearchModalOpen(true)}
+          onToggleTuner={() => setShowTuner((v) => !v)}
+          showTuner={showTuner}
+          onOpenExport={() => setExportModalOpen(true)}
+        />
 
-      {/* Main App Grid */}
-      <div className="flex-1 flex w-full max-w-7xl mx-auto">
-        {/* Left Category Sidebar */}
-        <Sidebar currentHash={currentHash} />
+        {/* Studio / Tuner Overlay Drawer (Collapsible) */}
+        {showTuner && (
+          <div className="border-b border-border bg-card/60 backdrop-blur-md px-4 py-3 md:px-6">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-foreground tracking-wide uppercase">
+                  Studio Theme Tuner
+                </span>
+                <span className="text-caption text-muted-foreground">
+                  Customizing CSS variables live
+                </span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-caption font-medium text-muted-foreground">Accent Palette</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {['#30a0ff', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'].map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setAccent(c)}
+                        className={`size-6 rounded-md border border-border/80 transition-transform ${
+                          accent === c ? 'scale-110 ring-2 ring-primary ring-offset-1 ring-offset-background' : 'hover:scale-105'
+                        }`}
+                        style={{ backgroundColor: c }}
+                        aria-label={`Select accent ${c}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
-        {/* Dynamic Route Page Content */}
-        <div className="flex-1 min-w-0">
-          <ErrorBoundary key={currentHash} fallbackTitle="Page Rendering Error">
-            {renderActivePage()}
-          </ErrorBoundary>
+        {/* Main 2-Column Showcase Layout */}
+        <div className="flex flex-1">
+          {/* Left SSOT Navigation Sidebar */}
+          <Sidebar currentHash={currentHash} />
+
+          {/* Right Main Documentation Viewport */}
+          <div className="flex-1 min-w-0">
+            <ErrorBoundary>
+              {renderActivePage()}
+            </ErrorBoundary>
+          </div>
         </div>
+
+        {/* Quick Search Dialog (Cmd+K) */}
+        <CommandSearchModal
+          isOpen={searchModalOpen}
+          onClose={() => setSearchModalOpen(false)}
+          onSelect={(href) => navigate(href)}
+        />
+
+        {/* One-Click Export Modal */}
+        <ExportModal
+          isOpen={exportModalOpen}
+          onClose={() => setExportModalOpen(false)}
+          mode={mode}
+          accent={accent}
+          overrides={overrides}
+        />
       </div>
-
-      {/* Quick Search Dialog (Cmd+K) */}
-      <CommandSearchModal
-        isOpen={searchModalOpen}
-        onClose={() => setSearchModalOpen(false)}
-        onSelect={(href) => navigate(href)}
-      />
-
-      {/* One-Click Export Modal */}
-      <ExportModal
-        isOpen={exportModalOpen}
-        onClose={() => setExportModalOpen(false)}
-        mode={mode}
-        accent={accent}
-        overrides={overrides}
-      />
-    </div>
+    </ChaSetI18nProvider>
   );
 }

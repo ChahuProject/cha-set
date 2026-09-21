@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Surfaces & Layout"
     pageTitle: "Viewport Constrained Container"
     description: "Container that dynamically bounds max-height based on available viewport space below the anchor, enabling smooth scrolling."
     tocItems: [

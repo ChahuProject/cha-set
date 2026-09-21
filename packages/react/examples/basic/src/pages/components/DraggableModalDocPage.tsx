@@ -41,7 +41,7 @@ export function DraggableModalDocPage() {
 
   return (
     <DocLayout
-      category="Desktop & Virtualization"
+      category="Overlays & Feedback"
       title="Draggable Modal"
       description="桌面可拖拽与尺寸调整弹窗体，支持尺寸档位切换、自动贴高与靠顶布局。"
       tocItems={[

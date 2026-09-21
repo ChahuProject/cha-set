@@ -62,7 +62,7 @@ export function PopoverDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Overlays & Feedback"
       title="Popover"
       description="Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management."
       tocItems={[

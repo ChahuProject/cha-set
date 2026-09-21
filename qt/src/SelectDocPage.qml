@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Base Primitives"
+    category: "Forms & Inputs"
     pageTitle: "Select"
     description: "Displays a list of options for the user to pick from — triggered by a button with chevron and checked indicators."
     tocItems: [

@@ -41,7 +41,7 @@ export function SheetDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Overlays & Feedback"
       title="Sheet"
       description="Extends the dialog component to display content that slides in from any screen edge (top, right, bottom, left)."
       tocItems={[

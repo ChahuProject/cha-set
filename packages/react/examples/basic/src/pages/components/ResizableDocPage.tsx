@@ -131,7 +131,7 @@ export function ResizableDocPage() {
 
   return (
     <DocLayout
-      category="Desktop & Virtualization"
+      category="Surfaces & Layout"
       title="Resizable"
       description="Accessible resizable panel groups and layout splitters."
       tocItems={[

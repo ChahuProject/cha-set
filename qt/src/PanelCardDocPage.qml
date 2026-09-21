@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Surfaces & Layout"
     pageTitle: "Panel Card"
     description: "Structured card container with a distinguished tinted header bar, optional badge indicators, and collapsible content toggling."
     tocItems: [

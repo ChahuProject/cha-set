@@ -21,7 +21,7 @@ export function ScaleOsdDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Overlays & Feedback"
       title="Scale OSD"
       description="Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
       tocItems={[

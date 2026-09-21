@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Base Primitives"
+    category: "Overlays & Feedback"
     pageTitle: "Sheet"
     description: "Extends the dialog component to display content that complements the main screen via smooth sliding transitions from any viewport edge."
     tocItems: [

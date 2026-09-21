@@ -37,7 +37,7 @@ export function SwitchDocPage() {
 
   return (
     <DocLayout
-      category="Base Primitives"
+      category="Forms & Inputs"
       title="Switch"
       description="A control that allows the user to toggle between checked and not checked states, with support for async loading, read-only mode, and helper descriptions."
       tocItems={[

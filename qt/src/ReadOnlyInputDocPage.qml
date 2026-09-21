@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Interactive Controls"
+    category: "Forms & Inputs"
     pageTitle: "Read-Only Input"
     description: "Protected display field for non-editable cryptographic tokens, resource IDs, and keys with an integrated one-click copy button."
     tocItems: [

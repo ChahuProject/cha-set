@@ -1087,20 +1087,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "A versatile button component with multiple variants, sizes, and states."
       },
       {
-        "id": "scroll-area",
-        "title": "Scroll Area",
-        "href": "#/components/scroll-area",
-        "desc": "Custom scrollable container with hot-zone expansion and stepper buttons.",
-        "description": "Custom scrollable container with hot-zone expansion and stepper buttons."
-      },
-      {
-        "id": "tabs",
-        "title": "Tabs",
-        "href": "#/components/tabs",
-        "desc": "Set of layered content sections known as tab panels, displayed one at a time.",
-        "description": "Set of layered content sections known as tab panels, displayed one at a time."
-      },
-      {
         "id": "badge",
         "title": "Badge",
         "href": "#/components/badge",
@@ -1115,12 +1101,45 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Renders an accessible label associated with form controls."
       },
       {
-        "id": "card",
-        "title": "Card",
-        "href": "#/components/card",
-        "desc": "Displays a card with header, title, description, content, and footer actions.",
-        "description": "Displays a card with header, title, description, content, and footer actions."
+        "id": "separator",
+        "title": "Separator",
+        "href": "#/components/separator",
+        "desc": "Visually or semantically separates content in horizontal or vertical orientation.",
+        "description": "Visually or semantically separates content in horizontal or vertical orientation."
       },
+      {
+        "id": "skeleton",
+        "title": "Skeleton",
+        "href": "#/components/skeleton",
+        "desc": "Used to show a placeholder while content is loading with pulse animations.",
+        "description": "Used to show a placeholder while content is loading with pulse animations."
+      },
+      {
+        "id": "copy-button",
+        "title": "Copy Button",
+        "href": "#/components/copy-button",
+        "desc": "One-click clipboard copy button with transient feedback icons and custom timeouts.",
+        "description": "One-click clipboard copy button with transient feedback icons and custom timeouts."
+      },
+      {
+        "id": "split-button",
+        "title": "Split Button",
+        "href": "#/components/split-button",
+        "desc": "Dual-action button with primary direct click and secondary dropdown chevron.",
+        "description": "Dual-action button with primary direct click and secondary dropdown chevron."
+      },
+      {
+        "id": "elided-text",
+        "title": "Elided Text",
+        "href": "#/components/elided-text",
+        "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated.",
+        "description": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
+      }
+    ]
+  },
+  {
+    "title": "Forms & Inputs",
+    "items": [
       {
         "id": "input",
         "title": "Input",
@@ -1143,11 +1162,11 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "A control that allows toggling binary state with smooth animated transitions."
       },
       {
-        "id": "separator",
-        "title": "Separator",
-        "href": "#/components/separator",
-        "desc": "Visually or semantically separates content in horizontal or vertical orientation.",
-        "description": "Visually or semantically separates content in horizontal or vertical orientation."
+        "id": "select",
+        "title": "Select",
+        "href": "#/components/select",
+        "desc": "Displays a list of options for the user to pick from with trigger and indicator.",
+        "description": "Displays a list of options for the user to pick from with trigger and indicator."
       },
       {
         "id": "slider",
@@ -1157,184 +1176,11 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Interactive control that allows selecting a numeric value along a track."
       },
       {
-        "id": "dialog",
-        "title": "Dialog",
-        "href": "#/components/dialog",
-        "desc": "Modal window that interrupts the user with critical content.",
-        "description": "Modal window that interrupts the user with critical content."
-      },
-      {
-        "id": "tooltip",
-        "title": "Tooltip",
-        "href": "#/components/tooltip",
-        "desc": "Popup that displays information related to an element on hover or focus.",
-        "description": "Popup that displays information related to an element on hover or focus."
-      },
-      {
-        "id": "table",
-        "title": "Table",
-        "href": "#/components/table",
-        "desc": "Responsive, accessible table component for tabular data.",
-        "description": "Responsive, accessible table component for tabular data."
-      },
-      {
-        "id": "color-picker",
-        "title": "ColorPicker",
-        "href": "#/components/color-picker",
-        "desc": "Interactive color selection with saturation/brightness field and swatches.",
-        "description": "Interactive color selection with saturation/brightness field and swatches."
-      },
-      {
-        "id": "dropdown-menu",
-        "title": "Dropdown Menu",
-        "href": "#/components/dropdown-menu",
-        "desc": "Displays a menu to the user triggered by a button with item groups and shortcuts.",
-        "description": "Displays a menu to the user triggered by a button with item groups and shortcuts."
-      },
-      {
-        "id": "select",
-        "title": "Select",
-        "href": "#/components/select",
-        "desc": "Displays a list of options for the user to pick from with trigger and indicator.",
-        "description": "Displays a list of options for the user to pick from with trigger and indicator."
-      },
-      {
-        "id": "popover",
-        "title": "Popover",
-        "href": "#/components/popover",
-        "desc": "Displays rich interactive content in a floating portal anchored to a trigger.",
-        "description": "Displays rich interactive content in a floating portal anchored to a trigger."
-      },
-      {
-        "id": "context-menu",
-        "title": "Context Menu",
-        "href": "#/components/context-menu",
-        "desc": "Displays a menu located at the pointer coordinates on right-click or context gesture.",
-        "description": "Displays a menu located at the pointer coordinates on right-click or context gesture."
-      },
-      {
-        "id": "alert-dialog",
-        "title": "Alert Dialog",
-        "href": "#/components/alert-dialog",
-        "desc": "A modal dialog that interrupts the user with important content and requires confirmation.",
-        "description": "A modal dialog that interrupts the user with important content and requires confirmation."
-      },
-      {
-        "id": "sheet",
-        "title": "Sheet",
-        "href": "#/components/sheet",
-        "desc": "Extends the dialog component to display content that slides in from any screen edge.",
-        "description": "Extends the dialog component to display content that slides in from any screen edge."
-      },
-      {
-        "id": "skeleton",
-        "title": "Skeleton",
-        "href": "#/components/skeleton",
-        "desc": "Used to show a placeholder while content is loading with pulse animations.",
-        "description": "Used to show a placeholder while content is loading with pulse animations."
-      },
-      {
-        "id": "collapsible",
-        "title": "Collapsible",
-        "href": "#/components/collapsible",
-        "desc": "An interactive component which expands and collapses a panel of content.",
-        "description": "An interactive component which expands and collapses a panel of content."
-      }
-    ]
-  },
-  {
-    "title": "Interactive Controls",
-    "items": [
-      {
-        "id": "copy-button",
-        "title": "Copy Button",
-        "href": "#/components/copy-button",
-        "desc": "One-click clipboard copy button with transient feedback icons and custom timeouts.",
-        "description": "One-click clipboard copy button with transient feedback icons and custom timeouts."
-      },
-      {
-        "id": "panel-card",
-        "title": "Panel Card",
-        "href": "#/components/panel-card",
-        "desc": "Card surface with integrated collapsible sections and header action slots.",
-        "description": "Card surface with integrated collapsible sections and header action slots."
-      },
-      {
-        "id": "split-button",
-        "title": "Split Button",
-        "href": "#/components/split-button",
-        "desc": "Dual-action button with primary direct click and secondary dropdown chevron.",
-        "description": "Dual-action button with primary direct click and secondary dropdown chevron."
-      },
-      {
-        "id": "inline-editable-text",
-        "title": "Inline Editable Text",
-        "href": "#/components/inline-editable-text",
-        "desc": "Text element that switches seamlessly to an input field on double-click or edit trigger.",
-        "description": "Text element that switches seamlessly to an input field on double-click or edit trigger."
-      },
-      {
         "id": "range-slider",
         "title": "Range Slider",
         "href": "#/components/range-slider",
         "desc": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention.",
         "description": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention."
-      },
-      {
-        "id": "read-only-input",
-        "title": "Read-Only Input",
-        "href": "#/components/read-only-input",
-        "desc": "Protected input field for tokens and IDs with integrated copy-to-clipboard action.",
-        "description": "Protected input field for tokens and IDs with integrated copy-to-clipboard action."
-      },
-      {
-        "id": "preset-number-input",
-        "title": "Preset Number Input",
-        "href": "#/components/preset-number-input",
-        "desc": "Numeric input field with quick-select preset dropdown panel and clear actions.",
-        "description": "Numeric input field with quick-select preset dropdown panel and clear actions."
-      },
-      {
-        "id": "keybinding-recorder",
-        "title": "Keybinding Recorder",
-        "href": "#/components/keybinding-recorder",
-        "desc": "Interactive recorder that captures accelerator keyboard sequences for desktop apps.",
-        "description": "Interactive recorder that captures accelerator keyboard sequences for desktop apps."
-      },
-      {
-        "id": "viewport-constrained-container",
-        "title": "Viewport Constrained Container",
-        "href": "#/components/viewport-constrained-container",
-        "desc": "Container that dynamically bounds max-height based on available viewport space below the anchor.",
-        "description": "Container that dynamically bounds max-height based on available viewport space below the anchor."
-      },
-      {
-        "id": "segmented-control",
-        "title": "Segmented Control",
-        "href": "#/components/segmented-control",
-        "desc": "Compact pill segmented switch for toolbars, menus, and view toggles.",
-        "description": "Compact pill segmented switch for toolbars, menus, and view toggles."
-      },
-      {
-        "id": "setting-row",
-        "title": "Setting Row",
-        "href": "#/components/setting-row",
-        "desc": "Settings form item layout with title, description, control slot, and anchor flash.",
-        "description": "Settings form item layout with title, description, control slot, and anchor flash."
-      },
-      {
-        "id": "elided-text",
-        "title": "Elided Text",
-        "href": "#/components/elided-text",
-        "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated.",
-        "description": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
-      },
-      {
-        "id": "duration-input",
-        "title": "Duration Input",
-        "href": "#/components/duration-input",
-        "desc": "Segmented duration input with step buttons, keyboard arrow jumping, and preset menu.",
-        "description": "Segmented duration input with step buttons, keyboard arrow jumping, and preset menu."
       },
       {
         "id": "snap-slider",
@@ -1344,51 +1190,114 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Stepped discrete slider that snaps to defined stops with ticks and label row."
       },
       {
-        "id": "scale-osd",
-        "title": "Scale OSD",
-        "href": "#/components/scale-osd",
-        "desc": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.",
-        "description": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
+        "id": "segmented-control",
+        "title": "Segmented Control",
+        "href": "#/components/segmented-control",
+        "desc": "Compact pill segmented switch for toolbars, menus, and view toggles.",
+        "description": "Compact pill segmented switch for toolbars, menus, and view toggles."
       },
       {
-        "id": "task-hud",
-        "title": "Task HUD",
-        "href": "#/components/task-hud",
-        "desc": "Floating task progress and notification HUD stack for background executions.",
-        "description": "Floating task progress and notification HUD stack for background executions."
+        "id": "color-picker",
+        "title": "ColorPicker",
+        "href": "#/components/color-picker",
+        "desc": "Interactive color selection with saturation/brightness field and swatches.",
+        "description": "Interactive color selection with saturation/brightness field and swatches."
+      },
+      {
+        "id": "duration-input",
+        "title": "Duration Input",
+        "href": "#/components/duration-input",
+        "desc": "Segmented duration input with step buttons, keyboard arrow jumping, and preset menu.",
+        "description": "Segmented duration input with step buttons, keyboard arrow jumping, and preset menu."
+      },
+      {
+        "id": "preset-number-input",
+        "title": "Preset Number Input",
+        "href": "#/components/preset-number-input",
+        "desc": "Numeric input field with quick-select preset dropdown panel and clear actions.",
+        "description": "Numeric input field with quick-select preset dropdown panel and clear actions."
+      },
+      {
+        "id": "read-only-input",
+        "title": "Read-Only Input",
+        "href": "#/components/read-only-input",
+        "desc": "Protected input field for tokens and IDs with integrated copy-to-clipboard action.",
+        "description": "Protected input field for tokens and IDs with integrated copy-to-clipboard action."
+      },
+      {
+        "id": "inline-editable-text",
+        "title": "Inline Editable Text",
+        "href": "#/components/inline-editable-text",
+        "desc": "Text element that switches seamlessly to an input field on double-click or edit trigger.",
+        "description": "Text element that switches seamlessly to an input field on double-click or edit trigger."
+      },
+      {
+        "id": "keybinding-recorder",
+        "title": "Keybinding Recorder",
+        "href": "#/components/keybinding-recorder",
+        "desc": "Interactive recorder that captures accelerator keyboard sequences for desktop apps.",
+        "description": "Interactive recorder that captures accelerator keyboard sequences for desktop apps."
       }
     ]
   },
   {
-    "title": "Desktop & Virtualization",
+    "title": "Surfaces & Layout",
     "items": [
       {
-        "id": "virtual-list",
-        "title": "Virtual List",
-        "href": "#/components/virtual-list",
-        "desc": "High-performance windowed 100k+ row list with dynamic or fixed item measurements.",
-        "description": "High-performance windowed 100k+ row list with dynamic or fixed item measurements."
+        "id": "card",
+        "title": "Card",
+        "href": "#/components/card",
+        "desc": "Displays a card with header, title, description, content, and footer actions.",
+        "description": "Displays a card with header, title, description, content, and footer actions."
       },
       {
-        "id": "virtual-tree",
-        "title": "Virtual Tree",
-        "href": "#/components/virtual-tree",
-        "desc": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation.",
-        "description": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
+        "id": "panel-card",
+        "title": "Panel Card",
+        "href": "#/components/panel-card",
+        "desc": "Card surface with integrated collapsible sections and header action slots.",
+        "description": "Card surface with integrated collapsible sections and header action slots."
       },
       {
-        "id": "virtual-grid",
-        "title": "Virtual Grid",
-        "href": "#/components/virtual-grid",
-        "desc": "2D windowed grid virtualizer for massive dataset visualization.",
-        "description": "2D windowed grid virtualizer for massive dataset visualization."
+        "id": "tabs",
+        "title": "Tabs",
+        "href": "#/components/tabs",
+        "desc": "Set of layered content sections known as tab panels, displayed one at a time.",
+        "description": "Set of layered content sections known as tab panels, displayed one at a time."
       },
       {
-        "id": "draggable-modal",
-        "title": "Draggable Modal",
-        "href": "#/components/draggable-modal",
-        "desc": "Desktop floating window with dragging title bar and bound viewport constraints.",
-        "description": "Desktop floating window with dragging title bar and bound viewport constraints."
+        "id": "scroll-area",
+        "title": "Scroll Area",
+        "href": "#/components/scroll-area",
+        "desc": "Custom scrollable container with hot-zone expansion and stepper buttons.",
+        "description": "Custom scrollable container with hot-zone expansion and stepper buttons."
+      },
+      {
+        "id": "collapsible",
+        "title": "Collapsible",
+        "href": "#/components/collapsible",
+        "desc": "An interactive component which expands and collapses a panel of content.",
+        "description": "An interactive component which expands and collapses a panel of content."
+      },
+      {
+        "id": "setting-row",
+        "title": "Setting Row",
+        "href": "#/components/setting-row",
+        "desc": "Settings form item layout with title, description, control slot, and anchor flash.",
+        "description": "Settings form item layout with title, description, control slot, and anchor flash."
+      },
+      {
+        "id": "viewport-constrained-container",
+        "title": "Viewport Constrained Container",
+        "href": "#/components/viewport-constrained-container",
+        "desc": "Container that dynamically bounds max-height based on available viewport space below the anchor.",
+        "description": "Container that dynamically bounds max-height based on available viewport space below the anchor."
+      },
+      {
+        "id": "sidebar",
+        "title": "Sidebar",
+        "href": "#/components/sidebar",
+        "desc": "Composable, responsive and resizable desktop-grade sidebar navigation system.",
+        "description": "Composable, responsive and resizable desktop-grade sidebar navigation system."
       },
       {
         "id": "splitter",
@@ -1410,7 +1319,87 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/resizable",
         "desc": "Accessible resizable panel groups and layout splitters.",
         "description": "Accessible resizable panel groups and layout splitters."
+      }
+    ]
+  },
+  {
+    "title": "Overlays & Feedback",
+    "items": [
+      {
+        "id": "dialog",
+        "title": "Dialog",
+        "href": "#/components/dialog",
+        "desc": "Modal window that interrupts the user with critical content.",
+        "description": "Modal window that interrupts the user with critical content."
       },
+      {
+        "id": "alert-dialog",
+        "title": "Alert Dialog",
+        "href": "#/components/alert-dialog",
+        "desc": "A modal dialog that interrupts the user with important content and requires confirmation.",
+        "description": "A modal dialog that interrupts the user with important content and requires confirmation."
+      },
+      {
+        "id": "sheet",
+        "title": "Sheet",
+        "href": "#/components/sheet",
+        "desc": "Extends the dialog component to display content that slides in from any screen edge.",
+        "description": "Extends the dialog component to display content that slides in from any screen edge."
+      },
+      {
+        "id": "popover",
+        "title": "Popover",
+        "href": "#/components/popover",
+        "desc": "Displays rich interactive content in a floating portal anchored to a trigger.",
+        "description": "Displays rich interactive content in a floating portal anchored to a trigger."
+      },
+      {
+        "id": "tooltip",
+        "title": "Tooltip",
+        "href": "#/components/tooltip",
+        "desc": "Popup that displays information related to an element on hover or focus.",
+        "description": "Popup that displays information related to an element on hover or focus."
+      },
+      {
+        "id": "dropdown-menu",
+        "title": "Dropdown Menu",
+        "href": "#/components/dropdown-menu",
+        "desc": "Displays a menu to the user triggered by a button with item groups and shortcuts.",
+        "description": "Displays a menu to the user triggered by a button with item groups and shortcuts."
+      },
+      {
+        "id": "context-menu",
+        "title": "Context Menu",
+        "href": "#/components/context-menu",
+        "desc": "Displays a menu located at the pointer coordinates on right-click or context gesture.",
+        "description": "Displays a menu located at the pointer coordinates on right-click or context gesture."
+      },
+      {
+        "id": "draggable-modal",
+        "title": "Draggable Modal",
+        "href": "#/components/draggable-modal",
+        "desc": "Desktop floating window with dragging title bar and bound viewport constraints.",
+        "description": "Desktop floating window with dragging title bar and bound viewport constraints."
+      },
+      {
+        "id": "scale-osd",
+        "title": "Scale OSD",
+        "href": "#/components/scale-osd",
+        "desc": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.",
+        "description": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
+      },
+      {
+        "id": "task-hud",
+        "title": "Task HUD",
+        "href": "#/components/task-hud",
+        "desc": "Floating task progress and notification HUD stack for background executions.",
+        "description": "Floating task progress and notification HUD stack for background executions."
+      }
+    ]
+  },
+  {
+    "title": "Desktop & Virtualization",
+    "items": [
       {
         "id": "window-title-bar",
         "title": "Window Title Bar",
@@ -1419,18 +1408,32 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons."
       },
       {
-        "id": "sidebar",
-        "title": "Sidebar",
-        "href": "#/components/sidebar",
-        "desc": "Composable, responsive and resizable desktop-grade sidebar navigation system.",
-        "description": "Composable, responsive and resizable desktop-grade sidebar navigation system."
-      },
-      {
         "id": "smooth-wheel-handler",
         "title": "Smooth Wheel Handler",
         "href": "#/components/smooth-wheel-handler",
         "desc": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex.",
         "description": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex."
+      },
+      {
+        "id": "virtual-list",
+        "title": "Virtual List",
+        "href": "#/components/virtual-list",
+        "desc": "High-performance windowed 100k+ row list with dynamic or fixed item measurements.",
+        "description": "High-performance windowed 100k+ row list with dynamic or fixed item measurements."
+      },
+      {
+        "id": "virtual-tree",
+        "title": "Virtual Tree",
+        "href": "#/components/virtual-tree",
+        "desc": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation.",
+        "description": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
+      },
+      {
+        "id": "virtual-grid",
+        "title": "Virtual Grid",
+        "href": "#/components/virtual-grid",
+        "desc": "2D windowed grid virtualizer for massive dataset visualization.",
+        "description": "2D windowed grid virtualizer for massive dataset visualization."
       }
     ]
   },
@@ -1443,6 +1446,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/generic-data-table",
         "desc": "Full-featured data table with column sorting, filtering, selection, and pagination.",
         "description": "Full-featured data table with column sorting, filtering, selection, and pagination."
+      },
+      {
+        "id": "table",
+        "title": "Table",
+        "href": "#/components/table",
+        "desc": "Responsive, accessible table component for tabular data.",
+        "description": "Responsive, accessible table component for tabular data."
       },
       {
         "id": "query-builder",
@@ -1478,6 +1488,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/theme-settings",
         "desc": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density.",
         "description": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density."
+      },
+      {
+        "id": "language-settings",
+        "title": "Language Settings",
+        "href": "#/components/language-settings",
+        "desc": "Cross-stack language configuration card with system detection and cultural poetry quotes.",
+        "description": "Cross-stack language configuration card with system detection and cultural poetry quotes."
       }
     ]
   }
@@ -2200,6 +2217,16 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "← / → / ↑ / ↓",
       "action": "Adjust slider values or select palette swatches"
+    }
+  ],
+  "language-settings": [
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Navigate between Follow System and language selection cards"
+    },
+    {
+      "key": "Space / Enter",
+      "action": "Select the focused language card and apply language preference"
     }
   ]
 };

@@ -15,7 +15,7 @@ export function ReadOnlyInputDocPage() {
 
   return (
     <DocLayout
-      category="Interactive Controls"
+      category="Forms & Inputs"
       title="Read-Only Input"
       description="Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle."
       tocItems={[

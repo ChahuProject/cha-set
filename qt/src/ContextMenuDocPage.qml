@@ -5,7 +5,7 @@ import ChaSet
 
 DocLayout {
     id: root
-    category: "Base Primitives"
+    category: "Overlays & Feedback"
     pageTitle: "Context Menu"
     description: "Displays a contextual popup menu at pointer coordinates triggered by right-click interaction."
     tocItems: [
