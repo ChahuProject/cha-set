@@ -179,7 +179,7 @@ Item {
             }
             var maxAllowed = root.width > 0 ? Math.max(140, root.width - 180) : 500;
             if (maxW > 0) return Math.min(maxAllowed, Math.max(100, maxW));
-            return Math.max(100, Math.min(140, root.width > 0 ? root.width * 0.35 : 140));
+            return root.width > 0 ? Math.min(maxAllowed, Math.max(160, root.width * 0.45)) : 200;
         }
         height: parent.height - (root.isSm ? 12 : 20)
     }
