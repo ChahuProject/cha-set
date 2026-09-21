@@ -1,0 +1,203 @@
+{
+  "$schema": "./schemas/theme-controls.schema.json",
+  "version": 1,
+  "description": "ChaSet theme control capability boundary. Declares, per configuration axis, whether ChaSet's theme control covers it (covered) or the host application owns it entirely (hostOnly). This file is the machine-readable authority for 'what ChaSet may and may not manage'. Any field named in `hostOnly` MUST NOT appear in ./schemas/theme-config.schema.json — enforced by scripts/check-theme-boundary.mjs in `pnpm gate`. See docs/design/chaset-theme-control.md.",
+  "principles": {
+    "P1_no_adapter": "Conflicts are eliminated by convergence, never by a bridging/adapter layer. When the two hosts disagree, ChaSet picks one canonical model and both hosts converge onto it.",
+    "P2_follow_launcher": "When a conflict must be resolved, follow the crd (launcher) model — it is the superset. Migration cost therefore lands on the dt (dunting) side.",
+    "P3_minimal_unique": "Anything neither host needs is deleted; anything only one host needs is that host's unique item and stays out of the shared control."
+  },
+  "canonical": {
+    "paletteSource": "launcher",
+    "paletteSourceFile": "crd-a/launcher/src/pages/外观页面/常量.ts (主题颜色选项列表)",
+    "note": "The launcher palette is the canonical list because it is the superset (neutral + 8 hues + custom = 10 selectable ids). dunting must converge onto it."
+  },
+  "axes": {
+    "mode": {
+      "covered": true,
+      "chaSetToken": "themes.axes.mode",
+      "configField": "mode",
+      "type": "enum",
+      "values": ["light", "dark"],
+      "rootValues": ["auto", "light", "dark"],
+      "launcher": { "field": "主题偏好", "values": ["auto", "light", "dark"], "file": "crd-a/launcher/src/lib/主题.ts:5" },
+      "dunting": { "field": "themeMode", "values": ["light", "system", "dark"], "file": "dt-a/theme/theme_manager.h (applyTheme normalizes to light|system|dark)" },
+      "resolution": "Converge on the launcher triple. `system` and `auto` are the same concept under different names; ChaSet names it `system`. The axis keepers {light,dark} are the resolved result."
+    },
+    "palette": {
+      "covered": true,
+      "chaSetToken": "themes.axes.accentTheme",
+      "configField": "palette.id",
+      "type": "enum",
+      "values": ["neutral", "slate", "red", "orange", "yellow", "green", "blue", "violet", "rose", "custom"],
+      "launcher": { "field": "主题颜色", "values": ["neutral", "slate", "red", "orange", "yellow", "green", "blue", "violet", "rose", "custom"], "file": "crd-a/launcher/src/lib/主题.ts:6", "note": "exact match — 10 ids, no convergence needed" },
+      "dunting": { "field": "accentMode + accentHex", "values": ["default", "custom"], "file": "dt-a/theme/theme_manager.h:274 (m_accentHex default #30a0ff)" },
+      "resolution": "dt's two-state {default, custom} collapses into the 10-id palette: `default` becomes `blue` (dt's base accent #30a0ff is blue) or `neutral`; `custom` becomes `custom` + customHex. Neither dt state is lost.",
+      "subcases": {
+        "neutral": {
+          "kind": "reset",
+          "semantics": "No override. Falls back to the shadcn base accent. Carries no delta block tokens of its own beyond the base re-point.",
+          "launcherEvidence": "crd-a/launcher/src/css/themes.css contains no [data-theme=\"neutral\"] block — verified."
+        },
+        "custom": {
+          "kind": "derived",
+          "semantics": "User-supplied hex drives a derived palette computed at runtime, not an enumerated delta block.",
+          "configField": "palette.customHex",
+          "launcherEvidence": "crd-a/launcher/src/lib/主题.ts:18159 应用自定义主题强调色() writes --primary/--primary-foreground/--ring/--chart-1..5 as inline style from one hex.",
+          "derivation": {
+            "primary": "{customHex}",
+            "primary-foreground": "derived contrast of customHex",
+            "ring": "color-mix(in oklch, {customHex} 72%, {dark?white:black})",
+            "chart-1": "{customHex}",
+            "chart-2": "color-mix(in oklch, {customHex} 76%, {dark?white:black})",
+            "chart-3": "color-mix(in oklch, {customHex} 58%, {dark?white:black})",
+            "chart-4": "color-mix(in oklch, {customHex} 74%, {dark?'#00d1b2':'#005f73'})",
+            "chart-5": "color-mix(in oklch, {customHex} 68%, {dark?'#fbbf24':'#9a3412'})"
+          }
+        }
+      }
+    },
+    "decoration": {
+      "covered": true,
+      "chaSetToken": "themeControls.decoration",
+      "configField": "decoration",
+      "launcher": { "field": "界面风格 + 装饰程度 + 装饰覆盖项", "file": "crd-a/launcher/src/lib/主题.ts:48-54, 515-561" },
+      "dunting": { "field": "(no per-axis decoration today)", "file": "dt-a uses fixed radii from cha-set tokens" },
+      "resolution": "The launcher model (styleId + level + per-key overrides) is canonical. dt gains it rather than inventing its own.",
+      "fields": {
+        "styleId": { "type": "enum", "values": ["simple", "expressive"], "covered": true, "chaSetToken": "themes.axes.interfaceStyle" },
+        "level": { "type": "integer", "min": 0, "max": 100, "default": 50, "covered": true, "launcherField": "装饰程度" },
+        "overrides": {
+          "type": "object",
+          "covered": true,
+          "note": "Per-key escape hatch; a key present here means 'follow this explicit value' instead of following `level`.",
+          "chaSetOwningTokens": {
+            "radius": "primitives.radius / composite radii",
+            "shadow": "composite shadows",
+            "motion": "primitives.motion"
+          }
+        }
+      }
+    },
+    "typography": {
+      "covered": true,
+      "chaSetToken": "primitives.typography",
+      "configField": "typography",
+      "fields": {
+        "familyId": { "type": "enum", "values": ["system", "sans", "serif", "mono"], "covered": true },
+        "scaleId": { "type": "enum", "values": ["default", "compact", "comfortable"], "covered": true }
+      },
+      "constraint": "Qt resolves only a SINGLE family name — comma-separated family lists are not parsed and silently fall back to the default font. familyId therefore resolves to exactly one concrete family per host; see docs/architecture/typography-system.md."
+    },
+    "uiScale": {
+      "covered": true,
+      "chaSetToken": "ThemeTokens.uiScale",
+      "configField": "uiScale",
+      "type": "number",
+      "min": 0.75,
+      "max": 2.0,
+      "default": 1.0,
+      "note": "Both hosts already expose this through ThemeTokens; the control only surfaces it."
+    }
+  },
+  "hostOnly": {
+    "description": "Axes ChaSet deliberately does NOT manage. Owned end-to-end by the launcher (crd). None of these identifiers may appear in the ThemeConfig schema. dt has no equivalent of any of them, which is exactly why they are out of scope for a shared control.",
+    "items": [
+      {
+        "id": "windowMaterial",
+        "label": "窗口材质",
+        "values": ["none", "mica", "acrylic", "tabbed"],
+        "configField": "窗口材质",
+        "why": "Windows DWM system-material capability (Mica/Acrylic/Mica Alt). Not expressible as a design token and meaningless on a non-Windows/Qt surface. crd-a/launcher/src/lib/主题.ts:7."
+      },
+      {
+        "id": "windowTint",
+        "label": "窗口色调",
+        "values": ["neutral", "slate", "graphite", "mist", "sage", "plum", "custom"],
+        "configField": "窗口色调",
+        "why": "Window-chrome-only tint composed with the DWM material. cha-set's themes.axes.windowTint exists as a launcher-preset CSS token axis, but it is not a shared-control concern: dt has no window tint. crd-a/launcher/src/lib/主题.ts:8."
+      },
+      {
+        "id": "customWindowTintLight",
+        "label": "自定义窗口底色（亮色）",
+        "configField": "自定义窗口底色亮色",
+        "why": "Companion input for windowTint=custom. crd-a/launcher/src/lib/主题.ts:39."
+      },
+      {
+        "id": "customWindowTintDark",
+        "label": "自定义窗口底色（暗色）",
+        "configField": "自定义窗口底色暗色",
+        "why": "Companion input for windowTint=custom. crd-a/launcher/src/lib/主题.ts:40."
+      },
+      {
+        "id": "backgroundImage",
+        "label": "背景图片",
+        "configField": "背景图片",
+        "why": "Host-specific asset pipeline (Tauri asset protocol conversion for local paths). A file path, not a token. crd-a/launcher/src/lib/主题.ts:67."
+      },
+      {
+        "id": "backgroundImageScale",
+        "label": "背景图片缩放",
+        "values": ["cover", "contain", "stretch", "tile", "center"],
+        "configField": "背景图片缩放",
+        "why": "Companion for backgroundImage; CSS sizing keywords attach to that image only. crd-a/launcher/src/lib/主题.ts:13."
+      },
+      {
+        "id": "backgroundImageOpacity",
+        "label": "背景图片不透明度",
+        "configField": "backgroundImageOpacity",
+        "why": "A decoration key in crd but semantically bound to the background image, which ChaSet does not own. Excluded from decoration.overrides for this reason. crd-a/launcher/src/lib/主题.ts:10."
+      }
+    ]
+  },
+  "duntingUnique": {
+    "description": "Axes that belong to dt only. ChaSet has no counterpart and the shared control does not expose them. Listed for completeness so the boundary is symmetric and auditable.",
+    "items": [
+      {
+        "id": "tabWidth",
+        "label": "标签栏宽度",
+        "configField": "tabMinWidth / tabMaxWidth",
+        "why": "dt user preference, explicitly filed as a non-token by cha-set itself. spec/tokens/meta.json sources.excluded: 'tabMinWidth/tabMaxWidth: user preferences, not design tokens'."
+      },
+      {
+        "id": "animationToggle",
+        "label": "平滑滚动 / 动画开关",
+        "configField": "animationsEnabled",
+        "why": "dt exposes a hard on/off; crd expresses the same intent continuously through decoration.motion. ChaSet's ThemeTokens.animationsEnabled is the resolved result, not a user-facing axis."
+      }
+    ]
+  },
+  "derivedContract": {
+    "description": "Values that ChaSet cannot statically generate and must therefore expose as a stated derivation contract. Both hosts implement these identically so a converged palette still renders converged derived states.",
+    "items": [
+      {
+        "id": "accentHover",
+        "formula": "accent().lighter(112)",
+        "source": "dt-a/theme/theme_manager.cpp:132-134",
+        "includedInSpec": false,
+        "why": "Runtime-derived from the resolved accent; not a static token. spec/tokens/meta.json sources.excluded records the same."
+      },
+      {
+        "id": "accentPressed",
+        "formula": "accent().darker(110)",
+        "source": "dt-a/theme/theme_manager.cpp:132-134",
+        "includedInSpec": false,
+        "why": "Same as accentHover, opposite direction."
+      },
+      {
+        "id": "decorationRadius",
+        "formula": "卡圆角rem=(6+radius*0.08)/16; 板圆角rem=(5+radius*0.07)/16; 控件圆角rem=(4+radius*0.05)/16",
+        "source": "crd-a/launcher/src/lib/主题.ts:515-561 应用装饰参数()",
+        "includedInSpec": false,
+        "why": "Continuous interpolation of a discrete level. The canonical host formula; dt must implement the same interpolation to stay visually converged."
+      },
+      {
+        "id": "decorationMotion",
+        "formula": "--app-motion-fast = (80 + motion*1.2)ms; --app-motion-normal = (100 + motion*1.6)ms",
+        "source": "crd-a/launcher/src/lib/主题.ts:515-561",
+        "includedInSpec": false,
+        "why": "Same continuous-interpolation reason as decorationRadius."
+      }
+    ]
+  }
+}

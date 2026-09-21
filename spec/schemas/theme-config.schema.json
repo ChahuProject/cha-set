@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "cha-set/theme-config@1",
+  "title": "ChaSet ThemeConfig",
+  "description": "The single theme-configuration object persisted and exchanged by the ChaSet theme control. This is the ONLY structured payload a host must store to reproduce a theme. Boundary: this schema covers exactly the axes marked `covered` in spec/theme-controls.json. Window material, window tint, and background image are hostOnly and MUST NOT be added here — scripts/check-theme-boundary.mjs fails the gate if they are.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "mode", "palette", "decoration", "typography", "uiScale"],
+  "properties": {
+    "version": {
+      "const": 1,
+      "type": "integer",
+      "description": "Schema version. Bumped only on breaking shape changes; hosts must reject unknown versions rather than guess."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["light", "dark", "system"],
+      "default": "system",
+      "description": "Requested appearance. `system` resolves through the host's OS detection. Corresponds to crd 主题偏好 {auto,light,dark} with `auto` renamed to `system`; dt's `system` already matches."
+    },
+    "palette": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "description": "Accent palette selection. The id list is the 10-item canonical launcher palette (spec/theme-controls.json axes.palette).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "enum": ["neutral", "slate", "red", "orange", "yellow", "green", "blue", "violet", "rose", "custom"],
+          "default": "neutral",
+          "description": "Canonical launcher palette id. `neutral` = no override (fall back to base accent). `custom` = derive the whole accent ramp from `customHex`."
+        },
+        "customHex": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "description": "Required in practice when id is `custom`, ignored otherwise. A single 6-digit sRGB hex; the ramp is derived per spec/theme-controls.json axes.palette.subcases.custom.derivation. Hosts SHOULD also accept this key when id !== custom so a user's picked colour survives a round-trip through `neutral`."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "id": { "const": "custom" } }, "required": ["id"] },
+          "then": { "required": ["customHex"] }
+        }
+      ]
+    },
+    "decoration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["styleId", "level"],
+      "description": "Radius / shadow / motion expression. Canonically the launcher model: a style preset plus a continuous level plus per-key overrides. All numeric leaves are re-derived by each host through the SAME interpolation contract (spec/theme-controls.json derivedContract) — the config carries the intent, never the resolved px/ms.",
+      "properties": {
+        "styleId": {
+          "type": "string",
+          "enum": ["simple", "expressive"],
+          "default": "simple",
+          "description": "Decoration preset. `simple` matches crd's data-interface-style=\"simple\" and dt's flat look; `expressive` is the richer counterpart."
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 50,
+          "description": "Master decoration amount. Radius, shadow and motion all scale from this unless individually overridden. crd field 装饰程度."
+        },
+        "overrides": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "Per-key escape hatch. A key present here means 'use this explicit value instead of following `level`'. Only keys ChaSet actually owns a token for are permitted — backgroundImageOpacity is deliberately absent because the background image is hostOnly.",
+          "properties": {
+            "radius": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Drives primitives.radius / composite corner radii. crd 装饰参数.radius." },
+            "shadow": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Drives composite shadow tokens. crd 装饰参数.shadow." },
+            "motion": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Drives primitives.motion durations. crd 装饰参数.motion." }
+          }
+        }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["familyId", "scaleId"],
+      "description": "Type selection. ChaSet owns a single typography scale (primitives.typography -> tokens.css + Typography.generated.qml); both hosts consume the SAME generated scale, so this object only picks a family and a size preset.",
+      "properties": {
+        "familyId": {
+          "type": "string",
+          "enum": ["system", "sans", "serif", "mono"],
+          "default": "system",
+          "description": "Logical family slot, NOT a font-family list. Each host maps it to exactly ONE concrete family name: Qt does not parse comma-separated family lists and silently falls back to the default font."
+        },
+        "scaleId": {
+          "type": "string",
+          "enum": ["default", "compact", "comfortable"],
+          "default": "default",
+          "description": "Size preset applied multiplicatively across the shared typography scale."
+        }
+      }
+    },
+    "uiScale": {
+      "type": "number",
+      "minimum": 0.75,
+      "maximum": 2.0,
+      "default": 1.0,
+      "description": "Global density multiplier. Both hosts already expose this as ThemeTokens.uiScale; the control only surfaces it in the UI."
+    }
+  }
+}

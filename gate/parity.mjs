@@ -173,6 +173,34 @@ if (existsSync(typographyCheckPath)) {
   console.log(`[gate] OK — Cross-Stack Typography Contract Gate passed (${typoRes.checkedCount} values agree across tokens.css, Typography.generated.qml and qt/src)`);
 }
 
+// 2.7 Mandatory Cross-Stack Theme Control Boundary Gate
+// The ChaSet theme control manages SOME axes (palette, mode, decoration, typography,
+// uiScale) and deliberately leaves others to the host (window material, window tint,
+// background image). That boundary is only real if it is machine-checked: this gate
+// asserts spec/theme-controls.json, spec/schemas/theme-config.schema.json and
+// themes.axes.accentTheme all agree, and that no hostOnly field has leaked into the
+// shared schema. See docs/design/chaset-theme-control.md.
+const themeBoundaryPath = resolve(root, 'scripts/check-theme-boundary.mjs');
+if (existsSync(themeBoundaryPath)) {
+  const { verifyThemeBoundary, selfTest } = await import(pathToFileURL(themeBoundaryPath).href);
+  // Run the self-test first: it proves the guard actually fires. A boundary check that
+  // silently stopped matching would otherwise pass forever without checking anything.
+  const st = selfTest();
+  if (!st.ok) {
+    console.error('[gate] FAIL: theme-control boundary gate self-test failed — the guard no longer detects injected violations');
+    process.exit(1);
+  }
+  const boundaryRes = verifyThemeBoundary({ quiet: true });
+  if (!boundaryRes.ok) {
+    console.error(`[gate] FAIL: Cross-Stack Theme Control Boundary Gate failed (${boundaryRes.errors.length} violation(s)):`);
+    for (const err of boundaryRes.errors) {
+      console.error(`  - ${err}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Theme Control Boundary Gate passed (${boundaryRes.checkedCount} boundary assertions, guard self-test verified)`);
+}
+
 // 3. Executable Behavioral Parity Checks
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');
 if (existsSync(qtExe)) {
@@ -238,6 +266,30 @@ if (existsSync(typographyTestFile)) {
     console.log('[gate] OK — Cross-stack typography conformance passed');
   } catch (err) {
     console.error('[gate] FAIL: Cross-stack typography conformance check failed');
+    if (err.stdout) console.error(err.stdout);
+    if (err.stderr) console.error(err.stderr);
+    process.exit(1);
+  }
+}
+
+// 5.6 Spec-Layer Token & Palette Invariant Tests
+// Covers the convergence guarantees a shared theme control depends on: the accent
+// palette is identical across the token axis / boundary declaration / config schema,
+// every selectable id has both mode blocks, and the frozen Qt colour contract is
+// untouched by the palette axis.
+const specTestsDir = resolve(root, 'spec', '__tests__');
+const paletteParityTest = resolve(specTestsDir, 'palette-parity.test.mjs');
+if (existsSync(paletteParityTest)) {
+  const { execSync } = await import('node:child_process');
+  try {
+    execSync('pnpm --filter @chahu/cha-set exec vitest run --config ../../spec/vitest.config.mjs', {
+      cwd: root,
+      stdio: 'pipe',
+      encoding: 'utf8',
+    });
+    console.log('[gate] OK — Spec-layer token & accent palette invariant tests passed');
+  } catch (err) {
+    console.error('[gate] FAIL: Spec-layer token & accent palette invariant tests failed');
     if (err.stdout) console.error(err.stdout);
     if (err.stderr) console.error(err.stderr);
     process.exit(1);
