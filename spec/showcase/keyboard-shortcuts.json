@@ -269,6 +269,10 @@
     { "key": "Tab / Shift + Tab", "action": "Navigate between settings rows and interactive controls" },
     { "key": "Space / Enter", "action": "Toggle segmented control, trigger reset or export actions" },
     { "key": "← / → / ↑ / ↓", "action": "Adjust slider values or select palette swatches" }
+  ],
+  "language-settings": [
+    { "key": "Tab / Shift + Tab", "action": "Navigate between Follow System and language selection cards" },
+    { "key": "Space / Enter", "action": "Select the focused language card and apply language preference" }
   ]
 }
 

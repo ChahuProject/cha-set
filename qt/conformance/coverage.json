@@ -332,5 +332,13 @@
     "exportImport": true,
     "typography": true,
     "disabled": true
+  },
+  "languageSettings": {
+    "followSystem": true,
+    "systemDetection": true,
+    "languageGrid": true,
+    "preferencePersistence": true,
+    "extensibility": true,
+    "disabled": true
   }
 }

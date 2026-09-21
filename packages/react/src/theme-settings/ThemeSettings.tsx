@@ -20,6 +20,7 @@ import {
   UploadIcon,
 } from '../lib/icons';
 import type { ThemeConfig, PaletteId, ThemeMode, DecorationStyleId } from '@chahu/spec/theme-settings';
+import { useChaSetI18n } from '../i18n';
 
 export interface ThemeSettingsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   config?: ThemeConfig;
@@ -86,13 +87,14 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
       showUiScale = true,
       showHeader,
       variant = 'card',
-      textProvider = (_key, defaultText) => defaultText,
+      textProvider,
       className,
       ...props
     },
     ref
   ) => {
-    const t = textProvider;
+    const i18n = useChaSetI18n();
+    const t = textProvider || i18n.t;
     const isEmbedded = variant === 'embedded';
     const shouldShowHeader = showHeader ?? !isEmbedded;
 

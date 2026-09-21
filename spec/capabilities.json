@@ -374,6 +374,14 @@
       "exportImport": { "requirement": "must", "description": "exports canonical JSON and imports valid configurations" },
       "typography": { "requirement": "should", "description": "configures logical typography family and scale presets" },
       "disabled": { "requirement": "should", "description": "disabled state blocks interactive changes" }
+    },
+    "languageSettings": {
+      "followSystem": { "requirement": "must", "description": "switches between follow system and fixed languages" },
+      "systemDetection": { "requirement": "must", "description": "detects and displays current system OS language" },
+      "languageGrid": { "requirement": "must", "description": "displays supported language cards with native names, codes, and poetry quotes" },
+      "preferencePersistence": { "requirement": "must", "description": "updates language preference and triggers reactive re-evaluation" },
+      "extensibility": { "requirement": "must", "description": "renders user-registered custom languages dynamically" },
+      "disabled": { "requirement": "should", "description": "disabled state blocks interactive selection" }
     }
   }
 }

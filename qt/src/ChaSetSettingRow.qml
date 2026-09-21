@@ -25,6 +25,7 @@ Item {
 
     width: parent ? parent.width : 0
     implicitHeight: Math.max(_labelColumn.implicitHeight, _controlZone.implicitHeight) + (root.isSm ? 14 : 20)
+    height: implicitHeight
 
     opacity: root.disabled ? 0.5 : 1.0
 
@@ -63,10 +64,8 @@ Item {
         anchors.left: parent.left
         anchors.right: _controlZone.left
         anchors.rightMargin: 12
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.topMargin: root.isSm ? 6 : 10
-        anchors.bottomMargin: root.isSm ? 6 : 10
+        anchors.verticalCenter: parent.verticalCenter
+        height: _labelColumn.height
         spacing: root.isSm ? 8 : 12
 
         Rectangle {
@@ -86,13 +85,19 @@ Item {
             }
         }
 
-        Column {
+        Item {
             id: _labelColumn
             width: _leftRow.width - (_iconBox.visible ? (_iconBox.width + _leftRow.spacing) : 0)
             anchors.verticalCenter: parent.verticalCenter
-            spacing: 2
+            implicitHeight: nameRow.height + (rowDescText.visible ? (rowDescText.height + 2) : 0)
+            height: implicitHeight
 
             Row {
+                id: nameRow
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: Math.max(rowNameText.height, badgeComp.visible ? badgeComp.height : 0)
                 spacing: 6
 
                 TextEdit {
@@ -124,6 +129,7 @@ Item {
                 }
 
                 ChaSetBadge {
+                    id: badgeComp
                     visible: root.badge.length > 0
                     text: root.badge
                     variant: "secondary"
@@ -134,7 +140,10 @@ Item {
 
             TextEdit {
                 id: rowDescText
-                width: parent.width
+                anchors.top: nameRow.bottom
+                anchors.topMargin: 2
+                anchors.left: parent.left
+                anchors.right: parent.right
                 text: root.description
                 visible: root.description.length > 0
                 color: ThemeTokens.subduedText
@@ -181,7 +190,18 @@ Item {
             if (maxW > 0) return Math.min(maxAllowed, Math.max(100, maxW));
             return root.width > 0 ? Math.min(maxAllowed, Math.max(160, root.width * 0.45)) : 200;
         }
-        height: parent.height - (root.isSm ? 12 : 20)
+        implicitHeight: {
+            var maxH = 0;
+            for (var j = 0; j < _controlZone.children.length; j++) {
+                var ch = _controlZone.children[j];
+                if (ch && ch.visible !== false) {
+                    var h = ch.implicitHeight > 0 ? ch.implicitHeight : ch.height;
+                    if (h > maxH) maxH = h;
+                }
+            }
+            return maxH;
+        }
+        height: implicitHeight > 0 ? implicitHeight : (parent.height - (root.isSm ? 12 : 20))
     }
 }
 

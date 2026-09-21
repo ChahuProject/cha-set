@@ -39,7 +39,7 @@ Item {
                 // fallback
             }
         }
-        return defaultText;
+        return ChaSetI18n.tr(key, defaultText);
     }
 
     readonly property var canonicalPalettes: [

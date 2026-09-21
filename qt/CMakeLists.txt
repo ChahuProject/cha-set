@@ -52,6 +52,16 @@ set_source_files_properties(src/SelectionHub.qml PROPERTIES
     QT_QML_SOURCE_TYPENAME SelectionHub
 )
 
+set_source_files_properties(src/ChaSetI18nData.generated.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME ChaSetI18nData
+)
+
+set_source_files_properties(src/ChaSetI18n.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME ChaSetI18n
+)
+
 # -------------------------------------------------------------
 # 1. Main Reusable Component Library (Target: ChaSet / ChaSet::ChaSet)
 # -------------------------------------------------------------
@@ -136,9 +146,12 @@ qt_add_qml_module(ChaSet
         src/ChaSetPipelineView.qml
         src/ChaSetAddressBar.qml
         src/ChaSetThemeSettings.qml
+        src/ChaSetLanguageSettings.qml
         src/ThemeTokens.generated.qml
 
         src/ShowcaseData.generated.qml
+        src/ChaSetI18nData.generated.qml
+        src/ChaSetI18n.qml
 
         src/Highlighter.generated.qml
 
@@ -241,6 +254,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/PipelineViewDocPage.qml
             src/AddressBarDocPage.qml
             src/ThemeSettingsDocPage.qml
+            src/LanguageSettingsDocPage.qml
             src/CommandSearchModal.qml
 
             src/ExportModal.qml
