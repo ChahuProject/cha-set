@@ -66,6 +66,14 @@ export {
   Maximize2Icon,
   PanelLeftIcon,
   ClockIcon,
+  SunIcon,
+  MoonIcon,
+  MonitorIcon,
+  RotateCcwIcon,
+  SlidersIcon,
+  PaletteIcon,
+  DownloadIcon,
+  UploadIcon,
 } from './lib/icons';
 
 

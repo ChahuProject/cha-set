@@ -22,6 +22,7 @@ Item {
     property bool showExport: true
     property bool showImport: true
     property bool showTypography: false
+    property string variant: "card" // "card" | "embedded"
 
     property bool showOverrides: false
 
@@ -121,31 +122,33 @@ Item {
     }
 
     width: parent ? parent.width : implicitWidth
-    implicitWidth: 460
+    implicitWidth: 480
     implicitHeight: _card.implicitHeight
 
     opacity: root.disabled ? 0.6 : 1.0
 
+    readonly property bool isEmbedded: root.variant === "embedded"
+
     Rectangle {
         id: _card
         width: parent.width
-        implicitHeight: _contentCol.implicitHeight + 32
-        radius: 12
-        color: ThemeTokens.panel
-        border.color: ThemeTokens.border
-        border.width: 1
+        implicitHeight: _contentCol.implicitHeight + (root.isEmbedded ? 0 : 32)
+        radius: root.isEmbedded ? 0 : 12
+        color: root.isEmbedded ? "transparent" : ThemeTokens.panel
+        border.color: root.isEmbedded ? "transparent" : ThemeTokens.border
+        border.width: root.isEmbedded ? 0 : 1
 
         Column {
             id: _contentCol
-            x: 16
-            y: 16
-            width: parent.width - 32
-            spacing: 12
+            x: root.isEmbedded ? 0 : 16
+            y: root.isEmbedded ? 0 : 16
+            width: root.isEmbedded ? parent.width : (parent.width - 32)
+            spacing: 14
 
-            // Header Section
+            // Header Section (Only rendered in card mode)
             Row {
                 width: parent.width
-                visible: root.showReset || root.showExport || root.showImport
+                visible: !root.isEmbedded && (root.showReset || root.showExport || root.showImport)
 
                 Row {
                     spacing: 8
@@ -196,72 +199,219 @@ Item {
             }
 
             ChaSetSeparator {
-                visible: root.showReset || root.showExport || root.showImport
+                visible: !root.isEmbedded && (root.showReset || root.showExport || root.showImport)
                 width: parent.width
             }
 
-            // 1. Appearance Mode
+            // 1. Appearance Mode — Visual Mockup Cards (Zero Emojis)
             ChaSetSettingRow {
                 name: root.trText("theme.settings.mode.title", "Appearance Mode")
                 description: root.trText("theme.settings.mode.desc", "Switch between Light, Dark, or System OS appearance")
                 controlWidth: 260
 
-                ChaSetSegmentedControl {
-                    id: modeControl
-                    size: "sm"
-                    width: 250
-                    value: root.config?.mode || "system"
-                    options: [
-                        { label: "☀️ " + root.trText("theme.mode.light", "Light"), value: "light" },
-                        { label: "🌙 " + root.trText("theme.mode.dark", "Dark"), value: "dark" },
-                        { label: "💻 " + root.trText("theme.mode.system", "System"), value: "system" }
-                    ]
-                    onValueSelected: function(val) {
-                        root.updateConfig(function(cfg) { cfg.mode = val; });
+                Row {
+                    spacing: 8
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    Repeater {
+                        model: [
+                            { id: "light", label: root.trText("theme.mode.light", "Light") },
+                            { id: "dark", label: root.trText("theme.mode.dark", "Dark") },
+                            { id: "system", label: root.trText("theme.mode.system", "System") }
+                        ]
+
+                        delegate: Rectangle {
+                            id: modeCard
+                            required property int index
+                            required property var modelData
+
+                            readonly property bool isSelected: (root.config?.mode || "system") === modelData.id
+                            width: 78
+                            height: 68
+                            radius: 8
+                            color: isSelected ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08) : ThemeTokens.card
+                            border.width: isSelected ? 2 : 1
+                            border.color: isSelected ? ThemeTokens.accent : ThemeTokens.border
+
+                            Column {
+                                anchors.centerIn: parent
+                                spacing: 4
+
+                                // Mini Mockup Window Frame
+                                Rectangle {
+                                    width: 66
+                                    height: 36
+                                    radius: 4
+                                    clip: true
+                                    border.width: 1
+                                    border.color: modelData.id === "light" ? "#e2e8f0" : (modelData.id === "dark" ? "#27272a" : "#52525b")
+                                    color: modelData.id === "light" ? "#ffffff" : (modelData.id === "dark" ? "#09090b" : "#ffffff")
+
+                                    // Light Window Mock
+                                    Item {
+                                        anchors.fill: parent
+                                        visible: modelData.id === "light"
+
+                                        Rectangle {
+                                            id: lightTitle
+                                            width: parent.width; height: 7; color: "#f4f4f5"
+                                            Row {
+                                                x: 3; y: 2; spacing: 2
+                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#f87171" }
+                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#fbbf24" }
+                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#34d399" }
+                                            }
+                                        }
+                                        Rectangle {
+                                            anchors.top: lightTitle.bottom; anchors.left: parent.left; anchors.bottom: parent.bottom
+                                            width: 14; color: "#f4f4f5"
+                                        }
+                                        Column {
+                                            anchors.left: parent.left; anchors.leftMargin: 18
+                                            anchors.top: lightTitle.bottom; anchors.topMargin: 4
+                                            spacing: 2
+                                            Rectangle { width: 38; height: 2; radius: 1; color: "#e4e4e7" }
+                                            Rectangle { width: 24; height: 2; radius: 1; color: "#e4e4e7" }
+                                        }
+                                    }
+
+                                    // Dark Window Mock
+                                    Item {
+                                        anchors.fill: parent
+                                        visible: modelData.id === "dark"
+
+                                        Rectangle {
+                                            id: darkTitle
+                                            width: parent.width; height: 7; color: "#18181b"
+                                            Row {
+                                                x: 3; y: 2; spacing: 2
+                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#52525b" }
+                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#52525b" }
+                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#52525b" }
+                                            }
+                                        }
+                                        Rectangle {
+                                            anchors.top: darkTitle.bottom; anchors.left: parent.left; anchors.bottom: parent.bottom
+                                            width: 14; color: "#18181b"
+                                        }
+                                        Column {
+                                            anchors.left: parent.left; anchors.leftMargin: 18
+                                            anchors.top: darkTitle.bottom; anchors.topMargin: 4
+                                            spacing: 2
+                                            Rectangle { width: 38; height: 2; radius: 1; color: "#27272a" }
+                                            Rectangle { width: 24; height: 2; radius: 1; color: "#27272a" }
+                                        }
+                                    }
+
+                                    // System Split Window Mock
+                                    Item {
+                                        anchors.fill: parent
+                                        visible: modelData.id === "system"
+
+                                        // Left half light
+                                        Rectangle {
+                                            anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom
+                                            width: parent.width / 2; color: "#ffffff"
+                                            Rectangle { width: parent.width; height: 7; color: "#f4f4f5" }
+                                            Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.topMargin: 7; anchors.bottom: parent.bottom; width: 7; color: "#f4f4f5" }
+                                        }
+                                        // Right half dark
+                                        Rectangle {
+                                            anchors.right: parent.right; anchors.top: parent.top; anchors.bottom: parent.bottom
+                                            width: parent.width / 2; color: "#09090b"
+                                            Rectangle { width: parent.width; height: 7; color: "#18181b" }
+                                            Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.topMargin: 7; anchors.bottom: parent.bottom; width: 7; color: "#18181b" }
+                                        }
+                                    }
+                                }
+
+                                Text {
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    text: modelData.label
+                                    font.pixelSize: Typography.sizeCaption
+                                    font.bold: modeCard.isSelected
+                                    color: modeCard.isSelected ? ThemeTokens.accent : ThemeTokens.subduedText
+                                }
+                            }
+
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                    root.updateConfig(function(cfg) { cfg.mode = modelData.id; });
+                                }
+                            }
+                        }
                     }
                 }
             }
 
             ChaSetSeparator { width: parent.width }
 
-            // 2. Accent Palette
+            // 2. Accent Palette — Tactile Swatches with Contrast Checks
             ChaSetSettingRow {
                 name: root.trText("theme.settings.palette.title", "Accent Palette")
                 description: root.trText("theme.settings.palette.desc", "Choose from 10 canonical theme palettes or custom accent")
                 controlWidth: 320
 
                 Row {
-                    spacing: 4
+                    spacing: 6
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
 
                     Flow {
                         width: Math.min(270, parent.parent ? parent.parent.width : 270)
-                        spacing: 4
+                        spacing: 6
 
                         Repeater {
                             model: root.canonicalPalettes
                             delegate: Rectangle {
+                                id: swatchItem
                                 required property int index
                                 required property var modelData
 
                                 readonly property bool isSelected: (root.config?.palette?.id || "neutral") === modelData.id
-                                width: 22
-                                height: 22
-                                radius: 11
-                                color: modelData.id === "custom"
-                                       ? (root.config?.palette?.customHex || "#30a0ff")
-                                       : modelData.hex
+                                width: 26
+                                height: 26
+                                radius: 13
+                                color: modelData.id === "neutral"
+                                       ? "#475569"
+                                       : (modelData.id === "custom"
+                                          ? (root.config?.palette?.customHex || "#30a0ff")
+                                          : modelData.hex)
                                 border.width: isSelected ? 2 : 1
-                                border.color: isSelected ? ThemeTokens.accent : ThemeTokens.border
+                                border.color: isSelected ? ThemeTokens.accent : Qt.rgba(0, 0, 0, 0.2)
+                                scale: isSelected ? 1.1 : 1.0
 
-                                Rectangle {
+                                Behavior on scale {
+                                    NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: Easing.OutQuad }
+                                }
+
+                                // Centered Checkmark Icon Canvas
+                                Canvas {
+                                    id: checkCanvas
                                     anchors.centerIn: parent
-                                    width: 6
-                                    height: 6
-                                    radius: 3
-                                    color: "#ffffff"
-                                    visible: parent.isSelected
+                                    width: 10
+                                    height: 8
+                                    visible: swatchItem.isSelected
+                                    onPaint: {
+                                        var ctx = getContext("2d");
+                                        ctx.reset();
+                                        ctx.strokeStyle = (modelData.id === "yellow") ? "#18181b" : "#ffffff";
+                                        ctx.lineWidth = 2;
+                                        ctx.lineCap = "round";
+                                        ctx.lineJoin = "round";
+                                        ctx.beginPath();
+                                        ctx.moveTo(1, 4);
+                                        ctx.lineTo(4, 7);
+                                        ctx.lineTo(9, 1);
+                                        ctx.stroke();
+                                    }
+                                    Connections {
+                                        target: swatchItem
+                                        function onIsSelectedChanged() { checkCanvas.requestPaint(); }
+                                    }
                                 }
 
                                 MouseArea {
@@ -278,6 +428,7 @@ Item {
                         }
                     }
 
+                    // Custom Color Popover Trigger
                     ChaSetColorPicker {
                         id: customPicker
                         visible: (root.config?.palette?.id || "neutral") === "custom"
@@ -353,8 +504,8 @@ Item {
                         size: "sm"
                         variant: "ghost"
                         text: root.showOverrides
-                              ? root.trText("theme.overrides.hide", "Hide")
-                              : root.trText("theme.overrides.custom", "Overrides")
+                              ? root.trText("theme.overrides.hide", "Details")
+                              : root.trText("theme.overrides.custom", "Tune")
                         onClicked: root.showOverrides = !root.showOverrides
                     }
                 }
