@@ -12,6 +12,15 @@ QtObject {
     property bool dark: false
     property bool animationsEnabled: true
     property real animSpeed: 0.2
+    property real uiScale: 1.0
+
+    function dp(val) {
+        return Math.round(val * uiScale);
+    }
+
+    function sp(val) {
+        return Math.round(val * uiScale);
+    }
 
     function motionDuration(baseMs) {
         if (!animationsEnabled) return 0;
