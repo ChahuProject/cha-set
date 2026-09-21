@@ -24,6 +24,7 @@
 | [`component-contracts.md`](./component-contracts.md) | Neutral component API contracts, capability manifests, earned coverage testing, and Parity Gate | `spec/components/`, `spec/capabilities.json`, `gate/parity.mjs`, `packages/*/conformance/` | `[Authoritative Specification]` |
 | [`visual-conformance.md`](./visual-conformance.md) | Cross-stack visual conformance, isolated component harnesses, automated Edge CDP + Qt snapshot pipeline, and pixel diff gating | `scripts/visual-diff.mjs`, `packages/react/examples/basic/`, `qt/src/` | `[Authoritative Specification]` |
 | [`theme-customizer.md`](./theme-customizer.md) | Style configurator & component preview workbench (React Studio + Qt Showcase), real-time token tuning, and copyable exports | `packages/react/examples/basic/`, `qt/src/` | `[Design & Implementation]` |
+| [`../design/chaset-theme-control.md`](../design/chaset-theme-control.md) | Unified cross-stack theme configuration control, neutral schema boundary, 10-id palette convergence, and host isolation | `packages/react/src/theme-settings/`, `qt/src/ChaSetThemeSettings.qml`, `spec/schemas/theme-config.schema.json`, `spec/theme-controls.json` | `[Authoritative Specification]` |
 
 ---
 

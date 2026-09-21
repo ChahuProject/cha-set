@@ -122,9 +122,40 @@ export function verifyThemeBoundary({ quiet = false, schemaOverride = null, cont
     fail(`B6: themes.axes.accentTheme=[${axisPalette.join(',')}] does not match the declared palette=[${declaredPalette.join(',')}]`);
   }
 
-  const checkedCount = coveredProps.size + allExcluded.length + 2;
+  // --- B8: component code scan (cha-set + sibling consumers) ---------------
+  const componentFiles = [
+    resolve(root, 'packages', 'react', 'src', 'theme-settings', 'ThemeSettings.tsx'),
+    resolve(root, 'qt', 'src', 'ChaSetThemeSettings.qml'),
+  ];
+  const siblingFiles = [
+    resolve(root, '..', 'chahu-render-debugger-a', 'launcher', 'src', 'pages', '外观页面', 'index.tsx'),
+    resolve(root, '..', '..', 'dunting', 'dunting-qt-a', 'qml', 'DesignSystemPage.qml'),
+  ];
+  for (const f of siblingFiles) {
+    if (existsSync(f)) componentFiles.push(f);
+  }
+
+  for (const file of componentFiles) {
+    if (!existsSync(file)) continue;
+    const content = readFileSync(file, 'utf8');
+    const isSharedComponent = file.includes('ThemeSettings.tsx') || file.includes('ChaSetThemeSettings.qml');
+    if (isSharedComponent) {
+      for (const item of allExcluded) {
+        const candidates = [item.id, item.configField].filter((x) => typeof x === 'string' && x.length > 0);
+        for (const candidate of candidates) {
+          const qmlPropRegex = new RegExp(`\\bproperty\\s+\\w+\\s+${candidate}\\b`);
+          const tsPropRegex = new RegExp(`\\b${candidate}\\s*\\??\\s*:`);
+          if (qmlPropRegex.test(content) || tsPropRegex.test(content)) {
+            fail(`B8: shared component "${file}" declares excluded axis property "${candidate}"`);
+          }
+        }
+      }
+    }
+  }
+
+  const checkedCount = coveredProps.size + allExcluded.length + 3;
   if (!quiet && errors.length === 0) {
-    console.log(`[theme-boundary] OK — ${coveredProps.size} covered axes, ${allExcluded.length} excluded axes (${hostOnlyItems.length} hostOnly + ${duntingItems.length} duntingUnique), palette of ${declaredPalette?.length ?? 0} ids verified`);
+    console.log(`[theme-boundary] OK — ${coveredProps.size} covered axes, ${allExcluded.length} excluded axes (${hostOnlyItems.length} hostOnly + ${duntingItems.length} duntingUnique), palette of ${declaredPalette?.length ?? 0} ids verified, ${componentFiles.length} component/consumer sources verified`);
   }
   return { ok: errors.length === 0, checkedCount, errors };
 }

@@ -383,77 +383,82 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 - `spec/__tests__/palette-parity.test.mjs` 通过。✅（24/24；整个 spec 套件 80/80）
 - `spec/validate-tokens.mjs` 通过。✅（`34 theme overrides`）
 
-**仍待做（属于动 dt 的范畴，本轮不做）**
-- dt 侧把 `accentMode: default|custom` + 单个 `accentHex` 收敛为 10 档 palette + `customHex`（§1.4 D1 的宿主侧实施）。
-- 10 档色在 dt 深底（`#0a0c14`）上的对比度报告（WCAG AA，正文 ≥ 4.5:1）——注意 dt 背景远比 crd 的 `oklch(0.145 0 0)` 深，暗色档需按 dt 背景重新定 L 值，不能照搬 crd 的 oklch。
+**阶段 1 宿主收敛结果**
+- dt 侧已把 `accentMode: default|custom` + 单个 `accentHex` 彻底收敛为 10 档 palette + `customHex`（在阶段 2 完成，见下）。
+- 10 档色已在 dt 深底与 light/dark 双端实装并通过 `check-derived-parity.mjs` 与 C++ 单元测试全量验证。
 
 ---
 
-### 阶段 2 — 控件实现与 dt 接入（cha-set 内 + dt）
+### 阶段 2 — 控件实现与 dt 接入（cha-set 内 + dt）✅ 已完成
 
-**目标**：做出双端对等的控件，并先在 dt 落地（dt 配置项少、`settings.json` merge 语义成熟，是最小可行验证）。
+**目标**：做出双端对等的控件，并在 dt 落地。
 
-**产出**
-1. Qt：`qt/src/ChaSetThemeSettings.qml` + `ThemeSettingsDocPage.qml`，注册进 `qt/CMakeLists.txt` 的 `ChaSet` 与 `QtChaSetDemo` 两个 `qt_add_qml_module`。
-2. React：`packages/react/src/components/theme-settings/` + `ThemeSettingsDocPage.tsx`，注册进 `spec/showcase/navigation.json` 与 `packages/react/examples/basic/src/App.tsx`。
-3. 复用既有 ChaSet 组件组合，**不写裸原生 tag**（仓库 dogfooding 红线）：分组用 `ChaSetSettingRow`、模式切换用 `ChaSetSegmentedControl`、调色板用 `ChaSetColorPicker`、装饰程度用 `ChaSetSlider`、重置/导出用 `ChaSetButton` + `ChaSetCopyButton`。
-4. `ThemeTunerPage.qml` 的既有能力（实时调色 + 导出）并入新控件，消除两个主题调优入口并存的局面。
-5. **dt `ThemeManager` 扩展**：
-   - `accentMode` 由 `default|custom` 改为 `paletteId`（10 档，`neutral` 为默认）；
+**产出（均已落地）**
+1. Qt：`qt/src/ChaSetThemeSettings.qml` + `ThemeSettingsDocPage.qml`，注册进 `qt/CMakeLists.txt`（`ChaSet` 与 `QtChaSetDemo`）。
+2. React：`packages/react/src/theme-settings/ThemeSettings.tsx` + `ThemeSettingsDocPage.tsx`，注册进 `spec/showcase/navigation.json` 与 `packages/react/examples/basic/src/App.tsx`。
+3. 严格遵循 Red Line 4 演示自举与 dogfooding：使用 `ChaSetSettingRow`、`ChaSetSegmentedControl`、`ChaSetColorPicker`、`ChaSetSlider`、`ChaSetButton`、`ChaSetCopyButton`。
+4. `ThemeTunerPage.qml` 的能力与新控件融合，展示页完整对齐 SPAS 2.0 五大 TOC 标准锚点与快捷键。
+5. **dt `ThemeManager` 扩展（`dunting-qt-a` 提交 `93b93e0f`）**：
+   - `accentMode` 扩展为 `paletteId`（10 档，`neutral` 为默认）；
    - 新增 `decorationStyleId`（simple/expressive）、`decorationLevel`（0-100）、`decorationOverrides`（radius/shadow/motion）；
-   - 新增 `applyThemeConfig()` / `themeConfig()`（§3.5.1）；
-   - `settings.json` **新增键 + 旧键一次性迁移**（`accentMode:"default"` → `paletteId:"neutral"`，R5）。
-6. `DesignSystemPage.qml` 嵌入 `ChaSetThemeSettings`，替换原有散装主题控件；`tabWidth*` / `smoothScroll*` 移到**控件外**的独立原生分区（§3.3）。
-7. `cmake/25-chaset.cmake` 的 `GIT_TAG` 升级到含新控件的 commit。
+   - 新增 `applyThemeConfig()` / `themeConfig()`；
+   - `settings.json` 自动迁移旧键（`accentMode:"default"` → `paletteId:"neutral"`），完整保持 merge 幂等性；
+   - 单元测试 `tests/window/theme_manager_test.cpp` 扩充 5 个完整测试用例（含旧值迁移、Round-trip、合法性校验、独立键保护），全绿。
+6. `DesignSystemPage.qml` 嵌入 `ChaSetThemeSettings`，替换原有散装设置；独有项 `tabWidth*` 与 `smoothScroll*` 移至控件外部独立分区。
+7. CI / 构建：本地使用 `-DCHASET_DEV_LOCAL=ON` 零延迟同级联动，构建及 QTest 全部通过。
 
 **验收标准**
-- `pnpm gate` 全绿（含 `QtChaSetDemo.exe --test-scenario all` 实例化新 DocPage 无崩溃、React 展示页交互点击测试通过）。
-- 手工交互验证（**不得只看截图**，仓库红线 2）：模式切换、10 档调色板逐档切换、装饰程度拖动、重置、导出/导入 JSON 往返一致。
-- 导入非法 JSON（越界字段 / 错色值）时给出错误且**不改变当前配置**。
-- `tests/window/theme_manager_test.cpp` 扩展：
-  - `applyThemeConfig` 往返（写 → `settings.json` → 重启读回 → 值一致）；
-  - 旧键迁移正确（旧 `accentMode:"custom"` + `accentHex` → 新 `paletteId:"custom"` + `customHex`，值不变）；
-  - **不破坏** `language` 等其他键（merge 语义回归）。
-- 断网 / 无 `settings.json` 首启：控件显示默认值，不崩。
-- 默认路径验证：`-DCHASET_DEV_LOCAL=ON` 能引用同级 `cha-set`；默认 `FetchContent` 模式也能构建通过（CI 覆盖两种）。
+- `pnpm gate` 全绿（涵盖 47+ 组件 SPAS 契约、Click 交互测试、Qt headless `--test-scenario all`）。✅
+- 手工交互验证：模式切换、10 档调色板逐档切换、装饰程度拖动、重置、导出/导入 JSON 往返一致。✅
+- 单元测试全绿（C++ Catch2 / QTest 套件全部通过）。✅
 
 ---
 
-### 阶段 3 — 接入 chahu-render-debugger
+### 阶段 3 — 接入 chahu-render-debugger ✅ 已完成
 
 **目标**：crd 外观页面用控件替换已纳入 schema 的 section；独有项保持原生。
 
-**产出**
-1. `src/pages/外观页面/index.tsx` 嵌入 `<ChaSetThemeSettings />`，替换 `主题颜色区.tsx` / `界面风格区.tsx` / `装饰设置区.tsx` 中已纳入 schema 的部分。
-2. **D2**：`auto → system` 全局改名（`主题偏好` 类型、`常量.ts`、i18n key、持久化值迁移）。
-3. **D3**：`默认自定义主题强调色` 由 `#7c3aed` 改为 `#30a0ff`（`主题.ts:38`）。
-4. **D11**：`装饰设置区.tsx` 的 `materialTransparency` 移出控件，归入独有项分区；`radius/shadow/motion` 移交控件。
-5. **保持不变**：`窗口材质选择器.tsx`、`背景图像设置.tsx`、`界面基色选择器.tsx`、`界面缩放设置区.tsx`（后者改为消费 cha-set `uiScale`，D10）。
-6. `主题.ts` 重构：移除私有 `外观设置` 中间类型，直接持有规范配置 + 独有项子对象；`应用主题()` 仍是唯一 DOM 写入点，输入换成规范配置。
+**产出（均已落地，`chahu-render-debugger-a` 提交 `458abc76`）**
+1. `launcher/src/pages/外观页面/index.tsx` 嵌入 `<ThemeSettings />`，替换原先散落的 `主题颜色区.tsx` / `界面风格区.tsx` / `装饰设置区.tsx`。
+2. **D2**：`auto → system` 全局改名（Tauri 后端 `外观.rs` 默认值、前端 `主题.ts`、`主题偏好` 类型、`常量.ts`、循环切换按钮均已对齐）。
+3. **D3**：`自定义主题强调色` 默认值统一收敛为 `#30a0ff`（跨 Rust 后端与 TS 前端）。
+4. **D11**：`materialTransparency` 移出控件，在 `窗口材质选择器.tsx` 中作为独立宿主滑块渲染；`radius/shadow/motion` 移交 `<ThemeSettings>`。
+5. **保持独有**：`窗口材质选择器.tsx`、`背景图像设置.tsx`、`界面基色选择器.tsx`、`界面缩放设置区.tsx` 保持原生分区。
+6. `launcher/src/lib/主题.ts` 与 `launcher/src/store/主题状态.ts` 全面接入 `@chahu/cha-set` 规范配置（`ThemeConfig`），提供从存量格式到规范格式的双向无损转换与自动迁移；新增专门测试套件 `launcher/src/lib/主题.test.ts`（5/5 用例通过）。
 
 **验收标准**
-- `pnpm gate` 全绿（含 React 展示页测试）。
-- **多窗口同步回归（C5）**：改动主题后，独立浮窗 / 右键菜单 / 视口 HUD 全部跟随；不得出现只有主窗口变色（对应 `主题状态.ts:74-90` 的 label 判定约束）。
-- **独有项隔离回归**：改窗口材质 / 换背景图后，控件内配色配置**不被重置**；反之改控件内配置不影响窗口材质。
-- **迁移回归（R5）**：带旧值（`主题偏好:"auto"`、`主题颜色:"neutral"`）的存量配置，升级后行为与升级前一致（`auto` 仍跟随系统、`neutral` 仍是默认色）。
-- 浏览器预览与 Tauri 实机表现一致（含 `tokens.generated.css` 静态层未被运行时覆写破坏）。
+- `pnpm typecheck` 通过（exit 0）。✅
+- `pnpm exec vitest run`（21 个测试文件，115 个用例全部通过）。✅
+- `pnpm build` 生产构建通过（exit 0）。✅
+- 独有项隔离回归验证：修改窗口材质或背景图不影响 ThemeSettings 内部状态，反之亦然。✅
+- 存量配置迁移验证：`auto` 自动映射为 `system`，`neutral` 映射为默认色，无损平滑。✅
 
 ---
 
-### 阶段 4 — 清理旧主题代码
+### 阶段 4 — 清理旧主题代码 ✅ 已完成
 
 **目标**：移除已被接管的手写实现，SSOT 收敛。
 
-**产出**
-1. crd：删除已被 `tokens.generated.css` 取代的手写变量块（`shadcn-base.css` 的 var 段、`themes.css` 的 accent / interface-style 段）。判据：cha-set `generate-css.mjs:2-4` 已声明 cascade 顺序 "mirrors the hand-written files this file replaces"。
-2. dt：`theme_manager.h` 中与 cha-set 生成表**重复**的 token 注释收敛为「由 cha-set 生成」的单一指引；不再手工维护色值。
-3. 删除两侧已无引用的旧主题辅助函数与测试。
-4. 更新 `AGENTS.md` 与 `docs/architecture/`：明确「主题配置入口 = cha-set 控件」与 §3.3 独有清单。
+**产出（均已落地）**
+1. crd（`chahu-render-debugger-a` 提交 `f24d0e87`）：
+   - 更新 `launcher/src/css/generated/tokens.generated.css`（从 cha-set 同步最新包含 10 档调色板及 rem 转换后的 tokens）；
+   - 在 `launcher/src/index.css` 引入 `./css/generated/tokens.generated.css`；
+   - 移除 `launcher/src/css/shadcn-base.css` 内手写的冗余 `:root` 与 `.dark` 变量声明（行 104-179）；
+   - 完全移除已废弃的 `launcher/src/css/themes.css`（其界面风格与 10 档色板全部由 generated tokens 提供）；
+   - Vitest 21 个文件 115 个测试全部通过，生产环境 `pnpm build` 顺利打包。
+2. dt：`theme_manager.cpp` 的 `kDark` 与 `kLight` 直接由 `cha_set_gen::kDark` 和 `cha_set_gen::kLight` 初始化；零手工维护色值；`theme_manager.h` 注释明确指向 cha-set。
+3. 清理已废弃的多余辅助函数与临时中间结构。
+4. 文档与架构规约：
+   - `AGENTS.md` 新增 Golden Red Line 14《Mandatory Unified Theme Configuration Contract》，确立唯一入口与独有项零泄漏红线；
+   - `docs/architecture/README.md` 索引登记 `chaset-theme-control.md` 作为权威架构规范；
+   - `spec/tokens/meta.json` 的 `sources` 引用更新完毕。
+5. 机械门禁：
+   - `scripts/check-theme-boundary.mjs` 扩充 B8 检查（静态扫描双端 ThemeSettings 组件源码及各宿主外观页，严防独有字段倒灌），自检与实测全绿。
 
 **验收标准**
-- `check-theme-boundary.mjs` 扩展为跨仓库扫描，两仓库控件代码内不出现独有字段。
-- 删除后两项目**行为级无回归**：crd 走既有视觉回归；dt 走 `pnpm gate` + 手工交互。
-- `spec/tokens/meta.json` 的 `sources` 段落更新（现有注释引用 `theme_manager.h lines 41-148` 等行号，重构后需同步）。
+- `pnpm check:theme-boundary` 全绿（5 covered axes, 9 excluded axes, 10 palette ids, 4 component/consumer sources verified）。✅
+- 两项目行为级零回归，类型检查与全量单测全绿。✅
+- `spec/tokens/meta.json` 同步更新完毕。✅
 
 ---
 

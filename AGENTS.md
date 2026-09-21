@@ -154,6 +154,13 @@
       When a DocPage introduces multiple example sections (e.g. `nested`, `playground`, `variants`, `vertical`), those section IDs and headings MUST be reflected identically in the Table of Contents (`tocItems`) and page structure on both React and Qt.
     - **Showcase Parity Automated Gate (SPAS 门禁)**:
       Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`). `pnpm gate` mechanically runs SPAS 2.0 validation across all registered components to guarantee zero structural, metadata, multi-example, or code divergence.
+14. **Mandatory Unified Theme Configuration Contract (统一主题配置入口与边界契约律 — 独有项零泄漏红线)**:
+    - **Single Theme Configuration Entry (唯一主题配置入口)**:
+      Cross-stack theme configuration across ChaSet consumers (e.g. `chahu-render-debugger` and `dunting-qt`) MUST be unified through ChaSet's `<ThemeSettings>` (React) and `ChaSetThemeSettings` (Qt QML).
+    - **Host-Only Isolation (独有项隔离原则)**:
+      Host-only settings (crd: window material, window tint, custom window background, background image; dt: tab width mode/min/max, smooth scroll, OS animations) MUST NOT leak into the shared ThemeSettings component or schema. They are rendered exclusively in host-specific setting sections.
+    - **Automated Boundary Gate (边界守卫门禁)**:
+      `pnpm check:theme-boundary` mechanically enforces that only covered axes (mode, palette 10-ids, decoration, typography, uiScale) exist in the neutral schema, and scans component sources (`packages/react/src/theme-settings/ThemeSettings.tsx` and `qt/src/ChaSetThemeSettings.qml`) plus consumer integrations to guarantee zero host-only field leakage.
 
 ---
 
