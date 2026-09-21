@@ -1471,6 +1471,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/address-bar",
         "desc": "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing.",
         "description": "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing."
+      },
+      {
+        "id": "theme-settings",
+        "title": "Theme Settings",
+        "href": "#/components/theme-settings",
+        "desc": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density.",
+        "description": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density."
       }
     ]
   }
@@ -2179,6 +2186,20 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "F5 / Ctrl + R",
       "action": "Refresh the active location"
+    }
+  ],
+  "theme-settings": [
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Navigate between settings rows and interactive controls"
+    },
+    {
+      "key": "Space / Enter",
+      "action": "Toggle segmented control, trigger reset or export actions"
+    },
+    {
+      "key": "← / → / ↑ / ↓",
+      "action": "Adjust slider values or select palette swatches"
     }
   ]
 };

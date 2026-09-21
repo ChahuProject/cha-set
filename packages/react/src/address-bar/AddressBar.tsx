@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
-import type { PathSegment, AddressBarApi } from '../../../../spec/components/address-bar';
+import type { PathSegment, AddressBarApi } from '@chahu/spec/address-bar';
 
 export type { PathSegment, AddressBarApi };
 
@@ -45,7 +45,7 @@ export function parsePathSegments(rawPath: string): PathSegment[] {
   // Windows drive letter: C:/ or C:/foo/bar
   const winMatch = normalized.match(/^([a-zA-Z]:)(?:\/(.*))?$/);
   if (winMatch) {
-    const drive = winMatch[1];
+    const drive = winMatch[1]!;
     const rest = winMatch[2] || '';
     const segments: PathSegment[] = [{ label: drive, path: `${drive}/` }];
     if (rest) {

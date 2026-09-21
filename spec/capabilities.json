@@ -364,6 +364,16 @@
       "navigationControls": { "requirement": "must", "description": "back, forward, up, and refresh navigation buttons" },
       "keyboard": { "requirement": "must", "description": "Alt+D or Ctrl+L to edit, Esc to cancel, Enter to navigate" },
       "suggestions": { "requirement": "should", "description": "dropdown popover with path suggestions and history" }
+    },
+    "themeSettings": {
+      "mode": { "requirement": "must", "description": "switches between light, dark, and system modes" },
+      "palette": { "requirement": "must", "description": "selects canonical 10-id palette presets and custom accent hex" },
+      "decoration": { "requirement": "must", "description": "configures interface style, master decoration level, and override sliders" },
+      "uiScale": { "requirement": "must", "description": "controls global UI scale density multiplier" },
+      "reset": { "requirement": "must", "description": "reverts to default theme configuration" },
+      "exportImport": { "requirement": "must", "description": "exports canonical JSON and imports valid configurations" },
+      "typography": { "requirement": "should", "description": "configures logical typography family and scale presets" },
+      "disabled": { "requirement": "should", "description": "disabled state blocks interactive changes" }
     }
   }
 }

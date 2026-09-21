@@ -1,0 +1,543 @@
+import * as React from 'react';
+import { cn } from '../lib/utils';
+import { SettingRow } from '../setting-row';
+import { SegmentedControl } from '../segmented-control';
+import { ColorPicker } from '../color-picker';
+import { Slider } from '../slider';
+import { Button } from '../button';
+import { Badge } from '../badge';
+import { Separator } from '../separator';
+import type { ThemeConfig, PaletteId, ThemeMode, DecorationStyleId } from '@chahu/spec/theme-settings';
+
+export interface ThemeSettingsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+  config?: ThemeConfig;
+  onChange?: (next: ThemeConfig) => void;
+  onReset?: () => void;
+  onExport?: (configJson: string) => void;
+  onImport?: (jsonString: string) => boolean | void;
+  disabled?: boolean;
+  showReset?: boolean;
+  showExport?: boolean;
+  showImport?: boolean;
+  showTypography?: boolean;
+  textProvider?: (key: string, defaultText: string) => string;
+}
+
+export const DEFAULT_THEME_CONFIG: ThemeConfig = {
+  version: 1,
+  mode: 'system',
+  palette: {
+    id: 'neutral',
+    customHex: '#30a0ff',
+  },
+  decoration: {
+    styleId: 'simple',
+    level: 50,
+    overrides: {},
+  },
+  typography: {
+    familyId: 'system',
+    scaleId: 'default',
+  },
+  uiScale: 1.0,
+};
+
+export const CANONICAL_PALETTES: Array<{ id: PaletteId; name: string; hex: string }> = [
+  { id: 'neutral', name: 'Neutral', hex: '#30a0ff' },
+  { id: 'slate', name: 'Slate', hex: '#64748b' },
+  { id: 'red', name: 'Red', hex: '#ef4444' },
+  { id: 'orange', name: 'Orange', hex: '#f97316' },
+  { id: 'yellow', name: 'Yellow', hex: '#eab308' },
+  { id: 'green', name: 'Green', hex: '#22c55e' },
+  { id: 'blue', name: 'Blue', hex: '#3b82f6' },
+  { id: 'violet', name: 'Violet', hex: '#8b5cf6' },
+  { id: 'rose', name: 'Rose', hex: '#f43f5e' },
+  { id: 'custom', name: 'Custom', hex: '#30a0ff' },
+];
+
+export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps>(
+  (
+    {
+      config = DEFAULT_THEME_CONFIG,
+      onChange,
+      onReset,
+      onExport,
+      onImport,
+      disabled = false,
+      showReset = true,
+      showExport = true,
+      showImport = true,
+      showTypography = false,
+      textProvider = (_key, defaultText) => defaultText,
+      className,
+      ...props
+    },
+    ref
+  ) => {
+    const t = textProvider;
+    const [importOpen, setImportOpen] = React.useState(false);
+    const [importText, setImportText] = React.useState('');
+    const [importError, setImportError] = React.useState<string | null>(null);
+    const [showOverrides, setShowOverrides] = React.useState(
+      Boolean(
+        config.decoration.overrides &&
+          Object.keys(config.decoration.overrides).length > 0
+      )
+    );
+
+    const updateConfig = (updater: (prev: ThemeConfig) => ThemeConfig) => {
+      if (disabled) return;
+      const next = updater(config);
+      onChange?.(next);
+    };
+
+    const handleModeChange = (val: string | number) => {
+      updateConfig((prev) => ({
+        ...prev,
+        mode: val as ThemeMode,
+      }));
+    };
+
+    const handlePaletteSelect = (id: PaletteId) => {
+      updateConfig((prev) => ({
+        ...prev,
+        palette: {
+          ...prev.palette,
+          id,
+          customHex: prev.palette?.customHex || '#30a0ff',
+        },
+      }));
+    };
+
+    const handleCustomHexChange = (hex: string) => {
+      updateConfig((prev) => ({
+        ...prev,
+        palette: {
+          id: 'custom',
+          customHex: hex,
+        },
+      }));
+    };
+
+    const handleStyleChange = (val: string | number) => {
+      updateConfig((prev) => ({
+        ...prev,
+        decoration: {
+          ...prev.decoration,
+          styleId: val as DecorationStyleId,
+        },
+      }));
+    };
+
+    const handleLevelChange = (level: number) => {
+      updateConfig((prev) => ({
+        ...prev,
+        decoration: {
+          ...prev.decoration,
+          level: Math.round(level),
+        },
+      }));
+    };
+
+    const handleOverrideChange = (key: 'radius' | 'shadow' | 'motion', val: number | null) => {
+      updateConfig((prev) => {
+        const nextOverrides = { ...prev.decoration.overrides };
+        if (val === null) {
+          delete nextOverrides[key];
+        } else {
+          nextOverrides[key] = Math.round(val);
+        }
+        return {
+          ...prev,
+          decoration: {
+            ...prev.decoration,
+            overrides: nextOverrides,
+          },
+        };
+      });
+    };
+
+    const handleUiScaleChange = (val: string | number) => {
+      updateConfig((prev) => ({
+        ...prev,
+        uiScale: Number(val),
+      }));
+    };
+
+    const handleReset = () => {
+      if (disabled) return;
+      onChange?.(DEFAULT_THEME_CONFIG);
+      onReset?.();
+    };
+
+    const handleExport = () => {
+      const jsonStr = JSON.stringify(config, null, 2);
+      onExport?.(jsonStr);
+      try {
+        navigator.clipboard.writeText(jsonStr);
+      } catch {
+        // clipboard fallback
+      }
+    };
+
+    const handleImportSubmit = () => {
+      try {
+        const parsed = JSON.parse(importText);
+        if (typeof parsed !== 'object' || parsed === null) {
+          throw new Error('Invalid JSON payload');
+        }
+        if (parsed.version && parsed.version !== 1) {
+          throw new Error('Unsupported configuration version');
+        }
+        // Normalize
+        const validated: ThemeConfig = {
+          version: 1,
+          mode: ['light', 'dark', 'system'].includes(parsed.mode) ? parsed.mode : 'system',
+          palette: {
+            id: CANONICAL_PALETTES.some((p) => p.id === parsed.palette?.id) ? parsed.palette.id : 'neutral',
+            customHex: parsed.palette?.customHex || '#30a0ff',
+          },
+          decoration: {
+            styleId: ['simple', 'expressive'].includes(parsed.decoration?.styleId) ? parsed.decoration.styleId : 'simple',
+            level: typeof parsed.decoration?.level === 'number' ? Math.max(0, Math.min(100, parsed.decoration.level)) : 50,
+            overrides: typeof parsed.decoration?.overrides === 'object' && parsed.decoration?.overrides !== null ? parsed.decoration.overrides : {},
+          },
+          typography: {
+            familyId: ['system', 'sans', 'serif', 'mono'].includes(parsed.typography?.familyId) ? parsed.typography.familyId : 'system',
+            scaleId: ['default', 'compact', 'comfortable'].includes(parsed.typography?.scaleId) ? parsed.typography.scaleId : 'default',
+          },
+          uiScale: typeof parsed.uiScale === 'number' ? Math.max(0.75, Math.min(2.0, parsed.uiScale)) : 1.0,
+        };
+        onChange?.(validated);
+        onImport?.(JSON.stringify(validated));
+        setImportOpen(false);
+        setImportText('');
+        setImportError(null);
+      } catch (err) {
+        setImportError(err instanceof Error ? err.message : 'JSON parsing error');
+      }
+    };
+
+    return (
+      <div
+        ref={ref}
+        data-slot="theme-settings"
+        className={cn(
+          'flex flex-col gap-4 rounded-xl border border-border bg-card text-card-foreground p-5 shadow-xs transition-all duration-quick ease-standard',
+          disabled && 'opacity-60 pointer-events-none',
+          className
+        )}
+        {...props}
+      >
+        {/* Header Actions */}
+        {(showReset || showExport || showImport) && (
+          <div className="flex items-center justify-between gap-2 pb-2 border-b border-border/60">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-foreground tracking-tight">
+                {t('theme.settings.title', 'Theme Configuration')}
+              </span>
+              <Badge variant="secondary" size="sm">
+                v{config.version}
+              </Badge>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {showReset && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleReset}
+                  disabled={disabled}
+                >
+                  {t('theme.settings.reset', 'Reset')}
+                </Button>
+              )}
+              {showImport && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setImportOpen(!importOpen)}
+                  disabled={disabled}
+                >
+                  {t('theme.settings.import', 'Import')}
+                </Button>
+              )}
+              {showExport && (
+                <Button
+                  size="sm"
+                  variant="default"
+                  onClick={handleExport}
+                  disabled={disabled}
+                >
+                  {t('theme.settings.export', 'Export JSON')}
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Import Drawer/Box */}
+        {importOpen && (
+          <div className="flex flex-col gap-2 p-3 rounded-lg bg-muted/60 border border-border/80 animate-in fade-in-0 duration-quick ease-standard">
+            <span className="text-xs font-medium text-foreground">
+              {t('theme.settings.import.hint', 'Paste JSON configuration:')}
+            </span>
+            <textarea
+              className="w-full h-24 p-2 text-xs font-mono rounded-md bg-background border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              value={importText}
+              onChange={(e) => setImportText(e.target.value)}
+              placeholder='{"mode": "dark", "palette": { "id": "blue" }}'
+            />
+            {importError && (
+              <span className="text-caption text-destructive">{importError}</span>
+            )}
+            <div className="flex justify-end gap-2">
+              <Button size="xs" variant="ghost" onClick={() => setImportOpen(false)}>
+                {t('theme.settings.cancel', 'Cancel')}
+              </Button>
+              <Button size="xs" variant="default" onClick={handleImportSubmit}>
+                {t('theme.settings.apply', 'Apply')}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* 1. Appearance Mode */}
+        <SettingRow
+          name={t('theme.settings.mode.title', 'Appearance Mode')}
+          description={t('theme.settings.mode.desc', 'Switch between Light, Dark, or System OS appearance')}
+        >
+          <SegmentedControl
+            size="sm"
+            value={config.mode}
+            onChange={handleModeChange}
+            disabled={disabled}
+            options={[
+              { label: '☀️ ' + t('theme.mode.light', 'Light'), value: 'light' },
+              { label: '🌙 ' + t('theme.mode.dark', 'Dark'), value: 'dark' },
+              { label: '💻 ' + t('theme.mode.system', 'System'), value: 'system' },
+            ]}
+          />
+        </SettingRow>
+
+        <Separator />
+
+        {/* 2. Accent Palette */}
+        <SettingRow
+          name={t('theme.settings.palette.title', 'Accent Palette')}
+          description={t('theme.settings.palette.desc', 'Choose from 10 canonical theme palettes or custom accent')}
+        >
+          <div className="flex flex-wrap items-center justify-end gap-1.5 max-w-[22rem]">
+            {CANONICAL_PALETTES.map((p) => {
+              const isSelected = config.palette.id === p.id;
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => handlePaletteSelect(p.id)}
+                  disabled={disabled}
+                  title={p.name}
+                  className={cn(
+                    'relative inline-flex items-center justify-center size-6 rounded-full transition-all duration-quick ease-standard cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                    isSelected
+                      ? 'ring-2 ring-primary ring-offset-2 scale-110 shadow-xs'
+                      : 'hover:scale-105 opacity-80 hover:opacity-100'
+                  )}
+                  style={{ backgroundColor: p.id === 'custom' ? (config.palette.customHex || '#30a0ff') : p.hex }}
+                >
+                  {isSelected && (
+                    <span className="size-1.5 rounded-full bg-white shadow-xs" />
+                  )}
+                </button>
+              );
+            })}
+            {config.palette.id === 'custom' && (
+              <div className="ml-1 shrink-0">
+                <ColorPicker
+                  size="sm"
+                  mode="popover"
+                  value={config.palette.customHex || '#30a0ff'}
+                  onChange={handleCustomHexChange}
+                  disabled={disabled}
+                />
+              </div>
+            )}
+          </div>
+        </SettingRow>
+
+        <Separator />
+
+        {/* 3. Interface Style */}
+        <SettingRow
+          name={t('theme.settings.style.title', 'Interface Style')}
+          description={t('theme.settings.style.desc', 'Simple flat presentation or expressive rich layered styling')}
+        >
+          <SegmentedControl
+            size="sm"
+            value={config.decoration.styleId}
+            onChange={handleStyleChange}
+            disabled={disabled}
+            options={[
+              { label: t('theme.style.simple', 'Simple'), value: 'simple' },
+              { label: t('theme.style.expressive', 'Expressive'), value: 'expressive' },
+            ]}
+          />
+        </SettingRow>
+
+        <Separator />
+
+        {/* 4. Decoration Intensity */}
+        <SettingRow
+          name={t('theme.settings.decoration.title', 'Decoration Level')}
+          description={t('theme.settings.decoration.desc', 'Master slider (0-100) driving corner radii, shadows, and motion')}
+          badge={`${config.decoration.level}%`}
+        >
+          <div className="flex items-center gap-3 w-56">
+            <Slider
+              size="sm"
+              min={0}
+              max={100}
+              step={1}
+              value={config.decoration.level}
+              onChange={handleLevelChange}
+              disabled={disabled}
+              className="flex-1"
+            />
+            <Button
+              size="xs"
+              variant="ghost"
+              onClick={() => setShowOverrides(!showOverrides)}
+              className="text-caption shrink-0"
+            >
+              {showOverrides ? t('theme.overrides.hide', 'Hide') : t('theme.overrides.custom', 'Customize')}
+            </Button>
+          </div>
+        </SettingRow>
+
+        {/* Overrides Sub-Panel */}
+        {showOverrides && (
+          <div className="flex flex-col gap-2.5 pl-4 pr-2 py-2 border-l-2 border-primary/30 ml-2 animate-in fade-in-0 duration-quick ease-standard">
+            {/* Radius Override */}
+            <div className="flex items-center justify-between gap-2 text-xs">
+              <span className="text-muted-foreground">
+                {t('theme.overrides.radius', 'Corner Radius Override')}
+              </span>
+              <div className="flex items-center gap-2 w-48">
+                <Slider
+                  size="sm"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={config.decoration.overrides?.radius ?? config.decoration.level}
+                  onChange={(v) => handleOverrideChange('radius', v)}
+                  disabled={disabled}
+                  className="flex-1"
+                />
+                <span className="text-caption font-mono w-8 text-right text-foreground">
+                  {config.decoration.overrides?.radius ?? config.decoration.level}
+                </span>
+              </div>
+            </div>
+
+            {/* Shadow Override */}
+            <div className="flex items-center justify-between gap-2 text-xs">
+              <span className="text-muted-foreground">
+                {t('theme.overrides.shadow', 'Shadow Elevation Override')}
+              </span>
+              <div className="flex items-center gap-2 w-48">
+                <Slider
+                  size="sm"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={config.decoration.overrides?.shadow ?? config.decoration.level}
+                  onChange={(v) => handleOverrideChange('shadow', v)}
+                  disabled={disabled}
+                  className="flex-1"
+                />
+                <span className="text-caption font-mono w-8 text-right text-foreground">
+                  {config.decoration.overrides?.shadow ?? config.decoration.level}
+                </span>
+              </div>
+            </div>
+
+            {/* Motion Override */}
+            <div className="flex items-center justify-between gap-2 text-xs">
+              <span className="text-muted-foreground">
+                {t('theme.overrides.motion', 'Motion Duration Override')}
+              </span>
+              <div className="flex items-center gap-2 w-48">
+                <Slider
+                  size="sm"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={config.decoration.overrides?.motion ?? config.decoration.level}
+                  onChange={(v) => handleOverrideChange('motion', v)}
+                  disabled={disabled}
+                  className="flex-1"
+                />
+                <span className="text-caption font-mono w-8 text-right text-foreground">
+                  {config.decoration.overrides?.motion ?? config.decoration.level}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <Separator />
+
+        {/* 5. UI Scale */}
+        <SettingRow
+          name={t('theme.settings.uiscale.title', 'Interface Scale')}
+          description={t('theme.settings.uiscale.desc', 'Global display density and UI scaling factor')}
+        >
+          <SegmentedControl
+            size="sm"
+            value={config.uiScale}
+            onChange={handleUiScaleChange}
+            disabled={disabled}
+            options={[
+              { label: '75%', value: 0.75 },
+              { label: '90%', value: 0.9 },
+              { label: '100%', value: 1.0 },
+              { label: '125%', value: 1.25 },
+              { label: '150%', value: 1.5 },
+            ]}
+          />
+        </SettingRow>
+
+        {/* 6. Typography (Optional) */}
+        {showTypography && (
+          <>
+            <Separator />
+            <SettingRow
+              name={t('theme.settings.typography.title', 'Typography System')}
+              description={t('theme.settings.typography.desc', 'Logical font family and type scale multiplier')}
+            >
+              <SegmentedControl
+                size="sm"
+                value={config.typography.familyId}
+                onChange={(v) =>
+                  updateConfig((prev) => ({
+                    ...prev,
+                    typography: { ...prev.typography, familyId: v as any },
+                  }))
+                }
+                disabled={disabled}
+                options={[
+                  { label: 'System', value: 'system' },
+                  { label: 'Sans', value: 'sans' },
+                  { label: 'Serif', value: 'serif' },
+                  { label: 'Mono', value: 'mono' },
+                ]}
+              />
+            </SettingRow>
+          </>
+        )}
+      </div>
+    );
+  }
+);
+
+ThemeSettings.displayName = 'ThemeSettings';

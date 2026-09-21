@@ -118,6 +118,7 @@ ApplicationWindow {
         case "code-block": return "CodeBlockDocPage.qml";
         case "pipeline-view": return "PipelineViewDocPage.qml";
         case "address-bar": return "AddressBarDocPage.qml";
+        case "theme-settings": return "ThemeSettingsDocPage.qml";
         default: return "ButtonDocPage.qml";
 
         }

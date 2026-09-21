@@ -264,6 +264,11 @@
     { "key": "Alt + Left / Alt + Right", "action": "Trigger backward or forward history navigation" },
     { "key": "Alt + Up", "action": "Navigate to the parent directory level" },
     { "key": "F5 / Ctrl + R", "action": "Refresh the active location" }
+  ],
+  "theme-settings": [
+    { "key": "Tab / Shift + Tab", "action": "Navigate between settings rows and interactive controls" },
+    { "key": "Space / Enter", "action": "Toggle segmented control, trigger reset or export actions" },
+    { "key": "← / → / ↑ / ↓", "action": "Adjust slider values or select palette swatches" }
   ]
 }
 

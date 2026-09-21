@@ -54,7 +54,10 @@
     "./splitter-handle": "./components/splitter-handle.ts",
     "./duration-input": "./components/duration-input.ts",
     "./code-block": "./components/code-block.ts",
-    "./pipeline-view": "./components/pipeline-view.ts"
+    "./pipeline-view": "./components/pipeline-view.ts",
+    "./task-hud": "./components/task-hud.ts",
+    "./address-bar": "./components/address-bar.ts",
+    "./theme-settings": "./components/theme-settings.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

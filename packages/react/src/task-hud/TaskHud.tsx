@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
-import type { TaskItem, TaskStatus, TaskHudPlacement } from '../../../../spec/components/task-hud';
+import type { TaskItem, TaskStatus, TaskHudPlacement } from '@chahu/spec/task-hud';
 
 export type { TaskItem, TaskStatus, TaskHudPlacement };
 

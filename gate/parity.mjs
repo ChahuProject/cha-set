@@ -201,6 +201,24 @@ if (existsSync(themeBoundaryPath)) {
   console.log(`[gate] OK — Theme Control Boundary Gate passed (${boundaryRes.checkedCount} boundary assertions, guard self-test verified)`);
 }
 
+// 2.8 Mandatory Cross-Stack Theme Derived Contract Parity Gate
+// Asserts that derived token formulas (accentHover, accentPressed, decorationRadius,
+// decorationMotion, customAccentRamp) from spec/theme-controls.json match runtime
+// mathematical evaluation with zero drift. See docs/design/chaset-theme-control.md §3.4.
+const themeDerivedPath = resolve(root, 'scripts/check-derived-parity.mjs');
+if (existsSync(themeDerivedPath)) {
+  const { verifyDerivedParity } = await import(pathToFileURL(themeDerivedPath).href);
+  const derivedRes = verifyDerivedParity({ quiet: true });
+  if (!derivedRes.ok) {
+    console.error(`[gate] FAIL: Cross-Stack Theme Derived Contract Gate failed (${derivedRes.errors.length} violation(s)):`);
+    for (const err of derivedRes.errors) {
+      console.error(`  - ${err}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Theme Derived Contract Gate passed (${derivedRes.checkedCount} contract assertions verified)`);
+}
+
 // 3. Executable Behavioral Parity Checks
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');
 if (existsSync(qtExe)) {

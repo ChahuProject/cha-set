@@ -78,6 +78,7 @@ import { DurationInputDocPage } from './pages/components/DurationInputDocPage';
 import { CodeBlockDocPage } from './pages/components/CodeBlockDocPage';
 import { PipelineViewDocPage } from './pages/components/PipelineViewDocPage';
 import { AddressBarDocPage } from './pages/components/AddressBarDocPage';
+import { ThemeSettingsDocPage } from './pages/components/ThemeSettingsDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 
 import { TokensPage } from './pages/get-started/TokensPage';
@@ -692,6 +693,8 @@ export function App() {
         return <PipelineViewDocPage />;
       case '#/components/address-bar':
         return <AddressBarDocPage />;
+      case '#/components/theme-settings':
+        return <ThemeSettingsDocPage />;
       case '#/components/button':
 
       default:
