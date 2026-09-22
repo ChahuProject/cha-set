@@ -14,9 +14,10 @@ import {
   CardContent,
   CardFooter,
   Input,
-  Separator,
   CodeBlock,
   ChaSetI18nProvider,
+  DEFAULT_THEME_CONFIG,
+  type ThemeConfig,
 } from '@chahu/cha-set';
 import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
@@ -103,7 +104,7 @@ export const CODE_BLOCK_HARNESS_SOURCE = [
   '}',
 ].join('\n');
 
-function applyTheme(mode: string, accent: string, overrides: ThemeOverrides) {
+function applyTheme(mode: string, accent: string, overrides: ThemeOverrides, uiScale: number = 1.0) {
   const html = document.documentElement;
 
   // 1. Toggle dark mode class
@@ -145,6 +146,15 @@ function applyTheme(mode: string, accent: string, overrides: ThemeOverrides) {
   if (overrides.border) html.style.setProperty('--border', overrides.border);
   if (overrides.ring) html.style.setProperty('--ring', overrides.ring);
   if (overrides.radius) html.style.setProperty('--radius', overrides.radius);
+
+  // 5. Interface Scale
+  if (typeof uiScale === 'number' && uiScale > 0 && Math.abs(uiScale - 1.0) > 0.001) {
+    html.style.zoom = String(uiScale);
+    html.style.setProperty('--cs-ui-scale', String(uiScale));
+  } else {
+    html.style.removeProperty('zoom');
+    html.style.removeProperty('--cs-ui-scale');
+  }
 }
 
 export function App() {
@@ -557,18 +567,96 @@ export function App() {
     }
   });
 
+  const [uiScale, setUiScale] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('cs-uiscale');
+      const parsed = saved ? parseFloat(saved) : 1.0;
+      return !isNaN(parsed) && parsed >= 0.75 && parsed <= 2.0 ? parsed : 1.0;
+    } catch {
+      return 1.0;
+    }
+  });
+
   const [showTuner, setShowTuner] = useState(false);
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
 
+  const themeConfig: ThemeConfig = {
+    version: 1,
+    mode: (mode === 'dark' || mode === 'light' || mode === 'system') ? mode : 'light',
+    palette: {
+      id: (accent || (overrides.primary ? 'custom' : 'neutral')) as any,
+      customHex: overrides.primary || '#30a0ff',
+    },
+    decoration: {
+      styleId: 'simple',
+      level: 50,
+      overrides: {
+        radius: overrides.radius ? Math.round(parseFloat(overrides.radius) * 16) : 8,
+      },
+    },
+    typography: { familyId: 'system', scaleId: 'default' },
+    uiScale,
+  };
+
+  const handleThemeConfigChange = (next: ThemeConfig) => {
+    // 1. Mode
+    if (next.mode) {
+      setMode(next.mode === 'dark' ? 'dark' : 'light');
+    }
+
+    // 2. Palette
+    if (next.palette?.id) {
+      if (next.palette.id === 'neutral') {
+        setAccent('');
+        setOverrides((prev) => {
+          const nextOv = { ...prev };
+          delete nextOv.primary;
+          return nextOv;
+        });
+      } else if (next.palette.id === 'custom' && next.palette.customHex) {
+        setAccent('');
+        setOverrides((prev) => ({ ...prev, primary: next.palette.customHex }));
+      } else {
+        setAccent(next.palette.id);
+        setOverrides((prev) => {
+          const nextOv = { ...prev };
+          delete nextOv.primary;
+          return nextOv;
+        });
+      }
+    }
+
+    // 3. Decoration
+    if (next.decoration) {
+      const rad = next.decoration.overrides?.radius !== undefined
+        ? next.decoration.overrides.radius
+        : Math.round(4 + (next.decoration.level / 100) * 12);
+      setOverrides((prev) => ({ ...prev, radius: `${rad * 0.0625}rem` }));
+    }
+
+    // 4. UI Scale
+    if (typeof next.uiScale === 'number' && next.uiScale >= 0.75 && next.uiScale <= 2.0) {
+      setUiScale(next.uiScale);
+    }
+  };
+
+  const handleResetThemeConfig = () => {
+    setMode('light');
+    setAccent('');
+    setOverrides({});
+    setUiScale(1.0);
+  };
+
   useEffect(() => {
-    applyTheme(mode, accent, overrides);
+    applyTheme(mode, accent, overrides, uiScale);
     localStorage.setItem('cs-mode', mode);
     localStorage.setItem('cs-accent', accent);
     localStorage.setItem('cs-overrides', JSON.stringify(overrides));
-  }, [mode, accent, overrides]);
+    localStorage.setItem('cs-uiscale', String(uiScale));
+  }, [mode, accent, overrides, uiScale]);
 
-  const themeKey = `${mode}:${accent}:${JSON.stringify(overrides)}`;
+  const themeKey = `${mode}:${accent}:${JSON.stringify(overrides)}:${uiScale}`;
 
   const renderActivePage = () => {
     switch (currentHash) {
@@ -696,7 +784,13 @@ export function App() {
       case '#/components/address-bar':
         return <AddressBarDocPage />;
       case '#/components/theme-settings':
-        return <ThemeSettingsDocPage />;
+        return (
+          <ThemeSettingsDocPage
+            config={themeConfig}
+            onChange={handleThemeConfigChange}
+            onReset={handleResetThemeConfig}
+          />
+        );
       case '#/components/language-settings':
         return <LanguageSettingsDocPage />;
       case '#/components/button':

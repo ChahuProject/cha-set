@@ -6,8 +6,20 @@ import { ComponentPreview } from '../../components/ComponentPreview';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
-export function ThemeSettingsDocPage() {
-  const [config, setConfig] = useState<ThemeConfig>(DEFAULT_THEME_CONFIG);
+export interface ThemeSettingsDocPageProps {
+  config?: ThemeConfig;
+  onChange?: (next: ThemeConfig) => void;
+  onReset?: () => void;
+}
+
+export function ThemeSettingsDocPage({
+  config: externalConfig,
+  onChange: externalOnChange,
+  onReset: externalOnReset,
+}: ThemeSettingsDocPageProps = {}) {
+  const [localConfig, setLocalConfig] = useState<ThemeConfig>(DEFAULT_THEME_CONFIG);
+  const config = externalConfig ?? localConfig;
+  const setConfig = externalOnChange ?? setLocalConfig;
 
   const heroReactCode = `<ThemeSettings
   config={${JSON.stringify(config, null, 2)}}
@@ -46,6 +58,7 @@ export function ThemeSettingsDocPage() {
             <ThemeSettings
               config={config}
               onChange={setConfig}
+              onReset={externalOnReset}
             />
           </div>
         </ComponentPreview>

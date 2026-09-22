@@ -25,6 +25,10 @@ DocLayout {
         uiScale: 1.0
     })
 
+    property var activeConfig: root.demoConfig
+    signal configModified(var nextConfig)
+    signal resetRequested()
+
     // Section 1: Overview
     ComponentPreview {
         id: heroPreview
@@ -55,9 +59,13 @@ DocLayout {
                 ChaSetThemeSettings {
                     id: settingsComp
                     width: parent.width
-                    config: root.demoConfig
+                    config: root.activeConfig
                     onConfigModified: function(next) {
                         root.demoConfig = next;
+                        root.configModified(next);
+                    }
+                    onResetRequested: function() {
+                        root.resetRequested();
                     }
                 }
             }

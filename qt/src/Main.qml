@@ -19,6 +19,112 @@ ApplicationWindow {
     property string activeAccent: ""
     property int customRadius: 8
 
+    // ---- Reactive Global Theme Config ----
+    property var globalThemeConfig: ({
+        version: 1,
+        mode: ThemeTokens.dark ? "dark" : "light",
+        palette: {
+            id: win.activeAccent !== "" ? win.activeAccent : (win.overridePrimary !== "" ? "custom" : "neutral"),
+            customHex: win.overridePrimary !== "" ? win.overridePrimary : "#30a0ff"
+        },
+        decoration: {
+            styleId: "simple",
+            level: 50,
+            overrides: {
+                radius: win.customRadius,
+                motion: Math.round(((ThemeTokens.animSpeed - 0.05) / 0.4) * 100)
+            }
+        },
+        typography: { familyId: "system", scaleId: "default" },
+        uiScale: ThemeTokens.uiScale
+    })
+
+    function syncGlobalThemeConfig() {
+        win.globalThemeConfig = {
+            version: 1,
+            mode: ThemeTokens.dark ? "dark" : "light",
+            palette: {
+                id: win.activeAccent !== "" ? win.activeAccent : (win.overridePrimary !== "" ? "custom" : "neutral"),
+                customHex: win.overridePrimary !== "" ? win.overridePrimary : "#30a0ff"
+            },
+            decoration: {
+                styleId: "simple",
+                level: 50,
+                overrides: {
+                    radius: win.customRadius,
+                    motion: Math.round(((ThemeTokens.animSpeed - 0.05) / 0.4) * 100)
+                }
+            },
+            typography: { familyId: "system", scaleId: "default" },
+            uiScale: ThemeTokens.uiScale
+        };
+    }
+
+    function applyThemeConfig(cfg) {
+        if (!cfg || typeof cfg !== "object") return;
+
+        // 1. Mode
+        if (cfg.mode === "dark") {
+            ThemeTokens.dark = true;
+        } else if (cfg.mode === "light") {
+            ThemeTokens.dark = false;
+        } else if (cfg.mode === "system") {
+            ThemeTokens.dark = false;
+        }
+
+        // 2. Palette
+        if (cfg.palette && cfg.palette.id) {
+            var palId = cfg.palette.id;
+            win.activeAccent = (palId === "neutral" ? "" : palId);
+            if (palId === "custom" && cfg.palette.customHex) {
+                win.overridePrimary = cfg.palette.customHex;
+            } else if (palId === "neutral") {
+                win.overridePrimary = "";
+            } else {
+                var palColors = {
+                    "slate": ThemeTokens.dark ? "#94a3b8" : "#475569",
+                    "red": ThemeTokens.dark ? "#ef4444" : "#dc2626",
+                    "orange": ThemeTokens.dark ? "#f97316" : "#ea580c",
+                    "yellow": ThemeTokens.dark ? "#eab308" : "#ca8a04",
+                    "green": ThemeTokens.dark ? "#22c55e" : "#16a34a",
+                    "blue": ThemeTokens.dark ? "#3b82f6" : "#2563eb",
+                    "violet": ThemeTokens.dark ? "#8b5cf6" : "#7c3aed",
+                    "rose": ThemeTokens.dark ? "#f43f5e" : "#e11d48"
+                };
+                win.overridePrimary = palColors[palId] || "";
+            }
+        }
+
+        // 3. Decoration
+        if (cfg.decoration) {
+            var r = (cfg.decoration.overrides && typeof cfg.decoration.overrides.radius === "number")
+                    ? cfg.decoration.overrides.radius
+                    : (typeof cfg.decoration.level === "number" ? Math.round(4 + (cfg.decoration.level / 100.0) * 12) : 8);
+            win.customRadius = Math.max(0, Math.min(24, r));
+
+            if (cfg.decoration.overrides && typeof cfg.decoration.overrides.motion === "number") {
+                ThemeTokens.animSpeed = 0.05 + (cfg.decoration.overrides.motion / 100.0) * 0.4;
+            }
+        }
+
+        // 4. UI Scale
+        if (typeof cfg.uiScale === "number" && cfg.uiScale >= 0.75 && cfg.uiScale <= 2.0) {
+            ThemeTokens.uiScale = cfg.uiScale;
+        }
+
+        win.syncGlobalThemeConfig();
+    }
+
+    function resetThemeConfig() {
+        ThemeTokens.dark = false;
+        win.activeAccent = "";
+        win.overridePrimary = "";
+        win.customRadius = 8;
+        ThemeTokens.animSpeed = 0.2;
+        ThemeTokens.uiScale = 1.0;
+        win.syncGlobalThemeConfig();
+    }
+
     property bool searchModalOpen: false
     property bool exportModalOpen: false
     property string exportTab: "qt"
@@ -140,6 +246,86 @@ ApplicationWindow {
         target: ThemeTokens
         property: "dark"
         value: typeof startupDark !== "undefined" && startupDark === true
+    }
+
+    Connections {
+        target: ThemeTokens
+        function onDarkChanged() {
+            win.syncGlobalThemeConfig();
+        }
+        function onUiScaleChanged() {
+            win.syncGlobalThemeConfig();
+        }
+    }
+
+    // Authentic Interface Scaling (Scene Graph Viewport Matrix)
+    readonly property real effectiveUiScale: (typeof harnessMode !== "undefined" && harnessMode !== "") ? 1.0 : ThemeTokens.uiScale
+
+    Binding {
+        target: win.contentItem
+        property: "scale"
+        value: win.effectiveUiScale
+    }
+    Binding {
+        target: win.contentItem
+        property: "transformOrigin"
+        value: Item.TopLeft
+    }
+    Binding {
+        target: win.contentItem
+        property: "width"
+        value: win.width / win.effectiveUiScale
+    }
+    Binding {
+        target: win.contentItem
+        property: "height"
+        value: win.height / win.effectiveUiScale
+    }
+
+    Binding {
+        target: win.Overlay.overlay
+        property: "scale"
+        value: win.effectiveUiScale
+    }
+    Binding {
+        target: win.Overlay.overlay
+        property: "transformOrigin"
+        value: Item.TopLeft
+    }
+    Binding {
+        target: win.Overlay.overlay
+        property: "width"
+        value: win.width / win.effectiveUiScale
+    }
+    Binding {
+        target: win.Overlay.overlay
+        property: "height"
+        value: win.height / win.effectiveUiScale
+    }
+
+    // Desktop Zoom Keyboard Shortcuts
+    Shortcut {
+        sequences: [StandardKey.ZoomIn, "Ctrl+=", "Ctrl++"]
+        onActivated: {
+            var next = Math.min(2.0, Math.round((ThemeTokens.uiScale + 0.1) * 100) / 100.0);
+            ThemeTokens.uiScale = next;
+            win.syncGlobalThemeConfig();
+        }
+    }
+    Shortcut {
+        sequences: [StandardKey.ZoomOut, "Ctrl+-"]
+        onActivated: {
+            var next = Math.max(0.75, Math.round((ThemeTokens.uiScale - 0.1) * 100) / 100.0);
+            ThemeTokens.uiScale = next;
+            win.syncGlobalThemeConfig();
+        }
+    }
+    Shortcut {
+        sequences: ["Ctrl+0"]
+        onActivated: {
+            ThemeTokens.uiScale = 1.0;
+            win.syncGlobalThemeConfig();
+        }
     }
 
     Component.onCompleted: {
@@ -281,8 +467,59 @@ ApplicationWindow {
                 testTabs.currentValue = "account";
             }
         }
+        // Scenario 6: Global Theme Control & Authentic Interface Scale Parity
+        if (scenario === "all" || scenario === "theme-control" || scenario === "uiscale") {
+            console.log("[qt-scenario] Running Global Theme Control & Authentic UI Scale scenario...");
+            var themeFailures = 0;
 
-        // Scenario 6: Living Showcase Navigation & Page Loading Coverage
+            // 1. Verify initial UI scale is 1.0
+            if (ThemeTokens.uiScale !== 1.0 || win.contentItem.scale !== 1.0) {
+                console.log("[qt-scenario] FAIL: Initial uiScale expected 1.0, got " + ThemeTokens.uiScale);
+                themeFailures++;
+            }
+
+            // 2. Test applyThemeConfig with UI scale
+            win.applyThemeConfig({
+                version: 1,
+                mode: "dark",
+                palette: { id: "red" },
+                decoration: { styleId: "simple", level: 80, overrides: { radius: 16 } },
+                typography: { familyId: "system", scaleId: "default" },
+                uiScale: 1.5
+            });
+
+            if (ThemeTokens.dark !== true) {
+                console.log("[qt-scenario] FAIL: ThemeTokens.dark was not updated to true by applyThemeConfig");
+                themeFailures++;
+            }
+            if (ThemeTokens.uiScale !== 1.5 || win.contentItem.scale !== 1.5 || win.Overlay.overlay.scale !== 1.5) {
+                console.log("[qt-scenario] FAIL: uiScale matrix transform not applied: ThemeTokens=" + ThemeTokens.uiScale + ", contentItem=" + win.contentItem.scale + ", overlay=" + win.Overlay.overlay.scale);
+                themeFailures++;
+            }
+            if (win.activeAccent !== "red" || win.overridePrimary !== "#ef4444") {
+                console.log("[qt-scenario] FAIL: red palette not applied: activeAccent=" + win.activeAccent + ", overridePrimary=" + win.overridePrimary);
+                themeFailures++;
+            }
+            if (win.customRadius !== 16) {
+                console.log("[qt-scenario] FAIL: customRadius expected 16, got " + win.customRadius);
+                themeFailures++;
+            }
+
+            // 3. Test resetThemeConfig
+            win.resetThemeConfig();
+            if (ThemeTokens.dark !== false || ThemeTokens.uiScale !== 1.0 || win.contentItem.scale !== 1.0 || win.Overlay.overlay.scale !== 1.0 || win.activeAccent !== "" || win.customRadius !== 8) {
+                console.log("[qt-scenario] FAIL: resetThemeConfig did not restore defaults: dark=" + ThemeTokens.dark + ", scale=" + ThemeTokens.uiScale + ", accent=" + win.activeAccent + ", radius=" + win.customRadius);
+                themeFailures++;
+            }
+
+            if (themeFailures === 0) {
+                console.log("[qt-scenario] PASS: Global Theme Control & Authentic UI Scale verified (mode, palette, decoration, uiScale, reset)");
+            } else {
+                failures += themeFailures;
+            }
+        }
+
+        // Scenario 7: Living Showcase Navigation & Page Loading Coverage
         if (scenario === "all" || scenario === "pages") {
             var navItems = [];
             if (ShowcaseData && ShowcaseData.navigation) {
@@ -623,6 +860,7 @@ ApplicationWindow {
                 failures += typoFailures;
             }
         }
+
 
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
@@ -1163,7 +1401,10 @@ ApplicationWindow {
                                 size: "icon"
                                 variant: "outline"
                                 text: ThemeTokens.dark ? "🌙" : "☀️"
-                                onClicked: ThemeTokens.dark = !ThemeTokens.dark
+                                onClicked: {
+                                    ThemeTokens.dark = !ThemeTokens.dark;
+                                    win.syncGlobalThemeConfig();
+                                }
                             }
                         }
                     }
@@ -1319,6 +1560,9 @@ ApplicationWindow {
                                     if ("cPrimary" in item) item.cPrimary = Qt.binding(function() { return win.cPrimary })
                                     if ("cAccentBg" in item) item.cAccentBg = Qt.binding(function() { return win.cAccentBg })
                                     if ("activeAccent" in item) item.activeAccent = Qt.binding(function() { return win.activeAccent })
+                                    if ("activeConfig" in item) item.activeConfig = Qt.binding(function() { return win.globalThemeConfig })
+                                    if ("configModified" in item) item.configModified.connect(function(cfg) { win.applyThemeConfig(cfg) })
+                                    if ("resetRequested" in item) item.resetRequested.connect(function() { win.resetThemeConfig() })
                                     if ("logAction" in item) item.logAction.connect(function(msg) { win.pushLog(msg) })
                                     if ("logCopied" in item) item.logCopied.connect(function(token) { win.pushLog("Copied: " + token) })
                                     if ("openPage" in item) item.openPage.connect(function(id) { win.activePage = id })
