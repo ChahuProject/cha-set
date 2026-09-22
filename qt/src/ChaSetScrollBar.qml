@@ -36,6 +36,18 @@ T.ScrollBar {
     property bool forceHover: false
     property bool forceActive: false
     property string forceButtonState: ""
+    property bool extraHovered: false
+
+    // Unified runway hover tracker with Qt.NoButton to never steal clicks or drags
+    MouseArea {
+        id: barHoverArea
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.NoButton
+        cursorShape: control.pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor
+        z: -1
+    }
+    readonly property bool isBarHovered: barHoverArea.containsMouse
 
     // Backward compatibility aliases for cha-set showcase and tests
     property alias hitSize: control.hitThickness
@@ -85,7 +97,9 @@ T.ScrollBar {
     readonly property bool isAtEnd: !canScrollForward
 
     // Expansion State
-    readonly property bool _isExpanded: control.forceHover || control.forceActive || control.hovered || control.pressed
+    readonly property bool _isExpanded: control.forceHover || control.forceActive
+                                        || control.hovered || barHoverArea.containsMouse
+                                        || control.extraHovered || control.pressed
                                         || (btnStartTo && btnStartTo._isHovered)
                                         || (btnStartPage && btnStartPage._isHovered)
                                         || (btnEndPage && btnEndPage._isHovered)
@@ -135,10 +149,6 @@ T.ScrollBar {
         color: control._isExpanded ? (ThemeTokens.dark ? Qt.rgba(255/255, 255/255, 255/255, 0.05) : Qt.rgba(241/255, 245/255, 249/255, 0.3)) : "transparent"
         radius: 0
         Behavior on color { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: ThemeTokens.motionShort } }
-
-        HoverHandler {
-            cursorShape: Qt.PointingHandCursor
-        }
     }
 
     // Centered Thumb Item with Min Length Clamping
@@ -169,10 +179,6 @@ T.ScrollBar {
             Behavior on width { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: ThemeTokens.motionShort; easing.type: Easing.OutQuad } }
             Behavior on height { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: ThemeTokens.motionShort; easing.type: Easing.OutQuad } }
             Behavior on color { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: ThemeTokens.motionShort } }
-
-            HoverHandler {
-                cursorShape: control.pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor
-            }
         }
     }
 
