@@ -105,9 +105,9 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           'group absolute select-none touch-none transition-colors duration-short ease-standard z-20 flex',
           !hasOverflow && 'hidden',
           isVertical
-            ? 'flex-col items-center hover:bg-muted/30'
-            : 'flex-row items-center hover:bg-muted/30',
-          isExpanded && 'bg-muted/30',
+            ? 'flex-col items-center hover:bg-muted/80'
+            : 'flex-row items-center hover:bg-muted/80',
+          isExpanded && 'bg-muted/80',
           className,
         )}
         {...props}

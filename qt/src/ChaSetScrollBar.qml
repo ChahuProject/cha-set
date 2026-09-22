@@ -38,16 +38,12 @@ T.ScrollBar {
     property string forceButtonState: ""
     property bool extraHovered: false
 
-    // Unified runway hover tracker with Qt.NoButton to never steal clicks or drags
-    MouseArea {
-        id: barHoverArea
-        anchors.fill: parent
-        hoverEnabled: true
-        acceptedButtons: Qt.NoButton
+    // Unified runway hover tracker with PointerHandler level tracking: never steals clicks or drags, never masked by child items or z-order
+    HoverHandler {
+        id: barHoverHandler
         cursorShape: control.pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor
-        z: -1
     }
-    readonly property bool isBarHovered: barHoverArea.containsMouse
+    readonly property bool isBarHovered: barHoverHandler.hovered
 
     // Backward compatibility aliases for cha-set showcase and tests
     property alias hitSize: control.hitThickness
@@ -98,12 +94,8 @@ T.ScrollBar {
 
     // Expansion State
     readonly property bool _isExpanded: control.forceHover || control.forceActive
-                                        || control.hovered || barHoverArea.containsMouse
+                                        || control.hovered || barHoverHandler.hovered
                                         || control.extraHovered || control.pressed
-                                        || (btnStartTo && btnStartTo._isHovered)
-                                        || (btnStartPage && btnStartPage._isHovered)
-                                        || (btnEndPage && btnEndPage._isHovered)
-                                        || (btnEndTo && btnEndTo._isHovered)
 
     // Navigation Methods
     function scrollToStart() {
@@ -146,7 +138,7 @@ T.ScrollBar {
     background: Rectangle {
         implicitWidth: control.vertical ? control.hitThickness : 0
         implicitHeight: control.horizontal ? control.hitThickness : 0
-        color: control._isExpanded ? (ThemeTokens.dark ? Qt.rgba(255/255, 255/255, 255/255, 0.05) : Qt.rgba(241/255, 245/255, 249/255, 0.3)) : "transparent"
+        color: control._isExpanded ? (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8)) : "transparent"
         radius: 0
         Behavior on color { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: ThemeTokens.motionShort } }
     }
@@ -172,8 +164,8 @@ T.ScrollBar {
 
             radius: Math.min(width, height) / 2
 
-            color: (control.pressed || control.forceActive) ? (ThemeTokens.dark ? Qt.rgba(157/255, 161/255, 170/255, 1.0) : Qt.rgba(101/255, 106/255, 115/255, 1.0)) :
-                   (control.hovered || control.forceHover) ? (ThemeTokens.dark ? Qt.rgba(83/255, 96/255, 115/255, 1.0) : Qt.rgba(175/255, 184/255, 196/255, 1.0)) :
+            color: (control.pressed || control.forceActive) ? (ThemeTokens.dark ? Qt.rgba(160/255, 165/255, 173/255, 1.0) : Qt.rgba(99/255, 104/255, 114/255, 1.0)) :
+                   (control._isExpanded) ? (ThemeTokens.dark ? Qt.rgba(87/255, 100/255, 119/255, 1.0) : Qt.rgba(172/255, 181/255, 195/255, 1.0)) :
                    (ThemeTokens.dark ? "#1e293b" : "#e2e8f0")
 
             Behavior on width { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: ThemeTokens.motionShort; easing.type: Easing.OutQuad } }
@@ -195,14 +187,14 @@ T.ScrollBar {
         height: control.buttonLength
         radius: 2
 
-        readonly property bool _isHovered: (control.forceButtonState === "hover") || (_ma.containsMouse && isEnabled)
-        readonly property bool _isPressed: (control.forceButtonState === "active") || (_ma.pressed && isEnabled)
+        readonly property bool _isHovered: (control.forceButtonState === "hover") || (_ma.containsMouse && isEnabled && control._isExpanded)
+        readonly property bool _isPressed: (control.forceButtonState === "active") || (_ma.pressed && isEnabled && control._isExpanded)
 
         color: !isEnabled ? "transparent" :
                _isPressed ? (ThemeTokens.dark ? "#334155" : "#e2e8f0") :
                _isHovered ? (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8)) : "transparent"
 
-        opacity: !isEnabled ? 0.20 : (control._isExpanded ? 1.0 : 0.0)
+        opacity: !control._isExpanded ? 0.0 : (!isEnabled ? 0.20 : 1.0)
         Behavior on opacity { enabled: ThemeTokens.animationsEnabled; NumberAnimation { duration: ThemeTokens.motionShort } }
         Behavior on color { enabled: ThemeTokens.animationsEnabled; ColorAnimation { duration: ThemeTokens.motionShort } }
 
@@ -288,7 +280,6 @@ T.ScrollBar {
             id: _ma
             anchors.fill: parent
             hoverEnabled: true
-            visible: control._isExpanded
             enabled: btn.isEnabled && control._isExpanded
             cursorShape: (btn.isEnabled && control._isExpanded) ? Qt.PointingHandCursor : undefined
             acceptedButtons: Qt.LeftButton
@@ -317,7 +308,7 @@ T.ScrollBar {
         id: btnStartTo
         objectName: "btnStartTo"
         kind: 0
-        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow && control._isExpanded
+        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollBack
         tooltipText: control.vertical ? qsTr("到顶") : qsTr("到最左")
         x: 0
@@ -329,7 +320,7 @@ T.ScrollBar {
         id: btnStartPage
         objectName: "btnStartPage"
         kind: 1
-        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow && control._isExpanded
+        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollBack
         tooltipText: control.vertical ? qsTr("向上翻一页") : qsTr("向左翻一页")
         x: control.vertical ? 0 : control.buttonLength
@@ -342,7 +333,7 @@ T.ScrollBar {
         id: btnEndPage
         objectName: "btnEndPage"
         kind: 2
-        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow && control._isExpanded
+        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollForward
         tooltipText: control.vertical ? qsTr("向下翻一页") : qsTr("向右翻一页")
         x: control.vertical ? 0 : (control.width - control.buttonLength * 2)
@@ -354,7 +345,7 @@ T.ScrollBar {
         id: btnEndTo
         objectName: "btnEndTo"
         kind: 3
-        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow && control._isExpanded
+        visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollForward
         tooltipText: control.vertical ? qsTr("到底") : qsTr("到最右")
         x: control.vertical ? 0 : (control.width - control.buttonLength)
