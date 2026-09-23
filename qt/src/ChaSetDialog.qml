@@ -17,12 +17,12 @@ Rectangle {
     property int customRadius: 8
     property int dialogWidth: {
         switch (root.size) {
-        case "sm": return 380
-        case "default": return 500
-        case "lg": return 680
-        case "xl": return 840
-        case "full": return Math.min(parent.width - 40, 1100)
-        default: return 500
+        case "sm": return ThemeTokens.dp(380)
+        case "default": return ThemeTokens.dp(500)
+        case "lg": return ThemeTokens.dp(680)
+        case "xl": return ThemeTokens.dp(840)
+        case "full": return Math.min(parent.width - ThemeTokens.dp(40), ThemeTokens.dp(1100))
+        default: return ThemeTokens.dp(500)
         }
     }
     property bool showCloseButton: true
@@ -87,14 +87,14 @@ Rectangle {
     // Modal Card Container
     Rectangle {
         id: card
-        width: Math.min(parent.width - 40, root.dialogWidth)
-        implicitHeight: cardLayout.implicitHeight + 40
-        height: Math.min(parent.height - 40, implicitHeight)
+        width: Math.min(parent.width - ThemeTokens.dp(40), root.dialogWidth)
+        implicitHeight: cardLayout.implicitHeight + ThemeTokens.dp(40)
+        height: Math.min(parent.height - ThemeTokens.dp(40), implicitHeight)
         anchors.centerIn: parent
         color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
-        radius: root.customRadius
+        radius: ThemeTokens.dp(root.customRadius)
         clip: true
         scale: root.open ? 1.0 : 0.95
 
@@ -117,19 +117,19 @@ Rectangle {
 
         Column {
             id: cardLayout
-            width: parent.width - 40
+            width: parent.width - ThemeTokens.dp(40)
             anchors.centerIn: parent
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
             // Dialog Header
             Column {
                 width: parent.width
-                spacing: 6
+                spacing: ThemeTokens.dp(6)
                 visible: root.title !== "" || root.description !== ""
 
                 Row {
                     width: parent.width
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
 
                     HoverHandler {
                         enabled: root.draggable
@@ -167,15 +167,15 @@ Rectangle {
 
                     Row {
                         id: headerActions
-                        spacing: 6
+                        spacing: ThemeTokens.dp(6)
                         anchors.verticalCenter: parent.verticalCenter
 
                         Rectangle {
                             id: escBadge
                             visible: root.showEscBadge
-                            width: 32
-                            height: 20
-                            radius: 4
+                            width: ThemeTokens.dp(32)
+                            height: ThemeTokens.dp(20)
+                            radius: ThemeTokens.dp(4)
                             color: ThemeTokens.panelRaised
                             border.color: ThemeTokens.border
                             border.width: 1
@@ -193,8 +193,8 @@ Rectangle {
                         ChaSetButton {
                             id: closeBtn
                             visible: root.showCloseButton
-                            width: 28
-                            height: 28
+                            width: ThemeTokens.dp(28)
+                            height: ThemeTokens.dp(28)
                             size: "icon"
                             variant: "ghost"
                             icon: "x"
@@ -241,7 +241,7 @@ Rectangle {
             Column {
                 id: bodyContent
                 width: parent.width
-                spacing: 14
+                spacing: ThemeTokens.dp(14)
             }
         }
     }

@@ -28,8 +28,8 @@ export interface HeaderProps {
   mode: string;
   onToggleMode: () => void;
   onOpenSearch: () => void;
-  onToggleTuner: () => void;
-  showTuner: boolean;
+  onOpenTuner: () => void;
+  isTunerActive: boolean;
   onOpenExport: () => void;
 }
 
@@ -37,8 +37,8 @@ export function Header({
   mode,
   onToggleMode,
   onOpenSearch,
-  onToggleTuner,
-  showTuner,
+  onOpenTuner,
+  isTunerActive,
   onOpenExport,
 }: HeaderProps) {
   const { preference, setPreference, supportedLocales, locale, t } = useChaSetI18n();
@@ -113,9 +113,9 @@ export function Header({
           <Tooltip content="Toggle theme controls" side="bottom">
             <Button
               type="button"
-              variant={showTuner ? 'default' : 'outline'}
+              variant={isTunerActive ? 'default' : 'outline'}
               size="sm"
-              onClick={onToggleTuner}
+              onClick={onOpenTuner}
               className="gap-1.5"
             >
               <PaletteIcon className="size-4" />

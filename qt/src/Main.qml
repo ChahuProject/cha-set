@@ -1499,7 +1499,7 @@ ApplicationWindow {
                             text: "Toggle theme controls"
                             side: "bottom"
                             ChaSetButton {
-                                variant: win.activePage === "theme-tuner" ? "default" : "secondary"
+                                variant: win.activePage === "theme-tuner" ? "default" : "outline"
                                 size: "sm"
                                 icon: "palette"
                                 text: ChaSetI18n.tr("showcase.studioTuner", "Studio Tuner")
@@ -1512,7 +1512,7 @@ ApplicationWindow {
                             text: "Export Theme Config"
                             side: "bottom"
                             ChaSetButton {
-                                variant: "secondary"
+                                variant: "outline"
                                 size: "sm"
                                 icon: "copy"
                                 text: ChaSetI18n.tr("showcase.exportTheme", "Export")
@@ -1747,10 +1747,15 @@ ApplicationWindow {
 
             // Export Config Modal
             ExportModal {
-                open: win.exportModalOpen
+                id: exportModalItem
                 customRadius: win.customRadius
                 exportTab: win.exportTab
                 onClose: win.exportModalOpen = false
+            }
+            Binding {
+                target: exportModalItem
+                property: "open"
+                value: win.exportModalOpen
             }
 
             // Floating UI Scale OSD (Bottom Center)

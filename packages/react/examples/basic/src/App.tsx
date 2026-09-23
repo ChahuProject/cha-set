@@ -628,7 +628,6 @@ export function App() {
     enableShortcuts: true,
   });
 
-  const [showTuner, setShowTuner] = useState(false);
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
 
@@ -859,45 +858,10 @@ export function App() {
           mode={mode}
           onToggleMode={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
           onOpenSearch={() => setSearchModalOpen(true)}
-          onToggleTuner={() => setShowTuner((v) => !v)}
-          showTuner={showTuner}
+          onOpenTuner={() => navigate('#/get-started/theme-tuner')}
+          isTunerActive={currentHash === '#/get-started/theme-tuner'}
           onOpenExport={() => setExportModalOpen(true)}
         />
-
-        {/* Studio / Tuner Overlay Drawer (Collapsible) */}
-        {showTuner && (
-          <div className="border-b border-border bg-card/60 backdrop-blur-md px-4 py-3 md:px-6">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-foreground tracking-wide uppercase">
-                  Studio Theme Tuner
-                </span>
-                <span className="text-caption text-muted-foreground">
-                  Customizing CSS variables live
-                </span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-caption font-medium text-muted-foreground">Accent Palette</span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {['#30a0ff', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'].map((c) => (
-                      <button
-                        key={c}
-                        type="button"
-                        onClick={() => setAccent(c)}
-                        className={`size-6 rounded-md border border-border/80 transition-transform ${
-                          accent === c ? 'scale-110 ring-2 ring-primary ring-offset-1 ring-offset-background' : 'hover:scale-105'
-                        }`}
-                        style={{ backgroundColor: c }}
-                        aria-label={`Select accent ${c}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Main 2-Column Showcase Layout */}
         <div className="flex flex-1">

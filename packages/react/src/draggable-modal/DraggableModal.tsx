@@ -141,7 +141,31 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     return 16;
   }, [remBase]);
 
-  const rem = resolveRem();
+  const [rem, setRem] = React.useState<number>(() => resolveRem());
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
+    const checkRem = () => {
+      const cur = resolveRem();
+      setRem((prev) => (Math.abs(prev - cur) > 0.05 ? cur : prev));
+    };
+
+    checkRem();
+
+    const observer = new MutationObserver(checkRem);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['style', 'class'],
+    });
+
+    window.addEventListener('resize', checkRem);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', checkRem);
+    };
+  }, [resolveRem]);
+
   const widthRemVal = defaultWidthRem ?? 默认宽度rem;
   const heightRemVal = defaultHeightRem ?? 默认高度rem;
   const minWidthRemVal = minWidthRem ?? 最小宽度rem;
@@ -238,6 +262,24 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
   React.useLayoutEffect(() => {
     attemptFitHeight();
   }, [children, attemptFitHeight]);
+
+  // Reactively respond to rem / UI scale changes
+  React.useEffect(() => {
+    const rnd = rndRef.current;
+    if (!rnd || typeof window === 'undefined') return;
+
+    const targetW = widthRemVal !== undefined ? widthRemVal * rem : (defaultWidth ?? 32 * rem);
+    if (Math.abs(targetW - currentSizeRef.current.width) > 1) {
+      currentSizeRef.current = { ...currentSizeRef.current, width: targetW };
+      rnd.updateSize({ width: targetW, height: currentSizeRef.current.height });
+      if (!hasManuallyAdjustedRef.current) {
+        const newX = Math.max(16, (window.innerWidth - targetW) / 2);
+        currentPosRef.current = { ...currentPosRef.current, x: newX };
+        rnd.updatePosition({ x: newX, y: currentPosRef.current.y });
+      }
+    }
+    attemptFitHeight();
+  }, [rem, widthRemVal, defaultWidth, attemptFitHeight]);
 
   React.useEffect(() => {
     const id = window.setTimeout(attemptFitHeight, 50);

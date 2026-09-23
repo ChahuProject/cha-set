@@ -9,17 +9,12 @@ ChaSetDialog {
     property string exportTab: "qt"
     title: "Export & Copy Theme Configuration"
     description: "One-click copy tailored styles and component code for your target framework."
-    dialogWidth: 680
+    dialogWidth: ThemeTokens.dp(680)
 
     signal close()
 
     onClosed: root.close()
     onRejected: root.close()
-
-    // Support both open and visible bindings
-    onVisibleChanged: {
-        if (visible !== open) open = visible
-    }
 
     // Tabs
     ChaSetTabs {
@@ -38,14 +33,14 @@ ChaSetDialog {
 
     Rectangle {
         width: parent.width
-        height: 220
+        height: ThemeTokens.dp(220)
         color: ThemeTokens.background
         border.color: ThemeTokens.border
-        radius: 4
+        radius: ThemeTokens.dp(4)
 
         ChaSetScrollArea {
             anchors.fill: parent
-            anchors.margins: 10
+            anchors.margins: ThemeTokens.dp(10)
             showVerticalScrollBar: true
             showHorizontalScrollBar: true
             showButtons: false
@@ -80,8 +75,8 @@ ChaSetDialog {
 
     Row {
         anchors.right: parent.right
-        spacing: 10
-        ChaSetButton { size: "sm"; variant: "secondary"; text: "Close"; onClicked: { root.close(); root.closeDialog() } }
+        spacing: ThemeTokens.dp(10)
+        ChaSetButton { size: "sm"; variant: "outline"; text: "Close"; onClicked: { root.close(); root.closeDialog() } }
         ChaSetButton { size: "sm"; variant: "default"; icon: "check"; text: "Done"; onClicked: { root.close(); root.closeDialog() } }
     }
 }
