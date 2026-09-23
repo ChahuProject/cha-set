@@ -25,18 +25,18 @@
 
 | 组件名称 | 业务解耦度 (0-5) | 通用价值 (0-5) | 双端可行性 (0-5) | 综合评分 (满分20) | 建议层级 | 裁决结论 | 预估重构成本 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **`Timeline`** (原 `DeviceStatusTimeline`) | 4/5 | 5/5 | 5/5 | **18/20** | L4 复合 | 🌟 建议直接收录 | 低 (仅需剥离设备专属字段) |
-| **`MetricCard`** (原 `KpiTelemetryCard`) | 4/5 | 5/5 | 5/5 | **18/20** | L1/L4 复合 | 🌟 建议直接收录 | 低 (提取通用数值与趋势插槽) |
-| **`FilterBar`** (原 `AuditQueryFilter`) | 3/5 | 4/5 | 4/5 | **15/20** | L4 复合 | 🔨 解耦重构后收录 | 中 (提取可配置字段 Schema) |
-| **`DiffViewer`** (原 `ConfigVersionDiff`) | 3/5 | 4/5 | 4/5 | **14/20** | L4 复合 | 🔨 解耦重构后收录 | 中 (解耦纯文本 Diff 算法) |
-| **`AudioWaveVisualizer`** | 1/5 | 2/5 | 2/5 | **7/20** | L3 原语 | ⚠️ 暂缓 / 局限性大 | 高 (Qt/Web 双端音频接口差异大) |
-| **`DeviceFirmwareUpgradeModal`** | 0/5 | 1/5 | 3/5 | **5/20** | 业务私有 | ❌ 维持业务私有 | 极高 (包含固件校验与专用 RPC) |
+| **`Timeline`** (原 `DeviceStatusTimeline`) | 4/5 | 5/5 | 5/5 | **18/20** | L4 复合 | [ADOPT] 建议直接收录 | 低 (仅需剥离设备专属字段) |
+| **`MetricCard`** (原 `KpiTelemetryCard`) | 4/5 | 5/5 | 5/5 | **18/20** | L1/L4 复合 | [ADOPT] 建议直接收录 | 低 (提取通用数值与趋势插槽) |
+| **`FilterBar`** (原 `AuditQueryFilter`) | 3/5 | 4/5 | 4/5 | **15/20** | L4 复合 | [REFACTOR] 解耦重构后收录 | 中 (提取可配置字段 Schema) |
+| **`DiffViewer`** (原 `ConfigVersionDiff`) | 3/5 | 4/5 | 4/5 | **14/20** | L4 复合 | [REFACTOR] 解耦重构后收录 | 中 (解耦纯文本 Diff 算法) |
+| **`AudioWaveVisualizer`** | 1/5 | 2/5 | 2/5 | **7/20** | L3 原语 | [DEFER] 暂缓 / 局限性大 | 高 (Qt/Web 双端音频接口差异大) |
+| **`DeviceFirmwareUpgradeModal`** | 0/5 | 1/5 | 3/5 | **5/20** | 业务私有 | [REJECT] 维持业务私有 | 极高 (包含固件校验与专用 RPC) |
 
 ---
 
 ### 二、重点推荐组件深度剖析与通用契约提案
 
-#### 1. 🌟 `Timeline` (原 `DeviceStatusTimeline`)
+#### 1. [ADOPT] `Timeline` (原 `DeviceStatusTimeline`)
 
 - **原有问题与耦合分析**：
   - 源码中硬编码了 `deviceId`, `fwVersion`, `gatewayIp` 等专有业务字段；
@@ -71,7 +71,7 @@
 
 ---
 
-#### 2. 🔨 `FilterBar` (原 `AuditQueryFilter`)
+#### 2. [REFACTOR] `FilterBar` (原 `AuditQueryFilter`)
 
 - **原有问题与耦合分析**：
   - 内置了对 `/api/audit/presets` 的异步加载逻辑；
@@ -109,10 +109,10 @@
 
 请用户勾选拟采纳并纳入本项目 (`cha-set`) 的候选组件：
 
-- [ ] **🌟 `Timeline`**：采纳为通用时间轴组件（归属 `L4 Composite`），预计开发耗时 0.5 天。
-- [ ] **🌟 `MetricCard`**：采纳为通用指标展示卡片（归属 `L1 Atomic` / `L4 Composite`），预计开发耗时 0.5 天。
-- [ ] **🔨 `FilterBar`**：按解耦方案抽象为通用多条件筛选栏（归属 `L4 Composite`），预计开发耗时 1 天。
-- [ ] **🔨 `DiffViewer`**：解耦文本差异算法后纳入代码/文本工具包，预计开发耗时 1.5 天。
+- [ ] **[ADOPT] `Timeline`**：采纳为通用时间轴组件（归属 `L4 Composite`），预计开发耗时 0.5 天。
+- [ ] **[ADOPT] `MetricCard`**：采纳为通用指标展示卡片（归属 `L1 Atomic` / `L4 Composite`），预计开发耗时 0.5 天。
+- [ ] **[REFACTOR] `FilterBar`**：按解耦方案抽象为通用多条件筛选栏（归属 `L4 Composite`），预计开发耗时 1 天。
+- [ ] **[REFACTOR] `DiffViewer`**：解耦文本差异算法后纳入代码/文本工具包，预计开发耗时 1.5 天。
 - [ ] **跳过其他组件**：其余业务组件维持在原项目中。
 
 > **下一步**：用户确认选择后，Agent 将自动调用 `add-component` 技能，按照单一真理源契约（Spec -> React -> Qt -> Living Showcase -> Verification Gate）依次将入选组件落地！

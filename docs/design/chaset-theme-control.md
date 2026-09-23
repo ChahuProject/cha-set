@@ -69,19 +69,19 @@
 
 | 配置项 | 取值 | 是否与 dt 重合 |
 |---|---|---|
-| `主题偏好` | `auto/light/dark` | ✅ 重合（dt: `system/light/dark`） |
-| `主题颜色` | `neutral/slate/red/orange/yellow/green/blue/violet/rose/custom`（10 档） | ⚠️ dt 只有 `default/custom` |
-| `自定义主题强调色` | hex，默认 `#7c3aed` | ✅ 重合（dt 默认 `#30a0ff`） |
-| `界面风格` | `simple/expressive` | ❌ dt 无 |
-| `装饰程度` | 0-100 | ❌ dt 无 |
-| `装饰覆盖项` | `radius/shadow/materialTransparency/motion` 各自 0-100 | ⚠️ dt 有静态 radius token，无"程度"概念 |
-| `窗口材质` | `none/mica/acrylic/tabbed` | ❌ dt 无 → **Windows DWM 系统 API** |
-| `窗口色调` | `neutral/slate/graphite/mist/sage/plum/custom` | ❌ dt 无 |
-| `自定义窗口底色亮/暗` | hex | ❌ dt 无 |
-| `背景图片` / `背景图片缩放` | 路径 + `cover/contain/stretch/tile/center` | ❌ dt 无 |
-| `界面缩放` | 系数 | ⚠️ dt 侧 cha-set 已有 `uiScale` |
-| `标签栏宽度` | — | ❌ crd 无（dt 独有） |
-| `平滑滚动/动画开关` | — | ❌ crd 无（dt 独有） |
+| `主题偏好` | `auto/light/dark` | [MATCH] 重合（dt: `system/light/dark`） |
+| `主题颜色` | `neutral/slate/red/orange/yellow/green/blue/violet/rose/custom`（10 档） | [PARTIAL] dt 只有 `default/custom` |
+| `自定义主题强调色` | hex，默认 `#7c3aed` | [MATCH] 重合（dt 默认 `#30a0ff`） |
+| `界面风格` | `simple/expressive` | [DIFF] dt 无 |
+| `装饰程度` | 0-100 | [DIFF] dt 无 |
+| `装饰覆盖项` | `radius/shadow/materialTransparency/motion` 各自 0-100 | [PARTIAL] dt 有静态 radius token，无"程度"概念 |
+| `窗口材质` | `none/mica/acrylic/tabbed` | [DIFF] dt 无 → **Windows DWM 系统 API** |
+| `窗口色调` | `neutral/slate/graphite/mist/sage/plum/custom` | [DIFF] dt 无 |
+| `自定义窗口底色亮/暗` | hex | [DIFF] dt 无 |
+| `背景图片` / `背景图片缩放` | 路径 + `cover/contain/stretch/tile/center` | [DIFF] dt 无 |
+| `界面缩放` | 系数 | [PARTIAL] dt 侧 cha-set 已有 `uiScale` |
+| `标签栏宽度` | — | [DIFF] crd 无（dt 独有） |
+| `平滑滚动/动画开关` | — | [DIFF] crd 无（dt 独有） |
 
 ### 1.4 冲突逐项裁定表（本方案的核心）
 
@@ -325,7 +325,7 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 
 ## 4. 分阶段落地计划
 
-### 阶段 0 — 边界冻结与契约固化（无 UI）✅ 已完成
+### 阶段 0 — 边界冻结与契约固化（无 UI） [DONE] 已完成
 
 **目标**：把 §3.3 独有清单与 §3.2 数据模型变成**机械可校验**产物，防止蔓延（R1）。
 
@@ -344,12 +344,12 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 6. `docs/design/chaset-theme-control.md`（本文）。
 
 **验收标准**
-- `pnpm gate` 新增 `theme-boundary` 步，本地全绿。✅（当前输出：`5 covered axes, 9 excluded axes (7 hostOnly + 2 duntingUnique), palette of 10 ids verified`，自检 3/3 通过）
-- 负向测试：故意往 schema 塞 `windowMaterial` → 门禁必须红。✅（`--self-test` 覆盖，且作为 `pnpm gate` 的前置条件）
+- `pnpm gate` 新增 `theme-boundary` 步，本地全绿。[PASSED]（当前输出：`5 covered axes, 9 excluded axes (7 hostOnly + 2 duntingUnique), palette of 10 ids verified`，自检 3/3 通过）
+- 负向测试：故意往 schema 塞 `windowMaterial` → 门禁必须红。[PASSED]（`--self-test` 覆盖，且作为 `pnpm gate` 的前置条件）
 
 ---
 
-### 阶段 1 — 收敛数据模型：调色板对齐为 10 档 ✅ cha-set 侧已完成
+### 阶段 1 — 收敛数据模型：调色板对齐为 10 档 [DONE] cha-set 侧已完成
 
 **目标**：让 `duning` 与 `launcher` 两 preset 共享**同一份 10 档调色板定义**，这是 D1 的实施。
 
@@ -379,9 +379,9 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 6. `pnpm gen:all` 重跑：`packages/react/src/styles/tokens.css` +30 行（4 个新选择器），`dist/consumers/dunting/generated/theme_tokens.generated.h` **无变化**——印证调色板轴不污染 Qt 侧冻结契约。
 
 **验收标准**
-- `pnpm gate` 全绿（typography 契约 68 值不变）。✅
-- `spec/__tests__/palette-parity.test.mjs` 通过。✅（24/24；整个 spec 套件 80/80）
-- `spec/validate-tokens.mjs` 通过。✅（`34 theme overrides`）
+- `pnpm gate` 全绿（typography 契约 68 值不变）。[PASSED]
+- `spec/__tests__/palette-parity.test.mjs` 通过。[PASSED]（24/24；整个 spec 套件 80/80）
+- `spec/validate-tokens.mjs` 通过。[PASSED]（`34 theme overrides`）
 
 **阶段 1 宿主收敛结果**
 - dt 侧已把 `accentMode: default|custom` + 单个 `accentHex` 彻底收敛为 10 档 palette + `customHex`（在阶段 2 完成，见下）。
@@ -389,7 +389,7 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 
 ---
 
-### 阶段 2 — 控件实现与 dt 接入（cha-set 内 + dt）✅ 已完成
+### 阶段 2 — 控件实现与 dt 接入（cha-set 内 + dt） [DONE] 已完成
 
 **目标**：做出双端对等的控件，并在 dt 落地。
 
@@ -408,13 +408,13 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 7. CI / 构建：本地使用 `-DCHASET_DEV_LOCAL=ON` 零延迟同级联动，构建及 QTest 全部通过。
 
 **验收标准**
-- `pnpm gate` 全绿（涵盖 47+ 组件 SPAS 契约、Click 交互测试、Qt headless `--test-scenario all`）。✅
-- 手工交互验证：模式切换、10 档调色板逐档切换、装饰程度拖动、重置、导出/导入 JSON 往返一致。✅
-- 单元测试全绿（C++ Catch2 / QTest 套件全部通过）。✅
+- `pnpm gate` 全绿（涵盖 47+ 组件 SPAS 契约、Click 交互测试、Qt headless `--test-scenario all`）。[PASSED]
+- 手工交互验证：模式切换、10 档调色板逐档切换、装饰程度拖动、重置、导出/导入 JSON 往返一致。[PASSED]
+- 单元测试全绿（C++ Catch2 / QTest 套件全部通过）。[PASSED]
 
 ---
 
-### 阶段 3 — 接入 chahu-render-debugger ✅ 已完成
+### 阶段 3 — 接入 chahu-render-debugger [DONE] 已完成
 
 **目标**：crd 外观页面用控件替换已纳入 schema 的 section；独有项保持原生。
 
@@ -427,15 +427,15 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 6. `launcher/src/lib/主题.ts` 与 `launcher/src/store/主题状态.ts` 全面接入 `@chahu/cha-set` 规范配置（`ThemeConfig`），提供从存量格式到规范格式的双向无损转换与自动迁移；新增专门测试套件 `launcher/src/lib/主题.test.ts`（5/5 用例通过）。
 
 **验收标准**
-- `pnpm typecheck` 通过（exit 0）。✅
-- `pnpm exec vitest run`（21 个测试文件，115 个用例全部通过）。✅
-- `pnpm build` 生产构建通过（exit 0）。✅
-- 独有项隔离回归验证：修改窗口材质或背景图不影响 ThemeSettings 内部状态，反之亦然。✅
-- 存量配置迁移验证：`auto` 自动映射为 `system`，`neutral` 映射为默认色，无损平滑。✅
+- `pnpm typecheck` 通过（exit 0）。[PASSED]
+- `pnpm exec vitest run`（21 个测试文件，115 个用例全部通过）。[PASSED]
+- `pnpm build` 生产构建通过（exit 0）。[PASSED]
+- 独有项隔离回归验证：修改窗口材质或背景图不影响 ThemeSettings 内部状态，反之亦然。[PASSED]
+- 存量配置迁移验证：`auto` 自动映射为 `system`，`neutral` 映射为默认色，无损平滑。[PASSED]
 
 ---
 
-### 阶段 4 — 清理旧主题代码 ✅ 已完成
+### 阶段 4 — 清理旧主题代码 [DONE] 已完成
 
 **目标**：移除已被接管的手写实现，SSOT 收敛。
 
@@ -456,9 +456,9 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
    - `scripts/check-theme-boundary.mjs` 扩充 B8 检查（静态扫描双端 ThemeSettings 组件源码及各宿主外观页，严防独有字段倒灌），自检与实测全绿。
 
 **验收标准**
-- `pnpm check:theme-boundary` 全绿（5 covered axes, 9 excluded axes, 10 palette ids, 4 component/consumer sources verified）。✅
-- 两项目行为级零回归，类型检查与全量单测全绿。✅
-- `spec/tokens/meta.json` 同步更新完毕。✅
+- `pnpm check:theme-boundary` 全绿（5 covered axes, 9 excluded axes, 10 palette ids, 4 component/consumer sources verified）。[PASSED]
+- 两项目行为级零回归，类型检查与全量单测全绿。[PASSED]
+- `spec/tokens/meta.json` 同步更新完毕。[PASSED]
 
 ---
 

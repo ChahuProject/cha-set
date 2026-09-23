@@ -114,7 +114,7 @@ const testCases = [
   },
 ];
 
-console.log('🍵 ChaSet Visual Conformance & Pixel-Diff Pipeline\n');
+console.log('[VISUAL-DIFF] ChaSet Visual Conformance & Pixel-Diff Pipeline\n');
 
 // 1. Build React and Qt targets
 console.log('[1/4] Building React & Qt artifacts...');
@@ -292,9 +292,9 @@ for (const r of results) {
 console.log('└─────────────────────────────┴─────────────┴────────────────┴───────────┴────────┘\n');
 
 if (allPassed) {
-  console.log('✅ ALL VISUAL CONFORMANCE CHECKS PASSED — Cross-stack pixel-level parity verified!');
+  console.log('[PASS] ALL VISUAL CONFORMANCE CHECKS PASSED — Cross-stack pixel-level parity verified!');
   process.exit(0);
 } else {
-  console.error('❌ VISUAL REGRESSION DETECTED — Some component snapshots exceeded the pixel difference threshold.');
+  console.error('[FAIL] VISUAL REGRESSION DETECTED — Some component snapshots exceeded the pixel difference threshold.');
   process.exit(1);
 }

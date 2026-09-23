@@ -27,12 +27,12 @@
 更新子仓库时，面对几十甚至数百条提交历史，人工逐行研判极为耗时。`show-unapplied-commits.ps1` 采用双层分类过滤：
 
 ### 1. 第一层：Conventional Commits 语义分类
-- **💥 破坏性变动 (Breaking Changes)**：匹配 `^[a-f0-9]+\s+[a-z0-9\-]+!:` 或 `BREAKING CHANGE:`。
+- **[BREAKING] 破坏性变动 (Breaking Changes)**：匹配 `^[a-f0-9]+\s+[a-z0-9\-]+!:` 或 `BREAKING CHANGE:`。
   - 此类变动意味着 API 签名调整、破坏性字段重命名或行为不兼容，必须由 Agent/开发者优先审查并适配宿主调用处。
-- **✨ Features (`feat:`)**：新功能、新组件、新导出能力。
-- **🐛 Bug Fixes (`fix:`)**：缺陷修复、边界保护。
-- **⚡ Performance (`perf:`)**：性能优化。
-- **♻️ Refactor (`refactor:`)**：内部重构，通常不破坏公开 API。
+- **[FEAT] Features (`feat:`)**：新功能、新组件、新导出能力。
+- **[FIX] Bug Fixes (`fix:`)**：缺陷修复、边界保护。
+- **[PERF] Performance (`perf:`)**：性能优化。
+- **[REFACTOR] Refactor (`refactor:`)**：内部重构，通常不破坏公开 API。
 
 ### 2. 第二层：领域子系统关键词分类
 通过正则表达式对提交信息的主题与正文进行关键词匹配：

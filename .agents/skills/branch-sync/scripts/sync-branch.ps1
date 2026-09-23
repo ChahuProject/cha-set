@@ -435,9 +435,9 @@ $isDiffEmpty = [string]::IsNullOrWhiteSpace($diffRes.Output)
 Write-Host "================== 合后校验结果 ==================" -ForegroundColor Green
 Write-Host "本地 HEAD:   $headCommit"
 Write-Host "集成分支:   $integTip"
-Write-Host "Merge 提交: $(if ($hasMerges) { '⚠️ 存在 Merge 提交' } else { '✅ 无 Merge 提交 (严格线性)' })"
-Write-Host "分支对齐:   $(if ($isDiffEmpty) { "✅ $SourceBranch 与 $IntegrationBranch 内容完全一致" } else { "⚠️ 两分支仍存在差异: $($diffRes.Output)" })"
-Write-Host "工作区:     ✅ 干净 (Clean)"
+Write-Host "Merge 提交: $(if ($hasMerges) { '[WARN] 存在 Merge 提交' } else { '[OK] 无 Merge 提交 (严格线性)' })"
+Write-Host "分支对齐:   $(if ($isDiffEmpty) { "[OK] $SourceBranch 与 $IntegrationBranch 内容完全一致" } else { "[WARN] 两分支仍存在差异: $($diffRes.Output)" })"
+Write-Host "工作区:     [OK] 干净 (Clean)"
 Write-Host "==================================================" -ForegroundColor Green
 Write-Host "同步完成！请运行一次项目构建校验命令。" -ForegroundColor Cyan
 Write-Host ""

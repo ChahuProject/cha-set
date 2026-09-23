@@ -18,7 +18,7 @@ Sync a parallel feat branch (often held by a worktree) into the integration bran
 [Fast-Track: sync-branch.ps1] OR [Inspection (git cherry -v)] -> [Route A: Free / Route B: Occupied] -> [Push & Verify]
 ```
 
-## ⚡ Fast-Track Workflow (Recommended: 1–2 Tool Calls)
+## Fast-Track Workflow (Recommended: 1–2 Tool Calls)
 
 Use the bundled script `.agents/skills/branch-sync/scripts/sync-branch.ps1` to automate topology detection, patch-level deduplication, branch alignment, safe push, and verification in a single run:
 
@@ -34,7 +34,7 @@ pwsh .agents/skills/branch-sync/scripts/sync-branch.ps1 -SourceBranch 'feat/x' -
 
 ---
 
-## 🛠️ Manual Fallback (Chained One-Liners)
+## Manual Fallback (Chained One-Liners)
 
 If the script environment is unavailable, use chained compound commands. **Never execute git commands line-by-line across multiple tool rounds, and never print raw full git logs to manually compare subjects.**
 

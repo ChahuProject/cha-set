@@ -154,7 +154,7 @@ Write-Host "               └─ $newCommitSubject" -ForegroundColor DarkGray
 Write-Host "-----------------------------------------------------------------" -ForegroundColor Gray
 
 if ($oldCommitFull -eq $newCommitFull) {
-    Write-Host "🎉 当前项目已对齐 $subrepoName 的目标提交，无须升级！" -ForegroundColor Green
+    Write-Host "[OK] 当前项目已对齐 $subrepoName 的目标提交，无须升级！" -ForegroundColor Green
     return
 }
 
@@ -232,55 +232,55 @@ foreach ($line in $commitsRaw) {
 Write-Host "【涉及系统与影响面聚类】" -ForegroundColor Yellow
 
 if ($breakingCommits.Count -gt 0) {
-    Write-Host "  💥 破坏性变更 (Breaking Changes) [$($breakingCommits.Count) 项] - 需重点核验:" -ForegroundColor Red
+    Write-Host "  [BREAKING] 破坏性变更 (Breaking Changes) [$($breakingCommits.Count) 项] - 需重点核验:" -ForegroundColor Red
     $breakingCommits | ForEach-Object { Write-Host "     - $_" }
     Write-Host ""
 }
 
 if ($motionCommits.Count -gt 0) {
-    Write-Host "  🎬 动效与过渡系统 (Motion) [$($motionCommits.Count) 项]:" -ForegroundColor Magenta
+    Write-Host "  [MOTION] 动效与过渡系统 (Motion) [$($motionCommits.Count) 项]:" -ForegroundColor Magenta
     $motionCommits | ForEach-Object { Write-Host "     - $_" }
     Write-Host ""
 }
 
 if ($tokenCommits.Count -gt 0) {
-    Write-Host "  🎨 设计令牌与色彩系统 (Tokens & Themes) [$($tokenCommits.Count) 项]:" -ForegroundColor Yellow
+    Write-Host "  [TOKENS] 设计令牌与色彩系统 (Tokens & Themes) [$($tokenCommits.Count) 项]:" -ForegroundColor Yellow
     $tokenCommits | ForEach-Object { Write-Host "     - $_" }
     Write-Host ""
 }
 
 if ($styleCommits.Count -gt 0) {
-    Write-Host "  📐 样式层叠与打包规范 (Styles & Layout) [$($styleCommits.Count) 项]:" -ForegroundColor Green
+    Write-Host "  [STYLES] 样式层叠与打包规范 (Styles & Layout) [$($styleCommits.Count) 项]:" -ForegroundColor Green
     $styleCommits | ForEach-Object { Write-Host "     - $_" }
     Write-Host ""
 }
 
 if ($componentCommits.Count -gt 0) {
-    Write-Host "  🧩 规范控件与组件 API 变更 (Components) [$($componentCommits.Count) 项]:" -ForegroundColor Cyan
+    Write-Host "  [COMPONENTS] 规范控件与组件 API 变更 (Components) [$($componentCommits.Count) 项]:" -ForegroundColor Cyan
     $componentCommits | ForEach-Object { Write-Host "     - $_" }
     Write-Host ""
 }
 
 if ($featCommits.Count -gt 0 -and $componentCommits.Count -eq 0) {
-    Write-Host "  ✨ 新功能与能力扩展 (Features) [$($featCommits.Count) 项]:" -ForegroundColor Cyan
+    Write-Host "  [FEAT] 新功能与能力扩展 (Features) [$($featCommits.Count) 项]:" -ForegroundColor Cyan
     $featCommits | ForEach-Object { Write-Host "     - $_" }
     Write-Host ""
 }
 
 if ($fixCommits.Count -gt 0) {
-    Write-Host "  🐛 缺陷修复与稳定性 (Bug Fixes) [$($fixCommits.Count) 项]:" -ForegroundColor DarkYellow
+    Write-Host "  [FIX] 缺陷修复与稳定性 (Bug Fixes) [$($fixCommits.Count) 项]:" -ForegroundColor DarkYellow
     $fixCommits | ForEach-Object { Write-Host "     - $_" }
     Write-Host ""
 }
 
 if ($perfCommits.Count -gt 0) {
-    Write-Host "  ⚡ 性能优化 (Performance) [$($perfCommits.Count) 项]:" -ForegroundColor Green
+    Write-Host "  [PERF] 性能优化 (Performance) [$($perfCommits.Count) 项]:" -ForegroundColor Green
     $perfCommits | ForEach-Object { Write-Host "     - $_" }
     Write-Host ""
 }
 
 if ($otherCommits.Count -gt 0) {
-    Write-Host "  🛠️ 工程基建、规范与测试 (Governance & Chore) [$($otherCommits.Count) 项]:" -ForegroundColor DarkGray
+    Write-Host "  [CHORE] 工程基建、规范与测试 (Governance & Chore) [$($otherCommits.Count) 项]:" -ForegroundColor DarkGray
     $otherCommits | ForEach-Object { Write-Host "     - $_" }
     Write-Host ""
 }
@@ -303,7 +303,7 @@ if ($Update) {
     Write-Host "正在将子仓库 $subrepoName 签出更新至目标 Commit: $newCommitShort ..." -ForegroundColor Yellow
     git -C $resolvedSubrepo checkout $newCommitFull
     $updatedCommit = (git -C $resolvedSubrepo rev-parse --short HEAD).Trim()
-    Write-Host "✅ 子仓库已更新到: $updatedCommit" -ForegroundColor Green
+    Write-Host "[OK] 子仓库已更新到: $updatedCommit" -ForegroundColor Green
     Write-Host ""
     Write-Host "下一步建议：" -ForegroundColor Cyan
     Write-Host "  1. 执行宿主项目对应的编译与类型检查（如 cargo check, pnpm build, just build 等）"
@@ -312,6 +312,6 @@ if ($Update) {
     Write-Host "  4. 提交时撰写规范提交信息，例如: chore(deps): 更新 $subrepoName 至 $newCommitShort 并完成适配"
 }
 else {
-    Write-Host "💡 提示：若需一键将子仓库签出更新至上述最新提交，可运行：" -ForegroundColor DarkYellow
+    Write-Host "[TIP] 提示：若需一键将子仓库签出更新至上述最新提交，可运行：" -ForegroundColor DarkYellow
     Write-Host "  pwsh .agents/skills/subrepo-sync/scripts/show-unapplied-commits.ps1 -SubrepoPath '$SubrepoPath' -Update" -ForegroundColor White
 }

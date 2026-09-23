@@ -91,7 +91,7 @@ CSS resolves a comma-separated fallback list; Qt assigns `font.family` to one fa
 
 ```
 CSS       line-height: 140%   →  1.40 × font-size      = 1.40 × 12 = 16.8px
-Qt <p>    line-height: 140%   →  1.40 × fontMetrics(14) = 19.6px   ✗
+Qt <p>    line-height: 140%   →  1.40 × fontMetrics(14) = 19.6px   [MISMATCH]
 ```
 
 Measured: `<p style="line-height:140%">` yields 19.59px/line for Consolas@12. So **never use a percentage in Qt rich text.** Use the absolute px form, which `Typography.lineHeightPx()` produces:

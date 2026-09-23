@@ -21,7 +21,7 @@ const componentArg = args.find((a) => a.startsWith('--component='))?.split('=')[
 const variantFilter = args.find((a) => a.startsWith('--variant='))?.split('=')[1] ?? (args.includes('--variant') ? args[args.indexOf('--variant') + 1] : null);
 const stateFilter = args.find((a) => a.startsWith('--state='))?.split('=')[1] ?? (args.includes('--state') ? args[args.indexOf('--state') + 1] : null);
 
-console.log('🔬 ChaSet Scientific Pixel-Sync & Conformance Engine');
+console.log('[PIXEL-SYNC] ChaSet Scientific Pixel-Sync & Conformance Engine');
 console.log(`   Component: ${componentArg} | Filter: variant=${variantFilter || 'all'}, state=${stateFilter || 'all'}\n`);
 
 // Definitive Button test matrix covering variants, sizes, and interactive behavior states
@@ -740,7 +740,7 @@ const htmlReport = `<!DOCTYPE html>
   </style>
 </head>
 <body>
-  <h1>🍵 ChaSet Pixel-Sync Visual Conformance Report</h1>
+  <h1>ChaSet Pixel-Sync Visual Conformance Report</h1>
   <div class="subtitle">Component: ${componentArg} | Total Scenarios: ${results.length} | Generated: ${new Date().toISOString()}</div>
   <div class="grid">
     ${results.map((r) => `
@@ -767,12 +767,12 @@ const htmlReport = `<!DOCTYPE html>
 </html>`;
 
 writeFileSync(join(outDir, 'report.html'), htmlReport, 'utf8');
-console.log(`📊 Visual report written to: file:///${join(outDir, 'report.html').replace(/\\/g, '/')}\n`);
+console.log(`[REPORT] Visual report written to: file:///${join(outDir, 'report.html').replace(/\\/g, '/')}\n`);
 
 if (allPassed) {
-  console.log('✅ ALL PIXEL-LEVEL CONFORMANCE CHECKS PASSED!');
+  console.log('[PASS] ALL PIXEL-LEVEL CONFORMANCE CHECKS PASSED!');
   process.exit(0);
 } else {
-  console.error('❌ PIXEL REGRESSION DETECTED — Some component scenarios exceeded tolerance.');
+  console.error('[FAIL] PIXEL REGRESSION DETECTED — Some component scenarios exceeded tolerance.');
   process.exit(1);
 }

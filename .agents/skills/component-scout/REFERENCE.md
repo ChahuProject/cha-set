@@ -26,25 +26,25 @@
 根据综合评分与核心红线，将候选组件划分为四大明确决策类别：
 
 ```
-[总分 >= 16 且解耦度 >= 4] ──► 🌟 建议直接收录 (DIRECT_ADOPT)
-[总分 11~15 或解耦度 2~3]  ──► 🔨 解耦重构后收录 (ABSTRACT_AND_ADOPT)
-[总分 8~10 或双端可行性 < 2] ──► ⚠️ 低优先级 / 暂缓 (SPECIALIZED_DEFER)
-[总分 < 8 或业务深度绑定]   ──► ❌ 维持业务私有 / 拒绝 (KEEP_IN_APP)
+[总分 >= 16 且解耦度 >= 4] ──> [DIRECT_ADOPT] 建议直接收录
+[总分 11~15 或解耦度 2~3]  ──> [ABSTRACT_AND_ADOPT] 解耦重构后收录
+[总分 8~10 或双端可行性 < 2] ──> [SPECIALIZED_DEFER] 低优先级 / 暂缓
+[总分 < 8 或业务深度绑定]   ──> [KEEP_IN_APP] 维持业务私有 / 拒绝
 ```
 
-### 1. 🌟 建议直接收录 (DIRECT_ADOPT)
+### 1. [DIRECT_ADOPT] 建议直接收录
 - **特征**：结构清晰、无业务副作用、易于跨端实现，属于通用组件库目前缺失的基础或进阶原语。
 - **行动**：直接输出规范化 API 契约草案（TypeScript Contract），纳入后续开发计划。
 
-### 2. 🔨 解耦重构后收录 (ABSTRACT_AND_ADOPT)
+### 2. [ABSTRACT_AND_ADOPT] 解耦重构后收录
 - **特征**：交互优秀、视觉体验好、在多处被重复开发，但源码中塞入了硬编码请求、特定实体字段或业务判断。
-- **行动**：应用下述五大解耦重构模式，出具“业务代码 ➔ 通用组件”前后 API 对比与插槽化方案。
+- **行动**：应用下述五大解耦重构模式，出具“业务代码 -> 通用组件”前后 API 对比与插槽化方案。
 
-### 3. ⚠️ 低优先级 / 暂缓 (SPECIALIZED_DEFER)
+### 3. [SPECIALIZED_DEFER] 低优先级 / 暂缓
 - **特征**：仅在极端边缘场景使用，或者依赖极其复杂的原生底层接口，短期投入产出比低。
 - **行动**：记录在评估报告的备选池中，暂不建议投入双端实现资源。
 
-### 4. ❌ 维持业务私有 / 拒绝 (KEEP_IN_APP)
+### 4. [KEEP_IN_APP] 维持业务私有 / 拒绝
 - **特征**：强业务逻辑属性（如带有业务校验逻辑的结算流程、专用审批流引擎），强行抽象会导致 API 过度设计、扩展性极差。
 - **行动**：建议留在业务应用仓库内，或者仅抽取其纯视觉子元素（如其中的单行状态标签）。
 
@@ -58,12 +58,12 @@
 - **反模式**：组件内部接收 `data: UserEntity[]` 或 `record: OrderDetail`。
 - **解耦法**：提取为扁平通用的数据项接口，或通过字段映射器 (`keyField`, `titleField`, `renderItem`) 允许调用方自定义取值。
 ```typescript
-// ❌ 业务硬编码
+// [BAD] 业务硬编码
 interface TimelineProps {
   logs: Array<{ orderId: string; opUser: string; auditStatus: number; createTime: string }>;
 }
 
-// ✅ 通用化抽象
+// [GOOD] 通用化抽象
 export interface TimelineItem {
   id: string | number;
   title: React.ReactNode;
