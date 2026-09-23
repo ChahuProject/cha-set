@@ -131,16 +131,36 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
     } | null>(null);
 
     const updateIndicator = React.useCallback(() => {
+      const container = containerRef.current;
       const el = itemRefs.current.get(activeValue);
-      if (!el) {
+      if (!container || !el) {
         setIndicatorStyle(null);
         return;
       }
+      const containerRect = container.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const rootFontSize =
+        typeof window !== 'undefined'
+          ? parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16
+          : 16;
+
+      let leftPx = elRect.left - containerRect.left - container.clientLeft;
+      let topPx = elRect.top - containerRect.top - container.clientTop;
+      let widthPx = elRect.width;
+      let heightPx = elRect.height;
+
+      if (widthPx === 0 && el.offsetWidth > 0) {
+        leftPx = el.offsetLeft;
+        topPx = el.offsetTop;
+        widthPx = el.offsetWidth;
+        heightPx = el.offsetHeight;
+      }
+
       setIndicatorStyle({
-        left: el.offsetLeft,
-        top: el.offsetTop,
-        width: el.offsetWidth,
-        height: el.offsetHeight,
+        left: leftPx / rootFontSize,
+        top: topPx / rootFontSize,
+        width: widthPx / rootFontSize,
+        height: heightPx / rootFontSize,
       });
     }, [activeValue]);
 
@@ -191,10 +211,10 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
               aria-hidden="true"
               className="absolute rounded-[0.3125rem] bg-background shadow-xs pointer-events-none transition-[left,top,width,height] duration-200 ease-standard"
               style={{
-                left: `${indicatorStyle.left * 0.0625}rem`,
-                top: `${indicatorStyle.top * 0.0625}rem`,
-                width: `${indicatorStyle.width * 0.0625}rem`,
-                height: `${indicatorStyle.height * 0.0625}rem`,
+                left: `${indicatorStyle.left}rem`,
+                top: `${indicatorStyle.top}rem`,
+                width: `${indicatorStyle.width}rem`,
+                height: `${indicatorStyle.height}rem`,
               }}
             />
           )}
