@@ -311,7 +311,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
         <span
           data-slot="scale-readout"
           className={cn(
-            'font-medium tabular-nums text-foreground px-1.5 text-center',
+            'font-medium tabular-nums text-foreground px-1.5 text-center whitespace-nowrap shrink-0',
             isLg ? 'text-lg min-w-[11.25rem]' : 'text-sm min-w-[3.5rem]',
           )}
           style={readoutStyle}
@@ -321,7 +321,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
 
         {showControls && (
           <div
-            className={cn('flex items-center', isLg ? 'gap-1.5' : 'gap-1 pl-1 border-l border-border/60')}
+            className={cn('flex items-center shrink-0', isLg ? 'gap-1.5' : 'gap-1 pl-1 border-l border-border/60')}
             style={ignoreUiScale ? { gap: 6 } : undefined}
           >
             <button
