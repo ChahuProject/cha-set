@@ -2,6 +2,25 @@ import * as React from 'react';
 import { observeElementRect, useVirtualizer } from '@tanstack/react-virtual';
 import { cn } from '../lib/utils';
 
+export interface TreeNode {
+  id: string;
+  label?: string;
+  name?: string;
+  title?: string;
+  children?: TreeNode[];
+  [key: string]: any;
+}
+
+export type DropPosition = 'before' | 'inside' | 'after';
+
+export interface VirtualTreeDropEvent<T> {
+  sourceNodes: T[];
+  sourceKeys: string[];
+  targetNode: T;
+  targetKey: string;
+  position: DropPosition;
+}
+
 export interface VirtualTreeHandle {
   /** Scroll to a specific item index */
   scrollToIndex: (index: number, align?: 'start' | 'center' | 'end' | 'auto') => void;
@@ -9,6 +28,14 @@ export interface VirtualTreeHandle {
   expandAll: () => void;
   /** Collapse all foldable nodes */
   collapseAll: () => void;
+  /** Select all visible nodes in multiple selection mode */
+  selectAll: () => void;
+  /** Clear all selections */
+  clearSelection: () => void;
+  /** Retrieve currently selected node objects */
+  getSelectedNodes: () => any[];
+  /** Retrieve currently selected IDs */
+  getSelectedIds: () => string[];
 }
 
 export interface VirtualTreeRowContext<T> {
@@ -16,10 +43,14 @@ export interface VirtualTreeRowContext<T> {
   depth: number;
   isExpanded: boolean;
   isSelected: boolean;
+  isDimmed: boolean;
+  isDropTarget: boolean;
+  dropPosition: DropPosition | null;
+  isDropValid: boolean;
   hasChildren: boolean;
   childCount: number;
   toggleExpand: () => void;
-  selectNode: () => void;
+  selectNode: (e?: React.MouseEvent) => void;
 }
 
 export interface VirtualTreeProps<T> {
@@ -35,8 +66,30 @@ export interface VirtualTreeProps<T> {
   renderRow?: (context: VirtualTreeRowContext<T>) => React.ReactNode;
   emptyNode?: React.ReactNode;
   className?: string;
+
+  // Selection API
+  selectionMode?: 'single' | 'multiple' | 'none';
   selectedId?: string | null;
+  selectedIds?: readonly string[] | ReadonlySet<string>;
+  defaultSelectedIds?: readonly string[];
   onSelectNode?: (node: T) => void;
+  onSelectionChange?: (selectedIds: string[], selectedNodes: T[]) => void;
+
+  // Dimmed / Cut State API
+  dimmedIds?: readonly string[] | ReadonlySet<string>;
+
+  // Keyboard shortcut hooks
+  onCut?: (selectedNodes: T[], selectedIds: string[]) => void;
+  onCopy?: (selectedNodes: T[], selectedIds: string[]) => void;
+  onPaste?: (targetNode: T | null, targetPosition: 'inside' | 'after') => void;
+  onDelete?: (selectedNodes: T[], selectedIds: string[]) => void;
+
+  // Drag and Drop API
+  enableDnd?: boolean;
+  canDrag?: (node: T) => boolean;
+  canDrop?: (event: VirtualTreeDropEvent<T>) => boolean;
+  onDropNode?: (event: VirtualTreeDropEvent<T>) => void;
+
   ref?: React.Ref<VirtualTreeHandle>;
 }
 
@@ -60,8 +113,21 @@ export function VirtualTree<T>({
   renderRow,
   emptyNode,
   className,
+  selectionMode = 'single',
   selectedId,
+  selectedIds,
+  defaultSelectedIds,
   onSelectNode,
+  onSelectionChange,
+  dimmedIds,
+  onCut,
+  onCopy,
+  onPaste,
+  onDelete,
+  enableDnd = false,
+  canDrag,
+  canDrop,
+  onDropNode,
   ref,
 }: VirtualTreeProps<T>) {
   const safeRootNodes = rootNodes ?? nodes ?? [];
@@ -72,35 +138,6 @@ export function VirtualTree<T>({
   const safeGetNodeKey = React.useMemo(
     () => getNodeKey ?? ((node: any) => node?.id ?? node?.key ?? String(node)),
     [getNodeKey],
-  );
-  const safeRenderRow = React.useMemo(
-    () =>
-      renderRow ??
-      (({ node, depth, hasChildren, isExpanded, isSelected, toggleExpand, selectNode }) => (
-        <div
-          className={cn(
-            'flex items-center gap-2 px-2 py-1 text-xs cursor-pointer rounded select-none transition-colors duration-quick ease-standard',
-            isSelected
-              ? 'bg-primary/15 text-primary font-medium'
-              : 'hover:bg-muted/50 text-foreground',
-          )}
-          style={{ paddingLeft: `${(depth * 16 + 8) / 16}rem` }}
-          onClick={() => {
-            selectNode();
-            if (hasChildren) toggleExpand();
-          }}
-        >
-          {hasChildren ? (
-            <span className="text-micro w-3.5 text-muted-foreground">{isExpanded ? '▼' : '▶'}</span>
-          ) : (
-            <span className="w-3.5 text-micro text-muted-foreground/50">•</span>
-          )}
-          <span className="font-mono">
-            {(node as any)?.label ?? (node as any)?.name ?? (node as any)?.title ?? String(node)}
-          </span>
-        </div>
-      )),
-    [renderRow],
   );
 
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
@@ -113,6 +150,38 @@ export function VirtualTree<T>({
 
   const [expandedKeys, setExpandedKeys] = React.useState<ReadonlySet<string>>(new Set());
   const [collapsedKeys, setCollapsedKeys] = React.useState<ReadonlySet<string>>(new Set());
+
+  // Multi-selection state
+  const [internalSelectedKeys, setInternalSelectedKeys] = React.useState<ReadonlySet<string>>(() => {
+    if (defaultSelectedIds) return new Set(defaultSelectedIds);
+    if (selectedId != null) return new Set([selectedId]);
+    return new Set();
+  });
+
+  const anchorIndexRef = React.useRef<number | null>(null);
+
+  const currentSelectedSet = React.useMemo<ReadonlySet<string>>(() => {
+    if (selectedIds !== undefined) {
+      return selectedIds instanceof Set ? selectedIds : new Set(selectedIds);
+    }
+    if (selectedId !== undefined) {
+      return selectedId ? new Set([selectedId]) : new Set();
+    }
+    return internalSelectedKeys;
+  }, [selectedIds, selectedId, internalSelectedKeys]);
+
+  const currentDimmedSet = React.useMemo<ReadonlySet<string>>(() => {
+    if (!dimmedIds) return new Set();
+    return dimmedIds instanceof Set ? dimmedIds : new Set(dimmedIds);
+  }, [dimmedIds]);
+
+  // Drag and Drop internal state
+  const [draggedKeys, setDraggedKeys] = React.useState<string[] | null>(null);
+  const [dropTarget, setDropTarget] = React.useState<{
+    key: string;
+    position: DropPosition;
+    isValid: boolean;
+  } | null>(null);
 
   const toggleExpand = React.useCallback(
     (node: T, depth: number, currentlyExpanded: boolean) => {
@@ -167,7 +236,7 @@ export function VirtualTree<T>({
 
   const collapseAll = React.useCallback(() => {
     const all = getAllKeys();
-    setCollapsedKeys(new Set(all));
+    setCollapsedKeys(new Set());
     setExpandedKeys(new Set());
   }, [getAllKeys]);
 
@@ -201,6 +270,242 @@ export function VirtualTree<T>({
     return results;
   }, [safeRootNodes, defaultExpandDepth, expandedKeys, collapsedKeys]);
 
+  const updateSelection = React.useCallback(
+    (nextKeys: Set<string>, lastClickedNode?: T) => {
+      if (selectedIds === undefined && selectedId === undefined) {
+        setInternalSelectedKeys(nextKeys);
+      }
+      const keysArr = Array.from(nextKeys);
+      const keyMap = new Map<string, T>();
+      for (const flat of visibleNodes) {
+        keyMap.set(safeGetNodeKey(flat.node), flat.node);
+      }
+      const selectedNodes = keysArr.map((k) => keyMap.get(k)).filter(Boolean) as T[];
+      onSelectionChange?.(keysArr, selectedNodes);
+      if (lastClickedNode) {
+        onSelectNode?.(lastClickedNode);
+      }
+    },
+    [selectedIds, selectedId, visibleNodes, safeGetNodeKey, onSelectionChange, onSelectNode],
+  );
+
+  const handleNodeClick = React.useCallback(
+    (flatIndex: number, e?: React.MouseEvent) => {
+      if (selectionMode === 'none' || flatIndex < 0 || flatIndex >= visibleNodes.length) return;
+      const target = visibleNodes[flatIndex]!;
+      const key = safeGetNodeKey(target.node);
+
+      if (selectionMode === 'single') {
+        anchorIndexRef.current = flatIndex;
+        updateSelection(new Set([key]), target.node);
+        return;
+      }
+
+      // selectionMode === 'multiple'
+      const isShift = Boolean(e?.shiftKey);
+      const isCtrlOrCmd = Boolean(e?.ctrlKey || e?.metaKey);
+
+      if (isShift && anchorIndexRef.current != null) {
+        const start = Math.min(anchorIndexRef.current, flatIndex);
+        const end = Math.max(anchorIndexRef.current, flatIndex);
+        const rangeKeys = new Set(isCtrlOrCmd ? currentSelectedSet : []);
+        for (let i = start; i <= end; i++) {
+          rangeKeys.add(safeGetNodeKey(visibleNodes[i]!.node));
+        }
+        updateSelection(rangeKeys, target.node);
+      } else if (isCtrlOrCmd) {
+        const nextSet = new Set(currentSelectedSet);
+        if (nextSet.has(key)) {
+          nextSet.delete(key);
+        } else {
+          nextSet.add(key);
+        }
+        anchorIndexRef.current = flatIndex;
+        updateSelection(nextSet, target.node);
+      } else {
+        anchorIndexRef.current = flatIndex;
+        updateSelection(new Set([key]), target.node);
+      }
+    },
+    [selectionMode, visibleNodes, safeGetNodeKey, currentSelectedSet, updateSelection],
+  );
+
+  const selectAll = React.useCallback(() => {
+    if (selectionMode !== 'multiple' || visibleNodes.length === 0) return;
+    const allKeys = new Set(visibleNodes.map((n) => safeGetNodeKey(n.node)));
+    updateSelection(allKeys);
+  }, [selectionMode, visibleNodes, safeGetNodeKey, updateSelection]);
+
+  const clearSelection = React.useCallback(() => {
+    anchorIndexRef.current = null;
+    updateSelection(new Set());
+  }, [updateSelection]);
+
+  const getSelectedNodes = React.useCallback(() => {
+    const keyMap = new Map<string, T>();
+    for (const flat of visibleNodes) {
+      keyMap.set(safeGetNodeKey(flat.node), flat.node);
+    }
+    return Array.from(currentSelectedSet)
+      .map((k) => keyMap.get(k))
+      .filter(Boolean) as T[];
+  }, [visibleNodes, safeGetNodeKey, currentSelectedSet]);
+
+  const getSelectedIds = React.useCallback(() => {
+    return Array.from(currentSelectedSet);
+  }, [currentSelectedSet]);
+
+  // Cycle prevention helper: verifies if candidateKey is a descendant of ancestorKey
+  const isDescendantOf = React.useCallback(
+    (ancestorKey: string, candidateKey: string): boolean => {
+      let found = false;
+      const search = (node: T) => {
+        const k = safeGetNodeKey(node);
+        if (k === ancestorKey) {
+          const scanSubtree = (child: T) => {
+            if (safeGetNodeKey(child) === candidateKey) {
+              found = true;
+              return;
+            }
+            const children = safeGetChildren(child) ?? [];
+            for (const c of children) {
+              if (found) return;
+              scanSubtree(c);
+            }
+          };
+          const children = safeGetChildren(node) ?? [];
+          for (const c of children) {
+            if (found) return;
+            scanSubtree(c);
+          }
+          return;
+        }
+        const children = safeGetChildren(node) ?? [];
+        for (const c of children) {
+          if (found) return;
+          search(c);
+        }
+      };
+
+      for (const root of safeRootNodes) {
+        if (found) break;
+        search(root);
+      }
+      return found;
+    },
+    [safeRootNodes, safeGetChildren, safeGetNodeKey],
+  );
+
+  // DnD Handlers
+  const handleDragStart = (e: React.DragEvent, node: T, nodeKey: string) => {
+    if (!enableDnd) return;
+    if (canDrag && !canDrag(node)) {
+      e.preventDefault();
+      return;
+    }
+
+    const sourceKeys =
+      currentSelectedSet.has(nodeKey) && currentSelectedSet.size > 1
+        ? Array.from(currentSelectedSet)
+        : [nodeKey];
+
+    setDraggedKeys(sourceKeys);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', JSON.stringify(sourceKeys));
+  };
+
+  const handleDragOver = (e: React.DragEvent, targetNode: T, flatNode: FlatNode<T>) => {
+    if (!enableDnd || !draggedKeys || draggedKeys.length === 0) return;
+    e.preventDefault();
+
+    const targetKey = safeGetNodeKey(targetNode);
+    const rect = e.currentTarget.getBoundingClientRect();
+    const rowHeight = rect.height || (rect.bottom - rect.top) || 32;
+    const rawClientY = typeof e.clientY === 'number' ? e.clientY : (e.nativeEvent as any)?.clientY;
+    const ratio = typeof rawClientY === 'number' && !isNaN(rawClientY)
+      ? (rawClientY - rect.top) / rowHeight
+      : (flatNode.hasChildren ? 0.5 : 0.8);
+
+    let position: DropPosition = 'inside';
+    if (ratio < 0.25) {
+      position = 'before';
+    } else if (ratio > 0.75) {
+      position = 'after';
+    } else {
+      position = flatNode.hasChildren ? 'inside' : ratio < 0.5 ? 'before' : 'after';
+    }
+
+    // Cycle & Validity check
+    let isValid = !draggedKeys.includes(targetKey);
+    if (isValid) {
+      for (const srcKey of draggedKeys) {
+        if (isDescendantOf(srcKey, targetKey)) {
+          isValid = false;
+          break;
+        }
+      }
+    }
+
+    if (isValid && canDrop) {
+      const keyMap = new Map<string, T>();
+      for (const flat of visibleNodes) {
+        keyMap.set(safeGetNodeKey(flat.node), flat.node);
+      }
+      const sourceNodes = draggedKeys.map((k) => keyMap.get(k)).filter(Boolean) as T[];
+      isValid = canDrop({
+        sourceNodes,
+        sourceKeys: draggedKeys,
+        targetNode,
+        targetKey,
+        position,
+      });
+    }
+
+    e.dataTransfer.dropEffect = isValid ? 'move' : 'none';
+    setDropTarget({
+      key: targetKey,
+      position,
+      isValid,
+    });
+  };
+
+  const handleDragLeave = (e: React.DragEvent, nodeKey: string) => {
+    if (!enableDnd) return;
+    const related = e.relatedTarget as Node | null;
+    if (e.currentTarget.contains(related)) return;
+    if (dropTarget?.key === nodeKey) {
+      setDropTarget(null);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, targetNode: T) => {
+    if (!enableDnd || !draggedKeys || !dropTarget || !dropTarget.isValid) return;
+    e.preventDefault();
+
+    const targetKey = safeGetNodeKey(targetNode);
+    const keyMap = new Map<string, T>();
+    for (const flat of visibleNodes) {
+      keyMap.set(safeGetNodeKey(flat.node), flat.node);
+    }
+    const sourceNodes = draggedKeys.map((k) => keyMap.get(k)).filter(Boolean) as T[];
+
+    onDropNode?.({
+      sourceNodes,
+      sourceKeys: draggedKeys,
+      targetNode,
+      targetKey,
+      position: dropTarget.position,
+    });
+
+    setDraggedKeys(null);
+    setDropTarget(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedKeys(null);
+    setDropTarget(null);
+  };
+
   const virtualizer = useVirtualizer({
     count: visibleNodes.length,
     getScrollElement: () => scrollContainerRef.current,
@@ -226,8 +531,12 @@ export function VirtualTree<T>({
       },
       expandAll,
       collapseAll,
+      selectAll,
+      clearSelection,
+      getSelectedNodes,
+      getSelectedIds,
     }),
-    [virtualizer, expandAll, collapseAll],
+    [virtualizer, expandAll, collapseAll, selectAll, clearSelection, getSelectedNodes, getSelectedIds],
   );
 
   const [focusedIndex, setFocusedIndex] = React.useState(0);
@@ -237,16 +546,77 @@ export function VirtualTree<T>({
     const current = visibleNodes[focusedIndex];
     if (!current) return;
 
+    // Clipboard shortcuts: Ctrl/Cmd + X / C / V / A
+    const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+
+    if (isCtrlOrCmd && (e.key === 'a' || e.key === 'A')) {
+      e.preventDefault();
+      selectAll();
+      return;
+    }
+
+    if (isCtrlOrCmd && (e.key === 'x' || e.key === 'X')) {
+      e.preventDefault();
+      onCut?.(getSelectedNodes(), getSelectedIds());
+      return;
+    }
+
+    if (isCtrlOrCmd && (e.key === 'c' || e.key === 'C')) {
+      e.preventDefault();
+      onCopy?.(getSelectedNodes(), getSelectedIds());
+      return;
+    }
+
+    if (isCtrlOrCmd && (e.key === 'v' || e.key === 'V')) {
+      e.preventDefault();
+      onPaste?.(current.node, current.hasChildren ? 'inside' : 'after');
+      return;
+    }
+
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      if (currentSelectedSet.size > 0) {
+        e.preventDefault();
+        onDelete?.(getSelectedNodes(), getSelectedIds());
+        return;
+      }
+    }
+
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       const next = Math.min(visibleNodes.length - 1, focusedIndex + 1);
       setFocusedIndex(next);
       virtualizer.scrollToIndex(next, { align: 'auto' });
+
+      if (e.shiftKey && selectionMode === 'multiple') {
+        if (anchorIndexRef.current == null) {
+          anchorIndexRef.current = focusedIndex;
+        }
+        const start = Math.min(anchorIndexRef.current, next);
+        const end = Math.max(anchorIndexRef.current, next);
+        const rangeKeys = new Set<string>();
+        for (let i = start; i <= end; i++) {
+          rangeKeys.add(safeGetNodeKey(visibleNodes[i]!.node));
+        }
+        updateSelection(rangeKeys, visibleNodes[next]!.node);
+      }
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       const prev = Math.max(0, focusedIndex - 1);
       setFocusedIndex(prev);
       virtualizer.scrollToIndex(prev, { align: 'auto' });
+
+      if (e.shiftKey && selectionMode === 'multiple') {
+        if (anchorIndexRef.current == null) {
+          anchorIndexRef.current = focusedIndex;
+        }
+        const start = Math.min(anchorIndexRef.current, prev);
+        const end = Math.max(anchorIndexRef.current, prev);
+        const rangeKeys = new Set<string>();
+        for (let i = start; i <= end; i++) {
+          rangeKeys.add(safeGetNodeKey(visibleNodes[i]!.node));
+        }
+        updateSelection(rangeKeys, visibleNodes[prev]!.node);
+      }
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
       if (current.hasChildren && !current.isExpanded) {
@@ -269,23 +639,73 @@ export function VirtualTree<T>({
           }
         }
       }
-    } else if (e.key === 'Enter' || e.key === ' ') {
+    } else if (e.key === ' ' || e.key === 'Spacebar') {
       e.preventDefault();
-      onSelectNode?.(current.node);
+      if (selectionMode === 'multiple') {
+        const key = safeGetNodeKey(current.node);
+        const nextSet = new Set(currentSelectedSet);
+        if (nextSet.has(key)) nextSet.delete(key);
+        else nextSet.add(key);
+        anchorIndexRef.current = focusedIndex;
+        updateSelection(nextSet, current.node);
+      } else if (selectionMode === 'single') {
+        handleNodeClick(focusedIndex);
+      }
+      if (current.hasChildren) {
+        toggleExpand(current.node, current.depth, current.isExpanded);
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      handleNodeClick(focusedIndex);
       if (current.hasChildren) {
         toggleExpand(current.node, current.depth, current.isExpanded);
       }
     }
   };
 
+  const safeRenderRow = React.useMemo(
+    () =>
+      renderRow ??
+      (({ node, depth, hasChildren, isExpanded, isSelected, isDimmed, toggleExpand, selectNode }) => (
+        <div
+          className={cn(
+            'flex items-center gap-2 px-2 py-1 text-xs cursor-pointer rounded select-none transition-colors duration-quick ease-standard',
+            isSelected
+              ? 'bg-primary/15 text-primary font-medium'
+              : 'hover:bg-muted/50 text-foreground',
+            isDimmed && 'opacity-40 transition-opacity',
+          )}
+          style={{ paddingLeft: `${(depth * 16 + 8) / 16}rem` }}
+          onClick={(e) => {
+            selectNode(e);
+            if (hasChildren && !e.shiftKey && !e.ctrlKey && !e.metaKey) toggleExpand();
+          }}
+        >
+          {hasChildren ? (
+            <span className="text-micro w-3.5 text-muted-foreground">{isExpanded ? '▼' : '▶'}</span>
+          ) : (
+            <span className="w-3.5 text-micro text-muted-foreground/50">•</span>
+          )}
+          <span className="font-mono">
+            {(node as any)?.label ?? (node as any)?.name ?? (node as any)?.title ?? String(node)}
+          </span>
+        </div>
+      )),
+    [renderRow],
+  );
+
   return (
     <div
       ref={scrollContainerRef}
       role="tree"
+      aria-multiselectable={selectionMode === 'multiple' ? true : undefined}
       tabIndex={0}
       onKeyDown={handleKeyDown}
       data-slot="virtual-tree"
-      className={cn('overflow-y-auto outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-md', className)}
+      className={cn(
+        'overflow-y-auto outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-md',
+        className,
+      )}
     >
       {visibleNodes.length === 0 ? (
         emptyNode ?? null
@@ -299,25 +719,75 @@ export function VirtualTree<T>({
             const flat = visibleNodes[virtualRow.index]!;
             const isFocused = virtualRow.index === focusedIndex;
             const nodeKey = safeGetNodeKey(flat.node);
-            const isSelected = selectedId != null && nodeKey === selectedId;
+            const isSelected = currentSelectedSet.has(nodeKey);
+            const isDimmed = currentDimmedSet.has(nodeKey);
+            const isTarget = dropTarget != null && dropTarget.key === nodeKey;
+            const dropPos = dropTarget != null && dropTarget.key === nodeKey ? dropTarget.position : null;
+            const isDropValid = dropTarget != null && dropTarget.key === nodeKey ? dropTarget.isValid : false;
+
             return (
               <div
                 key={virtualRow.key}
                 data-index={virtualRow.index}
                 data-focused={isFocused ? true : undefined}
+                data-selected={isSelected ? true : undefined}
+                data-dimmed={isDimmed ? true : undefined}
+                data-drop-target={isTarget ? true : undefined}
+                data-drop-position={dropPos ?? undefined}
+                data-drop-valid={isTarget ? isDropValid : undefined}
+                draggable={enableDnd && (canDrag ? canDrag(flat.node) : true)}
+                onDragStart={(e) => handleDragStart(e, flat.node, nodeKey)}
+                onDragOver={(e) => handleDragOver(e, flat.node, flat)}
+                onDragLeave={(e) => handleDragLeave(e, nodeKey)}
+                onDrop={(e) => handleDrop(e, flat.node)}
+                onDragEnd={handleDragEnd}
                 ref={virtualizer.measureElement}
-                className={cn('absolute top-0 left-0 w-full', isFocused && 'ring-1 ring-ring/40 rounded')}
+                className={cn(
+                  'absolute top-0 left-0 w-full',
+                  isFocused && 'ring-1 ring-ring/40 rounded',
+                  enableDnd && 'cursor-grab active:cursor-grabbing',
+                )}
                 style={{ transform: `translateY(${virtualRow.start}px)` }}
               >
+                {/* Visual Drop Indicators */}
+                {isTarget && isDropValid && dropPos === 'before' && (
+                  <div
+                    data-slot="drop-indicator-before"
+                    className="absolute top-0 left-0 right-0 h-0.5 bg-primary z-20 pointer-events-none"
+                  />
+                )}
+                {isTarget && isDropValid && dropPos === 'after' && (
+                  <div
+                    data-slot="drop-indicator-after"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary z-20 pointer-events-none"
+                  />
+                )}
+                {isTarget && isDropValid && dropPos === 'inside' && (
+                  <div
+                    data-slot="drop-indicator-inside"
+                    className="absolute inset-0 ring-2 ring-primary/80 bg-primary/10 rounded pointer-events-none z-20"
+                  />
+                )}
+                {isTarget && !isDropValid && (
+                  <div
+                    data-slot="drop-indicator-invalid"
+                    className="absolute inset-0 ring-1 ring-destructive/40 bg-destructive/5 rounded pointer-events-none z-20"
+                  />
+                )}
+
                 {safeRenderRow({
                   node: flat.node,
                   depth: flat.depth,
                   isExpanded: flat.isExpanded,
                   isSelected,
+                  isDimmed,
+                  isDropTarget: isTarget,
+                  dropPosition: dropPos,
+                  isDropValid,
                   hasChildren: flat.hasChildren,
                   childCount: flat.childCount,
                   toggleExpand: () => toggleExpand(flat.node, flat.depth, flat.isExpanded),
-                  selectNode: () => onSelectNode?.(flat.node),
+                  selectNode: (e) => handleNodeClick(virtualRow.index, e),
                 })}
               </div>
             );
