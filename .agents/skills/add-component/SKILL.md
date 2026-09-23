@@ -86,6 +86,12 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
     - **QML Root Item Geometry Mandate**: Every custom QML component implemented as a root `Item` MUST explicitly bind `width: implicitWidth` and `height: implicitHeight`. Qt Quick `Row` and `Column` position items without assigning sizes; omitting explicit width/height collapses the root item to `0x0`, making inner `MouseArea { anchors.fill: parent }` or `HoverHandler` completely dead and unable to display hover cursors or register clicks.
     - **QML `HoverHandler` Rule**: Because `QQuickTextInput` and `QQuickTextEdit` do not show hover cursors and occlude underlying `MouseArea` items (at `z: -1`), always attach `HoverHandler { cursorShape: root.disabled ? Qt.ForbiddenCursor : (root.readOnly ? Qt.ArrowCursor : Qt.IBeamCursor) }` directly on or inside the item. Remember: `HoverHandler` is a `QQuickPointerHandler`, NOT an `Item` — NEVER assign `anchors` to it.
     - **Code Selectability**: Code blocks must support full multi-line mouse drag selection (`selectByMouse: true`) and `Ctrl+C` clipboard copy, with line number gutters completely decoupled in a separate non-selectable column.
+13. **Mandatory Zero-Emoji Mandate & Pure-Vector Icon Conformance (严禁使用 Emoji 与纯矢量图标契约红线)**:
+    - Never use Unicode emojis anywhere in new components, test cases, living showcase pages, or documentation.
+    - All icons must use pure-vector representations:
+      - React: Use `<IconName />` from `packages/react/src/lib/icons.tsx` (exported by `@chahu/cha-set`).
+      - Qt: Use `ChaSetIcon { name: "<semantic-name>" }` from `qt/src/ChaSetIcon.qml` or `ChaSetButton { icon: "<semantic-name>" }`.
+    - Showcase datasets in `spec/showcase/*.json` must store semantic icon strings (e.g. `"icon": "zap"`, `"icon": "target"`, `"icon": "lock"`), never raw emoji characters.
 
 ---
 

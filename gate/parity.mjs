@@ -219,6 +219,20 @@ if (existsSync(themeDerivedPath)) {
   console.log(`[gate] OK — Theme Derived Contract Gate passed (${derivedRes.checkedCount} contract assertions verified)`);
 }
 
+// 2.9 Mandatory Zero-Emoji Mandate Gate
+const noEmojiCheckPath = resolve(root, 'scripts/check-no-emoji.mjs');
+if (existsSync(noEmojiCheckPath)) {
+  const { spawnSync } = await import('node:child_process');
+  const emojiRes = spawnSync(process.execPath, [noEmojiCheckPath], { encoding: 'utf8' });
+  if (emojiRes.status !== 0) {
+    console.error('[gate] FAIL: Zero-Emoji Mandate Gate failed:');
+    if (emojiRes.stderr) console.error(emojiRes.stderr);
+    if (emojiRes.stdout) console.log(emojiRes.stdout);
+    process.exit(1);
+  }
+  console.log('[gate] OK — Zero-Emoji Mandate Gate passed (0 emojis across all tracked files)');
+}
+
 // 3. Executable Behavioral Parity Checks
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');
 if (existsSync(qtExe)) {

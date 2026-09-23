@@ -161,6 +161,19 @@
       Host-only settings (crd: window material, window tint, custom window background, background image; dt: tab width mode/min/max, smooth scroll, OS animations) MUST NOT leak into the shared ThemeSettings component or schema. They are rendered exclusively in host-specific setting sections.
     - **Automated Boundary Gate (边界守卫门禁)**:
       `pnpm check:theme-boundary` mechanically enforces that only covered axes (mode, palette 10-ids, decoration, typography, uiScale) exist in the neutral schema, and scans component sources (`packages/react/src/theme-settings/ThemeSettings.tsx` and `qt/src/ChaSetThemeSettings.qml`) plus consumer integrations to guarantee zero host-only field leakage.
+15. **Mandatory Zero-Emoji Mandate & Pure-Vector Icon Conformance (严禁使用 Emoji 与纯矢量图标契约红线 — 零 Emoji 容忍律)**:
+    - **Zero Emoji Tolerance (全局零 Emoji 容忍律)**:
+      Raw emojis are strictly forbidden anywhere in this repository. This absolute prohibition applies to all UI component code, showcase pages, demo datasets, documentation (`docs/**`), scripts, skill files (`.agents/skills/**`), tests, console logs, and git commit messages. Never use Unicode emojis as icons, decorations, status indicators, bullets, or placeholders.
+    - **Pure Vector Icon Mandate (双端纯矢量图标契约)**:
+      All visual icons must be rendered using pure-vector graphics:
+      - **React Web**: Use native SVG icon components from `packages/react/src/lib/icons.tsx` (exported from `@chahu/cha-set`), such as `<SettingsIcon />`, `<EyeIcon />`, `<GlobeIcon />`, `<ZapIcon />`, `<CopyIcon />`, `<CheckIcon />`, `<XIcon />`, `<ChaSetLogoIcon />`, `<GridIcon />`, `<ListIcon />`, `<TableIcon />`, etc.
+      - **Qt Quick Desktop**: Use the pure-vector Canvas-rendered `ChaSetIcon` primitive (`qt/src/ChaSetIcon.qml`), passing semantic names such as `ChaSetIcon { name: "settings" }`, `ChaSetIcon { name: "eye" }`, `ChaSetIcon { name: "globe" }`, `ChaSetIcon { name: "zap" }`, `ChaSetIcon { name: "copy" }`, `ChaSetIcon { name: "check" }`, `ChaSetIcon { name: "x" }`, `ChaSetIcon { name: "logo" }`, or use `ChaSetButton { icon: "settings" }`.
+    - **Structured Text Fallback in Terminal & Logs (控制台与日志纯文本标记律)**:
+      In CLI scripts, terminal outputs, build logs, and test reports, use structured ASCII tags (e.g. `[PASS]`, `[FAIL]`, `[WARN]`, `[INFO]`, `[REPORT]`, `[DONE]`, `[BREAKING]`, `[ADOPT]`) instead of emojis.
+    - **Showcase & Spec Data Neutrality (规范数据与演示等价律)**:
+      Showcase datasets (`spec/showcase/*.json`) and component props must never store raw emoji characters; store semantic icon identifiers (e.g. `"icon": "zap"`, `"icon": "target"`, `"icon": "lock"`) that both platforms map to their respective vector icon primitives.
+    - **Automated Zero-Emoji Gate (机械化零 Emoji 门禁)**:
+      `scripts/check-no-emoji.mjs` mechanically scans all git-tracked files in the repository. Any detected emoji triggers an immediate gate failure (exit code 1). This check is integrated directly into `pnpm gate`.
 
 ---
 
