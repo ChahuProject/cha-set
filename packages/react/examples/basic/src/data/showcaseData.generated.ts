@@ -36,6 +36,19 @@ export interface KeyboardShortcutItem {
   action: string;
 }
 
+export interface TypographyQuoteItem {
+  id: string;
+  label: string;
+  native: string;
+  text: string;
+  attribution: string;
+}
+
+export interface TypographyRampData {
+  scaleSteps: string[];
+  quotes: TypographyQuoteItem[];
+}
+
 export const CHANGELOG_DATA: ChangelogItem[] = [
   {
     "id": "rel-120",
@@ -1073,6 +1086,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "badge": "Live",
         "desc": "Interactive theme customizer and config exporter.",
         "description": "Interactive theme customizer and config exporter."
+      },
+      {
+        "id": "typography",
+        "title": "Typography Rendering",
+        "href": "#/get-started/typography",
+        "desc": "Global text rasterizer policy and a five-script size ramp previewing every type scale step.",
+        "description": "Global text rasterizer policy and a five-script size ramp previewing every type scale step."
       }
     ]
   },
@@ -2259,6 +2279,58 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Space / Enter",
       "action": "Select the focused language card and apply language preference"
+    }
+  ]
+};
+export const TYPOGRAPHY_RAMP_DATA: TypographyRampData = {
+  "scaleSteps": [
+    "nano",
+    "micro",
+    "caption",
+    "small",
+    "body",
+    "heading",
+    "subheading",
+    "title-sm",
+    "title-md",
+    "title",
+    "display"
+  ],
+  "quotes": [
+    {
+      "id": "en",
+      "label": "English",
+      "native": "English",
+      "text": "“The only thing we have to fear is fear itself.”",
+      "attribution": "Franklin D. Roosevelt"
+    },
+    {
+      "id": "zh-hans",
+      "label": "Simplified Chinese",
+      "native": "简体中文",
+      "text": "「先天下之忧而忧，后天下之乐而乐。」",
+      "attribution": "范仲淹《岳阳楼记》"
+    },
+    {
+      "id": "zh-hant",
+      "label": "Traditional Chinese",
+      "native": "繁體中文",
+      "text": "「人生自古誰無死，留取丹心照汗青。」",
+      "attribution": "文天祥《過零丁洋》"
+    },
+    {
+      "id": "ja",
+      "label": "Japanese",
+      "native": "日本語",
+      "text": "「雨ニモマケズ、風ニモマケズ。」",
+      "attribution": "宮沢賢治"
+    },
+    {
+      "id": "ko",
+      "label": "Korean",
+      "native": "한국어",
+      "text": "“나는 나의 운명의 주인이며, 나는 나의 영혼의 선장이다.”",
+      "attribution": "헨리 데이비드 소로"
     }
   ]
 };

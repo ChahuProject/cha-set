@@ -200,6 +200,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/IntroductionPage.qml
             src/TokensPage.qml
             src/ThemeTunerPage.qml
+            src/TypographyPage.qml
             src/ButtonDocPage.qml
             src/ScrollAreaDocPage.qml
             src/TabsDocPage.qml

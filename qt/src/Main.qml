@@ -242,6 +242,7 @@ ApplicationWindow {
         case "intro": return "IntroductionPage.qml";
         case "tokens": return "TokensPage.qml";
         case "theme-tuner": return "ThemeTunerPage.qml";
+        case "typography": return "TypographyPage.qml";
         case "button": return "ButtonDocPage.qml";
         case "scroll-area": return "ScrollAreaDocPage.qml";
         case "tabs": return "TabsDocPage.qml";

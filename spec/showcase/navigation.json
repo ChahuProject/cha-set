@@ -20,6 +20,12 @@
         "href": "#/get-started/theme-tuner",
         "badge": "Live",
         "desc": "Interactive theme customizer and config exporter."
+      },
+      {
+        "id": "typography",
+        "title": "Typography Rendering",
+        "href": "#/get-started/typography",
+        "desc": "Global text rasterizer policy and a five-script size ramp previewing every type scale step."
       }
     ]
   },
