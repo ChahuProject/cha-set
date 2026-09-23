@@ -35,12 +35,12 @@ Item {
     function buttonHeight() {
         switch (size) {
         case "xs":
-        case "icon-xs": return 24
+        case "icon-xs": return ThemeTokens.dp(24)
         case "icon-sm":
-        case "sm": return 28
+        case "sm": return ThemeTokens.dp(28)
         case "icon-lg":
-        case "lg": return 36
-        default:   return 32
+        case "lg": return ThemeTokens.dp(36)
+        default:   return ThemeTokens.dp(32)
         }
     }
 
@@ -48,10 +48,10 @@ Item {
     function paddingH() {
         if (size === "icon" || size === "icon-xs" || size === "icon-sm" || size === "icon-lg") return 0
         switch (size) {
-        case "xs": return 8
-        case "sm": return 10
-        case "lg": return 12
-        default:   return 10
+        case "xs": return ThemeTokens.dp(8)
+        case "sm": return ThemeTokens.dp(10)
+        case "lg": return ThemeTokens.dp(12)
+        default:   return ThemeTokens.dp(10)
         }
     }
 
@@ -313,7 +313,7 @@ Item {
         Image {
             id: btnIconLeft
             visible: !root.loading && root.iconSource !== "" && root.iconPosition === "left"
-            width: visible ? (root.size === "sm" || root.size === "xs" ? 14 : 16) : 0
+            width: visible ? ThemeTokens.dp(root.size === "sm" || root.size === "xs" ? 14 : 16) : 0
             height: width
             anchors.verticalCenter: parent.verticalCenter
             source: root.iconSource
@@ -347,7 +347,7 @@ Item {
         Image {
             id: btnIconRight
             visible: !root.loading && root.iconSource !== "" && root.iconPosition === "right"
-            width: visible ? (root.size === "sm" || root.size === "xs" ? 14 : 16) : 0
+            width: visible ? ThemeTokens.dp(root.size === "sm" || root.size === "xs" ? 14 : 16) : 0
             height: width
             anchors.verticalCenter: parent.verticalCenter
             source: root.iconSource

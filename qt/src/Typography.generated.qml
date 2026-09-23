@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import ChaSet
 
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens/primitives.json -> primitives.typography / primitives.fontWeight
@@ -38,17 +39,17 @@ QtObject {
     readonly property int weightBold: 700 // Font.Bold
 
     // --- font sizes (px; CSS emits the same numbers as rem at a 16px root) ---
-    readonly property int sizeNano: 9
-    readonly property int sizeMicro: 10
-    readonly property int sizeCaption: 11
-    readonly property int sizeSmall: 12
-    readonly property int sizeBody: 14
-    readonly property int sizeHeading: 16
-    readonly property int sizeSubheading: 18
-    readonly property int sizeTitleSm: 20
-    readonly property int sizeTitleMd: 24
-    readonly property int sizeTitle: 28
-    readonly property int sizeDisplay: 36
+    readonly property int sizeNano: ThemeTokens.sp(9)
+    readonly property int sizeMicro: ThemeTokens.sp(10)
+    readonly property int sizeCaption: ThemeTokens.sp(11)
+    readonly property int sizeSmall: ThemeTokens.sp(12)
+    readonly property int sizeBody: ThemeTokens.sp(14)
+    readonly property int sizeHeading: ThemeTokens.sp(16)
+    readonly property int sizeSubheading: ThemeTokens.sp(18)
+    readonly property int sizeTitleSm: ThemeTokens.sp(20)
+    readonly property int sizeTitleMd: ThemeTokens.sp(24)
+    readonly property int sizeTitle: ThemeTokens.sp(28)
+    readonly property int sizeDisplay: ThemeTokens.sp(36)
 
     // --- line heights (unitless ratios, multiplied by the px font size) ---
     readonly property real leadingNone: 1
@@ -80,21 +81,21 @@ QtObject {
     // --- named-role accessors (avoid re-typing the scale in QML) ---------
     function size(name) {
         switch (name) {
-            case "nano": return 9
-            case "micro": return 10
-            case "caption": return 11
-            case "small": return 12
-            case "body": return 14
-            case "heading": return 16
-            case "subheading": return 18
+            case "nano": return ThemeTokens.sp(9)
+            case "micro": return ThemeTokens.sp(10)
+            case "caption": return ThemeTokens.sp(11)
+            case "small": return ThemeTokens.sp(12)
+            case "body": return ThemeTokens.sp(14)
+            case "heading": return ThemeTokens.sp(16)
+            case "subheading": return ThemeTokens.sp(18)
             case "titleSm":
-            case "title-sm": return 20
+            case "title-sm": return ThemeTokens.sp(20)
             case "titleMd":
-            case "title-md": return 24
-            case "title": return 28
-            case "display": return 36
+            case "title-md": return ThemeTokens.sp(24)
+            case "title": return ThemeTokens.sp(28)
+            case "display": return ThemeTokens.sp(36)
         }
-        return 12
+        return ThemeTokens.sp(12)
     }
 
     function leading(name) {

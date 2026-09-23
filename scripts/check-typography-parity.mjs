@@ -114,7 +114,7 @@ export function verifyTypographyParity({ quiet = false } = {}) {
   }
   for (const [k, v] of Object.entries(typo.fontSize ?? {})) {
     expectedCss.set(`--cs-text-${toKebab(k)}`, pxToRem(v));
-    expectedQml.set(`size${camelProp(k)}`, String(v));
+    expectedQml.set(`size${camelProp(k)}`, `ThemeTokens.sp(${v})`);
   }
   for (const [k, v] of Object.entries(typo.lineHeight ?? {})) {
     expectedCss.set(`--cs-leading-${toKebab(k)}`, ratioValue(v));

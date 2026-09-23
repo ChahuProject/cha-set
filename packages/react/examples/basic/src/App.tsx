@@ -147,11 +147,13 @@ function applyTheme(mode: string, accent: string, overrides: ThemeOverrides, uiS
   if (overrides.ring) html.style.setProperty('--ring', overrides.ring);
   if (overrides.radius) html.style.setProperty('--radius', overrides.radius);
 
-  // 5. Interface Scale
+  // 5. Interface Scale (Authentic typography & rem scaling via root font size)
   if (typeof uiScale === 'number' && uiScale > 0 && Math.abs(uiScale - 1.0) > 0.001) {
-    html.style.zoom = String(uiScale);
+    html.style.fontSize = `${16 * uiScale}px`;
     html.style.setProperty('--cs-ui-scale', String(uiScale));
+    html.style.removeProperty('zoom');
   } else {
+    html.style.removeProperty('fontSize');
     html.style.removeProperty('zoom');
     html.style.removeProperty('--cs-ui-scale');
   }

@@ -471,7 +471,7 @@ const weightProps = Object.entries(spec.primitives.fontWeight ?? {})
   .join('\n');
 
 const sizeProps = FONT_SIZE_ORDER.map(
-  (s) => `    readonly property int size${camel(s)}: ${num(typographyPrim.fontSize[s])}`,
+  (s) => `    readonly property int size${camel(s)}: ThemeTokens.sp(${num(typographyPrim.fontSize[s])})`,
 ).join('\n');
 
 const leadingProps = LINE_HEIGHT_ORDER.map(
@@ -485,8 +485,8 @@ const trackingProps = LETTER_SPACING_ORDER.map(
 const sizeSwitch = FONT_SIZE_ORDER.map((s) => {
   const k = toKebab(s);
   return k !== s
-    ? `            case "${s}":\n            case "${k}": return ${num(typographyPrim.fontSize[s])}`
-    : `            case "${s}": return ${num(typographyPrim.fontSize[s])}`;
+    ? `            case "${s}":\n            case "${k}": return ThemeTokens.sp(${num(typographyPrim.fontSize[s])})`
+    : `            case "${s}": return ThemeTokens.sp(${num(typographyPrim.fontSize[s])})`;
 }).join('\n');
 const leadingSwitch = LINE_HEIGHT_ORDER.map((l) => {
   const k = toKebab(l);
@@ -501,6 +501,7 @@ const weightSwitch = Object.entries(spec.primitives.fontWeight ?? {})
 
 const typographyQml = `pragma Singleton
 import QtQuick
+import ChaSet
 
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens/primitives.json -> primitives.typography / primitives.fontWeight
@@ -546,7 +547,7 @@ ${trackingProps}
         switch (name) {
 ${sizeSwitch}
         }
-        return ${num(typographyPrim.fontSize.small)}
+        return ThemeTokens.sp(${num(typographyPrim.fontSize.small)})
     }
 
     function leading(name) {

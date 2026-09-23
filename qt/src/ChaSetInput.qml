@@ -41,9 +41,9 @@ Rectangle {
     readonly property bool isDark: ThemeTokens.dark
     readonly property color destructiveColor: isDark ? Qt.rgba(248.0 / 255.0, 113.0 / 255.0, 113.0 / 255.0, 1.0) : Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)
 
-    implicitWidth: 200
-    implicitHeight: isSm ? 28 : 32
-    radius: customRadius >= 0 ? customRadius : 6
+    implicitWidth: ThemeTokens.dp(200)
+    implicitHeight: ThemeTokens.dp(isSm ? 28 : 32)
+    radius: customRadius >= 0 ? customRadius : ThemeTokens.dp(6)
     color: "transparent"
 
     opacity: root.disabled ? 0.5 : 1.0
@@ -69,7 +69,7 @@ Rectangle {
         id: focusRing
         anchors.fill: root
         anchors.margins: -1
-        radius: (root.customRadius >= 0 ? root.customRadius : 6) + 1
+        radius: (root.customRadius >= 0 ? root.customRadius : ThemeTokens.dp(6)) + 1
         color: "transparent"
         border.width: 1
         border.color: root.isFocused ? (root.invalid ? root.destructiveColor : (isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0))) : "transparent"
@@ -81,13 +81,13 @@ Rectangle {
         id: leftIcon
         visible: root.leftIconSource !== ""
         anchors.left: parent.left
-        anchors.leftMargin: root.isSm ? 8 : 10
+        anchors.leftMargin: ThemeTokens.dp(root.isSm ? 8 : 10)
         anchors.verticalCenter: parent.verticalCenter
-        width: root.isSm ? 14 : 16
-        height: root.isSm ? 14 : 16
+        width: ThemeTokens.dp(root.isSm ? 14 : 16)
+        height: ThemeTokens.dp(root.isSm ? 14 : 16)
         source: root.leftIconSource
-        sourceSize.width: root.isSm ? 14 : 16
-        sourceSize.height: root.isSm ? 14 : 16
+        sourceSize.width: ThemeTokens.dp(root.isSm ? 14 : 16)
+        sourceSize.height: ThemeTokens.dp(root.isSm ? 14 : 16)
         fillMode: Image.PreserveAspectFit
     }
 
@@ -95,16 +95,16 @@ Rectangle {
     Row {
         id: rightActions
         anchors.right: parent.right
-        anchors.rightMargin: root.isSm ? 6 : 8
+        anchors.rightMargin: ThemeTokens.dp(root.isSm ? 6 : 8)
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 4
+        spacing: ThemeTokens.dp(4)
 
         // Clear button
         Rectangle {
             id: clearBtn
             visible: root.clearable && !root.disabled && !root.readOnly && root.text.length > 0
-            width: root.isSm ? 16 : 18
-            height: root.isSm ? 16 : 18
+            width: ThemeTokens.dp(root.isSm ? 16 : 18)
+            height: ThemeTokens.dp(root.isSm ? 16 : 18)
             radius: width / 2
             color: clearMouse.containsMouse ? ThemeTokens.hover : "transparent"
             anchors.verticalCenter: parent.verticalCenter
@@ -136,9 +136,9 @@ Rectangle {
         Rectangle {
             id: eyeBtn
             visible: root.type === "password" && root.passwordToggle && !root.disabled
-            width: root.isSm ? 16 : 18
-            height: root.isSm ? 16 : 18
-            radius: 3
+            width: ThemeTokens.dp(root.isSm ? 16 : 18)
+            height: ThemeTokens.dp(root.isSm ? 16 : 18)
+            radius: ThemeTokens.dp(3)
             color: eyeMouse.containsMouse ? ThemeTokens.hover : "transparent"
             anchors.verticalCenter: parent.verticalCenter
 
@@ -162,11 +162,11 @@ Rectangle {
         Image {
             id: rightIcon
             visible: root.rightIconSource !== ""
-            width: root.isSm ? 14 : 16
-            height: root.isSm ? 14 : 16
+            width: ThemeTokens.dp(root.isSm ? 14 : 16)
+            height: ThemeTokens.dp(root.isSm ? 14 : 16)
             source: root.rightIconSource
-            sourceSize.width: root.isSm ? 14 : 16
-            sourceSize.height: root.isSm ? 14 : 16
+            sourceSize.width: ThemeTokens.dp(root.isSm ? 14 : 16)
+            sourceSize.height: ThemeTokens.dp(root.isSm ? 14 : 16)
             fillMode: Image.PreserveAspectFit
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -175,8 +175,8 @@ Rectangle {
     TextInput {
         id: inputInner
         anchors.fill: parent
-        anchors.leftMargin: leftIcon.visible ? (leftIcon.width + (root.isSm ? 12 : 14)) : (root.isSm ? 8 : 10)
-        anchors.rightMargin: (clearBtn.visible || eyeBtn.visible || rightIcon.visible) ? (rightActions.width + (root.isSm ? 10 : 12)) : (root.isSm ? 8 : 10)
+        anchors.leftMargin: leftIcon.visible ? (leftIcon.width + ThemeTokens.dp(root.isSm ? 12 : 14)) : ThemeTokens.dp(root.isSm ? 8 : 10)
+        anchors.rightMargin: (clearBtn.visible || eyeBtn.visible || rightIcon.visible) ? (rightActions.width + ThemeTokens.dp(root.isSm ? 10 : 12)) : ThemeTokens.dp(root.isSm ? 8 : 10)
         verticalAlignment: TextInput.AlignVCenter
 
         text: root.text

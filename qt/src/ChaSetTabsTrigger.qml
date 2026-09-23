@@ -47,11 +47,11 @@ Rectangle {
     readonly property bool isLine: variant === "line"
     readonly property bool isSm: size === "sm"
 
-    height: isLine ? (isSm ? 32 : 36) : (isSm ? 24 : 28)
+    height: ThemeTokens.dp(isLine ? (isSm ? 32 : 36) : (isSm ? 24 : 28))
     implicitHeight: height
-    implicitWidth: Math.max(isSm ? 28 : 36, contentRow.implicitWidth + (isLine ? (isSm ? 12 : 16) : (isSm ? 16 : 24)))
+    implicitWidth: Math.max(ThemeTokens.dp(isSm ? 28 : 36), contentRow.implicitWidth + ThemeTokens.dp(isLine ? (isSm ? 12 : 16) : (isSm ? 16 : 24)))
     width: implicitWidth
-    radius: isLine ? 0 : (isSm ? 4 : 6)
+    radius: isLine ? 0 : ThemeTokens.dp(isSm ? 4 : 6)
     opacity: disabled ? 0.5 : 1.0
 
     color: isLine
@@ -110,8 +110,8 @@ Rectangle {
             id: badgeRect
             visible: root.badge !== ""
             radius: 9999
-            height: root.isSm ? 14 : 16
-            width: Math.max(height, badgeText.implicitWidth + (root.isSm ? 6 : 8))
+            height: ThemeTokens.dp(root.isSm ? 14 : 16)
+            width: Math.max(height, badgeText.implicitWidth + ThemeTokens.dp(root.isSm ? 6 : 8))
             color: Qt.rgba(148.0 / 255.0, 163.0 / 255.0, 184.0 / 255.0, 0.15)
             anchors.verticalCenter: parent.verticalCenter
 
@@ -132,7 +132,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        height: 2
+        height: ThemeTokens.dp(2)
         color: ThemeTokens.accent
     }
 

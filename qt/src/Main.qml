@@ -261,47 +261,6 @@ ApplicationWindow {
     // Authentic Interface Scaling (Scene Graph Viewport Matrix)
     readonly property real effectiveUiScale: (typeof harnessMode !== "undefined" && harnessMode !== "") ? 1.0 : ThemeTokens.uiScale
 
-    Binding {
-        target: win.contentItem
-        property: "scale"
-        value: win.effectiveUiScale
-    }
-    Binding {
-        target: win.contentItem
-        property: "transformOrigin"
-        value: Item.TopLeft
-    }
-    Binding {
-        target: win.contentItem
-        property: "width"
-        value: win.width / win.effectiveUiScale
-    }
-    Binding {
-        target: win.contentItem
-        property: "height"
-        value: win.height / win.effectiveUiScale
-    }
-
-    Binding {
-        target: win.Overlay.overlay
-        property: "scale"
-        value: win.effectiveUiScale
-    }
-    Binding {
-        target: win.Overlay.overlay
-        property: "transformOrigin"
-        value: Item.TopLeft
-    }
-    Binding {
-        target: win.Overlay.overlay
-        property: "width"
-        value: win.width / win.effectiveUiScale
-    }
-    Binding {
-        target: win.Overlay.overlay
-        property: "height"
-        value: win.height / win.effectiveUiScale
-    }
 
     // Desktop Zoom Keyboard Shortcuts
     Shortcut {
@@ -472,9 +431,9 @@ ApplicationWindow {
             console.log("[qt-scenario] Running Global Theme Control & Authentic UI Scale scenario...");
             var themeFailures = 0;
 
-            // 1. Verify initial UI scale is 1.0
-            if (ThemeTokens.uiScale !== 1.0 || win.contentItem.scale !== 1.0) {
-                console.log("[qt-scenario] FAIL: Initial uiScale expected 1.0, got " + ThemeTokens.uiScale);
+            // 1. Verify initial UI scale is 1.0 and typography/dp match base metrics
+            if (ThemeTokens.uiScale !== 1.0 || Typography.sizeBody !== 14 || ThemeTokens.dp(32) !== 32) {
+                console.log("[qt-scenario] FAIL: Initial uiScale expected 1.0, got " + ThemeTokens.uiScale + " (sizeBody=" + Typography.sizeBody + ", dp32=" + ThemeTokens.dp(32) + ")");
                 themeFailures++;
             }
 
@@ -492,8 +451,8 @@ ApplicationWindow {
                 console.log("[qt-scenario] FAIL: ThemeTokens.dark was not updated to true by applyThemeConfig");
                 themeFailures++;
             }
-            if (ThemeTokens.uiScale !== 1.5 || win.contentItem.scale !== 1.5 || win.Overlay.overlay.scale !== 1.5) {
-                console.log("[qt-scenario] FAIL: uiScale matrix transform not applied: ThemeTokens=" + ThemeTokens.uiScale + ", contentItem=" + win.contentItem.scale + ", overlay=" + win.Overlay.overlay.scale);
+            if (ThemeTokens.uiScale !== 1.5 || Typography.sizeBody !== 21 || ThemeTokens.dp(32) !== 48) {
+                console.log("[qt-scenario] FAIL: Authentic vector typography & dp scale not applied: ThemeTokens.uiScale=" + ThemeTokens.uiScale + ", sizeBody=" + Typography.sizeBody + ", dp32=" + ThemeTokens.dp(32));
                 themeFailures++;
             }
             if (win.activeAccent !== "red" || win.overridePrimary !== "#ef4444") {
@@ -507,8 +466,8 @@ ApplicationWindow {
 
             // 3. Test resetThemeConfig
             win.resetThemeConfig();
-            if (ThemeTokens.dark !== false || ThemeTokens.uiScale !== 1.0 || win.contentItem.scale !== 1.0 || win.Overlay.overlay.scale !== 1.0 || win.activeAccent !== "" || win.customRadius !== 8) {
-                console.log("[qt-scenario] FAIL: resetThemeConfig did not restore defaults: dark=" + ThemeTokens.dark + ", scale=" + ThemeTokens.uiScale + ", accent=" + win.activeAccent + ", radius=" + win.customRadius);
+            if (ThemeTokens.dark !== false || ThemeTokens.uiScale !== 1.0 || Typography.sizeBody !== 14 || ThemeTokens.dp(32) !== 32 || win.activeAccent !== "" || win.customRadius !== 8) {
+                console.log("[qt-scenario] FAIL: resetThemeConfig did not restore defaults: dark=" + ThemeTokens.dark + ", scale=" + ThemeTokens.uiScale + ", sizeBody=" + Typography.sizeBody + ", accent=" + win.activeAccent + ", radius=" + win.customRadius);
                 themeFailures++;
             }
 
@@ -1247,7 +1206,7 @@ ApplicationWindow {
             Rectangle {
                 id: topbar
                 width: parent.width
-                height: 56
+                height: ThemeTokens.dp(56)
                 z: 50
                 color: win.cBg
 
@@ -1262,14 +1221,14 @@ ApplicationWindow {
                 Item {
                     id: topbarInner
                     anchors.fill: parent
-                    anchors.leftMargin: 20
-                    anchors.rightMargin: 20
+                    anchors.leftMargin: ThemeTokens.dp(20)
+                    anchors.rightMargin: ThemeTokens.dp(20)
 
                     // Left Brand Group
                     Row {
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: 10
+                        spacing: ThemeTokens.dp(10)
 
                         Text {
                             text: "🍵"
@@ -1295,24 +1254,24 @@ ApplicationWindow {
 
                     // Center Search Bar Trigger
                     Rectangle {
-                        width: Math.min(parent.width - 500, 320)
-                        height: 32
-                        radius: 6
+                        width: Math.min(parent.width - ThemeTokens.dp(500), ThemeTokens.dp(320))
+                        height: ThemeTokens.dp(32)
+                        radius: ThemeTokens.dp(6)
                         color: win.cAccentBg
                         border.color: win.cBorder
                         anchors.centerIn: parent
 
                         Row {
                             anchors.fill: parent
-                            anchors.leftMargin: 10
-                            anchors.rightMargin: 8
-                            spacing: 8
+                            anchors.leftMargin: ThemeTokens.dp(10)
+                            anchors.rightMargin: ThemeTokens.dp(8)
+                            spacing: ThemeTokens.dp(8)
 
                             Text { text: "🔍"; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                             Text { text: ChaSetI18n.tr("showcase.searchPlaceholder", "Search components & docs..."); color: win.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                            Item { width: parent.width - 240; height: 1 }
+                            Item { width: parent.width - ThemeTokens.dp(240); height: 1 }
                             Rectangle {
-                                width: 32; height: 18; radius: 3; color: win.cCard; border.color: win.cBorder
+                                width: ThemeTokens.dp(32); height: ThemeTokens.dp(18); radius: ThemeTokens.dp(3); color: win.cCard; border.color: win.cBorder
                                 anchors.verticalCenter: parent.verticalCenter
                                 Text { anchors.centerIn: parent; text: "⌘K"; color: win.cMutedFg; font.pixelSize: Typography.sizeMicro; font.family: Typography.familyMono }
                             }
@@ -1329,12 +1288,12 @@ ApplicationWindow {
                     Row {
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: 8
+                        spacing: ThemeTokens.dp(8)
 
                         // Language Switcher Dropdown Menu
                         Item {
-                            width: 90
-                            height: 32
+                            width: ThemeTokens.dp(90)
+                            height: ThemeTokens.dp(32)
                             anchors.verticalCenter: parent.verticalCenter
 
                             ChaSetButton {
@@ -1348,8 +1307,8 @@ ApplicationWindow {
 
                             Menu {
                                 id: langMenu
-                                y: langBtn.height + 4
-                                width: 160
+                                y: langBtn.height + ThemeTokens.dp(4)
+                                width: ThemeTokens.dp(160)
 
                                 MenuItem {
                                     text: "💻 " + ChaSetI18n.tr("language.followSystem", "Follow System")
@@ -1391,7 +1350,7 @@ ApplicationWindow {
                             }
                         }
 
-                        ChaSetSeparator { orientation: "vertical"; height: 18; anchors.verticalCenter: parent.verticalCenter }
+                        ChaSetSeparator { orientation: "vertical"; height: ThemeTokens.dp(18); anchors.verticalCenter: parent.verticalCenter }
 
                         // Dark/Light Mode Toggle Button
                         ChaSetTooltip {
@@ -1424,7 +1383,7 @@ ApplicationWindow {
                 // Left Navigation Sidebar (240px width with right border)
                 Rectangle {
                     id: sidebar
-                    width: 240
+                    width: ThemeTokens.dp(240)
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
@@ -1441,24 +1400,24 @@ ApplicationWindow {
 
                     ChaSetScrollArea {
                         anchors.fill: parent
-                        anchors.margins: 16
+                        anchors.margins: ThemeTokens.dp(16)
                         showVerticalScrollBar: true
                         showHorizontalScrollBar: false
                         showButtons: false
-                        contentWidth: width - 8
+                        contentWidth: width - ThemeTokens.dp(8)
                         contentHeight: sidebarCol.implicitHeight
 
                         Column {
                             id: sidebarCol
                             width: parent.width
-                            spacing: 20
+                            spacing: ThemeTokens.dp(20)
 
                         Repeater {
                             model: ShowcaseData.navigation || []
                             delegate: Column {
                                 required property var modelData
                                 width: parent.width
-                                spacing: 4
+                                spacing: ThemeTokens.dp(4)
 
                                 Text {
                                     text: modelData.title ? ChaSetI18n.tr("showcase.categories." + modelData.title, modelData.title).toUpperCase() : ""
@@ -1468,7 +1427,7 @@ ApplicationWindow {
                                     font.family: Typography.familySans
                                 }
 
-                                Item { width: 1; height: 4 }
+                                Item { width: 1; height: ThemeTokens.dp(4) }
 
                                 Repeater {
                                     model: modelData.items || []
@@ -1476,8 +1435,8 @@ ApplicationWindow {
                                         id: navItemRect
                                         required property var modelData
                                         width: parent.width
-                                        height: 32
-                                        radius: 6
+                                        height: ThemeTokens.dp(32)
+                                        radius: ThemeTokens.dp(6)
 
                                         readonly property bool isActive: win.activePage === navItemRect.modelData.id
                                         readonly property bool isHovered: navItemMouse.containsMouse
@@ -1490,9 +1449,9 @@ ApplicationWindow {
 
                                         Text {
                                             anchors.left: parent.left
-                                            anchors.leftMargin: 10
+                                            anchors.leftMargin: ThemeTokens.dp(10)
                                             anchors.right: navItemBadge.visible ? navItemBadge.left : parent.right
-                                            anchors.rightMargin: 8
+                                            anchors.rightMargin: ThemeTokens.dp(8)
                                             anchors.verticalCenter: parent.verticalCenter
                                             elide: Text.ElideRight
                                             text: navItemRect.modelData.title || ""
@@ -1508,7 +1467,7 @@ ApplicationWindow {
                                             size: "sm"
                                             text: navItemRect.modelData.badge || ""
                                             anchors.right: parent.right
-                                            anchors.rightMargin: 10
+                                            anchors.rightMargin: ThemeTokens.dp(10)
                                             anchors.verticalCenter: parent.verticalCenter
                                         }
 

@@ -25,7 +25,7 @@ Item {
     readonly property bool isHovered: (root.forceHover || mouseArea.containsMouse) && !root.disabled && !root.readOnly && !root.loading
     readonly property bool hasCompanionContent: root.label !== "" || root.description !== ""
 
-    implicitWidth: hasCompanionContent ? (track.width + 8 + labelColumn.implicitWidth) : track.width
+    implicitWidth: hasCompanionContent ? (track.width + ThemeTokens.dp(8) + labelColumn.implicitWidth) : track.width
     implicitHeight: Math.max(track.height, hasCompanionContent ? labelColumn.implicitHeight : 0)
     width: implicitWidth
     height: implicitHeight
@@ -52,31 +52,37 @@ Item {
 
     Rectangle {
         id: track
-        width: root.isSm ? 28 : 36
-        height: root.isSm ? 16 : 20
-        radius: root.isSm ? 8 : 10
+        width: ThemeTokens.dp(root.isSm ? 28 : 36)
+        height: ThemeTokens.dp(root.isSm ? 16 : 20)
+        radius: ThemeTokens.dp(root.isSm ? 8 : 10)
         anchors.left: parent.left
         anchors.verticalCenter: root.description !== "" ? undefined : parent.verticalCenter
         anchors.top: root.description !== "" ? parent.top : undefined
         anchors.topMargin: root.description !== "" ? 2 : 0
 
-        color: root.checked
-            ? (root.isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0))
-            : (root.isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0))
+        color: {
+            if (root.checked) {
+                return ThemeTokens.accent
+            }
+            return root.isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
+        }
 
         Behavior on color {
             enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
-            ColorAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
+            ColorAnimation {
+                duration: ThemeTokens.motionShort
+                easing.type: ThemeTokens.easeStandard
+            }
         }
 
-        // Outer focus ring: 1px offset Rectangle (margins: -1, radius + 1), visible when focused
+        // Focus Ring
         Rectangle {
             id: focusRing
             anchors.fill: parent
-            anchors.margins: -1
-            radius: track.radius + 1
+            anchors.margins: -2
+            radius: (root.isSm ? 8 : 10) + 2
             color: "transparent"
-            border.width: 1
+            border.width: 2
             border.color: root.isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
             visible: root.isFocused
         }
@@ -84,11 +90,11 @@ Item {
         // Thumb
         Rectangle {
             id: thumb
-            width: root.isSm ? 12 : 16
-            height: root.isSm ? 12 : 16
-            radius: root.isSm ? 6 : 8
+            width: ThemeTokens.dp(root.isSm ? 12 : 16)
+            height: ThemeTokens.dp(root.isSm ? 12 : 16)
+            radius: ThemeTokens.dp(root.isSm ? 6 : 8)
             y: (track.height - height) / 2
-            x: root.checked ? (track.width - width - 2) : 2
+            x: root.checked ? (track.width - width - ThemeTokens.dp(2)) : ThemeTokens.dp(2)
             color: "#ffffff"
             border.width: 1
             border.color: Qt.rgba(0, 0, 0, 0.06)

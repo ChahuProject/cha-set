@@ -30,11 +30,11 @@ Rectangle {
 
     // Dimensions based on size scale: default (h-5), sm (h-4)
     readonly property bool isSm: root.size === "sm"
-    implicitHeight: isSm ? 16 : 20
-    implicitWidth: Math.max(isSm ? 16 : 20, contentRow.implicitWidth + (isSm ? 12 : 16))
+    implicitHeight: ThemeTokens.dp(isSm ? 16 : 20)
+    implicitWidth: Math.max(ThemeTokens.dp(isSm ? 16 : 20), contentRow.implicitWidth + ThemeTokens.dp(isSm ? 12 : 16))
     height: implicitHeight
     width: implicitWidth
-    radius: isSm ? 4 : 10
+    radius: ThemeTokens.dp(isSm ? 4 : 10)
 
     // Background Color
     color: {
@@ -90,13 +90,13 @@ Rectangle {
     Row {
         id: contentRow
         anchors.centerIn: parent
-        spacing: root.isSm ? 3 : 4
+        spacing: ThemeTokens.dp(root.isSm ? 3 : 4)
 
         // Status Dot
         Rectangle {
             id: statusDot
             visible: root.dot
-            width: root.isSm ? 5 : 6
+            width: ThemeTokens.dp(root.isSm ? 5 : 6)
             height: width
             radius: width / 2
             color: root.dotColor
@@ -107,7 +107,7 @@ Rectangle {
         Image {
             id: badgeIcon
             visible: root.iconSource !== ""
-            width: root.isSm ? 10 : 12
+            width: ThemeTokens.dp(root.isSm ? 10 : 12)
             height: width
             source: root.iconSource
             sourceSize.width: width
@@ -146,7 +146,7 @@ Rectangle {
         Item {
             id: removeBtn
             visible: root.removable
-            width: root.isSm ? 10 : 12
+            width: ThemeTokens.dp(root.isSm ? 10 : 12)
             height: width
             anchors.verticalCenter: parent.verticalCenter
 

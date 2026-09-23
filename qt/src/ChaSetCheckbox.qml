@@ -33,8 +33,8 @@ Item {
     }
 
     readonly property bool isSm: root.size === "sm"
-    readonly property int boxSize: isSm ? 14 : 16
-    readonly property int effectiveRadius: customRadius >= 0 ? customRadius : (isSm ? 3 : 4)
+    readonly property int boxSize: ThemeTokens.dp(isSm ? 14 : 16)
+    readonly property int effectiveRadius: customRadius >= 0 ? customRadius : ThemeTokens.dp(isSm ? 3 : 4)
     readonly property bool isHovered: (root.forceHover || mouseArea.containsMouse) && !root.disabled && !root.readOnly
     readonly property bool isFocused: (root.forceFocus || root.activeFocus) && !root.disabled
     readonly property bool isDark: ThemeTokens.dark
@@ -42,7 +42,7 @@ Item {
     readonly property color destructiveColor: isDark ? Qt.rgba(248.0 / 255.0, 113.0 / 255.0, 113.0 / 255.0, 1.0) : Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)
     readonly property bool hasCompanionContent: root.label !== "" || root.description !== ""
 
-    implicitWidth: box.width + (hasCompanionContent ? 8 + labelColumn.implicitWidth : 0)
+    implicitWidth: box.width + (hasCompanionContent ? ThemeTokens.dp(8) + labelColumn.implicitWidth : 0)
     implicitHeight: Math.max(box.height, hasCompanionContent ? labelColumn.implicitHeight : 0)
     width: implicitWidth
     height: implicitHeight

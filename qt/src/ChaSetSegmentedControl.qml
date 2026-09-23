@@ -23,17 +23,17 @@ Item {
 
     readonly property int effectiveHeight: {
         switch (root.size) {
-        case "sm": return 22;
-        case "lg": return 36;
-        default:   return 28;
+        case "sm": return ThemeTokens.dp(22);
+        case "lg": return ThemeTokens.dp(36);
+        default:   return ThemeTokens.dp(28);
         }
     }
 
     readonly property int itemHeight: {
         switch (root.size) {
-        case "sm": return 18;
-        case "lg": return 30;
-        default:   return 22;
+        case "sm": return ThemeTokens.dp(18);
+        case "lg": return ThemeTokens.dp(30);
+        default:   return ThemeTokens.dp(22);
         }
     }
 
@@ -47,13 +47,13 @@ Item {
 
     readonly property int controlRadius: {
         switch (root.size) {
-        case "sm": return 5;
-        case "lg": return 8;
-        default:   return 6;
+        case "sm": return ThemeTokens.dp(5);
+        case "lg": return ThemeTokens.dp(8);
+        default:   return ThemeTokens.dp(6);
         }
     }
 
-    readonly property int itemRadius: controlRadius - 1
+    readonly property int itemRadius: Math.max(1, controlRadius - 1)
 
     FontMetrics {
         id: textFontMetrics
@@ -68,15 +68,15 @@ Item {
     }
 
     function calculateItemContentWidth(opt) {
-        if (!opt) return 40;
-        var pad = root.size === "sm" ? 16 : (root.size === "lg" ? 24 : 20);
+        if (!opt) return ThemeTokens.dp(40);
+        var pad = ThemeTokens.dp(root.size === "sm" ? 16 : (root.size === "lg" ? 24 : 20));
         var label = opt.label !== undefined ? String(opt.label) : "";
         var w = textFontMetrics.advanceWidth(label) + pad;
         if (opt.icon !== undefined && String(opt.icon).length > 0) {
-            w += (root.itemFontSize + 4);
+            w += (root.itemFontSize + ThemeTokens.dp(4));
         }
         if (opt.badge !== undefined && String(opt.badge).length > 0) {
-            w += (badgeFontMetrics.advanceWidth(String(opt.badge)) + 12);
+            w += (badgeFontMetrics.advanceWidth(String(opt.badge)) + ThemeTokens.dp(12));
         }
         return Math.ceil(w);
     }
@@ -105,14 +105,14 @@ Item {
         }
         if (root.equalWidth || root.fullWidth) {
             var totalSpacing = (options.length - 1) * track.segSpacing;
-            return Math.max(20, (track.width - 6 - totalSpacing) / options.length);
+            return Math.max(ThemeTokens.dp(20), (track.width - ThemeTokens.dp(6) - totalSpacing) / options.length);
         }
-        return naturalWidths[idx] || 40;
+        return naturalWidths[idx] || ThemeTokens.dp(40);
     }
 
     function getItemX(idx) {
-        if (idx <= 0) return 3;
-        var x = 3;
+        if (idx <= 0) return ThemeTokens.dp(3);
+        var x = ThemeTokens.dp(3);
         for (var i = 0; i < idx; i++) {
             x += getItemWidth(i) + track.segSpacing;
         }
@@ -122,19 +122,19 @@ Item {
     implicitHeight: effectiveHeight
     implicitWidth: {
         var base = hasTitle ? titleWidth : 0;
-        if (root.fullWidth) return parent ? parent.width : 200;
+        if (root.fullWidth) return parent ? parent.width : ThemeTokens.dp(200);
         if (root.itemWidth > 0) {
-            return base + 6 + (options.length * root.itemWidth) + ((options.length - 1) * track.segSpacing);
+            return base + ThemeTokens.dp(6) + (options.length * root.itemWidth) + ((options.length - 1) * track.segSpacing);
         }
         if (root.equalWidth) {
-            var maxW = 40;
+            var maxW = ThemeTokens.dp(40);
             for (var i = 0; i < naturalWidths.length; i++) {
                 if (naturalWidths[i] > maxW) maxW = naturalWidths[i];
             }
-            return base + 6 + (options.length * maxW) + ((options.length - 1) * track.segSpacing);
+            return base + ThemeTokens.dp(6) + (options.length * maxW) + ((options.length - 1) * track.segSpacing);
         }
         var totalSpacing = options.length > 1 ? (options.length - 1) * track.segSpacing : 0;
-        return base + 6 + totalNaturalWidth + totalSpacing;
+        return base + ThemeTokens.dp(6) + totalNaturalWidth + totalSpacing;
     }
     width: implicitWidth
     height: implicitHeight
