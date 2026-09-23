@@ -153,7 +153,7 @@ Item {
                         delegate: Item {
                             required property var modelData
                             width: modelData.width || 120
-                            height: parent.height
+                            height: parent ? parent.height : 0
 
                             Row {
                                 anchors.fill: parent

@@ -253,7 +253,7 @@ Item {
                     Text {
                         anchors.left: parent.left
                         anchors.leftMargin: 8
-                        anchors.right: checkText.visible ? checkText.left : parent.right
+                        anchors.right: checkIcon.visible ? checkIcon.left : parent.right
                         anchors.rightMargin: 8
                         anchors.verticalCenter: parent.verticalCenter
                         text: parent.modelData.label || ""

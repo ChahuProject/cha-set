@@ -92,7 +92,7 @@ DocLayout {
                     height: 240
                     model: 10000
                     delegate: Rectangle {
-                        width: parent.width
+                        width: parent ? parent.width : 0
                         height: 36
                         color: index % 2 === 0 ? ThemeTokens.hover : "transparent"
 

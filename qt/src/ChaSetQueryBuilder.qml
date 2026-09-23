@@ -87,7 +87,7 @@ Rectangle {
                 delegate: Rectangle {
                     required property var modelData
                     required property int index
-                    width: parent.width
+                    width: parent ? parent.width : 0
                     height: 32
                     opacity: 0
                     color: ThemeTokens.hover

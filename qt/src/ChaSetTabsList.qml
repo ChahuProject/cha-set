@@ -41,7 +41,11 @@ Rectangle {
         : (ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(241.0 / 255.0, 245.0 / 255.0, 249.0 / 255.0, 1.0))
 
     property bool initialized: false
-    Component.onCompleted: Qt.callLater(function() { root.initialized = true })
+    Component.onCompleted: Qt.callLater(function() {
+        if (root) {
+            root.initialized = true
+        }
+    })
 
     function getActiveTrigger() {
         if (!parentTabs || parentTabs.currentValue === undefined) return null;

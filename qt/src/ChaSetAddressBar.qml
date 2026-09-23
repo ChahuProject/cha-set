@@ -320,7 +320,7 @@ Item {
                         required property var modelData
                         required property int index
                         spacing: 2
-                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.verticalCenter: parent ? parent.verticalCenter : undefined
 
                         Rectangle {
                             id: segPill
