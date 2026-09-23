@@ -1,6 +1,12 @@
 import * as React from 'react';
-export { CANONICAL_SCALE_STEPS } from '@chahu/spec/scale-osd';
-import { CANONICAL_SCALE_STEPS } from '@chahu/spec/scale-osd';
+
+/**
+ * Canonical 17-step discrete scale ladder matching Chrome / Chromium page zoom:
+ * 25% 33% 50% 67% 75% 80% 90% 100% 110% 125% 150% 175% 200% 250% 300% 400% 500%
+ */
+export const CANONICAL_SCALE_STEPS: readonly number[] = [
+  0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0,
+] as const;
 
 export interface UseScaleOsdOptions {
   /** Current scale ratio (controlled) */
