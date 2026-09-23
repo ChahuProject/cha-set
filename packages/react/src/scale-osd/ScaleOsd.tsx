@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
-export { CANONICAL_SCALE_STEPS } from '@chahu/spec/scale-osd';
-import { CANONICAL_SCALE_STEPS } from '@chahu/spec/scale-osd';
+export { CANONICAL_SCALE_STEPS } from './useScaleOsd';
+import { CANONICAL_SCALE_STEPS } from './useScaleOsd';
 
 export type ScaleOsdPlacement =
   | 'bottom-center'
