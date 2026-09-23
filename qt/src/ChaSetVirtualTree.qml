@@ -8,6 +8,9 @@ Item {
 
     property var nodes: [] // [{ id, label, children: [...] }]
     property string selectedId: ""
+    property var selectedIds: []
+    property string selectionMode: "single" // "single" | "multiple" | "none"
+    property var dimmedIds: []
     property var expandedIds: ({})
     property int defaultExpandDepth: 0
     property int estimateSize: 28
@@ -15,7 +18,22 @@ Item {
     property int overscan: 10
     property int customRadius: 6
 
+    // Drag and Drop properties
+    property bool enableDnd: false
+    property string draggedId: ""
+    property var draggedIds: []
+    property string dropTargetId: ""
+    property string dropPosition: "" // "before" | "inside" | "after"
+    property bool isDropValid: true
+
+    property int anchorIndex: -1
+
     signal nodeSelected(string nodeId)
+    signal nodeCut(var ids)
+    signal nodeCopied(var ids)
+    signal nodePasted(string targetId, string position)
+    signal nodeDeleted(var ids)
+    signal nodeDropped(var sourceIds, string targetId, string position)
 
     implicitWidth: 320
     implicitHeight: 280
@@ -44,6 +62,115 @@ Item {
     }
 
     readonly property var flatItems: flatten(root.nodes, 0)
+
+    function isSelected(id) {
+        if (root.selectionMode === "multiple") {
+            return root.selectedIds && root.selectedIds.indexOf(id) !== -1
+        }
+        return root.selectedId === id
+    }
+
+    function isDimmed(id) {
+        return root.dimmedIds && root.dimmedIds.indexOf(id) !== -1
+    }
+
+    function selectAll() {
+        if (root.selectionMode !== "multiple") return
+        var ids = []
+        for (var i = 0; i < root.flatItems.length; i++) {
+            ids.push(root.flatItems[i].id)
+        }
+        root.selectedIds = ids
+        if (ids.length > 0) root.selectedId = ids[0]
+    }
+
+    function clearSelection() {
+        root.selectedIds = []
+        root.selectedId = ""
+        root.anchorIndex = -1
+    }
+
+    function handleNodeClick(nodeIndex, modifiers) {
+        if (root.selectionMode === "none" || nodeIndex < 0 || nodeIndex >= root.flatItems.length) return
+        var item = root.flatItems[nodeIndex]
+        root.currentIndex = nodeIndex
+
+        if (root.selectionMode === "single") {
+            root.selectedId = item.id
+            root.selectedIds = [item.id]
+            root.anchorIndex = nodeIndex
+            root.nodeSelected(item.id)
+            return
+        }
+
+        // Multiple selection mode
+        var isShift = (modifiers & Qt.ShiftModifier)
+        var isCtrl = (modifiers & Qt.ControlModifier) || (modifiers & Qt.MetaModifier)
+
+        if (isShift && root.anchorIndex >= 0) {
+            var start = Math.min(root.anchorIndex, nodeIndex)
+            var end = Math.max(root.anchorIndex, nodeIndex)
+            var newIds = isCtrl ? root.selectedIds.slice() : []
+            for (var i = start; i <= end; i++) {
+                var currId = root.flatItems[i].id
+                if (newIds.indexOf(currId) === -1) newIds.push(currId)
+            }
+            root.selectedIds = newIds
+            root.selectedId = item.id
+            root.nodeSelected(item.id)
+        } else if (isCtrl) {
+            var copy = root.selectedIds.slice()
+            var idx = copy.indexOf(item.id)
+            if (idx !== -1) {
+                copy.splice(idx, 1)
+            } else {
+                copy.push(item.id)
+            }
+            root.selectedIds = copy
+            root.selectedId = item.id
+            root.anchorIndex = nodeIndex
+            root.nodeSelected(item.id)
+        } else {
+            root.selectedIds = [item.id]
+            root.selectedId = item.id
+            root.anchorIndex = nodeIndex
+            root.nodeSelected(item.id)
+        }
+    }
+
+    function isDescendantOrSelf(ancestorId, targetId) {
+        if (!ancestorId || !targetId) return false
+        if (ancestorId === targetId) return true
+        function checkNode(node) {
+            if (node.id === ancestorId) {
+                function scanSub(child) {
+                    if (child.id === targetId) return true
+                    if (child.children) {
+                        for (var j = 0; j < child.children.length; j++) {
+                            if (scanSub(child.children[j])) return true
+                        }
+                    }
+                    return false
+                }
+                if (node.children) {
+                    for (var i = 0; i < node.children.length; i++) {
+                        if (scanSub(node.children[i])) return true
+                    }
+                }
+                return false
+            }
+            if (node.children) {
+                for (var k = 0; k < node.children.length; k++) {
+                    if (checkNode(node.children[k])) return true
+                }
+            }
+            return false
+        }
+        for (var r = 0; r < root.nodes.length; r++) {
+            if (checkNode(root.nodes[r])) return true
+        }
+        return false
+    }
 
     function toggleExpand(id) {
         let copy = Object.assign({}, root.expandedIds)
@@ -105,9 +232,16 @@ Item {
         event.accepted = true
         root.modality = "keyboard"
         if (root.flatItems.length > 0) {
-            root.currentIndex = Math.min(root.flatItems.length - 1, Math.max(0, root.currentIndex + 1))
-            root.selectedId = root.flatItems[root.currentIndex].id
-            root.nodeSelected(root.selectedId)
+            var nextIdx = Math.min(root.flatItems.length - 1, Math.max(0, root.currentIndex + 1))
+            root.currentIndex = nextIdx
+            if (event.modifiers & Qt.ShiftModifier && root.selectionMode === "multiple") {
+                if (root.anchorIndex < 0) root.anchorIndex = root.currentIndex
+                root.handleNodeClick(nextIdx, event.modifiers)
+            } else {
+                root.selectedId = root.flatItems[root.currentIndex].id
+                root.selectedIds = [root.selectedId]
+                root.nodeSelected(root.selectedId)
+            }
             treeList.positionViewAtIndex(root.currentIndex, ListView.Contain)
         }
     }
@@ -116,9 +250,16 @@ Item {
         event.accepted = true
         root.modality = "keyboard"
         if (root.flatItems.length > 0) {
-            root.currentIndex = Math.max(0, root.currentIndex - 1)
-            root.selectedId = root.flatItems[root.currentIndex].id
-            root.nodeSelected(root.selectedId)
+            var prevIdx = Math.max(0, root.currentIndex - 1)
+            root.currentIndex = prevIdx
+            if (event.modifiers & Qt.ShiftModifier && root.selectionMode === "multiple") {
+                if (root.anchorIndex < 0) root.anchorIndex = root.currentIndex
+                root.handleNodeClick(prevIdx, event.modifiers)
+            } else {
+                root.selectedId = root.flatItems[root.currentIndex].id
+                root.selectedIds = [root.selectedId]
+                root.nodeSelected(root.selectedId)
+            }
             treeList.positionViewAtIndex(root.currentIndex, ListView.Contain)
         }
     }
@@ -133,6 +274,7 @@ Item {
                 } else if (root.currentIndex + 1 < root.flatItems.length) {
                     root.currentIndex += 1
                     root.selectedId = root.flatItems[root.currentIndex].id
+                    root.selectedIds = [root.selectedId]
                     root.nodeSelected(root.selectedId)
                     treeList.positionViewAtIndex(root.currentIndex, ListView.Contain)
                 }
@@ -152,6 +294,7 @@ Item {
                     if (root.flatItems[i].depth === curr.depth - 1) {
                         root.currentIndex = i
                         root.selectedId = root.flatItems[i].id
+                        root.selectedIds = [root.selectedId]
                         root.nodeSelected(root.selectedId)
                         treeList.positionViewAtIndex(root.currentIndex, ListView.Contain)
                         break
@@ -161,22 +304,56 @@ Item {
         }
     }
 
-    Keys.onSpacePressed: function(event) {
-        if (root.currentIndex >= 0 && root.currentIndex < root.flatItems.length) {
+    Keys.onPressed: function(event) {
+        var isCtrl = (event.modifiers & Qt.ControlModifier) || (event.modifiers & Qt.MetaModifier)
+        if (isCtrl && (event.key === Qt.Key_A)) {
             event.accepted = true
-            let curr = root.flatItems[root.currentIndex]
-            if (curr.hasChildren) {
-                root.toggleExpand(curr.id)
+            root.selectAll()
+            return
+        }
+        if (isCtrl && (event.key === Qt.Key_X)) {
+            event.accepted = true
+            var targetCutIds = root.selectedIds.length > 0 ? root.selectedIds : (root.selectedId ? [root.selectedId] : [])
+            root.nodeCut(targetCutIds)
+            return
+        }
+        if (isCtrl && (event.key === Qt.Key_C)) {
+            event.accepted = true
+            var targetCopyIds = root.selectedIds.length > 0 ? root.selectedIds : (root.selectedId ? [root.selectedId] : [])
+            root.nodeCopied(targetCopyIds)
+            return
+        }
+        if (isCtrl && (event.key === Qt.Key_V)) {
+            event.accepted = true
+            var currNode = root.flatItems[root.currentIndex]
+            root.nodePasted(currNode ? currNode.id : "", currNode && currNode.hasChildren ? "inside" : "after")
+            return
+        }
+        if (event.key === Qt.Key_Delete || event.key === Qt.Key_Backspace) {
+            var targetDelIds = root.selectedIds.length > 0 ? root.selectedIds : (root.selectedId ? [root.selectedId] : [])
+            if (targetDelIds.length > 0) {
+                event.accepted = true
+                root.nodeDeleted(targetDelIds)
+                return
             }
         }
-    }
-
-    Keys.onReturnPressed: function(event) {
-        if (root.currentIndex >= 0 && root.currentIndex < root.flatItems.length) {
-            event.accepted = true
-            let curr = root.flatItems[root.currentIndex]
-            if (curr.hasChildren) {
-                root.toggleExpand(curr.id)
+        if (event.key === Qt.Key_Space) {
+            if (root.currentIndex >= 0 && root.currentIndex < root.flatItems.length) {
+                event.accepted = true
+                let curr = root.flatItems[root.currentIndex]
+                root.handleNodeClick(root.currentIndex, event.modifiers)
+                if (curr.hasChildren) {
+                    root.toggleExpand(curr.id)
+                }
+            }
+        } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+            if (root.currentIndex >= 0 && root.currentIndex < root.flatItems.length) {
+                event.accepted = true
+                let curr = root.flatItems[root.currentIndex]
+                root.handleNodeClick(root.currentIndex, event.modifiers)
+                if (curr.hasChildren) {
+                    root.toggleExpand(curr.id)
+                }
             }
         }
     }
@@ -211,17 +388,72 @@ Item {
             }
 
             delegate: Rectangle {
+                id: delegateRow
                 required property var modelData
                 required property int index
                 width: treeList.width
                 height: 28
 
                 readonly property bool isHighlighted: (root.modality === "keyboard" && root.currentIndex === index) || (root.modality === "pointer" && rowMouse.containsMouse)
-                color: root.selectedId === modelData.id ? ThemeTokens.hover : (isHighlighted ? ThemeTokens.hover : "transparent")
+                readonly property bool isSelected: root.isSelected(modelData.id)
+                readonly property bool isDimmed: root.isDimmed(modelData.id)
+                readonly property bool isDropTarget: root.enableDnd && root.dropTargetId === modelData.id
+
+                color: isSelected ? ThemeTokens.hover : (isHighlighted ? ThemeTokens.hover : "transparent")
+                opacity: isDimmed ? 0.4 : 1.0
 
                 Behavior on color {
                     enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
                     ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                }
+
+                Behavior on opacity {
+                    enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                    NumberAnimation { duration: ThemeTokens.motionQuick }
+                }
+
+                // Drop Indicator: Before Line
+                Rectangle {
+                    visible: isDropTarget && root.dropPosition === "before" && root.isDropValid
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: 2
+                    color: ThemeTokens.focus
+                    z: 20
+                }
+
+                // Drop Indicator: After Line
+                Rectangle {
+                    visible: isDropTarget && root.dropPosition === "after" && root.isDropValid
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: 2
+                    color: ThemeTokens.focus
+                    z: 20
+                }
+
+                // Drop Indicator: Inside Highlight
+                Rectangle {
+                    visible: isDropTarget && root.dropPosition === "inside" && root.isDropValid
+                    anchors.fill: parent
+                    color: Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15)
+                    border.color: ThemeTokens.focus
+                    border.width: 1
+                    radius: 4
+                    z: 20
+                }
+
+                // Drop Indicator: Invalid Target
+                Rectangle {
+                    visible: isDropTarget && !root.isDropValid
+                    anchors.fill: parent
+                    color: Qt.rgba(ThemeTokens.conflict.r, ThemeTokens.conflict.g, ThemeTokens.conflict.b, 0.1)
+                    border.color: ThemeTokens.conflict
+                    border.width: 1
+                    radius: 4
+                    z: 20
                 }
 
                 Row {
@@ -246,11 +478,68 @@ Item {
                     }
                 }
 
+                DropArea {
+                    id: rowDropArea
+                    anchors.fill: parent
+                    enabled: root.enableDnd
+
+                    onPositionChanged: function(drag) {
+                        var ratio = drag.y / parent.height
+                        var pos = "inside"
+                        if (ratio < 0.25) pos = "before"
+                        else if (ratio > 0.75) pos = "after"
+                        else pos = modelData.hasChildren ? "inside" : (ratio < 0.5 ? "before" : "after")
+
+                        root.dropTargetId = modelData.id
+                        root.dropPosition = pos
+                        root.isDropValid = !root.isDescendantOrSelf(root.draggedId, modelData.id)
+                    }
+
+                    onExited: {
+                        if (root.dropTargetId === modelData.id) {
+                            root.dropTargetId = ""
+                            root.dropPosition = ""
+                        }
+                    }
+
+                    onDropped: function(drop) {
+                        if (root.isDropValid && root.dropTargetId === modelData.id) {
+                            var srcList = root.draggedIds.length > 0 ? root.draggedIds : [root.draggedId]
+                            root.nodeDropped(srcList, modelData.id, root.dropPosition)
+                        }
+                        root.dropTargetId = ""
+                        root.dropPosition = ""
+                    }
+                }
+
+                Item {
+                    id: dragProxy
+                    Drag.active: rowMouse.drag.active
+                    Drag.source: rowMouse
+                    Drag.hotSpot.x: 10
+                    Drag.hotSpot.y: 10
+                }
+
                 MouseArea {
                     id: rowMouse
                     anchors.fill: parent
                     hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
+                    cursorShape: root.enableDnd ? (drag.active ? Qt.ClosedHandCursor : Qt.PointingHandCursor) : Qt.PointingHandCursor
+                    drag.target: root.enableDnd ? dragProxy : undefined
+
+                    onPressed: function(mouse) {
+                        if (root.enableDnd) {
+                            root.draggedId = parent.modelData.id
+                            root.draggedIds = root.selectedIds.length > 0 && root.selectedIds.indexOf(parent.modelData.id) !== -1 ? root.selectedIds : [parent.modelData.id]
+                        }
+                    }
+
+                    onReleased: function(mouse) {
+                        if (root.enableDnd) {
+                            dragProxy.Drag.drop()
+                        }
+                    }
+
                     onPositionChanged: function(mouse) {
                         if (root.modality !== "pointer") {
                             var dx = Math.abs(mouse.x - root.lastPointerX)
@@ -262,13 +551,12 @@ Item {
                         root.lastPointerX = mouse.x
                         root.lastPointerY = mouse.y
                     }
-                    onClicked: {
-                        root.currentIndex = parent.index
-                        if (parent.modelData.hasChildren) {
+
+                    onClicked: function(mouse) {
+                        root.handleNodeClick(parent.index, mouse.modifiers)
+                        if (parent.modelData.hasChildren && !(mouse.modifiers & Qt.ShiftModifier) && !(mouse.modifiers & Qt.ControlModifier)) {
                             root.toggleExpand(parent.modelData.id)
                         }
-                        root.selectedId = parent.modelData.id
-                        root.nodeSelected(parent.modelData.id)
                     }
                 }
             }
