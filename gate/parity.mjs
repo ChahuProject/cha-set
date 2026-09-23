@@ -233,6 +233,22 @@ if (existsSync(noEmojiCheckPath)) {
   console.log('[gate] OK — Zero-Emoji Mandate Gate passed (0 emojis across all tracked files)');
 }
 
+// 2.10 Mandatory High-DPI & Qt UI Scaling Parity Gate
+// Strictly enforces authentic UI scaling (ThemeTokens.dp / sp) across all Qt components.
+const qtScalingCheckPath = resolve(root, 'scripts/check-qt-scaling.mjs');
+if (existsSync(qtScalingCheckPath)) {
+  const { verifyQtScaling } = await import(pathToFileURL(qtScalingCheckPath).href);
+  const scalingRes = verifyQtScaling({ quiet: true });
+  if (!scalingRes.ok) {
+    console.error(`[gate] FAIL: Qt UI Scaling Parity Gate failed (${scalingRes.errors.length} violation(s)):`);
+    for (const err of scalingRes.errors) {
+      console.error(`  - ${err}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Qt UI Scaling Parity Gate passed (${scalingRes.checkedCount} components verified for ThemeTokens.dp/sp scaling)`);
+}
+
 // 3. Executable Behavioral Parity Checks
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');
 if (existsSync(qtExe)) {
