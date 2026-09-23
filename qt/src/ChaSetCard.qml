@@ -49,7 +49,7 @@ Rectangle {
 
     Column {
         id: contentColumn
-        width: root.width > 0 ? root.width : implicitWidth
+        width: Math.max(1, root.width > 0 ? root.width : implicitWidth)
         spacing: 0
     }
 

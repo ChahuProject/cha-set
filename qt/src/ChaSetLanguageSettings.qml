@@ -33,6 +33,8 @@ Item {
 
     implicitWidth: 540
     implicitHeight: cardContainer.implicitHeight
+    width: parent ? parent.width : implicitWidth
+    height: implicitHeight
 
     function selectPreference(pref) {
         if (root.disabled) return;
@@ -67,7 +69,7 @@ Item {
 
     ChaSetCard {
         id: cardContainer
-        anchors.fill: parent
+        width: parent.width
         visible: !root.isEmbedded
 
         ChaSetCardHeader {
@@ -127,17 +129,15 @@ Item {
 
         ChaSetCardContent {
             id: cardContentSlot
+            spacing: 16
 
-            Column {
+            // 1. Follow System Option Card
+            Rectangle {
+                id: followSystemCard
+                visible: root.showFollowSystem
                 width: parent.width
-                spacing: 16
-
-                // 1. Follow System Option Card
-                Rectangle {
-                    id: followSystemCard
-                    visible: root.showFollowSystem
-                    width: parent.width
-                    implicitHeight: 76
+                implicitHeight: 76
+                height: implicitHeight
                     radius: 8
                     color: root.preference === "system"
                            ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08)
@@ -259,6 +259,7 @@ Item {
                             readonly property bool isSelected: root.preference === modelData.code
                             width: (parent.width - (parent.columns - 1) * parent.spacing) / parent.columns
                             implicitHeight: 110
+                            height: implicitHeight
                             radius: 8
                             color: isSelected
                                    ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08)
@@ -370,7 +371,6 @@ Item {
                     color: ThemeTokens.subduedText
                     wrapMode: Text.Wrap
                 }
-            }
         }
     }
 }

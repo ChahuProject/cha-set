@@ -519,8 +519,8 @@ ApplicationWindow {
             for (var z = 0; z < 10; z++) {
                 win.stepZoom(+1);
             }
-            if (ThemeTokens.uiScale < 2.0) {
-                console.log("[qt-scenario] FAIL: High zoom did not reach > 2.0: got " + ThemeTokens.uiScale);
+            if (ThemeTokens.uiScale < 2.5) {
+                console.log("[qt-scenario] FAIL: High zoom did not reach >= 2.5: got " + ThemeTokens.uiScale);
                 themeFailures++;
             }
             win.resetZoom();
@@ -1347,7 +1347,7 @@ ApplicationWindow {
 
                     // Center Search Bar Trigger
                     Rectangle {
-                        width: Math.min(parent.width - ThemeTokens.dp(500), ThemeTokens.dp(320))
+                        width: Math.max(ThemeTokens.dp(120), Math.min(parent.width - ThemeTokens.dp(500), ThemeTokens.dp(320)))
                         height: ThemeTokens.dp(32)
                         radius: ThemeTokens.dp(6)
                         color: win.cAccentBg
@@ -1362,7 +1362,7 @@ ApplicationWindow {
 
                             ChaSetIcon { name: "search"; size: 14; color: win.cMutedFg; anchors.verticalCenter: parent.verticalCenter }
                             Text { text: ChaSetI18n.tr("showcase.searchPlaceholder", "Search components & docs..."); color: win.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                            Item { width: parent.width - ThemeTokens.dp(240); height: 1 }
+                            Item { width: Math.max(0, parent.width - ThemeTokens.dp(240)); height: 1 }
                             Rectangle {
                                 width: ThemeTokens.dp(32); height: ThemeTokens.dp(18); radius: ThemeTokens.dp(3); color: win.cCard; border.color: win.cBorder
                                 anchors.verticalCenter: parent.verticalCenter
@@ -1479,7 +1479,7 @@ ApplicationWindow {
                 // Left Navigation Sidebar (240px width with right border)
                 Rectangle {
                     id: sidebar
-                    width: ThemeTokens.dp(240)
+                    width: Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(240), Math.round(parent.width * 0.28)))
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
@@ -1500,7 +1500,7 @@ ApplicationWindow {
                         showVerticalScrollBar: true
                         showHorizontalScrollBar: false
                         showButtons: false
-                        contentWidth: width - ThemeTokens.dp(8)
+                        contentWidth: Math.max(width - ThemeTokens.dp(8), sidebarCol.implicitWidth)
                         contentHeight: sidebarCol.implicitHeight
 
                         Column {
@@ -1591,13 +1591,15 @@ ApplicationWindow {
                     anchors.top: parent.top
                     anchors.topMargin: ThemeTokens.dp(20)
                     anchors.bottom: parent.bottom
+                    showVerticalScrollBar: true
+                    showHorizontalScrollBar: true
                     contentWidth: pageContainer.width
                     contentHeight: pageContainer.implicitHeight + ThemeTokens.dp(40)
                     clip: true
 
                     Item {
                         id: pageContainer
-                        width: contentScroll.width
+                        width: Math.max(contentScroll.width, pageLoader.item ? pageLoader.item.implicitWidth : 0, ThemeTokens.dp(600))
                         implicitHeight: pageLoader.item ? Math.max(pageLoader.item.implicitHeight, pageLoader.item.height, ThemeTokens.dp(800)) : ThemeTokens.dp(800)
 
                         Loader {

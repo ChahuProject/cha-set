@@ -50,7 +50,7 @@ DocLayout {
 
             // Pillar 1
             ChaSetCard {
-                width: (parent.width - 28) / 3
+                width: Math.max(ThemeTokens.dp(160), (parent.width - 28) / 3)
                 implicitHeight: pillarItem1.implicitHeight
                 customRadius: 10
 
@@ -78,7 +78,7 @@ DocLayout {
 
             // Pillar 2
             ChaSetCard {
-                width: (parent.width - 28) / 3
+                width: Math.max(ThemeTokens.dp(160), (parent.width - 28) / 3)
                 implicitHeight: pillarItem2.implicitHeight
                 customRadius: 10
 
@@ -106,7 +106,7 @@ DocLayout {
 
             // Pillar 3
             ChaSetCard {
-                width: (parent.width - 28) / 3
+                width: Math.max(ThemeTokens.dp(160), (parent.width - 28) / 3)
                 implicitHeight: pillarItem3.implicitHeight
                 customRadius: 10
 

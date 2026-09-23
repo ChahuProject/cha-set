@@ -20,6 +20,7 @@ Item {
     property int topPadding: 0
     property int bottomPadding: isSm ? 16 : 24
     property int horizontalPadding: isSm ? 16 : 24
+    property int spacing: 0
 
     default property alias contentData: col.data
 
@@ -36,6 +37,6 @@ Item {
         anchors.leftMargin: root.horizontalPadding
         anchors.rightMargin: root.horizontalPadding
         anchors.topMargin: root.topPadding
-        spacing: 0
+        spacing: root.spacing
     }
 }

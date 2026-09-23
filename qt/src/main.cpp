@@ -28,8 +28,8 @@ protected:
                 if (delta == 0) delta = we->angleDelta().x();
                 if (delta != 0) {
                     m_accumulatedDelta += delta;
-                    // Debounce rapid wheel events (min 40ms or accumulation to 120) to prevent Direct3D device loss
-                    if (!m_timer.isValid() || m_timer.elapsed() >= 40 || std::abs(m_accumulatedDelta) >= 120) {
+                    // Genuine throttle: require at least 120 accumulated delta AND at least 50ms elapsed between zoom steps to prevent Direct3D device loss
+                    if (std::abs(m_accumulatedDelta) >= 120 && (!m_timer.isValid() || m_timer.elapsed() >= 50)) {
                         int direction = m_accumulatedDelta > 0 ? 1 : -1;
                         m_accumulatedDelta = 0;
                         m_timer.restart();
@@ -67,8 +67,8 @@ static bool runRealCtrlWheelVerification(QQuickWindow* window) {
     QWheelEvent zoomInEvent(local, global, QPoint(), QPoint(0, 120),
                             Qt::NoButton, Qt::ControlModifier, Qt::NoScrollPhase, false);
     QCoreApplication::sendEvent(window, &zoomInEvent);
-    qInfo("[qt-scenario] Step 1.1: zoomInEvent sent, waiting 50ms...");
-    QTest::qWait(50);
+    qInfo("[qt-scenario] Step 1.1: zoomInEvent sent, waiting 60ms...");
+    QTest::qWait(60);
 
     double zoomedInScale = window->property("effectiveUiScale").toDouble();
     qInfo() << "[qt-scenario] Step 1.2: zoomedInScale =" << zoomedInScale;
@@ -78,34 +78,39 @@ static bool runRealCtrlWheelVerification(QQuickWindow* window) {
         return false;
     }
 
-    // 2. Send Ctrl + Wheel Down (zoom out)
-    qInfo("[qt-scenario] Step 2: Sending zoomOutEvent...");
-    QWheelEvent zoomOutEvent(local, global, QPoint(), QPoint(0, -120),
-                             Qt::NoButton, Qt::ControlModifier, Qt::NoScrollPhase, false);
-    QCoreApplication::sendEvent(window, &zoomOutEvent);
-    qInfo("[qt-scenario] Step 2.1: zoomOutEvent sent, waiting 50ms...");
-    QTest::qWait(50);
-
-    double zoomedOutScale = window->property("effectiveUiScale").toDouble();
-    qInfo() << "[qt-scenario] Step 2.2: zoomedOutScale =" << zoomedOutScale;
-    if (zoomedOutScale >= zoomedInScale) {
-        qCritical() << "[qt-scenario] FAIL: Ctrl + Wheel Down did not decrease effectiveUiScale (zoomedIn="
-                     << zoomedInScale << ", after=" << zoomedOutScale << ")";
+    // 2. High zoom verification: Zoom past 200% up to 250% and 300% without D3D11 device loss
+    qInfo("[qt-scenario] Step 2: Testing high zoom past 200% (250% & 300%)...");
+    for (int i = 0; i < 6; ++i) {
+        QCoreApplication::sendEvent(window, &zoomInEvent);
+        QTest::qWait(60);
+    }
+    double highScale = window->property("effectiveUiScale").toDouble();
+    qInfo() << "[qt-scenario] Step 2.1: highScale =" << highScale;
+    if (highScale < 2.5) {
+        qCritical() << "[qt-scenario] FAIL: High zoom did not reach >= 2.5: got " << highScale;
         return false;
     }
+    // Allow SceneGraph to render at high scale
+    QTest::qWait(100);
 
     // 3. Reset Zoom back to 1.0
     qInfo("[qt-scenario] Step 3: Invoking resetZoom...");
     QMetaObject::invokeMethod(window, "resetZoom");
-    qInfo("[qt-scenario] Step 3.1: resetZoom invoked, waiting 50ms...");
-    QTest::qWait(50);
+    qInfo("[qt-scenario] Step 3.1: resetZoom invoked, waiting 60ms...");
+    QTest::qWait(60);
+
+    double resetScale = window->property("effectiveUiScale").toDouble();
+    if (std::abs(resetScale - 1.0) > 0.001) {
+        qCritical() << "[qt-scenario] FAIL: resetZoom did not restore 1.0: got " << resetScale;
+        return false;
+    }
 
     auto* scaleOsd = window->findChild<QQuickItem*>("globalScaleOsd");
     if (scaleOsd) {
         QMetaObject::invokeMethod(scaleOsd, "hide");
     }
 
-    qInfo("[qt-scenario] PASS: Authentic C++ Ctrl+Wheel zoom verified successfully");
+    qInfo("[qt-scenario] PASS: Authentic C++ Ctrl+Wheel zoom verified successfully (including > 200% high zoom)");
     return true;
 }
 

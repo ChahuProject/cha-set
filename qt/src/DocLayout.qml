@@ -14,6 +14,8 @@ Item {
     property var tocItems: []
     default property alias contentData: pageContentCol.data
 
+    readonly property bool showToc: root.tocItems && root.tocItems.length > 0 && layoutRow.width >= ThemeTokens.dp(600)
+
     MouseArea {
         anchors.fill: parent
         z: -1
@@ -23,13 +25,15 @@ Item {
     Row {
         id: layoutRow
         anchors.horizontalCenter: parent.horizontalCenter
-        width: Math.min(parent.width - ThemeTokens.dp(48), ThemeTokens.dp(1000))
+        width: Math.max(ThemeTokens.dp(320), Math.min(parent.width - ThemeTokens.dp(48), ThemeTokens.dp(1000)))
         spacing: ThemeTokens.dp(32)
 
         // Main Center Content Column (max-w-4xl)
         Column {
             id: mainCol
-            width: root.tocItems && root.tocItems.length > 0 ? (layoutRow.width - ThemeTokens.dp(180) - layoutRow.spacing) : layoutRow.width
+            width: root.showToc
+                ? Math.max(ThemeTokens.dp(280), layoutRow.width - ThemeTokens.dp(180) - layoutRow.spacing)
+                : Math.max(ThemeTokens.dp(280), layoutRow.width)
             spacing: ThemeTokens.dp(24)
 
             // Breadcrumb
@@ -159,7 +163,7 @@ Item {
         // Right Table of Contents (TOC, 180px width)
         Column {
             id: tocCol
-            visible: root.tocItems && root.tocItems.length > 0
+            visible: root.showToc
             width: ThemeTokens.dp(180)
             spacing: ThemeTokens.dp(12)
 
