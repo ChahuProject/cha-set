@@ -18,22 +18,27 @@ DocLayout {
     ComponentPreview {
         title: "Generic Data Table Sandbox"
         reactCode: `<GenericDataTable
+  data={users}
   columns={[
-    { key: "id", header: "ID" },
-    { key: "service", header: "Microservice" },
-    { key: "status", header: "Status" }
+    { accessorKey: 'id', header: 'ID' },
+    { accessorKey: 'name', header: 'User Name' },
+    { accessorKey: 'role', header: 'Role' },
+    { accessorKey: 'status', header: 'Status' },
   ]}
-  data={dataset}
+  enablePagination
   pageSize={5}
 />`
         qtCode: `ChaSetGenericDataTable {
-    columns: [
-        { key: "id", header: "ID", width: 80 },
-        { key: "service", header: "Microservice", width: 180 },
-        { key: "status", header: "Status", width: 100 }
-    ]
-    data: [...]
+    width: ThemeTokens.dp(480)
+    height: ThemeTokens.dp(280)
     pageSize: 5
+    columns: [
+        { key: "id", header: "ID", width: 50 },
+        { key: "name", header: "User Name", width: 130 },
+        { key: "role", header: "Role", width: 160 },
+        { key: "status", header: "Status", width: 90 }
+    ]
+    data: users
 }`
 
         Item {
@@ -41,23 +46,21 @@ DocLayout {
 
             ChaSetGenericDataTable {
                 anchors.centerIn: parent
-                width: 480
-                height: 280
-                pageSize: 4
+                width: ThemeTokens.dp(480)
+                height: ThemeTokens.dp(280)
+                pageSize: 5
                 columns: [
-                    { key: "id", header: "ID", width: 80 },
-                    { key: "service", header: "Service", width: 160 },
-                    { key: "version", header: "Version", width: 100 },
-                    { key: "status", header: "Status", width: 100 }
+                    { key: "id", header: "ID", width: 50 },
+                    { key: "name", header: "User Name", width: 130 },
+                    { key: "role", header: "Role", width: 160 },
+                    { key: "status", header: "Status", width: 90 }
                 ]
                 data: [
-                    { id: "SVC-101", service: "auth-gateway", version: "v2.4.1", status: "Healthy" },
-                    { id: "SVC-102", service: "render-debugger", version: "v1.9.0", status: "Active" },
-                    { id: "SVC-103", service: "pipeline-runner", version: "v3.1.2", status: "Degraded" },
-                    { id: "SVC-104", service: "storage-broker", version: "v0.8.4", status: "Healthy" },
-                    { id: "SVC-105", service: "token-engine", version: "v1.2.0", status: "Healthy" },
-                    { id: "SVC-106", service: "query-compiler", version: "v2.0.0", status: "Active" },
-                    { id: "SVC-107", service: "metric-collector", version: "v4.0.1", status: "Healthy" }
+                    { id: "1", name: "Alice Chen", role: "Lead Architect", status: "Active" },
+                    { id: "2", name: "Bob Smith", role: "Frontend Engineer", status: "Active" },
+                    { id: "3", name: "Carol White", role: "Qt Specialist", status: "Pending" },
+                    { id: "4", name: "David Lee", role: "DevOps Engineer", status: "Offline" },
+                    { id: "5", name: "Elena Rostova", role: "Product Manager", status: "Active" }
                 ]
             }
         }

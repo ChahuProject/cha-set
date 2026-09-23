@@ -15,8 +15,8 @@ Item {
     property int pageSize: 5
     property int customRadius: 6
 
-    implicitWidth: 500
-    implicitHeight: 320
+    implicitWidth: ThemeTokens.dp(500)
+    implicitHeight: ThemeTokens.dp(320)
 
     // Filtered data
     readonly property var filteredData: {
@@ -94,215 +94,219 @@ Item {
         color: ThemeTokens.panel
         border.color: root.activeFocus ? ThemeTokens.focus : ThemeTokens.border
         border.width: root.activeFocus ? 2 : 1
-        radius: root.customRadius
+        radius: ThemeTokens.dp(root.customRadius)
         clip: true
 
-        Column {
-            anchors.fill: parent
+        // Table Header / Toolbar
+        Rectangle {
+            id: tableToolbar
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: ThemeTokens.dp(44)
+            color: ThemeTokens.panel
+            border.color: ThemeTokens.border
+            border.width: 1
 
-            // Table Header / Toolbar
-            Rectangle {
-                width: parent.width
-                height: 44
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
-                border.width: 1
+            Row {
+                anchors.left: parent.left
+                anchors.leftMargin: ThemeTokens.dp(12)
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: ThemeTokens.dp(8)
 
-                Row {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 12
+                ChaSetIcon {
                     anchors.verticalCenter: parent.verticalCenter
-                    spacing: 8
+                    name: "search"
+                    size: ThemeTokens.dp(14)
+                    color: ThemeTokens.subduedText
+                }
 
-                    ChaSetIcon {
-                        anchors.verticalCenter: parent.verticalCenter
-                        name: "search"
-                        size: 14
-                        color: ThemeTokens.subduedText
+                ChaSetInput {
+                    width: ThemeTokens.dp(180)
+                    height: ThemeTokens.dp(28)
+                    placeholder: "Filter records..."
+                    text: root.searchFilter
+                    onTextEdited: {
+                        root.searchFilter = text
+                        root.currentPage = 1
+                        root.selectedRowIndex = -1
                     }
+                }
+            }
+        }
 
-                    ChaSetInput {
-                        width: 180
-                        height: 28
-                        placeholder: "Filter records..."
-                        text: root.searchFilter
-                        onTextEdited: {
-                            root.searchFilter = text
-                            root.currentPage = 1
-                            root.selectedRowIndex = -1
+        // Columns Header
+        Rectangle {
+            id: columnsHeader
+            anchors.top: tableToolbar.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: ThemeTokens.dp(32)
+            color: ThemeTokens.hover
+            border.color: ThemeTokens.border
+            border.width: 1
+
+            Row {
+                anchors.fill: parent
+                anchors.leftMargin: ThemeTokens.dp(12)
+                anchors.rightMargin: ThemeTokens.dp(12)
+
+                Repeater {
+                    model: root.columns
+                    delegate: Item {
+                        required property var modelData
+                        width: ThemeTokens.dp(modelData.width || 120)
+                        height: parent ? parent.height : 0
+
+                        Row {
+                            anchors.fill: parent
+                            spacing: ThemeTokens.dp(4)
+
+                            Text {
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: parent.parent.modelData.header || ""
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: Typography.sizeCaption
+                                font.weight: Font.DemiBold
+                            }
+
+                            Text {
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: root.sortKey === parent.parent.modelData.key ? (root.sortAsc ? "▲" : "▼") : ""
+                                color: ThemeTokens.text
+                                font.pixelSize: Typography.sizeMicro
+                            }
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: root.toggleSort(parent.modelData.key)
                         }
                     }
                 }
             }
+        }
 
-            // Columns Header
-            Rectangle {
-                width: parent.width
-                height: 32
-                color: ThemeTokens.hover
-                border.color: ThemeTokens.border
-                border.width: 1
+        // Pagination Footer
+        Rectangle {
+            id: paginationFooter
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: ThemeTokens.dp(40)
+            color: ThemeTokens.panel
+            border.color: ThemeTokens.border
+            border.width: 1
+
+            Text {
+                anchors.left: parent.left
+                anchors.leftMargin: ThemeTokens.dp(12)
+                anchors.verticalCenter: parent.verticalCenter
+                text: "Page " + root.currentPage + " of " + root.totalPages
+                color: ThemeTokens.subduedText
+                font.pixelSize: Typography.sizeCaption
+            }
+
+            Row {
+                anchors.right: parent.right
+                anchors.rightMargin: ThemeTokens.dp(12)
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: ThemeTokens.dp(8)
+
+                ChaSetButton {
+                    text: "Previous"
+                    size: "xs"
+                    variant: "outline"
+                    disabled: root.currentPage <= 1
+                    onClicked: root.currentPage--
+                }
+
+                ChaSetButton {
+                    text: "Next"
+                    size: "xs"
+                    variant: "outline"
+                    disabled: root.currentPage >= root.totalPages
+                    onClicked: root.currentPage++
+                }
+            }
+        }
+
+        // Table Body Rows
+        ListView {
+            id: bodyList
+            anchors.top: columnsHeader.bottom
+            anchors.bottom: paginationFooter.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            model: root.pageData
+            clip: true
+
+            delegate: Rectangle {
+                id: rowDelegate
+                required property var modelData
+                required property int index
+                width: bodyList.width
+                height: ThemeTokens.dp(32)
+                readonly property bool isSelectedRow: root.selectedRowIndex === index
+                color: isSelectedRow ? ThemeTokens.hover : (index % 2 === 0 ? ThemeTokens.panel : "transparent")
+                border.color: isSelectedRow ? ThemeTokens.focus : "transparent"
+                border.width: isSelectedRow ? 1 : 0
+
+                Behavior on color {
+                    enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                    ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                }
+                Behavior on border.color {
+                    enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                    ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                }
 
                 Row {
                     anchors.fill: parent
-                    anchors.leftMargin: 12
-                    anchors.rightMargin: 12
+                    anchors.leftMargin: ThemeTokens.dp(12)
+                    anchors.rightMargin: ThemeTokens.dp(12)
 
                     Repeater {
                         model: root.columns
                         delegate: Item {
+                            id: cellDelegate
                             required property var modelData
-                            width: modelData.width || 120
-                            height: parent ? parent.height : 0
+                            width: ThemeTokens.dp(modelData.width || 120)
+                            height: parent.height
 
-                            Row {
-                                anchors.fill: parent
-                                spacing: 4
-
-                                Text {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    text: parent.parent.modelData.header || ""
-                                    color: ThemeTokens.subduedText
-                                    font.pixelSize: Typography.sizeCaption
-                                    font.weight: Font.DemiBold
+                            ChaSetBadge {
+                                anchors.verticalCenter: parent.verticalCenter
+                                visible: cellDelegate.modelData.key === "status"
+                                variant: {
+                                    const val = String(rowDelegate.modelData["status"] ?? "")
+                                    if (val === "Healthy" || val === "Active") return "default"
+                                    if (val === "Pending" || val === "Degraded") return "secondary"
+                                    return "outline"
                                 }
-
-                                Text {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    text: root.sortKey === parent.parent.modelData.key ? (root.sortAsc ? "▲" : "▼") : ""
-                                    color: ThemeTokens.text
-                                    font.pixelSize: Typography.sizeMicro
-                                }
+                                text: String(rowDelegate.modelData["status"] ?? "")
                             }
 
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: root.toggleSort(parent.modelData.key)
+                            Text {
+                                visible: cellDelegate.modelData.key !== "status"
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: String(rowDelegate.modelData[cellDelegate.modelData.key] ?? "")
+                                color: ThemeTokens.text
+                                font.pixelSize: Typography.sizeSmall
+                                font.weight: rowDelegate.isSelectedRow ? Font.Medium : Font.Normal
+                                elide: Text.ElideRight
+                                width: parent.width - ThemeTokens.dp(8)
                             }
                         }
                     }
                 }
-            }
 
-            // Table Body Rows
-            ListView {
-                id: bodyList
-                width: parent.width
-                height: parent.height - 44 - 32 - 40
-                model: root.pageData
-                clip: true
-
-                delegate: Rectangle {
-                    id: rowDelegate
-                    required property var modelData
-                    required property int index
-                    width: bodyList.width
-                    height: 32
-                    readonly property bool isSelectedRow: root.selectedRowIndex === index
-                    color: isSelectedRow ? ThemeTokens.hover : (index % 2 === 0 ? ThemeTokens.panel : "transparent")
-                    border.color: isSelectedRow ? ThemeTokens.focus : "transparent"
-                    border.width: isSelectedRow ? 1 : 0
-
-                    Behavior on color {
-                        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
-                        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
-                    }
-                    Behavior on border.color {
-                        enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
-                        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
-                    }
-
-                    Row {
-                        anchors.fill: parent
-                        anchors.leftMargin: 12
-                        anchors.rightMargin: 12
-
-                        Repeater {
-                            model: root.columns
-                            delegate: Item {
-                                id: cellDelegate
-                                required property var modelData
-                                width: modelData.width || 120
-                                height: parent.height
-
-                                Loader {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    active: cellDelegate.modelData.key === "status"
-                                    visible: active
-                                    sourceComponent: ChaSetBadge {
-                                        variant: {
-                                            const val = String(rowDelegate.modelData["status"] ?? "")
-                                            if (val === "Healthy" || val === "Active") return "default"
-                                            if (val === "Pending" || val === "Degraded") return "secondary"
-                                            return "outline"
-                                        }
-                                        text: String(rowDelegate.modelData["status"] ?? "")
-                                    }
-                                }
-
-                                Text {
-                                    visible: cellDelegate.modelData.key !== "status"
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    text: String(rowDelegate.modelData[cellDelegate.modelData.key] ?? "")
-                                    color: ThemeTokens.text
-                                    font.pixelSize: Typography.sizeSmall
-                                    font.weight: rowDelegate.isSelectedRow ? Font.Medium : Font.Normal
-                                    elide: Text.ElideRight
-                                    width: parent.width - 8
-                                }
-                            }
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            root.selectedRowIndex = parent.index
-                            root.forceActiveFocus()
-                        }
-                    }
-                }
-            }
-
-            // Pagination Footer
-            Rectangle {
-                width: parent.width
-                height: 40
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
-                border.width: 1
-
-                Text {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 12
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: "Page " + root.currentPage + " of " + root.totalPages
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: Typography.sizeCaption
-                }
-
-                Row {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 12
-                    anchors.verticalCenter: parent.verticalCenter
-                    spacing: 8
-
-                    ChaSetButton {
-                        text: "Previous"
-                        size: "xs"
-                        variant: "outline"
-                        disabled: root.currentPage <= 1
-                        onClicked: root.currentPage--
-                    }
-
-                    ChaSetButton {
-                        text: "Next"
-                        size: "xs"
-                        variant: "outline"
-                        disabled: root.currentPage >= root.totalPages
-                        onClicked: root.currentPage++
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        root.selectedRowIndex = parent.index
+                        root.forceActiveFocus()
                     }
                 }
             }

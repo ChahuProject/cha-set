@@ -23,6 +23,10 @@ const SAMPLE_USERS: UserRecord[] = [
 export function GenericDataTableDocPage() {
   const columns = useMemo<ColumnDef<UserRecord, any>[]>(() => [
     {
+      accessorKey: 'id',
+      header: 'ID',
+    },
+    {
       accessorKey: 'name',
       header: 'User Name',
     },
@@ -52,10 +56,28 @@ export function GenericDataTableDocPage() {
 
   const reactCode = `<GenericDataTable
   data={users}
-  columns={columns}
+  columns={[
+    { accessorKey: 'id', header: 'ID' },
+    { accessorKey: 'name', header: 'User Name' },
+    { accessorKey: 'role', header: 'Role' },
+    { accessorKey: 'status', header: 'Status' },
+  ]}
   enablePagination
   pageSize={5}
 />`;
+
+  const qtCode = `ChaSetGenericDataTable {
+    width: ThemeTokens.dp(480)
+    height: ThemeTokens.dp(280)
+    pageSize: 5
+    columns: [
+        { key: "id", header: "ID", width: 50 },
+        { key: "name", header: "User Name", width: 130 },
+        { key: "role", header: "Role", width: 160 },
+        { key: "status", header: "Status", width: 90 }
+    ]
+    data: users
+}`;
 
   return (
     <DocLayout
@@ -77,7 +99,11 @@ export function GenericDataTableDocPage() {
           Click column headers to sort ascending and descending.
         </p>
 
-        <ComponentPreview title="Generic Data Table Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          title="Generic Data Table Sandbox"
+          reactCode={reactCode}
+          qtCode={qtCode}
+        >
           <div className="w-full max-w-xl">
             <GenericDataTable
               data={SAMPLE_USERS}
