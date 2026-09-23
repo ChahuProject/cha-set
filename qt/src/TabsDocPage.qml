@@ -71,17 +71,17 @@ DocLayout {
         // Sandbox Stage
         ChaSetCard {
             anchors.centerIn: parent
-            width: Math.min(parent.width - 40, 440)
+            width: Math.min(parent.width - ThemeTokens.dp(40), ThemeTokens.dp(440))
             implicitHeight: sandboxTabsCol.implicitHeight
             customRadius: root.customRadius
 
             Column {
                 id: sandboxTabsCol
-                x: 20
-                topPadding: 20
-                bottomPadding: 20
-                width: parent.width - 40
-                spacing: 16
+                x: ThemeTokens.dp(20)
+                topPadding: ThemeTokens.dp(20)
+                bottomPadding: ThemeTokens.dp(20)
+                width: parent.width - ThemeTokens.dp(40)
+                spacing: ThemeTokens.dp(16)
 
                 ChaSetTabs {
                     id: heroTabs
@@ -104,15 +104,18 @@ DocLayout {
 
                 Rectangle {
                     width: parent.width
-                    height: 80
-                    radius: 6
+                    implicitHeight: sandboxInnerCol.implicitHeight + ThemeTokens.dp(24)
+                    height: Math.max(ThemeTokens.dp(80), implicitHeight)
+                    radius: ThemeTokens.dp(6)
                     color: Qt.rgba(root.cAccentBg.r, root.cAccentBg.g, root.cAccentBg.b, 0.5)
                     border.color: root.cBorder
                     border.width: 0.5
 
                     Column {
+                        id: sandboxInnerCol
                         anchors.centerIn: parent
-                        spacing: 4
+                        width: parent.width - ThemeTokens.dp(24)
+                        spacing: ThemeTokens.dp(4)
 
                         DocText {
                             anchors.horizontalCenter: parent.horizontalCenter
@@ -126,6 +129,7 @@ DocLayout {
                             text: root.demoTab === "account" ? "Make changes to your account here." : (root.demoTab === "password" ? "Change your password credentials." : "Manage your notification preferences.")
                             font.pixelSize: Typography.sizeCaption
                             color: root.cMutedFg
+                            wrap: true
                         }
                     }
                 }

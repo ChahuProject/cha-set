@@ -144,8 +144,8 @@ Item {
     }
 
     // Geometry binding
-    implicitWidth: 500
-    implicitHeight: 36
+    implicitWidth: ThemeTokens.dp(500)
+    implicitHeight: ThemeTokens.dp(36)
     width: implicitWidth
     height: implicitHeight
 
@@ -155,7 +155,7 @@ Item {
     Rectangle {
         id: bgPanel
         anchors.fill: parent
-        radius: 6
+        radius: ThemeTokens.dp(6)
         color: root.editing ? ThemeTokens.panel : ThemeTokens.panelRaised
         border.width: 1
         border.color: root.editing ? ThemeTokens.accent : ThemeTokens.border
@@ -168,17 +168,17 @@ Item {
 
     RowLayout {
         anchors.fill: parent
-        anchors.leftMargin: 4
-        anchors.rightMargin: 4
+        anchors.leftMargin: ThemeTokens.dp(4)
+        anchors.rightMargin: ThemeTokens.dp(4)
         spacing: 2
 
         // Back Button
         Rectangle {
             id: backBtn
             visible: root.showNavButtons
-            Layout.preferredWidth: 26
-            Layout.preferredHeight: 26
-            radius: 4
+            Layout.preferredWidth: ThemeTokens.dp(26)
+            Layout.preferredHeight: ThemeTokens.dp(26)
+            radius: ThemeTokens.dp(4)
             color: backHover.hovered && root.canGoBack && !root.disabled ? ThemeTokens.hover : "transparent"
             opacity: (root.canGoBack && !root.disabled) ? 1.0 : 0.35
 
@@ -205,9 +205,9 @@ Item {
         Rectangle {
             id: forwardBtn
             visible: root.showNavButtons
-            Layout.preferredWidth: 26
-            Layout.preferredHeight: 26
-            radius: 4
+            Layout.preferredWidth: ThemeTokens.dp(26)
+            Layout.preferredHeight: ThemeTokens.dp(26)
+            radius: ThemeTokens.dp(4)
             color: forwardHover.hovered && root.canGoForward && !root.disabled ? ThemeTokens.hover : "transparent"
             opacity: (root.canGoForward && !root.disabled) ? 1.0 : 0.35
 
@@ -234,9 +234,9 @@ Item {
         Rectangle {
             id: upBtn
             visible: root.showNavButtons
-            Layout.preferredWidth: 26
-            Layout.preferredHeight: 26
-            radius: 4
+            Layout.preferredWidth: ThemeTokens.dp(26)
+            Layout.preferredHeight: ThemeTokens.dp(26)
+            radius: ThemeTokens.dp(4)
             readonly property bool canUp: Boolean(root.path && root.path !== "/" && !root.path.match(/^[a-zA-Z]:[/\\]?$/))
             color: upHover.hovered && canUp && !root.disabled ? ThemeTokens.hover : "transparent"
             opacity: (canUp && !root.disabled) ? 1.0 : 0.35
@@ -264,9 +264,9 @@ Item {
         Rectangle {
             id: refreshBtn
             visible: root.showNavButtons && root.showRefresh
-            Layout.preferredWidth: 26
-            Layout.preferredHeight: 26
-            radius: 4
+            Layout.preferredWidth: ThemeTokens.dp(26)
+            Layout.preferredHeight: ThemeTokens.dp(26)
+            radius: ThemeTokens.dp(4)
             color: refreshHover.hovered && !root.disabled ? ThemeTokens.hover : "transparent"
             opacity: !root.disabled ? 1.0 : 0.35
 
@@ -292,9 +292,9 @@ Item {
         Rectangle {
             visible: root.showNavButtons
             Layout.preferredWidth: 1
-            Layout.preferredHeight: 16
+            Layout.preferredHeight: ThemeTokens.dp(16)
             Layout.leftMargin: 2
-            Layout.rightMargin: 4
+            Layout.rightMargin: ThemeTokens.dp(4)
             color: ThemeTokens.border
         }
 
@@ -309,8 +309,8 @@ Item {
                 id: breadcrumbsRow
                 visible: !root.editing
                 anchors.fill: parent
-                anchors.leftMargin: 4
-                anchors.rightMargin: 4
+                anchors.leftMargin: ThemeTokens.dp(4)
+                anchors.rightMargin: ThemeTokens.dp(4)
                 spacing: 2
 
                 Repeater {
@@ -324,9 +324,9 @@ Item {
 
                         Rectangle {
                             id: segPill
-                            height: 24
-                            width: segText.implicitWidth + 10
-                            radius: 4
+                            height: ThemeTokens.dp(24)
+                            width: segText.implicitWidth + ThemeTokens.dp(10)
+                            radius: ThemeTokens.dp(4)
                             color: segHover.hovered && !root.disabled ? ThemeTokens.hover : "transparent"
 
                             Text {
@@ -373,8 +373,8 @@ Item {
             Item {
                 visible: root.editing
                 anchors.fill: parent
-                anchors.leftMargin: 6
-                anchors.rightMargin: 6
+                anchors.leftMargin: ThemeTokens.dp(6)
+                anchors.rightMargin: ThemeTokens.dp(6)
 
                 TextInput {
                     id: editInput
@@ -427,19 +427,19 @@ Item {
         Rectangle {
             id: searchBox
             visible: root.showSearch
-            Layout.preferredWidth: 140
-            Layout.preferredHeight: 26
+            Layout.preferredWidth: ThemeTokens.dp(140)
+            Layout.preferredHeight: ThemeTokens.dp(26)
             Layout.alignment: Qt.AlignVCenter
-            radius: 4
+            radius: ThemeTokens.dp(4)
             color: searchInput.activeFocus ? ThemeTokens.panel : ThemeTokens.panelRaised
             border.width: 1
             border.color: searchInput.activeFocus ? ThemeTokens.accent : ThemeTokens.border
 
             RowLayout {
                 anchors.fill: parent
-                anchors.leftMargin: 6
-                anchors.rightMargin: 6
-                spacing: 4
+                anchors.leftMargin: ThemeTokens.dp(6)
+                anchors.rightMargin: ThemeTokens.dp(6)
+                spacing: ThemeTokens.dp(4)
 
                 ChaSetIcon {
                     name: "search"
@@ -480,9 +480,9 @@ Item {
                 // Clear button
                 Rectangle {
                     visible: root.searchQuery.length > 0
-                    Layout.preferredWidth: 16
-                    Layout.preferredHeight: 16
-                    radius: 8
+                    Layout.preferredWidth: ThemeTokens.dp(16)
+                    Layout.preferredHeight: ThemeTokens.dp(16)
+                    radius: ThemeTokens.dp(8)
                     color: clearHover.hovered ? ThemeTokens.hover : "transparent"
 
                     ChaSetIcon {
@@ -515,12 +515,12 @@ Item {
         visible: root.editing && root.filteredSuggestions.length > 0
         z: 999
         anchors.top: parent.bottom
-        anchors.topMargin: 4
+        anchors.topMargin: ThemeTokens.dp(4)
         anchors.left: parent.left
         anchors.right: parent.right
-        implicitHeight: Math.min(sugCol.implicitHeight + 8, 200)
+        implicitHeight: Math.min(sugCol.implicitHeight + ThemeTokens.dp(8), ThemeTokens.dp(200))
         height: implicitHeight
-        radius: 6
+        radius: ThemeTokens.dp(6)
         color: ThemeTokens.panelRaised
         border.width: 1
         border.color: ThemeTokens.border
@@ -528,7 +528,7 @@ Item {
 
         Flickable {
             anchors.fill: parent
-            anchors.margins: 4
+            anchors.margins: ThemeTokens.dp(4)
             contentWidth: width
             contentHeight: sugCol.implicitHeight
             clip: true
@@ -546,15 +546,15 @@ Item {
                         required property int index
 
                         width: sugCol.width
-                        height: 28
-                        radius: 4
+                        height: ThemeTokens.dp(28)
+                        radius: ThemeTokens.dp(4)
                         color: (root.highlightedIndex === index || sugRowHover.hovered)
                                ? ThemeTokens.hover : "transparent"
 
                         Text {
                             anchors.fill: parent
-                            anchors.leftMargin: 8
-                            anchors.rightMargin: 8
+                            anchors.leftMargin: ThemeTokens.dp(8)
+                            anchors.rightMargin: ThemeTokens.dp(8)
                             verticalAlignment: Text.AlignVCenter
                             text: sugRow.modelData
                             color: ThemeTokens.text

@@ -9,8 +9,10 @@ Item {
     property int size: 16
     property color color: ThemeTokens.text
 
-    implicitWidth: size
-    implicitHeight: size
+    readonly property int effectiveSize: ThemeTokens.dp(root.size)
+
+    implicitWidth: effectiveSize
+    implicitHeight: effectiveSize
     width: implicitWidth
     height: implicitHeight
 

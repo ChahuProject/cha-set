@@ -20,8 +20,8 @@ Item {
 
     readonly property bool isSm: root.size === "sm"
 
-    implicitWidth: Math.max(120, editing ? inputField.implicitWidth + 56 : displayLabel.implicitWidth + 28)
-    implicitHeight: root.isSm ? 26 : 32
+    implicitWidth: Math.max(ThemeTokens.dp(120), editing ? inputField.implicitWidth + ThemeTokens.dp(56) : displayLabel.implicitWidth + ThemeTokens.dp(28))
+    implicitHeight: ThemeTokens.dp(root.isSm ? 26 : 32)
     opacity: root.disabled ? 0.5 : 1.0
 
     onValueChanged: {
@@ -62,7 +62,7 @@ Item {
         visible: !root.editing
         anchors.fill: parent
         color: (!root.disabled && (hoverMouse.containsMouse || displayBox.activeFocus)) ? ThemeTokens.hover : "transparent"
-        radius: 4
+        radius: ThemeTokens.dp(4)
         border.color: (!root.disabled && displayBox.activeFocus) ? ThemeTokens.focus : ((!root.disabled && hoverMouse.containsMouse) ? ThemeTokens.border : "transparent")
         border.width: displayBox.activeFocus ? 2 : 1
         activeFocusOnTab: !root.disabled && !root.editing
@@ -99,9 +99,9 @@ Item {
 
         Row {
             anchors.fill: parent
-            anchors.leftMargin: 6
-            anchors.rightMargin: 6
-            spacing: 6
+            anchors.leftMargin: ThemeTokens.dp(6)
+            anchors.rightMargin: ThemeTokens.dp(6)
+            spacing: ThemeTokens.dp(6)
 
             Text {
                 id: displayLabel
@@ -150,11 +150,11 @@ Item {
     Row {
         visible: root.editing
         anchors.fill: parent
-        spacing: 4
+        spacing: ThemeTokens.dp(4)
 
         ChaSetInput {
             id: inputField
-            width: parent.width - 56
+            width: parent.width - ThemeTokens.dp(56)
             height: parent.height
             size: root.isSm ? "sm" : "default"
             text: root.tempText
@@ -169,7 +169,7 @@ Item {
             variant: "default"
             size: "icon-xs"
             height: parent.height
-            width: root.isSm ? 22 : 24
+            width: ThemeTokens.dp(root.isSm ? 22 : 24)
             onClicked: root.commit()
         }
 
@@ -178,7 +178,7 @@ Item {
             variant: "ghost"
             size: "icon-xs"
             height: parent.height
-            width: root.isSm ? 22 : 24
+            width: ThemeTokens.dp(root.isSm ? 22 : 24)
             onClicked: root.cancel()
         }
     }

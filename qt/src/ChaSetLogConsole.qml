@@ -13,15 +13,15 @@ Rectangle {
   property bool autoScroll: true
   property string copyTitle: "Copy all logs"
 
-  implicitWidth: 480
-  implicitHeight: 260
+  implicitWidth: ThemeTokens.dp(480)
+  implicitHeight: ThemeTokens.dp(260)
   width: implicitWidth
   height: implicitHeight
 
   color: ThemeTokens.dark ? Qt.rgba(0.08, 0.12, 0.18, 0.4) : Qt.rgba(0.96, 0.97, 0.98, 0.8)
   border.color: ThemeTokens.border
   border.width: 1
-  radius: 8
+  radius: ThemeTokens.dp(8)
   clip: true
 
   function stripAnsi(str) {
@@ -66,7 +66,7 @@ Rectangle {
     id: listView
     visible: root.lines && root.lines.length > 0
     anchors.fill: parent
-    anchors.margins: 8
+    anchors.margins: ThemeTokens.dp(8)
     clip: true
     model: root.lines
     boundsBehavior: Flickable.StopAtBounds
@@ -103,12 +103,12 @@ Rectangle {
   Rectangle {
     visible: root.lines && root.lines.length > 0 && (root.showCopy || root.showLineCount)
     anchors.top: parent.top
-    anchors.topMargin: 8
+    anchors.topMargin: ThemeTokens.dp(8)
     anchors.right: parent.right
-    anchors.rightMargin: 12
-    height: 22
-    width: controlsRow.implicitWidth + 8
-    radius: 4
+    anchors.rightMargin: ThemeTokens.dp(12)
+    height: ThemeTokens.dp(22)
+    width: controlsRow.implicitWidth + ThemeTokens.dp(8)
+    radius: ThemeTokens.dp(4)
     color: ThemeTokens.dark ? Qt.rgba(0.08, 0.12, 0.18, 0.85) : Qt.rgba(1, 1, 1, 0.85)
     border.color: ThemeTokens.border
     border.width: 1
@@ -117,7 +117,7 @@ Rectangle {
     Row {
       id: controlsRow
       anchors.centerIn: parent
-      spacing: 6
+      spacing: ThemeTokens.dp(6)
 
       Text {
         visible: root.showLineCount

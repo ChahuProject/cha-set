@@ -7,8 +7,8 @@ Item {
     id: root
 
     property var items: [] // [{ id, label, icon, shortcut, destructive, disabled, onSelect }]
-    property int menuWidth: 180
-    property int customRadius: 6
+    property int menuWidth: ThemeTokens.dp(180)
+    property int customRadius: ThemeTokens.dp(6)
     property int highlightedIndex: -1
     property string modality: "pointer" // "pointer" | "keyboard"
     property real lastPointerSceneX: -1
@@ -92,7 +92,7 @@ Item {
     Popup {
         id: contextPopup
         width: root.menuWidth
-        padding: 4
+        padding: ThemeTokens.dp(4)
         modal: false
         focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -162,8 +162,8 @@ Item {
                     required property var modelData
                     required property int index
                     width: parent ? parent.width : 0
-                    height: 28
-                    radius: 4
+                    height: ThemeTokens.dp(28)
+                    radius: ThemeTokens.dp(4)
                     readonly property bool isHighlighted: index === root.highlightedIndex
                     color: isHighlighted ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
                     opacity: modelData.disabled ? 0.4 : 1.0
@@ -175,11 +175,11 @@ Item {
 
                     Row {
                         anchors.left: parent.left
-                        anchors.leftMargin: 8
+                        anchors.leftMargin: ThemeTokens.dp(8)
                         anchors.right: shortcutText.visible ? shortcutText.left : parent.right
-                        anchors.rightMargin: 8
+                        anchors.rightMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: 6
+                        spacing: ThemeTokens.dp(6)
 
                         Text {
                             visible: !!parent.parent.modelData.icon
@@ -200,7 +200,7 @@ Item {
                     Text {
                         id: shortcutText
                         anchors.right: parent.right
-                        anchors.rightMargin: 8
+                        anchors.rightMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
                         visible: !!parent.modelData.shortcut
                         text: parent.modelData.shortcut || ""

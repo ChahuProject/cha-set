@@ -30,12 +30,15 @@ Rectangle {
     readonly property bool isLine: variant === "line"
     readonly property bool isSm: size === "sm"
 
-    implicitHeight: isVert
-        ? (contentLayout.implicitHeight + padding * 2)
-        : (isLine ? (isSm ? 32 : 36) : (isSm ? 28 : 36))
-    implicitWidth: contentLayout.implicitWidth + padding * 2
+    readonly property int effectivePadding: variant === "line" ? 0 : ThemeTokens.dp(size === "sm" ? 2 : 4)
+    readonly property int effectiveRadius: variant === "line" ? 0 : ThemeTokens.dp(customRadius)
 
-    radius: customRadius
+    implicitHeight: isVert
+        ? (contentLayout.implicitHeight + effectivePadding * 2)
+        : ThemeTokens.dp(isLine ? (isSm ? 32 : 36) : (isSm ? 28 : 36))
+    implicitWidth: contentLayout.implicitWidth + effectivePadding * 2
+
+    radius: effectiveRadius
     color: isLine
         ? "transparent"
         : (ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(241.0 / 255.0, 245.0 / 255.0, 249.0 / 255.0, 1.0))
@@ -73,7 +76,7 @@ Rectangle {
         y: root.activeTrigger ? (contentLayout.y + root.activeTrigger.y) : 0
         width: root.activeTrigger ? root.activeTrigger.width : 0
         height: root.activeTrigger ? root.activeTrigger.height : 0
-        radius: root.isSm ? 4 : 6
+        radius: ThemeTokens.dp(root.isSm ? 4 : 6)
         color: ThemeTokens.dark ? Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
         border.width: 1
         border.color: ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 0.8)
@@ -100,10 +103,10 @@ Rectangle {
         id: contentLayout
         z: 1
         anchors.fill: parent
-        anchors.margins: root.padding
+        anchors.margins: root.effectivePadding
         columns: root.isVert ? 1 : -1
         rows: root.isVert ? -1 : 1
-        spacing: root.isLine ? (root.isSm ? 8 : 16) : 0
+        spacing: root.isLine ? ThemeTokens.dp(root.isSm ? 8 : 16) : 0
         verticalItemAlignment: Grid.AlignVCenter
         horizontalItemAlignment: root.isLine ? Grid.AlignLeft : Grid.AlignHCenter
     }
@@ -126,9 +129,9 @@ Rectangle {
         z: 2
         visible: root.isLine && !root.isVert && root.activeTrigger !== null
         x: root.activeTrigger ? (contentLayout.x + root.activeTrigger.x) : 0
-        y: root.height - 2
+        y: root.height - ThemeTokens.dp(2)
         width: root.activeTrigger ? root.activeTrigger.width : 0
-        height: 2
+        height: ThemeTokens.dp(2)
         color: ThemeTokens.accent
 
         Behavior on x {

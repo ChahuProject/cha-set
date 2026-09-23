@@ -9,7 +9,7 @@ Item {
   property var steps: []
   property string emptyText: "No steps"
 
-  implicitWidth: 320
+  implicitWidth: ThemeTokens.dp(320)
   implicitHeight: stepsColumn.implicitHeight
   width: implicitWidth
   height: implicitHeight
@@ -53,21 +53,21 @@ Item {
         readonly property string durationText: root.formatDuration(stepItem ? stepItem.durationMs : null)
 
         width: stepsColumn.width
-        implicitHeight: contentRow.implicitHeight + (isLast ? 0 : 12)
+        implicitHeight: contentRow.implicitHeight + (isLast ? 0 : ThemeTokens.dp(12))
         height: implicitHeight
 
         Row {
           id: contentRow
           anchors.left: parent.left
           anchors.right: parent.right
-          spacing: 8
+          spacing: ThemeTokens.dp(8)
 
           // Left icon and connector column
           Item {
-            width: 14
-            height: 14
+            width: ThemeTokens.dp(14)
+            height: ThemeTokens.dp(14)
             anchors.top: parent.top
-            anchors.topMargin: 2
+            anchors.topMargin: ThemeTokens.dp(2)
 
             ChaSetStatusIcon {
               id: statusIcon
@@ -81,9 +81,9 @@ Item {
               visible: !stepDelegate.isLast
               width: 1
               anchors.top: statusIcon.bottom
-              anchors.topMargin: 2
+              anchors.topMargin: ThemeTokens.dp(2)
               anchors.bottom: parent.bottom
-              anchors.bottomMargin: -12
+              anchors.bottomMargin: -ThemeTokens.dp(12)
               anchors.horizontalCenter: parent.horizontalCenter
               color: ThemeTokens.border
             }
@@ -91,8 +91,8 @@ Item {
 
           // Right step title and duration column
           Column {
-            width: parent.width - 22
-            spacing: 2
+            width: parent.width - ThemeTokens.dp(22)
+            spacing: ThemeTokens.dp(2)
 
             Text {
               width: parent.width

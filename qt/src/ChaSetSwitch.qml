@@ -80,7 +80,7 @@ Item {
             id: focusRing
             anchors.fill: parent
             anchors.margins: -2
-            radius: (root.isSm ? 8 : 10) + 2
+            radius: ThemeTokens.dp(root.isSm ? 8 : 10) + ThemeTokens.dp(2)
             color: "transparent"
             border.width: 2
             border.color: root.isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
@@ -132,11 +132,11 @@ Item {
     Column {
         id: labelColumn
         anchors.left: track.right
-        anchors.leftMargin: 8
+        anchors.leftMargin: ThemeTokens.dp(8)
         anchors.verticalCenter: root.description !== "" ? undefined : parent.verticalCenter
         anchors.top: root.description !== "" ? parent.top : undefined
         visible: root.hasCompanionContent
-        spacing: 3
+        spacing: ThemeTokens.dp(3)
 
         Text {
             id: labelText

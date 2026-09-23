@@ -8,7 +8,7 @@ Item {
     property string value: ""
     property string placeholder: ""
     property string colorScheme: "default"
-    property int customRadius: 6
+    property int customRadius: ThemeTokens.dp(6)
     property bool showCopy: true
     property bool masked: false
     property string maskChar: "•"
@@ -21,8 +21,8 @@ Item {
 
     readonly property bool isSm: root.size === "sm"
 
-    implicitWidth: 260
-    implicitHeight: root.isSm ? 26 : 32
+    implicitWidth: ThemeTokens.dp(260)
+    implicitHeight: ThemeTokens.dp(root.isSm ? 26 : 32)
     opacity: root.disabled ? 0.5 : 1.0
 
     readonly property color borderColor: {
@@ -49,14 +49,14 @@ Item {
 
         Item {
             anchors.fill: parent
-            anchors.leftMargin: root.isSm ? 8 : 10
-            anchors.rightMargin: 4
+            anchors.leftMargin: ThemeTokens.dp(root.isSm ? 8 : 10)
+            anchors.rightMargin: ThemeTokens.dp(4)
 
             TextInput {
                 id: valInput
                 anchors.left: parent.left
                 anchors.right: actionsRow.left
-                anchors.rightMargin: 4
+                anchors.rightMargin: ThemeTokens.dp(4)
                 anchors.verticalCenter: parent.verticalCenter
                 readOnly: true
                 enabled: !root.disabled
@@ -99,9 +99,9 @@ Item {
                 Rectangle {
                     id: maskToggleBtn
                     visible: root.masked && root.showMaskToggle
-                    width: 22
-                    height: 22
-                    radius: 4
+                    width: ThemeTokens.dp(22)
+                    height: ThemeTokens.dp(22)
+                    radius: ThemeTokens.dp(4)
                     color: toggleMouse.containsMouse ? ThemeTokens.hover : "transparent"
 
                     ChaSetIcon {

@@ -64,10 +64,10 @@ Item {
 
     Popup {
         id: splitPopup
-        y: mainBtn.height + 4
+        y: mainBtn.height + ThemeTokens.dp(4)
         x: rowLayout.width - width
-        width: 160
-        padding: 4
+        width: ThemeTokens.dp(160)
+        padding: ThemeTokens.dp(4)
         modal: false
         focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -186,8 +186,8 @@ Item {
                     required property var modelData
                     required property int index
                     width: parent ? parent.width : 0
-                    height: 28
-                    radius: 4
+                    height: ThemeTokens.dp(28)
+                    radius: ThemeTokens.dp(4)
 
                     readonly property bool isHighlighted: index === splitPopup.highlightedIndex
                     color: isHighlighted ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
@@ -199,9 +199,9 @@ Item {
 
                     Row {
                         anchors.fill: parent
-                        anchors.leftMargin: 8
-                        anchors.rightMargin: 8
-                        spacing: 6
+                        anchors.leftMargin: ThemeTokens.dp(8)
+                        anchors.rightMargin: ThemeTokens.dp(8)
+                        spacing: ThemeTokens.dp(6)
 
                         ChaSetIcon {
                             visible: !!parent.parent.modelData.icon

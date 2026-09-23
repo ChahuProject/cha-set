@@ -8,17 +8,18 @@ SplitView {
 
     property bool withHandle: false
     property int handleThickness: withHandle ? 8 : 4
+    readonly property int effectiveHandleThickness: ThemeTokens.dp(root.handleThickness)
     property color handleColor: ThemeTokens.border
     property color handleHoverColor: ThemeTokens.accent
     property color handleGripColor: ThemeTokens.subduedText
 
-    implicitWidth: 400
-    implicitHeight: 300
+    implicitWidth: ThemeTokens.dp(400)
+    implicitHeight: ThemeTokens.dp(300)
 
     handle: Rectangle {
         id: handleDelegate
-        implicitWidth: root.orientation === Qt.Horizontal ? root.handleThickness : root.width
-        implicitHeight: root.orientation === Qt.Vertical ? root.handleThickness : root.height
+        implicitWidth: root.orientation === Qt.Horizontal ? root.effectiveHandleThickness : root.width
+        implicitHeight: root.orientation === Qt.Vertical ? root.effectiveHandleThickness : root.height
         color: "transparent"
 
         HoverHandler {
@@ -42,12 +43,12 @@ SplitView {
             id: gripContainer
             visible: root.withHandle
             anchors.centerIn: parent
-            width: root.orientation === Qt.Horizontal ? 12 : 16
-            height: root.orientation === Qt.Horizontal ? 16 : 12
+            width: root.orientation === Qt.Horizontal ? ThemeTokens.dp(12) : ThemeTokens.dp(16)
+            height: root.orientation === Qt.Horizontal ? ThemeTokens.dp(16) : ThemeTokens.dp(12)
 
             Rectangle {
                 anchors.fill: parent
-                radius: 2
+                radius: ThemeTokens.dp(2)
                 color: ThemeTokens.panel
                 border.color: handleDelegate.SplitHandle.hovered || handleDelegate.SplitHandle.pressed ? ThemeTokens.accent : ThemeTokens.border
                 border.width: 1

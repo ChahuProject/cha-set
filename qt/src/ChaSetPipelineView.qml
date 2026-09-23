@@ -20,8 +20,8 @@ Item {
   signal jobSelected(string jobId)
   signal cancelClicked()
 
-  implicitWidth: 780
-  implicitHeight: 448
+  implicitWidth: ThemeTokens.dp(780)
+  implicitHeight: ThemeTokens.dp(448)
   width: implicitWidth
   height: implicitHeight
 
@@ -87,16 +87,16 @@ Item {
 
   Row {
     anchors.fill: parent
-    spacing: 12
+    spacing: ThemeTokens.dp(12)
 
     // Left Job List Column (Width: 288 matching React w-[18rem])
     Rectangle {
-      width: 288
+      width: ThemeTokens.dp(288)
       height: parent.height
       color: ThemeTokens.panel
       border.color: ThemeTokens.border
       border.width: 1
-      radius: 8
+      radius: ThemeTokens.dp(8)
       clip: true
 
       Column {
@@ -105,7 +105,7 @@ Item {
         // Header
         Rectangle {
           width: parent.width
-          height: 33
+          height: ThemeTokens.dp(33)
           color: "transparent"
 
           Rectangle {
@@ -118,7 +118,7 @@ Item {
           Text {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: 10
+            anchors.leftMargin: ThemeTokens.dp(10)
             text: root.jobsTitle
             font.pixelSize: Typography.sizeSmall
             font.weight: Font.DemiBold
@@ -130,7 +130,7 @@ Item {
         ListView {
           id: jobListView
           width: parent.width
-          height: parent.height - 33
+          height: parent.height - ThemeTokens.dp(33)
           clip: true
           model: root.jobs
           boundsBehavior: Flickable.StopAtBounds
@@ -145,17 +145,17 @@ Item {
             readonly property bool isSelected: modelData && (modelData.id === root.activeJobId || (root.activeJobId === "" && index === 0))
             readonly property string jobDur: root.formatDuration(modelData ? modelData.durationMs : null)
 
-            width: jobListView.width - 8
-            height: 32
+            width: jobListView.width - ThemeTokens.dp(8)
+            height: ThemeTokens.dp(32)
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
             color: isSelected ? (ThemeTokens.dark ? Qt.rgba(0.2, 0.25, 0.35, 0.6) : Qt.rgba(0.92, 0.94, 0.97, 1)) : (jobMouse.containsMouse ? ThemeTokens.hover : "transparent")
-            radius: 6
+            radius: ThemeTokens.dp(6)
 
             Row {
               anchors.fill: parent
-              anchors.leftMargin: 8
-              anchors.rightMargin: 8
-              spacing: 8
+              anchors.leftMargin: ThemeTokens.dp(8)
+              anchors.rightMargin: ThemeTokens.dp(8)
+              spacing: ThemeTokens.dp(8)
 
               // Status Icon matching React
               ChaSetStatusIcon {
@@ -171,7 +171,7 @@ Item {
                 font.weight: jobItemRect.isSelected ? Font.Medium : Font.Normal
                 color: ThemeTokens.text
                 elide: Text.ElideRight
-                width: parent.width - 22 - (jobItemRect.jobDur !== "" ? 45 : 0)
+                width: parent.width - ThemeTokens.dp(22) - (jobItemRect.jobDur !== "" ? ThemeTokens.dp(45) : 0)
                 anchors.verticalCenter: parent.verticalCenter
               }
 
@@ -205,7 +205,7 @@ Item {
 
     // Right Section
     Item {
-      width: parent.width - 300
+      width: parent.width - ThemeTokens.dp(300)
       height: parent.height
 
       // Header row
@@ -214,21 +214,21 @@ Item {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        height: 28
+        height: ThemeTokens.dp(28)
 
         Row {
           id: leftHeaderRow
           anchors.left: parent.left
           anchors.verticalCenter: parent.verticalCenter
-          spacing: 8
+          spacing: ThemeTokens.dp(8)
 
           // Status Badge matching React styling
           Rectangle {
-            height: 22
-            radius: 11
+            height: ThemeTokens.dp(22)
+            radius: height / 2
             border.width: 1
             anchors.verticalCenter: parent.verticalCenter
-            width: badgeContentRow.implicitWidth + 14
+            width: badgeContentRow.implicitWidth + ThemeTokens.dp(14)
 
             color: {
               if (root.normStatus === "running" || root.normStatus === "compiling") return Qt.rgba(0.23, 0.51, 0.96, 0.15)
@@ -249,7 +249,7 @@ Item {
             Row {
               id: badgeContentRow
               anchors.centerIn: parent
-              spacing: 5
+              spacing: ThemeTokens.dp(5)
 
               ChaSetStatusIcon {
                 size: 12
@@ -276,13 +276,13 @@ Item {
           // Total duration with Clock icon
           Row {
             visible: root.totalDurationText !== ""
-            spacing: 4
+            spacing: ThemeTokens.dp(4)
             anchors.verticalCenter: parent.verticalCenter
 
             Shape {
               id: clockIcon
-              width: 12
-              height: 12
+              width: ThemeTokens.dp(12)
+              height: ThemeTokens.dp(12)
               scale: 0.5
               transformOrigin: Item.Center
               anchors.verticalCenter: parent.verticalCenter
@@ -328,19 +328,19 @@ Item {
         id: timelineCard
         visible: root.activeJob && root.activeJob.steps && root.activeJob.steps.length > 0
         anchors.top: rightHeader.bottom
-        anchors.topMargin: 8
+        anchors.topMargin: ThemeTokens.dp(8)
         anchors.left: parent.left
         anchors.right: parent.right
-        height: (timelineItem.implicitHeight > 0 ? timelineItem.implicitHeight + 24 : 0)
+        height: (timelineItem.implicitHeight > 0 ? timelineItem.implicitHeight + ThemeTokens.dp(24) : 0)
         color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
-        radius: 8
+        radius: ThemeTokens.dp(8)
 
         ChaSetStepTimeline {
           id: timelineItem
           anchors.fill: parent
-          anchors.margins: 12
+          anchors.margins: ThemeTokens.dp(12)
           steps: (root.activeJob && root.activeJob.steps) ? root.activeJob.steps : []
         }
       }
@@ -348,7 +348,7 @@ Item {
       // Log Console
       ChaSetLogConsole {
         anchors.top: timelineCard.visible ? timelineCard.bottom : rightHeader.bottom
-        anchors.topMargin: 8
+        anchors.topMargin: ThemeTokens.dp(8)
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom

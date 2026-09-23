@@ -276,27 +276,27 @@ Item {
         anchors.horizontalCenter: root.horizontalCenter
         anchors.verticalCenter: root.verticalCenter
         anchors.verticalCenterOffset: root.effectiveDown ? 1 : 0
-        spacing: root.size === "lg" ? 8 : 6
+        spacing: root.size === "lg" ? ThemeTokens.dp(8) : ThemeTokens.dp(6)
 
         // Spinner (loading state)
         Rectangle {
             id: spinner
             visible: root.loading
-            width: root.loading ? 16 : 0
-            height: root.loading ? 16 : 0
+            width: root.loading ? ThemeTokens.dp(16) : 0
+            height: root.loading ? ThemeTokens.dp(16) : 0
             anchors.verticalCenter: parent.verticalCenter
             color: "transparent"
             border.color: root.fgColor()
             border.width: 2
-            radius: 8
+            radius: ThemeTokens.dp(8)
 
             Rectangle {
-                width: 3
-                height: 3
+                width: ThemeTokens.dp(3)
+                height: ThemeTokens.dp(3)
                 color: root.fgColor()
                 anchors.top: parent.top
                 anchors.horizontalCenter: parent.horizontalCenter
-                radius: 1.5
+                radius: ThemeTokens.dp(1.5)
             }
 
             RotationAnimation {

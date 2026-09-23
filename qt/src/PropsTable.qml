@@ -43,7 +43,7 @@ Column {
             { key: "prop", title: "PROP", width: 170, code: true },
             { key: "type", title: "TYPE", width: 180, badge: true },
             { key: "defaultVal", title: "DEFAULT", width: 100, code: true },
-            { key: "description", title: "DESCRIPTION" }
+            { key: "description", title: "DESCRIPTION", wrap: true }
         ]
         rows: {
             var res = []

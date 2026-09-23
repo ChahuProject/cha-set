@@ -26,6 +26,8 @@ Item {
     property color lineColor: ThemeTokens.border
     property color activeLineColor: ThemeTokens.accent
 
+    readonly property real effectiveHitThickness: ThemeTokens.dp(hitThickness)
+
     readonly property bool isVertical: edge === "left" || edge === "right"
     readonly property bool dragging: mouseArea.pressed
     readonly property bool hovered: mouseArea.containsMouse
@@ -41,8 +43,8 @@ Item {
     anchors.left: !isVertical ? (parent ? parent.left : undefined) : (edge === "left" && parent ? parent.left : undefined)
     anchors.right: !isVertical ? (parent ? parent.right : undefined) : (edge === "right" && parent ? parent.right : undefined)
 
-    width: isVertical ? hitThickness : (parent ? parent.width : 0)
-    height: isVertical ? (parent ? parent.height : 0) : hitThickness
+    width: isVertical ? effectiveHitThickness : (parent ? parent.width : 0)
+    height: isVertical ? (parent ? parent.height : 0) : effectiveHitThickness
     z: 10
 
     activeFocusOnTab: !disabled

@@ -10,14 +10,14 @@ Item {
     property string placeholder: "Select an option..."
     property var options: [] // [{ value: "apple", label: "Apple", disabled: false }]
     property bool disabled: false
-    property int customRadius: 6
+    property int customRadius: ThemeTokens.dp(6)
     property int highlightedIndex: -1
     property string modality: "pointer" // "pointer" | "keyboard"
     property real lastPointerSceneX: -1
     property real lastPointerSceneY: -1
 
-    implicitWidth: 160
-    implicitHeight: 32
+    implicitWidth: ThemeTokens.dp(160)
+    implicitHeight: ThemeTokens.dp(32)
 
     activeFocusOnTab: !root.disabled
 
@@ -193,9 +193,9 @@ Item {
 
     Popup {
         id: selectPopup
-        y: root.height + 4
-        width: Math.max(root.width, 160)
-        padding: 4
+        y: root.height + ThemeTokens.dp(4)
+        width: Math.max(root.width, ThemeTokens.dp(160))
+        padding: ThemeTokens.dp(4)
         modal: false
         focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -238,8 +238,8 @@ Item {
                     required property var modelData
                     required property int index
                     width: parent ? parent.width : 0
-                    height: 28
-                    radius: 4
+                    height: ThemeTokens.dp(28)
+                    radius: ThemeTokens.dp(4)
                     readonly property bool isSelected: String(modelData.value) === String(root.value)
                     readonly property bool isHighlighted: index === root.highlightedIndex
                     color: isHighlighted ? ThemeTokens.hover : "transparent"
@@ -252,9 +252,9 @@ Item {
 
                     Text {
                         anchors.left: parent.left
-                        anchors.leftMargin: 8
+                        anchors.leftMargin: ThemeTokens.dp(8)
                         anchors.right: checkIcon.visible ? checkIcon.left : parent.right
-                        anchors.rightMargin: 8
+                        anchors.rightMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
                         text: parent.modelData.label || ""
                         color: ThemeTokens.text

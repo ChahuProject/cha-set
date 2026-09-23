@@ -31,7 +31,7 @@ Item {
     // is a ratio multiplied by the font size — `Typography.lineHeightPx()` is
     // the single bridge so both engines land on the same number (12 × 1.4 = 16.8).
     readonly property real lineHeightPx: Typography.lineHeightPx(root.fontSize, root.lineHeight)
-    readonly property real gutterGap: root.showLineNumbers ? 12 : 0
+    readonly property real gutterGap: root.showLineNumbers ? ThemeTokens.dp(12) : 0
     readonly property real codeWidth: Math.max(0, root.width - (root.showLineNumbers ? gutterWidth + gutterGap : 0))
 
     // Tokenized data structures

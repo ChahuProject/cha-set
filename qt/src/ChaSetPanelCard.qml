@@ -10,7 +10,7 @@ Rectangle {
     property string badgeText: ""
     property bool collapsible: false
     property bool collapsed: false
-    property int customRadius: 8
+    property int customRadius: ThemeTokens.dp(8)
 
     default property alias contentData: bodyContent.data
 
@@ -18,8 +18,8 @@ Rectangle {
     border.color: ThemeTokens.border
     border.width: 1
     radius: root.customRadius
-    implicitWidth: 360
-    implicitHeight: headerRow.height + (root.collapsed ? 0 : bodyContent.implicitHeight + 20)
+    implicitWidth: ThemeTokens.dp(360)
+    implicitHeight: headerRow.height + (root.collapsed ? 0 : bodyContent.implicitHeight + ThemeTokens.dp(20))
     clip: true
 
     Behavior on implicitHeight {
@@ -34,16 +34,16 @@ Rectangle {
         Rectangle {
             id: headerRow
             width: parent.width
-            height: 40
+            height: ThemeTokens.dp(40)
             color: ThemeTokens.hover
 
             Row {
                 anchors.left: parent.left
-                anchors.leftMargin: 12
+                anchors.leftMargin: ThemeTokens.dp(12)
                 anchors.right: collapseBtn.visible ? collapseBtn.left : parent.right
-                anchors.rightMargin: 8
+                anchors.rightMargin: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 8
+                spacing: ThemeTokens.dp(8)
 
                 TextEdit {
                     id: panelTitleText
@@ -89,7 +89,7 @@ Rectangle {
                 size: "icon-xs"
                 text: root.collapsed ? "▾" : "▴"
                 anchors.right: parent.right
-                anchors.rightMargin: 12
+                anchors.rightMargin: ThemeTokens.dp(12)
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: root.collapsed = !root.collapsed
             }
@@ -107,7 +107,7 @@ Rectangle {
             width: parent.width
             implicitHeight: childrenRect.height
             height: childrenRect.height
-            anchors.margins: 12
+            anchors.margins: ThemeTokens.dp(12)
         }
     }
 }

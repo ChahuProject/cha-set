@@ -16,6 +16,7 @@ Item {
     property int minSize: Math.round(minRatio * 100)
     property int maxSize: Math.round(maxRatio * 100)
     property int gutterSize: 8
+    readonly property int effectiveGutterSize: ThemeTokens.dp(root.gutterSize)
 
     property real size: Math.round(splitRatio * 100)
     signal change(real newSize)
@@ -42,8 +43,8 @@ Item {
     property Component leftItem: null
     property Component rightItem: null
 
-    implicitWidth: 400
-    implicitHeight: 240
+    implicitWidth: ThemeTokens.dp(400)
+    implicitHeight: ThemeTokens.dp(240)
 
     readonly property bool isVertical: root.orientation === "vertical"
 
@@ -51,8 +52,8 @@ Item {
         id: firstPane
         x: 0
         y: 0
-        width: root.isVertical ? Math.max(0, root.width * root.splitRatio - root.gutterSize / 2) : root.width
-        height: root.isVertical ? root.height : Math.max(0, root.height * root.splitRatio - root.gutterSize / 2)
+        width: root.isVertical ? Math.max(0, root.width * root.splitRatio - root.effectiveGutterSize / 2) : root.width
+        height: root.isVertical ? root.height : Math.max(0, root.height * root.splitRatio - root.effectiveGutterSize / 2)
         clip: true
 
         Loader {
@@ -66,8 +67,8 @@ Item {
         id: gutter
         x: root.isVertical ? firstPane.width : 0
         y: root.isVertical ? 0 : firstPane.height
-        width: root.isVertical ? root.gutterSize : root.width
-        height: root.isVertical ? root.height : root.gutterSize
+        width: root.isVertical ? root.effectiveGutterSize : root.width
+        height: root.isVertical ? root.height : root.effectiveGutterSize
         color: "transparent"
         activeFocusOnTab: true
 
@@ -166,11 +167,11 @@ Item {
                 if (dragging) {
                     var pt = mapToItem(root, mouse.x, mouse.y)
                     if (root.isVertical) {
-                        var targetX = pt.x - dragOffset + root.gutterSize / 2
+                        var targetX = pt.x - dragOffset + root.effectiveGutterSize / 2
                         var ratio = targetX / root.width
                         root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, ratio))
                     } else {
-                        var targetY = pt.y - dragOffset + root.gutterSize / 2
+                        var targetY = pt.y - dragOffset + root.effectiveGutterSize / 2
                         var ratio = targetY / root.height
                         root.splitRatio = Math.max(root.minRatio, Math.min(root.maxRatio, ratio))
                     }
@@ -185,8 +186,8 @@ Item {
 
     Item {
         id: secondPane
-        x: root.isVertical ? (gutter.x + root.gutterSize) : 0
-        y: root.isVertical ? 0 : (gutter.y + root.gutterSize)
+        x: root.isVertical ? (gutter.x + root.effectiveGutterSize) : 0
+        y: root.isVertical ? 0 : (gutter.y + root.effectiveGutterSize)
         width: root.isVertical ? Math.max(0, root.width - x) : root.width
         height: root.isVertical ? root.height : Math.max(0, root.height - y)
         clip: true

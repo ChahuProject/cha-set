@@ -31,8 +31,8 @@ Item {
     readonly property bool isHovered: root.forceHover || mouseArea.containsMouse
     readonly property bool isDragging: mouseArea.pressed
 
-    implicitWidth: root.isHorizontal ? 200 : (root.isSm ? 16 : 20)
-    implicitHeight: root.isHorizontal ? (root.isSm ? 16 : 20) : 200
+    implicitWidth: root.isHorizontal ? ThemeTokens.dp(200) : ThemeTokens.dp(root.isSm ? 16 : 20)
+    implicitHeight: root.isHorizontal ? ThemeTokens.dp(root.isSm ? 16 : 20) : ThemeTokens.dp(200)
 
     opacity: root.disabled ? 0.5 : 1.0
     activeFocusOnTab: !root.disabled && !root.readOnly
@@ -181,17 +181,17 @@ Item {
         id: track
         anchors.left: root.isHorizontal ? parent.left : undefined
         anchors.right: root.isHorizontal ? parent.right : undefined
-        anchors.leftMargin: root.isHorizontal ? (root.isSm ? 6 : 8) : 0
-        anchors.rightMargin: root.isHorizontal ? (root.isSm ? 6 : 8) : 0
+        anchors.leftMargin: root.isHorizontal ? ThemeTokens.dp(root.isSm ? 6 : 8) : 0
+        anchors.rightMargin: root.isHorizontal ? ThemeTokens.dp(root.isSm ? 6 : 8) : 0
         anchors.top: !root.isHorizontal ? parent.top : undefined
         anchors.bottom: !root.isHorizontal ? parent.bottom : undefined
-        anchors.topMargin: !root.isHorizontal ? (root.isSm ? 6 : 8) : 0
-        anchors.bottomMargin: !root.isHorizontal ? (root.isSm ? 6 : 8) : 0
+        anchors.topMargin: !root.isHorizontal ? ThemeTokens.dp(root.isSm ? 6 : 8) : 0
+        anchors.bottomMargin: !root.isHorizontal ? ThemeTokens.dp(root.isSm ? 6 : 8) : 0
         anchors.verticalCenter: root.isHorizontal ? parent.verticalCenter : undefined
         anchors.horizontalCenter: !root.isHorizontal ? parent.horizontalCenter : undefined
-        width: root.isHorizontal ? undefined : (root.isSm ? 4 : 6)
-        height: root.isHorizontal ? (root.isSm ? 4 : 6) : undefined
-        radius: root.isSm ? 2 : 3
+        width: root.isHorizontal ? undefined : ThemeTokens.dp(root.isSm ? 4 : 6)
+        height: root.isHorizontal ? ThemeTokens.dp(root.isSm ? 4 : 6) : undefined
+        radius: ThemeTokens.dp(root.isSm ? 2 : 3)
         color: root.isDark
             ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0)
             : Qt.rgba(241.0 / 255.0, 245.0 / 255.0, 249.0 / 255.0, 1.0)
@@ -204,12 +204,12 @@ Item {
             anchors.top: root.isHorizontal ? parent.top : undefined
             anchors.right: !root.isHorizontal ? parent.right : undefined
             width: root.isHorizontal
-                ? Math.max(0, Math.min(track.width, thumb.x + (root.isSm ? 6 : 8) - track.x))
+                ? Math.max(0, Math.min(track.width, thumb.x + ThemeTokens.dp(root.isSm ? 6 : 8) - track.x))
                 : track.width
             height: !root.isHorizontal
-                ? Math.max(0, Math.min(track.height, track.height - (thumb.y + (root.isSm ? 6 : 8) - track.y)))
+                ? Math.max(0, Math.min(track.height, track.height - (thumb.y + ThemeTokens.dp(root.isSm ? 6 : 8) - track.y)))
                 : track.height
-            radius: root.isSm ? 2 : 3
+            radius: ThemeTokens.dp(root.isSm ? 2 : 3)
             color: root.isDark
                 ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0)
                 : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
@@ -233,16 +233,16 @@ Item {
                     id: tickItem
                     required property int index
                     readonly property real tickProgress: ticksContainer.tickCount > 1 ? (index / (ticksContainer.tickCount - 1)) : 0.0
-                    x: root.isHorizontal ? Math.round(tickProgress * ticksContainer.width) - 2 : (ticksContainer.width - 4) / 2
-                    y: root.isHorizontal ? (ticksContainer.height - 4) / 2 : Math.round((1.0 - tickProgress) * ticksContainer.height) - 2
-                    width: 4
-                    height: 4
+                    x: root.isHorizontal ? Math.round(tickProgress * ticksContainer.width) - 2 : (ticksContainer.width - ThemeTokens.dp(4)) / 2
+                    y: root.isHorizontal ? (ticksContainer.height - ThemeTokens.dp(4)) / 2 : Math.round((1.0 - tickProgress) * ticksContainer.height) - 2
+                    width: ThemeTokens.dp(4)
+                    height: ThemeTokens.dp(4)
 
                     Rectangle {
                         anchors.centerIn: parent
-                        width: 4
-                        height: 4
-                        radius: 2
+                        width: ThemeTokens.dp(4)
+                        height: ThemeTokens.dp(4)
+                        radius: ThemeTokens.dp(2)
                         color: tickItem.tickProgress <= root.progress ? ThemeTokens.accent : (root.isDark ? Qt.rgba(1, 1, 1, 0.25) : Qt.rgba(0, 0, 0, 0.25))
                     }
 
@@ -253,7 +253,7 @@ Item {
                         font.pixelSize: Typography.sizeMicro
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.top: parent.bottom
-                        anchors.topMargin: 4
+                        anchors.topMargin: ThemeTokens.dp(4)
                     }
                 }
             }
@@ -263,9 +263,9 @@ Item {
     // Thumb: 16x16 (default) or 12x12 (sm) circle
     Rectangle {
         id: thumb
-        width: root.isSm ? 12 : 16
-        height: root.isSm ? 12 : 16
-        radius: root.isSm ? 6 : 8
+        width: ThemeTokens.dp(root.isSm ? 12 : 16)
+        height: ThemeTokens.dp(root.isSm ? 12 : 16)
+        radius: ThemeTokens.dp(root.isSm ? 6 : 8)
         z: 2
 
         anchors.verticalCenter: root.isHorizontal ? parent.verticalCenter : undefined
@@ -305,19 +305,19 @@ Item {
             id: tooltipPopup
             visible: root.showTooltip && (root.isDragging || root.isHovered || root.forceHover || root.forceFocus)
             z: 10
-            width: tooltipText.implicitWidth + 10
-            height: tooltipText.implicitHeight + 4
-            radius: 4
+            width: tooltipText.implicitWidth + ThemeTokens.dp(10)
+            height: tooltipText.implicitHeight + ThemeTokens.dp(4)
+            radius: ThemeTokens.dp(4)
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
 
             anchors.bottom: root.isHorizontal ? parent.top : undefined
-            anchors.bottomMargin: root.isHorizontal ? 6 : 0
+            anchors.bottomMargin: root.isHorizontal ? ThemeTokens.dp(6) : 0
             anchors.horizontalCenter: root.isHorizontal ? parent.horizontalCenter : undefined
 
             anchors.left: !root.isHorizontal ? parent.right : undefined
-            anchors.leftMargin: !root.isHorizontal ? 8 : 0
+            anchors.leftMargin: !root.isHorizontal ? ThemeTokens.dp(8) : 0
             anchors.verticalCenter: !root.isHorizontal ? parent.verticalCenter : undefined
 
             Text {

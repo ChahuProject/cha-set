@@ -18,6 +18,10 @@ Rectangle {
 
     signal rowClicked(int index, var rowData)
 
+    readonly property int effectiveHeaderHeight: ThemeTokens.dp(headerHeight)
+    readonly property int effectiveRowHeight: ThemeTokens.dp(rowHeight)
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
+
     readonly property bool isDark: ThemeTokens.dark
     readonly property color cBg: ThemeTokens.panel
     readonly property color cBorder: customBorderColor
@@ -31,10 +35,10 @@ Rectangle {
     readonly property color cHover: ThemeTokens.hover
     readonly property color cSelection: ThemeTokens.selection
 
-    implicitWidth: 600
+    implicitWidth: ThemeTokens.dp(600)
     implicitHeight: mainLayout.implicitHeight
 
-    radius: customRadius
+    radius: effectiveRadius
     border.color: cBorder
     border.width: 1
     color: cBg
@@ -44,14 +48,14 @@ Rectangle {
         if (!columns || columns.length === 0) return totalWidth;
         var col = columns[index];
         if (col && col.width !== undefined && Number(col.width) > 0) {
-            return Number(col.width);
+            return ThemeTokens.dp(Number(col.width));
         }
         var fixedTotal = 0;
         var flexCount = 0;
         for (var i = 0; i < columns.length; ++i) {
             var c = columns[i];
             if (c && c.width !== undefined && Number(c.width) > 0) {
-                fixedTotal += Number(c.width);
+                fixedTotal += ThemeTokens.dp(Number(c.width));
             } else {
                 flexCount++;
             }
@@ -77,7 +81,7 @@ Rectangle {
         Rectangle {
             id: headerRow
             width: parent.width
-            height: root.headerHeight
+            height: root.effectiveHeaderHeight
             color: root.cHeaderBg
             topLeftRadius: Math.max(0, root.radius - 1)
             topRightRadius: Math.max(0, root.radius - 1)
@@ -104,8 +108,8 @@ Rectangle {
                         TextEdit {
                             id: headerCellText
                             anchors.fill: parent
-                            anchors.leftMargin: 12
-                            anchors.rightMargin: 12
+                            anchors.leftMargin: ThemeTokens.dp(12)
+                            anchors.rightMargin: ThemeTokens.dp(12)
                             verticalAlignment: TextEdit.AlignVCenter
                             horizontalAlignment: root.getAlignment(modelData ? modelData.align : "left")
                             text: modelData ? (modelData.title || "") : ""
@@ -150,7 +154,8 @@ Rectangle {
                 required property int index
 
                 width: mainLayout.width
-                height: root.rowHeight
+                property real rowCalculatedHeight: root.effectiveRowHeight
+                height: Math.max(root.effectiveRowHeight, rowCalculatedHeight)
 
                 property bool isLastRow: index === (root.rows.length - 1) && (!root.caption || root.caption.length === 0)
                 bottomLeftRadius: isLastRow ? Math.max(0, root.radius - 1) : 0
@@ -194,7 +199,7 @@ Rectangle {
                                 visible: Boolean(columnDef && columnDef.badge)
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.left: parent.left
-                                anchors.leftMargin: 12
+                                anchors.leftMargin: ThemeTokens.dp(12)
                                 text: {
                                     if (!rowRecord || !columnDef || columnDef.key === undefined) return "";
                                     var val = rowRecord[columnDef.key];
@@ -215,8 +220,8 @@ Rectangle {
                                 visible: Boolean(columnDef && columnDef.kbd)
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.left: parent.left
-                                anchors.leftMargin: 12
-                                spacing: 6
+                                anchors.leftMargin: ThemeTokens.dp(12)
+                                spacing: ThemeTokens.dp(6)
 
                                 readonly property string rawKeyStr: {
                                     if (!rowRecord || !columnDef || columnDef.key === undefined) return "";
@@ -232,7 +237,7 @@ Rectangle {
                                             id: comboRow
                                             required property var modelData
                                             required property int index
-                                            spacing: 4
+                                            spacing: ThemeTokens.dp(4)
 
                                             Text {
                                                 visible: comboRow.index > 0
@@ -248,9 +253,9 @@ Rectangle {
                                                 delegate: Rectangle {
                                                     id: chipRect
                                                     required property var modelData
-                                                    height: 20
-                                                    width: Math.max(18, keyChipLabel.implicitWidth + 10)
-                                                    radius: 4
+                                                    height: ThemeTokens.dp(20)
+                                                    width: Math.max(ThemeTokens.dp(18), keyChipLabel.implicitWidth + ThemeTokens.dp(10))
+                                                    radius: ThemeTokens.dp(4)
                                                     color: ThemeTokens.dark ? Qt.rgba(1, 1, 1, 0.08) : Qt.rgba(0, 0, 0, 0.05)
                                                     border.color: root.cBorder
                                                     border.width: 1
@@ -275,9 +280,11 @@ Rectangle {
                                 id: bodyCellText
                                 visible: !Boolean(columnDef && (columnDef.badge || columnDef.kbd))
                                 anchors.fill: parent
-                                anchors.leftMargin: 12
-                                anchors.rightMargin: 12
-                                verticalAlignment: TextEdit.AlignVCenter
+                                anchors.leftMargin: ThemeTokens.dp(12)
+                                anchors.rightMargin: ThemeTokens.dp(12)
+                                anchors.topMargin: (columnDef && columnDef.wrap) ? ThemeTokens.dp(8) : 0
+                                anchors.bottomMargin: (columnDef && columnDef.wrap) ? ThemeTokens.dp(8) : 0
+                                verticalAlignment: (columnDef && columnDef.wrap) ? TextEdit.AlignTop : TextEdit.AlignVCenter
                                 horizontalAlignment: root.getAlignment(columnDef ? columnDef.align : "left")
                                 text: {
                                     if (!rowRecord || !columnDef || columnDef.key === undefined) return "";
@@ -299,6 +306,15 @@ Rectangle {
                                 padding: 0
                                 selectionColor: ThemeTokens.accent
                                 selectedTextColor: "#ffffff"
+
+                                onContentHeightChanged: {
+                                    if (columnDef && columnDef.wrap) {
+                                        var needed = contentHeight + ThemeTokens.dp(16);
+                                        if (needed > rowItem.rowCalculatedHeight) {
+                                            rowItem.rowCalculatedHeight = needed;
+                                        }
+                                    }
+                                }
 
                                 HoverHandler {
                                     enabled: !root.interactive
@@ -334,7 +350,7 @@ Rectangle {
         Rectangle {
             visible: (!root.rows || root.rows.length === 0)
             width: parent.width
-            height: 60
+            height: ThemeTokens.dp(60)
             color: "transparent"
             bottomLeftRadius: (!root.caption || root.caption.length === 0) ? Math.max(0, root.radius - 1) : 0
             bottomRightRadius: (!root.caption || root.caption.length === 0) ? Math.max(0, root.radius - 1) : 0
@@ -352,7 +368,7 @@ Rectangle {
             id: captionBox
             visible: root.caption.length > 0
             width: parent.width
-            height: root.caption.length > 0 ? 36 : 0
+            height: root.caption.length > 0 ? root.effectiveHeaderHeight : 0
             color: "transparent"
 
             Text {

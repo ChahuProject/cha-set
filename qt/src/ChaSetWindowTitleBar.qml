@@ -13,16 +13,16 @@ Rectangle {
     signal maximizeClicked()
     signal closeClicked()
 
-    height: 36
+    height: ThemeTokens.dp(36)
     color: ThemeTokens.hover
     border.color: ThemeTokens.border
     border.width: 1
 
     Row {
         anchors.left: parent.left
-        anchors.leftMargin: 12
+        anchors.leftMargin: ThemeTokens.dp(12)
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 8
+        spacing: ThemeTokens.dp(8)
 
         ChaSetIcon {
             visible: root.icon !== ""
@@ -56,7 +56,7 @@ Rectangle {
 
         // Minimize
         Rectangle {
-            width: 44
+            width: ThemeTokens.dp(44)
             height: parent.height
             color: minMouse.containsMouse ? ThemeTokens.hover : "transparent"
 
@@ -83,7 +83,7 @@ Rectangle {
 
         // Maximize / Restore
         Rectangle {
-            width: 44
+            width: ThemeTokens.dp(44)
             height: parent.height
             color: maxMouse.containsMouse ? ThemeTokens.hover : "transparent"
 
@@ -113,7 +113,7 @@ Rectangle {
 
         // Close
         Rectangle {
-            width: 44
+            width: ThemeTokens.dp(44)
             height: parent.height
             color: closeMouse.containsMouse ? Qt.rgba(239/255, 68/255, 68/255, 0.85) : "transparent"
 

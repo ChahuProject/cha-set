@@ -186,11 +186,11 @@ Item {
     Column {
         id: labelColumn
         anchors.left: box.right
-        anchors.leftMargin: 8
+        anchors.leftMargin: ThemeTokens.dp(8)
         anchors.verticalCenter: root.description !== "" ? undefined : parent.verticalCenter
         anchors.top: root.description !== "" ? parent.top : undefined
         visible: root.hasCompanionContent
-        spacing: 3
+        spacing: ThemeTokens.dp(3)
 
         Text {
             id: labelText

@@ -9,10 +9,10 @@ Item {
     property bool open: false
     property string side: "bottom"      // "top" | "bottom" | "left" | "right"
     property string align: "start"      // "start" | "center" | "end"
-    property int sideOffset: 8
-    property int popoverWidth: 260
-    property int popoverHeight: 160
-    property int customRadius: 8
+    property int sideOffset: ThemeTokens.dp(8)
+    property int popoverWidth: ThemeTokens.dp(260)
+    property int popoverHeight: ThemeTokens.dp(160)
+    property int customRadius: ThemeTokens.dp(8)
     property bool modal: false
     property bool movable: false
     property string moveLabel: "Drag to move"
@@ -69,8 +69,8 @@ Item {
         }
         width: root.popoverWidth
         height: root.popoverHeight
-        padding: 12
-        topPadding: root.movable ? 22 : 12
+        padding: ThemeTokens.dp(12)
+        topPadding: root.movable ? ThemeTokens.dp(22) : ThemeTokens.dp(12)
         modal: root.modal
         dim: root.modal
         focus: true
@@ -96,8 +96,8 @@ Item {
             Rectangle {
                 id: arrowIndicator
                 visible: root.arrow
-                width: 10
-                height: 10
+                width: ThemeTokens.dp(10)
+                height: ThemeTokens.dp(10)
                 rotation: 45
                 color: ThemeTokens.panel
                 border.color: ThemeTokens.border
@@ -105,21 +105,21 @@ Item {
                 z: -1
                 x: {
                     switch (root.side) {
-                    case "left": return parent.width - 5
-                    case "right": return -5
+                    case "left": return parent.width - ThemeTokens.dp(5)
+                    case "right": return -ThemeTokens.dp(5)
                     default:
-                        if (root.align === "start") return 16
-                        if (root.align === "end") return parent.width - 26
+                        if (root.align === "start") return ThemeTokens.dp(16)
+                        if (root.align === "end") return parent.width - ThemeTokens.dp(26)
                         return (parent.width - width) / 2
                     }
                 }
                 y: {
                     switch (root.side) {
-                    case "top": return parent.height - 5
-                    case "bottom": return -5
+                    case "top": return parent.height - ThemeTokens.dp(5)
+                    case "bottom": return -ThemeTokens.dp(5)
                     default:
-                        if (root.align === "start") return 16
-                        if (root.align === "end") return parent.height - 26
+                        if (root.align === "start") return ThemeTokens.dp(16)
+                        if (root.align === "end") return parent.height - ThemeTokens.dp(26)
                         return (parent.height - height) / 2
                     }
                 }
@@ -134,22 +134,22 @@ Item {
                 id: dragHandle
                 visible: root.movable
                 anchors.top: parent.top
-                anchors.topMargin: -14
+                anchors.topMargin: -ThemeTokens.dp(14)
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width
-                height: 14
+                height: ThemeTokens.dp(14)
                 color: "transparent"
-                radius: 4
+                radius: ThemeTokens.dp(4)
 
                 Row {
                     anchors.centerIn: parent
-                    spacing: 3
+                    spacing: ThemeTokens.dp(3)
                     Repeater {
                         model: 5
                         Rectangle {
-                            width: 3
-                            height: 3
-                            radius: 1.5
+                            width: ThemeTokens.dp(3)
+                            height: ThemeTokens.dp(3)
+                            radius: ThemeTokens.dp(1.5)
                             color: ThemeTokens.subduedText
                         }
                     }

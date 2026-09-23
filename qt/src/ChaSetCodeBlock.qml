@@ -47,8 +47,8 @@ Rectangle {
         return Highlighter.languageLabel(root.language)
     }
 
-    readonly property int headerHeight: root.embedded ? 0 : 32
-    readonly property int bodyPadding: root.embedded ? 0 : 12
+    readonly property int headerHeight: root.embedded ? 0 : ThemeTokens.dp(32)
+    readonly property int bodyPadding: root.embedded ? 0 : ThemeTokens.dp(12)
     readonly property real naturalBodyHeight: highlighter.implicitHeight + root.bodyPadding * 2
 
     // React contract: Card (bg-card) + header strip (border-b, transparent bg)
@@ -64,10 +64,10 @@ Rectangle {
     color: root.embedded ? "transparent" : cCard
     border.color: root.embedded ? "transparent" : cBorder
     border.width: root.embedded ? 0 : 1
-    radius: root.embedded ? 0 : 12
+    radius: root.embedded ? 0 : ThemeTokens.dp(12)
     clip: true
 
-    implicitWidth: 640
+    implicitWidth: ThemeTokens.dp(640)
     implicitHeight: root.headerHeight + (root.maxHeight > 0 ? root.maxHeight : root.naturalBodyHeight)
     height: implicitHeight
 
@@ -118,7 +118,7 @@ Rectangle {
                 id: tabStrip
                 visible: root.multiFile
                 anchors.left: parent.left
-                anchors.leftMargin: 8
+                anchors.leftMargin: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 0
 
@@ -130,14 +130,14 @@ Rectangle {
                         required property var modelData
                         required property int index
                         height: root.headerHeight
-                        width: tabLabel.implicitWidth + 24
+                        width: tabLabel.implicitWidth + ThemeTokens.dp(24)
 
                         Rectangle {
                             id: tabActiveLine
                             anchors.bottom: parent.bottom
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            height: 2
+                            height: ThemeTokens.dp(2)
                             color: ThemeTokens.accent
                             visible: tabItem.index === root.currentIndex
                             z: 2
@@ -172,7 +172,7 @@ Rectangle {
                 id: headerLabel
                 visible: !root.multiFile && root.label !== ""
                 anchors.left: parent.left
-                anchors.leftMargin: 12
+                anchors.leftMargin: ThemeTokens.dp(12)
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.label.toUpperCase()
                 color: root.cMutedFg
@@ -190,7 +190,7 @@ Rectangle {
             ChaSetCopyButton {
                 visible: root.showCopy
                 anchors.right: parent.right
-                anchors.rightMargin: 8
+                anchors.rightMargin: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.activeCode
                 label: root.copyLabel !== "" ? root.copyLabel : "Copy"

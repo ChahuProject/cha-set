@@ -47,14 +47,15 @@ TextEdit {
     selectByKeyboard: true
     cursorVisible: false
     activeFocusOnPress: false
+    property bool wrap: false
     textMargin: 0
     padding: 0
-    wrapMode: TextEdit.NoWrap
+    wrapMode: (wrap || role === "p") ? TextEdit.WordWrap : TextEdit.NoWrap
     color: isMuted ? ThemeTokens.subduedText : textColor
     selectionColor: ThemeTokens.accent
     selectedTextColor: "#ffffff"
 
-    width: contentWidth
+    width: (wrap || role === "p") ? ((parent && parent.width > 0) ? parent.width : contentWidth) : contentWidth
     height: contentHeight
 
     HoverHandler {

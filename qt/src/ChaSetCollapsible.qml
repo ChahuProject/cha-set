@@ -12,7 +12,7 @@ Rectangle {
     property bool disabled: false
     property string variant: "default" // "default" | "card" | "ghost"
     property string title: ""
-    property int customRadius: 6
+    property int customRadius: ThemeTokens.dp(6)
     property bool forceHover: false
     property bool forceActive: false
 
@@ -32,8 +32,8 @@ Rectangle {
     radius: root.customRadius
     clip: true
 
-    implicitWidth: 320
-    implicitHeight: headerBar.height + contentWrapper.height + (root.variant === "card" ? 16 : 0)
+    implicitWidth: ThemeTokens.dp(320)
+    implicitHeight: headerBar.height + contentWrapper.height + (root.variant === "card" ? ThemeTokens.dp(16) : 0)
 
     activeFocusOnTab: !root.disabled
 
@@ -65,14 +65,14 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.margins: root.variant === "card" ? 8 : 0
+        anchors.margins: root.variant === "card" ? ThemeTokens.dp(8) : 0
         spacing: 0
 
         // Header Bar (Trigger)
         Rectangle {
             id: headerBar
             width: parent.width
-            height: 36
+            height: ThemeTokens.dp(36)
             radius: root.customRadius
             border.color: root.activeFocus ? ThemeTokens.accent : "transparent"
             border.width: root.activeFocus ? 1 : 0
@@ -88,11 +88,11 @@ Rectangle {
 
             Row {
                 anchors.left: parent.left
-                anchors.leftMargin: 8
+                anchors.leftMargin: ThemeTokens.dp(8)
                 anchors.right: chevronText.left
-                anchors.rightMargin: 8
+                anchors.rightMargin: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 8
+                spacing: ThemeTokens.dp(8)
 
                 Text {
                     id: headerTitle

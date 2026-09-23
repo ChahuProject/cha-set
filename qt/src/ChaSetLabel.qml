@@ -26,18 +26,18 @@ Item {
     readonly property bool isDark: ThemeTokens.dark
 
     implicitWidth: layoutCol.implicitWidth
-    implicitHeight: Math.max(isSm ? 16 : 20, layoutCol.implicitHeight)
+    implicitHeight: Math.max(ThemeTokens.dp(isSm ? 16 : 20), layoutCol.implicitHeight)
 
     opacity: root.disabled ? 0.5 : (root.forceActive ? 0.7 : (root.forceHover ? 0.8 : 1.0))
 
     Column {
         id: layoutCol
-        spacing: 3
+        spacing: ThemeTokens.dp(3)
         anchors.verticalCenter: parent.verticalCenter
 
         Row {
             id: contentRow
-            spacing: 4
+            spacing: ThemeTokens.dp(4)
 
             Text {
                 id: labelText
@@ -73,8 +73,8 @@ Item {
             Item {
                 id: tooltipIcon
                 visible: root.tooltip !== ""
-                width: root.isSm ? 12 : 14
-                height: root.isSm ? 12 : 14
+                width: ThemeTokens.dp(root.isSm ? 12 : 14)
+                height: ThemeTokens.dp(root.isSm ? 12 : 14)
                 anchors.verticalCenter: parent.verticalCenter
 
                 Text {

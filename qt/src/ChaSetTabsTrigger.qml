@@ -75,14 +75,14 @@ Rectangle {
     Row {
         id: contentRow
         anchors.centerIn: parent
-        spacing: root.isSm ? 4 : 6
+        spacing: ThemeTokens.dp(root.isSm ? 4 : 6)
 
         Image {
             id: iconItem
             visible: root.iconSource !== ""
             source: root.iconSource
-            width: root.isSm ? 12 : 14
-            height: root.isSm ? 12 : 14
+            width: ThemeTokens.dp(root.isSm ? 12 : 14)
+            height: ThemeTokens.dp(root.isSm ? 12 : 14)
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -109,7 +109,7 @@ Rectangle {
         Rectangle {
             id: badgeRect
             visible: root.badge !== ""
-            radius: 9999
+            radius: height / 2
             height: ThemeTokens.dp(root.isSm ? 14 : 16)
             width: Math.max(height, badgeText.implicitWidth + ThemeTokens.dp(root.isSm ? 6 : 8))
             color: Qt.rgba(148.0 / 255.0, 163.0 / 255.0, 184.0 / 255.0, 0.15)

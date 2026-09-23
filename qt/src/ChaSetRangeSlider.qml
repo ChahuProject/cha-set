@@ -24,8 +24,8 @@ Item {
     readonly property bool isSm: root.size === "sm"
     readonly property real minGap: root.minStepsBetweenThumbs * root.stepSize
 
-    implicitWidth: 240
-    implicitHeight: root.isSm ? 16 : 28
+    implicitWidth: ThemeTokens.dp(240)
+    implicitHeight: ThemeTokens.dp(root.isSm ? 16 : 28)
     opacity: root.disabled ? 0.4 : 1.0
     activeFocusOnTab: !root.disabled && !root.readOnly
 
@@ -116,9 +116,9 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: 8
-        height: root.isSm ? 4 : 6
-        radius: root.isSm ? 2 : 3
+        anchors.margins: ThemeTokens.dp(8)
+        height: ThemeTokens.dp(root.isSm ? 4 : 6)
+        radius: ThemeTokens.dp(root.isSm ? 2 : 3)
         color: ThemeTokens.hover
 
         // Active range highlight
@@ -133,12 +133,12 @@ Item {
         MouseArea {
             id: trackMouse
             anchors.fill: parent
-            anchors.margins: -8
+            anchors.margins: -ThemeTokens.dp(8)
             enabled: !root.disabled && !root.readOnly
             cursorShape: root.readOnly ? Qt.ArrowCursor : Qt.PointingHandCursor
             onPressed: function(mouse) {
                 root.forceActiveFocus()
-                let clickPos = mouse.x - 8
+                let clickPos = mouse.x - ThemeTokens.dp(8)
                 let clickVal = root.valForPos(clickPos)
                 let dist1 = Math.abs(clickVal - root.firstValue)
                 let dist2 = Math.abs(clickVal - root.secondValue)
@@ -162,9 +162,9 @@ Item {
     Rectangle {
         id: thumb1
         z: 2
-        width: root.isSm ? 12 : 16
-        height: root.isSm ? 12 : 16
-        radius: root.isSm ? 6 : 8
+        width: ThemeTokens.dp(root.isSm ? 12 : 16)
+        height: ThemeTokens.dp(root.isSm ? 12 : 16)
+        radius: ThemeTokens.dp(root.isSm ? 6 : 8)
         color: ThemeTokens.panel
         border.color: ThemeTokens.accent
         border.width: 2
@@ -191,14 +191,14 @@ Item {
             id: tooltip1
             visible: root.showTooltip && (thumb1Mouse.pressed || thumb1Mouse.containsMouse || (root.activeFocus && root.activeThumb === 1))
             z: 10
-            width: tooltipText1.implicitWidth + 8
-            height: tooltipText1.implicitHeight + 4
-            radius: 4
+            width: tooltipText1.implicitWidth + ThemeTokens.dp(8)
+            height: tooltipText1.implicitHeight + ThemeTokens.dp(4)
+            radius: ThemeTokens.dp(4)
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
             anchors.bottom: parent.top
-            anchors.bottomMargin: 6
+            anchors.bottomMargin: ThemeTokens.dp(6)
             anchors.horizontalCenter: parent.horizontalCenter
 
             Text {
@@ -256,9 +256,9 @@ Item {
     Rectangle {
         id: thumb2
         z: 2
-        width: root.isSm ? 12 : 16
-        height: root.isSm ? 12 : 16
-        radius: root.isSm ? 6 : 8
+        width: ThemeTokens.dp(root.isSm ? 12 : 16)
+        height: ThemeTokens.dp(root.isSm ? 12 : 16)
+        radius: ThemeTokens.dp(root.isSm ? 6 : 8)
         color: ThemeTokens.panel
         border.color: ThemeTokens.accent
         border.width: 2
@@ -285,14 +285,14 @@ Item {
             id: tooltip2
             visible: root.showTooltip && (thumb2Mouse.pressed || thumb2Mouse.containsMouse || (root.activeFocus && root.activeThumb === 2))
             z: 10
-            width: tooltipText2.implicitWidth + 8
-            height: tooltipText2.implicitHeight + 4
-            radius: 4
+            width: tooltipText2.implicitWidth + ThemeTokens.dp(8)
+            height: tooltipText2.implicitHeight + ThemeTokens.dp(4)
+            radius: ThemeTokens.dp(4)
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
             anchors.bottom: parent.top
-            anchors.bottomMargin: 6
+            anchors.bottomMargin: ThemeTokens.dp(6)
             anchors.horizontalCenter: parent.horizontalCenter
 
             Text {

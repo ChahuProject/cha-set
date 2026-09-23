@@ -27,8 +27,8 @@ Item {
     readonly property bool shouldShow: taskCount > 0 || forceVisible
 
     // Geometry defaults: bottom-right floating HUD
-    implicitWidth: 360
-    implicitHeight: stackContainer.height + (collapsedPill.visible ? collapsedPill.height + 8 : 0)
+    implicitWidth: ThemeTokens.dp(360)
+    implicitHeight: stackContainer.height + (collapsedPill.visible ? collapsedPill.height + ThemeTokens.dp(8) : 0)
     width: implicitWidth
     height: implicitHeight
 
@@ -69,11 +69,11 @@ Item {
     Rectangle {
         id: collapsedPill
         anchors.bottom: stackContainer.top
-        anchors.bottomMargin: 8
+        anchors.bottomMargin: ThemeTokens.dp(8)
         anchors.horizontalCenter: parent.horizontalCenter
-        width: pillRow.implicitWidth + 20
-        height: 24
-        radius: 12
+        width: pillRow.implicitWidth + ThemeTokens.dp(20)
+        height: ThemeTokens.dp(24)
+        radius: ThemeTokens.dp(12)
         visible: root.taskCount > root.maxVisible && root.hudVisible
         opacity: visible ? 1.0 : 0.0
         color: ThemeTokens.panelRaised
@@ -88,7 +88,7 @@ Item {
         Row {
             id: pillRow
             anchors.centerIn: parent
-            spacing: 4
+            spacing: ThemeTokens.dp(4)
 
             Text {
                 text: qsTr("还有 %1 项").arg(Math.max(0, root.taskCount - root.maxVisible))
@@ -112,7 +112,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        implicitHeight: Math.min(stack.implicitHeight, 420)
+        implicitHeight: Math.min(stack.implicitHeight, ThemeTokens.dp(420))
         height: implicitHeight
         clip: true
 
@@ -129,7 +129,7 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            spacing: 10
+            spacing: ThemeTokens.dp(10)
 
             move: Transition {
                 NumberAnimation {
@@ -197,9 +197,9 @@ Item {
                     readonly property int _elapsedMs: typeof (itemObj && itemObj.elapsedMs) === "number" ? itemObj.elapsedMs : (typeof model !== "undefined" && typeof model?.elapsedMs === "number" ? model.elapsedMs : 0)
 
                     width: stack.width
-                    implicitHeight: cardContent.implicitHeight + 14 + (showProgress ? 12 : 0)
+                    implicitHeight: cardContent.implicitHeight + ThemeTokens.dp(14) + (showProgress ? ThemeTokens.dp(12) : 0)
                     height: implicitHeight
-                    radius: 10
+                    radius: ThemeTokens.dp(10)
                     color: ThemeTokens.panelRaised
                     border.width: 1
                     border.color: {
@@ -229,8 +229,8 @@ Item {
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
-                        anchors.leftMargin: 8
-                        anchors.rightMargin: 8
+                        anchors.leftMargin: ThemeTokens.dp(8)
+                        anchors.rightMargin: ThemeTokens.dp(8)
                         height: 1
                         radius: 1
                         opacity: 0.18
@@ -244,26 +244,26 @@ Item {
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.top: parent.top
-                        anchors.leftMargin: 12
-                        anchors.rightMargin: 12
-                        anchors.topMargin: 10
+                        anchors.leftMargin: ThemeTokens.dp(12)
+                        anchors.rightMargin: ThemeTokens.dp(12)
+                        anchors.topMargin: ThemeTokens.dp(10)
                         implicitHeight: contentRow.implicitHeight
 
                         Row {
                             id: contentRow
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            spacing: 10
+                            spacing: ThemeTokens.dp(10)
 
                             // Status Icon (32px circular badge)
                             Item {
-                                width: 32
-                                height: 32
+                                width: ThemeTokens.dp(32)
+                                height: ThemeTokens.dp(32)
                                 anchors.verticalCenter: parent.verticalCenter
 
                                 Rectangle {
                                     anchors.fill: parent
-                                    radius: 16
+                                    radius: height / 2
                                     color: {
                                         if (card.isError) return Qt.rgba(ThemeTokens.danger.r, ThemeTokens.danger.g, ThemeTokens.danger.b, 0.12);
                                         if (card.isSuccess) return Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.12);
@@ -288,16 +288,16 @@ Item {
                             // Middle text column
                             Column {
                                 id: midCol
-                                width: parent.width - 32 - 24 - 20
+                                width: parent.width - ThemeTokens.dp(32) - ThemeTokens.dp(24) - ThemeTokens.dp(20)
                                 anchors.verticalCenter: parent.verticalCenter
-                                spacing: 3
+                                spacing: ThemeTokens.dp(3)
 
                                 Row {
                                     width: parent.width
-                                    spacing: 6
+                                    spacing: ThemeTokens.dp(6)
 
                                     Text {
-                                        width: parent.width - (elapsedText.visible ? elapsedText.width + 6 : 0)
+                                        width: parent.width - (elapsedText.visible ? elapsedText.width + ThemeTokens.dp(6) : 0)
                                         text: card._title || qsTr("Task")
                                         color: ThemeTokens.text
                                         font.pixelSize: Typography.sizeBody
@@ -344,9 +344,9 @@ Item {
                             // Dismiss button
                             Rectangle {
                                 id: dismissBtn
-                                width: 24
-                                height: 24
-                                radius: 12
+                                width: ThemeTokens.dp(24)
+                                height: ThemeTokens.dp(24)
+                                radius: height / 2
                                 anchors.verticalCenter: parent.verticalCenter
                                 color: dismissHover.hovered ? ThemeTokens.hover : "transparent"
 
@@ -382,16 +382,16 @@ Item {
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
-                        anchors.leftMargin: 12
-                        anchors.rightMargin: 12
-                        anchors.bottomMargin: 8
-                        height: 3
+                        anchors.leftMargin: ThemeTokens.dp(12)
+                        anchors.rightMargin: ThemeTokens.dp(12)
+                        anchors.bottomMargin: ThemeTokens.dp(8)
+                        height: ThemeTokens.dp(3)
                         clip: true
                         visible: card.showProgress
 
                         Rectangle {
                             anchors.fill: parent
-                            radius: 1.5
+                            radius: height / 2
                             color: ThemeTokens.border
                             opacity: 0.35
                         }
@@ -400,7 +400,7 @@ Item {
                         Rectangle {
                             id: determinateFill
                             height: parent.height
-                            radius: 1.5
+                            radius: height / 2
                             visible: !card.isIndeterminate
                             width: {
                                 const p = card._progress;
@@ -426,7 +426,7 @@ Item {
                         Rectangle {
                             id: shimmerBar
                             height: parent.height
-                            radius: 1.5
+                            radius: height / 2
                             width: parent.width * 0.36
                             visible: card.isIndeterminate
                             color: ThemeTokens.accent

@@ -19,20 +19,20 @@ Rectangle {
     property bool showCloseButton: true
     property int customSheetSize: 0
     property int sheetSize: {
-        if (customSheetSize > 0) return customSheetSize
+        if (customSheetSize > 0) return ThemeTokens.dp(customSheetSize)
         var isHorizontal = (side === "left" || side === "right")
         if (isHorizontal) {
-            if (size === "sm") return 280
-            if (size === "lg") return 460
-            if (size === "xl") return 640
+            if (size === "sm") return ThemeTokens.dp(280)
+            if (size === "lg") return ThemeTokens.dp(460)
+            if (size === "xl") return ThemeTokens.dp(640)
             if (size === "full") return root.width
-            return 360 // "default"
+            return ThemeTokens.dp(360) // "default"
         } else {
-            if (size === "sm") return 200
-            if (size === "lg") return 440
-            if (size === "xl") return 600
+            if (size === "sm") return ThemeTokens.dp(200)
+            if (size === "lg") return ThemeTokens.dp(440)
+            if (size === "xl") return ThemeTokens.dp(600)
             if (size === "full") return root.height
-            return 300 // "default"
+            return ThemeTokens.dp(300) // "default"
         }
     }
 
@@ -112,16 +112,16 @@ Rectangle {
 
         Column {
             anchors.fill: parent
-            anchors.margins: 20
-            spacing: 16
+            anchors.margins: ThemeTokens.dp(20)
+            spacing: ThemeTokens.dp(16)
 
             Row {
                 width: parent.width
-                spacing: 8
+                spacing: ThemeTokens.dp(8)
 
                 Column {
-                    width: parent.width - 36
-                    spacing: 4
+                    width: parent.width - ThemeTokens.dp(36)
+                    spacing: ThemeTokens.dp(4)
 
                     Text {
                         text: root.title
@@ -161,7 +161,7 @@ Rectangle {
             Item {
                 id: sheetContent
                 width: parent.width
-                height: parent.height - 80
+                height: parent.height - ThemeTokens.dp(80)
             }
         }
     }

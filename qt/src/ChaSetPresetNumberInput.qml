@@ -12,10 +12,10 @@ Item {
     property bool disabled: false
     property bool allowClear: true
     property string clearLabel: "None"
-    property int customRadius: 6
+    property int customRadius: ThemeTokens.dp(6)
 
-    implicitWidth: 140
-    implicitHeight: 32
+    implicitWidth: ThemeTokens.dp(140)
+    implicitHeight: ThemeTokens.dp(32)
 
     function formatPresetTag(num) {
         if (num >= 1024) {
@@ -115,7 +115,7 @@ Item {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.margins: 1
-        width: 24
+        width: ThemeTokens.dp(24)
         color: "transparent"
         radius: root.customRadius - 1
 
@@ -143,9 +143,9 @@ Item {
 
     Popup {
         id: presetPopup
-        y: root.height + 4
-        width: Math.max(root.width, 140)
-        padding: 4
+        y: root.height + ThemeTokens.dp(4)
+        width: Math.max(root.width, ThemeTokens.dp(140))
+        padding: ThemeTokens.dp(4)
         modal: false
         focus: false
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -189,13 +189,13 @@ Item {
                 id: clearItem
                 visible: root.allowClear
                 width: parent.width
-                height: 26
-                radius: 4
+                height: ThemeTokens.dp(26)
+                radius: ThemeTokens.dp(4)
                 color: clearMouse.containsMouse ? ThemeTokens.hover : "transparent"
 
                 Text {
                     anchors.left: parent.left
-                    anchors.leftMargin: 8
+                    anchors.leftMargin: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
                     text: root.clearLabel
                     color: ThemeTokens.subduedText
@@ -221,15 +221,15 @@ Item {
                     required property var modelData
                     required property int index
                     width: parent ? parent.width : 0
-                    height: 26
-                    radius: 4
+                    height: ThemeTokens.dp(26)
+                    radius: ThemeTokens.dp(4)
                     readonly property bool isSelected: String(modelData) === String(root.value)
                     readonly property bool isHighlighted: presetPopup.highlightedIndex === index
                     color: isHighlighted ? ThemeTokens.hover : (isSelected ? ThemeTokens.hover : "transparent")
 
                     Text {
                         anchors.left: parent.left
-                        anchors.leftMargin: 8
+                        anchors.leftMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
                         text: String(parent.modelData)
                         color: ThemeTokens.text
@@ -239,7 +239,7 @@ Item {
 
                     Text {
                         anchors.right: parent.right
-                        anchors.rightMargin: 8
+                        anchors.rightMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
                         text: root.formatPresetTag(parent.modelData)
                         color: ThemeTokens.subduedText

@@ -50,9 +50,9 @@ Item {
 
     readonly property bool isDark: ThemeTokens.dark
     readonly property bool isSm: root.size === "sm"
-    readonly property int cardWidth: isSm ? 280 : 320
-    readonly property int stageSize: isSm ? 200 : 236
-    readonly property int ringThickness: isSm ? 16 : 20
+    readonly property int cardWidth: ThemeTokens.dp(isSm ? 280 : 320)
+    readonly property int stageSize: ThemeTokens.dp(isSm ? 200 : 236)
+    readonly property int ringThickness: ThemeTokens.dp(isSm ? 16 : 20)
     readonly property int innerStageSize: stageSize - ringThickness * 2
     readonly property int squareSize: Math.floor(innerStageSize * 0.7071)
     readonly property real ringHandleRadius: (stageSize - ringThickness) * 0.5
@@ -66,29 +66,29 @@ Item {
     readonly property string sliderDensity: activeSliderCount >= 8 ? "dense" :
                                             activeSliderCount >= 5 ? "compact" : "spacious"
 
-    readonly property int sliderRowHeight: sliderDensity === "dense" ? (isSm ? 16 : 18) :
-                                           sliderDensity === "compact" ? (isSm ? 19 : 22) : (isSm ? 22 : 26)
+    readonly property int sliderRowHeight: ThemeTokens.dp(sliderDensity === "dense" ? (isSm ? 16 : 18) :
+                                           sliderDensity === "compact" ? (isSm ? 19 : 22) : (isSm ? 22 : 26))
 
-    readonly property real sliderTrackHeight: sliderDensity === "dense" ? (isSm ? 3.0 : 3.5) :
-                                              sliderDensity === "compact" ? (isSm ? 4.5 : 5.5) : (isSm ? 6.0 : 8.0)
+    readonly property real sliderTrackHeight: ThemeTokens.dp(sliderDensity === "dense" ? (isSm ? 3.0 : 3.5) :
+                                              sliderDensity === "compact" ? (isSm ? 4.5 : 5.5) : (isSm ? 6.0 : 8.0))
 
-    readonly property int sliderThumbSize: sliderDensity === "dense" ? (isSm ? 9 : 10) :
-                                           sliderDensity === "compact" ? (isSm ? 11 : 13) : (isSm ? 14 : 16)
+    readonly property int sliderThumbSize: ThemeTokens.dp(sliderDensity === "dense" ? (isSm ? 9 : 10) :
+                                           sliderDensity === "compact" ? (isSm ? 11 : 13) : (isSm ? 14 : 16))
 
-    readonly property int sliderLabelFontSize: sliderDensity === "dense" ? (isSm ? 8 : 9) :
-                                               sliderDensity === "compact" ? (isSm ? 9 : 10) : (isSm ? 10 : 11)
+    readonly property int sliderLabelFontSize: sliderDensity === "dense" ? (isSm ? Typography.sizeNano : Typography.sizeMicro) :
+                                               sliderDensity === "compact" ? (isSm ? Typography.sizeMicro : Typography.sizeCaption) : (isSm ? Typography.sizeCaption : Typography.sizeSmall)
 
-    readonly property int sliderInputWidth: sliderDensity === "dense" ? (isSm ? 34 : 40) :
-                                            sliderDensity === "compact" ? (isSm ? 38 : 46) : (isSm ? 44 : 52)
+    readonly property int sliderInputWidth: ThemeTokens.dp(sliderDensity === "dense" ? (isSm ? 34 : 40) :
+                                            sliderDensity === "compact" ? (isSm ? 38 : 46) : (isSm ? 44 : 52))
 
-    readonly property int sliderInputHeight: sliderDensity === "dense" ? (isSm ? 16 : 18) :
-                                             sliderDensity === "compact" ? (isSm ? 18 : 20) : (isSm ? 20 : 24)
+    readonly property int sliderInputHeight: ThemeTokens.dp(sliderDensity === "dense" ? (isSm ? 16 : 18) :
+                                             sliderDensity === "compact" ? (isSm ? 18 : 20) : (isSm ? 20 : 24))
 
-    readonly property int sliderSpacing: sliderDensity === "dense" ? (isSm ? 2 : 3) :
-                                         sliderDensity === "compact" ? (isSm ? 3 : 4) : (isSm ? 4 : 6)
+    readonly property int sliderSpacing: ThemeTokens.dp(sliderDensity === "dense" ? (isSm ? 2 : 3) :
+                                         sliderDensity === "compact" ? (isSm ? 3 : 4) : (isSm ? 4 : 6))
 
     implicitWidth: mode === "popover" ? popoverTrigger.implicitWidth : (panelLoader.item ? panelLoader.item.width : cardWidth)
-    implicitHeight: mode === "popover" ? popoverTrigger.implicitHeight : (panelLoader.item ? panelLoader.item.height : 540)
+    implicitHeight: mode === "popover" ? popoverTrigger.implicitHeight : (panelLoader.item ? panelLoader.item.height : ThemeTokens.dp(540))
     width: implicitWidth
     height: implicitHeight
 
@@ -350,7 +350,7 @@ Item {
             id: rowLabel
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            width: root.sliderDensity === "dense" ? 10 : 14
+            width: root.sliderDensity === "dense" ? ThemeTokens.dp(10) : ThemeTokens.dp(14)
             text: row.label
             color: row.labelColor
             font.pixelSize: root.sliderLabelFontSize
@@ -360,9 +360,9 @@ Item {
         Item {
             id: trackContainer
             anchors.left: rowLabel.right
-            anchors.leftMargin: 6
+            anchors.leftMargin: ThemeTokens.dp(6)
             anchors.right: numInputBox.left
-            anchors.rightMargin: 6
+            anchors.rightMargin: ThemeTokens.dp(6)
             anchors.verticalCenter: parent.verticalCenter
             height: root.sliderRowHeight
 
@@ -416,7 +416,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             width: root.sliderInputWidth
             height: root.sliderInputHeight
-            radius: 3
+            radius: ThemeTokens.dp(3)
             color: root.isDark ? Qt.rgba(1, 1, 1, 0.06) : Qt.rgba(0, 0, 0, 0.04)
             border.color: numIn.activeFocus ? ThemeTokens.accent : ThemeTokens.border
             border.width: 1
@@ -453,9 +453,9 @@ Item {
         Rectangle {
             id: cardRect
             width: root.cardWidth
-            implicitHeight: cardColumn.implicitHeight + 24
+            implicitHeight: cardColumn.implicitHeight + ThemeTokens.dp(24)
             height: implicitHeight
-            radius: 8
+            radius: ThemeTokens.dp(8)
             color: root.isDark ? ThemeTokens.panel : "#ffffff"
             border.color: ThemeTokens.border
             border.width: 1
@@ -512,19 +512,19 @@ Item {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-                anchors.margins: 12
-                spacing: 10
+                anchors.margins: ThemeTokens.dp(12)
+                spacing: ThemeTokens.dp(10)
 
                 // 1. Preview Header
                 Row {
                     width: parent.width
                     visible: root.showPreview
-                    spacing: 10
+                    spacing: ThemeTokens.dp(10)
 
                     Rectangle {
-                        width: 32
-                        height: 32
-                        radius: 6
+                        width: ThemeTokens.dp(32)
+                        height: ThemeTokens.dp(32)
+                        radius: ThemeTokens.dp(6)
                         color: root.value
                         border.color: ThemeTokens.border
                         border.width: 1
@@ -533,7 +533,7 @@ Item {
 
                     Column {
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: 2
+                        spacing: ThemeTokens.dp(2)
                         Text {
                             text: "Color"
                             color: ThemeTokens.text
@@ -552,14 +552,14 @@ Item {
                 // 2. View Tab Switcher (Square / Circle / Triangle / Swatches)
                 Rectangle {
                     width: parent.width
-                    height: 28
-                    radius: 6
+                    height: ThemeTokens.dp(28)
+                    radius: ThemeTokens.dp(6)
                     color: root.isDark ? Qt.rgba(1, 1, 1, 0.06) : Qt.rgba(0, 0, 0, 0.05)
 
                     Row {
                         anchors.fill: parent
-                        anchors.margins: 2
-                        spacing: 2
+                        anchors.margins: ThemeTokens.dp(2)
+                        spacing: ThemeTokens.dp(2)
 
                         Repeater {
                             model: [
@@ -569,9 +569,9 @@ Item {
                                 { id: "swatches", label: "Swatches" }
                             ]
                             Rectangle {
-                                width: (parent.width - 6) / 4
+                                width: (parent.width - ThemeTokens.dp(6)) / 4
                                 height: parent.height
-                                radius: 4
+                                radius: ThemeTokens.dp(4)
                                 color: root.activePanel === modelData.id
                                     ? (root.isDark ? Qt.rgba(1, 1, 1, 0.15) : "#ffffff")
                                     : "transparent"
@@ -695,14 +695,14 @@ Item {
 
                                 Rectangle {
                                     id: squareThumb
-                                    width: 12
-                                    height: 12
-                                    radius: 6
+                                    width: ThemeTokens.dp(12)
+                                    height: ThemeTokens.dp(12)
+                                    radius: height / 2
                                     color: root.value
                                     border.color: "#ffffff"
                                     border.width: 2
-                                    x: Math.max(0, Math.min(parent.width - 12, root.currentS * (parent.width - 12)))
-                                    y: Math.max(0, Math.min(parent.height - 12, (1.0 - root.currentV) * (parent.height - 12)))
+                                    x: Math.max(0, Math.min(parent.width - width, root.currentS * (parent.width - width)))
+                                    y: Math.max(0, Math.min(parent.height - height, (1.0 - root.currentV) * (parent.height - height)))
                                 }
 
                                 MouseArea {
@@ -780,9 +780,9 @@ Item {
 
                                 Rectangle {
                                     id: triThumb
-                                    width: 14
-                                    height: 14
-                                    radius: 7
+                                    width: ThemeTokens.dp(14)
+                                    height: ThemeTokens.dp(14)
+                                    radius: height / 2
                                     color: root.value
                                     border.color: "#ffffff"
                                     border.width: 2
@@ -793,8 +793,8 @@ Item {
                                         return root.weightsToPoint(weights.pure, weights.white, weights.black, w, w);
                                     }
 
-                                    x: pt.x - 7
-                                    y: pt.y - 7
+                                    x: pt.x - width / 2
+                                    y: pt.y - height / 2
                                 }
 
                                 MouseArea {
@@ -818,14 +818,14 @@ Item {
                         // Orbiting Hue Ring Handle
                         Rectangle {
                             z: 2
-                            width: 14
-                            height: 14
-                            radius: 7
+                            width: ThemeTokens.dp(14)
+                            height: ThemeTokens.dp(14)
+                            radius: height / 2
                             color: "#ffffff"
                             border.color: ThemeTokens.accent
                             border.width: 2
-                            x: (parent.width * 0.5) + root.ringHandleRadius * Math.cos((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - 7
-                            y: (parent.height * 0.5) + root.ringHandleRadius * Math.sin((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - 7
+                            x: (parent.width * 0.5) + root.ringHandleRadius * Math.cos((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - width / 2
+                            y: (parent.height * 0.5) + root.ringHandleRadius * Math.sin((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - height / 2
                         }
 
                         // Hue Ring Mouse Interaction
@@ -910,14 +910,14 @@ Item {
 
                         // Wheel Pointer Handle
                         Rectangle {
-                            width: 14
-                            height: 14
-                            radius: 7
+                            width: ThemeTokens.dp(14)
+                            height: ThemeTokens.dp(14)
+                            radius: height / 2
                             color: root.value
                             border.color: "#ffffff"
                             border.width: 2
-                            x: (parent.width * 0.5) + (root.currentS * (parent.width * 0.5 - 7)) * Math.cos((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - 7
-                            y: (parent.height * 0.5) + (root.currentS * (parent.height * 0.5 - 7)) * Math.sin((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - 7
+                            x: (parent.width * 0.5) + (root.currentS * (parent.width * 0.5 - width / 2)) * Math.cos((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - width / 2
+                            y: (parent.height * 0.5) + (root.currentS * (parent.height * 0.5 - height / 2)) * Math.sin((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - height / 2
                         }
 
                         MouseArea {
@@ -950,16 +950,16 @@ Item {
 
                         Grid {
                             anchors.centerIn: parent
-                            width: parent.width - 8
+                            width: parent.width - ThemeTokens.dp(8)
                             columns: 8
-                            spacing: 4
+                            spacing: ThemeTokens.dp(4)
 
                             Repeater {
                                 model: root.presetColors
                                 Rectangle {
-                                    width: (parent.width - 28) / 8
-                                    height: 22
-                                    radius: 4
+                                    width: (parent.width - ThemeTokens.dp(28)) / 8
+                                    height: ThemeTokens.dp(22)
+                                    radius: ThemeTokens.dp(4)
                                     color: modelData
                                     border.color: modelData.toUpperCase() === root.hex.toUpperCase() ? ThemeTokens.accent : ThemeTokens.border
                                     border.width: modelData.toUpperCase() === root.hex.toUpperCase() ? 2 : 1
@@ -978,15 +978,15 @@ Item {
                 // Quick preset swatches row (when not on swatches tab)
                 Flow {
                     width: parent.width
-                    spacing: 4
+                    spacing: ThemeTokens.dp(4)
                     visible: root.showSwatches && root.activePanel !== "swatches"
 
                     Repeater {
                         model: root.presetColors.slice(0, 16)
                         Rectangle {
-                            width: (parent.width - 32) / 8
-                            height: 18
-                            radius: 3
+                            width: (parent.width - ThemeTokens.dp(32)) / 8
+                            height: ThemeTokens.dp(18)
+                            radius: ThemeTokens.dp(3)
                             color: modelData
                             border.color: modelData.toUpperCase() === root.hex.toUpperCase() ? ThemeTokens.accent : ThemeTokens.border
                             border.width: modelData.toUpperCase() === root.hex.toUpperCase() ? 2 : 1
@@ -1003,8 +1003,8 @@ Item {
                 // 4. Hex Input Row with Copy Button
                 Row {
                     width: parent.width
-                    height: 28
-                    spacing: 8
+                    height: ThemeTokens.dp(28)
+                    spacing: ThemeTokens.dp(8)
                     visible: root.showHex
 
                     Text {
@@ -1016,9 +1016,9 @@ Item {
                     }
 
                     Rectangle {
-                        width: parent.width - 40
-                        height: 28
-                        radius: 4
+                        width: parent.width - ThemeTokens.dp(40)
+                        height: ThemeTokens.dp(28)
+                        radius: ThemeTokens.dp(4)
                         color: root.isDark ? Qt.rgba(1, 1, 1, 0.05) : Qt.rgba(0, 0, 0, 0.03)
                         border.color: hexInput.activeFocus ? ThemeTokens.accent : ThemeTokens.border
                         border.width: 1
@@ -1029,8 +1029,8 @@ Item {
                             anchors.right: copyBtn.left
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
-                            anchors.leftMargin: 8
-                            anchors.rightMargin: 4
+                            anchors.leftMargin: ThemeTokens.dp(8)
+                            anchors.rightMargin: ThemeTokens.dp(4)
                             verticalAlignment: TextInput.AlignVCenter
                             text: root.hex
                             font.family: Typography.familyMono
@@ -1055,7 +1055,7 @@ Item {
                         ChaSetCopyButton {
                             id: copyBtn
                             anchors.right: parent.right
-                            anchors.rightMargin: 2
+                            anchors.rightMargin: ThemeTokens.dp(2)
                             anchors.verticalCenter: parent.verticalCenter
                             text: root.hex
                             size: "icon-xs"
@@ -1067,8 +1067,8 @@ Item {
                 // 5. Channel Toggle Switcher Bar (Placed directly above sliders)
                 Row {
                     width: parent.width
-                    height: 26
-                    spacing: 4
+                    height: ThemeTokens.dp(26)
+                    spacing: ThemeTokens.dp(4)
 
                     Repeater {
                         model: [
@@ -1079,9 +1079,9 @@ Item {
                         ]
 
                         Rectangle {
-                            width: (parent.width - 12) / 4
+                            width: (parent.width - ThemeTokens.dp(12)) / 4
                             height: parent.height
-                            radius: 4
+                            radius: ThemeTokens.dp(4)
                             color: modelData.active
                                 ? (root.isDark ? Qt.rgba(1, 1, 1, 0.16) : Qt.rgba(0, 0, 0, 0.08))
                                 : "transparent"
@@ -1316,9 +1316,9 @@ Item {
     Rectangle {
         id: popoverTrigger
         visible: root.mode === "popover"
-        implicitWidth: root.isSm ? 110 : 124
-        implicitHeight: root.isSm ? 32 : 36
-        radius: 6
+        implicitWidth: ThemeTokens.dp(root.isSm ? 110 : 124)
+        implicitHeight: ThemeTokens.dp(root.isSm ? 32 : 36)
+        radius: ThemeTokens.dp(6)
         color: root.disabled ? ThemeTokens.disabled : (triggerMouse.containsMouse || popoverTrigger.activeFocus ? Qt.rgba(1, 1, 1, 0.08) : "transparent")
         border.color: popoverTrigger.activeFocus ? ThemeTokens.focus : ThemeTokens.border
         border.width: popoverTrigger.activeFocus ? 2 : 1
@@ -1345,12 +1345,12 @@ Item {
 
         Row {
             anchors.centerIn: parent
-            spacing: 8
+            spacing: ThemeTokens.dp(8)
 
             Rectangle {
-                width: 16
-                height: 16
-                radius: 8
+                width: ThemeTokens.dp(16)
+                height: ThemeTokens.dp(16)
+                radius: height / 2
                 color: root.value
                 border.color: ThemeTokens.border
                 border.width: 1
@@ -1390,7 +1390,7 @@ Item {
     // Popover Floating Dropdown
     Popup {
         id: colorPopup
-        y: popoverTrigger.height + 4
+        y: popoverTrigger.height + ThemeTokens.dp(4)
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         padding: 0
         background: Item {}

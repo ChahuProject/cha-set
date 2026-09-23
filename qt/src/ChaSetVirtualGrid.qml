@@ -17,6 +17,10 @@ Item {
     property int overscan: 4
     property int customRadius: 6
 
+    readonly property int effectiveCellWidth: ThemeTokens.dp(root.cellWidth)
+    readonly property int effectiveCellHeight: ThemeTokens.dp(root.cellHeight)
+    readonly property int effectiveEstimateSize: ThemeTokens.dp(root.estimateSize)
+
     function scrollToIndex(index) {
         if (gridView) {
             gridView.positionViewAtIndex(index, GridView.Beginning)
@@ -24,8 +28,8 @@ Item {
         }
     }
 
-    implicitWidth: 360
-    implicitHeight: 280
+    implicitWidth: ThemeTokens.dp(360)
+    implicitHeight: ThemeTokens.dp(280)
     activeFocusOnTab: true
 
     Keys.onUpPressed: function(event) {
@@ -53,19 +57,19 @@ Item {
         color: ThemeTokens.panel
         border.color: root.activeFocus ? ThemeTokens.focus : ThemeTokens.border
         border.width: root.activeFocus ? 2 : 1
-        radius: root.customRadius
+        radius: ThemeTokens.dp(root.customRadius)
         clip: true
 
         GridView {
             id: gridView
             anchors.fill: parent
-            anchors.margins: 8
-            cellWidth: root.cellWidth
-            cellHeight: root.cellHeight
+            anchors.margins: ThemeTokens.dp(8)
+            cellWidth: root.effectiveCellWidth
+            cellHeight: root.effectiveCellHeight
             boundsBehavior: Flickable.StopAtBounds
             clip: true
             reuseItems: true
-            cacheBuffer: root.overscan * (root.estimateSize > 0 ? root.estimateSize : root.cellHeight)
+            cacheBuffer: root.overscan * (root.estimateSize > 0 ? ThemeTokens.dp(root.estimateSize) : root.effectiveCellHeight)
 
             ScrollBar.vertical: ChaSetScrollBar {
                 orientation: Qt.Vertical

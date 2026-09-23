@@ -290,7 +290,7 @@ Item {
 
                 Row {
                     anchors.centerIn: parent
-                    spacing: 4
+                    spacing: ThemeTokens.dp(4)
 
                     ChaSetIcon {
                         id: iconItem
@@ -310,10 +310,10 @@ Item {
                         font.weight: segItem.isSelected ? Typography.weightMedium : Typography.weightRegular
                         elide: Text.ElideRight
                         width: {
-                            var avail = segItem.width - 12;
-                            if (iconItem.visible) avail -= (iconItem.implicitWidth + 4);
-                            if (badgeItem.visible) avail -= (badgeItem.width + 4);
-                            return Math.max(10, Math.min(implicitWidth, avail));
+                            var avail = segItem.width - ThemeTokens.dp(12);
+                            if (iconItem.visible) avail -= (iconItem.implicitWidth + ThemeTokens.dp(4));
+                            if (badgeItem.visible) avail -= (badgeItem.width + ThemeTokens.dp(4));
+                            return Math.max(ThemeTokens.dp(10), Math.min(implicitWidth, avail));
                         }
                         color: {
                             if (segItem.isItemDisabled) return ThemeTokens.subduedText;
@@ -327,9 +327,9 @@ Item {
                         id: badgeItem
                         visible: modelData && modelData.badge !== undefined && String(modelData.badge).length > 0
                         anchors.verticalCenter: parent.verticalCenter
-                        radius: 8
-                        height: root.itemFontSize + 2
-                        width: badgeText.implicitWidth + 8
+                        radius: ThemeTokens.dp(8)
+                        height: root.itemFontSize + ThemeTokens.dp(2)
+                        width: badgeText.implicitWidth + ThemeTokens.dp(8)
                         color: segItem.isSelected ? Qt.rgba(14/255, 165/255, 233/255, 0.15) : Qt.rgba(100/255, 116/255, 139/255, 0.15)
 
                         Text {

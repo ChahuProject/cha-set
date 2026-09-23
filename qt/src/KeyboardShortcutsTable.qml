@@ -53,7 +53,7 @@ Column {
         interactive: false
         columns: [
             { key: "key", title: "KEY SHORTCUT", width: 256, kbd: true },
-            { key: "action", title: "ACTION / BEHAVIOR" }
+            { key: "action", title: "ACTION / BEHAVIOR", wrap: true }
         ]
         rows: {
             var res = []

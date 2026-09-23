@@ -51,8 +51,8 @@ Item {
         // Icon-only presentation (centered)
         Item {
             anchors.centerIn: parent
-            width: 14
-            height: 14
+            width: ThemeTokens.dp(14)
+            height: ThemeTokens.dp(14)
             visible: root.label.length === 0
 
             // Copy icon (two overlapping rectangles)
@@ -61,13 +61,13 @@ Item {
                 visible: !root.copied
 
                 Rectangle {
-                    x: 3; y: 0; width: 9; height: 9; radius: 1
+                    x: ThemeTokens.dp(3); y: 0; width: ThemeTokens.dp(9); height: ThemeTokens.dp(9); radius: Math.max(1, ThemeTokens.dp(1))
                     color: "transparent"
                     border.color: btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText
                     border.width: 1.2
                 }
                 Rectangle {
-                    x: 0; y: 3; width: 9; height: 9; radius: 1
+                    x: 0; y: ThemeTokens.dp(3); width: ThemeTokens.dp(9); height: ThemeTokens.dp(9); radius: Math.max(1, ThemeTokens.dp(1))
                     color: btn.variant === "outline" ? ThemeTokens.background : (btn.variant === "ghost" ? "transparent" : ThemeTokens.panel)
                     border.color: btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText
                     border.width: 1.2
@@ -99,12 +99,12 @@ Item {
         Row {
             id: labelRow
             anchors.centerIn: parent
-            spacing: 6
+            spacing: ThemeTokens.dp(6)
             visible: root.label.length > 0
 
             Item {
-                width: 14
-                height: 14
+                width: ThemeTokens.dp(14)
+                height: ThemeTokens.dp(14)
                 anchors.verticalCenter: parent.verticalCenter
 
                 Item {
@@ -112,13 +112,13 @@ Item {
                     visible: !root.copied
 
                     Rectangle {
-                        x: 3; y: 0; width: 9; height: 9; radius: 1
+                        x: ThemeTokens.dp(3); y: 0; width: ThemeTokens.dp(9); height: ThemeTokens.dp(9); radius: Math.max(1, ThemeTokens.dp(1))
                         color: "transparent"
                         border.color: btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText
                         border.width: 1.2
                     }
                     Rectangle {
-                        x: 0; y: 3; width: 9; height: 9; radius: 1
+                        x: 0; y: ThemeTokens.dp(3); width: ThemeTokens.dp(9); height: ThemeTokens.dp(9); radius: Math.max(1, ThemeTokens.dp(1))
                         color: btn.variant === "outline" ? ThemeTokens.background : (btn.variant === "ghost" ? "transparent" : ThemeTokens.panel)
                         border.color: btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText
                         border.width: 1.2

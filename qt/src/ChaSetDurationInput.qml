@@ -16,7 +16,7 @@ Item {
     property string minutesLabel: "Minutes"
     property string secondsLabel: "Seconds"
     property string presetsLabel: "Presets"
-    property int customRadius: 6
+    property int customRadius: ThemeTokens.dp(6)
 
     property var presets: [
         {
@@ -43,9 +43,9 @@ Item {
         }
     ]
 
-    readonly property int boxHeight: size === "sm" ? 28 : (size === "lg" ? 36 : 32)
-    readonly property int inputWidth: size === "sm" ? 32 : (size === "lg" ? 48 : 40)
-    readonly property int stepperWidth: size === "sm" ? 14 : (size === "lg" ? 18 : 16)
+    readonly property int boxHeight: ThemeTokens.dp(size === "sm" ? 28 : (size === "lg" ? 36 : 32))
+    readonly property int inputWidth: ThemeTokens.dp(size === "sm" ? 32 : (size === "lg" ? 48 : 40))
+    readonly property int stepperWidth: ThemeTokens.dp(size === "sm" ? 14 : (size === "lg" ? 18 : 16))
     readonly property int fontSize: size === "sm" ? Typography.sizeCaption : (size === "lg" ? Typography.sizeBody : Typography.sizeSmall)
     readonly property int labelFontSize: size === "sm" ? Typography.sizeNano : (size === "lg" ? Typography.sizeCaption : Typography.sizeMicro)
     readonly property int segmentBoxWidth: inputWidth + stepperWidth
@@ -143,12 +143,12 @@ Item {
 
     Column {
         id: mainColumn
-        spacing: 4
+        spacing: ThemeTokens.dp(4)
 
         // Top Row: Segments and Presets Button
         Row {
             id: controlsRow
-            spacing: 6
+            spacing: ThemeTokens.dp(6)
 
             // Hours Segment Box
             Rectangle {
@@ -539,7 +539,7 @@ Item {
                 id: presetBtn
                 visible: root.showPresets
                 height: root.boxHeight
-                width: presetBtnRow.implicitWidth + 16
+                width: presetBtnRow.implicitWidth + ThemeTokens.dp(16)
                 radius: root.customRadius
                 color: presetMouse.containsMouse ? ThemeTokens.hover : "transparent"
                 border.color: ThemeTokens.border
@@ -549,7 +549,7 @@ Item {
                 Row {
                     id: presetBtnRow
                     anchors.centerIn: parent
-                    spacing: 4
+                    spacing: ThemeTokens.dp(4)
 
                     ChaSetIcon {
                         anchors.verticalCenter: parent.verticalCenter
@@ -587,7 +587,7 @@ Item {
         Row {
             id: labelsRow
             visible: root.showLabels
-            spacing: 6
+            spacing: ThemeTokens.dp(6)
 
             Text {
                 width: root.segmentBoxWidth
@@ -597,7 +597,7 @@ Item {
                 color: ThemeTokens.subduedText
             }
 
-            Item { width: 4; height: 1 } // colon space placeholder
+            Item { width: ThemeTokens.dp(4); height: 1 } // colon space placeholder
 
             Text {
                 width: root.segmentBoxWidth
@@ -607,7 +607,7 @@ Item {
                 color: ThemeTokens.subduedText
             }
 
-            Item { width: 4; height: 1 } // colon space placeholder
+            Item { width: ThemeTokens.dp(4); height: 1 } // colon space placeholder
 
             Text {
                 width: root.segmentBoxWidth
@@ -622,10 +622,10 @@ Item {
     // Presets Popup
     Popup {
         id: presetPopup
-        y: controlsRow.height + 4
+        y: controlsRow.height + ThemeTokens.dp(4)
         x: controlsRow.width - width
-        width: 130
-        padding: 4
+        width: ThemeTokens.dp(130)
+        padding: ThemeTokens.dp(4)
         modal: false
         focus: false
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -638,7 +638,7 @@ Item {
         }
 
         contentItem: Column {
-            spacing: 4
+            spacing: ThemeTokens.dp(4)
             width: parent.width
 
             Repeater {
@@ -646,12 +646,12 @@ Item {
                 delegate: Column {
                     required property var modelData
                     required property int index
-                    width: parent ? parent.width : 120
+                    width: parent ? parent.width : ThemeTokens.dp(120)
                     spacing: 2
 
                     Rectangle {
                         visible: index > 0
-                        width: parent ? parent.width : 120
+                        width: parent ? parent.width : ThemeTokens.dp(120)
                         height: 1
                         color: ThemeTokens.border
                     }
@@ -661,7 +661,7 @@ Item {
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeMicro
                         font.weight: Font.DemiBold
-                        leftPadding: 4
+                        leftPadding: ThemeTokens.dp(4)
                         topPadding: 2
                     }
 
@@ -670,15 +670,15 @@ Item {
                         delegate: Rectangle {
                             required property var modelData
                             required property int index
-                            width: parent ? parent.width : 120
-                            height: 24
+                            width: parent ? parent.width : ThemeTokens.dp(120)
+                            height: ThemeTokens.dp(24)
 
-                            radius: 4
+                            radius: ThemeTokens.dp(4)
                             color: itemMouse.containsMouse ? ThemeTokens.hover : "transparent"
 
                             Text {
                                 anchors.left: parent.left
-                                anchors.leftMargin: 8
+                                anchors.leftMargin: ThemeTokens.dp(8)
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: modelData.label
                                 color: ThemeTokens.text

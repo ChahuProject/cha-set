@@ -15,6 +15,9 @@ Item {
     property int overscan: 8
     property int customRadius: 6
 
+    readonly property int effectiveItemHeight: ThemeTokens.dp(root.itemHeight)
+    readonly property int effectiveEstimateSize: ThemeTokens.dp(root.estimateSize)
+
     function scrollToIndex(index) {
         if (listView) {
             listView.positionViewAtIndex(index, ListView.Beginning);
@@ -22,8 +25,8 @@ Item {
         }
     }
 
-    implicitWidth: 320
-    implicitHeight: 280
+    implicitWidth: ThemeTokens.dp(320)
+    implicitHeight: ThemeTokens.dp(280)
     activeFocusOnTab: true
 
     Keys.onUpPressed: function(event) {
@@ -57,7 +60,7 @@ Item {
         color: ThemeTokens.panel
         border.color: root.activeFocus ? ThemeTokens.focus : ThemeTokens.border
         border.width: root.activeFocus ? 2 : 1
-        radius: root.customRadius
+        radius: ThemeTokens.dp(root.customRadius)
         clip: true
 
         ListView {
@@ -66,8 +69,8 @@ Item {
             boundsBehavior: Flickable.StopAtBounds
             clip: true
             reuseItems: true
-            spacing: root.gap
-            cacheBuffer: root.overscan * (root.estimateSize > 0 ? root.estimateSize : root.itemHeight)
+            spacing: ThemeTokens.dp(root.gap)
+            cacheBuffer: root.overscan * (root.estimateSize > 0 ? root.effectiveEstimateSize : root.effectiveItemHeight)
 
             ScrollBar.vertical: ChaSetScrollBar {
                 orientation: Qt.Vertical

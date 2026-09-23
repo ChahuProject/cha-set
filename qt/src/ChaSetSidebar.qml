@@ -24,17 +24,17 @@ Item {
 
     readonly property int effectiveWidth: {
         if (!root.collapsed || root.collapsible === "none") {
-            return root.sidebarWidth
+            return ThemeTokens.dp(root.sidebarWidth)
         }
         if (root.isIconMode) {
-            return root.iconWidth
+            return ThemeTokens.dp(root.iconWidth)
         }
         return 0 // offcanvas
     }
 
     width: effectiveWidth
     implicitWidth: effectiveWidth
-    implicitHeight: 600
+    implicitHeight: ThemeTokens.dp(600)
 
     property bool isResizing: false
 
@@ -60,7 +60,7 @@ Item {
         color: root.variant === "floating" ? ThemeTokens.panelRaised : ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: root.variant === "floating" ? 1 : 0
-        radius: root.variant === "floating" ? 8 : (root.variant === "inset" ? 6 : 0)
+        radius: root.variant === "floating" ? ThemeTokens.dp(8) : (root.variant === "inset" ? ThemeTokens.dp(6) : 0)
         clip: true
 
         // Separating border on dock edge
@@ -78,7 +78,7 @@ Item {
         Item {
             id: contentHost
             anchors.fill: parent
-            anchors.margins: root.variant === "floating" ? 8 : 0
+            anchors.margins: root.variant === "floating" ? ThemeTokens.dp(8) : 0
             clip: true
         }
     }
@@ -90,13 +90,13 @@ Item {
     Rectangle {
         id: rail
         visible: root.resizable && (!root.collapsed || root.isIconMode)
-        width: 6
+        width: ThemeTokens.dp(6)
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: root.isRight ? undefined : parent.right
         anchors.left: root.isRight ? parent.left : undefined
-        anchors.rightMargin: root.isRight ? 0 : -3
-        anchors.leftMargin: root.isRight ? -3 : 0
+        anchors.rightMargin: root.isRight ? 0 : -ThemeTokens.dp(3)
+        anchors.leftMargin: root.isRight ? -ThemeTokens.dp(3) : 0
         z: 100
         color: railMouse.containsMouse || root.isResizing ? ThemeTokens.accent : "transparent"
         opacity: railMouse.containsMouse || root.isResizing ? 0.75 : 0.0
@@ -128,11 +128,12 @@ Item {
                         ? (railMouse.startWidth - delta)
                         : (railMouse.startWidth + delta)
 
-                    if (newW < 96 && root.collapsible !== "none") {
+                    if (newW < ThemeTokens.dp(96) && root.collapsible !== "none") {
                         root.collapsed = true
                     } else {
                         root.collapsed = false
-                        root.sidebarWidth = Math.max(root.minWidth, Math.min(root.maxWidth, newW))
+                        var logicalW = Math.round(newW / (ThemeTokens.uiScale > 0 ? ThemeTokens.uiScale : 1.0))
+                        root.sidebarWidth = Math.max(root.minWidth, Math.min(root.maxWidth, logicalW))
                     }
                 }
             }

@@ -123,7 +123,7 @@ Item {
     }
 
     implicitWidth: pill.implicitWidth
-    implicitHeight: isLg ? 42 : 40
+    implicitHeight: root.ignoreUiScale ? (isLg ? 42 : 40) : ThemeTokens.dp(isLg ? 42 : 40)
     width: implicitWidth
     height: implicitHeight
 
@@ -142,7 +142,7 @@ Item {
     Rectangle {
         id: shadowPill
         anchors.fill: pill
-        anchors.topMargin: 2
+        anchors.topMargin: root.ignoreUiScale ? 2 : ThemeTokens.dp(2)
         radius: pill.radius
         color: Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.35 : 0.12)
         z: -1
@@ -151,12 +151,12 @@ Item {
     Rectangle {
         id: pill
         anchors.fill: parent
-        radius: isLg ? 21 : height / 2
+        radius: isLg ? (root.ignoreUiScale ? 21 : ThemeTokens.dp(21)) : height / 2
         color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
-        implicitWidth: contentRow.implicitWidth + (isLg ? 27 : 24)
-        implicitHeight: isLg ? 42 : 40
+        implicitWidth: contentRow.implicitWidth + (root.ignoreUiScale ? (isLg ? 27 : 24) : ThemeTokens.dp(isLg ? 27 : 24))
+        implicitHeight: root.ignoreUiScale ? (isLg ? 42 : 40) : ThemeTokens.dp(isLg ? 42 : 40)
 
         HoverHandler {
             id: pillHover
@@ -165,14 +165,14 @@ Item {
         Row {
             id: contentRow
             anchors.left: parent.left
-            anchors.leftMargin: root.isLg ? 18 : 12
+            anchors.leftMargin: root.ignoreUiScale ? (root.isLg ? 18 : 12) : ThemeTokens.dp(root.isLg ? 18 : 12)
             anchors.verticalCenter: parent.verticalCenter
-            spacing: isLg ? 6 : 8
+            spacing: root.ignoreUiScale ? (isLg ? 6 : 8) : ThemeTokens.dp(isLg ? 6 : 8)
 
             Text {
                 id: labelText
                 anchors.verticalCenter: parent.verticalCenter
-                width: isLg ? Math.max(180, implicitWidth) : implicitWidth
+                width: isLg ? Math.max(root.ignoreUiScale ? 180 : ThemeTokens.dp(180), implicitWidth) : implicitWidth
                 text: root.format ? root.format(root.value) : qsTr("%1%").arg(Math.round(root.value * 100))
                 color: ThemeTokens.text
                 font.pixelSize: root.ignoreUiScale
@@ -188,7 +188,7 @@ Item {
             Rectangle {
                 visible: root.showControls && !root.isLg
                 width: 1
-                height: 18
+                height: root.ignoreUiScale ? 18 : ThemeTokens.dp(18)
                 color: ThemeTokens.border
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -197,9 +197,9 @@ Item {
             Rectangle {
                 id: minusBtn
                 visible: root.showControls
-                width: root.isLg ? 42 : 28
-                height: root.isLg ? 42 : 28
-                radius: root.isLg ? 21 : 14
+                width: root.ignoreUiScale ? (root.isLg ? 42 : 28) : ThemeTokens.dp(root.isLg ? 42 : 28)
+                height: root.ignoreUiScale ? (root.isLg ? 42 : 28) : ThemeTokens.dp(root.isLg ? 42 : 28)
+                radius: root.ignoreUiScale ? (root.isLg ? 21 : 14) : ThemeTokens.dp(root.isLg ? 21 : 14)
                 anchors.verticalCenter: parent.verticalCenter
                 readonly property bool minusDisabled: root.disabled || root.value <= root.effectiveMin + 0.001
                 color: minusTap.pressed ? ThemeTokens.pressed : (minusHover.hovered && !minusDisabled ? ThemeTokens.hover : "transparent")
@@ -237,9 +237,9 @@ Item {
             Rectangle {
                 id: plusBtn
                 visible: root.showControls
-                width: root.isLg ? 42 : 28
-                height: root.isLg ? 42 : 28
-                radius: root.isLg ? 21 : 14
+                width: root.ignoreUiScale ? (root.isLg ? 42 : 28) : ThemeTokens.dp(root.isLg ? 42 : 28)
+                height: root.ignoreUiScale ? (root.isLg ? 42 : 28) : ThemeTokens.dp(root.isLg ? 42 : 28)
+                radius: root.ignoreUiScale ? (root.isLg ? 21 : 14) : ThemeTokens.dp(root.isLg ? 21 : 14)
                 anchors.verticalCenter: parent.verticalCenter
                 readonly property bool plusDisabled: root.disabled || root.value >= root.effectiveMax - 0.001
                 color: plusTap.pressed ? ThemeTokens.pressed : (plusHover.hovered && !plusDisabled ? ThemeTokens.hover : "transparent")
@@ -277,9 +277,9 @@ Item {
             Rectangle {
                 id: resetBtn
                 visible: root.showControls
-                width: root.isLg ? 42 : 28
-                height: root.isLg ? 42 : 28
-                radius: root.isLg ? 21 : 14
+                width: root.ignoreUiScale ? (root.isLg ? 42 : 28) : ThemeTokens.dp(root.isLg ? 42 : 28)
+                height: root.ignoreUiScale ? (root.isLg ? 42 : 28) : ThemeTokens.dp(root.isLg ? 42 : 28)
+                radius: root.ignoreUiScale ? (root.isLg ? 21 : 14) : ThemeTokens.dp(root.isLg ? 21 : 14)
                 anchors.verticalCenter: parent.verticalCenter
                 readonly property bool resetDisabled: root.disabled || Math.abs(root.value - 1.0) < 0.001
                 color: resetTap.pressed ? ThemeTokens.pressed : (resetHover.hovered && !resetDisabled ? ThemeTokens.hover : "transparent")

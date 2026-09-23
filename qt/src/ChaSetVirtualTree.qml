@@ -18,9 +18,11 @@ Item {
     property var expandedIds: ({})
     property int defaultExpandDepth: 0
     property int estimateSize: 28
+    readonly property int effectiveEstimateSize: ThemeTokens.dp(estimateSize)
     property int gap: 0
     property int overscan: 10
     property int customRadius: 6
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
 
     // Drag and Drop properties
     property bool enableDnd: false
@@ -40,8 +42,8 @@ Item {
     signal nodeDeleted(var ids)
     signal nodeDropped(var sourceIds, string targetId, string position, bool isCopy)
 
-    implicitWidth: 320
-    implicitHeight: 280
+    implicitWidth: ThemeTokens.dp(320)
+    implicitHeight: ThemeTokens.dp(280)
 
     // Flatten tree items based on active expansion state
     function flatten(list, depth) {
@@ -417,7 +419,7 @@ Item {
                 required property var modelData
                 required property int index
                 width: treeList.width
-                height: 28
+                height: root.effectiveEstimateSize
 
                 readonly property bool isHovered: root.modality === "pointer" && (rowMouse.containsMouse || chevronMouse.containsMouse)
                 readonly property bool isKeyboardFocused: root.modality === "keyboard" && root.currentIndex === index
@@ -431,7 +433,7 @@ Item {
                     : (isHovered ? ThemeTokens.hover : (isCopied ? Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.10) : "transparent"))
                 border.color: isCopied ? ThemeTokens.focus : (isKeyboardFocused ? ThemeTokens.focus : "transparent")
                 border.width: isCopied || isKeyboardFocused ? 1 : 0
-                radius: 4
+                radius: ThemeTokens.dp(4)
                 opacity: isDimmed ? 0.4 : 1.0
 
                 Behavior on color {
@@ -450,7 +452,7 @@ Item {
                     anchors.top: parent.top
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    height: 2
+                    height: ThemeTokens.dp(2)
                     color: ThemeTokens.focus
                     z: 20
                 }
@@ -461,7 +463,7 @@ Item {
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    height: 2
+                    height: ThemeTokens.dp(2)
                     color: ThemeTokens.focus
                     z: 20
                 }
@@ -473,7 +475,7 @@ Item {
                     color: Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15)
                     border.color: ThemeTokens.focus
                     border.width: 1
-                    radius: 4
+                    radius: ThemeTokens.dp(4)
                     z: 20
                 }
 
@@ -484,23 +486,23 @@ Item {
                     color: Qt.rgba(ThemeTokens.conflict.r, ThemeTokens.conflict.g, ThemeTokens.conflict.b, 0.1)
                     border.color: ThemeTokens.conflict
                     border.width: 1
-                    radius: 4
+                    radius: ThemeTokens.dp(4)
                     z: 20
                 }
 
                 Row {
                     id: contentRow
                     anchors.left: parent.left
-                    anchors.leftMargin: 8 + modelData.depth * 16
+                    anchors.leftMargin: ThemeTokens.dp(8) + modelData.depth * ThemeTokens.dp(16)
                     anchors.right: dirBadge.visible ? dirBadge.left : parent.right
-                    anchors.rightMargin: 8
+                    anchors.rightMargin: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
                     z: 2
 
                     Item {
-                        width: 16
-                        height: 24
+                        width: ThemeTokens.dp(16)
+                        height: ThemeTokens.dp(24)
                         anchors.verticalCenter: parent.verticalCenter
                         visible: !!modelData.hasChildren
 
@@ -531,7 +533,7 @@ Item {
                         text: "•"
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeCaption
-                        width: 16
+                        width: ThemeTokens.dp(16)
                         horizontalAlignment: Text.AlignHCenter
                     }
 
@@ -595,12 +597,12 @@ Item {
 
                 Item {
                     id: dragProxy
-                    width: 20
-                    height: 20
+                    width: ThemeTokens.dp(20)
+                    height: ThemeTokens.dp(20)
                     Drag.active: rowMouse.drag.active
                     Drag.source: delegateRow
-                    Drag.hotSpot.x: 10
-                    Drag.hotSpot.y: 10
+                    Drag.hotSpot.x: ThemeTokens.dp(10)
+                    Drag.hotSpot.y: ThemeTokens.dp(10)
                     onXChanged: {
                         if (rowMouse.drag.active && !root.isDragging) root.isDragging = true
                     }
@@ -672,10 +674,10 @@ Item {
             visible: root.enableDnd && root.isDragging && root.draggedId !== ""
             anchors.bottom: parent.bottom
             anchors.right: parent.right
-            anchors.margins: 8
-            height: 24
-            width: hudRow.implicitWidth + 16
-            radius: 4
+            anchors.margins: ThemeTokens.dp(8)
+            height: ThemeTokens.dp(24)
+            width: hudRow.implicitWidth + ThemeTokens.dp(16)
+            radius: ThemeTokens.dp(4)
             color: ThemeTokens.panelRaised
             border.color: ThemeTokens.border
             border.width: 1
@@ -684,7 +686,7 @@ Item {
             Row {
                 id: hudRow
                 anchors.centerIn: parent
-                spacing: 4
+                spacing: ThemeTokens.dp(4)
                 Text {
                     text: (Qt.application.keyboardModifiers & Qt.ControlModifier) ? "Copying (Ctrl held)" : "Moving (Hold Ctrl to copy)"
                     color: ThemeTokens.text

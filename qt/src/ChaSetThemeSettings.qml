@@ -123,7 +123,7 @@ Item {
 
     width: parent ? parent.width : implicitWidth
     height: implicitHeight
-    implicitWidth: 480
+    implicitWidth: ThemeTokens.dp(480)
     implicitHeight: _card.implicitHeight
 
     opacity: root.disabled ? 0.6 : 1.0
@@ -134,29 +134,29 @@ Item {
         id: _card
         width: parent.width
         height: implicitHeight
-        implicitHeight: _contentCol.implicitHeight + (root.isEmbedded ? 0 : 32)
-        radius: root.isEmbedded ? 0 : 12
+        implicitHeight: _contentCol.implicitHeight + (root.isEmbedded ? 0 : ThemeTokens.dp(32))
+        radius: root.isEmbedded ? 0 : ThemeTokens.dp(12)
         color: root.isEmbedded ? "transparent" : ThemeTokens.panel
         border.color: root.isEmbedded ? "transparent" : ThemeTokens.border
         border.width: root.isEmbedded ? 0 : 1
 
         Column {
             id: _contentCol
-            x: root.isEmbedded ? 0 : 16
-            y: root.isEmbedded ? 0 : 16
-            width: root.isEmbedded ? parent.width : (parent.width - 32)
-            spacing: 14
+            x: root.isEmbedded ? 0 : ThemeTokens.dp(16)
+            y: root.isEmbedded ? 0 : ThemeTokens.dp(16)
+            width: root.isEmbedded ? parent.width : (parent.width - ThemeTokens.dp(32))
+            spacing: ThemeTokens.dp(14)
 
             // Header Section (Only rendered in card mode)
             Item {
                 width: parent.width
-                implicitHeight: 32
+                implicitHeight: ThemeTokens.dp(32)
                 visible: !root.isEmbedded && (root.showReset || root.showExport || root.showImport)
 
                 Row {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
 
                     Text {
                         text: root.trText("theme.settings.title", "Theme Configuration")
@@ -177,7 +177,7 @@ Item {
                 Row {
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
 
                     ChaSetButton {
                         visible: root.showReset
@@ -209,7 +209,7 @@ Item {
                 controlWidth: 260
 
                 Row {
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
 
@@ -226,22 +226,22 @@ Item {
                             required property var modelData
 
                             readonly property bool isSelected: (root.config?.mode || "system") === modelData.id
-                            width: 78
-                            height: 68
-                            radius: 8
+                            width: ThemeTokens.dp(78)
+                            height: ThemeTokens.dp(68)
+                            radius: ThemeTokens.dp(8)
                             color: isSelected ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08) : ThemeTokens.panel
                             border.width: isSelected ? 2 : 1
                             border.color: isSelected ? ThemeTokens.accent : ThemeTokens.border
 
                             Column {
                                 anchors.centerIn: parent
-                                spacing: 4
+                                spacing: ThemeTokens.dp(4)
 
                                 // Mini Mockup Window Frame
                                 Rectangle {
-                                    width: 66
-                                    height: 36
-                                    radius: 4
+                                    width: ThemeTokens.dp(66)
+                                    height: ThemeTokens.dp(36)
+                                    radius: ThemeTokens.dp(4)
                                     clip: true
                                     border.width: 1
                                     border.color: modelData.id === "light" ? "#e2e8f0" : (modelData.id === "dark" ? "#27272a" : "#52525b")
@@ -254,24 +254,24 @@ Item {
 
                                         Rectangle {
                                             id: lightTitle
-                                            width: parent.width; height: 7; color: "#f4f4f5"
+                                            width: parent.width; height: ThemeTokens.dp(7); color: "#f4f4f5"
                                             Row {
-                                                x: 3; y: 2; spacing: 2
-                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#f87171" }
-                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#fbbf24" }
-                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#34d399" }
+                                                x: ThemeTokens.dp(3); y: ThemeTokens.dp(2); spacing: ThemeTokens.dp(2)
+                                                Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: height / 2; color: "#f87171" }
+                                                Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: height / 2; color: "#fbbf24" }
+                                                Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: height / 2; color: "#34d399" }
                                             }
                                         }
                                         Rectangle {
                                             anchors.top: lightTitle.bottom; anchors.left: parent.left; anchors.bottom: parent.bottom
-                                            width: 14; color: "#f4f4f5"
+                                            width: ThemeTokens.dp(14); color: "#f4f4f5"
                                         }
                                         Column {
-                                            anchors.left: parent.left; anchors.leftMargin: 18
-                                            anchors.top: lightTitle.bottom; anchors.topMargin: 4
-                                            spacing: 2
-                                            Rectangle { width: 38; height: 2; radius: 1; color: "#e4e4e7" }
-                                            Rectangle { width: 24; height: 2; radius: 1; color: "#e4e4e7" }
+                                            anchors.left: parent.left; anchors.leftMargin: ThemeTokens.dp(18)
+                                            anchors.top: lightTitle.bottom; anchors.topMargin: ThemeTokens.dp(4)
+                                            spacing: ThemeTokens.dp(2)
+                                            Rectangle { width: ThemeTokens.dp(38); height: ThemeTokens.dp(2); radius: 1; color: "#e4e4e7" }
+                                            Rectangle { width: ThemeTokens.dp(24); height: ThemeTokens.dp(2); radius: 1; color: "#e4e4e7" }
                                         }
                                     }
 
@@ -282,24 +282,24 @@ Item {
 
                                         Rectangle {
                                             id: darkTitle
-                                            width: parent.width; height: 7; color: "#18181b"
+                                            width: parent.width; height: ThemeTokens.dp(7); color: "#18181b"
                                             Row {
-                                                x: 3; y: 2; spacing: 2
-                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#52525b" }
-                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#52525b" }
-                                                Rectangle { width: 3; height: 3; radius: 1.5; color: "#52525b" }
+                                                x: ThemeTokens.dp(3); y: ThemeTokens.dp(2); spacing: ThemeTokens.dp(2)
+                                                Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: height / 2; color: "#52525b" }
+                                                Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: height / 2; color: "#52525b" }
+                                                Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: height / 2; color: "#52525b" }
                                             }
                                         }
                                         Rectangle {
                                             anchors.top: darkTitle.bottom; anchors.left: parent.left; anchors.bottom: parent.bottom
-                                            width: 14; color: "#18181b"
+                                            width: ThemeTokens.dp(14); color: "#18181b"
                                         }
                                         Column {
-                                            anchors.left: parent.left; anchors.leftMargin: 18
-                                            anchors.top: darkTitle.bottom; anchors.topMargin: 4
-                                            spacing: 2
-                                            Rectangle { width: 38; height: 2; radius: 1; color: "#27272a" }
-                                            Rectangle { width: 24; height: 2; radius: 1; color: "#27272a" }
+                                            anchors.left: parent.left; anchors.leftMargin: ThemeTokens.dp(18)
+                                            anchors.top: darkTitle.bottom; anchors.topMargin: ThemeTokens.dp(4)
+                                            spacing: ThemeTokens.dp(2)
+                                            Rectangle { width: ThemeTokens.dp(38); height: ThemeTokens.dp(2); radius: 1; color: "#27272a" }
+                                            Rectangle { width: ThemeTokens.dp(24); height: ThemeTokens.dp(2); radius: 1; color: "#27272a" }
                                         }
                                     }
 
@@ -312,15 +312,15 @@ Item {
                                         Rectangle {
                                             anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom
                                             width: parent.width / 2; color: "#ffffff"
-                                            Rectangle { width: parent.width; height: 7; color: "#f4f4f5" }
-                                            Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.topMargin: 7; anchors.bottom: parent.bottom; width: 7; color: "#f4f4f5" }
+                                            Rectangle { width: parent.width; height: ThemeTokens.dp(7); color: "#f4f4f5" }
+                                            Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.topMargin: ThemeTokens.dp(7); anchors.bottom: parent.bottom; width: ThemeTokens.dp(7); color: "#f4f4f5" }
                                         }
                                         // Right half dark
                                         Rectangle {
                                             anchors.right: parent.right; anchors.top: parent.top; anchors.bottom: parent.bottom
                                             width: parent.width / 2; color: "#09090b"
-                                            Rectangle { width: parent.width; height: 7; color: "#18181b" }
-                                            Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.topMargin: 7; anchors.bottom: parent.bottom; width: 7; color: "#18181b" }
+                                            Rectangle { width: parent.width; height: ThemeTokens.dp(7); color: "#18181b" }
+                                            Rectangle { anchors.left: parent.left; anchors.top: parent.top; anchors.topMargin: ThemeTokens.dp(7); anchors.bottom: parent.bottom; width: ThemeTokens.dp(7); color: "#18181b" }
                                         }
                                     }
                                 }
@@ -355,13 +355,13 @@ Item {
                 controlWidth: 320
 
                 Row {
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
 
                     Flow {
-                        width: Math.min(270, parent.parent ? parent.parent.width : 270)
-                        spacing: 6
+                        width: Math.min(ThemeTokens.dp(270), parent.parent ? parent.parent.width : ThemeTokens.dp(270))
+                        spacing: ThemeTokens.dp(6)
 
                         Repeater {
                             model: root.canonicalPalettes
@@ -371,9 +371,9 @@ Item {
                                 required property var modelData
 
                                 readonly property bool isSelected: (root.config?.palette?.id || "neutral") === modelData.id
-                                width: 26
-                                height: 26
-                                radius: 13
+                                width: ThemeTokens.dp(26)
+                                height: ThemeTokens.dp(26)
+                                radius: height / 2
                                 color: modelData.id === "neutral"
                                        ? "#475569"
                                        : (modelData.id === "custom"
@@ -391,8 +391,8 @@ Item {
                                 Canvas {
                                     id: checkCanvas
                                     anchors.centerIn: parent
-                                    width: 10
-                                    height: 8
+                                    width: ThemeTokens.dp(10)
+                                    height: ThemeTokens.dp(8)
                                     visible: swatchItem.isSelected
                                     onPaint: {
                                         var ctx = getContext("2d");
@@ -402,9 +402,9 @@ Item {
                                         ctx.lineCap = "round";
                                         ctx.lineJoin = "round";
                                         ctx.beginPath();
-                                        ctx.moveTo(1, 4);
-                                        ctx.lineTo(4, 7);
-                                        ctx.lineTo(9, 1);
+                                        ctx.moveTo(ThemeTokens.dp(1), ThemeTokens.dp(4));
+                                        ctx.lineTo(ThemeTokens.dp(4), ThemeTokens.dp(7));
+                                        ctx.lineTo(ThemeTokens.dp(9), ThemeTokens.dp(1));
                                         ctx.stroke();
                                     }
                                     Connections {
@@ -455,7 +455,7 @@ Item {
 
                 ChaSetSegmentedControl {
                     size: "sm"
-                    width: 200
+                    width: ThemeTokens.dp(200)
                     value: root.config?.decoration?.styleId || "simple"
                     options: [
                         { label: root.trText("theme.style.simple", "Simple"), value: "simple" },
@@ -480,13 +480,13 @@ Item {
                 controlWidth: 260
 
                 Row {
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    width: 250
+                    width: ThemeTokens.dp(250)
 
                     ChaSetSlider {
-                        width: 170
+                        width: ThemeTokens.dp(170)
                         min: 0
                         max: 100
                         step: 1
@@ -513,21 +513,21 @@ Item {
             // Overrides Sub-Panel
             Column {
                 width: parent.width
-                spacing: 8
+                spacing: ThemeTokens.dp(8)
                 visible: root.showOverrides
 
                 Rectangle {
                     width: parent.width
-                    implicitHeight: overridesCol.implicitHeight + 16
-                    radius: 8
+                    implicitHeight: overridesCol.implicitHeight + ThemeTokens.dp(16)
+                    radius: ThemeTokens.dp(8)
                     color: ThemeTokens.hover
 
                     Column {
                         id: overridesCol
-                        x: 12
-                        y: 8
-                        width: parent.width - 24
-                        spacing: 8
+                        x: ThemeTokens.dp(12)
+                        y: ThemeTokens.dp(8)
+                        width: parent.width - ThemeTokens.dp(24)
+                        spacing: ThemeTokens.dp(8)
 
                         // Radius override
                         Row {
@@ -538,9 +538,9 @@ Item {
                                 font.pixelSize: Typography.sizeCaption
                                 anchors.verticalCenter: parent.verticalCenter
                             }
-                            Item { width: Math.max(10, parent.width - 240); height: 1 }
+                            Item { width: Math.max(ThemeTokens.dp(10), parent.width - ThemeTokens.dp(240)); height: 1 }
                             ChaSetSlider {
-                                width: 150
+                                width: ThemeTokens.dp(150)
                                 min: 0
                                 max: 100
                                 step: 1
@@ -565,9 +565,9 @@ Item {
                                 font.pixelSize: Typography.sizeCaption
                                 anchors.verticalCenter: parent.verticalCenter
                             }
-                            Item { width: Math.max(10, parent.width - 240); height: 1 }
+                            Item { width: Math.max(ThemeTokens.dp(10), parent.width - ThemeTokens.dp(240)); height: 1 }
                             ChaSetSlider {
-                                width: 150
+                                width: ThemeTokens.dp(150)
                                 min: 0
                                 max: 100
                                 step: 1
@@ -592,9 +592,9 @@ Item {
                                 font.pixelSize: Typography.sizeCaption
                                 anchors.verticalCenter: parent.verticalCenter
                             }
-                            Item { width: Math.max(10, parent.width - 240); height: 1 }
+                            Item { width: Math.max(ThemeTokens.dp(10), parent.width - ThemeTokens.dp(240)); height: 1 }
                             ChaSetSlider {
-                                width: 150
+                                width: ThemeTokens.dp(150)
                                 min: 0
                                 max: 100
                                 step: 1
@@ -622,7 +622,7 @@ Item {
                 controlWidth: 160
 
                 ChaSetSelect {
-                    width: 140
+                    width: ThemeTokens.dp(140)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     value: String(root.config?.uiScale || 1.0)

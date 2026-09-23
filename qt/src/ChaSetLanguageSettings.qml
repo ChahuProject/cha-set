@@ -31,7 +31,7 @@ Item {
         return ChaSetI18n.tr(key, defaultText, params);
     }
 
-    implicitWidth: 540
+    implicitWidth: ThemeTokens.dp(540)
     implicitHeight: cardContainer.implicitHeight
     width: parent ? parent.width : implicitWidth
     height: implicitHeight
@@ -81,9 +81,9 @@ Item {
 
                 Rectangle {
                     id: globeIconBox
-                    width: 36
-                    height: 36
-                    radius: 8
+                    width: ThemeTokens.dp(36)
+                    height: ThemeTokens.dp(36)
+                    radius: ThemeTokens.dp(8)
                     color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.1)
                     border.width: 1
                     border.color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.2)
@@ -101,11 +101,11 @@ Item {
                 Column {
                     id: headerLeft
                     anchors.left: globeIconBox.right
-                    anchors.leftMargin: 12
+                    anchors.leftMargin: ThemeTokens.dp(12)
                     anchors.right: headerBadge.left
-                    anchors.rightMargin: 12
+                    anchors.rightMargin: ThemeTokens.dp(12)
                     anchors.verticalCenter: parent.verticalCenter
-                    spacing: 4
+                    spacing: ThemeTokens.dp(4)
 
                     ChaSetCardTitle {
                         text: root.title !== "" ? root.title : root.trText("language.title", "Language Preference")
@@ -129,99 +129,99 @@ Item {
 
         ChaSetCardContent {
             id: cardContentSlot
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
             // 1. Follow System Option Card
             Rectangle {
                 id: followSystemCard
                 visible: root.showFollowSystem
                 width: parent.width
-                implicitHeight: 76
+                implicitHeight: ThemeTokens.dp(76)
                 height: implicitHeight
-                    radius: 8
-                    color: root.preference === "system"
-                           ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08)
-                           : (followHover.hovered ? ThemeTokens.hover : ThemeTokens.panel)
-                    border.width: root.preference === "system" ? 2 : 1
-                    border.color: root.preference === "system" ? ThemeTokens.accent : ThemeTokens.border
+                radius: ThemeTokens.dp(8)
+                color: root.preference === "system"
+                       ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08)
+                       : (followHover.hovered ? ThemeTokens.hover : ThemeTokens.panel)
+                border.width: root.preference === "system" ? 2 : 1
+                border.color: root.preference === "system" ? ThemeTokens.accent : ThemeTokens.border
 
-                    Behavior on color {
-                        ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: Easing.OutQuad }
-                    }
+                Behavior on color {
+                    ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: Easing.OutQuad }
+                }
 
-                    Item {
-                        anchors.fill: parent
-                        anchors.margins: 14
+                Item {
+                    anchors.fill: parent
+                    anchors.margins: ThemeTokens.dp(14)
 
-                        // Monitor Icon Badge
-                        Rectangle {
-                            id: monitorIconBox
-                            width: 36
-                            height: 36
-                            radius: 8
-                            color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.12)
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
+                    // Monitor Icon Badge
+                    Rectangle {
+                        id: monitorIconBox
+                        width: ThemeTokens.dp(36)
+                        height: ThemeTokens.dp(36)
+                        radius: ThemeTokens.dp(8)
+                        color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.12)
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
 
-                            ChaSetIcon {
-                                anchors.centerIn: parent
-                                name: "monitor"
-                                size: 16
-                                color: ThemeTokens.accent
-                            }
-                        }
-
-                        Column {
-                            anchors.left: monitorIconBox.right
-                            anchors.leftMargin: 12
-                            anchors.right: followCheckmark.left
-                            anchors.rightMargin: 12
-                            spacing: 3
-                            anchors.verticalCenter: parent.verticalCenter
-
-                            Text {
-                                text: root.trText("language.followSystem", "Follow System")
-                                font.pixelSize: Typography.sizeBody
-                                font.bold: true
-                                color: ThemeTokens.text
-                            }
-
-                            Text {
-                                text: root.trText("language.systemDetected", "System detected") + " · " + root.systemLocaleMeta.nativeName
-                                font.pixelSize: Typography.sizeCaption
-                                color: ThemeTokens.subduedText
-                            }
-
-                            Text {
-                                text: root.trText("language.followSystemDesc", "Automatically matches your system language if supported, otherwise defaults to English")
-                                font.pixelSize: Typography.sizeCaption
-                                color: ThemeTokens.subduedText
-                                elide: Text.ElideRight
-                                width: parent.width
-                            }
-                        }
-
-                        // Selection Checkmark Circle
-                        Rectangle {
-                            id: followCheckmark
-                            width: 20
-                            height: 20
-                            radius: 10
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            color: root.preference === "system" ? ThemeTokens.accent : ThemeTokens.panel
-                            border.width: 1
-                            border.color: root.preference === "system" ? ThemeTokens.accent : ThemeTokens.border
-
-                            ChaSetIcon {
-                                anchors.centerIn: parent
-                                name: "check"
-                                size: 12
-                                color: "#ffffff"
-                                visible: root.preference === "system"
-                            }
+                        ChaSetIcon {
+                            anchors.centerIn: parent
+                            name: "monitor"
+                            size: 16
+                            color: ThemeTokens.accent
                         }
                     }
+
+                    Column {
+                        anchors.left: monitorIconBox.right
+                        anchors.leftMargin: ThemeTokens.dp(12)
+                        anchors.right: followCheckmark.left
+                        anchors.rightMargin: ThemeTokens.dp(12)
+                        spacing: ThemeTokens.dp(3)
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        Text {
+                            text: root.trText("language.followSystem", "Follow System")
+                            font.pixelSize: Typography.sizeBody
+                            font.bold: true
+                            color: ThemeTokens.text
+                        }
+
+                        Text {
+                            text: root.trText("language.systemDetected", "System detected") + " · " + root.systemLocaleMeta.nativeName
+                            font.pixelSize: Typography.sizeCaption
+                            color: ThemeTokens.subduedText
+                        }
+
+                        Text {
+                            text: root.trText("language.followSystemDesc", "Automatically matches your system language if supported, otherwise defaults to English")
+                            font.pixelSize: Typography.sizeCaption
+                            color: ThemeTokens.subduedText
+                            elide: Text.ElideRight
+                            width: parent.width
+                        }
+                    }
+
+                    // Selection Checkmark Circle
+                    Rectangle {
+                        id: followCheckmark
+                        width: ThemeTokens.dp(20)
+                        height: ThemeTokens.dp(20)
+                        radius: height / 2
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: root.preference === "system" ? ThemeTokens.accent : ThemeTokens.panel
+                        border.width: 1
+                        border.color: root.preference === "system" ? ThemeTokens.accent : ThemeTokens.border
+
+                        ChaSetIcon {
+                            anchors.centerIn: parent
+                            name: "check"
+                            size: 12
+                            color: "#ffffff"
+                            visible: root.preference === "system"
+                        }
+                    }
+                }
 
                     HoverHandler {
                         id: followHover
@@ -245,8 +245,8 @@ Item {
                 // 2. Fixed Languages Grid
                 Grid {
                     width: parent.width
-                    columns: parent.width > 500 ? (parent.width > 700 ? 3 : 2) : 1
-                    spacing: 10
+                    columns: parent.width > ThemeTokens.dp(500) ? (parent.width > ThemeTokens.dp(700) ? 3 : 2) : 1
+                    spacing: ThemeTokens.dp(10)
 
                     Repeater {
                         model: ChaSetI18n.supportedLocales
@@ -258,9 +258,9 @@ Item {
 
                             readonly property bool isSelected: root.preference === modelData.code
                             width: (parent.width - (parent.columns - 1) * parent.spacing) / parent.columns
-                            implicitHeight: 110
+                            implicitHeight: ThemeTokens.dp(110)
                             height: implicitHeight
-                            radius: 8
+                            radius: ThemeTokens.dp(8)
                             color: isSelected
                                    ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08)
                                    : (cardHover.hovered ? ThemeTokens.hover : ThemeTokens.panel)
@@ -273,18 +273,18 @@ Item {
 
                             Column {
                                 anchors.fill: parent
-                                anchors.margins: 12
-                                spacing: 6
+                                anchors.margins: ThemeTokens.dp(12)
+                                spacing: ThemeTokens.dp(6)
 
                                 // Card Header (Title + Checkmark)
                                 Item {
                                     width: parent.width
-                                    height: 28
+                                    height: ThemeTokens.dp(28)
 
                                     Column {
                                         anchors.left: parent.left
                                         anchors.verticalCenter: parent.verticalCenter
-                                        spacing: 2
+                                        spacing: ThemeTokens.dp(2)
 
                                         Text {
                                             text: modelData.nativeName
@@ -302,9 +302,9 @@ Item {
                                     }
 
                                     Rectangle {
-                                        width: 18
-                                        height: 18
-                                        radius: 9
+                                        width: ThemeTokens.dp(18)
+                                        height: ThemeTokens.dp(18)
+                                        radius: height / 2
                                         anchors.right: parent.right
                                         anchors.verticalCenter: parent.verticalCenter
                                         color: langCard.isSelected ? ThemeTokens.accent : ThemeTokens.panel
@@ -321,12 +321,12 @@ Item {
                                     }
                                 }
 
-                                Item { width: 1; height: 4 }
+                                Item { width: 1; height: ThemeTokens.dp(4) }
 
                                 // Cultural Quote / Preview
                                 Column {
                                     width: parent.width
-                                    spacing: 2
+                                    spacing: ThemeTokens.dp(2)
                                     visible: modelData.quote !== undefined && modelData.quote !== null
 
                                     Rectangle { width: parent.width; height: 1; color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.4) }

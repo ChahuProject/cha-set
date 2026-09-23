@@ -23,9 +23,9 @@ Rectangle {
     color: ThemeTokens.panel
     border.color: ThemeTokens.border
     border.width: 1
-    radius: root.customRadius
-    implicitWidth: 460
-    implicitHeight: mainCol.implicitHeight + 24
+    radius: ThemeTokens.dp(root.customRadius)
+    implicitWidth: ThemeTokens.dp(460)
+    implicitHeight: mainCol.implicitHeight + ThemeTokens.dp(24)
     clip: true
 
     function toggleConnector() {
@@ -55,12 +55,12 @@ Rectangle {
     Column {
         id: mainCol
         anchors.fill: parent
-        anchors.margins: 12
-        spacing: 10
+        anchors.margins: ThemeTokens.dp(12)
+        spacing: ThemeTokens.dp(10)
 
         // Connector & Actions Bar
         Row {
-            spacing: 8
+            spacing: ThemeTokens.dp(8)
 
             ChaSetButton {
                 text: root.connector
@@ -80,7 +80,7 @@ Rectangle {
         // Rules List
         Column {
             width: parent.width
-            spacing: 6
+            spacing: ThemeTokens.dp(6)
 
             Repeater {
                 model: root.rules
@@ -88,12 +88,12 @@ Rectangle {
                     required property var modelData
                     required property int index
                     width: parent ? parent.width : 0
-                    height: 32
+                    height: ThemeTokens.dp(32)
                     opacity: 0
                     color: ThemeTokens.hover
                     border.color: ThemeTokens.border
                     border.width: 1
-                    radius: 4
+                    radius: ThemeTokens.dp(4)
 
                     // Fade new rules in as they are added.
                     Behavior on opacity {
@@ -104,11 +104,11 @@ Rectangle {
 
                     Row {
                         anchors.left: parent.left
-                        anchors.leftMargin: 8
+                        anchors.leftMargin: ThemeTokens.dp(8)
                         anchors.right: deleteBtn.left
-                        anchors.rightMargin: 8
+                        anchors.rightMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: 8
+                        spacing: ThemeTokens.dp(8)
 
                         // Field
                         ChaSetBadge {
@@ -129,8 +129,8 @@ Rectangle {
                         // Value
                         ChaSetInput {
                             anchors.verticalCenter: parent.verticalCenter
-                            width: 140
-                            height: 24
+                            width: ThemeTokens.dp(140)
+                            height: ThemeTokens.dp(24)
                             text: String(parent.parent.modelData.value ?? "")
                             onTextEdited: {
                                 parent.parent.modelData.value = text
@@ -143,7 +143,7 @@ Rectangle {
                     ChaSetButton {
                         id: deleteBtn
                         anchors.right: parent.right
-                        anchors.rightMargin: 8
+                        anchors.rightMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
                         icon: "x"
                         variant: "ghost"

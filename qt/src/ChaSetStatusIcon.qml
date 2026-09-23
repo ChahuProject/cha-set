@@ -10,8 +10,10 @@ Item {
   property int size: 14
   property color overrideColor: "transparent"
 
-  implicitWidth: size
-  implicitHeight: size
+  readonly property int effectiveSize: ThemeTokens.dp(root.size)
+
+  implicitWidth: effectiveSize
+  implicitHeight: effectiveSize
   width: implicitWidth
   height: implicitHeight
 

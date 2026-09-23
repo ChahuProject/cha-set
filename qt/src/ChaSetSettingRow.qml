@@ -24,7 +24,7 @@ Item {
     default property alias controls: _controlZone.children
 
     width: parent ? parent.width : 0
-    implicitHeight: Math.max(_labelColumn.implicitHeight, _controlZone.implicitHeight) + (root.isSm ? 14 : 20)
+    implicitHeight: Math.max(_labelColumn.implicitHeight, _controlZone.implicitHeight) + ThemeTokens.dp(root.isSm ? 14 : 20)
     height: implicitHeight
 
     opacity: root.disabled ? 0.5 : 1.0
@@ -32,8 +32,8 @@ Item {
     // Highlight flash border
     Rectangle {
         anchors.fill: parent
-        anchors.margins: -3
-        radius: 8
+        anchors.margins: -ThemeTokens.dp(3)
+        radius: ThemeTokens.dp(8)
         color: "transparent"
         border.width: root.highlight ? 2 : 0
         border.color: ThemeTokens.accent
@@ -63,17 +63,17 @@ Item {
         id: _leftRow
         anchors.left: parent.left
         anchors.right: _controlZone.left
-        anchors.rightMargin: 12
+        anchors.rightMargin: ThemeTokens.dp(12)
         anchors.verticalCenter: parent.verticalCenter
         height: _labelColumn.height
-        spacing: root.isSm ? 8 : 12
+        spacing: ThemeTokens.dp(root.isSm ? 8 : 12)
 
         Rectangle {
             id: _iconBox
             visible: root.icon.length > 0
-            width: root.isSm ? 26 : 32
-            height: root.isSm ? 26 : 32
-            radius: 6
+            width: ThemeTokens.dp(root.isSm ? 26 : 32)
+            height: ThemeTokens.dp(root.isSm ? 26 : 32)
+            radius: ThemeTokens.dp(6)
             color: ThemeTokens.hover
             anchors.verticalCenter: parent.verticalCenter
 
@@ -98,7 +98,7 @@ Item {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 height: Math.max(rowNameText.height, badgeComp.visible ? badgeComp.height : 0)
-                spacing: 6
+                spacing: ThemeTokens.dp(6)
 
                 TextEdit {
                     id: rowNameText
@@ -141,7 +141,7 @@ Item {
             TextEdit {
                 id: rowDescText
                 anchors.top: nameRow.bottom
-                anchors.topMargin: 2
+                anchors.topMargin: ThemeTokens.dp(2)
                 anchors.left: parent.left
                 anchors.right: parent.right
                 text: root.description
@@ -186,9 +186,9 @@ Item {
                     if (w > maxW) maxW = w;
                 }
             }
-            var maxAllowed = root.width > 0 ? Math.max(140, root.width - 180) : 500;
-            if (maxW > 0) return Math.min(maxAllowed, Math.max(100, maxW));
-            return root.width > 0 ? Math.min(maxAllowed, Math.max(160, root.width * 0.45)) : 200;
+            var maxAllowed = root.width > 0 ? Math.max(ThemeTokens.dp(140), root.width - ThemeTokens.dp(180)) : ThemeTokens.dp(500);
+            if (maxW > 0) return Math.min(maxAllowed, Math.max(ThemeTokens.dp(100), maxW));
+            return root.width > 0 ? Math.min(maxAllowed, Math.max(ThemeTokens.dp(160), root.width * 0.45)) : ThemeTokens.dp(200);
         }
         implicitHeight: {
             var maxH = 0;
@@ -201,7 +201,7 @@ Item {
             }
             return maxH;
         }
-        height: implicitHeight > 0 ? implicitHeight : (parent.height - (root.isSm ? 12 : 20))
+        height: implicitHeight > 0 ? implicitHeight : (parent.height - ThemeTokens.dp(root.isSm ? 12 : 20))
     }
 }
 

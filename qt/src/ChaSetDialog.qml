@@ -138,7 +138,7 @@ Rectangle {
 
                     TextEdit {
                         id: titleText
-                        width: parent.width - (headerActions.width + (headerActions.visible ? 8 : 0))
+                        width: parent.width - (headerActions.width + (headerActions.visible ? ThemeTokens.dp(8) : 0))
                         text: root.title
                         color: ThemeTokens.text
                         font.pixelSize: Typography.sizeHeading

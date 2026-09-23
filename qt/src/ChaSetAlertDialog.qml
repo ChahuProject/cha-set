@@ -18,7 +18,7 @@ Rectangle {
     property bool destructive: true
     property string actionVariant: destructive ? "destructive" : "default"
     property int customRadius: 8
-    property int dialogWidth: size === "sm" ? 400 : (size === "lg" ? 560 : 460)
+    property int dialogWidth: ThemeTokens.dp(size === "sm" ? 400 : (size === "lg" ? 560 : 460))
     property bool closeOnEscape: true
     property bool closeOnOverlayClick: false
 
@@ -69,13 +69,13 @@ Rectangle {
 
     Rectangle {
         id: card
-        width: Math.min(parent.width - 40, root.dialogWidth)
-        implicitHeight: cardCol.implicitHeight + 36
+        width: Math.min(parent.width - ThemeTokens.dp(40), root.dialogWidth)
+        implicitHeight: cardCol.implicitHeight + ThemeTokens.dp(36)
         anchors.centerIn: parent
         color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
-        radius: root.customRadius
+        radius: ThemeTokens.dp(root.customRadius)
         scale: root.open ? 1.0 : 0.95
 
         Behavior on scale {
@@ -92,12 +92,12 @@ Rectangle {
         Column {
             id: cardCol
             anchors.fill: parent
-            anchors.margins: 20
-            spacing: 16
+            anchors.margins: ThemeTokens.dp(20)
+            spacing: ThemeTokens.dp(16)
 
             Column {
                 width: parent.width
-                spacing: 6
+                spacing: ThemeTokens.dp(6)
 
                 TextEdit {
                     id: alertTitleText
@@ -158,7 +158,7 @@ Rectangle {
 
             Row {
                 anchors.right: parent.right
-                spacing: 8
+                spacing: ThemeTokens.dp(8)
 
                 ChaSetButton {
                     text: root.cancelText

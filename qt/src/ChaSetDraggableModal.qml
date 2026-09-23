@@ -7,9 +7,9 @@ Rectangle {
 
     property bool open: true
     property string title: "Inspector Window"
-    property int customRadius: 8
+    property int customRadius: ThemeTokens.dp(8)
     property string initialPositionMode: "center" // "center" | "top"
-    property int topMargin: 72
+    property int topMargin: ThemeTokens.dp(72)
     property var sizeOptions: []
     property string sizeMenuTooltip: "Adjust Size"
     property real remBase: 16
@@ -20,8 +20,8 @@ Rectangle {
 
     default property alias contentData: bodyContent.data
 
-    width: 320
-    height: 220
+    width: ThemeTokens.dp(320)
+    height: ThemeTokens.dp(220)
     color: ThemeTokens.panel
     border.color: ThemeTokens.border
     border.width: 1
@@ -138,7 +138,7 @@ Rectangle {
         Rectangle {
             id: titleBar
             width: parent.width
-            height: 36
+            height: ThemeTokens.dp(36)
             color: ThemeTokens.hover
 
             MouseArea {
@@ -156,9 +156,9 @@ Rectangle {
 
             Text {
                 anchors.left: parent.left
-                anchors.leftMargin: 12
+                anchors.leftMargin: ThemeTokens.dp(12)
                 anchors.right: controlsRow.left
-                anchors.rightMargin: 8
+                anchors.rightMargin: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.title
                 color: ThemeTokens.text
@@ -171,18 +171,18 @@ Rectangle {
             Row {
                 id: controlsRow
                 anchors.right: parent.right
-                anchors.rightMargin: 8
+                anchors.rightMargin: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 4
+                spacing: ThemeTokens.dp(4)
                 z: 1
 
                 // ESC Badge
                 Rectangle {
                     id: escBadge
                     visible: root.showEscBadge
-                    width: 28
-                    height: 18
-                    radius: 4
+                    width: ThemeTokens.dp(28)
+                    height: ThemeTokens.dp(18)
+                    radius: ThemeTokens.dp(4)
                     color: ThemeTokens.panel
                     border.color: ThemeTokens.border
                     border.width: 1
@@ -202,8 +202,8 @@ Rectangle {
                 ChaSetDropdownMenu {
                     id: sizeMenu
                     visible: root.sizeOptions && root.sizeOptions.length > 0
-                    width: 24
-                    height: 24
+                    width: ThemeTokens.dp(24)
+                    height: ThemeTokens.dp(24)
                     anchors.verticalCenter: parent.verticalCenter
                     items: {
                         var res = []
@@ -263,7 +263,7 @@ Rectangle {
         Item {
             id: bodyContent
             width: parent.width
-            height: parent.height - 37 - (footerArea.visible ? footerArea.height : 0)
+            height: parent.height - ThemeTokens.dp(37) - (footerArea.visible ? footerArea.height : 0)
         }
 
         // Fixed Footer

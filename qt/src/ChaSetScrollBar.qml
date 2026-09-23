@@ -18,11 +18,11 @@ T.ScrollBar {
     // ---- Desktop Geometry Properties ----
     property string barSize: "default" // "default" | "sm"
     readonly property bool isSm: barSize === "sm"
-    property int hitThickness: isSm ? 10 : 14
-    property int thumbThickness: isSm ? 2 : 4
-    property int expandedThumbThickness: isSm ? 6 : 10
-    property int minThumbLength: isSm ? 20 : 30
-    property int buttonLength: isSm ? 10 : 14
+    property int hitThickness: ThemeTokens.dp(isSm ? 10 : 14)
+    property int thumbThickness: ThemeTokens.dp(isSm ? 2 : 4)
+    property int expandedThumbThickness: ThemeTokens.dp(isSm ? 6 : 10)
+    property int minThumbLength: ThemeTokens.dp(isSm ? 20 : 30)
+    property int buttonLength: ThemeTokens.dp(isSm ? 10 : 14)
     property bool showButtons: true
     property bool autoRepeat: true
     property int autoRepeatDelay: 400
@@ -185,7 +185,7 @@ T.ScrollBar {
 
         width: control.buttonLength
         height: control.buttonLength
-        radius: 2
+        radius: ThemeTokens.dp(2)
 
         readonly property bool _isHovered: (control.forceButtonState === "hover") || (_ma.containsMouse && isEnabled && control._isExpanded)
         readonly property bool _isPressed: (control.forceButtonState === "active") || (_ma.pressed && isEnabled && control._isExpanded)
@@ -212,35 +212,40 @@ T.ScrollBar {
                 var ctx = getContext("2d")
                 ctx.reset()
                 ctx.clearRect(0, 0, width, height)
+                var w = width
+                var h = height
+                if (w <= 0 || h <= 0) return
+                var sx = function(val) { return (val / 14.0) * w }
+                var sy = function(val) { return (val / 14.0) * h }
                 ctx.strokeStyle = btn.iconColor
-                ctx.lineWidth = 1.0
+                ctx.lineWidth = Math.max(1.0, ThemeTokens.dp(1.0))
                 ctx.lineCap = "round"
                 ctx.lineJoin = "round"
 
                 var isVert = control.vertical
                 if (isVert) {
-                    if (btn.kind === 0) { // ToTop
-                        ctx.moveTo(3.5, 6.5); ctx.lineTo(7, 3); ctx.lineTo(10.5, 6.5); ctx.stroke()
-                        ctx.moveTo(3.5, 10.5); ctx.lineTo(7, 7); ctx.lineTo(10.5, 10.5); ctx.stroke()
-                    } else if (btn.kind === 1) { // PageUp
-                        ctx.moveTo(3.5, 8.5); ctx.lineTo(7, 5); ctx.lineTo(10.5, 8.5); ctx.stroke()
-                    } else if (btn.kind === 2) { // PageDown
-                        ctx.moveTo(3.5, 5.5); ctx.lineTo(7, 9); ctx.lineTo(10.5, 5.5); ctx.stroke()
-                    } else if (btn.kind === 3) { // ToBottom
-                        ctx.moveTo(3.5, 3.5); ctx.lineTo(7, 7); ctx.lineTo(10.5, 3.5); ctx.stroke()
-                        ctx.moveTo(3.5, 7.5); ctx.lineTo(7, 11); ctx.lineTo(10.5, 7.5); ctx.stroke()
+                    if (btn.kind === 0) { // ToStart (ToTop)
+                        ctx.moveTo(sx(3.5), sy(6.5)); ctx.lineTo(sx(7), sy(3)); ctx.lineTo(sx(10.5), sy(6.5)); ctx.stroke()
+                        ctx.moveTo(sx(3.5), sy(10.5)); ctx.lineTo(sx(7), sy(7)); ctx.lineTo(sx(10.5), sy(10.5)); ctx.stroke()
+                    } else if (btn.kind === 1) { // PageBack (PageUp)
+                        ctx.moveTo(sx(3.5), sy(8.5)); ctx.lineTo(sx(7), sy(5)); ctx.lineTo(sx(10.5), sy(8.5)); ctx.stroke()
+                    } else if (btn.kind === 2) { // PageForward (PageDown)
+                        ctx.moveTo(sx(3.5), sy(5.5)); ctx.lineTo(sx(7), sy(9)); ctx.lineTo(sx(10.5), sy(5.5)); ctx.stroke()
+                    } else if (btn.kind === 3) { // ToEnd (ToBottom)
+                        ctx.moveTo(sx(3.5), sy(3.5)); ctx.lineTo(sx(7), sy(7)); ctx.lineTo(sx(10.5), sy(3.5)); ctx.stroke()
+                        ctx.moveTo(sx(3.5), sy(7.5)); ctx.lineTo(sx(7), sy(11)); ctx.lineTo(sx(10.5), sy(7.5)); ctx.stroke()
                     }
                 } else {
-                    if (btn.kind === 0) { // ToLeft
-                        ctx.moveTo(6.5, 3.5); ctx.lineTo(3, 7); ctx.lineTo(6.5, 10.5); ctx.stroke()
-                        ctx.moveTo(10.5, 3.5); ctx.lineTo(7, 7); ctx.lineTo(10.5, 10.5); ctx.stroke()
-                    } else if (btn.kind === 1) { // PageLeft
-                        ctx.moveTo(8.5, 3.5); ctx.lineTo(5, 7); ctx.lineTo(8.5, 10.5); ctx.stroke()
-                    } else if (btn.kind === 2) { // PageRight
-                        ctx.moveTo(5.5, 3.5); ctx.lineTo(9, 7); ctx.lineTo(5.5, 10.5); ctx.stroke()
-                    } else if (btn.kind === 3) { // ToRight
-                        ctx.moveTo(3.5, 3.5); ctx.lineTo(7, 7); ctx.lineTo(3.5, 10.5); ctx.stroke()
-                        ctx.moveTo(7.5, 3.5); ctx.lineTo(11, 7); ctx.lineTo(7.5, 10.5); ctx.stroke()
+                    if (btn.kind === 0) { // ToStart (ToLeft)
+                        ctx.moveTo(sx(6.5), sy(3.5)); ctx.lineTo(sx(3), sy(7)); ctx.lineTo(sx(6.5), sy(10.5)); ctx.stroke()
+                        ctx.moveTo(sx(10.5), sy(3.5)); ctx.lineTo(sx(7), sy(7)); ctx.lineTo(sx(10.5), sy(10.5)); ctx.stroke()
+                    } else if (btn.kind === 1) { // PageBack (PageLeft)
+                        ctx.moveTo(sx(8.5), sy(3.5)); ctx.lineTo(sx(5), sy(7)); ctx.lineTo(sx(8.5), sy(10.5)); ctx.stroke()
+                    } else if (btn.kind === 2) { // PageForward (PageRight)
+                        ctx.moveTo(sx(5.5), sy(3.5)); ctx.lineTo(sx(9), sy(7)); ctx.lineTo(sx(5.5), sy(10.5)); ctx.stroke()
+                    } else if (btn.kind === 3) { // ToEnd (ToRight)
+                        ctx.moveTo(sx(3.5), sy(3.5)); ctx.lineTo(sx(7), sy(7)); ctx.lineTo(sx(3.5), sy(10.5)); ctx.stroke()
+                        ctx.moveTo(sx(7.5), sy(3.5)); ctx.lineTo(sx(11), sy(7)); ctx.lineTo(sx(7.5), sy(10.5)); ctx.stroke()
                     }
                 }
             }
@@ -249,6 +254,8 @@ T.ScrollBar {
                 target: btn
                 function onIconColorChanged() { iconCanvas.requestPaint() }
             }
+            onWidthChanged: iconCanvas.requestPaint()
+            onHeightChanged: iconCanvas.requestPaint()
             Component.onCompleted: iconCanvas.requestPaint()
         }
 

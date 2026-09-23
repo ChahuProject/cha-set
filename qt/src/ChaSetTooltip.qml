@@ -52,7 +52,7 @@ Item {
     readonly property real targetY: targetPosInRoot.y
     readonly property real targetW: effectiveTarget ? effectiveTarget.width : root.width
     readonly property real targetH: effectiveTarget ? effectiveTarget.height : root.height
-    readonly property int sideOffset: 6
+    readonly property int sideOffset: ThemeTokens.dp(6)
 
     readonly property real calculatedX: {
         switch (root.side) {
@@ -139,18 +139,18 @@ Item {
             NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
         }
 
-        radius: 4
+        radius: ThemeTokens.dp(4)
         color: ThemeTokens.dark ? "#f8fafc" : "#020817"
         border.color: ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.15) : Qt.rgba(255, 255, 255, 0.15)
         border.width: 1
 
-        implicitWidth: Math.max(24, contentRow.implicitWidth + 16)
-        implicitHeight: Math.max(20, contentRow.implicitHeight + 8)
+        implicitWidth: Math.max(ThemeTokens.dp(24), contentRow.implicitWidth + ThemeTokens.dp(16))
+        implicitHeight: Math.max(ThemeTokens.dp(20), contentRow.implicitHeight + ThemeTokens.dp(8))
 
         Row {
             id: contentRow
             anchors.centerIn: parent
-            spacing: 6
+            spacing: ThemeTokens.dp(6)
 
             Text {
                 id: bubbleText
@@ -167,12 +167,12 @@ Item {
                 id: shortcutBadge
                 visible: root.shortcut.length > 0
                 anchors.verticalCenter: parent.verticalCenter
-                radius: 3
+                radius: ThemeTokens.dp(3)
                 color: ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.1) : Qt.rgba(255, 255, 255, 0.2)
                 border.color: ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.15) : Qt.rgba(255, 255, 255, 0.2)
                 border.width: 1
-                implicitWidth: shortcutText.implicitWidth + 8
-                implicitHeight: shortcutText.implicitHeight + 4
+                implicitWidth: shortcutText.implicitWidth + ThemeTokens.dp(8)
+                implicitHeight: shortcutText.implicitHeight + ThemeTokens.dp(4)
 
                 Text {
                     id: shortcutText
@@ -189,22 +189,22 @@ Item {
         Rectangle {
             id: arrowIndicator
             visible: root.arrow
-            width: 6
-            height: 6
+            width: ThemeTokens.dp(6)
+            height: ThemeTokens.dp(6)
             rotation: 45
             color: bubble.color
             z: -1
             x: {
                 switch (root.side) {
-                case "left": return bubble.width - 3
-                case "right": return -3
+                case "left": return bubble.width - ThemeTokens.dp(3)
+                case "right": return -ThemeTokens.dp(3)
                 default: return (bubble.width - width) / 2
                 }
             }
             y: {
                 switch (root.side) {
-                case "top": return bubble.height - 3
-                case "bottom": return -3
+                case "top": return bubble.height - ThemeTokens.dp(3)
+                case "bottom": return -ThemeTokens.dp(3)
                 default: return (bubble.height - height) / 2
                 }
             }
