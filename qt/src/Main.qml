@@ -129,6 +129,78 @@ ApplicationWindow {
     property bool exportModalOpen: false
     property string exportTab: "qt"
 
+    readonly property string currentLanguageName: {
+        var cur = ChaSetI18n.locale;
+        var list = ChaSetI18n.supportedLocales || [];
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].code === cur) return list[i].nativeName;
+        }
+        return cur === "zh-CN" ? "中文" : "English";
+    }
+
+    readonly property var languageMenuItems: {
+        var pref = ChaSetI18n.preference;
+        var list = ChaSetI18n.supportedLocales || [];
+        var menu = [
+            { isLabel: true, label: ChaSetI18n.tr("showcase.switchLanguage", "Switch Language") },
+            { separator: true },
+            {
+                id: "system",
+                label: ChaSetI18n.tr("language.followSystem", "Follow System"),
+                icon: "monitor",
+                checked: pref === "system",
+                onSelect: function() { ChaSetI18n.setPreference("system"); }
+            },
+            { separator: true }
+        ];
+        for (var i = 0; i < list.length; i++) {
+            var l = list[i];
+            (function(code, name) {
+                menu.push({
+                    id: code,
+                    label: name + " (" + code + ")",
+                    checked: pref === code,
+                    onSelect: function() { ChaSetI18n.setPreference(code); }
+                });
+            })(l.code, l.nativeName);
+        }
+        return menu;
+    }
+
+    readonly property var quickJumpMenuItems: [
+        { isLabel: true, label: "Featured Engines" },
+        { separator: true },
+        {
+            id: "generic-data-table",
+            label: "Generic Data Table",
+            icon: "table",
+            onSelect: function() { win.activePage = "generic-data-table"; }
+        },
+        {
+            id: "query-builder",
+            label: "Query Builder",
+            icon: "search",
+            onSelect: function() { win.activePage = "query-builder"; }
+        },
+        {
+            id: "virtual-list",
+            label: "Virtual List",
+            icon: "file-text",
+            onSelect: function() { win.activePage = "virtual-list"; }
+        },
+        {
+            id: "draggable-modal",
+            label: "Draggable Modal",
+            icon: "maximize",
+            onSelect: function() { win.activePage = "draggable-modal"; }
+        },
+        {
+            id: "splitter",
+            label: "Splitter",
+            onSelect: function() { win.activePage = "splitter"; }
+        }
+    ]
+
     // Custom Color Overrides (Live)
     property string overridePrimary: ""
     property string overridePrimaryFg: ""
@@ -1322,19 +1394,37 @@ ApplicationWindow {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: ThemeTokens.dp(10)
 
-                        ChaSetIcon {
-                            name: "logo"
-                            size: 20
-                            color: ThemeTokens.accent
+                        Item {
+                            width: brandContentRow.implicitWidth
+                            height: brandContentRow.implicitHeight
                             anchors.verticalCenter: parent.verticalCenter
-                        }
 
-                        Text {
-                            text: "ChaSet"
-                            color: win.cFg
-                            font.pixelSize: Typography.sizeHeading
-                            font.weight: Typography.weightBold
-                            anchors.verticalCenter: parent.verticalCenter
+                            Row {
+                                id: brandContentRow
+                                spacing: ThemeTokens.dp(8)
+                                anchors.verticalCenter: parent.verticalCenter
+
+                                ChaSetIcon {
+                                    name: "logo"
+                                    size: 20
+                                    color: ThemeTokens.accent
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
+                                Text {
+                                    text: "ChaSet"
+                                    color: win.cFg
+                                    font.pixelSize: Typography.sizeHeading
+                                    font.weight: Typography.weightBold
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+                            }
+
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: win.activePage = "intro"
+                            }
                         }
 
                         ChaSetBadge {
@@ -1384,39 +1474,23 @@ ApplicationWindow {
                         spacing: ThemeTokens.dp(8)
 
                         // Language Switcher Dropdown Menu
-                        Item {
-                            width: ThemeTokens.dp(90)
-                            height: ThemeTokens.dp(32)
+                        ChaSetDropdownMenu {
+                            id: langDropdown
                             anchors.verticalCenter: parent.verticalCenter
+                            width: ThemeTokens.dp(100)
+                            height: ThemeTokens.dp(32)
+                            menuWidth: 190
+                            align: "end"
+                            sideOffset: 8
+                            items: win.languageMenuItems
 
                             ChaSetButton {
-                                id: langBtn
                                 anchors.fill: parent
                                 variant: "outline"
                                 size: "sm"
                                 icon: "globe"
-                                text: ChaSetI18n.locale === "zh-CN" ? "中文" : "EN"
-                                onClicked: langMenu.open()
-                            }
-
-                            Menu {
-                                id: langMenu
-                                y: langBtn.height + ThemeTokens.dp(4)
-                                width: ThemeTokens.dp(160)
-
-                                MenuItem {
-                                    text: ChaSetI18n.tr("language.followSystem", "Follow System")
-                                    onTriggered: ChaSetI18n.setPreference("system")
-                                }
-                                MenuSeparator {}
-                                Repeater {
-                                    model: ChaSetI18n.supportedLocales
-                                    delegate: MenuItem {
-                                        required property var modelData
-                                        text: modelData.nativeName + " (" + modelData.code + ")"
-                                        onTriggered: ChaSetI18n.setPreference(modelData.code)
-                                    }
-                                }
+                                text: win.currentLanguageName
+                                onClicked: langDropdown.open = !langDropdown.open
                             }
                         }
 
@@ -1446,6 +1520,27 @@ ApplicationWindow {
                             }
                         }
 
+                        // Quick Jump Dropdown Menu
+                        ChaSetDropdownMenu {
+                            id: quickJumpDropdown
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: ThemeTokens.dp(96)
+                            height: ThemeTokens.dp(32)
+                            menuWidth: 200
+                            align: "end"
+                            sideOffset: 8
+                            items: win.quickJumpMenuItems
+
+                            ChaSetButton {
+                                anchors.fill: parent
+                                variant: "outline"
+                                size: "sm"
+                                icon: "zap"
+                                text: ChaSetI18n.tr("showcase.jumpTo", "Jump to")
+                                onClicked: quickJumpDropdown.open = !quickJumpDropdown.open
+                            }
+                        }
+
                         ChaSetSeparator { orientation: "vertical"; height: ThemeTokens.dp(18); anchors.verticalCenter: parent.verticalCenter }
 
                         // Dark/Light Mode Toggle Button
@@ -1460,6 +1555,18 @@ ApplicationWindow {
                                     ThemeTokens.dark = !ThemeTokens.dark;
                                     win.syncGlobalThemeConfig();
                                 }
+                            }
+                        }
+
+                        // GitHub Repository Button
+                        ChaSetTooltip {
+                            text: "GitHub Repository"
+                            side: "bottom"
+                            ChaSetButton {
+                                size: "icon"
+                                variant: "outline"
+                                icon: "github"
+                                onClicked: Qt.openUrlExternally("https://github.com/chahu/cha-set")
                             }
                         }
                     }

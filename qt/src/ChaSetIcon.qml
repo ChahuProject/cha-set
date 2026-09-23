@@ -336,6 +336,26 @@ Item {
                 ctx.moveTo(w * 0.2, h * 0.7);
                 ctx.lineTo(w * 0.8, h * 0.7);
                 ctx.stroke();
+            } else if (n === "file-text" || n === "file") {
+                ctx.beginPath();
+                ctx.moveTo(w * 0.2, h * 0.15);
+                ctx.lineTo(w * 0.55, h * 0.15);
+                ctx.lineTo(w * 0.8, h * 0.4);
+                ctx.lineTo(w * 0.8, h * 0.85);
+                ctx.lineTo(w * 0.2, h * 0.85);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(w * 0.55, h * 0.15);
+                ctx.lineTo(w * 0.55, h * 0.4);
+                ctx.lineTo(w * 0.8, h * 0.4);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(w * 0.35, h * 0.55);
+                ctx.lineTo(w * 0.65, h * 0.55);
+                ctx.moveTo(w * 0.35, h * 0.68);
+                ctx.lineTo(w * 0.65, h * 0.68);
+                ctx.stroke();
             } else if (n === "grid") {
                 ctx.beginPath();
                 ctx.rect(w * 0.18, h * 0.18, w * 0.28, h * 0.28);
@@ -395,6 +415,22 @@ Item {
                 // Handle
                 ctx.beginPath();
                 ctx.arc(w * 0.72, h * 0.48, w * 0.12, 1.5 * Math.PI, 0.5 * Math.PI);
+                ctx.stroke();
+            } else if (n === "github") {
+                // GitHub mark silhouette
+                ctx.beginPath();
+                ctx.arc(w * 0.5, h * 0.5, w * 0.42, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(w * 0.3, h * 0.38);
+                ctx.lineTo(w * 0.3, h * 0.24);
+                ctx.lineTo(w * 0.42, h * 0.32);
+                ctx.bezierCurveTo(w * 0.47, h * 0.3, w * 0.53, h * 0.3, w * 0.58, h * 0.32);
+                ctx.lineTo(w * 0.7, h * 0.24);
+                ctx.lineTo(w * 0.7, h * 0.38);
+                ctx.bezierCurveTo(w * 0.78, h * 0.5, w * 0.76, h * 0.66, w * 0.66, h * 0.74);
+                ctx.bezierCurveTo(w * 0.58, h * 0.8, w * 0.42, h * 0.8, w * 0.34, h * 0.74);
+                ctx.bezierCurveTo(w * 0.24, h * 0.66, w * 0.22, h * 0.5, w * 0.3, h * 0.38);
                 ctx.stroke();
             } else {
                 // Fallback: subtle square
