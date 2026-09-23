@@ -16,6 +16,7 @@ Item {
     property bool disabled: false
     property bool pressed: false
     property string text: ""
+    property string icon: ""
     property string iconSource: ""
     property string iconPosition: "left" // left | right
     property int customRadius: 8
@@ -307,6 +308,16 @@ Item {
                 to: 360
                 duration: 600
             }
+        }
+
+        // Optional Vector Icon
+        ChaSetIcon {
+            id: btnVectorIcon
+            visible: !root.loading && root.icon !== ""
+            anchors.verticalCenter: parent.verticalCenter
+            name: root.icon
+            size: root.size === "sm" || root.size === "xs" || root.size === "icon-xs" || root.size === "icon-sm" ? 14 : 16
+            color: root.fgColor()
         }
 
         // Optional Left Icon
