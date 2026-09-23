@@ -53,8 +53,8 @@ Item {
                      ? (Qt.Vertical | Qt.Horizontal)
                      : Qt.Vertical
 
-        onWheel: (event) => {
-            root.handleWheel(event)
+        onWheel: function(event) {
+            root.handleWheel(event);
         }
     }
 
@@ -170,6 +170,7 @@ Item {
     }
 
     function handleWheel(event) {
+        if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) return
         if (!targetItem) return
 
         const dy = event.angleDelta.y

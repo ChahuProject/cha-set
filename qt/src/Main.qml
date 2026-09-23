@@ -274,7 +274,7 @@ ApplicationWindow {
         var next = steps[targetIdx];
         ThemeTokens.uiScale = next;
         win.syncGlobalThemeConfig();
-        if (scaleOsd) {
+        if (scaleOsd && (typeof testScenario === "undefined" || testScenario === "")) {
             scaleOsd.value = next;
             scaleOsd.show();
         }
@@ -283,7 +283,7 @@ ApplicationWindow {
     function resetZoom() {
         ThemeTokens.uiScale = 1.0;
         win.syncGlobalThemeConfig();
-        if (scaleOsd) {
+        if (scaleOsd && (typeof testScenario === "undefined" || testScenario === "")) {
             scaleOsd.value = 1.0;
             scaleOsd.show();
         }
@@ -318,20 +318,6 @@ ApplicationWindow {
     Shortcut {
         sequences: ["Ctrl+0"]
         onActivated: win.resetZoom()
-    }
-
-    WheelHandler {
-        target: null
-        acceptedModifiers: Qt.ControlModifier
-        onWheel: function(event) {
-            if (event.angleDelta.y === 0) return;
-            if (event.angleDelta.y > 0) {
-                win.stepZoom(+1);
-            } else {
-                win.stepZoom(-1);
-            }
-            event.accepted = true;
-        }
     }
 
     Component.onCompleted: {
@@ -582,6 +568,7 @@ ApplicationWindow {
                     }
                 }
             }
+            if (typeof gc === "function") gc();
             if (pageErrors === 0 && instantiatedCount >= 36) {
                 console.log("[qt-scenario] PASS: All " + instantiatedCount + " showcase page components successfully compiled and instantiated with zero errors");
             } else {
@@ -906,6 +893,17 @@ ApplicationWindow {
         objectName: "rootCanvas"
         anchors.fill: parent
         color: win.cBg
+
+        // Fallback QML WheelHandler for standalone QML runtime
+        WheelHandler {
+            target: null
+            acceptedModifiers: Qt.ControlModifier
+            onWheel: function(event) {
+                if (event.angleDelta.y === 0) return;
+                win.stepZoom(event.angleDelta.y > 0 ? 1 : -1);
+                event.accepted = true;
+            }
+        }
 
         // Hidden tabs instance for headless scenario testing
         ChaSetTabs {

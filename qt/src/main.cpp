@@ -8,7 +8,95 @@
 #include <QTimer>
 #include <QDebug>
 #include <QTest>
+#include <QWheelEvent>
 #include "ChaSetFontSystem.h"
+
+class GlobalWheelZoomFilter : public QObject {
+public:
+    explicit GlobalWheelZoomFilter(QQuickWindow* window) : QObject(window), m_window(window) {}
+
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override {
+        Q_UNUSED(watched);
+        if (event->type() == QEvent::Wheel) {
+            auto* we = static_cast<QWheelEvent*>(event);
+            if (we->modifiers() & (Qt::ControlModifier | Qt::MetaModifier)) {
+                int delta = we->angleDelta().y();
+                if (delta == 0) delta = we->angleDelta().x();
+                if (delta != 0) {
+                    int direction = delta > 0 ? 1 : -1;
+                    qInfo() << "[GlobalWheelZoomFilter] Intercepted Ctrl+Wheel delta=" << delta << ", invoking stepZoom(" << direction << ")";
+                    QMetaObject::invokeMethod(m_window, "stepZoom", Q_ARG(QVariant, direction));
+                    we->accept();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+private:
+    QQuickWindow* m_window;
+};
+
+static bool runRealCtrlWheelVerification(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running authentic C++ QTest Ctrl+Wheel zoom verification...");
+
+    double initialScale = window->property("effectiveUiScale").toDouble();
+    qInfo() << "[qt-scenario] Step 0: initialScale =" << initialScale;
+    if (initialScale <= 0.0) {
+        qWarning("[qt-scenario] WARNING: effectiveUiScale is invalid or zero");
+        return false;
+    }
+
+    // 1. Send Ctrl + Wheel Up (zoom in)
+    qInfo("[qt-scenario] Step 1: Sending zoomInEvent...");
+    QPointF local(100, 100);
+    QPointF global = window->mapToGlobal(QPoint(100, 100));
+    QWheelEvent zoomInEvent(local, global, QPoint(), QPoint(0, 120),
+                            Qt::NoButton, Qt::ControlModifier, Qt::NoScrollPhase, false);
+    QCoreApplication::sendEvent(window, &zoomInEvent);
+    qInfo("[qt-scenario] Step 1.1: zoomInEvent sent, waiting 50ms...");
+    QTest::qWait(50);
+
+    double zoomedInScale = window->property("effectiveUiScale").toDouble();
+    qInfo() << "[qt-scenario] Step 1.2: zoomedInScale =" << zoomedInScale;
+    if (zoomedInScale <= initialScale) {
+        qCritical() << "[qt-scenario] FAIL: Ctrl + Wheel Up did not increase effectiveUiScale (initial="
+                     << initialScale << ", after=" << zoomedInScale << ")";
+        return false;
+    }
+
+    // 2. Send Ctrl + Wheel Down (zoom out)
+    qInfo("[qt-scenario] Step 2: Sending zoomOutEvent...");
+    QWheelEvent zoomOutEvent(local, global, QPoint(), QPoint(0, -120),
+                             Qt::NoButton, Qt::ControlModifier, Qt::NoScrollPhase, false);
+    QCoreApplication::sendEvent(window, &zoomOutEvent);
+    qInfo("[qt-scenario] Step 2.1: zoomOutEvent sent, waiting 50ms...");
+    QTest::qWait(50);
+
+    double zoomedOutScale = window->property("effectiveUiScale").toDouble();
+    qInfo() << "[qt-scenario] Step 2.2: zoomedOutScale =" << zoomedOutScale;
+    if (zoomedOutScale >= zoomedInScale) {
+        qCritical() << "[qt-scenario] FAIL: Ctrl + Wheel Down did not decrease effectiveUiScale (zoomedIn="
+                     << zoomedInScale << ", after=" << zoomedOutScale << ")";
+        return false;
+    }
+
+    // 3. Reset Zoom back to 1.0
+    qInfo("[qt-scenario] Step 3: Invoking resetZoom...");
+    QMetaObject::invokeMethod(window, "resetZoom");
+    qInfo("[qt-scenario] Step 3.1: resetZoom invoked, waiting 50ms...");
+    QTest::qWait(50);
+
+    auto* scaleOsd = window->findChild<QQuickItem*>("globalScaleOsd");
+    if (scaleOsd) {
+        QMetaObject::invokeMethod(scaleOsd, "hide");
+    }
+
+    qInfo("[qt-scenario] PASS: Authentic C++ Ctrl+Wheel zoom verified successfully");
+    return true;
+}
 
 static bool runRealMouseDragVerification(QQuickWindow* window) {
     qInfo("[qt-scenario] Running authentic C++ QTest mouse drag injection...");
@@ -719,6 +807,7 @@ int main(int argc, char* argv[])
     auto* root = engine.rootObjects().first();
     auto* window = qobject_cast<QQuickWindow*>(root);
     if (window != nullptr) {
+        app.installEventFilter(new GlobalWheelZoomFilter(window));
         window->show();
         if (shotMode) {
             QTimer::singleShot(300, window, [window, shotPath]() {
@@ -729,7 +818,7 @@ int main(int argc, char* argv[])
                 QCoreApplication::exit(0);
             });
         } else if (!testScenario.isEmpty()) {
-            QTimer::singleShot(300, window, [window, testScenario]() {
+            QTimer::singleShot(300, window, [&engine, window, testScenario]() {
                 QVariant returnedValue;
                 bool ok = QMetaObject::invokeMethod(window, "runTestScenario",
                     Q_RETURN_ARG(QVariant, returnedValue),
@@ -740,6 +829,18 @@ int main(int argc, char* argv[])
                 } else {
                     int code = returnedValue.toInt();
                     if (code == 0) {
+                        QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+                        QCoreApplication::processEvents();
+                        engine.collectGarbage();
+                        QTest::qWait(50);
+
+                        if (testScenario == "all" || testScenario == "ctrl-wheel" || testScenario == "zoom") {
+                            bool wheelOk = runRealCtrlWheelVerification(window);
+                            if (!wheelOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                        }
                         if (testScenario == "all" || testScenario == "scroll-drag") {
                             bool dragOk = runRealMouseDragVerification(window);
                             if (!dragOk) {

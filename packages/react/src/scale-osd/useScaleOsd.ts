@@ -1,4 +1,5 @@
 import * as React from 'react';
+export { CANONICAL_SCALE_STEPS } from '@chahu/spec/scale-osd';
 import { CANONICAL_SCALE_STEPS } from '@chahu/spec/scale-osd';
 
 export interface UseScaleOsdOptions {

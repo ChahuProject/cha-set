@@ -238,7 +238,7 @@ const showcaseTestFile = resolve(root, 'packages/react/src/__tests__/showcase-pa
 if (existsSync(showcaseTestFile)) {
   const { execSync } = await import('node:child_process');
   try {
-    execSync('pnpm --filter @chahu/cha-set exec vitest run src/__tests__/showcase-parity.test.tsx src/__tests__/showcase-pages.test.tsx src/__tests__/showcase-sidebar.test.tsx', {
+    execSync('pnpm --filter @chahu/cha-set exec vitest run src/__tests__/showcase-parity.test.tsx src/__tests__/showcase-pages.test.tsx src/__tests__/showcase-sidebar.test.tsx src/__tests__/showcase-app.test.tsx', {
       cwd: root,
       stdio: 'pipe',
       encoding: 'utf8',
@@ -246,6 +246,27 @@ if (existsSync(showcaseTestFile)) {
     console.log('[gate] OK — React showcase living documentation pages & sidebar navigation integrity passed');
   } catch (err) {
     console.error('[gate] FAIL: React showcase living documentation pages smoke & click integrity check failed');
+    if (err.stdout) console.error(err.stdout);
+    if (err.stderr) console.error(err.stderr);
+    process.exit(1);
+  }
+}
+
+// 4.1 React Showcase Production Bundle & Export Resolution Gate
+// Strictly verifies that all imported symbols across the entire React showcase
+// resolve cleanly from @chahu/cha-set packages/react/src/index.ts with zero missing exports.
+const basicShowcaseDir = resolve(root, 'packages/react/examples/basic');
+if (existsSync(basicShowcaseDir)) {
+  const { execSync } = await import('node:child_process');
+  try {
+    execSync('pnpm --filter @chaset/example-react-button build', {
+      cwd: root,
+      stdio: 'pipe',
+      encoding: 'utf8',
+    });
+    console.log('[gate] OK — React showcase production bundle & export resolution passed');
+  } catch (err) {
+    console.error('[gate] FAIL: React showcase production build failed (missing exports or invalid imports in App.tsx / showcase):');
     if (err.stdout) console.error(err.stdout);
     if (err.stderr) console.error(err.stderr);
     process.exit(1);

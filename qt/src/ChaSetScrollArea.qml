@@ -193,6 +193,7 @@ Flickable {
         orientation: Qt.Vertical
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
         onWheel: function(event) {
+            if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) return
             if (event.angleDelta.y === 0) return
             var maxScrollY = Math.max(0, root.contentHeight - root.height)
             if (maxScrollY <= 0) return
@@ -209,6 +210,7 @@ Flickable {
         orientation: Qt.Horizontal
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
         onWheel: function(event) {
+            if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) return
             var delta = event.angleDelta.x !== 0 ? event.angleDelta.x : (!root.showVerticalScrollBar ? event.angleDelta.y : 0)
             if (delta === 0) return
             var maxScrollX = Math.max(0, root.contentWidth - root.width)
