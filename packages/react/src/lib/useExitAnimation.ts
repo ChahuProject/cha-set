@@ -21,14 +21,17 @@ export function useExitAnimation(open: boolean, exitDurationMs = 180) {
   const [visible, setVisible] = React.useState(open);
   const [exiting, setExiting] = React.useState(false);
 
+  // Synchronously ensure visibility when open is true so there is no 1-frame unmount/gap
+  if (open && (!visible || exiting)) {
+    setVisible(true);
+    setExiting(false);
+  }
+
   React.useEffect(() => {
-    if (open) {
-      setVisible(true);
-      setExiting(false);
-    } else if (visible) {
+    if (!open && visible && !exiting) {
       setExiting(true);
     }
-  }, [open, visible]);
+  }, [open, visible, exiting]);
 
   React.useEffect(() => {
     if (!exiting) return;
@@ -39,5 +42,5 @@ export function useExitAnimation(open: boolean, exitDurationMs = 180) {
     return () => window.clearTimeout(t);
   }, [exiting, exitDurationMs]);
 
-  return { visible, exiting };
+  return { visible: open || visible, exiting: !open && exiting };
 }

@@ -158,6 +158,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
       aria-pressed={pressed ? true : undefined}
       data-pressed={pressed ? 'true' : undefined}
       render={effectiveRender}
+      nativeButton={asChild ? false : undefined}
       data-slot="button"
       data-variant={currentVariant}
       data-size={currentSize}

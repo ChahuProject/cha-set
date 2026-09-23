@@ -285,7 +285,7 @@ const sizeClasses: Record<DialogSize, string> = {
 
 const defaultSizeWidths: Record<DialogSize, number | undefined> = {
   sm: 24,
-  default: undefined,
+  default: 32,
   lg: 44,
   xl: 56,
   full: 68,

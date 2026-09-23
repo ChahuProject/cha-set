@@ -132,7 +132,16 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
   const effectiveSizeOptions = sizeOptions ?? 尺寸选项;
   const effectiveTooltip = sizeMenuTooltip ?? 尺寸按钮提示 ?? '调整弹窗尺寸';
 
-  const rem = remBase ?? 16;
+  const resolveRem = React.useCallback(() => {
+    if (remBase !== undefined) return remBase;
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+      const fs = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
+      if (!isNaN(fs) && fs > 0) return fs;
+    }
+    return 16;
+  }, [remBase]);
+
+  const rem = resolveRem();
   const widthRemVal = defaultWidthRem ?? 默认宽度rem;
   const heightRemVal = defaultHeightRem ?? 默认高度rem;
   const minWidthRemVal = minWidthRem ?? 最小宽度rem;
@@ -147,7 +156,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
   } else if (defaultWidth !== undefined) {
     resolvedWidth = defaultWidth;
   } else {
-    resolvedWidth = 500;
+    resolvedWidth = 32 * rem;
   }
 
   let resolvedHeight: number;
@@ -156,7 +165,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
   } else if (defaultHeight !== undefined) {
     resolvedHeight = defaultHeight;
   } else {
-    resolvedHeight = 400;
+    resolvedHeight = 25 * rem;
   }
 
   const isBrowser = typeof window !== 'undefined';
@@ -189,6 +198,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     };
   }
   const initialPos = initialPosRef.current;
+  const currentPosRef = React.useRef({ x: initialPos.x, y: initialPos.y });
   const currentSizeRef = React.useRef({ width: initialPos.width, height: initialPos.height });
 
   const shouldAutoFit = autoFitHeight ?? 自动贴高 ?? true;
@@ -215,6 +225,13 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     if (Math.abs(targetH - currentSizeRef.current.height) > 1) {
       currentSizeRef.current = { ...currentSizeRef.current, height: targetH };
       rnd.updateSize({ width: currentSizeRef.current.width, height: targetH });
+
+      // If user has not dragged the modal yet, re-center vertically to avoid pushing below the screen
+      if (!hasManuallyAdjustedRef.current && !isTopMode && typeof window !== 'undefined') {
+        const newY = Math.max(16, (window.innerHeight - targetH) / 2);
+        currentPosRef.current = { ...currentPosRef.current, y: newY };
+        rnd.updatePosition({ x: currentPosRef.current.x, y: newY });
+      }
     }
   }, [shouldAutoFit, isTopMode, topMarginPx, rem, resolvedMinHeight]);
 
@@ -284,6 +301,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
 
     const newX = Math.max(8, Math.min((currentInnerW - targetW) / 2, Math.max(8, currentInnerW - targetW - 8)));
     const newY = Math.max(8, Math.min((currentInnerH - targetH) / 2, Math.max(8, currentInnerH - targetH - 8)));
+    currentPosRef.current = { x: newX, y: newY };
     rndRef.current?.updatePosition({ x: newX, y: newY });
   };
 
@@ -314,6 +332,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
         hasManuallyAdjustedRef.current = true;
       }}
       onDrag={(e: any, data) => {
+        currentPosRef.current = { x: data.x, y: data.y };
         const root = (e.target as HTMLElement).closest(`[data-slot="${dataSlot}"]`) as HTMLElement | null;
         if (root) {
           root.style.backgroundPosition = `${-data.x}px ${-data.y}px`;

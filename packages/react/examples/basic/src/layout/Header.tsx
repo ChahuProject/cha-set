@@ -88,7 +88,7 @@ export function Header({
                 <span className="hidden sm:inline font-medium">{activeLocaleMeta.nativeName}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuContent align="end" sideOffset={8} className="w-48">
               <DropdownMenuGroup>
                 <DropdownMenuLabel>{t('showcase.switchLanguage', 'Switch Language')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -144,7 +144,7 @@ export function Header({
                 <span>{t('showcase.jumpTo', 'Jump to')}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-52">
+            <DropdownMenuContent align="end" sideOffset={8} className="w-52">
               <DropdownMenuGroup>
                 <DropdownMenuLabel>Featured Engines</DropdownMenuLabel>
                 <DropdownMenuSeparator />

@@ -56,13 +56,14 @@ export function ContextMenuContent({
   return (
     <ContextMenuPrimitive.Portal>
       <ContextMenuPrimitive.Positioner
+        className="z-50"
         alignOffset={alignOffset}
         collisionPadding={collisionPadding}
       >
         <ContextMenuPrimitive.Popup
           data-slot="context-menu-content"
           className={cn(
-            'z-50 min-w-36 origin-(--transform-origin) overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
+            'relative z-50 min-w-36 origin-(--transform-origin) overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
             'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
             'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
             className,
@@ -307,11 +308,11 @@ export function ContextMenuSubContent({
   ...props
 }: ContextMenuSubContentProps) {
   return (
-    <ContextMenuPrimitive.Positioner>
+    <ContextMenuPrimitive.Positioner className="z-50">
       <ContextMenuPrimitive.Popup
         data-slot="context-menu-sub-content"
         className={cn(
-          'z-50 min-w-32 origin-(--transform-origin) overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
+          'relative z-50 min-w-32 origin-(--transform-origin) overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
           'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
           'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
           className,

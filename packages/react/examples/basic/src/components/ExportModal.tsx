@@ -183,7 +183,7 @@ ApplicationWindow {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent className="max-w-2xl p-6">
+      <DialogContent size="lg" className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Export & Copy Theme Configuration</DialogTitle>
           <DialogDescription>
@@ -193,7 +193,7 @@ ApplicationWindow {
 
         <div className="modal-tabs p-2 bg-muted/30 border-b border-border -mx-6">
           <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as any)}>
-            <TabsList>
+            <TabsList className="w-fit flex flex-wrap sm:flex-nowrap gap-1">
               <TabsTrigger value="css">CSS Variables</TabsTrigger>
               <TabsTrigger value="tailwind">Tailwind v4</TabsTrigger>
               <TabsTrigger value="react">React Code</TabsTrigger>
