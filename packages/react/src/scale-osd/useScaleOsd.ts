@@ -27,8 +27,8 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
     defaultValue = 1.0,
     steps = CANONICAL_SCALE_STEPS,
     step = 0.1,
-    min = steps && steps.length > 0 ? steps[0] : 0.2,
-    max = steps && steps.length > 0 ? steps[steps.length - 1] : 5.0,
+    min = options.min ?? (steps && steps.length > 0 ? (steps[0] ?? 0.2) : 0.2),
+    max = options.max ?? (steps && steps.length > 0 ? (steps[steps.length - 1] ?? 5.0) : 5.0),
     autoHideDuration = 1400,
     enableShortcuts = true,
     onChange,
@@ -106,14 +106,18 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
       let nearestIdx = 0;
       let minDiff = Infinity;
       for (let i = 0; i < steps.length; i++) {
-        const diff = Math.abs(steps[i] - scale);
-        if (diff < minDiff) {
-          minDiff = diff;
-          nearestIdx = i;
+        const stepVal = steps[i];
+        if (stepVal !== undefined) {
+          const diff = Math.abs(stepVal - scale);
+          if (diff < minDiff) {
+            minDiff = diff;
+            nearestIdx = i;
+          }
         }
       }
       const nextIdx = Math.min(steps.length - 1, nearestIdx + 1);
-      return commitScale(steps[nextIdx]);
+      const nextVal = steps[nextIdx];
+      return commitScale(nextVal !== undefined ? nextVal : scale + step);
     }
     return commitScale(scale + step);
   }, [commitScale, scale, step, steps]);
@@ -123,14 +127,18 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
       let nearestIdx = 0;
       let minDiff = Infinity;
       for (let i = 0; i < steps.length; i++) {
-        const diff = Math.abs(steps[i] - scale);
-        if (diff < minDiff) {
-          minDiff = diff;
-          nearestIdx = i;
+        const stepVal = steps[i];
+        if (stepVal !== undefined) {
+          const diff = Math.abs(stepVal - scale);
+          if (diff < minDiff) {
+            minDiff = diff;
+            nearestIdx = i;
+          }
         }
       }
       const nextIdx = Math.max(0, nearestIdx - 1);
-      return commitScale(steps[nextIdx]);
+      const nextVal = steps[nextIdx];
+      return commitScale(nextVal !== undefined ? nextVal : scale - step);
     }
     return commitScale(scale - step);
   }, [commitScale, scale, step, steps]);

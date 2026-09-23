@@ -86,8 +86,8 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
     },
     ref,
   ) => {
-    const min = propMin ?? (steps && steps.length > 0 ? steps[0] : 0.2);
-    const max = propMax ?? (steps && steps.length > 0 ? steps[steps.length - 1] : 5.0);
+    const min = propMin ?? (steps && steps.length > 0 ? (steps[0] ?? 0.2) : 0.2);
+    const max = propMax ?? (steps && steps.length > 0 ? (steps[steps.length - 1] ?? 5.0) : 5.0);
 
     const isControlledValue = value !== undefined;
     const [internalValue, setInternalValue] = React.useState<number>(defaultValue);
@@ -182,14 +182,20 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
           let nearestIdx = 0;
           let minDiff = Infinity;
           for (let i = 0; i < steps.length; i++) {
-            const diff = Math.abs(steps[i] - currentValue);
-            if (diff < minDiff) {
-              minDiff = diff;
-              nearestIdx = i;
+            const stepVal = steps[i];
+            if (stepVal !== undefined) {
+              const diff = Math.abs(stepVal - currentValue);
+              if (diff < minDiff) {
+                minDiff = diff;
+                nearestIdx = i;
+              }
             }
           }
           const nextIdx = Math.max(0, Math.min(steps.length - 1, nearestIdx + (direction > 0 ? 1 : -1)));
-          commitValue(steps[nextIdx]);
+          const targetVal = steps[nextIdx];
+          if (targetVal !== undefined) {
+            commitValue(targetVal);
+          }
         } else {
           commitValue(currentValue + direction * step);
         }
