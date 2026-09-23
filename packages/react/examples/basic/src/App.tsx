@@ -558,6 +558,44 @@ export function App() {
     );
   }
 
+  // Isolated ScaleOsd Visual Test Harness
+  if (harness === 'scale-osd') {
+    const size = (searchParams?.get('size') ?? 'default') as 'default' | 'lg';
+    const val = parseFloat(searchParams?.get('value') ?? '1.0');
+    const theme = searchParams?.get('theme') ?? 'light';
+    const width = Number(searchParams?.get('width') ?? 320);
+    const height = Number(searchParams?.get('height') ?? 80);
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+
+    return (
+      <div
+        style={{
+          width,
+          height,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: theme === 'dark' ? '#020817' : '#ffffff',
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <ScaleOsd
+          visible={true}
+          value={val}
+          size={size}
+          animated={false}
+          ignoreUiScale={true}
+          style={{ position: 'static', bottom: 'auto', left: 'auto', right: 'auto', margin: 0 }}
+          format={(v) => `${Math.round(v * 100)}%`}
+        />
+      </div>
+    );
+  }
+
   const { currentHash, navigate } = useRouter();
   // ?theme=light|dark deep link wins over the persisted toggle so visual-diff
   // runs (and shared links) can pin the workbench theme deterministically.

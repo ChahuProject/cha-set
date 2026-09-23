@@ -5,7 +5,7 @@ import ChaSet
 
 ChaSetCard {
     id: root
-    width: parent ? parent.width : 760
+    width: parent ? parent.width : ThemeTokens.dp(760)
     implicitHeight: previewContainer.implicitHeight
     clip: true
 
@@ -26,7 +26,7 @@ ChaSetCard {
         Rectangle {
             id: headerRect
             width: parent.width
-            height: 44
+            height: ThemeTokens.dp(44)
             color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.4) : Qt.rgba(241/255, 245/255, 249/255, 0.4)
             radius: root.radius
 
@@ -48,7 +48,7 @@ ChaSetCard {
 
             ChaSetSegmentedControl {
                 anchors.left: parent.left
-                anchors.leftMargin: 12
+                anchors.leftMargin: ThemeTokens.dp(12)
                 anchors.verticalCenter: parent.verticalCenter
                 size: "default"
                 value: root.activeTab
@@ -66,7 +66,7 @@ ChaSetCard {
                 id: previewTitleText
                 visible: root.title !== ""
                 anchors.right: parent.right
-                anchors.rightMargin: 14
+                anchors.rightMargin: ThemeTokens.dp(14)
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.title
                 color: ThemeTokens.subduedText
@@ -101,7 +101,7 @@ ChaSetCard {
             Item {
                 id: stageContainer
                 width: parent.width
-                height: root.stageHeight
+                height: ThemeTokens.dp(root.stageHeight)
                 clip: true
             }
 
@@ -110,7 +110,7 @@ ChaSetCard {
                 id: controlsBar
                 visible: controlsContainer.children.length > 0
                 width: parent.width
-                implicitHeight: controlsContainer.implicitHeight + 24
+                implicitHeight: controlsContainer.implicitHeight + ThemeTokens.dp(24)
                 color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.2) : Qt.rgba(241/255, 245/255, 249/255, 0.2)
                 radius: root.radius
 
@@ -134,11 +134,11 @@ ChaSetCard {
                     id: controlsContainer
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.leftMargin: 16
-                    anchors.rightMargin: 16
+                    anchors.leftMargin: ThemeTokens.dp(16)
+                    anchors.rightMargin: ThemeTokens.dp(16)
                     anchors.top: parent.top
-                    anchors.topMargin: 12
-                    spacing: 16
+                    anchors.topMargin: ThemeTokens.dp(12)
+                    spacing: ThemeTokens.dp(16)
                 }
             }
         }

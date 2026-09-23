@@ -238,5 +238,14 @@ describe('ScaleOsd', () => {
     });
     expect(screen.queryByRole('region')).not.toBeInTheDocument();
   });
+
+  it('enforces fixed physical pixel placement when ignoreUiScale is true', () => {
+    render(<ScaleOsd visible value={1.0} ignoreUiScale={true} placement="bottom-center" />);
+    const osd = screen.getByRole('region');
+    expect(osd.style.position).toBe('fixed');
+    expect(osd.style.bottom).toBe('36px');
+    expect(osd.style.left).toBe('0px');
+    expect(osd.style.right).toBe('0px');
+  });
 });
 

@@ -242,6 +242,13 @@ const codeBlockMatrix = [
   { id: 'code-linenumbers', component: 'code-block', state: 'idle', lineNumbers: true, theme: 'light', width: 380, height: 160, probeX: 200, probeY: 100, maxDiff: 4.0, pitchTolerance: 1 },
 ];
 
+// Definitive ScaleOsd test matrix covering sizes, zoom levels, and dark theme
+const scaleOsdMatrix = [
+  { id: 'scale-osd-default-100', component: 'scale-osd', size: 'default', value: 1.0, theme: 'light', width: 320, height: 80, probeX: 160, probeY: 23, maxDiff: 1.5 },
+  { id: 'scale-osd-dark-default', component: 'scale-osd', size: 'default', value: 1.0, theme: 'dark', width: 320, height: 80, probeX: 160, probeY: 23, maxDiff: 1.5 },
+  { id: 'scale-osd-lg-125', component: 'scale-osd', size: 'lg', value: 1.25, theme: 'light', width: 360, height: 80, probeX: 180, probeY: 22, maxDiff: 1.8 },
+];
+
 let testCases = [];
 if (componentArg === 'button') {
   testCases = buttonMatrix;
@@ -267,8 +274,10 @@ if (componentArg === 'button') {
   testCases = separatorMatrix;
 } else if (componentArg === 'code-block' || componentArg === 'codeblock' || componentArg === 'code') {
   testCases = codeBlockMatrix;
+} else if (componentArg === 'scale-osd' || componentArg === 'scaleosd') {
+  testCases = scaleOsdMatrix;
 } else if (componentArg === 'all') {
-  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix, ...cardMatrix, ...inputMatrix, ...separatorMatrix, ...codeBlockMatrix];
+  testCases = [...buttonMatrix, ...scrollAreaMatrix, ...tabsMatrix, ...badgeMatrix, ...cardMatrix, ...inputMatrix, ...separatorMatrix, ...codeBlockMatrix, ...scaleOsdMatrix];
 } else {
   console.log(`[pixel-sync] Component "${componentArg}" is not enabled for selective pixel sync. Skipping.`);
   process.exit(0);
@@ -448,6 +457,15 @@ try {
         width: String(tc.width),
         height: String(tc.height),
       }).toString();
+    } else if (tc.component === 'scale-osd') {
+      query = new URLSearchParams({
+        harness: 'scale-osd',
+        size: tc.size ?? 'default',
+        value: String(tc.value ?? 1.0),
+        theme: tc.theme ?? 'light',
+        width: String(tc.width),
+        height: String(tc.height),
+      }).toString();
     } else {
       query = new URLSearchParams({
         harness: 'button',
@@ -552,6 +570,16 @@ try {
         '--height', String(tc.height),
         '--shot', qtPngPath,
         ...(tc.lineNumbers ? ['--line-numbers'] : []),
+        ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
+      ];
+    } else if (tc.component === 'scale-osd') {
+      qtArgs = [
+        '--harness', 'scale-osd',
+        '--size', tc.size ?? 'default',
+        '--value', String(tc.value ?? 1.0),
+        '--width', String(tc.width),
+        '--height', String(tc.height),
+        '--shot', qtPngPath,
         ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
       ];
     } else {

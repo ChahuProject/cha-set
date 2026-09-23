@@ -53,6 +53,13 @@ const placementClasses: Record<ScaleOsdPlacement, string> = {
   'top-right': 'fixed top-9 right-9',
 };
 
+const placementStyles: Record<ScaleOsdPlacement, React.CSSProperties> = {
+  'bottom-center': { position: 'fixed', bottom: 36, top: 'auto', left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' },
+  'top-center': { position: 'fixed', top: 36, bottom: 'auto', left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' },
+  'bottom-right': { position: 'fixed', bottom: 36, right: 36, top: 'auto', left: 'auto', width: 'fit-content' },
+  'top-right': { position: 'fixed', top: 36, right: 36, bottom: 'auto', left: 'auto', width: 'fit-content' },
+};
+
 export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
   (
     {
@@ -234,6 +241,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
           fontSize: isLg ? 20 : 14,
           lineHeight: isLg ? '30px' : '20px',
           boxShadow: style?.boxShadow || defaultBoxShadow,
+          ...placementStyles[placement],
           ...style,
         }
       : {

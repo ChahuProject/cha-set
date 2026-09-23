@@ -6,8 +6,8 @@ import ChaSet
 
 ApplicationWindow {
     id: win
-    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge" || harnessMode === "label")) ? 220 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 120 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 260 : 1150)))
-    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge" || harnessMode === "label")) ? 80 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 200 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 80 : 850)))
+    width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge" || harnessMode === "label")) ? 220 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 120 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 260 : ((typeof harnessMode !== "undefined" && harnessMode === "scale-osd") ? 320 : 1150))))
+    height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge" || harnessMode === "label")) ? 80 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 200 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 80 : ((typeof harnessMode !== "undefined" && harnessMode === "scale-osd") ? 80 : 850))))
     visible: true
     title: "ChaSet Studio"
     color: win.cBg
@@ -515,9 +515,17 @@ ApplicationWindow {
                 console.log("[qt-scenario] FAIL: scaleOsd scale invariance violated: height=" + scaleOsd.height + ", expected 42");
                 themeFailures++;
             }
-            win.stepZoom(-1); // 1.1 -> 1.0
+            // Test zooming up past 2.0 to high scales
+            for (var z = 0; z < 10; z++) {
+                win.stepZoom(+1);
+            }
+            if (ThemeTokens.uiScale < 2.0) {
+                console.log("[qt-scenario] FAIL: High zoom did not reach > 2.0: got " + ThemeTokens.uiScale);
+                themeFailures++;
+            }
+            win.resetZoom();
             if (ThemeTokens.uiScale !== 1.0) {
-                console.log("[qt-scenario] FAIL: stepZoom(-1) expected 1.0, got " + ThemeTokens.uiScale);
+                console.log("[qt-scenario] FAIL: resetZoom did not restore 1.0: got " + ThemeTokens.uiScale);
                 themeFailures++;
             }
             scaleOsd.hide();
@@ -1258,6 +1266,27 @@ ApplicationWindow {
             }
         }
 
+        // Isolated ScaleOsd Harness Container (for visual unit tests)
+        Rectangle {
+            id: scaleOsdHarnessContainer
+            visible: typeof harnessMode !== "undefined" && harnessMode === "scale-osd"
+            anchors.fill: parent
+            color: ThemeTokens.dark ? "#020817" : "#ffffff"
+
+            ChaSetScaleOsd {
+                id: harnessScaleOsd
+                anchors.centerIn: parent
+                size: typeof harnessSize !== "undefined" ? harnessSize : "default"
+                value: (typeof harnessValue !== "undefined" && harnessValue > 0) ? harnessValue : 1.0
+                defaultVisible: true
+                animated: false
+                ignoreUiScale: true
+                format: function(v) {
+                    return qsTr("%1%").arg(Math.round(v * 100));
+                }
+            }
+        }
+
         Item {
             id: studioContainer
             visible: typeof harnessMode === "undefined" || harnessMode === ""
@@ -1438,7 +1467,7 @@ ApplicationWindow {
             // ==============================================================
             Item {
                 id: mainAppGrid
-                width: Math.min(parent.width, 1280)
+                width: Math.min(parent.width, ThemeTokens.dp(1280))
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: topbar.bottom
                 anchors.bottom: parent.bottom
@@ -1556,16 +1585,16 @@ ApplicationWindow {
                     anchors.left: sidebar.right
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.topMargin: 20
+                    anchors.topMargin: ThemeTokens.dp(20)
                     anchors.bottom: parent.bottom
                     contentWidth: pageContainer.width
-                    contentHeight: pageContainer.implicitHeight + 40
+                    contentHeight: pageContainer.implicitHeight + ThemeTokens.dp(40)
                     clip: true
 
                     Item {
                         id: pageContainer
                         width: contentScroll.width
-                        implicitHeight: pageLoader.item ? Math.max(pageLoader.item.implicitHeight, pageLoader.item.height, 800) : 800
+                        implicitHeight: pageLoader.item ? Math.max(pageLoader.item.implicitHeight, pageLoader.item.height, ThemeTokens.dp(800)) : ThemeTokens.dp(800)
 
                         Loader {
                             id: pageLoader

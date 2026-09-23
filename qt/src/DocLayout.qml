@@ -5,8 +5,8 @@ import ChaSet
 
 Item {
     id: root
-    width: parent ? parent.width : 1000
-    implicitHeight: layoutRow.implicitHeight + 60
+    width: parent ? parent.width : ThemeTokens.dp(1000)
+    implicitHeight: layoutRow.implicitHeight + ThemeTokens.dp(60)
 
     property string category: "Components"
     property string pageTitle: "Button"
@@ -23,14 +23,14 @@ Item {
     Row {
         id: layoutRow
         anchors.horizontalCenter: parent.horizontalCenter
-        width: Math.min(parent.width - 48, 1000)
-        spacing: 32
+        width: Math.min(parent.width - ThemeTokens.dp(48), ThemeTokens.dp(1000))
+        spacing: ThemeTokens.dp(32)
 
         // Main Center Content Column (max-w-4xl)
         Column {
             id: mainCol
-            width: root.tocItems && root.tocItems.length > 0 ? (layoutRow.width - 180 - layoutRow.spacing) : layoutRow.width
-            spacing: 24
+            width: root.tocItems && root.tocItems.length > 0 ? (layoutRow.width - ThemeTokens.dp(180) - layoutRow.spacing) : layoutRow.width
+            spacing: ThemeTokens.dp(24)
 
             // Breadcrumb
             TextEdit {
@@ -64,7 +64,7 @@ Item {
             // Page Header with Copy Link (Single RichText flow allowing continuous drag-selection)
             Column {
                 width: parent.width
-                spacing: 8
+                spacing: ThemeTokens.dp(8)
 
                 Item {
                     width: parent.width
@@ -74,7 +74,7 @@ Item {
                         id: titleText
                         anchors.left: parent.left
                         anchors.right: copyBtn.left
-                        anchors.rightMargin: 16
+                        anchors.rightMargin: ThemeTokens.dp(16)
                         anchors.verticalCenter: copyBtn.verticalCenter
                         text: root.pageTitle
                         color: ThemeTokens.text
@@ -152,7 +152,7 @@ Item {
             Column {
                 id: pageContentCol
                 width: parent.width
-                spacing: 32
+                spacing: ThemeTokens.dp(32)
             }
         }
 
@@ -160,8 +160,8 @@ Item {
         Column {
             id: tocCol
             visible: root.tocItems && root.tocItems.length > 0
-            width: 180
-            spacing: 12
+            width: ThemeTokens.dp(180)
+            spacing: ThemeTokens.dp(12)
 
             DocText {
                 text: "ON THIS PAGE"

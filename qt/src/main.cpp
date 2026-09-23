@@ -9,11 +9,14 @@
 #include <QDebug>
 #include <QTest>
 #include <QWheelEvent>
+#include <QElapsedTimer>
 #include "ChaSetFontSystem.h"
 
 class GlobalWheelZoomFilter : public QObject {
 public:
-    explicit GlobalWheelZoomFilter(QQuickWindow* window) : QObject(window), m_window(window) {}
+    explicit GlobalWheelZoomFilter(QQuickWindow* window) : QObject(window), m_window(window) {
+        m_timer.start();
+    }
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override {
@@ -24,9 +27,15 @@ protected:
                 int delta = we->angleDelta().y();
                 if (delta == 0) delta = we->angleDelta().x();
                 if (delta != 0) {
-                    int direction = delta > 0 ? 1 : -1;
-                    qInfo() << "[GlobalWheelZoomFilter] Intercepted Ctrl+Wheel delta=" << delta << ", invoking stepZoom(" << direction << ")";
-                    QMetaObject::invokeMethod(m_window, "stepZoom", Q_ARG(QVariant, direction));
+                    m_accumulatedDelta += delta;
+                    // Debounce rapid wheel events (min 40ms or accumulation to 120) to prevent Direct3D device loss
+                    if (!m_timer.isValid() || m_timer.elapsed() >= 40 || std::abs(m_accumulatedDelta) >= 120) {
+                        int direction = m_accumulatedDelta > 0 ? 1 : -1;
+                        m_accumulatedDelta = 0;
+                        m_timer.restart();
+                        qInfo() << "[GlobalWheelZoomFilter] Intercepted Ctrl+Wheel delta=" << delta << ", invoking stepZoom(" << direction << ")";
+                        QMetaObject::invokeMethod(m_window, "stepZoom", Q_ARG(QVariant, direction));
+                    }
                     we->accept();
                     return true;
                 }
@@ -37,6 +46,8 @@ protected:
 
 private:
     QQuickWindow* m_window;
+    QElapsedTimer m_timer;
+    int m_accumulatedDelta = 0;
 };
 
 static bool runRealCtrlWheelVerification(QQuickWindow* window) {
@@ -761,7 +772,11 @@ int main(int argc, char* argv[])
     const int scrollYIdx = static_cast<int>(args.indexOf("--scroll-y"));
     const int reqScrollY = scrollYIdx >= 0 && scrollYIdx + 1 < args.size() ? args.value(scrollYIdx + 1).toInt() : 0;
 
+    const int valIdx = static_cast<int>(args.indexOf("--value"));
+    const double harnessValue = valIdx >= 0 && valIdx + 1 < args.size() ? args.value(valIdx + 1).toDouble() : 1.0;
+
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("harnessValue", harnessValue);
     engine.rootContext()->setContextProperty("reqScrollY", reqScrollY);
     engine.rootContext()->setContextProperty("startupPage", startupPage);
     engine.rootContext()->setContextProperty("startupLight", startLight);

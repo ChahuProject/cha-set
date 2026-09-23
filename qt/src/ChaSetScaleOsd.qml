@@ -17,6 +17,7 @@ Item {
     property bool showControls: true
     property bool disabled: false
     property var format: null
+    property string placement: "bottom-center"
     property string size: "default" // "default" | "lg"
     property bool animated: true
 
@@ -151,7 +152,7 @@ Item {
         id: pill
         anchors.fill: parent
         radius: isLg ? 21 : height / 2
-        color: ThemeTokens.panelRaised
+        color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
         implicitWidth: contentRow.implicitWidth + (isLg ? 27 : 24)
@@ -175,7 +176,7 @@ Item {
                 text: root.format ? root.format(root.value) : qsTr("%1%").arg(Math.round(root.value * 100))
                 color: ThemeTokens.text
                 font.pixelSize: root.ignoreUiScale
-                    ? (root.isLg ? Math.round(Typography.sizeTitleSm / ThemeTokens.uiScale) : Math.round(Typography.sizeBody / ThemeTokens.uiScale))
+                    ? (root.isLg ? 20 : 14)
                     : (root.isLg ? Typography.sizeTitleSm : Typography.sizeBody)
                 font.weight: isLg ? Typography.weightMedium : Typography.weightSemibold
                 font.family: Typography.familySans
@@ -201,7 +202,7 @@ Item {
                 radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
                 readonly property bool minusDisabled: root.disabled || root.value <= root.effectiveMin + 0.001
-                color: minusTap.pressed ? ThemeTokens.accentMuted : (minusHover.hovered && !minusDisabled ? ThemeTokens.hover : "transparent")
+                color: minusTap.pressed ? ThemeTokens.pressed : (minusHover.hovered && !minusDisabled ? ThemeTokens.hover : "transparent")
                 opacity: minusDisabled ? 0.4 : 1.0
 
                 Text {
@@ -209,7 +210,7 @@ Item {
                     text: "−"
                     color: ThemeTokens.text
                     font.pixelSize: root.ignoreUiScale
-                        ? (root.isLg ? Math.round(Typography.sizeTitleSm / ThemeTokens.uiScale) : Math.round(Typography.sizeHeading / ThemeTokens.uiScale))
+                        ? (root.isLg ? 21 : 15)
                         : (root.isLg ? Typography.sizeTitleSm : Typography.sizeHeading)
                     font.weight: Typography.weightBold
                 }
@@ -241,7 +242,7 @@ Item {
                 radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
                 readonly property bool plusDisabled: root.disabled || root.value >= root.effectiveMax - 0.001
-                color: plusTap.pressed ? ThemeTokens.accentMuted : (plusHover.hovered && !plusDisabled ? ThemeTokens.hover : "transparent")
+                color: plusTap.pressed ? ThemeTokens.pressed : (plusHover.hovered && !plusDisabled ? ThemeTokens.hover : "transparent")
                 opacity: plusDisabled ? 0.4 : 1.0
 
                 Text {
@@ -249,7 +250,7 @@ Item {
                     text: "+"
                     color: ThemeTokens.text
                     font.pixelSize: root.ignoreUiScale
-                        ? (root.isLg ? Math.round(Typography.sizeTitleSm / ThemeTokens.uiScale) : Math.round(Typography.sizeHeading / ThemeTokens.uiScale))
+                        ? (root.isLg ? 21 : 15)
                         : (root.isLg ? Typography.sizeTitleSm : Typography.sizeHeading)
                     font.weight: Typography.weightBold
                 }
@@ -281,7 +282,7 @@ Item {
                 radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
                 readonly property bool resetDisabled: root.disabled || Math.abs(root.value - 1.0) < 0.001
-                color: resetTap.pressed ? ThemeTokens.accentMuted : (resetHover.hovered && !resetDisabled ? ThemeTokens.hover : "transparent")
+                color: resetTap.pressed ? ThemeTokens.pressed : (resetHover.hovered && !resetDisabled ? ThemeTokens.hover : "transparent")
                 opacity: resetDisabled ? 0.4 : 1.0
 
                 Text {
@@ -289,7 +290,7 @@ Item {
                     text: "⟳"
                     color: ThemeTokens.text
                     font.pixelSize: root.ignoreUiScale
-                        ? (root.isLg ? Math.round(Typography.sizeSubheading / ThemeTokens.uiScale) : Math.round(Typography.sizeBody / ThemeTokens.uiScale))
+                        ? (root.isLg ? 18 : 12)
                         : (root.isLg ? Typography.sizeSubheading : Typography.sizeBody)
                 }
 
