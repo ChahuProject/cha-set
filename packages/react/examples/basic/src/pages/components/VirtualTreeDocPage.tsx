@@ -361,6 +361,14 @@ export function VirtualTreeDocPage() {
               <Button
                 variant="outline"
                 size="sm"
+                disabled={selectedIds.length === 0}
+                onClick={() => handleDelete([], selectedIds)}
+              >
+                Delete (Del)
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => {
                   setTreeData(INITIAL_TREE);
                   setClipboardState(null);

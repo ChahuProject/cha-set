@@ -422,7 +422,7 @@ export function VirtualTree<T>({
         : [nodeKey];
 
     setDraggedKeys(sourceKeys);
-    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.effectAllowed = 'copyMove';
     e.dataTransfer.setData('text/plain', JSON.stringify(sourceKeys));
   };
 
@@ -502,7 +502,7 @@ export function VirtualTree<T>({
       keyMap.set(safeGetNodeKey(flat.node), flat.node);
     }
     const sourceNodes = draggedKeys.map((k) => keyMap.get(k)).filter(Boolean) as T[];
-    const isCopy = e.ctrlKey || e.metaKey;
+    const isCopy = Boolean(e.ctrlKey || e.metaKey || dragModifier === 'copy');
 
     onDropNode?.({
       sourceNodes,
@@ -843,7 +843,7 @@ export function VirtualTree<T>({
           aria-live="polite"
           className="pointer-events-none absolute bottom-2 right-2 flex items-center gap-1.5 rounded-md bg-popover/95 px-2.5 py-1 text-xs text-popover-foreground shadow-md border border-border backdrop-blur-xs z-30 transition-all select-none"
         >
-          <span className="font-medium">{dragModifier === 'copy' ? '📋 Copying' : '↔ Moving'}</span>
+          <span className="font-medium">{dragModifier === 'copy' ? 'Copying' : 'Moving'}</span>
           <span className="text-muted-foreground">({dragModifier === 'copy' ? 'Ctrl held' : 'Hold Ctrl to copy'})</span>
         </div>
       )}

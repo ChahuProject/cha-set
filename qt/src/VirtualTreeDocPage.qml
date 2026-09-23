@@ -160,13 +160,30 @@ DocLayout {
         return insertTarget(cleaned)
     }
 
+    function removeNodesInTree(tree, targetKeys) {
+        let res = []
+        for (let i = 0; i < tree.length; i++) {
+            let n = tree[i]
+            if (targetKeys.indexOf(n.id) === -1) {
+                let copy = Object.assign({}, n)
+                if (copy.children) {
+                    copy.children = removeNodesInTree(copy.children, targetKeys)
+                }
+                res.push(copy)
+            }
+        }
+        return res
+    }
+
     ComponentPreview {
         title: "Virtual Tree Sandbox"
         stageHeight: 420
         reactCode: `<VirtualTree
+  ref={treeRef}
   rootNodes={treeData}
   selectionMode="multiple"
   selectedIds={selectedIds}
+  onSelectionChange={(ids) => setSelectedIds(ids)}
   dimmedIds={cutIds}
   copiedIds={copiedIds}
   enableDnd
@@ -174,6 +191,10 @@ DocLayout {
   onCut={(nodes, ids) => handleCut(nodes, ids)}
   onCopy={(nodes, ids) => handleCopy(nodes, ids)}
   onPaste={(target, pos) => handlePaste(target, pos)}
+  onDelete={(nodes, ids) => handleDelete(nodes, ids)}
+  onEscape={() => handleEscape()}
+  defaultExpandDepth={2}
+  className="h-72 border border-border rounded-md bg-card overflow-auto p-2"
 />`
         qtCode: `ChaSetVirtualTree {
     nodes: treeData
@@ -185,6 +206,7 @@ DocLayout {
     onNodeDropped: function(src, target, pos, isCopy) { ... }
     onNodeCut: function(ids) { cutIds = ids }
     onNodeCopied: function(ids) { copiedIds = ids }
+    onNodeDeleted: function(ids) { ... }
 }`
 
         Item {
@@ -270,6 +292,23 @@ DocLayout {
                     }
 
                     ChaSetButton {
+                        text: "Delete (Del)"
+                        variant: "outline"
+                        size: "sm"
+                        enabled: virtualTree.selectedIds.length > 0 || virtualTree.selectedId !== ""
+                        onClicked: {
+                            var ids = virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds : [virtualTree.selectedId]
+                            if (ids.length > 0) {
+                                root.treeNodes = root.removeNodesInTree(root.treeNodes, ids)
+                                root.selectedIds = []
+                                virtualTree.selectedIds = []
+                                virtualTree.selectedId = ""
+                                root.statusMessage = "Deleted " + ids.length + " item(s)."
+                            }
+                        }
+                    }
+
+                    ChaSetButton {
                         text: "Reset"
                         variant: "outline"
                         size: "sm"
@@ -321,6 +360,16 @@ DocLayout {
                                 root.treeNodes = root.copyNodesInTree(root.treeNodes, root.copiedIds, targetId, pos)
                                 root.statusMessage = "Pasted (copied) " + root.copiedIds.length + " item(s) into/after " + targetId
                             }
+                        }
+                    }
+
+                    onNodeDeleted: function(ids) {
+                        if (ids.length > 0) {
+                            root.treeNodes = root.removeNodesInTree(root.treeNodes, ids)
+                            root.selectedIds = []
+                            virtualTree.selectedIds = []
+                            virtualTree.selectedId = ""
+                            root.statusMessage = "Deleted " + ids.length + " item(s)."
                         }
                     }
 

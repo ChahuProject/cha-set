@@ -253,6 +253,7 @@ describe('VirtualTree', () => {
     // 1. Drag start on File 1.1
     fireEvent.dragStart(file1Row, { dataTransfer });
     expect(dataTransfer.setData).toHaveBeenCalledWith('text/plain', JSON.stringify(['child-1-1']));
+    expect(dataTransfer.effectAllowed).toBe('copyMove');
 
     // 2. Drag over top of File 1.2 (ratio < 0.25 -> 'before')
     const activeFile2Row = container.querySelector('[data-index="2"]') as HTMLElement;
@@ -269,8 +270,20 @@ describe('VirtualTree', () => {
     expect(dropEvent.sourceKeys).toEqual(['child-1-1']);
     expect(dropEvent.targetKey).toBe('child-1-2');
     expect(dropEvent.position).toBe('before');
+    expect(dropEvent.isCopy).toBeFalsy();
 
-    // 4. Test cycle prevention: Drag Folder 1 over its child File 1.1
+    // 4. Test Ctrl+Drop for copy mode
+    fireEvent.dragStart(file1Row, { dataTransfer });
+    const dragOverCtrlEvt = createEvent.dragOver(activeFile2Row, { dataTransfer });
+    Object.defineProperty(dragOverCtrlEvt, 'clientY', { value: 105 });
+    Object.defineProperty(dragOverCtrlEvt, 'ctrlKey', { value: true });
+    fireEvent(activeFile2Row, dragOverCtrlEvt);
+    const dropCtrlEvt = createEvent.drop(activeFile2Row, { dataTransfer });
+    Object.defineProperty(dropCtrlEvt, 'ctrlKey', { value: true });
+    fireEvent(activeFile2Row, dropCtrlEvt);
+    expect(dropEvent.isCopy).toBe(true);
+
+    // 5. Test cycle prevention: Drag Folder 1 over its child File 1.1
     const activeFolder1Row = container.querySelector('[data-index="0"]') as HTMLElement;
     const activeFile1Row = container.querySelector('[data-index="1"]') as HTMLElement;
     fireEvent.dragStart(activeFolder1Row, { dataTransfer });

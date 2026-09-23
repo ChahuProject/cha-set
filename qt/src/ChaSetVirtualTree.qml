@@ -24,6 +24,7 @@ Item {
 
     // Drag and Drop properties
     property bool enableDnd: false
+    property bool isDragging: false
     property string draggedId: ""
     property var draggedIds: []
     property string dropTargetId: ""
@@ -48,7 +49,7 @@ Item {
         if (!list) return res
         for (let i = 0; i < list.length; i++) {
             let n = list[i]
-            let hasCh = n.children && n.children.length > 0
+            let hasCh = !!(n.children && n.children.length > 0)
             let isExp = root.expandedIds[n.id] !== undefined ? !!root.expandedIds[n.id] : (depth < root.defaultExpandDepth)
             res.push({
                 id: n.id,
@@ -418,15 +419,18 @@ Item {
                 width: treeList.width
                 height: 28
 
-                readonly property bool isHighlighted: (root.modality === "keyboard" && root.currentIndex === index) || (root.modality === "pointer" && rowMouse.containsMouse)
+                readonly property bool isHovered: root.modality === "pointer" && (rowMouse.containsMouse || chevronMouse.containsMouse)
+                readonly property bool isKeyboardFocused: root.modality === "keyboard" && root.currentIndex === index
                 readonly property bool isSelected: root.isSelected(modelData.id)
                 readonly property bool isDimmed: root.isDimmed(modelData.id)
                 readonly property bool isCopied: root.isCopied(modelData.id)
                 readonly property bool isDropTarget: root.enableDnd && root.dropTargetId === modelData.id
 
-                color: isSelected ? ThemeTokens.hover : (isHighlighted ? ThemeTokens.hover : (isCopied ? Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15) : "transparent"))
-                border.color: isCopied ? ThemeTokens.focus : "transparent"
-                border.width: isCopied ? 1 : 0
+                color: isSelected
+                    ? (isHovered ? Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.20) : Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15))
+                    : (isHovered ? ThemeTokens.hover : (isCopied ? Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.10) : "transparent"))
+                border.color: isCopied ? ThemeTokens.focus : (isKeyboardFocused ? ThemeTokens.focus : "transparent")
+                border.width: isCopied || isKeyboardFocused ? 1 : 0
                 radius: 4
                 opacity: isDimmed ? 0.4 : 1.0
 
@@ -485,16 +489,20 @@ Item {
                 }
 
                 Row {
-                    anchors.fill: parent
+                    id: contentRow
+                    anchors.left: parent.left
                     anchors.leftMargin: 8 + modelData.depth * 16
+                    anchors.right: dirBadge.visible ? dirBadge.left : parent.right
                     anchors.rightMargin: 8
+                    anchors.verticalCenter: parent.verticalCenter
                     spacing: 6
+                    z: 2
 
                     Item {
                         width: 16
                         height: 24
                         anchors.verticalCenter: parent.verticalCenter
-                        visible: modelData.hasChildren
+                        visible: !!modelData.hasChildren
 
                         Text {
                             anchors.centerIn: parent
@@ -530,10 +538,24 @@ Item {
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: modelData.label
-                        color: ThemeTokens.text
+                        color: isSelected ? ThemeTokens.focus : ThemeTokens.text
                         font.pixelSize: Typography.sizeSmall
                         font.family: Typography.familyMono
+                        font.weight: isSelected ? Typography.weightMedium : Font.Normal
+                        font.italic: isDimmed
                     }
+                }
+
+                ChaSetBadge {
+                    id: dirBadge
+                    visible: !!modelData.hasChildren
+                    size: "sm"
+                    variant: "outline"
+                    text: "dir"
+                    anchors.right: parent.right
+                    anchors.rightMargin: 8
+                    anchors.verticalCenter: parent.verticalCenter
+                    z: 2
                 }
 
                 DropArea {
@@ -563,7 +585,7 @@ Item {
                     onDropped: function(drop) {
                         if (root.isDropValid && root.dropTargetId === modelData.id) {
                             var srcList = root.draggedIds.length > 0 ? root.draggedIds : [root.draggedId]
-                            var isCopy = (drop.modifiers & Qt.ControlModifier) || (drop.modifiers & Qt.MetaModifier)
+                            var isCopy = (Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0 || (drop.keyboardModifiers & Qt.ControlModifier) !== 0
                             root.nodeDropped(srcList, modelData.id, root.dropPosition, isCopy)
                         }
                         root.dropTargetId = ""
@@ -573,10 +595,18 @@ Item {
 
                 Item {
                     id: dragProxy
+                    width: 20
+                    height: 20
                     Drag.active: rowMouse.drag.active
-                    Drag.source: rowMouse
+                    Drag.source: delegateRow
                     Drag.hotSpot.x: 10
                     Drag.hotSpot.y: 10
+                    onXChanged: {
+                        if (rowMouse.drag.active && !root.isDragging) root.isDragging = true
+                    }
+                    onYChanged: {
+                        if (rowMouse.drag.active && !root.isDragging) root.isDragging = true
+                    }
                 }
 
                 MouseArea {
@@ -598,9 +628,25 @@ Item {
                         if (root.enableDnd) {
                             dragProxy.Drag.drop()
                         }
+                        root.isDragging = false
+                        root.draggedId = ""
+                        root.draggedIds = []
+                        root.dropTargetId = ""
+                        root.dropPosition = ""
+                    }
+
+                    onCanceled: {
+                        root.isDragging = false
+                        root.draggedId = ""
+                        root.draggedIds = []
+                        root.dropTargetId = ""
+                        root.dropPosition = ""
                     }
 
                     onPositionChanged: function(mouse) {
+                        if (drag.active && !root.isDragging) {
+                            root.isDragging = true
+                        }
                         if (root.modality !== "pointer") {
                             var dx = Math.abs(mouse.x - root.lastPointerX)
                             var dy = Math.abs(mouse.y - root.lastPointerY)
@@ -623,7 +669,7 @@ Item {
         // Floating Drag Modifier HUD Tooltip
         Rectangle {
             id: dragHud
-            visible: root.enableDnd && root.draggedId !== ""
+            visible: root.enableDnd && root.isDragging && root.draggedId !== ""
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.margins: 8
