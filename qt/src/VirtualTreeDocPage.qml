@@ -18,38 +18,97 @@ DocLayout {
     property string selectionMode: "multiple"
     property var selectedIds: ["Button.tsx"]
     property var cutIds: []
-    property string statusMessage: "Ready. Try selecting files or dragging to reorder."
+    property var copiedIds: []
+    property string statusMessage: "Ready. Try selecting files or dragging to reorder (hold Ctrl to copy)."
 
     readonly property var initialNodes: [
         {
-            id: "src", label: "📁 src", children: [
+            id: "src", label: "src", children: [
                 {
-                    id: "components", label: "📁 components", children: [
-                        { id: "Button.tsx", label: "📄 Button.tsx" },
-                        { id: "Tree.tsx", label: "📄 Tree.tsx" },
-                        { id: "Table.tsx", label: "📄 Table.tsx" }
+                    id: "components", label: "components", children: [
+                        { id: "Button.tsx", label: "Button.tsx" },
+                        { id: "Input.tsx", label: "Input.tsx" },
+                        { id: "Dialog.tsx", label: "Dialog.tsx" }
                     ]
                 },
                 {
-                    id: "styles", label: "📁 styles", children: [
-                        { id: "theme.css", label: "🎨 theme.css" },
-                        { id: "tokens.css", label: "🎨 tokens.css" }
+                    id: "virtual", label: "virtual", children: [
+                        { id: "VirtualList.tsx", label: "VirtualList.tsx" },
+                        { id: "VirtualTree.tsx", label: "VirtualTree.tsx" },
+                        { id: "VirtualGrid.tsx", label: "VirtualGrid.tsx" }
                     ]
                 },
-                { id: "index.ts", label: "📄 index.ts" }
+                { id: "index.ts", label: "index.ts" }
             ]
         },
         {
-            id: "spec", label: "📁 spec", children: [
-                { id: "tokens.json", label: "📜 tokens.json" },
-                { id: "capabilities.json", label: "📜 capabilities.json" }
+            id: "spec", label: "spec", children: [
+                { id: "capabilities.json", label: "capabilities.json" },
+                { id: "components.ts", label: "components.ts" }
             ]
         },
-        { id: "package.json", label: "📦 package.json" },
-        { id: "README.md", label: "📝 README.md" }
+        { id: "package.json", label: "package.json" },
+        { id: "README.md", label: "README.md" }
     ]
 
     property var treeNodes: JSON.parse(JSON.stringify(initialNodes))
+
+    function copyNodesInTree(tree, sourceKeys, targetKey, position) {
+        let cloned = []
+        function cloneSubtree(n) {
+            let newId = n.id + "-copy-" + Math.floor(Math.random() * 10000)
+            let copy = {
+                id: newId,
+                label: n.label + " (copy)"
+            }
+            if (n.children) {
+                copy.children = []
+                for (let c = 0; c < n.children.length; c++) {
+                    copy.children.push(cloneSubtree(n.children[c]))
+                }
+            }
+            return copy
+        }
+        function findAndClone(list) {
+            for (let i = 0; i < list.length; i++) {
+                let n = list[i]
+                if (sourceKeys.indexOf(n.id) !== -1) {
+                    cloned.push(cloneSubtree(n))
+                }
+                if (n.children) findAndClone(n.children)
+            }
+        }
+        findAndClone(tree)
+        if (cloned.length === 0) return tree
+
+        function insertTarget(list) {
+            let res = []
+            for (let i = 0; i < list.length; i++) {
+                let n = list[i]
+                if (n.id === targetKey) {
+                    if (position === "before") {
+                        for (let j = 0; j < cloned.length; j++) res.push(cloned[j])
+                        res.push(n)
+                    } else if (position === "after") {
+                        res.push(n)
+                        for (let j = 0; j < cloned.length; j++) res.push(cloned[j])
+                    } else {
+                        let copy = Object.assign({}, n)
+                        copy.children = copy.children ? copy.children.concat(cloned) : cloned.slice()
+                        res.push(copy)
+                    }
+                } else {
+                    let copy = Object.assign({}, n)
+                    if (copy.children) {
+                        copy.children = insertTarget(copy.children)
+                    }
+                    res.push(copy)
+                }
+            }
+            return res
+        }
+        return insertTarget(tree)
+    }
 
     function moveNodesInTree(tree, sourceKeys, targetKey, position) {
         let extracted = []
@@ -109,9 +168,11 @@ DocLayout {
   selectionMode="multiple"
   selectedIds={selectedIds}
   dimmedIds={cutIds}
+  copiedIds={copiedIds}
   enableDnd
   onDropNode={(evt) => handleDrop(evt)}
-  onCut={(nodes, ids) => setCutIds(ids)}
+  onCut={(nodes, ids) => handleCut(nodes, ids)}
+  onCopy={(nodes, ids) => handleCopy(nodes, ids)}
   onPaste={(target, pos) => handlePaste(target, pos)}
 />`
         qtCode: `ChaSetVirtualTree {
@@ -119,9 +180,11 @@ DocLayout {
     selectionMode: "multiple"
     selectedIds: selectedIds
     dimmedIds: cutIds
+    copiedIds: copiedIds
     enableDnd: true
-    onNodeDropped: function(src, target, pos) { ... }
+    onNodeDropped: function(src, target, pos, isCopy) { ... }
     onNodeCut: function(ids) { cutIds = ids }
+    onNodeCopied: function(ids) { copiedIds = ids }
 }`
 
         Item {
@@ -161,6 +224,19 @@ DocLayout {
                     }
 
                     ChaSetButton {
+                        text: "Copy (Ctrl+C)"
+                        variant: "outline"
+                        size: "sm"
+                        enabled: virtualTree.selectedIds.length > 0 || virtualTree.selectedId !== ""
+                        onClicked: {
+                            var ids = virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds : [virtualTree.selectedId]
+                            root.copiedIds = ids
+                            root.cutIds = []
+                            root.statusMessage = "Copied " + ids.length + " item(s) (pulsing). Select target and paste."
+                        }
+                    }
+
+                    ChaSetButton {
                         text: "Cut (Ctrl+X)"
                         variant: "outline"
                         size: "sm"
@@ -168,6 +244,7 @@ DocLayout {
                         onClicked: {
                             var ids = virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds : [virtualTree.selectedId]
                             root.cutIds = ids
+                            root.copiedIds = []
                             root.statusMessage = "Cut " + ids.length + " item(s). Select target and paste."
                         }
                     }
@@ -176,13 +253,18 @@ DocLayout {
                         text: "Paste (Ctrl+V)"
                         variant: "outline"
                         size: "sm"
-                        enabled: root.cutIds.length > 0
+                        enabled: root.cutIds.length > 0 || root.copiedIds.length > 0
                         onClicked: {
                             var targetId = virtualTree.selectedId !== "" ? virtualTree.selectedId : (virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds[0] : "")
                             if (targetId !== "") {
-                                root.treeNodes = root.moveNodesInTree(root.treeNodes, root.cutIds, targetId, "inside")
-                                root.statusMessage = "Pasted " + root.cutIds.length + " item(s) into " + targetId
-                                root.cutIds = []
+                                if (root.cutIds.length > 0) {
+                                    root.treeNodes = root.moveNodesInTree(root.treeNodes, root.cutIds, targetId, "inside")
+                                    root.statusMessage = "Pasted (moved) " + root.cutIds.length + " item(s) into " + targetId
+                                    root.cutIds = []
+                                } else if (root.copiedIds.length > 0) {
+                                    root.treeNodes = root.copyNodesInTree(root.treeNodes, root.copiedIds, targetId, "inside")
+                                    root.statusMessage = "Pasted (copied) " + root.copiedIds.length + " item(s) into " + targetId
+                                }
                             }
                         }
                     }
@@ -194,6 +276,7 @@ DocLayout {
                         onClicked: {
                             root.treeNodes = JSON.parse(JSON.stringify(root.initialNodes))
                             root.cutIds = []
+                            root.copiedIds = []
                             root.selectedIds = ["Button.tsx"]
                             root.statusMessage = "Reset tree to default."
                         }
@@ -207,6 +290,7 @@ DocLayout {
                     selectionMode: root.selectionMode
                     selectedIds: root.selectedIds
                     dimmedIds: root.cutIds
+                    copiedIds: root.copiedIds
                     enableDnd: true
                     expandedIds: ({ "src": true, "components": true })
                     nodes: root.treeNodes
@@ -215,22 +299,39 @@ DocLayout {
                         root.selectedIds = virtualTree.selectedIds
                     }
 
+                    onNodeCopied: function(ids) {
+                        root.copiedIds = ids
+                        root.cutIds = []
+                        root.statusMessage = "Copied " + ids.length + " item(s) (pulsing). Select target and paste or Esc to cancel."
+                    }
+
                     onNodeCut: function(ids) {
                         root.cutIds = ids
-                        root.statusMessage = "Cut " + ids.length + " item(s) (dimmed). Select target folder and paste."
+                        root.copiedIds = []
+                        root.statusMessage = "Cut " + ids.length + " item(s) (dimmed). Select target folder and paste or Esc to cancel."
                     }
 
                     onNodePasted: function(targetId, pos) {
-                        if (root.cutIds.length > 0 && targetId !== "") {
-                            root.treeNodes = root.moveNodesInTree(root.treeNodes, root.cutIds, targetId, pos)
-                            root.statusMessage = "Pasted " + root.cutIds.length + " item(s) into/after " + targetId
-                            root.cutIds = []
+                        if (targetId !== "") {
+                            if (root.cutIds.length > 0) {
+                                root.treeNodes = root.moveNodesInTree(root.treeNodes, root.cutIds, targetId, pos)
+                                root.statusMessage = "Pasted (moved) " + root.cutIds.length + " item(s) into/after " + targetId
+                                root.cutIds = []
+                            } else if (root.copiedIds.length > 0) {
+                                root.treeNodes = root.copyNodesInTree(root.treeNodes, root.copiedIds, targetId, pos)
+                                root.statusMessage = "Pasted (copied) " + root.copiedIds.length + " item(s) into/after " + targetId
+                            }
                         }
                     }
 
-                    onNodeDropped: function(sourceIds, targetId, pos) {
-                        root.treeNodes = root.moveNodesInTree(root.treeNodes, sourceIds, targetId, pos)
-                        root.statusMessage = "Moved " + sourceIds.join(", ") + " -> " + pos + " " + targetId
+                    onNodeDropped: function(sourceIds, targetId, pos, isCopy) {
+                        if (isCopy) {
+                            root.treeNodes = root.copyNodesInTree(root.treeNodes, sourceIds, targetId, pos)
+                            root.statusMessage = "Copied " + sourceIds.join(", ") + " -> " + pos + " " + targetId
+                        } else {
+                            root.treeNodes = root.moveNodesInTree(root.treeNodes, sourceIds, targetId, pos)
+                            root.statusMessage = "Moved " + sourceIds.join(", ") + " -> " + pos + " " + targetId
+                        }
                     }
                 }
 
@@ -260,6 +361,12 @@ DocLayout {
                                 visible: root.cutIds.length > 0
                                 text: "[" + root.cutIds.length + " cut/dimmed]"
                                 color: ThemeTokens.subduedText
+                                font.pixelSize: Typography.sizeCaption
+                            }
+                            Text {
+                                visible: root.copiedIds.length > 0
+                                text: "[" + root.copiedIds.length + " copied (pulsing)]"
+                                color: ThemeTokens.focus
                                 font.pixelSize: Typography.sizeCaption
                             }
                         }

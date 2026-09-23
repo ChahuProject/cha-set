@@ -105,6 +105,67 @@ function moveNodesInTree(
   return insertTarget(cleanedTree);
 }
 
+function copyNodesInTree(
+  tree: TreeNode[],
+  sourceKeys: string[],
+  targetKey: string,
+  position: 'before' | 'inside' | 'after',
+): TreeNode[] {
+  const cloned: TreeNode[] = [];
+  function cloneSubtree(n: TreeNode): TreeNode {
+    const newId = `${n.id}-copy-${Math.random().toString(36).slice(2, 6)}`;
+    const copy: TreeNode = {
+      ...n,
+      id: newId,
+      label: n.label ? `${n.label} (copy)` : newId,
+    };
+    if (n.children) {
+      copy.children = n.children.map(cloneSubtree);
+    }
+    return copy;
+  }
+
+  function findAndClone(nodes: TreeNode[]) {
+    for (const n of nodes) {
+      if (sourceKeys.includes(n.id)) {
+        cloned.push(cloneSubtree(n));
+      }
+      if (n.children) {
+        findAndClone(n.children);
+      }
+    }
+  }
+  findAndClone(tree);
+  if (cloned.length === 0) return tree;
+
+  function insertTarget(nodes: TreeNode[]): TreeNode[] {
+    const next: TreeNode[] = [];
+    for (const n of nodes) {
+      if (n.id === targetKey) {
+        if (position === 'before') {
+          next.push(...cloned, n);
+        } else if (position === 'after') {
+          next.push(n, ...cloned);
+        } else {
+          // inside
+          const copy = { ...n };
+          copy.children = copy.children ? [...copy.children, ...cloned] : [...cloned];
+          next.push(copy);
+        }
+      } else {
+        const copy = { ...n };
+        if (copy.children) {
+          copy.children = insertTarget(copy.children);
+        }
+        next.push(copy);
+      }
+    }
+    return next;
+  }
+
+  return insertTarget(tree);
+}
+
 function removeNodesInTree(tree: TreeNode[], targetKeys: string[]): TreeNode[] {
   const next: TreeNode[] = [];
   for (const n of tree) {
@@ -124,32 +185,53 @@ export function VirtualTreeDocPage() {
   const [treeData, setTreeData] = useState<TreeNode[]>(INITIAL_TREE);
   const [selectionMode, setSelectionMode] = useState<'single' | 'multiple'>('multiple');
   const [selectedIds, setSelectedIds] = useState<string[]>(['Button.tsx']);
-  const [cutIds, setCutIds] = useState<string[]>([]);
-  const [statusMessage, setStatusMessage] = useState<string>('Ready. Try selecting files or dragging to reorder.');
+  const [clipboardState, setClipboardState] = useState<{
+    mode: 'cut' | 'copy';
+    ids: string[];
+  } | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string>('Ready. Try selecting files or dragging to reorder (hold Ctrl to copy).');
+
+  const cutIds = clipboardState?.mode === 'cut' ? clipboardState.ids : [];
+  const copiedIds = clipboardState?.mode === 'copy' ? clipboardState.ids : [];
 
   const handleCut = (selectedNodes: TreeNode[], ids: string[]) => {
     if (ids.length === 0) return;
-    setCutIds(ids);
-    setStatusMessage(`Cut ${ids.length} item(s) (dimmed). Select a target folder or file and press Ctrl+V to paste.`);
+    setClipboardState({ mode: 'cut', ids });
+    setStatusMessage(`Cut ${ids.length} item(s) (dimmed). Select a target and press Ctrl+V to paste or Esc to cancel.`);
   };
 
   const handleCopy = (selectedNodes: TreeNode[], ids: string[]) => {
-    setStatusMessage(`Copied ${ids.length} item(s) to clipboard.`);
+    if (ids.length === 0) return;
+    setClipboardState({ mode: 'copy', ids });
+    setStatusMessage(`Copied ${ids.length} item(s) (pulsing). Select a target and press Ctrl+V to paste or Esc to cancel.`);
+  };
+
+  const handleEscape = () => {
+    if (clipboardState) {
+      setClipboardState(null);
+      setStatusMessage('Clipboard cleared.');
+    }
   };
 
   const handlePaste = (targetNode: TreeNode | null, position: 'inside' | 'after') => {
-    if (cutIds.length === 0) {
-      setStatusMessage('Clipboard is empty. Press Ctrl+X to cut items first.');
+    if (!clipboardState || clipboardState.ids.length === 0) {
+      setStatusMessage('Clipboard is empty. Press Ctrl+C to copy or Ctrl+X to cut items first.');
       return;
     }
     if (!targetNode) {
       setStatusMessage('No target selected for paste.');
       return;
     }
-    const nextTree = moveNodesInTree(treeData, cutIds, targetNode.id, position);
-    setTreeData(nextTree);
-    setCutIds([]);
-    setStatusMessage(`Pasted ${cutIds.length} item(s) into/after "${targetNode.label || targetNode.id}".`);
+    if (clipboardState.mode === 'cut') {
+      const nextTree = moveNodesInTree(treeData, clipboardState.ids, targetNode.id, position);
+      setTreeData(nextTree);
+      setClipboardState(null);
+      setStatusMessage(`Pasted (moved) ${clipboardState.ids.length} item(s) into/after "${targetNode.label || targetNode.id}".`);
+    } else {
+      const nextTree = copyNodesInTree(treeData, clipboardState.ids, targetNode.id, position);
+      setTreeData(nextTree);
+      setStatusMessage(`Pasted (copied) ${clipboardState.ids.length} item(s) into/after "${targetNode.label || targetNode.id}".`);
+    }
   };
 
   const handleDelete = (selectedNodes: TreeNode[], ids: string[]) => {
@@ -161,9 +243,15 @@ export function VirtualTreeDocPage() {
   };
 
   const handleDropNode = (evt: VirtualTreeDropEvent<TreeNode>) => {
-    const nextTree = moveNodesInTree(treeData, evt.sourceKeys, evt.targetKey, evt.position);
-    setTreeData(nextTree);
-    setStatusMessage(`Moved ${evt.sourceKeys.join(', ')} -> ${evt.position} "${evt.targetNode.label || evt.targetKey}".`);
+    if (evt.isCopy) {
+      const nextTree = copyNodesInTree(treeData, evt.sourceKeys, evt.targetKey, evt.position);
+      setTreeData(nextTree);
+      setStatusMessage(`Copied ${evt.sourceKeys.join(', ')} -> ${evt.position} "${evt.targetNode.label || evt.targetKey}".`);
+    } else {
+      const nextTree = moveNodesInTree(treeData, evt.sourceKeys, evt.targetKey, evt.position);
+      setTreeData(nextTree);
+      setStatusMessage(`Moved ${evt.sourceKeys.join(', ')} -> ${evt.position} "${evt.targetNode.label || evt.targetKey}".`);
+    }
   };
 
   const reactCode = `<VirtualTree
@@ -173,11 +261,14 @@ export function VirtualTreeDocPage() {
   selectedIds={selectedIds}
   onSelectionChange={(ids) => setSelectedIds(ids)}
   dimmedIds={cutIds}
+  copiedIds={copiedIds}
   enableDnd
   onDropNode={(evt) => handleDrop(evt)}
-  onCut={(nodes, ids) => setCutIds(ids)}
+  onCut={(nodes, ids) => handleCut(nodes, ids)}
+  onCopy={(nodes, ids) => handleCopy(nodes, ids)}
   onPaste={(target, pos) => handlePaste(target, pos)}
-  onDelete={(nodes, ids) => handleDelete(ids)}
+  onDelete={(nodes, ids) => handleDelete(nodes, ids)}
+  onEscape={() => handleEscape()}
   defaultExpandDepth={2}
   className="h-72 border border-border rounded-md bg-card overflow-auto p-2"
 />`;
@@ -199,7 +290,7 @@ export function VirtualTreeDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Hierarchical tree with multi-selection (Ctrl/Shift+Click), external dimmed cut state (Ctrl+X/V), and drag-and-drop reordering.
+          Hierarchical tree with multi-selection (Ctrl/Shift+Click), external dimmed cut state (Ctrl+X/V), copied state (Ctrl+C/V), Ctrl+Drag copy, and keyboard navigation.
         </p>
 
         <ComponentPreview title="Virtual Tree Sandbox" reactCode={reactCode}>
@@ -233,6 +324,14 @@ export function VirtualTreeDocPage() {
                 variant="outline"
                 size="sm"
                 disabled={selectedIds.length === 0}
+                onClick={() => handleCopy([], selectedIds)}
+              >
+                Copy (Ctrl+C)
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={selectedIds.length === 0}
                 onClick={() => handleCut([], selectedIds)}
               >
                 Cut (Ctrl+X)
@@ -240,7 +339,7 @@ export function VirtualTreeDocPage() {
               <Button
                 variant="outline"
                 size="sm"
-                disabled={cutIds.length === 0 || selectedIds.length === 0}
+                disabled={!clipboardState || selectedIds.length === 0}
                 onClick={() => {
                   const targetKey = selectedIds[0];
                   const findNode = (nodes: TreeNode[]): TreeNode | null => {
@@ -264,7 +363,7 @@ export function VirtualTreeDocPage() {
                 size="sm"
                 onClick={() => {
                   setTreeData(INITIAL_TREE);
-                  setCutIds([]);
+                  setClipboardState(null);
                   setSelectedIds(['Button.tsx']);
                   setStatusMessage('Reset tree to default.');
                 }}
@@ -281,12 +380,14 @@ export function VirtualTreeDocPage() {
               selectedIds={selectedIds}
               onSelectionChange={(ids) => setSelectedIds(ids)}
               dimmedIds={cutIds}
+              copiedIds={copiedIds}
               enableDnd
               onDropNode={handleDropNode}
               onCut={handleCut}
               onCopy={handleCopy}
               onPaste={handlePaste}
               onDelete={handleDelete}
+              onEscape={handleEscape}
               getChildren={(node) => node.children ?? []}
               getNodeKey={(node) => node.id}
               defaultExpandDepth={2}
@@ -298,6 +399,7 @@ export function VirtualTreeDocPage() {
                 isExpanded,
                 isSelected,
                 isDimmed,
+                isCopied,
                 toggleExpand,
                 selectNode,
               }) => (
@@ -306,15 +408,22 @@ export function VirtualTreeDocPage() {
                     isSelected
                       ? 'bg-primary/15 text-primary font-medium'
                       : 'hover:bg-muted/50 text-foreground'
-                  } ${isDimmed ? 'opacity-40' : ''}`}
+                  } ${isDimmed ? 'opacity-40 italic' : ''} ${
+                    isCopied ? 'ring-1 ring-primary/80 bg-primary/10 animate-pulse' : ''
+                  }`}
                   style={{ paddingLeft: `${(depth * 16 + 8) / 16}rem` }}
                   onClick={(e) => {
                     selectNode(e);
-                    if (hasChildren && !e.shiftKey && !e.ctrlKey && !e.metaKey) toggleExpand();
                   }}
                 >
                   {hasChildren ? (
-                    <span className="text-micro w-3.5 text-muted-foreground">
+                    <span
+                      className="text-micro w-3.5 text-muted-foreground hover:text-foreground cursor-pointer select-none"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleExpand();
+                      }}
+                    >
                       {isExpanded ? '▼' : '▶'}
                     </span>
                   ) : (
@@ -336,11 +445,18 @@ export function VirtualTreeDocPage() {
                 <span>
                   Selected: <strong className="text-foreground">{selectedIds.length > 0 ? selectedIds.join(', ') : 'None'}</strong>
                 </span>
-                {cutIds.length > 0 && (
-                  <Badge variant="secondary" className="text-nano">
-                    {cutIds.length} cut (dimmed)
-                  </Badge>
-                )}
+                <div className="flex items-center gap-1.5">
+                  {cutIds.length > 0 && (
+                    <Badge variant="secondary" className="text-nano">
+                      {cutIds.length} cut (dimmed)
+                    </Badge>
+                  )}
+                  {copiedIds.length > 0 && (
+                    <Badge variant="secondary" className="text-nano">
+                      {copiedIds.length} copied (pulsing)
+                    </Badge>
+                  )}
+                </div>
               </div>
               <div className="truncate text-micro text-muted-foreground/80">
                 {statusMessage}

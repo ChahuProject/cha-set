@@ -1834,19 +1834,51 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
   "virtual-tree": [
     {
       "key": "↑ / ↓",
-      "action": "Traverse visible tree nodes vertically"
+      "action": "Navigate virtual focus across visible tree nodes"
+    },
+    {
+      "key": "Shift + ↑ / ↓",
+      "action": "Extend multiple selection range across tree nodes"
     },
     {
       "key": "→",
-      "action": "Expand closed node or move to first child node"
+      "action": "Expand collapsed folder node or move into first child"
     },
     {
       "key": "←",
-      "action": "Collapse open node or move to parent node"
+      "action": "Collapse expanded folder node or jump to parent node"
     },
     {
-      "key": "Space / Enter",
-      "action": "Select or toggle active tree node"
+      "key": "Space",
+      "action": "Toggle selection state of currently focused node"
+    },
+    {
+      "key": "Enter",
+      "action": "Toggle expand/collapse of folder or activate leaf node"
+    },
+    {
+      "key": "Ctrl + C",
+      "action": "Copy selected node(s) with persistent highlighting"
+    },
+    {
+      "key": "Ctrl + X",
+      "action": "Cut selected node(s) with dashed dimmed highlighting"
+    },
+    {
+      "key": "Ctrl + V",
+      "action": "Paste copied or cut nodes into selected folder"
+    },
+    {
+      "key": "Escape",
+      "action": "Cancel active cut or copy clipboard state"
+    },
+    {
+      "key": "Delete",
+      "action": "Delete selected node(s) from the virtual tree hierarchy"
+    },
+    {
+      "key": "Home / End",
+      "action": "Jump directly to the first / last node in the virtual tree"
     }
   ],
   "generic-data-table": [

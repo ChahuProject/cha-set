@@ -279,6 +279,20 @@
   "language-settings": [
     { "key": "Tab / Shift + Tab", "action": "Navigate between Follow System and language selection cards" },
     { "key": "Space / Enter", "action": "Select the focused language card and apply language preference" }
+  ],
+  "virtual-tree": [
+    { "key": "↑ / ↓", "action": "Navigate virtual focus across visible tree nodes" },
+    { "key": "Shift + ↑ / ↓", "action": "Extend multiple selection range across tree nodes" },
+    { "key": "→", "action": "Expand collapsed folder node or move into first child" },
+    { "key": "←", "action": "Collapse expanded folder node or jump to parent node" },
+    { "key": "Space", "action": "Toggle selection state of currently focused node" },
+    { "key": "Enter", "action": "Toggle expand/collapse of folder or activate leaf node" },
+    { "key": "Ctrl + C", "action": "Copy selected node(s) with persistent highlighting" },
+    { "key": "Ctrl + X", "action": "Cut selected node(s) with dashed dimmed highlighting" },
+    { "key": "Ctrl + V", "action": "Paste copied or cut nodes into selected folder" },
+    { "key": "Escape", "action": "Cancel active cut or copy clipboard state" },
+    { "key": "Delete", "action": "Delete selected node(s) from the virtual tree hierarchy" },
+    { "key": "Home / End", "action": "Jump directly to the first / last node in the virtual tree" }
   ]
 }
 

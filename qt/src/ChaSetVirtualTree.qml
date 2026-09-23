@@ -6,11 +6,15 @@ import ChaSet
 Item {
     id: root
 
+    focus: true
+    activeFocusOnTab: true
+
     property var nodes: [] // [{ id, label, children: [...] }]
     property string selectedId: ""
     property var selectedIds: []
     property string selectionMode: "single" // "single" | "multiple" | "none"
     property var dimmedIds: []
+    property var copiedIds: []
     property var expandedIds: ({})
     property int defaultExpandDepth: 0
     property int estimateSize: 28
@@ -33,7 +37,7 @@ Item {
     signal nodeCopied(var ids)
     signal nodePasted(string targetId, string position)
     signal nodeDeleted(var ids)
-    signal nodeDropped(var sourceIds, string targetId, string position)
+    signal nodeDropped(var sourceIds, string targetId, string position, bool isCopy)
 
     implicitWidth: 320
     implicitHeight: 280
@@ -72,6 +76,10 @@ Item {
 
     function isDimmed(id) {
         return root.dimmedIds && root.dimmedIds.indexOf(id) !== -1
+    }
+
+    function isCopied(id) {
+        return root.copiedIds && root.copiedIds.indexOf(id) !== -1
     }
 
     function selectAll() {
@@ -226,8 +234,6 @@ Item {
     property real lastPointerX: -1
     property real lastPointerY: -1
 
-    activeFocusOnTab: true
-
     Keys.onDownPressed: function(event) {
         event.accepted = true
         root.modality = "keyboard"
@@ -325,8 +331,26 @@ Item {
         }
         if (isCtrl && (event.key === Qt.Key_V)) {
             event.accepted = true
-            var currNode = root.flatItems[root.currentIndex]
+            var targetId = root.selectedId ? root.selectedId : (root.selectedIds.length > 0 ? root.selectedIds[root.selectedIds.length - 1] : "")
+            var currNode = null
+            if (targetId) {
+                for (var f = 0; f < root.flatItems.length; f++) {
+                    if (root.flatItems[f].id === targetId) {
+                        currNode = root.flatItems[f]
+                        break
+                    }
+                }
+            }
+            if (!currNode && root.currentIndex >= 0 && root.currentIndex < root.flatItems.length) {
+                currNode = root.flatItems[root.currentIndex]
+            }
             root.nodePasted(currNode ? currNode.id : "", currNode && currNode.hasChildren ? "inside" : "after")
+            return
+        }
+        if (event.key === Qt.Key_Escape) {
+            event.accepted = true
+            root.nodeCut([])
+            root.nodeCopied([])
             return
         }
         if (event.key === Qt.Key_Delete || event.key === Qt.Key_Backspace) {
@@ -397,9 +421,13 @@ Item {
                 readonly property bool isHighlighted: (root.modality === "keyboard" && root.currentIndex === index) || (root.modality === "pointer" && rowMouse.containsMouse)
                 readonly property bool isSelected: root.isSelected(modelData.id)
                 readonly property bool isDimmed: root.isDimmed(modelData.id)
+                readonly property bool isCopied: root.isCopied(modelData.id)
                 readonly property bool isDropTarget: root.enableDnd && root.dropTargetId === modelData.id
 
-                color: isSelected ? ThemeTokens.hover : (isHighlighted ? ThemeTokens.hover : "transparent")
+                color: isSelected ? ThemeTokens.hover : (isHighlighted ? ThemeTokens.hover : (isCopied ? Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15) : "transparent"))
+                border.color: isCopied ? ThemeTokens.focus : "transparent"
+                border.width: isCopied ? 1 : 0
+                radius: 4
                 opacity: isDimmed ? 0.4 : 1.0
 
                 Behavior on color {
@@ -462,11 +490,41 @@ Item {
                     anchors.rightMargin: 8
                     spacing: 6
 
-                    Text {
+                    Item {
+                        width: 16
+                        height: 24
                         anchors.verticalCenter: parent.verticalCenter
-                        text: modelData.hasChildren ? (modelData.isExpanded ? "▾" : "▸") : "•"
+                        visible: modelData.hasChildren
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: modelData.isExpanded ? "▾" : "▸"
+                            color: chevronMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeCaption
+                        }
+
+                        MouseArea {
+                            id: chevronMouse
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            z: 10
+                            onClicked: function(mouse) {
+                                mouse.accepted = true
+                                root.forceActiveFocus()
+                                root.toggleExpand(modelData.id)
+                            }
+                        }
+                    }
+
+                    Text {
+                        visible: !modelData.hasChildren
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: "•"
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeCaption
+                        width: 16
+                        horizontalAlignment: Text.AlignHCenter
                     }
 
                     Text {
@@ -505,7 +563,8 @@ Item {
                     onDropped: function(drop) {
                         if (root.isDropValid && root.dropTargetId === modelData.id) {
                             var srcList = root.draggedIds.length > 0 ? root.draggedIds : [root.draggedId]
-                            root.nodeDropped(srcList, modelData.id, root.dropPosition)
+                            var isCopy = (drop.modifiers & Qt.ControlModifier) || (drop.modifiers & Qt.MetaModifier)
+                            root.nodeDropped(srcList, modelData.id, root.dropPosition, isCopy)
                         }
                         root.dropTargetId = ""
                         root.dropPosition = ""
@@ -528,6 +587,7 @@ Item {
                     drag.target: root.enableDnd ? dragProxy : undefined
 
                     onPressed: function(mouse) {
+                        root.forceActiveFocus()
                         if (root.enableDnd) {
                             root.draggedId = parent.modelData.id
                             root.draggedIds = root.selectedIds.length > 0 && root.selectedIds.indexOf(parent.modelData.id) !== -1 ? root.selectedIds : [parent.modelData.id]
@@ -553,11 +613,36 @@ Item {
                     }
 
                     onClicked: function(mouse) {
+                        root.forceActiveFocus()
                         root.handleNodeClick(parent.index, mouse.modifiers)
-                        if (parent.modelData.hasChildren && !(mouse.modifiers & Qt.ShiftModifier) && !(mouse.modifiers & Qt.ControlModifier)) {
-                            root.toggleExpand(parent.modelData.id)
-                        }
                     }
+                }
+            }
+        }
+
+        // Floating Drag Modifier HUD Tooltip
+        Rectangle {
+            id: dragHud
+            visible: root.enableDnd && root.draggedId !== ""
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            anchors.margins: 8
+            height: 24
+            width: hudRow.implicitWidth + 16
+            radius: 4
+            color: ThemeTokens.panelRaised
+            border.color: ThemeTokens.border
+            border.width: 1
+            z: 100
+
+            Row {
+                id: hudRow
+                anchors.centerIn: parent
+                spacing: 4
+                Text {
+                    text: (Qt.application.keyboardModifiers & Qt.ControlModifier) ? "Copying (Ctrl held)" : "Moving (Hold Ctrl to copy)"
+                    color: ThemeTokens.text
+                    font.pixelSize: Typography.sizeSmall
                 }
             }
         }
