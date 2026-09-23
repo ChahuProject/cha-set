@@ -156,7 +156,8 @@ function applyTheme(mode: string, accent: string, overrides: ThemeOverrides, uiS
     html.style.setProperty('--cs-ui-scale', String(uiScale));
     html.style.removeProperty('zoom');
   } else {
-    html.style.removeProperty('fontSize');
+    html.style.removeProperty('font-size');
+    html.style.fontSize = '';
     html.style.removeProperty('zoom');
     html.style.removeProperty('--cs-ui-scale');
   }
