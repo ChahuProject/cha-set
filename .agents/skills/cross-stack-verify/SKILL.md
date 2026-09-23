@@ -127,6 +127,24 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Section & Sub-Anchor Parity (子示例章节与锚点对齐律)**: When a DocPage introduces multiple example sections (e.g. `nested`, `playground`, `variants`, `vertical`), those section IDs and headings MUST be reflected identically in the Table of Contents (`tocItems`) and page structure on both React and Qt.
    - **Automated Verification**: Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`) and `pnpm gate` (Stage 2.5) to mechanically enforce structural, multi-example, and code parity.
 
+14. **Mandatory Unified Theme Configuration Contract (统一主题配置入口与边界契约律)**
+   - **Single Theme Configuration Entry**: Cross-stack theme configuration across ChaSet consumers MUST be unified through ChaSet's `<ThemeSettings>` (React) and `ChaSetThemeSettings` (Qt QML).
+   - **Host-Only Isolation**: Host-only settings MUST NOT leak into the shared ThemeSettings component or schema.
+   - **Automated Boundary Gate**: `pnpm check:theme-boundary` mechanically enforces that only covered axes (mode, palette, decoration, typography, uiScale) exist in the neutral schema.
+
+15. **Mandatory Zero-Emoji Mandate & Pure-Vector Icon Conformance (严禁使用 Emoji 与纯矢量图标契约红线)**
+   - Never use Unicode emojis in component code, showcase pages, demo datasets, documentation, scripts, or commit messages.
+   - All visual icons must use pure-vector representations: SVG icon components from `packages/react/src/lib/icons.tsx` on React, and `ChaSetIcon` / `ChaSetStatusIcon` on Qt Quick.
+   - Mechanically enforced via `pnpm check:no-emoji` and `pnpm gate`.
+
+16. **Mandatory High-DPI & UI Scaling Parity Contract (跨端界面缩放体系与 ThemeTokens.dp 强制律 — 禁止非缩放物理像素)**
+   - Desktop Qt Quick does NOT scale raw pixel coordinates when `ThemeTokens.uiScale` changes. All geometric dimensions in ChaSet Qt components (`implicitHeight`, `implicitWidth`, `height`, `width`, `radius`, `spacing`, `padding`, `headerHeight`, `rowHeight`, `boxSize`, `estimateSize`, `itemHeight`, `thumbThickness`, `expandedThumbThickness`, `hitThickness`, `buttonLength`) MUST be scaled via `ThemeTokens.dp(val)` or `ThemeTokens.sp(val)` / `Typography.*`. Raw unscaled numbers > 2 are strictly forbidden.
+   - 0, 1, and 2 represent hairlines/borders and remain unscaled integer literals (`border.width: 1`). Any geometry dimension exceeding 2 MUST be wrapped in `ThemeTokens.dp(...)`.
+   - Public component property interfaces accept unscaled logical units (`rowHeight: 36`, `size: 16`); component internals calculate `ThemeTokens.dp(rowHeight)` (callers must NEVER pass `ThemeTokens.dp` to prevent double-scaling).
+   - All vector icons (`ChaSetIcon`, `ChaSetStatusIcon`) MUST scale strictly according to `ThemeTokens.dp(size)`.
+   - Interactive sandbox containers (`ComponentPreview`, `TabsDocPage`) must never use fixed unscaled heights that clip components under high zoom.
+   - Mechanically enforced via static linter `pnpm check:scaling` (`scripts/check-qt-scaling.mjs`) and headless runtime scenario (`QtChaSetDemo.exe --test-scenario uiscale`), both embedded directly in `pnpm gate`.
+
 ## 2. Verification Commands Checklist
 
 Before declaring any component task complete, execute:
@@ -137,6 +155,9 @@ pnpm build:tokens
 
 # 2. Run showcase parity assurance system (SPAS)
 pnpm check:showcase
+
+# 3. Check UI scaling compliance (ThemeTokens.dp) across all Qt components
+pnpm check:scaling
 
 # 3. Build Qt desktop project
 #    The QML components are compiled into QtChaSetDemo.exe, so ANY edit under

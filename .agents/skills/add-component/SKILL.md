@@ -92,6 +92,13 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
       - React: Use `<IconName />` from `packages/react/src/lib/icons.tsx` (exported by `@chahu/cha-set`).
       - Qt: Use `ChaSetIcon { name: "<semantic-name>" }` from `qt/src/ChaSetIcon.qml` or `ChaSetButton { icon: "<semantic-name>" }`.
     - Showcase datasets in `spec/showcase/*.json` must store semantic icon strings (e.g. `"icon": "zap"`, `"icon": "target"`, `"icon": "lock"`), never raw emoji characters.
+14. **Mandatory High-DPI & UI Scaling Parity Contract (跨端界面缩放体系与 ThemeTokens.dp 强制律 — 禁止非缩放物理像素)**:
+    - All geometric dimensions in ChaSet Qt components (`implicitHeight`, `implicitWidth`, `height`, `width`, `radius`, `spacing`, `padding`, `headerHeight`, `rowHeight`, `boxSize`, `estimateSize`, `itemHeight`, `thumbThickness`, `expandedThumbThickness`, `hitThickness`, `buttonLength`) and showcase infrastructure MUST be scaled via `ThemeTokens.dp(val)` or `ThemeTokens.sp(val)` / `Typography.*`. Raw unscaled numbers > 2 are strictly forbidden.
+    - 0, 1, and 2 represent hairlines/borders and remain unscaled integer literals (`border.width: 1`). Any geometry dimension exceeding 2 MUST be wrapped in `ThemeTokens.dp(...)`.
+    - Public component property interfaces accept unscaled logical units (`rowHeight: 36`, `size: 16`); component internals calculate `ThemeTokens.dp(rowHeight)` (callers must NEVER pass `ThemeTokens.dp` to prevent double-scaling).
+    - All vector icons (`ChaSetIcon`, `ChaSetStatusIcon`) MUST scale strictly according to `ThemeTokens.dp(size)`.
+    - Interactive sandbox containers (`ComponentPreview`, `TabsDocPage`) must never use fixed unscaled heights that clip components under high zoom.
+    - Mechanically enforced via static linter `pnpm check:scaling` (`scripts/check-qt-scaling.mjs`) and headless runtime scenario (`QtChaSetDemo.exe --test-scenario uiscale`), both embedded directly in `pnpm gate`.
 
 ---
 
@@ -181,6 +188,10 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Text content intended for copying or user selection MUST specify `selectByMouse: true`.
    - Adhere to desktop interaction conventions (smooth hover cursors, keyboard focus rings, auto-scroll active items into view).
    - **Add motion per Golden Rule 11**: every interactive state transition uses `Behavior on <prop>` gated on `ThemeTokens.animationsEnabled` (+ `!forceHover && !forceActive && harnessMode` guard) with `NumberAnimation`/`ColorAnimation` durations `ThemeTokens.motionQuick|Short|Medium` and `easing.type: ThemeTokens.easeStandard|Emphasized|Entrance`. Overlay surfaces animate opacity (+ mild scale); sliding panels animate x/y with `easeEmphasized`. NEVER animate scroll offsets or drag positions. Never hardcode `Easing.*` or numeric durations.
+    - **Scale All Geometry via `ThemeTokens.dp` per Golden Rule 14**:
+      - All geometric dimensions (`implicitWidth`, `implicitHeight`, `radius`, `spacing`, `padding`, `headerHeight`, `rowHeight`, `boxSize`, `itemHeight`) MUST use `ThemeTokens.dp(...)` or `Typography.*`.
+      - Public component props accept unscaled numbers (`size: 16`, `rowHeight: 36`); component internals calculate `readonly property int effectiveRowHeight: ThemeTokens.dp(rowHeight)`. Callers must never pass `ThemeTokens.dp(...)`.
+      - Hairlines and borders (0, 1, 2) remain unscaled integer literals (`border.width: 1`).
 2. **Register in CMake**:
    Update `qt/CMakeLists.txt`:
    - Add `src/ChaSet<Name>.qml` under `qt_add_qml_module(ChaSet ...)`.
@@ -196,10 +207,11 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 1. **Rebuild & Verify**:
    ```bash
    cmake --build qt/build
+   pnpm check:scaling
    pnpm --filter @chahu/cha-set test
    pnpm gate
    ```
-2. Ensure `gate/parity.mjs` outputs `[gate] OK — all must capabilities covered`.
+2. Ensure `gate/parity.mjs` outputs `[gate] OK — all must capabilities covered` and `[gate] OK — Qt UI Scaling Parity Gate passed`.
 
 ---
 

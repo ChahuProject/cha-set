@@ -177,6 +177,20 @@
       Showcase datasets (`spec/showcase/*.json`) and component props must never store raw emoji characters; store semantic icon identifiers (e.g. `"icon": "zap"`, `"icon": "target"`, `"icon": "lock"`) that both platforms map to their respective vector icon primitives.
     - **Automated Zero-Emoji Gate (机械化零 Emoji 门禁)**:
       `scripts/check-no-emoji.mjs` mechanically scans all git-tracked files in the repository. Any detected emoji triggers an immediate gate failure (exit code 1). This check is integrated directly into `pnpm gate`.
+16. **Mandatory High-DPI & UI Scaling Parity Contract (跨端界面缩放体系与 ThemeTokens.dp 强制律 — 禁止非缩放物理像素)**:
+    - **Single Source of Truth for Scale Conversion (界面缩放单一真理源)**:
+      Desktop Qt Quick does NOT automatically scale raw numeric values when `ThemeTokens.uiScale` changes or across heterogeneous high-DPI displays. All geometric dimensions in ChaSet Qt components (`implicitHeight`, `implicitWidth`, `height`, `width`, `radius`, `spacing`, `padding`, `headerHeight`, `rowHeight`, `boxSize`, `estimateSize`, `itemHeight`, `thumbThickness`, `expandedThumbThickness`, `hitThickness`, `buttonLength`) and showcase infrastructure MUST be scaled via `ThemeTokens.dp(val)` or `ThemeTokens.sp(val)` / `Typography.*`. Raw unscaled numbers > 2 are strictly forbidden.
+    - **Hairlines vs Scalable Geometry (发丝线微像素与几何缩放边界律)**:
+      Values of 0, 1, and 2 represent high-DPI hairlines, crisp borders, and subpixel alignment offsets and intentionally remain unscaled integer literals (`border.width: 1`). Any geometry dimension exceeding 2 MUST be wrapped in `ThemeTokens.dp(...)`.
+    - **Logical Point API Model (公开属性逻辑点模型 — 防重复双重缩放红线)**:
+      Public component property interfaces (`rowHeight: 36`, `handleThickness: 8`, `estimateSize: 180`, `size: 16`) accept unscaled logical units from callers. The component implementation itself is strictly and solely responsible for computing scaled internal geometry via `readonly property int effectiveRowHeight: ThemeTokens.dp(rowHeight)`. Callers must NEVER pass `ThemeTokens.dp(...)` into component property arguments, which would erroneously cause double-scaling.
+    - **Pure Vector Icon Scale Responsiveness (矢量图标绝对缩放响应律)**:
+      All vector icons (`ChaSetIcon`, `ChaSetStatusIcon`) MUST scale strictly according to `ThemeTokens.dp(size)`. Pure canvas drawing coordinates and canvas dimensions without `ThemeTokens.dp` scaling are strictly forbidden.
+    - **Showcase Stage Height & Dynamic Containment (演示容器动态自适应律 — 防高倍率截断红线)**:
+      Interactive sandbox containers (`ComponentPreview`, `TabsDocPage`, doc pages) must never use fixed unscaled heights that clip components when scaled up (e.g. at 1.5x, 2.0x, or 3.0x zoom). `ComponentPreview` uses `height: ThemeTokens.dp(root.stageHeight)`, and doc page containers must allow dynamic growth.
+    - **Automated Verification & Parity Gate (机械化缩放静态与动态双重门禁)**:
+      - **Static Linter**: `pnpm check:scaling` (`scripts/check-qt-scaling.mjs`) mechanically inspects all 72 ChaSet Qt components, flagging any raw unscaled geometry numbers > 2.
+      - **Runtime Headless Verification**: `QtChaSetDemo.exe --test-scenario uiscale` and `--test-scenario all` physically instantiate and dynamically step through UI zoom levels (1.0x -> 1.1x -> 1.5x -> 2.5x -> 3.0x -> reset to 1.0x), asserting scaled pixel sizes and verifying zero binding loops, zero white screens, and scale invariance of OSD overlays. Both checks are embedded directly inside `pnpm gate`.
 
 ---
 
