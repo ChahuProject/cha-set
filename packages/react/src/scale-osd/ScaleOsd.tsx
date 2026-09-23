@@ -229,6 +229,13 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
     const defaultBoxShadow =
       '0 0 0 1px color-mix(in oklch, var(--border) 85%, transparent), 0 12px 36px color-mix(in oklch, black 18%, transparent)';
 
+    const placementStyles: Record<ScaleOsdPlacement, React.CSSProperties> = {
+      'bottom-center': { bottom: 36 },
+      'top-center': { top: 36 },
+      'bottom-right': { bottom: 36, right: 36 },
+      'top-right': { top: 36, right: 36 },
+    };
+
     // When ignoreUiScale is true, apply fixed physical pixel metrics to guarantee
     // the HUD does not grow or shrink with root font-size rem scaling or uiScale.
     const invariantContainerStyle: React.CSSProperties = ignoreUiScale
