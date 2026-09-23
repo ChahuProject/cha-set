@@ -27,10 +27,17 @@ function main() {
     .map((f) => f.trim())
     .filter(Boolean);
 
+  let templateManagedFiles = new Set();
+  try {
+    const manifest = JSON.parse(readFileSync('.pengj-templates.json', 'utf-8'));
+    templateManagedFiles = new Set(Object.keys(manifest.files || {}).map((f) => f.replace(/\\/g, '/')));
+  } catch {}
+
   const violations = [];
   let scannedCount = 0;
 
   for (const file of trackedFiles) {
+    if (templateManagedFiles.has(file)) continue;
     const ext = file.slice(file.lastIndexOf('.')).toLowerCase();
     if (BINARY_EXTENSIONS.has(ext)) continue;
 

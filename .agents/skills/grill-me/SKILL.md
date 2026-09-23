@@ -1,11 +1,8 @@
 ---
 name: grill-me
 description: >-
-
   Continuously interrogate the user about a plan or design until consensus is reached, resolving every branch of the decision tree one by one. Use when the user wants to stress-test a proposal, accept design scrutiny, or mentions "grill me".
-
 ---
-
 
 # Grill Me
 

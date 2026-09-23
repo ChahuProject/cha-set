@@ -11,6 +11,10 @@
   - **Planning Modes (`/plan` / `/boost`) Enforcement**: In planning modes, creating or updating `walkthrough.md` does NOT conclude the task; **you are strictly forbidden from stopping after writing a walkthrough — you MUST proceed immediately to commit and push before finishing your turn**.
   - **Exemptions**: Committing is only skipped if the turn is purely conversational (zero file changes in `git status`) or if tests/builds failed and you are stopping specifically to ask the user for diagnostic input.
 - **Task Conclusion**: Before concluding any task or delivering final responses, the working tree must be clean and all commits pushed to the remote repository.
+- **Template Anti-Tampering Red Line (Strict Protection)**: All files under `.agents/skills/*/scripts/` and all content inside `PENGJ_TEMPLATE_START/END` managed blocks belong to `pengj-templates`. Directly modifying managed script files or tampering with code inside managed blocks in downstream projects is strictly prohibited! When encountering environment mismatch or needing project-specific settings:
+  1. Always declare configuration in the project-specific area outside the managed block in `SKILL.md` (e.g. integration branch declaration, untracked path ignore regex, or verification gates);
+  2. If the template lacks necessary capabilities, propose generic features to upstream `pengj-templates` instead of keeping local hacks in downstream;
+  3. Run `cargo run -p pengj-templates-cli -- audit --dir . --diff` anytime to inspect alignment and keep drift violations at zero.
 
 ### Enabled skills
 
@@ -18,7 +22,6 @@
 - `branch-sync` — see `.agents/skills/branch-sync/SKILL.md`
 - `caveman` — see `.agents/skills/caveman/SKILL.md`
 - `commit` — see `.agents/skills/commit/SKILL.md`
-- `component-scout` — see `.agents/skills/component-scout/SKILL.md`
 - `grill-me` — see `.agents/skills/grill-me/SKILL.md`
 - `subrepo-sync` — see `.agents/skills/subrepo-sync/SKILL.md`
 - `write-a-skill` — see `.agents/skills/write-a-skill/SKILL.md`

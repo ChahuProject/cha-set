@@ -25,14 +25,14 @@ pwsh .agents/skills/subrepo-sync/scripts/show-unapplied-commits.ps1 -SubrepoPath
 发现未应用的提交记录: 18 条
 
 【涉及系统与影响面聚类】
-  [BREAKING] 破坏性变更 (Breaking Changes) [1 项] - 需重点核验:
+  💥 破坏性变更 (Breaking Changes) [1 项] - 需重点核验:
      - 4f2a1b9 feat(button)!: rename variant 'danger' to 'destructive'
 
-  [MOTION] 动效与过渡系统 (Motion) [3 项]:
+  🎬 动效与过渡系统 (Motion) [3 项]:
      - b9c8d7e feat(motion): add ease-standard and ease-decelerate tokens
      - 3a4b5c6 fix(dialog): resolve exit transition flickers
 
-  [COMPONENTS] 规范控件与组件 API 变更 (Components) [5 项]:
+  🧩 规范控件与组件 API 变更 (Components) [5 项]:
      - 7e8f9a0 feat(code-block): support theme-aware syntax highlighting
      - 1a2b3c4 feat(duration-input): add duration input widget with unit selector
 
@@ -43,7 +43,7 @@ pwsh .agents/skills/subrepo-sync/scripts/show-unapplied-commits.ps1 -SubrepoPath
   ...
 =================================================================
 
-[TIP] 提示：若需一键将子仓库签出更新至上述最新提交，可运行：
+💡 提示：若需一键将子仓库签出更新至上述最新提交，可运行：
   pwsh .agents/skills/subrepo-sync/scripts/show-unapplied-commits.ps1 -SubrepoPath 'submodules/shared-ui' -Update
 ```
 

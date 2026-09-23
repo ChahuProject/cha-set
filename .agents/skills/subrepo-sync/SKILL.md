@@ -39,12 +39,12 @@ pwsh .agents/skills/subrepo-sync/scripts/show-unapplied-commits.ps1 -SubrepoPath
 
 ### Step 2: Unapplied Commits & Semantic Impact Clustering
 Extract commits via `git log <old>..<new> --oneline --no-merges` and cluster:
-- **[BREAKING] Breaking Changes**: `feat!:`, `fix!:`, `BREAKING CHANGE:` -> Check signature & breaking API changes.
-- **[MOTION] Motion & Transitions**: `motion`, `easing`, `animate` -> Verify exit transitions, easing curves, and duration collapse.
-- **[TOKENS] Tokens & Themes**: `token`, `theme`, `palette`, `color` -> Ensure foreground/background color coherence.
-- **[STYLES] Styles & Layers**: `styles`, `cascade-layer`, `layer`, `css` -> Ensure cascade layer order is preserved.
-- **[COMPONENTS] Canonical Components**: `component`, `feat(...)` -> Replace host handwritten wheels with upstream components.
-- **[PERF & FIXES] Performance & Fixes**: `perf:`, `fix:` -> Clean up temporary workarounds in the host.
+- **💥 Breaking Changes**: `feat!:`, `fix!:`, `BREAKING CHANGE:` ➔ Check signature & breaking API changes.
+- **🎬 Motion & Transitions**: `motion`, `easing`, `animate` ➔ Verify exit transitions, easing curves, and duration collapse.
+- **🎨 Tokens & Themes**: `token`, `theme`, `palette`, `color` ➔ Ensure foreground/background color coherence.
+- **📐 Styles & Layers**: `styles`, `cascade-layer`, `layer`, `css` ➔ Ensure cascade layer order is preserved.
+- **🧩 Canonical Components**: `component`, `feat(...)` ➔ Replace host handwritten wheels with upstream components.
+- **⚡ Performance & 🐛 Fixes**: `perf:`, `fix:` ➔ Clean up temporary workarounds in the host.
 
 ### Step 3: Safe Checkout & Pointer Update
 - Verify host and subrepo working trees are clean (`git status --short`).

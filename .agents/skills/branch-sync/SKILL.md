@@ -10,82 +10,75 @@ description: >-
 <!-- PENGJ_TEMPLATE_START -->
 # Branch Sync — Fast Worktree-Aware Linear Sync
 
-Sync a parallel feat branch (often held by a worktree) into the integration branch with **linear history, no merge commits, and `--force-with-lease` only**.
+Sync a feature branch (single-repo or worktree-occupied) into the integration branch with **safety backup references (refs/sync-backup/), Tree-Diff Guard revision preservation, remote-alignment anti-loss checks, and 1-shot closed-loop verification**.
+History must be strictly linear, zero merge commits, and force pushes must use `--force-with-lease`.
 
 > Convention: `{{ integration }}` refers to the target integration branch (default `main`). Declare deviations (e.g. `dev`/`master`) once in the project-specific area below.
 
 ```
-[Fast-Track: sync-branch.ps1] OR [Inspection (git cherry -v)] -> [Route A: Free / Route B: Occupied] -> [Push & Verify]
+[1-Shot One-Line Execution: sync-branch.ps1 -Apply] 
+  ├── 1. Adaptive topology & branch auto-detection
+  ├── 2. Remote alignment check (fast-forward remote commits, prevent drops)
+  ├── 3. Safety snapshot reference (refs/sync-backup/ permanent protection)
+  ├── 4. Linear merge (Route A: rebase-ff / Route B: ordered cherry-pick)
+  ├── 5. Tree-Diff Guard (strictly verifies 100% changes preserved before resetting source)
+  ├── 6. Source branch realignment & safe push (--force-with-lease)
+  └── 7. Automated post-merge test command (e.g. cargo test) -> Final status dashboard
 ```
 
-## Fast-Track Workflow (Recommended: 1–2 Tool Calls)
+## ⚡ Fast-Track Workflow (Recommended: 1 Single Tool Call)
 
-Use the bundled script `.agents/skills/branch-sync/scripts/sync-branch.ps1` to automate topology detection, patch-level deduplication, branch alignment, safe push, and verification in a single run:
+When requested to merge, sync, or align branches, **directly execute the script with `-Apply` in 1 single tool call**. The script handles end-to-end safety checks, sync, push, and verification:
 
 ```powershell
-# 1. Quick Dry Run: Check worktree topology & net-new commits in ~1s (read-only)
-pwsh .agents/skills/branch-sync/scripts/sync-branch.ps1 -SourceBranch 'feat/x'
-
-# 2. One-shot Execution: Rebase/ff or cherry-pick, align source branch, push, & verify
+# 1. Recommended: 1-Shot merge, push, and test in a single tool call
 pwsh .agents/skills/branch-sync/scripts/sync-branch.ps1 -SourceBranch 'feat/x' -Apply
+
+# 2. Auto-inference: Automatically detects current feature branch when omitted
+pwsh .agents/skills/branch-sync/scripts/sync-branch.ps1 -Apply
+
+# 3. Dry-run only (read-only preview of topology and net commits)
+pwsh .agents/skills/branch-sync/scripts/sync-branch.ps1 -SourceBranch 'feat/x'
 ```
 
-> **Efficiency Principle**: When the user requests a merge/sync and the source branch is known, run `-Apply` directly in **1 single tool call**. The script automatically verifies clean worktrees, identifies net commits, syncs both branches, and performs post-merge verification.
+> **Efficiency & Low-Intelligence Guardrails (Hard Rules)**:
+> 1. **1-Shot to Completion**: Do NOT split into multiple tool calls (dry-run -> apply -> build check). Run `-Apply` directly; the script inspects worktrees, prevents dirty overwrites, merges, pushes, and automatically runs the project's verification test (e.g. `cargo test`).
+> 2. **Never Hand-Craft Raw Git Commands**: Do NOT attempt manual `git merge` (violates commitlint) or manual `reset --hard` (causes irrevocable commit drops). Everything must go through `sync-branch.ps1`.
+> 3. **Dashboard Decides Completion**: When the script reports `STATUS: COMPLETED_READY_TO_REPORT`, all synchronization, pushes, and test checks have succeeded. Immediately report completion to the user without redundant tool calls.
 
 ---
 
-## Manual Fallback (Chained One-Liners)
+## 🛡️ Anti-Drop & Anti-Overwrite Safeguards
 
-If the script environment is unavailable, use chained compound commands. **Never execute git commands line-by-line across multiple tool rounds, and never print raw full git logs to manually compare subjects.**
+1. **Safety Backup Reference (refs/sync-backup/)**:
+   Before performing any destructive operation, the script snapshots branches to `refs/sync-backup/<branch>/<timestamp>-<sha>`. Any interrupted or failed operation can be restored instantly via `git branch -f <branch> <backup-ref>`.
+2. **Remote Alignment Guard**:
+   Compares local and `origin/<branch>` before merging: auto-fast-forwards if remote is ahead (preventing dropped remote commits) and blocks immediately if diverged.
+3. **Tree-Diff Guard**:
+   Before resetting the source branch, the script rigorously audits the integration branch:
+   **If any net commit from the source branch is missing, the source branch is NEVER reset or pushed**, and integration is rolled back automatically.
 
-### 1. Fast Topology & Net Contribution Inspection (1 Tool Call)
+---
+
+## 🛠️ Emergency Fallback (Only when PowerShell script execution is impossible)
+
+If operating in a restricted environment without PowerShell:
 
 ```powershell
-git worktree list; git cherry -v main 'feat/x'
-```
+# 1. Create safety snapshot
+git update-ref refs/sync-backup/feat_x/temp HEAD
 
-- **Topology decision**:
-  - `git worktree list` has 1 entry or `feat/x` is not checked out elsewhere -> **Route A**;
-  - `feat/x` is checked out in another worktree path -> **Route B**.
-- **Net-contribution rules**:
-  - Lines with `+ <hash>`: Truly net-new commits to be merged.
-  - Lines with `- <hash>`: Already applied in `main` with an identical patch -> automatically ignored!
-
-### 2. Chained Execution (1 Tool Call)
-
-**Route A — Single-repo OR source branch is free:**
-```powershell
+# 2. Route A (free branch): rebase -> merge ff -> push -> realign source -> push source
 git checkout 'feat/x' && git rebase main && git checkout main && git merge --ff-only 'feat/x' && git push origin main && git checkout 'feat/x' && git reset --hard main && git push --force-with-lease origin 'feat/x' && git checkout main
+
+# 3. Post-merge validation
+cargo test --workspace
 ```
-
-**Route B — Source branch is occupied by another worktree:**
-```powershell
-# 1) Main repo: cherry-pick net-new hashes in order and push
-git checkout main && git cherry-pick <net-hash-1> <net-hash-2> && git push origin main
-
-# 2) In occupied worktree: sync and push
-git -C <worktree-path> fetch origin && git -C <worktree-path> reset --hard origin/main && git -C <worktree-path> push --force-with-lease origin 'feat/x'
-```
-
-### 3. Post-Merge Verification (1 Tool Call)
-
-```powershell
-git rev-parse HEAD origin/main origin/'feat/x'; git diff origin/main origin/'feat/x' --stat; git log --oneline --merges -n 5 origin/main; git status --short
-```
-
-Verification goals:
-1. `HEAD`, `origin/main`, `origin/feat/x` all point to the same commit;
-2. `git diff` is empty (source branch fully aligned);
-3. No merge commits (`--merges` output is empty);
-4. Workspace is clean.
-
-Run the project build check **once** on the integration branch (e.g. `just ci`, `cargo test --workspace`).
 
 ## Guardrails & Traps
-- **commitlint rejection**: Never create merge commits (`merge: ...`). Always use linear rebase/ff or cherry-pick.
-- **Force push discipline**: Always use `--force-with-lease` after `git fetch`; never bare `-f` / `--force`.
-- **Both branches aligned**: Always realign and push the source branch after merging so `origin/main` and `origin/feat/x` match.
-- **Dirty worktree loss**: Never run `reset --hard` when uncommitted changes exist.
+- **No merge commits**: commitlint rejects `merge:`. Always use linear rebase/ff or cherry-pick.
+- **Force push discipline**: Always use `--force-with-lease` after `git fetch`; never bare `-f`.
+- **Workspace cleanliness**: Never run resets when uncommitted changes exist.
 <!-- PENGJ_TEMPLATE_END -->
 
 <!-- Project-specific area below -->

@@ -6,12 +6,13 @@ const subjectLanguagePlugin = {
         return [true];
       }
       if (!subject) {
-        return [false, 'commit subject cannot be empty'];
+        return [false, '提交标题 (subject) 不能为空 / commit subject cannot be empty'];
       }
 
       const trimmedSubject = subject.trim();
 
       if (lang === 'zh') {
+        // 中文模式：要求至少包含 2 个汉字，防止写成纯英文提交
         const chineseMatches = trimmedSubject.match(/[\p{Unified_Ideograph}]/gu) || [];
         const minChineseChars = 2;
         if (chineseMatches.length < minChineseChars) {
@@ -23,6 +24,7 @@ const subjectLanguagePlugin = {
           ];
         }
       } else if (lang === 'en') {
+        // 英文模式：
         // 步骤 a: 剥离单引号/双引号/反引号中的字面量内容（如 support '名称' alias）
         const strippedSubject = trimmedSubject.replace(/(['"`])[\s\S]*?\1/g, ' ').trim();
         const strippedChinese = strippedSubject.match(/[\p{Unified_Ideograph}]/gu) || [];
@@ -56,8 +58,8 @@ export default {
   extends: ['@commitlint/config-conventional'],
   plugins: [subjectLanguagePlugin],
   rules: {
-    'body-max-line-length': [0], // Disable body max line length
-    'subject-case': [0, 'always'], // Disable subject case check
+    'body-max-line-length': [0], // 禁用正文行长度限制
+    'subject-case': [0, 'always'], // 禁用 subject 大小写检查（允许中文标题）
     'type-enum': [
       2,
       'always',
