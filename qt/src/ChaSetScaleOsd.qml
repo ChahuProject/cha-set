@@ -25,7 +25,7 @@ Item {
 
     property bool defaultVisible: false
     property bool osdVisible: defaultVisible
-    property bool pointerOver: false
+    readonly property bool pointerOver: (pillHover.hovered || minusHover.hovered || plusHover.hovered || resetHover.hovered)
     property bool _initialized: false
 
     readonly property bool isLg: root.size === "lg"
@@ -137,6 +137,16 @@ Item {
         }
     }
 
+    // Shadow / depth behind pill
+    Rectangle {
+        id: shadowPill
+        anchors.fill: pill
+        anchors.topMargin: 2
+        radius: pill.radius
+        color: Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.35 : 0.12)
+        z: -1
+    }
+
     Rectangle {
         id: pill
         anchors.fill: parent
@@ -145,14 +155,17 @@ Item {
         border.color: ThemeTokens.border
         border.width: 1
         implicitWidth: contentRow.implicitWidth + (isLg ? 27 : 24)
+        implicitHeight: isLg ? 42 : 40
 
         HoverHandler {
-            onHoveredChanged: root.pointerOver = hovered
+            id: pillHover
         }
 
         Row {
             id: contentRow
-            anchors.centerIn: parent
+            anchors.left: parent.left
+            anchors.leftMargin: root.isLg ? 18 : 12
+            anchors.verticalCenter: parent.verticalCenter
             spacing: isLg ? 6 : 8
 
             Text {
@@ -187,8 +200,8 @@ Item {
                 height: root.isLg ? 42 : 28
                 radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
-                color: minusHover.hovered && !minusDisabled ? (root.isLg ? ThemeTokens.panelRaised : ThemeTokens.hover) : "transparent"
                 readonly property bool minusDisabled: root.disabled || root.value <= root.effectiveMin + 0.001
+                color: minusTap.pressed ? ThemeTokens.accentMuted : (minusHover.hovered && !minusDisabled ? ThemeTokens.hover : "transparent")
                 opacity: minusDisabled ? 0.4 : 1.0
 
                 Text {
@@ -201,12 +214,19 @@ Item {
                     font.weight: Typography.weightBold
                 }
 
+                ToolTip {
+                    visible: minusHover.hovered && !minusBtn.minusDisabled
+                    text: qsTr("缩小")
+                    delay: 400
+                }
+
                 HoverHandler {
                     id: minusHover
                     cursorShape: minusBtn.minusDisabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
                 }
 
                 TapHandler {
+                    id: minusTap
                     enabled: !minusBtn.minusDisabled
                     onTapped: root.stepZoom(-root.step)
                 }
@@ -220,8 +240,8 @@ Item {
                 height: root.isLg ? 42 : 28
                 radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
-                color: plusHover.hovered && !plusDisabled ? (root.isLg ? ThemeTokens.panelRaised : ThemeTokens.hover) : "transparent"
                 readonly property bool plusDisabled: root.disabled || root.value >= root.effectiveMax - 0.001
+                color: plusTap.pressed ? ThemeTokens.accentMuted : (plusHover.hovered && !plusDisabled ? ThemeTokens.hover : "transparent")
                 opacity: plusDisabled ? 0.4 : 1.0
 
                 Text {
@@ -234,12 +254,19 @@ Item {
                     font.weight: Typography.weightBold
                 }
 
+                ToolTip {
+                    visible: plusHover.hovered && !plusBtn.plusDisabled
+                    text: qsTr("放大")
+                    delay: 400
+                }
+
                 HoverHandler {
                     id: plusHover
                     cursorShape: plusBtn.plusDisabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
                 }
 
                 TapHandler {
+                    id: plusTap
                     enabled: !plusBtn.plusDisabled
                     onTapped: root.stepZoom(+root.step)
                 }
@@ -254,7 +281,7 @@ Item {
                 radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
                 readonly property bool resetDisabled: root.disabled || Math.abs(root.value - 1.0) < 0.001
-                color: resetHover.hovered && !resetDisabled ? (root.isLg ? ThemeTokens.panelRaised : ThemeTokens.hover) : "transparent"
+                color: resetTap.pressed ? ThemeTokens.accentMuted : (resetHover.hovered && !resetDisabled ? ThemeTokens.hover : "transparent")
                 opacity: resetDisabled ? 0.4 : 1.0
 
                 Text {
@@ -266,12 +293,19 @@ Item {
                         : (root.isLg ? Typography.sizeSubheading : Typography.sizeBody)
                 }
 
+                ToolTip {
+                    visible: resetHover.hovered && !resetBtn.resetDisabled
+                    text: qsTr("重置")
+                    delay: 400
+                }
+
                 HoverHandler {
                     id: resetHover
                     cursorShape: resetBtn.resetDisabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
                 }
 
                 TapHandler {
+                    id: resetTap
                     enabled: !resetBtn.resetDisabled
                     onTapped: root.resetZoom()
                 }

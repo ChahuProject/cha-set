@@ -171,5 +171,72 @@ describe('ScaleOsd', () => {
     expect(osd.style.height).toBe('42px');
     expect(osd.style.fontSize).toBe('20px');
   });
+
+  it('uses left-0 right-0 mx-auto w-fit to avoid subpixel translation blur', () => {
+    render(<ScaleOsd visible value={1.0} placement="bottom-center" />);
+    const osd = screen.getByRole('region');
+    expect(osd).toHaveClass('left-0');
+    expect(osd).toHaveClass('right-0');
+    expect(osd).toHaveClass('mx-auto');
+    expect(osd).toHaveClass('w-fit');
+    expect(osd).not.toHaveClass('-translate-x-1/2');
+  });
+
+  it('disables reset button when value is 100% and enables when zoomed', () => {
+    const { rerender } = render(<ScaleOsd visible value={1.0} />);
+    const resetBtn = screen.getByLabelText('Reset Zoom');
+    expect(resetBtn).toBeDisabled();
+
+    rerender(<ScaleOsd visible value={1.25} />);
+    expect(resetBtn).not.toBeDisabled();
+  });
+
+  it('remains visible while clicking buttons under active hover', () => {
+    const onVisibilityChange = vi.fn();
+    const { rerender } = render(
+      <ScaleOsd
+        value={1.0}
+        autoHideDuration={1400}
+        onVisibilityChange={onVisibilityChange}
+      />,
+    );
+
+    // Reveal by changing value
+    rerender(
+      <ScaleOsd
+        value={1.1}
+        autoHideDuration={1400}
+        onVisibilityChange={onVisibilityChange}
+      />,
+    );
+    const osd = screen.getByRole('region');
+
+    // Mouse enters the OSD
+    fireEvent.mouseEnter(osd);
+
+    // Advance 3000ms (way past 1400ms)
+    act(() => {
+      vi.advanceTimersByTime(3000);
+    });
+    expect(screen.getByText('110%')).toBeInTheDocument();
+
+    // Click zoom in while hovered
+    const zoomIn = screen.getByLabelText('Zoom In');
+    fireEvent.click(zoomIn);
+
+    // Advance another 3000ms while still hovering
+    act(() => {
+      vi.advanceTimersByTime(3000);
+    });
+    // Must remain visible under hover
+    expect(screen.getByRole('region')).toBeInTheDocument();
+
+    // Mouse leave starts countdown
+    fireEvent.mouseLeave(osd);
+    act(() => {
+      vi.advanceTimersByTime(1400);
+    });
+    expect(screen.queryByRole('region')).not.toBeInTheDocument();
+  });
 });
 

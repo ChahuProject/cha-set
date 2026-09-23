@@ -47,8 +47,8 @@ export interface ScaleOsdProps
 }
 
 const placementClasses: Record<ScaleOsdPlacement, string> = {
-  'bottom-center': 'fixed bottom-9 left-1/2 -translate-x-1/2',
-  'top-center': 'fixed top-9 left-1/2 -translate-x-1/2',
+  'bottom-center': 'fixed bottom-9 left-0 right-0 mx-auto w-fit',
+  'top-center': 'fixed top-9 left-0 right-0 mx-auto w-fit',
   'bottom-right': 'fixed bottom-9 right-9',
   'top-right': 'fixed top-9 right-9',
 };
@@ -78,6 +78,10 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       onReset,
       onVisibilityChange,
       style,
+      onMouseEnter,
+      onMouseLeave,
+      onPointerEnter,
+      onPointerLeave,
       ...props
     },
     ref,
@@ -94,6 +98,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
     const isVisible = isControlledVisible ? propVisible : internalVisible;
 
     const [isHovered, setIsHovered] = React.useState<boolean>(false);
+    const isHoveredRef = React.useRef<boolean>(false);
     const hideTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
     const prevValueRef = React.useRef<number>(currentValue);
 
@@ -107,39 +112,46 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       [isControlledVisible, onVisibilityChange],
     );
 
-    const startHideTimer = React.useCallback(() => {
-      if (hideTimerRef.current) {
-        clearTimeout(hideTimerRef.current);
-        hideTimerRef.current = null;
-      }
-      if (autoHideDuration > 0 && autoHideDuration < Infinity) {
-        hideTimerRef.current = setTimeout(() => {
-          updateVisibility(false);
-        }, autoHideDuration);
-      }
-    }, [autoHideDuration, updateVisibility]);
-
-    // When value changes, automatically reveal and reset timer
-    React.useEffect(() => {
-      if (prevValueRef.current !== currentValue) {
-        prevValueRef.current = currentValue;
-        updateVisibility(true);
-        if (!isHovered) {
-          startHideTimer();
-        }
-      }
-    }, [currentValue, isHovered, startHideTimer, updateVisibility]);
-
-    // Handle mouse enter (pause timer) and leave (restart timer)
-    const handleMouseEnter = React.useCallback(() => {
-      setIsHovered(true);
+    const clearHideTimer = React.useCallback(() => {
       if (hideTimerRef.current) {
         clearTimeout(hideTimerRef.current);
         hideTimerRef.current = null;
       }
     }, []);
 
+    const startHideTimer = React.useCallback(() => {
+      clearHideTimer();
+      if (isHoveredRef.current) return;
+      if (autoHideDuration > 0 && autoHideDuration < Infinity) {
+        hideTimerRef.current = setTimeout(() => {
+          if (!isHoveredRef.current) {
+            updateVisibility(false);
+            hideTimerRef.current = null;
+          }
+        }, autoHideDuration);
+      }
+    }, [autoHideDuration, clearHideTimer, updateVisibility]);
+
+    // When value changes, automatically reveal and reset timer if not hovered
+    React.useEffect(() => {
+      if (prevValueRef.current !== currentValue) {
+        prevValueRef.current = currentValue;
+        updateVisibility(true);
+        if (!isHoveredRef.current) {
+          startHideTimer();
+        }
+      }
+    }, [currentValue, startHideTimer, updateVisibility]);
+
+    // Handle mouse/pointer enter (pause timer) and leave (restart timer)
+    const handleMouseEnter = React.useCallback(() => {
+      isHoveredRef.current = true;
+      setIsHovered(true);
+      clearHideTimer();
+    }, [clearHideTimer]);
+
     const handleMouseLeave = React.useCallback(() => {
+      isHoveredRef.current = false;
       setIsHovered(false);
       if (isVisible) {
         startHideTimer();
@@ -148,11 +160,9 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
 
     React.useEffect(() => {
       return () => {
-        if (hideTimerRef.current) {
-          clearTimeout(hideTimerRef.current);
-        }
+        clearHideTimer();
       };
-    }, []);
+    }, [clearHideTimer]);
 
     const commitValue = React.useCallback(
       (newVal: number) => {
@@ -203,6 +213,9 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
 
     const isLg = size === 'lg';
 
+    const defaultBoxShadow =
+      '0 0 0 1px color-mix(in oklch, var(--border) 85%, transparent), 0 12px 36px color-mix(in oklch, black 18%, transparent)';
+
     // When ignoreUiScale is true, apply fixed physical pixel metrics to guarantee
     // the HUD does not grow or shrink with root font-size rem scaling or uiScale.
     const invariantContainerStyle: React.CSSProperties = ignoreUiScale
@@ -214,9 +227,13 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
           gap: 6,
           fontSize: isLg ? 20 : 14,
           lineHeight: isLg ? '30px' : '20px',
+          boxShadow: style?.boxShadow || defaultBoxShadow,
           ...style,
         }
-      : style || {};
+      : {
+          boxShadow: style?.boxShadow || defaultBoxShadow,
+          ...style,
+        };
 
     const readoutStyle: React.CSSProperties | undefined = ignoreUiScale
       ? {
@@ -250,17 +267,31 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
         role="region"
         aria-label="Scale OSD"
         className={cn(
-          'z-50 flex items-center select-none rounded-full',
+          'z-[100] flex items-center select-none rounded-full',
           isLg ? 'gap-1.5 h-11 px-4' : 'gap-1.5 h-10 px-3.5',
-          'bg-card text-card-foreground border border-border shadow-md',
+          'bg-popover text-popover-foreground border border-border/80 shadow-2xl',
           animated ? 'transition-all duration-short ease-standard' : 'transition-none',
           placementClasses[placement],
           disabled && 'opacity-60 pointer-events-none',
           className,
         )}
         style={invariantContainerStyle}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={(e) => {
+          handleMouseEnter();
+          onMouseEnter?.(e);
+        }}
+        onMouseLeave={(e) => {
+          handleMouseLeave();
+          onMouseLeave?.(e);
+        }}
+        onPointerEnter={(e) => {
+          handleMouseEnter();
+          onPointerEnter?.(e);
+        }}
+        onPointerLeave={(e) => {
+          handleMouseLeave();
+          onPointerLeave?.(e);
+        }}
         {...props}
       >
         <span
@@ -282,10 +313,11 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
             <button
               type="button"
               aria-label="Zoom Out"
+              title="缩小"
               disabled={disabled || currentValue <= min}
               onClick={() => handleStep(-1)}
               className={cn(
-                'rounded-full flex items-center justify-center font-semibold',
+                'rounded-full flex items-center justify-center font-semibold shrink-0',
                 isLg ? 'size-10 text-lg' : 'size-7 text-sm',
                 'cursor-pointer hover:bg-muted text-foreground transition-colors duration-quick ease-standard',
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
@@ -298,10 +330,11 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
             <button
               type="button"
               aria-label="Zoom In"
+              title="放大"
               disabled={disabled || currentValue >= max}
               onClick={() => handleStep(1)}
               className={cn(
-                'rounded-full flex items-center justify-center font-semibold',
+                'rounded-full flex items-center justify-center font-semibold shrink-0',
                 isLg ? 'size-10 text-lg' : 'size-7 text-sm',
                 'cursor-pointer hover:bg-muted text-foreground transition-colors duration-quick ease-standard',
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
@@ -314,10 +347,11 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
             <button
               type="button"
               aria-label="Reset Zoom"
-              disabled={disabled}
+              title="重置"
+              disabled={disabled || Math.abs(currentValue - 1.0) < 0.001}
               onClick={handleReset}
               className={cn(
-                'rounded-full flex items-center justify-center',
+                'rounded-full flex items-center justify-center shrink-0',
                 isLg ? 'size-10 text-base' : 'size-7 text-xs',
                 'cursor-pointer hover:bg-muted text-foreground transition-colors duration-quick ease-standard',
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
