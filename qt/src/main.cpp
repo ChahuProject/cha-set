@@ -552,10 +552,12 @@ bool runRealTypographyVerification(QQuickWindow* window) {
         qCritical("[qt-scenario] FAIL: QGuiApplication font hintingPreference is not PreferVerticalHinting!");
         return false;
     }
-    if (QQuickWindow::textRenderType() != QQuickWindow::NativeTextRendering) {
-        qCritical("[qt-scenario] FAIL: QQuickWindow textRenderType is not NativeTextRendering!");
+    if (QQuickWindow::textRenderType() != static_cast<QQuickWindow::TextRenderType>(ChaSet::FontSystem::activeTextRenderType())) {
+        qCritical("[qt-scenario] FAIL: QQuickWindow textRenderType does not match the resolved CHASET_TEXT_RENDER policy!");
         return false;
     }
+    qInfo() << "[qt-scenario] Text render policy:" << ChaSet::FontSystem::activeTextRenderPolicyName()
+            << "(renderType =" << ChaSet::FontSystem::activeTextRenderType() << ")";
 
     const QStringList segoeSubst = QFont::substitutes(QStringLiteral("Segoe UI"));
     if (!segoeSubst.contains(QStringLiteral("Microsoft YaHei UI"), Qt::CaseInsensitive) &&
@@ -576,15 +578,17 @@ bool runRealTypographyVerification(QQuickWindow* window) {
         return false;
     }
 
+    const int expectedRenderType = ChaSet::FontSystem::activeTextRenderType();
     int verifiedCount = 0;
     std::function<bool(QQuickItem*)> scanItems = [&](QQuickItem* item) -> bool {
         if (!item) return true;
         const QString className = QString::fromLatin1(item->metaObject()->className());
         if (className.contains(QStringLiteral("Text")) || className.contains(QStringLiteral("TextInput")) || className.contains(QStringLiteral("TextEdit"))) {
             QVariant rt = item->property("renderType");
-            // NativeRendering enum value is 1 across Text, TextEdit, TextInput
-            if (rt.isValid() && rt.toInt() != 1) {
-                qCritical() << "[qt-scenario] FAIL: Text item" << className << "has non-native renderType:" << rt.toInt();
+            // The window-level CHASET_TEXT_RENDER policy is inherited by every text node.
+            if (rt.isValid() && rt.toInt() != expectedRenderType) {
+                qCritical() << "[qt-scenario] FAIL: Text item" << className << "renderType" << rt.toInt()
+                            << "diverges from the resolved policy" << expectedRenderType;
                 return false;
             }
             verifiedCount++;
@@ -720,7 +724,9 @@ int main(int argc, char* argv[])
     }
 
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
-    QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
+    // Single owner of the global text rasterization path: CHASET_TEXT_RENDER
+    // selects qt (default) / native / curve. Must precede the first window.
+    ChaSet::FontSystem::applyTextRenderType();
 
     QGuiApplication app(argc, argv);
 
@@ -802,6 +808,7 @@ int main(int argc, char* argv[])
     engine.rootContext()->setContextProperty("testScenario", testScenario);
     engine.rootContext()->setContextProperty("reqWidth", reqWidth);
     engine.rootContext()->setContextProperty("reqHeight", reqHeight);
+    engine.rootContext()->setContextProperty("textRenderPolicy", ChaSet::FontSystem::activeTextRenderPolicyName());
 
     QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, []() {
         QCoreApplication::exit(0);

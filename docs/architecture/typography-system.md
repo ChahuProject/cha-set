@@ -245,9 +245,19 @@ Even with identical font metrics and tokens, visual discrepancy ("像素感" / b
    - `QFont::PreferDefaultHinting` in TrueType rasterization snaps small glyph curves aggressively to full integer pixel grid boundaries, producing jagged pixelated staircases.
    - Setting `appFont.setHintingPreference(QFont::PreferVerticalHinting)` preserves vertical baseline alignment while allowing smooth vector antialiasing along horizontal curves.
 
-3. **Window-Level Render Type Single Truth**:
-   - Text rendering is configured globally via `QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering)` and inherited uniformly across all QML text items.
-   - Manual `renderType:` overrides in QML components are strictly forbidden and mechanically checked by `scripts/check-typography-parity.mjs`.
+3. **Window-Level Text Rasterizer Single Truth (`CHASET_TEXT_RENDER`)**:
+   - The rasterizer is owned by exactly one place: `ChaSet::FontSystem::applyTextRenderType()` in `qt/src/ChaSetFontSystem.cpp`. `qt/src/main.cpp` invokes it immediately before `QGuiApplication` is constructed, so the choice precedes the first `QQuickWindow`. `QQuickWindow::setTextRenderType()` is called nowhere else.
+   - The policy is switchable at runtime through the `CHASET_TEXT_RENDER` environment variable:
+
+     | Value | `QQuickWindow::TextRenderType` | Rasterizer | Trade-off |
+     | :--- | :--- | :--- | :--- |
+     | `qt` **(default)** | `QtTextRendering` | Qt's own glyph-outline rasterizer | Smooth grayscale outline coverage; outlines are not fitted to the pixel grid, so curves stay smooth as the UI scale grows. |
+     | `native` | `NativeTextRendering` | Operating-system rasterizer (DirectWrite / CoreText) | Crispest stems for small upright text, but hinting fits the outlines to the pixel grid, which produces visible staircases on rounded strokes (CJK, `S`, `e`, `g`) once the UI scale enlarges the glyphs. |
+     | `curve` | `CurveTextRendering` | Hardware curve rasterizer (Qt 6.7+) | Glyph outlines are rasterized as curves on the GPU; scale-invariant smoothness and the lowest texture memory. Requires a hardware RHI backend. |
+
+   - Unknown values log a warning and resolve to `qt`. `curve` degrades to `qt` when a software rasterizer is active (`QT_QUICK_BACKEND=software`, `QSG_RHI_BACKEND=software`, or `QSG_RHI_PREFER_SOFTWARE_RENDERER`), because the curve rasterizer runs on the graphics hardware.
+   - The resolved policy is exposed to QML as the `textRenderPolicy` context property and asserted by the headless `typography` scenario in `qt/src/main.cpp`.
+   - Manual `renderType:` overrides in QML components remain strictly forbidden and are mechanically checked by `scripts/check-typography-parity.mjs`.
 
 4. **Web Monospace Font Fallback Integrity**:
    - Raw CSS declarations such as `ui-monospace, monospace` without `Consolas` fall back on Windows Chromium to bitmap-infused `NSimSun` at small font sizes.
@@ -272,20 +282,22 @@ The ChaSet Font System provides an end-to-end guarantee against SimSun degradati
 
 ### 10.2 Host Application Integration (C++ / Qt)
 
-Host applications linking against `ChaSet::ChaSet` initialize the entire font subsystem with one line:
+Host applications linking against `ChaSet::ChaSet` initialize the entire font subsystem with two calls:
 
 ```cpp
 #include <ChaSet/ChaSetFontSystem.h>
 
 int main(int argc, char* argv[]) {
+    // Must precede QGuiApplication: resolves CHASET_TEXT_RENDER (qt / native / curve).
+    ChaSet::FontSystem::applyTextRenderType();
     QGuiApplication app(argc, argv);
     ChaSet::FontSystem::initialize(&app);
     ...
 }
 ```
 
-This single call configures:
-- `QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering)`
+Between the two calls they configure:
+- The global text rasterizer (`applyTextRenderType()`, see §9.3) — `qt` by default
 - Pure alpha grayscale antialiasing (`QFont::NoSubpixelAntialias`)
 - Vertical curve hinting (`QFont::PreferVerticalHinting`)
 - DirectWrite CJK substitution tables (`Segoe UI`, `Consolas`, `sans-serif`, `monospace`)

@@ -1,11 +1,37 @@
 #include "ChaSetFontSystem.h"
 #include <QFontDatabase>
 #include <QQuickWindow>
+#include <QDebug>
 
 namespace ChaSet {
 
+namespace {
+
+// CurveTextRendering runs on the graphics hardware, so it is unavailable under
+// Qt's software scene graph adaptation.
+bool isSoftwareRasterizerRequested()
+{
+    const QString quickBackend = qEnvironmentVariable("QT_QUICK_BACKEND").trimmed().toLower();
+    if (quickBackend == QLatin1String("software")) {
+        return true;
+    }
+    const QString rhiBackend = qEnvironmentVariable("QSG_RHI_BACKEND").trimmed().toLower();
+    if (rhiBackend == QLatin1String("software")) {
+        return true;
+    }
+    return !qEnvironmentVariableIsEmpty("QSG_RHI_PREFER_SOFTWARE_RENDERER");
+}
+
+} // namespace
+
 QStringList FontSystem::s_customSansFamilies;
 QStringList FontSystem::s_customMonoFamilies;
+QString FontSystem::s_textRenderPolicyName = QStringLiteral("qt");
+
+const char* FontSystem::textRenderEnvVar()
+{
+    return "CHASET_TEXT_RENDER";
+}
 
 QStringList FontSystem::defaultSansFamilies()
 {
@@ -54,15 +80,57 @@ void FontSystem::applySubstitutions()
     QFont::insertSubstitutions(QStringLiteral("monospace"), mono);
 }
 
+void FontSystem::applyTextRenderType()
+{
+    const QString requested = qEnvironmentVariable(textRenderEnvVar()).trimmed().toLower();
+
+    QQuickWindow::TextRenderType type = QQuickWindow::QtTextRendering;
+    QString resolved = QStringLiteral("qt");
+
+    if (requested.isEmpty() || requested == QLatin1String("qt")) {
+        // Default: Qt's own rasterizer.
+    } else if (requested == QLatin1String("native")) {
+        type = QQuickWindow::NativeTextRendering;
+        resolved = QStringLiteral("native");
+    } else if (requested == QLatin1String("curve")) {
+        if (isSoftwareRasterizerRequested()) {
+            qWarning() << "[ChaSet][FontSystem]" << textRenderEnvVar()
+                       << "= curve requires a hardware RHI backend, but a software rasterizer is active;"
+                       << "falling back to the Qt default (QtTextRendering).";
+        } else {
+            type = QQuickWindow::CurveTextRendering;
+            resolved = QStringLiteral("curve");
+        }
+    } else {
+        qWarning() << "[ChaSet][FontSystem] Unknown" << textRenderEnvVar() << "value" << requested
+                   << "- expected one of {qt, native, curve}; falling back to the Qt default (QtTextRendering).";
+    }
+
+    QQuickWindow::setTextRenderType(type);
+    s_textRenderPolicyName = resolved;
+    qInfo() << "[ChaSet][FontSystem] Text render type:" << resolved
+            << "(QQuickWindow::TextRenderType =" << static_cast<int>(type) << ")";
+}
+
+QString FontSystem::activeTextRenderPolicyName()
+{
+    return s_textRenderPolicyName;
+}
+
+int FontSystem::activeTextRenderType()
+{
+    return static_cast<int>(QQuickWindow::textRenderType());
+}
+
 void FontSystem::initialize(QGuiApplication* /*app*/)
 {
-    // 1. Force native vector text rendering globally across all QML windows
-    QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
+    // The global text rasterization path is owned by applyTextRenderType(), which
+    // main() invokes before QGuiApplication so the choice precedes every window.
 
-    // 2. Register font substitution tables to eliminate SimSun fallback
+    // Register font substitution tables to eliminate SimSun fallback
     applySubstitutions();
 
-    // 3. Configure application-level default font with grayscale antialiasing
+    // Configure application-level default font with grayscale antialiasing
     const QStringList sans = activeSansFamilies();
     QFont appFont(sans.isEmpty() ? QStringLiteral("Segoe UI") : sans.first());
     appFont.setStyleStrategy(static_cast<QFont::StyleStrategy>(

@@ -232,7 +232,7 @@ export function verifyTypographyParity({ quiet = false } = {}) {
       if (/renderType\s*:/.test(line)) {
         checked += 1;
         errors.push(
-          `${rel}:${i + 1}: manual renderType override — "${line.trim()}". Text rendering is managed globally via QQuickWindow::NativeTextRendering and QGuiApplication::setFont.`,
+          `${rel}:${i + 1}: manual renderType override — "${line.trim()}". Text rendering is managed globally via ChaSet::FontSystem::applyTextRenderType() (CHASET_TEXT_RENDER) and QGuiApplication::setFont.`,
         );
       }
     });
