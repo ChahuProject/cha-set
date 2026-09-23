@@ -191,6 +191,9 @@ DocLayout {
                     { name: "step", type: "real", defaultVal: "0.1", description: "Step increment applied on +/- button click." },
                     { name: "min", type: "real", defaultVal: "0.2", description: "Minimum allowed zoom scale ratio." },
                     { name: "max", type: "real", defaultVal: "3.0", description: "Maximum allowed zoom scale ratio." },
+                    { name: "steps", type: "var", defaultVal: "[]", description: "Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS)." },
+                    { name: "size", type: "string", defaultVal: "\"default\"", description: "Visual scale variant (desktop launcher 42px or standard 40px)." },
+                    { name: "ignoreUiScale", type: "bool", defaultVal: "true", description: "Locks physical pixel size and renders invariant regardless of interface scaling." },
                     { name: "autoHideDuration", type: "int", defaultVal: "1400", description: "Duration in ms before auto-hiding (pauses on hover)." },
                     { name: "showControls", type: "bool", defaultVal: "true", description: "Whether to display +/- and reset buttons." },
                     { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all controls and user interaction." }

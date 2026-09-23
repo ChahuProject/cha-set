@@ -348,7 +348,8 @@
       "stepControls": { "requirement": "must", "description": "zoom in, zoom out, and reset buttons" },
       "autoHide": { "requirement": "must", "description": "auto-hides after duration with hover pause" },
       "keyboard": { "requirement": "must", "description": "button keyboard activation" },
-      "placement": { "requirement": "should", "description": "configurable screen/viewport anchoring" }
+      "placement": { "requirement": "should", "description": "configurable screen/viewport anchoring" },
+      "scaleInvariance": { "requirement": "must", "description": "remains invariant and fixed size regardless of interface scale factor" }
     },
     "taskHud": {
       "rendersTasks": { "requirement": "must", "description": "renders list of task cards with title, detail, and status" },

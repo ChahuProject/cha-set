@@ -11,6 +11,8 @@ Item {
     property real step: 0.1
     property real min: 0.2
     property real max: 3.0
+    property var steps: []
+    property bool ignoreUiScale: true
     property int autoHideDuration: 1400
     property bool showControls: true
     property bool disabled: false
@@ -27,6 +29,8 @@ Item {
     property bool _initialized: false
 
     readonly property bool isLg: root.size === "lg"
+    readonly property real effectiveMin: (root.steps && root.steps.length > 0) ? Math.min.apply(null, root.steps) : root.min
+    readonly property real effectiveMax: (root.steps && root.steps.length > 0) ? Math.max.apply(null, root.steps) : root.max
 
     Component.onCompleted: {
         _initialized = true;
@@ -50,10 +54,35 @@ Item {
 
     function stepZoom(delta) {
         if (root.disabled) return;
-        var next = Math.max(root.min, Math.min(root.max, Math.round((root.value + delta) * 100) / 100));
-        root.value = next;
-        root.stepTriggered(delta);
-        root.show();
+        if (root.steps && root.steps.length > 0) {
+            var sorted = root.steps.slice().sort(function(a, b) { return a - b; });
+            var targetIdx = -1;
+            if (delta > 0) {
+                for (var i = 0; i < sorted.length; i++) {
+                    if (sorted[i] > root.value + 0.001) {
+                        targetIdx = i;
+                        break;
+                    }
+                }
+                if (targetIdx === -1) targetIdx = sorted.length - 1;
+            } else {
+                for (var j = sorted.length - 1; j >= 0; j--) {
+                    if (sorted[j] < root.value - 0.001) {
+                        targetIdx = j;
+                        break;
+                    }
+                }
+                if (targetIdx === -1) targetIdx = 0;
+            }
+            root.value = sorted[targetIdx];
+            root.stepTriggered(delta > 0 ? 1 : -1);
+            root.show();
+        } else {
+            var next = Math.max(root.min, Math.min(root.max, Math.round((root.value + delta) * 100) / 100));
+            root.value = next;
+            root.stepTriggered(delta);
+            root.show();
+        }
     }
 
     function resetZoom() {
@@ -132,7 +161,9 @@ Item {
                 width: isLg ? Math.max(180, implicitWidth) : implicitWidth
                 text: root.format ? root.format(root.value) : qsTr("%1%").arg(Math.round(root.value * 100))
                 color: ThemeTokens.text
-                font.pixelSize: isLg ? Typography.sizeTitle : Typography.sizeBody
+                font.pixelSize: root.ignoreUiScale
+                    ? (root.isLg ? Math.round(Typography.sizeTitleSm / ThemeTokens.uiScale) : Math.round(Typography.sizeBody / ThemeTokens.uiScale))
+                    : (root.isLg ? Typography.sizeTitleSm : Typography.sizeBody)
                 font.weight: isLg ? Typography.weightMedium : Typography.weightSemibold
                 font.family: Typography.familySans
                 horizontalAlignment: Text.AlignHCenter
@@ -157,14 +188,16 @@ Item {
                 radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
                 color: minusHover.hovered && !minusDisabled ? (root.isLg ? ThemeTokens.panelRaised : ThemeTokens.hover) : "transparent"
-                readonly property bool minusDisabled: root.disabled || root.value <= root.min
+                readonly property bool minusDisabled: root.disabled || root.value <= root.effectiveMin + 0.001
                 opacity: minusDisabled ? 0.4 : 1.0
 
                 Text {
                     anchors.centerIn: parent
                     text: "−"
                     color: ThemeTokens.text
-                    font.pixelSize: root.isLg ? 21 : Typography.sizeHeading
+                    font.pixelSize: root.ignoreUiScale
+                        ? (root.isLg ? Math.round(Typography.sizeTitleSm / ThemeTokens.uiScale) : Math.round(Typography.sizeHeading / ThemeTokens.uiScale))
+                        : (root.isLg ? Typography.sizeTitleSm : Typography.sizeHeading)
                     font.weight: Typography.weightBold
                 }
 
@@ -188,14 +221,16 @@ Item {
                 radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
                 color: plusHover.hovered && !plusDisabled ? (root.isLg ? ThemeTokens.panelRaised : ThemeTokens.hover) : "transparent"
-                readonly property bool plusDisabled: root.disabled || root.value >= root.max
+                readonly property bool plusDisabled: root.disabled || root.value >= root.effectiveMax - 0.001
                 opacity: plusDisabled ? 0.4 : 1.0
 
                 Text {
                     anchors.centerIn: parent
                     text: "+"
                     color: ThemeTokens.text
-                    font.pixelSize: root.isLg ? 21 : Typography.sizeHeading
+                    font.pixelSize: root.ignoreUiScale
+                        ? (root.isLg ? Math.round(Typography.sizeTitleSm / ThemeTokens.uiScale) : Math.round(Typography.sizeHeading / ThemeTokens.uiScale))
+                        : (root.isLg ? Typography.sizeTitleSm : Typography.sizeHeading)
                     font.weight: Typography.weightBold
                 }
 
@@ -218,23 +253,26 @@ Item {
                 height: root.isLg ? 42 : 28
                 radius: root.isLg ? 21 : 14
                 anchors.verticalCenter: parent.verticalCenter
-                color: resetHover.hovered && !root.disabled ? (root.isLg ? ThemeTokens.panelRaised : ThemeTokens.hover) : "transparent"
-                opacity: root.disabled ? 0.4 : 1.0
+                readonly property bool resetDisabled: root.disabled || Math.abs(root.value - 1.0) < 0.001
+                color: resetHover.hovered && !resetDisabled ? (root.isLg ? ThemeTokens.panelRaised : ThemeTokens.hover) : "transparent"
+                opacity: resetDisabled ? 0.4 : 1.0
 
                 Text {
                     anchors.centerIn: parent
                     text: "⟳"
                     color: ThemeTokens.text
-                    font.pixelSize: root.isLg ? 18 : Typography.sizeBody
+                    font.pixelSize: root.ignoreUiScale
+                        ? (root.isLg ? Math.round(Typography.sizeSubheading / ThemeTokens.uiScale) : Math.round(Typography.sizeBody / ThemeTokens.uiScale))
+                        : (root.isLg ? Typography.sizeSubheading : Typography.sizeBody)
                 }
 
                 HoverHandler {
                     id: resetHover
-                    cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
+                    cursorShape: resetBtn.resetDisabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
                 }
 
                 TapHandler {
-                    enabled: !root.disabled
+                    enabled: !resetBtn.resetDisabled
                     onTapped: root.resetZoom()
                 }
             }

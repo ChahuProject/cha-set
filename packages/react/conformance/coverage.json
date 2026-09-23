@@ -319,7 +319,8 @@
     "stepControls": true,
     "autoHide": true,
     "keyboard": true,
-    "placement": true
+    "placement": true,
+    "scaleInvariance": true
   },
   "taskHud": {
     "rendersTasks": true,

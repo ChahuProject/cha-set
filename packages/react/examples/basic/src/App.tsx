@@ -15,6 +15,9 @@ import {
   CardFooter,
   Input,
   CodeBlock,
+  ScaleOsd,
+  useScaleOsd,
+  CANONICAL_SCALE_STEPS,
   ChaSetI18nProvider,
   DEFAULT_THEME_CONFIG,
   type ThemeConfig,
@@ -573,10 +576,17 @@ export function App() {
     try {
       const saved = localStorage.getItem('cs-uiscale');
       const parsed = saved ? parseFloat(saved) : 1.0;
-      return !isNaN(parsed) && parsed >= 0.75 && parsed <= 2.0 ? parsed : 1.0;
+      return !isNaN(parsed) && parsed >= 0.25 && parsed <= 5.0 ? parsed : 1.0;
     } catch {
       return 1.0;
     }
+  });
+
+  const scaleOsd = useScaleOsd({
+    value: uiScale,
+    onChange: setUiScale,
+    steps: CANONICAL_SCALE_STEPS,
+    enableShortcuts: true,
   });
 
   const [showTuner, setShowTuner] = useState(false);
@@ -638,7 +648,7 @@ export function App() {
     }
 
     // 4. UI Scale
-    if (typeof next.uiScale === 'number' && next.uiScale >= 0.75 && next.uiScale <= 2.0) {
+    if (typeof next.uiScale === 'number' && next.uiScale >= 0.25 && next.uiScale <= 5.0) {
       setUiScale(next.uiScale);
     }
   };
@@ -877,6 +887,15 @@ export function App() {
           mode={mode}
           accent={accent}
           overrides={overrides}
+        />
+
+        {/* Global Floating UI Scale OSD (Bottom Center) */}
+        <ScaleOsd
+          {...scaleOsd.bind}
+          size="lg"
+          ignoreUiScale={true}
+          placement="bottom-center"
+          format={(v) => `界面缩放 ${Math.round(v * 100)}%`}
         />
       </div>
     </ChaSetI18nProvider>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
+import { CANONICAL_SCALE_STEPS } from '@chahu/spec/scale-osd';
 
 export type ScaleOsdPlacement =
   | 'bottom-center'
@@ -12,10 +13,12 @@ export interface ScaleOsdProps
   /** Current scale ratio (e.g. 1.0 for 100%) */
   value?: number;
   defaultValue?: number;
-  /** Step increment for minus/plus buttons (default 0.1) */
+  /** Step increment for minus/plus buttons when not using discrete steps (default 0.1) */
   step?: number;
   min?: number;
   max?: number;
+  /** Discrete scale steps list (e.g. CANONICAL_SCALE_STEPS) */
+  steps?: readonly number[];
   /** Controlled visibility state */
   visible?: boolean;
   defaultVisible?: boolean;
@@ -33,6 +36,8 @@ export interface ScaleOsdProps
   animated?: boolean;
   /** Whether controls are disabled */
   disabled?: boolean;
+  /** Whether the OSD ignores global UI scale and maintains fixed physical pixel geometry (default true) */
+  ignoreUiScale?: boolean;
   /** Callbacks */
   onChange?: (value: number) => void;
   onStep?: (delta: number) => void;
@@ -41,10 +46,10 @@ export interface ScaleOsdProps
 }
 
 const placementClasses: Record<ScaleOsdPlacement, string> = {
-  'bottom-center': 'fixed bottom-6 left-1/2 -translate-x-1/2',
-  'top-center': 'fixed top-6 left-1/2 -translate-x-1/2',
-  'bottom-right': 'fixed bottom-6 right-6',
-  'top-right': 'fixed top-6 right-6',
+  'bottom-center': 'fixed bottom-9 left-1/2 -translate-x-1/2',
+  'top-center': 'fixed top-9 left-1/2 -translate-x-1/2',
+  'bottom-right': 'fixed bottom-9 right-9',
+  'top-right': 'fixed top-9 right-9',
 };
 
 export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
@@ -54,8 +59,9 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       value,
       defaultValue = 1,
       step = 0.1,
-      min = 0.2,
-      max = 3.0,
+      min: propMin,
+      max: propMax,
+      steps,
       visible: propVisible,
       defaultVisible = false,
       autoHideDuration = 1400,
@@ -65,14 +71,19 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       disabled = false,
       size = 'default',
       animated = true,
+      ignoreUiScale = true,
       onChange,
       onStep,
       onReset,
       onVisibilityChange,
+      style,
       ...props
     },
     ref,
   ) => {
+    const min = propMin ?? (steps && steps.length > 0 ? steps[0] : 0.2);
+    const max = propMax ?? (steps && steps.length > 0 ? steps[steps.length - 1] : 5.0);
+
     const isControlledValue = value !== undefined;
     const [internalValue, setInternalValue] = React.useState<number>(defaultValue);
     const currentValue = isControlledValue ? value : internalValue;
@@ -154,12 +165,26 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
     );
 
     const handleStep = React.useCallback(
-      (delta: number) => {
+      (direction: number) => {
         if (disabled) return;
-        commitValue(currentValue + delta);
-        onStep?.(delta);
+        if (steps && steps.length > 0) {
+          let nearestIdx = 0;
+          let minDiff = Infinity;
+          for (let i = 0; i < steps.length; i++) {
+            const diff = Math.abs(steps[i] - currentValue);
+            if (diff < minDiff) {
+              minDiff = diff;
+              nearestIdx = i;
+            }
+          }
+          const nextIdx = Math.max(0, Math.min(steps.length - 1, nearestIdx + (direction > 0 ? 1 : -1)));
+          commitValue(steps[nextIdx]);
+        } else {
+          commitValue(currentValue + direction * step);
+        }
+        onStep?.(direction * step);
       },
-      [commitValue, currentValue, disabled, onStep],
+      [commitValue, currentValue, disabled, onStep, step, steps],
     );
 
     const handleReset = React.useCallback(() => {
@@ -177,6 +202,46 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
 
     const isLg = size === 'lg';
 
+    // When ignoreUiScale is true, apply fixed physical pixel metrics to guarantee
+    // the HUD does not grow or shrink with root font-size rem scaling or uiScale.
+    const invariantContainerStyle: React.CSSProperties = ignoreUiScale
+      ? {
+          height: isLg ? 42 : 40,
+          minHeight: isLg ? 42 : 40,
+          paddingLeft: isLg ? 18 : 14,
+          paddingRight: isLg ? 9 : 14,
+          gap: 6,
+          fontSize: isLg ? 20 : 14,
+          lineHeight: isLg ? '30px' : '20px',
+          ...style,
+        }
+      : style || {};
+
+    const readoutStyle: React.CSSProperties | undefined = ignoreUiScale
+      ? {
+          fontSize: isLg ? 20 : 14,
+          minWidth: isLg ? 180 : 56,
+        }
+      : undefined;
+
+    const buttonStyle: React.CSSProperties | undefined = ignoreUiScale
+      ? {
+          width: isLg ? 42 : 28,
+          height: isLg ? 42 : 28,
+          minWidth: isLg ? 42 : 28,
+          fontSize: isLg ? 21 : 15,
+        }
+      : undefined;
+
+    const resetButtonStyle: React.CSSProperties | undefined = ignoreUiScale
+      ? {
+          width: isLg ? 42 : 28,
+          height: isLg ? 42 : 28,
+          minWidth: isLg ? 42 : 28,
+          fontSize: isLg ? 18 : 12,
+        }
+      : undefined;
+
     return (
       <div
         ref={ref}
@@ -192,6 +257,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
           disabled && 'opacity-60 pointer-events-none',
           className,
         )}
+        style={invariantContainerStyle}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         {...props}
@@ -200,19 +266,23 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
           data-slot="scale-readout"
           className={cn(
             'font-medium tabular-nums text-foreground px-1.5 text-center',
-            isLg ? 'text-lg min-w-[11.25rem]' : 'text-sm min-w-[3.5rem]'
+            isLg ? 'text-lg min-w-[11.25rem]' : 'text-sm min-w-[3.5rem]',
           )}
+          style={readoutStyle}
         >
           {labelText}
         </span>
 
         {showControls && (
-          <div className={cn('flex items-center', isLg ? 'gap-1.5' : 'gap-1 pl-1 border-l border-border/60')}>
+          <div
+            className={cn('flex items-center', isLg ? 'gap-1.5' : 'gap-1 pl-1 border-l border-border/60')}
+            style={ignoreUiScale ? { gap: 6 } : undefined}
+          >
             <button
               type="button"
               aria-label="Zoom Out"
               disabled={disabled || currentValue <= min}
-              onClick={() => handleStep(-step)}
+              onClick={() => handleStep(-1)}
               className={cn(
                 'rounded-full flex items-center justify-center font-semibold',
                 isLg ? 'size-10 text-lg' : 'size-7 text-sm',
@@ -220,6 +290,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
                 'disabled:cursor-not-allowed disabled:opacity-40',
               )}
+              style={buttonStyle}
             >
               −
             </button>
@@ -227,7 +298,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
               type="button"
               aria-label="Zoom In"
               disabled={disabled || currentValue >= max}
-              onClick={() => handleStep(+step)}
+              onClick={() => handleStep(1)}
               className={cn(
                 'rounded-full flex items-center justify-center font-semibold',
                 isLg ? 'size-10 text-lg' : 'size-7 text-sm',
@@ -235,6 +306,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
                 'disabled:cursor-not-allowed disabled:opacity-40',
               )}
+              style={buttonStyle}
             >
               +
             </button>
@@ -250,6 +322,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
                 'disabled:cursor-not-allowed disabled:opacity-40',
               )}
+              style={resetButtonStyle}
             >
               ⟳
             </button>
@@ -261,3 +334,4 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
 );
 
 ScaleOsd.displayName = 'ScaleOsd';
+

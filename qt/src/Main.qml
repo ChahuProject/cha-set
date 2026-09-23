@@ -108,7 +108,7 @@ ApplicationWindow {
         }
 
         // 4. UI Scale
-        if (typeof cfg.uiScale === "number" && cfg.uiScale >= 0.75 && cfg.uiScale <= 2.0) {
+        if (typeof cfg.uiScale === "number" && cfg.uiScale >= 0.25 && cfg.uiScale <= 5.0) {
             ThemeTokens.uiScale = cfg.uiScale;
         }
 
@@ -248,6 +248,47 @@ ApplicationWindow {
         value: typeof startupDark !== "undefined" && startupDark === true
     }
 
+    readonly property var scaleSteps: [0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0]
+
+    function stepZoom(direction) {
+        var steps = win.scaleSteps;
+        var current = ThemeTokens.uiScale;
+        var targetIdx = -1;
+        if (direction > 0) {
+            for (var i = 0; i < steps.length; i++) {
+                if (steps[i] > current + 0.001) {
+                    targetIdx = i;
+                    break;
+                }
+            }
+            if (targetIdx === -1) targetIdx = steps.length - 1;
+        } else {
+            for (var j = steps.length - 1; j >= 0; j--) {
+                if (steps[j] < current - 0.001) {
+                    targetIdx = j;
+                    break;
+                }
+            }
+            if (targetIdx === -1) targetIdx = 0;
+        }
+        var next = steps[targetIdx];
+        ThemeTokens.uiScale = next;
+        win.syncGlobalThemeConfig();
+        if (scaleOsd) {
+            scaleOsd.value = next;
+            scaleOsd.show();
+        }
+    }
+
+    function resetZoom() {
+        ThemeTokens.uiScale = 1.0;
+        win.syncGlobalThemeConfig();
+        if (scaleOsd) {
+            scaleOsd.value = 1.0;
+            scaleOsd.show();
+        }
+    }
+
     Connections {
         target: ThemeTokens
         function onDarkChanged() {
@@ -255,35 +296,41 @@ ApplicationWindow {
         }
         function onUiScaleChanged() {
             win.syncGlobalThemeConfig();
+            if (scaleOsd && (typeof testScenario === "undefined" || testScenario === "")) {
+                scaleOsd.value = ThemeTokens.uiScale;
+                scaleOsd.show();
+            }
         }
     }
 
     // Authentic Interface Scaling (Scene Graph Viewport Matrix)
     readonly property real effectiveUiScale: (typeof harnessMode !== "undefined" && harnessMode !== "") ? 1.0 : ThemeTokens.uiScale
 
-
-    // Desktop Zoom Keyboard Shortcuts
+    // Desktop Zoom Keyboard Shortcuts & Wheel Handling
     Shortcut {
         sequences: [StandardKey.ZoomIn, "Ctrl+=", "Ctrl++"]
-        onActivated: {
-            var next = Math.min(2.0, Math.round((ThemeTokens.uiScale + 0.1) * 100) / 100.0);
-            ThemeTokens.uiScale = next;
-            win.syncGlobalThemeConfig();
-        }
+        onActivated: win.stepZoom(+1)
     }
     Shortcut {
         sequences: [StandardKey.ZoomOut, "Ctrl+-"]
-        onActivated: {
-            var next = Math.max(0.75, Math.round((ThemeTokens.uiScale - 0.1) * 100) / 100.0);
-            ThemeTokens.uiScale = next;
-            win.syncGlobalThemeConfig();
-        }
+        onActivated: win.stepZoom(-1)
     }
     Shortcut {
         sequences: ["Ctrl+0"]
-        onActivated: {
-            ThemeTokens.uiScale = 1.0;
-            win.syncGlobalThemeConfig();
+        onActivated: win.resetZoom()
+    }
+
+    WheelHandler {
+        target: null
+        acceptedModifiers: Qt.ControlModifier
+        onWheel: function(event) {
+            if (event.angleDelta.y === 0) return;
+            if (event.angleDelta.y > 0) {
+                win.stepZoom(+1);
+            } else {
+                win.stepZoom(-1);
+            }
+            event.accepted = true;
         }
     }
 
@@ -471,8 +518,26 @@ ApplicationWindow {
                 themeFailures++;
             }
 
+            // 4. Test ChaSetScaleOsd discrete step zoom & scale invariance
+            var prevScaleOsdHeight = scaleOsd.height;
+            win.stepZoom(+1); // 1.0 -> 1.1
+            if (ThemeTokens.uiScale !== 1.1) {
+                console.log("[qt-scenario] FAIL: stepZoom(+1) expected 1.1, got " + ThemeTokens.uiScale);
+                themeFailures++;
+            }
+            if (scaleOsd.height !== prevScaleOsdHeight || scaleOsd.height !== 42) {
+                console.log("[qt-scenario] FAIL: scaleOsd scale invariance violated: height=" + scaleOsd.height + ", expected 42");
+                themeFailures++;
+            }
+            win.stepZoom(-1); // 1.1 -> 1.0
+            if (ThemeTokens.uiScale !== 1.0) {
+                console.log("[qt-scenario] FAIL: stepZoom(-1) expected 1.0, got " + ThemeTokens.uiScale);
+                themeFailures++;
+            }
+            scaleOsd.hide();
+
             if (themeFailures === 0) {
-                console.log("[qt-scenario] PASS: Global Theme Control & Authentic UI Scale verified (mode, palette, decoration, uiScale, reset)");
+                console.log("[qt-scenario] PASS: Global Theme Control & Authentic UI Scale verified (mode, palette, decoration, uiScale, reset, scaleOsd)");
             } else {
                 failures += themeFailures;
             }
@@ -1546,6 +1611,30 @@ ApplicationWindow {
                 customRadius: win.customRadius
                 exportTab: win.exportTab
                 onClose: win.exportModalOpen = false
+            }
+
+            // Floating UI Scale OSD (Bottom Center)
+            ChaSetScaleOsd {
+                id: scaleOsd
+                objectName: "globalScaleOsd"
+                size: "lg"
+                ignoreUiScale: true
+                steps: win.scaleSteps
+                value: ThemeTokens.uiScale
+                format: function(v) {
+                    return qsTr("界面缩放 %1%").arg(Math.round(v * 100));
+                }
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 36
+                anchors.horizontalCenter: parent.horizontalCenter
+                z: 100
+
+                onStepTriggered: function(delta) {
+                    win.stepZoom(delta > 0 ? 1 : -1);
+                }
+                onResetTriggered: {
+                    win.resetZoom();
+                }
             }
         }
     }

@@ -181,6 +181,24 @@ export function ScaleOsdDocPage() {
               description: 'Maximum allowed zoom scale ratio.',
             },
             {
+              name: 'steps',
+              type: 'number[]',
+              default: 'undefined',
+              description: 'Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS).',
+            },
+            {
+              name: 'size',
+              type: '"default" | "lg"',
+              default: '"default"',
+              description: 'Visual scale variant (desktop launcher 42px or standard 40px).',
+            },
+            {
+              name: 'ignoreUiScale',
+              type: 'boolean',
+              default: 'true',
+              description: 'Locks physical pixel size and renders invariant regardless of interface scaling.',
+            },
+            {
               name: 'visible',
               type: 'boolean',
               default: 'undefined',

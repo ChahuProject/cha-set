@@ -55,6 +55,7 @@
     "./duration-input": "./components/duration-input.ts",
     "./code-block": "./components/code-block.ts",
     "./pipeline-view": "./components/pipeline-view.ts",
+    "./scale-osd": "./components/scale-osd.ts",
     "./task-hud": "./components/task-hud.ts",
     "./address-bar": "./components/address-bar.ts",
     "./theme-settings": "./components/theme-settings.ts"

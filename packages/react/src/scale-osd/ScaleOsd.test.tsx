@@ -124,4 +124,52 @@ describe('ScaleOsd', () => {
     expect(osd).toHaveClass('transition-none');
     expect(screen.getByText('100%')).toHaveClass('min-w-[11.25rem]');
   });
+
+  it('steps through discrete steps list', () => {
+    const onChange = vi.fn();
+    const steps = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
+    render(
+      <ScaleOsd
+        visible
+        value={1.0}
+        steps={steps}
+        onChange={onChange}
+      />,
+    );
+
+    const zoomIn = screen.getByLabelText('Zoom In');
+    const zoomOut = screen.getByLabelText('Zoom Out');
+
+    fireEvent.click(zoomIn);
+    expect(onChange).toHaveBeenCalledWith(1.25);
+
+    fireEvent.click(zoomOut);
+    expect(onChange).toHaveBeenCalledWith(0.75);
+  });
+
+  it('maintains fixed physical pixel metrics when ignoreUiScale is true', () => {
+    const { container, rerender } = render(
+      <ScaleOsd
+        visible
+        value={1.0}
+        size="default"
+        ignoreUiScale
+      />,
+    );
+    const osd = screen.getByRole('region');
+    expect(osd.style.height).toBe('40px');
+    expect(osd.style.fontSize).toBe('14px');
+
+    rerender(
+      <ScaleOsd
+        visible
+        value={1.0}
+        size="lg"
+        ignoreUiScale
+      />,
+    );
+    expect(osd.style.height).toBe('42px');
+    expect(osd.style.fontSize).toBe('20px');
+  });
 });
+
