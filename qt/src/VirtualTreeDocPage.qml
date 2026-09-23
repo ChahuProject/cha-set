@@ -15,31 +15,113 @@ DocLayout {
         { id: "props", title: "Props Reference" }
     ]
 
-    property string selectedPath: "None"
+    property string selectionMode: "multiple"
+    property var selectedIds: ["Button.tsx"]
+    property var cutIds: []
+    property string statusMessage: "Ready. Try selecting files or dragging to reorder."
+
+    readonly property var initialNodes: [
+        {
+            id: "src", label: "📁 src", children: [
+                {
+                    id: "components", label: "📁 components", children: [
+                        { id: "Button.tsx", label: "📄 Button.tsx" },
+                        { id: "Tree.tsx", label: "📄 Tree.tsx" },
+                        { id: "Table.tsx", label: "📄 Table.tsx" }
+                    ]
+                },
+                {
+                    id: "styles", label: "📁 styles", children: [
+                        { id: "theme.css", label: "🎨 theme.css" },
+                        { id: "tokens.css", label: "🎨 tokens.css" }
+                    ]
+                },
+                { id: "index.ts", label: "📄 index.ts" }
+            ]
+        },
+        {
+            id: "spec", label: "📁 spec", children: [
+                { id: "tokens.json", label: "📜 tokens.json" },
+                { id: "capabilities.json", label: "📜 capabilities.json" }
+            ]
+        },
+        { id: "package.json", label: "📦 package.json" },
+        { id: "README.md", label: "📝 README.md" }
+    ]
+
+    property var treeNodes: JSON.parse(JSON.stringify(initialNodes))
+
+    function moveNodesInTree(tree, sourceKeys, targetKey, position) {
+        let extracted = []
+        function removeSource(list) {
+            let res = []
+            for (let i = 0; i < list.length; i++) {
+                let n = list[i]
+                if (sourceKeys.indexOf(n.id) !== -1) {
+                    extracted.push(n)
+                } else {
+                    let copy = Object.assign({}, n)
+                    if (copy.children) {
+                        copy.children = removeSource(copy.children)
+                    }
+                    res.push(copy)
+                }
+            }
+            return res
+        }
+        let cleaned = removeSource(tree)
+        if (extracted.length === 0) return tree
+
+        function insertTarget(list) {
+            let res = []
+            for (let i = 0; i < list.length; i++) {
+                let n = list[i]
+                if (n.id === targetKey) {
+                    if (position === "before") {
+                        for (let j = 0; j < extracted.length; j++) res.push(extracted[j])
+                        res.push(n)
+                    } else if (position === "after") {
+                        res.push(n)
+                        for (let j = 0; j < extracted.length; j++) res.push(extracted[j])
+                    } else {
+                        let copy = Object.assign({}, n)
+                        copy.children = copy.children ? copy.children.concat(extracted) : extracted.slice()
+                        res.push(copy)
+                    }
+                } else {
+                    let copy = Object.assign({}, n)
+                    if (copy.children) {
+                        copy.children = insertTarget(copy.children)
+                    }
+                    res.push(copy)
+                }
+            }
+            return res
+        }
+        return insertTarget(cleaned)
+    }
 
     ComponentPreview {
         title: "Virtual Tree Sandbox"
-        stageHeight: 340
+        stageHeight: 420
         reactCode: `<VirtualTree
   rootNodes={treeData}
-  getChildren={(n) => n.children}
-  getNodeKey={(n) => n.id}
-  renderRow={({ node, depth, isExpanded, toggleExpand }) => (
-    <div style={{ paddingLeft: depth * 16 }} onClick={toggleExpand}>
-      {node.label}
-    </div>
-  )}
+  selectionMode="multiple"
+  selectedIds={selectedIds}
+  dimmedIds={cutIds}
+  enableDnd
+  onDropNode={(evt) => handleDrop(evt)}
+  onCut={(nodes, ids) => setCutIds(ids)}
+  onPaste={(target, pos) => handlePaste(target, pos)}
 />`
         qtCode: `ChaSetVirtualTree {
-    nodes: [
-        { id: "src", label: "src/", children: [
-            { id: "components", label: "components/", children: [
-                { id: "Button.tsx", label: "Button.tsx" },
-                { id: "Tree.tsx", label: "Tree.tsx" }
-            ]}
-        ]}
-    ]
-    onNodeSelected: function(id) { console.log(id) }
+    nodes: treeData
+    selectionMode: "multiple"
+    selectedIds: selectedIds
+    dimmedIds: cutIds
+    enableDnd: true
+    onNodeDropped: function(src, target, pos) { ... }
+    onNodeCut: function(ids) { cutIds = ids }
 }`
 
         Item {
@@ -47,11 +129,13 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 12
+                spacing: 10
+                width: 380
 
-                Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 8
+                // Action Toolbar
+                Flow {
+                    width: parent.width
+                    spacing: 6
 
                     ChaSetButton {
                         text: "Expand All"
@@ -66,52 +150,128 @@ DocLayout {
                         size: "sm"
                         onClicked: virtualTree.collapseAll()
                     }
+
+                    ChaSetButton {
+                        text: "Mode: " + (root.selectionMode === "multiple" ? "Multi" : "Single")
+                        variant: "outline"
+                        size: "sm"
+                        onClicked: {
+                            root.selectionMode = root.selectionMode === "multiple" ? "single" : "multiple"
+                        }
+                    }
+
+                    ChaSetButton {
+                        text: "Cut (Ctrl+X)"
+                        variant: "outline"
+                        size: "sm"
+                        enabled: virtualTree.selectedIds.length > 0 || virtualTree.selectedId !== ""
+                        onClicked: {
+                            var ids = virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds : [virtualTree.selectedId]
+                            root.cutIds = ids
+                            root.statusMessage = "Cut " + ids.length + " item(s). Select target and paste."
+                        }
+                    }
+
+                    ChaSetButton {
+                        text: "Paste (Ctrl+V)"
+                        variant: "outline"
+                        size: "sm"
+                        enabled: root.cutIds.length > 0
+                        onClicked: {
+                            var targetId = virtualTree.selectedId !== "" ? virtualTree.selectedId : (virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds[0] : "")
+                            if (targetId !== "") {
+                                root.treeNodes = root.moveNodesInTree(root.treeNodes, root.cutIds, targetId, "inside")
+                                root.statusMessage = "Pasted " + root.cutIds.length + " item(s) into " + targetId
+                                root.cutIds = []
+                            }
+                        }
+                    }
+
+                    ChaSetButton {
+                        text: "Reset"
+                        variant: "outline"
+                        size: "sm"
+                        onClicked: {
+                            root.treeNodes = JSON.parse(JSON.stringify(root.initialNodes))
+                            root.cutIds = []
+                            root.selectedIds = ["Button.tsx"]
+                            root.statusMessage = "Reset tree to default."
+                        }
+                    }
                 }
 
                 ChaSetVirtualTree {
                     id: virtualTree
-                    width: 320
+                    width: parent.width
                     height: 240
+                    selectionMode: root.selectionMode
+                    selectedIds: root.selectedIds
+                    dimmedIds: root.cutIds
+                    enableDnd: true
                     expandedIds: ({ "src": true, "components": true })
-                    nodes: [
-                        {
-                            id: "src", label: "📁 src", children: [
-                                {
-                                    id: "components", label: "📁 components", children: [
-                                        { id: "Button.tsx", label: "📄 Button.tsx" },
-                                        { id: "Tree.tsx", label: "📄 Tree.tsx" },
-                                        { id: "Table.tsx", label: "📄 Table.tsx" }
-                                    ]
-                                },
-                                {
-                                    id: "styles", label: "📁 styles", children: [
-                                        { id: "theme.css", label: "🎨 theme.css" },
-                                        { id: "tokens.css", label: "🎨 tokens.css" }
-                                    ]
-                                },
-                                { id: "index.ts", label: "📄 index.ts" }
-                            ]
-                        },
-                        {
-                            id: "spec", label: "📁 spec", children: [
-                                { id: "tokens.json", label: "📜 tokens.json" },
-                                { id: "capabilities.json", label: "📜 capabilities.json" }
-                            ]
-                        },
-                        { id: "package.json", label: "📦 package.json" },
-                        { id: "README.md", label: "📝 README.md" }
-                    ]
+                    nodes: root.treeNodes
+
                     onNodeSelected: function(nodeId) {
-                        root.selectedPath = nodeId
+                        root.selectedIds = virtualTree.selectedIds
+                    }
+
+                    onNodeCut: function(ids) {
+                        root.cutIds = ids
+                        root.statusMessage = "Cut " + ids.length + " item(s) (dimmed). Select target folder and paste."
+                    }
+
+                    onNodePasted: function(targetId, pos) {
+                        if (root.cutIds.length > 0 && targetId !== "") {
+                            root.treeNodes = root.moveNodesInTree(root.treeNodes, root.cutIds, targetId, pos)
+                            root.statusMessage = "Pasted " + root.cutIds.length + " item(s) into/after " + targetId
+                            root.cutIds = []
+                        }
+                    }
+
+                    onNodeDropped: function(sourceIds, targetId, pos) {
+                        root.treeNodes = root.moveNodesInTree(root.treeNodes, sourceIds, targetId, pos)
+                        root.statusMessage = "Moved " + sourceIds.join(", ") + " -> " + pos + " " + targetId
                     }
                 }
 
-                DocText {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Selected Node ID: " + root.selectedPath
-                    color: ThemeTokens.text
-                    font.pixelSize: Typography.sizeSmall
-                    font.family: Typography.familyMono
+                // Telemetry / Status Box
+                Rectangle {
+                    width: parent.width
+                    height: 52
+                    color: ThemeTokens.panel
+                    border.color: ThemeTokens.border
+                    border.width: 1
+                    radius: 4
+
+                    Column {
+                        anchors.fill: parent
+                        anchors.margins: 6
+                        spacing: 2
+
+                        Row {
+                            spacing: 8
+                            Text {
+                                text: "Selected: " + (virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds.join(", ") : (virtualTree.selectedId || "None"))
+                                color: ThemeTokens.text
+                                font.pixelSize: Typography.sizeCaption
+                                font.family: Typography.familyMono
+                            }
+                            Text {
+                                visible: root.cutIds.length > 0
+                                text: "[" + root.cutIds.length + " cut/dimmed]"
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: Typography.sizeCaption
+                            }
+                        }
+
+                        Text {
+                            text: root.statusMessage
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeCaption
+                            elide: Text.ElideRight
+                            width: parent.width
+                        }
+                    }
                 }
             }
         }
@@ -119,7 +279,7 @@ DocLayout {
 
     ChaSetCodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetVirtualTree { nodes: [...] }"
+        code: "import ChaSet 1.0\n\nChaSetVirtualTree { nodes: [...], selectionMode: \"multiple\", enableDnd: true }"
         language: "qml"
     }
 
@@ -131,7 +291,11 @@ DocLayout {
         title: "Props Reference"
         props: [
             { name: "nodes", type: "var[]", default: "[]", description: "Hierarchical array of tree node objects with nested children arrays." },
-            { name: "selectedId", type: "string", default: "''", description: "ID of the currently highlighted node." },
+            { name: "selectionMode", type: "string", default: "'single'", description: "Selection modality: 'single' | 'multiple' | 'none'." },
+            { name: "selectedId", type: "string", default: "''", description: "ID of the currently highlighted node (single mode)." },
+            { name: "selectedIds", type: "var[]", default: "[]", description: "Array of selected node IDs in multiple mode." },
+            { name: "dimmedIds", type: "var[]", default: "[]", description: "Array of node IDs rendered in dimmed/cut state." },
+            { name: "enableDnd", type: "bool", default: "false", description: "Enables drag-and-drop reordering and folder nesting." },
             { name: "expandedIds", type: "var", default: "{}", description: "Map of expanded node IDs." },
             { name: "defaultExpandDepth", type: "int", default: "0", description: "Default level of expansion for child branches." },
             { name: "estimateSize", type: "int", default: "28", description: "Estimated row height for virtual calculations." },
@@ -140,6 +304,7 @@ DocLayout {
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the tree container." },
             { name: "expandAll()", type: "function", default: "function", description: "Expands all collapsible tree branches." },
             { name: "collapseAll()", type: "function", default: "function", description: "Collapses all open tree branches." },
+            { name: "selectAll()", type: "function", default: "function", description: "Selects all visible nodes in multiple mode." },
             { name: "scrollToIndex(index)", type: "function", default: "function", description: "Scrolls the virtual tree to the specified index." }
         ]
     }

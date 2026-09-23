@@ -121,9 +121,15 @@
   ],
   "virtual-tree": [
     { "key": "↑ / ↓", "action": "Traverse visible tree nodes vertically" },
+    { "key": "Shift + ↑ / ↓", "action": "Extend continuous selection range in multiple mode" },
     { "key": "→", "action": "Expand closed node or move to first child node" },
     { "key": "←", "action": "Collapse open node or move to parent node" },
-    { "key": "Space / Enter", "action": "Select or toggle active tree node" }
+    { "key": "Space / Enter", "action": "Select or toggle active tree node" },
+    { "key": "Ctrl + A", "action": "Select all visible nodes in multiple mode" },
+    { "key": "Ctrl + X", "action": "Cut selected items (enters dimmed state)" },
+    { "key": "Ctrl + C", "action": "Copy selected items to clipboard" },
+    { "key": "Ctrl + V", "action": "Paste items into target folder or after item" },
+    { "key": "Delete", "action": "Delete selected items" }
   ],
   "generic-data-table": [
     { "key": "↑ / ↓", "action": "Move row selection cursor up / down" },
