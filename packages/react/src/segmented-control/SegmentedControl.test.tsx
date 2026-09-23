@@ -85,13 +85,13 @@ describe('SegmentedControl', () => {
 
   it('renders icons and badges when provided in options', () => {
     const richOptions = [
-      { label: 'Active', value: 'active', icon: '★', badge: 5 },
+      { label: 'Active', value: 'active', icon: <span data-testid="active-icon">ICON</span>, badge: 5 },
       { label: 'Archived', value: 'archived', badge: 'New' },
     ];
 
     render(<SegmentedControl options={richOptions} defaultValue="active" />);
 
-    expect(screen.getByText('★')).toBeInTheDocument();
+    expect(screen.getByTestId('active-icon')).toBeInTheDocument();
     expect(screen.getByText('5')).toBeInTheDocument();
     expect(screen.getByText('New')).toBeInTheDocument();
   });

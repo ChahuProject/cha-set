@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SettingRow, Switch, Card, Button, Separator, CodeBlock } from '@chahu/cha-set';
+import { SettingRow, Switch, Card, Button, Separator, CodeBlock, ZapIcon, RotateCcwIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { PropsTable } from '../../components/PropsTable';
@@ -18,7 +18,7 @@ export function SettingRowDocPage() {
 
   const heroReactCode = `<SettingRow
   name="Hardware Acceleration"
-  icon="⚡"
+  icon={<ZapIcon className="size-4" />}
   badge="Recommended"
   description="Enable GPU-accelerated rasterization and smooth rendering."
   highlightId="hw-accel"
@@ -29,7 +29,7 @@ export function SettingRowDocPage() {
 
   const heroQtCode = `ChaSetSettingRow {
     name: "Hardware Acceleration"
-    icon: "⚡"
+    icon: "zap"
     badge: "Recommended"
     description: "Enable GPU-accelerated rasterization and smooth rendering."
     highlightId: "hw-accel"
@@ -75,7 +75,7 @@ export function SettingRowDocPage() {
             <Card className="p-2 space-y-1">
               <SettingRow
                 name="Hardware Acceleration"
-                icon="⚡"
+                icon={<ZapIcon className="size-4 text-primary" />}
                 badge="Recommended"
                 description="Enable GPU-accelerated rasterization and smooth viewport rendering."
                 highlightId="hw-accel"
@@ -91,7 +91,7 @@ export function SettingRowDocPage() {
 
               <SettingRow
                 name="Auto-Check Updates"
-                icon="🔄"
+                icon={<RotateCcwIcon className="size-4 text-muted-foreground" />}
                 description="Periodically verify semantic releases and download patches in background."
                 highlightId="auto-update"
                 highlightTarget={highlightTarget}

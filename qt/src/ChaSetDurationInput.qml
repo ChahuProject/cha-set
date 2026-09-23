@@ -551,8 +551,16 @@ Item {
                     anchors.centerIn: parent
                     spacing: 4
 
+                    ChaSetIcon {
+                        anchors.verticalCenter: parent.verticalCenter
+                        name: "clock"
+                        size: 12
+                        color: ThemeTokens.subduedText
+                    }
+
                     Text {
-                        text: "⏱ " + root.presetsLabel + " ▾"
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: root.presetsLabel + " ▾"
                         color: ThemeTokens.text
                         font.pixelSize: root.fontSize
                     }

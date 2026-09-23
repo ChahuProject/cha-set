@@ -88,10 +88,11 @@ Item {
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
 
-                    Text {
+                    ChaSetIcon {
                         anchors.centerIn: parent
-                        text: "🌐"
-                        font.pixelSize: Typography.sizeBody
+                        name: "globe"
+                        size: 16
+                        color: ThemeTokens.accent
                     }
                 }
 
@@ -162,10 +163,11 @@ Item {
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
 
-                            Text {
+                            ChaSetIcon {
                                 anchors.centerIn: parent
-                                text: "💻"
-                                font.pixelSize: Typography.sizeBody
+                                name: "monitor"
+                                size: 16
+                                color: ThemeTokens.accent
                             }
                         }
 
@@ -211,11 +213,10 @@ Item {
                             border.width: 1
                             border.color: root.preference === "system" ? ThemeTokens.accent : ThemeTokens.border
 
-                            Text {
+                            ChaSetIcon {
                                 anchors.centerIn: parent
-                                text: "✓"
-                                font.pixelSize: Typography.sizeCaption
-                                font.bold: true
+                                name: "check"
+                                size: 12
                                 color: "#ffffff"
                                 visible: root.preference === "system"
                             }
@@ -309,11 +310,10 @@ Item {
                                         border.width: 1
                                         border.color: langCard.isSelected ? ThemeTokens.accent : ThemeTokens.border
 
-                                        Text {
+                                        ChaSetIcon {
                                             anchors.centerIn: parent
-                                            text: "✓"
-                                            font.pixelSize: Typography.sizeCaption - 2
-                                            font.bold: true
+                                            name: "check"
+                                            size: 12
                                             color: "#ffffff"
                                             visible: langCard.isSelected
                                         }

@@ -1322,9 +1322,10 @@ ApplicationWindow {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: ThemeTokens.dp(10)
 
-                        Text {
-                            text: "🍵"
-                            font.pixelSize: Typography.sizeTitleSm
+                        ChaSetIcon {
+                            name: "logo"
+                            size: 20
+                            color: ThemeTokens.accent
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
@@ -1359,7 +1360,7 @@ ApplicationWindow {
                             anchors.rightMargin: ThemeTokens.dp(8)
                             spacing: ThemeTokens.dp(8)
 
-                            Text { text: "🔍"; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                            ChaSetIcon { name: "search"; size: 14; color: win.cMutedFg; anchors.verticalCenter: parent.verticalCenter }
                             Text { text: ChaSetI18n.tr("showcase.searchPlaceholder", "Search components & docs..."); color: win.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                             Item { width: parent.width - ThemeTokens.dp(240); height: 1 }
                             Rectangle {
@@ -1393,7 +1394,8 @@ ApplicationWindow {
                                 anchors.fill: parent
                                 variant: "outline"
                                 size: "sm"
-                                text: "🌐 " + (ChaSetI18n.locale === "zh-CN" ? "中文" : "EN")
+                                icon: "globe"
+                                text: ChaSetI18n.locale === "zh-CN" ? "中文" : "EN"
                                 onClicked: langMenu.open()
                             }
 
@@ -1403,7 +1405,7 @@ ApplicationWindow {
                                 width: ThemeTokens.dp(160)
 
                                 MenuItem {
-                                    text: "💻 " + ChaSetI18n.tr("language.followSystem", "Follow System")
+                                    text: ChaSetI18n.tr("language.followSystem", "Follow System")
                                     onTriggered: ChaSetI18n.setPreference("system")
                                 }
                                 MenuSeparator {}
@@ -1425,7 +1427,8 @@ ApplicationWindow {
                             ChaSetButton {
                                 variant: win.activePage === "theme-tuner" ? "default" : "secondary"
                                 size: "sm"
-                                text: "🎨 " + ChaSetI18n.tr("showcase.studioTuner", "Studio Tuner")
+                                icon: "palette"
+                                text: ChaSetI18n.tr("showcase.studioTuner", "Studio Tuner")
                                 onClicked: win.activePage = "theme-tuner"
                             }
                         }
@@ -1437,7 +1440,8 @@ ApplicationWindow {
                             ChaSetButton {
                                 variant: "secondary"
                                 size: "sm"
-                                text: "📋 " + ChaSetI18n.tr("showcase.exportTheme", "Export")
+                                icon: "copy"
+                                text: ChaSetI18n.tr("showcase.exportTheme", "Export")
                                 onClicked: win.exportModalOpen = true
                             }
                         }
@@ -1451,7 +1455,7 @@ ApplicationWindow {
                             ChaSetButton {
                                 size: "icon"
                                 variant: "outline"
-                                text: ThemeTokens.dark ? "🌙" : "☀️"
+                                icon: ThemeTokens.dark ? "moon" : "sun"
                                 onClicked: {
                                     ThemeTokens.dark = !ThemeTokens.dark;
                                     win.syncGlobalThemeConfig();

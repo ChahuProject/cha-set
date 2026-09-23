@@ -264,15 +264,15 @@ Item {
                         elide: Text.ElideRight
                     }
 
-                    Text {
-                        id: checkText
+                    ChaSetIcon {
+                        id: checkIcon
                         anchors.right: parent.right
                         anchors.rightMargin: 8
                         anchors.verticalCenter: parent.verticalCenter
                         visible: parent.isSelected
-                        text: "✓"
+                        name: "check"
+                        size: 14
                         color: ThemeTokens.accent
-                        font.pixelSize: Typography.sizeCaption
                     }
 
                     MouseArea {

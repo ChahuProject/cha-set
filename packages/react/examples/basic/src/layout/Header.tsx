@@ -12,6 +12,16 @@ import {
   DropdownMenuSeparator,
   Separator,
   useChaSetI18n,
+  ChaSetLogoIcon,
+  GlobeIcon,
+  MonitorIcon,
+  PaletteIcon,
+  CopyIcon,
+  ZapIcon,
+  TableIcon,
+  SearchIcon,
+  FileTextIcon,
+  Maximize2Icon,
 } from '@chahu/cha-set';
 
 export interface HeaderProps {
@@ -40,7 +50,7 @@ export function Header({
         {/* Brand Group */}
         <div className="flex items-center gap-3">
           <a href="#/get-started/introduction" className="flex items-center gap-2 font-bold text-foreground hover:opacity-85 transition-opacity">
-            <span className="text-xl leading-none">🍵</span>
+            <ChaSetLogoIcon className="size-5 text-primary shrink-0" />
             <span className="text-base tracking-tight">ChaSet</span>
           </a>
           <Badge variant="outline" size="sm" className="font-medium text-muted-foreground bg-muted/60">
@@ -74,7 +84,7 @@ export function Header({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="inline-flex items-center gap-1.5" aria-label={t('showcase.switchLanguage', 'Switch Language')}>
-                <span>🌐</span>
+                <GlobeIcon className="size-4" />
                 <span className="hidden sm:inline font-medium">{activeLocaleMeta.nativeName}</span>
               </Button>
             </DropdownMenuTrigger>
@@ -83,8 +93,9 @@ export function Header({
                 <DropdownMenuLabel>{t('showcase.switchLanguage', 'Switch Language')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => setPreference('system')}>
-                  <span className={preference === 'system' ? 'font-semibold text-primary' : ''}>
-                    💻 {t('language.followSystem', 'Follow System')}
+                  <span className={`flex items-center gap-1.5 ${preference === 'system' ? 'font-semibold text-primary' : ''}`}>
+                    <MonitorIcon className="size-3.5" />
+                    {t('language.followSystem', 'Follow System')}
                   </span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -105,8 +116,9 @@ export function Header({
               variant={showTuner ? 'default' : 'outline'}
               size="sm"
               onClick={onToggleTuner}
+              className="gap-1.5"
             >
-              <span>🎨</span>
+              <PaletteIcon className="size-4" />
               <span className="hidden md:inline">{t('showcase.studioTuner', 'Studio Tuner')}</span>
             </Button>
           </Tooltip>
@@ -117,8 +129,9 @@ export function Header({
               variant="outline"
               size="sm"
               onClick={onOpenExport}
+              className="gap-1.5"
             >
-              <span>📋</span>
+              <CopyIcon className="size-4" />
               <span className="hidden md:inline">{t('showcase.exportTheme', 'Export')}</span>
             </Button>
           </Tooltip>
@@ -127,7 +140,8 @@ export function Header({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="hidden lg:inline-flex items-center gap-1.5">
-                <span>⚡ {t('showcase.jumpTo', 'Jump to')}</span>
+                <ZapIcon className="size-3.5 text-primary" />
+                <span>{t('showcase.jumpTo', 'Jump to')}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
@@ -135,19 +149,23 @@ export function Header({
                 <DropdownMenuLabel>Featured Engines</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => { window.location.hash = '#/components/generic-data-table'; }}>
-                  📊 Generic Data Table
+                  <TableIcon className="size-3.5 mr-2 inline text-muted-foreground" />
+                  Generic Data Table
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => { window.location.hash = '#/components/query-builder'; }}>
-                  🔍 Query Builder
+                  <SearchIcon className="size-3.5 mr-2 inline text-muted-foreground" />
+                  Query Builder
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => { window.location.hash = '#/components/virtual-list'; }}>
-                  📜 Virtual List
+                  <FileTextIcon className="size-3.5 mr-2 inline text-muted-foreground" />
+                  Virtual List
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => { window.location.hash = '#/components/draggable-modal'; }}>
-                  🪟 Draggable Modal
+                  <Maximize2Icon className="size-3.5 mr-2 inline text-muted-foreground" />
+                  Draggable Modal
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => { window.location.hash = '#/components/splitter'; }}>
-                  ✂️ Splitter
+                  Splitter
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

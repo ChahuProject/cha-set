@@ -142,10 +142,10 @@ Rectangle {
             color: eyeMouse.containsMouse ? ThemeTokens.hover : "transparent"
             anchors.verticalCenter: parent.verticalCenter
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: root.showPassword ? "👁" : "🔒"
-                font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeSmall
+                name: root.showPassword ? "eye" : "eye-off"
+                size: root.isSm ? 12 : 14
                 color: eyeMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText
             }
 

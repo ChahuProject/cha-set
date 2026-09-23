@@ -441,10 +441,10 @@ Item {
                 anchors.rightMargin: 6
                 spacing: 4
 
-                Text {
-                    text: "⌕"
+                ChaSetIcon {
+                    name: "search"
+                    size: 14
                     color: ThemeTokens.subduedText
-                    font.pixelSize: Typography.sizeSmall
                 }
 
                 TextInput {
@@ -485,10 +485,10 @@ Item {
                     radius: 8
                     color: clearHover.hovered ? ThemeTokens.hover : "transparent"
 
-                    Text {
+                    ChaSetIcon {
                         anchors.centerIn: parent
-                        text: "✕"
-                        font.pixelSize: Typography.sizeMicro
+                        name: "x"
+                        size: 10
                         color: ThemeTokens.subduedText
                     }
 

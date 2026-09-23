@@ -119,8 +119,8 @@ describe('Input component', () => {
   it('renders left and right icon slots', () => {
     render(
       <Input
-        leftIcon={<span data-testid="left-icon">🔍</span>}
-        rightIcon={<span data-testid="right-icon">✓</span>}
+        leftIcon={<span data-testid="left-icon"><svg /></span>}
+        rightIcon={<span data-testid="right-icon"><svg /></span>}
         data-testid="icon-input"
       />,
     );

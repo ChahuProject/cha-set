@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SegmentedControl, Card, Button, Checkbox, CodeBlock } from '@chahu/cha-set';
+import { SegmentedControl, Card, Button, Checkbox, CodeBlock, GridIcon, ListIcon, TableIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { PropsTable } from '../../components/PropsTable';
@@ -11,9 +11,9 @@ export function SegmentedControlDocPage() {
   const [disabled, setDisabled] = useState(false);
 
   const viewOptions = [
-    { label: 'Grid', value: 'grid', icon: '⊞' },
-    { label: 'List', value: 'list', icon: '☰' },
-    { label: 'Gallery', value: 'gallery', icon: '▣', badge: 3 },
+    { label: 'Grid', value: 'grid', icon: <GridIcon className="size-3.5" /> },
+    { label: 'List', value: 'list', icon: <ListIcon className="size-3.5" /> },
+    { label: 'Gallery', value: 'gallery', icon: <TableIcon className="size-3.5" />, badge: 3 },
   ];
 
   const menuOptions = [
@@ -25,9 +25,9 @@ export function SegmentedControlDocPage() {
   const heroReactCode = `<SegmentedControl
   size="${selectedSize}"
   options={[
-    { label: 'Grid', value: 'grid', icon: '⊞' },
-    { label: 'List', value: 'list', icon: '☰' },
-    { label: 'Gallery', value: 'gallery', icon: '▣', badge: 3 },
+    { label: 'Grid', value: 'grid', icon: <GridIcon /> },
+    { label: 'List', value: 'list', icon: <ListIcon /> },
+    { label: 'Gallery', value: 'gallery', icon: <TableIcon />, badge: 3 },
   ]}
   value={activeView}
   onValueChange={setActiveView}
@@ -37,9 +37,9 @@ export function SegmentedControlDocPage() {
   const heroQtCode = `ChaSetSegmentedControl {
     size: "${selectedSize}"
     options: [
-        { label: "Grid", value: "grid", icon: "⊞" },
-        { label: "List", value: "list", icon: "☰" },
-        { label: "Gallery", value: "gallery", icon: "▣", badge: 3 }
+        { label: "Grid", value: "grid", icon: "grid" },
+        { label: "List", value: "list", icon: "list" },
+        { label: "Gallery", value: "gallery", icon: "table", badge: 3 }
     ]
     value: activeView
     disabled: ${disabled}

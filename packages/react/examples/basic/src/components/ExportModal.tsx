@@ -219,7 +219,7 @@ ApplicationWindow {
 
         <DialogFooter className="flex items-center justify-between sm:justify-between w-full pt-2">
           <span className="text-xs text-muted-foreground">
-            💡 Drop this configuration directly into your project's stylesheet or theme manager.
+            Tip: Drop this configuration directly into your project's stylesheet or theme manager.
           </span>
           <div className="flex gap-2">
             <Button variant="secondary" size="sm" onClick={onClose}>

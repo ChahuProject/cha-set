@@ -186,7 +186,7 @@ describe('Tabs Component', () => {
         <TabsList>
           <TabsTrigger
             value="inbox"
-            icon={<span data-testid="test-icon">📬</span>}
+            icon={<span data-testid="test-icon"><svg /></span>}
             badge="12"
           >
             Inbox

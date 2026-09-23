@@ -104,10 +104,10 @@ Item {
                     radius: 4
                     color: toggleMouse.containsMouse ? ThemeTokens.hover : "transparent"
 
-                    Text {
+                    ChaSetIcon {
                         anchors.centerIn: parent
-                        text: root.revealed ? "👁" : "👁‍🗨"
-                        font.pixelSize: Typography.sizeCaption
+                        name: root.revealed ? "eye" : "eye-off"
+                        size: 14
                         color: ThemeTokens.subduedText
                     }
 

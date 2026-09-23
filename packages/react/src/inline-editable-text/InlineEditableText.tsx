@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CheckIcon, PencilIcon } from '../lib/icons';
+import { CheckIcon, PencilIcon, XIcon } from '../lib/icons';
 import { cn } from '../lib/utils';
 
 export type InlineEditableTextSize = 'default' | 'sm';
@@ -152,7 +152,7 @@ export function InlineEditableText({
             }}
             className="flex size-5 cursor-pointer items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-muted"
           >
-            <span className="text-xs leading-none font-semibold">✕</span>
+            <XIcon className={isSm ? 'size-3' : 'size-3.5'} />
           </button>
         </div>
       </span>

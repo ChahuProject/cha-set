@@ -75,7 +75,7 @@ Item {
             ChaSetButton {
                 id: clearBtn
                 visible: root.clearable && !root.recording && root.keybinding.length > 0 && !root.disabled
-                text: "✕"
+                icon: "x"
                 variant: "ghost"
                 size: "icon-xs"
                 height: root.isSm ? 20 : 24

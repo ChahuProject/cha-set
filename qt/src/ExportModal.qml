@@ -82,6 +82,6 @@ ChaSetDialog {
         anchors.right: parent.right
         spacing: 10
         ChaSetButton { size: "sm"; variant: "secondary"; text: "Close"; onClicked: { root.close(); root.closeDialog() } }
-        ChaSetButton { size: "sm"; variant: "default"; text: "✓ Done"; onClicked: { root.close(); root.closeDialog() } }
+        ChaSetButton { size: "sm"; variant: "default"; icon: "check"; text: "Done"; onClicked: { root.close(); root.closeDialog() } }
     }
 }

@@ -46,7 +46,7 @@ DocLayout {
   variant="${root.btnVariant}"
   size="${root.btnSize}"${root.btnLoading ? '\n  loading' : ''}${root.btnDisabled ? '\n  disabled' : ''}${root.btnFullWidth ? '\n  fullWidth' : ''}${root.btnPressed ? '\n  pressed' : ''}
 >
-  ${root.isIconSize ? '⚙' : root.btnLabel}
+  ${root.isIconSize ? '<SettingsIcon className="size-4" />' : root.btnLabel}
 </Button>`
         qtCode: `ChaSetButton {
     variant: "${root.btnVariant}"
@@ -227,13 +227,13 @@ DocLayout {
                     ChaSetButton { size: "sm"; text: "Small" }
                     ChaSetButton { size: "default"; text: "Default" }
                     ChaSetButton { size: "lg"; text: "Large" }
-                    ChaSetButton { size: "icon"; text: "⚙" }
+                    ChaSetButton { size: "icon"; icon: "settings" }
                 }
             }
             ChaSetCodeBlock {
                 width: parent.width
                 language: "qml"
-                code: "ChaSetButton { size: \"xs\"; text: \"Extra Small\" }\nChaSetButton { size: \"sm\"; text: \"Small\" }\nChaSetButton { size: \"default\"; text: \"Default\" }\nChaSetButton { size: \"lg\"; text: \"Large\" }\nChaSetButton { size: \"icon\"; text: \"⚙\" }"
+                code: "ChaSetButton { size: \"xs\"; text: \"Extra Small\" }\nChaSetButton { size: \"sm\"; text: \"Small\" }\nChaSetButton { size: \"default\"; text: \"Default\" }\nChaSetButton { size: \"lg\"; text: \"Large\" }\nChaSetButton { size: \"icon\"; icon: \"settings\" }"
             }
         }
 

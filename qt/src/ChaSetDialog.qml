@@ -195,9 +195,9 @@ Rectangle {
                             visible: root.showCloseButton
                             width: 28
                             height: 28
-                            size: "sm"
+                            size: "icon"
                             variant: "ghost"
-                            text: "✕"
+                            icon: "x"
                             anchors.verticalCenter: parent.verticalCenter
                             onClicked: {
                                 root.open = false

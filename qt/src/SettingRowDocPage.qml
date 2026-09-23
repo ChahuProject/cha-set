@@ -78,7 +78,7 @@ ChaSetSettingRow {
 
                 ChaSetSettingRow {
                     name: "Hardware Acceleration"
-                    icon: "⚡"
+                    icon: "zap"
                     badge: "Recommended"
                     description: "Enable GPU-accelerated rasterization and smooth rendering."
                     highlightId: "hw-accel"
@@ -96,7 +96,7 @@ ChaSetSettingRow {
 
                 ChaSetSettingRow {
                     name: "Auto-Check Updates"
-                    icon: "🔄"
+                    icon: "rotate-ccw"
                     description: "Periodically verify semantic releases and download patches in background."
                     highlightId: "auto-update"
                     highlightTarget: root.activeHighlightTarget

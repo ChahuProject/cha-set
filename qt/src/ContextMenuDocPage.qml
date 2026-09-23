@@ -30,10 +30,10 @@ DocLayout {
 </ContextMenu>`
         qtCode: `ChaSetContextMenu {
     items: [
-        { id: "back", label: "Back", icon: "◀", shortcut: "Alt+Left" },
-        { id: "forward", label: "Forward", icon: "▶", shortcut: "Alt+Right" },
-        { id: "reload", label: "Reload", icon: "🔄", shortcut: "Ctrl+R" },
-        { id: "inspect", label: "Inspect Element", icon: "🔍", shortcut: "F12" }
+        { id: "back", label: "Back", shortcut: "Alt+Left" },
+        { id: "forward", label: "Forward", shortcut: "Alt+Right" },
+        { id: "reload", label: "Reload", shortcut: "Ctrl+R" },
+        { id: "inspect", label: "Inspect Element", shortcut: "F12" }
     ]
     onItemSelected: function(id) { console.log(id) }
 
@@ -54,11 +54,11 @@ DocLayout {
                     width: 320
                     height: 160
                     items: [
-                        { id: "back", label: "Back", icon: "◀", shortcut: "Alt+Left" },
-                        { id: "forward", label: "Forward", icon: "▶", shortcut: "Alt+Right", disabled: true },
-                        { id: "reload", label: "Reload", icon: "🔄", shortcut: "Ctrl+R" },
-                        { id: "save", label: "Save As...", icon: "💾", shortcut: "Ctrl+S" },
-                        { id: "inspect", label: "Inspect Element", icon: "🔍", shortcut: "F12" }
+                        { id: "back", label: "Back", shortcut: "Alt+Left" },
+                        { id: "forward", label: "Forward", shortcut: "Alt+Right", disabled: true },
+                        { id: "reload", label: "Reload", shortcut: "Ctrl+R" },
+                        { id: "save", label: "Save As...", shortcut: "Ctrl+S" },
+                        { id: "inspect", label: "Inspect Element", shortcut: "F12" }
                     ]
                     onItemSelected: function(itemId) {
                         root.lastAction = "Action selected: " + itemId
@@ -77,7 +77,7 @@ DocLayout {
 
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text: "🖱️ Right Click Inside This Area"
+                                text: "Right Click Inside This Area"
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.weight: Typography.weightSemibold

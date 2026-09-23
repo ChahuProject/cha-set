@@ -19,9 +19,9 @@ DocLayout {
     ]
 
     property var viewOptions: [
-        { label: "Grid", value: "grid", icon: "⊞" },
-        { label: "List", value: "list", icon: "☰" },
-        { label: "Gallery", value: "gallery", icon: "▣", badge: 3 }
+        { label: "Grid", value: "grid", icon: "grid" },
+        { label: "List", value: "list", icon: "list" },
+        { label: "Gallery", value: "gallery", icon: "table", badge: 3 }
     ]
 
     property var selectedView: "grid"
@@ -30,7 +30,7 @@ DocLayout {
 
     ChaSetCodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSegmentedControl {\n    options: [\n        { label: \"Grid\", value: \"grid\", icon: \"⊞\" },\n        { label: \"List\", value: \"list\", icon: \"☰\" }\n    ]\n    value: \"grid\"\n}"
+        code: "import ChaSet 1.0\n\nChaSetSegmentedControl {\n    options: [\n        { label: \"Grid\", value: \"grid\", icon: \"grid\" },\n        { label: \"List\", value: \"list\", icon: \"list\" }\n    ]\n    value: \"grid\"\n}"
         language: "qml"
     }
 
@@ -40,9 +40,9 @@ DocLayout {
         reactCode: `<SegmentedControl
   size="${root.currentSize}"
   options={[
-    { label: 'Grid', value: 'grid', icon: '⊞' },
-    { label: 'List', value: 'list', icon: '☰' },
-    { label: 'Gallery', value: 'gallery', icon: '▣', badge: 3 }
+    { label: 'Grid', value: 'grid', icon: <GridIcon /> },
+    { label: 'List', value: 'list', icon: <ListIcon /> },
+    { label: 'Gallery', value: 'gallery', icon: <TableIcon />, badge: 3 }
   ]}
   value="${root.selectedView}"
   disabled={${root.disabledState}}
@@ -50,9 +50,9 @@ DocLayout {
         qtCode: `ChaSetSegmentedControl {
     size: "${root.currentSize}"
     options: [
-        { label: "Grid", value: "grid", icon: "⊞" },
-        { label: "List", value: "list", icon: "☰" },
-        { label: "Gallery", value: "gallery", icon: "▣", badge: 3 }
+        { label: "Grid", value: "grid", icon: "grid" },
+        { label: "List", value: "list", icon: "list" },
+        { label: "Gallery", value: "gallery", icon: "table", badge: 3 }
     ]
     value: "${root.selectedView}"
     disabled: ${root.disabledState}

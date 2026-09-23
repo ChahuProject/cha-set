@@ -355,11 +355,11 @@ Item {
                                     ColorAnimation { duration: ThemeTokens.motionShort }
                                 }
 
-                                Text {
+                                ChaSetIcon {
                                     anchors.centerIn: parent
-                                    text: "✕"
+                                    name: "x"
+                                    size: 10
                                     color: dismissHover.hovered ? ThemeTokens.text : ThemeTokens.subduedText
-                                    font.pixelSize: Typography.sizeCaption
                                 }
 
                                 HoverHandler {

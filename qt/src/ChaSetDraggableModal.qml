@@ -245,7 +245,7 @@ Rectangle {
                 // Close Button
                 ChaSetButton {
                     id: closeBtn
-                    text: "✕"
+                    icon: "x"
                     variant: "ghost"
                     size: "icon-xs"
                     anchors.verticalCenter: parent.verticalCenter

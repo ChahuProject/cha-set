@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup, Input, Checkbox, SegmentedControl, type ButtonVariant, type ButtonSize, CodeBlock } from '@chahu/cha-set';
+import { Button, ButtonGroup, Input, Checkbox, SegmentedControl, type ButtonVariant, type ButtonSize, CodeBlock, SettingsIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { PropsTable } from '../../components/PropsTable';
@@ -20,7 +20,7 @@ export function ButtonDocPage() {
   variant="${variant}"
   size="${size}"${loading ? '\n  loading' : ''}${disabled ? '\n  disabled' : ''}${fullWidth ? '\n  fullWidth' : ''}${pressed ? '\n  pressed' : ''}
 >
-  ${isIconSize ? '⚙' : label}
+  ${isIconSize ? '<SettingsIcon className="size-4" />' : label}
 </Button>`;
 
   const qtCode = `ChaSetButton {
@@ -150,7 +150,7 @@ export function ButtonDocPage() {
               fullWidth={fullWidth}
               pressed={pressed}
             >
-              {isIconSize ? '⚙' : label}
+              {isIconSize ? <SettingsIcon className="size-4" /> : label}
             </Button>
           </div>
         </ComponentPreview>
@@ -206,10 +206,10 @@ export function ButtonDocPage() {
             <Button size="sm">Small</Button>
             <Button size="default">Default</Button>
             <Button size="lg">Large</Button>
-            <Button size="icon" aria-label="Settings">⚙</Button>
+            <Button size="icon" aria-label="Settings"><SettingsIcon className="size-4" /></Button>
           </div>
           <CodeBlock
-            code={`<Button size="xs">Extra Small</Button>\n<Button size="sm">Small</Button>\n<Button size="default">Default</Button>\n<Button size="lg">Large</Button>\n<Button size="icon" aria-label="Settings">⚙</Button>`}
+            code={`<Button size="xs">Extra Small</Button>\n<Button size="sm">Small</Button>\n<Button size="default">Default</Button>\n<Button size="lg">Large</Button>\n<Button size="icon" aria-label="Settings"><SettingsIcon className="size-4" /></Button>`}
             language="tsx"
             className="mt-3"
           />

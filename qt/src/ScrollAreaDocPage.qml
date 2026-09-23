@@ -131,7 +131,7 @@ DocLayout {
                                 anchors.fill: parent; anchors.margins: 14; spacing: 8
                                 Row {
                                     width: parent.width
-                                    DocText { text: parent.parent.parent.modelData.icon; font.pixelSize: Typography.sizeTitleMd }
+                                    ChaSetIcon { name: parent.parent.parent.modelData.icon; size: 24; color: ThemeTokens.accent }
                                     Item { width: 10; height: 1 }
                                     Rectangle {
                                         width: 44; height: 18; radius: 9
@@ -287,7 +287,7 @@ DocLayout {
         }
 
         DocText {
-            text: "Hover over the bottom scrollbar to reveal the left (⏪ / ◀) and right (▶ / ⏩) stepper buttons."
+            text: "Hover over the bottom scrollbar to reveal the left and right stepper buttons."
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -502,8 +502,8 @@ export const CrossStackSpecification = {
                 Column {
                     anchors.fill: parent; anchors.margins: 14; spacing: 6
                     DocText { text: "Vertical Cluster"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
-                    DocText { text: "• Top: ⏫ To Top & 🔼 Page Up (85% viewport step)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    DocText { text: "• Bottom: 🔽 Page Down & ⏬ To Bottom"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: "• Top: [To Top] & [Page Up] (85% viewport step)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: "• Bottom: [Page Down] & [To Bottom]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     DocText { text: "• Auto-disabled when at boundary limits."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                 }
             }
@@ -518,8 +518,8 @@ export const CrossStackSpecification = {
                 Column {
                     anchors.fill: parent; anchors.margins: 14; spacing: 6
                     DocText { text: "Horizontal Cluster"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
-                    DocText { text: "• Left: ⏪ To Start & ◀ Page Left"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    DocText { text: "• Right: ▶ Page Right & ⏩ To End"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: "• Left: [To Start] & [Page Left]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: "• Right: [Page Right] & [To End]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     DocText { text: "• Supports smooth animated interpolation."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                 }
             }

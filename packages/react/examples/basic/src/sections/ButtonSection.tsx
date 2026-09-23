@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, ScrollArea } from '@chahu/cha-set';
+import { Button, ScrollArea, SettingsIcon } from '@chahu/cha-set';
 
 const VARIANTS = ['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'] as const;
 const SIZES = ['sm', 'default', 'lg', 'icon'] as const;
@@ -27,7 +27,7 @@ export default function ButtonSection() {
           <span className="matrix-label">{v}</span>
           {SIZES.map((s) => (
             <Button key={s} variant={v} size={s} onClick={() => push(`${v}/${s} clicked`)}>
-              {s === 'icon' ? '⚙' : `${v} ${s}`}
+              {s === 'icon' ? <SettingsIcon className="size-4" /> : `${v} ${s}`}
             </Button>
           ))}
         </div>

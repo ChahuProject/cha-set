@@ -112,10 +112,11 @@ Item {
                 font.weight: Font.Medium
             }
 
-            Text {
+            ChaSetIcon {
                 anchors.verticalCenter: parent.verticalCenter
-                text: "✏️"
-                font.pixelSize: root.isSm ? Typography.sizeNano : Typography.sizeMicro
+                name: "pencil"
+                size: root.isSm ? 10 : 12
+                color: ThemeTokens.subduedText
                 opacity: (!root.disabled && (hoverMouse.containsMouse || displayBox.activeFocus)) ? 0.8 : 0.0
 
                 Behavior on opacity {
@@ -164,7 +165,7 @@ Item {
         }
 
         ChaSetButton {
-            text: "✓"
+            icon: "check"
             variant: "default"
             size: "icon-xs"
             height: parent.height
@@ -173,7 +174,7 @@ Item {
         }
 
         ChaSetButton {
-            text: "✕"
+            icon: "x"
             variant: "ghost"
             size: "icon-xs"
             height: parent.height

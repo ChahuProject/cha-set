@@ -301,7 +301,7 @@ export function ScrollAreaDocPage() {
       <section id="horizontal-example" className="my-10">
         <h2 className="text-xl font-bold tracking-tight mb-2">Horizontal Scrolling Example</h2>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-          Hover over the bottom scrollbar to reveal the left (⏪ / ◀) and right (▶ / ⏩) stepper buttons.
+          Hover over the bottom scrollbar to reveal the left and right stepper buttons.
         </p>
 
         <div className="rounded-xl border border-border bg-card p-6 shadow-xs">
@@ -457,16 +457,16 @@ export const CrossStackSpecification = {
           <div className="p-4 rounded-lg border border-border bg-card/40">
             <h4 className="font-semibold mb-2">Vertical Cluster</h4>
             <ul className="space-y-1 text-muted-foreground list-disc pl-4">
-              <li><strong>Top:</strong> ⏫ To Top & 🔼 Page Up (85% viewport step)</li>
-              <li><strong>Bottom:</strong> 🔽 Page Down & ⏬ To Bottom</li>
+              <li><strong>Top:</strong> To Top (Home) & Page Up (85% viewport step)</li>
+              <li><strong>Bottom:</strong> Page Down & To Bottom (End)</li>
               <li>Auto-disabled when at boundary limits.</li>
             </ul>
           </div>
           <div className="p-4 rounded-lg border border-border bg-card/40">
             <h4 className="font-semibold mb-2">Horizontal Cluster</h4>
             <ul className="space-y-1 text-muted-foreground list-disc pl-4">
-              <li><strong>Left:</strong> ⏪ To Start & ◀ Page Left</li>
-              <li><strong>Right:</strong> ▶ Page Right & ⏩ To End</li>
+              <li><strong>Left:</strong> To Start (Home) & Page Left</li>
+              <li><strong>Right:</strong> Page Right & To End (End)</li>
               <li>Supports smooth animated interpolation.</li>
             </ul>
           </div>

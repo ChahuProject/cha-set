@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, Tabs, TabsList, TabsTrigger, type CollapsibleVariant, CodeBlock } from '@chahu/cha-set';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, Tabs, TabsList, TabsTrigger, type CollapsibleVariant, CodeBlock, LockIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { PropsTable } from '../../components/PropsTable';
@@ -223,7 +223,7 @@ export function CollapsibleDocPage() {
                 <span className="text-sm font-medium">Locked Premium Settings</span>
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" size="sm" className="w-8 h-8 p-0" disabled>
-                    <span className="text-xs">🔒</span>
+                    <LockIcon className="size-3.5 text-muted-foreground" />
                   </Button>
                 </CollapsibleTrigger>
               </div>

@@ -75,15 +75,12 @@ Item {
             }
 
             // Checkmark icon
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
                 visible: root.copied
-                text: "✓"
+                name: "check"
+                size: 14
                 color: "#10b981"
-                font.pixelSize: Typography.sizeBody
-                font.bold: true
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
                 opacity: root.copied ? 1.0 : 0.0
                 scale: root.copied ? 1.0 : 0.5
 
@@ -128,15 +125,12 @@ Item {
                     }
                 }
 
-                Text {
+                ChaSetIcon {
                     anchors.centerIn: parent
                     visible: root.copied
-                    text: "✓"
+                    name: "check"
+                    size: 14
                     color: "#10b981"
-                    font.pixelSize: Typography.sizeBody
-                    font.bold: true
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
                     opacity: root.copied ? 1.0 : 0.0
                     scale: root.copied ? 1.0 : 0.5
 

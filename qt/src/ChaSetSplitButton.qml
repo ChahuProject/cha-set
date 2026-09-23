@@ -203,10 +203,11 @@ Item {
                         anchors.rightMargin: 8
                         spacing: 6
 
-                        Text {
+                        ChaSetIcon {
                             visible: !!parent.parent.modelData.icon
-                            text: parent.parent.modelData.icon || ""
-                            font.pixelSize: Typography.sizeSmall
+                            name: parent.parent.modelData.icon || ""
+                            size: 14
+                            color: parent.parent.modelData.destructive ? ThemeTokens.danger : ThemeTokens.text
                             anchors.verticalCenter: parent.verticalCenter
                         }
 

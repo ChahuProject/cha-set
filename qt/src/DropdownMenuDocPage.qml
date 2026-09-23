@@ -25,9 +25,9 @@ DocLayout {
         qtCode: `ChaSetDropdownMenu {
     open: menuOpen
     items: [
-        { id: "profile", label: "Profile", icon: "👤", shortcut: "⌘P" },
-        { id: "settings", label: "Settings", icon: "⚙️", shortcut: "⌘S" },
-        { id: "delete", label: "Delete", icon: "🗑️", destructive: true }
+        { id: "profile", label: "Profile", shortcut: "⌘P" },
+        { id: "settings", label: "Settings", shortcut: "⌘S" },
+        { id: "delete", label: "Delete", destructive: true }
     ]
     onItemSelected: function(id) { console.log(id) }
 
@@ -51,10 +51,10 @@ DocLayout {
                     width: 120
                     height: 32
                     items: [
-                        { id: "profile", label: "Profile", icon: "👤", shortcut: "⌘P" },
-                        { id: "billing", label: "Billing", icon: "💳", shortcut: "⌘B" },
-                        { id: "settings", label: "Settings", icon: "⚙️", shortcut: "⌘S" },
-                        { id: "logout", label: "Log Out", icon: "🚪", destructive: true }
+                        { id: "profile", label: "Profile", shortcut: "⌘P" },
+                        { id: "billing", label: "Billing", shortcut: "⌘B" },
+                        { id: "settings", label: "Settings", shortcut: "⌘S" },
+                        { id: "logout", label: "Log Out", destructive: true }
                     ]
                     onItemSelected: function(itemId) {
                         root.lastAction = "Selected: " + itemId

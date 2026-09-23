@@ -56,15 +56,21 @@ DocLayout {
         anchors.margins: 12
         spacing: 12
 
-        Text {
-            text: sidebar.collapsed ? "🍵" : "🍵 ChaSet Studio"
-            color: ThemeTokens.text
-            font.weight: Font.Bold
+        Row {
+            spacing: 8
+            ChaSetIcon { name: "logo"; size: 16 }
+            Text {
+                visible: !sidebar.collapsed
+                text: "ChaSet Studio"
+                color: ThemeTokens.text
+                font.weight: Font.Bold
+            }
         }
 
         ChaSetButton {
             width: parent.width
-            text: sidebar.collapsed ? "📊" : "Dashboard"
+            icon: "chart"
+            text: sidebar.collapsed ? "" : "Dashboard"
             variant: "default"
         }
     }
@@ -110,9 +116,11 @@ DocLayout {
                             height: 24
                             spacing: 8
 
-                            DocText {
-                                text: "🍵"
-                                font.pixelSize: Typography.sizeTitleSm
+                            ChaSetIcon {
+                                name: "logo"
+                                size: 20
+                                color: ThemeTokens.accent
+                                anchors.verticalCenter: parent.verticalCenter
                             }
 
                             DocText {
@@ -121,6 +129,7 @@ DocLayout {
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.weight: Typography.weightBold
+                                anchors.verticalCenter: parent.verticalCenter
                             }
                         }
 
@@ -141,7 +150,8 @@ DocLayout {
                             anchors.topMargin: 12
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            text: demoSidebar.collapsed ? "🏠" : "  🏠  Overview"
+                            icon: "home"
+                            text: demoSidebar.collapsed ? "" : "Overview"
                             variant: "default"
                             size: "sm"
                         }
@@ -152,7 +162,8 @@ DocLayout {
                             anchors.topMargin: 6
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            text: demoSidebar.collapsed ? "📂" : "  📂  Projects"
+                            icon: "folder"
+                            text: demoSidebar.collapsed ? "" : "Projects"
                             variant: "ghost"
                             size: "sm"
                         }
@@ -163,7 +174,8 @@ DocLayout {
                             anchors.topMargin: 6
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            text: demoSidebar.collapsed ? "⚙️" : "  ⚙️  Preferences"
+                            icon: "settings"
+                            text: demoSidebar.collapsed ? "" : "Preferences"
                             variant: "ghost"
                             size: "sm"
                         }
@@ -174,7 +186,7 @@ DocLayout {
                             anchors.bottom: parent.bottom
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            text: demoSidebar.collapsed ? "▶" : "◀ Collapse"
+                            text: demoSidebar.collapsed ? "Expand" : "Collapse"
                             variant: "outline"
                             size: "sm"
                             onClicked: {

@@ -23,7 +23,7 @@ describe('SettingRow', () => {
     render(
       <SettingRow
         name="Developer Mode"
-        icon={<span data-testid="dev-icon">⚙</span>}
+        icon={<span data-testid="dev-icon"><svg /></span>}
         badge="Beta"
       />
     );

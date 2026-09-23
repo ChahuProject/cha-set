@@ -1,4 +1,4 @@
-import { Button, Tabs, TabsList, TabsTrigger, Badge, Input, Slider, Tooltip, ColorPicker } from '@chahu/cha-set';
+import { Button, Tabs, TabsList, TabsTrigger, Badge, Input, Slider, Tooltip, ColorPicker, PaletteIcon, CopyIcon, SunIcon, MoonIcon } from '@chahu/cha-set';
 
 export interface ThemeOverrides {
   primary?: string;
@@ -60,7 +60,7 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
     <div className="tuner-panel">
       <div className="tuner-header">
         <div className="tuner-title">
-          <span className="tuner-icon">🎨</span>
+          <PaletteIcon className="size-4 text-primary" />
           <strong>Theme & Style Tuner</strong>
         </div>
         <div className="tuner-actions">
@@ -76,8 +76,9 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
             </Tooltip>
           )}
           <Tooltip content="Export theme configuration as CSS, Tailwind, or JSON" side="bottom">
-            <Button variant="default" size="sm" onClick={onOpenExport}>
-              📋 Copy Config
+            <Button variant="default" size="sm" onClick={onOpenExport} className="gap-1.5">
+              <CopyIcon className="size-3.5" />
+              Copy Config
             </Button>
           </Tooltip>
         </div>
@@ -89,8 +90,8 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
           <label className="tuner-label">Appearance & Mode</label>
           <Tabs value={mode} onValueChange={(v) => setMode(v as string)}>
             <TabsList>
-              <TabsTrigger value="light">☀️ Light</TabsTrigger>
-              <TabsTrigger value="dark">🌙 Dark</TabsTrigger>
+              <TabsTrigger value="light" icon={<SunIcon className="size-3.5" />}>Light</TabsTrigger>
+              <TabsTrigger value="dark" icon={<MoonIcon className="size-3.5" />}>Dark</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>

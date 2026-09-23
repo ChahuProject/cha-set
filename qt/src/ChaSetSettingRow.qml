@@ -77,10 +77,10 @@ Item {
             color: ThemeTokens.hover
             anchors.verticalCenter: parent.verticalCenter
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: root.icon
-                font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
+                name: root.icon
+                size: root.isSm ? 14 : 16
                 color: ThemeTokens.text
             }
         }

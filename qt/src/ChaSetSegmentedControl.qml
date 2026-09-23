@@ -292,12 +292,12 @@ Item {
                     anchors.centerIn: parent
                     spacing: 4
 
-                    Text {
+                    ChaSetIcon {
                         id: iconItem
                         visible: modelData && modelData.icon !== undefined && String(modelData.icon).length > 0
                         anchors.verticalCenter: parent.verticalCenter
-                        text: modelData && modelData.icon ? String(modelData.icon) : ""
-                        font.pixelSize: root.itemFontSize
+                        name: modelData && modelData.icon ? String(modelData.icon) : ""
+                        size: root.itemFontSize
                         color: segItem.isSelected ? ThemeTokens.text : ThemeTokens.subduedText
                     }
 

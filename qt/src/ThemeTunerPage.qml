@@ -55,7 +55,7 @@ DocLayout {
                     width: parent.width
                     Row {
                         spacing: 8
-                        DocText { text: "🎨"; font.pixelSize: Typography.sizeHeading; anchors.verticalCenter: parent.verticalCenter }
+                        ChaSetIcon { name: "palette"; size: 24; color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
                         DocText { text: "Theme & Style Tuner"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeHeading; font.weight: Typography.weightBold; anchors.verticalCenter: parent.verticalCenter }
                     }
 
@@ -78,7 +78,8 @@ DocLayout {
                         ChaSetButton {
                             size: "sm"
                             variant: "default"
-                            text: "📋 Copy Config"
+                            icon: "copy"
+                            text: "Copy Config"
                             onClicked: root.requestExport()
                         }
                     }
@@ -100,8 +101,8 @@ DocLayout {
                             }
                         }
                         ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "light"; text: "☀️ Light" }
-                            ChaSetTabsTrigger { value: "dark"; text: "🌙 Dark" }
+                            ChaSetTabsTrigger { value: "light"; text: "Light" }
+                            ChaSetTabsTrigger { value: "dark"; text: "Dark" }
                         }
                     }
                 }

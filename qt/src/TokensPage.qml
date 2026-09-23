@@ -103,7 +103,12 @@ DocLayout {
                                 anchors.centerIn: parent
                                 width: 72; height: 22; radius: 11
                                 color: Qt.rgba(0, 0, 0, 0.75)
-                                DocText { anchors.centerIn: parent; text: "✓ Copied"; color: "#10b981"; font.pixelSize: Typography.sizeMicro; font.weight: Typography.weightBold }
+                                Row {
+                                    anchors.centerIn: parent
+                                    spacing: 4
+                                    ChaSetIcon { name: "check"; size: 12; color: "#10b981"; anchors.verticalCenter: parent.verticalCenter }
+                                    DocText { text: "Copied"; color: "#10b981"; font.pixelSize: Typography.sizeMicro; font.weight: Typography.weightBold; anchors.verticalCenter: parent.verticalCenter }
+                                }
                             }
                         }
 

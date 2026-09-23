@@ -6,7 +6,7 @@ Rectangle {
     id: root
 
     property string title: "ChaSet Desktop Studio"
-    property string icon: "🍵"
+    property string icon: "logo"
     property bool maximized: false
 
     signal minimizeClicked()
@@ -24,9 +24,11 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         spacing: 8
 
-        Text {
-            text: root.icon
-            font.pixelSize: Typography.sizeBody
+        ChaSetIcon {
+            visible: root.icon !== ""
+            name: root.icon
+            size: 16
+            color: ThemeTokens.accent
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -63,11 +65,11 @@ Rectangle {
                 ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
             }
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: "—"
+                name: "minimize"
+                size: 10
                 color: ThemeTokens.text
-                font.pixelSize: Typography.sizeCaption
             }
 
             MouseArea {
@@ -90,11 +92,11 @@ Rectangle {
                 ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
             }
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: root.maximized ? "❐" : "▢"
+                name: root.maximized ? "restore" : "maximize"
+                size: 10
                 color: ThemeTokens.text
-                font.pixelSize: Typography.sizeSmall
             }
 
             MouseArea {
@@ -120,11 +122,11 @@ Rectangle {
                 ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
             }
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: "✕"
+                name: "x"
+                size: 10
                 color: closeMouse.containsMouse ? "#ffffff" : ThemeTokens.text
-                font.pixelSize: Typography.sizeSmall
             }
 
             MouseArea {

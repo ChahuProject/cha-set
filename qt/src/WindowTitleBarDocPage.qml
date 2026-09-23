@@ -21,7 +21,7 @@ DocLayout {
         title: "Window Title Bar Sandbox"
         reactCode: `<WindowTitleBar
   title="Render Debugger"
-  icon="🍵"
+  icon={<ChaSetLogoIcon />}
   onMinimize={() => {}}
   onMaximize={() => {}}
   onClose={() => {}}
@@ -29,7 +29,7 @@ DocLayout {
         qtCode: `ChaSetWindowTitleBar {
     width: parent.width
     title: "Chahu Render Studio"
-    icon: "🍵"
+    icon: "logo"
     onMinimizeClicked: console.log("minimize")
     onMaximizeClicked: console.log("maximize")
     onCloseClicked: console.log("close")
@@ -58,7 +58,7 @@ DocLayout {
                         ChaSetWindowTitleBar {
                             width: parent.width
                             title: "Chahu Render Studio v2.4"
-                            icon: "🍵"
+                            icon: "logo"
                             onMinimizeClicked: root.lastAction = "Minimize clicked"
                             onMaximizeClicked: root.lastAction = "Maximize / Restore clicked"
                             onCloseClicked: root.lastAction = "Close clicked"
@@ -120,7 +120,7 @@ DocLayout {
         title: "Props Reference"
         props: [
             { name: "title", type: "string", default: "'ChaSet Desktop Studio'", description: "Headline text in the title bar." },
-            { name: "icon", type: "string", default: "'🍵'", description: "Emoji or icon glyph for application branding." },
+            { name: "icon", type: "string", default: "'logo'", description: "Vector icon identifier for application branding." },
             { name: "maximized", type: "bool", default: "false", description: "Whether the window is in maximized state." }
         ]
     }

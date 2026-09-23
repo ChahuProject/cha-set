@@ -63,14 +63,14 @@ describe('Button', () => {
     const { rerender } = render(<Button size="xs">XS</Button>);
     expect(screen.getByRole('button', { name: 'XS' })).toHaveClass('h-6', 'text-xs');
 
-    rerender(<Button size="icon-xs">🔍</Button>);
-    expect(screen.getByRole('button', { name: '🔍' })).toHaveClass('size-6');
+    rerender(<Button size="icon-xs" aria-label="Search"><svg data-testid="icon-xs" /></Button>);
+    expect(screen.getByRole('button', { name: 'Search' })).toHaveClass('size-6');
 
-    rerender(<Button size="icon-sm">🔍</Button>);
-    expect(screen.getByRole('button', { name: '🔍' })).toHaveClass('size-7');
+    rerender(<Button size="icon-sm" aria-label="Search"><svg data-testid="icon-sm" /></Button>);
+    expect(screen.getByRole('button', { name: 'Search' })).toHaveClass('size-7');
 
-    rerender(<Button size="icon-lg">🔍</Button>);
-    expect(screen.getByRole('button', { name: '🔍' })).toHaveClass('size-9');
+    rerender(<Button size="icon-lg" aria-label="Search"><svg data-testid="icon-lg" /></Button>);
+    expect(screen.getByRole('button', { name: 'Search' })).toHaveClass('size-9');
   });
 
   it('supports shadcn outline, secondary, ghost, and link variants', () => {
@@ -102,7 +102,7 @@ describe('Button', () => {
   });
 
   it('supports icon size', () => {
-    render(<Button size="icon" aria-label="Settings">⚙</Button>);
+    render(<Button size="icon" aria-label="Settings"><svg data-testid="settings-icon" /></Button>);
     const button = screen.getByRole('button', { name: 'Settings' });
     expect(button).toHaveClass('size-8', 'p-0');
   });

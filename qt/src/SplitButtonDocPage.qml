@@ -52,10 +52,10 @@ DocLayout {
                     text: "Deploy Build #142"
                     variant: "default"
                     menuItems: [
-                        { id: "staging", label: "Deploy to Staging", icon: "🚀" },
-                        { id: "tag", label: "Tag Release v1.2.0", icon: "🏷️" },
-                        { id: "archive", label: "Archive Artifact", icon: "📦" },
-                        { id: "abort", label: "Abort Pipeline", icon: "🛑", destructive: true }
+                        { id: "staging", label: "Deploy to Staging", icon: "rocket" },
+                        { id: "tag", label: "Tag Release v1.2.0", icon: "tag" },
+                        { id: "archive", label: "Archive Artifact", icon: "package" },
+                        { id: "abort", label: "Abort Pipeline", icon: "stop", destructive: true }
                     ]
                     onClicked: root.lastTriggered = "Primary Action: Deploy Build triggered"
                     onMenuItemClicked: function(id) {

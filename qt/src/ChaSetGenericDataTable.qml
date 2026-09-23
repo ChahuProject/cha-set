@@ -114,10 +114,11 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: 8
 
-                    Text {
+                    ChaSetIcon {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: "🔍"
-                        font.pixelSize: Typography.sizeSmall
+                        name: "search"
+                        size: 14
+                        color: ThemeTokens.subduedText
                     }
 
                     ChaSetInput {

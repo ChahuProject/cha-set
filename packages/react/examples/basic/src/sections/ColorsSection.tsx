@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { CheckIcon } from '@chahu/cha-set';
 
 const TOKENS = [
   'background',
@@ -60,7 +61,7 @@ export default function ColorsSection({ themeKey }: { themeKey: string }) {
             title="Click to copy CSS variable"
           >
             <div className="swatch-color" style={{ background: `var(--${t})` }}>
-              {copiedToken === t && <span className="swatch-copied-badge">✓ Copied</span>}
+              {copiedToken === t && <span className="swatch-copied-badge inline-flex items-center gap-1"><CheckIcon className="size-3" /> Copied</span>}
             </div>
             <div className="swatch-meta">
               <div className="swatch-name">--{t}</div>

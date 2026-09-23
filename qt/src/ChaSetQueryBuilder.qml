@@ -145,7 +145,7 @@ Rectangle {
                         anchors.right: parent.right
                         anchors.rightMargin: 8
                         anchors.verticalCenter: parent.verticalCenter
-                        text: "✕"
+                        icon: "x"
                         variant: "ghost"
                         size: "icon-xs"
                         onClicked: root.deleteRule(parent.index)

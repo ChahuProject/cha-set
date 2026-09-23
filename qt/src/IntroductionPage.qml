@@ -64,7 +64,7 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 6
-                        DocText { text: "🎯"; font.pixelSize: Typography.sizeTitleMd }
+                        ChaSetIcon { name: "target"; size: 24; color: ThemeTokens.accent }
                         DocText { text: "One Source of Truth"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
                             text: "Design tokens and API contracts reside in spec/ and emit synchronized tokens for Web & Qt."
@@ -92,7 +92,7 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 6
-                        DocText { text: "⚡"; font.pixelSize: Typography.sizeTitleMd }
+                        ChaSetIcon { name: "zap"; size: 24; color: ThemeTokens.accent }
                         DocText { text: "Native Ergonomics"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
                             text: "Tailwind CSS v4 & Base UI on React; pure QML Quick Controls on Qt — no electron bloat or foreign wrappers."
@@ -120,7 +120,7 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: 14
                         spacing: 6
-                        DocText { text: "🔒"; font.pixelSize: Typography.sizeTitleMd }
+                        ChaSetIcon { name: "lock"; size: 24; color: ThemeTokens.accent }
                         DocText { text: "Automated Parity Gate"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
                             text: "CI enforces that all required capabilities and visual rendering match 100% across stacks."

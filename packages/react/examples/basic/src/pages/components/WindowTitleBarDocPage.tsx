@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { WindowTitleBar, Badge, CodeBlock } from '@chahu/cha-set';
+import { WindowTitleBar, Badge, CodeBlock, ChaSetLogoIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { PropsTable } from '../../components/PropsTable';
@@ -10,7 +10,7 @@ export function WindowTitleBarDocPage() {
 
   const reactCode = `<WindowTitleBar
   title="Window Title Bar"
-  icon={<span className="text-base">🍵</span>}
+  icon={<ChaSetLogoIcon className="size-4 text-primary" />}
   onMinimize={() => setLastAction('Minimize clicked')}
   onMaximize={() => setLastAction('Maximize / Restore clicked')}
   onClose={() => setLastAction('Close clicked')}
@@ -40,7 +40,7 @@ export function WindowTitleBarDocPage() {
           <div className="w-full max-w-lg border border-border rounded-lg overflow-hidden shadow-sm">
             <WindowTitleBar
               title="ChaSet Desktop Studio"
-              icon={<span className="text-sm">🍵</span>}
+              icon={<ChaSetLogoIcon className="size-4 text-primary" />}
               onMinimize={() => setLastAction('Minimize clicked')}
               onMaximize={() => setLastAction('Maximize / Restore clicked')}
               onClose={() => setLastAction('Close clicked')}

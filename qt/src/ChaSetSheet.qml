@@ -140,7 +140,7 @@ Rectangle {
                 }
 
                 ChaSetButton {
-                    text: "✕"
+                    icon: "x"
                     variant: "ghost"
                     size: "icon-xs"
                     visible: root.showCloseButton

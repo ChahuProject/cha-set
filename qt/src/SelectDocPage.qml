@@ -54,10 +54,10 @@ DocLayout {
                     value: root.selectedFruit
                     placeholder: "Select fruit..."
                     options: [
-                        { value: "apple", label: "🍎 Apple" },
-                        { value: "banana", label: "🍌 Banana" },
-                        { value: "cherry", label: "🍒 Cherry" },
-                        { value: "dragonfruit", label: "🐉 Dragonfruit (Disabled)", disabled: true }
+                        { value: "apple", label: "Apple" },
+                        { value: "banana", label: "Banana" },
+                        { value: "cherry", label: "Cherry" },
+                        { value: "dragonfruit", label: "Dragonfruit (Disabled)", disabled: true }
                     ]
                     onValueChanged: root.selectedFruit = value
                 }

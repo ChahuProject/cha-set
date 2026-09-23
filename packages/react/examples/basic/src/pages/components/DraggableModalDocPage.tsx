@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DraggableModal, Button, Badge, CodeBlock } from '@chahu/cha-set';
+import { DraggableModal, Button, Badge, CodeBlock, XIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { PropsTable } from '../../components/PropsTable';
@@ -21,7 +21,7 @@ export function DraggableModalDocPage() {
     sizeMenuTooltip="调整弹窗尺寸"
     topControls={
       <Button variant="ghost" size="icon-xs" onClick={() => setOpen(false)}>
-        ✕
+        <XIcon className="size-3" />
       </Button>
     }
     fixedFooter={
@@ -78,7 +78,7 @@ export function DraggableModalDocPage() {
                 sizeMenuTooltip="调整弹窗尺寸"
                 topControls={
                   <Button variant="ghost" size="icon-xs" onClick={() => setOpen(false)}>
-                    ✕
+                    <XIcon className="size-3" />
                   </Button>
                 }
                 fixedFooter={
