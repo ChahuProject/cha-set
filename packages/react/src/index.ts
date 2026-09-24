@@ -127,6 +127,7 @@ export {
   ICON_COLOR,
   ICON_RULES,
   ICON_CATEGORIES,
+  ICON_FAMILIES,
   ICON_SPECS,
   ICON_ADOPTION,
   ICON_AUDIT,
@@ -134,6 +135,6 @@ export {
   ICON_ALIASES,
   ICON_ELEMENTS,
 } from './lib/icons';
-export type { IconName, IconProps, NamedIconProps, IconDefinition, IconGrid, IconGridId, IconRule, IconCategory, IconSpecSummary, IconAudit } from './lib/icons';
+export type { IconName, IconProps, NamedIconProps, IconDefinition, IconGrid, IconGridId, IconRule, IconCategory, IconFamily, IconSpecSummary, IconAudit } from './lib/icons';
 
 

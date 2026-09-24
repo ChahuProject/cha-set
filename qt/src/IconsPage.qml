@@ -333,10 +333,32 @@ DocLayout {
                                     isMono: true
                                     font.pixelSize: Typography.sizeMicro
                                 }
+                                DocText {
+                                    text: "floor " + gridCard.gridData.size + " / " + gridCard.gridData.strokeWidth
+                                          + " = " + gridCard.gridData.strokeFloor + "px"
+                                    isMuted: true
+                                    isMono: true
+                                    font.pixelSize: Typography.sizeMicro
+                                }
                             }
 
                             DocText {
                                 text: gridCard.gridData.note
+                                isMuted: true
+                                font.pixelSize: Typography.sizeSmall
+                                width: parent.width
+                                wrapMode: TextEdit.WordWrap
+                                height: contentHeight
+                            }
+
+                            DocText {
+                                text: gridCard.gridData.strokeFloor + "px is the smallest honest render size "
+                                      + "for this grid: it is where " + gridCard.gridData.size + " / "
+                                      + gridCard.gridData.strokeWidth + " lands on exactly one pixel of stroke. "
+                                      + "Under it the stroke is sub-pixel and the glyph ships lighter than its "
+                                      + "artwork declares — measured rather than banned, because a 2x display "
+                                      + "forgives it, so the gate lists every reference below its floor and each "
+                                      + "one is a decision instead of an accident."
                                 isMuted: true
                                 font.pixelSize: Typography.sizeSmall
                                 width: parent.width
@@ -370,6 +392,135 @@ DocLayout {
                                             font.pixelSize: Typography.sizeMicro
                                         }
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                width: parent.width
+                implicitHeight: familyCol.implicitHeight + ThemeTokens.dp(32)
+                radius: ThemeTokens.dp(8)
+                color: ThemeTokens.panel
+                border.color: ThemeTokens.border
+                border.width: 1
+
+                Column {
+                    id: familyCol
+                    anchors.fill: parent
+                    anchors.margins: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(12)
+
+                    Row {
+                        spacing: ThemeTokens.dp(8)
+                        DocText {
+                            text: "Control families"
+                            textColor: ThemeTokens.text
+                            font.pixelSize: Typography.sizeBody
+                            font.weight: Typography.weightSemibold
+                        }
+                        ChaSetBadge {
+                            text: ChaSetIcons.families.length + " declared"
+                            variant: "outline"
+                        }
+                    }
+
+                    DocText {
+                        text: "A family names icons that render together inside one control. Their grid is "
+                              + "then a promise about the control rather than about any single icon, which is "
+                              + "what the caption close button broke: every icon involved was individually "
+                              + "valid, and the row was still wrong. The gate asserts that no family spans "
+                              + "two grids."
+                        isMuted: true
+                        font.pixelSize: Typography.sizeSmall
+                        width: parent.width
+                        wrapMode: TextEdit.WordWrap
+                        height: contentHeight
+                    }
+
+                    Repeater {
+                        model: ChaSetIcons.families
+                        delegate: Rectangle {
+                            id: familyCard
+                            required property var modelData
+                            width: parent ? parent.width : 0
+                            implicitHeight: memberCol.implicitHeight + ThemeTokens.dp(24)
+                            radius: ThemeTokens.dp(6)
+                            color: ThemeTokens.background
+                            border.color: ThemeTokens.border
+                            border.width: 1
+
+                            readonly property string familyGrid: {
+                                var members = familyCard.modelData.icons;
+                                if (!members || members.length === 0) return "default";
+                                var shape = ChaSetIcons.shapes[members[0]];
+                                return shape ? shape.grid : "default";
+                            }
+
+                            Column {
+                                id: memberCol
+                                anchors.fill: parent
+                                anchors.margins: ThemeTokens.dp(12)
+                                spacing: ThemeTokens.dp(10)
+
+                                Row {
+                                    spacing: ThemeTokens.dp(8)
+                                    DocText {
+                                        text: familyCard.modelData.id
+                                        isMono: true
+                                        font.pixelSize: Typography.sizeMicro
+                                    }
+                                    DocText {
+                                        text: familyCard.modelData.title
+                                        isMuted: true
+                                        font.pixelSize: Typography.sizeMicro
+                                    }
+                                    ChaSetBadge {
+                                        text: ChaSetIcons.grids[familyCard.familyGrid].size + " unit grid"
+                                        variant: "secondary"
+                                    }
+                                }
+
+                                Row {
+                                    spacing: ThemeTokens.dp(14)
+                                    Repeater {
+                                        model: familyCard.modelData.icons
+                                        delegate: Column {
+                                            id: familyMember
+                                            required property string modelData
+                                            spacing: ThemeTokens.dp(6)
+
+                                            readonly property string memberGrid: {
+                                                var shape = ChaSetIcons.shapes[familyMember.modelData];
+                                                return shape ? shape.grid : "default";
+                                            }
+
+                                            ChaSetIcon {
+                                                anchors.horizontalCenter: parent.horizontalCenter
+                                                name: familyMember.modelData
+                                                size: ChaSetIcons.grids[familyMember.memberGrid].strokeFloor
+                                                color: ThemeTokens.text
+                                            }
+                                            DocText {
+                                                anchors.horizontalCenter: parent.horizontalCenter
+                                                text: familyMember.modelData
+                                                isMuted: true
+                                                isMono: true
+                                                font.pixelSize: Typography.sizeMicro
+                                            }
+                                        }
+                                    }
+                                }
+
+                                DocText {
+                                    text: familyCard.modelData.note
+                                    isMuted: true
+                                    font.pixelSize: Typography.sizeMicro
+                                    width: parent.width
+                                    wrapMode: TextEdit.WordWrap
+                                    height: contentHeight
                                 }
                             }
                         }

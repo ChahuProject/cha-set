@@ -406,3 +406,20 @@ export function elementsBBox(elements, strokeWidth = 0) {
   const maxY = box.maxY + pad;
   return { minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY };
 }
+
+/**
+ * Smallest render size at which a grid's stroke is still one pixel.
+ *
+ * The stroke is expressed in grid units and the grid is scaled to the requested render
+ * size, so the painted stroke is `size / grid.size * grid.strokeWidth` pixels. Setting that
+ * to 1 and solving for `size` gives this number. Below it the stroke is sub-pixel: it
+ * antialiases into a fainter, fuzzier line, so the glyph ships lighter than its artwork
+ * declares and lighter than every sibling rendered a step larger — the defect that makes a
+ * 10px close button look like a mistake next to a 10px minimise bar.
+ *
+ * It is derived rather than stored beside the metrics on purpose: a second hand-maintained
+ * copy of a fact nothing verifies is exactly how the numbers in this system rot.
+ */
+export function gridStrokeFloor(grid) {
+  return grid.size / grid.strokeWidth;
+}

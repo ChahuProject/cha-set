@@ -14,6 +14,11 @@ export interface IconGrid {
   linejoin: 'round' | 'miter' | 'bevel';
   safeMargin: number;
   note: string;
+  /**
+   * Smallest render size at which this grid still paints a one pixel stroke, derived as
+   * `size / strokeWidth` rather than stored beside it. Below it the stroke is sub-pixel.
+   */
+  strokeFloor: number;
 }
 
 /**
@@ -65,8 +70,20 @@ export interface IconCategory {
   icons: string[];
 }
 
+/**
+ * A set of icons that render together inside one control. Their grids are a promise about the
+ * control rather than about any single icon: drawn at one size, a member on another grid is a
+ * different weight from its neighbours.
+ */
+export interface IconFamily {
+  id: string;
+  title: string;
+  note: string;
+  icons: IconName[];
+}
+
 export interface IconAudit {
-  grid: string;
+  grid: IconGridId;
   gridSize: number;
   strokeWidth: number;
   centerX: number;
@@ -100,7 +117,8 @@ export const ICON_GRIDS: Record<IconGridId, IconGrid> = {
     "linecap": "round",
     "linejoin": "round",
     "safeMargin": 1,
-    "note": "Every UI icon. Renders 2 units of stroke at 24 units, 1.33 at 16 units."
+    "note": "Every UI icon. Renders 2 units of stroke at 24 units, 1.33 at 16 units.",
+    "strokeFloor": 12
   },
   "chrome": {
     "size": 10,
@@ -108,7 +126,8 @@ export const ICON_GRIDS: Record<IconGridId, IconGrid> = {
     "linecap": "round",
     "linejoin": "round",
     "safeMargin": 0.5,
-    "note": "Window-caption glyphs. A denser grid keeps the stroke hairline at 10 units instead of 0.8."
+    "note": "Window-caption glyphs. A denser grid keeps the stroke hairline at 10 units instead of 0.8.",
+    "strokeFloor": 10
   }
 };
 export const ICON_SIZES = {
@@ -148,7 +167,7 @@ export const ICON_RULES: IconRule[] = [
     "id": "monoline-stroke",
     "title": "One weight per control",
     "statement": "All icons in a control draw at the grid stroke width. Mixing a bold glyph with a regular one inside the same control is the defect this specification exists to prevent.",
-    "enforcement": "check-icon-spec: stroke uniformity"
+    "enforcement": "check-icon-spec: stroke uniformity, control families"
   },
   {
     "id": "optical-center",
@@ -197,6 +216,12 @@ export const ICON_RULES: IconRule[] = [
     "title": "Vector only",
     "statement": "Emoji are banned repo-wide; an icon is always vector artwork.",
     "enforcement": "pnpm check:no-emoji"
+  },
+  {
+    "id": "stroke-floor",
+    "title": "Know where the stroke stops being a stroke",
+    "statement": "A grid stops painting a one pixel stroke below grid.size / grid.strokeWidth (24/2 = 12px on the default grid, 10/1 = 10px on chrome). At that size and under, the stroke is sub-pixel and antialiases into a fainter line, which is tolerable on a 2x display and visibly weak on a 1x one, so it is measured rather than banned: the ledger lists every reference that renders below its floor and each one is judged on purpose. A control that genuinely needs a small glyph has three honest options — keep the coarse glyph where its artwork is proportioned for that size, declare a denser grid, or accept the lighter stroke deliberately. What is not acceptable is arriving there by accident, which costs nothing to detect and is how the caption close button shipped a third the size of its siblings.",
+    "enforcement": "check-icon-spec: stroke floor ledger"
   }
 ];
 export const ICON_CATEGORIES: IconCategory[] = [
@@ -206,6 +231,7 @@ export const ICON_CATEGORIES: IconCategory[] = [
     "icons": [
       "search",
       "chevron-right",
+      "chevron-left",
       "chevron-down",
       "chevron-up",
       "arrow-left",
@@ -315,6 +341,56 @@ export const ICON_CATEGORIES: IconCategory[] = [
       "window-maximize",
       "window-restore",
       "window-close"
+    ]
+  }
+];
+export const ICON_FAMILIES: IconFamily[] = [
+  {
+    "id": "window-caption",
+    "title": "Window caption controls",
+    "note": "The three caption buttons and the close beside them. They are drawn in one row at one size, so a member on a different grid is lighter than its neighbours and a member using a different glyph proportion is a different size inside the same box. This is the family that shipped both mistakes: the close rendered the generic 24 unit x, whose artwork covers half its grid, where the caption glyphs cover nine tenths of theirs.",
+    "icons": [
+      "window-minimize",
+      "window-maximize",
+      "window-restore",
+      "window-close"
+    ]
+  },
+  {
+    "id": "chevron-horizontal",
+    "title": "Horizontal chevrons",
+    "note": "Mirror images of each other. Shipping one without the other leaves a gap in the public icon set, and a hand-drawn stand-in for the missing half is how two directions drift apart.",
+    "icons": [
+      "chevron-left",
+      "chevron-right"
+    ]
+  },
+  {
+    "id": "scrollbar-steppers",
+    "title": "Scroll bar steppers",
+    "note": "The two ends of one track. They must agree on weight because they are read as a pair.",
+    "icons": [
+      "chevron-up",
+      "chevron-down"
+    ]
+  },
+  {
+    "id": "view-mode",
+    "title": "View mode selector",
+    "note": "Alternatives in a single segmented control; an icon that is heavier than its alternatives reads as selected.",
+    "icons": [
+      "table",
+      "grid",
+      "list"
+    ]
+  },
+  {
+    "id": "theme-toggle",
+    "title": "Theme toggle",
+    "note": "The two states of one button, so a difference in weight would make the toggle jump as it flips.",
+    "icons": [
+      "sun",
+      "moon"
     ]
   }
 ];
@@ -449,6 +525,20 @@ export const ICON_AUDIT: Record<string, IconAudit> = {
     "withinTolerance": true
   },
   "chevron-right": {
+    "grid": "default",
+    "gridSize": 24,
+    "strokeWidth": 2,
+    "centerX": 12,
+    "centerY": 12,
+    "offsetX": 0,
+    "offsetY": 0,
+    "minX": 8,
+    "minY": 5,
+    "maxX": 16,
+    "maxY": 19,
+    "withinTolerance": true
+  },
+  "chevron-left": {
     "grid": "default",
     "gridSize": 24,
     "strokeWidth": 2,
@@ -1266,6 +1356,15 @@ export const ICON_ELEMENTS = {
       {
         "t": "path",
         "d": "m9 18 6-6-6-6"
+      }
+    ]
+  },
+  "chevron-left": {
+    "grid": "default",
+    "elements": [
+      {
+        "t": "path",
+        "d": "m15 18-6-6 6-6"
       }
     ]
   },
@@ -2546,6 +2645,7 @@ function makeIcon(name: IconName, displayName: string) {
 
 export const CheckIcon = /*#__PURE__*/ makeIcon('check', 'CheckIcon');
 export const ChevronRightIcon = /*#__PURE__*/ makeIcon('chevron-right', 'ChevronRightIcon');
+export const ChevronLeftIcon = /*#__PURE__*/ makeIcon('chevron-left', 'ChevronLeftIcon');
 export const ChevronDownIcon = /*#__PURE__*/ makeIcon('chevron-down', 'ChevronDownIcon');
 export const ChevronUpIcon = /*#__PURE__*/ makeIcon('chevron-up', 'ChevronUpIcon');
 export const XIcon = /*#__PURE__*/ makeIcon('x', 'XIcon');

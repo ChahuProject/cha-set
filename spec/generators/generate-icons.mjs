@@ -13,7 +13,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { elementToPath, elementsBBox } from '../icons/geometry.mjs';
+import { elementToPath, elementsBBox, gridStrokeFloor } from '../icons/geometry.mjs';
 import { resolveActiveSpec, validateRegistry, repoRoot } from '../icons/load.mjs';
 import { scanInlineSvgSites, scanTextGlyphSites } from '../icons/adoption.mjs';
 
@@ -46,6 +46,16 @@ if (validationErrors.length > 0) {
  * ------------------------------------------------------------------ */
 
 const iconNames = Object.keys(spec.icons);
+
+/**
+ * Grids as the artifacts consume them: the declared metrics plus the stroke floor derived from
+ * them. The floor is computed here rather than stored in the registry so there is exactly one
+ * statement of it — a floor written down next to the metrics it is computed from is a second
+ * copy of a fact, and the second copy is the one that rots.
+ */
+const grids = Object.fromEntries(
+  Object.entries(spec.grids).map(([id, grid]) => [id, { ...grid, strokeFloor: gridStrokeFloor(grid) }]),
+);
 
 /** Compiled Qt drawing instructions: one flat list of SVG paths per icon. */
 const compiledShapes = {};
@@ -80,6 +90,16 @@ function componentName(name) {
 const categories = (spec.categories || []).map((c) => ({
   ...c,
   icons: c.icons.filter((i) => iconNames.includes(i)),
+}));
+
+/**
+ * Control families, narrowed to icons the specification actually owns. A family that names a
+ * missing icon is a gate failure, but the artifact still has to render: dropping the unknown
+ * member keeps the showcase honest about what exists rather than printing a broken name.
+ */
+const families = (spec.families || []).map((family) => ({
+  ...family,
+  icons: (family.icons || []).filter((i) => iconNames.includes(i)),
 }));
 
 /**
@@ -189,6 +209,11 @@ export interface IconGrid {
   linejoin: 'round' | 'miter' | 'bevel';
   safeMargin: number;
   note: string;
+  /**
+   * Smallest render size at which this grid still paints a one pixel stroke, derived as
+   * \`size / strokeWidth\` rather than stored beside it. Below it the stroke is sub-pixel.
+   */
+  strokeFloor: number;
 }
 
 /**
@@ -236,8 +261,20 @@ export interface IconCategory {
   icons: string[];
 }
 
+/**
+ * A set of icons that render together inside one control. Their grids are a promise about the
+ * control rather than about any single icon: drawn at one size, a member on another grid is a
+ * different weight from its neighbours.
+ */
+export interface IconFamily {
+  id: string;
+  title: string;
+  note: string;
+  icons: IconName[];
+}
+
 export interface IconAudit {
-  grid: string;
+  grid: IconGridId;
   gridSize: number;
   strokeWidth: number;
   centerX: number;
@@ -256,12 +293,13 @@ export const ICON_SPEC_ID = '${specId}';
 export const ICON_SPEC_TITLE = ${JSON.stringify(spec.title)};
 export const ICON_SPEC_SOURCE = ${JSON.stringify(source)};
 export const ICON_METRICS = ${JSON.stringify(spec.metrics, null, 2)} as const;
-export const ICON_GRIDS: Record<IconGridId, IconGrid> = ${JSON.stringify(spec.grids, null, 2)};
+export const ICON_GRIDS: Record<IconGridId, IconGrid> = ${JSON.stringify(grids, null, 2)};
 export const ICON_SIZES = ${JSON.stringify(spec.sizes, null, 2)} as const;
 export const ICON_WEIGHTS = ${JSON.stringify(spec.weights, null, 2)} as const;
 export const ICON_COLOR = ${JSON.stringify(spec.color, null, 2)} as const;
 export const ICON_RULES: IconRule[] = ${JSON.stringify(spec.rules, null, 2)};
 export const ICON_CATEGORIES: IconCategory[] = ${JSON.stringify(categories, null, 2)};
+export const ICON_FAMILIES: IconFamily[] = ${JSON.stringify(families, null, 2)};
 export const ICON_SPECS: IconSpecSummary[] = ${JSON.stringify(specSummaries, null, 2)};
 export const ICON_ADOPTION = ${JSON.stringify(adoption, null, 2)};
 export const ICON_AUDIT: Record<string, IconAudit> = ${JSON.stringify(iconAudit, null, 2)};
@@ -384,10 +422,11 @@ QtObject {
     readonly property var colorPolicy: ${JSON.stringify(spec.color)}
     readonly property var rules: ${JSON.stringify(spec.rules)}
     readonly property var categories: ${JSON.stringify(categories)}
+    readonly property var families: ${JSON.stringify(families)}
     readonly property var specs: ${JSON.stringify(specSummaries)}
     readonly property var adoption: ${JSON.stringify(adoption)}
     readonly property var audit: (${JSON.stringify(iconAudit)})
-    readonly property var grids: (${JSON.stringify(spec.grids)})
+    readonly property var grids: (${JSON.stringify(grids)})
     readonly property var aliases: (${JSON.stringify(spec.aliases || {})})
     readonly property var names: ${JSON.stringify(iconNames)}
 

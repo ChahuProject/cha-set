@@ -6,6 +6,7 @@ import {
   ICON_AUDIT,
   ICON_CATEGORIES,
   ICON_COLOR,
+  ICON_FAMILIES,
   ICON_GRIDS,
   ICON_METRICS,
   ICON_NAMES,
@@ -202,10 +203,63 @@ export function IconsPage() {
                   <span className="font-mono text-nano text-muted-foreground">
                     safe margin {grid.safeMargin}
                   </span>
+                  <span className="font-mono text-nano text-muted-foreground">
+                    floor {grid.size} / {grid.strokeWidth} = {grid.strokeFloor}px
+                  </span>
                 </div>
                 <p className="text-small text-muted-foreground">{grid.note}</p>
+                <p className="mt-2 text-small text-muted-foreground">
+                  {grid.strokeFloor}px is the smallest honest render size for this grid: it is where{' '}
+                  <span className="text-foreground">
+                    {grid.size} / {grid.strokeWidth}
+                  </span>{' '}
+                  lands on exactly one pixel of stroke. Under it the stroke is sub-pixel and the glyph ships
+                  lighter than its artwork declares — measured rather than banned, because a 2x display forgives
+                  it, so the gate lists every reference below its floor and each one is a decision instead of an
+                  accident.
+                </p>
               </div>
             ))}
+          </div>
+
+          <div className="mb-6 rounded-lg border border-border bg-card p-4 text-card-foreground md:p-5">
+            <div className="mb-3 flex flex-wrap items-center gap-2 border-b border-border pb-3">
+              <span className="text-body font-semibold text-foreground">Control families</span>
+              <Badge variant="outline">{ICON_FAMILIES.length} declared</Badge>
+            </div>
+            <p className="mb-4 text-small text-muted-foreground">
+              A family names icons that render together inside one control. Their grid is then a promise about
+              the control rather than about any single icon, which is what the caption close button broke: every
+              icon involved was individually valid, and the row was still wrong. The gate asserts that no family
+              spans two grids.
+            </p>
+            <div className="space-y-4">
+              {ICON_FAMILIES.map((family) => {
+                const head = family.icons.at(0);
+                const familyGrid: IconGridId = (head && ICON_AUDIT[head]?.grid) || 'default';
+                return (
+                  <div key={family.id} className="rounded-md border border-border bg-muted/30 p-3">
+                    <div className="mb-2 flex flex-wrap items-center gap-2">
+                      <span className="font-mono text-micro text-foreground">{family.id}</span>
+                      <span className="text-micro text-muted-foreground">{family.title}</span>
+                      <Badge variant="secondary">{ICON_GRIDS[familyGrid].size} unit grid</Badge>
+                    </div>
+                    <div className="mb-2 flex flex-wrap items-center gap-3">
+                      {family.icons.map((name) => {
+                        const gridId: IconGridId = ICON_AUDIT[name]?.grid || 'default';
+                        return (
+                          <span key={name} className="flex items-center gap-1.5">
+                            <Icon name={name} size={ICON_GRIDS[gridId].strokeFloor} className="text-foreground" />
+                            <span className="font-mono text-nano text-muted-foreground">{name}</span>
+                          </span>
+                        );
+                      })}
+                    </div>
+                    <p className="text-micro text-muted-foreground">{family.note}</p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <div className="rounded-lg border border-border bg-card p-4 text-card-foreground md:p-5">

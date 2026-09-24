@@ -13,7 +13,13 @@
 //   text-glyphs   a character is used where an icon belongs
 //   ratchet       the count of hand-authored inline <svg> sites grew, or an exemption
 //                 marker was misused (no reason, dangling, or not attached to an <svg>)
-//   resolution    a component references an icon name the active specification does not own
+//   resolution    a component references an icon by name that the active specification does
+//                 not own
+//   unowned       (warning) references render icon components the specification does not own
+//   sibling-grids one file renders icons at one size from more than one grid
+//   families      a declared control family names unknown icons or spans more than one grid
+//   stroke-floor  (warning) a reference renders below the size at which its grid's stroke is
+//                 still one pixel
 //
 // See docs/architecture/icon-system.md.
 
@@ -21,7 +27,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
-import { elementsBBox } from '../spec/icons/geometry.mjs';
+import { elementsBBox, gridStrokeFloor } from '../spec/icons/geometry.mjs';
 import { resolveActiveSpec, repoRoot, CONFIG_FILE, ENV_VAR } from '../spec/icons/load.mjs';
 import {
   scanInlineSvgSites,
@@ -173,17 +179,147 @@ export function verifyIconSpec({ quiet = false, root = repoRoot() } = {}) {
     );
   }
 
-  // 6. Every referenced icon name must resolve in the active specification.
-  const knownNames = new Set([...Object.keys(spec.icons), ...Object.keys(spec.aliases || {})]);
-  for (const usage of scanIconUsages(root)) {
+  // 6. Every reference resolves, and every reference that names its own render size is checked
+  //    against the grid it asks for.
+  //
+  //    The two reference shapes fail differently on purpose. `<Icon name="...">` and a QML
+  //    `name:` ask the registry by name, so an unknown name is a broken call site and fails the
+  //    gate. A named export is resolved by the bundler and may be anything — a locally
+  //    hand-authored icon set, a brand mark — so unresolvable ones are counted as a backlog
+  //    instead of reported as one failure each. Before this scan learned about named exports it
+  //    saw 40 of the repository's 155 references and none of the 116 that use the export form.
+  const usages = scanIconUsages(root, {
+    iconNames: Object.keys(spec.icons),
+    aliases: spec.aliases,
+    defaultSize: spec.sizes.default ?? null,
+  });
+
+  const foreignReferences = new Map();
+  for (const usage of usages) {
     checkedCount += 1;
-    const key = usage.name.trim().toLowerCase();
-    if (!knownNames.has(key)) {
+    if (usage.known) continue;
+    if (usage.reference === 'name') {
       errors.push(
-        `[resolution] ${usage.file}:${usage.line} references icon "${usage.name}" which specification ` +
+        `[resolution] ${usage.file}:${usage.line} references icon "${usage.written}" by name, which specification ` +
           `"${specId}" does not define (add it to spec/icons/registry.json or use an existing name)`,
       );
+      continue;
     }
+    if (!foreignReferences.has(usage.written)) foreignReferences.set(usage.written, []);
+    foreignReferences.get(usage.written).push(`${usage.file}:${usage.line}`);
+  }
+  if (foreignReferences.size > 0) {
+    const total = [...foreignReferences.values()].reduce((sum, file) => sum + file.length, 0);
+    warnings.push(
+      `[unowned] ${total} reference(s) render icon components the specification does not own, across ` +
+        `${foreignReferences.size} name(s): ` +
+        [...foreignReferences]
+          .map(([written, sites]) => `${written} (${sites.length}: ${sites[0]}${sites.length > 1 ? ', …' : ''})`)
+          .join(', ') +
+        '. These are locally authored artwork — the migration backlog the inline-svg ratchet also ' +
+        'counts — or components that are not icons at all. The gate cannot tell them apart; a ' +
+        'migration removes one from this list.',
+    );
+  }
+
+  // 7. Sibling grids. Icons rendered at one size inside one file sit in one visual context, so
+  //    they have to come from one grid. This is the rule the caption close button broke: it
+  //    rendered the generic 24 unit `x` at 10px beside two chrome-grid glyphs, and because `x`
+  //    covers half its grid while the caption glyphs cover nine tenths of theirs, the close
+  //    shipped at a third the size of the buttons next to it. Nothing else in the specification
+  //    could see it: every icon involved was individually valid.
+  const siblingGroups = new Map();
+  for (const usage of usages) {
+    if (!usage.known || usage.sizes.length === 0) continue;
+    const gridId = spec.icons[usage.name].grid;
+    for (const size of usage.sizes) {
+      const key = `${usage.file}\u0000${size}`;
+      if (!siblingGroups.has(key)) siblingGroups.set(key, new Map());
+      const group = siblingGroups.get(key);
+      if (!group.has(gridId)) group.set(gridId, []);
+      group.get(gridId).push(`${usage.written}@${usage.line}`);
+    }
+  }
+  checkedCount += siblingGroups.size;
+  for (const [key, group] of siblingGroups) {
+    if (group.size < 2) continue;
+    const [file, size] = key.split('\u0000');
+    errors.push(
+      `[sibling-grids] ${file} renders icons at ${size}px from ${group.size} different grids: ` +
+        `${[...group].map(([gridId, sites]) => `${gridId} (${sites.join(', ')})`).join(' and ')}. ` +
+        `Icons drawn at one size in one component are read as one weight, and two grids at one size ` +
+        `means one of them is lighter than the other. Use one grid per size, or give the outlier its own size.`,
+    );
+  }
+
+  // 8. Control families. A family names the icons that render together inside one control, so
+  //    their grids are a promise about the control rather than about any single icon. Unlike the
+  //    sibling scan it needs no source parsing: it is a property of the registry, which means it
+  //    also protects icons whose call sites have not been written yet.
+  for (const family of spec.families ?? []) {
+    checkedCount += 1;
+    const members = family.icons ?? [];
+    if (members.length < 2) {
+      errors.push(
+        `[families] family "${family.id}" has ${members.length} member(s); a family exists to constrain ` +
+          `icons that render together, so it needs at least two`,
+      );
+    }
+    const missing = members.filter((name) => !spec.icons[name]);
+    if (missing.length > 0) {
+      errors.push(
+        `[families] family "${family.id}" names icon(s) specification "${specId}" does not define: ${missing.join(', ')}`,
+      );
+    }
+    const grids = new Set(members.filter((name) => spec.icons[name]).map((name) => spec.icons[name].grid));
+    if (grids.size > 1) {
+      errors.push(
+        `[families] family "${family.id}" spans ${grids.size} grids (${[...grids].sort().join(', ')}): ` +
+          `${members.join(', ')}. These render in one control, so a member on another grid is a different ` +
+          `weight from the rest.`,
+      );
+    }
+  }
+
+  // 9. Stroke floor ledger. Below `grid.size / grid.strokeWidth` a grid's stroke is sub-pixel, so
+  //    it antialiases into a fainter line — tolerable on a 2x display, visibly weak on a 1x one.
+  //    That makes it a judgement rather than a violation, so the sites are listed and each one is
+  //    decided deliberately: keep the coarse glyph where its artwork suits the size, declare a
+  //    denser grid, or accept the lighter stroke on purpose.
+  const floors = Object.fromEntries(
+    Object.entries(spec.grids).map(([id, grid]) => [id, gridStrokeFloor(grid)]),
+  );
+  const belowFloor = [];
+  let unknownSize = 0;
+  for (const usage of usages) {
+    if (!usage.known) continue;
+    if (usage.sizes.length === 0) {
+      unknownSize += 1;
+      continue;
+    }
+    const gridId = spec.icons[usage.name].grid;
+    const smallest = Math.min(...usage.sizes);
+    if (smallest < floors[gridId]) belowFloor.push({ usage, gridId, smallest, floor: floors[gridId] });
+  }
+  checkedCount += 1;
+  if (belowFloor.length > 0) {
+    warnings.push(
+      `[stroke-floor] ${belowFloor.length} reference(s) render below their grid's stroke floor ` +
+        `(${Object.entries(floors).map(([id, px]) => `${id} ${px}px`).join(', ')}): ` +
+        belowFloor
+          .map(
+            ({ usage, gridId, smallest, floor }) =>
+              `${usage.file}:${usage.line} ${usage.written} ${gridId} ${smallest}px < ${floor}px`,
+          )
+          .join('; '),
+    );
+  }
+  if (unknownSize > 0) {
+    warnings.push(
+      `[stroke-floor] ${unknownSize} reference(s) compute their render size at run time, so the floor ` +
+        `cannot be checked for them. The sizes seen in source are: ` +
+        `${[...new Set(usages.filter((u) => u.sizes.length > 0).map((u) => u.sizeSource))].slice(0, 12).join(', ')}`,
+    );
   }
 
   if (!quiet) report(errors, warnings, checkedCount, { specId, source, config: resolve(root, CONFIG_FILE) });

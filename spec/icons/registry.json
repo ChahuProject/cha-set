@@ -71,7 +71,7 @@
           "id": "monoline-stroke",
           "title": "One weight per control",
           "statement": "All icons in a control draw at the grid stroke width. Mixing a bold glyph with a regular one inside the same control is the defect this specification exists to prevent.",
-          "enforcement": "check-icon-spec: stroke uniformity"
+          "enforcement": "check-icon-spec: stroke uniformity, control families"
         },
         {
           "id": "optical-center",
@@ -120,6 +120,12 @@
           "title": "Vector only",
           "statement": "Emoji are banned repo-wide; an icon is always vector artwork.",
           "enforcement": "pnpm check:no-emoji"
+        },
+        {
+          "id": "stroke-floor",
+          "title": "Know where the stroke stops being a stroke",
+          "statement": "A grid stops painting a one pixel stroke below grid.size / grid.strokeWidth (24/2 = 12px on the default grid, 10/1 = 10px on chrome). At that size and under, the stroke is sub-pixel and antialiases into a fainter line, which is tolerable on a 2x display and visibly weak on a 1x one, so it is measured rather than banned: the ledger lists every reference that renders below its floor and each one is judged on purpose. A control that genuinely needs a small glyph has three honest options — keep the coarse glyph where its artwork is proportioned for that size, declare a denser grid, or accept the lighter stroke deliberately. What is not acceptable is arriving there by accident, which costs nothing to detect and is how the caption close button shipped a third the size of its siblings.",
+          "enforcement": "check-icon-spec: stroke floor ledger"
         }
       ],
       "icons": {
@@ -138,6 +144,15 @@
             {
               "t": "path",
               "d": "m9 18 6-6-6-6"
+            }
+          ]
+        },
+        "chevron-left": {
+          "grid": "default",
+          "elements": [
+            {
+              "t": "path",
+              "d": "m15 18-6-6 6-6"
             }
           ]
         },
@@ -1328,6 +1343,38 @@
         "maximize": "window-maximize",
         "restore": "window-restore"
       },
+      "families": [
+        {
+          "id": "window-caption",
+          "title": "Window caption controls",
+          "note": "The three caption buttons and the close beside them. They are drawn in one row at one size, so a member on a different grid is lighter than its neighbours and a member using a different glyph proportion is a different size inside the same box. This is the family that shipped both mistakes: the close rendered the generic 24 unit x, whose artwork covers half its grid, where the caption glyphs cover nine tenths of theirs.",
+          "icons": ["window-minimize", "window-maximize", "window-restore", "window-close"]
+        },
+        {
+          "id": "chevron-horizontal",
+          "title": "Horizontal chevrons",
+          "note": "Mirror images of each other. Shipping one without the other leaves a gap in the public icon set, and a hand-drawn stand-in for the missing half is how two directions drift apart.",
+          "icons": ["chevron-left", "chevron-right"]
+        },
+        {
+          "id": "scrollbar-steppers",
+          "title": "Scroll bar steppers",
+          "note": "The two ends of one track. They must agree on weight because they are read as a pair.",
+          "icons": ["chevron-up", "chevron-down"]
+        },
+        {
+          "id": "view-mode",
+          "title": "View mode selector",
+          "note": "Alternatives in a single segmented control; an icon that is heavier than its alternatives reads as selected.",
+          "icons": ["table", "grid", "list"]
+        },
+        {
+          "id": "theme-toggle",
+          "title": "Theme toggle",
+          "note": "The two states of one button, so a difference in weight would make the toggle jump as it flips.",
+          "icons": ["sun", "moon"]
+        }
+      ],
       "categories": [
         {
           "id": "navigation",
@@ -1335,6 +1382,7 @@
           "icons": [
             "search",
             "chevron-right",
+            "chevron-left",
             "chevron-down",
             "chevron-up",
             "arrow-left",

@@ -12,6 +12,11 @@
 //
 // Both ledgers are also embedded into the generated artifacts so the showcase page can
 // display live, cross-stack identical numbers.
+//
+// `scanIconUsages` answers a third question the ledgers cannot: what does each reference site
+// actually ask for? A name that resolves is only half the story — the size it renders at says
+// which grid it should have been drawn on, and that is where a 24 unit glyph rendered at 10px
+// quietly ships a sub-pixel stroke.
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, isAbsolute } from 'node:path';
@@ -263,24 +268,161 @@ export function scanTextGlyphSites(rootDir) {
   return hits.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
 }
 
-/** Names referenced through the icon primitives, so the registry can prove it owns them. */
-export function scanIconUsages(rootDir) {
+/** Tailwind's `size-N` utility paints N * 0.25rem, which is N * 4px. */
+function utilityToPx(token) {
+  const value = Number(token);
+  return Number.isFinite(value) ? value * 4 : null;
+}
+
+function pascalCase(name) {
+  return name
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('');
+}
+
+/**
+ * End of a JSX opening tag, skipping quoted strings and brace expressions so a `>` inside an
+ * attribute value does not close the tag early.
+ */
+function jsxTagEnd(content, start) {
+  let depth = 0;
+  let quote = null;
+  for (let i = start; i < content.length; i += 1) {
+    const ch = content[i];
+    if (quote) {
+      if (ch === quote && content[i - 1] !== '\\') quote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === '`') {
+      quote = ch;
+      continue;
+    }
+    if (ch === '{') depth += 1;
+    else if (ch === '}') depth -= 1;
+    else if (ch === '>' && depth === 0) return i + 1;
+  }
+  return -1;
+}
+
+/** End of the `{...}` block that opens at `openIndex`, honouring nested braces and strings. */
+function braceBlockEnd(content, openIndex) {
+  let depth = 0;
+  let quote = null;
+  for (let i = openIndex; i < content.length; i += 1) {
+    const ch = content[i];
+    if (quote) {
+      if (ch === quote && content[i - 1] !== '\\') quote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      continue;
+    }
+    if (ch === '{') depth += 1;
+    else if (ch === '}') {
+      depth -= 1;
+      if (depth === 0) return i + 1;
+    }
+  }
+  return -1;
+}
+
+/**
+ * Render sizes a JSX icon element can paint at, read from its own opening tag. A size prop
+ * wins over a utility class because it is what the consumer typed at the call site, and an
+ * element with neither renders at the primitive's default.
+ *
+ * A conditional size yields every branch, not just the first: `size={isSm ? 10 : 12}` renders
+ * at 10 on small viewports, and that is the branch that has to satisfy the grid.
+ */
+function sizesFromJsxTag(tag, fallback) {
+  const attr = tag.match(/\bsize=\{([^}]*)\}/);
+  if (attr) {
+    const numbers = [...attr[1].matchAll(/(?<![\w.])(\d+(?:\.\d+)?)\b/g)].map((m) => Number(m[1]));
+    if (numbers.length > 0) return { sizes: numbers, source: `size={${attr[1].trim()}}` };
+    return { sizes: [], source: `size={${attr[1].trim()}}` };
+  }
+  const util = tag.match(/(?<![\w-])size-(\d+(?:\.\d+)?)\b/);
+  if (util) return { sizes: [utilityToPx(util[1])], source: `className size-${util[1]}` };
+  return { sizes: fallback === null ? [] : [fallback], source: 'primitive default' };
+}
+
+function sizesFromQmlBlock(block, fallback) {
+  const line = block.match(/^\s*size\s*:\s*(.+)$/m);
+  if (!line) return { sizes: fallback === null ? [] : [fallback], source: 'primitive default' };
+  const value = line[1].trim().replace(/;$/, '');
+  const numbers = [];
+  for (const m of value.matchAll(/\bdp\(\s*(\d+(?:\.\d+)?)\s*\)/g)) numbers.push(Number(m[1]));
+  const bare = value.replace(/\bdp\(\s*[\d.]+\s*\)/g, '');
+  for (const m of bare.matchAll(/(?<![\w.])(\d+(?:\.\d+)?)\b/g)) numbers.push(Number(m[1]));
+  return { sizes: numbers, source: `size: ${value}` };
+}
+
+/**
+ * Icon references through the icon primitives, with the render size each one asks for.
+ *
+ * Three reference shapes exist and all three have to be seen, because each one has hidden the
+ * others at some point:
+ *
+ *   1. `<Icon name="x" />` — a dynamic name, resolvable only at run time, so the registry has
+ *      to prove it owns the name.
+ *   2. `<SearchIcon />` — a named export. It is compile-checked, but it still renders at a
+ *      size, and a size is a claim about which grid is appropriate. Missing these hid 116 of
+ *      the 139 reference sites in the repository.
+ *   3. `ChaSetIcon { name: ... }` — QML, where the name is often a ternary over two literals
+ *      (`root.maximized ? "restore" : "maximize"`), so a scan that only reads a quoted name
+ *      misses the state it flips to.
+ *
+ * `size` is null when the value is computed at run time. Those cannot be checked, and the
+ * caller reports them as unverifiable rather than pretending they passed.
+ */
+export function scanIconUsages(rootDir, { iconNames = [], aliases = {}, defaultSize = null } = {}) {
   const usages = [];
 
-  const qmlFiles = walk(join(rootDir, 'qt/src'), ['.qml']);
-  for (const file of qmlFiles) {
-    const rel = relative(rootDir, file).replace(/\\/g, '/');
-    const lines = readFileSync(file, 'utf8').split(/\r?\n/);
-    lines.forEach((line, idx) => {
-      if (!/\bChaSetIcon\s*\{/.test(line)) return;
-      for (let look = idx + 1; look < Math.min(idx + 9, lines.length); look += 1) {
-        const m = lines[look].match(/^\s*name\s*:\s*"([a-zA-Z0-9_-]+)"/);
-        if (m) {
-          usages.push({ stack: 'qt', file: rel, line: look + 1, name: m[1] });
-          break;
-        }
-      }
+  const byExport = new Map();
+  const byKey = new Map();
+  for (const name of iconNames) {
+    byExport.set(`${pascalCase(name)}Icon`, name);
+    byKey.set(name, name);
+  }
+  for (const [alias, target] of Object.entries(aliases)) byKey.set(alias, target);
+
+  const record = (entry, raw, resolver) => {
+    const resolved = resolver(raw);
+    usages.push({
+      ...entry,
+      written: raw,
+      name: resolved ?? null,
+      known: Boolean(resolved),
     });
+  };
+
+  for (const file of walk(join(rootDir, 'qt/src'), ['.qml'])) {
+    const rel = relative(rootDir, file).replace(/\\/g, '/');
+    if (isGeneratedArtifact(rel)) continue;
+    const content = readFileSync(file, 'utf8');
+    const starts = lineIndex(content);
+
+    for (const match of content.matchAll(/\bChaSetIcon\s*\{/g)) {
+      const open = content.indexOf('{', match.index + match[0].length - 1);
+      const end = braceBlockEnd(content, open);
+      if (end === -1) continue;
+      const block = content.slice(open, end);
+      const here = locate(starts, match.index);
+      const nameLine = block.match(/^\s*name\s*:\s*(.+)$/m);
+      if (!nameLine) continue;
+      const literals = [...nameLine[1].matchAll(/"([a-zA-Z0-9_-]+)"/g)].map((m) => m[1]);
+      if (literals.length === 0) continue;
+      const { sizes, source } = sizesFromQmlBlock(block, defaultSize);
+      for (const literal of literals) {
+        record(
+          { stack: 'qt', file: rel, line: here.line + 1, sizes, sizeSource: source, reference: 'name' },
+          literal,
+          (raw) => byKey.get(raw.toLowerCase()),
+        );
+      }
+    }
   }
 
   const reactFiles = walk(join(rootDir, 'packages/react/src'), ['.tsx']).concat(
@@ -288,11 +430,38 @@ export function scanIconUsages(rootDir) {
   );
   for (const file of reactFiles) {
     const rel = relative(rootDir, file).replace(/\\/g, '/');
-    const lines = readFileSync(file, 'utf8').split(/\r?\n/);
-    lines.forEach((line, idx) => {
-      const m = line.match(/<Icon\s+name=["']([a-zA-Z0-9_-]+)["']/);
-      if (m) usages.push({ stack: 'react', file: rel, line: idx + 1, name: m[1] });
-    });
+    if (isGeneratedArtifact(rel)) continue;
+    const content = readFileSync(file, 'utf8');
+    const starts = lineIndex(content);
+    const pattern = /<([A-Z][A-Za-z0-9]*)\b/g;
+
+    for (const match of content.matchAll(pattern)) {
+      const identifier = match[1];
+      const isDynamic = identifier === 'Icon';
+      if (!isDynamic && !identifier.endsWith('Icon')) continue;
+      const end = jsxTagEnd(content, match.index);
+      if (end === -1) continue;
+      const tag = content.slice(match.index, end);
+      if (isDynamic && !/\bname=["']/.test(tag)) continue;
+      const here = locate(starts, match.index);
+      const { sizes, source } = sizesFromJsxTag(tag, defaultSize);
+
+      if (isDynamic) {
+        const dynamicName = tag.match(/\bname=["']([a-zA-Z0-9_-]+)["']/);
+        if (!dynamicName) continue;
+        record(
+          { stack: 'react', file: rel, line: here.line + 1, sizes, sizeSource: source, reference: 'name' },
+          dynamicName[1],
+          (raw) => byKey.get(raw.toLowerCase()),
+        );
+      } else {
+        record(
+          { stack: 'react', file: rel, line: here.line + 1, sizes, sizeSource: source, reference: 'export' },
+          identifier,
+          (raw) => byExport.get(raw),
+        );
+      }
+    }
   }
 
   return usages.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
