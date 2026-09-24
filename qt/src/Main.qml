@@ -119,6 +119,13 @@ ApplicationWindow {
         ThemeTokens.dark = false;
         win.activeAccent = "";
         win.overridePrimary = "";
+        win.overridePrimaryFg = "";
+        win.overrideSecondary = "";
+        win.overrideSecondaryFg = "";
+        win.overrideDestructive = "";
+        win.overrideBackground = "";
+        win.overrideCard = "";
+        win.overrideRing = "";
         win.customRadius = 8;
         ThemeTokens.animSpeed = 0.2;
         ThemeTokens.uiScale = 1.0;
@@ -127,7 +134,7 @@ ApplicationWindow {
 
     property bool searchModalOpen: false
     property bool exportModalOpen: false
-    property string exportTab: "qt"
+    property string exportTab: "css"
 
     readonly property string currentLanguageName: {
         var cur = ChaSetI18n.locale;
@@ -205,9 +212,11 @@ ApplicationWindow {
     property string overridePrimary: ""
     property string overridePrimaryFg: ""
     property string overrideSecondary: ""
+    property string overrideSecondaryFg: ""
     property string overrideDestructive: ""
     property string overrideBackground: ""
     property string overrideCard: ""
+    property string overrideRing: ""
 
     // Click event log
     property var clickLogs: []
@@ -1772,6 +1781,14 @@ ApplicationWindow {
                                     if ("cPrimary" in item) item.cPrimary = Qt.binding(function() { return win.cPrimary })
                                     if ("cAccentBg" in item) item.cAccentBg = Qt.binding(function() { return win.cAccentBg })
                                     if ("activeAccent" in item) item.activeAccent = Qt.binding(function() { return win.activeAccent })
+                                    if ("overridePrimary" in item) { item.overridePrimary = win.overridePrimary; item.overridePrimaryChanged.connect(function() { win.overridePrimary = item.overridePrimary }) }
+                                    if ("overridePrimaryFg" in item) { item.overridePrimaryFg = win.overridePrimaryFg; item.overridePrimaryFgChanged.connect(function() { win.overridePrimaryFg = item.overridePrimaryFg }) }
+                                    if ("overrideSecondary" in item) { item.overrideSecondary = win.overrideSecondary; item.overrideSecondaryChanged.connect(function() { win.overrideSecondary = item.overrideSecondary }) }
+                                    if ("overrideSecondaryFg" in item) { item.overrideSecondaryFg = win.overrideSecondaryFg; item.overrideSecondaryFgChanged.connect(function() { win.overrideSecondaryFg = item.overrideSecondaryFg }) }
+                                    if ("overrideDestructive" in item) { item.overrideDestructive = win.overrideDestructive; item.overrideDestructiveChanged.connect(function() { win.overrideDestructive = item.overrideDestructive }) }
+                                    if ("overrideBackground" in item) { item.overrideBackground = win.overrideBackground; item.overrideBackgroundChanged.connect(function() { win.overrideBackground = item.overrideBackground }) }
+                                    if ("overrideCard" in item) { item.overrideCard = win.overrideCard; item.overrideCardChanged.connect(function() { win.overrideCard = item.overrideCard }) }
+                                    if ("overrideRing" in item) { item.overrideRing = win.overrideRing; item.overrideRingChanged.connect(function() { win.overrideRing = item.overrideRing }) }
                                     if ("activeConfig" in item) item.activeConfig = Qt.binding(function() { return win.globalThemeConfig })
                                     if ("configModified" in item) item.configModified.connect(function(cfg) { win.applyThemeConfig(cfg) })
                                     if ("resetRequested" in item) item.resetRequested.connect(function() { win.resetThemeConfig() })
@@ -1798,6 +1815,16 @@ ApplicationWindow {
                 id: exportModalItem
                 customRadius: win.customRadius
                 exportTab: win.exportTab
+                activeAccent: win.activeAccent
+                mode: ThemeTokens.dark ? "dark" : "light"
+                overridePrimary: win.overridePrimary
+                overridePrimaryFg: win.overridePrimaryFg
+                overrideSecondary: win.overrideSecondary
+                overrideSecondaryFg: win.overrideSecondaryFg
+                overrideDestructive: win.overrideDestructive
+                overrideBackground: win.overrideBackground
+                overrideCard: win.overrideCard
+                overrideRing: win.overrideRing
                 onClose: win.exportModalOpen = false
             }
             Binding {
