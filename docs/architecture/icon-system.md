@@ -51,9 +51,12 @@ An **active specification** owns the contract:
 | `metrics.opticalCenterTolerance` | `0.75` | Max drift of the painted centre from the grid centre |
 | `grids.default` | `size 24 · stroke 2 · safeMargin 1` | Every UI icon |
 | `grids.chrome` | `size 10 · stroke 1 · safeMargin 0.5` | Window-caption glyphs, drawn on a **denser** grid so the line stays a hairline |
+| `families` | named sets of icons that render together | A promise about the control rather than about any single icon; no family may span two grids (§7) |
 | `weights` | `[{ id: "regular", strokeWidth: 2 }]` | One weight. Emphasis is colour or size — never a heavier glyph |
 | `sizes.ramp` | `10, 12, 14, 16, 18, 20, 24` | Named steps; artwork is never hand-scaled |
 | `color.policy` | `currentColor` | Web inherits `currentColor`; Qt defaults to `ThemeTokens.text` |
+
+Each grid also has a **stroke floor** of `size / strokeWidth` — the smallest render size at which it still paints a one-pixel stroke. It is not a registry field: it is derived from the two numbers above and embedded in the artifacts, because a floor written down beside the metrics it comes from is a third copy of a fact that nothing verifies (§7).
 
 `icons` is the artwork itself, written in a seven-element vocabulary — `path`, `circle`, `ellipse`, `rect`, `line`, `polyline`, `polygon` — plus a per-icon `grid`:
 
@@ -176,11 +179,35 @@ The registry holds a **list** of specifications, not one hard-coded contract, so
 | `live-area` | Artwork escapes the safe margin, or a stroke bleeds past `[0, grid.size]` and would collide with a neighbouring icon |
 | `text-glyphs` | A character (`+`, U+2212, U+27F3, `×`, arrows, …) is used where an icon belongs |
 | `ratchet` | The number of hand-authored inline `<svg>` sites grew, or an exemption marker was misused (no reason, dangling, or not attached to a following `<svg>`) |
-| `resolution` | A component references an icon name the active specification does not own |
+| `resolution` | A component asks the registry for an icon **by name** (`<Icon name="…">`, QML `name:`) and the active specification does not own it |
+| `unowned` (warning) | A reference renders an icon component the specification does not own. The gate cannot tell a locally authored icon set from a component that is not an icon at all, so these are counted rather than failed; a migration removes one from the list |
+| `sibling-grids` | One file renders icons **at one size** from more than one grid |
+| `families` | A declared control family names an icon the specification does not define, or spans more than one grid |
+| `stroke-floor` (warning) | A reference renders below `grid.size / grid.strokeWidth` — the size at which that grid's stroke stops being one pixel |
 
-The assertion count is not fixed: each icon contributes a geometry assertion and each icon reference in the codebase contributes a resolution assertion, so the number grows as the library grows.
+The assertion count is not fixed: each icon contributes a geometry assertion and each icon reference in the codebase contributes a reference assertion, so the number grows as the library grows.
 
 > **Centring is judged on ink, not on boxes.** The gate measures the painted extent — half the stroke paints outside the artwork coordinates, and it is the painted ink that has to *look* centred. Anchor offsets and padding are deliberately not an accepted fix: they centre a box, not what is inside it. This is the specific reason the OSD reset arrow no longer drifts: it is centred because the geometry is, not because a margin was tuned until it looked right.
+
+### Density belongs to the render site
+
+The first version of this gate could see 40 of the repository's 155 icon references, and every one of the 116 it missed was invisible to it. They were invisible for two different reasons: the scanner only matched `<Icon name="…">` and never the named export `<SearchIcon />` that the codebase actually prefers, and QML's `name:` was only read when it held a bare quoted string, so `name: root.maximized ? "restore" : "maximize"` — a line that renders two different icons depending on state — was read as nothing at all.
+
+Closing that gap made a class of defect visible for the first time, and it is not a class any individual icon can be blamed for. Three questions now have assertions:
+
+1. **Does the reference resolve?** Asked by name, an unknown icon is a broken call site and fails. Reached by named export, an unknown component may legitimately be something else, so it is counted as backlog instead. That split exists because the two reference shapes carry different amounts of information: a name is a claim on the registry, a component identifier is only a claim that something exists.
+2. **Do the icons drawn together agree?** Icons rendered at one size inside one file sit in one visual context, so they must come from one grid (`sibling-grids`). `families` makes the same promise explicit for a named set of icons that render together, and unlike the sibling scan it needs no source parsing, so it also protects call sites nobody has written yet.
+3. **Is the size honest for the grid?** A grid stops painting a stroke below `grid.size / grid.strokeWidth`: 24/2 = **12px** on the default grid, 10/1 = **10px** on chrome. Under that the stroke is sub-pixel — tolerable on a 2x display, visibly weak on a 1x one — so it is *measured, not banned*. The gate lists every reference below its floor and each one is then a decision: keep the coarse glyph where its artwork suits the size, declare a denser grid, or accept the lighter stroke on purpose. What is not acceptable is arriving there without noticing, which costs nothing to detect.
+
+The floor is **derived** from the grid metrics and embedded in the artifacts, never written down beside them. A floor stored next to the numbers it is computed from is a second copy of a fact, and the second copy is the one that rots.
+
+Rule 2 got its sharpest test from the third question's ancestor. `qt/src/ChaSetWindowTitleBar.qml` drew its minimise and maximise buttons from the chrome grid at 10px and its close button from the **default** grid at 10px. Every icon involved was individually valid, every reference resolved, and the row was still wrong: the generic `x` covers half its grid while the caption glyphs cover nine tenths of theirs, so the close shipped as a 5.8px glyph with a 0.83px stroke beside two 10px glyphs with 1px strokes — roughly a third the size of its neighbours, on every platform. React had used the 10-unit plane for all three buttons from the start, so the desktop was simply the odd one out. No assertion in the specification could see it, because no assertion knew what a reference *asked for*; `sibling-grids` exists to make exactly this shape of mistake a build failure.
+
+### The catalogue is published API, not a usage report
+
+An audit of internal consumption finds that some icons in the catalogue are rendered nowhere in this repository. That is expected and it is not debt: `packages/react/src/index.ts` exports every icon as a named component plus `resolveIconName`, so the catalogue is **published API for consumers of the library**, and a consumer's usage is not visible from here. Internal consumption is the right yardstick only for the two ledgers that are about *this* codebase — the inline-`<svg>` ratchet and the text-glyph ban. Removing an entry because this repository happens not to call it would be removing it from somebody else's build.
+
+What the audit *is* good for is completeness. `chevron-right` shipped without a `chevron-left`, which is a gap in a public icon set no internal scan would ever notice; the missing half is the exact mirror of the existing one (`m9 18 6-6-6-6` → `m15 18-6-6 6-6`), so it was added rather than approximated.
 
 ### The adoption ratchet
 
@@ -218,6 +245,8 @@ That rule splits the backlog three ways.
 2. **Off-weight.** The geometry matches a registry icon but the stroke does not — `Checkbox` draws the standard checkmark at stroke **3.5** on the 24-unit grid, and `Switch` draws the standard loader arc at stroke **3**. Both are compensating for a 10-12px render size by thickening the stroke, which is precisely what a denser grid exists to avoid. Migrating them means the glyph gets *thinner*, so it is a visible change and needs a rendered pass rather than a mechanical one.
 3. **Off-grid chrome.** `Badge` draws its close glyph on a 12-unit grid; `ScrollBarButtons` draws eight chevrons on an 8-unit grid while Qt draws the same eight on a 14-unit space with `Canvas`. These are the hairline grids, and the two stacks currently render the scroll-bar steppers at different sizes — so which grids the specification should declare is a live question, not a transcription detail.
 
+The floor ledger (§7) shows what happens once the third question can be asked, and the answer is not "everything below the floor is wrong". Four small controls render the **default-grid `x` at 10px** — the address-bar clear button, the task-HUD dismiss button, the badge remove affordance and the inline-edit pencil — and they are correct as they are. `x` and `window-close` are not the same drawing at two densities: `x` covers half its grid because it is a small in-field clear glyph, while `window-close` covers nine tenths of its because it is a caption control. Migrating those four to the chrome glyph would double the ink, and a 10px-ink `×` inside a 16dp circle would reach the edge. What was wrong was the **caption** row, where the small glyph sat beside two large ones. The ledger's job is to make that distinction visible at a glance instead of leaving it to whoever happens to look at the control next.
+
 The scroll-bar case is the sharpest example of why the ratchet alone was not enough. The two stacks have already drifted apart in four independent ways: grid (8 vs 14), chevron width (62.5% vs 50% of the grid), chevron height (31.25% vs 25%), and the gap between the two chevrons of a double glyph (touching vs separated). The registry's own 24-unit `chevron-up` is 50% × 25%, which means the **desktop** proportions are the ones that already agree with the specification and the web scroll-bar arrows are the outlier — a conclusion nobody could reach by looking at either stack alone.
 
 ### Related gates
@@ -244,8 +273,10 @@ The scroll-bar case is the sharpest example of why the ratchet alone was not eno
 | `Label` | Inline `info` artwork | `InfoIcon` (registry gained `info`) |
 | `qt/src/ChaSetIcon.qml` | Canvas-drawn per-name line art (`lw = max(1.2, w * 0.09)`) | Specification-driven `Shape` + `PathSvg` renderer |
 | `packages/react/src/lib/icons.tsx` | 47 hand-written SVG components | Re-export of `icons.generated.tsx` (import paths and export names unchanged) |
+| `qt/src/ChaSetWindowTitleBar.qml` | Close button rendered the **generic 24-unit `x`** at 10px — a 5.8px glyph with a 0.83px stroke beside two 10px chrome glyphs on the same row | `window-close` on the chrome grid, so all three caption buttons share one grid at one size. This is the defect `sibling-grids` was written from, and the first thing it failed on |
+| `spec/icons/registry.json` | `chevron-right` shipped without a `chevron-left` | `chevron-left` added as the exact mirror (`m9 18 6-6-6-6` → `m15 18-6-6 6-6`), and the `chevron-horizontal` family names the pair so the gap cannot reopen silently |
 
-New icons added by this migration: `plus`, `minus`, `arrow-left`, `arrow-right`, `arrow-up`, `chart`, `window-minimize`, `window-maximize`, `window-restore`, `window-close` — the last four on the dense 10-unit chrome grid so window captions finally match the geometry of the toolbar icons next to them — plus `info`, which the label tooltip had been drawing by hand.
+The chrome-grid caption icons (`window-minimize`, `window-maximize`, `window-restore`, `window-close`) were added by the original migration so window captions would match the weight of the toolbar icons beside them — but the close button kept rendering the generic `x`, so the caption row matched on three sides out of four until the `sibling-grids` assertion was written and found it. The lesson is recorded rather than tidied away: adding the right glyph to the registry does not migrate the call site, and a registry-only check cannot see the difference.
 
 ---
 
@@ -259,11 +290,18 @@ pnpm test             # React unit + conformance + showcase smoke suite
 pnpm build:qt         # QtChaSetDemo, including the QML runtime scenario sweep
 ```
 
-Expected clean output of the icon gate — a pass plus at most one warning:
+Expected output of the icon gate — a pass plus the standing ledgers. Warnings here are not tolerances to be ignored: each one names work that is deliberately outstanding, and a warning that stops being true should be deleted rather than left standing.
 
 ```
-[check-icon-spec] WARN [ratchet] N hand-authored inline <svg> site(s) remain in the frozen
-                            migration backlog (budget 56): ...
-[check-icon-spec] OK — M icon specification assertion(s) verified — active specification
-                          "stroke-monoline" via chaset.config.json (icons.spec)
+[check-icon-spec] WARN [ratchet]      N hand-authored inline <svg> site(s) remain in the frozen
+                                      migration backlog (ceiling from the registry)
+[check-icon-spec] WARN [ratchet]      M site(s) are excused as non-iconography, with reasons
+[check-icon-spec] WARN [unowned]      K reference(s) render icon components the specification
+                                      does not own
+[check-icon-spec] WARN [stroke-floor] J reference(s) render below their grid's stroke floor
+[check-icon-spec] WARN [stroke-floor] I reference(s) compute their size at run time
+[check-icon-spec] OK — accepted assertions verified — active specification "stroke-monoline"
+                        via chaset.config.json (icons.spec)
 ```
+
+Counts are deliberately absent from this page. Every one of them changes whenever unrelated work lands, and a stale count in prose either makes a healthy run look like a regression or trains the reader to ignore it; the run prints its own numbers.
