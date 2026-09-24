@@ -230,10 +230,10 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       '0 0 0 1px color-mix(in oklch, var(--border) 85%, transparent), 0 12px 36px color-mix(in oklch, black 18%, transparent)';
 
     const placementStyles: Record<ScaleOsdPlacement, React.CSSProperties> = {
-      'bottom-center': { bottom: 36 },
-      'top-center': { top: 36 },
-      'bottom-right': { bottom: 36, right: 36 },
-      'top-right': { top: 36, right: 36 },
+      'bottom-center': { position: 'fixed', bottom: 36, top: 'auto', left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' },
+      'top-center': { position: 'fixed', top: 36, bottom: 'auto', left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' },
+      'bottom-right': { position: 'fixed', bottom: 36, right: 36, top: 'auto', left: 'auto', width: 'fit-content' },
+      'top-right': { position: 'fixed', top: 36, right: 36, bottom: 'auto', left: 'auto', width: 'fit-content' },
     };
 
     // When ignoreUiScale is true, apply fixed physical pixel metrics to guarantee
