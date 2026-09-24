@@ -186,10 +186,12 @@ export function IconsPage() {
         <section className="block" id="grids">
           <h2>Grids, Weight &amp; Size</h2>
           <p className="desc">
-            A grid pairs a drawing box with the stroke width that box expects. Two grids are declared: the default
-            24-unit grid for UI icons, and a dense 10-unit chrome grid whose 1-unit stroke stays hairline on window
-            captions instead of collapsing to a sub-pixel smear. Because the ratio is declared rather than improvised,
-            a 10-unit caption glyph and a 24-unit toolbar glyph end up with the same apparent weight.
+            A grid pairs a drawing box with the stroke width that box expects, and states the render size it was
+            drawn for. Two grids are declared: the default 24-unit grid for UI icons, drawn for a 16px render, and a
+            dense 10-unit chrome grid whose 1-unit stroke stays hairline on window captions instead of collapsing to
+            a sub-pixel smear. Because the ratio and the target are declared rather than improvised, a 10-unit
+            caption glyph and a 24-unit toolbar glyph end up with the same apparent weight — and a glyph rendered
+            below its grid's target is a number the gate can name instead of a defect a reviewer has to notice.
           </p>
 
           <div className="mb-6 space-y-3">
@@ -204,19 +206,22 @@ export function IconsPage() {
                     safe margin {grid.safeMargin}
                   </span>
                   <span className="font-mono text-nano text-muted-foreground">
+                    drawn for {grid.renderSize}px → {grid.strokeAtRenderSize}px stroke
+                  </span>
+                  <span className="font-mono text-nano text-muted-foreground">
                     floor {grid.size} / {grid.strokeWidth} = {grid.strokeFloor}px
                   </span>
                 </div>
                 <p className="text-small text-muted-foreground">{grid.note}</p>
                 <p className="mt-2 text-small text-muted-foreground">
-                  {grid.strokeFloor}px is the smallest honest render size for this grid: it is where{' '}
-                  <span className="text-foreground">
-                    {grid.size} / {grid.strokeWidth}
-                  </span>{' '}
-                  lands on exactly one pixel of stroke. Under it the stroke is sub-pixel and the glyph ships
-                  lighter than its artwork declares — measured rather than banned, because a 2x display forgives
-                  it, so the gate lists every reference below its floor and each one is a decision instead of an
-                  accident.
+                  {grid.renderSize}px is the size this grid was drawn for, where its stroke paints{' '}
+                  <span className="text-foreground">{grid.strokeAtRenderSize}px</span> — the weight the artwork was
+                  proportioned to carry. Under {grid.strokeFloor}px that stroke is under a pixel and the glyph ships
+                  lighter than its artwork declares, so the steps this grid is honest at are{' '}
+                  <span className="text-foreground">{grid.renderSizes.join(', ')}</span>. A size outside that list is
+                  not a smaller icon, it is a lighter one — measured rather than banned, because a 2x display
+                  forgives it, so the gate lists every reference below its floor and each one is a decision instead
+                  of an accident.
                 </p>
               </div>
             ))}

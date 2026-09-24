@@ -281,7 +281,7 @@ DocLayout {
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "A grid pairs a drawing box with the stroke width that box expects. Two grids are declared: the default 24 unit grid for UI icons, and a dense 10 unit chrome grid whose 1 unit stroke stays hairline on window captions instead of collapsing to a sub-pixel smear. Because the ratio is declared rather than improvised, a 10 unit caption glyph and a 24 unit toolbar glyph end up with the same apparent weight."
+                    text: "A grid pairs a drawing box with the stroke width that box expects, and states the render size it was drawn for. Two grids are declared: the default 24 unit grid for UI icons, drawn for a 16px render, and a dense 10 unit chrome grid whose 1 unit stroke stays hairline on window captions instead of collapsing to a sub-pixel smear. Because the ratio and the target are declared rather than improvised, a 10 unit caption glyph and a 24 unit toolbar glyph end up with the same apparent weight — and a glyph rendered below its grid's target is a number the gate can name instead of a defect a reviewer has to notice."
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -334,6 +334,13 @@ DocLayout {
                                     font.pixelSize: Typography.sizeMicro
                                 }
                                 DocText {
+                                    text: "drawn for " + gridCard.gridData.renderSize + "px → "
+                                          + gridCard.gridData.strokeAtRenderSize + "px stroke"
+                                    isMuted: true
+                                    isMono: true
+                                    font.pixelSize: Typography.sizeMicro
+                                }
+                                DocText {
                                     text: "floor " + gridCard.gridData.size + " / " + gridCard.gridData.strokeWidth
                                           + " = " + gridCard.gridData.strokeFloor + "px"
                                     isMuted: true
@@ -352,13 +359,16 @@ DocLayout {
                             }
 
                             DocText {
-                                text: gridCard.gridData.strokeFloor + "px is the smallest honest render size "
-                                      + "for this grid: it is where " + gridCard.gridData.size + " / "
-                                      + gridCard.gridData.strokeWidth + " lands on exactly one pixel of stroke. "
-                                      + "Under it the stroke is sub-pixel and the glyph ships lighter than its "
-                                      + "artwork declares — measured rather than banned, because a 2x display "
-                                      + "forgives it, so the gate lists every reference below its floor and each "
-                                      + "one is a decision instead of an accident."
+                                text: gridCard.gridData.renderSize + "px is the size this grid was drawn "
+                                      + "for, where its stroke paints " + gridCard.gridData.strokeAtRenderSize
+                                      + "px — the weight the artwork was proportioned to carry. Under "
+                                      + gridCard.gridData.strokeFloor + "px that stroke is under a pixel and "
+                                      + "the glyph ships lighter than its artwork declares, so the steps this "
+                                      + "grid is honest at are " + gridCard.gridData.renderSizes.join(", ")
+                                      + ". A size outside that list is not a smaller icon, it is a lighter "
+                                      + "one — measured rather than banned, because a 2x display forgives it, "
+                                      + "so the gate lists every reference below its floor and each one is a "
+                                      + "decision instead of an accident."
                                 isMuted: true
                                 font.pixelSize: Typography.sizeSmall
                                 width: parent.width

@@ -13,12 +13,22 @@ export interface IconGrid {
   linecap: 'round' | 'butt' | 'square';
   linejoin: 'round' | 'miter' | 'bevel';
   safeMargin: number;
+  /**
+   * The render size this grid was drawn for. A grid is a shape plus the size that shape is
+   * meant to be read at, and leaving the second half unsaid is how a glyph ends up rendered
+   * three steps below the size its artwork was proportioned for.
+   */
+  renderSize: number;
   note: string;
   /**
    * Smallest render size at which this grid still paints a one pixel stroke, derived as
    * `size / strokeWidth` rather than stored beside it. Below it the stroke is sub-pixel.
    */
   strokeFloor: number;
+  /** Painted stroke width at `renderSize` — the weight the grid is designed to carry. */
+  strokeAtRenderSize: number;
+  /** The steps of the size ramp at which this grid's stroke is still at least one pixel. */
+  renderSizes: number[];
 }
 
 /**
@@ -117,8 +127,18 @@ export const ICON_GRIDS: Record<IconGridId, IconGrid> = {
     "linecap": "round",
     "linejoin": "round",
     "safeMargin": 1,
-    "note": "Every UI icon. Renders 2 units of stroke at 24 units, 1.33 at 16 units.",
-    "strokeFloor": 12
+    "renderSize": 16,
+    "note": "Every UI icon. Drawn for a 16 unit render, where its 2 unit stroke lands at 1.33 pixels.",
+    "strokeFloor": 12,
+    "strokeAtRenderSize": 1.33,
+    "renderSizes": [
+      12,
+      14,
+      16,
+      18,
+      20,
+      24
+    ]
   },
   "chrome": {
     "size": 10,
@@ -126,8 +146,19 @@ export const ICON_GRIDS: Record<IconGridId, IconGrid> = {
     "linecap": "round",
     "linejoin": "round",
     "safeMargin": 0.5,
+    "renderSize": 10,
     "note": "Window-caption glyphs. A denser grid keeps the stroke hairline at 10 units instead of 0.8.",
-    "strokeFloor": 10
+    "strokeFloor": 10,
+    "strokeAtRenderSize": 1,
+    "renderSizes": [
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      24
+    ]
   }
 };
 export const ICON_SIZES = {

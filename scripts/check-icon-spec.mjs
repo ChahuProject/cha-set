@@ -18,6 +18,8 @@
 //   unowned       (warning) references render icon components the specification does not own
 //   sibling-grids one file renders icons at one size from more than one grid
 //   families      a declared control family names unknown icons or spans more than one grid
+//   grid-render   a grid declares a render size that is not a ramp step, or is below the size
+//                 at which its own stroke is a full pixel
 //   stroke-floor  (warning) a reference renders below the size at which its grid's stroke is
 //                 still one pixel
 //
@@ -27,7 +29,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
-import { elementsBBox, gridStrokeFloor } from '../spec/icons/geometry.mjs';
+import { elementsBBox, gridStrokeAt, gridStrokeFloor } from '../spec/icons/geometry.mjs';
 import { resolveActiveSpec, repoRoot, CONFIG_FILE, ENV_VAR } from '../spec/icons/load.mjs';
 import {
   scanInlineSvgSites,
@@ -281,11 +283,45 @@ export function verifyIconSpec({ quiet = false, root = repoRoot() } = {}) {
     }
   }
 
-  // 9. Stroke floor ledger. Below `grid.size / grid.strokeWidth` a grid's stroke is sub-pixel, so
-  //    it antialiases into a fainter line — tolerable on a 2x display, visibly weak on a 1x one.
-  //    That makes it a judgement rather than a violation, so the sites are listed and each one is
-  //    decided deliberately: keep the coarse glyph where its artwork suits the size, declare a
-  //    denser grid, or accept the lighter stroke on purpose.
+  // 9. Grid render size. A grid is a shape *and* the size that shape is meant to be read at, and
+  //    the registry states the second half. Three things then have to agree, none of them visible
+  //    by looking at the artwork: the size exists, it is a step the interface actually renders
+  //    at, and it is not below the size at which the grid's own stroke is a full pixel — a grid
+  //    designed to be blurry at its own target size is a contradiction.
+  const ramp = spec.sizes?.ramp ?? [];
+  for (const [id, grid] of Object.entries(spec.grids)) {
+    checkedCount += 1;
+    const renderSize = grid.renderSize;
+    if (!Number.isFinite(renderSize) || renderSize <= 0) {
+      errors.push(
+        `[grid-render] grid "${id}" does not declare a positive renderSize. Without the size its artwork ` +
+          `was drawn for, "is this glyph rendered too small" has no answer in the registry.`,
+      );
+      continue;
+    }
+    const floor = gridStrokeFloor(grid);
+    if (renderSize < floor) {
+      errors.push(
+        `[grid-render] grid "${id}" declares renderSize ${renderSize} but its stroke only reaches a full ` +
+          `pixel at ${floor}px, so the grid would be sub-pixel at the size it was drawn for.`,
+      );
+    }
+    if (ramp.length > 0 && !ramp.includes(renderSize)) {
+      errors.push(
+        `[grid-render] grid "${id}" declares renderSize ${renderSize}, which is not a step of the size ramp ` +
+          `(${ramp.join(', ')}). A grid drawn for a size the interface never renders at is a target nobody ` +
+          `can hit.`,
+      );
+    }
+  }
+
+  // 10. Stroke floor ledger. Below `grid.size / grid.strokeWidth` a grid's stroke is sub-pixel, so
+  //     it antialiases into a fainter line — tolerable on a 2x display, visibly weak on a 1x one.
+  //     That makes it a judgement rather than a violation, so the sites are listed and each one is
+  //     decided deliberately: keep the coarse glyph where its artwork suits the size, declare a
+  //     denser grid, or accept the lighter stroke on purpose. Each entry prints the stroke it
+  //     actually paints, so the reader is not asked to divide one number by another to see how
+  //     far off it is, and the render size declared above says what the grid is meant to weigh.
   const floors = Object.fromEntries(
     Object.entries(spec.grids).map(([id, grid]) => [id, gridStrokeFloor(grid)]),
   );
@@ -299,17 +335,28 @@ export function verifyIconSpec({ quiet = false, root = repoRoot() } = {}) {
     }
     const gridId = spec.icons[usage.name].grid;
     const smallest = Math.min(...usage.sizes);
-    if (smallest < floors[gridId]) belowFloor.push({ usage, gridId, smallest, floor: floors[gridId] });
+    if (smallest < floors[gridId]) {
+      belowFloor.push({
+        usage,
+        gridId,
+        smallest,
+        floor: floors[gridId],
+        painted: gridStrokeAt(spec.grids[gridId], smallest),
+      });
+    }
   }
   checkedCount += 1;
   if (belowFloor.length > 0) {
     warnings.push(
-      `[stroke-floor] ${belowFloor.length} reference(s) render below their grid's stroke floor ` +
-        `(${Object.entries(floors).map(([id, px]) => `${id} ${px}px`).join(', ')}): ` +
+      `[stroke-floor] ${belowFloor.length} reference(s) render below the size at which their grid still ` +
+        `paints a full pixel of stroke — ${Object.entries(floors)
+          .map(([id, px]) => `${id} ${px}px, drawn for ${spec.grids[id].renderSize}px`)
+          .join('; ')}: ` +
         belowFloor
           .map(
-            ({ usage, gridId, smallest, floor }) =>
-              `${usage.file}:${usage.line} ${usage.written} ${gridId} ${smallest}px < ${floor}px`,
+            ({ usage, gridId, smallest, floor, painted }) =>
+              `${usage.file}:${usage.line} ${usage.written} ${gridId} ${smallest}px < ${floor}px ` +
+              `(paints ${Math.round(painted * 100) / 100}px)`,
           )
           .join('; '),
     );

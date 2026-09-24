@@ -23,7 +23,8 @@
           "linecap": "round",
           "linejoin": "round",
           "safeMargin": 1,
-          "note": "Every UI icon. Renders 2 units of stroke at 24 units, 1.33 at 16 units."
+          "renderSize": 16,
+          "note": "Every UI icon. Drawn for a 16 unit render, where its 2 unit stroke lands at 1.33 pixels."
         },
         "chrome": {
           "size": 10,
@@ -31,6 +32,7 @@
           "linecap": "round",
           "linejoin": "round",
           "safeMargin": 0.5,
+          "renderSize": 10,
           "note": "Window-caption glyphs. A denser grid keeps the stroke hairline at 10 units instead of 0.8."
         }
       },

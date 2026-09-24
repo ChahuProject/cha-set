@@ -13,7 +13,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { elementToPath, elementsBBox, gridStrokeFloor } from '../icons/geometry.mjs';
+import { elementToPath, elementsBBox, gridStrokeAt, gridStrokeFloor } from '../icons/geometry.mjs';
 import { resolveActiveSpec, validateRegistry, repoRoot } from '../icons/load.mjs';
 import { scanInlineSvgSites, scanTextGlyphSites } from '../icons/adoption.mjs';
 
@@ -48,13 +48,34 @@ if (validationErrors.length > 0) {
 const iconNames = Object.keys(spec.icons);
 
 /**
- * Grids as the artifacts consume them: the declared metrics plus the stroke floor derived from
- * them. The floor is computed here rather than stored in the registry so there is exactly one
- * statement of it — a floor written down next to the metrics it is computed from is a second
- * copy of a fact, and the second copy is the one that rots.
+ * Grids as the artifacts consume them: the declared metrics plus the three numbers derived from
+ * them. `renderSize` is the one field the registry states by hand — it is design intent, the
+ * size the artwork was drawn against — and everything else is computed, so there is exactly one
+ * statement of each fact. A floor written down next to the metrics it comes from is a second
+ * copy, and the second copy is always the one that rots.
+ *
+ * `strokeAtRenderSize` is what makes `renderSize` worth declaring: it is the weight the grid
+ * carries at the size it was built for, which is how a denser grid can be told apart from a
+ * coarser one without rendering either. `renderSizes` is the grid's share of the size ramp —
+ * the steps at which its stroke is still at least a pixel — which turns "is this glyph too
+ * small" from a judgement into a membership test.
  */
+const sizeRamp = spec.sizes?.ramp ?? [];
+const round2 = (n) => Math.round(n * 100) / 100;
+
 const grids = Object.fromEntries(
-  Object.entries(spec.grids).map(([id, grid]) => [id, { ...grid, strokeFloor: gridStrokeFloor(grid) }]),
+  Object.entries(spec.grids).map(([id, grid]) => {
+    const strokeFloor = gridStrokeFloor(grid);
+    return [
+      id,
+      {
+        ...grid,
+        strokeFloor,
+        strokeAtRenderSize: round2(gridStrokeAt(grid, grid.renderSize)),
+        renderSizes: sizeRamp.filter((step) => step >= strokeFloor),
+      },
+    ];
+  }),
 );
 
 /** Compiled Qt drawing instructions: one flat list of SVG paths per icon. */
@@ -208,12 +229,22 @@ export interface IconGrid {
   linecap: 'round' | 'butt' | 'square';
   linejoin: 'round' | 'miter' | 'bevel';
   safeMargin: number;
+  /**
+   * The render size this grid was drawn for. A grid is a shape plus the size that shape is
+   * meant to be read at, and leaving the second half unsaid is how a glyph ends up rendered
+   * three steps below the size its artwork was proportioned for.
+   */
+  renderSize: number;
   note: string;
   /**
    * Smallest render size at which this grid still paints a one pixel stroke, derived as
    * \`size / strokeWidth\` rather than stored beside it. Below it the stroke is sub-pixel.
    */
   strokeFloor: number;
+  /** Painted stroke width at \`renderSize\` — the weight the grid is designed to carry. */
+  strokeAtRenderSize: number;
+  /** The steps of the size ramp at which this grid's stroke is still at least one pixel. */
+  renderSizes: number[];
 }
 
 /**

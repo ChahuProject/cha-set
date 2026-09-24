@@ -408,14 +408,26 @@ export function elementsBBox(elements, strokeWidth = 0) {
 }
 
 /**
- * Smallest render size at which a grid's stroke is still one pixel.
+ * Painted stroke width, in pixels, when a grid is rendered at `size`.
  *
- * The stroke is expressed in grid units and the grid is scaled to the requested render
- * size, so the painted stroke is `size / grid.size * grid.strokeWidth` pixels. Setting that
- * to 1 and solving for `size` gives this number. Below it the stroke is sub-pixel: it
- * antialiases into a fainter, fuzzier line, so the glyph ships lighter than its artwork
- * declares and lighter than every sibling rendered a step larger — the defect that makes a
- * 10px close button look like a mistake next to a 10px minimise bar.
+ * A grid is scaled as one piece, so its stroke scales with it: the painted line is
+ * `size / grid.size * grid.strokeWidth` pixels wide for every `size`. Every weight statement
+ * this system makes is this one expression evaluated at a different point — the stroke floor,
+ * the weight a grid carries at the size it was drawn for, the reason a 24 unit glyph reads
+ * thin at 10. Stating it once means those three can never disagree.
+ */
+export function gridStrokeAt(grid, size) {
+  return (size / grid.size) * grid.strokeWidth;
+}
+
+/**
+ * Smallest render size at which a grid's stroke is still one pixel: the `size` at which
+ * `gridStrokeAt` returns exactly 1, which solves to `grid.size / grid.strokeWidth`.
+ *
+ * Below it the stroke is sub-pixel: it antialiases into a fainter, fuzzier line, so the glyph
+ * ships lighter than its artwork declares and lighter than every sibling rendered a step
+ * larger — the defect that makes a 10px close button look like a mistake next to a 10px
+ * minimise bar.
  *
  * It is derived rather than stored beside the metrics on purpose: a second hand-maintained
  * copy of a fact nothing verifies is exactly how the numbers in this system rot.
