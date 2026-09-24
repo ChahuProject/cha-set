@@ -156,9 +156,9 @@ Item {
         Text {
             id: labelText
             anchors.left: parent.left
-            anchors.leftMargin: 10
+            anchors.leftMargin: ThemeTokens.dp(10)
             anchors.right: arrowText.left
-            anchors.rightMargin: 6
+            anchors.rightMargin: ThemeTokens.dp(6)
             anchors.verticalCenter: parent.verticalCenter
             elide: Text.ElideRight
             text: root.currentOption ? root.currentOption.label : root.placeholder
@@ -170,7 +170,7 @@ Item {
         Text {
             id: arrowText
             anchors.right: parent.right
-            anchors.rightMargin: 10
+            anchors.rightMargin: ThemeTokens.dp(10)
             anchors.verticalCenter: parent.verticalCenter
             text: selectPopup.visible ? "▴" : "▾"
             color: ThemeTokens.subduedText
@@ -227,7 +227,7 @@ Item {
         }
 
         contentItem: Column {
-            spacing: 2
+            spacing: ThemeTokens.dp(2)
             width: parent.width
             focus: true
             Keys.onPressed: (event) => root.handleKeyEvent(event)
@@ -267,11 +267,11 @@ Item {
                     ChaSetIcon {
                         id: checkIcon
                         anchors.right: parent.right
-                        anchors.rightMargin: 8
+                        anchors.rightMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
                         visible: parent.isSelected
                         name: "check"
-                        size: 14
+                        size: ThemeTokens.dp(14)
                         color: ThemeTokens.accent
                     }
 

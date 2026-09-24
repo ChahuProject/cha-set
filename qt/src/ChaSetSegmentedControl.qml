@@ -221,7 +221,7 @@ Item {
     Rectangle {
         id: track
         anchors.left: root.hasTitle ? titleLabel.right : parent.left
-        anchors.leftMargin: root.hasTitle ? 6 : 0
+        anchors.leftMargin: root.hasTitle ? ThemeTokens.dp(6) : 0
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
@@ -231,7 +231,7 @@ Item {
         border.color: root.activeFocus ? ThemeTokens.accent : ThemeTokens.border
         border.width: 1
 
-        readonly property real segSpacing: 2
+        readonly property real segSpacing: ThemeTokens.dp(2)
 
         // Sliding indicator pill
         Rectangle {

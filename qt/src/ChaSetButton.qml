@@ -20,6 +20,7 @@ Item {
     property string iconSource: ""
     property string iconPosition: "left" // left | right
     property int customRadius: 8
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property bool roundLeft: true
     property bool roundRight: true
 
@@ -166,26 +167,26 @@ Item {
         id: shadowDepth
         anchors.fill: root
         anchors.topMargin: 1
-        radius: root.customRadius
+        radius: root.effectiveRadius
         color: root.hasBorder() || root.variant === "default" || root.variant === "primary" || root.variant === "secondary" || root.variant === "destructive"
                ? Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.25 : 0.06)
                : "transparent"
         visible: !root.effectiveDown && !root.pressed && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link" && root.variant !== "destructive")
 
         Rectangle {
-            visible: !root.roundRight && root.customRadius > 0
+            visible: !root.roundRight && root.effectiveRadius > 0
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            width: root.customRadius
+            width: root.effectiveRadius
             color: parent.color
         }
         Rectangle {
-            visible: !root.roundLeft && root.customRadius > 0
+            visible: !root.roundLeft && root.effectiveRadius > 0
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            width: root.customRadius
+            width: root.effectiveRadius
             color: parent.color
         }
     }
@@ -194,7 +195,7 @@ Item {
     Rectangle {
         id: bg
         anchors.fill: root
-        radius: root.customRadius
+        radius: root.effectiveRadius
         color: root.bgColor()
         border.color: root.borderColor()
         border.width: root.hasBorder() ? 1 : 0
@@ -210,50 +211,50 @@ Item {
         opacity: root.effectiveDisabled ? 0.5 : 1.0
 
         Rectangle {
-            visible: !root.roundRight && root.customRadius > 0
+            visible: !root.roundRight && root.effectiveRadius > 0
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            width: root.customRadius
+            width: root.effectiveRadius
             color: parent.color
         }
         Rectangle {
-            visible: !root.roundLeft && root.customRadius > 0
+            visible: !root.roundLeft && root.effectiveRadius > 0
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            width: root.customRadius
+            width: root.effectiveRadius
             color: parent.color
         }
         Rectangle {
-            visible: root.hasBorder() && !root.roundRight && root.customRadius > 0
+            visible: root.hasBorder() && !root.roundRight && root.effectiveRadius > 0
             anchors.right: parent.right
             anchors.top: parent.top
-            width: root.customRadius
+            width: root.effectiveRadius
             height: 1
             color: root.cBorder
         }
         Rectangle {
-            visible: root.hasBorder() && !root.roundRight && root.customRadius > 0
+            visible: root.hasBorder() && !root.roundRight && root.effectiveRadius > 0
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            width: root.customRadius
+            width: root.effectiveRadius
             height: 1
             color: root.cBorder
         }
         Rectangle {
-            visible: root.hasBorder() && !root.roundLeft && root.customRadius > 0
+            visible: root.hasBorder() && !root.roundLeft && root.effectiveRadius > 0
             anchors.left: parent.left
             anchors.top: parent.top
-            width: root.customRadius
+            width: root.effectiveRadius
             height: 1
             color: root.cBorder
         }
         Rectangle {
-            visible: root.hasBorder() && !root.roundLeft && root.customRadius > 0
+            visible: root.hasBorder() && !root.roundLeft && root.effectiveRadius > 0
             anchors.left: parent.left
             anchors.bottom: parent.bottom
-            width: root.customRadius
+            width: root.effectiveRadius
             height: 1
             color: root.cBorder
         }
@@ -262,8 +263,8 @@ Item {
     // Focus ring (offset ring matching focus-visible:ring-2 focus-visible:ring-ring)
     Rectangle {
         anchors.fill: root
-        anchors.margins: -2
-        radius: root.customRadius + 2
+        anchors.margins: -ThemeTokens.dp(2)
+        radius: root.effectiveRadius + ThemeTokens.dp(2)
         color: "transparent"
         border.color: root.activeFocus ? ThemeTokens.focus : "transparent"
         border.width: 2

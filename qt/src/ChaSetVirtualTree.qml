@@ -555,7 +555,7 @@ Item {
                     variant: "outline"
                     text: "dir"
                     anchors.right: parent.right
-                    anchors.rightMargin: 8
+                    anchors.rightMargin: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
                     z: 2
                 }

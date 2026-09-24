@@ -22,8 +22,8 @@ Item {
         ? customColor
         : (isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0))
 
-    implicitWidth: hasLabel ? (parent ? parent.width : 160) : (isVertical ? 1 : 100)
-    implicitHeight: hasLabel ? Math.max(16, labelText.implicitHeight) : (isVertical ? 100 : 1)
+    implicitWidth: hasLabel ? (parent ? parent.width : ThemeTokens.dp(160)) : (isVertical ? 1 : ThemeTokens.dp(100))
+    implicitHeight: hasLabel ? Math.max(ThemeTokens.dp(16), labelText.implicitHeight) : (isVertical ? ThemeTokens.dp(100) : 1)
 
     width: hasLabel ? (parent ? parent.width : implicitWidth) : (isVertical ? 1 : (parent ? parent.width : implicitWidth))
     height: hasLabel ? implicitHeight : (isVertical ? (parent ? parent.height : implicitHeight) : 1)
@@ -82,10 +82,10 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             height: 1
             width: root.labelPosition === "left"
-                ? 24
+                ? ThemeTokens.dp(24)
                 : (root.labelPosition === "right"
-                    ? Math.max(0, parent.width - labelText.implicitWidth - 36)
-                    : Math.max(0, (parent.width - labelText.implicitWidth - 24) / 2))
+                    ? Math.max(0, parent.width - labelText.implicitWidth - ThemeTokens.dp(36))
+                    : Math.max(0, (parent.width - labelText.implicitWidth - ThemeTokens.dp(24)) / 2))
 
             Rectangle {
                 visible: root.variant === "solid"
@@ -124,9 +124,9 @@ Item {
             font.weight: Font.Medium
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: root.labelPosition === "left" ? leftLineWrapper.right : undefined
-            anchors.leftMargin: root.labelPosition === "left" ? 12 : 0
+            anchors.leftMargin: root.labelPosition === "left" ? ThemeTokens.dp(12) : 0
             anchors.right: root.labelPosition === "right" ? rightLineWrapper.left : undefined
-            anchors.rightMargin: root.labelPosition === "right" ? 12 : 0
+            anchors.rightMargin: root.labelPosition === "right" ? ThemeTokens.dp(12) : 0
             anchors.horizontalCenter: root.labelPosition === "center" ? parent.horizontalCenter : undefined
         }
 
@@ -136,10 +136,10 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             height: 1
             width: root.labelPosition === "right"
-                ? 24
+                ? ThemeTokens.dp(24)
                 : (root.labelPosition === "left"
-                    ? Math.max(0, parent.width - labelText.implicitWidth - 36)
-                    : Math.max(0, (parent.width - labelText.implicitWidth - 24) / 2))
+                    ? Math.max(0, parent.width - labelText.implicitWidth - ThemeTokens.dp(36))
+                    : Math.max(0, (parent.width - labelText.implicitWidth - ThemeTokens.dp(24)) / 2))
 
             Rectangle {
                 visible: root.variant === "solid"

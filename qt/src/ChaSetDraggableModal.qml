@@ -12,7 +12,7 @@ Rectangle {
     property int topMargin: ThemeTokens.dp(72)
     property var sizeOptions: []
     property string sizeMenuTooltip: "Adjust Size"
-    property real remBase: 16
+    property real remBase: ThemeTokens.dp(16)
     property bool autoFitHeight: true
     property bool showEscBadge: false
     property Item fixedFooter: null
@@ -48,30 +48,30 @@ Rectangle {
 
     Keys.onLeftPressed: function(event) {
         if (event.modifiers & Qt.AltModifier) {
-            root.x = Math.max(0, root.x - 20)
+            root.x = Math.max(0, root.x - ThemeTokens.dp(20))
             event.accepted = true
         }
     }
 
     Keys.onRightPressed: function(event) {
         if (event.modifiers & Qt.AltModifier) {
-            if (parent) root.x = Math.min(parent.width - root.width, root.x + 20)
-            else root.x += 20
+            if (parent) root.x = Math.min(parent.width - root.width, root.x + ThemeTokens.dp(20))
+            else root.x += ThemeTokens.dp(20)
             event.accepted = true
         }
     }
 
     Keys.onUpPressed: function(event) {
         if (event.modifiers & Qt.AltModifier) {
-            root.y = Math.max(0, root.y - 20)
+            root.y = Math.max(0, root.y - ThemeTokens.dp(20))
             event.accepted = true
         }
     }
 
     Keys.onDownPressed: function(event) {
         if (event.modifiers & Qt.AltModifier) {
-            if (parent) root.y = Math.min(parent.height - root.height, root.y + 20)
-            else root.y += 20
+            if (parent) root.y = Math.min(parent.height - root.height, root.y + ThemeTokens.dp(20))
+            else root.y += ThemeTokens.dp(20)
             event.accepted = true
         }
     }
@@ -88,31 +88,31 @@ Rectangle {
         if (!parent) return
         var pw = parent.width
         var ph = parent.height
-        root.x = Math.max(16, (pw - root.width) / 2)
+        root.x = Math.max(ThemeTokens.dp(16), (pw - root.width) / 2)
         if (root.initialPositionMode === "top" || root.initialPositionMode === "顶部靠上") {
             root.y = root.topMargin
-            var maxAvailableH = Math.max(100, ph - root.topMargin - 32)
+            var maxAvailableH = Math.max(ThemeTokens.dp(100), ph - root.topMargin - ThemeTokens.dp(32))
             if (root.height > maxAvailableH) {
                 root.height = maxAvailableH
             }
         } else {
-            root.y = Math.max(16, (ph - root.height) / 2)
+            root.y = Math.max(ThemeTokens.dp(16), (ph - root.height) / 2)
         }
     }
 
     function applySizeOption(opt) {
         if (!opt) return
-        var pw = parent ? parent.width : 1024
-        var ph = parent ? parent.height : 768
+        var pw = parent ? parent.width : ThemeTokens.dp(1024)
+        var ph = parent ? parent.height : ThemeTokens.dp(768)
         var targetW = root.width
         var targetH = root.height
 
         if (opt.special === "fullscreen" || opt.special === "全窗口") {
-            targetW = pw - 16
-            targetH = ph - 16
+            targetW = pw - ThemeTokens.dp(16)
+            targetH = ph - ThemeTokens.dp(16)
         } else if (opt.special === "default" || opt.special === "默认") {
-            targetW = 320
-            targetH = 220
+            targetW = ThemeTokens.dp(320)
+            targetH = ThemeTokens.dp(220)
         } else {
             if (opt.widthRem !== undefined) targetW = opt.widthRem * root.remBase
             else if (opt.width !== undefined) targetW = opt.width
@@ -120,15 +120,15 @@ Rectangle {
             if (opt.heightRem !== undefined) targetH = opt.heightRem * root.remBase
             else if (opt.height !== undefined) targetH = opt.height
 
-            targetW = Math.min(targetW, pw - 16)
-            targetH = Math.min(targetH, ph - 16)
+            targetW = Math.min(targetW, pw - ThemeTokens.dp(16))
+            targetH = Math.min(targetH, ph - ThemeTokens.dp(16))
         }
 
         root.width = targetW
         root.height = targetH
 
-        root.x = Math.max(8, Math.min((pw - targetW) / 2, Math.max(8, pw - targetW - 8)))
-        root.y = Math.max(8, Math.min((ph - targetH) / 2, Math.max(8, ph - targetH - 8)))
+        root.x = Math.max(ThemeTokens.dp(8), Math.min((pw - targetW) / 2, Math.max(ThemeTokens.dp(8), pw - targetW - ThemeTokens.dp(8))))
+        root.y = Math.max(ThemeTokens.dp(8), Math.min((ph - targetH) / 2, Math.max(ThemeTokens.dp(8), ph - targetH - ThemeTokens.dp(8))))
     }
 
     Column {

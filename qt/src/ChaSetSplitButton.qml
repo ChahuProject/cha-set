@@ -12,6 +12,7 @@ Item {
     property bool disabled: false
     property var menuItems: [] // [{ id, label, icon, destructive, onSelect }]
     property int customRadius: 8
+    readonly property int effectiveRadius: ThemeTokens.dp(root.customRadius)
 
     signal clicked()
     signal menuItemClicked(string itemId)
@@ -29,7 +30,7 @@ Item {
             variant: root.variant
             size: root.size
             disabled: root.disabled
-            customRadius: root.customRadius
+            customRadius: root.effectiveRadius
             roundRight: false
             onClicked: root.clicked()
         }
@@ -52,7 +53,7 @@ Item {
             variant: root.variant
             size: root.size === "sm" ? "icon-sm" : (root.size === "lg" ? "icon-lg" : "icon")
             disabled: root.disabled
-            customRadius: root.customRadius
+            customRadius: root.effectiveRadius
             roundLeft: false
             onClicked: splitPopup.open()
             Keys.onDownPressed: function(event) {

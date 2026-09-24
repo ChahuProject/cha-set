@@ -8,8 +8,8 @@ Rectangle {
     id: root
 
     property var maxHeight: undefined
-    property var minHeight: 80
-    property real margin: 16
+    property var minHeight: ThemeTokens.dp(80)
+    property real margin: ThemeTokens.dp(16)
     property string overflow: "auto" // "auto" | "scroll"
     property int customRadius: 6
     property color backgroundColor: ThemeTokens.panel
@@ -19,7 +19,7 @@ Rectangle {
     Accessible.role: Accessible.Pane
     Accessible.name: "Viewport Constrained Container"
 
-    radius: customRadius
+    radius: ThemeTokens.dp(customRadius)
     color: backgroundColor
     border.width: 1
     border.color: borderColor
@@ -35,7 +35,7 @@ Rectangle {
             var parsed = parseInt(root.minHeight, 10);
             if (!isNaN(parsed) && parsed > 0) return parsed;
         }
-        return 80;
+        return ThemeTokens.dp(80);
     }
 
     // Calculated bounded height
@@ -48,12 +48,12 @@ Rectangle {
         if (root.parent) {
             return root.parent.height - root.y - root.margin;
         }
-        return 600;
+        return ThemeTokens.dp(600);
     }
 
     readonly property real calculatedMaxHeight: {
         var avail = Math.max(root.minH, availableViewportRemaining);
-        var upper = root.Window.window ? (root.Window.window.height - 16) : 600;
+        var upper = root.Window.window ? (root.Window.window.height - ThemeTokens.dp(16)) : ThemeTokens.dp(600);
         var limit = avail;
 
         if (typeof root.maxHeight === "number" && root.maxHeight > 0) {
@@ -68,7 +68,7 @@ Rectangle {
         return Math.max(root.minH, Math.min(limit, upper, avail));
     }
 
-    implicitWidth: Math.max(contentContainer.implicitWidth, 120)
+    implicitWidth: Math.max(contentContainer.implicitWidth, ThemeTokens.dp(120))
     implicitHeight: {
         var contentH = contentContainer.implicitHeight > 0 ? contentContainer.implicitHeight : 0;
         if (root.overflow === "scroll") {

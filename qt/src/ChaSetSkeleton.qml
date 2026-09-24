@@ -11,7 +11,7 @@ Rectangle {
     property int customRadius: -1
 
     color: ThemeTokens.hover
-    radius: root.customRadius >= 0 ? root.customRadius : (root.rounded === "none" ? 0 : (root.rounded === "sm" ? 2 : (root.rounded === "lg" ? 8 : (root.rounded === "full" ? Math.min(width, height) / 2 : 4))))
+    radius: root.customRadius >= 0 ? root.customRadius : (root.rounded === "none" ? 0 : (root.rounded === "sm" ? ThemeTokens.dp(2) : (root.rounded === "lg" ? ThemeTokens.dp(8) : (root.rounded === "full" ? Math.min(width, height) / 2 : ThemeTokens.dp(4)))))
     clip: true
     opacity: root.animate && root.animation === "pulse" ? 0.6 : 0.85
 
@@ -25,7 +25,7 @@ Rectangle {
     Rectangle {
         id: waveHighlight
         visible: root.animate && root.animation === "wave"
-        width: Math.max(parent.width * 0.6, 40)
+        width: Math.max(parent.width * 0.6, ThemeTokens.dp(40))
         height: parent.height
         opacity: 0.25
         gradient: Gradient {

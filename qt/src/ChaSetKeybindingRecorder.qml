@@ -103,7 +103,7 @@ Item {
         MouseArea {
             id: recorderClickArea
             anchors.fill: parent
-            anchors.rightMargin: btnRow.width + 10
+            anchors.rightMargin: btnRow.width + ThemeTokens.dp(10)
             hoverEnabled: true
             cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
             onClicked: {

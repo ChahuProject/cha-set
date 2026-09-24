@@ -109,7 +109,7 @@ Rectangle {
             Text {
                 id: chevronText
                 anchors.right: parent.right
-                anchors.rightMargin: 8
+                anchors.rightMargin: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
                 text: "▼"
                 font.pixelSize: Typography.sizeMicro

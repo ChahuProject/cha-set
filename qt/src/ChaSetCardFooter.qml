@@ -18,9 +18,9 @@ Item {
     readonly property bool isSm: parentCard && parentCard.size === "sm"
 
     property int topPadding: 0
-    property int bottomPadding: isSm ? 16 : 24
-    property int horizontalPadding: isSm ? 16 : 24
-    property int spacing: isSm ? 6 : 8
+    property int bottomPadding: ThemeTokens.dp(isSm ? 16 : 24)
+    property int horizontalPadding: ThemeTokens.dp(isSm ? 16 : 24)
+    property int spacing: ThemeTokens.dp(isSm ? 6 : 8)
 
     default property alias contentData: row.data
 

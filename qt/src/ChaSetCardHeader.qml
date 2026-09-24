@@ -17,8 +17,8 @@ Item {
     readonly property Item parentCard: findCard()
     readonly property bool isSm: parentCard && parentCard.size === "sm"
 
-    property int padding: isSm ? 16 : 24
-    property int spacing: isSm ? 4 : 6
+    property int padding: ThemeTokens.dp(isSm ? 16 : 24)
+    property int spacing: ThemeTokens.dp(isSm ? 4 : 6)
 
     property string title: ""
     property string description: ""
