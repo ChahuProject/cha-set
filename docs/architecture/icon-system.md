@@ -49,14 +49,20 @@ An **active specification** owns the contract:
 | `metrics.linecap` / `linejoin` | `round` / `round` | Caps and joins are part of the specification, not of the call site |
 | `metrics.fillPolicy` | `none-unless-declared` | Monoline outlines; fill only where an element opts in |
 | `metrics.opticalCenterTolerance` | `0.75` | Max drift of the painted centre from the grid centre |
-| `grids.default` | `size 24 · stroke 2 · safeMargin 1` | Every UI icon |
-| `grids.chrome` | `size 10 · stroke 1 · safeMargin 0.5` | Window-caption glyphs, drawn on a **denser** grid so the line stays a hairline |
+| `grids.default` | `size 24 · stroke 2 · safeMargin 1 · renderSize 16` | Every UI icon |
+| `grids.chrome` | `size 10 · stroke 1 · safeMargin 0.5 · renderSize 10` | Window-caption glyphs, drawn on a **denser** grid so the line stays a hairline |
 | `families` | named sets of icons that render together | A promise about the control rather than about any single icon; no family may span two grids (§7) |
 | `weights` | `[{ id: "regular", strokeWidth: 2 }]` | One weight. Emphasis is colour or size — never a heavier glyph |
 | `sizes.ramp` | `10, 12, 14, 16, 18, 20, 24` | Named steps; artwork is never hand-scaled |
 | `color.policy` | `currentColor` | Web inherits `currentColor`; Qt defaults to `ThemeTokens.text` |
 
-Each grid also has a **stroke floor** of `size / strokeWidth` — the smallest render size at which it still paints a one-pixel stroke. It is not a registry field: it is derived from the two numbers above and embedded in the artifacts, because a floor written down beside the metrics it comes from is a third copy of a fact that nothing verifies (§7).
+A grid is a shape **and** the size that shape is meant to be read at, so each one declares `renderSize` — the one size field in the grids table that is written by hand, because it is intent rather than arithmetic. Everything else is derived from it and from the two numbers above, and embedded in the artifacts rather than stored:
+
+- **stroke floor** = `size / strokeWidth`: the smallest render size at which the grid still paints a one-pixel stroke.
+- **stroke at render size** = `renderSize / size × strokeWidth`: how heavy the line actually is at the size the artwork was drawn for. This is what separates the two grids without rendering either — chrome's is `1.0`, a hairline by design, and default's is `1.33`.
+- **render sizes**: the steps of `sizes.ramp` at or above the floor. Default is honest from 12px up and chrome from 10px up, which is why a 24-unit glyph drawn at 10px is not a smaller icon but a lighter one.
+
+None of them is written down beside the metrics it comes from. A number stored next to the values it is computed from is a second copy of a fact, and the second copy is the one that rots (§7).
 
 `icons` is the artwork itself, written in a seven-element vocabulary — `path`, `circle`, `ellipse`, `rect`, `line`, `polyline`, `polygon` — plus a per-icon `grid`:
 
@@ -183,7 +189,8 @@ The registry holds a **list** of specifications, not one hard-coded contract, so
 | `unowned` (warning) | A reference renders an icon component the specification does not own. The gate cannot tell a locally authored icon set from a component that is not an icon at all, so these are counted rather than failed; a migration removes one from the list |
 | `sibling-grids` | One file renders icons **at one size** from more than one grid |
 | `families` | A declared control family names an icon the specification does not define, or spans more than one grid |
-| `stroke-floor` (warning) | A reference renders below `grid.size / grid.strokeWidth` — the size at which that grid's stroke stops being one pixel |
+| `grid-render` | A grid's `renderSize` is missing or not positive, is not a step of `sizes.ramp`, or sits below its own stroke floor — a grid drawn to be sub-pixel at the size it was drawn for |
+| `stroke-floor` (warning) | A reference renders below `grid.size / grid.strokeWidth` — the size at which that grid's stroke stops being one pixel. Each entry prints the stroke it actually paints |
 
 The assertion count is not fixed: each icon contributes a geometry assertion and each icon reference in the codebase contributes a reference assertion, so the number grows as the library grows.
 
@@ -199,7 +206,9 @@ Closing that gap made a class of defect visible for the first time, and it is no
 2. **Do the icons drawn together agree?** Icons rendered at one size inside one file sit in one visual context, so they must come from one grid (`sibling-grids`). `families` makes the same promise explicit for a named set of icons that render together, and unlike the sibling scan it needs no source parsing, so it also protects call sites nobody has written yet.
 3. **Is the size honest for the grid?** A grid stops painting a stroke below `grid.size / grid.strokeWidth`: 24/2 = **12px** on the default grid, 10/1 = **10px** on chrome. Under that the stroke is sub-pixel — tolerable on a 2x display, visibly weak on a 1x one — so it is *measured, not banned*. The gate lists every reference below its floor and each one is then a decision: keep the coarse glyph where its artwork suits the size, declare a denser grid, or accept the lighter stroke on purpose. What is not acceptable is arriving there without noticing, which costs nothing to detect.
 
-The floor is **derived** from the grid metrics and embedded in the artifacts, never written down beside them. A floor stored next to the numbers it is computed from is a second copy of a fact, and the second copy is the one that rots.
+   `renderSize` is what turns that ledger from a bare number into a distance. Stating that default was drawn for 16px and chrome for 10px gives every entry a reference point: an entry is no longer merely "below a floor" but "below the size this grid was built for", and 10px is not on default's ramp at all. A reference can then be read as *two steps lighter than intended* instead of as an unconnected pair of numbers, and the gate prints the painted stroke so nobody has to divide one by the other to see how far off it is.
+
+The floor is **derived** from the grid metrics and embedded in the artifacts, never written down beside them; so is the stroke at render size, and so is the list of honest sizes. `renderSize` is the single exception, and it is stated by hand precisely because it is the one number nothing else can compute — it is a decision, not a consequence. A floor stored next to the numbers it is computed from is a second copy of a fact, and the second copy is the one that rots.
 
 Rule 2 got its sharpest test from the third question's ancestor. `qt/src/ChaSetWindowTitleBar.qml` drew its minimise and maximise buttons from the chrome grid at 10px and its close button from the **default** grid at 10px. Every icon involved was individually valid, every reference resolved, and the row was still wrong: the generic `x` covers half its grid while the caption glyphs cover nine tenths of theirs, so the close shipped as a 5.8px glyph with a 0.83px stroke beside two 10px glyphs with 1px strokes — roughly a third the size of its neighbours, on every platform. React had used the 10-unit plane for all three buttons from the start, so the desktop was simply the odd one out. No assertion in the specification could see it, because no assertion knew what a reference *asked for*; `sibling-grids` exists to make exactly this shape of mistake a build failure.
 
@@ -298,7 +307,10 @@ Expected output of the icon gate — a pass plus the standing ledgers. Warnings 
 [check-icon-spec] WARN [ratchet]      M site(s) are excused as non-iconography, with reasons
 [check-icon-spec] WARN [unowned]      K reference(s) render icon components the specification
                                       does not own
-[check-icon-spec] WARN [stroke-floor] J reference(s) render below their grid's stroke floor
+[check-icon-spec] WARN [stroke-floor] J reference(s) render below the size at which their grid
+                                      still paints a full pixel of stroke — each grid's floor and
+                                      the size it was drawn for; each site prints the stroke it
+                                      actually paints
 [check-icon-spec] WARN [stroke-floor] I reference(s) compute their size at run time
 [check-icon-spec] OK — accepted assertions verified — active specification "stroke-monoline"
                         via chaset.config.json (icons.spec)
