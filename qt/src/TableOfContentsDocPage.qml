@@ -10,7 +10,7 @@ DocLayout {
     description: "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
+        { id: "anatomy", title: "Anatomy" },
         { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
@@ -266,57 +266,17 @@ DocLayout {
         }
     }
 
-    // 2. Installation
-    DocText {
-        text: "Installation"
-        font.pixelSize: Typography.sizeTitleSm
-        font.weight: Typography.weightSemibold
-    }
-
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: `import ChaSet 1.0
-
-ChaSetTableOfContents {
-    items: docHeadings
-    activeId: currentSectionId
-    onSelectItem: (item) => scrollTo(item)
-}`
-        language: "qml"
-    }
-
-    // 3. Animations
-    DocText {
-        text: "Animations"
-        font.pixelSize: Typography.sizeTitleSm
-        font.weight: Typography.weightSemibold
-    }
-
-    DocText {
+    // 2. Anatomy
+    DocAnatomy {
         width: parent.width
-        text: "Hover states and active indicator transitions are driven by ThemeTokens.motionQuick and ThemeTokens.easeStandard. Reduced-motion mode (ThemeTokens.animationsEnabled = false) disables dynamic transitions for zero latency."
-        textColor: ThemeTokens.subduedText
+        qtCode: `import ChaSet\n\nChaSetTableOfContents {\n    items: demoItems\n    activeId: currentSectionId\n    onSelectItem: (item) => scrollTo(item)\n}`
+        reactCode: `import { TableOfContents, type TocItem } from '@chahu/cha-set';\n\n<TableOfContents\n  items={items}\n  activeId={activeId}\n  onSelect={(item) => scrollTo(item)}\n/>`
     }
 
-    // 4. Keyboard Navigation
-    DocText {
-        text: "Keyboard Navigation"
-        font.pixelSize: Typography.sizeTitleSm
-        font.weight: Typography.weightSemibold
-    }
-
-    KeyboardShortcutsTable {
+    // 3. Footer Sections (Animations, Keyboard Navigation, Props Reference)
+    DocFooterSections {
+        width: parent.width
         componentId: "table-of-contents"
-    }
-
-    // 5. Props Reference
-    DocText {
-        text: "Props Reference"
-        font.pixelSize: Typography.sizeTitleSm
-        font.weight: Typography.weightSemibold
-    }
-
-    PropsTable {
         propsModel: [
             {
                 name: "items",

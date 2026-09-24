@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import {
   TableOfContents,
-  Card,
   Button,
   Switch,
   SegmentedControl,
   Slider,
-  CodeBlock,
   RotateCcwIcon,
   type TocItem,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocFooterSections } from '../../components/DocFooterSections';
+import type { PropItem } from '../../components/PropsTable';
 
 export function TableOfContentsDocPage() {
   const [showBanner, setShowBanner] = useState<boolean>(true);
@@ -104,7 +103,7 @@ export function TableOfContentsDocPage() {
       description="Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
+        { id: 'anatomy', title: 'Anatomy' },
         { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
@@ -226,105 +225,79 @@ export function TableOfContentsDocPage() {
         </ComponentPreview>
       </section>
 
-      {/* 2. Installation */}
-      <section id="installation" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <CodeBlock
-          language="bash"
-          code="pnpm add @chahu/cha-set"
-        />
-        <CodeBlock
-          language="tsx"
-          code={`import { TableOfContents, type TocItem } from '@chahu/cha-set';`}
-        />
-      </section>
+      {/* 2. Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { TableOfContents, type TocItem } from '@chahu/cha-set';\n\n<TableOfContents items={items} activeId={activeId} />`}
+        qtCode={`import ChaSet\n\nChaSetTableOfContents {\n    items: demoItems\n    activeId: currentSectionId\n}`}
+      />
 
-      {/* 3. Animations */}
-      <section id="animations" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Animations</h2>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          Hover color changes and active indicator marker transitions are powered by the shared motion tokens{' '}
-          <code className="text-primary font-mono">duration-quick</code> and{' '}
-          <code className="text-primary font-mono">ease-standard</code>. When users enable reduced motion preferences (
-          <code className="text-primary font-mono">prefers-reduced-motion</code> on Web,{' '}
-          <code className="text-primary font-mono">ThemeTokens.animationsEnabled</code> on Desktop), animations transition instantaneously.
-        </p>
-      </section>
-
-      {/* 4. Keyboard Navigation */}
-      <section id="keyboard" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard Navigation</h2>
-        <KeyboardShortcutsTable componentId="table-of-contents" />
-      </section>
-
-      {/* 5. Props Reference */}
-      <section id="props" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
-        <PropsTable
-          props={[
-            {
-              name: 'items',
-              type: 'TocItem[]',
-              defaultValue: '[]',
-              description: 'Hierarchical array of outline items with level and nested children.',
-            },
-            {
-              name: 'activeId',
-              type: 'string',
-              defaultValue: '""',
-              description: 'Currently active section ID.',
-            },
-            {
-              name: 'topOffset',
-              type: 'number | string',
-              defaultValue: '0',
-              description: 'Top offset for sticky positioning, accommodating global announcement banners.',
-            },
-            {
-              name: 'targetOffset',
-              type: 'number',
-              defaultValue: '0',
-              description: 'Safety scroll offset ensuring headings are not occluded by top banners.',
-            },
-            {
-              name: 'variant',
-              type: '"default" | "track" | "flat"',
-              defaultValue: '"default"',
-              description: 'Visual styling variant of the table of contents container.',
-            },
-            {
-              name: 'size',
-              type: '"default" | "sm"',
-              defaultValue: '"default"',
-              description: 'Size density and font scaling of the outline labels.',
-            },
-            {
-              name: 'showTrack',
-              type: 'boolean',
-              defaultValue: 'true',
-              description: 'Whether to render the vertical guide track and active indicator marker.',
-            },
-            {
-              name: 'showTitle',
-              type: 'boolean',
-              defaultValue: 'true',
-              description: 'Whether to display the header title label.',
-            },
-            {
-              name: 'title',
-              type: 'string',
-              defaultValue: '"On this page"',
-              description: 'Header title text displayed above outline items.',
-            },
-            {
-              name: 'onSelect',
-              type: '(item: TocItem, event) => void',
-              defaultValue: 'undefined',
-              description: 'Callback fired when an outline item is selected or activated.',
-            },
-          ]}
-        />
-      </section>
+      {/* 3. Footer Sections (Animations, Keyboard Navigation, Props Reference) */}
+      <DocFooterSections
+        componentId="table-of-contents"
+        props={[
+          {
+            name: 'items',
+            type: 'TocItem[]',
+            defaultValue: '[]',
+            description: 'Hierarchical array of outline items with level and nested children.',
+          },
+          {
+            name: 'activeId',
+            type: 'string',
+            defaultValue: '""',
+            description: 'Currently active section ID.',
+          },
+          {
+            name: 'topOffset',
+            type: 'number | string',
+            defaultValue: '0',
+            description: 'Top offset for sticky positioning, accommodating global announcement banners.',
+          },
+          {
+            name: 'targetOffset',
+            type: 'number',
+            defaultValue: '0',
+            description: 'Safety scroll offset ensuring headings are not occluded by top banners.',
+          },
+          {
+            name: 'variant',
+            type: '"default" | "track" | "flat"',
+            defaultValue: '"default"',
+            description: 'Visual styling variant of the table of contents container.',
+          },
+          {
+            name: 'size',
+            type: '"default" | "sm"',
+            defaultValue: '"default"',
+            description: 'Size density and font scaling of the outline labels.',
+          },
+          {
+            name: 'showTrack',
+            type: 'boolean',
+            defaultValue: 'true',
+            description: 'Whether to render the vertical guide track and active indicator marker.',
+          },
+          {
+            name: 'showTitle',
+            type: 'boolean',
+            defaultValue: 'true',
+            description: 'Whether to display the header title label.',
+          },
+          {
+            name: 'title',
+            type: 'string',
+            defaultValue: '"On this page"',
+            description: 'Header title text displayed above outline items.',
+          },
+          {
+            name: 'onSelect',
+            type: '(item: TocItem, event) => void',
+            defaultValue: 'undefined',
+            description: 'Callback fired when an outline item is selected or activated.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }
