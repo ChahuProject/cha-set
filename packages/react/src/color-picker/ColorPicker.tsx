@@ -797,6 +797,7 @@ export const ColorPicker = React.forwardRef<HTMLDivElement, ColorPickerProps>(
               sizePx={stageSize}
               thickness={ringThickness}
             >
+              {/* chaset-icon-exempt: interactive HSV colour field, sized from computed geometry and painted with two generated gradients */}
               <svg
                 ref={triangleSvgRef}
                 viewBox={`0 0 ${DEFAULT_TRIANGLE_WIDTH} ${DEFAULT_TRIANGLE_HEIGHT}`}

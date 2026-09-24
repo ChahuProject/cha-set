@@ -1463,77 +1463,7 @@
     }
   ],
   "adoption": {
-    "maxInlineSvgSites": 56,
-    "note": "Ratchet for components that still hand-author <svg> artwork. The gate fails the moment the number of sites grows, so new drift is impossible while the backlog is paid down at leisure.",
-    "inlineSvgBaseline": [
-      {
-        "file": "packages/react/examples/basic/src/components/CommandSearchModal.tsx",
-        "count": 1
-      },
-      {
-        "file": "packages/react/examples/basic/src/layout/Header.tsx",
-        "count": 4
-      },
-      {
-        "file": "packages/react/examples/basic/src/pages/get-started/IntroductionPage.tsx",
-        "count": 3
-      },
-      {
-        "file": "packages/react/src/address-bar/AddressBar.tsx",
-        "count": 5
-      },
-      {
-        "file": "packages/react/src/badge/Badge.tsx",
-        "count": 1
-      },
-      {
-        "file": "packages/react/src/checkbox/Checkbox.tsx",
-        "count": 1
-      },
-      {
-        "file": "packages/react/src/color-picker/ColorPicker.tsx",
-        "count": 2
-      },
-      {
-        "file": "packages/react/src/input/Input.tsx",
-        "count": 3
-      },
-      {
-        "file": "packages/react/src/label/Label.tsx",
-        "count": 1
-      },
-      {
-        "file": "packages/react/src/language-settings/LanguageSettings.tsx",
-        "count": 3
-      },
-      {
-        "file": "packages/react/src/pipeline-view/icons.tsx",
-        "count": 10
-      },
-      {
-        "file": "packages/react/src/read-only-input/ReadOnlyInput.tsx",
-        "count": 2
-      },
-      {
-        "file": "packages/react/src/resizable/Resizable.tsx",
-        "count": 1
-      },
-      {
-        "file": "packages/react/src/scroll-area/ScrollBarButtons.tsx",
-        "count": 8
-      },
-      {
-        "file": "packages/react/src/switch/Switch.tsx",
-        "count": 1
-      },
-      {
-        "file": "packages/react/src/task-hud/TaskHud.tsx",
-        "count": 6
-      },
-      {
-        "file": "packages/react/src/window-title-bar/WindowTitleBar.tsx",
-        "count": 4
-      }
-    ]
+    "maxInlineSvgSites": 55,
+    "note": "Ratchet for components that still hand-author <svg> artwork. The gate fails the moment the number of sites grows, so new drift is impossible while the backlog is paid down at leisure. Sites excused as genuinely non-iconographic artwork are excluded from this ceiling, so the number always means \"artwork somebody could still migrate\"; each escape is carried by a marker with a mandatory reason and is reported in the ledger. The per-file breakdown is deliberately NOT stored here — it is derived live, because a hand-maintained copy of it is a second source of truth that nothing verifies and that therefore rots."
   }
 }

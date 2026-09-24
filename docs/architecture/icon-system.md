@@ -33,10 +33,11 @@ Every icon in `cha-set` is declared once in **`spec/icons/registry.json`**. Noth
 {
   "version": 1,
   "activeSpec": "stroke-monoline",
-  "specs": [ /* named specifications — exactly one is "implemented" at a time */ ],
-  "adoption": { "maxInlineSvgSites": 56, "inlineSvgBaseline": [ /* frozen backlog */ ] }
+  "specs": [ /* named specifications — exactly one is "implemented" at a time */ ]
 }
 ```
+
+A third top-level key, `adoption`, carries the ratchet ceiling and is described in §7. Its value is deliberately not quoted on this page: it only ever moves down, so any copy of it written into a document is wrong as soon as the next migration lands.
 
 An **active specification** owns the contract:
 
@@ -174,7 +175,7 @@ The registry holds a **list** of specifications, not one hard-coded contract, so
 | `optical` | An icon's **painted** bounding box (artwork plus half the stroke) is not centred on its grid beyond `opticalCenterTolerance` |
 | `live-area` | Artwork escapes the safe margin, or a stroke bleeds past `[0, grid.size]` and would collide with a neighbouring icon |
 | `text-glyphs` | A character (`+`, U+2212, U+27F3, `×`, arrows, …) is used where an icon belongs |
-| `ratchet` | The number of hand-authored inline `<svg>` sites grew |
+| `ratchet` | The number of hand-authored inline `<svg>` sites grew, or an exemption marker was misused (no reason, dangling, or not attached to a following `<svg>`) |
 | `resolution` | A component references an icon name the active specification does not own |
 
 The assertion count is not fixed: each icon contributes a geometry assertion and each icon reference in the codebase contributes a resolution assertion, so the number grows as the library grows.
@@ -183,9 +184,31 @@ The assertion count is not fixed: each icon contributes a geometry assertion and
 
 ### The adoption ratchet
 
-Hand-authored `<svg>` artwork in components is frozen as a **budget, not a target**: `adoption.maxInlineSvgSites` currently allows 56 sites (`packages/react/src/**`, `packages/react/examples/basic/src/**`, `qt/src/**`). The gate *warns* while the backlog sits at the budget and *fails* the moment it grows, so the backlog can only shrink. Each migration lowers `maxInlineSvgSites` in the same commit that removes a site.
+Hand-authored `<svg>` artwork in components is frozen as a **budget, not a target**: `adoption.maxInlineSvgSites` in the registry is the ceiling for `packages/react/src/**`, `packages/react/examples/basic/src/**` and `qt/src/**`. The gate *warns* while the backlog sits at the ceiling and *fails* the moment it grows, so the backlog can only shrink. Each migration lowers the ceiling in the same commit that removes a site.
 
-The catalogued migration backlog (labels, checkbox, switch, scroll-bar steppers, window title bar, task HUD, pipeline view, …) is intentionally **not** migrated here: rewriting them without a rendered verification pass would trade a verified state for an unverified one. Only the *text-glyph* class — the defect family this specification exists to remove — was cleared outright, because each of those was a one-line change with a visible, checkable result.
+Read that ceiling from the registry, never from prose — including from this page. A number that only ever moves down is wrong in a document as soon as the next migration lands, and a stale ceiling is worse than none: it makes a healthy run look like a regression.
+
+The per-file breakdown is deliberately **not** stored either. It is derived live by `spec/icons/adoption.mjs` and embedded in the generated artifacts, so the showcase renders the real numbers and no hand-maintained second copy of the truth exists to drift.
+
+#### Exemptions: parametric art is not a migration
+
+The ceiling is only meaningful if every site inside it is something someone could actually migrate. That is false for **parametric vector art**: the colour picker's HSV triangle, whose vertices come from computed dimensions and whose fill is two generated gradients, has no 24-grid stroke representation and never will. Counting it would make the ceiling permanently unreachable — and an unreachable ceiling stops being read as a signal.
+
+Such a site is therefore excluded, but never silently. It carries an inline marker directly above the artwork:
+
+```tsx
+{/* chaset-icon-exempt: interactive HSV colour field, sized from computed geometry and painted with two generated gradients */}
+<svg …>
+```
+
+The marker is built to be awkward to abuse:
+
+1. **The reason is mandatory.** An unreasoned marker buys nothing: the site stays inside the ceiling *and* the gate fails.
+2. **It reaches three lines down at most**, so it cannot be posted at the top of a file to bless everything after it.
+3. **It has to be used.** A dangling marker is a gate failure, so exemptions cannot be stockpiled ahead of writing the art they excuse.
+4. **It is displayed.** Exempt sites and their reasons are embedded in the ledger and rendered on the showcase page, so the escape hatch is audited rather than invisible.
+
+The remaining migration backlog (labels, checkbox, switch, scroll-bar steppers, window title bar, task HUD, pipeline view, …) is intentionally **not** migrated here: rewriting it without a rendered verification pass would trade a verified state for an unverified one. Only the *text-glyph* class — the defect family this specification exists to remove — was cleared outright, because each of those was a one-line change with a visible, checkable result.
 
 ### Related gates
 

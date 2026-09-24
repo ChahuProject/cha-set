@@ -11,7 +11,8 @@
 //   optical       an icon's painted bounding box is not centred on its grid
 //   live-area     artwork escapes the grid's safe margin
 //   text-glyphs   a character is used where an icon belongs
-//   ratchet       the count of hand-authored inline <svg> sites grew
+//   ratchet       the count of hand-authored inline <svg> sites grew, or an exemption
+//                 marker was misused (no reason, dangling, or not attached to an <svg>)
 //   resolution    a component references an icon name the active specification does not own
 //
 // See docs/architecture/icon-system.md.
@@ -22,7 +23,12 @@ import { spawnSync } from 'node:child_process';
 
 import { elementsBBox } from '../spec/icons/geometry.mjs';
 import { resolveActiveSpec, repoRoot, CONFIG_FILE, ENV_VAR } from '../spec/icons/load.mjs';
-import { scanInlineSvgSites, scanTextGlyphSites, scanIconUsages } from '../spec/icons/adoption.mjs';
+import {
+  scanInlineSvgSites,
+  scanTextGlyphSites,
+  scanIconUsages,
+  EXEMPTION_MARKER,
+} from '../spec/icons/adoption.mjs';
 
 /**
  * Painted artwork may sit this far off the grid centre (grid units). The active
@@ -127,10 +133,22 @@ export function verifyIconSpec({ quiet = false, root = repoRoot() } = {}) {
   }
 
   // 5. Adoption ratchet: hand-authored inline <svg> artwork may shrink, never grow.
-  const inlineSites = scanInlineSvgSites(root);
+  //    Sites excused as non-iconography are excluded from the budget, but only when their
+  //    marker is well formed — so an exemption is a documented decision, not a silence.
+  const { sites: inlineSites, exemptionProblems } = scanInlineSvgSites(root);
   const inlineTotal = inlineSites.reduce((sum, s) => sum + s.count, 0);
+  const exemptedTotal = inlineSites.reduce((sum, s) => sum + s.exempted, 0);
   const budget = registry.adoption?.maxInlineSvgSites ?? 0;
+
   checkedCount += 1;
+  for (const problem of exemptionProblems) {
+    errors.push(
+      `[ratchet] ${problem.file}:${problem.line} has an unusable exemption marker — ${problem.problem}. ` +
+        `The marker is "${EXEMPTION_MARKER} <reason>" and must sit directly above the <svg> it excuses.`,
+    );
+  }
+  checkedCount += exemptedTotal;
+
   if (inlineTotal > budget) {
     errors.push(
       `[ratchet] hand-authored inline <svg> sites grew to ${inlineTotal} (budget ${budget}). ` +
@@ -140,7 +158,18 @@ export function verifyIconSpec({ quiet = false, root = repoRoot() } = {}) {
   } else if (inlineTotal > 0) {
     warnings.push(
       `[ratchet] ${inlineTotal} hand-authored inline <svg> site(s) remain in the frozen migration backlog ` +
-        `(budget ${budget}): ${inlineSites.map((s) => `${s.file} (${s.count})`).join(', ')}`,
+        `(budget ${budget}): ${inlineSites
+          .filter((s) => s.count > 0)
+          .map((s) => `${s.file} (${s.count})`)
+          .join(', ')}`,
+    );
+  }
+  if (exemptedTotal > 0) {
+    warnings.push(
+      `[ratchet] ${exemptedTotal} site(s) are excused as non-iconography: ${inlineSites
+        .filter((s) => s.exempted > 0)
+        .map((s) => `${s.file} (${s.exempted}: ${s.reasons.map((r) => r.reason).join('; ')})`)
+        .join(', ')}`,
     );
   }
 

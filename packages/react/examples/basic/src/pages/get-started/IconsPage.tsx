@@ -103,6 +103,9 @@ export function IconsPage() {
     (id) => [id, ICON_GRIDS[id]] as const,
   );
   const textGlyphs = ICON_ADOPTION.textGlyphSites;
+  const exemptSites = ICON_ADOPTION.inlineSvgSites.filter((site) => site.exempted > 0);
+  const exemptTotal = exemptSites.reduce((sum, site) => sum + site.exempted, 0);
+  const inlineTotal = ICON_ADOPTION.inlineSvgSites.reduce((sum, site) => sum + site.count, 0);
 
   return (
     <DocLayout
@@ -421,10 +424,9 @@ export function IconsPage() {
               <div>
                 <div className="mb-1 text-micro font-medium text-foreground">Adoption ratchet</div>
                 <p>
-                  {ICON_ADOPTION.inlineSvgSites.reduce((sum, site) => sum + site.count, 0)} hand-authored{' '}
-                  <code className="font-mono text-micro">&lt;svg&gt;</code> site(s) remain in the frozen migration
-                  backlog against a budget of {ICON_ADOPTION.maxInlineSvgSites}. The gate fails when that number
-                  grows, so the backlog can only shrink.
+                  {inlineTotal} hand-authored <code className="font-mono text-micro">&lt;svg&gt;</code> site(s)
+                  remain in the frozen migration backlog against a budget of {ICON_ADOPTION.maxInlineSvgSites}. The
+                  gate fails when that number grows, so the backlog can only shrink.
                 </p>
               </div>
               <div>
@@ -433,6 +435,31 @@ export function IconsPage() {
                   {textGlyphs.length} remaining. Characters such as plus, minus sign and the reset arrow are
                   typography: they inherit weight, size and baseline from surrounding copy — the mechanism behind
                   both defects this specification was written to remove.
+                </p>
+              </div>
+              <div className="sm:col-span-2">
+                <div className="mb-1 text-micro font-medium text-foreground">
+                  Excused as non-iconography ({exemptTotal})
+                </div>
+                {exemptSites.length === 0 ? (
+                  <p>None. Every inline artwork site in the repository owes a migration.</p>
+                ) : (
+                  <ul className="space-y-1">
+                    {exemptSites.map((site) => (
+                      <li key={site.file}>
+                        <code className="font-mono text-micro text-foreground">{site.file}</code>
+                        {' — '}
+                        {site.reasons.join('; ')}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <p className="mt-1">
+                  Parametric vector art has no 24-grid stroke representation, so leaving it inside the budget would
+                  make the budget permanently unreachable. It is excluded instead — visibly, and only through a
+                  marker that carries a reason and must sit directly above the artwork it excuses. A marker that is
+                  unreasoned, dangling, or not attached to a following{' '}
+                  <code className="font-mono text-micro">&lt;svg&gt;</code> fails the gate.
                 </p>
               </div>
             </div>

@@ -118,9 +118,20 @@ for (const [name, def] of Object.entries(spec.icons)) {
 // belong to the gate's diagnostics, which re-derive them on demand. Baking line numbers in
 // would make the artifact "drift" whenever any file that mentions an icon gained a line —
 // a freshness assertion that fires for reasons the author cannot see is worse than none.
+//
+// Exempt sites are carried too, as `exempted` plus the reason strings. An escape hatch that
+// is not displayed is an escape hatch nobody audits.
+const { sites: inlineSvgSites, exemptionProblems } = scanInlineSvgSites(root);
+
 const adoption = {
   maxInlineSvgSites: registry.adoption?.maxInlineSvgSites ?? 0,
-  inlineSvgSites: scanInlineSvgSites(root),
+  inlineSvgSites: inlineSvgSites.map(({ file, count, exempted, reasons }) => ({
+    file,
+    count,
+    exempted,
+    reasons: reasons.map((entry) => entry.reason),
+  })),
+  exemptionProblemCount: exemptionProblems.length,
   textGlyphSites: scanTextGlyphSites(root).map(({ file, codePoint }) => ({ file, codePoint })),
 };
 

@@ -332,77 +332,114 @@ export const ICON_SPECS: IconSpecSummary[] = [
   }
 ];
 export const ICON_ADOPTION = {
-  "maxInlineSvgSites": 56,
+  "maxInlineSvgSites": 55,
   "inlineSvgSites": [
     {
       "file": "packages/react/examples/basic/src/components/CommandSearchModal.tsx",
-      "count": 1
+      "count": 1,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/examples/basic/src/layout/Header.tsx",
-      "count": 4
+      "count": 4,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/examples/basic/src/pages/get-started/IntroductionPage.tsx",
-      "count": 3
+      "count": 3,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/address-bar/AddressBar.tsx",
-      "count": 5
+      "count": 5,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/badge/Badge.tsx",
-      "count": 1
+      "count": 1,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/checkbox/Checkbox.tsx",
-      "count": 1
+      "count": 1,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/color-picker/ColorPicker.tsx",
-      "count": 2
+      "count": 1,
+      "exempted": 1,
+      "reasons": [
+        "interactive HSV colour field, sized from computed geometry and painted with two generated gradients"
+      ]
     },
     {
       "file": "packages/react/src/input/Input.tsx",
-      "count": 3
+      "count": 3,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/label/Label.tsx",
-      "count": 1
+      "count": 1,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/language-settings/LanguageSettings.tsx",
-      "count": 3
+      "count": 3,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/pipeline-view/icons.tsx",
-      "count": 10
+      "count": 10,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/read-only-input/ReadOnlyInput.tsx",
-      "count": 2
+      "count": 2,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/resizable/Resizable.tsx",
-      "count": 1
+      "count": 1,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/scroll-area/ScrollBarButtons.tsx",
-      "count": 8
+      "count": 8,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/switch/Switch.tsx",
-      "count": 1
+      "count": 1,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/task-hud/TaskHud.tsx",
-      "count": 6
+      "count": 6,
+      "exempted": 0,
+      "reasons": []
     },
     {
       "file": "packages/react/src/window-title-bar/WindowTitleBar.tsx",
-      "count": 4
+      "count": 4,
+      "exempted": 0,
+      "reasons": []
     }
   ],
+  "exemptionProblemCount": 0,
   "textGlyphSites": []
 };
 export const ICON_AUDIT: Record<string, IconAudit> = {

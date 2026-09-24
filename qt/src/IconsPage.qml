@@ -48,6 +48,29 @@ DocLayout {
         return total;
     }
 
+    readonly property int exemptTotal: {
+        var total = 0;
+        var sites = ChaSetIcons.adoption.inlineSvgSites;
+        for (var i = 0; i < sites.length; i++) total += (sites[i].exempted || 0);
+        return total;
+    }
+
+    // Exempt sites are surfaced rather than hidden: an escape hatch nobody can see is an
+    // escape hatch nobody audits.
+    function exemptSummary() {
+        var sites = ChaSetIcons.adoption.inlineSvgSites;
+        var parts = [];
+        for (var i = 0; i < sites.length; i++) {
+            var site = sites[i];
+            if (!site.exempted) continue;
+            var reasons = site.reasons || [];
+            for (var j = 0; j < reasons.length; j++) parts.push(site.file + " — " + reasons[j]);
+        }
+        return parts.length > 0
+            ? parts.join("\n")
+            : "None. Every inline artwork site in the repository owes a migration.";
+    }
+
     // The tag name is escaped so this prose does not register as hand-authored artwork in
     // the adoption ratchet (which counts literal "<svg" occurrences in component sources).
     readonly property string svgTag: "\u003csvg\u003e"
@@ -1093,6 +1116,33 @@ DocLayout {
                                 wrapMode: TextEdit.WordWrap
                                 height: contentHeight
                             }
+                        }
+                    }
+
+                    Column {
+                        width: parent.width
+                        spacing: ThemeTokens.dp(6)
+                        DocText {
+                            text: "Excused as non-iconography (" + root.exemptTotal + ")"
+                            textColor: ThemeTokens.text
+                            font.pixelSize: Typography.sizeMicro
+                            font.weight: Typography.weightMedium
+                        }
+                        DocText {
+                            text: root.exemptSummary()
+                            isMuted: true
+                            font.pixelSize: Typography.sizeSmall
+                            width: parent.width
+                            wrapMode: TextEdit.WordWrap
+                            height: contentHeight
+                        }
+                        DocText {
+                            text: "Parametric vector art has no 24-grid stroke representation, so leaving it inside the budget would make the budget permanently unreachable. It is excluded instead — visibly, and only through a marker that carries a reason and must sit directly above the artwork it excuses. A marker that is unreasoned, dangling, or not attached to a following " + root.svgTag + " fails the gate."
+                            isMuted: true
+                            font.pixelSize: Typography.sizeSmall
+                            width: parent.width
+                            wrapMode: TextEdit.WordWrap
+                            height: contentHeight
                         }
                     }
                 }
