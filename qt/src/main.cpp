@@ -150,6 +150,70 @@ static bool runRealCtrlWheelVerification(QQuickWindow* window) {
     return true;
 }
 
+static bool runRealCodeBlockWheelVerification(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running authentic C++ code block wheel pass-through verification...");
+    auto* contentScroll = window->findChild<QQuickItem*>("contentScroll");
+    if (!contentScroll) {
+        qWarning("[qt-scenario] WARNING: contentScroll not found");
+        return false;
+    }
+
+    auto* flickable = contentScroll->property("flickableItem").value<QQuickItem*>();
+    if (!flickable) {
+        qWarning("[qt-scenario] WARNING: flickableItem property not accessible");
+        return false;
+    }
+
+    // Reset contentY to 0
+    flickable->setProperty("contentY", 0.0);
+    QTest::qWait(100);
+
+    // Find any visible QQuickTextEdit (the code block text area) inside contentScroll
+    QQuickItem* targetEdit = nullptr;
+    const auto allItems = contentScroll->findChildren<QQuickItem*>();
+    for (auto* item : allItems) {
+        if (item->metaObject()->className() == QStringLiteral("QQuickTextEdit") &&
+            item->isVisible() && item->width() > 50 && item->height() > 20) {
+            targetEdit = item;
+            break;
+        }
+    }
+
+    if (!targetEdit) {
+        qWarning("[qt-scenario] WARNING: No code block text edit found inside contentScroll!");
+        return false;
+    }
+
+    // Map the center of the code block to scene / window coordinates
+    QPointF localCenter(targetEdit->width() / 2.0, targetEdit->height() / 2.0);
+    QPointF scenePos = targetEdit->mapToScene(localCenter);
+    QPoint globalPos = window->mapToGlobal(scenePos.toPoint());
+
+    double initialY = flickable->property("contentY").toDouble();
+    qInfo() << "[qt-scenario] Code block textEdit found at scenePos=" << scenePos << ", initial outer contentY=" << initialY;
+
+    // Send QWheelEvent down (angleDelta.y = -120) directly over the code block
+    QWheelEvent wheelDownEvent(scenePos, globalPos, QPoint(), QPoint(0, -120),
+                               Qt::NoButton, Qt::NoModifier, Qt::NoScrollPhase, false);
+    QCoreApplication::sendEvent(window, &wheelDownEvent);
+    QTest::qWait(100);
+
+    double scrolledY = flickable->property("contentY").toDouble();
+    qInfo() << "[qt-scenario] After wheel down over code block: outer contentY=" << scrolledY;
+    if (scrolledY <= initialY) {
+        qCritical() << "[qt-scenario] FAIL: Wheel down over code block did not scroll outer contentScroll! (initial="
+                    << initialY << ", after=" << scrolledY << ")";
+        return false;
+    }
+
+    // Reset back to top
+    flickable->setProperty("contentY", 0.0);
+    QTest::qWait(50);
+
+    qInfo("[qt-scenario] PASS: Authentic C++ wheel pass-through over code block verified successfully (outer contentY delta > 0)");
+    return true;
+}
+
 static bool runRealMouseDragVerification(QQuickWindow* window) {
     qInfo("[qt-scenario] Running authentic C++ QTest mouse drag injection...");
     
@@ -1065,6 +1129,14 @@ int main(int argc, char* argv[])
                                 return;
                             }
                         }
+                        if (testScenario == "all" || testScenario == "scroll-wheel" || testScenario == "scroll" || testScenario == "code-block-wheel") {
+                            bool codeBlockWheelOk = runRealCodeBlockWheelVerification(window);
+                            if (!codeBlockWheelOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                        }
+
                         if (testScenario == "all" || testScenario == "scroll-drag") {
                             bool dragOk = runRealMouseDragVerification(window);
                             if (!dragOk) {

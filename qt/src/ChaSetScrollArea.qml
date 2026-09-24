@@ -24,6 +24,8 @@ Flickable {
     property bool forceHover: false
     property bool forceActive: false
     property string forceButtonState: ""
+    property var parentScrollArea: null
+    property bool horizontalWheelWithVertical: false
 
     onContentWidthChanged: {
         var maxX = Math.max(0, contentWidth - width)
@@ -227,39 +229,122 @@ Flickable {
         }
     }
 
+    function resolveParentScrollArea() {
+        if (parentScrollArea && parentScrollArea !== root) return parentScrollArea
+        var p = root.parent
+        while (p) {
+            if (p !== root && p.flickableItem && typeof p.handleVerticalWheel === "function") {
+                parentScrollArea = p
+                return p
+            }
+            p = p.parent
+        }
+        return null
+    }
+
+    function handleVerticalWheel(deltaY) {
+        var maxScrollY = Math.max(0, root.contentHeight - root.height)
+        if (maxScrollY <= 1.0) {
+            var parentArea = resolveParentScrollArea()
+            if (parentArea && typeof parentArea.handleVerticalWheel === "function") {
+                return parentArea.handleVerticalWheel(deltaY)
+            }
+            return false
+        }
+
+        var scrollingDown = (deltaY < 0)
+        var scrollingUp = (deltaY > 0)
+
+        if ((scrollingUp && root.contentY <= 0) || (scrollingDown && root.contentY >= maxScrollY - 0.5)) {
+            var parentArea = resolveParentScrollArea()
+            if (parentArea && typeof parentArea.handleVerticalWheel === "function") {
+                return parentArea.handleVerticalWheel(deltaY)
+            }
+            return false
+        }
+
+        animY.stop()
+        var scrollPixels = (deltaY / 120.0) * 80.0
+        var newY = Math.max(0, Math.min(maxScrollY, root.contentY - scrollPixels))
+        if (newY === root.contentY) {
+            var parentArea = resolveParentScrollArea()
+            if (parentArea && typeof parentArea.handleVerticalWheel === "function") {
+                return parentArea.handleVerticalWheel(deltaY)
+            }
+            return false
+        }
+        root.contentY = newY
+        return true
+    }
+
+    function handleHorizontalWheel(deltaX) {
+        var maxScrollX = Math.max(0, root.contentWidth - root.width)
+        if (maxScrollX <= 1.0) {
+            var parentArea = resolveParentScrollArea()
+            if (parentArea && typeof parentArea.handleHorizontalWheel === "function") {
+                return parentArea.handleHorizontalWheel(deltaX)
+            }
+            return false
+        }
+
+        var scrollingRight = (deltaX < 0)
+        var scrollingLeft = (deltaX > 0)
+
+        if ((scrollingLeft && root.contentX <= 0) || (scrollingRight && root.contentX >= maxScrollX - 0.5)) {
+            var parentArea = resolveParentScrollArea()
+            if (parentArea && typeof parentArea.handleHorizontalWheel === "function") {
+                return parentArea.handleHorizontalWheel(deltaX)
+            }
+            return false
+        }
+
+        animX.stop()
+        var scrollPixels = (deltaX / 120.0) * 80.0
+        var newX = Math.max(0, Math.min(maxScrollX, root.contentX - scrollPixels))
+        if (newX === root.contentX) {
+            var parentArea = resolveParentScrollArea()
+            if (parentArea && typeof parentArea.handleHorizontalWheel === "function") {
+                return parentArea.handleHorizontalWheel(deltaX)
+            }
+            return false
+        }
+        root.contentX = newX
+        return true
+    }
+
     WheelHandler {
+        id: vWheelHandler
         target: null
         orientation: Qt.Vertical
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+        enabled: (root.contentHeight - root.height) > 1.0
         onWheel: function(event) {
             if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) return
             if (event.angleDelta.y === 0) return
-            var maxScrollY = Math.max(0, root.contentHeight - root.height)
-            if (maxScrollY <= 0) return
-            animY.stop()
-            var deltaY = event.angleDelta.y
-            var scrollPixels = (deltaY / 120.0) * 80.0
-            root.contentY = Math.max(0, Math.min(maxScrollY, root.contentY - scrollPixels))
-            event.accepted = true
+            var handled = root.handleVerticalWheel(event.angleDelta.y)
+            if (handled) {
+                event.accepted = true
+            }
         }
     }
 
     WheelHandler {
+        id: hWheelHandler
         target: null
         orientation: Qt.Horizontal
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+        enabled: (root.contentWidth - root.width) > 1.0
         onWheel: function(event) {
             if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) return
-            var delta = event.angleDelta.x !== 0 ? event.angleDelta.x : (!root.showVerticalScrollBar ? event.angleDelta.y : 0)
+            var delta = event.angleDelta.x !== 0 ? event.angleDelta.x : (root.horizontalWheelWithVertical ? event.angleDelta.y : 0)
             if (delta === 0) return
-            var maxScrollX = Math.max(0, root.contentWidth - root.width)
-            if (maxScrollX <= 0) return
-            animX.stop()
-            var scrollPixels = (delta / 120.0) * 80.0
-            root.contentX = Math.max(0, Math.min(maxScrollX, root.contentX - scrollPixels))
-            event.accepted = true
+            var handled = root.handleHorizontalWheel(delta)
+            if (handled) {
+                event.accepted = true
+            }
         }
     }
+
 
     ScrollBar.vertical: ChaSetScrollBar {
         id: vScrollBar

@@ -493,7 +493,59 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 2b: Nested Scroll Chaining & Pass-Through Verification
+        if (scenario === "all" || scenario === "scroll-chaining" || scenario === "scroll-wheel") {
+            contentScroll.flickableItem.contentY = 0;
+
+            // 1. Direct pass-through test: an unscrollable inner scroll area (contentHeight <= height)
+            var unscrollableInner = Qt.createQmlObject('import QtQuick 6.10; import ChaSet; ChaSetScrollArea { width: 300; height: 300; contentWidth: 300; contentHeight: 200 }', contentScroll.contentItem, "dynamicUnscrollableArea");
+            if (unscrollableInner) {
+                var initialOuterY = contentScroll.flickableItem.contentY;
+                var handled = unscrollableInner.handleVerticalWheel(-120);
+                var newOuterY = contentScroll.flickableItem.contentY;
+                if (handled && newOuterY > initialOuterY) {
+                    console.log("[qt-scenario] PASS: Unscrollable inner scroll area passes wheel to parent (outer contentY " + initialOuterY + " -> " + newOuterY + ")");
+                } else {
+                    console.log("[qt-scenario] FAIL: Unscrollable inner scroll area did not pass wheel to parent (handled=" + handled + ", initial=" + initialOuterY + ", new=" + newOuterY + ")");
+                    failures++;
+                }
+                unscrollableInner.destroy();
+            }
+
+            // 2. Scroll chaining test: a scrollable inner scroll area (contentHeight: 500, height: 200)
+            var scrollableInner = Qt.createQmlObject('import QtQuick 6.10; import ChaSet; ChaSetScrollArea { width: 300; height: 200; contentWidth: 300; contentHeight: 500 }', contentScroll.contentItem, "dynamicScrollableArea");
+            if (scrollableInner) {
+                contentScroll.flickableItem.contentY = 100;
+                var outerBeforeInnerScroll = contentScroll.flickableItem.contentY;
+
+                // Scroll inner area down
+                scrollableInner.handleVerticalWheel(-120);
+                if (scrollableInner.contentY > 0 && contentScroll.flickableItem.contentY === outerBeforeInnerScroll) {
+                    console.log("[qt-scenario] PASS: Scrollable inner area consumes wheel within its bounds (inner contentY=" + scrollableInner.contentY + ", outer unchanged=" + outerBeforeInnerScroll + ")");
+                } else {
+                    console.log("[qt-scenario] FAIL: Inner area did not consume wheel (inner contentY=" + scrollableInner.contentY + ", outer=" + contentScroll.flickableItem.contentY + ")");
+                    failures++;
+                }
+
+                // Move inner area directly to bottom boundary
+                scrollableInner.contentY = Math.max(0, scrollableInner.contentHeight - scrollableInner.height);
+                var outerBeforeChaining = contentScroll.flickableItem.contentY;
+                var chained = scrollableInner.handleVerticalWheel(-120);
+                var outerAfterChaining = contentScroll.flickableItem.contentY;
+                if (chained && outerAfterChaining > outerBeforeChaining) {
+                    console.log("[qt-scenario] PASS: Reaching bottom boundary chains wheel down to parent (outer contentY " + outerBeforeChaining + " -> " + outerAfterChaining + ")");
+                } else {
+                    console.log("[qt-scenario] FAIL: Wheel at boundary did not chain to parent (chained=" + chained + ", before=" + outerBeforeChaining + ", after=" + outerAfterChaining + ")");
+                    failures++;
+                }
+                scrollableInner.destroy();
+            }
+
+            contentScroll.flickableItem.contentY = 0;
+        }
+
         // Scenario 3: Real Synthetic Vertical & Horizontal Thumb Drag Verification
+
         if (scenario === "all" || scenario === "scroll-drag") {
             contentScroll.flickableItem.contentY = 0;
             var startY = contentScroll.flickableItem.contentY;
