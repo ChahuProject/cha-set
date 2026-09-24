@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Slider, type SliderOrientation, type SliderSize, Tabs, TabsList, TabsTrigger, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -204,37 +205,11 @@ export function SliderDocPage() {
       </section>
 
       {/* 3. Anatomy */}
-      <section id="anatomy" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Import and render Slider controlled or uncontrolled in your React JSX or Qt QML tree.
-        </p>
-        <CodeBlock
-          code={`import { Slider } from '@chahu/cha-set';
-
-export function SliderDemo() {
-  const [volume, setVolume] = React.useState(50);
-
-  return (
-    <div className="flex flex-col gap-2 max-w-xs">
-      <label className="text-sm font-medium">Volume: {volume}%</label>
-      <Slider
-        value={volume}
-        min={0}
-        max={100}
-        step={1}
-        showTooltip
-        formatValue={(v) => \`\${v}%\`}
-        onValueChange={setVolume}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Slider } from '@chahu/cha-set';\n\n<Slider\n  value={volume}\n  min={0}\n  max={100}\n  step={1}\n  showTooltip\n  formatValue={(v) => v + '%'}\n  onValueChange={setVolume}\n/>`}
+        qtCode={`import ChaSet\n\nChaSetSlider {\n    value: 50\n    min: 0\n    max: 100\n    step: 1\n    showTooltip: true\n    onValueMoved: volume = value\n}`}
       />
-    </div>
-  );
-}`}
-          language="tsx"
-        />
-      </section>
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">

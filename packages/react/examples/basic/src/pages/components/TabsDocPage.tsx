@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent, type TabsVariant, type TabsSize, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -179,33 +180,11 @@ export function TabsDocPage() {
       </section>
 
       {/* 3. Anatomy */}
-      <section id="anatomy" className="mt-12 scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Tabs components follow the shadcn compound structure:
-        </p>
-        <CodeBlock
-          language="tsx"
-          code={`import { Tabs, TabsList, TabsTrigger, TabsContent } from '@chahu/cha-set';
-
-export default function Example() {
-  return (
-    <Tabs defaultValue="overview">
-      <TabsList>
-        <TabsTrigger value="overview">Overview</TabsTrigger>
-        <TabsTrigger value="analytics">Analytics</TabsTrigger>
-        <TabsTrigger value="reports">Reports</TabsTrigger>
-      </TabsList>
-      <TabsContent value="overview">Overview pane</TabsContent>
-      <TabsContent value="analytics">Analytics pane</TabsContent>
-      <TabsContent value="reports">Reports pane</TabsContent>
-    </Tabs>
-  );
-}`}
-        />
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Tabs, TabsList, TabsTrigger, TabsContent } from '@chahu/cha-set';\n\n<Tabs defaultValue="overview">\n  <TabsList>\n    <TabsTrigger value="overview">Overview</TabsTrigger>\n    <TabsTrigger value="analytics">Analytics</TabsTrigger>\n    <TabsTrigger value="reports">Reports</TabsTrigger>\n  </TabsList>\n  <TabsContent value="overview">Overview pane</TabsContent>\n  <TabsContent value="analytics">Analytics pane</TabsContent>\n  <TabsContent value="reports">Reports pane</TabsContent>\n</Tabs>`}
+        qtCode={`import ChaSet\n\nChaSetTabs {\n    currentValue: "overview"\n    ChaSetTabsList {\n        ChaSetTabsTrigger { value: "overview"; text: "Overview" }\n        ChaSetTabsTrigger { value: "analytics"; text: "Analytics" }\n        ChaSetTabsTrigger { value: "reports"; text: "Reports" }\n    }\n}`}
+      />
 
       {/* 4. Examples & Variants */}
       <section id="examples" className="mt-12 scroll-mt-20">

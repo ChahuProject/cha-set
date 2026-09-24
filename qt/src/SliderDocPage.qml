@@ -216,28 +216,10 @@ DocLayout {
     }
 
     // Section 3: Anatomy
-    Column {
+    DocAnatomy {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Anatomy"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        DocText {
-            text: "Import and render ChaSetSlider directly in your QML scene."
-            color: root.cMutedFg
-            font.pixelSize: Typography.sizeBody
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: `import ChaSet\n\nChaSetSlider {\n    width: 240\n    value: 50\n    min: 0\n    max: 100\n    step: 1\n    showTooltip: true\n    formatValue: function(v) {\n        return v + "%"\n    }\n    onValueMoved: function(val) {\n        console.log("Slider moved:", val)\n    }\n}`
-        }
+        qtCode: `import ChaSet\n\nChaSetSlider {\n    value: 50\n    min: 0\n    max: 100\n    step: 1\n    showTooltip: true\n    onValueMoved: volume = value\n}`
+        reactCode: `import { Slider } from '@chahu/cha-set';\n\n<Slider\n  value={volume}\n  min={0}\n  max={100}\n  step={1}\n  showTooltip\n  formatValue={(v) => v + '%'}\n  onValueChange={setVolume}\n/>`
     }
 
     // Section 4: Examples & States

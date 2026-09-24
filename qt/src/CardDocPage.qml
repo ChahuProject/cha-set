@@ -155,28 +155,10 @@ DocLayout {
     }
 
     // Section 3: Anatomy
-    Column {
+    DocAnatomy {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Anatomy"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        DocText {
-            text: "Card is composed of modular building blocks for flexible layouts."
-            color: root.cMutedFg
-            font.pixelSize: Typography.sizeBody
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: `ChaSetCard {\n    ChaSetCardHeader {\n        ChaSetCardTitle { text: "Card Title" }\n        ChaSetCardDescription { text: "Card Description" }\n    }\n    ChaSetCardContent {\n        Text { text: "Main content area" }\n    }\n    ChaSetCardFooter {\n        Text { text: "Footer actions" }\n    }\n}`
-        }
+        qtCode: `import ChaSet\n\nChaSetCard {\n    variant: "default"\n    ChaSetCardHeader {\n        ChaSetCardTitle { text: "Card Title" }\n        ChaSetCardDescription { text: "Card Description" }\n    }\n    ChaSetCardContent {\n        ChaSetLabel { text: "Main content area" }\n    }\n    ChaSetCardFooter {\n        ChaSetButton { size: "sm"; text: "Footer action" }\n    }\n}`
+        reactCode: `import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@chahu/cha-set';\n\n<Card>\n  <CardHeader>\n    <CardTitle>Card Title</CardTitle>\n    <CardDescription>Card Description</CardDescription>\n  </CardHeader>\n  <CardContent>Main content area</CardContent>\n  <CardFooter>Footer actions</CardFooter>\n</Card>`
     }
 
     // Section 4: Variants

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Switch, type SwitchSize, Checkbox, Tabs, TabsList, TabsTrigger, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -139,31 +140,11 @@ export function SwitchDocPage() {
       </section>
 
       {/* 3. Anatomy */}
-      <section id="anatomy" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Import and render Switch standalone or with companion labels and descriptions in your React JSX or Qt QML tree.
-        </p>
-        <CodeBlock
-          code={`import { Switch } from '@chahu/cha-set';
-
-export function SwitchDemo() {
-  const [enabled, setEnabled] = React.useState(false);
-
-  return (
-    <Switch
-      checked={enabled}
-      onCheckedChange={setEnabled}
-      label="Enable Notifications"
-      description="Receive daily push updates on this device."
-    />
-  );
-}`}
-          language="tsx"
-        />
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Switch } from '@chahu/cha-set';\n\n<Switch\n  checked={enabled}\n  onCheckedChange={setEnabled}\n  label="Enable Notifications"\n  description="Receive daily push updates on this device."\n/>`}
+        qtCode={`import ChaSet\n\nChaSetSwitch {\n    checked: enabled\n    label: "Enable Notifications"\n    description: "Receive daily push updates on this device."\n    onToggled: enabled = checked\n}`}
+      />
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">

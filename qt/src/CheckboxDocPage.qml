@@ -151,28 +151,10 @@ DocLayout {
     }
 
     // Section 3: Anatomy
-    Column {
+    DocAnatomy {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Anatomy"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        DocText {
-            text: "Import and render ChaSetCheckbox in your QML scene graph with declarative properties and signals."
-            color: root.cMutedFg
-            font.pixelSize: Typography.sizeBody
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetCheckbox {\n    label: \"Remember me\"\n    checked: true\n    onToggled: (checked) => console.log(\"Checkbox state:\", checked)\n}"
-        }
+        qtCode: `import ChaSet\n\nChaSetCheckbox {\n    checked: agree\n    label: "Service agreement"\n    description: "I agree to the service agreement and terms of use."\n    onToggled: agree = checked\n}`
+        reactCode: `import { Checkbox } from '@chahu/cha-set';\n\n<Checkbox\n  checked={agree}\n  onCheckedChange={setAgree}\n  label="Service agreement"\n  description="I agree to the service agreement and terms of use."\n/>`
     }
 
     // Section 4: Examples & States

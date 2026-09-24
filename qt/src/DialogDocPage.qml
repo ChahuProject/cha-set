@@ -95,28 +95,10 @@ DocLayout {
     }
 
     // Section 3: Anatomy
-    Column {
+    DocAnatomy {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Anatomy"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        DocText {
-            text: "Import and configure ChaSetDialog in your QML scene."
-            color: root.cMutedFg
-            font.pixelSize: Typography.sizeBody
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: `import ChaSet\n\nChaSetDialog {\n    id: myModal\n    title: "Dialog Title"\n    description: "Brief contextual description."\n\n    Text { text: "Dialog body content"; color: ThemeTokens.text }\n\n    Row {\n        anchors.right: parent.right\n        ChaSetButton { text: "Dismiss"; onClicked: myModal.closeDialog() }\n    }\n}`
-        }
+        qtCode: `import ChaSet\n\nChaSetDialog {\n    open: dialogOpen\n    size: "default"\n    title: "Dialog Title"\n    description: "Dialog Description"\n    showCloseButton: true\n    onAccepted: dialogOpen = false\n    onRejected: dialogOpen = false\n}`
+        reactCode: `import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, Button } from '@chahu/cha-set';\n\n<Dialog>\n  <DialogTrigger asChild>\n    <Button>Open</Button>\n  </DialogTrigger>\n  <DialogContent>\n    <DialogHeader>\n      <DialogTitle>Dialog Title</DialogTitle>\n      <DialogDescription>Dialog Description</DialogDescription>\n    </DialogHeader>\n    <DialogFooter>\n      <DialogClose asChild>\n        <Button variant="outline">Cancel</Button>\n      </DialogClose>\n      <Button>Confirm</Button>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>`
     }
 
     // Section 4: Examples & States

@@ -211,34 +211,10 @@ DocLayout {
     }
 
     // 3. Anatomy
-    Rectangle {
+    DocAnatomy {
         width: parent.width
-        implicitHeight: anatomyCol.implicitHeight + 20
-        color: "transparent"
-
-        Column {
-            id: anatomyCol
-            width: parent.width
-            spacing: 8
-
-            DocText { text: "Anatomy"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-            DocText { text: "Tabs components follow the shadcn compound structure:"; font.pixelSize: Typography.sizeBody; color: root.cMutedFg }
-            ChaSetCodeBlock {
-                width: parent.width
-                language: "qml"
-                code: `ChaSetTabs {
-    currentValue: "overview"
-
-    ChaSetTabsList {
-        ChaSetTabsTrigger { value: "overview"; text: "Overview" }
-        ChaSetTabsTrigger { value: "analytics"; text: "Analytics" }
-    }
-
-    ChaSetTabsContent { value: "overview"; Text { text: "Overview Pane" } }
-    ChaSetTabsContent { value: "analytics"; Text { text: "Analytics Pane" } }
-}`
-            }
-        }
+        qtCode: `import ChaSet\n\nChaSetTabs {\n    currentValue: "overview"\n    ChaSetTabsList {\n        ChaSetTabsTrigger { value: "overview"; text: "Overview" }\n        ChaSetTabsTrigger { value: "analytics"; text: "Analytics" }\n        ChaSetTabsTrigger { value: "reports"; text: "Reports" }\n    }\n}`
+        reactCode: `import { Tabs, TabsList, TabsTrigger, TabsContent } from '@chahu/cha-set';\n\n<Tabs defaultValue="overview">\n  <TabsList>\n    <TabsTrigger value="overview">Overview</TabsTrigger>\n    <TabsTrigger value="analytics">Analytics</TabsTrigger>\n    <TabsTrigger value="reports">Reports</TabsTrigger>\n  </TabsList>\n  <TabsContent value="overview">Overview pane</TabsContent>\n  <TabsContent value="analytics">Analytics pane</TabsContent>\n  <TabsContent value="reports">Reports pane</TabsContent>\n</Tabs>`
     }
 
     // 4. Examples & Variants

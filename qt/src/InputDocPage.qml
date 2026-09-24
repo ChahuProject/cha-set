@@ -169,28 +169,10 @@ DocLayout {
     }
 
     // Section 3: Anatomy
-    Column {
+    DocAnatomy {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Anatomy"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        DocText {
-            text: "Import and render ChaSetInput directly in your QML scene."
-            color: root.cMutedFg
-            font.pixelSize: Typography.sizeBody
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: `import ChaSet\n\nChaSetInput {\n    width: 240\n    placeholderText: "Enter email..."\n    onAccepted: console.log("Submitted:", text)\n}`
-        }
+        qtCode: `import ChaSet\n\nChaSetInput {\n    type: "email"\n    placeholder: "Email"\n    clearable: true\n}`
+        reactCode: `import { Input } from '@chahu/cha-set';\n\n<Input type="email" placeholder="Email" clearable />`
     }
 
     // Section 4: Examples & States

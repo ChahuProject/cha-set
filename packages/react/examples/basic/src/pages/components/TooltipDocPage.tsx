@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Card, Tabs, TabsList, TabsTrigger, Checkbox, Input, Tooltip, TooltipProvider, TooltipTrigger, TooltipContent, type TooltipSide, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -150,61 +151,11 @@ export function TooltipDocPage() {
       </section>
 
       {/* 3. Anatomy */}
-      <section id="anatomy" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Tooltip can be used as a compound component structure or via the ergonomic shorthand wrapper.
-        </p>
-
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-2">Compound Pattern</h3>
-            <CodeBlock
-              code={`import {
-  TooltipProvider,
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-  Button,
-} from '@chahu/cha-set';
-
-export function CompoundTooltipDemo() {
-  return (
-    <TooltipProvider delayDuration={200}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="outline">Hover me</Button>
-        </TooltipTrigger>
-        <TooltipContent side="top">
-          Add to library
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-}`}
-              language="tsx"
-            />
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-2">Convenience Shorthand</h3>
-            <CodeBlock
-              code={`import { Tooltip, Button } from '@chahu/cha-set';
-
-export function ShorthandTooltipDemo() {
-  return (
-    <Tooltip content="Add to library" side="top">
-      <Button variant="outline">Hover me</Button>
-    </Tooltip>
-  );
-}`}
-              language="tsx"
-            />
-          </div>
-        </div>
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent, Button } from '@chahu/cha-set';\n\n<TooltipProvider delayDuration={200}>\n  <Tooltip>\n    <TooltipTrigger asChild>\n      <Button variant="outline">Hover me</Button>\n    </TooltipTrigger>\n    <TooltipContent side="top">Add to library</TooltipContent>\n  </Tooltip>\n</TooltipProvider>\n\n// Shorthand wrapper\n<Tooltip content="Add to library" side="top">\n  <Button variant="outline">Hover me</Button>\n</Tooltip>`}
+        qtCode={`import ChaSet\n\nChaSetTooltip {\n    text: "Add to library"\n    side: "top"\n    delay: 200\n    ChaSetButton { text: "Hover me"; variant: "outline" }\n}`}
+      />
 
       {/* 4. Examples & States */}
       <section id="examples" className="scroll-mt-20 my-10">

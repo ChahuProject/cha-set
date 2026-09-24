@@ -38,6 +38,77 @@ function toPascalCase(str) {
   return str.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('');
 }
 
+// Brace-aware JSX attribute scanner: starts right after the element name and
+// returns everything up to the closing ">" while ignoring braces, quotes and
+// template literals (whose contents may legally contain ">" and "/>").
+function scanJsxElementAttrs(content, startIndex) {
+  let idx = startIndex;
+  let inBrace = 0;
+  let inBacktick = false;
+  let inQuote = null;
+
+  while (idx < content.length) {
+    const ch = content[idx];
+    const prevCh = idx > 0 ? content[idx - 1] : '';
+
+    if (inBacktick) {
+      if (ch === '`' && prevCh !== '\\') inBacktick = false;
+    } else if (inQuote) {
+      if (ch === inQuote && prevCh !== '\\') inQuote = null;
+    } else if (ch === '`') {
+      inBacktick = true;
+    } else if (ch === '"' || ch === "'") {
+      inQuote = ch;
+    } else if (ch === '{') {
+      inBrace++;
+    } else if (ch === '}') {
+      inBrace = Math.max(0, inBrace - 1);
+    } else if (ch === '>' && inBrace === 0) {
+      return content.slice(startIndex, idx);
+    }
+    idx++;
+  }
+  return null;
+}
+
+// Brace-aware QML block scanner: starts right after the opening "{" and
+// returns the block body, ignoring braces inside template literals, string
+// literals and line comments.
+function scanQmlBlockBody(content, startIndex) {
+  let idx = startIndex;
+  let depth = 1;
+  let inBacktick = false;
+  let inQuote = null;
+  let inLineComment = false;
+
+  while (idx < content.length) {
+    const ch = content[idx];
+    const prevCh = idx > 0 ? content[idx - 1] : '';
+
+    if (inLineComment) {
+      if (ch === '\n') inLineComment = false;
+    } else if (inBacktick) {
+      if (ch === '`' && prevCh !== '\\') inBacktick = false;
+    } else if (inQuote) {
+      if (ch === inQuote && prevCh !== '\\') inQuote = null;
+    } else if (ch === '/' && content[idx + 1] === '/') {
+      inLineComment = true;
+      idx++;
+    } else if (ch === '`') {
+      inBacktick = true;
+    } else if (ch === '"' || ch === "'") {
+      inQuote = ch;
+    } else if (ch === '{') {
+      depth++;
+    } else if (ch === '}') {
+      depth--;
+      if (depth === 0) return content.slice(startIndex, idx);
+    }
+    idx++;
+  }
+  return null;
+}
+
 const specialMap = {
   'scrollbar': { navId: 'scroll-area', reactDoc: 'ScrollAreaDocPage.tsx', qtDoc: 'ScrollAreaDocPage.qml' },
   'data-table': { navId: 'generic-data-table', reactDoc: 'GenericDataTableDocPage.tsx', qtDoc: 'GenericDataTableDocPage.qml' },
@@ -151,6 +222,20 @@ export function extractReactDocMetadata(content) {
   }
   meta.previewTitle = meta.previews[0]?.title || '';
 
+  meta.anatomies = [];
+  for (const aMatch of content.matchAll(/<DocAnatomy\b/g)) {
+    const attrs = scanJsxElementAttrs(content, aMatch.index + aMatch[0].length);
+    if (attrs === null) continue;
+    const reactCodeMatch = attrs.match(/reactCode=\{(?:`([^`]*)`|"((?:[^"\\]|\\.)*)")\}/s);
+    const qtCodeMatch = attrs.match(/qtCode=\{(?:`([^`]*)`|"((?:[^"\\]|\\.)*)")\}/s);
+    const idMatch = attrs.match(/\bid=(?:["']([^"']+)["']|\{["']([^"']+)["']\})/);
+    meta.anatomies.push({
+      id: idMatch ? (idMatch[1] || idMatch[2]) : 'anatomy',
+      hasReactCode: !!reactCodeMatch && (reactCodeMatch[1] || reactCodeMatch[2] || '').trim() !== '',
+      hasQtCode: !!qtCodeMatch && (qtCodeMatch[1] || qtCodeMatch[2] || '').trim() !== '',
+    });
+  }
+
   const kbMatch = content.match(/KeyboardShortcutsTable\s*\{?[^>]*?componentId[:=]\s*["']([^"']+)["']/);
   if (kbMatch) meta.keyboardComponentId = kbMatch[1];
 
@@ -230,6 +315,22 @@ export function extractQtDocMetadata(content) {
   }
   meta.previewTitle = meta.previews[0]?.title || '';
   meta.reactCode = meta.previews[0]?.reactCode || '';
+
+  meta.anatomies = [];
+  const qAnatomyRegex = /\bDocAnatomy\s*\{/g;
+  let qAnatomyMatch;
+  while ((qAnatomyMatch = qAnatomyRegex.exec(content)) !== null) {
+    const body = scanQmlBlockBody(content, qAnatomyMatch.index + qAnatomyMatch[0].length);
+    if (body === null) continue;
+    const reactCodeMatch = body.match(/\breactCode\s*:\s*(?:`([^`]*)`|"((?:[^"\\]|\\.)*)")/s);
+    const qtCodeMatch = body.match(/\bqtCode\s*:\s*(?:`([^`]*)`|"((?:[^"\\]|\\.)*)")/s);
+    const idMatch = body.match(/\bsectionId\s*:\s*["']([^"']+)["']/);
+    meta.anatomies.push({
+      id: idMatch ? idMatch[1] : 'anatomy',
+      hasReactCode: !!reactCodeMatch && (reactCodeMatch[1] || reactCodeMatch[2] || '').trim() !== '',
+      hasQtCode: !!qtCodeMatch && (qtCodeMatch[1] || qtCodeMatch[2] || '').trim() !== '',
+    });
+  }
 
   const kbMatch = content.match(/KeyboardShortcutsTable\s*\{[^}]*?componentId:\s*["']([^"']+)["']/s);
   if (kbMatch) meta.keyboardComponentId = kbMatch[1];
@@ -391,7 +492,48 @@ export function verifyShowcaseParity(options = {}) {
       }
     }
 
-    // 5. Component-Specific Parity Gates
+    // 5. DocAnatomy Contract Gate
+    // Every page that declares an "anatomy" TOC section must render the shared
+    // DocAnatomy component on both stacks (never a hand-rolled section), and
+    // every DocAnatomy instance must supply both language snippets.
+    const hasAnatomyToc = reactTocIds.includes('anatomy') || qtTocIds.includes('anatomy');
+    const reactAnatomies = reactMeta.anatomies || [];
+    const qtAnatomies = qtMeta.anatomies || [];
+
+    if (hasAnatomyToc && reactAnatomies.length === 0) {
+      errors.push(
+        `[${base}] Page declares an "anatomy" TOC section but React does not render the shared <DocAnatomy> component`
+      );
+    }
+    if (hasAnatomyToc && qtAnatomies.length === 0) {
+      errors.push(
+        `[${base}] Page declares an "anatomy" TOC section but Qt does not render the shared DocAnatomy component`
+      );
+    }
+
+    if (reactAnatomies.length !== qtAnatomies.length) {
+      errors.push(
+        `[${base}] DocAnatomy count mismatch: React has ${reactAnatomies.length}, but Qt has ${qtAnatomies.length}`
+      );
+    }
+
+    const minAnatomies = Math.min(reactAnatomies.length, qtAnatomies.length);
+    for (let i = 0; i < minAnatomies; i++) {
+      if (!reactAnatomies[i].hasReactCode) {
+        errors.push(`[${base}] React DocAnatomy[${i}] is missing a non-empty 'reactCode' prop`);
+      }
+      if (!reactAnatomies[i].hasQtCode) {
+        errors.push(`[${base}] React DocAnatomy[${i}] is missing a non-empty 'qtCode' prop`);
+      }
+      if (!qtAnatomies[i].hasReactCode) {
+        errors.push(`[${base}] Qt DocAnatomy[${i}] is missing a non-empty 'reactCode' property`);
+      }
+      if (!qtAnatomies[i].hasQtCode) {
+        errors.push(`[${base}] Qt DocAnatomy[${i}] is missing a non-empty 'qtCode' property`);
+      }
+    }
+
+    // 6. Component-Specific Parity Gates
     if (base === 'splitter') {
       const rIds = reactTocIds.join(',');
       const qIds = qtTocIds.join(',');

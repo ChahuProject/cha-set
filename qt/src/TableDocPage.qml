@@ -142,28 +142,10 @@ DocLayout {
     }
 
     // Section 3: Anatomy
-    Column {
+    DocAnatomy {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Anatomy"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        DocText {
-            text: "Import ChaSetTable and declare column schemas and row datasets."
-            color: root.cMutedFg
-            font.pixelSize: Typography.sizeBody
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: `import ChaSet\n\nChaSetTable {\n    width: parent.width\n    columns: [\n        { key: "id", title: "ID", width: 80 },\n        { key: "name", title: "Name" },\n        { key: "role", title: "Role", align: "right" }\n    ]\n    rows: [\n        { id: 1, name: "Alice", role: "Admin" },\n        { id: 2, name: "Bob", role: "Editor" }\n    ]\n}`
-        }
+        qtCode: `import ChaSet\n\nChaSetTable {\n    width: parent.width\n    caption: "A list of recent records."\n    columns: [\n        { key: "name", title: "Name" },\n        { key: "status", title: "Status" }\n    ]\n    rows: [\n        { name: "Alpha", status: "Active" }\n    ]\n}`
+        reactCode: `import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from '@chahu/cha-set';\n\n<Table>\n  <TableCaption>A list of recent records.</TableCaption>\n  <TableHeader>\n    <TableRow>\n      <TableHead>Name</TableHead>\n      <TableHead>Status</TableHead>\n    </TableRow>\n  </TableHeader>\n  <TableBody>\n    <TableRow>\n      <TableCell>Alpha</TableCell>\n      <TableCell>Active</TableCell>\n    </TableRow>\n  </TableBody>\n  <TableFooter>\n    <TableRow>\n      <TableCell colSpan={2}>Footer summary</TableCell>\n    </TableRow>\n  </TableFooter>\n</Table>`
     }
 
     // Section 4: Examples & States

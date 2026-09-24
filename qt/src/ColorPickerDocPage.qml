@@ -194,28 +194,10 @@ DocLayout {
     }
 
     // Section 3: Anatomy
-    Column {
+    DocAnatomy {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Anatomy"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        DocText {
-            text: "Import and render ChaSetColorPicker directly in your QML scene."
-            color: root.cMutedFg
-            font.pixelSize: Typography.sizeBody
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: `import ChaSet\n\nChaSetColorPicker {\n    value: "#1d7ae0"\n    mode: "inline"\n    onHexChanged: function(newHex) {\n        console.log("Color selected:", newHex)\n    }\n}`
-        }
+        qtCode: `import ChaSet\n\nChaSetColorPicker {\n    value: "#1d7ae0"\n    mode: "popover"\n    size: "default"\n    onColorChanged: accentColor = color\n}`
+        reactCode: `import { ColorPicker } from '@chahu/cha-set';\n\n<ColorPicker\n  value={accentColor}\n  mode="popover"\n  onChange={setAccentColor}\n/>`
     }
 
     // Section 4: Examples & States

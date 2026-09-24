@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Input, type InputSize, Button, Badge, Tabs, TabsList, TabsTrigger, Checkbox, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -161,22 +162,11 @@ export function InputDocPage() {
       </section>
 
       {/* 3. Anatomy */}
-      <section id="anatomy" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Import and render the Input component directly in your React JSX or Qt QML tree.
-        </p>
-        <CodeBlock
-          code={`import { Input } from '@chahu/cha-set';
-
-export function InputDemo() {
-  return <Input type="email" placeholder="Email" clearable />;
-}`}
-          language="tsx"
-        />
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Input } from '@chahu/cha-set';\n\n<Input type="email" placeholder="Email" clearable />`}
+        qtCode={`import ChaSet\n\nChaSetInput {\n    type: "email"\n    placeholder: "Email"\n    clearable: true\n}`}
+      />
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">

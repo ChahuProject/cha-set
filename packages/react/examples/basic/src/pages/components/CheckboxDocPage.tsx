@@ -3,6 +3,7 @@ import { Tabs, TabsList, TabsTrigger, Card, CodeBlock } from '@chahu/cha-set';
 import { Checkbox, type CheckboxSize } from '../../../../../src/checkbox';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -158,31 +159,11 @@ export function CheckboxDocPage() {
       </section>
 
       {/* 3. Anatomy */}
-      <section id="anatomy" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Render Checkbox standalone or with companion labels and descriptions in React JSX or Qt QML trees.
-        </p>
-        <CodeBlock
-          code={`import { Checkbox } from '@chahu/cha-set';
-
-export function CheckboxDemo() {
-  const [agree, setAgree] = React.useState(false);
-
-  return (
-    <Checkbox
-      checked={agree}
-      onCheckedChange={setAgree}
-      label="Service agreement"
-      description="I agree to the service agreement and terms of use."
-    />
-  );
-}`}
-          language="tsx"
-        />
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Checkbox } from '@chahu/cha-set';\n\n<Checkbox\n  checked={agree}\n  onCheckedChange={setAgree}\n  label="Service agreement"\n  description="I agree to the service agreement and terms of use."\n/>`}
+        qtCode={`import ChaSet\n\nChaSetCheckbox {\n    checked: agree\n    label: "Service agreement"\n    description: "I agree to the service agreement and terms of use."\n    onToggled: agree = checked\n}`}
+      />
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">

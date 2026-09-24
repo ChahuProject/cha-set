@@ -147,28 +147,10 @@ DocLayout {
     }
 
     // Section 3: Anatomy
-    Column {
+    DocAnatomy {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Anatomy"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        DocText {
-            text: "Import and render ChaSetSwitch directly in your QML scene."
-            color: root.cMutedFg
-            font.pixelSize: Typography.sizeBody
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: `import ChaSet\n\nChaSetSwitch {\n    checked: false\n    label: "Enable notifications"\n    onToggled: function(checked) {\n        console.log("Switch state:", checked)\n    }\n}`
-        }
+        qtCode: `import ChaSet\n\nChaSetSwitch {\n    checked: enabled\n    label: "Enable Notifications"\n    description: "Receive daily push updates on this device."\n    onToggled: enabled = checked\n}`
+        reactCode: `import { Switch } from '@chahu/cha-set';\n\n<Switch\n  checked={enabled}\n  onCheckedChange={setEnabled}\n  label="Enable Notifications"\n  description="Receive daily push updates on this device."\n/>`
     }
 
     // Section 4: Examples & States

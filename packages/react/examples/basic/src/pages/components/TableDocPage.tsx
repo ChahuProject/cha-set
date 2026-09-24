@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption, Badge, Input, Tabs, TabsList, TabsTrigger, Checkbox, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -215,52 +216,11 @@ export function TableDocPage() {
       </section>
 
       {/* 3. Anatomy */}
-      <section id="anatomy" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Construct semantic and accessible tables using shadcn compound subcomponents.
-        </p>
-        <CodeBlock
-          code={`import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableCaption,
-} from '@chahu/cha-set';
-
-export function TableDemo() {
-  return (
-    <Table>
-      <TableCaption>A list of recent records.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Header 1</TableHead>
-          <TableHead>Header 2</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell>Data 1</TableCell>
-          <TableCell>Data 2</TableCell>
-        </TableRow>
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={2}>Footer summary</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
-  );
-}`}
-          language="tsx"
-        />
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from '@chahu/cha-set';\n\n<Table>\n  <TableCaption>A list of recent records.</TableCaption>\n  <TableHeader>\n    <TableRow>\n      <TableHead>Name</TableHead>\n      <TableHead>Status</TableHead>\n    </TableRow>\n  </TableHeader>\n  <TableBody>\n    <TableRow>\n      <TableCell>Alpha</TableCell>\n      <TableCell>Active</TableCell>\n    </TableRow>\n  </TableBody>\n  <TableFooter>\n    <TableRow>\n      <TableCell colSpan={2}>Footer summary</TableCell>\n    </TableRow>\n  </TableFooter>\n</Table>`}
+        qtCode={`import ChaSet\n\nChaSetTable {\n    width: parent.width\n    caption: "A list of recent records."\n    columns: [\n        { key: "name", title: "Name" },\n        { key: "status", title: "Status" }\n    ]\n    rows: [\n        { name: "Alpha", status: "Active" }\n    ]\n}`}
+      />
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">

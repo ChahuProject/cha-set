@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, type DialogSizeOption, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -220,50 +221,11 @@ export function DialogDocPage() {
       </section>
 
       {/* 3. Anatomy */}
-      <section id="anatomy" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Dialog is composed of modular compound components following accessible modal standards.
-        </p>
-        <CodeBlock
-          code={`import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from '@chahu/cha-set';
-
-export function DialogDemo() {
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>Open</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Dialog Title</DialogTitle>
-          <DialogDescription>Dialog Description</DialogDescription>
-        </DialogHeader>
-        <div>Modal Body Content</div>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogClose>
-          <Button>Confirm</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-}`}
-          language="tsx"
-        />
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, Button } from '@chahu/cha-set';\n\n<Dialog>\n  <DialogTrigger asChild>\n    <Button>Open</Button>\n  </DialogTrigger>\n  <DialogContent>\n    <DialogHeader>\n      <DialogTitle>Dialog Title</DialogTitle>\n      <DialogDescription>Dialog Description</DialogDescription>\n    </DialogHeader>\n    <DialogFooter>\n      <DialogClose asChild>\n        <Button variant="outline">Cancel</Button>\n      </DialogClose>\n      <Button>Confirm</Button>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>`}
+        qtCode={`import ChaSet\n\nChaSetDialog {\n    open: dialogOpen\n    size: "default"\n    title: "Dialog Title"\n    description: "Dialog Description"\n    showCloseButton: true\n    onAccepted: dialogOpen = false\n    onRejected: dialogOpen = false\n}`}
+      />
 
       {/* 4. Examples & States */}
       <section id="examples" className="scroll-mt-20 my-10">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, type CardVariant, Button, Badge, Tabs, TabsList, TabsTrigger, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -142,42 +143,11 @@ export function CardDocPage() {
       </section>
 
       {/* 3. Anatomy */}
-      <section id="anatomy" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Card is composed of modular building blocks for flexible layouts.
-        </p>
-        <CodeBlock
-          code={`import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@chahu/cha-set';
-
-export function Example() {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p>Main content area</p>
-      </CardContent>
-      <CardFooter>
-        <p>Footer actions</p>
-      </CardFooter>
-    </Card>
-  );
-}`}
-          language="tsx"
-        />
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@chahu/cha-set';\n\n<Card>\n  <CardHeader>\n    <CardTitle>Card Title</CardTitle>\n    <CardDescription>Card Description</CardDescription>\n  </CardHeader>\n  <CardContent>Main content area</CardContent>\n  <CardFooter>Footer actions</CardFooter>\n</Card>`}
+        qtCode={`import ChaSet\n\nChaSetCard {\n    variant: "default"\n    ChaSetCardHeader {\n        ChaSetCardTitle { text: "Card Title" }\n        ChaSetCardDescription { text: "Card Description" }\n    }\n    ChaSetCardContent {\n        ChaSetLabel { text: "Main content area" }\n    }\n    ChaSetCardFooter {\n        ChaSetButton { size: "sm"; text: "Footer action" }\n    }\n}`}
+      />
 
       {/* 4. Variants */}
       <section id="variants" className="scroll-mt-20 my-10">

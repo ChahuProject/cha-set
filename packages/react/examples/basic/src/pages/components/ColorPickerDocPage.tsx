@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ColorPicker, type ColorPickerMode, type ColorPickerSize, Tabs, TabsList, TabsTrigger, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
@@ -165,33 +166,11 @@ export function ColorPickerDocPage() {
       </section>
 
       {/* 3. Anatomy */}
-      <section id="anatomy" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Render ColorPicker inline inside forms and inspectors, or in popover mode as a compact swatch button.
-        </p>
-        <CodeBlock
-          code={`import { ColorPicker } from '@chahu/cha-set';
-
-export function ColorPickerDemo() {
-  const [accentColor, setAccentColor] = React.useState('#1d7ae0');
-
-  return (
-    <div className="flex flex-col gap-3 max-w-xs">
-      <label className="text-sm font-medium">Theme Accent</label>
-      <ColorPicker
-        value={accentColor}
-        mode="popover"
-        onChange={setAccentColor}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ColorPicker } from '@chahu/cha-set';\n\n<ColorPicker\n  value={accentColor}\n  mode="popover"\n  onChange={setAccentColor}\n/>`}
+        qtCode={`import ChaSet\n\nChaSetColorPicker {\n    value: "#1d7ae0"\n    mode: "popover"\n    size: "default"\n    onColorChanged: accentColor = color\n}`}
       />
-    </div>
-  );
-}`}
-          language="tsx"
-        />
-      </section>
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
