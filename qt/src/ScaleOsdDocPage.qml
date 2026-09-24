@@ -196,6 +196,7 @@ DocLayout {
                     { name: "ignoreUiScale", type: "bool", defaultVal: "true", description: "Locks physical pixel size and renders invariant regardless of interface scaling." },
                     { name: "autoHideDuration", type: "int", defaultVal: "1400", description: "Duration in ms before auto-hiding (pauses on hover)." },
                     { name: "showControls", type: "bool", defaultVal: "true", description: "Whether to display +/- and reset buttons." },
+                    { name: "showTooltips", type: "bool", defaultVal: "true", description: "Whether to display hover tooltip hints for control buttons." },
                     { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all controls and user interaction." }
                 ]
             }

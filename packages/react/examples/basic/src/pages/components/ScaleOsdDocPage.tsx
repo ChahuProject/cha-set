@@ -217,6 +217,12 @@ export function ScaleOsdDocPage() {
               description: 'Whether to display +/- and reset buttons.',
             },
             {
+              name: 'showTooltips',
+              type: 'boolean',
+              default: 'true',
+              description: 'Whether to display hover tooltip hints for control buttons.',
+            },
+            {
               name: 'placement',
               type: '"bottom-center" | "top-center" | "bottom-right" | "top-right"',
               default: '"bottom-center"',

@@ -1,7 +1,5 @@
 // ChaSetScaleOsd.qml — Cross-Stack Scale OSD Component
 import QtQuick 6.10
-import QtQuick.Controls 6.10
-import QtQuick.Layouts 6.10
 import ChaSet
 
 Item {
@@ -15,6 +13,7 @@ Item {
     property bool ignoreUiScale: true
     property int autoHideDuration: 1400
     property bool showControls: true
+    property bool showTooltips: true
     property bool disabled: false
     property var format: null
     property string placement: "bottom-center"
@@ -28,6 +27,52 @@ Item {
     property bool osdVisible: defaultVisible
     readonly property bool pointerOver: (pillHover.hovered || minusHover.hovered || plusHover.hovered || resetHover.hovered)
     property bool _initialized: false
+
+    // In-capsule scale-invariant tooltip management for control buttons
+    readonly property Item _hoveredBtn: {
+        if (!root.showControls || root.disabled || !root.showTooltips) return null;
+        if (minusHover.hovered && !minusBtn.minusDisabled) return minusBtn;
+        if (plusHover.hovered && !plusBtn.plusDisabled) return plusBtn;
+        if (resetHover.hovered && !resetBtn.resetDisabled) return resetBtn;
+        return null;
+    }
+    readonly property string _hoveredBtnText: {
+        if (_hoveredBtn === minusBtn) return qsTr("缩小");
+        if (_hoveredBtn === plusBtn) return qsTr("放大");
+        if (_hoveredBtn === resetBtn) return qsTr("重置");
+        return "";
+    }
+    property bool _tooltipVisible: false
+
+    Timer {
+        id: tooltipDelayTimer
+        interval: 400
+        repeat: false
+        running: false
+        onTriggered: {
+            if (root._hoveredBtn) {
+                root._tooltipVisible = true;
+            }
+        }
+    }
+
+    on_HoveredBtnChanged: {
+        if (_hoveredBtn) {
+            if (!_tooltipVisible) {
+                tooltipDelayTimer.restart();
+            }
+        } else {
+            tooltipDelayTimer.stop();
+            _tooltipVisible = false;
+        }
+    }
+
+    onOsdVisibleChanged: {
+        if (!osdVisible) {
+            tooltipDelayTimer.stop();
+            _tooltipVisible = false;
+        }
+    }
 
     readonly property bool isLg: root.size === "lg"
     readonly property real effectiveMin: (root.steps && root.steps.length > 0) ? Math.min.apply(null, root.steps) : root.min
@@ -213,12 +258,6 @@ Item {
                     color: ThemeTokens.text
                 }
 
-                ToolTip {
-                    visible: minusHover.hovered && !minusBtn.minusDisabled
-                    text: qsTr("缩小")
-                    delay: 400
-                }
-
                 HoverHandler {
                     id: minusHover
                     cursorShape: minusBtn.minusDisabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
@@ -249,12 +288,6 @@ Item {
                     size: root.isLg ? 18 : 15
                     ignoreUiScale: root.ignoreUiScale
                     color: ThemeTokens.text
-                }
-
-                ToolTip {
-                    visible: plusHover.hovered && !plusBtn.plusDisabled
-                    text: qsTr("放大")
-                    delay: 400
                 }
 
                 HoverHandler {
@@ -289,12 +322,6 @@ Item {
                     color: ThemeTokens.text
                 }
 
-                ToolTip {
-                    visible: resetHover.hovered && !resetBtn.resetDisabled
-                    text: qsTr("重置")
-                    delay: 400
-                }
-
                 HoverHandler {
                     id: resetHover
                     cursorShape: resetBtn.resetDisabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
@@ -306,6 +333,53 @@ Item {
                     onTapped: root.resetZoom()
                 }
             }
+        }
+    }
+
+    // Scale-invariant in-capsule tooltip bubble strictly anchored within root coordinate space
+    Rectangle {
+        id: osdTooltip
+        z: 100
+        visible: root.osdVisible && root._tooltipVisible && root._hoveredBtn !== null
+        opacity: visible ? 1.0 : 0.0
+
+        Behavior on opacity {
+            enabled: root.animated && ThemeTokens.animationsEnabled
+            NumberAnimation {
+                duration: ThemeTokens.motionShort
+                easing.type: ThemeTokens.easeStandard
+            }
+        }
+
+        color: ThemeTokens.dark ? "#f8fafc" : "#020817"
+        border.color: ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.15) : Qt.rgba(255, 255, 255, 0.15)
+        border.width: 1
+        radius: root.ignoreUiScale ? 4 : ThemeTokens.dp(4)
+
+        implicitWidth: osdTooltipText.implicitWidth + (root.ignoreUiScale ? 16 : ThemeTokens.dp(16))
+        implicitHeight: osdTooltipText.implicitHeight + (root.ignoreUiScale ? 8 : ThemeTokens.dp(8))
+        width: implicitWidth
+        height: implicitHeight
+
+        // Precise local horizontal centering relative to the hovered button
+        x: root._hoveredBtn ? Math.round(contentRow.x + root._hoveredBtn.x + (root._hoveredBtn.width - width) / 2) : 0
+        y: {
+            var margin = root.ignoreUiScale ? 6 : ThemeTokens.dp(6);
+            if (root.placement.indexOf("top") !== -1) {
+                return Math.round(pill.y + pill.height + margin);
+            } else {
+                return Math.round(pill.y - height - margin);
+            }
+        }
+
+        Text {
+            id: osdTooltipText
+            anchors.centerIn: parent
+            text: root._hoveredBtnText
+            color: ThemeTokens.dark ? "#020817" : "#f8fafc"
+            font.pixelSize: root.ignoreUiScale ? 12 : Typography.sizeCaption
+            font.weight: Typography.weightMedium
+            font.family: Typography.familySans
         }
     }
 }

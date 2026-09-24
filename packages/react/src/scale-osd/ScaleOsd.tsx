@@ -40,6 +40,8 @@ export interface ScaleOsdProps
   disabled?: boolean;
   /** Whether the OSD ignores global UI scale and maintains fixed physical pixel geometry (default true) */
   ignoreUiScale?: boolean;
+  /** Whether to show tooltip titles on buttons (default true) */
+  showTooltips?: boolean;
   /** Callbacks */
   onChange?: (value: number) => void;
   onStep?: (delta: number) => void;
@@ -81,6 +83,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       size = 'default',
       animated = true,
       ignoreUiScale = true,
+      showTooltips = true,
       onChange,
       onStep,
       onReset,
@@ -332,7 +335,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
             <button
               type="button"
               aria-label="Zoom Out"
-              title="缩小"
+              title={showTooltips ? '缩小' : undefined}
               disabled={disabled || currentValue <= min}
               onClick={() => handleStep(-1)}
               className={cn(
@@ -349,7 +352,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
             <button
               type="button"
               aria-label="Zoom In"
-              title="放大"
+              title={showTooltips ? '放大' : undefined}
               disabled={disabled || currentValue >= max}
               onClick={() => handleStep(1)}
               className={cn(
@@ -366,7 +369,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
             <button
               type="button"
               aria-label="Reset Zoom"
-              title="重置"
+              title={showTooltips ? '重置' : undefined}
               disabled={disabled || Math.abs(currentValue - 1.0) < 0.001}
               onClick={handleReset}
               className={cn(

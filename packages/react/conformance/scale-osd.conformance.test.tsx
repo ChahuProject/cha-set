@@ -20,6 +20,7 @@ describe('ScaleOsd conformance (spec contract)', () => {
       size: 'default',
       animated: true,
       ignoreUiScale: true,
+      showTooltips: true,
     } as const;
 
     expect(() => scaleOsdSchema.parse(fixture)).not.toThrow();
@@ -37,6 +38,7 @@ describe('ScaleOsd conformance (spec contract)', () => {
     expect(defaultParsed.size).toBe('default');
     expect(defaultParsed.animated).toBe(true);
     expect(defaultParsed.ignoreUiScale).toBe(true);
+    expect(defaultParsed.showTooltips).toBe(true);
 
     for (const p of ['bottom-center', 'top-center', 'bottom-right', 'top-right'] as const) {
       expect(() => scaleOsdSchema.parse({ placement: p })).not.toThrow();

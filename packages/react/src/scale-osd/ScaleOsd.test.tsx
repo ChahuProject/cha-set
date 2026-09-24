@@ -247,5 +247,21 @@ describe('ScaleOsd', () => {
     expect(osd.style.left).toBe('0px');
     expect(osd.style.right).toBe('0px');
   });
+
+  it('renders tooltips by default and suppresses them when showTooltips is false', () => {
+    const { rerender } = render(<ScaleOsd visible value={1.0} />);
+    const zoomIn = screen.getByLabelText('Zoom In');
+    const zoomOut = screen.getByLabelText('Zoom Out');
+    const reset = screen.getByLabelText('Reset Zoom');
+
+    expect(zoomIn).toHaveAttribute('title', '放大');
+    expect(zoomOut).toHaveAttribute('title', '缩小');
+    expect(reset).toHaveAttribute('title', '重置');
+
+    rerender(<ScaleOsd visible value={1.0} showTooltips={false} />);
+    expect(zoomIn).not.toHaveAttribute('title');
+    expect(zoomOut).not.toHaveAttribute('title');
+    expect(reset).not.toHaveAttribute('title');
+  });
 });
 
