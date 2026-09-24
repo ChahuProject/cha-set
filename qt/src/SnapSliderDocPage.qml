@@ -105,6 +105,8 @@ DocLayout {
             }
 
             DocText {
+                width: parent.width
+                wrap: true
                 text: "Thumb hover and focus transitions animate over ThemeTokens.motionQuick (90ms) with ThemeTokens.easeStandard. Dragging tracks pointer without lag in 60fps."
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
@@ -130,6 +132,8 @@ DocLayout {
             }
 
             DocText {
+                width: parent.width
+                wrap: true
                 text: "Keyboard shortcuts and discrete step navigation patterns."
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall

@@ -49,6 +49,9 @@ DocLayout {
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
+                    width: ThemeTokens.dp(480)
+                    wrap: true
+                    horizontalAlignment: Text.AlignHCenter
                     text: "Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset."
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
@@ -181,6 +184,9 @@ DocLayout {
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
+                    width: ThemeTokens.dp(480)
+                    wrap: true
+                    horizontalAlignment: Text.AlignHCenter
                     text: "Top and bottom pane split with horizontal divider line. Drag vertically to resize console output."
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall

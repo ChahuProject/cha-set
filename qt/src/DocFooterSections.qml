@@ -52,6 +52,8 @@ Column {
         }
 
         DocText {
+            width: parent.width
+            wrap: true
             text: "Keyboard shortcuts and interaction patterns for this component."
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody

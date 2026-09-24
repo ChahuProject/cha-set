@@ -73,6 +73,8 @@ DocLayout {
             font.weight: Typography.weightSemibold
         }
         DocText {
+            width: parent.width
+            wrap: true
             text: "Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and chrome-less embedding for inline prose."
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
@@ -92,7 +94,7 @@ DocLayout {
                 language: "tsx"
                 code: root.sampleCode
                 showLineNumbers: true
-                maxHeight: 220
+                maxHeight: ThemeTokens.dp(220)
             }
         }
 
@@ -160,6 +162,8 @@ DocLayout {
             font.weight: Typography.weightSemibold
         }
         DocText {
+            width: parent.width
+            wrap: true
             text: "Pass a files array to render a tabbed group. Each tab carries its own language, and the copy button always targets the active file."
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
@@ -168,7 +172,7 @@ DocLayout {
             width: parent.width
             files: root.multiFileSample
             showLineNumbers: true
-            maxHeight: 220
+            maxHeight: ThemeTokens.dp(220)
         }
     }
 

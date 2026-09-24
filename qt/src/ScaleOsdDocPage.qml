@@ -130,6 +130,8 @@ DocLayout {
             }
 
             DocText {
+                width: parent.width
+                wrap: true
                 text: "OSD enter and exit transitions animate smoothly over ThemeTokens.motionShort (120ms) using ThemeTokens.easeStandard. Auto-hide timer runs with a 1400ms countdown, pausing on mouse hover."
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
@@ -155,6 +157,8 @@ DocLayout {
             }
 
             DocText {
+                width: parent.width
+                wrap: true
                 text: "Keyboard shortcuts and button activation patterns."
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall

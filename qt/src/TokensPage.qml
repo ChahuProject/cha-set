@@ -13,7 +13,7 @@ DocLayout {
         { id: "type", title: "Typography & Radius" }
     ]
 
-    property int customRadius: 8
+    property int customRadius: ThemeTokens.dp(8)
     property color cFg: ThemeTokens.text
     property color cMutedFg: ThemeTokens.subduedText
     property color cCard: ThemeTokens.panel
@@ -45,11 +45,11 @@ DocLayout {
     // Section 1: Color Palette
     Column {
         width: parent.width
-        spacing: 14
+        spacing: ThemeTokens.dp(14)
 
         Column {
             width: parent.width
-            spacing: 4
+            spacing: ThemeTokens.dp(4)
             DocText { text: "Palette · Semantic Core Tokens"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
             DocText {
                 width: parent.width
@@ -63,8 +63,8 @@ DocLayout {
 
         Grid {
             columns: 4
-            columnSpacing: 12
-            rowSpacing: 12
+            columnSpacing: ThemeTokens.dp(12)
+            rowSpacing: ThemeTokens.dp(12)
             width: parent.width
 
             Repeater {
@@ -89,9 +89,9 @@ DocLayout {
                 ]
                 delegate: Rectangle {
                     required property var modelData
-                    width: (parent ? parent.width - 36 : 760) / 4
-                    height: 100
-                    radius: 8
+                    width: (parent ? parent.width - ThemeTokens.dp(36) : ThemeTokens.dp(760)) / 4
+                    height: ThemeTokens.dp(100)
+                    radius: ThemeTokens.dp(8)
                     color: ThemeTokens.panel
                     border.color: ThemeTokens.border
                     border.width: 1
@@ -101,7 +101,7 @@ DocLayout {
                         anchors.fill: parent
                         Rectangle {
                             width: parent.width
-                            height: 52
+                            height: ThemeTokens.dp(52)
                             color: modelData[1]
                             border.color: ThemeTokens.border
                             border.width: 0.5
@@ -109,11 +109,11 @@ DocLayout {
                             Rectangle {
                                 visible: root.copiedToken === modelData[0]
                                 anchors.centerIn: parent
-                                width: 72; height: 22; radius: 11
+                                width: ThemeTokens.dp(72); height: ThemeTokens.dp(22); radius: ThemeTokens.dp(11)
                                 color: Qt.rgba(0, 0, 0, 0.75)
                                 Row {
                                     anchors.centerIn: parent
-                                    spacing: 4
+                                    spacing: ThemeTokens.dp(4)
                                     ChaSetIcon { name: "check"; size: 12; color: "#10b981"; anchors.verticalCenter: parent.verticalCenter }
                                     DocText { text: "Copied"; color: "#10b981"; font.pixelSize: Typography.sizeMicro; font.weight: Typography.weightBold; anchors.verticalCenter: parent.verticalCenter }
                                 }
@@ -121,9 +121,9 @@ DocLayout {
                         }
 
                         Column {
-                            x: 8
-                            y: 6
-                            spacing: 2
+                            x: ThemeTokens.dp(8)
+                            y: ThemeTokens.dp(6)
+                            spacing: ThemeTokens.dp(2)
                             DocText {
                                 text: "--" + modelData[0]
                                 color: ThemeTokens.text
@@ -153,11 +153,11 @@ DocLayout {
     // Section 2: Typography & Radius & Charts
     Column {
         width: parent.width
-        spacing: 16
+        spacing: ThemeTokens.dp(16)
 
         Column {
             width: parent.width
-            spacing: 4
+            spacing: ThemeTokens.dp(4)
             DocText { text: "Typography / Radius / Charts"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
             DocText {
                 width: parent.width
@@ -172,7 +172,7 @@ DocLayout {
         // Radius Boxes
         Row {
             width: parent.width
-            spacing: 12
+            spacing: ThemeTokens.dp(12)
             Repeater {
                 model: [
                     ["radius-sm", 4, "0.25rem"],
@@ -182,16 +182,16 @@ DocLayout {
                 ]
                 delegate: Rectangle {
                     required property var modelData
-                    width: (parent ? parent.width - 36 : 760) / 4
-                    height: 64
-                    radius: modelData[1]
+                    width: (parent ? parent.width - ThemeTokens.dp(36) : ThemeTokens.dp(760)) / 4
+                    height: ThemeTokens.dp(64)
+                    radius: ThemeTokens.dp(modelData[1])
                     color: ThemeTokens.panel
                     border.color: ThemeTokens.border
                     border.width: 1
 
                     Column {
                         anchors.centerIn: parent
-                        spacing: 2
+                        spacing: ThemeTokens.dp(2)
                         DocText { text: modelData[0]; color: ThemeTokens.text; font.pixelSize: Typography.sizeCaption; font.weight: Typography.weightBold; font.family: Typography.familyMono; anchors.horizontalCenter: parent.horizontalCenter }
                         DocText { text: modelData[2]; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeMicro; anchors.horizontalCenter: parent.horizontalCenter }
                     }
@@ -202,8 +202,8 @@ DocLayout {
         // Typography Weight & CJK Font Fallback Samples
         Rectangle {
             width: parent.width
-            implicitHeight: typeCol.implicitHeight + 28
-            radius: 8
+            implicitHeight: typeCol.implicitHeight + ThemeTokens.dp(28)
+            radius: ThemeTokens.dp(8)
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
@@ -211,11 +211,11 @@ DocLayout {
             Column {
                 id: typeCol
                 anchors.fill: parent
-                anchors.margins: 14
-                spacing: 12
+                anchors.margins: ThemeTokens.dp(14)
+                spacing: ThemeTokens.dp(12)
 
                 Row {
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Font System · CJK Fallback & Typography Scale"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                     ChaSetBadge { text: "Zero-SimSun Guarantee"; variant: "secondary" }
                 }
@@ -231,10 +231,12 @@ DocLayout {
                 }
 
                 Column {
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
                     width: parent.width
 
                     DocText {
+                        width: parent.width
+                        wrap: true
                         text: "Regular 400 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
                         color: ThemeTokens.text
                         font.family: Typography.familySans
@@ -242,6 +244,8 @@ DocLayout {
                         font.weight: Typography.weightRegular
                     }
                     DocText {
+                        width: parent.width
+                        wrap: true
                         text: "Medium 500 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
                         color: ThemeTokens.text
                         font.family: Typography.familySans
@@ -249,6 +253,8 @@ DocLayout {
                         font.weight: Typography.weightMedium
                     }
                     DocText {
+                        width: parent.width
+                        wrap: true
                         text: "Semibold 600 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
                         color: ThemeTokens.text
                         font.family: Typography.familySans
@@ -256,6 +262,8 @@ DocLayout {
                         font.weight: Typography.weightSemibold
                     }
                     DocText {
+                        width: parent.width
+                        wrap: true
                         text: "Bold 700 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
                         color: ThemeTokens.text
                         font.family: Typography.familySans
@@ -282,25 +290,29 @@ DocLayout {
 
                 Rectangle {
                     width: parent.width
-                    implicitHeight: monoCol.implicitHeight + 16
+                    implicitHeight: monoCol.implicitHeight + ThemeTokens.dp(16)
                     color: ThemeTokens.panelRaised
-                    radius: 6
+                    radius: ThemeTokens.dp(6)
                     border.color: ThemeTokens.border
                     border.width: 1
 
                     Column {
                         id: monoCol
                         anchors.fill: parent
-                        anchors.margins: 10
-                        spacing: 4
+                        anchors.margins: ThemeTokens.dp(10)
+                        spacing: ThemeTokens.dp(4)
 
                         DocText {
+                            width: parent.width
+                            wrap: true
                             text: "const fontSystem = ChaSet.FontSystem; // 自动处理中文字体回退，消除宋体锯齿"
                             color: ThemeTokens.text
                             font.family: Typography.familyMono
                             font.pixelSize: Typography.sizeSmall
                         }
                         DocText {
+                            width: parent.width
+                            wrap: true
                             text: "console.log(`[ChaSet] CJK glyphs: 字体平滑清晰, zero raster artifacts`);"
                             color: ThemeTokens.subduedText
                             font.family: Typography.familyMono
@@ -313,10 +325,10 @@ DocLayout {
 
         // Chart Bars
         Column {
-            spacing: 6
+            spacing: ThemeTokens.dp(6)
             DocText { text: "CHART PALETTE (FOLLOWS ACCENT)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.weight: Typography.weightBold; font.letterSpacing: 0.5 }
             Row {
-                spacing: 10
+                spacing: ThemeTokens.dp(10)
                 Repeater {
                     model: [
                         [1, ThemeTokens.accent, 40],
@@ -327,15 +339,15 @@ DocLayout {
                     ]
                     delegate: Rectangle {
                         required property var modelData
-                        width: 44
-                        height: modelData[2]
-                        radius: 4
+                        width: ThemeTokens.dp(44)
+                        height: ThemeTokens.dp(modelData[2])
+                        radius: ThemeTokens.dp(4)
                         color: modelData[1]
                         anchors.bottom: parent ? parent.bottom : undefined
                         DocText {
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.bottom: parent.top
-                            anchors.bottomMargin: 4
+                            anchors.bottomMargin: ThemeTokens.dp(4)
                             text: "--chart-" + parent.modelData[0]
                             color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeNano

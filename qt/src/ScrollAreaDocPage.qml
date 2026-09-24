@@ -491,10 +491,10 @@ export const CrossStackSpecification = {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "Vertical Cluster"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
-                    DocText { text: "• Top: [To Top] & [Page Up] (85% viewport step)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    DocText { text: "• Bottom: [Page Down] & [To Bottom]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    DocText { text: "• Auto-disabled when at boundary limits."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "Vertical Cluster"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Top: [To Top] & [Page Up] (85% viewport step)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Bottom: [Page Down] & [To Bottom]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Auto-disabled when at boundary limits."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                 }
             }
 
@@ -509,10 +509,10 @@ export const CrossStackSpecification = {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "Horizontal Cluster"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
-                    DocText { text: "• Left: [To Start] & [Page Left]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    DocText { text: "• Right: [Page Right] & [To End]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    DocText { text: "• Supports smooth animated interpolation."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "Horizontal Cluster"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Left: [To Start] & [Page Left]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Right: [Page Right] & [To End]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Supports smooth animated interpolation."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                 }
             }
         }

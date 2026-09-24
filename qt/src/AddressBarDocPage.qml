@@ -215,6 +215,8 @@ DocLayout {
             }
 
             DocText {
+                width: parent.width
+                wrap: true
                 text: "Breadcrumb segment hover highlights transition over ThemeTokens.motionQuick (100ms) with ThemeTokens.easeStandard curve. Suggestions popover renders with an entry scale and fade animation over 120ms."
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
@@ -241,6 +243,8 @@ DocLayout {
             }
 
             DocText {
+                width: parent.width
+                wrap: true
                 text: "Keyboard shortcuts and button activation patterns."
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall

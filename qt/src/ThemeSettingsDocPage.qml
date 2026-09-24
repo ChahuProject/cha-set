@@ -139,29 +139,29 @@ ChaSetThemeSettings {
 
         Rectangle {
             width: parent.width
-            implicitHeight: propsCol.implicitHeight + 24
-            radius: 8
+            implicitHeight: propsCol.implicitHeight + ThemeTokens.dp(24)
+            radius: ThemeTokens.dp(8)
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
 
             Column {
                 id: propsCol
-                x: 16
-                y: 12
-                width: parent.width - 32
-                spacing: 12
+                x: ThemeTokens.dp(16)
+                y: ThemeTokens.dp(12)
+                width: parent.width - ThemeTokens.dp(32)
+                spacing: ThemeTokens.dp(12)
 
-                DocText { text: "• config: var — Canonical theme configuration object matching ThemeConfig schema."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { text: "• disabled: bool — Disables all interactive controls and dims opacity. Default: false."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { text: "• showReset: bool — Whether to display the reset button in header. Default: true."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { text: "• showExport: bool — Whether to display the export JSON button in header. Default: true."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { text: "• showImport: bool — Whether to display the import button in header. Default: true."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { text: "• showTypography: bool — Whether to render typography selection rows. Default: false."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { text: "• textProvider: var — Optional i18n string resolver function (key, defaultText) => string."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { text: "• signal configChanged(var nextConfig) — Emitted when configuration values change."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
-                DocText { text: "• signal resetRequested() — Emitted when reset is clicked."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
-                DocText { text: "• signal exportRequested(string jsonString) — Emitted when export is clicked."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                DocText { width: parent.width; wrap: true; text: "• config: var — Canonical theme configuration object matching ThemeConfig schema."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                DocText { width: parent.width; wrap: true; text: "• disabled: bool — Disables all interactive controls and dims opacity. Default: false."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                DocText { width: parent.width; wrap: true; text: "• showReset: bool — Whether to display the reset button in header. Default: true."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                DocText { width: parent.width; wrap: true; text: "• showExport: bool — Whether to display the export JSON button in header. Default: true."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                DocText { width: parent.width; wrap: true; text: "• showImport: bool — Whether to display the import button in header. Default: true."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                DocText { width: parent.width; wrap: true; text: "• showTypography: bool — Whether to render typography selection rows. Default: false."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                DocText { width: parent.width; wrap: true; text: "• textProvider: var — Optional i18n string resolver function (key, defaultText) => string."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                DocText { width: parent.width; wrap: true; text: "• signal configChanged(var nextConfig) — Emitted when configuration values change."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                DocText { width: parent.width; wrap: true; text: "• signal resetRequested() — Emitted when reset is clicked."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                DocText { width: parent.width; wrap: true; text: "• signal exportRequested(string jsonString) — Emitted when export is clicked."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
             }
         }
     }

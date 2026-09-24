@@ -269,6 +269,8 @@ DocLayout {
             }
 
             DocText {
+                width: parent.width
+                wrap: true
                 text: "Card push-up and slide-in transitions animate smoothly over ThemeTokens.motionMedium (180ms) using ThemeTokens.easeStandard. Determinate progress width animates over 220ms, while indeterminate running tasks display an infinite 1.2s shimmer guarded by ThemeTokens.animationsEnabled."
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
@@ -295,6 +297,8 @@ DocLayout {
             }
 
             DocText {
+                width: parent.width
+                wrap: true
                 text: "Keyboard shortcuts and button activation patterns."
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
