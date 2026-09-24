@@ -64,7 +64,7 @@ Rectangle {
         if (flexCount > 0 && available > 0) {
             return available / flexCount;
         }
-        return totalWidth / columns.length;
+        return ThemeTokens.dp(80);
     }
 
     function getAlignment(alignStr) {
@@ -170,8 +170,31 @@ Rectangle {
                 required property int index
 
                 width: mainLayout.width
-                property real rowCalculatedHeight: root.effectiveRowHeight
-                height: Math.max(root.effectiveRowHeight, rowCalculatedHeight)
+                property real cellMaxNeededHeight: root.effectiveRowHeight
+                height: Math.max(root.effectiveRowHeight, cellMaxNeededHeight)
+
+                function updateRowHeight() {
+                    var maxNeeded = root.effectiveRowHeight;
+                    for (var i = 0; i < cellsRow.children.length; ++i) {
+                        var childItem = cellsRow.children[i];
+                        if (childItem && childItem.neededCellHeight !== undefined) {
+                            if (childItem.neededCellHeight > maxNeeded) {
+                                maxNeeded = childItem.neededCellHeight;
+                            }
+                        }
+                    }
+                    cellMaxNeededHeight = maxNeeded;
+                }
+
+                Connections {
+                    target: root
+                    function onEffectiveRowHeightChanged() {
+                        rowItem.updateRowHeight();
+                    }
+                }
+                onWidthChanged: {
+                    rowItem.updateRowHeight();
+                }
 
                 property bool isLastRow: index === (root.rows.length - 1) && (!root.caption || root.caption.length === 0)
                 bottomLeftRadius: isLastRow ? Math.max(0, root.radius - 1) : 0
@@ -196,15 +219,22 @@ Rectangle {
                 }
 
                 Row {
+                    id: cellsRow
                     anchors.fill: parent
                     Repeater {
                         model: root.columns
                         delegate: Item {
+                            id: cellDelegate
                             required property var modelData
                             required property int index
 
                             property var columnDef: modelData
                             property var rowRecord: rowItem.modelData
+                            property real neededCellHeight: (columnDef && columnDef.wrap && bodyCellText.contentHeight > 0)
+                                ? (bodyCellText.contentHeight + ThemeTokens.dp(16))
+                                : root.effectiveRowHeight
+
+                            onNeededCellHeightChanged: rowItem.updateRowHeight()
 
                             width: root.getColWidth(index, rowItem.width)
                             height: rowItem.height
@@ -325,10 +355,7 @@ Rectangle {
 
                                 onContentHeightChanged: {
                                     if (columnDef && columnDef.wrap) {
-                                        var needed = contentHeight + ThemeTokens.dp(16);
-                                        if (needed > rowItem.rowCalculatedHeight) {
-                                            rowItem.rowCalculatedHeight = needed;
-                                        }
+                                        rowItem.updateRowHeight();
                                     }
                                 }
 

@@ -5,8 +5,8 @@ import ChaSet
 
 Column {
     id: root
-    width: parent ? parent.width : 760
-    spacing: 10
+    width: parent ? parent.width : ThemeTokens.dp(760)
+    spacing: ThemeTokens.dp(10)
 
     property string title: "Keyboard Navigation & Shortcuts"
     property string componentId: ""

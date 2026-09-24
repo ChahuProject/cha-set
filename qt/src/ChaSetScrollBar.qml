@@ -18,7 +18,7 @@ T.ScrollBar {
     // ---- Desktop Geometry Properties ----
     property string barSize: "default" // "default" | "sm"
     readonly property bool isSm: barSize === "sm"
-    property int hitThickness: ThemeTokens.dp(isSm ? 10 : 14)
+    property int hitThickness: ThemeTokens.dp(isSm ? 12 : 16)
     property int thumbThickness: ThemeTokens.dp(isSm ? 2 : 4)
     property int expandedThumbThickness: ThemeTokens.dp(isSm ? 6 : 10)
     property int minThumbLength: ThemeTokens.dp(isSm ? 20 : 30)
@@ -52,7 +52,7 @@ T.ScrollBar {
 
     readonly property bool isVertical: control.vertical
 
-    readonly property bool _hasSpaceForButtons: showButtons && ((vertical ? height : width) >= (buttonLength * 4 + 24))
+    readonly property bool _hasSpaceForButtons: showButtons && ((vertical ? height : width) >= (buttonLength * 4 + ThemeTokens.dp(24)))
 
     topPadding: (vertical && _hasSpaceForButtons) ? (buttonLength * 2) : 0
     bottomPadding: (vertical && _hasSpaceForButtons) ? (buttonLength * 2) : 0
@@ -93,8 +93,14 @@ T.ScrollBar {
     readonly property bool isAtEnd: !canScrollForward
 
     // Expansion State
+    readonly property bool _anyButtonHovered: (typeof btnStartTo !== "undefined" && btnStartTo._isHovered)
+                                           || (typeof btnStartPage !== "undefined" && btnStartPage._isHovered)
+                                           || (typeof btnEndPage !== "undefined" && btnEndPage._isHovered)
+                                           || (typeof btnEndTo !== "undefined" && btnEndTo._isHovered)
+
     readonly property bool _isExpanded: control.forceHover || control.forceActive
                                         || control.hovered || barHoverHandler.hovered
+                                        || _anyButtonHovered
                                         || control.extraHovered || control.pressed
 
     // Navigation Methods
@@ -186,6 +192,7 @@ T.ScrollBar {
         width: control.buttonLength
         height: control.buttonLength
         radius: ThemeTokens.dp(2)
+        z: 2
 
         readonly property bool _isHovered: (control.forceButtonState === "hover") || (_ma.containsMouse && isEnabled && control._isExpanded)
         readonly property bool _isPressed: (control.forceButtonState === "active") || (_ma.pressed && isEnabled && control._isExpanded)

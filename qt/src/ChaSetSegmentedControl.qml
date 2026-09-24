@@ -14,6 +14,7 @@ Item {
     property bool fullWidth: false
     property bool equalWidth: false
     property real itemWidth: 0
+    readonly property real effectiveItemWidth: root.itemWidth > 0 ? ThemeTokens.dp(root.itemWidth) : 0
 
     signal valueSelected(var val)
 
@@ -100,8 +101,8 @@ Item {
 
     function getItemWidth(idx) {
         if (idx < 0 || !options || idx >= options.length) return 0;
-        if (root.itemWidth > 0) {
-            return root.itemWidth;
+        if (root.effectiveItemWidth > 0) {
+            return root.effectiveItemWidth;
         }
         if (root.equalWidth || root.fullWidth) {
             var totalSpacing = (options.length - 1) * track.segSpacing;
@@ -123,8 +124,8 @@ Item {
     implicitWidth: {
         var base = hasTitle ? titleWidth : 0;
         if (root.fullWidth) return parent ? parent.width : ThemeTokens.dp(200);
-        if (root.itemWidth > 0) {
-            return base + ThemeTokens.dp(6) + (options.length * root.itemWidth) + ((options.length - 1) * track.segSpacing);
+        if (root.effectiveItemWidth > 0) {
+            return base + ThemeTokens.dp(6) + (options.length * root.effectiveItemWidth) + ((options.length - 1) * track.segSpacing);
         }
         if (root.equalWidth) {
             var maxW = ThemeTokens.dp(40);

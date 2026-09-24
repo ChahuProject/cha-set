@@ -16,14 +16,23 @@ Flickable {
     property bool showVerticalScrollBar: true
     property bool showHorizontalScrollBar: false
     property bool showButtons: true
-    property int hitSize: size === "sm" ? 6 : 8
-    property int collapsedSize: size === "sm" ? 2 : 4
-    property int expandedSize: size === "sm" ? 6 : 8
+    property int hitSize: ThemeTokens.dp(size === "sm" ? 10 : 14)
+    property int collapsedSize: ThemeTokens.dp(size === "sm" ? 2 : 4)
+    property int expandedSize: ThemeTokens.dp(size === "sm" ? 6 : 10)
     property real pageStepRatio: 0.85
     property bool smoothScroll: true
     property bool forceHover: false
     property bool forceActive: false
     property string forceButtonState: ""
+
+    onContentWidthChanged: {
+        var maxX = Math.max(0, contentWidth - width)
+        if (contentX > maxX) contentX = maxX
+    }
+    onContentHeightChanged: {
+        var maxY = Math.max(0, contentHeight - height)
+        if (contentY > maxY) contentY = maxY
+    }
 
     readonly property bool isAtTop: root.contentY <= 1
     readonly property bool isAtBottom: root.contentHeight > root.height ? (root.contentY + root.height >= root.contentHeight - 2) : true

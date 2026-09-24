@@ -68,7 +68,7 @@ Rectangle {
     clip: true
 
     implicitWidth: ThemeTokens.dp(640)
-    implicitHeight: root.headerHeight + (root.maxHeight > 0 ? root.maxHeight : root.naturalBodyHeight)
+    implicitHeight: root.headerHeight + (root.maxHeight > 0 ? ThemeTokens.dp(root.maxHeight) : root.naturalBodyHeight)
     height: implicitHeight
 
     // Motion (Golden Rule 11): selecting another file cross-fades the body so the
@@ -204,7 +204,7 @@ Rectangle {
         Rectangle {
             id: body
             width: parent.width
-            height: root.maxHeight > 0 ? root.maxHeight : root.naturalBodyHeight
+            height: root.maxHeight > 0 ? ThemeTokens.dp(root.maxHeight) : root.naturalBodyHeight
             color: "transparent"
 
             ChaSetScrollArea {
