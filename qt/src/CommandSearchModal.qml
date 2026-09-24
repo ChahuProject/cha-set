@@ -46,9 +46,9 @@ Rectangle {
 
     ChaSetCard {
         id: searchCard
-        width: Math.min(parent.width - 40, 560)
-        height: Math.min(parent.height - 80, 380)
-        customRadius: 8
+        width: Math.min(parent.width - ThemeTokens.dp(40), ThemeTokens.dp(560))
+        height: Math.min(parent.height - ThemeTokens.dp(80), ThemeTokens.dp(380))
+        customRadius: ThemeTokens.dp(8)
         anchors.centerIn: parent
 
         Item {
@@ -59,82 +59,91 @@ Rectangle {
 
             Column {
                 anchors.fill: parent
-                anchors.margins: 14
-                spacing: 10
+                anchors.margins: ThemeTokens.dp(14)
+                spacing: ThemeTokens.dp(10)
 
-            // Search Input
-            ChaSetInput {
-                id: searchInput
-                width: parent.width
-                placeholderText: "Search components & docs..."
-                text: root.query
-                selectByMouse: true
-                onTextEdited: { root.query = text; root.selectedIndex = 0 }
-                onAccepted: {
-                    if (root.filteredItems.length > 0 && root.selectedIndex < root.filteredItems.length) {
-                        root.selectPage(root.filteredItems[root.selectedIndex].id)
-                        root.close()
-                    }
-                }
-                Keys.onEscapePressed: root.close()
-                Keys.onDownPressed: {
-                    if (root.selectedIndex < root.filteredItems.length - 1) root.selectedIndex++
-                }
-                Keys.onUpPressed: {
-                    if (root.selectedIndex > 0) root.selectedIndex--
-                }
-                Component.onCompleted: forceActiveFocus()
-            }
-
-            ChaSetSeparator {}
-
-            // Results List
-            ListView {
-                id: resultsList
-                width: parent.width
-                height: parent.height - 70
-                clip: true
-                model: root.filteredItems
-                ScrollBar.vertical: ChaSetScrollBar {
-                    showButtons: false
-                }
-                delegate: Rectangle {
-                    required property var modelData
-                    required property int index
+                // Search Input
+                ChaSetInput {
+                    id: searchInput
                     width: parent.width
-                    height: 48
-                    radius: 6
-                    color: root.selectedIndex === index ? ThemeTokens.hover : "transparent"
-
-                    Row {
-                        anchors.fill: parent
-                        anchors.margins: 8
-                        spacing: 10
-                        Column {
-                            anchors.verticalCenter: parent.verticalCenter
-                            spacing: 2
-                            Row {
-                                spacing: 6
-                                Text { text: parent.parent.parent.parent.modelData.title; color: ThemeTokens.text; font.family: Typography.familySans; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; anchors.verticalCenter: parent.verticalCenter }
-                                ChaSetBadge { size: "sm"; variant: "outline"; text: parent.parent.parent.parent.modelData.category; anchors.verticalCenter: parent.verticalCenter }
-                            }
-                            Text { text: parent.parent.parent.modelData.desc; color: ThemeTokens.subduedText; font.family: Typography.familySans; font.pixelSize: Typography.sizeCaption }
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        hoverEnabled: true
-                        onEntered: root.selectedIndex = parent.index
-                        onClicked: {
-                            root.selectPage(parent.modelData.id)
+                    placeholderText: "Search components & docs..."
+                    text: root.query
+                    selectByMouse: true
+                    onTextEdited: { root.query = text; root.selectedIndex = 0 }
+                    onAccepted: {
+                        if (root.filteredItems.length > 0 && root.selectedIndex < root.filteredItems.length) {
+                            root.selectPage(root.filteredItems[root.selectedIndex].id)
                             root.close()
                         }
                     }
+                    Keys.onEscapePressed: root.close()
+                    Keys.onDownPressed: {
+                        if (root.selectedIndex < root.filteredItems.length - 1) root.selectedIndex++
+                    }
+                    Keys.onUpPressed: {
+                        if (root.selectedIndex > 0) root.selectedIndex--
+                    }
+                    Component.onCompleted: forceActiveFocus()
+                }
+
+                ChaSetSeparator {
+                    id: searchSeparator
+                }
+
+                // Results List
+                ListView {
+                    id: resultsList
+                    width: parent.width
+                    height: Math.max(0, parent.height - searchInput.height - searchSeparator.height - ThemeTokens.dp(20))
+                    clip: true
+                    model: root.filteredItems
+                    ScrollBar.vertical: ChaSetScrollBar {
+                        showButtons: false
+                    }
+                    delegate: Rectangle {
+                        required property var modelData
+                        required property int index
+                        width: parent.width
+                        height: ThemeTokens.dp(48)
+                        radius: ThemeTokens.dp(6)
+                        color: root.selectedIndex === index ? ThemeTokens.hover : "transparent"
+
+                        Row {
+                            anchors.fill: parent
+                            anchors.margins: ThemeTokens.dp(8)
+                            spacing: ThemeTokens.dp(10)
+                            Column {
+                                anchors.verticalCenter: parent.verticalCenter
+                                spacing: ThemeTokens.dp(2)
+                                Row {
+                                    spacing: ThemeTokens.dp(6)
+                                    Text { text: parent.parent.parent.parent.modelData.title; color: ThemeTokens.text; font.family: Typography.familySans; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; anchors.verticalCenter: parent.verticalCenter }
+                                    ChaSetBadge { size: "sm"; variant: "outline"; text: parent.parent.parent.parent.modelData.category; anchors.verticalCenter: parent.verticalCenter }
+                                }
+                                Text {
+                                    text: parent.parent.parent.modelData.desc
+                                    color: ThemeTokens.subduedText
+                                    font.family: Typography.familySans
+                                    font.pixelSize: Typography.sizeCaption
+                                    elide: Text.ElideRight
+                                    width: resultsList.width - ThemeTokens.dp(24)
+                                }
+                            }
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            hoverEnabled: true
+                            onEntered: root.selectedIndex = parent.index
+                            onClicked: {
+                                root.selectPage(parent.modelData.id)
+                                root.close()
+                            }
+                        }
+                    }
                 }
             }
-        }
         }
     }
 }

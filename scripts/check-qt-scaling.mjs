@@ -13,7 +13,7 @@ const srcDir = resolve(rootDir, 'qt/src');
  * Values of 0, 1, 2 are exempt as they represent hairlines, crisp borders, and optical alignment.
  */
 export function verifyQtScaling({ quiet = false } = {}) {
-  const files = readdirSync(srcDir).filter(f => f.startsWith('ChaSet') && f.endsWith('.qml'));
+  const files = readdirSync(srcDir).filter(f => (f.startsWith('ChaSet') || f === 'CommandSearchModal.qml') && f.endsWith('.qml'));
   const errors = [];
   let checkedCount = 0;
 
@@ -40,7 +40,7 @@ export function verifyQtScaling({ quiet = false } = {}) {
 
       // 2. Direct raw integer assignments for geometry properties > 2
       // e.g. implicitHeight: 36, width: 200, radius: 8, spacing: 12
-      const geoMatch = trimmed.match(/^(?:readonly\s+property\s+\w+\s+|property\s+\w+\s+)?(implicitHeight|implicitWidth|height|width|radius|spacing|padding|headerHeight|rowHeight|boxSize|estimateSize|itemHeight|thumbThickness|expandedThumbThickness|hitThickness|buttonLength)\s*:\s*(\d+)(?:\s*;|\s*$)/);
+      const geoMatch = trimmed.match(/^(?:readonly\s+property\s+\w+\s+|property\s+\w+\s+)?(implicitHeight|implicitWidth|height|width|radius|customRadius|spacing|padding|topPadding|bottomPadding|leftPadding|rightPadding|horizontalPadding|verticalPadding|headerHeight|rowHeight|boxSize|estimateSize|itemHeight|thumbThickness|expandedThumbThickness|hitThickness|buttonLength)\s*:\s*(\d+)(?:\s*;|\s*$)/);
       if (geoMatch) {
         const prop = geoMatch[1];
         const val = Number(geoMatch[2]);
@@ -50,7 +50,8 @@ export function verifyQtScaling({ quiet = false } = {}) {
         const isPublicConfigProp = trimmed.startsWith('property int ') || trimmed.startsWith('property real ');
         const hasEffectiveProp = isPublicConfigProp && (
           content.includes(`effective${prop.charAt(0).toUpperCase() + prop.slice(1)}`) ||
-          content.includes(`ThemeTokens.dp(${prop})`)
+          content.includes(`ThemeTokens.dp(${prop})`) ||
+          content.includes(`ThemeTokens.dp(root.${prop})`)
         );
 
         if (val > 2 && !trimmed.includes('ThemeTokens.dp') && !trimmed.includes('ThemeTokens.sp') && !hasEffectiveProp) {
@@ -63,7 +64,7 @@ export function verifyQtScaling({ quiet = false } = {}) {
       }
 
       // 3. Ternary assignments with raw integers > 2 e.g. height: isSm ? 28 : 36
-      const ternaryMatch = trimmed.match(/^(implicitHeight|implicitWidth|height|width|radius|spacing|padding)\s*:\s*[^?:]+\?\s*(\d+)\s*:\s*(\d+)/);
+      const ternaryMatch = trimmed.match(/^(implicitHeight|implicitWidth|height|width|radius|customRadius|spacing|padding|topPadding|bottomPadding|leftPadding|rightPadding|horizontalPadding|verticalPadding)\s*:\s*[^?:]+\?\s*(\d+)\s*:\s*(\d+)/);
       if (ternaryMatch) {
         const val1 = Number(ternaryMatch[2]);
         const val2 = Number(ternaryMatch[3]);
