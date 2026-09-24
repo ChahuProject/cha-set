@@ -46,6 +46,19 @@ export function CopyButton({
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const effectiveSize = size ?? (label ? 'sm' : 'icon-xs');
 
+  const isSolidColored = variant === 'default';
+  const isSecondaryOrDestructive = variant === 'secondary' || variant === 'destructive';
+
+  const defaultCopyIconColor = isSolidColored
+    ? 'text-primary-foreground'
+    : isSecondaryOrDestructive
+      ? 'text-current'
+      : 'text-muted-foreground transition-colors group-hover:text-foreground hover:text-foreground';
+
+  const defaultCheckIconColor = isSolidColored
+    ? 'text-primary-foreground'
+    : 'text-emerald-500';
+
   React.useEffect(() => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -86,16 +99,16 @@ export function CopyButton({
       ) : label ? (
         <span className="inline-flex items-center gap-1.5 pointer-events-none">
           {copied ? (
-            <CheckIcon className={cn(iconClassName, 'text-emerald-500 animate-in fade-in-0 zoom-in-75 duration-short')} />
+            <CheckIcon className={cn(defaultCheckIconColor, iconClassName, 'animate-in fade-in-0 zoom-in-75 duration-short')} />
           ) : (
-            <CopyIcon className={cn(iconClassName, 'text-muted-foreground transition-colors group-hover:text-foreground')} />
+            <CopyIcon className={cn(defaultCopyIconColor, iconClassName)} />
           )}
           <span className="text-xs">{copied ? copiedLabel : label}</span>
         </span>
       ) : copied ? (
-        <CheckIcon className={cn(iconClassName, 'text-emerald-500 animate-in fade-in-0 zoom-in-75 duration-short')} />
+        <CheckIcon className={cn(defaultCheckIconColor, iconClassName, 'animate-in fade-in-0 zoom-in-75 duration-short')} />
       ) : (
-        <CopyIcon className={cn(iconClassName, 'text-muted-foreground transition-colors hover:text-foreground')} />
+        <CopyIcon className={cn(defaultCopyIconColor, iconClassName)} />
       )}
     </Button>
   );

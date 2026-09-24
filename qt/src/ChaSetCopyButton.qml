@@ -14,6 +14,7 @@ Item {
     property string size: label.length > 0 ? "sm" : "icon-xs"
     property bool copied: false
     readonly property bool hovered: btn.effectiveHovered
+    readonly property bool isSolidColored: root.variant === "default" || root.variant === "primary"
 
     signal copiedToClipboard(string text)
 
@@ -63,13 +64,13 @@ Item {
                 Rectangle {
                     x: ThemeTokens.dp(3); y: 0; width: ThemeTokens.dp(9); height: ThemeTokens.dp(9); radius: Math.max(1, ThemeTokens.dp(1))
                     color: "transparent"
-                    border.color: btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText
+                    border.color: root.isSolidColored ? btn.fgColor() : (btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText)
                     border.width: 1.2
                 }
                 Rectangle {
                     x: 0; y: ThemeTokens.dp(3); width: ThemeTokens.dp(9); height: ThemeTokens.dp(9); radius: Math.max(1, ThemeTokens.dp(1))
-                    color: btn.variant === "outline" ? ThemeTokens.background : (btn.variant === "ghost" ? "transparent" : ThemeTokens.panel)
-                    border.color: btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText
+                    color: root.isSolidColored ? btn.bgColor() : (btn.variant === "outline" ? ThemeTokens.background : (btn.variant === "ghost" ? "transparent" : ThemeTokens.panel))
+                    border.color: root.isSolidColored ? btn.fgColor() : (btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText)
                     border.width: 1.2
                 }
             }
@@ -80,7 +81,7 @@ Item {
                 visible: root.copied
                 name: "check"
                 size: 14
-                color: "#10b981"
+                color: root.isSolidColored ? btn.fgColor() : "#10b981"
                 opacity: root.copied ? 1.0 : 0.0
                 scale: root.copied ? 1.0 : 0.5
 
@@ -114,13 +115,13 @@ Item {
                     Rectangle {
                         x: ThemeTokens.dp(3); y: 0; width: ThemeTokens.dp(9); height: ThemeTokens.dp(9); radius: Math.max(1, ThemeTokens.dp(1))
                         color: "transparent"
-                        border.color: btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText
+                        border.color: root.isSolidColored ? btn.fgColor() : (btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText)
                         border.width: 1.2
                     }
                     Rectangle {
                         x: 0; y: ThemeTokens.dp(3); width: ThemeTokens.dp(9); height: ThemeTokens.dp(9); radius: Math.max(1, ThemeTokens.dp(1))
-                        color: btn.variant === "outline" ? ThemeTokens.background : (btn.variant === "ghost" ? "transparent" : ThemeTokens.panel)
-                        border.color: btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText
+                        color: root.isSolidColored ? btn.bgColor() : (btn.variant === "outline" ? ThemeTokens.background : (btn.variant === "ghost" ? "transparent" : ThemeTokens.panel))
+                        border.color: root.isSolidColored ? btn.fgColor() : (btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText)
                         border.width: 1.2
                     }
                 }
@@ -130,7 +131,7 @@ Item {
                     visible: root.copied
                     name: "check"
                     size: 14
-                    color: "#10b981"
+                    color: root.isSolidColored ? btn.fgColor() : "#10b981"
                     opacity: root.copied ? 1.0 : 0.0
                     scale: root.copied ? 1.0 : 0.5
 
@@ -148,7 +149,7 @@ Item {
             Text {
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.copied ? (root.copiedLabel ? root.copiedLabel : "Copied!") : root.label
-                color: btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText
+                color: root.isSolidColored ? btn.fgColor() : (btn.effectiveHovered ? ThemeTokens.text : ThemeTokens.subduedText)
                 font.pixelSize: Typography.sizeSmall
             }
         }

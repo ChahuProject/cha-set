@@ -57,4 +57,27 @@ describe('CopyButton', () => {
       expect(screen.getByRole('button', { name: 'Copied Command!' })).toHaveTextContent('Copied Command!');
     });
   });
+
+  it('uses text-primary-foreground on variant="default" and text-muted-foreground on ghost', async () => {
+    const { container: defaultContainer } = render(
+      <CopyButton text="token-123" variant="default" label="Copy Token" />,
+    );
+    const defaultSvg = defaultContainer.querySelector('svg');
+    expect(defaultSvg).toHaveClass('text-primary-foreground');
+    expect(defaultSvg).not.toHaveClass('text-muted-foreground');
+
+    const defaultBtn = screen.getByRole('button', { name: 'Copy Token' });
+    fireEvent.click(defaultBtn);
+    await waitFor(() => {
+      const checkSvg = defaultContainer.querySelector('svg');
+      expect(checkSvg).toHaveClass('text-primary-foreground');
+      expect(checkSvg).not.toHaveClass('text-emerald-500');
+    });
+
+    const { container: ghostContainer } = render(
+      <CopyButton text="ghost-token" variant="ghost" label="Ghost Copy" />,
+    );
+    const ghostSvg = ghostContainer.querySelector('svg');
+    expect(ghostSvg).toHaveClass('text-muted-foreground');
+  });
 });
