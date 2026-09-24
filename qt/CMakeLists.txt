@@ -2,6 +2,18 @@ cmake_minimum_required(VERSION 3.21)
 
 project(ChaSet VERSION 0.1.0 LANGUAGES CXX)
 
+# Guard against GCC/MinGW toolchain pollution on Windows when linking MSVC Qt.
+if(WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT CHASE_ALLOW_GCC)
+    message(FATAL_ERROR
+        "MinGW / GCC compiler detected (${CMAKE_CXX_COMPILER})! "
+        "ChaSet on Windows requires MSVC (cl.exe) or Clang-CL to link against MSVC Qt binaries. "
+        "CMake cache has NOT been written with GCC. "
+        "Please build from Visual Studio Developer PowerShell / Command Prompt, "
+        "or pass -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl."
+    )
+endif()
+
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 

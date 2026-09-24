@@ -17,7 +17,7 @@ When developing or modifying components across React and Qt, you MUST follow thi
      1. Navigation entry in `spec/showcase/navigation.json`.
      2. **Web (React)**: Living DocPage `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx` and active route in `packages/react/examples/basic/src/App.tsx`.
      3. **Desktop (Qt/QML)**: Component `qt/src/ChaSet<Name>.qml` + DocPage `qt/src/<Name>DocPage.qml` (both registered in `qt/CMakeLists.txt`) and active route in `qt/src/Main.qml` (`getPageSource`).
-   - **Mechanical Gate**: `pnpm gate` mechanically scans all component specs and enforces 100% dual-stack (React + Qt) living showcase completeness and runs headless scenario tests (`QtChaSetDemo.exe --test-scenario all`) across all routes.
+   - **Mechanical Gate**: `pnpm gate` mechanically scans all component specs and enforces 100% dual-stack (React + Qt) living showcase completeness and runs headless scenario tests (`QtChaSetDemo.exe --test-scenario all`) across all routes. The compiled binary `qt/build/QtChaSetDemo.exe` is a mandatory hard gate (missing binary fails gate; pass `--skip-qt` only for isolated web-only debugging).
 
 2. **NO Visual-Only Delivery (禁止仅凭静态截图验收)**
    - Screenshots only verify static CSS / QML bounding boxes.
@@ -183,7 +183,7 @@ pnpm test
 pnpm --filter @chahu/cha-set exec vitest run src/__tests__/cursor-conformance.test.tsx
 
 # 5. Run full cross-stack behavioral, cursor & showcase gate
-# (Checks capability coverage, 100% showcase docs completeness for every component, SPAS parity, and Qt scenarios)
+# (Checks capability coverage, 100% showcase docs completeness for every component, SPAS parity, and Qt scenarios; requires QtChaSetDemo.exe unless --skip-qt is passed)
 pnpm gate
 
 # 6. Run targeted Qt cursor & behavioral scenarios

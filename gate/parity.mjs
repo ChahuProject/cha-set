@@ -250,8 +250,24 @@ if (existsSync(qtScalingCheckPath)) {
 }
 
 // 3. Executable Behavioral Parity Checks
+const skipQt = process.argv.includes('--skip-qt') || process.env.CHASE_SKIP_QT === '1';
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');
-if (existsSync(qtExe)) {
+
+if (!existsSync(qtExe)) {
+  if (skipQt) {
+    console.warn('[gate] WARN: Qt desktop binary not found at qt/build/QtChaSetDemo.exe (skipped via --skip-qt)');
+  } else {
+    console.error('[gate] FAIL: Qt desktop binary not found at qt/build/QtChaSetDemo.exe');
+    console.error('[gate] Dual-stack behavioral verification cannot run without the compiled Qt showcase executable.');
+    console.error('[gate] To build QtChaSetDemo:');
+    console.error('       pnpm build:qt');
+    console.error('       (Or see .agents/skills/cross-stack-verify/SKILL.md for MSVC DevShell build instructions)');
+    console.error('[gate] If you intentionally need to run web-only verification without Qt, pass: pnpm gate --skip-qt');
+    process.exit(1);
+  }
+} else if (skipQt) {
+  console.log('[gate] SKIP — Qt runtime behavioral scenario assertions skipped via --skip-qt');
+} else {
   const { spawnSync } = await import('node:child_process');
   const testRes = spawnSync(qtExe, ['--test-scenario', 'all'], { encoding: 'utf8' });
   if (testRes.status !== 0) {
@@ -262,6 +278,7 @@ if (existsSync(qtExe)) {
   }
   console.log('[gate] OK — Qt runtime behavioral scenario assertions passed (showcase-data, scroll-kinematics, steppers)');
 }
+
 
 // 4. React Showcase Smoke & Interactive Click Integrity Check
 const showcaseTestFile = resolve(root, 'packages/react/src/__tests__/showcase-pages.test.tsx');
