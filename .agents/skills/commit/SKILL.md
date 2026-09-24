@@ -72,8 +72,8 @@ Before committing any component changes in this repository, run the project-defi
    ```bash
    cmake --build qt/build && pnpm test && pnpm gate
    ```
-   - All test files must pass (currently 114 files / 667 unit & conformance tests). Treat the count as a floor that only grows — never "fix" a higher count back down.
-   - Parity gate must verify all capability checks (currently 398), the living showcase doc pages across React and Qt (currently 56 components, 1:1), and headless Qt scenario tests (`QtChaSetDemo.exe --test-scenario all`).
+   - Every test file must pass. The gate prints its own totals — read them from the run, never from this document, and never "correct" a total downwards.
+   - Parity gate must verify all capability checks, the living showcase doc pages across React and Qt (1:1), and headless Qt scenario tests (`QtChaSetDemo.exe --test-scenario all`).
 
 2. **Mandatory Zero-`px` Verification**:
    - Verify zero raw `px` units in newly created or modified component files, styles, inline properties, code previews, and `PropsTable` descriptions.
