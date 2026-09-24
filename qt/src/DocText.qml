@@ -47,20 +47,15 @@ TextEdit {
     selectByKeyboard: true
     cursorVisible: false
     activeFocusOnPress: true
-    property bool wrap: true
-    readonly property bool _isInHorizontalRow: {
-        if (!parent) return false;
-        var pStr = parent.toString();
-        return (pStr.indexOf("QQuickRow") !== -1 || pStr.indexOf("Row_QML") !== -1) && pStr.indexOf("RowLayout") === -1;
-    }
+    property bool wrap: false
     textMargin: 0
     padding: 0
-    wrapMode: (wrap && (!_isInHorizontalRow || width !== contentWidth)) ? TextEdit.WordWrap : TextEdit.NoWrap
+    wrapMode: wrap ? TextEdit.WordWrap : TextEdit.NoWrap
     color: isMuted ? ThemeTokens.subduedText : textColor
     selectionColor: ThemeTokens.accent
     selectedTextColor: "#ffffff"
 
-    width: _isInHorizontalRow ? contentWidth : ((parent && parent.width > 0) ? parent.width : contentWidth)
+    width: contentWidth
     height: contentHeight
 
     HoverHandler {

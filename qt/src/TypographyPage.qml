@@ -172,10 +172,12 @@ DocLayout {
 
                         Item {
                             width: parent.width
-                            implicitHeight: Math.max(quoteLabels.implicitHeight, attribution.implicitHeight)
+                            height: Math.max(quoteLabels.implicitHeight, attribution.implicitHeight)
 
                             Row {
                                 id: quoteLabels
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
                                 spacing: ThemeTokens.dp(8)
 
                                 DocText {
@@ -194,6 +196,7 @@ DocLayout {
                             DocText {
                                 id: attribution
                                 anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
                                 text: quoteCard.modelData.attribution
                                 isMuted: true
                                 isMono: true

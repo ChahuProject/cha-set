@@ -465,8 +465,8 @@ DocLayout {
                             readonly property string familyGrid: {
                                 var members = familyCard.modelData.icons;
                                 if (!members || members.length === 0) return "default";
-                                var shape = ChaSetIcons.shapes[members[0]];
-                                return shape ? shape.grid : "default";
+                                var audit = ChaSetIcons.audit[members[0]];
+                                return audit ? audit.grid : "default";
                             }
 
                             Column {
@@ -493,28 +493,29 @@ DocLayout {
                                     }
                                 }
 
-                                Row {
-                                    spacing: ThemeTokens.dp(14)
+                                Flow {
+                                    width: parent.width
+                                    spacing: ThemeTokens.dp(12)
                                     Repeater {
                                         model: familyCard.modelData.icons
-                                        delegate: Column {
+                                        delegate: Row {
                                             id: familyMember
                                             required property string modelData
                                             spacing: ThemeTokens.dp(6)
 
                                             readonly property string memberGrid: {
-                                                var shape = ChaSetIcons.shapes[familyMember.modelData];
-                                                return shape ? shape.grid : "default";
+                                                var audit = ChaSetIcons.audit[familyMember.modelData];
+                                                return audit ? audit.grid : "default";
                                             }
 
                                             ChaSetIcon {
-                                                anchors.horizontalCenter: parent.horizontalCenter
+                                                anchors.verticalCenter: parent.verticalCenter
                                                 name: familyMember.modelData
                                                 size: ChaSetIcons.grids[familyMember.memberGrid].strokeFloor
                                                 color: ThemeTokens.text
                                             }
                                             DocText {
-                                                anchors.horizontalCenter: parent.horizontalCenter
+                                                anchors.verticalCenter: parent.verticalCenter
                                                 text: familyMember.modelData
                                                 isMuted: true
                                                 isMono: true
@@ -927,24 +928,35 @@ DocLayout {
 
                                 Repeater {
                                     model: categoryCard.modelData.icons
-                                    delegate: Column {
+                                    delegate: Rectangle {
                                         id: galleryTile
                                         required property string modelData
-                                        width: ThemeTokens.dp(96)
-                                        spacing: ThemeTokens.dp(8)
+                                        width: ThemeTokens.dp(100)
+                                        height: ThemeTokens.dp(64)
+                                        radius: ThemeTokens.dp(6)
+                                        color: tileHover.hovered ? ThemeTokens.hover : "transparent"
+                                        border.color: tileHover.hovered ? ThemeTokens.border : "transparent"
+                                        border.width: 1
 
-                                        ChaSetIcon {
-                                            anchors.horizontalCenter: parent.horizontalCenter
-                                            name: galleryTile.modelData
-                                            size: 20
-                                            color: ThemeTokens.text
-                                        }
-                                        DocText {
-                                            anchors.horizontalCenter: parent.horizontalCenter
-                                            text: galleryTile.modelData
-                                            isMuted: true
-                                            isMono: true
-                                            font.pixelSize: Typography.sizeMicro
+                                        HoverHandler { id: tileHover }
+
+                                        Column {
+                                            anchors.centerIn: parent
+                                            spacing: ThemeTokens.dp(6)
+
+                                            ChaSetIcon {
+                                                anchors.horizontalCenter: parent.horizontalCenter
+                                                name: galleryTile.modelData
+                                                size: 20
+                                                color: ThemeTokens.text
+                                            }
+                                            DocText {
+                                                anchors.horizontalCenter: parent.horizontalCenter
+                                                text: galleryTile.modelData
+                                                isMuted: true
+                                                isMono: true
+                                                font.pixelSize: Typography.sizeMicro
+                                            }
                                         }
                                     }
                                 }

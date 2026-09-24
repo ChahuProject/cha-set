@@ -42,6 +42,7 @@ DocLayout {
             isMuted: true
             font.pixelSize: Typography.sizeBody
             width: parent.width
+            wrap: true
         }
 
         Row {
@@ -71,6 +72,7 @@ DocLayout {
                             isMuted: true
                             font.pixelSize: Typography.sizeCaption
                             width: parent.width
+                            wrap: true
                         }
                     }
                 }
@@ -99,6 +101,7 @@ DocLayout {
                             isMuted: true
                             font.pixelSize: Typography.sizeCaption
                             width: parent.width
+                            wrap: true
                         }
                     }
                 }
@@ -127,6 +130,7 @@ DocLayout {
                             isMuted: true
                             font.pixelSize: Typography.sizeCaption
                             width: parent.width
+                            wrap: true
                         }
                     }
                 }
