@@ -317,9 +317,19 @@ Flickable {
         target: null
         orientation: Qt.Vertical
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-        enabled: (root.contentHeight - root.height) > 1.0
+        enabled: (root.contentHeight - root.height) > 1.0 || (root.contentWidth - root.width) > 1.0
         onWheel: function(event) {
             if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) return
+            var isShift = Boolean(event.modifiers & Qt.ShiftModifier)
+            if (isShift) {
+                var delta = event.angleDelta.y !== 0 ? event.angleDelta.y : event.angleDelta.x
+                if (delta === 0) return
+                var hHandled = root.handleHorizontalWheel(delta)
+                if (hHandled) {
+                    event.accepted = true
+                }
+                return
+            }
             if (event.angleDelta.y === 0) return
             var handled = root.handleVerticalWheel(event.angleDelta.y)
             if (handled) {
