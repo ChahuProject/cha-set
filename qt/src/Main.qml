@@ -953,6 +953,52 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 12: Table of Contents (TOC) Interactive Scrolling & Anchor Alignment
+        if (scenario === "all" || scenario === "toc" || scenario === "table-of-contents") {
+            console.log("[qt-scenario] Running Table of Contents interactive scrolling scenario...");
+            var tocFailures = 0;
+            var docItem = pageLoader.item;
+            if (!docItem || !docItem.tocItems || docItem.tocItems.length === 0) {
+                console.log("[qt-scenario] FAIL: pageLoader.item is not a DocLayout with tocItems");
+                tocFailures++;
+            } else {
+                // 1. Verify findSectionTarget locates all tocItems declared on the active page
+                for (var t = 0; t < docItem.tocItems.length; t++) {
+                    var item = docItem.tocItems[t];
+                    var target = docItem.findSectionTarget(item);
+                    if (!target) {
+                        console.log("[qt-scenario] FAIL: findSectionTarget failed to find target for '" + item.id + "' ('" + item.title + "')");
+                        tocFailures++;
+                    }
+                }
+
+                // 2. Test scrollToSection to second section and verify scrolling
+                if (docItem.tocItems.length > 1) {
+                    var secondItem = docItem.tocItems[1];
+                    docItem.scrollToSection(secondItem);
+                    if (contentScroll.contentY <= 0) {
+                        console.log("[qt-scenario] FAIL: scrollToSection('" + secondItem.id + "') did not advance contentScroll.contentY (got " + contentScroll.contentY + ")");
+                        tocFailures++;
+                    }
+                }
+
+                // 3. Test scrollToSection back to first section
+                if (docItem.tocItems.length > 0) {
+                    var firstItem = docItem.tocItems[0];
+                    docItem.scrollToSection(firstItem);
+                    if (contentScroll.contentY > 250) {
+                        console.log("[qt-scenario] FAIL: scrollToSection('" + firstItem.id + "') did not return near top (got " + contentScroll.contentY + ")");
+                        tocFailures++;
+                    }
+                }
+            }
+
+            if (tocFailures === 0) {
+                console.log("[qt-scenario] PASS: Table of Contents interactive scrolling & section target alignment verified");
+            } else {
+                failures += tocFailures;
+            }
+        }
 
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");

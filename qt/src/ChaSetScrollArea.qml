@@ -55,8 +55,8 @@ Flickable {
     }
 
     function scrollToTop(smooth) {
-        var useSmooth = (typeof smooth !== "undefined") ? smooth : root.smoothScroll
-        if (useSmooth) {
+        var useSmooth = (typeof smooth !== "undefined") ? smooth : (root.smoothScroll && ThemeTokens.animationsEnabled)
+        if (useSmooth && ThemeTokens.animationsEnabled) {
             animY.stop()
             animY.to = 0
             animY.start()
@@ -67,15 +67,45 @@ Flickable {
     }
 
     function scrollToBottom(smooth) {
-        var useSmooth = (typeof smooth !== "undefined") ? smooth : root.smoothScroll
+        var useSmooth = (typeof smooth !== "undefined") ? smooth : (root.smoothScroll && ThemeTokens.animationsEnabled)
         var targetY = Math.max(0, root.contentHeight - root.height)
-        if (useSmooth) {
+        if (useSmooth && ThemeTokens.animationsEnabled) {
             animY.stop()
             animY.to = targetY
             animY.start()
         } else {
             animY.stop()
             root.contentY = targetY
+        }
+    }
+
+    function scrollToY(targetY, smooth) {
+        if (typeof targetY !== "number" || isNaN(targetY)) return
+        var useSmooth = (typeof smooth !== "undefined") ? smooth : (root.smoothScroll && ThemeTokens.animationsEnabled)
+        var maxScrollY = Math.max(0, root.contentHeight - root.height)
+        var clampedY = Math.max(0, Math.min(maxScrollY, targetY))
+        if (useSmooth && ThemeTokens.animationsEnabled) {
+            animY.stop()
+            animY.to = clampedY
+            animY.start()
+        } else {
+            animY.stop()
+            root.contentY = clampedY
+        }
+    }
+
+    function scrollToX(targetX, smooth) {
+        if (typeof targetX !== "number" || isNaN(targetX)) return
+        var useSmooth = (typeof smooth !== "undefined") ? smooth : (root.smoothScroll && ThemeTokens.animationsEnabled)
+        var maxScrollX = Math.max(0, root.contentWidth - root.width)
+        var clampedX = Math.max(0, Math.min(maxScrollX, targetX))
+        if (useSmooth && ThemeTokens.animationsEnabled) {
+            animX.stop()
+            animX.to = clampedX
+            animX.start()
+        } else {
+            animX.stop()
+            root.contentX = clampedX
         }
     }
 
