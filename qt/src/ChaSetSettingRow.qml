@@ -112,7 +112,7 @@ Item {
                     selectByMouse: true
                     selectByKeyboard: true
                     cursorVisible: false
-                    activeFocusOnPress: false
+                    activeFocusOnPress: true
                     textMargin: 0
                     padding: 0
                     selectionColor: ThemeTokens.accent
@@ -125,6 +125,21 @@ Item {
                     onSelectedTextChanged: {
                         if (selectedText.length > 0) SelectionHub.claim(rowNameText);
                         else if (SelectionHub.activeOwner === rowNameText) SelectionHub.clear(rowNameText);
+                    }
+
+                    Keys.onPressed: function(event) {
+                        if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
+                            SelectionHub.copyActiveSelection();
+                            event.accepted = true;
+                        }
+                    }
+
+                    TapHandler {
+                        acceptedButtons: Qt.RightButton
+                        onTapped: function(eventPoint) {
+                            var scenePos = eventPoint.scenePosition;
+                            SelectionHub.showContextMenu(scenePos.x, scenePos.y, rowNameText);
+                        }
                     }
                 }
 
@@ -154,7 +169,7 @@ Item {
                 selectByMouse: true
                 selectByKeyboard: true
                 cursorVisible: false
-                activeFocusOnPress: false
+                activeFocusOnPress: true
                 textMargin: 0
                 padding: 0
                 selectionColor: ThemeTokens.accent
@@ -167,6 +182,21 @@ Item {
                 onSelectedTextChanged: {
                     if (selectedText.length > 0) SelectionHub.claim(rowDescText);
                     else if (SelectionHub.activeOwner === rowDescText) SelectionHub.clear(rowDescText);
+                }
+
+                Keys.onPressed: function(event) {
+                    if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
+                        SelectionHub.copyActiveSelection();
+                        event.accepted = true;
+                    }
+                }
+
+                TapHandler {
+                    acceptedButtons: Qt.RightButton
+                    onTapped: function(eventPoint) {
+                        var scenePos = eventPoint.scenePosition;
+                        SelectionHub.showContextMenu(scenePos.x, scenePos.y, rowDescText);
+                    }
                 }
             }
         }

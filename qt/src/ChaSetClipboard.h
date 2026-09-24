@@ -17,4 +17,7 @@ public:
     Q_INVOKABLE void setText(const QString &text);
     Q_INVOKABLE QString text() const;
     Q_INVOKABLE void clear();
+
+private:
+    QString m_lastSetText;
 };

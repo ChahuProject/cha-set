@@ -70,6 +70,29 @@ Item {
         }
     }
 
+    function openAt(sceneX, sceneY) {
+        var localPos = mapFromItem(null, sceneX, sceneY)
+        var targetX = localPos.x
+        var targetY = localPos.y
+        var winW = (root.Window && root.Window.window) ? root.Window.window.width : (parent ? parent.width : 1000)
+        var winH = (root.Window && root.Window.window) ? root.Window.window.height : (parent ? parent.height : 800)
+        var menuW = root.menuWidth
+        var estimatedMenuH = ((root.items && root.items.length > 0) ? root.items.length : 3) * ThemeTokens.dp(28) + ThemeTokens.dp(16)
+        if (sceneX + menuW > winW) {
+            targetX = Math.max(0, targetX - menuW)
+        }
+        if (sceneY + estimatedMenuH > winH) {
+            targetY = Math.max(0, targetY - estimatedMenuH)
+        }
+        contextPopup.x = targetX
+        contextPopup.y = targetY
+        contextPopup.open()
+    }
+
+    function close() {
+        contextPopup.close()
+    }
+
     default property alias targetData: targetContainer.data
 
     Item {
@@ -80,6 +103,7 @@ Item {
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.RightButton
+        enabled: targetContainer.children.length > 0
         onClicked: function(mouse) {
             if (mouse.button === Qt.RightButton) {
                 contextPopup.x = mouse.x
@@ -181,10 +205,19 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: ThemeTokens.dp(6)
 
+                        ChaSetIcon {
+                            id: vectorIcon
+                            visible: !!parent.parent.modelData.icon && (String(parent.parent.modelData.icon).length <= 16 && !/[^\x00-\x7F]/.test(String(parent.parent.modelData.icon)))
+                            name: String(parent.parent.modelData.icon || "")
+                            size: 14
+                            color: parent.parent.modelData.destructive ? ThemeTokens.danger : (parent.parent.modelData.disabled ? ThemeTokens.subduedText : ThemeTokens.text)
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
                         Text {
-                            visible: !!parent.parent.modelData.icon
+                            visible: !!parent.parent.modelData.icon && !vectorIcon.visible
                             text: parent.parent.modelData.icon || ""
-                            color: parent.parent.modelData.destructive ? ThemeTokens.danger : ThemeTokens.text
+                            color: parent.parent.modelData.destructive ? ThemeTokens.danger : (parent.parent.modelData.disabled ? ThemeTokens.subduedText : ThemeTokens.text)
                             font.pixelSize: Typography.sizeSmall
                             anchors.verticalCenter: parent.verticalCenter
                         }

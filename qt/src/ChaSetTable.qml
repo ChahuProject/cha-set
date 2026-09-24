@@ -122,7 +122,7 @@ Rectangle {
                             selectByMouse: !root.interactive
                             selectByKeyboard: true
                             cursorVisible: false
-                            activeFocusOnPress: false
+                            activeFocusOnPress: !root.interactive
                             textMargin: 0
                             padding: 0
                             selectionColor: ThemeTokens.accent
@@ -136,6 +136,22 @@ Rectangle {
                             onSelectedTextChanged: {
                                 if (selectedText.length > 0) SelectionHub.claim(headerCellText);
                                 else if (SelectionHub.activeOwner === headerCellText) SelectionHub.clear(headerCellText);
+                            }
+
+                            Keys.onPressed: function(event) {
+                                if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
+                                    SelectionHub.copyActiveSelection();
+                                    event.accepted = true;
+                                }
+                            }
+
+                            TapHandler {
+                                enabled: !root.interactive
+                                acceptedButtons: Qt.RightButton
+                                onTapped: function(eventPoint) {
+                                    var scenePos = eventPoint.scenePosition;
+                                    SelectionHub.showContextMenu(scenePos.x, scenePos.y, headerCellText);
+                                }
                             }
                         }
                     }
@@ -301,7 +317,7 @@ Rectangle {
                                 selectByMouse: !root.interactive
                                 selectByKeyboard: true
                                 cursorVisible: false
-                                activeFocusOnPress: false
+                                activeFocusOnPress: !root.interactive
                                 textMargin: 0
                                 padding: 0
                                 selectionColor: ThemeTokens.accent
@@ -324,6 +340,22 @@ Rectangle {
                                 onSelectedTextChanged: {
                                     if (selectedText.length > 0) SelectionHub.claim(bodyCellText);
                                     else if (SelectionHub.activeOwner === bodyCellText) SelectionHub.clear(bodyCellText);
+                                }
+
+                                Keys.onPressed: function(event) {
+                                    if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
+                                        SelectionHub.copyActiveSelection();
+                                        event.accepted = true;
+                                    }
+                                }
+
+                                TapHandler {
+                                    enabled: !root.interactive
+                                    acceptedButtons: Qt.RightButton
+                                    onTapped: function(eventPoint) {
+                                        var scenePos = eventPoint.scenePosition;
+                                        SelectionHub.showContextMenu(scenePos.x, scenePos.y, bodyCellText);
+                                    }
                                 }
                             }
                         }

@@ -79,6 +79,21 @@ Item {
                 if (selectedText.length > 0) SelectionHub.claim(richHeaderText);
                 else if (SelectionHub.activeOwner === richHeaderText) SelectionHub.clear(richHeaderText);
             }
+
+            Keys.onPressed: function(event) {
+                if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
+                    SelectionHub.copyActiveSelection();
+                    event.accepted = true;
+                }
+            }
+
+            TapHandler {
+                acceptedButtons: Qt.RightButton
+                onTapped: function(eventPoint) {
+                    var scenePos = eventPoint.scenePosition;
+                    SelectionHub.showContextMenu(scenePos.x, scenePos.y, richHeaderText);
+                }
+            }
         }
     }
 }

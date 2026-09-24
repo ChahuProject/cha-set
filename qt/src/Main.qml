@@ -39,6 +39,14 @@ ApplicationWindow {
         uiScale: ThemeTokens.uiScale
     })
 
+    // Global copy shortcut routing to active SelectionHub owner
+    Shortcut {
+        sequences: [StandardKey.Copy, "Ctrl+C", "Ctrl+Ins"]
+        onActivated: {
+            SelectionHub.copyActiveSelection();
+        }
+    }
+
     function syncGlobalThemeConfig() {
         win.globalThemeConfig = {
             version: 1,
@@ -906,8 +914,46 @@ ApplicationWindow {
                 selFailures++;
             }
 
+            // 4. Test copyActiveSelection and hasSelection
+            var mockItemC = {
+                selectedText: "test-selection-copy-token-" + Date.now(),
+                code: "const x = 42;",
+                deselectCount: 0,
+                deselect: function() { this.deselectCount++; },
+                selectAll: function() { this.selectedText = this.code; }
+            };
+            SelectionHub.claim(mockItemC);
+            if (!SelectionHub.hasSelection) {
+                console.log("[qt-scenario] FAIL: SelectionHub hasSelection should be true for mockItemC");
+                selFailures++;
+            }
+            var copied = SelectionHub.copyActiveSelection();
+            if (!copied) {
+                console.log("[qt-scenario] FAIL: SelectionHub.copyActiveSelection returned false");
+                selFailures++;
+            }
+            if (ChaSetClipboard.text() !== mockItemC.selectedText) {
+                console.log("[qt-scenario] FAIL: ChaSetClipboard text mismatch, got: " + ChaSetClipboard.text());
+                selFailures++;
+            }
+
+            // 5. Test context menu registration and showContextMenu
+            SelectionHub.showContextMenu(120, 120, mockItemC);
+            if (!globalTextContextMenu.items || globalTextContextMenu.items.length === 0) {
+                console.log("[qt-scenario] FAIL: globalTextContextMenu.items empty after showContextMenu");
+                selFailures++;
+            }
+            globalTextContextMenu.close();
+
+            // 6. Deselection & clearAll
+            SelectionHub.clearAll();
+            if (SelectionHub.hasSelection) {
+                console.log("[qt-scenario] FAIL: SelectionHub hasSelection should be false after clearAll");
+                selFailures++;
+            }
+
             if (selFailures === 0) {
-                console.log("[qt-scenario] PASS: SelectionHub global mutual exclusion & single-selection verified");
+                console.log("[qt-scenario] PASS: SelectionHub global mutual exclusion, copyActiveSelection & context menu verified");
             } else {
                 failures += selFailures;
             }
@@ -1854,6 +1900,16 @@ ApplicationWindow {
                 }
                 onResetTriggered: {
                     win.resetZoom();
+                }
+            }
+
+            // Global Text Selection Context Menu (for copying and selection actions)
+            ChaSetContextMenu {
+                id: globalTextContextMenu
+                objectName: "globalTextContextMenu"
+                z: 200
+                Component.onCompleted: {
+                    SelectionHub.registerContextMenu(globalTextContextMenu);
                 }
             }
         }

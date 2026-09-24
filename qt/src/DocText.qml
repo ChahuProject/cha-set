@@ -46,7 +46,7 @@ TextEdit {
     selectByMouse: true
     selectByKeyboard: true
     cursorVisible: false
-    activeFocusOnPress: false
+    activeFocusOnPress: true
     property bool wrap: false
     textMargin: 0
     padding: 0
@@ -65,5 +65,20 @@ TextEdit {
     onSelectedTextChanged: {
         if (selectedText.length > 0) SelectionHub.claim(root);
         else if (SelectionHub.activeOwner === root) SelectionHub.clear(root);
+    }
+
+    Keys.onPressed: function(event) {
+        if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
+            SelectionHub.copyActiveSelection();
+            event.accepted = true;
+        }
+    }
+
+    TapHandler {
+        acceptedButtons: Qt.RightButton
+        onTapped: function(eventPoint) {
+            var scenePos = eventPoint.scenePosition;
+            SelectionHub.showContextMenu(scenePos.x, scenePos.y, root);
+        }
     }
 }

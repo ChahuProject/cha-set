@@ -148,6 +148,26 @@ Item {
             HoverHandler {
                 cursorShape: Qt.IBeamCursor
             }
+
+            onSelectedTextChanged: {
+                if (selectedText.length > 0) SelectionHub.claim(codeEdit, root);
+                else if (SelectionHub.activeOwner === codeEdit) SelectionHub.clear(codeEdit);
+            }
+
+            Keys.onPressed: function(event) {
+                if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
+                    SelectionHub.copyActiveSelection();
+                    event.accepted = true;
+                }
+            }
+
+            TapHandler {
+                acceptedButtons: Qt.RightButton
+                onTapped: function(eventPoint) {
+                    var scenePos = eventPoint.scenePosition;
+                    SelectionHub.showContextMenu(scenePos.x, scenePos.y, codeEdit, root);
+                }
+            }
         }
     }
 }
