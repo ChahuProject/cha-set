@@ -226,7 +226,7 @@ export const TableOfContents = React.forwardRef<HTMLElement, TableOfContentsProp
             <span
               aria-hidden="true"
               data-slot="toc-indicator"
-              className="pointer-events-none absolute left-0 -ml-[0.0625rem] w-[0.125rem] rounded-full bg-primary transition-[transform,height] duration-quick ease-standard"
+              className="pointer-events-none absolute left-0 top-0 -ml-[0.0625rem] w-[0.125rem] rounded-full bg-primary transition-[transform,height] duration-quick ease-standard"
               style={{
                 height: `${INDICATOR_HEIGHT_REM}rem`,
                 transform: `translateY(${

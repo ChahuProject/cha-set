@@ -19,6 +19,7 @@ const BANNER_GAP_REM = 0.75;
 const CANONICAL_TITLES: Record<string, string> = {
   overview: 'Interactive Overview',
   installation: 'Installation',
+  states: 'Examples & States',
   animations: 'Animations',
   keyboard: 'Keyboard Navigation',
   props: 'Props Reference',
@@ -216,30 +217,77 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
 
   useEffect(() => {
     if (typeof window === 'undefined' || !items || items.length === 0) return;
-    if (typeof IntersectionObserver === 'undefined') return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.find((entry) => entry.isIntersecting);
-        if (visible && visible.target.id) {
-          setActiveId(visible.target.id);
+    const flat = flattenTocItems(items);
+    if (flat.length === 0) return;
+
+    let ticking = false;
+
+    const updateActive = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const innerHeight = window.innerHeight;
+      const scrollHeight = document.documentElement.scrollHeight;
+
+      // 1. Bottom of page -> activate last item
+      if (scrollY + innerHeight >= scrollHeight - 64) {
+        const last = flat[flat.length - 1];
+        if (last) {
+          setActiveId(last.id);
+          return;
         }
-      },
-      {
-        // Keep the detection band below the sticky banner so the row that is
-        // actually readable under it wins.
-        rootMargin: `-${bannerOffset}px 0px -60% 0px`,
-        threshold: 0,
       }
-    );
 
-    flattenTocItems(items).forEach((item) => {
-      const el = document.getElementById(item.id);
-      if (el) observer.observe(el);
-    });
+      // 2. Top of page -> activate first item
+      if (scrollY < 50) {
+        const first = flat[0];
+        if (first) {
+          setActiveId(first.id);
+          return;
+        }
+      }
 
+      // 3. Current heading nearest reading baseline below bannerOffset
+      const threshold = (bannerOffset || 56) + 40;
+      let currentActive = flat[0]?.id;
+
+      for (let i = 0; i < flat.length; i++) {
+        const el = document.getElementById(flat[i].id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= threshold) {
+          currentActive = flat[i].id;
+        }
+      }
+
+      // If near the bottom of the page, activate the lowest visible section
+      const distFromBottom = scrollHeight - (scrollY + innerHeight);
+      if (distFromBottom < innerHeight * 0.4) {
+        for (let i = flat.length - 1; i >= 0; i--) {
+          const el = document.getElementById(flat[i].id);
+          if (!el) continue;
+          const rect = el.getBoundingClientRect();
+          if (rect.top < innerHeight * 0.8 && rect.bottom > 0) {
+            currentActive = flat[i].id;
+            break;
+          }
+        }
+      }
+
+      if (currentActive) {
+        setActiveId(currentActive);
+      }
+    };
+
+    const onScroll = () => {
+      updateActive();
+    };
+
+    updateActive();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
     return () => {
-      observer.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
     };
   }, [items, bannerOffset]);
 
