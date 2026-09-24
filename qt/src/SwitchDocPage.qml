@@ -192,119 +192,119 @@ DocLayout {
         Grid {
             width: parent.width
             columns: 2
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Default Toggle"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Row {
-                        spacing: 20
+                        spacing: ThemeTokens.dp(20)
                         ChaSetSwitch { checked: false; label: "Off" }
                         ChaSetSwitch { checked: true; label: "On" }
                     }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Small Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Row {
-                        spacing: 20
+                        spacing: ThemeTokens.dp(20)
                         ChaSetSwitch { size: "sm"; checked: false; label: "Compact Off" }
                         ChaSetSwitch { size: "sm"; checked: true; label: "Compact On" }
                     }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Row {
-                        spacing: 20
+                        spacing: ThemeTokens.dp(20)
                         ChaSetSwitch { disabled: true; checked: false; label: "Disabled Off" }
                         ChaSetSwitch { disabled: true; checked: true; label: "Disabled On" }
                     }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Async Loading State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Row {
-                        spacing: 20
+                        spacing: ThemeTokens.dp(20)
                         ChaSetSwitch { loading: true; checked: false; label: "Connecting..." }
                         ChaSetSwitch { loading: true; checked: true; label: "Syncing..." }
                     }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Read-Only State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Row {
-                        spacing: 20
+                        spacing: ThemeTokens.dp(20)
                         ChaSetSwitch { readOnly: true; checked: false; label: "Locked Off" }
                         ChaSetSwitch { readOnly: true; checked: true; label: "Locked On" }
                     }
                 }
             }
 
-            Rectangle {
+            ChaSetCard {
                 width: parent.width
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "With Helper Description"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetSwitch {
                         checked: true

@@ -17,6 +17,7 @@ DocLayout {
 
     ComponentPreview {
         title: "Virtual Grid Sandbox"
+        stageHeight: 360
         reactCode: `<VirtualGrid
   items={items}
   minColumnWidthRem={10}
@@ -40,7 +41,8 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 12
+                width: ThemeTokens.dp(360)
+                spacing: ThemeTokens.dp(12)
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -51,7 +53,7 @@ DocLayout {
 
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
 
                     ChaSetButton {
                         text: "Top (#1)"
@@ -84,27 +86,27 @@ DocLayout {
 
                 ChaSetVirtualGrid {
                     id: virtualGrid
-                    width: 360
-                    height: 220
+                    width: ThemeTokens.dp(360)
+                    height: ThemeTokens.dp(220)
                     cellWidth: 168
                     cellHeight: 96
                     model: 1000
 
                     delegate: Item {
-                        width: 168
-                        height: 96
+                        width: virtualGrid.effectiveCellWidth
+                        height: virtualGrid.effectiveCellHeight
 
                         Rectangle {
                             anchors.fill: parent
-                            anchors.margins: 4
+                            anchors.margins: ThemeTokens.dp(4)
                             color: ThemeTokens.panel
                             border.color: ThemeTokens.border
                             border.width: 1
-                            radius: 6
+                            radius: ThemeTokens.dp(6)
 
                             Column {
                                 anchors.centerIn: parent
-                                spacing: 4
+                                spacing: ThemeTokens.dp(4)
 
                                 DocText {
                                     anchors.horizontalCenter: parent.horizontalCenter

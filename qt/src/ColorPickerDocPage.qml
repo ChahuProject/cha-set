@@ -45,13 +45,13 @@ DocLayout {
         stageData: [
             Item {
                 anchors.centerIn: parent
-                width: 320
-                height: root.demoMode === "popover" ? 100 : pickerCol.implicitHeight
+                width: ThemeTokens.dp(320)
+                height: root.demoMode === "popover" ? ThemeTokens.dp(100) : pickerCol.implicitHeight
 
                 Column {
                     id: pickerCol
                     anchors.centerIn: parent
-                    spacing: 12
+                    spacing: ThemeTokens.dp(12)
 
                     ChaSetColorPicker {
                         id: sandboxPicker
@@ -79,7 +79,7 @@ DocLayout {
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Rectangle {
-                            width: 14; height: 14; radius: 3
+                            width: ThemeTokens.dp(14); height: ThemeTokens.dp(14); radius: ThemeTokens.dp(3)
                             color: root.demoColor
                             border.color: root.cBorder
                             border.width: 1
@@ -239,19 +239,19 @@ DocLayout {
         Grid {
             width: parent.width
             columns: 2
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Popover Dropdown Mode"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Compact swatch trigger opening floating overlay"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
@@ -261,17 +261,17 @@ DocLayout {
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Smaller footprint suitable for toolbars and palettes"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
@@ -282,17 +282,17 @@ DocLayout {
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Non-interactive with 50% opacity"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
@@ -303,17 +303,17 @@ DocLayout {
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Custom Swatches Palette"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Configured with specialized palette colors"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {

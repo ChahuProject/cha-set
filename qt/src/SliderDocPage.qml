@@ -261,24 +261,24 @@ DocLayout {
         Grid {
             width: parent.width
             columns: 2
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Floating Value Tooltip"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Interactive formatted indicator on thumb drag and hover"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    Item { width: parent.width; height: 6 }
+                    Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         value: 75
                         min: 0
                         max: 100
@@ -289,22 +289,22 @@ DocLayout {
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Reduced track thickness and thumb size for toolbars"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    Item { width: parent.width; height: 6 }
+                    Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         size: "sm"
                         value: 40
                         min: 0
@@ -313,22 +313,22 @@ DocLayout {
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Read-Only State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Locked value without dimmed 50% opacity"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    Item { width: parent.width; height: 6 }
+                    Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         readOnly: true
                         value: 60
                         min: 0
@@ -337,22 +337,22 @@ DocLayout {
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Discrete Stops with Ticks"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Quantized stops with tick indicators and label marks"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    Item { width: parent.width; height: 6 }
+                    Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         value: 50
                         min: 0
                         max: 100
@@ -363,22 +363,22 @@ DocLayout {
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Non-interactive with dimmed opacity for disabled controls"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    Item { width: parent.width; height: 6 }
+                    Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         disabled: true
                         value: 45
                         min: 0
@@ -387,22 +387,22 @@ DocLayout {
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Custom Range (20 to 80)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Bounded custom minimum and maximum limits with step=5"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    Item { width: parent.width; height: 6 }
+                    Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         value: 50
                         min: 20
                         max: 80

@@ -42,25 +42,25 @@ DocLayout {
 
             ChaSetPanelCard {
                 anchors.centerIn: parent
-                width: 360
+                width: ThemeTokens.dp(360)
                 title: "Production Cluster #01"
                 badgeText: "Active"
                 collapsible: true
 
                 Column {
-                    width: parent.width - 32
-                    x: 16
-                    y: 12
-                    spacing: 10
+                    width: parent.width - ThemeTokens.dp(32)
+                    x: ThemeTokens.dp(16)
+                    y: ThemeTokens.dp(12)
+                    spacing: ThemeTokens.dp(10)
 
                     Row {
-                        spacing: 8
+                        spacing: ThemeTokens.dp(8)
                         DocText { text: "Node Count:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                         DocText { text: "16 Dedicated Replicas"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     }
 
                     Row {
-                        spacing: 8
+                        spacing: ThemeTokens.dp(8)
                         DocText { text: "Avg Latency:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                         DocText { text: "12ms (p99: 45ms)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                     }

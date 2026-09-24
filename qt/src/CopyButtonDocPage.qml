@@ -27,24 +27,24 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 12
+                    spacing: ThemeTokens.dp(12)
 
                     Rectangle {
-                        width: 240
-                        height: 32
+                        width: ThemeTokens.dp(240)
+                        height: ThemeTokens.dp(32)
                         color: ThemeTokens.panel
                         border.color: ThemeTokens.border
                         border.width: 1
-                        radius: 6
+                        radius: ThemeTokens.dp(6)
 
                         DocText {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.left
-                            anchors.leftMargin: 10
+                            anchors.leftMargin: ThemeTokens.dp(10)
                             text: "pnpm add @chahu/cha-set"
                             color: ThemeTokens.text
                             font.pixelSize: Typography.sizeSmall

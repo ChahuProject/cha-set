@@ -83,10 +83,10 @@ DocLayout {
 
         controlsData: [
             Row {
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 ChaSetInput {
-                    width: 160
+                    width: ThemeTokens.dp(160)
                     size: "sm"
                     placeholderText: "Filter invoices..."
                     text: root.searchTerm
@@ -95,7 +95,7 @@ DocLayout {
                 }
 
                 Row {
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
                     DocText { text: "Status:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {

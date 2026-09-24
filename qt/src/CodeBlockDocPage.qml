@@ -52,7 +52,7 @@ DocLayout {
 
             ChaSetCodeBlock {
                 anchors.centerIn: parent
-                width: Math.min(parent.width - 40, 560)
+                width: Math.min(parent.width - ThemeTokens.dp(40), ThemeTokens.dp(560))
                 language: "tsx"
                 code: root.sampleCode
                 showLineNumbers: true

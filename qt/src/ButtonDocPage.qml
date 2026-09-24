@@ -146,9 +146,9 @@ DocLayout {
                 spacing: 6
                 DocText { text: "Label:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetInput {
-                    width: 100
+                    width: ThemeTokens.dp(100)
                     size: "sm"
-                    customRadius: 4
+                    customRadius: ThemeTokens.dp(4)
                     text: root.btnLabel
                     onTextEdited: root.btnLabel = text
                 }
@@ -159,7 +159,7 @@ DocLayout {
     // 2. Installation
     Column {
         width: parent.width
-        spacing: 10
+        spacing: ThemeTokens.dp(10)
 
         DocText { text: "Installation"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
         ChaSetCodeBlock { width: parent.width; language: "bash"; code: "pnpm add @chahu/cha-set" }
@@ -174,31 +174,35 @@ DocLayout {
     // 3. Examples
     Column {
         width: parent.width
-        spacing: 20
+        spacing: ThemeTokens.dp(20)
 
         DocText { text: "Examples"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
         // Variants Example
         Column {
             width: parent.width
-            spacing: 8
+            spacing: ThemeTokens.dp(8)
             DocText { text: "Variants"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeHeading; font.weight: Typography.weightSemibold }
             DocText { text: "Use the variant prop to change the visual hierarchy."; isMuted: true; font.pixelSize: Typography.sizeSmall }
-            Rectangle {
+            ChaSetCard {
                 width: parent.width
-                height: 72
-                radius: 8
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
-                Row {
-                    anchors.centerIn: parent
-                    spacing: 10
-                    ChaSetButton { variant: "default"; text: "Default" }
-                    ChaSetButton { variant: "secondary"; text: "Secondary" }
-                    ChaSetButton { variant: "outline"; text: "Outline" }
-                    ChaSetButton { variant: "ghost"; text: "Ghost" }
-                    ChaSetButton { variant: "destructive"; text: "Destructive" }
-                    ChaSetButton { variant: "link"; text: "Link" }
+                customRadius: ThemeTokens.dp(8)
+
+                Column {
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+
+                    Row {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing: ThemeTokens.dp(10)
+                        ChaSetButton { variant: "default"; text: "Default" }
+                        ChaSetButton { variant: "secondary"; text: "Secondary" }
+                        ChaSetButton { variant: "outline"; text: "Outline" }
+                        ChaSetButton { variant: "ghost"; text: "Ghost" }
+                        ChaSetButton { variant: "destructive"; text: "Destructive" }
+                        ChaSetButton { variant: "link"; text: "Link" }
+                    }
                 }
             }
             ChaSetCodeBlock {
@@ -211,23 +215,27 @@ DocLayout {
         // Sizes Example
         Column {
             width: parent.width
-            spacing: 8
+            spacing: ThemeTokens.dp(8)
             DocText { text: "Sizes"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeHeading; font.weight: Typography.weightSemibold }
             DocText { text: "Available in standardized sizes: xs, sm, default, lg, and icon variants."; isMuted: true; font.pixelSize: Typography.sizeSmall }
-            Rectangle {
+            ChaSetCard {
                 width: parent.width
-                height: 72
-                radius: 8
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
-                Row {
-                    anchors.centerIn: parent
-                    spacing: 10
-                    ChaSetButton { size: "xs"; text: "Extra Small" }
-                    ChaSetButton { size: "sm"; text: "Small" }
-                    ChaSetButton { size: "default"; text: "Default" }
-                    ChaSetButton { size: "lg"; text: "Large" }
-                    ChaSetButton { size: "icon"; icon: "settings" }
+                customRadius: ThemeTokens.dp(8)
+
+                Column {
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+
+                    Row {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing: ThemeTokens.dp(10)
+                        ChaSetButton { size: "xs"; text: "Extra Small" }
+                        ChaSetButton { size: "sm"; text: "Small" }
+                        ChaSetButton { size: "default"; text: "Default" }
+                        ChaSetButton { size: "lg"; text: "Large" }
+                        ChaSetButton { size: "icon"; icon: "settings" }
+                    }
                 }
             }
             ChaSetCodeBlock {
@@ -240,21 +248,25 @@ DocLayout {
         // States Example
         Column {
             width: parent.width
-            spacing: 8
+            spacing: ThemeTokens.dp(8)
             DocText { text: "States & Loading"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeHeading; font.weight: Typography.weightSemibold }
             DocText { text: "Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events."; isMuted: true; font.pixelSize: Typography.sizeSmall }
-            Rectangle {
+            ChaSetCard {
                 width: parent.width
-                height: 72
-                radius: 8
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
-                Row {
-                    anchors.centerIn: parent
-                    spacing: 10
-                    ChaSetButton { text: "Saving Changes"; loading: true; loadingText: "Saving..." }
-                    ChaSetButton { text: "Active Toggle"; pressed: true }
-                    ChaSetButton { text: "Disabled Button"; disabled: true }
+                customRadius: ThemeTokens.dp(8)
+
+                Column {
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+
+                    Row {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing: ThemeTokens.dp(10)
+                        ChaSetButton { text: "Saving Changes"; loading: true; loadingText: "Saving..." }
+                        ChaSetButton { text: "Active Toggle"; pressed: true }
+                        ChaSetButton { text: "Disabled Button"; disabled: true }
+                    }
                 }
             }
             ChaSetCodeBlock {

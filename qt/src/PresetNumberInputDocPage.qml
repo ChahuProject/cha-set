@@ -27,22 +27,22 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 Column {
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "Texture Dimension:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetPresetNumberInput {
-                        width: 220
+                        width: ThemeTokens.dp(220)
                         value: "1024"
                     }
                 }
 
                 Column {
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "Custom Presets (Small):"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetPresetNumberInput {
-                        width: 220
+                        width: ThemeTokens.dp(220)
                         presets: [8, 16, 32, 64, 128]
                         value: "64"
                         clearLabel: "Auto"

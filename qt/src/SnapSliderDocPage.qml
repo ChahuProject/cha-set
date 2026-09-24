@@ -44,8 +44,8 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 20
-                width: 280
+                spacing: ThemeTokens.dp(20)
+                width: ThemeTokens.dp(280)
 
                 ChaSetSnapSlider {
                     width: parent.width

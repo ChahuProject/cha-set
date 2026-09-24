@@ -124,17 +124,17 @@ DocLayout {
                         model: ShowcaseData.featureCards
                         delegate: Rectangle {
                             required property var modelData
-                            width: 220; height: 160; radius: 8
+                            width: ThemeTokens.dp(220); height: ThemeTokens.dp(160); radius: ThemeTokens.dp(8)
                             color: ThemeTokens.panel
                             border.color: ThemeTokens.border
                             Column {
-                                anchors.fill: parent; anchors.margins: 14; spacing: 8
+                                anchors.fill: parent; anchors.margins: ThemeTokens.dp(14); spacing: ThemeTokens.dp(8)
                                 Row {
                                     width: parent.width
-                                    ChaSetIcon { name: parent.parent.parent.modelData.icon; size: 24; color: ThemeTokens.accent }
-                                    Item { width: 10; height: 1 }
+                                    ChaSetIcon { name: parent.parent.parent.modelData.icon; size: ThemeTokens.dp(24); color: ThemeTokens.accent }
+                                    Item { width: ThemeTokens.dp(10); height: 1 }
                                     Rectangle {
-                                        width: 44; height: 18; radius: 9
+                                        width: ThemeTokens.dp(44); height: ThemeTokens.dp(18); radius: ThemeTokens.dp(9)
                                         color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.15)
                                         DocText { anchors.centerIn: parent; text: parent.parent.parent.parent.modelData.badge; color: ThemeTokens.accent; font.pixelSize: Typography.sizeMicro; font.weight: Typography.weightBold }
                                     }
@@ -152,22 +152,22 @@ DocLayout {
                 id: demoScrollBoth
                 visible: root.heroMode === "both"
                 anchors.fill: parent
-                anchors.margins: 6
+                anchors.margins: ThemeTokens.dp(6)
                 size: root.heroSize
                 showVerticalScrollBar: true
                 showHorizontalScrollBar: true
                 showButtons: root.showButtons
                 smoothScroll: root.smoothScroll
-                contentWidth: 800
-                contentHeight: 600
+                contentWidth: ThemeTokens.dp(800)
+                contentHeight: ThemeTokens.dp(600)
 
                 Grid {
-                    x: 10; y: 10; columns: 8; spacing: 8
+                    x: ThemeTokens.dp(10); y: ThemeTokens.dp(10); columns: 8; spacing: ThemeTokens.dp(8)
                     Repeater {
                         model: 64
                         delegate: Rectangle {
                             required property int index
-                            width: 88; height: 60; radius: 6
+                            width: ThemeTokens.dp(88); height: ThemeTokens.dp(60); radius: ThemeTokens.dp(6)
                             color: ThemeTokens.panel
                             border.color: ThemeTokens.border
                             DocText { anchors.centerIn: parent; text: "Cell " + (parent.index + 1); color: ThemeTokens.text; font.pixelSize: Typography.sizeCaption; font.weight: Typography.weightMedium }
@@ -239,36 +239,22 @@ DocLayout {
             font.weight: Typography.weightBold
         }
 
-        Rectangle {
+        ChaSetCodeBlock {
             width: parent.width
-            height: 48
-            radius: 6
-            color: ThemeTokens.background
-            border.color: ThemeTokens.border
-            Row {
-                anchors.fill: parent; anchors.margins: 14; spacing: 10
-                DocText { text: "$"; color: ThemeTokens.subduedText; font.family: Typography.familyMono; font.pixelSize: Typography.sizeBody }
-                DocText { text: "pnpm add @chahu/cha-set"; color: ThemeTokens.text; font.family: Typography.familyMono; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
-            }
+            language: "bash"
+            code: "pnpm add @chahu/cha-set"
         }
 
-        DocText { text: "Import in QML (Qt Quick):"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+        DocText {
+            text: "Import in QML (Qt Quick):"
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeSmall
+        }
 
-        Rectangle {
+        ChaSetCodeBlock {
             width: parent.width
-            height: 60
-            radius: 6
-            color: ThemeTokens.background
-            border.color: ThemeTokens.border
-            TextArea {
-                anchors.fill: parent; anchors.margins: 12
-                readOnly: true
-                text: "import QtQuick 6.10\nimport ChaSet"
-                color: ThemeTokens.text
-                font.family: Typography.familyMono
-                font.pixelSize: Typography.sizeSmall
-                background: null
-            }
+            language: "qml"
+            code: "import QtQuick 6.10\nimport ChaSet"
         }
     }
 
@@ -294,38 +280,38 @@ DocLayout {
 
         Rectangle {
             width: parent.width
-            height: 220
-            radius: 8
+            height: ThemeTokens.dp(220)
+            radius: ThemeTokens.dp(8)
             color: ThemeTokens.background
             border.color: ThemeTokens.border
 
             ChaSetScrollArea {
                 anchors.fill: parent
-                anchors.margins: 12
+                anchors.margins: ThemeTokens.dp(12)
                 showVerticalScrollBar: false
                 showHorizontalScrollBar: true
                 showButtons: true
-                contentWidth: horizExampleRow.implicitWidth + 24
-                contentHeight: parent.height - 24
+                contentWidth: horizExampleRow.implicitWidth + ThemeTokens.dp(24)
+                contentHeight: parent.height - ThemeTokens.dp(24)
 
                 Row {
                     id: horizExampleRow
-                    x: 8; y: 8; spacing: 14
+                    x: ThemeTokens.dp(8); y: ThemeTokens.dp(8); spacing: ThemeTokens.dp(14)
                     Repeater {
                         model: ShowcaseData.featureCards
                         delegate: Rectangle {
                             required property var modelData
-                            width: 220; height: 160; radius: 8
+                            width: ThemeTokens.dp(220); height: ThemeTokens.dp(160); radius: ThemeTokens.dp(8)
                             color: ThemeTokens.panel
                             border.color: ThemeTokens.border
                             Column {
-                                anchors.fill: parent; anchors.margins: 14; spacing: 8
+                                anchors.fill: parent; anchors.margins: ThemeTokens.dp(14); spacing: ThemeTokens.dp(8)
                                 Row {
                                     width: parent.width
                                     DocText { text: parent.parent.parent.modelData.icon; font.pixelSize: Typography.sizeTitleMd }
-                                    Item { width: 10; height: 1 }
+                                    Item { width: ThemeTokens.dp(10); height: 1 }
                                     Rectangle {
-                                        width: 44; height: 18; radius: 9
+                                        width: ThemeTokens.dp(44); height: ThemeTokens.dp(18); radius: ThemeTokens.dp(9)
                                         color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.15)
                                         DocText { anchors.centerIn: parent; text: parent.parent.parent.parent.modelData.badge; color: ThemeTokens.accent; font.pixelSize: Typography.sizeMicro; font.weight: Typography.weightBold }
                                     }
@@ -345,7 +331,7 @@ DocLayout {
     // ==============================================================
     Column {
         width: parent.width
-        spacing: 12
+        spacing: ThemeTokens.dp(12)
 
         DocText {
             text: "Dual-Axis (Both Axes with Corner)"
@@ -362,22 +348,22 @@ DocLayout {
 
         Rectangle {
             width: parent.width
-            height: 240
-            radius: 8
+            height: ThemeTokens.dp(240)
+            radius: ThemeTokens.dp(8)
             color: ThemeTokens.background
             border.color: ThemeTokens.border
 
             ChaSetScrollArea {
                 anchors.fill: parent
-                anchors.margins: 10
+                anchors.margins: ThemeTokens.dp(10)
                 showVerticalScrollBar: true
                 showHorizontalScrollBar: true
                 showButtons: true
-                contentWidth: 900
-                contentHeight: 500
+                contentWidth: ThemeTokens.dp(900)
+                contentHeight: ThemeTokens.dp(500)
 
                 Rectangle {
-                    width: 900; height: 500; color: "transparent"
+                    width: ThemeTokens.dp(900); height: ThemeTokens.dp(500); color: "transparent"
                     TextArea {
                         anchors.fill: parent; anchors.margins: 14
                         readOnly: true
@@ -440,28 +426,30 @@ export const CrossStackSpecification = {
             width: parent.width
         }
 
-        Rectangle {
+        ChaSetCard {
             width: parent.width
-            height: 110
-            radius: 8
-            color: ThemeTokens.panel
-            border.color: ThemeTokens.border
+            customRadius: ThemeTokens.dp(8)
 
             Column {
-                anchors.fill: parent; anchors.margins: 14; spacing: 8
+                width: parent.width
+                topPadding: ThemeTokens.dp(14)
+                bottomPadding: ThemeTokens.dp(14)
+                leftPadding: ThemeTokens.dp(14)
+                rightPadding: ThemeTokens.dp(14)
+                spacing: ThemeTokens.dp(8)
                 Row {
-                    spacing: 8
-                    Rectangle { width: 8; height: 8; radius: 4; color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
+                    spacing: ThemeTokens.dp(8)
+                    Rectangle { width: ThemeTokens.dp(8); height: ThemeTokens.dp(8); radius: ThemeTokens.dp(4); color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
                     DocText { text: "Idle State: Slim indicator bar, non-intrusive and lightweight."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                 }
                 Row {
-                    spacing: 8
-                    Rectangle { width: 8; height: 8; radius: 4; color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
+                    spacing: ThemeTokens.dp(8)
+                    Rectangle { width: ThemeTokens.dp(8); height: ThemeTokens.dp(8); radius: ThemeTokens.dp(4); color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
                     DocText { text: "Hover State: Expands with high visual affordance."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                 }
                 Row {
-                    spacing: 8
-                    Rectangle { width: 8; height: 8; radius: 4; color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
+                    spacing: ThemeTokens.dp(8)
+                    Rectangle { width: ThemeTokens.dp(8); height: ThemeTokens.dp(8); radius: ThemeTokens.dp(4); color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
                     DocText { text: "Hit Area: Compact trigger box prevents accidental cursor capture."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                 }
             }
@@ -490,17 +478,19 @@ export const CrossStackSpecification = {
 
         Row {
             width: parent.width
-            spacing: 14
+            spacing: ThemeTokens.dp(14)
 
-            Rectangle {
-                width: (parent.width - 14) / 2
-                height: 110
-                radius: 8
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(14)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent; anchors.margins: 14; spacing: 6
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "Vertical Cluster"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                     DocText { text: "• Top: [To Top] & [Page Up] (85% viewport step)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     DocText { text: "• Bottom: [Page Down] & [To Bottom]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
@@ -508,15 +498,17 @@ export const CrossStackSpecification = {
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 14) / 2
-                height: 110
-                radius: 8
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(14)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent; anchors.margins: 14; spacing: 6
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "Horizontal Cluster"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                     DocText { text: "• Left: [To Start] & [Page Left]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     DocText { text: "• Right: [Page Right] & [To End]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }

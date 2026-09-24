@@ -40,8 +40,8 @@ DocLayout {
         stageData: [
             Column {
                 anchors.centerIn: parent
-                spacing: 8
-                width: 280
+                spacing: ThemeTokens.dp(8)
+                width: ThemeTokens.dp(280)
 
                 ChaSetCollapsible {
                     width: parent.width
@@ -53,13 +53,13 @@ DocLayout {
 
                     Column {
                         width: parent.width
-                        spacing: 6
-                        topPadding: 8
+                        spacing: ThemeTokens.dp(6)
+                        topPadding: ThemeTokens.dp(8)
 
                         Rectangle {
                             width: parent.width
-                            height: 32
-                            radius: 4
+                            height: ThemeTokens.dp(32)
+                            radius: ThemeTokens.dp(4)
                             color: ThemeTokens.hover
 
                             DocText {
@@ -72,8 +72,8 @@ DocLayout {
 
                         Rectangle {
                             width: parent.width
-                            height: 32
-                            radius: 4
+                            height: ThemeTokens.dp(32)
+                            radius: ThemeTokens.dp(4)
                             color: ThemeTokens.hover
 
                             DocText {
@@ -174,19 +174,19 @@ DocLayout {
 
                     Column {
                         width: parent.width
-                        spacing: 6
-                        topPadding: 8
+                        spacing: ThemeTokens.dp(6)
+                        topPadding: ThemeTokens.dp(8)
 
                         Rectangle {
                             width: parent.width
-                            height: 32
-                            radius: 4
+                            height: ThemeTokens.dp(32)
+                            radius: ThemeTokens.dp(4)
                             color: ThemeTokens.hover
 
                             DocText {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.left: parent.left
-                                anchors.leftMargin: 8
+                                anchors.leftMargin: ThemeTokens.dp(8)
                                 text: "Vulkan Validation Layers: Enabled"
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeSmall

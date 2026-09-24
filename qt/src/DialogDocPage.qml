@@ -140,19 +140,19 @@ DocLayout {
         Grid {
             width: parent.width
             columns: 2
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 130
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 16
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(8)
 
                     DocText {
                         text: "Destructive Confirmation"
@@ -166,7 +166,7 @@ DocLayout {
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                         wrapMode: TextEdit.WordWrap
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(32)
                     }
 
                     ChaSetButton {
@@ -178,17 +178,17 @@ DocLayout {
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 130
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 16
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(8)
 
                     DocText {
                         text: "Informational Notice"
@@ -202,7 +202,7 @@ DocLayout {
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                         wrapMode: TextEdit.WordWrap
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(32)
                     }
 
                     ChaSetButton {
@@ -344,34 +344,34 @@ DocLayout {
 
             Row {
                 width: parent.width
-                spacing: 10
+                spacing: ThemeTokens.dp(10)
                 DocText {
                     text: "Name"
-                    width: 70
+                    width: ThemeTokens.dp(70)
                     color: root.cFg
                     font.pixelSize: Typography.sizeBody
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 ChaSetInput {
                     id: nameInput
-                    width: parent.width - 80
+                    width: parent.width - ThemeTokens.dp(80)
                     text: "Alex Rivera"
                 }
             }
 
             Row {
                 width: parent.width
-                spacing: 10
+                spacing: ThemeTokens.dp(10)
                 DocText {
                     text: "Username"
-                    width: 70
+                    width: ThemeTokens.dp(70)
                     color: root.cFg
                     font.pixelSize: Typography.sizeBody
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 ChaSetInput {
                     id: usernameInput
-                    width: parent.width - 80
+                    width: parent.width - ThemeTokens.dp(80)
                     text: "@arivera"
                 }
             }

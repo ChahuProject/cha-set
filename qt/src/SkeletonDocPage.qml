@@ -42,11 +42,11 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
 
                     ChaSetButton {
                         text: "pulse"
@@ -72,36 +72,36 @@ DocLayout {
 
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 16
+                    spacing: ThemeTokens.dp(16)
 
                     ChaSetSkeleton {
-                        width: 52
-                        height: 52
+                        width: ThemeTokens.dp(52)
+                        height: ThemeTokens.dp(52)
                         rounded: "full"
                         animation: root.animationMode
                     }
 
                     Column {
-                        spacing: 10
+                        spacing: ThemeTokens.dp(10)
                         anchors.verticalCenter: parent.verticalCenter
 
                         ChaSetSkeleton {
-                            width: 220
-                            height: 16
+                            width: ThemeTokens.dp(220)
+                            height: ThemeTokens.dp(16)
                             rounded: "md"
                             animation: root.animationMode
                         }
 
                         ChaSetSkeleton {
-                            width: 160
-                            height: 14
+                            width: ThemeTokens.dp(160)
+                            height: ThemeTokens.dp(14)
                             rounded: "md"
                             animation: root.animationMode
                         }
 
                         ChaSetSkeleton {
-                            width: 100
-                            height: 12
+                            width: ThemeTokens.dp(100)
+                            height: ThemeTokens.dp(12)
                             rounded: "md"
                             animation: root.animationMode
                         }

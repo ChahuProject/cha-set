@@ -193,9 +193,9 @@ DocLayout {
 
                 Rectangle {
                     width: parent.width
-                    height: 320
+                    height: ThemeTokens.dp(320)
                     color: ThemeTokens.panel
-                    radius: 8
+                    radius: ThemeTokens.dp(8)
                     border.color: ThemeTokens.border
                     border.width: 1
                     clip: true

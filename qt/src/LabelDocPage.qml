@@ -42,8 +42,8 @@ DocLayout {
         stageData: [
             Column {
                 anchors.centerIn: parent
-                spacing: 6
-                width: 260
+                spacing: ThemeTokens.dp(6)
+                width: ThemeTokens.dp(260)
 
                 ChaSetLabel {
                     text: "Email address"
@@ -178,104 +178,104 @@ DocLayout {
         Grid {
             width: parent.width
             columns: 2
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 6
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "Required Indicator"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Destructive asterisk denoting mandatory input fields"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetLabel { text: "Work Email"; required: true }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 6
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "Optional Indicator"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Muted tag denoting non-mandatory optional fields"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetLabel { text: "Alternative Phone"; optional: true }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 6
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "Validation Error (Invalid)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Destructive text color highlighting validation error"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetLabel { text: "Account Password"; invalid: true }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 6
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "With Info Tooltip"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Help icon with contextual explanation on hover"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetLabel { text: "Recovery Email"; tooltip: "Used for two-factor authentication recovery codes" }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 6
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "With Helper Description"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Supporting guidance subtitle directly below label"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetLabel { text: "Legal Entity Name"; description: "Enter your official company legal name" }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 6
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Dimmed opacity for non-interactive form elements"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetLabel { text: "Archived Record ID"; disabled: true }

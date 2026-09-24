@@ -214,13 +214,13 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 10
-                width: 380
+                spacing: ThemeTokens.dp(10)
+                width: ThemeTokens.dp(380)
 
                 // Action Toolbar
                 Flow {
                     width: parent.width
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
 
                     ChaSetButton {
                         text: "Expand All"
@@ -325,7 +325,7 @@ DocLayout {
                 ChaSetVirtualTree {
                     id: virtualTree
                     width: parent.width
-                    height: 240
+                    height: ThemeTokens.dp(240)
                     selectionMode: root.selectionMode
                     selectedIds: root.selectedIds
                     dimmedIds: root.cutIds
@@ -387,19 +387,19 @@ DocLayout {
                 // Telemetry / Status Box
                 Rectangle {
                     width: parent.width
-                    height: 52
+                    height: ThemeTokens.dp(52)
                     color: ThemeTokens.panel
                     border.color: ThemeTokens.border
                     border.width: 1
-                    radius: 4
+                    radius: ThemeTokens.dp(4)
 
                     Column {
                         anchors.fill: parent
-                        anchors.margins: 6
-                        spacing: 2
+                        anchors.margins: ThemeTokens.dp(6)
+                        spacing: ThemeTokens.dp(2)
 
                         Row {
-                            spacing: 8
+                            spacing: ThemeTokens.dp(8)
                             Text {
                                 text: "Selected: " + (virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds.join(", ") : (virtualTree.selectedId || "None"))
                                 color: ThemeTokens.text

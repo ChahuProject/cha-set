@@ -76,8 +76,8 @@ DocLayout {
             Flickable {
                 id: demoFlickable
                 anchors.centerIn: parent
-                width: Math.min(parent.width - 48, 380)
-                height: 220
+                width: Math.min(parent.width - ThemeTokens.dp(48), ThemeTokens.dp(380))
+                height: ThemeTokens.dp(220)
                 contentHeight: demoCol.implicitHeight
                 clip: true
 
@@ -91,23 +91,23 @@ DocLayout {
                 Column {
                     id: demoCol
                     width: parent.width
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
 
                     Repeater {
                         model: 18
                         delegate: Rectangle {
                             required property int index
                             width: demoCol.width
-                            height: 42
-                            radius: 6
+                            height: ThemeTokens.dp(42)
+                            radius: ThemeTokens.dp(6)
                             color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.5) : Qt.rgba(241/255, 245/255, 249/255, 0.8)
                             border.color: ThemeTokens.border
                             border.width: 1
 
                             Item {
                                 anchors.fill: parent
-                                anchors.leftMargin: 12
-                                anchors.rightMargin: 12
+                                anchors.leftMargin: ThemeTokens.dp(12)
+                                anchors.rightMargin: ThemeTokens.dp(12)
 
                                 DocText {
                                     anchors.left: parent.left

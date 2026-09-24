@@ -47,12 +47,12 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 ChaSetContextMenu {
                     id: ctxMenu
-                    width: 320
-                    height: 160
+                    width: ThemeTokens.dp(320)
+                    height: ThemeTokens.dp(160)
                     items: [
                         { id: "back", label: "Back", shortcut: "Alt+Left" },
                         { id: "forward", label: "Forward", shortcut: "Alt+Right", disabled: true },

@@ -63,15 +63,15 @@ ChaSetElidedText {
             Rectangle {
                 anchors.centerIn: parent
                 width: root.containerWidth
-                height: 36
+                height: ThemeTokens.dp(36)
                 color: ThemeTokens.panel
-                radius: 6
+                radius: ThemeTokens.dp(6)
                 border.color: ThemeTokens.border
                 border.width: 1
 
                 ChaSetElidedText {
                     anchors.fill: parent
-                    anchors.margins: 8
+                    anchors.margins: ThemeTokens.dp(8)
                     text: root.sampleText
                     alwaysShowTooltip: root.alwaysShow
                     copyable: root.copyable
@@ -82,10 +82,10 @@ ChaSetElidedText {
 
         controlsData: [
             Row {
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 Row {
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
 
                     DocText {
@@ -97,7 +97,7 @@ ChaSetElidedText {
 
                     ChaSetSlider {
                         anchors.verticalCenter: parent.verticalCenter
-                        width: 120
+                        width: ThemeTokens.dp(120)
                         min: 120
                         max: 440
                         step: 10
@@ -152,16 +152,16 @@ ChaSetElidedText {
                 }
 
                 Rectangle {
-                    width: Math.min(parent.width, 360)
-                    height: 48
+                    width: Math.min(parent.width, ThemeTokens.dp(360))
+                    height: ThemeTokens.dp(48)
                     color: ThemeTokens.panel
-                    radius: 6
+                    radius: ThemeTokens.dp(6)
                     border.color: ThemeTokens.border
                     border.width: 1
 
                     ChaSetElidedText {
                         anchors.fill: parent
-                        anchors.margins: 8
+                        anchors.margins: ThemeTokens.dp(8)
                         maxLines: 2
                         text: "ChaSet provides cross-stack design system primitives with pixel-level parity across React Web and Qt Quick desktop applications."
                         tooltipPlacement: "bottom"

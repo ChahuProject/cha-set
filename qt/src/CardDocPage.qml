@@ -40,7 +40,7 @@ DocLayout {
         stageData: [
             ChaSetCard {
                 anchors.centerIn: parent
-                width: 340
+                width: ThemeTokens.dp(340)
                 variant: root.demoVariant
                 size: root.demoSize
                 interactive: root.demoInteractive
@@ -94,10 +94,10 @@ DocLayout {
 
         controlsData: [
             Row {
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 Row {
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetTabs {
                         anchors.verticalCenter: parent.verticalCenter

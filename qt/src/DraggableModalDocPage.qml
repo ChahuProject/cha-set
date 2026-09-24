@@ -60,10 +60,10 @@ DocLayout {
                 }
 
                 ChaSetDraggableModal {
-                    x: 40
-                    y: 30
-                    width: 300
-                    height: 200
+                    x: ThemeTokens.dp(40)
+                    y: ThemeTokens.dp(30)
+                    width: ThemeTokens.dp(300)
+                    height: ThemeTokens.dp(200)
                     title: "Shader Debugger"
                     showEscBadge: true
                     initialPositionMode: "center"
@@ -75,8 +75,8 @@ DocLayout {
 
                     Column {
                         anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 8
+                        anchors.margins: ThemeTokens.dp(16)
+                        spacing: ThemeTokens.dp(8)
 
                         Row {
                             spacing: 8

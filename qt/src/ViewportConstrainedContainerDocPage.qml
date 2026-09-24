@@ -55,29 +55,29 @@ DocLayout {
             ChaSetViewportConstrainedContainer {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
-                anchors.topMargin: 24
-                width: 260
-                maxHeight: 220
-                margin: 16
+                anchors.topMargin: ThemeTokens.dp(24)
+                width: ThemeTokens.dp(260)
+                maxHeight: ThemeTokens.dp(220)
+                margin: ThemeTokens.dp(16)
 
                 Column {
                     width: parent.width
-                    padding: 12
-                    spacing: 8
+                    padding: ThemeTokens.dp(12)
+                    spacing: ThemeTokens.dp(8)
 
                     Repeater {
                         model: 12
                         Rectangle {
-                            width: parent ? parent.width - 24 : 200
-                            height: 32
-                            radius: 4
+                            width: parent ? parent.width - ThemeTokens.dp(24) : ThemeTokens.dp(200)
+                            height: ThemeTokens.dp(32)
+                            radius: ThemeTokens.dp(4)
                             color: ThemeTokens.color("panelRaised")
                             border.width: 1
                             border.color: ThemeTokens.border
 
                             DocText {
                                 anchors.left: parent.left
-                                anchors.leftMargin: 10
+                                anchors.leftMargin: ThemeTokens.dp(10)
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: "Constrained Item #" + (index + 1)
                                 color: ThemeTokens.text

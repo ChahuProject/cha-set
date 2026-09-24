@@ -39,8 +39,8 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 12
-                width: 440
+                spacing: ThemeTokens.dp(12)
+                width: ThemeTokens.dp(440)
 
                 ChaSetQueryBuilder {
                     id: qb
@@ -61,7 +61,7 @@ DocLayout {
                 }
 
                 Row {
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
                     ChaSetBadge {
                         text: "Rules: " + qb.rules.length
                         variant: "outline"
@@ -74,11 +74,11 @@ DocLayout {
 
                 Rectangle {
                     width: parent.width
-                    height: 50
+                    height: ThemeTokens.dp(50)
                     color: ThemeTokens.hover
                     border.color: ThemeTokens.border
                     border.width: 1
-                    radius: 4
+                    radius: ThemeTokens.dp(4)
 
                     DocText {
                         id: serializedText

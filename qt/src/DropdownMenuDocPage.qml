@@ -43,13 +43,13 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 ChaSetDropdownMenu {
                     id: demoMenu
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: 120
-                    height: 32
+                    width: ThemeTokens.dp(120)
+                    height: ThemeTokens.dp(32)
                     items: [
                         { id: "profile", label: "Profile", shortcut: "⌘P" },
                         { id: "billing", label: "Billing", shortcut: "⌘B" },

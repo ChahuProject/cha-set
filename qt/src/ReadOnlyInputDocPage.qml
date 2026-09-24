@@ -35,11 +35,11 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
-                width: 360
+                spacing: ThemeTokens.dp(16)
+                width: ThemeTokens.dp(360)
 
                 Column {
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
                     width: parent.width
                     DocText { text: "API Secret Key (Masked with Copy):"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetReadOnlyInput {
@@ -51,7 +51,7 @@ DocLayout {
                 }
 
                 Column {
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
                     width: parent.width
                     DocText { text: "GitHub Personal Access Token (Masked):"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetReadOnlyInput {
@@ -83,8 +83,8 @@ ChaSetReadOnlyInput { value: "chaset_success_verified"; colorScheme: "success" }
 
             Column {
                 anchors.centerIn: parent
-                spacing: 10
-                width: 360
+                spacing: ThemeTokens.dp(10)
+                width: ThemeTokens.dp(360)
 
                 ChaSetReadOnlyInput { width: parent.width; value: "chaset_default_token_preview"; size: "default" }
                 ChaSetReadOnlyInput { width: parent.width; value: "chaset_compact_sm_token_preview"; size: "sm" }

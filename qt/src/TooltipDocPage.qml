@@ -44,8 +44,8 @@ DocLayout {
         stageData: [
             Item {
                 anchors.centerIn: parent
-                width: 320
-                height: 140
+                width: ThemeTokens.dp(320)
+                height: ThemeTokens.dp(140)
 
                 ChaSetTooltip {
                     anchors.centerIn: parent
@@ -100,10 +100,10 @@ DocLayout {
 
             // Text Input
             Row {
-                spacing: 8
+                spacing: ThemeTokens.dp(8)
                 DocText { text: "Text:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetInput {
-                    width: 140
+                    width: ThemeTokens.dp(140)
                     size: "sm"
                     text: root.demoText
                     onTextEdited: root.demoText = text
@@ -112,10 +112,10 @@ DocLayout {
 
             // Shortcut Input
             Row {
-                spacing: 8
+                spacing: ThemeTokens.dp(8)
                 DocText { text: "Shortcut:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetInput {
-                    width: 90
+                    width: ThemeTokens.dp(90)
                     size: "sm"
                     text: root.demoShortcut
                     onTextEdited: root.demoShortcut = text
@@ -205,24 +205,24 @@ DocLayout {
         Grid {
             width: parent.width
             columns: 2
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
             // Top Placement
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Top Placement (Default)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
-                        width: parent.width
-                        height: 60
+                        width: parent.width - ThemeTokens.dp(28)
+                        height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
                             text: "Tooltip above target"
@@ -235,21 +235,21 @@ DocLayout {
             }
 
             // Bottom Placement
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Bottom Placement"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
-                        width: parent.width
-                        height: 60
+                        width: parent.width - ThemeTokens.dp(28)
+                        height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
                             text: "Tooltip below target"
@@ -262,21 +262,21 @@ DocLayout {
             }
 
             // Left Placement
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Left Placement"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
-                        width: parent.width
-                        height: 60
+                        width: parent.width - ThemeTokens.dp(28)
+                        height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
                             text: "Tooltip on left"
@@ -289,21 +289,21 @@ DocLayout {
             }
 
             // Right Placement
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Right Placement"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
-                        width: parent.width
-                        height: 60
+                        width: parent.width - ThemeTokens.dp(28)
+                        height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
                             text: "Tooltip on right"
@@ -316,21 +316,21 @@ DocLayout {
             }
 
             // Keyboard Shortcut Hint
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Keyboard Shortcut Hint"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
-                        width: parent.width
-                        height: 60
+                        width: parent.width - ThemeTokens.dp(28)
+                        height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
                             text: "Save Document"
@@ -344,21 +344,21 @@ DocLayout {
             }
 
             // Directional Arrow
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 120
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Directional Arrow"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
-                        width: parent.width
-                        height: 60
+                        width: parent.width - ThemeTokens.dp(28)
+                        height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
                             text: "Anchored Pointer"

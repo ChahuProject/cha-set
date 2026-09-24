@@ -78,10 +78,10 @@ DocLayout {
 
             Rectangle {
                 anchors.centerIn: parent
-                width: Math.min(parent.width - 48, 520)
-                height: 220
+                width: Math.min(parent.width - ThemeTokens.dp(48), ThemeTokens.dp(520))
+                height: ThemeTokens.dp(220)
                 color: ThemeTokens.background
-                radius: 6
+                radius: ThemeTokens.dp(6)
                 border.color: ThemeTokens.border
                 border.width: 1
                 clip: true
@@ -213,11 +213,11 @@ DocLayout {
                 }
 
                 Rectangle {
-                    width: Math.min(parent.width, 440)
-                    height: 180
-                    implicitHeight: 180
+                    width: Math.min(parent.width, ThemeTokens.dp(440))
+                    height: ThemeTokens.dp(180)
+                    implicitHeight: ThemeTokens.dp(180)
                     color: ThemeTokens.background
-                    radius: 6
+                    radius: ThemeTokens.dp(6)
                     border.color: ThemeTokens.border
                     border.width: 1
                     clip: true

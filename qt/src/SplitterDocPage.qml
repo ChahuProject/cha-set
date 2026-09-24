@@ -41,11 +41,11 @@ DocLayout {
 
         Item {
             anchors.fill: parent
-            implicitHeight: 250
+            implicitHeight: ThemeTokens.dp(250)
 
             Column {
                 anchors.centerIn: parent
-                spacing: 12
+                spacing: ThemeTokens.dp(12)
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -55,9 +55,9 @@ DocLayout {
                 }
 
                 Rectangle {
-                    width: 480
-                    height: 192
-                    radius: 6
+                    width: ThemeTokens.dp(480)
+                    height: ThemeTokens.dp(192)
+                    radius: ThemeTokens.dp(6)
                     border.color: ThemeTokens.border
                     border.width: 1
                     color: ThemeTokens.panel
@@ -173,11 +173,11 @@ DocLayout {
 
         Item {
             anchors.fill: parent
-            implicitHeight: 270
+            implicitHeight: ThemeTokens.dp(270)
 
             Column {
                 anchors.centerIn: parent
-                spacing: 12
+                spacing: ThemeTokens.dp(12)
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -187,9 +187,9 @@ DocLayout {
                 }
 
                 Rectangle {
-                    width: 480
-                    height: 220
-                    radius: 6
+                    width: ThemeTokens.dp(480)
+                    height: ThemeTokens.dp(220)
+                    radius: ThemeTokens.dp(6)
                     border.color: ThemeTokens.border
                     border.width: 1
                     color: ThemeTokens.panel

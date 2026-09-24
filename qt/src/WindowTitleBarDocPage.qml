@@ -40,16 +40,16 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
-                width: 440
+                spacing: ThemeTokens.dp(16)
+                width: ThemeTokens.dp(440)
 
                 Rectangle {
                     width: parent.width
-                    height: 180
+                    height: ThemeTokens.dp(180)
                     color: ThemeTokens.panel
                     border.color: ThemeTokens.border
                     border.width: 1
-                    radius: 8
+                    radius: ThemeTokens.dp(8)
                     clip: true
 
                     Column {

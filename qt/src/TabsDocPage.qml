@@ -258,19 +258,19 @@ DocLayout {
             Grid {
                 width: parent.width
                 columns: 2
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
-                Rectangle {
-                    width: (parent.width - 16) / 2
-                    height: 110
-                    radius: 8
-                    color: root.cCard
-                    border.color: root.cBorder
+                ChaSetCard {
+                    width: (parent.width - ThemeTokens.dp(16)) / 2
+                    customRadius: ThemeTokens.dp(8)
 
                     Column {
-                        anchors.fill: parent
-                        anchors.margins: 14
-                        spacing: 8
+                        width: parent.width
+                        topPadding: ThemeTokens.dp(14)
+                        bottomPadding: ThemeTokens.dp(14)
+                        leftPadding: ThemeTokens.dp(14)
+                        rightPadding: ThemeTokens.dp(14)
+                        spacing: ThemeTokens.dp(8)
                         DocText { text: "Line Variant (Underline)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                         DocText { text: "Full-width bottom accent border for navigation headers"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                         ChaSetTabs {
@@ -285,17 +285,17 @@ DocLayout {
                     }
                 }
 
-                Rectangle {
-                    width: (parent.width - 16) / 2
-                    height: 110
-                    radius: 8
-                    color: root.cCard
-                    border.color: root.cBorder
+                ChaSetCard {
+                    width: (parent.width - ThemeTokens.dp(16)) / 2
+                    customRadius: ThemeTokens.dp(8)
 
                     Column {
-                        anchors.fill: parent
-                        anchors.margins: 14
-                        spacing: 8
+                        width: parent.width
+                        topPadding: ThemeTokens.dp(14)
+                        bottomPadding: ThemeTokens.dp(14)
+                        leftPadding: ThemeTokens.dp(14)
+                        rightPadding: ThemeTokens.dp(14)
+                        spacing: ThemeTokens.dp(8)
                         DocText { text: "With Badges & Counts"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                         DocText { text: "Integrated status counters and notification count tags"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                         ChaSetTabs {
@@ -309,17 +309,17 @@ DocLayout {
                     }
                 }
 
-                Rectangle {
-                    width: (parent.width - 16) / 2
-                    height: 110
-                    radius: 8
-                    color: root.cCard
-                    border.color: root.cBorder
+                ChaSetCard {
+                    width: (parent.width - ThemeTokens.dp(16)) / 2
+                    customRadius: ThemeTokens.dp(8)
 
                     Column {
-                        anchors.fill: parent
-                        anchors.margins: 14
-                        spacing: 8
+                        width: parent.width
+                        topPadding: ThemeTokens.dp(14)
+                        bottomPadding: ThemeTokens.dp(14)
+                        leftPadding: ThemeTokens.dp(14)
+                        rightPadding: ThemeTokens.dp(14)
+                        spacing: ThemeTokens.dp(8)
                         DocText { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                         DocText { text: "High-density tab triggers for compact headers and toolbars"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                         ChaSetTabs {
@@ -334,17 +334,17 @@ DocLayout {
                     }
                 }
 
-                Rectangle {
-                    width: (parent.width - 16) / 2
-                    height: 110
-                    radius: 8
-                    color: root.cCard
-                    border.color: root.cBorder
+                ChaSetCard {
+                    width: (parent.width - ThemeTokens.dp(16)) / 2
+                    customRadius: ThemeTokens.dp(8)
 
                     Column {
-                        anchors.fill: parent
-                        anchors.margins: 14
-                        spacing: 8
+                        width: parent.width
+                        topPadding: ThemeTokens.dp(14)
+                        bottomPadding: ThemeTokens.dp(14)
+                        leftPadding: ThemeTokens.dp(14)
+                        rightPadding: ThemeTokens.dp(14)
+                        spacing: ThemeTokens.dp(8)
                         DocText { text: "Disabled Trigger"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                         DocText { text: "Individual tab triggers blocked with 50% opacity"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                         ChaSetTabs {

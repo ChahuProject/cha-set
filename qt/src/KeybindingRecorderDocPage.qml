@@ -39,14 +39,14 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 Column {
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
                     anchors.horizontalCenter: parent.horizontalCenter
                     DocText { text: "Click recorder box and press shortcut combination:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetKeybindingRecorder {
-                        width: 240
+                        width: ThemeTokens.dp(240)
                         value: root.boundKey
                         clearable: true
                         onKeybindingRecorded: function(val) {
@@ -82,8 +82,8 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`
 
             Column {
                 anchors.centerIn: parent
-                spacing: 14
-                width: 260
+                spacing: ThemeTokens.dp(14)
+                width: ThemeTokens.dp(260)
 
                 Column {
                     spacing: 4

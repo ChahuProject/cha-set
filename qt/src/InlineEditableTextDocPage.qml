@@ -35,7 +35,7 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -46,7 +46,7 @@ DocLayout {
 
                 ChaSetInlineEditableText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: 260
+                    width: ThemeTokens.dp(260)
                     value: root.currentTitle
                     onSave: function(newVal) {
                         root.currentTitle = newVal
@@ -80,8 +80,8 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`
 
             Column {
                 anchors.centerIn: parent
-                spacing: 14
-                width: 280
+                spacing: ThemeTokens.dp(14)
+                width: ThemeTokens.dp(280)
 
                 Column {
                     spacing: 4

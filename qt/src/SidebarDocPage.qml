@@ -82,11 +82,11 @@ DocLayout {
             // Preview Container Box
             Rectangle {
                 anchors.centerIn: parent
-                width: Math.min(parent.width - 40, 680)
-                height: 380
+                width: Math.min(parent.width - ThemeTokens.dp(40), ThemeTokens.dp(680))
+                height: ThemeTokens.dp(380)
                 color: ThemeTokens.background
                 border.color: ThemeTokens.border
-                radius: 8
+                radius: ThemeTokens.dp(8)
                 clip: true
 
                 // Embedded Demo Sidebar
@@ -95,7 +95,7 @@ DocLayout {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
-                    sidebarWidth: 220
+                    sidebarWidth: ThemeTokens.dp(220)
                     collapsed: root.demoCollapsed
                     variant: root.demoVariant
                     collapsible: root.demoCollapsible
@@ -105,7 +105,7 @@ DocLayout {
 
                     Item {
                         anchors.fill: parent
-                        anchors.margins: 12
+                        anchors.margins: ThemeTokens.dp(12)
 
                         // Header Bar
                         Row {
@@ -113,12 +113,12 @@ DocLayout {
                             anchors.top: parent.top
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            height: 24
-                            spacing: 8
+                            height: ThemeTokens.dp(24)
+                            spacing: ThemeTokens.dp(8)
 
                             ChaSetIcon {
                                 name: "logo"
-                                size: 20
+                                size: ThemeTokens.dp(20)
                                 color: ThemeTokens.accent
                                 anchors.verticalCenter: parent.verticalCenter
                             }

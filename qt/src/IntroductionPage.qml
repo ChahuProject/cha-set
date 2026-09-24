@@ -46,24 +46,24 @@ DocLayout {
 
         Row {
             width: parent.width
-            spacing: 14
+            spacing: ThemeTokens.dp(14)
 
             // Pillar 1
             ChaSetCard {
-                width: Math.max(ThemeTokens.dp(160), (parent.width - 28) / 3)
+                width: Math.max(ThemeTokens.dp(160), (parent.width - ThemeTokens.dp(28)) / 3)
                 implicitHeight: pillarItem1.implicitHeight
-                customRadius: 10
+                customRadius: ThemeTokens.dp(10)
 
                 Item {
                     id: pillarItem1
                     width: parent.width
-                    implicitHeight: col1.implicitHeight + 28
+                    implicitHeight: col1.implicitHeight + ThemeTokens.dp(28)
 
                     Column {
                         id: col1
                         anchors.fill: parent
-                        anchors.margins: 14
-                        spacing: 6
+                        anchors.margins: ThemeTokens.dp(14)
+                        spacing: ThemeTokens.dp(6)
                         ChaSetIcon { name: "target"; size: 24; color: ThemeTokens.accent }
                         DocText { text: "One Source of Truth"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
@@ -78,20 +78,20 @@ DocLayout {
 
             // Pillar 2
             ChaSetCard {
-                width: Math.max(ThemeTokens.dp(160), (parent.width - 28) / 3)
+                width: Math.max(ThemeTokens.dp(160), (parent.width - ThemeTokens.dp(28)) / 3)
                 implicitHeight: pillarItem2.implicitHeight
-                customRadius: 10
+                customRadius: ThemeTokens.dp(10)
 
                 Item {
                     id: pillarItem2
                     width: parent.width
-                    implicitHeight: col2.implicitHeight + 28
+                    implicitHeight: col2.implicitHeight + ThemeTokens.dp(28)
 
                     Column {
                         id: col2
                         anchors.fill: parent
-                        anchors.margins: 14
-                        spacing: 6
+                        anchors.margins: ThemeTokens.dp(14)
+                        spacing: ThemeTokens.dp(6)
                         ChaSetIcon { name: "zap"; size: 24; color: ThemeTokens.accent }
                         DocText { text: "Native Ergonomics"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
@@ -106,20 +106,20 @@ DocLayout {
 
             // Pillar 3
             ChaSetCard {
-                width: Math.max(ThemeTokens.dp(160), (parent.width - 28) / 3)
+                width: Math.max(ThemeTokens.dp(160), (parent.width - ThemeTokens.dp(28)) / 3)
                 implicitHeight: pillarItem3.implicitHeight
-                customRadius: 10
+                customRadius: ThemeTokens.dp(10)
 
                 Item {
                     id: pillarItem3
                     width: parent.width
-                    implicitHeight: col3.implicitHeight + 28
+                    implicitHeight: col3.implicitHeight + ThemeTokens.dp(28)
 
                     Column {
                         id: col3
                         anchors.fill: parent
-                        anchors.margins: 14
-                        spacing: 6
+                        anchors.margins: ThemeTokens.dp(14)
+                        spacing: ThemeTokens.dp(6)
                         ChaSetIcon { name: "lock"; size: 24; color: ThemeTokens.accent }
                         DocText { text: "Automated Parity Gate"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {

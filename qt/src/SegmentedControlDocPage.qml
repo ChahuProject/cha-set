@@ -213,7 +213,7 @@ DocLayout {
                     spacing: 6
                     DocText { text: "Fixed width with truncation (itemWidth: 120)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
-                        itemWidth: 120
+                        itemWidth: ThemeTokens.dp(120)
                         options: [
                             { label: "Compact", value: "compact" },
                             { label: "Very Long Option Text That Truncates", value: "long" },

@@ -120,16 +120,16 @@ DocLayout {
 
                 Rectangle {
                     width: parent.width
-                    height: 180
+                    height: ThemeTokens.dp(180)
                     color: ThemeTokens.panel
-                    radius: 8
+                    radius: ThemeTokens.dp(8)
                     border.color: ThemeTokens.border
                     border.width: 1
 
                     Column {
                         anchors.centerIn: parent
-                        width: parent.width - 48
-                        spacing: 16
+                        width: parent.width - ThemeTokens.dp(48)
+                        spacing: ThemeTokens.dp(16)
 
                         ChaSetAddressBar {
                             id: bar

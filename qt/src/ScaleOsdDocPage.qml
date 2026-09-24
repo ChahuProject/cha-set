@@ -44,13 +44,13 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 24
-                width: 320
+                spacing: ThemeTokens.dp(24)
+                width: ThemeTokens.dp(320)
 
                 Rectangle {
-                    width: 96
-                    height: 96
-                    radius: 8
+                    width: ThemeTokens.dp(96)
+                    height: ThemeTokens.dp(96)
+                    radius: ThemeTokens.dp(8)
                     color: ThemeTokens.hover
                     border.color: ThemeTokens.accent
                     border.width: 1

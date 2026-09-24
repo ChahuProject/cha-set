@@ -17,7 +17,7 @@ DocLayout {
 
     ComponentPreview {
         title: "Virtual List Sandbox"
-        stageHeight: 340
+        stageHeight: 380
         reactCode: `<VirtualList
   items={items}
   estimateSize={36}
@@ -44,7 +44,8 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 12
+                width: ThemeTokens.dp(360)
+                spacing: ThemeTokens.dp(12)
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -55,7 +56,7 @@ DocLayout {
 
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
 
                     ChaSetButton {
                         text: "Top (#1)"
@@ -88,19 +89,19 @@ DocLayout {
 
                 ChaSetVirtualList {
                     id: virtualList
-                    width: 360
-                    height: 240
+                    width: ThemeTokens.dp(360)
+                    height: ThemeTokens.dp(240)
                     model: 10000
                     delegate: Rectangle {
                         width: parent ? parent.width : 0
-                        height: 36
+                        height: virtualList.effectiveItemHeight
                         color: index % 2 === 0 ? ThemeTokens.hover : "transparent"
 
                         DocText {
                             anchors.left: parent.left
-                            anchors.leftMargin: 12
+                            anchors.leftMargin: ThemeTokens.dp(12)
                             anchors.right: badgeItem.left
-                            anchors.rightMargin: 8
+                            anchors.rightMargin: ThemeTokens.dp(8)
                             anchors.verticalCenter: parent.verticalCenter
                             text: "Dataset Record #" + (index + 1)
                             color: ThemeTokens.text
@@ -112,7 +113,7 @@ DocLayout {
                         ChaSetBadge {
                             id: badgeItem
                             anchors.right: parent.right
-                            anchors.rightMargin: 12
+                            anchors.rightMargin: ThemeTokens.dp(12)
                             anchors.verticalCenter: parent.verticalCenter
                             text: index % 3 === 0 ? "Production" : "Staging"
                             variant: index % 3 === 0 ? "default" : "secondary"

@@ -150,7 +150,7 @@ DocLayout {
                             }
 
                             Row {
-                                spacing: 8
+                                spacing: ThemeTokens.dp(8)
                                 width: parent.width
 
                                 DocText {
@@ -158,19 +158,19 @@ DocLayout {
                                     color: ThemeTokens.text
                                     font.pixelSize: Typography.sizeSmall
                                     anchors.verticalCenter: parent.verticalCenter
-                                    width: 50
+                                    width: ThemeTokens.dp(50)
                                 }
 
                                 ChaSetInput {
-                                    width: 160
-                                    height: 28
+                                    width: ThemeTokens.dp(160)
+                                    height: ThemeTokens.dp(28)
                                     text: "" + root.layerWidth
                                     onTextEdited: root.layerWidth = parseInt(text) || 0
                                 }
                             }
 
                             Row {
-                                spacing: 8
+                                spacing: ThemeTokens.dp(8)
                                 width: parent.width
 
                                 DocText {
@@ -178,12 +178,12 @@ DocLayout {
                                     color: ThemeTokens.text
                                     font.pixelSize: Typography.sizeSmall
                                     anchors.verticalCenter: parent.verticalCenter
-                                    width: 50
+                                    width: ThemeTokens.dp(50)
                                 }
 
                                 ChaSetInput {
-                                    width: 160
-                                    height: 28
+                                    width: ThemeTokens.dp(160)
+                                    height: ThemeTokens.dp(28)
                                     text: "" + root.layerHeight
                                     onTextEdited: root.layerHeight = parseInt(text) || 0
                                 }

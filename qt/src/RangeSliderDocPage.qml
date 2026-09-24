@@ -42,12 +42,12 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 20
-                width: 280
+                spacing: ThemeTokens.dp(20)
+                width: ThemeTokens.dp(280)
 
                 Item {
                     width: parent.width
-                    height: 16
+                    height: ThemeTokens.dp(16)
                     DocText {
                         anchors.left: parent.left
                         text: "Min: " + Math.round(root.minPrice)
@@ -96,8 +96,8 @@ ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false 
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
-                width: 280
+                spacing: ThemeTokens.dp(16)
+                width: ThemeTokens.dp(280)
 
                 Column {
                     spacing: 4

@@ -284,53 +284,50 @@ DocLayout {
 
             // Example 3: Labeled Dividers
             ChaSetCard {
-                width: (parent.width - 16) / 2
-                height: 180
+                width: (parent.width - ThemeTokens.dp(16)) / 2
                 customRadius: root.customRadius
 
-                Item {
+                Column {
                     width: parent.width
-                    height: 180
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(12)
+
+                    DocText {
+                        text: "Labeled Dividers"
+                        font.pixelSize: Typography.sizeHeading
+                        font.weight: Typography.weightBold
+                        color: root.cFg
+                    }
+
+                    DocText {
+                        text: "Embed section titles or auth splits with left, center, or right alignment."
+                        font.pixelSize: Typography.sizeBody
+                        color: root.cMutedFg
+                        wrapMode: TextEdit.WordWrap
+                        width: parent.width - ThemeTokens.dp(32)
+                    }
 
                     Column {
-                        anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 12
+                        width: parent.width - ThemeTokens.dp(32)
+                        spacing: ThemeTokens.dp(10)
 
-                        DocText {
-                            text: "Labeled Dividers"
-                            font.pixelSize: Typography.sizeHeading
-                            font.weight: Typography.weightBold
-                            color: root.cFg
-                        }
-
-                        DocText {
-                            text: "Embed section titles or auth splits with left, center, or right alignment."
-                            font.pixelSize: Typography.sizeBody
-                            color: root.cMutedFg
-                            wrapMode: TextEdit.WordWrap
+                        ChaSetSeparator {
+                            label: "Section Start"
+                            labelPosition: "left"
                             width: parent.width
                         }
-
-                        Column {
+                        ChaSetSeparator {
+                            label: "OR CONTINUE WITH"
+                            labelPosition: "center"
                             width: parent.width
-                            spacing: 10
-
-                            ChaSetSeparator {
-                                label: "Section Start"
-                                labelPosition: "left"
-                                width: parent.width
-                            }
-                            ChaSetSeparator {
-                                label: "OR CONTINUE WITH"
-                                labelPosition: "center"
-                                width: parent.width
-                            }
-                            ChaSetSeparator {
-                                label: "End of Category"
-                                labelPosition: "right"
-                                width: parent.width
-                            }
+                        }
+                        ChaSetSeparator {
+                            label: "End of Category"
+                            labelPosition: "right"
+                            width: parent.width
                         }
                     }
                 }
@@ -338,122 +335,116 @@ DocLayout {
 
             // Example 4: Border Styles (Solid, Dashed, Dotted)
             ChaSetCard {
-                width: (parent.width - 16) / 2
-                height: 180
+                width: (parent.width - ThemeTokens.dp(16)) / 2
                 customRadius: root.customRadius
 
-                Item {
+                Column {
                     width: parent.width
-                    height: 180
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(12)
+
+                    DocText {
+                        text: "Border Styles"
+                        font.pixelSize: Typography.sizeHeading
+                        font.weight: Typography.weightBold
+                        color: root.cFg
+                    }
+
+                    DocText {
+                        text: "Choose between solid, dashed, or dotted dividers to distinguish hierarchy."
+                        font.pixelSize: Typography.sizeBody
+                        color: root.cMutedFg
+                        wrapMode: TextEdit.WordWrap
+                        width: parent.width - ThemeTokens.dp(32)
+                    }
 
                     Column {
-                        anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 12
+                        width: parent.width - ThemeTokens.dp(32)
+                        spacing: ThemeTokens.dp(8)
 
-                        DocText {
-                            text: "Border Styles"
-                            font.pixelSize: Typography.sizeHeading
-                            font.weight: Typography.weightBold
-                            color: root.cFg
-                        }
+                        DocText { text: "Solid (Default)"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                        ChaSetSeparator { variant: "solid"; width: parent.width }
 
-                        DocText {
-                            text: "Choose between solid, dashed, or dotted dividers to distinguish hierarchy."
-                            font.pixelSize: Typography.sizeBody
-                            color: root.cMutedFg
-                            wrapMode: TextEdit.WordWrap
-                            width: parent.width
-                        }
+                        DocText { text: "Dashed"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                        ChaSetSeparator { variant: "dashed"; width: parent.width }
 
-                        Column {
-                            width: parent.width
-                            spacing: 8
-
-                            DocText { text: "Solid (Default)"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                            ChaSetSeparator { variant: "solid"; width: parent.width }
-
-                            DocText { text: "Dashed"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                            ChaSetSeparator { variant: "dashed"; width: parent.width }
-
-                            DocText { text: "Dotted"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                            ChaSetSeparator { variant: "dotted"; width: parent.width }
-                        }
+                        DocText { text: "Dotted"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                        ChaSetSeparator { variant: "dotted"; width: parent.width }
                     }
                 }
             }
 
-            // Example 4: Vertical Navigation Divider
+            // Example 5: Vertical Navigation Divider
             ChaSetCard {
-                width: (parent.width - 16) / 2
-                height: 180
+                width: (parent.width - ThemeTokens.dp(16)) / 2
                 customRadius: root.customRadius
 
-                Item {
+                Column {
                     width: parent.width
-                    height: 180
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(12)
 
-                    Column {
-                        anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 12
+                    DocText {
+                        text: "Navigation Divider"
+                        font.pixelSize: Typography.sizeHeading
+                        font.weight: Typography.weightBold
+                        color: root.cFg
+                    }
 
-                        DocText {
-                            text: "Navigation Divider"
-                            font.pixelSize: Typography.sizeHeading
-                            font.weight: Typography.weightBold
-                            color: root.cFg
-                        }
+                    DocText {
+                        text: "Vertical dividers between inline list items or metadata tags."
+                        font.pixelSize: Typography.sizeBody
+                        color: root.cMutedFg
+                        wrapMode: TextEdit.WordWrap
+                        width: parent.width - ThemeTokens.dp(32)
+                    }
 
-                        DocText {
-                            text: "Vertical dividers between inline list items or metadata tags."
-                            font.pixelSize: Typography.sizeBody
-                            color: root.cMutedFg
-                            wrapMode: TextEdit.WordWrap
-                            width: parent.width
-                        }
+                    Rectangle {
+                        width: parent.width - ThemeTokens.dp(32)
+                        height: ThemeTokens.dp(38)
+                        radius: ThemeTokens.dp(6)
+                        color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.6)
+                        border.color: root.cBorder
+                        border.width: 1
 
-                        Rectangle {
-                            width: parent.width
-                            height: 38
-                            radius: 6
-                            color: Qt.rgba(ThemeTokens.hover.r, ThemeTokens.hover.g, ThemeTokens.hover.b, ThemeTokens.hover.a * 0.6)
-                            border.color: root.cBorder
-                            border.width: 1
+                        Row {
+                            anchors.centerIn: parent
+                            spacing: ThemeTokens.dp(12)
 
-                            Row {
-                                anchors.centerIn: parent
-                                spacing: 12
-
-                                DocText {
-                                    text: "v0.2.0"
-                                    font.weight: Typography.weightSemibold
-                                    font.pixelSize: Typography.sizeSmall
-                                    color: root.cFg
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
-                                ChaSetSeparator {
-                                    orientation: "vertical"
-                                    height: 16
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
-                                DocText {
-                                    text: "MIT License"
-                                    font.pixelSize: Typography.sizeSmall
-                                    color: root.cMutedFg
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
-                                ChaSetSeparator {
-                                    orientation: "vertical"
-                                    height: 16
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
-                                DocText {
-                                    text: "React 19 & Qt 6"
-                                    font.pixelSize: Typography.sizeSmall
-                                    color: root.cMutedFg
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
+                            DocText {
+                                text: "v0.2.0"
+                                font.weight: Typography.weightSemibold
+                                font.pixelSize: Typography.sizeSmall
+                                color: root.cFg
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            ChaSetSeparator {
+                                orientation: "vertical"
+                                height: ThemeTokens.dp(16)
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            DocText {
+                                text: "MIT License"
+                                font.pixelSize: Typography.sizeSmall
+                                color: root.cMutedFg
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            ChaSetSeparator {
+                                orientation: "vertical"
+                                height: ThemeTokens.dp(16)
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            DocText {
+                                text: "React 19 & Qt 6"
+                                font.pixelSize: Typography.sizeSmall
+                                color: root.cMutedFg
+                                anchors.verticalCenter: parent.verticalCenter
                             }
                         }
                     }

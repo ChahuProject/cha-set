@@ -195,165 +195,151 @@ DocLayout {
 
         Flow {
             width: parent.width
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
             ChaSetCard {
-                width: (parent.width - 16) / 2
-                height: 140
+                width: (parent.width - ThemeTokens.dp(16)) / 2
                 customRadius: root.customRadius
 
-                Item {
+                Column {
                     width: parent.width
-                    height: 140
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(8)
+
+                    DocText { text: "Unchecked & Checked"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: "Standard interactive toggle states"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
                     Column {
-                        anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 8
+                        width: parent.width - ThemeTokens.dp(32)
+                        spacing: ThemeTokens.dp(8)
+                        ChaSetCheckbox { checked: false; label: "Unchecked by default" }
+                        ChaSetCheckbox { checked: true; label: "Checked by default" }
+                    }
+                }
+            }
 
-                        DocText { text: "Unchecked & Checked"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                        DocText { text: "Standard interactive toggle states"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: root.customRadius
 
-                        Column {
-                            spacing: 8
-                            ChaSetCheckbox { checked: false; label: "Unchecked by default" }
-                            ChaSetCheckbox { checked: true; label: "Checked by default" }
+                Column {
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(8)
+
+                    DocText { text: "Indeterminate State"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: "Represents partially selected sub-options"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
+
+                    Column {
+                        width: parent.width - ThemeTokens.dp(32)
+                        spacing: ThemeTokens.dp(6)
+                        ChaSetCheckbox { indeterminate: true; label: "Select all sub-tasks" }
+                        Row {
+                            spacing: ThemeTokens.dp(8)
+                            Item { width: ThemeTokens.dp(14); height: 1 }
+                            ChaSetCheckbox { size: "sm"; checked: true; label: "Task 1: Requirements" }
                         }
                     }
                 }
             }
 
             ChaSetCard {
-                width: (parent.width - 16) / 2
-                height: 140
+                width: (parent.width - ThemeTokens.dp(16)) / 2
                 customRadius: root.customRadius
 
-                Item {
+                Column {
                     width: parent.width
-                    height: 140
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(8)
 
-                    Column {
-                        anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 8
+                    DocText { text: "With Helper Description"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: "Detailed multi-line label and subtext"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
-                        DocText { text: "Indeterminate State"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                        DocText { text: "Represents partially selected sub-options"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
-
-                        Column {
-                            spacing: 6
-                            ChaSetCheckbox { indeterminate: true; label: "Select all sub-tasks" }
-                            Row {
-                                spacing: 8
-                                Item { width: 14; height: 1 }
-                                ChaSetCheckbox { size: "sm"; checked: true; label: "Task 1: Requirements" }
-                            }
-                        }
+                    ChaSetCheckbox {
+                        checked: true
+                        label: "Automatic background syncing"
+                        description: "Sync data with remote servers when idle."
                     }
                 }
             }
 
             ChaSetCard {
-                width: (parent.width - 16) / 2
-                height: 140
+                width: (parent.width - ThemeTokens.dp(16)) / 2
                 customRadius: root.customRadius
 
-                Item {
+                Column {
                     width: parent.width
-                    height: 140
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(8)
 
-                    Column {
-                        anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 8
+                    DocText { text: "Invalid / Error State"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: "Highlights unchecked required confirmation"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
-                        DocText { text: "With Helper Description"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                        DocText { text: "Detailed multi-line label and subtext"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
-
-                        ChaSetCheckbox {
-                            checked: true
-                            label: "Automatic background syncing"
-                            description: "Sync data with remote servers when idle."
-                        }
+                    ChaSetCheckbox {
+                        invalid: true
+                        checked: false
+                        label: "Mandatory compliance confirmation"
+                        description: "Must be accepted before setup."
                     }
                 }
             }
 
             ChaSetCard {
-                width: (parent.width - 16) / 2
-                height: 140
+                width: (parent.width - ThemeTokens.dp(16)) / 2
                 customRadius: root.customRadius
 
-                Item {
+                Column {
                     width: parent.width
-                    height: 140
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(8)
+
+                    DocText { text: "Disabled & Read-Only States"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: "Dimmed non-interactive vs locked presentation"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
                     Column {
-                        anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 8
-
-                        DocText { text: "Invalid / Error State"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                        DocText { text: "Highlights unchecked required confirmation"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
-
-                        ChaSetCheckbox {
-                            invalid: true
-                            checked: false
-                            label: "Mandatory compliance confirmation"
-                            description: "Must be accepted before setup."
-                        }
+                        width: parent.width - ThemeTokens.dp(32)
+                        spacing: ThemeTokens.dp(8)
+                        ChaSetCheckbox { disabled: true; checked: false; label: "Disabled unchecked" }
+                        ChaSetCheckbox { readOnly: true; checked: true; label: "Read-only checked" }
                     }
                 }
             }
 
             ChaSetCard {
-                width: (parent.width - 16) / 2
-                height: 140
+                width: (parent.width - ThemeTokens.dp(16)) / 2
                 customRadius: root.customRadius
 
-                Item {
+                Column {
                     width: parent.width
-                    height: 140
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(8)
+
+                    DocText { text: "Size Variants"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: "Default vs Compact size"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
                     Column {
-                        anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 8
-
-                        DocText { text: "Disabled & Read-Only States"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                        DocText { text: "Dimmed non-interactive vs locked presentation"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
-
-                        Column {
-                            spacing: 8
-                            ChaSetCheckbox { disabled: true; checked: false; label: "Disabled unchecked" }
-                            ChaSetCheckbox { readOnly: true; checked: true; label: "Read-only checked" }
-                        }
-                    }
-                }
-            }
-
-            ChaSetCard {
-                width: (parent.width - 16) / 2
-                height: 140
-                customRadius: root.customRadius
-
-                Item {
-                    width: parent.width
-                    height: 140
-
-                    Column {
-                        anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 8
-
-                        DocText { text: "Size Variants"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                        DocText { text: "Default vs Compact size"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
-
-                        Column {
-                            spacing: 8
-                            ChaSetCheckbox { size: "default"; checked: true; label: "Default size (text-sm)" }
-                            ChaSetCheckbox { size: "sm"; checked: true; label: "Small size (sm, text-xs)" }
-                        }
+                        width: parent.width - ThemeTokens.dp(32)
+                        spacing: ThemeTokens.dp(8)
+                        ChaSetCheckbox { size: "default"; checked: true; label: "Default size (text-sm)" }
+                        ChaSetCheckbox { size: "sm"; checked: true; label: "Small size (sm, text-xs)" }
                     }
                 }
             }

@@ -45,8 +45,8 @@ DocLayout {
         stageData: [
             Column {
                 anchors.centerIn: parent
-                width: 320
-                spacing: 8
+                width: ThemeTokens.dp(320)
+                spacing: ThemeTokens.dp(8)
 
                 Row {
                     width: parent.width
@@ -214,101 +214,101 @@ DocLayout {
         Grid {
             width: parent.width
             columns: 2
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Default Input"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    ChaSetInput { width: parent.width; placeholderText: "Enter username..." }
+                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); placeholderText: "Enter username..." }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Small Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    ChaSetInput { width: parent.width; size: "sm"; placeholderText: "Compact input..." }
+                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); size: "sm"; placeholderText: "Compact input..." }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Invalid / Error State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    ChaSetInput { width: parent.width; invalid: true; text: "invalid-email@" }
+                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); invalid: true; text: "invalid-email@" }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Clearable Field"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    ChaSetInput { width: parent.width; clearable: true; text: "Click cross to clear" }
+                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); clearable: true; text: "Click cross to clear" }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Password with Toggle"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    ChaSetInput { width: parent.width; type: "password"; passwordToggle: true; text: "supersecret123" }
+                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); type: "password"; passwordToggle: true; text: "supersecret123" }
                 }
             }
 
-            Rectangle {
-                width: (parent.width - 16) / 2
-                height: 100
-                radius: 8
-                color: root.cCard
-                border.color: root.cBorder
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
 
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: 14
-                    spacing: 8
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    ChaSetInput { width: parent.width; disabled: true; placeholderText: "Disabled input"; text: "preset value" }
+                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); disabled: true; placeholderText: "Disabled input"; text: "preset value" }
                 }
             }
         }

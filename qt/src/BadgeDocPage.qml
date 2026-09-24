@@ -151,16 +151,16 @@ DocLayout {
 
         ChaSetCard {
             width: parent.width
-            height: 70
             customRadius: root.customRadius
 
-            Item {
+            Column {
                 width: parent.width
-                height: 70
+                topPadding: ThemeTokens.dp(20)
+                bottomPadding: ThemeTokens.dp(20)
 
                 Row {
-                    anchors.centerIn: parent
-                    spacing: 12
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: ThemeTokens.dp(12)
                     ChaSetBadge { variant: "default"; text: "Default" }
                     ChaSetBadge { variant: "secondary"; text: "Secondary" }
                     ChaSetBadge { variant: "destructive"; text: "Destructive" }
@@ -175,29 +175,29 @@ DocLayout {
     // Section 4: Sizes
     Column {
         width: parent.width
-        spacing: 8
+        spacing: ThemeTokens.dp(8)
         DocText { text: "Sizes"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
         DocText { text: "Choose between standard pill scale (default) and compact micro badge (sm)."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
-            height: 70
             customRadius: root.customRadius
 
-            Item {
+            Column {
                 width: parent.width
-                height: 70
+                topPadding: ThemeTokens.dp(20)
+                bottomPadding: ThemeTokens.dp(20)
 
                 Row {
-                    anchors.centerIn: parent
-                    spacing: 20
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: ThemeTokens.dp(20)
                     Row {
-                        spacing: 8
+                        spacing: ThemeTokens.dp(8)
                         DocText { anchors.verticalCenter: parent.verticalCenter; text: "Default:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
                         ChaSetBadge { size: "default"; text: "Badge Default" }
                     }
                     Row {
-                        spacing: 8
+                        spacing: ThemeTokens.dp(8)
                         DocText { anchors.verticalCenter: parent.verticalCenter; text: "Small:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
                         ChaSetBadge { size: "sm"; text: "NEW" }
                     }
@@ -209,22 +209,22 @@ DocLayout {
     // Section 5: Status & Removable Badges
     Column {
         width: parent.width
-        spacing: 8
+        spacing: ThemeTokens.dp(8)
         DocText { text: "Status & Removable Tags"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
         DocText { text: "Badges support live status indicator dots and dismissible action buttons for filter tags."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
-            height: 70
             customRadius: root.customRadius
 
-            Item {
+            Column {
                 width: parent.width
-                height: 70
+                topPadding: ThemeTokens.dp(20)
+                bottomPadding: ThemeTokens.dp(20)
 
                 Row {
-                    anchors.centerIn: parent
-                    spacing: 16
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: ThemeTokens.dp(16)
                     ChaSetBadge { dot: true; dotColor: "#10b981"; variant: "outline"; text: "Online" }
                     ChaSetBadge { dot: true; dotColor: "#f59e0b"; variant: "outline"; text: "Away" }
                     ChaSetBadge { dot: true; dotColor: "#ef4444"; variant: "destructive"; text: "Error" }

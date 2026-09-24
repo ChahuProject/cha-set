@@ -45,12 +45,12 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
 
                 ChaSetSelect {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: 200
-                    height: 32
+                    width: ThemeTokens.dp(200)
+                    height: ThemeTokens.dp(32)
                     value: root.selectedFruit
                     placeholder: "Select fruit..."
                     options: [
