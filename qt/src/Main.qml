@@ -47,6 +47,22 @@ ApplicationWindow {
         }
     }
 
+    function copyActiveSelection() {
+        return SelectionHub.copyActiveSelection();
+    }
+
+    function testClaimSelection(text) {
+        SelectionHub.claim({
+            selectedText: text,
+            code: text,
+            deselect: function() {}
+        });
+    }
+
+    function testClearSelection() {
+        SelectionHub.clearAll();
+    }
+
     function syncGlobalThemeConfig() {
         win.globalThemeConfig = {
             version: 1,

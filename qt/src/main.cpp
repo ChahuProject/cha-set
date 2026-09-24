@@ -9,8 +9,11 @@
 #include <QDebug>
 #include <QTest>
 #include <QWheelEvent>
+#include <QKeyEvent>
+#include <QDateTime>
 #include <QElapsedTimer>
 #include "ChaSetFontSystem.h"
+#include "ChaSetClipboard.h"
 
 class GlobalWheelZoomFilter : public QObject {
 public:
@@ -37,6 +40,32 @@ protected:
                         QMetaObject::invokeMethod(m_window, "stepZoom", Q_ARG(QVariant, direction));
                     }
                     we->accept();
+                    return true;
+                }
+            }
+        } else if (event->type() == QEvent::ShortcutOverride || event->type() == QEvent::KeyPress) {
+            auto* ke = static_cast<QKeyEvent*>(event);
+            if ((ke->key() == Qt::Key_C && (ke->modifiers() & (Qt::ControlModifier | Qt::MetaModifier))) ||
+                (ke->key() == Qt::Key_Insert && (ke->modifiers() & Qt::ControlModifier))) {
+                bool copied = false;
+                if (m_window != nullptr) {
+                    if (auto* focusItem = m_window->activeFocusItem()) {
+                        QString selText = focusItem->property("selectedText").toString();
+                        if (!selText.isEmpty()) {
+                            ChaSetClipboard clipboard;
+                            clipboard.setText(selText);
+                            copied = true;
+                        }
+                    }
+                    if (!copied) {
+                        QVariant res;
+                        if (QMetaObject::invokeMethod(m_window, "copyActiveSelection", Q_RETURN_ARG(QVariant, res))) {
+                            copied = res.toBool();
+                        }
+                    }
+                }
+                if (copied) {
+                    event->accept();
                     return true;
                 }
             }
@@ -260,7 +289,22 @@ static bool runRealKeyboardVerification(QQuickWindow* window) {
         return false;
     }
 
-    qInfo("[qt-scenario] PASS: Authentic C++ QTest keyboard navigation verified for Select and DropdownMenu");
+    // 3. SelectionHub & Ctrl+C keyboard copy verification via QTest
+    qInfo("[qt-scenario] Step 3: Verifying Ctrl+C copying of selected text via real QTest event...");
+    const QString testSelToken = QStringLiteral("chaset-ctrl-c-test-%1").arg(QDateTime::currentMSecsSinceEpoch());
+    QMetaObject::invokeMethod(window, "testClaimSelection", Q_ARG(QVariant, testSelToken));
+    QTest::keyClick(window, Qt::Key_C, Qt::ControlModifier);
+    QTest::qWait(50);
+    ChaSetClipboard checkClip;
+    if (checkClip.text() != testSelToken) {
+        qCritical() << "[qt-scenario] FAIL: Ctrl+C keyClick did not copy selected text to clipboard! Expected:"
+                    << testSelToken << "got:" << checkClip.text();
+        return false;
+    }
+    qInfo("[qt-scenario] PASS: Ctrl+C real keyClick copied selected text to clipboard via GlobalWheelZoomFilter & SelectionHub");
+    QMetaObject::invokeMethod(window, "testClearSelection");
+
+    qInfo("[qt-scenario] PASS: Authentic C++ QTest keyboard navigation verified for Select, DropdownMenu, and Ctrl+C selection copy");
     return true;
 }
 

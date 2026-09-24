@@ -13,6 +13,7 @@ Column {
     property alias props: root.propsModel
 
     TextEdit {
+        id: propTitleEdit
         visible: root.title !== ""
         text: root.title
         color: ThemeTokens.text
@@ -24,7 +25,7 @@ Column {
         selectByMouse: true
         selectByKeyboard: true
         cursorVisible: false
-        activeFocusOnPress: false
+        activeFocusOnPress: true
         textMargin: 0
         padding: 0
         selectionColor: ThemeTokens.accent
@@ -33,6 +34,19 @@ Column {
 
         HoverHandler {
             cursorShape: Qt.IBeamCursor
+        }
+
+        onSelectedTextChanged: {
+            if (selectedText.length > 0) SelectionHub.claim(propTitleEdit);
+            else if (SelectionHub.activeOwner === propTitleEdit) SelectionHub.clear(propTitleEdit);
+        }
+
+        TapHandler {
+            acceptedButtons: Qt.RightButton
+            onTapped: function(eventPoint) {
+                var scenePos = eventPoint.scenePosition;
+                SelectionHub.showContextMenu(scenePos.x, scenePos.y, propTitleEdit);
+            }
         }
     }
 
