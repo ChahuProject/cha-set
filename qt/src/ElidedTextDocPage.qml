@@ -10,8 +10,9 @@ DocLayout {
     description: "Smart text truncation with automatic overflow detection and contextual tooltip reveal."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
+        { id: "anatomy", title: "Anatomy" },
         { id: "multiline", title: "Multi-Line Clamping" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
@@ -20,16 +21,6 @@ DocLayout {
     property bool alwaysShow: false
     property bool copyable: true
     readonly property string sampleText: "C:\\Users\\Development\\Projects\\cha-set\\qt\\src\\ChaSetElidedText.qml"
-
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: `import ChaSet 1.0
-
-ChaSetElidedText {
-    text: "Sample text..."
-}`
-        language: "qml"
-    }
 
     ComponentPreview {
         id: heroPreview
@@ -123,6 +114,13 @@ ChaSetElidedText {
         ]
     }
 
+    // Anatomy
+    DocAnatomy {
+        width: parent.width
+        qtCode: "import ChaSet\n\nChaSetElidedText {\n    text: \"Sample text...\"\n    width: parent.width\n}"
+        reactCode: "import { ElidedText } from '@chahu/cha-set';\n\n<ElidedText text=\"Sample text...\" />"
+    }
+
     // Multi-Line Clamping
     DocText {
         text: "Multi-Line Clamping"
@@ -171,22 +169,11 @@ ChaSetElidedText {
         }
     }
 
-    // Keyboard Navigation
-    DocText {
-        text: "Keyboard Navigation"
-        font.pixelSize: Typography.sizeTitleSm
-        font.bold: true
-        color: ThemeTokens.text
-    }
-
-    KeyboardShortcutsTable {
+    // Footer Sections (Animations, Keyboard, Props)
+    DocFooterSections {
+        width: parent.width
         componentId: "elided-text"
-    }
-
-    // Props Reference
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "text", type: "string", default: "''", description: "The string content to display and measure for overflow." },
             { name: "tooltipText", type: "string", default: "''", description: "Custom tooltip text override if different from raw text." },
             { name: "tooltipPlacement", type: "string", default: "'top'", description: "Placement direction: 'top', 'bottom', 'left', 'right', 'auto'." },

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Badge, type BadgeVariant, type BadgeSize, Tabs, TabsList, TabsTrigger, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
+import { Badge, type BadgeVariant, type BadgeSize, Tabs, TabsList, TabsTrigger, Checkbox, Card } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocFooterSections } from '../../components/DocFooterSections';
 
 export function BadgeDocPage() {
   const [variant, setVariant] = useState<BadgeVariant>('default');
@@ -32,10 +32,11 @@ export function BadgeDocPage() {
       description="Displays a badge or a component that looks like a badge to highlight status, tags, and counts."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
+        { id: 'anatomy', title: 'Anatomy' },
         { id: 'variants', title: 'Variants' },
         { id: 'sizes', title: 'Sizes' },
         { id: 'status-and-tags', title: 'Status & Removable' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -120,13 +121,12 @@ export function BadgeDocPage() {
         </ComponentPreview>
       </section>
 
-      {/* 2. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* 2. Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Badge } from '@chahu/cha-set';\n\n<Badge>Badge</Badge>`}
+        qtCode={`import ChaSet\n\nChaSetBadge {\n    text: "Badge"\n}`}
+      />
 
       {/* 3. Variants */}
       <section id="variants" className="scroll-mt-20 my-10">
@@ -183,74 +183,59 @@ export function BadgeDocPage() {
         </Card>
       </section>
 
-      {/* 6. Props Reference */}
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="badge" />
-      </section>
-
-      <section id="props" className="my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
-            {
-              name: 'variant',
-              type: "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'",
-              default: "'default'",
-              description: 'Visual stylistic variant corresponding to core color tokens.',
-            },
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: 'Size variant determining pill height, padding, and font metrics scale.',
-            },
-            {
-              name: 'dot',
-              type: 'boolean',
-              default: 'false',
-              description: 'Whether to display a leading status indicator dot.',
-            },
-            {
-              name: 'dotColor',
-              type: 'string',
-              default: 'undefined',
-              description: 'Custom color class for the status dot (e.g. bg-emerald-500).',
-            },
-            {
-              name: 'removable',
-              type: 'boolean',
-              default: 'false',
-              description: 'Whether to display an inline dismiss/remove action button.',
-            },
-            {
-              name: 'onRemove',
-              type: '() => void',
-              default: 'undefined',
-              description: 'Callback fired when the dismiss/remove action is triggered.',
-            },
-            {
-              name: 'interactive',
-              type: 'boolean',
-              default: 'false',
-              description: 'Whether the badge responds with interactive cursor and click effects.',
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: 'Optional additional Tailwind CSS class names.',
-            },
-          ]}
-        />
-      </section>
+      <DocFooterSections
+        componentId="badge"
+        props={[
+          {
+            name: 'variant',
+            type: "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'",
+            default: "'default'",
+            description: 'Visual stylistic variant corresponding to core color tokens.',
+          },
+          {
+            name: 'size',
+            type: "'default' | 'sm'",
+            default: "'default'",
+            description: 'Size variant determining pill height, padding, and font metrics scale.',
+          },
+          {
+            name: 'dot',
+            type: 'boolean',
+            default: 'false',
+            description: 'Whether to display a leading status indicator dot.',
+          },
+          {
+            name: 'dotColor',
+            type: 'string',
+            default: 'undefined',
+            description: 'Custom color class for the status dot (e.g. bg-emerald-500).',
+          },
+          {
+            name: 'removable',
+            type: 'boolean',
+            default: 'false',
+            description: 'Whether to display an inline dismiss/remove action button.',
+          },
+          {
+            name: 'onRemove',
+            type: '() => void',
+            default: 'undefined',
+            description: 'Callback fired when the dismiss/remove action is triggered.',
+          },
+          {
+            name: 'interactive',
+            type: 'boolean',
+            default: 'false',
+            description: 'Whether the badge responds with interactive cursor and click effects.',
+          },
+          {
+            name: 'className',
+            type: 'string',
+            default: "''",
+            description: 'Optional additional Tailwind CSS class names.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

@@ -10,9 +10,9 @@ DocLayout {
     description: "Visually or semantically separates content in a list or section."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
         { id: "states", title: "Examples & States" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
@@ -47,12 +47,16 @@ DocLayout {
         stageData: [
             Item {
                 anchors.centerIn: parent
-                width: root.demoOrientation === "horizontal" ? 300 : 260
-                height: root.demoOrientation === "horizontal" ? (root.demoHasLabel ? 120 : 110) : 40
+                width: root.demoOrientation === "horizontal" ? ThemeTokens.dp(280) : vRow.implicitWidth
+                height: root.demoOrientation === "horizontal"
+                    ? (root.demoHasLabel ? hColLabel.implicitHeight : hColNoLabel.implicitHeight)
+                    : vRow.implicitHeight
 
                 Column {
+                    id: hColLabel
                     visible: root.demoOrientation === "horizontal" && root.demoHasLabel
-                    anchors.fill: parent
+                    anchors.centerIn: parent
+                    width: parent.width
                     spacing: 12
 
                     ChaSetButton {
@@ -78,12 +82,15 @@ DocLayout {
                 }
 
                 Column {
+                    id: hColNoLabel
                     visible: root.demoOrientation === "horizontal" && !root.demoHasLabel
-                    anchors.fill: parent
+                    anchors.centerIn: parent
+                    width: parent.width
                     spacing: 12
 
                     Column {
                         spacing: 4
+                        width: parent.width
                         DocText {
                             text: "ChaSet UI"
                             font.bold: true
@@ -105,15 +112,16 @@ DocLayout {
 
                     Row {
                         spacing: 12
-                        DocText { text: "Docs"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
-                        ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 14 }
-                        DocText { text: "Source"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
-                        ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 14 }
-                        DocText { text: "Changelog"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
+                        DocText { text: "Docs"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                        ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 14; anchors.verticalCenter: parent.verticalCenter }
+                        DocText { text: "Source"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                        ChaSetSeparator { orientation: "vertical"; variant: root.demoVariant; height: 14; anchors.verticalCenter: parent.verticalCenter }
+                        DocText { text: "Changelog"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     }
                 }
 
                 Row {
+                    id: vRow
                     visible: root.demoOrientation === "vertical"
                     anchors.centerIn: parent
                     spacing: 12
@@ -188,30 +196,11 @@ DocLayout {
         ]
     }
 
-    // Section 2: Installation
-    Column {
+    // Section 2: Anatomy
+    DocAnatomy {
         width: parent.width
-        spacing: 8
-        DocText { text: "Installation"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
-    }
-
-    // Section 3: Anatomy
-    Column {
-        width: parent.width
-        spacing: 8
-        DocText { text: "Anatomy"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Import and place ChaSetSeparator horizontally or vertically to segment content."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: "ChaSetSeparator {\n    orientation: \"horizontal\"\n    width: parent.width\n}"
-        }
+        qtCode: "import ChaSet\n\nChaSetSeparator {\n    orientation: \"horizontal\"\n    width: parent.width\n}"
+        reactCode: "import { Separator } from '@chahu/cha-set';\n\n<Separator orientation=\"horizontal\" />"
     }
 
     // Section 4: Examples & States
@@ -453,56 +442,47 @@ DocLayout {
         }
     }
 
-    // Section 5: Props Reference
-    Column {
+    // Section 5: Footer Sections (Animations, Keyboard, Props)
+    DocFooterSections {
         width: parent.width
-        spacing: 8
-        DocText { text: "Props Reference"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-
-        KeyboardShortcutsTable {
-            componentId: "separator"
-        }
-
-        PropsTable {
-            width: parent.width
-            propsModel: [
-                {
-                    name: "orientation",
-                    type: "\"horizontal\" | \"vertical\"",
-                    default: "\"horizontal\"",
-                    description: "The orientation of the separator line."
-                },
-                {
-                    name: "variant",
-                    type: "\"solid\" | \"dashed\" | \"dotted\"",
-                    default: "\"solid\"",
-                    description: "The stroke style of the separator line."
-                },
-                {
-                    name: "label",
-                    type: "string",
-                    default: "\"\"",
-                    description: "Optional label text embedded in the divider line."
-                },
-                {
-                    name: "labelPosition",
-                    type: "\"left\" | \"center\" | \"right\"",
-                    default: "\"center\"",
-                    description: "Alignment for the embedded label text."
-                },
-                {
-                    name: "decorative",
-                    type: "bool",
-                    default: "true",
-                    description: "Whether the element is purely decorative or conveys semantic structure."
-                },
-                {
-                    name: "customColor",
-                    type: "color",
-                    default: "\"transparent\"",
-                    description: "Optional explicit override color for the divider line (defaults to ThemeTokens.border)."
-                }
-            ]
-        }
+        componentId: "separator"
+        propsModel: [
+            {
+                name: "orientation",
+                type: "\"horizontal\" | \"vertical\"",
+                default: "\"horizontal\"",
+                description: "The orientation of the separator line."
+            },
+            {
+                name: "variant",
+                type: "\"solid\" | \"dashed\" | \"dotted\"",
+                default: "\"solid\"",
+                description: "The stroke style of the separator line."
+            },
+            {
+                name: "label",
+                type: "string",
+                default: "\"\"",
+                description: "Optional label text embedded in the divider line."
+            },
+            {
+                name: "labelPosition",
+                type: "\"left\" | \"center\" | \"right\"",
+                default: "\"center\"",
+                description: "Alignment for the embedded label text."
+            },
+            {
+                name: "decorative",
+                type: "bool",
+                default: "true",
+                description: "Whether the element is purely decorative or conveys semantic structure."
+            },
+            {
+                name: "customColor",
+                type: "color",
+                default: "\"transparent\"",
+                description: "Optional explicit override color for the divider line (defaults to ThemeTokens.border)."
+            }
+        ]
     }
 }

@@ -10,7 +10,8 @@ DocLayout {
     description: "Combines a primary direct action button with an adjoining chevron menu trigger for secondary options."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
+        { id: "anatomy", title: "Anatomy" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
@@ -74,20 +75,16 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSplitButton { text: \"Deploy\"; menuItems: [...] }"
-        language: "qml"
+    DocAnatomy {
+        width: parent.width
+        qtCode: "import ChaSet\n\nChaSetSplitButton {\n    text: \"Deploy\"\n    variant: \"default\"\n    menuItems: [\n        { id: \"staging\", label: \"Deploy to Staging\" }\n    ]\n}"
+        reactCode: "import { SplitButton } from '@chahu/cha-set';\n\n<SplitButton\n  text=\"Deploy\"\n  variant=\"default\"\n  menuItems={[{ label: 'Deploy to Staging', onSelect: () => {} }]}\n/>"
     }
 
-    
-    KeyboardShortcutsTable {
+    DocFooterSections {
+        width: parent.width
         componentId: "split-button"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "text", type: "string", default: "'Action'", description: "Label text for the primary button." },
             { name: "variant", type: "string", default: "'default'", description: "Visual variant style: 'default', 'secondary', 'outline', 'destructive'." },
             { name: "size", type: "string", default: "'default'", description: "Size scaling preset: 'sm', 'default', 'lg'." },

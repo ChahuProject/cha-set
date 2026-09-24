@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Separator, type SeparatorOrientation, type SeparatorVariant, type SeparatorLabelPosition, Tabs, TabsList, TabsTrigger, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Checkbox, CodeBlock } from '@chahu/cha-set';
+import { Separator, type SeparatorOrientation, type SeparatorVariant, type SeparatorLabelPosition, Tabs, TabsList, TabsTrigger, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Checkbox } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocFooterSections } from '../../components/DocFooterSections';
 
 export function SeparatorDocPage() {
   const [orientation, setOrientation] = useState<SeparatorOrientation>('horizontal');
@@ -102,9 +102,9 @@ export function SeparatorDocPage() {
       description="Visually or semantically separates content in a list, form, or section."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
         { id: 'anatomy', title: 'Anatomy' },
         { id: 'states', title: 'Examples & States' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -223,39 +223,12 @@ export function SeparatorDocPage() {
         </ComponentPreview>
       </section>
 
-      {/* 2. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
-      {/* 3. Anatomy */}
-      <section id="anatomy" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Anatomy
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Import and place the Separator component horizontally or vertically to segment content, with optional dashed/dotted styles or embedded labels.
-        </p>
-        <CodeBlock
-          code={`import { Separator } from '@chahu/cha-set';
-
-export function SeparatorDemo() {
-  return (
-    <div className="space-y-4">
-      <div>Section Header</div>
-      <Separator orientation="horizontal" variant="solid" />
-      <div>Content Body</div>
-      <Separator orientation="horizontal" variant="dashed" label="OR" />
-      <div>Alternative Action</div>
-    </div>
-  );
-}`}
-          language="tsx"
-        />
-      </section>
+      {/* 2. Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Separator } from '@chahu/cha-set';\n\n<Separator orientation="horizontal" />`}
+        qtCode={`import ChaSet\n\nChaSetSeparator {\n    orientation: "horizontal"\n    width: parent.width\n}`}
+      />
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
@@ -347,63 +320,48 @@ export function SeparatorDemo() {
         </div>
       </section>
 
-      {/* 5. Props Reference */}
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="separator" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
-            {
-              name: 'orientation',
-              type: "'horizontal' | 'vertical'",
-              default: "'horizontal'",
-              description: 'The orientation of the separator line.',
-            },
-            {
-              name: 'variant',
-              type: "'solid' | 'dashed' | 'dotted'",
-              default: "'solid'",
-              description: 'The stroke style of the separator line.',
-            },
-            {
-              name: 'label',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: 'Optional label or annotation text embedded in the divider line.',
-            },
-            {
-              name: 'labelPosition',
-              type: "'left' | 'center' | 'right'",
-              default: "'center'",
-              description: 'Horizontal alignment for the embedded label.',
-            },
-            {
-              name: 'decorative',
-              type: 'boolean',
-              default: 'true',
-              description:
-                'Whether the component is purely decorative (role="none") or represents a structural semantic separator (role="separator").',
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: 'Additional CSS classes for custom width, height, margin, or color overrides.',
-            },
-          ]}
-        />
-      </section>
+      <DocFooterSections
+        componentId="separator"
+        props={[
+          {
+            name: 'orientation',
+            type: "'horizontal' | 'vertical'",
+            default: "'horizontal'",
+            description: 'The orientation of the separator line.',
+          },
+          {
+            name: 'variant',
+            type: "'solid' | 'dashed' | 'dotted'",
+            default: "'solid'",
+            description: 'The stroke style of the separator line.',
+          },
+          {
+            name: 'label',
+            type: 'ReactNode',
+            default: 'undefined',
+            description: 'Optional label or annotation text embedded in the divider line.',
+          },
+          {
+            name: 'labelPosition',
+            type: "'left' | 'center' | 'right'",
+            default: "'center'",
+            description: 'Horizontal alignment for the embedded label.',
+          },
+          {
+            name: 'decorative',
+            type: 'boolean',
+            default: 'true',
+            description:
+              'Whether the component is purely decorative (role="none") or represents a structural semantic separator (role="separator").',
+          },
+          {
+            name: 'className',
+            type: 'string',
+            default: "''",
+            description: 'Additional CSS classes for custom width, height, margin, or color overrides.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

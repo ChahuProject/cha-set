@@ -21,6 +21,14 @@ export function ComponentPreview({
 }: ComponentPreviewProps) {
   const [activeTab, setActiveTab] = useState<'preview' | 'code' | 'qt'>('preview');
 
+  const effectiveReactCode =
+    reactCode?.trim() ||
+    `// React code for ${title || 'this component'} is being aligned.\nimport { ... } from '@chahu/cha-set';\n`;
+
+  const effectiveQtCode =
+    qtCode?.trim() ||
+    `// Qt QML code for ${title || 'this component'} is being aligned.\nimport ChaSet\n`;
+
   return (
     <Card className="my-6 overflow-hidden">
       <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as any)} className="gap-0">
@@ -32,7 +40,7 @@ export function ComponentPreview({
             options={[
               { label: 'Preview', value: 'preview' },
               { label: 'React Code', value: 'code' },
-              ...(qtCode ? [{ label: 'Qt QML', value: 'qt' }] : []),
+              { label: 'Qt QML', value: 'qt' },
             ]}
           />
 
@@ -58,14 +66,12 @@ export function ComponentPreview({
         </TabsContent>
 
         <TabsContent value="code" className="mt-0 p-0">
-          <CodeBlock code={reactCode} language="tsx" className="border-0 rounded-none" />
+          <CodeBlock code={effectiveReactCode} language="tsx" className="border-0 rounded-none" />
         </TabsContent>
 
-        {qtCode && (
-          <TabsContent value="qt" className="mt-0 p-0">
-            <CodeBlock code={qtCode} language="qml" className="border-0 rounded-none" />
-          </TabsContent>
-        )}
+        <TabsContent value="qt" className="mt-0 p-0">
+          <CodeBlock code={effectiveQtCode} language="qml" className="border-0 rounded-none" />
+        </TabsContent>
       </Tabs>
     </Card>
   );

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { SplitButton, DropdownMenuItem, DropdownMenuSeparator, CodeBlock } from '@chahu/cha-set';
+import { SplitButton, DropdownMenuItem, DropdownMenuSeparator } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocFooterSections } from '../../components/DocFooterSections';
 
 export function SplitButtonDocPage() {
   const [lastAction, setLastAction] = useState('None');
@@ -34,7 +34,8 @@ export function SplitButtonDocPage() {
       description="Dual-action button with primary direct click and secondary attached dropdown menu."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
+        { id: 'anatomy', title: 'Anatomy' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
         { id: 'props', title: 'Props Reference' },
       ]}
@@ -47,7 +48,18 @@ export function SplitButtonDocPage() {
           Click the main button to trigger the primary action, or click the chevron to open the dropdown menu.
         </p>
 
-        <ComponentPreview title="Split Button Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          title="Split Button Sandbox"
+          reactCode={reactCode}
+          qtCode={`ChaSetSplitButton {
+    text: "Deploy"
+    variant: "default"
+    menuItems: [
+        { id: "staging", label: "Deploy to Staging" },
+        { id: "canary", label: "Deploy Canary" }
+    ]
+}`}
+        >
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-wrap gap-4">
               <SplitButton
@@ -93,38 +105,23 @@ export function SplitButtonDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* 2. Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { SplitButton, DropdownMenuItem } from '@chahu/cha-set';\n\n<SplitButton\n  label="Save"\n  onClick={() => {}}\n  menuContent={<DropdownMenuItem onSelect={() => {}}>Save As</DropdownMenuItem>}\n/>`}
+        qtCode={`import ChaSet\n\nChaSetSplitButton {\n    text: "Deploy"\n    variant: "default"\n    menuItems: [\n        { id: "staging", label: "Deploy to Staging" }\n    ]\n}`}
+      />
 
-      
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="split-button" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
-            { name: 'label', type: 'ReactNode', default: 'undefined', description: 'Label on the primary action button.' },
-            { name: 'onClick', type: '() => void', default: 'undefined', description: 'Callback fired on clicking primary action.' },
-            { name: 'menuContent', type: 'ReactNode', default: 'undefined', description: 'Dropdown menu items rendered on chevron click.' },
-            { name: 'variant', type: 'ButtonVariant', default: "'default'", description: 'Button stylistic variant.' },
-            { name: 'size', type: 'ButtonSize', default: "'default'", description: 'Button size variant.' },
-          ]}
-        />
-      </section>
+      <DocFooterSections
+        componentId="split-button"
+        props={[
+          { name: 'label', type: 'ReactNode', default: 'undefined', description: 'Label on the primary action button.' },
+          { name: 'onClick', type: '() => void', default: 'undefined', description: 'Callback fired on clicking primary action.' },
+          { name: 'menuContent', type: 'ReactNode', default: 'undefined', description: 'Dropdown menu items rendered on chevron click.' },
+          { name: 'variant', type: 'ButtonVariant', default: "'default'", description: 'Button stylistic variant.' },
+          { name: 'size', type: 'ButtonSize', default: "'default'", description: 'Button size variant.' },
+        ]}
+      />
     </DocLayout>
   );
 }

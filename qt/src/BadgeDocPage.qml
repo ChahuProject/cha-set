@@ -10,10 +10,11 @@ DocLayout {
     description: "Displays a badge or a component that looks like a badge to highlight status, tags, and counts."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
+        { id: "anatomy", title: "Anatomy" },
         { id: "variants", title: "Variants" },
         { id: "sizes", title: "Sizes" },
         { id: "status-and-tags", title: "Status & Removable" },
+        { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
         { id: "props", title: "Props Reference" }
     ]
@@ -130,16 +131,11 @@ DocLayout {
         ]
     }
 
-    // Section 2: Installation
-    Column {
+    // Section 2: Anatomy
+    DocAnatomy {
         width: parent.width
-        spacing: 8
-        DocText { text: "Installation"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
+        qtCode: "import ChaSet\n\nChaSetBadge {\n    text: \"Badge\"\n}"
+        reactCode: "import { Badge } from '@chahu/cha-set';\n\n<Badge>Badge</Badge>"
     }
 
     // Section 3: Variants
@@ -235,28 +231,19 @@ DocLayout {
         }
     }
 
-    // Section 6: Props Reference
-    Column {
+    // Section 6: Footer Sections (Animations, Keyboard, Props)
+    DocFooterSections {
         width: parent.width
-        spacing: 8
-        DocText { text: "Props Reference"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-
-        KeyboardShortcutsTable {
-            componentId: "badge"
-        }
-
-        PropsTable {
-            width: parent.width
-            propsModel: [
-                { name: "variant", type: "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'", defaultValue: "'default'", desc: "Visual stylistic variant corresponding to core color tokens." },
-                { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "Size variant determining pill height, padding, and font metrics scale." },
-                { name: "dot", type: "bool", defaultValue: "false", desc: "Whether to display a leading status indicator dot." },
-                { name: "dotColor", type: "color", defaultValue: "accent", desc: "Custom color for the status indicator dot." },
-                { name: "removable", type: "bool", defaultValue: "false", desc: "Whether to display an inline dismiss/remove action button." },
-                { name: "interactive", type: "bool", defaultValue: "false", desc: "Whether the badge responds with interactive cursor and click effects." },
-                { name: "iconSource", type: "string", defaultValue: "''", desc: "Optional leading icon image source URL." },
-                { name: "text", type: "string", defaultValue: "''", desc: "The label text to display inside the badge." }
-            ]
-        }
+        componentId: "badge"
+        propsModel: [
+            { name: "variant", type: "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'", defaultValue: "'default'", desc: "Visual stylistic variant corresponding to core color tokens." },
+            { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "Size variant determining pill height, padding, and font metrics scale." },
+            { name: "dot", type: "bool", defaultValue: "false", desc: "Whether to display a leading status indicator dot." },
+            { name: "dotColor", type: "color", defaultValue: "accent", desc: "Custom color for the status indicator dot." },
+            { name: "removable", type: "bool", defaultValue: "false", desc: "Whether to display an inline dismiss/remove action button." },
+            { name: "interactive", type: "bool", defaultValue: "false", desc: "Whether the badge responds with interactive cursor and click effects." },
+            { name: "iconSource", type: "string", defaultValue: "''", desc: "Optional leading icon image source URL." },
+            { name: "text", type: "string", defaultValue: "''", desc: "The label text to display inside the badge." }
+        ]
     }
 }

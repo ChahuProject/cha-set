@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Button, ButtonGroup, Icon, Input, Checkbox, SegmentedControl, type ButtonVariant, type ButtonSize, CodeBlock, SettingsIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocFooterSections } from '../../components/DocFooterSections';
 
 export function ButtonDocPage() {
   const [variant, setVariant] = useState<ButtonVariant>('default');
@@ -41,7 +41,7 @@ export function ButtonDocPage() {
       description="Displays a button or a component that looks like a button with multiple variants, sizes, and states."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
+        { id: 'anatomy', title: 'Anatomy' },
         { id: 'examples', title: 'Examples' },
         { id: 'variants', title: 'Variants' },
         { id: 'sizes', title: 'Sizes' },
@@ -156,19 +156,12 @@ export function ButtonDocPage() {
         </ComponentPreview>
       </section>
 
-      {/* 2. Installation */}
-      <section id="installation" className="my-8">
-        <h2 className="text-xl font-bold tracking-tight mb-3">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-        <p className="text-xs text-muted-foreground mt-2">
-          Import styles and component in your application entry:
-        </p>
-        <CodeBlock
-          code={`import { Button } from '@chahu/cha-set';\nimport '@chahu/cha-set/styles.css';`}
-          language="tsx"
-          className="mt-2"
-        />
-      </section>
+      {/* 2. Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Button } from '@chahu/cha-set';\n\n<Button variant="default">Button</Button>`}
+        qtCode={`import ChaSet\n\nChaSetButton {\n    text: "Button"\n}`}
+      />
 
       {/* 3. Examples */}
       <section id="examples" className="my-10">
@@ -258,116 +251,77 @@ export function ButtonDocPage() {
 
       {/* 4. API Reference */}
       
-      <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Animations
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Motion behavior and timing for interactive states.
-        </p>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            Color, shadow, and translate changes animate over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
-          </li>
-          <li>
-            Pressing nudges the label down slightly (<code>active:translate-y-0.5</code>).
-          </li>
-          <li>
-            Durations and easing resolve from theme tokens, so{' '}
-            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
-            <code>ThemeTokens.animationsEnabled</code>).
-          </li>
-        </ul>
-      </section>
-
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="button" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          title="ButtonProps"
-          props={[
-            {
-              name: 'variant',
-              type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'",
-              default: "'default'",
-              description: 'Visual appearance and semantic intent.',
-            },
-            {
-              name: 'size',
-              type: "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'",
-              default: "'default'",
-              description: 'Standardized dimensions scale.',
-            },
-            {
-              name: 'loading',
-              type: 'boolean',
-              default: 'false',
-              description: 'Shows spinning indicator and disables user interaction.',
-            },
-            {
-              name: 'loadingText',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: 'Optional content displayed while in loading state.',
-            },
-            {
-              name: 'pressed',
-              type: 'boolean',
-              default: 'false',
-              description: 'Toggle or selected state with active styling and aria-pressed.',
-            },
-            {
-              name: 'leftIcon',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: 'Optional leading icon displayed before children.',
-            },
-            {
-              name: 'rightIcon',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: 'Optional trailing icon displayed after children.',
-            },
-            {
-              name: 'fullWidth',
-              type: 'boolean',
-              default: 'false',
-              description: 'Stretches the button to 100% of the parent container width.',
-            },
-            {
-              name: 'asChild',
-              type: 'boolean',
-              default: 'false',
-              description: 'Passes props directly to the child element (polymorphism).',
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: 'Blocks clicks and applies muted disabled styling.',
-            },
-            {
-              name: 'type',
-              type: "'button' | 'submit' | 'reset'",
-              default: "'button'",
-              description: 'HTML button type attribute.',
-            },
-          ]}
-        />
-      </section>
+      <DocFooterSections
+        componentId="button"
+        props={[
+          {
+            name: 'variant',
+            type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'",
+            default: "'default'",
+            description: 'Visual appearance and semantic intent.',
+          },
+          {
+            name: 'size',
+            type: "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'",
+            default: "'default'",
+            description: 'Standardized dimensions scale.',
+          },
+          {
+            name: 'loading',
+            type: 'boolean',
+            default: 'false',
+            description: 'Shows spinning indicator and disables user interaction.',
+          },
+          {
+            name: 'loadingText',
+            type: 'ReactNode',
+            default: 'undefined',
+            description: 'Optional content displayed while in loading state.',
+          },
+          {
+            name: 'pressed',
+            type: 'boolean',
+            default: 'false',
+            description: 'Toggle or selected state with active styling and aria-pressed.',
+          },
+          {
+            name: 'leftIcon',
+            type: 'ReactNode',
+            default: 'undefined',
+            description: 'Optional leading icon displayed before children.',
+          },
+          {
+            name: 'rightIcon',
+            type: 'ReactNode',
+            default: 'undefined',
+            description: 'Optional trailing icon displayed after children.',
+          },
+          {
+            name: 'fullWidth',
+            type: 'boolean',
+            default: 'false',
+            description: 'Stretches the button to 100% of the parent container width.',
+          },
+          {
+            name: 'asChild',
+            type: 'boolean',
+            default: 'false',
+            description: 'Passes props directly to the child element (polymorphism).',
+          },
+          {
+            name: 'disabled',
+            type: 'boolean',
+            default: 'false',
+            description: 'Blocks clicks and applies muted disabled styling.',
+          },
+          {
+            name: 'type',
+            type: "'button' | 'submit' | 'reset'",
+            default: "'button'",
+            description: 'HTML button type attribute.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

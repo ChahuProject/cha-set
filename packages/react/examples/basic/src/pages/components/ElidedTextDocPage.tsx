@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ElidedText, Card, Button, Slider, CodeBlock } from '@chahu/cha-set';
+import { ElidedText, Card, Button, Slider } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocFooterSections } from '../../components/DocFooterSections';
 
 export function ElidedTextDocPage() {
   const [containerWidth, setContainerWidth] = useState(240);
@@ -40,10 +40,11 @@ export function ElidedTextDocPage() {
       description="Smart text truncation with automatic overflow detection, click-to-copy, and contextual tooltip reveal."
       tocItems={[
         { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
+        { id: 'anatomy', title: 'Anatomy' },
         { id: 'multiline', title: 'Multi-Line Clamping' },
+        { id: 'animations', title: 'Animations' },
         { id: 'keyboard', title: 'Keyboard Navigation' },
-{ id: 'props', title: 'Props Reference' },
+        { id: 'props', title: 'Props Reference' },
       ]}
     >
       <section id="overview" className="space-y-4">
@@ -104,10 +105,12 @@ export function ElidedTextDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* 2. Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ElidedText } from '@chahu/cha-set';\n\n<ElidedText text="Sample text..." />`}
+        qtCode={`import ChaSet\n\nChaSetElidedText {\n    text: "Sample text..."\n    width: parent.width\n}`}
+      />
 
       <section id="multiline" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Multi-Line Clamping</h2>
@@ -123,80 +126,59 @@ export function ElidedTextDocPage() {
         </Card>
       </section>
 
-      <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard Navigation</h2>
-        <KeyboardShortcutsTable componentId="elided-text" />
-      </section>
-
-      <section id="code" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Implementation Code</h2>
-        <div className="space-y-4">
-          <CodeBlock language="tsx" code={heroReactCode} />
-          <CodeBlock language="qml" code={heroQtCode} />
-        </div>
-      </section>
-
-      <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
-        <PropsTable
-          items={[
-            {
-              name: 'text',
-              type: 'string',
-              required: true,
-              description: 'The string content to display and measure for overflow.',
-            },
-            {
-              name: 'tooltipText',
-              type: 'string',
-              required: false,
-              description: 'Custom tooltip text override if different from raw text.',
-            },
-            {
-              name: 'tooltipPlacement',
-              type: "'top' | 'bottom' | 'left' | 'right' | 'auto'",
-              default: "'top'",
-              required: false,
-              description: 'Placement direction of the floating tooltip.',
-            },
-            {
-              name: 'tooltipDelay',
-              type: 'number',
-              default: '400',
-              required: false,
-              description: 'Delay in milliseconds before showing tooltip on hover.',
-            },
-            {
-              name: 'alwaysShowTooltip',
-              type: 'boolean',
-              default: 'false',
-              required: false,
-              description: 'Force tooltip to appear on hover even if text is not elided.',
-            },
-            {
-              name: 'showTooltipWhenElided',
-              type: 'boolean',
-              default: 'true',
-              required: false,
-              description: 'Enable tooltip reveal whenever overflow truncation is detected.',
-            },
-            {
-              name: 'maxLines',
-              type: 'number',
-              default: '1',
-              required: false,
-              description: 'Maximum visible lines before truncating (1 = single line, >1 = clamp).',
-            },
-            {
-              name: 'copyable',
-              type: 'boolean',
-              default: 'false',
-              required: false,
-              description: 'Whether clicking the text copies it to clipboard with instant feedback.',
-            },
-          ]}
-        />
-      </section>
+      <DocFooterSections
+        componentId="elided-text"
+        props={[
+          {
+            name: 'text',
+            type: 'string',
+            default: "''",
+            description: 'The string content to display and measure for overflow.',
+          },
+          {
+            name: 'tooltipText',
+            type: 'string',
+            default: "''",
+            description: 'Custom tooltip text override if different from raw text.',
+          },
+          {
+            name: 'tooltipPlacement',
+            type: "'top' | 'bottom' | 'left' | 'right' | 'auto'",
+            default: "'top'",
+            description: 'Placement direction of the floating tooltip.',
+          },
+          {
+            name: 'tooltipDelay',
+            type: 'number',
+            default: '400',
+            description: 'Delay in milliseconds before showing tooltip on hover.',
+          },
+          {
+            name: 'alwaysShowTooltip',
+            type: 'boolean',
+            default: 'false',
+            description: 'Force tooltip to appear on hover even if text is not elided.',
+          },
+          {
+            name: 'showTooltipWhenElided',
+            type: 'boolean',
+            default: 'true',
+            description: 'Enable tooltip reveal whenever overflow truncation is detected.',
+          },
+          {
+            name: 'maxLines',
+            type: 'number',
+            default: '1',
+            description: 'Maximum visible lines before truncating (1 = single line, >1 = clamp).',
+          },
+          {
+            name: 'copyable',
+            type: 'boolean',
+            default: 'false',
+            description: 'Whether clicking the text copies it to clipboard with instant feedback.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

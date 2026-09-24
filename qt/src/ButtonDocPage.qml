@@ -10,7 +10,7 @@ DocLayout {
     description: "Displays a button or a component that looks like a button with multiple variants, sizes, and states."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
+        { id: "anatomy", title: "Anatomy" },
         { id: "examples", title: "Examples" },
         { id: "variants", title: "Variants" },
         { id: "sizes", title: "Sizes" },
@@ -156,19 +156,11 @@ DocLayout {
         ]
     }
 
-    // 2. Installation
-    Column {
+    // 2. Anatomy
+    DocAnatomy {
         width: parent.width
-        spacing: ThemeTokens.dp(10)
-
-        DocText { text: "Installation"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-        ChaSetCodeBlock { width: parent.width; language: "bash"; code: "pnpm add @chahu/cha-set" }
-        DocText { text: "Import component in your application entry:"; isMuted: true; font.pixelSize: Typography.sizeSmall }
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetButton {\n    variant: \"default\"\n    size: \"default\"\n    text: \"Create Project\"\n    onClicked: console.log(\"Clicked!\")\n}"
-        }
+        qtCode: "import ChaSet\n\nChaSetButton {\n    text: \"Button\"\n}"
+        reactCode: "import { Button } from '@chahu/cha-set';\n\n<Button variant=\"default\">Button</Button>"
     }
 
     // 3. Examples
@@ -277,28 +269,10 @@ DocLayout {
         }
     }
 
-    // Animations
-    Column {
+    // 4. Footer Sections (Animations, Keyboard, Props)
+    DocFooterSections {
         width: parent.width
-        spacing: 12
-
-        DocText { text: "Animations"; textColor: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-
-        DocText { text: "Motion behavior and timing driven by ThemeTokens for interactive state changes."; isMuted: true; font.pixelSize: Typography.sizeBody; width: parent.width }
-
-        DocText { text: "• Background color, shadow, and label-color changes interpolate via Behavior, using ThemeTokens.motionQuick with the easeStandard curve."; textColor: root.cFg; font.pixelSize: Typography.sizeBody; width: parent.width }
-        DocText { text: "• Pressing nudges the label down slightly to convey the pressed state."; textColor: root.cFg; font.pixelSize: Typography.sizeBody; width: parent.width }
-        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; textColor: root.cFg; font.pixelSize: Typography.sizeBody; width: parent.width }
-    }
-
-    // 4. API Reference
-    KeyboardShortcutsTable {
         componentId: "button"
-    }
-
-    PropsTable {
-        width: parent.width
-        title: "Props Reference"
         propsModel: [
             ["variant", "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", "'default'", "Visual appearance and semantic intent."],
             ["size", "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'", "'default'", "Standardized dimensions scale."],

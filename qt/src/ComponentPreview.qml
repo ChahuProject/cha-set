@@ -15,6 +15,9 @@ ChaSetCard {
     property string activeTab: "preview"
     property int stageHeight: 280
 
+    readonly property string effectiveQtCode: (root.qtCode && root.qtCode.trim() !== "") ? root.qtCode : ("// Qt QML code for " + (root.title !== "" ? root.title : "this component") + " is being aligned.\nimport ChaSet\n")
+    readonly property string effectiveReactCode: (root.reactCode && root.reactCode.trim() !== "") ? root.reactCode : ("// React code for " + (root.title !== "" ? root.title : "this component") + " is being aligned.\nimport { ... } from '@chahu/cha-set';\n")
+
     default property alias stageData: stageContainer.data
     property alias controlsData: controlsContainer.data
 
@@ -54,8 +57,8 @@ ChaSetCard {
                 value: root.activeTab
                 options: [
                     { label: "Preview", value: "preview" },
-                    { label: "React Code", value: "code" },
-                    ...(root.qtCode !== "" ? [{ label: "Qt QML", value: "qt" }] : [])
+                    { label: "Qt QML", value: "qt" },
+                    { label: "React Code", value: "code" }
                 ]
                 onValueSelected: function(val) {
                     root.activeTab = val
@@ -158,21 +161,21 @@ ChaSetCard {
             }
         }
 
-        // React Code Tab
-        ChaSetCodeBlock {
-            visible: root.activeTab === "code"
-            width: parent.width
-            code: root.reactCode
-            language: "tsx"
-            radius: 0
-        }
-
         // Qt QML Code Tab
         ChaSetCodeBlock {
             visible: root.activeTab === "qt"
             width: parent.width
-            code: root.qtCode
+            code: root.effectiveQtCode
             language: "qml"
+            radius: 0
+        }
+
+        // React Code Tab
+        ChaSetCodeBlock {
+            visible: root.activeTab === "code"
+            width: parent.width
+            code: root.effectiveReactCode
+            language: "tsx"
             radius: 0
         }
     }
