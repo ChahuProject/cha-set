@@ -72,15 +72,20 @@ Before committing any component changes in this repository, run the project-defi
    ```bash
    cmake --build qt/build && pnpm test && pnpm gate
    ```
-   - All 96 test files (518+ unit & conformance tests) must pass.
-   - Parity gate must verify all 318 capability checks, 47 living showcase doc pages across React and Qt, and headless Qt scenario tests (`QtChaSetDemo.exe --test-scenario all`).
+   - All test files must pass (currently 114 files / 667 unit & conformance tests). Treat the count as a floor that only grows — never "fix" a higher count back down.
+   - Parity gate must verify all capability checks (currently 398), the living showcase doc pages across React and Qt (currently 56 components, 1:1), and headless Qt scenario tests (`QtChaSetDemo.exe --test-scenario all`).
 
 2. **Mandatory Zero-`px` Verification**:
    - Verify zero raw `px` units in newly created or modified component files, styles, inline properties, code previews, and `PropsTable` descriptions.
    - Dynamic measurements must use `rem` (`${val * 0.0625}rem`).
 
-3. **Incremental Pre-Response Commit Gate**:
+3. **`pnpm build` before `pnpm typecheck`**:
+   - `pnpm typecheck` resolves the workspace package through its built types. Running it on a clean tree (no `dist/`) cascades into ~160 bogus errors (`TS2307 Cannot find module '@chahu/cha-set'` plus downstream `TS2322/TS2345`).
+   - Always `pnpm build && pnpm typecheck`. With a fresh build the real residual count is ~80, concentrated in test files and showcase doc pages — **not** in `src/` component code.
+
+4. **Incremental Pre-Response Commit Gate**:
    - For multi-component tasks, verify and commit each component individually (`feat(<name>): ...`).
    - Immediately push (`git push origin main`). Never accumulate uncommitted changes before yielding control to the user.
+   - This worktree's branch (`d`) carries `branch.d.merge = refs/heads/main`, so `main` on `origin` is the correct push target; rebase onto `main` first to keep history linear.
 
 
