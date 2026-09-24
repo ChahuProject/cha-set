@@ -8,15 +8,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Tooltip"
     description: "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "examples", title: "Examples & States" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int customRadius: 6
     property color cFg: ThemeTokens.text
@@ -140,23 +131,6 @@ DocLayout {
         ]
     }
 
-    // Section 2: Installation
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Installation"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
     }
 
     // Section 3: Anatomy
@@ -369,26 +343,10 @@ DocLayout {
         DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
-    // Section 5: Props Reference
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Props Reference"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        
-    KeyboardShortcutsTable {
+        ComponentReference {
+        name: "Tooltip"
         componentId: "tooltip"
-    }
-
-    PropsTable {
-            width: parent.width
-            propsModel: [
+        propsModel: [
                 {
                     name: "text",
                     type: "string",
@@ -444,6 +402,6 @@ DocLayout {
                     description: "Visual testing hook to force active tooltip visibility."
                 }
             ]
-        }
     }
+}
 }

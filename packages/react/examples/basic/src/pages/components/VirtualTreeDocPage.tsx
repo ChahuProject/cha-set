@@ -9,9 +9,9 @@ import {
   CodeBlock,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 const INITIAL_TREE: TreeNode[] = [
   {
@@ -278,12 +278,6 @@ export function VirtualTreeDocPage() {
       category="Desktop & Virtualization"
       title="Virtual Tree"
       description="Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -486,29 +480,27 @@ export function VirtualTreeDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { VirtualTree } from '@chahu/cha-set';
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="virtual-tree" />
-      </section>
+<VirtualTree data={treeNodes} onNodeSelect={(node) => console.log(node)} />`}
+        qtCode={`import ChaSet
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+ChaSetVirtualTree {
+    width: parent.width
+    height: 400
+    model: treeModel
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="VirtualTree"
+        componentId="virtual-tree"
+        props={[
             { name: 'rootNodes', type: 'readonly T[]', default: '[]', description: 'Array of top-level hierarchy nodes.' },
             { name: 'nodes', type: 'readonly T[]', default: '[]', description: 'Alias for rootNodes.' },
             { name: 'getChildren', type: '(node: T) => readonly T[]', default: '(node) => node.children', description: 'Accessor returning child nodes of a node.' },
@@ -530,8 +522,7 @@ export function VirtualTreeDocPage() {
             { name: 'emptyNode', type: 'ReactNode', default: 'null', description: 'Content shown when tree is empty.' },
             { name: 'ref', type: 'Ref<VirtualTreeHandle>', default: 'undefined', description: 'Handle exposing expandAll(), collapseAll(), selectAll(), scrollToIndex().' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

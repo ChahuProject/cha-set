@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { DraggableModal, Button, Badge, CodeBlock, XIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function DraggableModalDocPage() {
   const [open, setOpen] = useState(false);
@@ -44,12 +44,6 @@ export function DraggableModalDocPage() {
       category="Overlays & Feedback"
       title="Draggable Modal"
       description="桌面可拖拽与尺寸调整弹窗体，支持尺寸档位切换、自动贴高与靠顶布局。"
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -121,29 +115,33 @@ export function DraggableModalDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { DraggableModal, Button } from '@chahu/cha-set';
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="draggable-modal" />
-      </section>
+<DraggableModal
+  title="Floating Tools"
+  open={open}
+  onOpenChange={setOpen}
+>
+  <div className="p-4">Floating window content</div>
+</DraggableModal>`}
+        qtCode={`import ChaSet
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+ChaSetDraggableModal {
+    title: "Floating Tools"
+    open: true
+    initialPositionMode: "center"
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="DraggableModal"
+        componentId="draggable-modal"
+        props={[
             { name: 'children', type: 'ReactNode', default: 'undefined', description: '弹窗内容主体（可滚动容器）。' },
             { name: 'initialPositionMode', type: "'center' | 'top' | '居中' | '顶部靠上'", default: "'center'", description: '初始定位模式：居中或靠顶显示。' },
             { name: 'sizeOptions', type: 'DraggableModalSizeOption[]', default: 'undefined', description: '右上角尺寸切换档位列表。' },
@@ -160,8 +158,7 @@ export function DraggableModalDocPage() {
             { name: 'topMarginRem', type: 'number', default: '4.5', description: '靠顶模式下的顶部外边距（rem 单位）。' },
             { name: 'remBase', type: 'number', default: '16', description: 'rem 换算基准比例。' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

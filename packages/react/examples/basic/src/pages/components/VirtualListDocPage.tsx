@@ -1,9 +1,9 @@
 import React, { useMemo, useRef } from 'react';
 import { VirtualList, type VirtualListHandle, Badge, Button, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function VirtualListDocPage() {
   const listRef = useRef<VirtualListHandle>(null);
@@ -39,12 +39,6 @@ listRef.current?.scrollToIndex(500, 'center');
       category="Desktop & Virtualization"
       title="Virtual List"
       description="High-performance windowed 100k+ row list powered by TanStack Virtual, rendering only DOM nodes visible in the active viewport."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -118,29 +112,28 @@ listRef.current?.scrollToIndex(500, 'center');
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { VirtualList } from '@chahu/cha-set';
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="virtual-list" />
-      </section>
+<VirtualList count={10000} itemHeight={36} renderItem={(index) => <div>Row {index}</div>} />`}
+        qtCode={`import ChaSet
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+ChaSetVirtualList {
+    width: parent.width
+    height: 400
+    count: 10000
+    itemHeight: 36
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="VirtualList"
+        componentId="virtual-list"
+        props={[
             { name: 'items', type: 'readonly T[]', default: '[]', description: 'Array of data items to virtualize.' },
             { name: 'renderRow', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: 'Callback rendering an individual row.' },
             { name: 'renderItem', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: 'Alias for renderRow.' },
@@ -151,8 +144,7 @@ listRef.current?.scrollToIndex(500, 'center');
             { name: 'onScroll', type: '(distanceToBottom: number) => void', default: 'undefined', description: 'Scroll event callback receiving distance to bottom.' },
             { name: 'ref', type: 'Ref<VirtualListHandle>', default: 'undefined', description: 'Handle exposing scrollToIndex(index, align).' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

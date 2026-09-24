@@ -1,9 +1,9 @@
 import React from 'react';
 import { ReadOnlyInput, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function ReadOnlyInputDocPage() {
   const reactCode = `<ReadOnlyInput
@@ -18,13 +18,6 @@ export function ReadOnlyInputDocPage() {
       category="Forms & Inputs"
       title="Read-Only Input"
       description="Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'variants', title: 'Sizes & Color Schemes' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -54,9 +47,25 @@ export function ReadOnlyInputDocPage() {
         </ComponentPreview>
       </section>
 
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ReadOnlyInput } from '@chahu/cha-set';
+
+<ReadOnlyInput value="api_key_secret_12345" label="API Key" />`}
+        qtCode={`import ChaSet
+
+ChaSetReadOnlyInput {
+    value: "api_key_secret_12345"
+    label: "API Key"
+}`}
+      />
+
+
+
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Sizes & Color Schemes
+          Sizes & Status Variants
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           Available in default and sm sizing tiers with semantic status color schemes.
@@ -85,29 +94,10 @@ ChaSetReadOnlyInput { value: "chaset_success_verified"; colorScheme: "success" }
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="read-only-input" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="ReadOnlyInput"
+        componentId="read-only-input"
+        props={[
             { name: 'value', type: 'string', default: "''", description: 'Protected value displayed in the input.' },
             { name: 'showCopy', type: 'boolean', default: 'true', description: 'Whether to show the attached copy button.' },
             { name: 'masked', type: 'boolean', default: 'false', description: 'Whether to mask characters with bullets.' },
@@ -118,8 +108,7 @@ ChaSetReadOnlyInput { value: "chaset_success_verified"; colorScheme: "success" }
             { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether the input field is disabled.' },
             { name: 'placeholder', type: 'string', default: "''", description: 'Placeholder displayed when value is empty.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

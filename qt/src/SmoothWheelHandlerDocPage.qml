@@ -8,21 +8,12 @@ DocLayout {
     category: "Desktop & Virtualization"
     pageTitle: "Smooth Wheel Handler"
     description: "Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "kinematics", title: "Kinematic Architecture" },
-        { id: "keyboard", title: "Keyboard & Wheel Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property real demoSpeed: 1.2
     property int demoDuration: 200
     property bool demoMapShift: false
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSmoothWheelHandler { target: flickable }"
+    "
         language: "qml"
     }
 
@@ -173,74 +164,82 @@ DocLayout {
         ]
     }
 
-    // Kinematic Architecture
-    DocText {
-        text: "Kinematic Architecture"
-        font.pixelSize: Typography.sizeTitleSm
-        font.bold: true
-        color: ThemeTokens.text
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetSmoothWheelHandler {
+    target: flickableItem
+}`
+        reactCode: `import { SmoothWheelHandler } from '@chahu/cha-set';
+
+<SmoothWheelHandler onWheelScroll={(dx, dy) => console.log(dx, dy)} />`
     }
 
-    ChaSetCard {
+
+
+    // Kinematic Architecture
+    Column {
+        property string sectionId: "kinematics"
         width: parent.width
+        spacing: 12
 
-        ChaSetCardContent {
-            topPadding: 16
-            bottomPadding: 16
-            horizontalPadding: 16
+        DocText {
+            text: "Kinematic Architecture"
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+            color: ThemeTokens.text
+        }
 
-            Column {
-                spacing: 12
-                width: parent.width
+        ChaSetCard {
+            width: parent.width
 
-                DocText {
+            ChaSetCardContent {
+                topPadding: 16
+                bottomPadding: 16
+                horizontalPadding: 16
+
+                Column {
+                    spacing: 12
                     width: parent.width
-                    wrapMode: TextEdit.Wrap
-                    text: "• Momentum Accumulation: Consecutive wheel clicks accumulate linearly to targetPos rather than interrupting or jerking the active transition."
-                    color: ThemeTokens.text
-                    font.pixelSize: Typography.sizeSmall
-                }
-                DocText {
-                    width: parent.width
-                    wrapMode: TextEdit.Wrap
-                    text: "• Gesture Decoupling: Automatically listens to targetItem.moving and targetItem.flicking. When the user touches or drags the view, smooth animations abort instantly to prevent motion fight."
-                    color: ThemeTokens.text
-                    font.pixelSize: Typography.sizeSmall
-                }
-                DocText {
-                    width: parent.width
-                    wrapMode: TextEdit.Wrap
-                    text: "• Universal Drop-In: Targets any Flickable / ListView / GridView or ChaSetScrollArea without modifying existing visual hierarchies."
-                    color: ThemeTokens.text
-                    font.pixelSize: Typography.sizeSmall
+
+                    DocText {
+                        width: parent.width
+                        wrapMode: TextEdit.Wrap
+                        text: "• Momentum Accumulation: Consecutive wheel clicks accumulate linearly to targetPos rather than interrupting or jerking the active transition."
+                        color: ThemeTokens.text
+                        font.pixelSize: Typography.sizeSmall
+                    }
+                    DocText {
+                        width: parent.width
+                        wrapMode: TextEdit.Wrap
+                        text: "• Gesture Decoupling: Automatically listens to targetItem.moving and targetItem.flicking. When the user touches or drags the view, smooth animations abort instantly to prevent motion fight."
+                        color: ThemeTokens.text
+                        font.pixelSize: Typography.sizeSmall
+                    }
+                    DocText {
+                        width: parent.width
+                        wrapMode: TextEdit.Wrap
+                        text: "• Universal Drop-In: Targets any Flickable / ListView / GridView or ChaSetScrollArea without modifying existing visual hierarchies."
+                        color: ThemeTokens.text
+                        font.pixelSize: Typography.sizeSmall
+                    }
                 }
             }
         }
     }
 
-    // Keyboard & Wheel Navigation
-    DocText {
-        text: "Keyboard & Wheel Navigation"
-        font.pixelSize: Typography.sizeTitleSm
-        font.bold: true
-        color: ThemeTokens.text
-    }
-
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "SmoothWheelHandler"
         componentId: "smooth-wheel-handler"
-    }
-
-    // Props Reference
-    PropsTable {
-        title: "Props Reference"
-        props: [
-            { name: "targetItem", type: "Item", default: "parent", description: "Target scrollable item (Flickable, ListView, GridView, etc.)" },
-            { name: "scrollOrientation", type: "int", default: "Qt.Vertical", description: "Scroll axis: Qt.Vertical or Qt.Horizontal" },
-            { name: "mapVerticalToHorizontal", type: "bool", default: "false", description: "Whether vertical mouse wheel rolls horizontally" },
-            { name: "speedMultiplier", type: "real", default: "1.2", description: "Velocity scaling factor applied to raw wheel delta" },
-            { name: "duration", type: "int", default: "200", description: "Transition damping duration in milliseconds" },
-            { name: "fixedStepSize", type: "real", default: "0", description: "Optional fixed quantization step per tick (0 for dynamic)" },
-            { name: "consumeEvent", type: "bool", default: "true", description: "Whether to accept wheel event to stop propagation" }
+        propsModel: [
+            { name: "targetItem", type: "Item", defaultValue: "parent", description: "Target scrollable item (Flickable, ListView, GridView, etc.)" },
+            { name: "scrollOrientation", type: "int", defaultValue: "Qt.Vertical", description: "Scroll axis: Qt.Vertical or Qt.Horizontal" },
+            { name: "mapVerticalToHorizontal", type: "bool", defaultValue: "false", description: "Whether vertical mouse wheel rolls horizontally" },
+            { name: "speedMultiplier", type: "real", defaultValue: "1.2", description: "Velocity scaling factor applied to raw wheel delta" },
+            { name: "duration", type: "int", defaultValue: "200", description: "Transition damping duration in milliseconds" },
+            { name: "fixedStepSize", type: "real", defaultValue: "0", description: "Optional fixed quantization step per tick (0 for dynamic)" },
+            { name: "consumeEvent", type: "bool", defaultValue: "true", description: "Whether to accept wheel event to stop propagation" }
         ]
     }
 }

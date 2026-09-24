@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { DurationInput, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function DurationInputDocPage() {
   const [value, setValue] = useState(3665); // 1h 1m 5s
@@ -30,12 +30,6 @@ export function DurationInputDocPage() {
       category="Forms & Inputs"
       title="Duration Input"
       description="Segmented duration input control for hours, minutes, and seconds with stepper buttons, mouse wheel adjustments, keyboard arrow jumping, and preset menu."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-{ id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -63,6 +57,22 @@ export function DurationInputDocPage() {
           </div>
         </ComponentPreview>
       </section>
+
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { DurationInput } from '@chahu/cha-set';
+
+<DurationInput value={3600} onChange={(v) => console.log(v)} />`}
+        qtCode={`import ChaSet
+
+ChaSetDurationInput {
+    value: 3600
+    onValueChanged: (v) => console.log(v)
+}`}
+      />
+
+
 
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -101,29 +111,10 @@ export function DurationInputDocPage() {
         </div>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for time segment editing.
-        </p>
-        <KeyboardShortcutsTable componentId="duration-input" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="DurationInput"
+        componentId="duration-input"
+        props={[
             { name: 'value', type: 'number', default: '0', description: 'Total duration in seconds (controlled mode).' },
             { name: 'defaultValue', type: 'number', default: '0', description: 'Initial duration in seconds (uncontrolled mode).' },
             { name: 'onChange', type: '(seconds: number) => void', default: 'undefined', description: 'Callback fired when the duration changes.' },
@@ -139,8 +130,7 @@ export function DurationInputDocPage() {
             { name: 'presetsLabel', type: 'string', default: "'Presets'", description: 'Label text for the presets trigger button.' },
             { name: 'className', type: 'string', default: 'undefined', description: 'Custom CSS classes for outer container.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

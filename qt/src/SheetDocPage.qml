@@ -8,13 +8,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Sheet"
     description: "Extends the dialog component to display content that complements the main screen via smooth sliding transitions from any viewport edge."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string sheetSide: "right"
     property string sheetSizePreset: "default"
@@ -173,9 +166,33 @@ ChaSetSheet {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSheet { ... }"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetSheet {
+    side: "right"
+    title: "Sheet Title"
+    description: "Drawer content description."
+}`
+        reactCode: `import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, Button } from '@chahu/cha-set';
+
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Open Sheet</Button>
+  </SheetTrigger>
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle>Sheet Title</SheetTitle>
+      <SheetDescription>Drawer content description.</SheetDescription>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>`
+    }
+
+
+
+    "
         language: "qml"
     }
 
@@ -193,13 +210,10 @@ ChaSetSheet {
         DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "Sheet"
         componentId: "sheet"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "open", type: "bool", default: "false", description: "Whether the sheet is currently open." },
             { name: "side", type: "string", default: "'right'", description: "The edge from which the sheet enters: 'top' | 'bottom' | 'left' | 'right'." },
             { name: "size", type: "string", default: "'default'", description: "Preset drawer dimension sizing ('sm', 'default', 'lg', 'xl', 'full')." },
@@ -209,6 +223,9 @@ ChaSetSheet {
             { name: "showCloseButton", type: "bool", default: "true", description: "Whether the header close button is displayed." },
             { name: "closeOnOverlayClick", type: "bool", default: "true", description: "Whether clicking outside dismisses the sheet." },
             { name: "closeOnEscape", type: "bool", default: "true", description: "Whether pressing Escape dismisses the sheet." }
+        ]
+    }
+}
         ]
     }
 }

@@ -8,13 +8,6 @@ DocLayout {
     category: "Surfaces & Layout"
     pageTitle: "Table of Contents"
     description: "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property bool showBanner: true
     property int bannerHeight: 40
@@ -274,10 +267,30 @@ DocLayout {
     }
 
     // 3. Footer Sections (Animations, Keyboard Navigation, Props Reference)
-    DocFooterSections {
+        // Animations
+    Column {
         width: parent.width
+        spacing: ThemeTokens.dp(8)
+
+        DocText {
+            text: "Animations"
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
+            color: ThemeTokens.text
+        }
+
+        DocText {
+            text: "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
+    ComponentReference {
+        name: "TableOfContents"
         componentId: "table-of-contents"
-        customAnimations: "The outline fades and slides in from the left, and the active marker is a single bar that glides between rows rather than a per-row bar being swapped in place. Entrance and marker travel both run over ThemeTokens.motionQuick with ThemeTokens.easeStandard. The marker reads its vertical position and height from the live delegate, so it stays centered as interface scale changes font-relative row heights. ThemeTokens.animationsEnabled zeroes every duration automatically."
         propsModel: [
             {
                 name: "items",
@@ -334,5 +347,6 @@ DocLayout {
                 description: "Header title text displayed above outline items."
             }
         ]
+    }
     }
 }

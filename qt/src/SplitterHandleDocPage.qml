@@ -8,14 +8,6 @@ DocLayout {
     category: "Surfaces & Layout"
     pageTitle: "Splitter Handle"
     description: "Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "vertical", title: "Vertical Edge Handle" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property real sidebarWidth: 200
     property real bottomHeight: 120
@@ -183,6 +175,20 @@ DocLayout {
         ]
     }
 
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetSplitterHandle {
+    orientation: Qt.Horizontal
+}`
+        reactCode: `import { SplitterHandle } from '@chahu/cha-set';
+
+<SplitterHandle orientation="horizontal" onDrag={(delta) => console.log(delta)} />`
+    }
+
+
+
     // Vertical Edge Handle
     DocText {
         text: "Vertical Edge Handle"
@@ -283,9 +289,7 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSplitterHandle { edge: \"right\" }"
+    "
         language: "qml"
     }
 

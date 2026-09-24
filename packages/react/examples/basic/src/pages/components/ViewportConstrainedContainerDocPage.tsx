@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ViewportConstrainedContainer, Button, Badge, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function ViewportConstrainedContainerDocPage() {
   const [limit, setLimit] = useState<number | undefined>(220);
@@ -37,12 +37,6 @@ export function ViewportConstrainedContainerDocPage() {
       category="Surfaces & Layout"
       title="Viewport Constrained Container"
       description="Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-{ id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -129,6 +123,23 @@ export function ViewportConstrainedContainerDocPage() {
         </ComponentPreview>
       </section>
 
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ViewportConstrainedContainer } from '@chahu/cha-set';
+
+<ViewportConstrainedContainer maxHeight={400}>
+  <div className="p-4">Constrained content</div>
+</ViewportConstrainedContainer>`}
+        qtCode={`import ChaSet
+
+ChaSetViewportConstrainedContainer {
+    maxHeight: 400
+}`}
+      />
+
+
+
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Variants & Limits
@@ -179,29 +190,10 @@ export function ViewportConstrainedContainerDocPage() {
         </div>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="viewport-constrained-container" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="ViewportConstrainedContainer"
+        componentId="viewport-constrained-container"
+        props={[
             { name: 'maxHeight', type: 'number | string', default: 'undefined', description: 'Optional upper limit on container max-height.' },
             { name: 'minHeight', type: 'number | string', default: '80', description: 'Minimum allowable height lower bound.' },
             { name: 'margin', type: 'number', default: '16', description: 'Reserved margin between container bottom and viewport bottom edge.' },
@@ -209,8 +201,7 @@ export function ViewportConstrainedContainerDocPage() {
             { name: 'className', type: 'string', default: 'undefined', description: 'Custom CSS class names for styling.' },
             { name: 'children', type: 'React.ReactNode', default: 'undefined', description: 'Elements rendered inside the container.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

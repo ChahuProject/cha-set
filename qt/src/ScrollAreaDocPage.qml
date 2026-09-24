@@ -8,16 +8,6 @@ DocLayout {
     category: "Surfaces & Layout"
     pageTitle: "Scroll Area"
     description: "Augments native scroll functionality with custom cross-browser styling, dynamic hot-zone expansion, and interactive stepper navigation buttons."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "horizontal-example", title: "Horizontal Scrolling" },
-        { id: "dual-axis", title: "Dual-Axis (Both Axes)" },
-        { id: "hotzone", title: "Hot Zone & Dynamic Width" },
-        { id: "steppers", title: "Stepper Navigation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string heroMode: "vertical"
     property string heroSize: "default"
@@ -226,36 +216,12 @@ DocLayout {
     }
 
     // ==============================================================
-    // 2. Installation
+    // 2. Anatomy
     // ==============================================================
-    Column {
+    DocAnatomy {
         width: parent.width
-        spacing: 10
-
-        DocText {
-            text: "Installation"
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
-
-        DocText {
-            text: "Import in QML (Qt Quick):"
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "qml"
-            code: "import QtQuick 6.10\nimport ChaSet"
-        }
+        qtCode: `import ChaSet\n\nChaSetScrollArea {\n    width: 300\n    height: 200\n    contentWidth: 300\n    contentHeight: 600\n}`
+        reactCode: `import { ScrollArea } from "@chahu/cha-set";\n\n<ScrollArea className="h-48 w-full border rounded">\n  <div className="p-4">Scrollable content area...</div>\n</ScrollArea>`
     }
 
     // ==============================================================
@@ -266,7 +232,7 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "Horizontal Scrolling Example"
+            text: "Horizontal Example"
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
@@ -334,7 +300,7 @@ DocLayout {
         spacing: ThemeTokens.dp(12)
 
         DocText {
-            text: "Dual-Axis (Both Axes with Corner)"
+            text: "Dual-Axis"
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
@@ -412,7 +378,7 @@ export const CrossStackSpecification = {
         spacing: 12
 
         DocText {
-            text: "Dual-Box Hot Zone & Dynamic Width"
+            text: "Dual-Box Hot Zone"
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
@@ -464,7 +430,7 @@ export const CrossStackSpecification = {
         spacing: 12
 
         DocText {
-            text: "Two-End Stepper Navigation"
+            text: "Stepper Buttons"
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
@@ -518,48 +484,29 @@ export const CrossStackSpecification = {
         }
     }
 
-    // ==============================================================
-    // 7. API Reference
-    // ==============================================================
-    Column {
-        width: parent.width
-        spacing: 14
+        ComponentReference {
+        name: "ScrollArea"
+        componentId: "scroll-area"
+        propsModel: [
+            ["size", "string", "\"default\"", "Scrollbar density and scale (\"default\" | \"sm\")."],
+            ["showVerticalScrollBar", "bool", "true", "Whether to render vertical scrollbar."],
+            ["showHorizontalScrollBar", "bool", "false", "Whether to render horizontal scrollbar."],
+            ["showButtons", "bool", "true", "Whether stepper navigation buttons appear on hover."],
+            ["pageStepRatio", "real", "0.85", "Viewport dimension ratio for page up / down."],
+            ["smoothScroll", "bool", "true", "Whether stepper buttons trigger animated smooth scrolling."]
+        ]
+    }
 
-        DocText {
-            text: "API Reference"
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        PropsTable {
-            width: parent.width
-            title: "ChaSetScrollArea Properties"
-            propsModel: [
-                ["size", "string", "\"default\"", "Scrollbar density and scale (\"default\" | \"sm\")."],
-                ["showVerticalScrollBar", "bool", "true", "Whether to render vertical scrollbar."],
-                ["showHorizontalScrollBar", "bool", "false", "Whether to render horizontal scrollbar."],
-                ["showButtons", "bool", "true", "Whether stepper navigation buttons appear on hover."],
-                ["pageStepRatio", "real", "0.85", "Viewport dimension ratio for page up / down."],
-                ["smoothScroll", "bool", "true", "Whether stepper buttons trigger animated smooth scrolling."]
-            ]
-        }
-
-        KeyboardShortcutsTable {
-            componentId: "scroll-area"
-        }
-
-        PropsTable {
-            width: parent.width
-            title: "ChaSetScrollBar Properties"
-            propsModel: [
-                ["orientation", "Qt::Orientation", "Qt.Vertical", "Scrollbar orientation axis."],
-                ["barSize", "string", "\"default\"", "Scrollbar density and scale (\"default\" | \"sm\")."],
-                ["collapsedSize", "int", "4", "Thickness of the visual indicator when idle."],
-                ["expandedSize", "int", "10", "Thickness of the visual indicator when hovered."],
-                ["hitSize", "int", "14", "Thickness of the pointer-capture hot-zone (preventing Win32 resize border conflict)."]
-            ]
-        }
+    ComponentReference {
+        name: "ScrollBar"
+        componentId: "scroll-bar"
+        isSubComponent: true
+        propsModel: [
+            ["orientation", "Qt::Orientation", "Qt.Vertical", "Scrollbar orientation axis."],
+            ["barSize", "string", "\"default\"", "Scrollbar density and scale (\"default\" | \"sm\")."],
+            ["collapsedSize", "int", "4", "Thickness of the visual indicator when idle."],
+            ["expandedSize", "int", "10", "Thickness of the visual indicator when hovered."],
+            ["hitSize", "int", "14", "Thickness of the pointer-capture hot-zone (preventing Win32 resize border conflict)."]
+        ]
     }
 }
-

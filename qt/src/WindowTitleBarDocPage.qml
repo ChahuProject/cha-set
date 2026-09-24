@@ -8,12 +8,6 @@ DocLayout {
     category: "Desktop & Virtualization"
     pageTitle: "Window Title Bar"
     description: "Frameless desktop application window header with app branding, icon, drag region, and caption control buttons."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string lastAction: "Idle"
 
@@ -105,23 +99,36 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetWindowTitleBar { title: \"App Header\" }"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetWindowTitleBar {
+    width: parent.width
+    title: "ChaSet Desktop"
+}`
+        reactCode: `import { WindowTitleBar } from '@chahu/cha-set';
+
+<WindowTitleBar title="ChaSet Desktop" onMinimize={() => {}} onMaximize={() => {}} onClose={() => {}} />`
+    }
+
+
+
+    "
         language: "qml"
     }
 
     
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "WindowTitleBar"
         componentId: "window-title-bar"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "title", type: "string", default: "'ChaSet Desktop Studio'", description: "Headline text in the title bar." },
             { name: "icon", type: "string", default: "'logo'", description: "Vector icon identifier for application branding." },
             { name: "maximized", type: "bool", default: "false", description: "Whether the window is in maximized state." }
+        ]
+    }
+}
         ]
     }
 }

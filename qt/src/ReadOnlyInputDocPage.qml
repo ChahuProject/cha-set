@@ -8,13 +8,6 @@ DocLayout {
     category: "Forms & Inputs"
     pageTitle: "Read-Only Input"
     description: "Protected display field for non-editable cryptographic tokens, resource IDs, and keys with an integrated one-click copy button."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "variants", title: "Sizes & Color Schemes" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     ComponentPreview {
         title: "Read-Only Input Sandbox"
@@ -65,7 +58,22 @@ DocLayout {
         }
     }
 
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetReadOnlyInput {
+    value: "api_key_secret_12345"
+    label: "API Key"
+}`
+        reactCode: `import { ReadOnlyInput } from '@chahu/cha-set';
+
+<ReadOnlyInput value="api_key_secret_12345" label="API Key" />`
+    }
+
     ComponentPreview {
+        property string sectionId: "variants"
         title: "Sizes & Status Variants"
         reactCode: `<ReadOnlyInput value="default_token_val_1" size="default" />
 <ReadOnlyInput value="compact_sm_token_2" size="sm" />
@@ -95,19 +103,10 @@ ChaSetReadOnlyInput { value: "chaset_success_verified"; colorScheme: "success" }
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetReadOnlyInput { value: \"token_123\"; masked: true }"
-        language: "qml"
-    }
-
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "ReadOnlyInput"
         componentId: "read-only-input"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "value", type: "string", default: "''", description: "The read-only token or string to be displayed and copied." },
             { name: "placeholder", type: "string", default: "''", description: "Placeholder text displayed when value is empty." },
             { name: "masked", type: "bool", default: "false", description: "Whether to obscure characters for secrets/passwords." },

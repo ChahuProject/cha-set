@@ -10,14 +10,6 @@ DocLayout {
     pageTitle: "Address Bar"
     description: "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing."
 
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
-
     property string currentPath: "C:/Users/Development/Projects/cha-set"
     property var history: [
         "C:/",
@@ -170,33 +162,28 @@ DocLayout {
         }
     }
 
-    // 2. Installation Section
-    Item {
-        id: installationSection
-        width: parent ? parent.width : 0
-        height: instCol.implicitHeight
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
 
-        Column {
-            id: instCol
-            width: parent.width
-            spacing: 12
+ChaSetAddressBar {
+    width: parent.width
+    path: "/home/project"
+    canGoBack: false
+    canGoForward: false
+    onNavigateRequested: (path) => console.log(path)
+}`
+        reactCode: `import { AddressBar } from '@chahu/cha-set';
 
-            DocText {
-                text: "Installation"
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            ChaSetCodeBlock {
-                width: parent.width
-                language: "bash"
-                code: "pnpm add @chahu/cha-set"
-            }
-        }
+<AddressBar
+  path="/home/project"
+  canGoBack={false}
+  canGoForward={false}
+  onNavigate={(path) => console.log(path)}
+/>`
     }
 
-    // 3. Animations Section
+    // Animations Section
     Item {
         id: animationsSection
         width: parent ? parent.width : 0
@@ -224,69 +211,17 @@ DocLayout {
         }
     }
 
-    // 4. Keyboard Section
-    Item {
-        id: keyboardSection
-        width: parent ? parent.width : 0
-        height: kbCol.implicitHeight
-
-        Column {
-            id: kbCol
-            width: parent.width
-            spacing: 12
-
-            DocText {
-                text: "Keyboard Navigation"
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            DocText {
-                width: parent.width
-                wrap: true
-                text: "Keyboard shortcuts and button activation patterns."
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeSmall
-            }
-
-            KeyboardShortcutsTable {
-                width: parent.width
-                componentId: "address-bar"
-            }
-        }
-    }
-
-    // 5. Props Section
-    Item {
-        id: propsSection
-        width: parent ? parent.width : 0
-        height: propsCol.implicitHeight
-
-        Column {
-            id: propsCol
-            width: parent.width
-            spacing: 12
-
-            DocText {
-                text: "Props Reference"
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            PropsTable {
-                width: parent.width
-                props: [
-                    { name: "path", type: "string", defaultVal: "''", description: "Current path string rendered in breadcrumb and edit modes." },
-                    { name: "canGoBack", type: "bool", defaultVal: "false", description: "Enables the backward history navigation button." },
-                    { name: "canGoForward", type: "bool", defaultVal: "false", description: "Enables the forward history navigation button." },
-                    { name: "showNavButtons", type: "bool", defaultVal: "true", description: "Whether to show back, forward, up, and refresh navigation buttons." },
-                    { name: "showRefresh", type: "bool", defaultVal: "true", description: "Whether to show the refresh button." },
-                    { name: "suggestions", type: "var", defaultVal: "[]", description: "List of auto-complete or history path strings in the dropdown popover." },
-                    { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all interactions and input editing." }
-                ]
-            }
-        }
+    ComponentReference {
+        name: "AddressBar"
+        componentId: "address-bar"
+        propsModel: [
+            { name: "path", type: "string", defaultVal: "''", description: "Current path string rendered in breadcrumb and edit modes." },
+            { name: "canGoBack", type: "bool", defaultVal: "false", description: "Enables the backward history navigation button." },
+            { name: "canGoForward", type: "bool", defaultVal: "false", description: "Enables the forward history navigation button." },
+            { name: "showNavButtons", type: "bool", defaultVal: "true", description: "Whether to show back, forward, up, and refresh navigation buttons." },
+            { name: "showRefresh", type: "bool", defaultVal: "true", description: "Whether to show the refresh button." },
+            { name: "suggestions", type: "var", defaultVal: "[]", description: "List of auto-complete or history path strings in the dropdown popover." },
+            { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all interactions and input editing." }
+        ]
     }
 }

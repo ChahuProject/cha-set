@@ -8,13 +8,6 @@ DocLayout {
     category: "Composite Engines"
     pageTitle: "Language Settings"
     description: "Cross-stack language configuration card with system detection and cultural poetry quotes."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string demoPref: ChaSetI18n.preference
 
@@ -58,23 +51,23 @@ DocLayout {
         }
     }
 
-    // Section 2: Installation
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: `import ChaSet 1.0
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        qtCode: `import ChaSet
 
 ChaSetLanguageSettings {
-    preference: ChaSetI18n.preference
-    showFollowSystem: true
-    onPreferenceChanged: function(next) {
-        ChaSetI18n.setPreference(next)
-    }
+    currentLocale: "en-US"
+    onLocaleChanged: (l) => console.log(l)
 }`
-        language: "qml"
+        reactCode: `import { LanguageSettings } from '@chahu/cha-set';
+
+<LanguageSettings currentLocale="en-US" onLocaleChange={(l) => console.log(l)} />`
     }
 
     // Section 3: Animations
     Column {
+        property string sectionId: "animations"
         width: parent.width
         spacing: 8
 
@@ -94,57 +87,41 @@ ChaSetLanguageSettings {
         }
     }
 
-    // Section 4: Keyboard Navigation
-    KeyboardShortcutsTable {
+    // Section 4: Keyboard Navigation & Props Reference
+    ComponentReference {
+        name: "LanguageSettings"
         componentId: "language-settings"
-    }
-
-    // Section 5: Props Reference
-    Column {
-        width: parent.width
-        spacing: 8
-
-        DocText {
-            text: "Props Reference"
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeHeading
-            font.bold: true
-        }
-
-        PropsTable {
-            width: parent.width
-            props: [
-                {
-                    name: "preference",
-                    type: "string",
-                    defaultValue: "\"system\"",
-                    description: "Active language preference, either \"system\" or an explicit language code."
-                },
-                {
-                    name: "showFollowSystem",
-                    type: "bool",
-                    defaultValue: "true",
-                    description: "Whether to show the prominent Follow System option card with system detection."
-                },
-                {
-                    name: "variant",
-                    type: "string",
-                    defaultValue: "\"card\"",
-                    description: "Visual container variant. \"card\" renders an outer bordered card with header; \"embedded\" renders inline content without outer frame."
-                },
-                {
-                    name: "disabled",
-                    type: "bool",
-                    defaultValue: "false",
-                    description: "Whether the language selection controls are disabled."
-                },
-                {
-                    name: "textProvider",
-                    type: "var",
-                    defaultValue: "null",
-                    description: "Optional custom translation function for overriding component strings."
-                }
-            ]
-        }
+        propsModel: [
+            {
+                name: "preference",
+                type: "string",
+                defaultValue: "\"system\"",
+                description: "Active language preference, either \"system\" or an explicit language code."
+            },
+            {
+                name: "showFollowSystem",
+                type: "bool",
+                defaultValue: "true",
+                description: "Whether to show the prominent Follow System option card with system detection."
+            },
+            {
+                name: "variant",
+                type: "string",
+                defaultValue: "\"card\"",
+                description: "Visual container variant. \"card\" renders an outer bordered card with header; \"embedded\" renders inline content without outer frame."
+            },
+            {
+                name: "disabled",
+                type: "bool",
+                defaultValue: "false",
+                description: "Whether the language selection controls are disabled."
+            },
+            {
+                name: "textProvider",
+                type: "var",
+                defaultValue: "null",
+                description: "Optional custom translation function for overriding component strings."
+            }
+        ]
     }
 }

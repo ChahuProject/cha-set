@@ -3,7 +3,7 @@ import { Badge, type BadgeVariant, type BadgeSize, Tabs, TabsList, TabsTrigger, 
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { DocFooterSections } from '../../components/DocFooterSections';
+import { ComponentReference } from "../../components/ComponentReference";
 
 export function BadgeDocPage() {
   const [variant, setVariant] = useState<BadgeVariant>('default');
@@ -30,16 +30,6 @@ export function BadgeDocPage() {
       category="Base Primitives"
       title="Badge"
       description="Displays a badge or a component that looks like a badge to highlight status, tags, and counts."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'variants', title: 'Variants' },
-        { id: 'sizes', title: 'Sizes' },
-        { id: 'status-and-tags', title: 'Status & Removable' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
@@ -167,7 +157,7 @@ export function BadgeDocPage() {
       </section>
 
       {/* 5. Status & Removable Badges */}
-      <section id="status-and-tags" className="scroll-mt-20 my-10">
+      <section id="status-removable-tags" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Status & Removable Tags
         </h2>
@@ -183,7 +173,32 @@ export function BadgeDocPage() {
         </Card>
       </section>
 
-      <DocFooterSections
+            {/* Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+            <li>
+              State changes (hover, press, focus) animate over{" "}
+              <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{" "}
+              <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+            </li>
+            <li>
+              Durations and easing resolve from theme tokens, so{" "}
+              <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{" "}
+              <code>ThemeTokens.animationsEnabled</code>).
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <ComponentReference
+        name="Badge"
         componentId="badge"
         props={[
           {

@@ -8,15 +8,6 @@ DocLayout {
     category: "Forms & Inputs"
     pageTitle: "Segmented Control"
     description: "A compact pill-style segmented switch for toolbars, menus, and view toggles."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "sizes", title: "Sizes" },
-        { id: "fixed-width", title: "Fixed Width & Truncation" },
-        { id: "menu", title: "Menu & Inline Title" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property var viewOptions: [
         { label: "Grid", value: "grid", icon: "grid" },
@@ -28,9 +19,7 @@ DocLayout {
     property string currentSize: "default"
     property bool disabledState: false
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSegmentedControl {\n    options: [\n        { label: \"Grid\", value: \"grid\", icon: \"grid\" },\n        { label: \"List\", value: \"list\", icon: \"list\" }\n    ]\n    value: \"grid\"\n}"
+    ,\n        { label: \"List\", value: \"list\", icon: \"list\" }\n    ]\n    value: \"grid\"\n}"
         language: "qml"
     }
 
@@ -118,6 +107,28 @@ DocLayout {
             }
         ]
     }
+
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetSegmentedControl {
+    model: ["Day", "Week", "Month"]
+    currentIndex: 0
+}`
+        reactCode: `import { SegmentedControl } from '@chahu/cha-set';
+
+<SegmentedControl
+  options={[
+    { label: 'Day', value: 'day' },
+    { label: 'Week', value: 'week' },
+  ]}
+  value="day"
+  onValueChange={(v) => console.log(v)}
+/>`
+    }
+
+
 
     // Sizes
     DocText {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { SnapSlider, Card, CodeBlock, Button } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SnapSliderDocPage() {
   const [value, setValue] = useState(1);
@@ -23,13 +23,6 @@ export function SnapSliderDocPage() {
       category="Forms & Inputs"
       title="Snap Slider"
       description="Stepped discrete slider that snaps to defined stops with ticks and label row."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
@@ -86,10 +79,21 @@ export function SnapSliderDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { SnapSlider } from '@chahu/cha-set';
+
+<SnapSlider stops={[0, 25, 50, 75, 100]} value={50} onChange={(v) => console.log(v)} />`}
+        qtCode={`import ChaSet
+
+ChaSetSnapSlider {
+    stops: [0, 25, 50, 75, 100]
+    value: 50
+}`}
+      />
+
+
 
       <section id="animations" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Animations</h2>

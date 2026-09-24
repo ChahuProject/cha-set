@@ -9,14 +9,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Scale OSD"
     description: "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
-
     property real demoScale: 1.0
 
     ComponentPreview {
@@ -87,29 +79,16 @@ DocLayout {
         }
     }
 
-    Item {
-        id: installationSection
-        width: parent ? parent.width : 0
-        height: instCol.implicitHeight
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
 
-        Column {
-            id: instCol
-            width: parent.width
-            spacing: 12
+ChaSetScaleOsd {
+    scale: 100
+}`
+        reactCode: `import { ScaleOsd } from '@chahu/cha-set';
 
-            DocText {
-                text: "Installation"
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            ChaSetCodeBlock {
-                width: parent.width
-                language: "bash"
-                code: "pnpm add @chahu/cha-set"
-            }
-        }
+<ScaleOsd scale={100} onZoomIn={() => {}} onZoomOut={() => {}} onReset={() => {}} />`
     }
 
     Item {
@@ -139,71 +118,21 @@ DocLayout {
         }
     }
 
-    Item {
-        id: keyboardSection
-        width: parent ? parent.width : 0
-        height: kbCol.implicitHeight
-
-        Column {
-            id: kbCol
-            width: parent.width
-            spacing: 12
-
-            DocText {
-                text: "Keyboard Navigation"
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            DocText {
-                width: parent.width
-                wrap: true
-                text: "Keyboard shortcuts and button activation patterns."
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeSmall
-            }
-
-            KeyboardShortcutsTable {
-                width: parent.width
-                componentId: "scale-osd"
-            }
-        }
-    }
-
-    Item {
-        id: propsSection
-        width: parent ? parent.width : 0
-        height: propsCol.implicitHeight
-
-        Column {
-            id: propsCol
-            width: parent.width
-            spacing: 12
-
-            DocText {
-                text: "Props Reference"
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            PropsTable {
-                width: parent.width
-                props: [
-                    { name: "value", type: "real", defaultVal: "1.0", description: "Current scale ratio (e.g. 1.0 represents 100%)." },
-                    { name: "step", type: "real", defaultVal: "0.1", description: "Step increment applied on +/- button click." },
-                    { name: "min", type: "real", defaultVal: "0.2", description: "Minimum allowed zoom scale ratio." },
-                    { name: "max", type: "real", defaultVal: "3.0", description: "Maximum allowed zoom scale ratio." },
-                    { name: "steps", type: "var", defaultVal: "[]", description: "Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS)." },
-                    { name: "size", type: "string", defaultVal: "\"default\"", description: "Visual scale variant (desktop launcher 42px or standard 40px)." },
-                    { name: "ignoreUiScale", type: "bool", defaultVal: "true", description: "Locks physical pixel size and renders invariant regardless of interface scaling." },
-                    { name: "autoHideDuration", type: "int", defaultVal: "1400", description: "Duration in ms before auto-hiding (pauses on hover)." },
-                    { name: "showControls", type: "bool", defaultVal: "true", description: "Whether to display +/- and reset buttons." },
-                    { name: "showTooltips", type: "bool", defaultVal: "true", description: "Whether to display hover tooltip hints for control buttons." },
-                    { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all controls and user interaction." }
-                ]
-            }
-        }
+    ComponentReference {
+        name: "ScaleOsd"
+        componentId: "scale-osd"
+        propsModel: [
+            { name: "value", type: "real", defaultVal: "1.0", description: "Current scale ratio (e.g. 1.0 represents 100%)." },
+            { name: "step", type: "real", defaultVal: "0.1", description: "Step increment applied on +/- button click." },
+            { name: "min", type: "real", defaultVal: "0.2", description: "Minimum allowed zoom scale ratio." },
+            { name: "max", type: "real", defaultVal: "3.0", description: "Maximum allowed zoom scale ratio." },
+            { name: "steps", type: "var", defaultVal: "[]", description: "Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS)." },
+            { name: "size", type: "string", defaultVal: "\"default\"", description: "Visual scale variant (desktop launcher 42px or standard 40px)." },
+            { name: "ignoreUiScale", type: "bool", defaultVal: "true", description: "Locks physical pixel size and renders invariant regardless of interface scaling." },
+            { name: "autoHideDuration", type: "int", defaultVal: "1400", description: "Duration in ms before auto-hiding (pauses on hover)." },
+            { name: "showControls", type: "bool", defaultVal: "true", description: "Whether to display +/- and reset buttons." },
+            { name: "showTooltips", type: "bool", defaultVal: "true", description: "Whether to display hover tooltip hints for control buttons." },
+            { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all controls and user interaction." }
+        ]
     }
 }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { QueryBuilder, Badge, type QueryRuleGroup, type QueryField, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 const SAMPLE_FIELDS: QueryField[] = [
   { id: 'name', label: 'User Name', type: 'string' },
@@ -33,12 +33,6 @@ export function QueryBuilderDocPage() {
       category="Composite Engines"
       title="Query Builder"
       description="Visual rule tree builder for structured search query generation with nested logic groups (AND/OR), operator filters, and JSON serialization."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -88,37 +82,32 @@ export function QueryBuilderDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { QueryBuilder } from '@chahu/cha-set';
 
-      
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="query-builder" />
-      </section>
+<QueryBuilder fields={fields} value={rules} onChange={setRules} />`}
+        qtCode={`import ChaSet
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+ChaSetQueryBuilder {
+    width: parent.width
+    fields: fieldsModel
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="QueryBuilder"
+        componentId="query-builder"
+        props={[
             { name: 'fields', type: 'QueryField[]', default: '[]', description: 'Available queryable fields and data types.' },
             { name: 'query', type: 'QueryRuleGroup', default: 'undefined', description: 'Active query tree root group.' },
             { name: 'onQueryChange', type: '(q: QueryRuleGroup) => void', default: 'undefined', description: 'Callback fired on rule addition, deletion, or editing.' },
             { name: 'maxDepth', type: 'number', default: '3', description: 'Maximum nested rule group depth.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

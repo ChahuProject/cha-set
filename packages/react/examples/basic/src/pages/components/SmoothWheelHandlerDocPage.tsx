@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { SmoothWheelHandler, Card, Badge, SegmentedControl, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SmoothWheelHandlerDocPage() {
   const [speed, setSpeed] = useState(1.2);
@@ -53,13 +53,6 @@ export function SmoothWheelHandlerDocPage() {
       category="Desktop & Virtualization"
       title="Smooth Wheel Handler"
       description="Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'kinematics', title: 'Kinematic Architecture' },
-        { id: 'keyboard', title: 'Keyboard & Wheel Navigation' },
-{ id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
@@ -121,13 +114,23 @@ export function SmoothWheelHandlerDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { SmoothWheelHandler } from '@chahu/cha-set';
+
+<SmoothWheelHandler onWheelScroll={(dx, dy) => console.log(dx, dy)} />`}
+        qtCode={`import ChaSet
+
+ChaSetSmoothWheelHandler {
+    target: flickableItem
+}`}
+      />
+
+
 
       <section id="kinematics" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Kinematic Features</h2>
+        <h2 className="text-xl font-semibold text-foreground">Kinematic Architecture</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="p-4 space-y-2">
             <h3 className="text-sm font-semibold text-foreground">Continuous Momentum Accumulation</h3>
@@ -150,68 +153,54 @@ export function SmoothWheelHandlerDocPage() {
         </div>
       </section>
 
-      <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard & Wheel Navigation</h2>
-        <KeyboardShortcutsTable componentId="smooth-wheel-handler" />
-      </section>
-
-      <section id="code" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Implementation Code</h2>
-        <div className="space-y-4">
-          <CodeBlock language="tsx" code={heroReactCode} />
-          <CodeBlock language="qml" code={heroQtCode} />
-        </div>
-      </section>
-
-      <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
-        <PropsTable
-          items={[
-            {
-              name: 'scrollOrientation',
-              type: "'vertical' | 'horizontal'",
-              default: "'vertical'",
-              required: false,
-              description: 'Primary direction of scrolling for the target viewport.',
-            },
-            {
-              name: 'mapVerticalToHorizontal',
-              type: 'boolean',
-              default: 'false',
-              required: false,
-              description: 'Whether to map vertical wheel ticks to horizontal axis movement.',
-            },
-            {
-              name: 'speedMultiplier',
-              type: 'number',
-              default: '1.2',
-              required: false,
-              description: 'Scroll speed multiplier applied to raw delta values.',
-            },
-            {
-              name: 'duration',
-              type: 'number',
-              default: '200',
-              required: false,
-              description: 'Duration in milliseconds for the OutCubic damping transition.',
-            },
-            {
-              name: 'fixedStepSize',
-              type: 'number',
-              default: '0',
-              required: false,
-              description: 'Optional quantized step increment per wheel notch (0 for dynamic).',
-            },
-            {
-              name: 'consumeEvent',
-              type: 'boolean',
-              default: 'true',
-              required: false,
-              description: 'Whether to prevent propagation of handled wheel events to parent windows.',
-            },
-          ]}
-        />
-      </section>
+      <ComponentReference
+        name="SmoothWheelHandler"
+        componentId="smooth-wheel-handler"
+        props={[
+          {
+            name: 'scrollOrientation',
+            type: "'vertical' | 'horizontal'",
+            default: "'vertical'",
+            required: false,
+            description: 'Primary direction of scrolling for the target viewport.',
+          },
+          {
+            name: 'mapVerticalToHorizontal',
+            type: 'boolean',
+            default: 'false',
+            required: false,
+            description: 'Whether to map vertical wheel ticks to horizontal axis movement.',
+          },
+          {
+            name: 'speedMultiplier',
+            type: 'number',
+            default: '1.2',
+            required: false,
+            description: 'Scroll speed multiplier applied to raw delta values.',
+          },
+          {
+            name: 'duration',
+            type: 'number',
+            default: '200',
+            required: false,
+            description: 'Duration in milliseconds for the OutCubic damping transition.',
+          },
+          {
+            name: 'fixedStepSize',
+            type: 'number',
+            default: '0',
+            required: false,
+            description: 'Optional quantized step increment per wheel notch (0 for dynamic).',
+          },
+          {
+            name: 'consumeEvent',
+            type: 'boolean',
+            default: 'true',
+            required: false,
+            description: 'Whether to prevent propagation of handled wheel events to parent windows.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

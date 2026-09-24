@@ -7,9 +7,9 @@ import {
   type PipelineStep,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 const SAMPLE_STEPS: PipelineStep[] = [
   { name: 'Parse SPIR-V Bytecode', status: 'success', durationMs: 3200 },
@@ -92,13 +92,6 @@ export function PipelineViewDocPage() {
       category="Composite Engines"
       title="Pipeline View"
       description="Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -125,14 +118,21 @@ export function PipelineViewDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <div className="rounded-lg border border-border bg-muted/40 p-3 font-mono text-xs text-foreground select-text">
-          import &#123; PipelineView, StepTimeline, LogConsole, JobList, PipelineCenter &#125; from &apos;@chahu/cha-set&apos;;
-        </div>
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { PipelineView } from '@chahu/cha-set';
+
+<PipelineView stages={stages} activeStageIndex={0} />`}
+        qtCode={`import ChaSet
+
+ChaSetPipelineView {
+    width: parent.width
+    stages: stagesModel
+}`}
+      />
+
+
 
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -154,22 +154,10 @@ export function PipelineViewDocPage() {
         </ul>
       </section>
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Spatial keyboard navigation across the job list and execution controls.
-        </p>
-        <KeyboardShortcutsTable componentId="pipeline-view" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="PipelineView"
+        componentId="pipeline-view"
+        props={[
             { name: 'status', type: 'PipelineStatus', default: "'running'", description: 'Overall execution status for summary header badge.' },
             { name: 'startMs', type: 'number', default: '0', description: 'Execution start timestamp in epoch milliseconds.' },
             { name: 'endMs', type: 'number | null', default: 'null', description: 'Execution completion timestamp; displays formatted duration when non-null.' },
@@ -183,8 +171,7 @@ export function PipelineViewDocPage() {
             { name: 'emptyJobsText', type: 'string', default: "'No jobs'", description: 'Placeholder text displayed when the job list is empty.' },
             { name: 'headerActionSlot', type: 'ReactNode', default: 'undefined', description: 'Slot for custom actions in the header.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

@@ -8,14 +8,6 @@ DocLayout {
     pageTitle: "Task HUD"
     description: "Floating task progress and notification HUD stack for background executions."
 
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
-
     property var demoTasks: [
         {
             id: "task-1",
@@ -224,33 +216,21 @@ DocLayout {
         }
     }
 
-    // 2. Installation Section
-    Item {
-        id: installationSection
-        width: parent ? parent.width : 0
-        height: instCol.implicitHeight
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
 
-        Column {
-            id: instCol
-            width: parent.width
-            spacing: 12
+ChaSetTaskHud {
+    title: "Build Process"
+    progress: 0.65
+    status: "running"
+}`
+        reactCode: `import { TaskHud } from '@chahu/cha-set';
 
-            DocText {
-                text: "Installation"
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            ChaSetCodeBlock {
-                width: parent.width
-                language: "bash"
-                code: "pnpm add @chahu/cha-set"
-            }
-        }
+<TaskHud title="Build Process" progress={0.65} status="running" />`
     }
 
-    // 3. Animations Section
+    // Animations Section
     Item {
         id: animationsSection
         width: parent ? parent.width : 0
@@ -278,67 +258,15 @@ DocLayout {
         }
     }
 
-    // 4. Keyboard Section
-    Item {
-        id: keyboardSection
-        width: parent ? parent.width : 0
-        height: kbCol.implicitHeight
-
-        Column {
-            id: kbCol
-            width: parent.width
-            spacing: 12
-
-            DocText {
-                text: "Keyboard Navigation"
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            DocText {
-                width: parent.width
-                wrap: true
-                text: "Keyboard shortcuts and button activation patterns."
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeSmall
-            }
-
-            KeyboardShortcutsTable {
-                width: parent.width
-                componentId: "task-hud"
-            }
-        }
-    }
-
-    // 5. Props Section
-    Item {
-        id: propsSection
-        width: parent ? parent.width : 0
-        height: propsCol.implicitHeight
-
-        Column {
-            id: propsCol
-            width: parent.width
-            spacing: 12
-
-            DocText {
-                text: "Props Reference"
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            PropsTable {
-                width: parent.width
-                props: [
-                    { name: "tasks", type: "var", defaultVal: "[]", description: "Array or list model of active or completed task objects." },
-                    { name: "maxVisible", type: "int", defaultVal: "3", description: "Maximum number of task cards displayed before displaying the collapsed pill." },
-                    { name: "autoHideDelay", type: "int", defaultVal: "600", description: "Delay in ms before fading out after the task queue is empty." },
-                    { name: "forceVisible", type: "bool", defaultVal: "false", description: "Forces visibility for static previews or testing harnesses." },
-                    { name: "hudVisible", type: "bool", defaultVal: "false", description: "Current visibility state of the HUD container." }
-                ]
-            }
-        }
+    ComponentReference {
+        name: "TaskHud"
+        componentId: "task-hud"
+        propsModel: [
+            { name: "tasks", type: "var", defaultVal: "[]", description: "Array or list model of active or completed task objects." },
+            { name: "maxVisible", type: "int", defaultVal: "3", description: "Maximum number of task cards displayed before displaying the collapsed pill." },
+            { name: "autoHideDelay", type: "int", defaultVal: "600", description: "Delay in ms before fading out after the task queue is empty." },
+            { name: "forceVisible", type: "bool", defaultVal: "false", description: "Forces visibility for static previews or testing harnesses." },
+            { name: "hudVisible", type: "bool", defaultVal: "false", description: "Current visibility state of the HUD container." }
+        ]
     }
 }

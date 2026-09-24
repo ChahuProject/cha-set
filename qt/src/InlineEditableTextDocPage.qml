@@ -8,13 +8,6 @@ DocLayout {
     category: "Forms & Inputs"
     pageTitle: "Inline Editable Text"
     description: "Seamless inline text label that dynamically transforms into an input field on double-click or edit trigger."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "variants", title: "Sizes & Interaction Triggers" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string currentTitle: "Project Apollo Architecture"
 
@@ -64,8 +57,24 @@ DocLayout {
         }
     }
 
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetInlineEditableText {
+    text: "Project Title"
+    onAccepted: (val) => console.log(val)
+}`
+        reactCode: `import { InlineEditableText } from '@chahu/cha-set';
+
+<InlineEditableText value="Project Title" onSave={(val) => console.log(val)} />`
+    }
+
     ComponentPreview {
-        title: "Sizes & Triggers Preview"
+        property string sectionId: "variants"
+        property string sectionTitle: "Sizes & Interaction Triggers"
+        title: "Sizes & Interaction Triggers"
         reactCode: `<InlineEditableText value="Single Click to Edit" trigger="click" size="default" />
 <InlineEditableText value="Double Click to Edit" trigger="doubleClick" size="default" />
 <InlineEditableText value="Compact sm Tier Label" size="sm" />
@@ -114,19 +123,10 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetInlineEditableText { value: \"Sample Title\" }"
-        language: "qml"
-    }
-
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "InlineEditableText"
         componentId: "inline-editable-text"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "value", type: "string", default: "'Click to edit'", description: "The active text value displayed and edited." },
             { name: "text", type: "string", default: "''", description: "Alias for value property." },
             { name: "placeholder", type: "string", default: "'Enter text...'", description: "Fallback text when the value property is empty." },

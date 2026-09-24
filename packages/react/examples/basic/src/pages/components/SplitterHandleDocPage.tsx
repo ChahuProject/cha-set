@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { SplitterHandle, Card, Button, Badge, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SplitterHandleDocPage() {
   const [sidebarWidth, setSidebarWidth] = useState(240);
@@ -63,14 +63,6 @@ export function SplitterHandleDocPage() {
       category="Surfaces & Layout"
       title="Splitter Handle"
       description="Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'vertical', title: 'Vertical Edge Handle' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
@@ -123,7 +115,22 @@ export function SplitterHandleDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="vertical" className="space-y-4 pt-6">
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { SplitterHandle } from '@chahu/cha-set';
+
+<SplitterHandle orientation="horizontal" onDrag={(delta) => console.log(delta)} />`}
+        qtCode={`import ChaSet
+
+ChaSetSplitterHandle {
+    orientation: Qt.Horizontal
+}`}
+      />
+
+
+
+      <section id="vertical-edge-handle" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Vertical Edge Handle</h2>
         <p className="text-sm text-muted-foreground">
           Handles can also be attached to horizontal edges (<code>top</code> or <code>bottom</code>) for bottom console or drawer resizing.
@@ -151,11 +158,6 @@ export function SplitterHandleDocPage() {
         </Card>
       </section>
 
-      <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
       <section id="animations" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Animations</h2>
         <p className="text-sm text-muted-foreground">
@@ -179,95 +181,81 @@ export function SplitterHandleDocPage() {
         </ul>
       </section>
 
-      <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard Navigation</h2>
-        <KeyboardShortcutsTable componentId="splitter-handle" />
-      </section>
-
-      <section id="code" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Implementation Code</h2>
-        <div className="space-y-4">
-          <CodeBlock language="tsx" code={heroReactCode} />
-          <CodeBlock language="qml" code={heroQtCode} />
-        </div>
-      </section>
-
-      <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
-        <PropsTable
-          items={[
-            {
-              name: 'edge',
-              type: "'left' | 'right' | 'top' | 'bottom'",
-              default: "'left'",
-              required: false,
-              description: 'Which edge of the target panel the resize handle controls.',
-            },
-            {
-              name: 'targetSize',
-              type: 'number',
-              default: '200',
-              required: false,
-              description: 'Current size (width or height) of the target element being resized.',
-            },
-            {
-              name: 'minSize',
-              type: 'number',
-              default: '100',
-              required: false,
-              description: 'Minimum allowed size bound.',
-            },
-            {
-              name: 'maxSize',
-              type: 'number',
-              default: '1000',
-              required: false,
-              description: 'Maximum allowed size bound.',
-            },
-            {
-              name: 'defaultSize',
-              type: 'number',
-              required: false,
-              description: 'Size restored when double-clicked or Enter is pressed.',
-            },
-            {
-              name: 'liveUpdate',
-              type: 'boolean',
-              default: 'true',
-              required: false,
-              description: 'Whether size updates fire continuously during drag.',
-            },
-            {
-              name: 'hitThickness',
-              type: 'number',
-              default: '6',
-              required: false,
-              description: 'Interactive mouse hit test zone thickness.',
-            },
-            {
-              name: 'visualThickness',
-              type: 'number',
-              default: '1',
-              required: false,
-              description: 'Resting visible hairline thickness.',
-            },
-            {
-              name: 'activeVisualThickness',
-              type: 'number',
-              default: '2',
-              required: false,
-              description: 'Highlighted visible hairline thickness when hovered or dragged.',
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              required: false,
-              description: 'Whether handle resizing is disabled.',
-            },
-          ]}
-        />
-      </section>
+      <ComponentReference
+        name="SplitterHandle"
+        componentId="splitter-handle"
+        props={[
+          {
+            name: 'edge',
+            type: "'left' | 'right' | 'top' | 'bottom'",
+            default: "'left'",
+            required: false,
+            description: 'Which edge of the target panel the resize handle controls.',
+          },
+          {
+            name: 'targetSize',
+            type: 'number',
+            default: '200',
+            required: false,
+            description: 'Current size (width or height) of the target element being resized.',
+          },
+          {
+            name: 'minSize',
+            type: 'number',
+            default: '100',
+            required: false,
+            description: 'Minimum allowed size bound.',
+          },
+          {
+            name: 'maxSize',
+            type: 'number',
+            default: '1000',
+            required: false,
+            description: 'Maximum allowed size bound.',
+          },
+          {
+            name: 'defaultSize',
+            type: 'number',
+            required: false,
+            description: 'Size restored when double-clicked or Enter is pressed.',
+          },
+          {
+            name: 'liveUpdate',
+            type: 'boolean',
+            default: 'true',
+            required: false,
+            description: 'Whether size updates fire continuously during drag.',
+          },
+          {
+            name: 'hitThickness',
+            type: 'number',
+            default: '6',
+            required: false,
+            description: 'Interactive mouse hit test zone thickness.',
+          },
+          {
+            name: 'visualThickness',
+            type: 'number',
+            default: '1',
+            required: false,
+            description: 'Resting visible hairline thickness.',
+          },
+          {
+            name: 'activeVisualThickness',
+            type: 'number',
+            default: '2',
+            required: false,
+            description: 'Highlighted visible hairline thickness when hovered or dragged.',
+          },
+          {
+            name: 'disabled',
+            type: 'boolean',
+            default: 'false',
+            required: false,
+            description: 'Whether handle resizing is disabled.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

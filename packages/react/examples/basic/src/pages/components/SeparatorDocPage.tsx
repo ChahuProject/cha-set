@@ -3,7 +3,7 @@ import { Separator, type SeparatorOrientation, type SeparatorVariant, type Separ
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { DocFooterSections } from '../../components/DocFooterSections';
+import { ComponentReference } from "../../components/ComponentReference";
 
 export function SeparatorDocPage() {
   const [orientation, setOrientation] = useState<SeparatorOrientation>('horizontal');
@@ -100,14 +100,6 @@ export function SeparatorDocPage() {
       category="Base Primitives"
       title="Separator"
       description="Visually or semantically separates content in a list, form, or section."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'states', title: 'Examples & States' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
@@ -320,7 +312,32 @@ export function SeparatorDocPage() {
         </div>
       </section>
 
-      <DocFooterSections
+            {/* Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+            <li>
+              State changes (hover, press, focus) animate over{" "}
+              <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{" "}
+              <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+            </li>
+            <li>
+              Durations and easing resolve from theme tokens, so{" "}
+              <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{" "}
+              <code>ThemeTokens.animationsEnabled</code>).
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <ComponentReference
+        name="Separator"
         componentId="separator"
         props={[
           {

@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import { VirtualGrid, type VirtualGridHandle, Badge, Button, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 const SAMPLE_ITEMS = Array.from({ length: 60 }, (_, i) => ({
   id: i + 1,
@@ -43,12 +43,6 @@ gridRef.current?.scrollToIndex(20, 'center');
       category="Desktop & Virtualization"
       title="Virtual Grid"
       description="2D responsive windowed grid virtualizer for massive cards, matrix data, and dynamic layouts."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -127,29 +121,30 @@ gridRef.current?.scrollToIndex(20, 'center');
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { VirtualGrid } from '@chahu/cha-set';
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="virtual-grid" />
-      </section>
+<VirtualGrid rowCount={1000} columnCount={50} rowHeight={32} columnWidth={100} />`}
+        qtCode={`import ChaSet
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+ChaSetVirtualGrid {
+    width: parent.width
+    height: 400
+    rows: 1000
+    columns: 50
+    rowHeight: 32
+    columnWidth: 100
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="VirtualGrid"
+        componentId="virtual-grid"
+        props={[
             { name: 'items', type: 'readonly T[]', default: '[]', description: 'Array of data items to layout into grid cards.' },
             { name: 'renderCard', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: 'Callback rendering an individual grid card.' },
             { name: 'renderItem', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: 'Alias for renderCard.' },
@@ -160,8 +155,7 @@ gridRef.current?.scrollToIndex(20, 'center');
             { name: 'emptyNode', type: 'ReactNode', default: 'null', description: 'Content rendered when items array is empty.' },
             { name: 'ref', type: 'Ref<VirtualGridHandle>', default: 'undefined', description: 'Handle exposing scrollToIndex(index, align).' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

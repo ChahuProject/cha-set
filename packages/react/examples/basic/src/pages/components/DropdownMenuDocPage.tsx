@@ -1,9 +1,9 @@
 import React from 'react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, Button, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function DropdownMenuDocPage() {
   const reactCode = `<DropdownMenu>
@@ -40,12 +40,6 @@ export function DropdownMenuDocPage() {
       category="Overlays & Feedback"
       title="Dropdown Menu"
       description="Displays a menu to the user triggered by a button, supporting items, labels, separators, shortcuts, and destructive actions."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -102,37 +96,43 @@ export function DropdownMenuDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Dropdown Menu implements the ChaSet Input Modality State Machine, suppressing stationary mouse hover highlights when navigating with arrow keys.
-        </p>
-        <KeyboardShortcutsTable componentId="dropdown-menu" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, Button } from '@chahu/cha-set';
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Options</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem onSelect={() => {}}>Profile</DropdownMenuItem>
+    <DropdownMenuItem onSelect={() => {}}>Settings</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`}
+        qtCode={`import ChaSet
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+ChaSetDropdownMenu {
+    items: [
+        { id: "profile", label: "Profile", shortcut: "⌘P" },
+        { id: "settings", label: "Settings", shortcut: "⌘," }
+    ]
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="DropdownMenu"
+        componentId="dropdown-menu"
+        props={[
             { name: 'open', type: 'boolean', default: 'undefined', description: 'Controlled open state of the dropdown menu.' },
             { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: 'Event handler called when open state changes.' },
             { name: 'modal', type: 'boolean', default: 'true', description: 'Whether to render as a modal trapping focus.' },
             { name: 'sideOffset', type: 'number', default: '4', description: 'Distance offset from trigger to floating content.' },
             { name: 'align', type: "'start' | 'center' | 'end'", default: "'start'", description: 'Alignment along trigger edge.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

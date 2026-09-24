@@ -64,12 +64,7 @@ Item {
     function isHeadingItem(item) {
         if (!item || !item.visible) return false;
         if (item.text !== undefined && typeof item.text === "string" && item.text.trim() !== "") {
-            if (item.font !== undefined && (
-                item.font.pixelSize >= Typography.sizeTitleSm ||
-                item.font.weight >= Typography.weightBold ||
-                item.font.weight >= Typography.weightSemibold ||
-                item.font.pixelSize >= Typography.sizeHeading
-            )) {
+            if (item.font !== undefined && item.font.pixelSize >= Typography.sizeHeading) {
                 return true;
             }
         }
@@ -148,6 +143,15 @@ Item {
             } else if (id === "props-reference" || id === "api-reference") {
                 id = "props";
                 title = "Props Reference";
+            } else if (id === "examples-states" || id === "examples" || id === "examples-variants") {
+                id = "states";
+                title = "Examples & States";
+            } else if (id === "variants-options") {
+                id = "variants";
+                title = "Variants & Options";
+            } else if (id === "multi-file-tabs") {
+                id = "multi-file";
+                title = "Multi-File Tabs";
             }
 
             if (!seenIds[id]) {
@@ -174,7 +178,16 @@ Item {
                 continue;
             }
 
-            // 2. Direct KeyboardShortcutsTable
+            // 2. ComponentReference container (shortcuts on top, props on bottom)
+            if (child.kbItem !== undefined && child.propsItem !== undefined) {
+                if (child.hasShortcuts) {
+                    addEntry(child.keyboardSectionId || "keyboard", child.kbTitle || "Keyboard Navigation", child.kbItem, 2);
+                }
+                addEntry(child.propsSectionId || "props", child.isSubComponent ? child.propTableTitle : "Props Reference", child.propsItem, 2);
+                continue;
+            }
+
+            // 3. Direct KeyboardShortcutsTable
             if (child.componentId !== undefined) {
                 addEntry(child.sectionId || "keyboard", child.sectionTitle || "Keyboard Navigation", child, 2);
                 continue;

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Card, Tabs, TabsList, TabsTrigger, Checkbox, Input, Tooltip, TooltipProvider, TooltipTrigger, TooltipContent, type TooltipSide, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function TooltipDocPage() {
   const [side, setSide] = useState<TooltipSide>('top');
@@ -37,15 +36,6 @@ export function TooltipDocPage() {
       category="Overlays & Feedback"
       title="Tooltip"
       description="A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'examples', title: 'Examples & States' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
@@ -143,13 +133,6 @@ export function TooltipDocPage() {
       </section>
 
       {/* 2. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
       {/* 3. Anatomy */}
       <DocAnatomy
         id="anatomy"
@@ -267,23 +250,10 @@ export function TooltipDocPage() {
         </ul>
       </section>
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="tooltip" />
-      </section>
-
-      {/* 5. Props Reference */}
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="Tooltip"
+        componentId="tooltip"
+        props={[
             {
               name: 'content',
               type: 'ReactNode | string',
@@ -345,8 +315,7 @@ export function TooltipDocPage() {
               description: 'Additional CSS class names applied to the element.',
             },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

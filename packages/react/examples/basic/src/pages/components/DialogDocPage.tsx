@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, type DialogSizeOption, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function DialogDocPage() {
   const [open, setOpen] = useState(false);
@@ -93,15 +92,6 @@ export function DialogDocPage() {
       category="Overlays & Feedback"
       title="Dialog"
       description="A modal window that interrupts the user with critical content and prompts for user action."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'examples', title: 'Examples & States' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Overview */}
       <section id="overview" className="scroll-mt-20">
@@ -171,56 +161,7 @@ export function DialogDocPage() {
         </ComponentPreview>
       </section>
 
-      {/* Animations */}
-      <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Animations
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Motion behavior and timing for the overlay and content on open and close.
-        </p>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            The backdrop overlay fades in and out using{' '}
-            <code className="text-xs bg-muted px-1 rounded">animate-fade-in</code> /
-            <code className="text-xs bg-muted px-1 rounded">animate-fade-out</code>, over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-short</code> with the{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-entrance</code> curve.
-          </li>
-          <li>
-            The content card cross-fades with opacity only (transform-positioned elements avoid
-            scale animation to prevent conflicts), and exit uses
-            <code className="text-xs bg-muted px-1 rounded">useExitAnimation</code> to delay
-            unmounting.
-          </li>
-          <li>
-            Durations and easing resolve from theme tokens, so{' '}
-            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
-            <code>ThemeTokens.animationsEnabled</code>).
-          </li>
-        </ul>
-      </section>
-
-      {/* Keyboard Navigation */}
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Dialog enforces accessible modal standards: Tab focus cycling is strictly trapped inside the modal, and Escape automatically dismisses the dialog while returning focus to the trigger.
-        </p>
-        <KeyboardShortcutsTable componentId="dialog" />
-      </section>
-
-      {/* 2. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
-      {/* 3. Anatomy */}
+      {/* 2. Anatomy */}
       <DocAnatomy
         id="anatomy"
         reactCode={`import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, Button } from '@chahu/cha-set';\n\n<Dialog>\n  <DialogTrigger asChild>\n    <Button>Open</Button>\n  </DialogTrigger>\n  <DialogContent>\n    <DialogHeader>\n      <DialogTitle>Dialog Title</DialogTitle>\n      <DialogDescription>Dialog Description</DialogDescription>\n    </DialogHeader>\n    <DialogFooter>\n      <DialogClose asChild>\n        <Button variant="outline">Cancel</Button>\n      </DialogClose>\n      <Button>Confirm</Button>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>`}
@@ -351,13 +292,40 @@ export function DialogDocPage() {
         </div>
       </section>
 
-      {/* 5. Props Reference */}
-      <section id="props" className="scroll-mt-20 my-10">
+      {/* Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
+          Animations
         </h2>
-        <PropsTable
-          props={[
+        <p className="text-sm text-muted-foreground mb-4">
+          Motion behavior and timing for the overlay and content on open and close.
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+          <li>
+            The backdrop overlay fades in and out using{' '}
+            <code className="text-xs bg-muted px-1 rounded">animate-fade-in</code> /
+            <code className="text-xs bg-muted px-1 rounded">animate-fade-out</code>, over{' '}
+            <code className="text-xs bg-muted px-1 rounded">duration-short</code> with the{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-entrance</code> curve.
+          </li>
+          <li>
+            The content card cross-fades with opacity only (transform-positioned elements avoid
+            scale animation to prevent conflicts), and exit uses
+            <code className="text-xs bg-muted px-1 rounded">useExitAnimation</code> to delay
+            unmounting.
+          </li>
+          <li>
+            Durations and easing resolve from theme tokens, so{' '}
+            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
+            <code>ThemeTokens.animationsEnabled</code>).
+          </li>
+        </ul>
+      </section>
+
+      <ComponentReference
+        name="Dialog"
+        componentId="dialog"
+        props={[
             {
               name: 'open',
               type: 'boolean',
@@ -473,8 +441,7 @@ export function DialogDocPage() {
               description: 'Additional CSS classes to customize the backdrop overlay.',
             },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

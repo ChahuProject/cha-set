@@ -8,13 +8,6 @@ DocLayout {
     category: "Forms & Inputs"
     pageTitle: "Range Slider"
     description: "Dual-thumb slider control for selecting continuous or stepped numeric min-max intervals with collision prevention."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "variants", title: "Sizes & States" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property real minPrice: 20.0
     property real maxPrice: 80.0
@@ -80,8 +73,26 @@ DocLayout {
         }
     }
 
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetRangeSlider {
+    firstValue: 20
+    secondValue: 80
+    from: 0
+    to: 100
+}`
+        reactCode: `import { RangeSlider } from '@chahu/cha-set';
+
+<RangeSlider value={[20, 80]} min={0} max={100} onValueChange={(val) => console.log(val)} />`
+    }
+
     ComponentPreview {
-        title: "Sizes & States Preview"
+        property string sectionId: "variants"
+        property string sectionTitle: "Sizes & States"
+        title: "Sizes & States"
         reactCode: `<RangeSlider size="default" defaultValue={[20, 80]} showTooltip />
 <RangeSlider size="sm" defaultValue={[30, 70]} showTooltip />
 <RangeSlider size="sm" defaultValue={[25, 75]} readOnly />
@@ -130,19 +141,10 @@ ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false 
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetRangeSlider { from: 0; to: 100; showTooltip: true }"
-        language: "qml"
-    }
-
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "RangeSlider"
         componentId: "range-slider"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "from", type: "real", default: "0.0", description: "Minimum bounds value of the slider." },
             { name: "to", type: "real", default: "100.0", description: "Maximum bounds value of the slider." },
             { name: "firstValue", type: "real", default: "20.0", description: "Value represented by the first thumb." },

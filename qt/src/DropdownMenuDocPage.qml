@@ -8,12 +8,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Dropdown Menu"
     description: "Displays a menu to the user triggered by a button with item groups, icons, shortcuts, and destructive actions."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "installation", title: "Installation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string lastAction: "None"
 
@@ -79,23 +73,42 @@ DocLayout {
         }
     }
 
-    KeyboardShortcutsTable {
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetDropdownMenu {
+    items: [
+        { id: "profile", label: "Profile", shortcut: "⌘P" },
+        { id: "settings", label: "Settings", shortcut: "⌘," }
+    ]
+}`
+        reactCode: `import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, Button } from '@chahu/cha-set';
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Options</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem onSelect={() => {}}>Profile</DropdownMenuItem>
+    <DropdownMenuItem onSelect={() => {}}>Settings</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`
+    }
+
+
+
+    ComponentReference {
+        name: "DropdownMenu"
         componentId: "dropdown-menu"
-    }
-
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetDropdownMenu { ... }"
-        language: "qml"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "open", type: "bool", default: "false", description: "Whether the menu popup is currently open." },
             { name: "items", type: "var[]", default: "[]", description: "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }." },
             { name: "menuWidth", type: "int", default: "180", description: "Width dimension of the popup menu panel." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the menu panel." }
+        ]
+    }
+}
         ]
     }
 }

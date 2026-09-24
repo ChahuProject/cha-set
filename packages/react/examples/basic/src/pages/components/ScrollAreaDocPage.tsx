@@ -11,6 +11,8 @@ const MATRIX_COLUMNS: TableColumn[] = [
   { key: 'hash', title: 'Commit', width: 100, code: true },
 ];
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from "../../components/DocAnatomy";
+import { ComponentReference } from "../../components/ComponentReference";
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { CHANGELOG_DATA, FEATURE_CARDS_DATA } from '../../data/showcaseData.generated';
@@ -119,16 +121,6 @@ export function ScrollAreaDocPage() {
       category="Surfaces & Layout"
       title="Scroll Area"
       description="Augments native scroll functionality with custom cross-browser styling, dynamic hot-zone expansion, and interactive stepper navigation buttons."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'horizontal-example', title: 'Horizontal Scrolling' },
-        { id: 'dual-axis', title: 'Dual-Axis (Both Axes)' },
-        { id: 'hotzone', title: 'Hot Zone & Dynamic Width' },
-        { id: 'steppers', title: 'Stepper Navigation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Preview Hero */}
       <section id="overview">
@@ -285,21 +277,19 @@ export function ScrollAreaDocPage() {
         </ComponentPreview>
       </section>
 
-      {/* 2. Installation */}
-      <section id="installation" className="my-8">
-        <h2 className="text-xl font-bold tracking-tight mb-3">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-        <p className="text-xs text-muted-foreground mt-2">Import components and styles:</p>
-        <CodeBlock
-          code={`import { ScrollArea, ScrollBar } from '@chahu/cha-set';\nimport '@chahu/cha-set/styles.css';`}
-          language="tsx"
-          className="mt-2"
-        />
-      </section>
+      {/* 2. Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ScrollArea } from "@chahu/cha-set";\n\n<ScrollArea className="h-48 w-full border rounded">\n  <div className="p-4">Scrollable content area...</div>\n</ScrollArea>`}
+        qtCode={`import ChaSet\n\nChaSetScrollArea {\n    width: 300\n    height: 200\n    contentWidth: 300\n    contentHeight: 600\n}`}
+      />
 
-      {/* 3. Horizontal Scrolling Example Card */}
-      <section id="horizontal-example" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">Horizontal Scrolling Example</h2>
+
+
+      {/* 2. Installation */}
+      {/* 3. Horizontal Example Card */}
+      <section id="horizontal-example" data-toc-title="Horizontal Example" className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-2">Horizontal Example</h2>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
           Hover over the bottom scrollbar to reveal the left and right stepper buttons.
         </p>
@@ -342,8 +332,8 @@ export function ScrollAreaDocPage() {
       </section>
 
       {/* 4. Dual-Axis Example */}
-      <section id="dual-axis" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">Dual-Axis (Both Axes with Corner)</h2>
+      <section id="dual-axis" data-toc-title="Dual-Axis" className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-2">Dual-Axis</h2>
         <p className="text-xs text-muted-foreground mb-4">
           When content exceeds both width and height, both scrollbars render with a synchronized corner piece.
         </p>
@@ -421,8 +411,8 @@ export const CrossStackSpecification = {
       </section>
 
       {/* 5. Hot Zone & Dynamic Width Feature */}
-      <section id="hotzone" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">Dual-Box Hot Zone & Dynamic Width</h2>
+      <section id="dual-box-hot-zone" data-toc-title="Dual-Box Hot Zone" className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-2">Dual-Box Hot Zone</h2>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
           Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces a compact{' '}
           <strong>0.5rem transparent interaction hot-zone</strong> paired with an animated visual indicator that expands
@@ -448,8 +438,8 @@ export const CrossStackSpecification = {
       </section>
 
       {/* 6. Stepper Navigation */}
-      <section id="steppers" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">Two-End Stepper Navigation</h2>
+      <section id="stepper-buttons" data-toc-title="Stepper Buttons" className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-2">Stepper Buttons</h2>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
           Hovering the scrollbar reveals two-end stepper action buttons:
         </p>
@@ -475,102 +465,92 @@ export const CrossStackSpecification = {
 
       {/* 7. API Reference */}
       
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="scroll-area" />
-      </section>
+            <ComponentReference
+        name="ScrollArea"
+        componentId="scroll-area"
+        props={[
+          {
+            name: "size",
+            type: "'default' | 'sm'",
+            default: "'default'",
+            description: "Scrollbar density and scale.",
+          },
+          {
+            name: "showVerticalScrollBar",
+            type: "boolean",
+            default: "true",
+            description: "Whether to render the vertical scrollbar.",
+          },
+          {
+            name: "showHorizontalScrollBar",
+            type: "boolean",
+            default: "false",
+            description: "Whether to render the horizontal scrollbar.",
+          },
+          {
+            name: "showButtons",
+            type: "boolean",
+            default: "true",
+            description: "Whether stepper navigation buttons appear on scrollbar hover.",
+          },
+          {
+            name: "pageStepRatio",
+            type: "number",
+            default: "0.85",
+            description: "Viewport dimension ratio used when clicking page-up/page-down.",
+          },
+          {
+            name: "smoothScroll",
+            type: "boolean",
+            default: "true",
+            description: "Whether stepper buttons use smooth scrolling behavior.",
+          },
+          {
+            name: "viewportClassName",
+            type: "string",
+            default: "undefined",
+            description: "Additional CSS classes for the internal scroll viewport element.",
+          },
+        ]}
+      />
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">Props Reference</h2>
-        <PropsTable
-          title="ScrollAreaProps"
-          props={[
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: 'Scrollbar density and scale.',
-            },
-            {
-              name: 'showVerticalScrollBar',
-              type: 'boolean',
-              default: 'true',
-              description: 'Whether to render the vertical scrollbar.',
-            },
-            {
-              name: 'showHorizontalScrollBar',
-              type: 'boolean',
-              default: 'false',
-              description: 'Whether to render the horizontal scrollbar.',
-            },
-            {
-              name: 'showButtons',
-              type: 'boolean',
-              default: 'true',
-              description: 'Whether stepper navigation buttons appear on scrollbar hover.',
-            },
-            {
-              name: 'pageStepRatio',
-              type: 'number',
-              default: '0.85',
-              description: 'Viewport dimension ratio used when clicking page-up/page-down.',
-            },
-            {
-              name: 'smoothScroll',
-              type: 'boolean',
-              default: 'true',
-              description: 'Whether stepper buttons use smooth scrolling behavior.',
-            },
-            {
-              name: 'viewportClassName',
-              type: 'string',
-              default: 'undefined',
-              description: 'Additional CSS classes for the internal scroll viewport element.',
-            },
-          ]}
-        />
-
-        <PropsTable
-          title="ScrollBarProps"
-          props={[
-            {
-              name: 'orientation',
-              type: "'vertical' | 'horizontal'",
-              default: "'vertical'",
-              description: 'Scrollbar orientation axis.',
-            },
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: 'Scrollbar density and scale.',
-            },
-            {
-              name: 'hitSize',
-              type: 'number | string',
-              default: '8',
-              description: 'Thickness of the transparent pointer-capture hot-zone.',
-            },
-            {
-              name: 'collapsedSize',
-              type: 'number | string',
-              default: '4',
-              description: 'Thickness of the visual indicator when idle.',
-            },
-            {
-              name: 'expandedSize',
-              type: 'number | string',
-              default: '8',
-              description: 'Thickness of the visual indicator when hovered.',
-            },
-          ]}
-        />
-      </section>
+      <ComponentReference
+        name="ScrollBar"
+        componentId="scroll-bar"
+        isSubComponent
+        props={[
+          {
+            name: "orientation",
+            type: "'vertical' | 'horizontal'",
+            default: "'vertical'",
+            description: "Scrollbar orientation axis.",
+          },
+          {
+            name: "size",
+            type: "'default' | 'sm'",
+            default: "'default'",
+            description: "Scrollbar density and scale.",
+          },
+          {
+            name: "hitSize",
+            type: "number | string",
+            default: "8",
+            description: "Thickness of the transparent pointer-capture hot-zone.",
+          },
+          {
+            name: "collapsedSize",
+            type: "number | string",
+            default: "4",
+            description: "Thickness of the visual indicator when idle.",
+          },
+          {
+            name: "expandedSize",
+            type: "number | string",
+            default: "8",
+            description: "Thickness of the visual indicator when hovered.",
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

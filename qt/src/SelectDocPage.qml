@@ -8,12 +8,6 @@ DocLayout {
     category: "Forms & Inputs"
     pageTitle: "Select"
     description: "Displays a list of options for the user to pick from — triggered by a button with chevron and checked indicators."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "installation", title: "Installation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string selectedFruit: "apple"
 
@@ -73,24 +67,41 @@ DocLayout {
         }
     }
 
-    KeyboardShortcutsTable {
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetSelect {
+    model: ["Apple", "Banana", "Orange"]
+    currentText: "Apple"
+}`
+        reactCode: `import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@chahu/cha-set';
+
+<Select defaultValue="apple">
+  <SelectTrigger className="w-48">
+    <SelectValue placeholder="Select fruit" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="apple">Apple</SelectItem>
+    <SelectItem value="banana">Banana</SelectItem>
+  </SelectContent>
+</Select>`
+    }
+
+
+
+    ComponentReference {
+        name: "Select"
         componentId: "select"
-    }
-
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSelect { ... }"
-        language: "qml"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "value", type: "string", default: "''", description: "The currently selected option value." },
             { name: "placeholder", type: "string", default: "'Select an option...'", description: "Placeholder label displayed when no value is chosen." },
             { name: "options", type: "var[]", default: "[]", description: "Array of selectable option objects: { value, label, disabled }." },
             { name: "disabled", type: "bool", default: "false", description: "Whether the select control is disabled." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the select trigger." }
+        ]
+    }
+}
         ]
     }
 }

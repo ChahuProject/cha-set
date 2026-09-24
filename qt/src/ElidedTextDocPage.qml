@@ -8,14 +8,6 @@ DocLayout {
     category: "Base Primitives"
     pageTitle: "Elided Text"
     description: "Smart text truncation with automatic overflow detection and contextual tooltip reveal."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "multiline", title: "Multi-Line Clamping" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int containerWidth: 240
     property bool alwaysShow: false
@@ -170,8 +162,29 @@ DocLayout {
     }
 
     // Footer Sections (Animations, Keyboard, Props)
-    DocFooterSections {
+        // Animations
+    Column {
         width: parent.width
+        spacing: ThemeTokens.dp(8)
+
+        DocText {
+            text: "Animations"
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
+            color: ThemeTokens.text
+        }
+
+        DocText {
+            text: "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
+    ComponentReference {
+        name: "ElidedText"
         componentId: "elided-text"
         propsModel: [
             { name: "text", type: "string", default: "''", description: "The string content to display and measure for overflow." },
@@ -184,5 +197,5 @@ DocLayout {
             { name: "copyable", type: "bool", default: "false", description: "Whether clicking the text copies it to clipboard with instant feedback." }
         ]
     }
+    }
 }
-

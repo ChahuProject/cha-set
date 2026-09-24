@@ -11,7 +11,7 @@ import {
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { DocFooterSections } from '../../components/DocFooterSections';
+import { ComponentReference } from "../../components/ComponentReference";
 import type { PropItem } from '../../components/PropsTable';
 
 export function TableOfContentsDocPage() {
@@ -101,13 +101,6 @@ export function TableOfContentsDocPage() {
       category="Surfaces & Layout"
       title="Table of Contents"
       description="Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Overview */}
       <section id="overview" className="space-y-4">
@@ -233,31 +226,33 @@ export function TableOfContentsDocPage() {
       />
 
       {/* 3. Footer Sections (Animations, Keyboard Navigation, Props Reference) */}
-      <DocFooterSections
+            {/* Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+            <li>
+              State changes (hover, press, focus) animate over{" "}
+              <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{" "}
+              <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+            </li>
+            <li>
+              Durations and easing resolve from theme tokens, so{" "}
+              <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{" "}
+              <code>ThemeTokens.animationsEnabled</code>).
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <ComponentReference
+        name="TableOfContents"
         componentId="table-of-contents"
-        animations={
-          <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">
-              The outline fades and slides in from the left, and the active marker is a single bar
-              that glides between rows rather than a per-row bar being swapped in place.
-            </p>
-            <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-              <li>
-                Entrance and marker travel both run over{' '}
-                <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with{' '}
-                <code className="text-xs bg-muted px-1 rounded">ease-standard</code>.
-              </li>
-              <li>
-                The marker reads its vertical position and height from the live DOM, so it stays
-                centered as interface scale changes font-relative row heights.
-              </li>
-              <li>
-                <code>prefers-reduced-motion</code> zeroes every duration automatically (Qt:{' '}
-                <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code>).
-              </li>
-            </ul>
-          </div>
-        }
         props={[
           {
             name: 'items',

@@ -19,9 +19,9 @@ import {
   CodeBlock,
 } from "@chahu/cha-set";
 import { DocLayout } from "../../layout/DocLayout";
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from "../../components/ComponentPreview";
-import { PropsTable } from "../../components/PropsTable";
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SidebarDocPage() {
   const [activeItem, setActiveItem] = useState("dashboard");
@@ -63,12 +63,6 @@ export function SidebarDocPage() {
       category="Surfaces & Layout"
       title="Sidebar"
       description="Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -197,29 +191,29 @@ export function SidebarDocPage() {
       </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-      
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="sidebar" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter } from '@chahu/cha-set';
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+<Sidebar>
+  <SidebarHeader>App Name</SidebarHeader>
+  <SidebarContent>Navigation items...</SidebarContent>
+  <SidebarFooter>User Profile</SidebarFooter>
+</Sidebar>`}
+        qtCode={`import ChaSet
+
+ChaSetSidebar {
+    width: 240
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="Sidebar"
+        componentId="sidebar"
+        props={[
           {
             name: "collapsible",
             type: "'offcanvas' | 'icon' | 'none'",
@@ -245,8 +239,7 @@ export function SidebarDocPage() {
             description: "Initial expanded state on SidebarProvider.",
           },
         ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

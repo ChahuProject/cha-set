@@ -8,14 +8,6 @@ DocLayout {
     category: "Forms & Inputs"
     pageTitle: "ColorPicker"
     description: "An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB)."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "states", title: "Examples & States" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -174,26 +166,7 @@ DocLayout {
         ]
     }
 
-    // Section 2: Installation
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Installation"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
-    }
-
-    // Section 3: Anatomy
+    // Section 2: Anatomy
     DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet\n\nChaSetColorPicker {\n    value: "#1d7ae0"\n    mode: "popover"\n    size: "default"\n    onColorChanged: accentColor = color\n}`
@@ -308,117 +281,101 @@ DocLayout {
         }
     }
 
-    // Section 5: Props Reference
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Props Reference"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        
-    KeyboardShortcutsTable {
+    // Section 4: Component Reference
+    ComponentReference {
+        name: "ColorPicker"
         componentId: "color-picker"
-    }
-
-    PropsTable {
-            width: parent.width
-            propsModel: [
-                {
-                    name: "value",
-                    type: "color",
-                    default: "\"#1d7ae0\"",
-                    description: "The selected color value."
-                },
-                {
-                    name: "hex",
-                    type: "string",
-                    default: "\"#1D7AE0\"",
-                    description: "The selected hex color string (e.g. #1D7AE0)."
-                },
-                {
-                    name: "mode",
-                    type: "\"inline\" | \"popover\"",
-                    default: "\"inline\"",
-                    description: "Display mode: inline panel card or popover swatch button."
-                },
-                {
-                    name: "size",
-                    type: "\"default\" | \"sm\"",
-                    default: "\"default\"",
-                    description: "Visual scale size for the picker and its controls."
-                },
-                {
-                    name: "disabled",
-                    type: "bool",
-                    default: "false",
-                    description: "Disables user interactions and applies muted opacity."
-                },
-                {
-                    name: "movable",
-                    type: "bool",
-                    default: "false",
-                    description: "Allows dragging blank background areas to reposition the component. Double-click resets offset."
-                },
-                {
-                    name: "showPreview",
-                    type: "bool",
-                    default: "true",
-                    description: "Whether to show the top preview header swatch and hex label."
-                },
-                {
-                    name: "showHex",
-                    type: "bool",
-                    default: "true",
-                    description: "Whether to display the editable HEX text input row."
-                },
-                {
-                    name: "showSwatches",
-                    type: "bool",
-                    default: "true",
-                    description: "Whether to display the quick preset color chips row."
-                },
-                {
-                    name: "presetColors",
-                    type: "var (string[])",
-                    default: "16 default colors",
-                    description: "Array of hex color strings displayed as preset swatches."
-                },
-                {
-                    name: "activePanel",
-                    type: "\"square\" | \"circle\" | \"triangle\" | \"swatches\"",
-                    default: "\"square\"",
-                    description: "Active color selector panel mode."
-                },
-                {
-                    name: "showRgbSliders",
-                    type: "bool",
-                    default: "true",
-                    description: "Whether RGB channel sliders and numeric inputs are visible."
-                },
-                {
-                    name: "showHsvSliders",
-                    type: "bool",
-                    default: "false",
-                    description: "Whether HSV channel sliders and numeric inputs are visible."
-                },
-                {
-                    name: "showCmykSliders",
-                    type: "bool",
-                    default: "false",
-                    description: "Whether CMYK channel sliders and numeric inputs are visible."
-                },
-                {
-                    name: "showLabSliders",
-                    type: "bool",
-                    default: "false",
-                    description: "Whether CIELAB channel sliders and numeric inputs are visible."
-                }
-            ]
-        }
+        propsModel: [
+            {
+                name: "value",
+                type: "color",
+                default: "\"#1d7ae0\"",
+                description: "The selected color value."
+            },
+            {
+                name: "hex",
+                type: "string",
+                default: "\"#1D7AE0\"",
+                description: "The selected hex color string (e.g. #1D7AE0)."
+            },
+            {
+                name: "mode",
+                type: "\"inline\" | \"popover\"",
+                default: "\"inline\"",
+                description: "Display mode: inline panel card or popover swatch button."
+            },
+            {
+                name: "size",
+                type: "\"default\" | \"sm\"",
+                default: "\"default\"",
+                description: "Visual scale size for the picker and its controls."
+            },
+            {
+                name: "disabled",
+                type: "bool",
+                default: "false",
+                description: "Disables user interactions and applies muted opacity."
+            },
+            {
+                name: "movable",
+                type: "bool",
+                default: "false",
+                description: "Allows dragging blank background areas to reposition the component. Double-click resets offset."
+            },
+            {
+                name: "showPreview",
+                type: "bool",
+                default: "true",
+                description: "Whether to show the top preview header swatch and hex label."
+            },
+            {
+                name: "showHex",
+                type: "bool",
+                default: "true",
+                description: "Whether to display the editable HEX text input row."
+            },
+            {
+                name: "showSwatches",
+                type: "bool",
+                default: "true",
+                description: "Whether to display the quick preset color chips row."
+            },
+            {
+                name: "presetColors",
+                type: "var (string[])",
+                default: "16 default colors",
+                description: "Array of hex color strings displayed as preset swatches."
+            },
+            {
+                name: "activePanel",
+                type: "\"square\" | \"circle\" | \"triangle\" | \"swatches\"",
+                default: "\"square\"",
+                description: "Active color selector panel mode."
+            },
+            {
+                name: "showRgbSliders",
+                type: "bool",
+                default: "true",
+                description: "Whether RGB channel sliders and numeric inputs are visible."
+            },
+            {
+                name: "showHsvSliders",
+                type: "bool",
+                default: "false",
+                description: "Whether HSV channel sliders and numeric inputs are visible."
+            },
+            {
+                name: "showCmykSliders",
+                type: "bool",
+                default: "false",
+                description: "Whether CMYK channel sliders and numeric inputs are visible."
+            },
+            {
+                name: "showLabSliders",
+                type: "bool",
+                default: "false",
+                description: "Whether CIELAB channel sliders and numeric inputs are visible."
+            }
+        ]
     }
 }

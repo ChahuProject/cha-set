@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Skeleton, Card, type SkeletonAnimation, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SkeletonDocPage() {
   const [animation, setAnimation] = useState<SkeletonAnimation>('pulse');
@@ -21,13 +21,6 @@ export function SkeletonDocPage() {
       category="Base Primitives"
       title="Skeleton"
       description="Used to show a placeholder while content is loading, with smooth CSS pulse and wave shimmer animations."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -87,12 +80,25 @@ export function SkeletonDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Skeleton } from '@chahu/cha-set';
+
+<div className="space-y-2">
+  <Skeleton className="h-4 w-48" />
+  <Skeleton className="h-4 w-32" />
+</div>`}
+        qtCode={`import ChaSet
+
+Column {
+    spacing: 8
+    ChaSetSkeleton { width: 192; height: 16 }
+    ChaSetSkeleton { width: 128; height: 16 }
+}`}
+      />
+
+
 
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -119,29 +125,16 @@ export function SkeletonDocPage() {
         </ul>
       </section>
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="skeleton" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="Skeleton"
+        componentId="skeleton"
+        props={[
             { name: 'animation', type: "'pulse' | 'wave' | 'none'", default: "'pulse'", description: 'Animation style for the placeholder loading effect.' },
             { name: 'rounded', type: "'none' | 'sm' | 'md' | 'lg' | 'full'", default: "'md'", description: 'Corner radius preset for the placeholder shape.' },
             { name: 'animate', type: 'boolean', default: 'true', description: 'Convenience boolean flag to toggle animation on or off.' },
             { name: 'className', type: 'string', default: "''", description: 'Custom CSS classes for height, width, and background styling.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Popover, PopoverTrigger, PopoverContent, Button, Input, Tabs, TabsList, TabsTrigger, Checkbox, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function PopoverDocPage() {
   const [side, setSide] = useState<'top' | 'bottom' | 'left' | 'right'>('bottom');
@@ -65,12 +65,6 @@ export function PopoverDocPage() {
       category="Overlays & Feedback"
       title="Popover"
       description="Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-{ id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -165,12 +159,27 @@ export function PopoverDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Popover, PopoverTrigger, PopoverContent, Button } from '@chahu/cha-set';
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open Popover</Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-64 p-3">
+    <p className="text-sm">Popover information panel.</p>
+  </PopoverContent>
+</Popover>`}
+        qtCode={`import ChaSet
+
+ChaSetPopover {
+    contentItem: DocText { text: "Popover information panel." }
+}`}
+      />
+
+
 
       {/* Examples & States */}
       <section id="examples" className="scroll-mt-20 my-10">
@@ -216,22 +225,10 @@ export function PopoverDocPage() {
         </div>
       </section>
       
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="popover" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="Popover"
+        componentId="popover"
+        props={[
             { name: 'open', type: 'boolean', default: 'undefined', description: 'Controlled open state.' },
             { name: 'defaultOpen', type: 'boolean', default: 'false', description: 'Default open state when uncontrolled.' },
             { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: 'Open state change handler.' },
@@ -244,8 +241,7 @@ export function PopoverDocPage() {
             { name: 'movable', type: 'boolean', default: 'false', description: 'Enables interactive drag repositioning via handle.' },
             { name: 'moveLabel', type: 'string', default: "'Drag to move'", description: 'Accessible label for the drag handle button.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

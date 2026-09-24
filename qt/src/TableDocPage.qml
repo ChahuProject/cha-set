@@ -8,14 +8,6 @@ DocLayout {
     category: "Composite Engines"
     pageTitle: "Table"
     description: "A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "states", title: "Examples & States" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -122,23 +114,6 @@ DocLayout {
         ]
     }
 
-    // Section 2: Installation
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Installation"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
     }
 
     // Section 3: Anatomy
@@ -225,26 +200,10 @@ DocLayout {
         }
     }
 
-    // Section 5: Props Reference
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Props Reference"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        
-    KeyboardShortcutsTable {
+        ComponentReference {
+        name: "Table"
         componentId: "table"
-    }
-
-    PropsTable {
-            width: parent.width
-            propsModel: [
+        propsModel: [
                 {
                     name: "columns",
                     type: "var (array)",
@@ -294,6 +253,6 @@ DocLayout {
                     description: "Border color for the table and row dividers."
                 }
             ]
-        }
     }
+}
 }

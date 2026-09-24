@@ -8,12 +8,6 @@ DocLayout {
     category: "Desktop & Virtualization"
     pageTitle: "Virtual Grid"
     description: "2D windowed grid virtualizer for high-performance visualization of massive visual card and thumbnail matrices."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     ComponentPreview {
         title: "Virtual Grid Sandbox"
@@ -131,19 +125,33 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetVirtualGrid { model: 1000; delegate: ... }"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetVirtualGrid {
+    width: parent.width
+    height: 400
+    rows: 1000
+    columns: 50
+    rowHeight: 32
+    columnWidth: 100
+}`
+        reactCode: `import { VirtualGrid } from '@chahu/cha-set';
+
+<VirtualGrid rowCount={1000} columnCount={50} rowHeight={32} columnWidth={100} />`
+    }
+
+
+
+    "
         language: "qml"
     }
 
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "VirtualGrid"
         componentId: "virtual-grid"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "model", type: "var", default: "null", description: "Number of grid items or data array." },
             { name: "cellWidth", type: "int", default: "160", description: "Width of each grid slot cell." },
             { name: "cellHeight", type: "int", default: "120", description: "Height of each grid slot cell." },
@@ -153,6 +161,9 @@ DocLayout {
             { name: "overscan", type: "int", default: "4", description: "Buffer rows rendered outside visible bounds." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the grid container." },
             { name: "scrollToIndex(index)", type: "function", default: "function", description: "Scrolls the virtual grid to the target card index." }
+        ]
+    }
+}
         ]
     }
 }

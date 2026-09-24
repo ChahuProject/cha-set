@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { KeybindingRecorder, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function KeybindingRecorderDocPage() {
   const [binding, setBinding] = useState('Ctrl+Shift+P');
@@ -19,13 +19,6 @@ export function KeybindingRecorderDocPage() {
       category="Forms & Inputs"
       title="Keybinding Recorder"
       description="Interactive keyboard sequence recorder that captures desktop accelerator combinations (Ctrl, Alt, Shift, Meta)."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'variants', title: 'Sizes & States' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -56,6 +49,22 @@ export function KeybindingRecorderDocPage() {
         </ComponentPreview>
       </section>
 
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { KeybindingRecorder } from '@chahu/cha-set';
+
+<KeybindingRecorder value="Ctrl+Shift+P" onChange={(k) => console.log(k)} />`}
+        qtCode={`import ChaSet
+
+ChaSetKeybindingRecorder {
+    keySequence: "Ctrl+Shift+P"
+    onKeySequenceChanged: (k) => console.log(k)
+}`}
+      />
+
+
+
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Sizes & States
@@ -69,7 +78,7 @@ export function KeybindingRecorderDocPage() {
 ChaSetKeybindingRecorder { value: "Ctrl+Shift+P"; size: "sm" }
 ChaSetKeybindingRecorder { value: "Alt+F4"; clearable: false }
 ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`}
-          title="Sizes & States Preview"
+          title="Sizes & States"
           reactCode={`<KeybindingRecorder value="Ctrl+K" size="default" />
 <KeybindingRecorder value="Ctrl+Shift+P" size="sm" />
 <KeybindingRecorder value="Alt+F4" clearable={false} />
@@ -96,29 +105,10 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`}
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="keybinding-recorder" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="KeybindingRecorder"
+        componentId="keybinding-recorder"
+        props={[
             { name: 'value', type: 'string | KeybindingValue', default: "''", description: 'Active key combination (string or structured object).' },
             { name: 'onValueChange', type: '(val: string | KeybindingValue) => void', default: 'undefined', description: 'Callback fired when new combination recorded.' },
             { name: 'onChange', type: '(value: KeybindingValue, str: string) => void', default: 'undefined', description: 'Dual callback receiving both structured object and string.' },
@@ -128,8 +118,7 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`}
             { name: 'placeholder', type: 'string', default: "'No keybinding set'", description: 'Placeholder when no shortcut is defined.' },
             { name: 'recordingText', type: 'string', default: "'Press key combination (Esc to cancel)...'", description: 'Prompt displayed during active recording.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

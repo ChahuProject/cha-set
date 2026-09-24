@@ -8,14 +8,6 @@ DocLayout {
     category: "Forms & Inputs"
     pageTitle: "Slider"
     description: "An interactive control that allows the user to select a numeric value along a track."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "states", title: "Examples & States" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -196,34 +188,17 @@ DocLayout {
         ]
     }
 
-    // Section 2: Installation
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Installation"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
-    }
-
-    // Section 3: Anatomy
+    // Section 2: Anatomy
     DocAnatomy {
+        sectionId: "anatomy"
         width: parent.width
         qtCode: `import ChaSet\n\nChaSetSlider {\n    value: 50\n    min: 0\n    max: 100\n    step: 1\n    showTooltip: true\n    onValueMoved: volume = value\n}`
         reactCode: `import { Slider } from '@chahu/cha-set';\n\n<Slider\n  value={volume}\n  min={0}\n  max={100}\n  step={1}\n  showTooltip\n  formatValue={(v) => v + '%'}\n  onValueChange={setVolume}\n/>`
     }
 
-    // Section 4: Examples & States
+    // Section 3: Examples & States
     Column {
+        property string sectionId: "states"
         width: parent.width
         spacing: 12
 
@@ -395,119 +370,94 @@ DocLayout {
         }
     }
 
-    // Section 5: Props Reference
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Keyboard Navigation"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        KeyboardShortcutsTable {
-            componentId: "slider"
-        }
-
-        Item { width: parent.width; height: 12 }
-
-        DocText {
-            text: "Props Reference"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        PropsTable {
-            width: parent.width
-            propsModel: [
-                {
-                    name: "value",
-                    type: "real",
-                    default: "0",
-                    description: "The numeric value of the slider."
-                },
-                {
-                    name: "min",
-                    type: "real",
-                    default: "0",
-                    description: "The minimum allowable value."
-                },
-                {
-                    name: "max",
-                    type: "real",
-                    default: "100",
-                    description: "The maximum allowable value."
-                },
-                {
-                    name: "step",
-                    type: "real",
-                    default: "1",
-                    description: "The stepping granularity interval."
-                },
-                {
-                    name: "size",
-                    type: "\"default\" | \"sm\"",
-                    default: "\"default\"",
-                    description: "The size scale of the slider track and thumb."
-                },
-                {
-                    name: "disabled",
-                    type: "bool",
-                    default: "false",
-                    description: "Disables user interactions and applies muted opacity."
-                },
-                {
-                    name: "readOnly",
-                    type: "bool",
-                    default: "false",
-                    description: "Locks value changes while keeping active full visual contrast."
-                },
-                {
-                    name: "showTooltip",
-                    type: "bool",
-                    default: "false",
-                    description: "Displays a floating value indicator tooltip badge on hover or active dragging."
-                },
-                {
-                    name: "formatValue",
-                    type: "var",
-                    default: "null",
-                    description: "Optional formatting function for the floating tooltip text."
-                },
-                {
-                    name: "showTicks",
-                    type: "bool",
-                    default: "false",
-                    description: "Renders tick marks at step intervals along the track."
-                },
-                {
-                    name: "marks",
-                    type: "var",
-                    default: "[]",
-                    description: "Optional array of text mark labels rendered along the track."
-                },
-                {
-                    name: "orientation",
-                    type: "\"horizontal\" | \"vertical\"",
-                    default: "\"horizontal\"",
-                    description: "Orientation of the slider track."
-                },
-                {
-                    name: "forceHover",
-                    type: "bool",
-                    default: "false",
-                    description: "Visual testing aid to force hover state."
-                },
-                {
-                    name: "forceFocus",
-                    type: "bool",
-                    default: "false",
-                    description: "Visual testing aid to force focus ring."
-                }
-            ]
-        }
+    ComponentReference {
+        name: "Slider"
+        componentId: "slider"
+        propsModel: [
+            {
+                name: "value",
+                type: "real",
+                defaultVal: "0",
+                description: "The numeric value of the slider."
+            },
+            {
+                name: "min",
+                type: "real",
+                defaultVal: "0",
+                description: "The minimum allowable value."
+            },
+            {
+                name: "max",
+                type: "real",
+                defaultVal: "100",
+                description: "The maximum allowable value."
+            },
+            {
+                name: "step",
+                type: "real",
+                defaultVal: "1",
+                description: "The stepping granularity interval."
+            },
+            {
+                name: "size",
+                type: "\"default\" | \"sm\"",
+                defaultVal: "\"default\"",
+                description: "The size scale of the slider track and thumb."
+            },
+            {
+                name: "disabled",
+                type: "bool",
+                defaultVal: "false",
+                description: "Disables user interactions and applies muted opacity."
+            },
+            {
+                name: "readOnly",
+                type: "bool",
+                defaultVal: "false",
+                description: "Locks value changes while keeping active full visual contrast."
+            },
+            {
+                name: "showTooltip",
+                type: "bool",
+                defaultVal: "false",
+                description: "Displays a floating value indicator tooltip badge on hover or active dragging."
+            },
+            {
+                name: "formatValue",
+                type: "var",
+                defaultVal: "null",
+                description: "Optional formatting function for the floating tooltip text."
+            },
+            {
+                name: "showTicks",
+                type: "bool",
+                defaultVal: "false",
+                description: "Renders tick marks at step intervals along the track."
+            },
+            {
+                name: "marks",
+                type: "var",
+                defaultVal: "[]",
+                description: "Optional array of text mark labels rendered along the track."
+            },
+            {
+                name: "orientation",
+                type: "\"horizontal\" | \"vertical\"",
+                defaultVal: "\"horizontal\"",
+                description: "Orientation of the slider track."
+            },
+            {
+                name: "forceHover",
+                type: "bool",
+                defaultVal: "false",
+                description: "Visual testing aid to force hover state."
+            },
+            {
+                name: "forceFocus",
+                type: "bool",
+                defaultVal: "false",
+                description: "Visual testing aid to force focus ring."
+            }
+        ]
     }
 }

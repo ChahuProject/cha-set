@@ -8,14 +8,6 @@ DocLayout {
     category: "Base Primitives"
     pageTitle: "Separator"
     description: "Visually or semantically separates content in a list or section."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "states", title: "Examples & States" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -443,8 +435,29 @@ DocLayout {
     }
 
     // Section 5: Footer Sections (Animations, Keyboard, Props)
-    DocFooterSections {
+        // Animations
+    Column {
         width: parent.width
+        spacing: ThemeTokens.dp(8)
+
+        DocText {
+            text: "Animations"
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
+            color: ThemeTokens.text
+        }
+
+        DocText {
+            text: "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
+    ComponentReference {
+        name: "Separator"
         componentId: "separator"
         propsModel: [
             {
@@ -484,5 +497,6 @@ DocLayout {
                 description: "Optional explicit override color for the divider line (defaults to ThemeTokens.border)."
             }
         ]
+    }
     }
 }

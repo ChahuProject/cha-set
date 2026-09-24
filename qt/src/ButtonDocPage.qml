@@ -8,17 +8,6 @@ DocLayout {
     category: "Base Primitives"
     pageTitle: "Button"
     description: "Displays a button or a component that looks like a button with multiple variants, sizes, and states."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "examples", title: "Examples" },
-        { id: "variants", title: "Variants" },
-        { id: "sizes", title: "Sizes" },
-        { id: "states", title: "States" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string btnVariant: "default"
     property string btnSize: "default"
@@ -168,7 +157,7 @@ DocLayout {
         width: parent.width
         spacing: ThemeTokens.dp(20)
 
-        DocText { text: "Examples"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        DocText { text: "Examples & States"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
         // Variants Example
         Column {
@@ -270,8 +259,29 @@ DocLayout {
     }
 
     // 4. Footer Sections (Animations, Keyboard, Props)
-    DocFooterSections {
+        // Animations
+    Column {
         width: parent.width
+        spacing: ThemeTokens.dp(8)
+
+        DocText {
+            text: "Animations"
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
+            color: ThemeTokens.text
+        }
+
+        DocText {
+            text: "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
+    ComponentReference {
+        name: "Button"
         componentId: "button"
         propsModel: [
             ["variant", "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", "'default'", "Visual appearance and semantic intent."],
@@ -285,5 +295,6 @@ DocLayout {
             ["iconPosition", "string", "\"left\"", "Placement of iconSource: left or right."],
             ["text", "string", "\"\"", "Button label text content."]
         ]
+    }
     }
 }

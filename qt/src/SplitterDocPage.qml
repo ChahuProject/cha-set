@@ -8,14 +8,6 @@ DocLayout {
     category: "Surfaces & Layout"
     pageTitle: "Splitter"
     description: "Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits."
-    tocItems: [
-        { id: "overview", title: "Horizontal Splitter" },
-        { id: "vertical", title: "Vertical Splitter" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     ComponentPreview {
         title: "Horizontal Splitter Sandbox"
@@ -152,8 +144,30 @@ DocLayout {
         }
     }
 
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetSplitter {
+    width: parent.width
+    height: 300
+    orientation: Qt.Horizontal
+    splitRatio: 0.3
+}`
+        reactCode: `import { Splitter } from '@chahu/cha-set';
+
+<Splitter orientation="horizontal" defaultSplit={0.3}>
+  <div>Left Pane</div>
+  <div>Right Pane</div>
+</Splitter>`
+    }
+
+
+
     ComponentPreview {
-        title: "Vertical Splitter Sandbox"
+        property string sectionId: "vertical"
+        property string sectionTitle: "Vertical Splitter"
+        title: "Vertical Splitter"
         reactCode: `<div className="flex flex-col h-64 border rounded-md">
   <div style={{ height: \`\${verticalSize}%\` }} className="p-4 text-xs">
     Top Pane (Editor Canvas)
@@ -288,14 +302,9 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSplitter {\n    orientation: \"vertical\"\n    initialSize: 35\n}"
-        language: "qml"
-    }
-
     // Animations Section
     Column {
+        property string sectionId: "animations"
         width: parent.width
         spacing: 12
 
@@ -337,13 +346,10 @@ DocLayout {
         }
     }
 
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "Splitter"
         componentId: "splitter"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "orientation", type: "string", default: "'vertical'", description: "Divider orientation: 'vertical' (separates left/right panes) or 'horizontal' (separates top/bottom panes)." },
             { name: "size", type: "real", default: "50", description: "Controlled percentage width/height (0-100)." },
             { name: "initialSize", type: "int", default: "50", description: "Initial size percentage for default layout distribution." },

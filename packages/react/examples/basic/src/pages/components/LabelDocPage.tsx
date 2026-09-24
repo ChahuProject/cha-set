@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Label, type LabelSize, Input, Checkbox, Tabs, TabsList, TabsTrigger, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function LabelDocPage() {
   const [size, setSize] = useState<LabelSize>('default');
@@ -54,14 +54,6 @@ export function LabelDocPage() {
       category="Base Primitives"
       title="Label"
       description="Renders an accessible label associated with form controls."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'sizes', title: 'Sizes' },
-        { id: 'states', title: 'States' },
-{ id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
@@ -141,14 +133,22 @@ export function LabelDocPage() {
         </ComponentPreview>
       </section>
 
-      {/* 2. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Label } from '@chahu/cha-set';
 
+<Label htmlFor="email">Email Address</Label>`}
+        qtCode={`import ChaSet
+
+ChaSetLabel {
+    text: "Email Address"
+}`}
+      />
+
+
+
+      {/* 2. Installation */}
       {/* 3. Sizes */}
       <section id="sizes" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -269,22 +269,10 @@ export function LabelDocPage() {
       </section>
 
       {/* 6. Props Reference */}
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="label" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="Label"
+        componentId="label"
+        props={[
             {
               name: 'size',
               type: "'default' | 'sm'",
@@ -340,8 +328,7 @@ export function LabelDocPage() {
               description: 'Additional custom CSS classes.',
             },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

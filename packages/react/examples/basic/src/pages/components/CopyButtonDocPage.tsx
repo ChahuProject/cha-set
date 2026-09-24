@@ -1,9 +1,9 @@
 import React from 'react';
 import { CopyButton, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function CopyButtonDocPage() {
   const reactCode = `<div className="flex items-center gap-4">
@@ -16,12 +16,6 @@ export function CopyButtonDocPage() {
       category="Base Primitives"
       title="Copy Button"
       description="One-click clipboard copy button with transient success checkmark feedback and customizable timeout."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -41,30 +35,27 @@ export function CopyButtonDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { CopyButton } from '@chahu/cha-set';
 
-      
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="copy-button" />
-      </section>
+<CopyButton text="pnpm add @chahu/cha-set" label="Copy Command" />`}
+        qtCode={`import ChaSet
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+ChaSetCopyButton {
+    text: "pnpm add @chahu/cha-set"
+    label: "Copy Command"
+    onCopiedToClipboard: (txt) => console.log("Copied:", txt)
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="CopyButton"
+        componentId="copy-button"
+        props={[
             { name: 'text', type: 'string | (() => string | Promise<string>)', default: "''", description: 'Text string written to clipboard on click.' },
             { name: 'label', type: 'string', default: "''", description: 'Optional companion label alongside the icon.' },
             { name: 'copiedLabel', type: 'string', default: "'Copied!'", description: 'Label text displayed after successful copy.' },
@@ -73,8 +64,7 @@ export function CopyButtonDocPage() {
             { name: 'size', type: "'icon-xs' | 'icon-sm' | 'sm' | 'default'", default: "label ? 'sm' : 'icon-xs'", description: 'Button sizing preset.' },
             { name: 'onCopy', type: '(copiedText: string) => void', default: 'undefined', description: 'Callback fired when text is copied.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

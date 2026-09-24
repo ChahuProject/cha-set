@@ -223,6 +223,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/PropsTable.qml
             src/KeyboardShortcutsTable.qml
             src/ComponentPreview.qml
+            src/ComponentReference.qml
             src/IntroductionPage.qml
             src/TokensPage.qml
             src/ThemeTunerPage.qml

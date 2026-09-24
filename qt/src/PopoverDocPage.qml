@@ -8,12 +8,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Popover"
     description: "Displays rich interactive content in a floating portal anchored to a trigger button."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int layerWidth: 100
     property int layerHeight: 200
@@ -195,20 +189,108 @@ DocLayout {
         ]
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetPopover { ... }"
-        language: "qml"
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetPopover {
+    contentItem: DocText { text: "Popover information panel." }
+}`
+        reactCode: `import { Popover, PopoverTrigger, PopoverContent, Button } from '@chahu/cha-set';
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open Popover</Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-64 p-3">
+    <p className="text-sm">Popover information panel.</p>
+  </PopoverContent>
+</Popover>`
     }
 
-    
-    KeyboardShortcutsTable {
+    // Section: Examples & States
+    Column {
+        property string sectionId: "states"
+        width: parent.width
+        spacing: ThemeTokens.dp(12)
+
+        DocText {
+            text: "Examples & States"
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+            color: ThemeTokens.text
+        }
+
+        DocText {
+            text: "Common interactive configurations including directional arrows and draggable repositioning."
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+        }
+
+        Grid {
+            width: parent.width
+            columns: 2
+            spacing: ThemeTokens.dp(16)
+
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
+                    DocText { text: "With Directional Arrow"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: "Anchored triangle indicator pointed directly at the trigger"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    ChaSetButton {
+                        text: "Arrow Popover"
+                        variant: "secondary"
+                        size: "sm"
+                        onClicked: arrowPop.open = !arrowPop.open
+                        ChaSetPopover {
+                            id: arrowPop
+                            arrow: true
+                            side: "top"
+                            popoverWidth: 220
+                            popoverHeight: 80
+                            DocText { anchors.centerIn: parent; text: "Anchored pointer triangle."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                        }
+                    }
+                }
+            }
+
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: ThemeTokens.dp(8)
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
+                    DocText { text: "Movable Drag Handle"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: "Interactive drag header to freely reposition the popover layer"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    ChaSetButton {
+                        text: "Movable Popover"
+                        variant: "secondary"
+                        size: "sm"
+                        onClicked: movePop.open = !movePop.open
+                        ChaSetPopover {
+                            id: movePop
+                            movable: true
+                            side: "bottom"
+                            popoverWidth: 220
+                            popoverHeight: 80
+                            DocText { anchors.centerIn: parent; text: "Drag top grip bar to move."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ComponentReference {
+        name: "Popover"
         componentId: "popover"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "open", type: "bool", default: "false", description: "Whether the popover is currently visible." },
             { name: "side", type: "string", default: "'bottom'", description: "Placement anchor side: 'top' | 'bottom' | 'left' | 'right'." },
             { name: "align", type: "string", default: "'start'", description: "Alignment along the anchor edge: 'start' | 'center' | 'end'." },

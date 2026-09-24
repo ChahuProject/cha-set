@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ScaleOsd, Card, CodeBlock, Button } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function ScaleOsdDocPage() {
   const [scale, setScale] = useState(1.0);
@@ -24,13 +24,6 @@ export function ScaleOsdDocPage() {
       category="Overlays & Feedback"
       title="Scale OSD"
       description="Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
@@ -118,10 +111,20 @@ export function ScaleOsdDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ScaleOsd } from '@chahu/cha-set';
+
+<ScaleOsd scale={100} onZoomIn={() => {}} onZoomOut={() => {}} onReset={() => {}} />`}
+        qtCode={`import ChaSet
+
+ChaSetScaleOsd {
+    scale: 100
+}`}
+      />
+
+
 
       <section id="animations" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Animations</h2>

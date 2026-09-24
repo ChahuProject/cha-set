@@ -8,13 +8,6 @@ DocLayout {
     category: "Forms & Inputs"
     pageTitle: "Keybinding Recorder"
     description: "Interactive keyboard accelerator recorder that captures modifier sequences (Ctrl, Shift, Alt, Cmd) and hotkeys for desktop applications."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "variants", title: "Sizes & States" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string boundKey: "Ctrl+Shift+P"
     property string compactKey: "Ctrl+K"
@@ -66,8 +59,24 @@ DocLayout {
         }
     }
 
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetKeybindingRecorder {
+    keySequence: "Ctrl+Shift+P"
+    onKeySequenceChanged: (k) => console.log(k)
+}`
+        reactCode: `import { KeybindingRecorder } from '@chahu/cha-set';
+
+<KeybindingRecorder value="Ctrl+Shift+P" onChange={(k) => console.log(k)} />`
+    }
+
     ComponentPreview {
-        title: "Sizes & States Preview"
+        property string sectionId: "variants"
+        property string sectionTitle: "Sizes & States"
+        title: "Sizes & States"
         reactCode: `<KeybindingRecorder value="Ctrl+K" size="default" />
 <KeybindingRecorder value="Ctrl+Shift+P" size="sm" />
 <KeybindingRecorder value="Alt+F4" clearable={false} />
@@ -116,19 +125,10 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetKeybindingRecorder {\n    value: \"Ctrl+S\"\n    clearable: true\n}"
-        language: "qml"
-    }
-
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "KeybindingRecorder"
         componentId: "keybinding-recorder"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "value", type: "string", default: "'Ctrl+K'", description: "The serialized shortcut string representation (e.g. 'Ctrl+Shift+P')." },
             { name: "keybinding", type: "string", default: "'Ctrl+K'", description: "Alias for value." },
             { name: "size", type: "'default' | 'sm'", default: "'default'", description: "Size preset variant for regular or compact density." },

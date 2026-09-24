@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { AddressBar, Card, CodeBlock, Button } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function AddressBarDocPage() {
   const [currentPath, setCurrentPath] = useState('C:/Users/Development/Projects/cha-set');
@@ -70,13 +70,6 @@ export function AddressBarDocPage() {
       category="Composite Engines"
       title="Address Bar"
       description="Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
@@ -148,10 +141,29 @@ export function AddressBarDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { AddressBar } from '@chahu/cha-set';
+
+<AddressBar
+  path="/home/project"
+  canGoBack={false}
+  canGoForward={false}
+  onNavigate={(path) => console.log(path)}
+/>`}
+        qtCode={`import ChaSet
+
+ChaSetAddressBar {
+    width: parent.width
+    path: "/home/project"
+    canGoBack: false
+    canGoForward: false
+    onNavigateRequested: (path) => console.log(path)
+}`}
+      />
+
+
 
       <section id="animations" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Animations</h2>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { SegmentedControl, Card, Button, Checkbox, CodeBlock, GridIcon, ListIcon, TableIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SegmentedControlDocPage() {
   const [selectedSize, setSelectedSize] = useState<'sm' | 'default' | 'lg'>('default');
@@ -51,15 +51,6 @@ export function SegmentedControlDocPage() {
       category="Forms & Inputs"
       title="Segmented Control"
       description="A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'sizes', title: 'Sizes' },
-        { id: 'fixed-width', title: 'Fixed Width & Truncation' },
-        { id: 'menu', title: 'Menu & Inline Title' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-{ id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
@@ -106,12 +97,30 @@ export function SegmentedControlDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { SegmentedControl } from '@chahu/cha-set';
 
-      <section id="sizes" className="space-y-4 pt-6">
+<SegmentedControl
+  options={[
+    { label: 'Day', value: 'day' },
+    { label: 'Week', value: 'week' },
+  ]}
+  value="day"
+  onValueChange={(v) => console.log(v)}
+/>`}
+        qtCode={`import ChaSet
+
+ChaSetSegmentedControl {
+    model: ["Day", "Week", "Month"]
+    currentIndex: 0
+}`}
+      />
+
+
+
+      <section id="sizes-badges" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Sizes & Badges</h2>
         <Card className="p-6 space-y-6">
           <div className="space-y-2">
@@ -129,8 +138,8 @@ export function SegmentedControlDocPage() {
         </Card>
       </section>
 
-      <section id="fixed-width" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Content-Adaptive & Fixed Width with Ellipsis</h2>
+      <section id="fixed-width-truncation" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Fixed Width & Truncation</h2>
         <p className="text-sm text-muted-foreground">
           By default, segments auto-adapt to their content length. When <code>equalWidth</code>, <code>fullWidth</code>, or <code>itemWidth</code> is configured, segments enforce equal or fixed dimensions and truncate overflowing text with an ellipsis.
         </p>
@@ -161,7 +170,7 @@ export function SegmentedControlDocPage() {
         </Card>
       </section>
 
-      <section id="menu" className="space-y-4 pt-6">
+      <section id="menu-inline-title" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Menu & Inline Title</h2>
         <p className="text-sm text-muted-foreground">
           Supports an optional prefix title to seamlessly embed within context menu rows and parameter settings panels.
@@ -176,90 +185,76 @@ export function SegmentedControlDocPage() {
         </Card>
       </section>
 
-      <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard Navigation</h2>
-        <KeyboardShortcutsTable componentId="segmented-control" />
-      </section>
-
-      <section id="code" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Implementation Code</h2>
-        <div className="space-y-4">
-          <CodeBlock language="tsx" code={heroReactCode} />
-          <CodeBlock language="qml" code={heroQtCode} />
-        </div>
-      </section>
-
-      <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
-        <PropsTable
-          items={[
-            {
-              name: 'options',
-              type: 'SegmentedControlOption[]',
-              required: true,
-              description: 'Array of option objects ({ label, value, icon?, badge?, disabled? }).',
-            },
-            {
-              name: 'value',
-              type: 'string | number',
-              required: false,
-              description: 'Controlled active value.',
-            },
-            {
-              name: 'defaultValue',
-              type: 'string | number',
-              required: false,
-              description: 'Initial value when uncontrolled.',
-            },
-            {
-              name: 'onValueChange',
-              type: '(value: string | number) => void',
-              required: false,
-              description: 'Callback invoked when a new segment is selected.',
-            },
-            {
-              name: 'size',
-              type: "'sm' | 'default' | 'lg'",
-              default: "'default'",
-              required: false,
-              description: "Physical dimension variant ('sm', 'default', 'lg').",
-            },
-            {
-              name: 'title',
-              type: 'string',
-              required: false,
-              description: 'Optional prefix label displayed before the segments.',
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              required: false,
-              description: 'Whether the entire segmented control is disabled.',
-            },
-            {
-              name: 'fullWidth',
-              type: 'boolean',
-              default: 'false',
-              required: false,
-              description: 'Whether segments expand equally to fill the parent container.',
-            },
-            {
-              name: 'equalWidth',
-              type: 'boolean',
-              default: 'false',
-              required: false,
-              description: 'Whether all segments share an identical fixed width while hugging content.',
-            },
-            {
-              name: 'itemWidth',
-              type: 'number',
-              required: false,
-              description: 'Explicit fixed width allocated to each segment option.',
-            },
-          ]}
-        />
-      </section>
+      <ComponentReference
+        name="SegmentedControl"
+        componentId="segmented-control"
+        props={[
+          {
+            name: 'options',
+            type: 'SegmentedControlOption[]',
+            required: true,
+            description: 'Array of option objects ({ label, value, icon?, badge?, disabled? }).',
+          },
+          {
+            name: 'value',
+            type: 'string | number',
+            required: false,
+            description: 'Controlled active value.',
+          },
+          {
+            name: 'defaultValue',
+            type: 'string | number',
+            required: false,
+            description: 'Initial value when uncontrolled.',
+          },
+          {
+            name: 'onValueChange',
+            type: '(value: string | number) => void',
+            required: false,
+            description: 'Callback invoked when a new segment is selected.',
+          },
+          {
+            name: 'size',
+            type: "'sm' | 'default' | 'lg'",
+            default: "'default'",
+            required: false,
+            description: "Physical dimension variant ('sm', 'default', 'lg').",
+          },
+          {
+            name: 'title',
+            type: 'string',
+            required: false,
+            description: 'Optional prefix label displayed before the segments.',
+          },
+          {
+            name: 'disabled',
+            type: 'boolean',
+            default: 'false',
+            required: false,
+            description: 'Whether the entire segmented control is disabled.',
+          },
+          {
+            name: 'fullWidth',
+            type: 'boolean',
+            default: 'false',
+            required: false,
+            description: 'Whether segments expand equally to fill the parent container.',
+          },
+          {
+            name: 'equalWidth',
+            type: 'boolean',
+            default: 'false',
+            required: false,
+            description: 'Whether all segments share an identical fixed width while hugging content.',
+          },
+          {
+            name: 'itemWidth',
+            type: 'number',
+            required: false,
+            description: 'Explicit fixed width allocated to each segment option.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

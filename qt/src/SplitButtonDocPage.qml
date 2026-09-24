@@ -8,13 +8,6 @@ DocLayout {
     category: "Base Primitives"
     pageTitle: "Split Button"
     description: "Combines a primary direct action button with an adjoining chevron menu trigger for secondary options."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string lastTriggered: "None"
 
@@ -81,8 +74,29 @@ DocLayout {
         reactCode: "import { SplitButton } from '@chahu/cha-set';\n\n<SplitButton\n  text=\"Deploy\"\n  variant=\"default\"\n  menuItems={[{ label: 'Deploy to Staging', onSelect: () => {} }]}\n/>"
     }
 
-    DocFooterSections {
+        // Animations
+    Column {
         width: parent.width
+        spacing: ThemeTokens.dp(8)
+
+        DocText {
+            text: "Animations"
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
+            color: ThemeTokens.text
+        }
+
+        DocText {
+            text: "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
+    ComponentReference {
+        name: "SplitButton"
         componentId: "split-button"
         propsModel: [
             { name: "text", type: "string", default: "'Action'", description: "Label text for the primary button." },
@@ -91,5 +105,6 @@ DocLayout {
             { name: "menuItems", type: "var[]", default: "[]", description: "List of secondary options for the dropdown popup." },
             { name: "disabled", type: "bool", default: "false", description: "Whether the split button is disabled." }
         ]
+    }
     }
 }

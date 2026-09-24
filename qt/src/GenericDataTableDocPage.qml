@@ -8,12 +8,6 @@ DocLayout {
     category: "Composite Engines"
     pageTitle: "Generic Data Table"
     description: "Enterprise data table with column header sorting, live search filter querying, responsive row virtualization, and paginated navigation."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     ComponentPreview {
         title: "Generic Data Table Sandbox"
@@ -66,24 +60,39 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetGenericDataTable { columns: [...]; rows: [...] }"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetGenericDataTable {
+    width: ThemeTokens.dp(480)
+    height: ThemeTokens.dp(280)
+    columns: columns
+    pageSize: 10
+}`
+        reactCode: `import { GenericDataTable } from '@chahu/cha-set';
+
+<GenericDataTable data={data} columns={columns} pageSize={10} />`
+    }
+
+
+
+    "
         language: "qml"
     }
 
     
-    KeyboardShortcutsTable {
-        componentId: "generic-data-table"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+    ComponentReference {
+        name: "DataTable"
+        componentId: "data-table"
+        propsModel: [
             { name: "columns", type: "var[]", default: "[]", description: "Array of column specifications: { key, header, width }." },
             { name: "rows", type: "var[]", default: "[]", description: "Array of arbitrary records to display (alias: tableData)." },
             { name: "pageSize", type: "int", default: "5", description: "Number of rows per page." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the table border frame." }
+        ]
+    }
+}
         ]
     }
 }

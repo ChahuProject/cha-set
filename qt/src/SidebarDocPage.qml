@@ -8,12 +8,6 @@ DocLayout {
     category: "Surfaces & Layout"
     pageTitle: "Sidebar"
     description: "Composable, responsive and resizable desktop-grade sidebar navigation system supporting expanded, icon collapsed, and offcanvas modes."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property bool demoCollapsed: false
     property string demoVariant: "sidebar"
@@ -270,20 +264,33 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSidebar {\n    sidebarWidth: 256\n    collapsible: \"icon\"\n    // content...\n}"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetSidebar {
+    width: 240
+}`
+        reactCode: `import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter } from '@chahu/cha-set';
+
+<Sidebar>
+  <SidebarHeader>App Name</SidebarHeader>
+  <SidebarContent>Navigation items...</SidebarContent>
+  <SidebarFooter>User Profile</SidebarFooter>
+</Sidebar>`
+    }
+
+
+
+    "
         language: "qml"
     }
 
     
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "Sidebar"
         componentId: "sidebar"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "sidebarWidth", type: "int", default: "256", description: "Expanded width of the sidebar bound." },
             { name: "minWidth", type: "int", default: "160", description: "Minimum draggable width limit." },
             { name: "maxWidth", type: "int", default: "400", description: "Maximum draggable width limit." },
@@ -293,6 +300,9 @@ DocLayout {
             { name: "variant", type: "string", default: "'sidebar'", description: "Visual container variant: 'sidebar' | 'floating' | 'inset'." },
             { name: "collapsible", type: "string", default: "'icon'", description: "Collapse strategy: 'offcanvas' | 'icon' | 'none'." },
             { name: "resizable", type: "bool", default: "true", description: "Enables interactive edge dragging rail for dynamic resizing." }
+        ]
+    }
+}
         ]
     }
 }

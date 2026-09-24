@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, Tabs, TabsList, TabsTrigger, type CollapsibleVariant, CodeBlock, LockIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function CollapsibleDocPage() {
   const [open, setOpen] = useState(false);
@@ -80,14 +80,6 @@ export function CollapsibleDocPage() {
       category="Surfaces & Layout"
       title="Collapsible"
       description="An interactive component which expands and collapses a panel of content."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'default-open', title: 'Default Open' },
-        { id: 'disabled', title: 'Disabled State' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
@@ -168,14 +160,31 @@ export function CollapsibleDocPage() {
         </ComponentPreview>
       </section>
 
-      {/* 2. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button } from '@chahu/cha-set';
 
+<Collapsible>
+  <CollapsibleTrigger asChild>
+    <Button variant="ghost">Toggle Details</Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent>
+    <div className="p-3 bg-muted rounded">Collapsible content panel</div>
+  </CollapsibleContent>
+</Collapsible>`}
+        qtCode={`import ChaSet
+
+ChaSetCollapsible {
+    width: 280
+    title: "Toggle Details"
+    open: false
+}`}
+      />
+
+
+
+      {/* 2. Installation */}
       {/* 3. Default Open */}
       <section id="default-open" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -234,23 +243,10 @@ export function CollapsibleDocPage() {
 
       {/* 5. Props Reference */}
       
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="collapsible" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <h3 className="text-base font-medium text-foreground mb-2">Collapsible</h3>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="Collapsible"
+        componentId="collapsible"
+        props={[
             {
               name: 'open',
               type: 'boolean',
@@ -288,44 +284,7 @@ export function CollapsibleDocPage() {
               description: 'Additional custom CSS classes.',
             },
           ]}
-        />
-
-        <h3 className="text-base font-medium text-foreground mt-6 mb-2">CollapsibleTrigger</h3>
-        <PropsTable
-          props={[
-            {
-              name: 'asChild',
-              type: 'boolean',
-              default: 'false',
-              description: 'Merges trigger props onto its immediate child element.',
-            },
-            {
-              name: 'render',
-              type: 'ReactElement | ((props, state) => ReactElement)',
-              default: 'undefined',
-              description: 'Custom element or render function to replace default button.',
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: 'Additional custom CSS classes.',
-            },
-          ]}
-        />
-
-        <h3 className="text-base font-medium text-foreground mt-6 mb-2">CollapsibleContent</h3>
-        <PropsTable
-          props={[
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: 'Additional custom CSS classes for the expandable container.',
-            },
-          ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

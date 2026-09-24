@@ -8,14 +8,6 @@ DocLayout {
     category: "Surfaces & Layout"
     pageTitle: "Collapsible"
     description: "An interactive component which expands and collapses a panel of content."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "default-open", title: "Default Open" },
-        { id: "disabled", title: "Disabled State" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -138,20 +130,31 @@ DocLayout {
         ]
     }
 
-    // Section 2: Installation
-    Column {
-        width: parent.width
-        spacing: 8
-        DocText { text: "Installation"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
+    // Section 2: Anatomy
+    DocAnatomy {
+        sectionId: "anatomy"
+        reactCode: `import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button } from '@chahu/cha-set';
+
+<Collapsible>
+  <CollapsibleTrigger asChild>
+    <Button variant="ghost">Toggle Details</Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent>
+    <div className="p-3 bg-muted rounded">Collapsible content panel</div>
+  </CollapsibleContent>
+</Collapsible>`
+        qtCode: `import ChaSet
+
+ChaSetCollapsible {
+    width: 280
+    title: "Toggle Details"
+    open: false
+}`
     }
 
     // Section 3: Default Open
     Column {
+        property string sectionId: "default-open"
         width: parent.width
         spacing: 8
         DocText { text: "Default Open"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
@@ -200,6 +203,7 @@ DocLayout {
 
     // Section 4: Disabled State
     Column {
+        property string sectionId: "disabled"
         width: parent.width
         spacing: 8
         DocText { text: "Disabled State"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
@@ -225,26 +229,16 @@ DocLayout {
     }
 
     // Section 5: Props Reference
-    Column {
-        width: parent.width
-        spacing: 8
-        DocText { text: "Props Reference"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-
-        
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "Collapsible"
         componentId: "collapsible"
-    }
-
-    PropsTable {
-            width: parent.width
-            propsModel: [
-                { name: "open", type: "bool", defaultValue: "false", desc: "Whether the collapsible content is currently expanded." },
-                { name: "defaultOpen", type: "bool", defaultValue: "false", desc: "Whether the collapsible is initially expanded on load." },
-                { name: "disabled", type: "bool", defaultValue: "false", desc: "Whether user interaction and toggling are disabled." },
-                { name: "variant", type: "string", defaultValue: "'default'", desc: "Visual container styling variant: 'default' | 'card' | 'ghost'." },
-                { name: "title", type: "string", defaultValue: "''", desc: "Title text displayed in the header trigger bar." },
-                { name: "customRadius", type: "int", defaultValue: "6", desc: "Corner radius of the header and container." }
-            ]
-        }
+        props: [
+            { name: "open", type: "bool", defaultValue: "false", description: "Whether the collapsible content is currently expanded." },
+            { name: "defaultOpen", type: "bool", defaultValue: "false", description: "Whether the collapsible is initially expanded on load." },
+            { name: "disabled", type: "bool", defaultValue: "false", description: "Whether user interaction and toggling are disabled." },
+            { name: "variant", type: "string", defaultValue: "'default'", description: "Visual container styling variant: 'default' | 'card' | 'ghost'." },
+            { name: "title", type: "string", defaultValue: "''", description: "Title text displayed in the header trigger bar." },
+            { name: "customRadius", type: "int", defaultValue: "6", description: "Corner radius of the header and container." }
+        ]
     }
 }

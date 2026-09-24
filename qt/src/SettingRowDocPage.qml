@@ -8,13 +8,6 @@ DocLayout {
     category: "Surfaces & Layout"
     pageTitle: "Setting Row"
     description: "Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "anchor", title: "Anchor Jump & Flash" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property bool hwAccel: true
     property string activeHighlightTarget: ""
@@ -30,14 +23,7 @@ DocLayout {
         resetTimer.restart();
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: `import ChaSet 1.0
-
-ChaSetSettingRow {
-    label: "Setting"
-    description: "Description"
-}`
+    `
         language: "qml"
     }
 
@@ -128,6 +114,26 @@ ChaSetSettingRow {
             }
         ]
     }
+
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetSettingRow {
+    width: parent.width
+    title: "Automatic Sync"
+    description: "Sync files automatically in the background"
+}`
+        reactCode: `import { SettingRow, Switch } from '@chahu/cha-set';
+
+<SettingRow
+  title="Automatic Sync"
+  description="Sync files automatically in the background"
+  control={<Switch checked={true} />}
+/>`
+    }
+
+
 
     // Anchor Jump & Flash
     DocText {

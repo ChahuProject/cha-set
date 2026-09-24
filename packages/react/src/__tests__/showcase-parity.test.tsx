@@ -42,7 +42,7 @@ describe('Showcase Parity Assurance System (SPAS)', () => {
     const syntheticReact = `
       <DocLayout category="General" title="Test" description="Desc">
         <section id="overview"><ComponentPreview title="Preview" /></section>
-        <section id="installation"><h2>Installation</h2></section>
+        <DocAnatomy id="anatomy" />
         <section id="variants"><h2>Variants</h2></section>
         <section id="keyboard"><h2>Keyboard Navigation</h2></section>
         <section id="props"><h2>Props Reference</h2></section>
@@ -52,7 +52,7 @@ describe('Showcase Parity Assurance System (SPAS)', () => {
     expect(rMeta.isAutoToc).toBe(true);
     expect(rMeta.tocItems.map((t: { id: string }) => t.id)).toEqual([
       'overview',
-      'installation',
+      'anatomy',
       'variants',
       'keyboard',
       'props',
@@ -64,7 +64,7 @@ describe('Showcase Parity Assurance System (SPAS)', () => {
         pageTitle: "Test"
         description: "Desc"
         ComponentPreview { title: "Sandbox" }
-        Column { DocText { text: "Installation"; font.pixelSize: Typography.sizeTitleSm } }
+        DocAnatomy { sectionId: "anatomy" }
         Column { DocText { text: "Variants"; font.pixelSize: Typography.sizeTitleSm } }
         KeyboardShortcutsTable { componentId: "test" }
         PropsTable { propsModel: [] }
@@ -74,7 +74,7 @@ describe('Showcase Parity Assurance System (SPAS)', () => {
     expect(qMeta.isAutoToc).toBe(true);
     expect(qMeta.tocItems.map((t: { id: string }) => t.id)).toEqual([
       'overview',
-      'installation',
+      'anatomy',
       'variants',
       'keyboard',
       'props',

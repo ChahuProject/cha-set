@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Icon, Input, Checkbox, SegmentedControl, type Butt
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { DocFooterSections } from '../../components/DocFooterSections';
+import { ComponentReference } from "../../components/ComponentReference";
 
 export function ButtonDocPage() {
   const [variant, setVariant] = useState<ButtonVariant>('default');
@@ -39,17 +39,6 @@ export function ButtonDocPage() {
       category="Base Primitives"
       title="Button"
       description="Displays a button or a component that looks like a button with multiple variants, sizes, and states."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'examples', title: 'Examples' },
-        { id: 'variants', title: 'Variants' },
-        { id: 'sizes', title: 'Sizes' },
-        { id: 'states', title: 'States' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Preview Hero */}
       <section id="overview">
@@ -164,8 +153,8 @@ export function ButtonDocPage() {
       />
 
       {/* 3. Examples */}
-      <section id="examples" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-4">Examples</h2>
+      <section id="states" className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-4">Examples & States</h2>
 
         {/* Variants */}
         <div id="variants" className="my-6">
@@ -251,7 +240,32 @@ export function ButtonDocPage() {
 
       {/* 4. API Reference */}
       
-      <DocFooterSections
+            {/* Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+            <li>
+              State changes (hover, press, focus) animate over{" "}
+              <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{" "}
+              <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+            </li>
+            <li>
+              Durations and easing resolve from theme tokens, so{" "}
+              <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{" "}
+              <code>ThemeTokens.animationsEnabled</code>).
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <ComponentReference
+        name="Button"
         componentId="button"
         props={[
           {

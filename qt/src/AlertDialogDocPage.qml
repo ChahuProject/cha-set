@@ -8,12 +8,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Alert Dialog"
     description: "A modal dialog that interrupts the user with important content and expects a confirmation or cancellation action."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string alertFeedback: "Dialog is idle."
 
@@ -112,19 +106,58 @@ ChaSetAlertDialog {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetAlertDialog { ... }"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetAlertDialog {
+    id: alertDlg
+    title: "Are you absolutely sure?"
+    description: "This action cannot be undone."
+    confirmText: "Continue"
+    cancelText: "Cancel"
+    onConfirmed: console.log("Confirmed")
+}`
+        reactCode: `import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+  Button,
+} from '@chahu/cha-set';
+
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete Account</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+      <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Continue</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`
+    }
+
+
+
+    "
         language: "qml"
     }
 
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "AlertDialog"
         componentId: "alert-dialog"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "open", type: "bool", default: "false", description: "Whether the alert dialog modal is visible." },
             { name: "size", type: "string", default: "'default'", description: "Preset modal width sizing ('sm', 'default', 'lg')." },
             { name: "title", type: "string", default: "'Are you absolutely sure?'", description: "Dialog headline title." },
@@ -135,6 +168,9 @@ ChaSetAlertDialog {
             { name: "actionVariant", type: "string", default: "'destructive'", description: "Custom button variant for confirmation ('destructive', 'default', etc.)." },
             { name: "closeOnOverlayClick", type: "bool", default: "false", description: "Whether clicking the backdrop automatically dismisses the dialog." },
             { name: "closeOnEscape", type: "bool", default: "true", description: "Whether pressing the Escape key dismisses the dialog." }
+        ]
+    }
+}
         ]
     }
 }

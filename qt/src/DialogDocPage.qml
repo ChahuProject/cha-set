@@ -8,16 +8,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Dialog"
     description: "A modal window that interrupts the user with critical content and prompts for user action."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "installation", title: "Installation" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "examples", title: "Examples & States" },
-        { id: "props", title: "Props Reference" }
-    ]
-
     property int customRadius: 8
     property color cFg: ThemeTokens.text
     property color cMutedFg: ThemeTokens.subduedText
@@ -57,44 +47,7 @@ DocLayout {
         ]
     }
 
-    // Animations
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText { text: "Animations"; color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-
-        DocText { text: "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-
-        DocText { text: "• The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-    }
-
-    KeyboardShortcutsTable {
-        componentId: "dialog"
-    }
-
-    // Section 2: Installation
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Installation"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
-    }
-
-    // Section 3: Anatomy
+    // Section 2: Anatomy
     DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet\n\nChaSetDialog {\n    open: dialogOpen\n    size: "default"\n    title: "Dialog Title"\n    description: "Dialog Description"\n    showCloseButton: true\n    onAccepted: dialogOpen = false\n    onRejected: dialogOpen = false\n}`
@@ -198,119 +151,121 @@ DocLayout {
         }
     }
 
-    // Section 5: Props Reference
+    // Animations
     Column {
         width: parent.width
         spacing: 12
 
-        DocText {
-            text: "Props Reference"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
+        DocText { text: "Animations"; color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        PropsTable {
-            width: parent.width
-            propsModel: [
-                {
-                    name: "open",
-                    type: "bool",
-                    default: "false",
-                    description: "Controls the visible / open state of the modal dialog."
-                },
-                {
-                    name: "title",
-                    type: "string",
-                    default: "\"\"",
-                    description: "Header title text displayed in prominent bold styling."
-                },
-                {
-                    name: "description",
-                    type: "string",
-                    default: "\"\"",
-                    description: "Header descriptive text displayed beneath the title."
-                },
-                {
-                    name: "size",
-                    type: "\"sm\" | \"default\" | \"lg\" | \"xl\" | \"full\"",
-                    default: "\"default\"",
-                    description: "Tiered size preset controlling modal card width."
-                },
-                {
-                    name: "customRadius",
-                    type: "int",
-                    default: "8",
-                    description: "Corner radius of the modal dialog card."
-                },
-                {
-                    name: "dialogWidth",
-                    type: "int",
-                    default: "500",
-                    description: "Explicit width of the dialog card override."
-                },
-                {
-                    name: "showCloseButton",
-                    type: "bool",
-                    default: "true",
-                    description: "Whether to render the close button in the top-right corner."
-                },
-                {
-                    name: "showEscBadge",
-                    type: "bool",
-                    default: "false",
-                    description: "Whether to display the ESC keyboard badge in the top-right header."
-                },
-                {
-                    name: "closeOnOverlayClick",
-                    type: "bool",
-                    default: "true",
-                    description: "Whether clicking the backdrop overlay dismisses the dialog."
-                },
-                {
-                    name: "closeOnEscape",
-                    type: "bool",
-                    default: "true",
-                    description: "Whether pressing Escape key dismisses the dialog."
-                },
-                {
-                    name: "draggable",
-                    type: "bool",
-                    default: "true",
-                    description: "Whether the dialog card can be dragged across the viewport."
-                },
-                {
-                    name: "contentData",
-                    type: "list<QtObject>",
-                    default: "[]",
-                    description: "Default property alias for body content elements."
-                },
-                {
-                    name: "opened()",
-                    type: "signal",
-                    default: "—",
-                    description: "Emitted when the modal has transitioned to open."
-                },
-                {
-                    name: "closed()",
-                    type: "signal",
-                    default: "—",
-                    description: "Emitted when the modal has closed."
-                },
-                {
-                    name: "accepted()",
-                    type: "signal",
-                    default: "—",
-                    description: "Emitted when the accept() function is invoked."
-                },
-                {
-                    name: "rejected()",
-                    type: "signal",
-                    default: "—",
-                    description: "Emitted when the reject() function or scrim / close button is triggered."
-                }
-            ]
-        }
+        DocText { text: "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+
+        DocText { text: "• The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+    }
+
+    ComponentReference {
+        name: "Dialog"
+        componentId: "dialog"
+        propsModel: [
+            {
+                name: "open",
+                type: "bool",
+                defaultVal: "false",
+                description: "Controls the visible / open state of the modal dialog."
+            },
+            {
+                name: "title",
+                type: "string",
+                defaultVal: "\"\"",
+                description: "Header title text displayed in prominent bold styling."
+            },
+            {
+                name: "description",
+                type: "string",
+                defaultVal: "\"\"",
+                description: "Header descriptive text displayed beneath the title."
+            },
+            {
+                name: "size",
+                type: "\"sm\" | \"default\" | \"lg\" | \"xl\" | \"full\"",
+                defaultVal: "\"default\"",
+                description: "Tiered size preset controlling modal card width."
+            },
+            {
+                name: "customRadius",
+                type: "int",
+                defaultVal: "8",
+                description: "Corner radius of the modal dialog card."
+            },
+            {
+                name: "dialogWidth",
+                type: "int",
+                defaultVal: "500",
+                description: "Explicit width of the dialog card override."
+            },
+            {
+                name: "showCloseButton",
+                type: "bool",
+                defaultVal: "true",
+                description: "Whether to render the close button in the top-right corner."
+            },
+            {
+                name: "showEscBadge",
+                type: "bool",
+                defaultVal: "false",
+                description: "Whether to display the ESC keyboard badge in the top-right header."
+            },
+            {
+                name: "closeOnOverlayClick",
+                type: "bool",
+                defaultVal: "true",
+                description: "Whether clicking the backdrop overlay dismisses the dialog."
+            },
+            {
+                name: "closeOnEscape",
+                type: "bool",
+                defaultVal: "true",
+                description: "Whether pressing Escape key dismisses the dialog."
+            },
+            {
+                name: "draggable",
+                type: "bool",
+                defaultVal: "true",
+                description: "Whether the dialog card can be dragged across the viewport."
+            },
+            {
+                name: "contentData",
+                type: "list<QtObject>",
+                defaultVal: "[]",
+                description: "Default property alias for body content elements."
+            },
+            {
+                name: "opened()",
+                type: "signal",
+                defaultVal: "—",
+                description: "Emitted when the modal has transitioned to open."
+            },
+            {
+                name: "closed()",
+                type: "signal",
+                defaultVal: "—",
+                description: "Emitted when the modal has closed."
+            },
+            {
+                name: "accepted()",
+                type: "signal",
+                defaultVal: "—",
+                description: "Emitted when the accept() function is invoked."
+            },
+            {
+                name: "rejected()",
+                type: "signal",
+                defaultVal: "—",
+                description: "Emitted when the reject() function or scrim / close button is triggered."
+            }
+        ]
     }
 
     // Profile Dialog Instance

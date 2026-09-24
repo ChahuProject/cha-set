@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { ThemeSettings, DEFAULT_THEME_CONFIG, Card, CodeBlock } from '@chahu/cha-set';
 import type { ThemeConfig } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export interface ThemeSettingsDocPageProps {
   config?: ThemeConfig;
@@ -39,13 +39,6 @@ export function ThemeSettingsDocPage({
       category="Composite Engines"
       title="Theme Settings"
       description="Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
@@ -64,21 +57,20 @@ export function ThemeSettingsDocPage({
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <div className="space-y-3">
-          <CodeBlock
-            code="npm install @chahu/cha-set"
-            language="bash"
-            title="Terminal"
-          />
-          <CodeBlock
-            code={`import { ThemeSettings, type ThemeConfig } from '@chahu/cha-set';`}
-            language="tsx"
-            title="Import"
-          />
-        </div>
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ThemeSettings } from '@chahu/cha-set';
+
+<ThemeSettings />`}
+        qtCode={`import ChaSet
+
+ChaSetThemeSettings {
+    width: parent.width
+}`}
+      />
+
+
 
       <section id="animations" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Animations</h2>
@@ -92,79 +84,78 @@ export function ThemeSettingsDocPage({
         </p>
       </section>
 
-      <section id="keyboard" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard Navigation</h2>
-        <KeyboardShortcutsTable componentId="theme-settings" />
-      </section>
-
-      <section id="props" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
-        <PropsTable
-          items={[
-            {
-              name: 'config',
-              type: 'ThemeConfig',
-              defaultValue: 'DEFAULT_THEME_CONFIG',
-              description: 'Canonical theme configuration object containing mode, palette, decoration, typography, and uiScale.',
-            },
-            {
-              name: 'onChange',
-              type: '(next: ThemeConfig) => void',
-              description: 'Callback invoked when any theme property changes.',
-            },
-            {
-              name: 'onReset',
-              type: '() => void',
-              description: 'Callback invoked when the reset button is activated.',
-            },
-            {
-              name: 'onExport',
-              type: '(configJson: string) => void',
-              description: 'Callback invoked when exporting configuration JSON.',
-            },
-            {
-              name: 'onImport',
-              type: '(jsonString: string) => boolean | void',
-              description: 'Callback invoked when importing and parsing configuration JSON.',
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              defaultValue: 'false',
-              description: 'Disables all interactive controls and dims opacity.',
-            },
-            {
-              name: 'showReset',
-              type: 'boolean',
-              defaultValue: 'true',
-              description: 'Whether to display the reset button in header.',
-            },
-            {
-              name: 'showExport',
-              type: 'boolean',
-              defaultValue: 'true',
-              description: 'Whether to display the export JSON button in header.',
-            },
-            {
-              name: 'showImport',
-              type: 'boolean',
-              defaultValue: 'true',
-              description: 'Whether to display the import button in header.',
-            },
-            {
-              name: 'showTypography',
-              type: 'boolean',
-              defaultValue: 'false',
-              description: 'Whether to render typography font family and scale selection rows.',
-            },
-            {
-              name: 'textProvider',
-              type: '(key: string, defaultText: string) => string',
-              description: 'Optional internationalization string resolver callback.',
-            },
-          ]}
-        />
-      </section>
+      <ComponentReference
+        name="ThemeSettings"
+        componentId="theme-settings"
+        props={[
+          {
+            name: 'config',
+            type: 'ThemeConfig',
+            default: 'DEFAULT_THEME_CONFIG',
+            description: 'Canonical theme configuration object containing mode, palette, decoration, typography, and uiScale.',
+          },
+          {
+            name: 'onChange',
+            type: '(next: ThemeConfig) => void',
+            default: 'undefined',
+            description: 'Callback invoked when any theme property changes.',
+          },
+          {
+            name: 'onReset',
+            type: '() => void',
+            default: 'undefined',
+            description: 'Callback invoked when the reset button is activated.',
+          },
+          {
+            name: 'onExport',
+            type: '(configJson: string) => void',
+            default: 'undefined',
+            description: 'Callback invoked when exporting configuration JSON.',
+          },
+          {
+            name: 'onImport',
+            type: '(jsonString: string) => boolean | void',
+            default: 'undefined',
+            description: 'Callback invoked when importing and parsing configuration JSON.',
+          },
+          {
+            name: 'disabled',
+            type: 'boolean',
+            default: 'false',
+            description: 'Disables all interactive controls and dims opacity.',
+          },
+          {
+            name: 'showReset',
+            type: 'boolean',
+            default: 'true',
+            description: 'Whether to display the reset button in header.',
+          },
+          {
+            name: 'showExport',
+            type: 'boolean',
+            default: 'true',
+            description: 'Whether to display the export JSON button in header.',
+          },
+          {
+            name: 'showImport',
+            type: 'boolean',
+            default: 'true',
+            description: 'Whether to display the import button in header.',
+          },
+          {
+            name: 'showTypography',
+            type: 'boolean',
+            default: 'false',
+            description: 'Whether to render typography font family and scale selection rows.',
+          },
+          {
+            name: 'textProvider',
+            type: '(key: string, defaultText: string) => string',
+            default: 'undefined',
+            description: 'Optional internationalization string resolver callback.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

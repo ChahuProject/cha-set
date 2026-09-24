@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { GenericDataTable, Badge, type ColumnDef, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 interface UserRecord {
   id: string;
@@ -84,12 +84,6 @@ export function GenericDataTableDocPage() {
       category="Composite Engines"
       title="Generic Data Table"
       description="Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -115,38 +109,35 @@ export function GenericDataTableDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { GenericDataTable } from '@chahu/cha-set';
 
-      
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="generic-data-table" />
-      </section>
+<GenericDataTable data={data} columns={columns} pageSize={10} />`}
+        qtCode={`import ChaSet
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+ChaSetGenericDataTable {
+    width: ThemeTokens.dp(480)
+    height: ThemeTokens.dp(280)
+    columns: columns
+    pageSize: 10
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="DataTable"
+        componentId="data-table"
+        props={[
             { name: 'data', type: 'TData[]', default: '[]', description: 'Array of data records.' },
             { name: 'columns', type: 'ColumnDef<TData, any>[]', default: '[]', description: 'TanStack Table column definitions.' },
             { name: 'enableSorting', type: 'boolean', default: 'true', description: 'Whether column sorting is enabled.' },
             { name: 'enablePagination', type: 'boolean', default: 'true', description: 'Whether pagination controls are rendered.' },
             { name: 'pageSize', type: 'number', default: '10', description: 'Number of rows per page.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

@@ -8,12 +8,6 @@ DocLayout {
     category: "Surfaces & Layout"
     pageTitle: "Panel Card"
     description: "Structured card container with a distinguished tinted header bar, optional badge indicators, and collapsible content toggling."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     ComponentPreview {
         title: "Panel Card Sandbox"
@@ -75,25 +69,40 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetPanelCard { title: \"Settings\"; collapsible: true }"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetPanelCard {
+    width: parent.width
+    title: "Server Overview"
+}`
+        reactCode: `import { PanelCard } from '@chahu/cha-set';
+
+<PanelCard title="Server Overview">
+  <div className="p-4">Server telemetry and health status.</div>
+</PanelCard>`
+    }
+
+
+
+    "
         language: "qml"
     }
 
     
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "PanelCard"
         componentId: "panel-card"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "title", type: "string", default: "'Panel Title'", description: "Headline text in the tinted header." },
             { name: "badgeText", type: "string", default: "''", description: "Optional badge text displayed next to the title." },
             { name: "collapsible", type: "bool", default: "false", description: "Whether the panel card can be expanded and collapsed." },
             { name: "collapsed", type: "bool", default: "false", description: "Current collapsed state of the panel." },
             { name: "customRadius", type: "int", default: "8", description: "Corner radius of the card surface." }
+        ]
+    }
+}
         ]
     }
 }

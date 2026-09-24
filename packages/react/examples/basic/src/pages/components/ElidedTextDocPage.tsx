@@ -3,7 +3,7 @@ import { ElidedText, Card, Button, Slider } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { DocFooterSections } from '../../components/DocFooterSections';
+import { ComponentReference } from "../../components/ComponentReference";
 
 export function ElidedTextDocPage() {
   const [containerWidth, setContainerWidth] = useState(240);
@@ -38,14 +38,6 @@ export function ElidedTextDocPage() {
       category="Base Primitives"
       title="Elided Text"
       description="Smart text truncation with automatic overflow detection, click-to-copy, and contextual tooltip reveal."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'multiline', title: 'Multi-Line Clamping' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
@@ -112,7 +104,7 @@ export function ElidedTextDocPage() {
         qtCode={`import ChaSet\n\nChaSetElidedText {\n    text: "Sample text..."\n    width: parent.width\n}`}
       />
 
-      <section id="multiline" className="space-y-4 pt-6">
+      <section id="multi-line-clamping" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Multi-Line Clamping</h2>
         <p className="text-sm text-muted-foreground">
           Using <code>maxLines={2}</code>, text wraps up to two lines before truncating with an ellipsis.
@@ -126,7 +118,32 @@ export function ElidedTextDocPage() {
         </Card>
       </section>
 
-      <DocFooterSections
+            {/* Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+            <li>
+              State changes (hover, press, focus) animate over{" "}
+              <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{" "}
+              <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+            </li>
+            <li>
+              Durations and easing resolve from theme tokens, so{" "}
+              <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{" "}
+              <code>ThemeTokens.animationsEnabled</code>).
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <ComponentReference
+        name="ElidedText"
         componentId="elided-text"
         props={[
           {

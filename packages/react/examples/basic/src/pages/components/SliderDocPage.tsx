@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Slider, type SliderOrientation, type SliderSize, Tabs, TabsList, TabsTrigger, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function SliderDocPage() {
   const [value, setValue] = useState(50);
@@ -60,14 +59,6 @@ export function SliderDocPage() {
       category="Forms & Inputs"
       title="Slider"
       description="An interactive control that allows the user to select a numeric value along a track."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'states', title: 'Examples & States' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
@@ -197,13 +188,6 @@ export function SliderDocPage() {
       </section>
 
       {/* 2. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
       {/* 3. Anatomy */}
       <DocAnatomy
         id="anatomy"
@@ -271,22 +255,10 @@ export function SliderDocPage() {
       </section>
 
       {/* 5. Props Reference */}
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="slider" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="Slider"
+        componentId="slider"
+        props={[
             {
               name: 'value',
               type: 'number',
@@ -402,8 +374,7 @@ export function SliderDocPage() {
               description: 'Additional CSS class names to apply to the slider root element.',
             },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

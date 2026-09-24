@@ -8,12 +8,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Draggable Modal"
     description: "Desktop floating panel window with a draggable header bar, bounded parent viewport constraints, and size mode switching."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     ComponentPreview {
         title: "Draggable Modal Sandbox"
@@ -102,19 +96,36 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetDraggableModal {\n    title: \"Inspector\"\n    initialPositionMode: \"center\"\n    width: 300\n    height: 200\n}"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetDraggableModal {
+    title: "Floating Tools"
+    open: true
+    initialPositionMode: "center"
+}`
+        reactCode: `import { DraggableModal, Button } from '@chahu/cha-set';
+
+<DraggableModal
+  title="Floating Tools"
+  open={open}
+  onOpenChange={setOpen}
+>
+  <div className="p-4">Floating window content</div>
+</DraggableModal>`
+    }
+
+
+
+    "
         language: "qml"
     }
 
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "DraggableModal"
         componentId: "draggable-modal"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "title", type: "string", default: "'Inspector Window'", description: "Headline text in the drag bar." },
             { name: "open", type: "bool", default: "true", description: "Whether the floating window is currently visible." },
             { name: "customRadius", type: "int", default: "8", description: "Corner radius of the floating window." },
@@ -126,6 +137,9 @@ DocLayout {
             { name: "showEscBadge", type: "bool", default: "false", description: "Whether to display the ESC keyboard shortcut badge." },
             { name: "fixedFooter", type: "Item", default: "null", description: "Fixed footer action bar item anchored to the bottom." },
             { name: "topControls", type: "Item", default: "null", description: "Custom control item rendered in the header toolbar." }
+        ]
+    }
+}
         ]
     }
 }

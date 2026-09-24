@@ -11,6 +11,7 @@ Column {
 
     property string sectionId: "anatomy"
     property string pageTitle: "Anatomy"
+    property string sectionTitle: pageTitle
     property string description: "Import and structure definition for React and Qt Quick."
     property string reactCode: ""
     property string qtCode: ""

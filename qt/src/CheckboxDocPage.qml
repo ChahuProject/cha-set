@@ -8,15 +8,6 @@ DocLayout {
     category: "Forms & Inputs"
     pageTitle: "Checkbox"
     description: "A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, and companion labels."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "states", title: "Examples & States" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int customRadius: 6
     property color cFg: ThemeTokens.text
@@ -131,26 +122,7 @@ DocLayout {
         ]
     }
 
-    // Section 2: Installation
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Installation"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
-    }
-
-    // Section 3: Anatomy
+    // Section 2: Anatomy
     DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet\n\nChaSetCheckbox {\n    checked: agree\n    label: "Service agreement"\n    description: "I agree to the service agreement and terms of use."\n    onToggled: agree = checked\n}`
@@ -342,38 +314,22 @@ DocLayout {
         DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
-    // Section 5: Props Reference
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Props Reference"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        
-    KeyboardShortcutsTable {
+    // Section 5: Component Reference (Keyboard + Props)
+    ComponentReference {
+        name: "Checkbox"
         componentId: "checkbox"
-    }
-
-    PropsTable {
-            width: parent.width
-            propsModel: [
-                { name: "checked", type: "bool", defaultValue: "false", desc: "Whether the checkbox is currently checked." },
-                { name: "indeterminate", type: "bool", defaultValue: "false", desc: "Whether the checkbox is in an indeterminate state (takes visual precedence over checked)." },
-                { name: "disabled", type: "bool", defaultValue: "false", desc: "Disables user interactions and applies 50% opacity." },
-                { name: "readOnly", type: "bool", defaultValue: "false", desc: "Prevents toggling state while retaining focusability and full opacity." },
-                { name: "invalid", type: "bool", defaultValue: "false", desc: "Applies destructive error styling to box border and focus ring." },
-                { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "The size variant: default or sm." },
-                { name: "label", type: "string", defaultValue: "''", desc: "Companion label text displayed next to the checkbox." },
-                { name: "description", type: "string", defaultValue: "''", desc: "Optional helper text displayed below the label." },
-                { name: "customRadius", type: "int", defaultValue: "-1", desc: "Optional custom corner radius for the checkbox box (-1 uses default)." },
-                { name: "forceHover", type: "bool", defaultValue: "false", desc: "Visual testing aid to force hover state styles." },
-                { name: "forceFocus", type: "bool", defaultValue: "false", desc: "Visual testing aid to force focus ring styles." }
-            ]
-        }
+        propsModel: [
+            { name: "checked", type: "bool", defaultValue: "false", desc: "Whether the checkbox is currently checked." },
+            { name: "indeterminate", type: "bool", defaultValue: "false", desc: "Whether the checkbox is in an indeterminate state (takes visual precedence over checked)." },
+            { name: "disabled", type: "bool", defaultValue: "false", desc: "Disables user interactions and applies 50% opacity." },
+            { name: "readOnly", type: "bool", defaultValue: "false", desc: "Prevents toggling state while retaining focusability and full opacity." },
+            { name: "invalid", type: "bool", defaultValue: "false", desc: "Applies destructive error styling to box border and focus ring." },
+            { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "The size variant: default or sm." },
+            { name: "label", type: "string", defaultValue: "''", desc: "Companion label text displayed next to the checkbox." },
+            { name: "description", type: "string", defaultValue: "''", desc: "Optional helper text displayed below the label." },
+            { name: "customRadius", type: "int", defaultValue: "-1", desc: "Optional custom corner radius for the checkbox box (-1 uses default)." },
+            { name: "forceHover", type: "bool", defaultValue: "false", desc: "Visual testing aid to force hover state styles." },
+            { name: "forceFocus", type: "bool", defaultValue: "false", desc: "Visual testing aid to force focus ring styles." }
+        ]
     }
 }

@@ -145,10 +145,26 @@ export function extractReactDocMetadata(content) {
     meta.isAutoToc = false;
   } else {
     meta.isAutoToc = true;
+    const events = [];
+
+    const pStarts = [...content.matchAll(/<ComponentPreview\b/g)];
+    for (const p of pStarts) {
+      events.push({ index: p.index, id: 'overview', title: 'Interactive Overview' });
+    }
+
+    const aStarts = [...content.matchAll(/<DocAnatomy\b/g)];
+    for (const a of aStarts) {
+      events.push({ index: a.index, id: 'anatomy', title: 'Anatomy' });
+    }
+
     const sectionRegex = /<section\b[^>]*?id=["']([^"']+)["'][^>]*>([\s\S]*?)<\/section>/g;
     let sMatch;
     while ((sMatch = sectionRegex.exec(content)) !== null) {
-      const id = sMatch[1];
+      let id = sMatch[1];
+      if (id === 'overview' || id === 'anatomy' || id === 'installation') continue;
+      if (id === 'examples' || id === 'examples-states' || id === 'examples-variants') id = 'states';
+      if (id === 'variants-options') id = 'variants';
+      if (id === 'multi-file-tabs') id = 'multi-file';
       const inner = sMatch[2];
       let title = '';
       const customTitleMatch = inner.match(/data-toc-title=["']([^"']+)["']/);
@@ -160,15 +176,49 @@ export function extractReactDocMetadata(content) {
           title = hMatch[1].replace(/<[^>]+>/g, '').trim();
         }
       }
-      if (!title || (id === 'overview' && title.toLowerCase().includes('sandbox'))) {
-        if (id === 'overview') title = 'Interactive Overview';
-        else if (id === 'installation') title = 'Installation';
-        else if (id === 'animations') title = 'Animations';
+      if (!title) {
+        if (id === 'animations') title = 'Animations';
         else if (id === 'keyboard') title = 'Keyboard Navigation';
         else if (id === 'props') title = 'Props Reference';
         else title = id.split(/[-_]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
       }
-      meta.tocItems.push({ id, title });
+      events.push({ index: sMatch.index, id, title });
+    }
+
+    const dfsStarts = [...content.matchAll(/<DocFooterSections\b/g)];
+    for (const dfs of dfsStarts) {
+      events.push({ index: dfs.index, id: 'animations', title: 'Animations' });
+      events.push({ index: dfs.index + 1, id: 'keyboard', title: 'Keyboard Navigation' });
+      events.push({ index: dfs.index + 2, id: 'props', title: 'Props Reference' });
+    }
+
+    const crRegex = /<ComponentReference\b([^>]*?)(?:\/>|>)/gs;
+    let crMatch;
+    while ((crMatch = crRegex.exec(content)) !== null) {
+      const attrs = crMatch[1];
+      const compIdMatch = attrs.match(/componentId=["']([^"']+)["']/);
+      const nameMatch = attrs.match(/name=["']([^"']+)["']/);
+      const isSub = /isSubComponent/.test(attrs);
+      const compId = compIdMatch ? compIdMatch[1] : '';
+      const name = nameMatch ? nameMatch[1] : '';
+      const hasKb = compId && keyboardShortcuts[compId] && keyboardShortcuts[compId].length > 0;
+      if (hasKb) {
+        const kbId = isSub ? `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-keyboard` : 'keyboard';
+        const kbTitle = isSub ? `${name} Keyboard Navigation & Shortcuts` : 'Keyboard Navigation';
+        events.push({ index: crMatch.index, id: kbId, title: kbTitle });
+      }
+      const propsId = isSub ? `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-props` : 'props';
+      const propsTitle = isSub ? `${name} Properties` : 'Props Reference';
+      events.push({ index: crMatch.index + 1, id: propsId, title: propsTitle });
+    }
+
+    events.sort((a, b) => a.index - b.index);
+    const seen = new Set();
+    for (const ev of events) {
+      if (!seen.has(ev.id)) {
+        seen.add(ev.id);
+        meta.tocItems.push({ id: ev.id, title: ev.title });
+      }
     }
   }
 
@@ -274,27 +324,113 @@ export function extractQtDocMetadata(content) {
     meta.isAutoToc = false;
   } else {
     meta.isAutoToc = true;
-    if (/ComponentPreview\s*\{/.test(content)) {
-      meta.tocItems.push({ id: 'overview', title: 'Interactive Overview' });
+    const events = [];
+
+    const pStarts = [...content.matchAll(/\bComponentPreview\s*\{/g)];
+    for (const p of pStarts) {
+      const body = scanQmlBlockBody(content, p.index + p[0].length);
+      const sIdMatch = body ? body.match(/sectionId:\s*["']([^"']+)["']/) : null;
+      const sTitleMatch = body ? body.match(/sectionTitle:\s*["']([^"']+)["']/) : null;
+      const titleMatch = body ? body.match(/title:\s*["']([^"']+)["']/) : null;
+      const id = sIdMatch ? sIdMatch[1] : 'overview';
+      const title = sTitleMatch ? sTitleMatch[1] : (id === 'overview' ? 'Interactive Overview' : (titleMatch ? titleMatch[1] : 'Interactive Overview'));
+      events.push({ index: p.index, id, title });
     }
-    const docTextRegex = /DocText\s*\{[^}]*?text\s*:\s*["']([^"']+)["'][^}]*?(?:sizeTitleSm|weightBold|weightSemibold|sizeHeading)/g;
+
+    const aStarts = [...content.matchAll(/\bDocAnatomy\s*\{/g)];
+    for (const a of aStarts) {
+      events.push({ index: a.index, id: 'anatomy', title: 'Anatomy' });
+    }
+
+    const secIdRegex = /(?:property\s+string\s+)?sectionId\s*:\s*["']([^"']+)["']/g;
+    let secMatch;
+    while ((secMatch = secIdRegex.exec(content)) !== null) {
+      const id = secMatch[1];
+      if (id === 'overview' || id === 'anatomy' || id === 'installation') continue;
+      const snippet = content.slice(secMatch.index, secMatch.index + 500);
+      const stitleMatch = snippet.match(/(?:property\s+string\s+)?sectionTitle\s*:\s*["']([^"']+)["']/);
+      let title = stitleMatch ? stitleMatch[1] : '';
+      if (!title) {
+        const textMatch = snippet.match(/(?:DocText|Text)\s*\{[^}]*?text\s*:\s*["']([^"']+)["']/);
+        if (textMatch) {
+          title = textMatch[1].trim();
+        }
+      }
+      if (!title) {
+        if (id === 'animations') title = 'Animations';
+        else if (id === 'keyboard') title = 'Keyboard Navigation';
+        else if (id === 'props') title = 'Props Reference';
+        else title = id.split(/[-_]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      }
+      if (id === 'animations' && (title.startsWith('Animations') || title.startsWith('Motion'))) {
+        title = 'Animations';
+      }
+      events.push({ index: secMatch.index, id, title });
+    }
+
+    const titleRegex = /DocText\s*\{[^}]*?text\s*:\s*["']([^"']+)["'][^}]*?(?:sizeTitleSm|font\.pixelSize:\s*Typography\.sizeTitleSm)[^}]*?\}/g;
     let tMatch;
-    while ((tMatch = docTextRegex.exec(content)) !== null) {
+    while ((tMatch = titleRegex.exec(content)) !== null) {
+      const lastOpenBrace = content.lastIndexOf('{', tMatch.index);
+      const lastCloseBrace = content.lastIndexOf('}', tMatch.index);
+      if (lastOpenBrace > lastCloseBrace) {
+        const blockStart = content.slice(lastOpenBrace, tMatch.index);
+        const sidMatch = blockStart.match(/(?:property\s+string\s+)?sectionId\s*:\s*["']([^"']+)["']/);
+        if (sidMatch) continue;
+      }
       const title = tMatch[1].trim();
       let id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-      if (id === 'interactive-overview' || id === 'sandbox') id = 'overview';
-      else if (id === 'keyboard-navigation') id = 'keyboard';
-      else if (id === 'props-reference') id = 'props';
+      if (id === 'interactive-overview' || id === 'sandbox' || id === 'overview' || id === 'anatomy' || id === 'installation') continue;
+      if (id === 'keyboard-navigation' || id === 'keyboard' || id === 'props-reference' || id === 'props' || id === 'api-reference') continue;
+      if (id === 'examples-states' || id === 'examples' || id === 'examples-variants') id = 'states';
+      if (id === 'variants-options') id = 'variants';
+      if (id === 'multi-file-tabs') id = 'multi-file';
+      events.push({ index: tMatch.index, id, title: (id === 'states' ? 'Examples & States' : title) });
+    }
 
-      if (!meta.tocItems.some(item => item.id === id)) {
-        meta.tocItems.push({ id, title });
+    const dfsStarts = [...content.matchAll(/\bDocFooterSections\s*\{/g)];
+    for (const dfs of dfsStarts) {
+      events.push({ index: dfs.index, id: 'animations', title: 'Animations' });
+      events.push({ index: dfs.index + 1, id: 'keyboard', title: 'Keyboard Navigation' });
+      events.push({ index: dfs.index + 2, id: 'props', title: 'Props Reference' });
+    }
+
+    const crRegex = /\bComponentReference\s*\{([^}]*)\}/g;
+    let crMatch;
+    while ((crMatch = crRegex.exec(content)) !== null) {
+      const body = crMatch[1];
+      const compIdMatch = body.match(/componentId:\s*["']([^"']+)["']/);
+      const nameMatch = body.match(/name:\s*["']([^"']+)["']/);
+      const isSub = /isSubComponent:\s*true/.test(body);
+      const compId = compIdMatch ? compIdMatch[1] : '';
+      const name = nameMatch ? nameMatch[1] : '';
+      const hasKb = compId && keyboardShortcuts[compId] && keyboardShortcuts[compId].length > 0;
+      if (hasKb) {
+        const kbId = isSub ? `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-keyboard` : 'keyboard';
+        const kbTitle = isSub ? `${name} Keyboard Navigation & Shortcuts` : 'Keyboard Navigation';
+        events.push({ index: crMatch.index, id: kbId, title: kbTitle });
       }
+      const propsId = isSub ? `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-props` : 'props';
+      const propsTitle = isSub ? `${name} Properties` : 'Props Reference';
+      events.push({ index: crMatch.index + 1, id: propsId, title: propsTitle });
     }
-    if (/KeyboardShortcutsTable\s*\{/.test(content) && !meta.tocItems.some(i => i.id === 'keyboard')) {
-      meta.tocItems.push({ id: 'keyboard', title: 'Keyboard Navigation' });
+
+    const kbStarts = [...content.matchAll(/\bKeyboardShortcutsTable\s*\{/g)];
+    for (const kb of kbStarts) {
+      events.push({ index: kb.index, id: 'keyboard', title: 'Keyboard Navigation' });
     }
-    if (/PropsTable\s*\{/.test(content) && !meta.tocItems.some(i => i.id === 'props')) {
-      meta.tocItems.push({ id: 'props', title: 'Props Reference' });
+    const ptStarts = [...content.matchAll(/\bPropsTable\s*\{/g)];
+    for (const pt of ptStarts) {
+      events.push({ index: pt.index, id: 'props', title: 'Props Reference' });
+    }
+
+    events.sort((a, b) => a.index - b.index);
+    const seen = new Set();
+    for (const ev of events) {
+      if (!seen.has(ev.id)) {
+        seen.add(ev.id);
+        meta.tocItems.push({ id: ev.id, title: ev.title });
+      }
     }
   }
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { TaskHud, type TaskItem, Card, CodeBlock, Button } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function TaskHudDocPage() {
   const [tasks, setTasks] = useState<TaskItem[]>([
@@ -99,13 +99,6 @@ export function TaskHudDocPage() {
       category="Overlays & Feedback"
       title="Task HUD"
       description="Floating task progress and notification HUD stack for background executions."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
@@ -156,10 +149,22 @@ export function TaskHudDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { TaskHud } from '@chahu/cha-set';
+
+<TaskHud title="Build Process" progress={0.65} status="running" />`}
+        qtCode={`import ChaSet
+
+ChaSetTaskHud {
+    title: "Build Process"
+    progress: 0.65
+    status: "running"
+}`}
+      />
+
+
 
       <section id="animations" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Animations</h2>

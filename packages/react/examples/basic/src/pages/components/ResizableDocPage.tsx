@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle, Button, Badge, SegmentedControl, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function ResizableDocPage() {
   const [playgroundDirection, setPlaygroundDirection] = useState<
@@ -134,15 +134,6 @@ export function ResizableDocPage() {
       category="Surfaces & Layout"
       title="Resizable"
       description="Accessible resizable panel groups and layout splitters."
-      tocItems={[
-        { id: 'overview', title: 'Horizontal Split' },
-        { id: 'nested', title: 'Nested Splitters' },
-        { id: 'playground', title: 'Variants Playground' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Horizontal Split Overview */}
       <section id="overview" className="scroll-mt-20">
@@ -189,10 +180,30 @@ export function ResizableDocPage() {
         </ComponentPreview>
       </section>
 
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@chahu/cha-set';
+
+<ResizablePanelGroup direction="horizontal">
+  <ResizablePanel defaultSize={30}>Sidebar</ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={70}>Content</ResizablePanel>
+</ResizablePanelGroup>`}
+        qtCode={`import ChaSet
+
+ChaSetResizable {
+    width: parent.width
+    orientation: Qt.Horizontal
+}`}
+      />
+
+
+
       {/* 2. Nested Splitters */}
       <section id="nested" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Nested Splitters
+          Nested Resizable Layout
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           Embed vertical panel groups inside horizontal panels to construct multi-pane IDE workbenches and docking surfaces.
@@ -256,7 +267,7 @@ export function ResizableDocPage() {
       {/* 3. Variants Playground */}
       <section id="playground" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Variants Playground
+          Interactive Playground
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           Toggle between horizontal and vertical orientations and test visual grip handle styles dynamically.
@@ -330,13 +341,6 @@ export function ResizableDocPage() {
       </section>
 
       {/* 4. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
       {/* 5. Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -364,22 +368,10 @@ export function ResizableDocPage() {
       </section>
 
       {/* 6. Keyboard Navigation */}
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="resizable" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="Resizable"
+        componentId="resizable"
+        props={[
             {
               name: 'direction',
               type: "'horizontal' | 'vertical'",
@@ -417,8 +409,7 @@ export function ResizableDocPage() {
               description: 'Renders an accessible tactile visual grip handle on the separator divider.',
             },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

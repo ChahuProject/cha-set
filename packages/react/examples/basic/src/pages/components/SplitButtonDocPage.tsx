@@ -3,7 +3,7 @@ import { SplitButton, DropdownMenuItem, DropdownMenuSeparator } from '@chahu/cha
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { DocFooterSections } from '../../components/DocFooterSections';
+import { ComponentReference } from "../../components/ComponentReference";
 
 export function SplitButtonDocPage() {
   const [lastAction, setLastAction] = useState('None');
@@ -32,13 +32,6 @@ export function SplitButtonDocPage() {
       category="Base Primitives"
       title="Split Button"
       description="Dual-action button with primary direct click and secondary attached dropdown menu."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -112,7 +105,32 @@ export function SplitButtonDocPage() {
         qtCode={`import ChaSet\n\nChaSetSplitButton {\n    text: "Deploy"\n    variant: "default"\n    menuItems: [\n        { id: "staging", label: "Deploy to Staging" }\n    ]\n}`}
       />
 
-      <DocFooterSections
+            {/* Animations */}
+      <section id="animations" className="scroll-mt-20 my-10">
+        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+          Animations
+        </h2>
+        <div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+            <li>
+              State changes (hover, press, focus) animate over{" "}
+              <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{" "}
+              <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+            </li>
+            <li>
+              Durations and easing resolve from theme tokens, so{" "}
+              <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{" "}
+              <code>ThemeTokens.animationsEnabled</code>).
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <ComponentReference
+        name="SplitButton"
         componentId="split-button"
         props={[
           { name: 'label', type: 'ReactNode', default: 'undefined', description: 'Label on the primary action button.' },

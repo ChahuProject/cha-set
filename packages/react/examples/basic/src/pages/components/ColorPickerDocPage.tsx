@@ -3,8 +3,7 @@ import { ColorPicker, type ColorPickerMode, type ColorPickerSize, Tabs, TabsList
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { ComponentReference } from '../../components/ComponentReference';
 
 export function ColorPickerDocPage() {
   const [color, setColor] = useState('#1d7ae0');
@@ -47,14 +46,6 @@ export function ColorPickerDocPage() {
       category="Forms & Inputs"
       title="ColorPicker"
       description="An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB)."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'states', title: 'Examples & States' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
@@ -157,15 +148,7 @@ export function ColorPickerDocPage() {
         </ComponentPreview>
       </section>
 
-      {/* 2. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
-      {/* 3. Anatomy */}
+      {/* 2. Anatomy */}
       <DocAnatomy
         id="anatomy"
         reactCode={`import { ColorPicker } from '@chahu/cha-set';\n\n<ColorPicker\n  value={accentColor}\n  mode="popover"\n  onChange={setAccentColor}\n/>`}
@@ -231,105 +214,91 @@ export function ColorPickerDocPage() {
         </div>
       </section>
 
-      {/* 5. Props Reference */}
-      
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="color-picker" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
-            {
-              name: 'value',
-              type: 'string',
-              default: '—',
-              description: 'Controlled hex color value (e.g. #1D7AE0).',
-            },
-            {
-              name: 'defaultValue',
-              type: 'string',
-              default: "'#1d7ae0'",
-              description: 'Initial color value for uncontrolled usage.',
-            },
-            {
-              name: 'mode',
-              type: "'inline' | 'popover'",
-              default: "'inline'",
-              description: 'Display mode: inline panel card or popover dropdown trigger.',
-            },
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: 'Visual sizing scale for canvas, swatches, and inputs.',
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: 'When true, prevents user interaction and applies muted opacity.',
-            },
-            {
-              name: 'movable',
-              type: 'boolean',
-              default: 'false',
-              description: 'When true, allows dragging on empty background areas to reposition the component. Double-click resets position.',
-            },
-            {
-              name: 'showPreview',
-              type: 'boolean',
-              default: 'true',
-              description: 'Whether to show the top preview header swatch and hex label.',
-            },
-            {
-              name: 'showHex',
-              type: 'boolean',
-              default: 'true',
-              description: 'Whether to display the editable HEX text input row.',
-            },
-            {
-              name: 'showSwatches',
-              type: 'boolean',
-              default: 'true',
-              description: 'Whether to show the quick preset color swatch row.',
-            },
-            {
-              name: 'presetColors',
-              type: 'string[]',
-              default: '16 default colors',
-              description: 'Array of preset hex color strings displayed in swatches panel.',
-            },
-            {
-              name: 'onChange',
-              type: '(hex: string) => void',
-              default: '—',
-              description: 'Callback invoked whenever the selected color changes.',
-            },
-            {
-              name: 'onValueChange',
-              type: '(hex: string) => void',
-              default: '—',
-              description: 'Alias callback for onChange for contract consistency.',
-            },
-            {
-              name: 'title',
-              type: 'ReactNode',
-              default: "'Color'",
-              description: 'Custom label rendered in the preview header.',
-            },
-          ]}
-        />
-      </section>
+      {/* 4. Component Reference */}
+      <ComponentReference
+        name="ColorPicker"
+        componentId="color-picker"
+        props={[
+          {
+            name: 'value',
+            type: 'string',
+            default: '—',
+            description: 'Controlled hex color value (e.g. #1D7AE0).',
+          },
+          {
+            name: 'defaultValue',
+            type: 'string',
+            default: "'#1d7ae0'",
+            description: 'Initial color value for uncontrolled usage.',
+          },
+          {
+            name: 'mode',
+            type: "'inline' | 'popover'",
+            default: "'inline'",
+            description: 'Display mode: inline panel card or popover dropdown trigger.',
+          },
+          {
+            name: 'size',
+            type: "'default' | 'sm'",
+            default: "'default'",
+            description: 'Visual sizing scale for canvas, swatches, and inputs.',
+          },
+          {
+            name: 'disabled',
+            type: 'boolean',
+            default: 'false',
+            description: 'When true, prevents user interaction and applies muted opacity.',
+          },
+          {
+            name: 'movable',
+            type: 'boolean',
+            default: 'false',
+            description: 'When true, allows dragging on empty background areas to reposition the component. Double-click resets position.',
+          },
+          {
+            name: 'showPreview',
+            type: 'boolean',
+            default: 'true',
+            description: 'Whether to show the top preview header swatch and hex label.',
+          },
+          {
+            name: 'showHex',
+            type: 'boolean',
+            default: 'true',
+            description: 'Whether to display the editable HEX text input row.',
+          },
+          {
+            name: 'showSwatches',
+            type: 'boolean',
+            default: 'true',
+            description: 'Whether to show the quick preset color swatch row.',
+          },
+          {
+            name: 'presetColors',
+            type: 'string[]',
+            default: '16 default colors',
+            description: 'Array of preset hex color strings displayed in swatches panel.',
+          },
+          {
+            name: 'onChange',
+            type: '(hex: string) => void',
+            default: '—',
+            description: 'Callback invoked whenever the selected color changes.',
+          },
+          {
+            name: 'onValueChange',
+            type: '(hex: string) => void',
+            default: '—',
+            description: 'Alias callback for onChange for contract consistency.',
+          },
+          {
+            name: 'title',
+            type: 'ReactNode',
+            default: "'Color'",
+            description: 'Custom label rendered in the preview header.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

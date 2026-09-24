@@ -8,12 +8,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Context Menu"
     description: "Displays a contextual popup menu at pointer coordinates triggered by right-click interaction."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "installation", title: "Installation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string lastAction: "Right-click the target area below"
 
@@ -104,22 +98,41 @@ DocLayout {
         }
     }
 
-    KeyboardShortcutsTable {
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetContextMenu {
+    items: [
+        { id: "back", label: "Back", shortcut: "Alt+Left" },
+        { id: "forward", label: "Forward", shortcut: "Alt+Right" }
+    ]
+}`
+        reactCode: `import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from '@chahu/cha-set';
+
+<ContextMenu>
+  <ContextMenuTrigger className="p-8 border rounded">
+    Right click here
+  </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem onSelect={() => console.log('Back')}>Back</ContextMenuItem>
+    <ContextMenuItem onSelect={() => console.log('Forward')}>Forward</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>`
+    }
+
+
+
+    ComponentReference {
+        name: "ContextMenu"
         componentId: "context-menu"
-    }
-
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetContextMenu { ... }"
-        language: "qml"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "items", type: "var[]", default: "[]", description: "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }." },
             { name: "menuWidth", type: "int", default: "180", description: "Width of the context menu popup panel." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the context menu." }
+        ]
+    }
+}
         ]
     }
 }

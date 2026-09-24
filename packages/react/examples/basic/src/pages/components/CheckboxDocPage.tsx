@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger, Card, CodeBlock } from '@chahu/cha-set';
+import { Tabs, TabsList, TabsTrigger, Card } from '@chahu/cha-set';
 import { Checkbox, type CheckboxSize } from '../../../../../src/checkbox';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { ComponentReference } from '../../components/ComponentReference';
 
 export function CheckboxDocPage() {
   const [size, setSize] = useState<CheckboxSize>('default');
@@ -45,15 +44,6 @@ export function CheckboxDocPage() {
       category="Forms & Inputs"
       title="Checkbox"
       description="A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, helper descriptions, and companion labels."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'states', title: 'Examples & States' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
@@ -150,15 +140,7 @@ export function CheckboxDocPage() {
         </ComponentPreview>
       </section>
 
-      {/* 2. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
-      {/* 3. Anatomy */}
+      {/* 2. Anatomy */}
       <DocAnatomy
         id="anatomy"
         reactCode={`import { Checkbox } from '@chahu/cha-set';\n\n<Checkbox\n  checked={agree}\n  onCheckedChange={setAgree}\n  label="Service agreement"\n  description="I agree to the service agreement and terms of use."\n/>`}
@@ -266,105 +248,91 @@ export function CheckboxDocPage() {
         </ul>
       </section>
 
-      {/* 6. Keyboard Navigation */}
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="checkbox" />
-      </section>
-
-      {/* 6. Props Reference */}
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
-            {
-              name: 'checked',
-              type: 'boolean',
-              default: 'false',
-              description: 'The controlled checked state of the checkbox.',
-            },
-            {
-              name: 'defaultChecked',
-              type: 'boolean',
-              default: 'false',
-              description: 'The default checked state when uncontrolled.',
-            },
-            {
-              name: 'indeterminate',
-              type: 'boolean',
-              default: 'false',
-              description: 'Whether the checkbox is in an indeterminate state (takes visual precedence over checked).',
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: 'Disables user interactions and applies 50% opacity.',
-            },
-            {
-              name: 'readOnly',
-              type: 'boolean',
-              default: 'false',
-              description: 'Prevents toggling state while retaining focusability and full opacity.',
-            },
-            {
-              name: 'invalid',
-              type: 'boolean',
-              default: 'false',
-              description: 'Applies destructive error styling and aria-invalid attribute.',
-            },
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: 'The size variant: default or sm.',
-            },
-            {
-              name: 'label',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: 'Optional companion label rendered alongside the checkbox.',
-            },
-            {
-              name: 'description',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: 'Optional helper text rendered below the label.',
-            },
-            {
-              name: 'onCheckedChange',
-              type: '(checked: boolean) => void',
-              default: 'undefined',
-              description: 'Callback invoked when checked state changes.',
-            },
-            {
-              name: 'forceHover',
-              type: 'boolean',
-              default: 'false',
-              description: 'Visual testing aid to force hover state styles.',
-            },
-            {
-              name: 'forceFocus',
-              type: 'boolean',
-              default: 'false',
-              description: 'Visual testing aid to force focus ring styles.',
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: 'Additional CSS class names to apply to the checkbox button.',
-            },
-          ]}
-        />
-      </section>
+      {/* 5. Component Reference (Keyboard + Props) */}
+      <ComponentReference
+        name="Checkbox"
+        componentId="checkbox"
+        props={[
+          {
+            name: 'checked',
+            type: 'boolean',
+            default: 'false',
+            description: 'The controlled checked state of the checkbox.',
+          },
+          {
+            name: 'defaultChecked',
+            type: 'boolean',
+            default: 'false',
+            description: 'The default checked state when uncontrolled.',
+          },
+          {
+            name: 'indeterminate',
+            type: 'boolean',
+            default: 'false',
+            description: 'Whether the checkbox is in an indeterminate state (takes visual precedence over checked).',
+          },
+          {
+            name: 'disabled',
+            type: 'boolean',
+            default: 'false',
+            description: 'Disables user interactions and applies 50% opacity.',
+          },
+          {
+            name: 'readOnly',
+            type: 'boolean',
+            default: 'false',
+            description: 'Prevents toggling state while retaining focusability and full opacity.',
+          },
+          {
+            name: 'invalid',
+            type: 'boolean',
+            default: 'false',
+            description: 'Applies destructive error styling and aria-invalid attribute.',
+          },
+          {
+            name: 'size',
+            type: "'default' | 'sm'",
+            default: "'default'",
+            description: 'The size variant: default or sm.',
+          },
+          {
+            name: 'label',
+            type: 'ReactNode',
+            default: 'undefined',
+            description: 'Optional companion label rendered alongside the checkbox.',
+          },
+          {
+            name: 'description',
+            type: 'ReactNode',
+            default: 'undefined',
+            description: 'Optional helper text rendered below the label.',
+          },
+          {
+            name: 'onCheckedChange',
+            type: '(checked: boolean) => void',
+            default: 'undefined',
+            description: 'Callback invoked when checked state changes.',
+          },
+          {
+            name: 'forceHover',
+            type: 'boolean',
+            default: 'false',
+            description: 'Visual testing aid to force hover state styles.',
+          },
+          {
+            name: 'forceFocus',
+            type: 'boolean',
+            default: 'false',
+            description: 'Visual testing aid to force focus ring styles.',
+          },
+          {
+            name: 'className',
+            type: 'string',
+            default: "''",
+            description: 'Additional CSS class names to apply to the checkbox button.',
+          },
+        ]}
+      />
     </DocLayout>
   );
 }

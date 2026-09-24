@@ -8,14 +8,6 @@ DocLayout {
     category: "Forms & Inputs"
     pageTitle: "Switch"
     description: "A control that allows the user to toggle between checked and not checked states."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "states", title: "Examples & States" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -127,23 +119,6 @@ DocLayout {
         ]
     }
 
-    // Section 2: Installation
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Installation"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
     }
 
     // Section 3: Anatomy
@@ -298,25 +273,10 @@ DocLayout {
         }
     }
 
-    // Section 5: Props Reference
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Props Reference"
-            color: root.cFg
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-        }
-
-        KeyboardShortcutsTable {
-            componentId: "switch"
-        }
-
-        PropsTable {
-            width: parent.width
-            propsModel: [
+        ComponentReference {
+        name: "Switch"
+        componentId: "switch"
+        propsModel: [
                 {
                     name: "checked",
                     type: "bool",
@@ -372,6 +332,6 @@ DocLayout {
                     description: "Visual testing aid to force focus ring."
                 }
             ]
-        }
     }
+}
 }

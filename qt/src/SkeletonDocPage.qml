@@ -8,13 +8,6 @@ DocLayout {
     category: "Base Primitives"
     pageTitle: "Skeleton"
     description: "Used to show a placeholder while content is loading, utilizing a subtle looping pulse animation."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string animationMode: "pulse"
 
@@ -111,9 +104,26 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetSkeleton { width: 200; height: 20; rounded: 'md' }"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+Column {
+    spacing: 8
+    ChaSetSkeleton { width: 192; height: 16 }
+    ChaSetSkeleton { width: 128; height: 16 }
+}`
+        reactCode: `import { Skeleton } from '@chahu/cha-set';
+
+<div className="space-y-2">
+  <Skeleton className="h-4 w-48" />
+  <Skeleton className="h-4 w-32" />
+</div>`
+    }
+
+
+
+    "
         language: "qml"
     }
 
@@ -130,17 +140,17 @@ DocLayout {
         DocText { text: "• All animations stop when ThemeTokens.animationsEnabled is false, keeping the skeleton static."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "Skeleton"
         componentId: "skeleton"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "animation", type: "string", default: "'pulse'", description: "Animation mode: 'pulse' | 'wave' | 'none'." },
             { name: "rounded", type: "string", default: "'md'", description: "Corner radius preset: 'none' | 'sm' | 'md' | 'lg' | 'full'." },
             { name: "customRadius", type: "int", default: "-1", description: "Custom corner radius override." },
             { name: "animate", type: "bool", default: "true", description: "Convenience flag to enable or disable animation." }
+        ]
+    }
+}
         ]
     }
 }

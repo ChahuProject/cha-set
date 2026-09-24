@@ -8,14 +8,6 @@ DocLayout {
     category: "Base Primitives"
     pageTitle: "Label"
     description: "Renders an accessible label associated with form controls."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "sizes", title: "Sizes" },
-        { id: "states", title: "States" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -125,19 +117,22 @@ DocLayout {
     }
 
     // Section 2: Installation
-    Column {
-        width: parent.width
-        spacing: 8
-        DocText { text: "Installation"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        ChaSetCodeBlock {
-            width: parent.width
-            language: "bash"
-            code: "pnpm add @chahu/cha-set"
-        }
+    // Section 2: Anatomy
+    DocAnatomy {
+        sectionId: "anatomy"
+        reactCode: `import { Label } from '@chahu/cha-set';
+
+<Label htmlFor="email">Email Address</Label>`
+        qtCode: `import ChaSet
+
+ChaSetLabel {
+    text: "Email Address"
+}`
     }
 
     // Section 3: Sizes
     Column {
+        property string sectionId: "sizes"
         width: parent.width
         spacing: 8
         DocText { text: "Sizes"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
@@ -170,6 +165,7 @@ DocLayout {
 
     // Section 4: States
     Column {
+        property string sectionId: "states"
         width: parent.width
         spacing: 8
         DocText { text: "States & Variants"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
@@ -284,32 +280,52 @@ DocLayout {
         }
     }
 
-    // Section 5: Props Reference
+    // Section 5: Form Association
     Column {
+        property string sectionId: "form-control"
         width: parent.width
         spacing: 8
-        DocText { text: "Keyboard Navigation"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "Form Association"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "Clicking the label activates or toggles the linked input element."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
-        KeyboardShortcutsTable {
-            componentId: "label"
-        }
-
-        Item { width: parent.width; height: 12 }
-
-        DocText { text: "Props Reference"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-
-        PropsTable {
+        ChaSetCard {
             width: parent.width
-            propsModel: [
-                { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "Text size variant (default or compact sm)." },
-                { name: "disabled", type: "bool", defaultValue: "false", desc: "Whether the label is displayed in a disabled dimmed state." },
-                { name: "required", type: "bool", defaultValue: "false", desc: "Displays a destructive colored asterisk marker." },
-                { name: "optional", type: "bool", defaultValue: "false", desc: "Displays a muted optional text indicator." },
-                { name: "invalid", type: "bool", defaultValue: "false", desc: "Displays destructive text color indicating validation error." },
-                { name: "description", type: "string", defaultValue: "''", desc: "Supporting helper text rendered beneath the label." },
-                { name: "tooltip", type: "string", defaultValue: "''", desc: "Contextual help tooltip text displayed on hovering the info icon." },
-                { name: "text", type: "string", defaultValue: "''", desc: "The label text to display." }
-            ]
+            customRadius: root.customRadius
+
+            Row {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 16
+                spacing: 8
+                ChaSetCheckbox {
+                    id: termsCheckbox
+                    size: "sm"
+                }
+                ChaSetLabel {
+                    text: "I accept the terms and conditions"
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: termsCheckbox.checked = !termsCheckbox.checked
+                    }
+                }
+            }
         }
+    }
+
+    // Section 6: Props Reference
+    ComponentReference {
+        name: "Label"
+        componentId: "label"
+        props: [
+            { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", description: "Text size variant (default or compact sm)." },
+            { name: "disabled", type: "bool", defaultValue: "false", description: "Whether the label is displayed in a disabled dimmed state." },
+            { name: "required", type: "bool", defaultValue: "false", description: "Displays a destructive colored asterisk marker." },
+            { name: "optional", type: "bool", defaultValue: "false", description: "Displays a muted optional text indicator." },
+            { name: "invalid", type: "bool", defaultValue: "false", description: "Displays destructive text color indicating validation error." },
+            { name: "description", type: "string", defaultValue: "''", description: "Supporting helper text rendered beneath the label." },
+            { name: "tooltip", type: "string", defaultValue: "''", description: "Contextual help tooltip text displayed on hovering the info icon." },
+            { name: "text", type: "string", defaultValue: "''", description: "The label text to display." }
+        ]
     }
 }

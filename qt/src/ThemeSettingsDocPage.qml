@@ -8,13 +8,6 @@ DocLayout {
     category: "Composite Engines"
     pageTitle: "Theme Settings"
     description: "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property var demoConfig: ({
         version: 1,
@@ -72,29 +65,29 @@ DocLayout {
         }
     }
 
-    // Section 2: Installation
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: `import ChaSet 1.0
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
 
 ChaSetThemeSettings {
-    config: currentConfig
-    onConfigModified: function(next) {
-        themeManager.applyThemeConfig(next)
-    }
+    width: parent.width
 }`
-        language: "qml"
+        reactCode: `import { ThemeSettings } from '@chahu/cha-set';
+
+<ThemeSettings />`
     }
 
-    // Section 3: Animations
+
+
+    // Animations Section
     Column {
         width: parent.width
         spacing: 8
 
         DocText {
-            text: "Animations & Transitions"
+            text: "Animations"
             color: ThemeTokens.text
-            font.pixelSize: Typography.sizeHeading
+            font.pixelSize: Typography.sizeTitleSm
             font.bold: true
         }
 
@@ -107,62 +100,17 @@ ChaSetThemeSettings {
         }
     }
 
-    // Section 4: Keyboard Navigation
-    Column {
-        width: parent.width
-        spacing: 8
-
-        DocText {
-            text: "Keyboard Navigation"
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeHeading
-            font.bold: true
-        }
-
-        KeyboardShortcutsTable {
-            width: parent.width
-            componentId: "theme-settings"
-        }
-    }
-
-    // Section 5: Props Reference
-    Column {
-        width: parent.width
-        spacing: 12
-
-        DocText {
-            text: "Props Reference"
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeHeading
-            font.bold: true
-        }
-
-        Rectangle {
-            width: parent.width
-            implicitHeight: propsCol.implicitHeight + ThemeTokens.dp(24)
-            radius: ThemeTokens.dp(8)
-            color: ThemeTokens.panel
-            border.color: ThemeTokens.border
-            border.width: 1
-
-            Column {
-                id: propsCol
-                x: ThemeTokens.dp(16)
-                y: ThemeTokens.dp(12)
-                width: parent.width - ThemeTokens.dp(32)
-                spacing: ThemeTokens.dp(12)
-
-                DocText { width: parent.width; wrap: true; text: "• config: var — Canonical theme configuration object matching ThemeConfig schema."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { width: parent.width; wrap: true; text: "• disabled: bool — Disables all interactive controls and dims opacity. Default: false."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { width: parent.width; wrap: true; text: "• showReset: bool — Whether to display the reset button in header. Default: true."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { width: parent.width; wrap: true; text: "• showExport: bool — Whether to display the export JSON button in header. Default: true."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { width: parent.width; wrap: true; text: "• showImport: bool — Whether to display the import button in header. Default: true."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { width: parent.width; wrap: true; text: "• showTypography: bool — Whether to render typography selection rows. Default: false."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { width: parent.width; wrap: true; text: "• textProvider: var — Optional i18n string resolver function (key, defaultText) => string."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
-                DocText { width: parent.width; wrap: true; text: "• signal configChanged(var nextConfig) — Emitted when configuration values change."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
-                DocText { width: parent.width; wrap: true; text: "• signal resetRequested() — Emitted when reset is clicked."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
-                DocText { width: parent.width; wrap: true; text: "• signal exportRequested(string jsonString) — Emitted when export is clicked."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
-            }
-        }
+    ComponentReference {
+        name: "ThemeSettings"
+        componentId: "theme-settings"
+        propsModel: [
+            { name: "config", type: "var", defaultVal: "{}", description: "Canonical theme configuration object matching ThemeConfig schema." },
+            { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all interactive controls and dims opacity." },
+            { name: "showReset", type: "bool", defaultVal: "true", description: "Whether to display the reset button in header." },
+            { name: "showExport", type: "bool", defaultVal: "true", description: "Whether to display the export JSON button in header." },
+            { name: "showImport", type: "bool", defaultVal: "true", description: "Whether to display the import button in header." },
+            { name: "showTypography", type: "bool", defaultVal: "false", description: "Whether to render typography selection rows." },
+            { name: "textProvider", type: "var", defaultVal: "undefined", description: "Optional i18n string resolver function." }
+        ]
     }
 }

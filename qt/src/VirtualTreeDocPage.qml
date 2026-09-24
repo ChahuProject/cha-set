@@ -8,12 +8,6 @@ DocLayout {
     category: "Desktop & Virtualization"
     pageTitle: "Virtual Tree"
     description: "Hierarchical tree structure with reactive node expansion, indentation guides, and selection states."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string selectionMode: "multiple"
     property var selectedIds: ["Button.tsx"]
@@ -433,19 +427,30 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetVirtualTree { nodes: [...], selectionMode: \"multiple\", enableDnd: true }"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetVirtualTree {
+    width: parent.width
+    height: 400
+    model: treeModel
+}`
+        reactCode: `import { VirtualTree } from '@chahu/cha-set';
+
+<VirtualTree data={treeNodes} onNodeSelect={(node) => console.log(node)} />`
+    }
+
+
+
+    "
         language: "qml"
     }
 
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "VirtualTree"
         componentId: "virtual-tree"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "nodes", type: "var[]", default: "[]", description: "Hierarchical array of tree node objects with nested children arrays." },
             { name: "selectionMode", type: "string", default: "'single'", description: "Selection modality: 'single' | 'multiple' | 'none'." },
             { name: "selectedId", type: "string", default: "''", description: "ID of the currently highlighted node (single mode)." },
@@ -462,6 +467,9 @@ DocLayout {
             { name: "collapseAll()", type: "function", default: "function", description: "Collapses all open tree branches." },
             { name: "selectAll()", type: "function", default: "function", description: "Selects all visible nodes in multiple mode." },
             { name: "scrollToIndex(index)", type: "function", default: "function", description: "Scrolls the virtual tree to the specified index." }
+        ]
+    }
+}
         ]
     }
 }

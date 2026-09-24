@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Splitter, Badge, Button, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SplitterDocPage() {
   const [size, setSize] = useState(35);
@@ -56,14 +56,6 @@ export function SplitterDocPage() {
       category="Surfaces & Layout"
       title="Splitter"
       description="Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits."
-      tocItems={[
-        { id: 'overview', title: 'Horizontal Splitter' },
-        { id: 'vertical', title: 'Vertical Splitter' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -112,6 +104,27 @@ export function SplitterDocPage() {
         </ComponentPreview>
       </section>
 
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Splitter } from '@chahu/cha-set';
+
+<Splitter orientation="horizontal" defaultSplit={0.3}>
+  <div>Left Pane</div>
+  <div>Right Pane</div>
+</Splitter>`}
+        qtCode={`import ChaSet
+
+ChaSetSplitter {
+    width: parent.width
+    height: 300
+    orientation: Qt.Horizontal
+    splitRatio: 0.3
+}`}
+      />
+
+
+
       <section id="vertical" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Vertical Splitter
@@ -121,7 +134,7 @@ export function SplitterDocPage() {
         </p>
 
         <ComponentPreview
-          title="Vertical Splitter Sandbox"
+          title="Vertical Splitter"
           reactCode={verticalReactCode}
           qtCode={verticalQtCode}
         >
@@ -157,13 +170,6 @@ export function SplitterDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Animations
@@ -189,22 +195,10 @@ export function SplitterDocPage() {
         </ul>
       </section>
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="splitter" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="Splitter"
+        componentId="splitter"
+        props={[
             { name: 'size', type: 'number', default: 'undefined', description: 'Controlled percentage width/height (0-100).' },
             { name: 'onChange', type: '(size: number) => void', default: 'undefined', description: 'Callback fired on drag with new percentage.' },
             { name: 'initialSize', type: 'number', default: '50', description: 'Initial size percentage for uncontrolled usage.' },
@@ -212,8 +206,7 @@ export function SplitterDocPage() {
             { name: 'maxSize', type: 'number', default: '100', description: 'Maximum allowed percentage bound.' },
             { name: 'orientation', type: "'vertical' | 'horizontal'", default: "'vertical'", description: 'Orientation of the divider.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

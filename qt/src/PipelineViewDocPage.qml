@@ -8,13 +8,6 @@ DocLayout {
   category: "Composite Engines"
   pageTitle: "Pipeline View"
   description: "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
-  tocItems: [
-    { id: "overview", title: "Interactive Overview" },
-    { id: "installation", title: "Installation" },
-    { id: "animations", title: "Animations" },
-    { id: "keyboard", title: "Keyboard Navigation" },
-    { id: "props", title: "Props Reference" }
-  ]
 
   property var sampleSteps: [
     { name: "Parse SPIR-V Bytecode", status: "success", durationMs: 3200 },
@@ -101,52 +94,46 @@ DocLayout {
     }
   }
 
-  // Installation
-  Column {
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetPipelineView {
     width: parent.width
-    spacing: 8
+    stages: stagesModel
+}`
+        reactCode: `import { PipelineView } from '@chahu/cha-set';
 
-    Text {
-      text: "Installation"
-      color: ThemeTokens.text
-      font.pixelSize: Typography.sizeTitleSm
-      font.weight: Typography.weightSemibold
+<PipelineView stages={stages} activeStageIndex={0} />`
     }
-    ChaSetCodeBlock {
-      width: parent.width
-      language: "bash"
-      code: "import ChaSet\n\nChaSetPipelineView {\n    status: \"running\"\n    jobs: myJobs\n}"
+
+    // Animations
+    Column {
+        property string sectionId: "animations"
+        width: parent.width
+        spacing: 12
+
+        Text { text: "Animations"; color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        Text { text: "Execution transitions and status node states are governed by shared motion tokens:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• Active execution nodes (running, compiling, retrying) display continuous rotation animations."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• Job list selection and hover states interpolate smoothly using ThemeTokens.motionQuick."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
     }
-  }
 
-  // Animations
-  Column {
-    width: parent.width
-    spacing: 12
-
-    Text { text: "Animations"; color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-    Text { text: "Execution transitions and status node states are governed by shared motion tokens:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
-    Text { text: "• Active execution nodes (running, compiling, retrying) display continuous rotation animations."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
-    Text { text: "• Job list selection and hover states interpolate smoothly using ThemeTokens.motionQuick."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
-    Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
-  }
-
-  KeyboardShortcutsTable {
-    componentId: "pipeline-view"
-  }
-
-  PropsTable {
-    title: "Props Reference"
-    props: [
-      { name: "status", type: "string", default: "'running'", description: "Overall execution status for summary header badge." },
-      { name: "startMs", type: "real", default: "0", description: "Execution start timestamp in epoch milliseconds." },
-      { name: "endMs", type: "var", default: "null", description: "Execution completion timestamp; displays formatted duration when non-null." },
-      { name: "jobs", type: "var", default: "[]", description: "Array of jobs belonging to the current execution run." },
-      { name: "activeJobId", type: "string", default: "''", description: "Currently selected job id displaying step timeline and logs." },
-      { name: "logsSupplier", type: "var", default: "null", description: "Function supplying log lines array for a given job id." },
-      { name: "jobsTitle", type: "string", default: "'Jobs'", description: "Title text for the job list sidebar." },
-      { name: "emptyJobsText", type: "string", default: "'No jobs'", description: "Placeholder text displayed when the job list is empty." },
-      { name: "cancelDisabled", type: "bool", default: "false", description: "Disables the cancel button." }
-    ]
-  }
+    ComponentReference {
+        name: "PipelineView"
+        componentId: "pipeline-view"
+        propsModel: [
+            { name: "status", type: "string", default: "'running'", description: "Overall execution status for summary header badge." },
+            { name: "startMs", type: "real", default: "0", description: "Execution start timestamp in epoch milliseconds." },
+            { name: "endMs", type: "var", default: "null", description: "Execution completion timestamp; displays formatted duration when non-null." },
+            { name: "jobs", type: "var", default: "[]", description: "Array of jobs belonging to the current execution run." },
+            { name: "activeJobId", type: "string", default: "''", description: "Currently selected job id displaying step timeline and logs." },
+            { name: "logsSupplier", type: "var", default: "null", description: "Function supplying log lines array for a given job id." },
+            { name: "jobsTitle", type: "string", default: "'Jobs'", description: "Title text for the job list sidebar." },
+            { name: "emptyJobsText", type: "string", default: "'No jobs'", description: "Placeholder text displayed when the job list is empty." },
+            { name: "cancelDisabled", type: "bool", default: "false", description: "Disables the cancel button." }
+        ]
+    }
 }

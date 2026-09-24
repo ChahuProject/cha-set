@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { InlineEditableText, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function InlineEditableTextDocPage() {
   const [title, setTitle] = useState('My Awesome Project');
@@ -19,13 +19,6 @@ export function InlineEditableTextDocPage() {
       category="Forms & Inputs"
       title="Inline Editable Text"
       description="Text element that switches seamlessly to an input field on double-click or edit trigger, supporting Enter to save and Escape to cancel."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'variants', title: 'Sizes & Interaction Triggers' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -55,6 +48,22 @@ export function InlineEditableTextDocPage() {
         </ComponentPreview>
       </section>
 
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { InlineEditableText } from '@chahu/cha-set';
+
+<InlineEditableText value="Project Title" onSave={(val) => console.log(val)} />`}
+        qtCode={`import ChaSet
+
+ChaSetInlineEditableText {
+    text: "Project Title"
+    onAccepted: (val) => console.log(val)
+}`}
+      />
+
+
+
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Sizes & Interaction Triggers
@@ -68,7 +77,7 @@ export function InlineEditableTextDocPage() {
 ChaSetInlineEditableText { value: "Database Connection URI"; trigger: "doubleClick"; size: "default" }
 ChaSetInlineEditableText { value: "Sprint-42-Review"; size: "sm" }
 ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`}
-          title="Sizes & Triggers Preview"
+          title="Sizes & Interaction Triggers"
           reactCode={`<InlineEditableText value="Single Click to Edit" trigger="click" size="default" />
 <InlineEditableText value="Double Click to Edit" trigger="doubleClick" size="default" />
 <InlineEditableText value="Compact sm Tier Label" size="sm" />
@@ -95,29 +104,10 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`}
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="inline-editable-text" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="InlineEditableText"
+        componentId="inline-editable-text"
+        props={[
             { name: 'value', type: 'string', default: "''", description: 'Current text value.' },
             { name: 'onValueChange', type: '(v: string) => void', default: 'undefined', description: 'Callback invoked upon confirming an edit.' },
             { name: 'onSave', type: '(v: string) => void | boolean | Promise<...>', default: 'undefined', description: 'Async save handler; returning false keeps edit mode open.' },
@@ -127,8 +117,7 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`}
             { name: 'hint', type: 'string', default: "''", description: 'Hover tooltip hint.' },
             { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether inline editing is disabled.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

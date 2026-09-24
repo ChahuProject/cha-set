@@ -1,10 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption, Badge, Input, Tabs, TabsList, TabsTrigger, Checkbox, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 interface Invoice {
   id: string;
@@ -90,14 +89,6 @@ export function TableDocPage() {
       category="Composite Engines"
       title="Table"
       description="A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'states', title: 'Examples & States' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
@@ -208,13 +199,6 @@ export function TableDocPage() {
       </section>
 
       {/* 2. Installation */}
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
       {/* 3. Anatomy */}
       <DocAnatomy
         id="anatomy"
@@ -309,25 +293,10 @@ export function TableDocPage() {
 
       {/* 5. Props Reference */}
       
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="table" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-2">Table</h3>
-            <PropsTable
-              props={[
+            <ComponentReference
+        name="Table"
+        componentId="table"
+        props={[
                 {
                   name: 'className',
                   type: 'string',
@@ -341,44 +310,7 @@ export function TableDocPage() {
                   description: 'Additional CSS classes for the overflow-auto wrapper container.',
                 },
               ]}
-            />
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-2">TableRow</h3>
-            <PropsTable
-              props={[
-                {
-                  name: 'data-state',
-                  type: "'selected' | undefined",
-                  default: 'undefined',
-                  description: 'Sets row selection styling highlight.',
-                },
-                {
-                  name: 'className',
-                  type: 'string',
-                  default: "''",
-                  description: 'Additional CSS classes for the table row element.',
-                },
-              ]}
-            />
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-2">TableHead & TableCell</h3>
-            <PropsTable
-              props={[
-                {
-                  name: 'className',
-                  type: 'string',
-                  default: "''",
-                  description: 'Additional CSS classes for cell alignment, typography, or width.',
-                },
-              ]}
-            />
-          </div>
-        </div>
-      </section>
+      />
     </DocLayout>
   );
 }

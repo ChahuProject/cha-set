@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { PresetNumberInput, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function PresetNumberInputDocPage() {
   const [value, setValue] = useState('1024');
@@ -23,12 +23,6 @@ export function PresetNumberInputDocPage() {
       category="Forms & Inputs"
       title="Preset Number Input"
       description="High-density numeric input field with a quick-select dropdown panel for common dimension presets, unit tags, and optional clear action."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-{ id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -57,6 +51,22 @@ export function PresetNumberInputDocPage() {
           </div>
         </ComponentPreview>
       </section>
+
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { PresetNumberInput } from '@chahu/cha-set';
+
+<PresetNumberInput value={100} presets={[50, 100, 200]} onChange={(v) => console.log(v)} />`}
+        qtCode={`import ChaSet
+
+ChaSetPresetNumberInput {
+    value: 100
+    presets: [50, 100, 200]
+}`}
+      />
+
+
 
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -96,30 +106,10 @@ export function PresetNumberInputDocPage() {
         </div>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
-      
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="preset-number-input" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="PresetNumberInput"
+        componentId="preset-number-input"
+        props={[
             { name: 'value', type: 'string', default: "''", description: 'Current numeric value of the input.' },
             { name: 'onChange', type: '(val: string) => void', default: 'undefined', description: 'Callback fired when the value changes.' },
             { name: 'presets', type: 'number[]', default: '[64, 128, 256, 512, 1024, 2048, 4096, 8192]', description: 'List of quick-select preset numbers.' },
@@ -130,8 +120,7 @@ export function PresetNumberInputDocPage() {
             { name: 'inputClassName', type: 'string', default: 'undefined', description: 'Custom CSS classes for the inner input.' },
             { name: 'className', type: 'string', default: 'undefined', description: 'Custom CSS classes for the outer container.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

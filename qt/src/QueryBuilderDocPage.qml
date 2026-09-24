@@ -8,12 +8,6 @@ DocLayout {
     category: "Composite Engines"
     pageTitle: "Query Builder"
     description: "Visual rule tree builder for structured query generation with AND/OR logic toggling, field and operator predicates, and dynamic condition management."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     ComponentPreview {
         title: "Query Builder Sandbox"
@@ -95,24 +89,37 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetQueryBuilder { connector: \"AND\"; rules: [...] }"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetQueryBuilder {
+    width: parent.width
+    fields: fieldsModel
+}`
+        reactCode: `import { QueryBuilder } from '@chahu/cha-set';
+
+<QueryBuilder fields={fields} value={rules} onChange={setRules} />`
+    }
+
+
+
+    "
         language: "qml"
     }
 
     
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "QueryBuilder"
         componentId: "query-builder"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "connector", type: "string", default: "'AND'", description: "Root boolean combinator logic ('AND' | 'OR')." },
             { name: "fields", type: "var[]", default: "[]", description: "Array of queryable field definitions." },
             { name: "rules", type: "var[]", default: "[]", description: "Array of active condition rules." },
             { name: "customRadius", type: "int", default: "8", description: "Corner radius of the rule builder container." }
+        ]
+    }
+}
         ]
     }
 }

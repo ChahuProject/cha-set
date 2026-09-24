@@ -8,15 +8,6 @@ DocLayout {
     category: "Surfaces & Layout"
     pageTitle: "Resizable"
     description: "Accessible resizable panel groups and layout splitters."
-    tocItems: [
-        { id: "overview", title: "Horizontal Split" },
-        { id: "nested", title: "Nested Splitters" },
-        { id: "playground", title: "Variants Playground" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string playgroundDirection: "horizontal"
     property bool playgroundWithHandle: true
@@ -126,8 +117,27 @@ DocLayout {
         }
     }
 
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetResizable {
+    width: parent.width
+    orientation: Qt.Horizontal
+}`
+        reactCode: `import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@chahu/cha-set';
+
+<ResizablePanelGroup direction="horizontal">
+  <ResizablePanel defaultSize={30}>Sidebar</ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={70}>Content</ResizablePanel>
+</ResizablePanelGroup>`
+    }
+
     // 2. Nested Splitters
     ComponentPreview {
+        property string sectionId: "nested"
         title: "Nested Resizable Layout"
         reactCode: `<ResizablePanelGroup direction="horizontal" className="min-h-64 rounded-lg border border-border">
   <ResizablePanel defaultSize={28} minSize={5} maxSize={95}>
@@ -283,6 +293,7 @@ DocLayout {
 
     // 3. Variants Playground
     ComponentPreview {
+        property string sectionId: "playground"
         title: "Interactive Playground"
         reactCode: `<ResizablePanelGroup direction="${root.playgroundDirection}" className="min-h-56 rounded-lg border border-border">
   <ResizablePanel defaultSize={40} minSize={5} maxSize={95}>
@@ -441,14 +452,9 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetResizable {\n    orientation: Qt.Horizontal\n    withHandle: true\n}"
-        language: "qml"
-    }
-
     // Animations Section
     Column {
+        property string sectionId: "animations"
         width: parent.width
         spacing: 12
 
@@ -490,13 +496,10 @@ DocLayout {
         }
     }
 
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "Resizable"
         componentId: "resizable"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "orientation", type: "int", default: "Qt.Horizontal", description: "Split layout orientation: Qt.Horizontal or Qt.Vertical." },
             { name: "withHandle", type: "bool", default: "false", description: "Whether to render a tactile 6-dot visual grip indicator on the handle." },
             { name: "handleThickness", type: "int", default: "4 (or 8 with handle)", description: "Thickness of the divider separator bound." },

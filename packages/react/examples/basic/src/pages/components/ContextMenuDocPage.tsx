@@ -1,9 +1,9 @@
 import React from 'react';
 import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function ContextMenuDocPage() {
   const reactCode = `<ContextMenu>
@@ -34,12 +34,6 @@ export function ContextMenuDocPage() {
       category="Overlays & Feedback"
       title="Context Menu"
       description="Displays a menu located at the pointer coordinates on right-click or desktop context gesture."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -88,34 +82,40 @@ export function ContextMenuDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Context menu supports desktop shortcut triggers (Shift+F10 / Menu key), directional item traversal, and modality isolation.
-        </p>
-        <KeyboardShortcutsTable componentId="context-menu" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from '@chahu/cha-set';
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+<ContextMenu>
+  <ContextMenuTrigger className="p-8 border rounded">
+    Right click here
+  </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem onSelect={() => console.log('Back')}>Back</ContextMenuItem>
+    <ContextMenuItem onSelect={() => console.log('Forward')}>Forward</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>`}
+        qtCode={`import ChaSet
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+ChaSetContextMenu {
+    items: [
+        { id: "back", label: "Back", shortcut: "Alt+Left" },
+        { id: "forward", label: "Forward", shortcut: "Alt+Right" }
+    ]
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="ContextMenu"
+        componentId="context-menu"
+        props={[
             { name: 'modal', type: 'boolean', default: 'true', description: 'Whether the context menu is modal.' },
             { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: 'Callback fired on open state change.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

@@ -8,12 +8,6 @@ DocLayout {
     category: "Base Primitives"
     pageTitle: "Copy Button"
     description: "One-click clipboard copy button with transient feedback state and configurable timeouts."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property string copyStatus: "Click the copy button to test"
 
@@ -25,32 +19,7 @@ DocLayout {
         Item {
             anchors.fill: parent
 
-            Column {
-                anchors.centerIn: parent
-                spacing: ThemeTokens.dp(16)
-
-                Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: ThemeTokens.dp(12)
-
-                    Rectangle {
-                        width: ThemeTokens.dp(240)
-                        height: ThemeTokens.dp(32)
-                        color: ThemeTokens.panel
-                        border.color: ThemeTokens.border
-                        border.width: 1
-                        radius: ThemeTokens.dp(6)
-
-                        DocText {
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: parent.left
-                            anchors.leftMargin: ThemeTokens.dp(10)
-                            text: "pnpm add @chahu/cha-set"
-                            color: ThemeTokens.text
-                            font.pixelSize: Typography.sizeSmall
-                            font.family: Typography.familyMono
-                        }
-                    }
+            }
 
                     ChaSetCopyButton {
                         text: "pnpm add @chahu/cha-set"
@@ -79,6 +48,22 @@ DocLayout {
                     }
                 }
 
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetCopyButton {
+    text: "pnpm add @chahu/cha-set"
+    label: "Copy Command"
+    onCopiedToClipboard: (txt) => console.log("Copied:", txt)
+}`
+        reactCode: `import { CopyButton } from '@chahu/cha-set';
+
+<CopyButton text="pnpm add @chahu/cha-set" label="Copy Command" />`
+    }
+
+
+
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: root.copyStatus
@@ -90,25 +75,23 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetCopyButton { text: \"Hello\"; label: \"Copy\" }"
+    "
         language: "qml"
     }
 
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "CopyButton"
         componentId: "copy-button"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "text", type: "string", default: "''", description: "The string content sent to the clipboard when clicked (alias: textToCopy)." },
             { name: "label", type: "string", default: "''", description: "Optional companion label text displayed next to the copy icon." },
             { name: "copiedLabel", type: "string", default: "'Copied!'", description: "Feedback label text displayed after successfully copying." },
             { name: "timeout", type: "int", default: "2000", description: "Duration in milliseconds that the success check icon persists." },
             { name: "variant", type: "string", default: "'outline'", description: "Visual variant style: 'outline' | 'ghost' | 'default' | 'secondary'." },
             { name: "size", type: "string", default: "'icon-xs'", description: "Button sizing preset: 'icon-xs', 'icon-sm', 'sm', 'default'." }
+        ]
+    }
+}
         ]
     }
 }

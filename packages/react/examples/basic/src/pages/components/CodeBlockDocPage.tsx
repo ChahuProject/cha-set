@@ -1,9 +1,9 @@
 import React from 'react';
 import { CodeBlock, Badge } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 const TSX_SAMPLE = `import { useState } from 'react';
 
@@ -77,15 +77,6 @@ export function CodeBlockDocPage() {
       category="Composite Engines"
       title="Code Block"
       description="Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'variants', title: 'Variants & Options' },
-        { id: 'multi-file', title: 'Multi-File Tabs' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -104,9 +95,32 @@ export function CodeBlockDocPage() {
         </ComponentPreview>
       </section>
 
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { CodeBlock } from '@chahu/cha-set';
+
+<CodeBlock
+  code="const greeting = 'Hello, world!';" 
+  language="tsx"
+  showLineNumbers
+  showCopy
+/>`}
+        qtCode={`import ChaSet
+
+ChaSetCodeBlock {
+    width: parent.width
+    code: "const greeting = 'Hello, world!';"
+    language: "tsx"
+    showLineNumbers: true
+}`}
+      />
+
+
+
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Variants &amp; Options
+          Variants & Options
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and
@@ -163,13 +177,6 @@ export function CodeBlockDocPage() {
         <CodeBlock files={MULTI_FILE_SAMPLE} showLineNumbers />
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
-
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Animations
@@ -197,22 +204,10 @@ export function CodeBlockDocPage() {
         </ul>
       </section>
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="code-block" />
-      </section>
-
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+            <ComponentReference
+        name="CodeBlock"
+        componentId="code-block"
+        props={[
             { name: 'code', type: 'string', default: "''", description: 'Source text; ignored when `files` is provided.' },
             { name: 'language', type: 'string', default: "'tsx'", description: 'Language id or alias resolved by the shared lexer.' },
             { name: 'filename', type: 'string', default: 'undefined', description: 'Header title override; defaults to the resolved language label.' },
@@ -227,8 +222,7 @@ export function CodeBlockDocPage() {
             { name: 'copyLabel', type: 'string', default: 'undefined', description: 'Accessible label for the copy button.' },
             { name: 'className', type: 'string', default: 'undefined', description: 'Additional class names for the outer container.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }

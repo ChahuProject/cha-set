@@ -8,16 +8,6 @@ DocLayout {
     category: "Base Primitives"
     pageTitle: "Badge"
     description: "Displays a badge or a component that looks like a badge to highlight status, tags, and counts."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "variants", title: "Variants" },
-        { id: "sizes", title: "Sizes" },
-        { id: "status-and-tags", title: "Status & Removable" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -232,8 +222,29 @@ DocLayout {
     }
 
     // Section 6: Footer Sections (Animations, Keyboard, Props)
-    DocFooterSections {
+        // Animations
+    Column {
         width: parent.width
+        spacing: ThemeTokens.dp(8)
+
+        DocText {
+            text: "Animations"
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
+            color: ThemeTokens.text
+        }
+
+        DocText {
+            text: "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
+    ComponentReference {
+        name: "Badge"
         componentId: "badge"
         propsModel: [
             { name: "variant", type: "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'", defaultValue: "'default'", desc: "Visual stylistic variant corresponding to core color tokens." },
@@ -245,5 +256,6 @@ DocLayout {
             { name: "iconSource", type: "string", defaultValue: "''", desc: "Optional leading icon image source URL." },
             { name: "text", type: "string", defaultValue: "''", desc: "The label text to display inside the badge." }
         ]
+    }
     }
 }

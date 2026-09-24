@@ -8,12 +8,6 @@ DocLayout {
     category: "Desktop & Virtualization"
     pageTitle: "Virtual List"
     description: "High-performance windowed virtualized list for handling 100k+ rows with native desktop wheel kinematics and delegate recycling."
-    tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
-    ]
 
     ComponentPreview {
         title: "Virtual List Sandbox"
@@ -125,19 +119,31 @@ DocLayout {
         }
     }
 
-    ChaSetCodeBlock {
-        title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetVirtualList { model: 10000; delegate: ... }"
+    DocAnatomy {
+        width: parent.width
+        qtCode: `import ChaSet
+
+ChaSetVirtualList {
+    width: parent.width
+    height: 400
+    count: 10000
+    itemHeight: 36
+}`
+        reactCode: `import { VirtualList } from '@chahu/cha-set';
+
+<VirtualList count={10000} itemHeight={36} renderItem={(index) => <div>Row {index}</div>} />`
+    }
+
+
+
+    "
         language: "qml"
     }
 
-    KeyboardShortcutsTable {
+    ComponentReference {
+        name: "VirtualList"
         componentId: "virtual-list"
-    }
-
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "model", type: "var", default: "null", description: "List model count or array for delegate generation." },
             { name: "delegate", type: "Component", default: "null", description: "Visual delegate instantiated for visible rows." },
             { name: "itemHeight", type: "int", default: "36", description: "Default estimated height of each row." },
@@ -146,6 +152,9 @@ DocLayout {
             { name: "overscan", type: "int", default: "8", description: "Number of buffer items rendered beyond viewport bounds." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the list viewport container." },
             { name: "scrollToIndex(index)", type: "function", default: "function", description: "Programmatically scrolls to the target item index." }
+        ]
+    }
+}
         ]
     }
 }

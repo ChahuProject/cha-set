@@ -1,9 +1,9 @@
 import React from 'react';
 import { PanelCard, Button, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function PanelCardDocPage() {
   const reactCode = `<PanelCard
@@ -22,12 +22,6 @@ export function PanelCardDocPage() {
       category="Surfaces & Layout"
       title="Panel Card"
       description="Card surface with integrated collapsible sections and header action slots for desktop sidebars and inspectors."
-      tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
@@ -77,30 +71,28 @@ export function PanelCardDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
-        </h2>
-        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { PanelCard } from '@chahu/cha-set';
 
-      
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Keyboard shortcuts and interaction patterns for this component.
-        </p>
-        <KeyboardShortcutsTable componentId="panel-card" />
-      </section>
+<PanelCard title="Server Overview">
+  <div className="p-4">Server telemetry and health status.</div>
+</PanelCard>`}
+        qtCode={`import ChaSet
 
-      <section id="props" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
-        </h2>
-        <PropsTable
-          props={[
+ChaSetPanelCard {
+    width: parent.width
+    title: "Server Overview"
+}`}
+      />
+
+
+
+            <ComponentReference
+        name="PanelCard"
+        componentId="panel-card"
+        props={[
             { name: 'title', type: 'ReactNode', default: 'undefined', description: 'Panel header title text or element.' },
             { name: 'badgeText', type: 'string', default: 'undefined', description: 'Optional badge text displayed next to the title.' },
             { name: 'collapsible', type: 'boolean', default: 'false', description: 'Whether the panel content can be toggled collapsed.' },
@@ -110,8 +102,7 @@ export function PanelCardDocPage() {
             { name: 'actions', type: 'ReactNode', default: 'undefined', description: 'Right-aligned header action elements.' },
             { name: 'size', type: "'default' | 'sm'", default: "'default'", description: 'Sizing scale of the card panel.' },
           ]}
-        />
-      </section>
+      />
     </DocLayout>
   );
 }
