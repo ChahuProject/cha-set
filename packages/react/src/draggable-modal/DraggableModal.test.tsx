@@ -121,5 +121,24 @@ describe('DraggableModal and FloatingWindow', () => {
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
+
+  it('dynamically adapts dimensions according to root html fontSize (uiScale)', async () => {
+    const prevFontSize = document.documentElement.style.fontSize;
+    document.documentElement.style.fontSize = '24px';
+    try {
+      const { container } = render(
+        <DraggableModal defaultWidthRem={20} defaultHeightRem={15} autoFitHeight={false}>
+          <div>Scaled Modal</div>
+        </DraggableModal>,
+      );
+
+      const modal = container.querySelector('[data-slot="dialog-content"]') as HTMLElement;
+      expect(modal).toBeInTheDocument();
+      // 20rem * 24px = 480px
+      expect(modal.style.width).toBe('480px');
+    } finally {
+      document.documentElement.style.fontSize = prevFontSize;
+    }
+  });
 });
 

@@ -92,7 +92,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
       minHeightRem,
       initialPositionMode = 'center',
       topMarginRem = 4.5,
-      remBase = 16,
+      remBase,
       autoFitHeight = true,
       sizeOptions,
       sizeMenuTooltip,
@@ -171,8 +171,8 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
   const minWidthRemVal = minWidthRem ?? 最小宽度rem;
   const minHeightRemVal = minHeightRem ?? 最小高度rem;
 
-  const resolvedMinWidth = minWidthRemVal !== undefined ? minWidthRemVal * rem : (minWidth ?? 300);
-  const resolvedMinHeight = minHeightRemVal !== undefined ? minHeightRemVal * rem : (minHeight ?? 200);
+  const resolvedMinWidth = minWidthRemVal !== undefined ? minWidthRemVal * rem : (minWidth ?? (18 * rem));
+  const resolvedMinHeight = minHeightRemVal !== undefined ? minHeightRemVal * rem : (minHeight ?? (12 * rem));
 
   let resolvedWidth: number;
   if (widthRemVal !== undefined) {
@@ -204,7 +204,9 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
 
   const initialPosRef = React.useRef<{ x: number; y: number; width: number; height: number } | null>(null);
   if (initialPosRef.current === null) {
-    let initX = Math.max(16, (innerW - resolvedWidth) / 2);
+    const maxModalW = Math.max(resolvedMinWidth, innerW - 32);
+    const boundedW = Math.min(resolvedWidth, maxModalW);
+    let initX = Math.max(16, (innerW - boundedW) / 2);
     let initY = Math.max(16, (innerH - resolvedHeight) / 2);
     let initH = resolvedHeight;
 
@@ -217,7 +219,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     initialPosRef.current = {
       x: initX,
       y: initY,
-      width: resolvedWidth,
+      width: boundedW,
       height: initH,
     };
   }
@@ -268,7 +270,9 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     const rnd = rndRef.current;
     if (!rnd || typeof window === 'undefined') return;
 
-    const targetW = widthRemVal !== undefined ? widthRemVal * rem : (defaultWidth ?? 32 * rem);
+    const baseW = widthRemVal !== undefined ? widthRemVal * rem : (defaultWidth ?? 32 * rem);
+    const maxW = Math.max(resolvedMinWidth, window.innerWidth - 32);
+    const targetW = Math.min(baseW, maxW);
     if (Math.abs(targetW - currentSizeRef.current.width) > 1) {
       currentSizeRef.current = { ...currentSizeRef.current, width: targetW };
       rnd.updateSize({ width: targetW, height: currentSizeRef.current.height });
@@ -279,7 +283,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
       }
     }
     attemptFitHeight();
-  }, [rem, widthRemVal, defaultWidth, attemptFitHeight]);
+  }, [rem, widthRemVal, defaultWidth, resolvedMinWidth, attemptFitHeight]);
 
   React.useEffect(() => {
     const id = window.setTimeout(attemptFitHeight, 50);
