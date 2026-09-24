@@ -76,7 +76,7 @@ export function GenericDataTableDocPage() {
         { key: "role", header: "Role", width: 160 },
         { key: "status", header: "Status", width: 90 }
     ]
-    data: users
+    rows: users
 }`;
 
   return (

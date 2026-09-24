@@ -38,7 +38,7 @@ DocLayout {
         { key: "role", header: "Role", width: 160 },
         { key: "status", header: "Status", width: 90 }
     ]
-    data: users
+    rows: users
 }`
 
         Item {
@@ -55,7 +55,7 @@ DocLayout {
                     { key: "role", header: "Role", width: 160 },
                     { key: "status", header: "Status", width: 90 }
                 ]
-                data: [
+                rows: [
                     { id: "1", name: "Alice Chen", role: "Lead Architect", status: "Active" },
                     { id: "2", name: "Bob Smith", role: "Frontend Engineer", status: "Active" },
                     { id: "3", name: "Carol White", role: "Qt Specialist", status: "Pending" },
@@ -68,7 +68,7 @@ DocLayout {
 
     ChaSetCodeBlock {
         title: "Installation"
-        code: "import ChaSet 1.0\n\nChaSetGenericDataTable { columns: [...]; data: [...] }"
+        code: "import ChaSet 1.0\n\nChaSetGenericDataTable { columns: [...]; rows: [...] }"
         language: "qml"
     }
 
@@ -81,7 +81,7 @@ DocLayout {
         title: "Props Reference"
         props: [
             { name: "columns", type: "var[]", default: "[]", description: "Array of column specifications: { key, header, width }." },
-            { name: "data", type: "var[]", default: "[]", description: "Array of arbitrary records to display." },
+            { name: "rows", type: "var[]", default: "[]", description: "Array of arbitrary records to display (alias: tableData)." },
             { name: "pageSize", type: "int", default: "5", description: "Number of rows per page." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the table border frame." }
         ]

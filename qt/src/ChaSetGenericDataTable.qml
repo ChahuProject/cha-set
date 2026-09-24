@@ -6,8 +6,9 @@ import ChaSet
 Item {
     id: root
 
-    property var columns: [] // [{ key, header, width }]
-    property var data: [] // array of record objects
+    property var columns: [] // [{ key/accessorKey, header, width }]
+    property var rows: [] // array of record objects
+    property alias tableData: root.rows
     property string searchFilter: ""
     property string sortKey: ""
     property bool sortAsc: true
@@ -20,10 +21,12 @@ Item {
 
     // Filtered data
     readonly property var filteredData: {
-        let list = root.data || []
+        let list = (root.rows && root.rows.length !== undefined) ? root.rows : (root.tableData || [])
+        if (!Array.isArray(list)) list = []
         if (root.searchFilter.length > 0) {
             let q = root.searchFilter.toLowerCase()
             list = list.filter(function(row) {
+                if (!row) return false
                 return Object.values(row).some(function(val) {
                     return String(val).toLowerCase().indexOf(q) !== -1
                 })
@@ -31,8 +34,8 @@ Item {
         }
         if (root.sortKey !== "") {
             list = list.slice().sort(function(a, b) {
-                let va = a[root.sortKey]
-                let vb = b[root.sortKey]
+                let va = a ? a[root.sortKey] : undefined
+                let vb = b ? b[root.sortKey] : undefined
                 if (va < vb) return root.sortAsc ? -1 : 1
                 if (va > vb) return root.sortAsc ? 1 : -1
                 return 0
@@ -154,9 +157,11 @@ Item {
                 Repeater {
                     model: root.columns
                     delegate: Item {
+                        id: colDelegate
                         required property var modelData
                         width: ThemeTokens.dp(modelData.width || 120)
                         height: parent ? parent.height : 0
+                        readonly property string colKey: String(colDelegate.modelData.key || colDelegate.modelData.accessorKey || "")
 
                         Row {
                             anchors.fill: parent
@@ -164,7 +169,7 @@ Item {
 
                             Text {
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: parent.parent.modelData.header || ""
+                                text: String(colDelegate.modelData.header || "")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeCaption
                                 font.weight: Font.DemiBold
@@ -172,7 +177,7 @@ Item {
 
                             Text {
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: root.sortKey === parent.parent.modelData.key ? (root.sortAsc ? "▲" : "▼") : ""
+                                text: root.sortKey === colDelegate.colKey ? (root.sortAsc ? "▲" : "▼") : ""
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeMicro
                             }
@@ -181,7 +186,7 @@ Item {
                         MouseArea {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: root.toggleSort(parent.modelData.key)
+                            onClicked: root.toggleSort(colDelegate.colKey)
                         }
                     }
                 }
@@ -274,23 +279,24 @@ Item {
                             required property var modelData
                             width: ThemeTokens.dp(modelData.width || 120)
                             height: parent.height
+                            readonly property string cellKey: String(cellDelegate.modelData.key || cellDelegate.modelData.accessorKey || "")
 
                             ChaSetBadge {
                                 anchors.verticalCenter: parent.verticalCenter
-                                visible: cellDelegate.modelData.key === "status"
+                                visible: cellDelegate.cellKey === "status"
                                 variant: {
-                                    const val = String(rowDelegate.modelData["status"] ?? "")
+                                    const val = String(rowDelegate.modelData ? (rowDelegate.modelData["status"] ?? "") : "")
                                     if (val === "Healthy" || val === "Active") return "default"
                                     if (val === "Pending" || val === "Degraded") return "secondary"
                                     return "outline"
                                 }
-                                text: String(rowDelegate.modelData["status"] ?? "")
+                                text: String(rowDelegate.modelData ? (rowDelegate.modelData["status"] ?? "") : "")
                             }
 
                             Text {
-                                visible: cellDelegate.modelData.key !== "status"
+                                visible: cellDelegate.cellKey !== "status"
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: String(rowDelegate.modelData[cellDelegate.modelData.key] ?? "")
+                                text: String(rowDelegate.modelData ? (rowDelegate.modelData[cellDelegate.cellKey] ?? "") : "")
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeSmall
                                 font.weight: rowDelegate.isSelectedRow ? Font.Medium : Font.Normal
