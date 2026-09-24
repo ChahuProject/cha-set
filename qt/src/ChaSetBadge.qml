@@ -150,11 +150,10 @@ Rectangle {
             height: width
             anchors.verticalCenter: parent.verticalCenter
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: "×"
-                font.pixelSize: root.isSm ? Typography.sizeCaption : Typography.sizeBody
-                font.weight: Font.Bold
+                name: "x"
+                size: root.isSm ? 10 : 12
                 color: badgeText.color
                 opacity: removeTap.pressed ? 1.0 : (removeHover.hovered ? 0.9 : 0.6)
             }

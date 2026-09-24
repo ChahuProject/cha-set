@@ -38,6 +38,16 @@ set_source_files_properties(src/ShowcaseData.generated.qml PROPERTIES
     QT_QML_SOURCE_TYPENAME ShowcaseData
 )
 
+# Icon specification contract and compiled artwork (emitted from
+# spec/icons/registry.json by pnpm gen:icons). QT_QML_SINGLETON_TYPE is what makes
+# ChaSetIcons.resolveIcon() / shapesFor() callable from other components; the pragma
+# inside the generated file is not enough on its own — without this property the type is
+# registered as an ordinary component and those methods are not reachable at all.
+set_source_files_properties(src/ChaSetIcons.generated.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME ChaSetIcons
+)
+
 # Shared syntax lexer + its palette (emitted from spec/highlight/* and
 # spec/tokens/semantic/core.json by pnpm gen:highlight / gen:qt).
 set_source_files_properties(src/Highlighter.generated.qml PROPERTIES
@@ -161,6 +171,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetThemeSettings.qml
         src/ChaSetLanguageSettings.qml
         src/ThemeTokens.generated.qml
+        src/ChaSetIcons.generated.qml
 
         src/ShowcaseData.generated.qml
         src/ChaSetI18nData.generated.qml
@@ -213,6 +224,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/TokensPage.qml
             src/ThemeTunerPage.qml
             src/TypographyPage.qml
+            src/IconsPage.qml
             src/ButtonDocPage.qml
             src/ScrollAreaDocPage.qml
             src/TabsDocPage.qml

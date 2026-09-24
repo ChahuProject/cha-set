@@ -102,6 +102,37 @@ export {
   UserIcon,
   CreditCardIcon,
   LogOutIcon,
+  PlusIcon,
+  MinusIcon,
+  ChartIcon,
+  WindowMinimizeIcon,
+  WindowMaximizeIcon,
+  WindowRestoreIcon,
+  WindowCloseIcon,
 } from './lib/icons';
+
+// Icon specification (single source of truth: spec/icons/registry.json).
+// See docs/architecture/icon-system.md for the rules and the external configuration.
+export {
+  Icon,
+  resolveIconName,
+  ICON_SPEC_ID,
+  ICON_SPEC_TITLE,
+  ICON_SPEC_SOURCE,
+  ICON_METRICS,
+  ICON_GRIDS,
+  ICON_SIZES,
+  ICON_WEIGHTS,
+  ICON_COLOR,
+  ICON_RULES,
+  ICON_CATEGORIES,
+  ICON_SPECS,
+  ICON_ADOPTION,
+  ICON_AUDIT,
+  ICON_NAMES,
+  ICON_ALIASES,
+  ICON_ELEMENTS,
+} from './lib/icons';
+export type { IconName, IconProps, NamedIconProps, IconDefinition, IconGrid, IconGridId, IconRule, IconCategory, IconSpecSummary, IconAudit } from './lib/icons';
 
 

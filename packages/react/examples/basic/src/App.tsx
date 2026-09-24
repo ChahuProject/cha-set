@@ -90,6 +90,7 @@ import { IntroductionPage } from './pages/get-started/IntroductionPage';
 import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
 import { TypographyPage } from './pages/get-started/TypographyPage';
+import { IconsPage } from './pages/get-started/IconsPage';
 
 /**
  * Deterministic CodeBlock harness source. Mirrored verbatim in
@@ -730,6 +731,8 @@ export function App() {
         );
       case '#/get-started/typography':
         return <TypographyPage />;
+      case '#/get-started/icons':
+        return <IconsPage />;
       case '#/components/scroll-area':
         return <ScrollAreaDocPage />;
       case '#/components/tabs':

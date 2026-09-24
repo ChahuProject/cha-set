@@ -249,6 +249,27 @@ if (existsSync(qtScalingCheckPath)) {
   console.log(`[gate] OK — Qt UI Scaling Parity Gate passed (${scalingRes.checkedCount} components verified for ThemeTokens.dp/sp scaling)`);
 }
 
+// 2.11 Mandatory Icon Specification Gate
+// The icon specification is only real where it is machine-checked: the gate re-derives
+// every rule published on the Icon System showcase page — optical centring, the grid live
+// area, the ban on glyphs used as icons, the adoption ratchet for hand-authored <svg>
+// artwork, generated-artifact freshness, and icon-name resolution — for whichever
+// specification the external configuration selects. See docs/architecture/icon-system.md.
+const iconSpecCheckPath = resolve(root, 'scripts/check-icon-spec.mjs');
+if (existsSync(iconSpecCheckPath)) {
+  const { verifyIconSpec } = await import(pathToFileURL(iconSpecCheckPath).href);
+  const iconRes = verifyIconSpec({ quiet: true });
+  for (const warn of iconRes.warnings) console.warn(`[gate] WARN ${warn}`);
+  if (!iconRes.ok) {
+    console.error(`[gate] FAIL: Icon Specification Gate failed (${iconRes.errors.length} violation(s)):`);
+    for (const err of iconRes.errors) {
+      console.error(`  - ${err}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Icon Specification Gate passed (${iconRes.checkedCount} assertions verified)`);
+}
+
 // 3. Executable Behavioral Parity Checks
 const skipQt = process.argv.includes('--skip-qt') || process.env.CHASE_SKIP_QT === '1';
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');

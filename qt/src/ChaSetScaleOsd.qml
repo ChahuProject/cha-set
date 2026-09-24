@@ -205,14 +205,12 @@ Item {
                 color: minusTap.pressed ? ThemeTokens.pressed : (minusHover.hovered && !minusDisabled ? ThemeTokens.hover : "transparent")
                 opacity: minusDisabled ? 0.4 : 1.0
 
-                Text {
+                ChaSetIcon {
                     anchors.centerIn: parent
-                    text: "−"
+                    name: "minus"
+                    size: root.isLg ? 18 : 15
+                    ignoreUiScale: root.ignoreUiScale
                     color: ThemeTokens.text
-                    font.pixelSize: root.ignoreUiScale
-                        ? (root.isLg ? 21 : 15)
-                        : (root.isLg ? Typography.sizeTitleSm : Typography.sizeHeading)
-                    font.weight: Typography.weightBold
                 }
 
                 ToolTip {
@@ -245,14 +243,12 @@ Item {
                 color: plusTap.pressed ? ThemeTokens.pressed : (plusHover.hovered && !plusDisabled ? ThemeTokens.hover : "transparent")
                 opacity: plusDisabled ? 0.4 : 1.0
 
-                Text {
+                ChaSetIcon {
                     anchors.centerIn: parent
-                    text: "+"
+                    name: "plus"
+                    size: root.isLg ? 18 : 15
+                    ignoreUiScale: root.ignoreUiScale
                     color: ThemeTokens.text
-                    font.pixelSize: root.ignoreUiScale
-                        ? (root.isLg ? 21 : 15)
-                        : (root.isLg ? Typography.sizeTitleSm : Typography.sizeHeading)
-                    font.weight: Typography.weightBold
                 }
 
                 ToolTip {
@@ -285,13 +281,12 @@ Item {
                 color: resetTap.pressed ? ThemeTokens.pressed : (resetHover.hovered && !resetDisabled ? ThemeTokens.hover : "transparent")
                 opacity: resetDisabled ? 0.4 : 1.0
 
-                Text {
+                ChaSetIcon {
                     anchors.centerIn: parent
-                    text: "⟳"
+                    name: "rotate-ccw"
+                    size: root.isLg ? 18 : 15
+                    ignoreUiScale: root.ignoreUiScale
                     color: ThemeTokens.text
-                    font.pixelSize: root.ignoreUiScale
-                        ? (root.isLg ? 18 : 12)
-                        : (root.isLg ? Typography.sizeSubheading : Typography.sizeBody)
                 }
 
                 ToolTip {

@@ -182,12 +182,11 @@ Item {
             color: backHover.hovered && root.canGoBack && !root.disabled ? ThemeTokens.hover : "transparent"
             opacity: (root.canGoBack && !root.disabled) ? 1.0 : 0.35
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: "←"
+                name: "arrow-left"
+                size: 16
                 color: ThemeTokens.text
-                font.pixelSize: Typography.sizeBody
-                font.weight: Typography.weightBold
             }
 
             HoverHandler {
@@ -211,12 +210,11 @@ Item {
             color: forwardHover.hovered && root.canGoForward && !root.disabled ? ThemeTokens.hover : "transparent"
             opacity: (root.canGoForward && !root.disabled) ? 1.0 : 0.35
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: "→"
+                name: "arrow-right"
+                size: 16
                 color: ThemeTokens.text
-                font.pixelSize: Typography.sizeBody
-                font.weight: Typography.weightBold
             }
 
             HoverHandler {
@@ -241,12 +239,11 @@ Item {
             color: upHover.hovered && canUp && !root.disabled ? ThemeTokens.hover : "transparent"
             opacity: (canUp && !root.disabled) ? 1.0 : 0.35
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: "↑"
+                name: "arrow-up"
+                size: 16
                 color: ThemeTokens.text
-                font.pixelSize: Typography.sizeBody
-                font.weight: Typography.weightBold
             }
 
             HoverHandler {
@@ -270,11 +267,11 @@ Item {
             color: refreshHover.hovered && !root.disabled ? ThemeTokens.hover : "transparent"
             opacity: !root.disabled ? 1.0 : 0.35
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: "⟳"
+                name: "rotate-ccw"
+                size: 16
                 color: ThemeTokens.text
-                font.pixelSize: Typography.sizeBody
             }
 
             HoverHandler {

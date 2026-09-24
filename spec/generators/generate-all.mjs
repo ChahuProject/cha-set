@@ -27,4 +27,5 @@ run('generate-qt.mjs');
 run('generate-highlight.mjs');
 run('generate-showcase-data.mjs');
 run('generate-i18n.mjs');
+run('generate-icons.mjs');
 console.log('[gen:all] all generators completed');

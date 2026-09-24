@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
+import { MinusIcon, PlusIcon, RotateCcwIcon } from '../lib/icons';
 export { CANONICAL_SCALE_STEPS } from './useScaleOsd';
 import { CANONICAL_SCALE_STEPS } from './useScaleOsd';
 
@@ -268,18 +269,15 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
           width: isLg ? 42 : 28,
           height: isLg ? 42 : 28,
           minWidth: isLg ? 42 : 28,
-          fontSize: isLg ? 21 : 15,
         }
       : undefined;
 
-    const resetButtonStyle: React.CSSProperties | undefined = ignoreUiScale
-      ? {
-          width: isLg ? 42 : 28,
-          height: isLg ? 42 : 28,
-          minWidth: isLg ? 42 : 28,
-          fontSize: isLg ? 18 : 12,
-        }
-      : undefined;
+    // The three controls render the *same* icon size and inherit the specification's
+    // single stroke weight. Previously they were typography: "+" and "−" were typed at a
+    // bold weight while the reset glyph (U+27F3) inherited the surrounding regular weight
+    // and a smaller font size — and because a font's ascent and descent are asymmetric the
+    // symbol also sat visibly low inside its button. See docs/architecture/icon-system.md.
+    const controlIconSize = ignoreUiScale ? (isLg ? 18 : 15) : undefined;
 
     return (
       <div
@@ -338,15 +336,15 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
               disabled={disabled || currentValue <= min}
               onClick={() => handleStep(-1)}
               className={cn(
-                'rounded-full flex items-center justify-center font-semibold shrink-0',
-                isLg ? 'size-10 text-lg' : 'size-7 text-sm',
+                'rounded-full flex items-center justify-center shrink-0',
+                isLg ? 'size-10' : 'size-7',
                 'cursor-pointer hover:bg-muted text-foreground transition-colors duration-quick ease-standard',
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
                 'disabled:cursor-not-allowed disabled:opacity-40',
               )}
               style={buttonStyle}
             >
-              −
+              <MinusIcon size={controlIconSize} />
             </button>
             <button
               type="button"
@@ -355,15 +353,15 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
               disabled={disabled || currentValue >= max}
               onClick={() => handleStep(1)}
               className={cn(
-                'rounded-full flex items-center justify-center font-semibold shrink-0',
-                isLg ? 'size-10 text-lg' : 'size-7 text-sm',
+                'rounded-full flex items-center justify-center shrink-0',
+                isLg ? 'size-10' : 'size-7',
                 'cursor-pointer hover:bg-muted text-foreground transition-colors duration-quick ease-standard',
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
                 'disabled:cursor-not-allowed disabled:opacity-40',
               )}
               style={buttonStyle}
             >
-              +
+              <PlusIcon size={controlIconSize} />
             </button>
             <button
               type="button"
@@ -373,14 +371,14 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
               onClick={handleReset}
               className={cn(
                 'rounded-full flex items-center justify-center shrink-0',
-                isLg ? 'size-10 text-base' : 'size-7 text-xs',
+                isLg ? 'size-10' : 'size-7',
                 'cursor-pointer hover:bg-muted text-foreground transition-colors duration-quick ease-standard',
                 'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
                 'disabled:cursor-not-allowed disabled:opacity-40',
               )}
-              style={resetButtonStyle}
+              style={buttonStyle}
             >
-              ⟳
+              <RotateCcwIcon size={controlIconSize} />
             </button>
           </div>
         )}

@@ -109,11 +109,10 @@ Rectangle {
             color: clearMouse.containsMouse ? ThemeTokens.hover : "transparent"
             anchors.verticalCenter: parent.verticalCenter
 
-            Text {
+            ChaSetIcon {
                 anchors.centerIn: parent
-                text: "×"
-                font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
-                font.bold: true
+                name: "x"
+                size: root.isSm ? 12 : 14
                 color: clearMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText
             }
 

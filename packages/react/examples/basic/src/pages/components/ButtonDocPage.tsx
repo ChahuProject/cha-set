@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup, Input, Checkbox, SegmentedControl, type ButtonVariant, type ButtonSize, CodeBlock, SettingsIcon } from '@chahu/cha-set';
+import { Button, ButtonGroup, Icon, Input, Checkbox, SegmentedControl, type ButtonVariant, type ButtonSize, CodeBlock, SettingsIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { PropsTable } from '../../components/PropsTable';
@@ -240,8 +240,8 @@ export function ButtonDocPage() {
             Group related buttons cohesively with <code className="font-mono text-primary">ButtonGroup</code>, and enrich buttons with leading or trailing icons.
           </p>
           <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-4">
-            <Button leftIcon={<span>←</span>}>Back</Button>
-            <Button rightIcon={<span>→</span>}>Next</Button>
+            <Button leftIcon={<Icon name="arrow-left" className="size-4" />}>Back</Button>
+            <Button rightIcon={<Icon name="arrow-right" className="size-4" />}>Next</Button>
             <ButtonGroup>
               <Button variant="outline">Left</Button>
               <Button variant="outline">Middle</Button>
@@ -249,7 +249,7 @@ export function ButtonDocPage() {
             </ButtonGroup>
           </div>
           <CodeBlock
-            code={`<Button leftIcon={<span>←</span>}>Back</Button>\n<Button rightIcon={<span>→</span>}>Next</Button>\n\n<ButtonGroup>\n  <Button variant="outline">Left</Button>\n  <Button variant="outline">Middle</Button>\n  <Button variant="outline">Right</Button>\n</ButtonGroup>`}
+            code={`<Button leftIcon={<Icon name="arrow-left" />}>Back</Button>\n<Button rightIcon={<Icon name="arrow-right" />}>Next</Button>\n\n<ButtonGroup>\n  <Button variant="outline">Left</Button>\n  <Button variant="outline">Middle</Button>\n  <Button variant="outline">Right</Button>\n</ButtonGroup>`}
             language="tsx"
             className="mt-3"
           />

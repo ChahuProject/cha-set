@@ -1093,6 +1093,14 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/get-started/typography",
         "desc": "Global text rasterizer policy and a five-script size ramp previewing every type scale step.",
         "description": "Global text rasterizer policy and a five-script size ramp previewing every type scale step."
+      },
+      {
+        "id": "icons",
+        "title": "Icon System",
+        "href": "#/get-started/icons",
+        "badge": "New",
+        "desc": "One icon specification for both stacks: single geometry source, one stroke weight, optical centring by construction, and how to switch specifications.",
+        "description": "One icon specification for both stacks: single geometry source, one stroke weight, optical centring by construction, and how to switch specifications."
       }
     ]
   },
