@@ -88,4 +88,9 @@ Before committing any component changes in this repository, run the project-defi
    - Immediately push (`git push origin main`). Never accumulate uncommitted changes before yielding control to the user.
    - This worktree's branch (`d`) carries `branch.d.merge = refs/heads/main`, so `main` on `origin` is the correct push target; rebase onto `main` first to keep history linear.
 
+5. **Regenerate before verifying when the SSOT changes**:
+   - `spec/` holds the sources of truth — the icon registry, component schemas, token definitions — and the committed `*.generated.*` files are their output, not hand-authored code. Editing a product by hand, or editing the source without rerunning its generator, makes the two disagree in a way no other gate can see.
+   - After touching anything under `spec/`, run the matching generator (`pnpm gen:icons`, or `pnpm gen:all` when unsure) **before** `pnpm test` / `pnpm gate`. A stale product fails with errors that point at the consumer, not at the cause that produced it.
+   - Treat regeneration as idempotent and check it: rerun the generator on an already-clean tree and confirm the products do not move. A product that keeps changing under an unchanged source is a generator bug, not a diff to commit.
+
 
