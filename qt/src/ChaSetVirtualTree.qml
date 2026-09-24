@@ -27,7 +27,9 @@ Item {
     // Drag and Drop properties
     property bool enableDnd: false
     property bool isDragging: false
+    property bool isDropping: false
     property bool isCtrlHeld: false
+    readonly property bool effectiveIsCopy: isCtrlHeld || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)
     property string draggedId: ""
     property var draggedIds: []
     property string dropTargetId: ""
@@ -195,6 +197,7 @@ Item {
 
     function resetDragState() {
         root.isDragging = false
+        root.isDropping = false
         root.draggedId = ""
         root.draggedIds = []
         root.dropTargetId = ""
@@ -202,17 +205,18 @@ Item {
         root.isCtrlHeld = false
     }
 
-    function executeDrop(forceCopy) {
-        if (!root.enableDnd || !root.isDragging) {
-            root.resetDragState()
+    function executeDrop(forceCopy, explicitTargetId, explicitPos) {
+        if (!root.enableDnd || !root.isDragging || root.isDropping) {
+            if (!root.isDropping) root.resetDragState()
             return
         }
+        root.isDropping = true
 
-        var canDrop = root.isDropValid && root.dropTargetId !== ""
-        var targetId = root.dropTargetId
-        var targetPos = root.dropPosition
+        var targetId = (explicitTargetId !== undefined && explicitTargetId !== "") ? explicitTargetId : root.dropTargetId
+        var targetPos = (explicitPos !== undefined && explicitPos !== "") ? explicitPos : root.dropPosition
+        var canDrop = targetId !== "" && root.isDropValidFor(targetId)
         var srcList = root.draggedIds.length > 0 ? root.draggedIds.slice() : (root.draggedId ? [root.draggedId] : [])
-        var isCopy = root.isCtrlHeld || (forceCopy === true)
+        var isCopy = (forceCopy === true) || root.effectiveIsCopy
 
         if (canDrop && targetPos === "inside") {
             let expCopy = Object.assign({}, root.expandedIds)
@@ -639,20 +643,23 @@ Item {
                         root.dropPosition = pos
                         root.isDropValid = root.isDropValidFor(modelData.id)
                         if (drag.accept) {
-                            drag.accept(root.isCtrlHeld ? Qt.CopyAction : Qt.MoveAction)
+                            drag.accept(root.effectiveIsCopy ? Qt.CopyAction : Qt.MoveAction)
                         }
                     }
 
                     onExited: {
-                        if (root.dropTargetId === modelData.id) {
-                            root.dropTargetId = ""
-                            root.dropPosition = ""
+                        if (!root.isDropping && root.isDragging) {
+                            if (root.dropTargetId === modelData.id) {
+                                root.dropTargetId = ""
+                                root.dropPosition = ""
+                            }
                         }
                     }
 
                     onDropped: function(drop) {
                         if (drop) drop.acceptProposedAction()
-                        root.executeDrop()
+                        var isCopy = root.effectiveIsCopy || (drop && ((drop.keyboardModifiers & Qt.ControlModifier) !== 0 || (drop.keyboardModifiers & Qt.MetaModifier) !== 0))
+                        root.executeDrop(isCopy, modelData.id, root.dropPosition)
                     }
                 }
 
@@ -694,21 +701,23 @@ Item {
                     }
 
                     onReleased: function(mouse) {
-                        dragProxy.x = 0
-                        dragProxy.y = 0
                         if (root.enableDnd && root.isDragging) {
-                            var isCopy = root.isCtrlHeld || ((mouse.modifiers & Qt.ControlModifier) !== 0) || ((mouse.modifiers & Qt.MetaModifier) !== 0)
+                            var isCopy = root.effectiveIsCopy || ((mouse.modifiers & Qt.ControlModifier) !== 0) || ((mouse.modifiers & Qt.MetaModifier) !== 0)
+                            var targetId = root.dropTargetId
+                            var targetPos = root.dropPosition
                             dragProxy.Drag.drop()
-                            root.executeDrop(isCopy)
+                            root.executeDrop(isCopy, targetId, targetPos)
                         } else {
                             root.resetDragState()
                         }
+                        dragProxy.x = 0
+                        dragProxy.y = 0
                     }
 
                     onCanceled: {
+                        root.resetDragState()
                         dragProxy.x = 0
                         dragProxy.y = 0
-                        root.resetDragState()
                     }
 
                     onPositionChanged: function(mouse) {
@@ -757,7 +766,7 @@ Item {
                 anchors.centerIn: parent
                 spacing: ThemeTokens.dp(4)
                 Text {
-                    text: root.isCtrlHeld ? "Copying (Ctrl held)" : "Moving (Hold Ctrl to copy)"
+                    text: root.effectiveIsCopy ? "Copying (Ctrl held)" : "Moving (Hold Ctrl to copy)"
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeSmall
                 }

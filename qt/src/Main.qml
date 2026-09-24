@@ -1223,7 +1223,46 @@ ApplicationWindow {
                     dndFailures++;
                 }
 
-                // 5. Release without valid target / cancel drag
+                // 5. Test move drop without copy modifier (isCopy = false) and explicit target fallback
+                var moveDropReceived = false;
+                var moveDropIsCopy = true;
+                var moveTarget = "";
+                var movePos = "";
+                testTree.isDragging = true;
+                testTree.draggedId = "file1-copy";
+                testTree.draggedIds = ["file1-copy"];
+                testTree.isCtrlHeld = false;
+                testTree.dropTargetId = "";
+                testTree.dropPosition = "";
+
+                var moveConn = function(src, target, pos, isCopy) {
+                    moveDropReceived = true;
+                    moveDropIsCopy = isCopy;
+                    moveTarget = target;
+                    movePos = pos;
+                };
+                testTree.nodeDropped.connect(moveConn);
+
+                testTree.executeDrop(false, "dst", "after");
+
+                if (!moveDropReceived) {
+                    console.log("[qt-scenario] FAIL: executeDrop(false, dst, after) did not emit nodeDropped");
+                    dndFailures++;
+                }
+                if (moveDropIsCopy !== false) {
+                    console.log("[qt-scenario] FAIL: executeDrop(false) should propagate isCopy=false for move");
+                    dndFailures++;
+                }
+                if (moveTarget !== "dst" || movePos !== "after") {
+                    console.log("[qt-scenario] FAIL: executeDrop target/pos mismatch: target=" + moveTarget + ", pos=" + movePos);
+                    dndFailures++;
+                }
+                if (testTree.isDragging !== false || testTree.dropTargetId !== "") {
+                    console.log("[qt-scenario] FAIL: drag state not reset after move drop");
+                    dndFailures++;
+                }
+
+                // 6. Release without valid target / cancel drag
                 testTree.isDragging = true;
                 testTree.draggedId = "file1";
                 testTree.dropTargetId = "invalidTarget";
