@@ -1697,8 +1697,8 @@ ApplicationWindow {
             // ==============================================================
             Item {
                 id: mainAppGrid
-                width: Math.min(parent.width, ThemeTokens.dp(1280))
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.left: parent.left
+                anchors.right: parent.right
                 anchors.top: topbar.bottom
                 anchors.bottom: parent.bottom
 
@@ -1815,7 +1815,6 @@ ApplicationWindow {
                     anchors.left: sidebar.right
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.topMargin: ThemeTokens.dp(20)
                     anchors.bottom: parent.bottom
                     showVerticalScrollBar: true
                     showHorizontalScrollBar: true
@@ -1826,11 +1825,12 @@ ApplicationWindow {
                     Item {
                         id: pageContainer
                         width: Math.max(contentScroll.width, pageLoader.item ? pageLoader.item.implicitWidth : 0, ThemeTokens.dp(600))
-                        implicitHeight: pageLoader.item ? Math.max(pageLoader.item.implicitHeight, pageLoader.item.height, ThemeTokens.dp(800)) : ThemeTokens.dp(800)
+                        implicitHeight: (pageLoader.item ? Math.max(pageLoader.item.implicitHeight, pageLoader.item.height, ThemeTokens.dp(800)) : ThemeTokens.dp(800)) + ThemeTokens.dp(20)
 
                         Loader {
                             id: pageLoader
                             objectName: "pageLoader"
+                            y: ThemeTokens.dp(20)
                             width: parent.width
                             source: win.getPageSource(win.activePage)
                             onLoaded: {

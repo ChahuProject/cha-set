@@ -290,9 +290,10 @@ if (!existsSync(qtExe)) {
   console.log('[gate] SKIP — Qt runtime behavioral scenario assertions skipped via --skip-qt');
 } else {
   const { spawnSync } = await import('node:child_process');
-  const testRes = spawnSync(qtExe, ['--test-scenario', 'all'], { encoding: 'utf8' });
-  if (testRes.status !== 0) {
+  const testRes = spawnSync(qtExe, ['--test-scenario', 'all'], { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 });
+  if (testRes.status !== 0 || testRes.error) {
     console.error('[gate] FAIL: Qt runtime behavioral scenario assertions failed');
+    if (testRes.error) console.error('[gate] Process error:', testRes.error);
     if (testRes.stdout) console.error(testRes.stdout);
     if (testRes.stderr) console.error(testRes.stderr);
     process.exit(1);

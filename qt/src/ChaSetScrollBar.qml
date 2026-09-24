@@ -142,11 +142,13 @@ T.ScrollBar {
 
     // Runway Background
     background: Rectangle {
+        objectName: "runwayBackground"
         implicitWidth: control.vertical ? control.hitThickness : 0
         implicitHeight: control.horizontal ? control.hitThickness : 0
-        color: control._isExpanded ? (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8)) : "transparent"
+        color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8)
+        opacity: control._isExpanded ? 1.0 : 0.0
         radius: 0
-        Behavior on color { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); ColorAnimation { duration: ThemeTokens.motionShort } }
+        Behavior on opacity { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: ThemeTokens.motionShort } }
     }
 
     // Centered Thumb Item with Min Length Clamping
@@ -159,11 +161,8 @@ T.ScrollBar {
             readonly property real actualLength: control.vertical ? parent.height : parent.width
             readonly property real displayLength: Math.max(control.minThumbLength, actualLength)
 
-            y: control.vertical ? ((actualLength < control.minThumbLength) ? (actualLength - control.minThumbLength) / 2 : 0) : 0
-            x: control.horizontal ? ((actualLength < control.minThumbLength) ? (actualLength - control.minThumbLength) / 2 : 0) : 0
-
-            anchors.horizontalCenter: control.vertical ? parent.horizontalCenter : undefined
-            anchors.verticalCenter: control.horizontal ? parent.verticalCenter : undefined
+            y: control.vertical ? ((actualLength < control.minThumbLength) ? (actualLength - control.minThumbLength) / 2 : 0) : Math.round((parent.height - height) / 2)
+            x: control.horizontal ? ((actualLength < control.minThumbLength) ? (actualLength - control.minThumbLength) / 2 : 0) : Math.round((parent.width - width) / 2)
 
             width: control.vertical ? (control._isExpanded ? control.expandedThumbThickness : control.thumbThickness) : displayLength
             height: control.horizontal ? (control._isExpanded ? control.expandedThumbThickness : control.thumbThickness) : displayLength
@@ -194,12 +193,13 @@ T.ScrollBar {
         radius: ThemeTokens.dp(2)
         z: 2
 
-        readonly property bool _isHovered: (control.forceButtonState === "hover") || (_ma.containsMouse && isEnabled && control._isExpanded)
-        readonly property bool _isPressed: (control.forceButtonState === "active") || (_ma.pressed && isEnabled && control._isExpanded)
+        readonly property bool _isHovered: (control.forceButtonState === "hover") || (_ma.containsMouse && isEnabled)
+        readonly property bool _isPressed: (control.forceButtonState === "active") || (_ma.pressed && isEnabled)
 
         color: !isEnabled ? "transparent" :
                _isPressed ? (ThemeTokens.dark ? "#334155" : "#e2e8f0") :
-               _isHovered ? (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8)) : "transparent"
+               _isHovered ? (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8)) :
+               (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.0) : Qt.rgba(241/255, 245/255, 249/255, 0.0))
 
         opacity: !control._isExpanded ? 0.0 : (!isEnabled ? 0.20 : 1.0)
         Behavior on opacity { enabled: ThemeTokens.animationsEnabled; NumberAnimation { duration: ThemeTokens.motionShort } }
@@ -294,8 +294,8 @@ T.ScrollBar {
             id: _ma
             anchors.fill: parent
             hoverEnabled: true
-            enabled: btn.isEnabled && control._isExpanded
-            cursorShape: (btn.isEnabled && control._isExpanded) ? Qt.PointingHandCursor : undefined
+            enabled: btn.isEnabled
+            cursorShape: btn.isEnabled ? Qt.PointingHandCursor : undefined
             acceptedButtons: Qt.LeftButton
 
             onPressed: {

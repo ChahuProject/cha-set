@@ -204,6 +204,116 @@ static bool runRealMouseDragVerification(QQuickWindow* window) {
     }
 }
 
+static bool runRealScrollBarVerification(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running scrollbar page-right position and hover stability verification...");
+
+    auto* contentScroll = window->findChild<QQuickItem*>("contentScroll");
+    if (!contentScroll) {
+        qCritical("[qt-scenario] FAIL: contentScroll item not found by objectName");
+        return false;
+    }
+
+    auto* vScrollBar = contentScroll->property("verticalScrollBar").value<QQuickItem*>();
+    if (!vScrollBar) {
+        qCritical("[qt-scenario] FAIL: verticalScrollBar not accessible on contentScroll");
+        return false;
+    }
+
+    // --- 1. Page-Right Layout Verification: scrollbar must be at the far right of the page ---
+    int origWidth = window->width();
+    const int testWidths[] = { 1150, 1440, 1920 };
+    for (int tw : testWidths) {
+        window->setWidth(tw);
+        QTest::qWait(50);
+        qreal rightEdge = contentScroll->mapToScene(QPointF(contentScroll->width(), 0)).x();
+        if (std::abs(rightEdge - tw) > 1.0) {
+            qCritical() << "[qt-scenario] FAIL: Page scrollbar is NOT at the far right of the page at window width"
+                        << tw << ": contentScroll rightEdge=" << rightEdge << ", expected=" << tw;
+            window->setWidth(origWidth);
+            return false;
+        }
+    }
+    window->setWidth(origWidth);
+    QTest::qWait(50);
+    qInfo("[qt-scenario] PASS: Page scrollbar is at the far right of the entire page across all window widths (1150, 1440, 1920)");
+
+    // --- 2. Hover Stability & Runway Opacity Verification: entering, tracking, and leaving without flicker ---
+    QPoint outsidePoint(window->width() / 2, window->height() / 2);
+    QTest::mouseMove(window, outsidePoint, 50);
+    QTest::qWait(100);
+
+    bool outsideExpanded = vScrollBar->property("_isExpanded").toBool();
+    if (outsideExpanded) {
+        qCritical("[qt-scenario] FAIL: ScrollBar should not be expanded when mouse is outside");
+        return false;
+    }
+
+    auto* runwayBg = vScrollBar->findChild<QQuickItem*>("runwayBackground");
+    if (runwayBg) {
+        qreal initialOpacity = runwayBg->opacity();
+        if (initialOpacity > 0.05) {
+            qCritical() << "[qt-scenario] FAIL: Runway background should have 0 opacity at rest, got" << initialOpacity;
+            return false;
+        }
+    }
+
+    QPoint targetPoint = contentScroll->mapToScene(QPointF(contentScroll->width() - 8, 100)).toPoint();
+    QTest::mouseMove(window, targetPoint, 50);
+    QTest::qWait(150);
+
+    bool insideExpanded = vScrollBar->property("_isExpanded").toBool();
+    if (!insideExpanded) {
+        qCritical("[qt-scenario] FAIL: ScrollBar should expand when mouse enters runway");
+        return false;
+    }
+
+    if (runwayBg) {
+        qreal hoverOpacity = runwayBg->opacity();
+        if (hoverOpacity < 0.95) {
+            qCritical() << "[qt-scenario] FAIL: Runway background should reach full opacity on hover, got" << hoverOpacity;
+            return false;
+        }
+    }
+
+    // Step through the runway and thumb: it MUST remain steadily expanded without dropping/flickering
+    for (int dy = 10; dy <= 120; dy += 10) {
+        QTest::mouseMove(window, targetPoint + QPoint(0, dy), 20);
+        QTest::qWait(20);
+        if (!vScrollBar->property("_isExpanded").toBool()) {
+            qCritical() << "[qt-scenario] FAIL: ScrollBar flickered to collapsed during runway movement at dy=" << dy;
+            return false;
+        }
+    }
+
+    // Move onto stepper button at the top
+    QPoint topBtn = contentScroll->mapToScene(QPointF(contentScroll->width() - 8, 8)).toPoint();
+    QTest::mouseMove(window, topBtn, 50);
+    QTest::qWait(60);
+    if (!vScrollBar->property("_isExpanded").toBool()) {
+        qCritical("[qt-scenario] FAIL: ScrollBar flickered to collapsed when hovering top stepper button");
+        return false;
+    }
+
+    // Move back outside
+    QTest::mouseMove(window, outsidePoint, 50);
+    QTest::qWait(200);
+    if (vScrollBar->property("_isExpanded").toBool()) {
+        qCritical("[qt-scenario] FAIL: ScrollBar should collapse when mouse leaves to outside");
+        return false;
+    }
+
+    if (runwayBg) {
+        qreal exitOpacity = runwayBg->opacity();
+        if (exitOpacity > 0.05) {
+            qCritical() << "[qt-scenario] FAIL: Runway background should return to 0 opacity after mouse leaves, got" << exitOpacity;
+            return false;
+        }
+    }
+
+    qInfo("[qt-scenario] PASS: ScrollBar hover enter, tracking, and leave verified with zero flicker");
+    return true;
+}
+
 static bool runRealKeyboardVerification(QQuickWindow* window) {
     qInfo("[qt-scenario] Running authentic C++ QTest keyboard navigation verification...");
 
@@ -965,6 +1075,13 @@ int main(int argc, char* argv[])
                         if (testScenario == "all" || testScenario == "keyboard-navigation") {
                             bool kbOk = runRealKeyboardVerification(window);
                             if (!kbOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                        }
+                        if (testScenario == "all" || testScenario == "scrollbar" || testScenario == "scroll-hover") {
+                            bool sbOk = runRealScrollBarVerification(window);
+                            if (!sbOk) {
                                 QCoreApplication::exit(1);
                                 return;
                             }
