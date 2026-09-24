@@ -6,11 +6,110 @@ export interface TocItem {
   title: string;
 }
 
-export interface TableOfContentsProps {
-  items: TocItem[];
+export function slugToTitle(slug: string): string {
+  return slug
+    .split(/[-_]+/)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
 
-export function TableOfContents({ items }: TableOfContentsProps) {
+export function scanDocSections(container: HTMLElement | null): TocItem[] {
+  if (!container) return [];
+
+  const candidates = Array.from(
+    container.querySelectorAll<HTMLElement>(
+      'section[id], [data-toc-id], [data-section-id], h2[id], h3[id], div[id]'
+    )
+  );
+
+  const items: TocItem[] = [];
+  const seenIds = new Set<string>();
+
+  for (const el of candidates) {
+    let id = el.getAttribute('data-toc-id') || el.getAttribute('data-section-id') || el.id;
+    if (!id) continue;
+    id = id.trim();
+    if (seenIds.has(id)) continue;
+
+    const isSection = el.tagName.toLowerCase() === 'section';
+    const isHeading = el.tagName.toLowerCase() === 'h2' || el.tagName.toLowerCase() === 'h3';
+    const hasDataAttr = el.hasAttribute('data-toc-id') || el.hasAttribute('data-toc-title') || el.hasAttribute('data-section-id');
+    const childHeading = el.querySelector<HTMLElement>(':scope > h1, :scope > h2, :scope > h3, :scope > div > h2, :scope > div > h3, h2, h3, [data-toc-heading]');
+
+    const isKnownSection = ['overview', 'installation', 'animations', 'keyboard', 'props', 'examples'].includes(id);
+
+    if (!isSection && !isHeading && !hasDataAttr && !childHeading && !isKnownSection) {
+      continue;
+    }
+
+    let title = el.getAttribute('data-toc-title');
+    if (!title) {
+      if (isHeading) {
+        title = el.textContent?.trim() || '';
+      } else if (childHeading && childHeading.textContent) {
+        title = childHeading.textContent.trim();
+      }
+    }
+
+    // Canonical Fallbacks
+    if (!title || title === '' || (id === 'overview' && title.toLowerCase().includes('sandbox'))) {
+      if (id === 'overview') {
+        title = 'Interactive Overview';
+      } else if (id === 'installation') {
+        title = 'Installation';
+      } else if (id === 'animations') {
+        title = 'Animations';
+      } else if (id === 'keyboard') {
+        title = 'Keyboard Navigation';
+      } else if (id === 'props') {
+        title = 'Props Reference';
+      } else {
+        title = title || slugToTitle(id);
+      }
+    }
+
+    seenIds.add(id);
+    items.push({ id, title });
+  }
+
+  return items;
+}
+
+export interface TableOfContentsProps {
+  items?: TocItem[];
+  containerRef?: React.RefObject<HTMLElement | null>;
+}
+
+export function TableOfContents({ items: propItems, containerRef }: TableOfContentsProps) {
+  const [scannedItems, setScannedItems] = useState<TocItem[]>([]);
+
+  useEffect(() => {
+    if (propItems && propItems.length > 0) return;
+    if (!containerRef?.current) return;
+
+    const scan = () => {
+      if (!containerRef.current) return;
+      const detected = scanDocSections(containerRef.current);
+      setScannedItems((prev) => {
+        if (
+          prev.length === detected.length &&
+          prev.every((item, i) => item.id === detected[i].id && item.title === detected[i].title)
+        ) {
+          return prev;
+        }
+        return detected;
+      });
+    };
+
+    scan();
+
+    const observer = new MutationObserver(scan);
+    observer.observe(containerRef.current, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [propItems, containerRef]);
+
+  const items = propItems && propItems.length > 0 ? propItems : scannedItems;
   const [activeId, setActiveId] = useState<string>(() => items[0]?.id || '');
 
   useEffect(() => {

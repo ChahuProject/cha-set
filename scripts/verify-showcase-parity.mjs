@@ -69,9 +69,37 @@ export function extractReactDocMetadata(content) {
   const tocBlockMatch = content.match(/tocItems=\{?\s*\[([^\]]*)\]\}?/s);
   if (tocBlockMatch) {
     tocBlock = tocBlockMatch[1];
+    const tocMatches = [...tocBlock.matchAll(/\{\s*id[:=]\s*["']([^"']+)["'],\s*title[:=]\s*["']([^"']+)["']/g)];
+    meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] }));
+    meta.isAutoToc = false;
+  } else {
+    meta.isAutoToc = true;
+    const sectionRegex = /<section\b[^>]*?id=["']([^"']+)["'][^>]*>([\s\S]*?)<\/section>/g;
+    let sMatch;
+    while ((sMatch = sectionRegex.exec(content)) !== null) {
+      const id = sMatch[1];
+      const inner = sMatch[2];
+      let title = '';
+      const customTitleMatch = inner.match(/data-toc-title=["']([^"']+)["']/);
+      if (customTitleMatch) {
+        title = customTitleMatch[1];
+      } else {
+        const hMatch = inner.match(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/);
+        if (hMatch) {
+          title = hMatch[1].replace(/<[^>]+>/g, '').trim();
+        }
+      }
+      if (!title || (id === 'overview' && title.toLowerCase().includes('sandbox'))) {
+        if (id === 'overview') title = 'Interactive Overview';
+        else if (id === 'installation') title = 'Installation';
+        else if (id === 'animations') title = 'Animations';
+        else if (id === 'keyboard') title = 'Keyboard Navigation';
+        else if (id === 'props') title = 'Props Reference';
+        else title = id.split(/[-_]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      }
+      meta.tocItems.push({ id, title });
+    }
   }
-  const tocMatches = [...tocBlock.matchAll(/\{\s*id[:=]\s*["']([^"']+)["'],\s*title[:=]\s*["']([^"']+)["']/g)];
-  meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] }));
 
   meta.previews = [];
   const rRegex = /<ComponentPreview\b([\s\S]*?)>/g;
@@ -119,9 +147,34 @@ export function extractQtDocMetadata(content) {
   const tocBlockMatch = content.match(/tocItems:\s*\[([^\]]*)\]/s);
   if (tocBlockMatch) {
     tocBlock = tocBlockMatch[1];
+    const tocMatches = [...tocBlock.matchAll(/\{\s*id:\s*["']([^"']+)["'],\s*title:\s*["']([^"']+)["']/g)];
+    meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] }));
+    meta.isAutoToc = false;
+  } else {
+    meta.isAutoToc = true;
+    if (/ComponentPreview\s*\{/.test(content)) {
+      meta.tocItems.push({ id: 'overview', title: 'Interactive Overview' });
+    }
+    const docTextRegex = /DocText\s*\{[^}]*?text\s*:\s*["']([^"']+)["'][^}]*?(?:sizeTitleSm|weightBold|weightSemibold|sizeHeading)/g;
+    let tMatch;
+    while ((tMatch = docTextRegex.exec(content)) !== null) {
+      const title = tMatch[1].trim();
+      let id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      if (id === 'interactive-overview' || id === 'sandbox') id = 'overview';
+      else if (id === 'keyboard-navigation') id = 'keyboard';
+      else if (id === 'props-reference') id = 'props';
+
+      if (!meta.tocItems.some(item => item.id === id)) {
+        meta.tocItems.push({ id, title });
+      }
+    }
+    if (/KeyboardShortcutsTable\s*\{/.test(content) && !meta.tocItems.some(i => i.id === 'keyboard')) {
+      meta.tocItems.push({ id: 'keyboard', title: 'Keyboard Navigation' });
+    }
+    if (/PropsTable\s*\{/.test(content) && !meta.tocItems.some(i => i.id === 'props')) {
+      meta.tocItems.push({ id: 'props', title: 'Props Reference' });
+    }
   }
-  const tocMatches = [...tocBlock.matchAll(/\{\s*id:\s*["']([^"']+)["'],\s*title:\s*["']([^"']+)["']/g)];
-  meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] }));
 
   meta.previews = [];
   const qPreviewRegex = /\bComponentPreview\s*\{/g;

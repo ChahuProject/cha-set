@@ -14,9 +14,12 @@ export function DocLayout({
   category,
   title,
   description,
-  tocItems = [],
+  tocItems,
   children,
 }: DocLayoutProps) {
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const hasExplicitItems = tocItems && tocItems.length > 0;
+
   return (
     <div className="flex w-full min-w-0 justify-center">
       <main className="w-full max-w-4xl min-w-0 px-4 py-8 md:px-8 lg:py-10">
@@ -51,11 +54,14 @@ export function DocLayout({
         <Separator className="mb-8" />
 
         {/* Page Content */}
-        <div className="prose-content">{children}</div>
+        <div className="prose-content" ref={contentRef}>{children}</div>
       </main>
 
-      {/* Right Table of Contents */}
-      {tocItems.length > 0 && <TableOfContents items={tocItems} />}
+      {/* Right Table of Contents (explicit items or auto-scanned from containerRef) */}
+      <TableOfContents
+        items={hasExplicitItems ? tocItems : undefined}
+        containerRef={hasExplicitItems ? undefined : contentRef}
+      />
     </div>
   );
 }

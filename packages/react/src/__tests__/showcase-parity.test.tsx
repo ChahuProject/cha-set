@@ -34,4 +34,50 @@ describe('Showcase Parity Assurance System (SPAS)', () => {
     expect(qMeta.pageTitle).toBe('WrongTitle');
     expect(qMeta.tocItems[0].id).toBe('preview');
   });
+
+  it('automatically extracts TOC sections when tocItems is omitted from doc pages', async () => {
+    // @ts-expect-error - .mjs helper script without types
+    const { extractReactDocMetadata, extractQtDocMetadata } = await import('../../../../scripts/verify-showcase-parity.mjs');
+
+    const syntheticReact = `
+      <DocLayout category="General" title="Test" description="Desc">
+        <section id="overview"><ComponentPreview title="Preview" /></section>
+        <section id="installation"><h2>Installation</h2></section>
+        <section id="variants"><h2>Variants</h2></section>
+        <section id="keyboard"><h2>Keyboard Navigation</h2></section>
+        <section id="props"><h2>Props Reference</h2></section>
+      </DocLayout>
+    `;
+    const rMeta = extractReactDocMetadata(syntheticReact);
+    expect(rMeta.isAutoToc).toBe(true);
+    expect(rMeta.tocItems.map((t: { id: string }) => t.id)).toEqual([
+      'overview',
+      'installation',
+      'variants',
+      'keyboard',
+      'props',
+    ]);
+
+    const syntheticQt = `
+      DocLayout {
+        category: "General"
+        pageTitle: "Test"
+        description: "Desc"
+        ComponentPreview { title: "Sandbox" }
+        Column { DocText { text: "Installation"; font.pixelSize: Typography.sizeTitleSm } }
+        Column { DocText { text: "Variants"; font.pixelSize: Typography.sizeTitleSm } }
+        KeyboardShortcutsTable { componentId: "test" }
+        PropsTable { propsModel: [] }
+      }
+    `;
+    const qMeta = extractQtDocMetadata(syntheticQt);
+    expect(qMeta.isAutoToc).toBe(true);
+    expect(qMeta.tocItems.map((t: { id: string }) => t.id)).toEqual([
+      'overview',
+      'installation',
+      'variants',
+      'keyboard',
+      'props',
+    ]);
+  });
 });

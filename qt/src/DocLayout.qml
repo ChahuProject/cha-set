@@ -12,9 +12,11 @@ Item {
     property string pageTitle: "Button"
     property string description: ""
     property var tocItems: []
+    property var autoTocItems: []
+    readonly property var effectiveTocItems: (root.tocItems && root.tocItems.length > 0) ? root.tocItems : root.autoTocItems
     default property alias contentData: pageContentCol.data
 
-    readonly property bool showToc: root.tocItems && root.tocItems.length > 0 && layoutRow.width >= ThemeTokens.dp(600)
+    readonly property bool showToc: root.effectiveTocItems && root.effectiveTocItems.length > 0 && layoutRow.width >= ThemeTokens.dp(600)
     property int activeTocIndex: 0
 
     readonly property var scrollAreaItem: {
@@ -34,6 +36,169 @@ Item {
         function onContentYChanged() {
             root.updateActiveTocOnScroll();
         }
+    }
+
+    Connections {
+        target: pageContentCol
+        ignoreUnknownSignals: true
+        function onChildrenChanged() {
+            root.scanSections();
+        }
+    }
+
+    Component.onCompleted: {
+        root.scanSections();
+        Qt.callLater(root.scanSections);
+    }
+
+    function slugify(text) {
+        if (!text) return "";
+        return String(text).toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+    }
+
+    function isHeadingItem(item) {
+        if (!item || !item.visible) return false;
+        if (item.text !== undefined && typeof item.text === "string" && item.text.trim() !== "") {
+            if (item.font !== undefined && (
+                item.font.pixelSize >= Typography.sizeTitleSm ||
+                item.font.weight >= Typography.weightBold ||
+                item.font.weight >= Typography.weightSemibold ||
+                item.font.pixelSize >= Typography.sizeHeading
+            )) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function findFirstHeading(item) {
+        if (!item || !item.visible) return null;
+        if (isHeadingItem(item)) return item;
+        if (item.children && item.children.length > 0) {
+            for (var i = 0; i < item.children.length; i++) {
+                var found = findFirstHeading(item.children[i]);
+                if (found) return found;
+            }
+        }
+        return null;
+    }
+
+    function findChildByType(parentItem, checkFn) {
+        if (!parentItem || !parentItem.children) return null;
+        for (var i = 0; i < parentItem.children.length; i++) {
+            var c = parentItem.children[i];
+            if (!c) continue;
+            if (checkFn(c)) return c;
+            var sub = findChildByType(c, checkFn);
+            if (sub) return sub;
+        }
+        return null;
+    }
+
+    function scanSections() {
+        if (!pageContentCol || !pageContentCol.children) return;
+        var scanned = [];
+        var seenIds = {};
+
+        function addEntry(id, title, target) {
+            if (!id || !title || !target) return;
+            if (id === "interactive-overview" || id === "sandbox") {
+                id = "overview";
+                title = "Interactive Overview";
+            } else if (id === "keyboard-navigation") {
+                id = "keyboard";
+                title = "Keyboard Navigation";
+            } else if (id === "props-reference" || id === "api-reference") {
+                id = "props";
+                title = "Props Reference";
+            }
+
+            if (!seenIds[id]) {
+                seenIds[id] = true;
+                scanned.push({
+                    id: id,
+                    title: title,
+                    targetItem: target
+                });
+            }
+        }
+
+        var children = pageContentCol.children;
+        for (var i = 0; i < children.length; i++) {
+            var child = children[i];
+            if (!child || !child.visible) continue;
+
+            // 1. Direct ComponentPreview
+            if (child.reactCode !== undefined || child.stageData !== undefined || child.controlsData !== undefined) {
+                var prevId = child.sectionId ? String(child.sectionId) : "overview";
+                var prevTitle = child.sectionTitle ? String(child.sectionTitle) : (prevId === "overview" ? "Interactive Overview" : (child.title || "Interactive Overview"));
+                addEntry(prevId, prevTitle, child);
+                continue;
+            }
+
+            // 2. Direct KeyboardShortcutsTable
+            if (child.componentId !== undefined) {
+                addEntry(child.sectionId || "keyboard", child.sectionTitle || "Keyboard Navigation", child);
+                continue;
+            }
+
+            // 3. Direct PropsTable
+            if (child.propsModel !== undefined) {
+                addEntry(child.sectionId || "props", child.sectionTitle || "Props Reference", child);
+                continue;
+            }
+
+            // 4. Explicit sectionId/sectionTitle on container
+            if (child.sectionId !== undefined && child.sectionId !== "") {
+                var sTitle = child.sectionTitle ? String(child.sectionTitle) : "";
+                if (!sTitle) {
+                    var h = findFirstHeading(child);
+                    if (h) sTitle = String(h.text).trim();
+                }
+                addEntry(String(child.sectionId), sTitle || String(child.sectionId), child);
+                continue;
+            }
+
+            // 5. Container with heading
+            var heading = findFirstHeading(child);
+            if (heading) {
+                var hText = String(heading.text).trim();
+                var sId = child.objectName || slugify(hText);
+
+                var kb = findChildByType(child, function(it) { return it.componentId !== undefined; });
+                var pt = findChildByType(child, function(it) { return it.propsModel !== undefined; });
+
+                if (kb && pt && (sId === "props" || sId === "keyboard" || sId === "props-reference" || sId === "api-reference")) {
+                    addEntry("keyboard", "Keyboard Navigation", kb);
+                    addEntry("props", "Props Reference", pt);
+                } else if (kb && !pt) {
+                    addEntry(sId || "keyboard", hText || "Keyboard Navigation", child);
+                } else if (pt && !kb) {
+                    addEntry(sId || "props", hText || "Props Reference", child);
+                } else {
+                    addEntry(sId, hText, child);
+
+                    if (child.children && child.children.length > 1) {
+                        for (var j = 0; j < child.children.length; j++) {
+                            var subChild = child.children[j];
+                            if (!subChild || subChild === heading) continue;
+                            var subH = findFirstHeading(subChild);
+                            if (subH && subH !== heading) {
+                                var subText = String(subH.text).trim();
+                                if (subText !== "" && subText !== hText) {
+                                    var subId = subChild.sectionId || subChild.objectName || slugify(subText);
+                                    addEntry(subId, subText, subChild);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        root.autoTocItems = scanned;
     }
 
     function matchesSectionText(rawText, targetId, targetTitle) {
@@ -121,9 +286,9 @@ Item {
 
     function scrollToSection(tocItem) {
         var scrollArea = root.scrollAreaItem;
-        if (!scrollArea) return;
+        if (!scrollArea || !tocItem) return;
 
-        var target = findSectionTarget(tocItem);
+        var target = (tocItem && tocItem.targetItem) ? tocItem.targetItem : findSectionTarget(tocItem);
         if (!target) return;
 
         var contentTarget = scrollArea.contentItem ? scrollArea.contentItem : scrollArea;
@@ -140,13 +305,15 @@ Item {
 
     function updateActiveTocOnScroll() {
         var scrollArea = root.scrollAreaItem;
-        if (!scrollArea || !root.tocItems || root.tocItems.length === 0) return;
+        var items = root.effectiveTocItems;
+        if (!scrollArea || !items || items.length === 0) return;
         var contentTarget = scrollArea.contentItem ? scrollArea.contentItem : scrollArea;
         var currentY = scrollArea.contentY + ThemeTokens.dp(60);
 
         var bestIndex = 0;
-        for (var i = 0; i < root.tocItems.length; i++) {
-            var target = findSectionTarget(root.tocItems[i]);
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            var target = (item && item.targetItem) ? item.targetItem : findSectionTarget(item);
             if (!target) continue;
             var pt = target.mapToItem(contentTarget, 0, 0);
             if (pt && pt.y <= currentY) {
@@ -380,7 +547,7 @@ Item {
             }
 
             Repeater {
-                model: root.tocItems
+                model: root.effectiveTocItems
                 delegate: Text {
                     id: tocText
                     required property var modelData
