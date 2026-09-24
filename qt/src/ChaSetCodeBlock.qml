@@ -68,6 +68,7 @@ Rectangle {
     clip: true
 
     implicitWidth: ThemeTokens.dp(640)
+    width: parent ? parent.width : implicitWidth
     implicitHeight: root.headerHeight + (root.maxHeight > 0 ? ThemeTokens.dp(root.maxHeight) : root.naturalBodyHeight)
     height: implicitHeight
 

@@ -27,6 +27,7 @@ Item {
     implicitWidth: row.implicitWidth + horizontalPadding * 2
     implicitHeight: row.implicitHeight + topPadding + bottomPadding
     width: parent ? parent.width : implicitWidth
+    height: implicitHeight
 
     Row {
         id: row

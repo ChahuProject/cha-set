@@ -28,6 +28,7 @@ Item {
     implicitWidth: col.implicitWidth + padding * 2
     implicitHeight: col.implicitHeight + padding * 2
     width: parent ? parent.width : implicitWidth
+    height: implicitHeight
 
     Column {
         id: col

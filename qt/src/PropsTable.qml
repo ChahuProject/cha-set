@@ -50,33 +50,44 @@ Column {
         }
     }
 
-    ChaSetTable {
+    ChaSetScrollArea {
+        id: propsScrollArea
         width: parent.width
-        interactive: false
-        columns: [
-            { key: "prop", title: "PROP", width: 170, code: true },
-            { key: "type", title: "TYPE", width: 180, badge: true },
-            { key: "defaultVal", title: "DEFAULT", width: 100, code: true },
-            { key: "description", title: "DESCRIPTION", wrap: true }
-        ]
-        rows: {
-            var res = []
-            if (!root.propsModel) return res
-            for (var i = 0; i < root.propsModel.length; i++) {
-                var m = root.propsModel[i]
-                var name = m.name || m.propName || m[0] || ""
-                var req = !!(m.required || m[4])
-                var type = m.type || m.propType || m[1] || ""
-                var def = (m.default !== undefined) ? m.default : (m.defaultValue !== undefined ? m.defaultValue : (m.propDefault !== undefined ? m.propDefault : (m[2] !== undefined ? m[2] : "—")))
-                var desc = m.description || m.propDescription || m[3] || ""
-                res.push({
-                    prop: name + (req ? " *" : ""),
-                    type: type,
-                    defaultVal: def,
-                    description: desc
-                })
+        height: innerTable.implicitHeight + (horizontalScrollBar.visible ? horizontalScrollBar.height : 0)
+        showVerticalScrollBar: false
+        showHorizontalScrollBar: true
+        showButtons: false
+
+        ChaSetTable {
+            id: innerTable
+            width: Math.max(propsScrollArea.width, ThemeTokens.dp(780))
+            height: implicitHeight
+            interactive: false
+            columns: [
+                { key: "prop", title: "PROP", width: 170, code: true },
+                { key: "type", title: "TYPE", width: 240, badge: true },
+                { key: "defaultVal", title: "DEFAULT", width: 110, code: true },
+                { key: "description", title: "DESCRIPTION", wrap: true }
+            ]
+            rows: {
+                var res = []
+                if (!root.propsModel) return res
+                for (var i = 0; i < root.propsModel.length; i++) {
+                    var m = root.propsModel[i]
+                    var name = m.name || m.propName || m[0] || ""
+                    var req = !!(m.required || m[4])
+                    var type = m.type || m.propType || m[1] || ""
+                    var def = (m.default !== undefined) ? m.default : (m.defaultValue !== undefined ? m.defaultValue : (m.propDefault !== undefined ? m.propDefault : (m[2] !== undefined ? m[2] : "—")))
+                    var desc = m.description || m.propDescription || m[3] || ""
+                    res.push({
+                        prop: name + (req ? " *" : ""),
+                        type: type,
+                        defaultVal: def,
+                        description: desc
+                    })
+                }
+                return res
             }
-            return res
         }
     }
 }

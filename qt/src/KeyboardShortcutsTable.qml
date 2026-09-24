@@ -69,24 +69,35 @@ Column {
         }
     }
 
-    ChaSetTable {
+    ChaSetScrollArea {
+        id: kbScrollArea
         width: parent.width
-        interactive: false
-        columns: [
-            { key: "key", title: "KEY SHORTCUT", width: 256, kbd: true },
-            { key: "action", title: "ACTION / BEHAVIOR", wrap: true }
-        ]
-        rows: {
-            var res = []
-            var list = root.activeShortcuts
-            for (var i = 0; i < list.length; i++) {
-                var it = list[i]
-                res.push({
-                    key: it.key || "",
-                    action: it.action || ""
-                })
+        height: kbInnerTable.implicitHeight + (horizontalScrollBar.visible ? horizontalScrollBar.height : 0)
+        showVerticalScrollBar: false
+        showHorizontalScrollBar: true
+        showButtons: false
+
+        ChaSetTable {
+            id: kbInnerTable
+            width: Math.max(kbScrollArea.width, ThemeTokens.dp(640))
+            height: implicitHeight
+            interactive: false
+            columns: [
+                { key: "key", title: "KEY SHORTCUT", width: 256, kbd: true },
+                { key: "action", title: "ACTION / BEHAVIOR", wrap: true }
+            ]
+            rows: {
+                var res = []
+                var list = root.activeShortcuts
+                for (var i = 0; i < list.length; i++) {
+                    var it = list[i]
+                    res.push({
+                        key: it.key || "",
+                        action: it.action || ""
+                    })
+                }
+                return res
             }
-            return res
         }
     }
 }

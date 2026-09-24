@@ -1,6 +1,7 @@
 #include "ChaSetClipboard.h"
 #include <QThread>
 
+
 ChaSetClipboard::ChaSetClipboard(QObject *parent)
     : QObject(parent)
 {
