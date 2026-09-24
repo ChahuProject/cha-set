@@ -62,6 +62,7 @@ QtObject {
             textToCopy = activeOwner.selectedText;
         }
         if (textToCopy && textToCopy.length > 0) {
+            textToCopy = textToCopy.replace(/\u2029/g, "\n");
             if (typeof ChaSetClipboard !== "undefined" && ChaSetClipboard.setText) {
                 ChaSetClipboard.setText(textToCopy);
                 hub.textCopied(textToCopy);

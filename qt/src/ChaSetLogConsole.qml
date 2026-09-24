@@ -79,6 +79,7 @@ Rectangle {
       width: listView.width
       readOnly: true
       selectByMouse: true
+      activeFocusOnPress: true
       font.family: Typography.familyMono
       font.pixelSize: Typography.sizeSmall
       color: ThemeTokens.text
@@ -87,6 +88,19 @@ Rectangle {
 
       HoverHandler {
         cursorShape: Qt.IBeamCursor
+      }
+
+      onSelectedTextChanged: {
+        if (selectedText.length > 0) SelectionHub.claim(lineEdit);
+        else if (SelectionHub.activeOwner === lineEdit) SelectionHub.clear(lineEdit);
+      }
+
+      TapHandler {
+        acceptedButtons: Qt.RightButton
+        onTapped: function(eventPoint) {
+          var scenePos = eventPoint.scenePosition;
+          SelectionHub.showContextMenu(scenePos.x, scenePos.y, lineEdit);
+        }
       }
     }
 

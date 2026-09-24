@@ -43,24 +43,31 @@ protected:
                     return true;
                 }
             }
-        } else if (event->type() == QEvent::ShortcutOverride || event->type() == QEvent::KeyPress) {
+        } else if (event->type() == QEvent::ShortcutOverride) {
+            auto* ke = static_cast<QKeyEvent*>(event);
+            if ((ke->key() == Qt::Key_C && (ke->modifiers() & (Qt::ControlModifier | Qt::MetaModifier))) ||
+                (ke->key() == Qt::Key_Insert && (ke->modifiers() & Qt::ControlModifier))) {
+                event->accept();
+                return true;
+            }
+        } else if (event->type() == QEvent::KeyPress) {
             auto* ke = static_cast<QKeyEvent*>(event);
             if ((ke->key() == Qt::Key_C && (ke->modifiers() & (Qt::ControlModifier | Qt::MetaModifier))) ||
                 (ke->key() == Qt::Key_Insert && (ke->modifiers() & Qt::ControlModifier))) {
                 bool copied = false;
                 if (m_window != nullptr) {
-                    if (auto* focusItem = m_window->activeFocusItem()) {
-                        QString selText = focusItem->property("selectedText").toString();
-                        if (!selText.isEmpty()) {
-                            ChaSetClipboard clipboard;
-                            clipboard.setText(selText);
-                            copied = true;
-                        }
+                    QVariant res;
+                    if (QMetaObject::invokeMethod(m_window, "copyActiveSelection", Q_RETURN_ARG(QVariant, res))) {
+                        copied = res.toBool();
                     }
                     if (!copied) {
-                        QVariant res;
-                        if (QMetaObject::invokeMethod(m_window, "copyActiveSelection", Q_RETURN_ARG(QVariant, res))) {
-                            copied = res.toBool();
+                        if (auto* focusItem = m_window->activeFocusItem()) {
+                            QString selText = focusItem->property("selectedText").toString();
+                            if (!selText.isEmpty()) {
+                                ChaSetClipboard clipboard;
+                                clipboard.setText(selText);
+                                copied = true;
+                            }
                         }
                     }
                 }
@@ -303,6 +310,42 @@ static bool runRealKeyboardVerification(QQuickWindow* window) {
     }
     qInfo("[qt-scenario] PASS: Ctrl+C real keyClick copied selected text to clipboard via GlobalWheelZoomFilter & SelectionHub");
     QMetaObject::invokeMethod(window, "testClearSelection");
+    QTest::qWait(100);
+
+    // 4. Test real TextEdit on page
+    qInfo("[qt-scenario] Step 4: Testing Ctrl+C with a real TextEdit on the page...");
+    QQuickItem* foundTextEdit = nullptr;
+    const auto items = window->findChildren<QQuickItem*>();
+    for (auto* it : items) {
+        if (it->metaObject()->className() == QString("QQuickTextEdit") && it->isVisible() && it->property("height").toDouble() > 0 && it->property("text").toString().length() > 5) {
+            foundTextEdit = it;
+            break;
+        }
+    }
+    if (foundTextEdit) {
+        QMetaObject::invokeMethod(foundTextEdit, "selectAll");
+        QTest::qWait(50);
+        QString sel = foundTextEdit->property("selectedText").toString();
+        QMetaObject::invokeMethod(foundTextEdit, "forceActiveFocus");
+        QTest::qWait(50);
+
+        checkClip.clear();
+        QTest::qWait(50);
+        QTest::keyClick(window, Qt::Key_C, Qt::ControlModifier);
+        QTest::qWait(50);
+
+        QString copiedText = checkClip.text();
+        QString expectedSel = sel;
+        expectedSel.replace(QChar(0x2029), QLatin1Char('\n'));
+        if (copiedText.trimmed().isEmpty() || (!copiedText.contains(expectedSel.trimmed()) && !expectedSel.contains(copiedText.trimmed()))) {
+            qCritical() << "[qt-scenario] FAIL: Ctrl+C keyClick did not copy real TextEdit selected text! Expected:"
+                        << expectedSel << "got:" << copiedText;
+            return false;
+        }
+        qInfo("[qt-scenario] PASS: Ctrl+C real keyClick copied on-page TextEdit selection to clipboard");
+    } else {
+        qWarning("[qt-scenario] Note: No real TextEdit found on initial page to verify Ctrl+C");
+    }
 
     qInfo("[qt-scenario] PASS: Authentic C++ QTest keyboard navigation verified for Select, DropdownMenu, and Ctrl+C selection copy");
     return true;

@@ -94,7 +94,7 @@ const forwardArgs = rawArgs.filter((arg) => arg !== '--build-only');
 
 // 3. Configure with CMake
 console.log('\n[qt-showcase] 1. Configuring CMake...');
-const cmakeArgs = ['-S', qtDir, '-B', buildDir, '-G', 'Ninja'];
+const cmakeArgs = ['-S', qtDir, '-B', buildDir, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release'];
 if (qtPrefix) {
   cmakeArgs.push(`-DCMAKE_PREFIX_PATH=${qtPrefix}`);
 }

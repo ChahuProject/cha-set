@@ -10,13 +10,7 @@ void ChaSetClipboard::setText(const QString &text)
 {
     m_lastSetText = text;
     if (auto *clipboard = QGuiApplication::clipboard()) {
-        for (int retry = 0; retry < 5; ++retry) {
-            clipboard->setText(text, QClipboard::Clipboard);
-            if (clipboard->text(QClipboard::Clipboard) == text) {
-                break;
-            }
-            QThread::msleep(10);
-        }
+        clipboard->setText(text, QClipboard::Clipboard);
     }
 }
 
