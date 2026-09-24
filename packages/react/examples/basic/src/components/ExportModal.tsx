@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Button,
-  ScrollArea,
   Tabs,
   TabsList,
   TabsTrigger,
@@ -12,6 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
   CopyButton,
+  CodeBlock,
 } from '@chahu/cha-set';
 import type { ThemeOverrides } from './ThemeTuner';
 
@@ -31,7 +31,6 @@ export const ExportModal: React.FC<ExportModalProps> = ({
   overrides,
 }) => {
   const [activeTab, setActiveTab] = useState<'css' | 'tailwind' | 'react' | 'qt' | 'json'>('css');
-  const [copied, setCopied] = useState(false);
 
   // Build CSS Variables Snippet
   const buildCssSnippet = () => {
@@ -156,6 +155,21 @@ ApplicationWindow {
     );
   };
 
+  const getLanguage = (): string => {
+    switch (activeTab) {
+      case 'css':
+        return 'css';
+      case 'tailwind':
+        return 'css';
+      case 'react':
+        return 'tsx';
+      case 'qt':
+        return 'qml';
+      case 'json':
+        return 'json';
+    }
+  };
+
   const getSnippet = () => {
     switch (activeTab) {
       case 'css':
@@ -171,19 +185,13 @@ ApplicationWindow {
     }
   };
 
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(getSnippet());
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Fallback
-    }
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent size="lg">
+      <DialogContent
+        size="lg"
+        defaultHeightRem={34}
+        contentClassName="overflow-hidden p-6 gap-3"
+      >
         <DialogHeader>
           <DialogTitle>Export & Copy Theme Configuration</DialogTitle>
           <DialogDescription>
@@ -203,18 +211,15 @@ ApplicationWindow {
           </Tabs>
         </div>
 
-        <div className="py-2">
-          <ScrollArea
-            showVerticalScrollBar={true}
-            showHorizontalScrollBar={true}
-            showButtons={false}
-            className="max-h-72 rounded-md border border-border bg-card"
-            viewportClassName="p-4"
-          >
-            <pre className="m-0 font-mono text-xs leading-relaxed text-foreground whitespace-pre">
-              <code>{getSnippet()}</code>
-            </pre>
-          </ScrollArea>
+        <div className="py-2 min-h-0 flex-1 flex flex-col">
+          <CodeBlock
+            code={getSnippet()}
+            language={getLanguage()}
+            showCopy={true}
+            showLanguage={true}
+            showLineNumbers={true}
+            maxHeight="16rem"
+          />
         </div>
 
         <DialogFooter className="flex items-center justify-between sm:justify-between w-full pt-2">

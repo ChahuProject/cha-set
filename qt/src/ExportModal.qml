@@ -175,33 +175,25 @@ ChaSetDialog {
         }
     }
 
-    Rectangle {
-        width: parent.width
-        height: ThemeTokens.dp(220)
-        color: ThemeTokens.panel
-        border.color: ThemeTokens.border
-        radius: ThemeTokens.dp(4)
-        clip: true
-
-        ChaSetScrollArea {
-            anchors.fill: parent
-            anchors.margins: ThemeTokens.dp(10)
-            showVerticalScrollBar: true
-            showHorizontalScrollBar: true
-            showButtons: false
-            contentWidth: Math.max(width, exportText.implicitWidth)
-            contentHeight: exportText.implicitHeight
-
-            TextEdit {
-                id: exportText
-                readOnly: true
-                selectByMouse: true
-                text: root.getSnippet()
-                color: ThemeTokens.text
-                font.family: Typography.familyMono
-                font.pixelSize: Typography.sizeSmall
-            }
+    function getLanguage() {
+        switch (root.exportTab) {
+        case "css": return "css";
+        case "tailwind": return "css";
+        case "react": return "tsx";
+        case "qt": return "qml";
+        case "json": return "json";
+        default: return "css";
         }
+    }
+
+    ChaSetCodeBlock {
+        width: parent.width
+        code: root.getSnippet()
+        language: root.getLanguage()
+        maxHeight: ThemeTokens.dp(240)
+        showCopy: true
+        showLanguage: true
+        showLineNumbers: true
     }
 
     Item {
