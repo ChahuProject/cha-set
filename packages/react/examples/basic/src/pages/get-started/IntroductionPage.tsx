@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardTitle, CardDescription, CodeBlock, Table, type TableColumn, ScrollArea, CheckIcon } from '@chahu/cha-set';
+import { Card, CardTitle, CardDescription, CodeBlock, Table, type TableColumn, ScrollArea, CheckIcon, ZapIcon, LockIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 
 const PACKAGE_COLUMNS: TableColumn[] = [
@@ -52,9 +52,7 @@ export function IntroductionPage() {
           </Card>
           <Card className="p-4 flex flex-col items-start gap-2">
             <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center ring-1 ring-primary/20">
-              <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
-              </svg>
+              <ZapIcon className="size-4" />
             </div>
             <CardTitle className="font-semibold text-sm">Native Ergonomics</CardTitle>
             <CardDescription className="text-xs leading-relaxed">
@@ -63,10 +61,7 @@ export function IntroductionPage() {
           </Card>
           <Card className="p-4 flex flex-col items-start gap-2">
             <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center ring-1 ring-primary/20">
-              <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
+              <LockIcon className="size-4" />
             </div>
             <CardTitle className="font-semibold text-sm">Automated Parity Gate</CardTitle>
             <CardDescription className="text-xs leading-relaxed">

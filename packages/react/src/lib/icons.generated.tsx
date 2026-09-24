@@ -248,6 +248,7 @@ export const ICON_CATEGORIES: IconCategory[] = [
       "star",
       "clock",
       "lock",
+      "info",
       "zap",
       "rocket"
     ]
@@ -332,23 +333,19 @@ export const ICON_SPECS: IconSpecSummary[] = [
   }
 ];
 export const ICON_ADOPTION = {
-  "maxInlineSvgSites": 55,
+  "maxInlineSvgSites": 47,
   "inlineSvgSites": [
     {
-      "file": "packages/react/examples/basic/src/components/CommandSearchModal.tsx",
-      "count": 1,
-      "exempted": 0,
-      "reasons": []
-    },
-    {
       "file": "packages/react/examples/basic/src/layout/Header.tsx",
-      "count": 4,
-      "exempted": 0,
-      "reasons": []
+      "count": 0,
+      "exempted": 1,
+      "reasons": [
+        "GitHub brand mark — a filled 24-unit logotype with its own proportions, not a stroke glyph"
+      ]
     },
     {
       "file": "packages/react/examples/basic/src/pages/get-started/IntroductionPage.tsx",
-      "count": 3,
+      "count": 1,
       "exempted": 0,
       "reasons": []
     },
@@ -381,12 +378,6 @@ export const ICON_ADOPTION = {
     {
       "file": "packages/react/src/input/Input.tsx",
       "count": 3,
-      "exempted": 0,
-      "reasons": []
-    },
-    {
-      "file": "packages/react/src/label/Label.tsx",
-      "count": 1,
       "exempted": 0,
       "reasons": []
     },
@@ -780,6 +771,20 @@ export const ICON_AUDIT: Record<string, IconAudit> = {
     "withinTolerance": true
   },
   "eye-off": {
+    "grid": "default",
+    "gridSize": 24,
+    "strokeWidth": 2,
+    "centerX": 12,
+    "centerY": 12,
+    "offsetX": 0,
+    "offsetY": 0,
+    "minX": 1,
+    "minY": 1,
+    "maxX": 23,
+    "maxY": 23,
+    "withinTolerance": true
+  },
+  "info": {
     "grid": "default",
     "gridSize": 24,
     "strokeWidth": 2,
@@ -1786,6 +1791,25 @@ export const ICON_ELEMENTS = {
       }
     ]
   },
+  "info": {
+    "grid": "default",
+    "elements": [
+      {
+        "t": "circle",
+        "cx": 12,
+        "cy": 12,
+        "r": 10
+      },
+      {
+        "t": "path",
+        "d": "M12 16v-4"
+      },
+      {
+        "t": "path",
+        "d": "M12 8h.01"
+      }
+    ]
+  },
   "lock": {
     "grid": "default",
     "elements": [
@@ -2545,6 +2569,7 @@ export const UploadIcon = /*#__PURE__*/ makeIcon('upload', 'UploadIcon');
 export const SettingsIcon = /*#__PURE__*/ makeIcon('settings', 'SettingsIcon');
 export const EyeIcon = /*#__PURE__*/ makeIcon('eye', 'EyeIcon');
 export const EyeOffIcon = /*#__PURE__*/ makeIcon('eye-off', 'EyeOffIcon');
+export const InfoIcon = /*#__PURE__*/ makeIcon('info', 'InfoIcon');
 export const LockIcon = /*#__PURE__*/ makeIcon('lock', 'LockIcon');
 export const GlobeIcon = /*#__PURE__*/ makeIcon('globe', 'GlobeIcon');
 export const ZapIcon = /*#__PURE__*/ makeIcon('zap', 'ZapIcon');

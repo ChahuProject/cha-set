@@ -80,6 +80,7 @@ export {
   SettingsIcon,
   EyeIcon,
   EyeOffIcon,
+  InfoIcon,
   LockIcon,
   GlobeIcon,
   ZapIcon,

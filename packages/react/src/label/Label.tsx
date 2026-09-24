@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '../lib/utils';
+import { InfoIcon } from '../lib/icons';
 
 export type LabelSize = 'default' | 'sm';
 
@@ -68,20 +69,7 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
             title={typeof tooltip === 'string' ? tooltip : undefined}
           >
             {typeof tooltip === 'string' ? (
-              <svg
-                className="w-3.5 h-3.5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 16v-4" />
-                <path d="M12 8h.01" />
-              </svg>
+              <InfoIcon size={14} />
             ) : (
               tooltip
             )}

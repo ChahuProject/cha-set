@@ -208,7 +208,17 @@ The marker is built to be awkward to abuse:
 3. **It has to be used.** A dangling marker is a gate failure, so exemptions cannot be stockpiled ahead of writing the art they excuse.
 4. **It is displayed.** Exempt sites and their reasons are embedded in the ledger and rendered on the showcase page, so the escape hatch is audited rather than invisible.
 
-The remaining migration backlog (labels, checkbox, switch, scroll-bar steppers, window title bar, task HUD, pipeline view, …) is intentionally **not** migrated here: rewriting it without a rendered verification pass would trade a verified state for an unverified one. Only the *text-glyph* class — the defect family this specification exists to remove — was cleared outright, because each of those was a one-line change with a visible, checkable result.
+### What may be migrated, and in what order
+
+Backlog sites are not interchangeable, and the ratchet does not pretend they are. They are paid down under a single rule: **a site moves only when the rendered result can be shown to be unchanged.**
+
+That rule splits the backlog three ways.
+
+1. **Provably identical.** The inline artwork is already drawn on the declared grid at the declared weight, so the registry entry reproduces it exactly — often because the site and the registry were derived from the same original drawing. These migrate freely. Verified so far: `search` (showcase header, command palette), `sun` and `moon` (theme toggle), `zap` and `lock` (introduction cards), and `info` (label tooltip hint), the last of which required adding `info` to the registry first.
+2. **Off-weight.** The geometry matches a registry icon but the stroke does not — `Checkbox` draws the standard checkmark at stroke **3.5** on the 24-unit grid, and `Switch` draws the standard loader arc at stroke **3**. Both are compensating for a 10-12px render size by thickening the stroke, which is precisely what a denser grid exists to avoid. Migrating them means the glyph gets *thinner*, so it is a visible change and needs a rendered pass rather than a mechanical one.
+3. **Off-grid chrome.** `Badge` draws its close glyph on a 12-unit grid; `ScrollBarButtons` draws eight chevrons on an 8-unit grid while Qt draws the same eight on a 14-unit space with `Canvas`. These are the hairline grids, and the two stacks currently render the scroll-bar steppers at different sizes — so which grids the specification should declare is a live question, not a transcription detail.
+
+The scroll-bar case is the sharpest example of why the ratchet alone was not enough. The two stacks have already drifted apart in four independent ways: grid (8 vs 14), chevron width (62.5% vs 50% of the grid), chevron height (31.25% vs 25%), and the gap between the two chevrons of a double glyph (touching vs separated). The registry's own 24-unit `chevron-up` is 50% × 25%, which means the **desktop** proportions are the ones that already agree with the specification and the web scroll-bar arrows are the outlier — a conclusion nobody could reach by looking at either stack alone.
 
 ### Related gates
 
@@ -227,10 +237,15 @@ The remaining migration backlog (labels, checkbox, switch, scroll-bar steppers, 
 | `ChaSetAddressBar` | `Text` glyphs `←` `→` `↑` `⟳` | `ChaSetIcon` `arrow-left` / `arrow-right` / `arrow-up` / `rotate-ccw` |
 | `ChaSetBadge`, `ChaSetInput` | `Text { text: "×" }` | `ChaSetIcon { name: "x" }` |
 | `ButtonDocPage` | `<span>←</span>` / `<span>→</span>` | `<Icon name="arrow-left" />` / `<Icon name="arrow-right" />` |
+| `Header` (showcase) | Inline `search`, `sun`, `moon` artwork | `SearchIcon`, `SunIcon`, `MoonIcon` |
+| `Header` (showcase) | Inline GitHub logo | Exempted as a brand mark, and displayed as such on the showcase page |
+| `CommandSearchModal` | Inline `search` artwork | `SearchIcon` |
+| `IntroductionPage` | Inline `zap` / `lock` artwork | `ZapIcon` / `LockIcon` |
+| `Label` | Inline `info` artwork | `InfoIcon` (registry gained `info`) |
 | `qt/src/ChaSetIcon.qml` | Canvas-drawn per-name line art (`lw = max(1.2, w * 0.09)`) | Specification-driven `Shape` + `PathSvg` renderer |
 | `packages/react/src/lib/icons.tsx` | 47 hand-written SVG components | Re-export of `icons.generated.tsx` (import paths and export names unchanged) |
 
-New icons added by this migration: `plus`, `minus`, `arrow-left`, `arrow-right`, `arrow-up`, `chart`, `window-minimize`, `window-maximize`, `window-restore`, `window-close` — the last four on the dense 10-unit chrome grid so window captions finally match the geometry of the toolbar icons next to them.
+New icons added by this migration: `plus`, `minus`, `arrow-left`, `arrow-right`, `arrow-up`, `chart`, `window-minimize`, `window-maximize`, `window-restore`, `window-close` — the last four on the dense 10-unit chrome grid so window captions finally match the geometry of the toolbar icons next to them — plus `info`, which the label tooltip had been drawing by hand.
 
 ---
 

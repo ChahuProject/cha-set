@@ -663,6 +663,25 @@
             }
           ]
         },
+        "info": {
+          "grid": "default",
+          "elements": [
+            {
+              "t": "circle",
+              "cx": 12,
+              "cy": 12,
+              "r": 10
+            },
+            {
+              "t": "path",
+              "d": "M12 16v-4"
+            },
+            {
+              "t": "path",
+              "d": "M12 8h.01"
+            }
+          ]
+        },
         "lock": {
           "grid": "default",
           "elements": [
@@ -1358,6 +1377,7 @@
             "star",
             "clock",
             "lock",
+            "info",
             "zap",
             "rocket"
           ]
@@ -1463,7 +1483,7 @@
     }
   ],
   "adoption": {
-    "maxInlineSvgSites": 55,
+    "maxInlineSvgSites": 47,
     "note": "Ratchet for components that still hand-author <svg> artwork. The gate fails the moment the number of sites grows, so new drift is impossible while the backlog is paid down at leisure. Sites excused as genuinely non-iconographic artwork are excluded from this ceiling, so the number always means \"artwork somebody could still migrate\"; each escape is carried by a marker with a mandatory reason and is reported in the ledger. The per-file breakdown is deliberately NOT stored here — it is derived live, because a hand-maintained copy of it is a second source of truth that nothing verifies and that therefore rots."
   }
 }
