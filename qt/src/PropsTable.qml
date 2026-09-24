@@ -57,6 +57,8 @@ Column {
         showVerticalScrollBar: false
         showHorizontalScrollBar: true
         showButtons: false
+        contentWidth: innerTable.width
+        contentHeight: innerTable.implicitHeight
 
         ChaSetTable {
             id: innerTable

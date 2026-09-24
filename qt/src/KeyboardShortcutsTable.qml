@@ -76,6 +76,8 @@ Column {
         showVerticalScrollBar: false
         showHorizontalScrollBar: true
         showButtons: false
+        contentWidth: kbInnerTable.width
+        contentHeight: kbInnerTable.implicitHeight
 
         ChaSetTable {
             id: kbInnerTable

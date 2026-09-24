@@ -101,12 +101,13 @@ Rectangle {
                         showButtons: false
                     }
                     delegate: Rectangle {
+                        id: itemDelegate
                         required property var modelData
                         required property int index
-                        width: parent.width
+                        width: resultsList.width
                         height: ThemeTokens.dp(48)
                         radius: ThemeTokens.dp(6)
-                        color: root.selectedIndex === index ? ThemeTokens.hover : "transparent"
+                        color: root.selectedIndex === itemDelegate.index ? ThemeTokens.hover : "transparent"
 
                         Row {
                             anchors.fill: parent
@@ -117,16 +118,28 @@ Rectangle {
                                 spacing: ThemeTokens.dp(2)
                                 Row {
                                     spacing: ThemeTokens.dp(6)
-                                    Text { text: parent.parent.parent.parent.modelData.title; color: ThemeTokens.text; font.family: Typography.familySans; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; anchors.verticalCenter: parent.verticalCenter }
-                                    ChaSetBadge { size: "sm"; variant: "outline"; text: parent.parent.parent.parent.modelData.category; anchors.verticalCenter: parent.verticalCenter }
+                                    Text {
+                                        text: itemDelegate.modelData ? (itemDelegate.modelData.title || "") : ""
+                                        color: ThemeTokens.text
+                                        font.family: Typography.familySans
+                                        font.pixelSize: Typography.sizeBody
+                                        font.weight: Typography.weightBold
+                                        anchors.verticalCenter: parent.verticalCenter
+                                    }
+                                    ChaSetBadge {
+                                        size: "sm"
+                                        variant: "outline"
+                                        text: itemDelegate.modelData ? (itemDelegate.modelData.category || "") : ""
+                                        anchors.verticalCenter: parent.verticalCenter
+                                    }
                                 }
                                 Text {
-                                    text: parent.parent.parent.modelData.desc
+                                    text: itemDelegate.modelData ? (itemDelegate.modelData.desc || "") : ""
                                     color: ThemeTokens.subduedText
                                     font.family: Typography.familySans
                                     font.pixelSize: Typography.sizeCaption
                                     elide: Text.ElideRight
-                                    width: resultsList.width - ThemeTokens.dp(24)
+                                    width: Math.max(0, resultsList.width - ThemeTokens.dp(24))
                                 }
                             }
                         }
@@ -135,10 +148,12 @@ Rectangle {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                             hoverEnabled: true
-                            onEntered: root.selectedIndex = parent.index
+                            onEntered: root.selectedIndex = itemDelegate.index
                             onClicked: {
-                                root.selectPage(parent.modelData.id)
-                                root.close()
+                                if (itemDelegate.modelData) {
+                                    root.selectPage(itemDelegate.modelData.id)
+                                    root.close()
+                                }
                             }
                         }
                     }

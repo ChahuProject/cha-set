@@ -381,6 +381,7 @@ Flickable {
     // Dual-Axis Corner Piece
     Rectangle {
         id: corner
+        parent: root
         visible: vScrollBar.visible && hScrollBar.visible
         z: 20
         anchors.right: parent.right
