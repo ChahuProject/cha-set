@@ -18,7 +18,6 @@ export function DocLayout({
   children,
 }: DocLayoutProps) {
   const contentRef = React.useRef<HTMLDivElement>(null);
-  const hasExplicitItems = tocItems && tocItems.length > 0;
 
   return (
     <div className="flex w-full min-w-0 justify-center">
@@ -57,11 +56,10 @@ export function DocLayout({
         <div className="prose-content" ref={contentRef}>{children}</div>
       </main>
 
-      {/* Right Table of Contents (explicit items or auto-scanned from containerRef) */}
-      <TableOfContents
-        items={hasExplicitItems ? tocItems : undefined}
-        containerRef={hasExplicitItems ? undefined : contentRef}
-      />
+      {/* Right Table of Contents — explicit labels when provided, otherwise
+          auto-scanned from the rendered content. The container ref is always
+          passed so heading depths can be resolved from the live DOM. */}
+      <TableOfContents items={tocItems} containerRef={contentRef} />
     </div>
   );
 }

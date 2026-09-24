@@ -235,6 +235,29 @@ export function TableOfContentsDocPage() {
       {/* 3. Footer Sections (Animations, Keyboard Navigation, Props Reference) */}
       <DocFooterSections
         componentId="table-of-contents"
+        animations={
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              The outline fades and slides in from the left, and the active marker is a single bar
+              that glides between rows rather than a per-row bar being swapped in place.
+            </p>
+            <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+              <li>
+                Entrance and marker travel both run over{' '}
+                <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with{' '}
+                <code className="text-xs bg-muted px-1 rounded">ease-standard</code>.
+              </li>
+              <li>
+                The marker reads its vertical position and height from the live DOM, so it stays
+                centered as interface scale changes font-relative row heights.
+              </li>
+              <li>
+                <code>prefers-reduced-motion</code> zeroes every duration automatically (Qt:{' '}
+                <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code>).
+              </li>
+            </ul>
+          </div>
+        }
         props={[
           {
             name: 'items',

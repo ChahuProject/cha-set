@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { TableOfContents, scanDocSections, slugToTitle } from '../../examples/basic/src/layout/TableOfContents';
+import {
+  TableOfContents,
+  scanDocSections,
+  enrichTocLevels,
+  slugToTitle,
+} from '../../examples/basic/src/layout/TableOfContents';
 import { DocLayout } from '../../examples/basic/src/layout/DocLayout';
 
 describe('TableOfContents Auto-Scanning Engine (React)', () => {
@@ -35,11 +40,11 @@ describe('TableOfContents Auto-Scanning Engine (React)', () => {
 
     const items = scanDocSections(container);
     expect(items).toEqual([
-      { id: 'overview', title: 'Interactive Overview' },
-      { id: 'installation', title: 'Installation' },
-      { id: 'status-and-tags', title: 'Status & Removable Tags' },
-      { id: 'keyboard', title: 'Keyboard Navigation' },
-      { id: 'props', title: 'Props Reference' },
+      { id: 'overview', title: 'Interactive Overview', level: 1 },
+      { id: 'installation', title: 'Installation', level: 1 },
+      { id: 'status-and-tags', title: 'Status & Removable Tags', level: 1 },
+      { id: 'keyboard', title: 'Keyboard Navigation', level: 1 },
+      { id: 'props', title: 'Props Reference', level: 1 },
     ]);
   });
 
@@ -53,7 +58,51 @@ describe('TableOfContents Auto-Scanning Engine (React)', () => {
 
     const items = scanDocSections(container);
     expect(items).toEqual([
-      { id: 'custom-demo', title: 'Custom Visual Gallery' },
+      { id: 'custom-demo', title: 'Custom Visual Gallery', level: 1 },
+    ]);
+  });
+
+  it('derives a heading tree from h2/h3 levels and rebases the shallowest to the top', () => {
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <section id="examples">
+        <h2>Examples</h2>
+        <div id="variants"><h3>Variants</h3></div>
+        <div id="sizes"><h3>Sizes</h3></div>
+      </section>
+      <section id="props"><h2>Props Reference</h2></section>
+    `;
+
+    const items = scanDocSections(container);
+    expect(items).toEqual([
+      { id: 'examples', title: 'Examples', level: 1 },
+      { id: 'variants', title: 'Variants', level: 2 },
+      { id: 'sizes', title: 'Sizes', level: 2 },
+      { id: 'props', title: 'Props Reference', level: 1 },
+    ]);
+  });
+
+  it('enriches explicit tocItems with DOM-resolved levels', () => {
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <section id="examples"><h2>Examples</h2></section>
+      <div id="variants"><h3>Variants</h3></div>
+    `;
+    document.body.appendChild(container);
+
+    const items = enrichTocLevels(
+      [
+        { id: 'examples', title: 'Examples' },
+        { id: 'variants', title: 'Variants' },
+      ],
+      container
+    );
+
+    document.body.removeChild(container);
+
+    expect(items).toEqual([
+      { id: 'examples', title: 'Examples', level: 1 },
+      { id: 'variants', title: 'Variants', level: 2 },
     ]);
   });
 

@@ -277,6 +277,7 @@ DocLayout {
     DocFooterSections {
         width: parent.width
         componentId: "table-of-contents"
+        customAnimations: "The outline fades and slides in from the left, and the active marker is a single bar that glides between rows rather than a per-row bar being swapped in place. Entrance and marker travel both run over ThemeTokens.motionQuick with ThemeTokens.easeStandard. The marker reads its vertical position and height from the live delegate, so it stays centered as interface scale changes font-relative row heights. ThemeTokens.animationsEnabled zeroes every duration automatically."
         propsModel: [
             {
                 name: "items",

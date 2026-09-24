@@ -13,7 +13,10 @@ Item {
     property string description: ""
     property var tocItems: []
     property var autoTocItems: []
-    readonly property var effectiveTocItems: (root.tocItems && root.tocItems.length > 0) ? root.tocItems : root.autoTocItems
+    property var enrichedTocItems: []
+    readonly property var effectiveTocItems: (root.tocItems && root.tocItems.length > 0)
+        ? ((root.enrichedTocItems && root.enrichedTocItems.length > 0) ? root.enrichedTocItems : root.tocItems)
+        : root.autoTocItems
     default property alias contentData: pageContentCol.data
 
     readonly property bool showToc: root.effectiveTocItems && root.effectiveTocItems.length > 0 && layoutRow.width >= ThemeTokens.dp(600)
@@ -85,6 +88,38 @@ Item {
         return null;
     }
 
+    /** Outline depth for a detected heading, mirroring the React h2/h3 map:
+     * section titles (sizeTitleSm / bold) are level 2 while sub-section
+     * headings (sizeHeading / semibold) are level 3. */
+    function headingLevel(item) {
+        if (!item || item.font === undefined) return 2;
+        if (item.font.pixelSize >= Typography.sizeTitleSm || item.font.weight >= Typography.weightBold) return 2;
+        if (item.font.pixelSize >= Typography.sizeHeading || item.font.weight >= Typography.weightSemibold) return 3;
+        return 2;
+    }
+
+    /** Rebase depths so the shallowest heading in the outline renders flush; a
+     * page whose top-level headings are all level 2 must not indent every row. */
+    function normalizeLevels(list) {
+        if (!list || list.length === 0) return list;
+        var min = 99;
+        for (var i = 0; i < list.length; i++) {
+            var lv = (list[i].level !== undefined && list[i].level > 0) ? list[i].level : 2;
+            if (lv < min) min = lv;
+        }
+        var out = [];
+        for (var j = 0; j < list.length; j++) {
+            var src = list[j];
+            out.push({
+                id: src.id,
+                title: src.title,
+                level: ((src.level !== undefined && src.level > 0) ? src.level : 2) - min + 1,
+                targetItem: src.targetItem !== undefined ? src.targetItem : null
+            });
+        }
+        return out;
+    }
+
     function findChildByType(parentItem, checkFn) {
         if (!parentItem || !parentItem.children) return null;
         for (var i = 0; i < parentItem.children.length; i++) {
@@ -102,7 +137,7 @@ Item {
         var scanned = [];
         var seenIds = {};
 
-        function addEntry(id, title, target) {
+        function addEntry(id, title, target, level) {
             if (!id || !title || !target) return;
             if (id === "interactive-overview" || id === "sandbox") {
                 id = "overview";
@@ -120,6 +155,7 @@ Item {
                 scanned.push({
                     id: id,
                     title: title,
+                    level: (level !== undefined && level > 0) ? level : 2,
                     targetItem: target
                 });
             }
@@ -134,30 +170,31 @@ Item {
             if (child.reactCode !== undefined || child.stageData !== undefined || child.controlsData !== undefined) {
                 var prevId = child.sectionId ? String(child.sectionId) : "overview";
                 var prevTitle = child.sectionTitle ? String(child.sectionTitle) : (prevId === "overview" ? "Interactive Overview" : (child.title || "Interactive Overview"));
-                addEntry(prevId, prevTitle, child);
+                addEntry(prevId, prevTitle, child, 2);
                 continue;
             }
 
             // 2. Direct KeyboardShortcutsTable
             if (child.componentId !== undefined) {
-                addEntry(child.sectionId || "keyboard", child.sectionTitle || "Keyboard Navigation", child);
+                addEntry(child.sectionId || "keyboard", child.sectionTitle || "Keyboard Navigation", child, 2);
                 continue;
             }
 
             // 3. Direct PropsTable
             if (child.propsModel !== undefined) {
-                addEntry(child.sectionId || "props", child.sectionTitle || "Props Reference", child);
+                addEntry(child.sectionId || "props", child.sectionTitle || "Props Reference", child, 2);
                 continue;
             }
 
             // 4. Explicit sectionId/sectionTitle on container
             if (child.sectionId !== undefined && child.sectionId !== "") {
                 var sTitle = child.sectionTitle ? String(child.sectionTitle) : "";
+                var sHeading = null;
                 if (!sTitle) {
-                    var h = findFirstHeading(child);
-                    if (h) sTitle = String(h.text).trim();
+                    sHeading = findFirstHeading(child);
+                    if (sHeading) sTitle = String(sHeading.text).trim();
                 }
-                addEntry(String(child.sectionId), sTitle || String(child.sectionId), child);
+                addEntry(String(child.sectionId), sTitle || String(child.sectionId), child, sHeading ? headingLevel(sHeading) : 2);
                 continue;
             }
 
@@ -171,14 +208,14 @@ Item {
                 var pt = findChildByType(child, function(it) { return it.propsModel !== undefined; });
 
                 if (kb && pt && (sId === "props" || sId === "keyboard" || sId === "props-reference" || sId === "api-reference")) {
-                    addEntry("keyboard", "Keyboard Navigation", kb);
-                    addEntry("props", "Props Reference", pt);
+                    addEntry("keyboard", "Keyboard Navigation", kb, 2);
+                    addEntry("props", "Props Reference", pt, 2);
                 } else if (kb && !pt) {
-                    addEntry(sId || "keyboard", hText || "Keyboard Navigation", child);
+                    addEntry(sId || "keyboard", hText || "Keyboard Navigation", child, 2);
                 } else if (pt && !kb) {
-                    addEntry(sId || "props", hText || "Props Reference", child);
+                    addEntry(sId || "props", hText || "Props Reference", child, 2);
                 } else {
-                    addEntry(sId, hText, child);
+                    addEntry(sId, hText, child, headingLevel(heading));
 
                     if (child.children && child.children.length > 1) {
                         for (var j = 0; j < child.children.length; j++) {
@@ -189,7 +226,7 @@ Item {
                                 var subText = String(subH.text).trim();
                                 if (subText !== "" && subText !== hText) {
                                     var subId = subChild.sectionId || subChild.objectName || slugify(subText);
-                                    addEntry(subId, subText, subChild);
+                                    addEntry(subId, subText, subChild, headingLevel(subH));
                                 }
                             }
                         }
@@ -198,7 +235,26 @@ Item {
             }
         }
 
-        root.autoTocItems = scanned;
+        var levelById = {};
+        for (var m = 0; m < scanned.length; m++) {
+            levelById[scanned[m].id] = scanned[m].level;
+        }
+
+        root.autoTocItems = normalizeLevels(scanned);
+
+        // Explicit `tocItems` keep their labels and order; depth is resolved from
+        // the scanned headings so a flat hand-written list still renders as a tree.
+        if (root.tocItems && root.tocItems.length > 0) {
+            var enriched = [];
+            for (var t = 0; t < root.tocItems.length; t++) {
+                var src = root.tocItems[t];
+                var lv = (src.level !== undefined && src.level > 0)
+                    ? src.level
+                    : (levelById[src.id] !== undefined ? levelById[src.id] : 2);
+                enriched.push({ id: src.id, title: src.title, level: lv, targetItem: src.targetItem });
+            }
+            root.enrichedTocItems = normalizeLevels(enriched);
+        }
     }
 
     function matchesSectionText(rawText, targetId, targetTitle) {

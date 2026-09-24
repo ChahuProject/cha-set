@@ -47,7 +47,10 @@ export function Header({
   const activeLocaleMeta = supportedLocales.find((l) => l.code === locale) || { nativeName: locale, code: locale };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md">
+    <header
+      data-slot="showcase-top-banner"
+      className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md"
+    >
       <div className="flex h-14 items-center justify-between px-4 md:px-6">
         {/* Brand Group */}
         <div className="flex items-center gap-3">
