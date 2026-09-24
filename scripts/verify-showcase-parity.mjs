@@ -102,15 +102,52 @@ export function extractReactDocMetadata(content) {
   }
 
   meta.previews = [];
-  const rRegex = /<ComponentPreview\b([\s\S]*?)>/g;
-  let rMatch;
-  while ((rMatch = rRegex.exec(content)) !== null) {
-    const attrs = rMatch[1];
-    const titleMatch = attrs.match(/title=(?:["']([^"']+)["']|\{["']([^"']+)["']\})/);
-    const title = titleMatch ? (titleMatch[1] || titleMatch[2]) : '';
-    const hasReactCode = /reactCode=/.test(attrs);
-    const hasControls = /controls=/.test(attrs);
-    meta.previews.push({ title, hasReactCode, hasControls });
+  const previewStarts = [...content.matchAll(/<ComponentPreview\b/g)];
+  for (const pMatch of previewStarts) {
+    let idx = pMatch.index + pMatch[0].length;
+    let inBrace = 0;
+    let inBacktick = false;
+    let inQuote = null;
+    let endIdx = -1;
+
+    while (idx < content.length) {
+      const ch = content[idx];
+      const prevCh = idx > 0 ? content[idx - 1] : '';
+
+      if (inBacktick) {
+        if (ch === '`' && prevCh !== '\\') {
+          inBacktick = false;
+        }
+      } else if (inQuote) {
+        if (ch === inQuote && prevCh !== '\\') {
+          inQuote = null;
+        }
+      } else {
+        if (ch === '`') {
+          inBacktick = true;
+        } else if (ch === '"' || ch === "'") {
+          inQuote = ch;
+        } else if (ch === '{') {
+          inBrace++;
+        } else if (ch === '}') {
+          inBrace = Math.max(0, inBrace - 1);
+        } else if (ch === '>' && inBrace === 0) {
+          endIdx = idx;
+          break;
+        }
+      }
+      idx++;
+    }
+
+    if (endIdx !== -1) {
+      const attrs = content.slice(pMatch.index + pMatch[0].length, endIdx);
+      const titleMatch = attrs.match(/title=(?:["']([^"']+)["']|\{["']([^"']+)["']\})/);
+      const title = titleMatch ? (titleMatch[1] || titleMatch[2]) : '';
+      const hasReactCode = /reactCode=/.test(attrs);
+      const hasQtCode = /qtCode=/.test(attrs);
+      const hasControls = /controls=/.test(attrs);
+      meta.previews.push({ title, hasReactCode, hasQtCode, hasControls });
+    }
   }
   meta.previewTitle = meta.previews[0]?.title || '';
 
@@ -186,8 +223,10 @@ export function extractQtDocMetadata(content) {
     const title = titleMatch ? titleMatch[1] : '';
     const reactCodeMatch = snippet.match(/reactCode\s*:\s*(?:`([^`]+)`|["']([^"']+)["']|([^\n\r]+))/);
     const reactCode = reactCodeMatch ? (reactCodeMatch[1] || reactCodeMatch[2] || reactCodeMatch[3] || '').trim() : '';
+    const qtCodeMatch = snippet.match(/qtCode\s*:\s*(?:`([^`]+)`|["']([^"']+)["']|([^\n\r]+))/);
+    const qtCode = qtCodeMatch ? (qtCodeMatch[1] || qtCodeMatch[2] || qtCodeMatch[3] || '').trim() : '';
     const hasControls = /controlsData\s*:/.test(snippet);
-    meta.previews.push({ title, reactCode, hasControls });
+    meta.previews.push({ title, reactCode, qtCode, hasControls });
   }
   meta.previewTitle = meta.previews[0]?.title || '';
   meta.reactCode = meta.previews[0]?.reactCode || '';
@@ -336,6 +375,19 @@ export function verifyShowcaseParity(options = {}) {
       const qPrev = qtMeta.previews[i];
       if (!qPrev.reactCode || qPrev.reactCode.trim() === '') {
         errors.push(`[${base}] Qt ComponentPreview[${i}] is missing 'reactCode' property`);
+      }
+      if (!qPrev.qtCode || qPrev.qtCode.trim() === '') {
+        errors.push(`[${base}] Qt ComponentPreview[${i}] is missing 'qtCode' property`);
+      }
+    }
+
+    for (let i = 0; i < reactMeta.previews.length; i++) {
+      const rPrev = reactMeta.previews[i];
+      if (!rPrev.hasReactCode) {
+        errors.push(`[${base}] React ComponentPreview[${i}] is missing 'reactCode' prop`);
+      }
+      if (!rPrev.hasQtCode) {
+        errors.push(`[${base}] React ComponentPreview[${i}] is missing 'qtCode' prop`);
       }
     }
 

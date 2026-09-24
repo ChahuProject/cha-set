@@ -44,7 +44,17 @@ export function SelectDocPage() {
           Select an item from the menu. Selected value: <code>{value}</code>
         </p>
 
-        <ComponentPreview title="Select Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetSelect {
+    value: "apple"
+    placeholder: "Choose fruit..."
+    options: [
+        { value: "apple", label: "Apple" },
+        { value: "banana", label: "Banana" },
+        { value: "cherry", label: "Cherry" }
+    ]
+    onValueChanged: function(val) { console.log(val) }
+}`} title="Select Sandbox" reactCode={reactCode}>
           <Select value={value} onValueChange={setValue}>
             <SelectTrigger className="w-48">
               <SelectValue placeholder="Select a fruit" />

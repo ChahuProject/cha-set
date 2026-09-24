@@ -74,7 +74,38 @@ export function SidebarDocPage() {
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Interactive Overview
         </h2>
-      <ComponentPreview title="Sidebar Sandbox" reactCode={basicUsageCode}>
+      <ComponentPreview
+          qtCode={`ChaSetSidebar {
+    id: sidebar
+    collapsed: false
+    variant: "sidebar"
+    collapsible: "icon"
+    sidebarWidth: 240
+
+    Column {
+        anchors.fill: parent
+        anchors.margins: 12
+        spacing: 12
+
+        Row {
+            spacing: 8
+            ChaSetIcon { name: "logo"; size: 16 }
+            Text {
+                visible: !sidebar.collapsed
+                text: "ChaSet Studio"
+                color: ThemeTokens.text
+                font.weight: Font.Bold
+            }
+        }
+
+        ChaSetButton {
+            width: parent.width
+            icon: "chart"
+            text: sidebar.collapsed ? "" : "Dashboard"
+            variant: "default"
+        }
+    }
+}`} title="Sidebar Sandbox" reactCode={basicUsageCode}>
         <div className="relative h-[22.5rem] w-full border rounded-lg overflow-hidden flex bg-background">
           <SidebarProvider defaultOpen={true} container>
             <Sidebar collapsible={collapsibleMode} className="border-r">

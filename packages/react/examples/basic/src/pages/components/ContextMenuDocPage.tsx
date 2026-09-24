@@ -49,7 +49,20 @@ export function ContextMenuDocPage() {
           Right-click (or long press) inside the dashed container below to reveal the context menu.
         </p>
 
-        <ComponentPreview title="Context Menu Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetContextMenu {
+    items: [
+        { id: "back", label: "Back", shortcut: "Alt+Left" },
+        { id: "forward", label: "Forward", shortcut: "Alt+Right" },
+        { id: "reload", label: "Reload", shortcut: "Ctrl+R" },
+        { id: "inspect", label: "Inspect Element", shortcut: "F12" }
+    ]
+    onItemSelected: function(id) { console.log(id) }
+
+    Rectangle {
+        // Target canvas to receive right-click
+    }
+}`} title="Context Menu Sandbox" reactCode={reactCode}>
           <ContextMenu>
             <ContextMenuTrigger className="flex h-36 w-full max-w-xs items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground select-none bg-muted/20 hover:bg-muted/40 transition-colors">
               Right click here

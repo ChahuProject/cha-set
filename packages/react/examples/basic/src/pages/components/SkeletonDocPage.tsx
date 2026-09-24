@@ -37,7 +37,16 @@ export function SkeletonDocPage() {
           Visual placeholder skeleton cards for progressive loading states. Switch between pulse, wave shimmer, or static modes.
         </p>
 
-        <ComponentPreview title="Skeleton Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`Row {
+    spacing: 12
+    ChaSetSkeleton { width: 48; height: 48; rounded: "full"; animation: "${animation}" }
+    Column {
+        spacing: 8
+        ChaSetSkeleton { width: 200; height: 16; rounded: "md"; animation: "${animation}" }
+        ChaSetSkeleton { width: 140; height: 16; rounded: "md"; animation: "${animation}" }
+    }
+}`} title="Skeleton Sandbox" reactCode={reactCode}>
           <div className="flex flex-col items-center gap-6">
             <div className="flex items-center gap-2 text-xs">
               <span className="font-medium text-muted-foreground">Animation:</span>

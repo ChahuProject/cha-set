@@ -110,6 +110,12 @@ export function TaskHudDocPage() {
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
         <ComponentPreview
+          qtCode={`ChaSetTaskHud {
+    tasks: demoTasks
+    maxVisible: 3
+    autoHideDelay: 600
+    onDismissed: (id) => dismissTask(id)
+}`}
           title="Task HUD Sandbox"
           reactCode={heroReactCode}
           controls={

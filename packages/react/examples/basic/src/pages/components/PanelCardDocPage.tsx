@@ -37,7 +37,20 @@ export function PanelCardDocPage() {
           Click the chevron icon or title to collapse and expand the card panel body.
         </p>
 
-        <ComponentPreview title="Panel Card Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetPanelCard {
+    title: "System Diagnostics"
+    badgeText: "Healthy"
+    collapsible: true
+
+    Column {
+        anchors.fill: parent
+        anchors.margins: 14
+        spacing: 8
+        Text { text: "CPU Utilization: 24%"; color: ThemeTokens.text }
+        Text { text: "Memory Usage: 4.2 GB / 16 GB"; color: ThemeTokens.subduedText }
+    }
+}`} title="Panel Card Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-md">
             <PanelCard
               title="Shader Pipeline Status"

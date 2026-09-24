@@ -52,7 +52,33 @@ export function ViewportConstrainedContainerDocPage() {
           The container dynamically measures the distance from its anchor to the bottom of the window (window.innerHeight - rect.top - margin) and clamps content height to prevent overflowing outside the viewport.
         </p>
 
-        <ComponentPreview title="Viewport Constrained Container Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetViewportConstrainedContainer {
+    width: 260
+    maxHeight: 220
+    margin: 16
+
+    Column {
+        width: parent.width
+        padding: 12
+        spacing: 8
+        Repeater {
+            model: 12
+            Rectangle {
+                width: parent.width - 24
+                height: 32
+                radius: 4
+                color: ThemeTokens.color("panelRaised")
+                Text {
+                    anchors.centerIn: parent
+                    text: "Item #" + (index + 1)
+                    color: ThemeTokens.text
+                    font.pixelSize: 12
+                }
+            }
+        }
+    }
+}`} title="Viewport Constrained Container Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-sm flex flex-col gap-4">
             <div className="flex items-center gap-2">
               <Button

@@ -36,7 +36,15 @@ export function WindowTitleBarDocPage() {
           Frameless window title bar with native-style action buttons.
         </p>
 
-        <ComponentPreview title="Window Title Bar Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetWindowTitleBar {
+    width: parent.width
+    title: "Chahu Render Studio"
+    icon: "logo"
+    onMinimizeClicked: console.log("minimize")
+    onMaximizeClicked: console.log("maximize")
+    onCloseClicked: console.log("close")
+}`} title="Window Title Bar Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-lg border border-border rounded-lg overflow-hidden shadow-sm">
             <WindowTitleBar
               title="ChaSet Desktop Studio"

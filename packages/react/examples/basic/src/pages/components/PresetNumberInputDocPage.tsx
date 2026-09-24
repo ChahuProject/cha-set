@@ -38,7 +38,10 @@ export function PresetNumberInputDocPage() {
           Focus or click the input field to open the preset numbers list. Click an item to populate the field, or type custom numbers freely.
         </p>
 
-        <ComponentPreview title="Preset Number Input Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetPresetNumberInput {
+    value: "1024"
+}`} title="Preset Number Input Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-xs flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-muted-foreground">Texture Dimension</label>

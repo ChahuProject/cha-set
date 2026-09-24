@@ -37,7 +37,15 @@ export function RangeSliderDocPage() {
           Drag either thumb to adjust minimum and maximum bounds.
         </p>
 
-        <ComponentPreview title="Range Slider Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetRangeSlider {
+    from: 0
+    to: 100
+    firstValue: 20
+    secondValue: 80
+    showTooltip: true
+    onValuesChanged: function(f, s) { console.log(f, s) }
+}`} title="Range Slider Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-sm flex flex-col gap-4">
             <div className="flex justify-between text-xs text-muted-foreground font-mono">
               <span>Min: {range[0]}</span>
@@ -64,6 +72,10 @@ export function RangeSliderDocPage() {
         </p>
 
         <ComponentPreview
+          qtCode={`ChaSetRangeSlider { size: "default"; firstValue: 20; secondValue: 80; showTooltip: true }
+ChaSetRangeSlider { size: "sm"; firstValue: 30; secondValue: 70; showTooltip: true }
+ChaSetRangeSlider { size: "sm"; firstValue: 25; secondValue: 75; readOnly: true }
+ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false }`}
           title="Sizes & States Preview"
           reactCode={`<RangeSlider size="default" defaultValue={[20, 80]} showTooltip />
 <RangeSlider size="sm" defaultValue={[30, 70]} showTooltip />

@@ -293,7 +293,19 @@ export function VirtualTreeDocPage() {
           Hierarchical tree with multi-selection (Ctrl/Shift+Click), external dimmed cut state (Ctrl+X/V), copied state (Ctrl+C/V), Ctrl+Drag copy, and keyboard navigation.
         </p>
 
-        <ComponentPreview title="Virtual Tree Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetVirtualTree {
+    nodes: treeData
+    selectionMode: "multiple"
+    selectedIds: selectedIds
+    dimmedIds: cutIds
+    copiedIds: copiedIds
+    enableDnd: true
+    onNodeDropped: function(src, target, pos, isCopy) { ... }
+    onNodeCut: function(ids) { cutIds = ids }
+    onNodeCopied: function(ids) { copiedIds = ids }
+    onNodeDeleted: function(ids) { ... }
+}`} title="Virtual Tree Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-md flex flex-col gap-3">
             {/* Control Toolbar */}
             <div className="flex flex-wrap items-center gap-2">

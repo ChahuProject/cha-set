@@ -58,7 +58,17 @@ gridRef.current?.scrollToIndex(20, 'center');
           Virtualizing responsive card columns with automatic width calculation and row-based DOM recycling. Use controls below for programmatic navigation.
         </p>
 
-        <ComponentPreview title="Virtual Grid Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetVirtualGrid {
+    width: 360
+    height: 240
+    cellWidth: 168
+    cellHeight: 96
+    model: 1000
+    delegate: Item {
+        // ...card delegate...
+    }
+}`} title="Virtual Grid Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-xl space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
               <Button

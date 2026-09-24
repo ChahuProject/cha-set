@@ -59,7 +59,19 @@ export function DraggableModalDocPage() {
           点击打开可拖拽弹窗体，支持通过右上角菜单切换尺寸档位、拖拽移动以及贴高自适应。
         </p>
 
-        <ComponentPreview title="Draggable Modal Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetDraggableModal {
+    title: "Floating Tools"
+    initialPositionMode: "center"
+    showEscBadge: true
+    sizeOptions: [
+        { name: "默认", special: "default" },
+        { name: "宽屏", widthRem: 32, heightRem: 20 },
+        { name: "全窗口", special: "fullscreen" }
+    ]
+    width: 300
+    height: 200
+}`} title="Draggable Modal Sandbox" reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4">
             <Button variant="outline" onClick={() => setOpen(true)}>
               {open ? '弹窗已打开' : '打开可拖拽诊断弹窗'}

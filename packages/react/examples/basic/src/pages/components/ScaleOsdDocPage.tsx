@@ -35,6 +35,14 @@ export function ScaleOsdDocPage() {
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
         <ComponentPreview
+          qtCode={`ChaSetScaleOsd {
+    value: 1.0
+    step: 0.1
+    min: 0.2
+    max: 3.0
+    autoHideDuration: 1400
+    onValueChanged: function(val) { console.log(val) }
+}`}
           title="Scale OSD Sandbox"
           reactCode={heroReactCode}
           controls={

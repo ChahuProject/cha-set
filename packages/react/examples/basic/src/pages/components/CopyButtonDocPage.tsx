@@ -31,7 +31,8 @@ export function CopyButtonDocPage() {
           Click either copy button below to copy the target string to your system clipboard.
         </p>
 
-        <ComponentPreview title="Copy Button Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`Row {\n    spacing: 12\n    ChaSetCopyButton {\n        text: "pnpm add @chahu/cha-set"\n        onCopiedToClipboard: function(txt) { console.log("Copied: " + txt) }\n    }\n    ChaSetCopyButton {\n        text: "https://chahu.design"\n        label: "Copy Link"\n        variant: "outline"\n    }\n    ChaSetCopyButton {\n        text: "export const SECRET = 'sk_live_948271';"\n        label: "Copy Secret"\n        variant: "default"\n    }\n}`} title="Copy Button Sandbox" reactCode={reactCode}>
           <div className="flex flex-wrap items-center gap-4">
             <CopyButton text="pnpm add @chahu/cha-set" />
             <CopyButton text="https://chahu.design" label="Copy Link" />

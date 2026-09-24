@@ -48,7 +48,18 @@ export function QueryBuilderDocPage() {
           Add rules and nested groups dynamically to construct complex query predicates.
         </p>
 
-        <ComponentPreview title="Query Builder Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetQueryBuilder {
+    connector: "AND"
+    fields: [
+        { key: "role", label: "Role" },
+        { key: "age", label: "Age" }
+    ]
+    rules: [
+        { id: "r1", field: "role", operator: "equals", value: "Architect" }
+    ]
+    onQueryChanged: console.log("query changed")
+}`} title="Query Builder Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-xl flex flex-col gap-4">
             <QueryBuilder
               fields={SAMPLE_FIELDS}

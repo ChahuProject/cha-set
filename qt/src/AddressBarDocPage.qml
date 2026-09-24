@@ -87,6 +87,7 @@ DocLayout {
                 width: parent.width
                 title: "Address Bar Sandbox"
                 reactCode: "<AddressBar\n  path={currentPath}\n  canGoBack={canGoBack}\n  canGoForward={canGoForward}\n  onNavigate={(newPath) => setCurrentPath(newPath)}\n  onBack={handleBack}\n  onForward={handleForward}\n  onRefresh={() => console.log('Refreshed')}\n  suggestions={[\n    'C:/Users/Development/cha-set',\n    'C:/Windows/System32',\n    'D:/Projects/qt-demo',\n    '/var/log/nginx',\n  ]}\n/>"
+                qtCode: "ChaSetAddressBar {\n    width: parent.width\n    path: currentPath\n    canGoBack: canGoBack\n    canGoForward: canGoForward\n    onNavigateRequested: (path) => navigateTo(path)\n    onBackRequested: handleBack()\n    onForwardRequested: handleForward()\n    onRefreshRequested: handleRefresh()\n}"
 
                 controlsData: [
                     Row {

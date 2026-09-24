@@ -148,6 +148,7 @@ DocLayout {
                 width: parent.width
                 title: "Task HUD Sandbox"
                 reactCode: "<TaskHud\n  tasks={tasks}\n  maxVisible={3}\n  autoHideDelay={600}\n  onDismiss={(id) => setTasks((prev) => prev.filter((t) => t.id !== id))}\n/>"
+                qtCode: "ChaSetTaskHud {\n    tasks: demoTasks\n    maxVisible: 3\n    autoHideDelay: 600\n    onDismissed: (id) => dismissTask(id)\n}"
 
                 controlsData: [
                     Row {

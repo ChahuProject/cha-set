@@ -34,6 +34,14 @@ export function SnapSliderDocPage() {
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
         <ComponentPreview
+          qtCode={`ChaSetSnapSlider {
+    count: 5
+    labels: ["0.5x", "1.0x", "1.5x", "2.0x", "3.0x"]
+    leftLabel: "Slow"
+    rightLabel: "Fast"
+    currentIndex: 1
+    onIndexChanged: function(idx) { console.log(idx) }
+}`}
           title="Snap Slider Sandbox"
           reactCode={heroReactCode}
           controls={

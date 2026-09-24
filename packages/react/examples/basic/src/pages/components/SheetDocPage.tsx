@@ -60,7 +60,21 @@ export function SheetDocPage() {
           Choose a slide edge and size preset, then trigger the drawer modal.
         </p>
 
-        <ComponentPreview title="Sheet Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetButton {
+    text: "Open Sheet"
+    variant: "outline"
+    onClicked: sheet.open = true
+}
+
+ChaSetSheet {
+    id: sheet
+    side: "right"
+    size: "default"
+    title: "Edit profile"
+    description: "Make changes to your profile here."
+    // ...content...
+}`} title="Sheet Sandbox" reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-wrap items-center justify-center gap-3 text-xs">
               <span className="font-medium text-muted-foreground">Side:</span>

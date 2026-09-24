@@ -35,7 +35,14 @@ export function KeybindingRecorderDocPage() {
           Click the recorder box below and press any key combination (e.g. <code>Ctrl+Alt+S</code>).
         </p>
 
-        <ComponentPreview title="Keybinding Recorder Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetKeybindingRecorder {
+    width: 240
+    value: "Ctrl+Shift+P"
+    size: "default"
+    clearable: true
+    onKeybindingRecorded: function(b) { console.log(b) }
+}`} title="Keybinding Recorder Sandbox" reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4 w-full max-w-sm">
             <KeybindingRecorder
               value={binding}
@@ -58,6 +65,10 @@ export function KeybindingRecorderDocPage() {
         </p>
 
         <ComponentPreview
+          qtCode={`ChaSetKeybindingRecorder { value: "Ctrl+K"; size: "default" }
+ChaSetKeybindingRecorder { value: "Ctrl+Shift+P"; size: "sm" }
+ChaSetKeybindingRecorder { value: "Alt+F4"; clearable: false }
+ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`}
           title="Sizes & States Preview"
           reactCode={`<KeybindingRecorder value="Ctrl+K" size="default" />
 <KeybindingRecorder value="Ctrl+Shift+P" size="sm" />

@@ -96,7 +96,8 @@ export function CodeBlockDocPage() {
           produced by the shared spec lexer — no third-party highlighter is shipped on either stack.
         </p>
 
-        <ComponentPreview title="Code Block Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetCodeBlock {\n    language: "tsx"\n    showLineNumbers: true\n    code: source\n}`} title="Code Block Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-2xl">
             <CodeBlock code={TSX_SAMPLE} language="tsx" showLineNumbers />
           </div>

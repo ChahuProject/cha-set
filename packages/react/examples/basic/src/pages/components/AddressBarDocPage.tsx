@@ -81,6 +81,16 @@ export function AddressBarDocPage() {
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
         <ComponentPreview
+          qtCode={`ChaSetAddressBar {
+    width: parent.width
+    path: currentPath
+    canGoBack: canGoBack
+    canGoForward: canGoForward
+    onNavigateRequested: (path) => navigateTo(path)
+    onBackRequested: handleBack()
+    onForwardRequested: handleForward()
+    onRefreshRequested: handleRefresh()
+}`}
           title="Address Bar Sandbox"
           reactCode={heroReactCode}
           controls={

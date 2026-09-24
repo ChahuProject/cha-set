@@ -55,7 +55,22 @@ export function DropdownMenuDocPage() {
           Click the trigger below to open the dropdown menu. Keyboard navigation and shortcuts are fully supported.
         </p>
 
-        <ComponentPreview title="Dropdown Menu Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetDropdownMenu {
+    open: menuOpen
+    items: [
+        { id: "profile", label: "Profile", shortcut: "⌘P" },
+        { id: "settings", label: "Settings", shortcut: "⌘S" },
+        { id: "delete", label: "Delete", destructive: true }
+    ]
+    onItemSelected: function(id) { console.log(id) }
+
+    ChaSetButton {
+        text: "Options ▾"
+        variant: "outline"
+        onClicked: parent.open = !parent.open
+    }
+}`} title="Dropdown Menu Sandbox" reactCode={reactCode}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">Options ▾</Button>

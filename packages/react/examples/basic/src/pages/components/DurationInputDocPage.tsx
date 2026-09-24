@@ -45,7 +45,10 @@ export function DurationInputDocPage() {
           Directly type into any segment or use the up/down stepper buttons. Press Left/Right arrow keys to jump between segments, or pick from grouped quick-select presets.
         </p>
 
-        <ComponentPreview title="Duration Input Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetDurationInput {
+    value: 3665
+}`} title="Duration Input Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-sm flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-muted-foreground">Timer Duration</label>

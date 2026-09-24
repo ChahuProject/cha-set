@@ -34,7 +34,12 @@ export function ReadOnlyInputDocPage() {
           Safely expose secret credentials with optional masking, reveal toggle, and one-click copy.
         </p>
 
-        <ComponentPreview title="Read-Only Input Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetReadOnlyInput {
+    value: "cs_live_94817264810294827104"
+    masked: true
+    showCopy: true
+}`} title="Read-Only Input Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-md flex flex-col gap-4">
             <ReadOnlyInput
               value="cs_live_94817264810294827104"
@@ -58,6 +63,11 @@ export function ReadOnlyInputDocPage() {
         </p>
 
         <ComponentPreview
+          qtCode={`ChaSetReadOnlyInput { value: "chaset_default_token_preview"; size: "default" }
+ChaSetReadOnlyInput { value: "chaset_compact_sm_token_preview"; size: "sm" }
+ChaSetReadOnlyInput { value: "chaset_destructive_revoked"; colorScheme: "destructive" }
+ChaSetReadOnlyInput { value: "chaset_warning_expiring_soon"; colorScheme: "warning" }
+ChaSetReadOnlyInput { value: "chaset_success_verified"; colorScheme: "success" }`}
           title="Sizes & Status Variants"
           reactCode={`<ReadOnlyInput value="default_token_val_1" size="default" />
 <ReadOnlyInput value="compact_sm_token_2" size="sm" />

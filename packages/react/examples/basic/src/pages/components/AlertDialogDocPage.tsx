@@ -51,7 +51,22 @@ export function AlertDialogDocPage() {
           Click the destructive button below to trigger the confirmation modal. You can toggle size presets and overlay click behavior.
         </p>
 
-        <ComponentPreview title="Alert Dialog Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetButton {
+    text: "Delete Account"
+    variant: "destructive"
+    onClicked: alertDlg.open = true
+}
+
+ChaSetAlertDialog {
+    id: alertDlg
+    title: "Are you absolutely sure?"
+    description: "This action cannot be undone. This will permanently delete your account."
+    confirmText: "Delete"
+    destructive: true
+    onConfirmed: console.log("confirmed")
+    onCancelled: console.log("cancelled")
+}`} title="Alert Dialog Sandbox" reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-wrap items-center gap-3 text-xs">
               <span className="font-medium text-muted-foreground">Size:</span>

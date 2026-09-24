@@ -54,7 +54,17 @@ listRef.current?.scrollToIndex(500, 'center');
           Rendering <strong>10,000</strong> virtual items smoothly at 60fps. Use the controls below to trigger programmatic scrolling or scroll rapidly to observe instant windowing.
         </p>
 
-        <ComponentPreview title="Virtual List Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetVirtualList {
+    width: 340
+    height: 260
+    model: 10000
+    delegate: Rectangle {
+        width: parent.width
+        height: 36
+        // ...delegate...
+    }
+}`} title="Virtual List Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-md space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
               <Button

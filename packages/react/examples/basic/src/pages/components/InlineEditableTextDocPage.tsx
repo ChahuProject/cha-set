@@ -35,7 +35,11 @@ export function InlineEditableTextDocPage() {
           Click or double-click on the text below to modify it. Press <code>Enter</code> to confirm or <code>Esc</code> to cancel.
         </p>
 
-        <ComponentPreview title="Inline Editable Text Sandbox" reactCode={reactCode}>
+        <ComponentPreview
+          qtCode={`ChaSetInlineEditableText {
+    value: "Project Apollo Architecture"
+    onSave: function(newVal) { console.log(newVal) }
+}`} title="Inline Editable Text Sandbox" reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4">
             <div className="p-4 rounded-lg border border-border bg-card text-foreground text-base">
               <InlineEditableText
@@ -60,6 +64,10 @@ export function InlineEditableTextDocPage() {
         </p>
 
         <ComponentPreview
+          qtCode={`ChaSetInlineEditableText { value: "Project Architecture Doc"; trigger: "click"; size: "default" }
+ChaSetInlineEditableText { value: "Database Connection URI"; trigger: "doubleClick"; size: "default" }
+ChaSetInlineEditableText { value: "Sprint-42-Review"; size: "sm" }
+ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`}
           title="Sizes & Triggers Preview"
           reactCode={`<InlineEditableText value="Single Click to Edit" trigger="click" size="default" />
 <InlineEditableText value="Double Click to Edit" trigger="doubleClick" size="default" />
