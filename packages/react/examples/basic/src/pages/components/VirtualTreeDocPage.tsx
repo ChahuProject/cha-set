@@ -426,12 +426,12 @@ export function VirtualTreeDocPage() {
                 <div
                   className={`flex items-center gap-2 px-2 py-1 text-xs rounded cursor-pointer transition-colors select-none ${
                     isSelected
-                      ? 'bg-primary/15 text-primary font-medium'
-                      : 'hover:bg-muted/50 text-foreground'
+                      ? 'bg-primary/15 text-primary font-medium border border-primary/25'
+                      : 'hover:bg-muted/50 text-foreground border border-transparent'
                   } ${isDimmed ? 'opacity-40 italic' : ''} ${
                     isCopied ? 'ring-1 ring-primary/80 bg-primary/10 animate-pulse' : ''
                   }`}
-                  style={{ paddingLeft: `${(depth * 16 + 8) / 16}rem` }}
+                  style={{ paddingLeft: `${depth * 1 + 0.5}rem` }}
                   onClick={(e) => {
                     selectNode(e);
                   }}

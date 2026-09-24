@@ -524,10 +524,16 @@ export function VirtualTree<T>({
     setDragModifier('move');
   };
 
+  const getRootFontSize = React.useCallback(() => {
+    if (typeof window === 'undefined') return 16;
+    const size = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
+    return Number.isFinite(size) && size > 0 ? size : 16;
+  }, []);
+
   const virtualizer = useVirtualizer({
     count: visibleNodes.length,
     getScrollElement: () => scrollContainerRef.current,
-    estimateSize: () => measuredSizeRef.current,
+    estimateSize: () => (estimateSize / 16) * getRootFontSize(),
     overscan,
     gap,
     getItemKey: (index) => getNodeKeyRef.current(visibleNodes[index]!.node),
@@ -540,6 +546,31 @@ export function VirtualTree<T>({
       });
     },
   });
+
+  // Re-measure virtual items when root font size changes (UI scaling) or window resizes
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleScale = () => {
+      virtualizer.measure();
+    };
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.type === 'attributes' && (m.attributeName === 'style' || m.attributeName === 'class')) {
+          virtualizer.measure();
+          break;
+        }
+      }
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['style', 'class'],
+    });
+    window.addEventListener('resize', handleScale);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', handleScale);
+    };
+  }, [virtualizer]);
 
   React.useImperativeHandle(
     ref,
@@ -701,12 +732,12 @@ export function VirtualTree<T>({
           className={cn(
             'flex items-center gap-2 px-2 py-1 text-xs cursor-pointer rounded select-none transition-colors duration-quick ease-standard',
             isSelected
-              ? 'bg-primary/15 text-primary font-medium'
-              : 'hover:bg-muted/50 text-foreground',
+              ? 'bg-primary/15 text-primary font-medium border border-primary/25'
+              : 'hover:bg-muted/50 text-foreground border border-transparent',
             isDimmed && 'opacity-40 transition-opacity',
             isCopied && 'ring-1 ring-primary/60 bg-primary/10',
           )}
-          style={{ paddingLeft: `${(depth * 16 + 8) / 16}rem` }}
+          style={{ paddingLeft: `${depth * 1 + 0.5}rem` }}
           onClick={(e) => {
             selectNode(e);
           }}
@@ -751,7 +782,7 @@ export function VirtualTree<T>({
         <div
           data-slot="virtual-tree-content"
           className="relative w-full"
-          style={{ height: `${virtualizer.getTotalSize() * 0.0625}rem`, flexShrink: 0 }}
+          style={{ height: virtualizer.getTotalSize(), flexShrink: 0 }}
         >
           {virtualizer.getVirtualItems().map((virtualRow) => {
             const flat = visibleNodes[virtualRow.index]!;
@@ -787,7 +818,7 @@ export function VirtualTree<T>({
                   isFocused && 'ring-1 ring-ring/40 rounded',
                   enableDnd && 'cursor-grab active:cursor-grabbing',
                 )}
-                style={{ transform: `translateY(${virtualRow.start * 0.0625}rem)` }}
+                style={{ transform: `translateY(${virtualRow.start}px)` }}
               >
                 {/* Visual Drop Indicators */}
                 {isTarget && isDropValid && dropPos === 'before' && (

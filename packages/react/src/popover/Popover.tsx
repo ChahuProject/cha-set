@@ -112,7 +112,7 @@ export function PopoverContent({
           style={{
             ...style,
             translate: movable
-              ? `${(moveOffset.x * 0.0625).toFixed(4)}rem ${(moveOffset.y * 0.0625).toFixed(4)}rem`
+              ? `${moveOffset.x}px ${moveOffset.y}px`
               : style?.translate,
           }}
           className={cn(

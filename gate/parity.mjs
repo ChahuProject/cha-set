@@ -270,6 +270,39 @@ if (existsSync(iconSpecCheckPath)) {
   console.log(`[gate] OK — Icon Specification Gate passed (${iconRes.checkedCount} assertions verified)`);
 }
 
+// 2.12 Mandatory React UI Scaling & Runtime Dimension Unit Enforcement Gate
+// Strictly verifies that runtime measurements and virtualizer metrics are not multiplied by 0.0625rem
+// which would cause quadratic/exponential gap blowouts when root font size is scaled.
+const uiScaleCheckPath = resolve(root, 'scripts/check-ui-scale-dimensions.mjs');
+if (existsSync(uiScaleCheckPath)) {
+  const { verifyUiScaleDimensions } = await import(pathToFileURL(uiScaleCheckPath).href);
+  const uiScaleRes = verifyUiScaleDimensions({ quiet: true });
+  if (!uiScaleRes.ok) {
+    console.error(`[gate] FAIL: React UI Scaling Dimension Gate failed (${uiScaleRes.violations.length} violation(s)):`);
+    for (const v of uiScaleRes.violations) {
+      console.error(`  - ${v.file}:${v.line}: "${v.matched}" -> ${v.reason}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — React UI Scaling Dimension Gate passed (${uiScaleRes.checkedCount} components verified with 0 double-scaling blowouts)`);
+}
+
+// 2.13 Mandatory Qt Virtual Tree DnD & Visual Parity Conformance Gate
+// Verifies reactive Ctrl key modifier tracking, drop state release, container padding, and selection borders.
+const qtTreeDndCheckPath = resolve(root, 'scripts/check-qt-tree-dnd-parity.mjs');
+if (existsSync(qtTreeDndCheckPath)) {
+  const { verifyQtTreeDndParity } = await import(pathToFileURL(qtTreeDndCheckPath).href);
+  const treeDndRes = verifyQtTreeDndParity({ quiet: true });
+  if (!treeDndRes.ok) {
+    console.error(`[gate] FAIL: Qt VirtualTree DnD & Visual Parity Gate failed (${treeDndRes.violations.length} violation(s)):`);
+    for (const v of treeDndRes.violations) {
+      console.error(`  - ${v}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Qt VirtualTree DnD & Visual Parity Gate passed (${treeDndRes.checkedCount} invariants verified)`);
+}
+
 // 3. Executable Behavioral Parity Checks
 const skipQt = process.argv.includes('--skip-qt') || process.env.CHASE_SKIP_QT === '1';
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');

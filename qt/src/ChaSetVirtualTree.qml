@@ -27,6 +27,7 @@ Item {
     // Drag and Drop properties
     property bool enableDnd: false
     property bool isDragging: false
+    property bool isCtrlHeld: false
     property string draggedId: ""
     property var draggedIds: []
     property string dropTargetId: ""
@@ -314,6 +315,9 @@ Item {
     }
 
     Keys.onPressed: function(event) {
+        if (event.key === Qt.Key_Control) {
+            root.isCtrlHeld = true
+        }
         var isCtrl = (event.modifiers & Qt.ControlModifier) || (event.modifiers & Qt.MetaModifier)
         if (isCtrl && (event.key === Qt.Key_A)) {
             event.accepted = true
@@ -385,6 +389,12 @@ Item {
         }
     }
 
+    Keys.onReleased: function(event) {
+        if (event.key === Qt.Key_Control) {
+            root.isCtrlHeld = false
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         color: ThemeTokens.panel
@@ -396,10 +406,11 @@ Item {
         ListView {
             id: treeList
             anchors.fill: parent
+            anchors.margins: ThemeTokens.dp(8)
             model: root.flatItems
             boundsBehavior: Flickable.StopAtBounds
             clip: true
-            spacing: root.gap
+            spacing: root.gap > 0 ? ThemeTokens.dp(root.gap) : ThemeTokens.dp(2)
             cacheBuffer: root.overscan * root.estimateSize
 
             ScrollBar.vertical: ChaSetScrollBar {
@@ -426,13 +437,15 @@ Item {
                 readonly property bool isSelected: root.isSelected(modelData.id)
                 readonly property bool isDimmed: root.isDimmed(modelData.id)
                 readonly property bool isCopied: root.isCopied(modelData.id)
-                readonly property bool isDropTarget: root.enableDnd && root.dropTargetId === modelData.id
+                readonly property bool isDropTarget: root.enableDnd && root.isDragging && root.dropTargetId === modelData.id
 
                 color: isSelected
                     ? (isHovered ? Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.20) : Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15))
                     : (isHovered ? ThemeTokens.hover : (isCopied ? Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.10) : "transparent"))
-                border.color: isCopied ? ThemeTokens.focus : (isKeyboardFocused ? ThemeTokens.focus : "transparent")
-                border.width: isCopied || isKeyboardFocused ? 1 : 0
+                border.color: isSelected
+                    ? Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.35)
+                    : (isCopied ? ThemeTokens.focus : (isKeyboardFocused ? ThemeTokens.focus : "transparent"))
+                border.width: isSelected || isCopied || isKeyboardFocused ? 1 : 0
                 radius: ThemeTokens.dp(4)
                 opacity: isDimmed ? 0.4 : 1.0
 
@@ -575,6 +588,7 @@ Item {
                         root.dropTargetId = modelData.id
                         root.dropPosition = pos
                         root.isDropValid = !root.isDescendantOrSelf(root.draggedId, modelData.id)
+                        root.isCtrlHeld = (drag.keyboardModifiers & Qt.ControlModifier) !== 0 || (Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0
                     }
 
                     onExited: {
@@ -585,13 +599,18 @@ Item {
                     }
 
                     onDropped: function(drop) {
+                        if (drop) drop.acceptProposedAction()
                         if (root.isDropValid && root.dropTargetId === modelData.id) {
                             var srcList = root.draggedIds.length > 0 ? root.draggedIds : [root.draggedId]
-                            var isCopy = (Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0 || (drop.keyboardModifiers & Qt.ControlModifier) !== 0
+                            var isCopy = root.isCtrlHeld || (Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0 || (drop.keyboardModifiers & Qt.ControlModifier) !== 0
                             root.nodeDropped(srcList, modelData.id, root.dropPosition, isCopy)
                         }
+                        root.isDragging = false
+                        root.draggedId = ""
+                        root.draggedIds = []
                         root.dropTargetId = ""
                         root.dropPosition = ""
+                        root.isCtrlHeld = false
                     }
                 }
 
@@ -623,11 +642,12 @@ Item {
                         if (root.enableDnd) {
                             root.draggedId = parent.modelData.id
                             root.draggedIds = root.selectedIds.length > 0 && root.selectedIds.indexOf(parent.modelData.id) !== -1 ? root.selectedIds : [parent.modelData.id]
+                            root.isCtrlHeld = (mouse.modifiers & Qt.ControlModifier) !== 0 || (Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0
                         }
                     }
 
                     onReleased: function(mouse) {
-                        if (root.enableDnd) {
+                        if (root.enableDnd && root.isDragging) {
                             dragProxy.Drag.drop()
                         }
                         root.isDragging = false
@@ -635,6 +655,7 @@ Item {
                         root.draggedIds = []
                         root.dropTargetId = ""
                         root.dropPosition = ""
+                        root.isCtrlHeld = false
                     }
 
                     onCanceled: {
@@ -643,11 +664,15 @@ Item {
                         root.draggedIds = []
                         root.dropTargetId = ""
                         root.dropPosition = ""
+                        root.isCtrlHeld = false
                     }
 
                     onPositionChanged: function(mouse) {
                         if (drag.active && !root.isDragging) {
                             root.isDragging = true
+                        }
+                        if (root.isDragging) {
+                            root.isCtrlHeld = (mouse.modifiers & Qt.ControlModifier) !== 0 || (Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0
                         }
                         if (root.modality !== "pointer") {
                             var dx = Math.abs(mouse.x - root.lastPointerX)
@@ -688,7 +713,7 @@ Item {
                 anchors.centerIn: parent
                 spacing: ThemeTokens.dp(4)
                 Text {
-                    text: (Qt.application.keyboardModifiers & Qt.ControlModifier) ? "Copying (Ctrl held)" : "Moving (Hold Ctrl to copy)"
+                    text: root.isCtrlHeld ? "Copying (Ctrl held)" : "Moving (Hold Ctrl to copy)"
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeSmall
                 }

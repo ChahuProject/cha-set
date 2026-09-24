@@ -294,4 +294,25 @@ describe('VirtualTree', () => {
     // Cycle detected: cannot drop parent into child
     expect(activeFile1Row.getAttribute('data-drop-valid')).toBe('false');
   });
+
+  it('renders rows with pixel transforms to prevent scaling gap blowouts under UI scale', () => {
+    const { container } = render(
+      <VirtualTree
+        rootNodes={treeData}
+        defaultExpandDepth={2}
+        getChildren={(node) => node.children ?? []}
+        getNodeKey={(node) => node.id}
+        estimateSize={32}
+      />,
+    );
+
+    const content = container.querySelector('[data-slot="virtual-tree-content"]') as HTMLElement;
+    expect(content).toBeDefined();
+    // Height must be in pixels (not converted with * 0.0625rem which squares the UI scale)
+    expect(content.style.height).toMatch(/px$/);
+
+    const row0 = container.querySelector('[data-index="0"]') as HTMLElement;
+    expect(row0).toBeDefined();
+    expect(row0.style.transform).toMatch(/translateY\(\d+px\)/);
+  });
 });

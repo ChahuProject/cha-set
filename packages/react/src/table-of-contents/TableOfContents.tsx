@@ -230,8 +230,14 @@ export const TableOfContents = React.forwardRef<HTMLElement, TableOfContentsProp
               style={{
                 height: `${INDICATOR_HEIGHT_REM}rem`,
                 transform: `translateY(${
-                  indicator.top * 0.0625 + (indicator.height * 0.0625) / 2 - INDICATOR_HEIGHT_REM / 2
-                }rem)`,
+                  indicator.top +
+                  indicator.height / 2 -
+                  (INDICATOR_HEIGHT_REM *
+                    (typeof window !== 'undefined'
+                      ? parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16
+                      : 16)) /
+                    2
+                }px)`,
               }}
             />
           )}
