@@ -201,6 +201,12 @@
 
   /* Slide translations (spacing-scaled: N = N * 0.25rem, matching Tailwind
    * spacing utilities). */
+  .slide-in-from-left-2 {
+    --tw-enter-translate-x: -0.5rem;
+  }
+  .slide-in-from-right-2 {
+    --tw-enter-translate-x: 0.5rem;
+  }
   .slide-in-from-top-10 {
     --tw-enter-translate-y: -2.5rem;
   }

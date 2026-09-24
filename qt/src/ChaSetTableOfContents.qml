@@ -57,6 +57,16 @@ Item {
 
     readonly property var flatItems: root.flattenItems(root.items, 1)
 
+    /** Index of the active row within the flattened outline, or -1. Drives the
+     * single sliding marker so the bar travels between rows instead of being
+     * re-parented on every selection. */
+    readonly property int activeIndex: {
+        for (var i = 0; i < root.flatItems.length; i++) {
+            if (root.flatItems[i].id === root.activeId) return i;
+        }
+        return -1;
+    }
+
     function selectByIndex(index) {
         if (index < 0 || index >= root.flatItems.length) return;
         var item = root.flatItems[index];
@@ -150,11 +160,78 @@ Item {
                 opacity: 0.6
             }
 
+            // Single sliding active marker. Geometry is read from the live
+            // delegate so the bar follows font-relative row heights as the
+            // interface scale changes.
+            Rectangle {
+                id: activeIndicator
+                visible: root.showTrack && root.variant !== "flat" && root.activeIndex >= 0
+                anchors.left: parent.left
+                anchors.leftMargin: -1
+                width: 2
+                height: ThemeTokens.dp(14)
+                radius: 1
+                color: ThemeTokens.accent
+
+                y: {
+                    var count = repeater.count;
+                    if (root.activeIndex < 0 || count === 0) return 0;
+                    var delegate = repeater.itemAt(root.activeIndex);
+                    if (!delegate) return 0;
+                    return delegate.y + delegate.height / 2 - height / 2;
+                }
+
+                Behavior on y {
+                    enabled: ThemeTokens.animationsEnabled
+                    NumberAnimation {
+                        duration: ThemeTokens.motionQuick
+                        easing.type: ThemeTokens.easeStandard
+                    }
+                }
+
+                Behavior on height {
+                    enabled: ThemeTokens.animationsEnabled
+                    NumberAnimation {
+                        duration: ThemeTokens.motionQuick
+                        easing.type: ThemeTokens.easeStandard
+                    }
+                }
+            }
+
             Column {
                 id: itemsCol
                 anchors.left: parent.left
                 anchors.right: parent.right
                 spacing: ThemeTokens.dp(4)
+                opacity: 0
+
+                // Fade and slide the outline in, mirroring the React entrance
+                // (`animate-in fade-in-0 slide-in-from-left-2`).
+                transform: Translate {
+                    id: itemsEntryTranslate
+                    x: -ThemeTokens.dp(8)
+
+                    Behavior on x {
+                        enabled: ThemeTokens.animationsEnabled
+                        NumberAnimation {
+                            duration: ThemeTokens.motionQuick
+                            easing.type: ThemeTokens.easeEntrance
+                        }
+                    }
+                }
+
+                Behavior on opacity {
+                    enabled: ThemeTokens.animationsEnabled
+                    NumberAnimation {
+                        duration: ThemeTokens.motionQuick
+                        easing.type: ThemeTokens.easeEntrance
+                    }
+                }
+
+                Component.onCompleted: {
+                    opacity = 1;
+                    itemsEntryTranslate.x = 0;
+                }
 
                 Repeater {
                     id: repeater
@@ -170,26 +247,6 @@ Item {
                         readonly property bool isActive: root.activeId === modelData.id
                         readonly property bool isFocused: root.modality === "keyboard" && root.focusedIndex === index
                         readonly property real indentPx: ThemeTokens.dp((modelData.depth - 1) * 12 + 10)
-
-                        // Active Indicator Marker on Vertical Track
-                        Rectangle {
-                            id: activeMarker
-                            visible: delegateRoot.isActive && root.showTrack && root.variant !== "flat"
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            width: 2
-                            height: ThemeTokens.dp(14)
-                            radius: 1
-                            color: ThemeTokens.accent
-
-                            Behavior on opacity {
-                                enabled: ThemeTokens.animationsEnabled
-                                NumberAnimation {
-                                    duration: ThemeTokens.motionQuick
-                                    easing.type: ThemeTokens.easeStandard
-                                }
-                            }
-                        }
 
                         // Focus Ring
                         Rectangle {

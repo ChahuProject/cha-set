@@ -33,11 +33,17 @@ export function flattenTocItems(items: TocItem[], parentDepth = 1): FlattenedToc
   return result;
 }
 
+/** Active indicator bar height, matching the previous fixed `h-4` marker. */
+const INDICATOR_HEIGHT_REM = 1;
+
 export const tableOfContentsVariants = cva('flex flex-col text-xs', {
   variants: {
     variant: {
       default: '',
-      track: 'relative pl-3 border-l border-border/60',
+      // The guide track itself is rendered by the item container for every
+      // variant so the sliding indicator can align with it; `track` only adds
+      // the inset that separates labels from the line.
+      track: 'pl-3',
       flat: '',
     },
     size: {
@@ -91,6 +97,37 @@ export const TableOfContents = React.forwardRef<HTMLElement, TableOfContentsProp
 
     const [focusedIndex, setFocusedIndex] = React.useState<number>(-1);
     const [modality, setModality] = React.useState<'pointer' | 'keyboard'>('pointer');
+
+    const listRef = React.useRef<HTMLDivElement>(null);
+    const itemRefs = React.useRef(new Map<string, HTMLAnchorElement>());
+    const [indicator, setIndicator] = React.useState<{ top: number; height: number } | null>(null);
+
+    const showTrackLine = showTrack && variant !== 'flat';
+    const itemsKey = React.useMemo(() => flatItems.map((item) => item.id).join('|'), [flatItems]);
+
+    // The single active marker is a sibling of the labels rather than a child of
+    // one of them, so switching sections slides one bar instead of swapping two
+    // static bars. Geometry is measured from the live DOM because row height is
+    // font-relative and therefore changes with interface scale.
+    React.useEffect(() => {
+      const el = itemRefs.current.get(activeId);
+      if (!el) {
+        setIndicator(null);
+        return;
+      }
+
+      const sync = () => {
+        const next = { top: el.offsetTop, height: el.offsetHeight };
+        setIndicator((prev) => (prev && prev.top === next.top && prev.height === next.height ? prev : next));
+      };
+
+      sync();
+
+      if (typeof ResizeObserver === 'undefined' || !listRef.current) return;
+      const observer = new ResizeObserver(sync);
+      observer.observe(listRef.current);
+      return () => observer.disconnect();
+    }, [activeId, flatItems]);
 
     const handleSelect = (item: TocItem, event: React.MouseEvent | React.KeyboardEvent) => {
       if (item.disabled) return;
@@ -176,7 +213,29 @@ export const TableOfContents = React.forwardRef<HTMLElement, TableOfContentsProp
           </span>
         )}
 
-        <div className={cn('flex flex-col relative', showTrack && variant !== 'track' && 'border-l border-border/50')}>
+        <div
+          ref={listRef}
+          key={itemsKey}
+          className={cn(
+            'flex flex-col relative animate-in fade-in-0 slide-in-from-left-2 animate-in-quick',
+            showTrackLine && 'border-l border-border/50'
+          )}
+        >
+          {/* Sliding active marker: one bar, animated between rows. */}
+          {showTrackLine && indicator && (
+            <span
+              aria-hidden="true"
+              data-slot="toc-indicator"
+              className="pointer-events-none absolute left-0 -ml-[0.0625rem] w-[0.125rem] rounded-full bg-primary transition-[transform,height] duration-quick ease-standard"
+              style={{
+                height: `${INDICATOR_HEIGHT_REM}rem`,
+                transform: `translateY(${
+                  indicator.top * 0.0625 + (indicator.height * 0.0625) / 2 - INDICATOR_HEIGHT_REM / 2
+                }rem)`,
+              }}
+            />
+          )}
+
           {flatItems.map((item, index) => {
             const isActive = activeId === item.id;
             const isFocused = modality === 'keyboard' && focusedIndex === index;
@@ -186,8 +245,13 @@ export const TableOfContents = React.forwardRef<HTMLElement, TableOfContentsProp
             return (
               <a
                 key={item.id}
+                ref={(node) => {
+                  if (node) itemRefs.current.set(item.id, node);
+                  else itemRefs.current.delete(item.id);
+                }}
                 href={`#${item.id}`}
                 aria-current={isActive ? 'true' : undefined}
+                aria-level={item.depth}
                 aria-disabled={item.disabled ? 'true' : undefined}
                 tabIndex={-1}
                 onClick={(e) => {
@@ -201,7 +265,7 @@ export const TableOfContents = React.forwardRef<HTMLElement, TableOfContentsProp
                   paddingLeft: indentRem,
                 }}
                 className={cn(
-                  'relative group flex items-center py-1 text-left transition-colors duration-quick ease-standard truncate select-none',
+                  'relative group flex items-center py-1 text-left transition-[color,opacity] duration-quick ease-standard truncate select-none',
                   item.disabled
                     ? 'opacity-40 cursor-not-allowed pointer-events-none'
                     : 'cursor-pointer',
@@ -211,14 +275,6 @@ export const TableOfContents = React.forwardRef<HTMLElement, TableOfContentsProp
                   isFocused && 'ring-1 ring-primary/40 rounded-sm'
                 )}
               >
-                {/* Active Indicator Bar on Track */}
-                {isActive && showTrack && (
-                  <span
-                    aria-hidden="true"
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-[0.125rem] h-4 bg-primary rounded-full -ml-[0.0625rem]"
-                  />
-                )}
-
                 <span className="truncate">{item.title}</span>
               </a>
             );
