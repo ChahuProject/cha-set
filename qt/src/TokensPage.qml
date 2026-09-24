@@ -221,6 +221,9 @@ DocLayout {
                 }
 
                 DocText {
+                    width: parent.width
+                    wrap: true
+                    height: contentHeight
                     text: "Fallback Stack (Sans): " + Typography.familiesSans.join("  →  ")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
@@ -268,6 +271,9 @@ DocLayout {
                 }
 
                 DocText {
+                    width: parent.width
+                    wrap: true
+                    height: contentHeight
                     text: "Fallback Stack (Mono): " + Typography.familiesMono.join("  →  ")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption

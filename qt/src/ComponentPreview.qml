@@ -161,13 +161,26 @@ ChaSetCard {
             }
         }
 
-        // Qt QML Code Tab
+        // Qt QML Code Tab. Qt's Rectangle clip is square, so the code block
+        // re-applies the card radius for the bottom corners and squares its top
+        // interior edge with a same-colored patch inset by the card hairline.
         ChaSetCodeBlock {
             visible: root.activeTab === "qt"
             width: parent.width
             code: root.effectiveQtCode
             language: "qml"
-            radius: 0
+            radius: root.radius
+
+            Rectangle {
+                z: -1
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.leftMargin: 1
+                anchors.rightMargin: 1
+                height: root.radius
+                color: parent.color
+            }
         }
 
         // React Code Tab
@@ -176,7 +189,18 @@ ChaSetCard {
             width: parent.width
             code: root.effectiveReactCode
             language: "tsx"
-            radius: 0
+            radius: root.radius
+
+            Rectangle {
+                z: -1
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.leftMargin: 1
+                anchors.rightMargin: 1
+                height: root.radius
+                color: parent.color
+            }
         }
     }
 }
