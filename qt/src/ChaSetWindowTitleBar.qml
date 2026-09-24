@@ -124,7 +124,7 @@ Rectangle {
 
             ChaSetIcon {
                 anchors.centerIn: parent
-                name: "x"
+                name: "window-close"
                 size: 10
                 color: closeMouse.containsMouse ? "#ffffff" : ThemeTokens.text
             }
