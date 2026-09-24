@@ -8,6 +8,7 @@ export interface TreeNode {
   name?: string;
   title?: string;
   children?: TreeNode[];
+  hasChildren?: boolean;
   [key: string]: any;
 }
 
@@ -25,6 +26,8 @@ export interface VirtualTreeDropEvent<T> {
 export interface VirtualTreeHandle {
   /** Scroll to a specific item index */
   scrollToIndex: (index: number, align?: 'start' | 'center' | 'end' | 'auto') => void;
+  /** Scroll to a specific item by its key/id */
+  scrollToId: (id: string, align?: 'start' | 'center' | 'end' | 'auto') => boolean;
   /** Expand all foldable nodes */
   expandAll: () => void;
   /** Collapse all foldable nodes */
@@ -96,6 +99,9 @@ export interface VirtualTreeProps<T> {
   canDrop?: (event: VirtualTreeDropEvent<T>) => boolean;
   onDropNode?: (event: VirtualTreeDropEvent<T>) => void;
 
+  showBadges?: boolean;
+  onNodeToggle?: (node: T, isExpanded: boolean) => void;
+
   ref?: React.Ref<VirtualTreeHandle>;
 }
 
@@ -119,6 +125,8 @@ export function VirtualTree<T>({
   renderRow,
   emptyNode,
   className,
+  showBadges = true,
+  onNodeToggle,
   selectionMode = 'single',
   selectedId,
   selectedIds,
@@ -218,20 +226,23 @@ export function VirtualTree<T>({
     const key = getNodeKeyRef.current(node);
     setExpandedKeys((prev) => {
       const next = new Set(prev);
-      if (next.has(key)) {
-        next.delete(key);
-      } else {
+      const isExpandedNow = !next.has(key);
+      if (isExpandedNow) {
         next.add(key);
+      } else {
+        next.delete(key);
       }
+      onNodeToggle?.(node, isExpandedNow);
       return next;
     });
-  }, []);
+  }, [onNodeToggle]);
 
   const getAllKeys = React.useCallback(() => {
     const keys: string[] = [];
     const traverse = (node: T) => {
       const children = safeGetChildren(node) ?? [];
-      if (children.length > 0) {
+      const hasChildren = (node as any)?.hasChildren !== undefined ? Boolean((node as any).hasChildren) : children.length > 0;
+      if (hasChildren) {
         keys.push(safeGetNodeKey(node));
         for (const child of children) {
           traverse(child);
@@ -258,17 +269,18 @@ export function VirtualTree<T>({
     const traverse = (node: T, depth: number) => {
       const children = getChildrenRef.current(node) ?? [];
       const key = getNodeKeyRef.current(node);
-      const isExpanded = children.length > 0 && expandedKeys.has(key);
+      const hasChildren = (node as any)?.hasChildren !== undefined ? Boolean((node as any).hasChildren) : children.length > 0;
+      const isExpanded = hasChildren && expandedKeys.has(key);
 
       results.push({
         node,
         depth,
         isExpanded,
-        hasChildren: children.length > 0,
+        hasChildren,
         childCount: children.length,
       });
 
-      if (isExpanded) {
+      if (isExpanded && children.length > 0) {
         for (const child of children) {
           traverse(child, depth + 1);
         }
@@ -578,6 +590,14 @@ export function VirtualTree<T>({
       scrollToIndex: (index, align = 'auto') => {
         virtualizer.scrollToIndex(index, { align });
       },
+      scrollToId: (id, align = 'auto') => {
+        const idx = visibleNodes.findIndex((n) => safeGetNodeKey(n.node) === id);
+        if (idx !== -1) {
+          virtualizer.scrollToIndex(idx, { align });
+          return true;
+        }
+        return false;
+      },
       expandAll,
       collapseAll,
       selectAll,
@@ -585,7 +605,7 @@ export function VirtualTree<T>({
       getSelectedNodes,
       getSelectedIds,
     }),
-    [virtualizer, expandAll, collapseAll, selectAll, clearSelection, getSelectedNodes, getSelectedIds],
+    [virtualizer, visibleNodes, safeGetNodeKey, expandAll, collapseAll, selectAll, clearSelection, getSelectedNodes, getSelectedIds],
   );
 
   const [focusedIndex, setFocusedIndex] = React.useState(0);

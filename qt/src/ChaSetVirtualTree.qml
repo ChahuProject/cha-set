@@ -23,6 +23,7 @@ Item {
     property int overscan: 10
     property int customRadius: 6
     readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
+    property bool showBadges: true
 
     // Drag and Drop properties
     property bool enableDnd: false
@@ -39,6 +40,10 @@ Item {
     property int anchorIndex: -1
 
     signal nodeSelected(string nodeId)
+    signal nodeExpanded(string nodeId)
+    signal nodeCollapsed(string nodeId)
+    signal nodeToggled(string nodeId, bool isExpanded)
+    signal nodeDoubleClicked(string nodeId)
     signal nodeCut(var ids)
     signal nodeCopied(var ids)
     signal nodePasted(string targetId, string position)
@@ -54,16 +59,18 @@ Item {
         if (!list) return res
         for (let i = 0; i < list.length; i++) {
             let n = list[i]
-            let hasCh = !!(n.children && n.children.length > 0)
+            let hasCh = n.hasChildren !== undefined ? !!n.hasChildren : !!(n.children && n.children.length > 0)
             let isExp = root.expandedIds[n.id] !== undefined ? !!root.expandedIds[n.id] : (depth < root.defaultExpandDepth)
-            res.push({
+            let item = Object.assign({}, n, {
                 id: n.id,
-                label: n.label,
+                label: n.label !== undefined ? n.label : (n.name !== undefined ? n.name : n.id),
                 depth: depth,
                 hasChildren: hasCh,
-                isExpanded: isExp
+                isExpanded: isExp,
+                rawNode: n
             })
-            if (hasCh && isExp) {
+            res.push(item)
+            if (hasCh && isExp && n.children && n.children.length > 0) {
                 let sub = flatten(n.children, depth + 1)
                 for (let j = 0; j < sub.length; j++) res.push(sub[j])
             }
@@ -252,8 +259,15 @@ Item {
             }
             findDepth(root.nodes, 0)
         }
-        copy[id] = !currentExp
+        let nextExp = !currentExp
+        copy[id] = nextExp
         root.expandedIds = copy
+        root.nodeToggled(id, nextExp)
+        if (nextExp) {
+            root.nodeExpanded(id)
+        } else {
+            root.nodeCollapsed(id)
+        }
     }
 
     function expandAll() {
@@ -281,6 +295,16 @@ Item {
             treeList.positionViewAtIndex(index, ListView.Beginning)
             root.currentIndex = index
         }
+    }
+
+    function scrollToId(id) {
+        for (let i = 0; i < root.flatItems.length; i++) {
+            if (root.flatItems[i].id === id) {
+                scrollToIndex(i)
+                return true
+            }
+        }
+        return false
     }
 
     property int currentIndex: -1
@@ -616,10 +640,10 @@ Item {
 
                 ChaSetBadge {
                     id: dirBadge
-                    visible: !!modelData.hasChildren
+                    visible: root.showBadges && !!modelData.hasChildren
                     size: "sm"
                     variant: "outline"
-                    text: "dir"
+                    text: modelData.badge !== undefined ? modelData.badge : "dir"
                     anchors.right: parent.right
                     anchors.rightMargin: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
@@ -741,6 +765,11 @@ Item {
                     onClicked: function(mouse) {
                         root.forceActiveFocus()
                         root.handleNodeClick(parent.index, mouse.modifiers)
+                    }
+
+                    onDoubleClicked: function(mouse) {
+                        root.forceActiveFocus()
+                        root.nodeDoubleClicked(parent.modelData.id)
                     }
                 }
             }

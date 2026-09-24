@@ -10,6 +10,7 @@ export const virtualTreeSchema = z.object({
   overscan: z.number().default(10),
   selectionMode: z.enum(['single', 'multiple', 'none']).default('single'),
   enableDnd: z.boolean().default(false),
+  showBadges: z.boolean().default(true),
 });
 
 export type VirtualTreeApi = z.infer<typeof virtualTreeSchema>;
