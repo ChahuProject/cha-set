@@ -524,53 +524,21 @@ Item {
         }
 
         // Right Table of Contents (TOC, 180px width)
-        Column {
+        ChaSetTableOfContents {
             id: tocCol
             visible: root.showToc
             anchors.right: parent.right
             width: ThemeTokens.dp(180)
-            spacing: ThemeTokens.dp(12)
+            items: root.effectiveTocItems
+            activeId: (root.effectiveTocItems && root.effectiveTocItems.length > root.activeTocIndex && root.activeTocIndex >= 0) ? root.effectiveTocItems[root.activeTocIndex].id : ""
             y: {
                 var sa = root.scrollAreaItem;
                 if (!sa) return 0;
                 var maxSticky = Math.max(0, mainCol.height - tocCol.implicitHeight);
                 return Math.max(0, Math.min(maxSticky, sa.contentY));
             }
-
-            DocText {
-                text: "ON THIS PAGE"
-                textColor: ThemeTokens.subduedText
-                font.family: Typography.familySans
-                font.pixelSize: Typography.sizeCaption
-                font.weight: Typography.weightSemibold
-                font.letterSpacing: Typography.trackingPx(Typography.sizeCaption, "wider")
-            }
-
-            Repeater {
-                model: root.effectiveTocItems
-                delegate: Text {
-                    id: tocText
-                    required property var modelData
-                    required property int index
-                    text: modelData.title
-                    color: root.activeTocIndex === index ? ThemeTokens.accent : (tocMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText)
-                    font.family: Typography.familySans
-                    font.pixelSize: Typography.sizeSmall
-                    font.weight: root.activeTocIndex === index ? Typography.weightMedium : Typography.weightRegular
-                    wrapMode: Text.WordWrap
-                    width: tocCol.width
-
-                    MouseArea {
-                        id: tocMouse
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            root.activeTocIndex = index;
-                            root.scrollToSection(modelData);
-                        }
-                    }
-                }
+            onSelectItem: function(item) {
+                root.scrollToSection(item);
             }
         }
     }

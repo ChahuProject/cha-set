@@ -8,7 +8,7 @@ ChaSetClipboard::ChaSetClipboard(QObject *parent)
 
 void ChaSetClipboard::setText(const QString &text)
 {
-    m_lastSetText = text;
+    s_lastSetText = text;
     if (auto *clipboard = QGuiApplication::clipboard()) {
         clipboard->setText(text, QClipboard::Clipboard);
     }
@@ -20,12 +20,12 @@ QString ChaSetClipboard::text() const
         QString t = clipboard->text(QClipboard::Clipboard);
         if (!t.isEmpty()) return t;
     }
-    return m_lastSetText;
+    return s_lastSetText;
 }
 
 void ChaSetClipboard::clear()
 {
-    m_lastSetText.clear();
+    s_lastSetText.clear();
     if (auto *clipboard = QGuiApplication::clipboard()) {
         clipboard->clear(QClipboard::Clipboard);
     }

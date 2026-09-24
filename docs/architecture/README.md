@@ -28,6 +28,7 @@
 | [`i18n-system.md`](./i18n-system.md) | Universal cross-stack internationalization (i18n): neutral dictionaries, 3-tier extension, reactive QML singleton, and dual-stack LanguageSettings | `spec/i18n/`, `spec/generators/generate-i18n.mjs`, `packages/react/src/i18n/`, `packages/react/src/language-settings/`, `qt/src/ChaSetI18n*`, `qt/src/ChaSetLanguageSettings.qml` | `[Authoritative Specification]` |
 | [`../design/chaset-theme-control.md`](../design/chaset-theme-control.md) | Unified cross-stack theme configuration control, neutral schema boundary, 10-id palette convergence, and host isolation | `packages/react/src/theme-settings/`, `qt/src/ChaSetThemeSettings.qml`, `spec/schemas/theme-config.schema.json`, `spec/theme-controls.json` | `[Authoritative Specification]` |
 | [`showcase-architecture.md`](./showcase-architecture.md) | Showcase living documentation infrastructure, automated "On this page" TOC scanning, zero-drift heading synchronization, and SPAS verification | `packages/react/examples/basic/src/layout/`, `qt/src/DocLayout.qml`, `scripts/verify-showcase-parity.mjs` | `[Authoritative Specification]` |
+| [`table-of-contents.md`](./table-of-contents.md) | Table of Contents & Anchor navigation component: tree-structured multi-level headings, guide tracks, and dynamic banner offset adaptation | `spec/components/table-of-contents.ts`, `packages/react/src/table-of-contents/`, `qt/src/ChaSetTableOfContents.qml` | `[Authoritative Specification]` |
 
 ---
 

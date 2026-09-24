@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollArea } from '@chahu/cha-set';
+import { ScrollArea, TableOfContents as ChaSetTableOfContents, type TocItem } from '@chahu/cha-set';
 
-export interface TocItem {
-  id: string;
-  title: string;
-}
+export type { TocItem };
 
 export function slugToTitle(slug: string): string {
   return slug
@@ -69,8 +66,14 @@ export function scanDocSections(container: HTMLElement | null): TocItem[] {
       }
     }
 
+    const isH3 = el.tagName.toLowerCase() === 'h3' || (!!childHeading && childHeading.tagName.toLowerCase() === 'h3');
+    const item: TocItem = { id, title };
+    if (isH3) {
+      item.level = 2;
+    }
+
     seenIds.add(id);
-    items.push({ id, title });
+    items.push(item);
   }
 
   return items;
@@ -164,30 +167,14 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
   return (
     <aside className="w-56 shrink-0 hidden xl:block border-l border-border h-[calc(100vh-3.5rem)] sticky top-14 text-xs bg-background/50 overflow-hidden">
       <ScrollArea className="h-full w-full" viewportClassName="p-6">
-        <div className="flex flex-col gap-3">
-          <span className="font-semibold text-muted-foreground uppercase tracking-wider text-[0.6875rem]">
-            On this page
-          </span>
-          <nav className="flex flex-col gap-2">
-            {items.map((item) => {
-              const isActive = activeId === item.id;
-              return (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  onClick={(e) => scrollToSection(e, item.id)}
-                  className={`transition-colors truncate cursor-pointer py-0.5 text-xs ${
-                    isActive
-                      ? 'text-primary font-medium'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {item.title}
-                </a>
-              );
-            })}
-          </nav>
-        </div>
+        <ChaSetTableOfContents
+          items={items}
+          activeId={activeId}
+          title="On this page"
+          showTitle={true}
+          showTrack={true}
+          onSelect={(item, e) => scrollToSection(e as any, item.id)}
+        />
       </ScrollArea>
     </aside>
   );

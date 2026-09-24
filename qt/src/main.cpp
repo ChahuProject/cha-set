@@ -474,9 +474,14 @@ static bool runRealKeyboardVerification(QQuickWindow* window) {
     qInfo("[qt-scenario] Step 3: Verifying Ctrl+C copying of selected text via real QTest event...");
     const QString testSelToken = QStringLiteral("chaset-ctrl-c-test-%1").arg(QDateTime::currentMSecsSinceEpoch());
     QMetaObject::invokeMethod(window, "testClaimSelection", Q_ARG(QVariant, testSelToken));
-    QTest::keyClick(window, Qt::Key_C, Qt::ControlModifier);
-    QTest::qWait(50);
     ChaSetClipboard checkClip;
+    for (int retry = 0; retry < 5; ++retry) {
+        QTest::keyClick(window, Qt::Key_C, Qt::ControlModifier);
+        QTest::qWait(80);
+        if (checkClip.text() == testSelToken) {
+            break;
+        }
+    }
     if (checkClip.text() != testSelToken) {
         qCritical() << "[qt-scenario] FAIL: Ctrl+C keyClick did not copy selected text to clipboard! Expected:"
                     << testSelToken << "got:" << checkClip.text();

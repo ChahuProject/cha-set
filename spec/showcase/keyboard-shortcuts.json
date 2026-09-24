@@ -293,6 +293,12 @@
     { "key": "Escape", "action": "Cancel active cut or copy clipboard state" },
     { "key": "Delete", "action": "Delete selected node(s) from the virtual tree hierarchy" },
     { "key": "Home / End", "action": "Jump directly to the first / last node in the virtual tree" }
+  ],
+  "table-of-contents": [
+    { "key": "↑ / ↓", "action": "Navigate selection through outline items" },
+    { "key": "Home / End", "action": "Jump directly to the first / last outline item" },
+    { "key": "Space / Enter", "action": "Activate selected item and scroll to target section" },
+    { "key": "Tab / Shift + Tab", "action": "Move focus into and out of table of contents navigation" }
   ]
 }
 

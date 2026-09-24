@@ -58,7 +58,8 @@
     "./scale-osd": "./components/scale-osd.ts",
     "./task-hud": "./components/task-hud.ts",
     "./address-bar": "./components/address-bar.ts",
-    "./theme-settings": "./components/theme-settings.ts"
+    "./theme-settings": "./components/theme-settings.ts",
+    "./table-of-contents": "./components/table-of-contents.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

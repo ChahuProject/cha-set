@@ -100,6 +100,7 @@
     "scale-osd": { "semantic": "action", "supportsDisabled": true },
     "pipeline-view": { "semantic": "action", "supportsDisabled": true },
     "task-hud": { "semantic": "action", "supportsDisabled": true },
-    "address-bar": { "semantic": "action", "supportsDisabled": true }
+    "address-bar": { "semantic": "action", "supportsDisabled": true },
+    "table-of-contents": { "semantic": "action", "supportsDisabled": true }
   }
 }

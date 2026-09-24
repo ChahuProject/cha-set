@@ -1347,6 +1347,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/resizable",
         "desc": "Accessible resizable panel groups and layout splitters.",
         "description": "Accessible resizable panel groups and layout splitters."
+      },
+      {
+        "id": "table-of-contents",
+        "title": "Table of Contents",
+        "href": "#/components/table-of-contents",
+        "desc": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support.",
+        "description": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
       }
     ]
   },
@@ -2287,6 +2294,24 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Space / Enter",
       "action": "Select the focused language card and apply language preference"
+    }
+  ],
+  "table-of-contents": [
+    {
+      "key": "↑ / ↓",
+      "action": "Navigate selection through outline items"
+    },
+    {
+      "key": "Home / End",
+      "action": "Jump directly to the first / last outline item"
+    },
+    {
+      "key": "Space / Enter",
+      "action": "Activate selected item and scroll to target section"
+    },
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Move focus into and out of table of contents navigation"
     }
   ]
 };

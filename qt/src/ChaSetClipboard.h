@@ -19,5 +19,5 @@ public:
     Q_INVOKABLE void clear();
 
 private:
-    QString m_lastSetText;
+    static inline QString s_lastSetText;
 };

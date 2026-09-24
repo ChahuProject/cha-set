@@ -85,6 +85,7 @@ import { PipelineViewDocPage } from './pages/components/PipelineViewDocPage';
 import { AddressBarDocPage } from './pages/components/AddressBarDocPage';
 import { ThemeSettingsDocPage } from './pages/components/ThemeSettingsDocPage';
 import { LanguageSettingsDocPage } from './pages/components/LanguageSettingsDocPage';
+import { TableOfContentsDocPage } from './pages/components/TableOfContentsDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 
 import { TokensPage } from './pages/get-started/TokensPage';
@@ -849,6 +850,8 @@ export function App() {
         );
       case '#/components/language-settings':
         return <LanguageSettingsDocPage />;
+      case '#/components/table-of-contents':
+        return <TableOfContentsDocPage />;
       case '#/components/button':
 
       default:

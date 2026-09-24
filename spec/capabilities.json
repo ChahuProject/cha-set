@@ -383,6 +383,15 @@
       "preferencePersistence": { "requirement": "must", "description": "updates language preference and triggers reactive re-evaluation" },
       "extensibility": { "requirement": "must", "description": "renders user-registered custom languages dynamically" },
       "disabled": { "requirement": "should", "description": "disabled state blocks interactive selection" }
+    },
+    "tableOfContents": {
+      "rendersTree": { "requirement": "must", "description": "renders hierarchical outline items with level-based indentation" },
+      "activeIndicator": { "requirement": "must", "description": "visual indicator for currently active section" },
+      "bannerOffset": { "requirement": "must", "description": "supports topOffset and targetOffset adapting to global banners" },
+      "selection": { "requirement": "must", "description": "clicking an item triggers selection and smooth navigation" },
+      "keyboard": { "requirement": "must", "description": "arrow key spatial navigation and Enter/Space activation" },
+      "variant": { "requirement": "should", "description": "supports default, track, and flat visual variants" },
+      "disabled": { "requirement": "should", "description": "disabled items block click and navigation" }
     }
   }
 }

@@ -53,6 +53,7 @@ export * from './pipeline-view';
 export * from './address-bar';
 export * from './theme-settings';
 export * from './language-settings';
+export * from './table-of-contents';
 export * from './scale-osd';
 export * from './i18n';
 export * from './typography';

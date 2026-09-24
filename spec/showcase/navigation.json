@@ -246,6 +246,12 @@
         "title": "Resizable",
         "href": "#/components/resizable",
         "desc": "Accessible resizable panel groups and layout splitters."
+      },
+      {
+        "id": "table-of-contents",
+        "title": "Table of Contents",
+        "href": "#/components/table-of-contents",
+        "desc": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
       }
     ]
   },

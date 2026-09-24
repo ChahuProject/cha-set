@@ -334,6 +334,7 @@ ApplicationWindow {
         case "address-bar": return "AddressBarDocPage.qml";
         case "theme-settings": return "ThemeSettingsDocPage.qml";
         case "language-settings": return "LanguageSettingsDocPage.qml";
+        case "table-of-contents": return "TableOfContentsDocPage.qml";
         default: return "ButtonDocPage.qml";
 
         }

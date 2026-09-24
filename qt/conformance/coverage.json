@@ -341,5 +341,14 @@
     "preferencePersistence": true,
     "extensibility": true,
     "disabled": true
+  },
+  "tableOfContents": {
+    "rendersTree": true,
+    "activeIndicator": true,
+    "bannerOffset": true,
+    "selection": true,
+    "keyboard": true,
+    "variant": true,
+    "disabled": true
   }
 }
