@@ -184,6 +184,52 @@ Item {
         return false
     }
 
+    function isDropValidFor(targetId) {
+        if (!targetId) return false
+        var srcList = root.draggedIds.length > 0 ? root.draggedIds : (root.draggedId ? [root.draggedId] : [])
+        for (var i = 0; i < srcList.length; i++) {
+            if (root.isDescendantOrSelf(srcList[i], targetId)) return false
+        }
+        return true
+    }
+
+    function resetDragState() {
+        root.isDragging = false
+        root.draggedId = ""
+        root.draggedIds = []
+        root.dropTargetId = ""
+        root.dropPosition = ""
+        root.isCtrlHeld = false
+    }
+
+    function executeDrop(forceCopy) {
+        if (!root.enableDnd || !root.isDragging) {
+            root.resetDragState()
+            return
+        }
+
+        var canDrop = root.isDropValid && root.dropTargetId !== ""
+        var targetId = root.dropTargetId
+        var targetPos = root.dropPosition
+        var srcList = root.draggedIds.length > 0 ? root.draggedIds.slice() : (root.draggedId ? [root.draggedId] : [])
+        var isCopy = root.isCtrlHeld || (forceCopy === true)
+
+        if (canDrop && targetPos === "inside") {
+            let expCopy = Object.assign({}, root.expandedIds)
+            expCopy[targetId] = true
+            root.expandedIds = expCopy
+        }
+
+        // Clean up all drag states on root BEFORE emitting nodeDropped!
+        // This ensures that when consumer mutates treeNodes and ListView rebuilds delegates,
+        // all new delegates initialize with isDropTarget: false, eliminating any stuck insertion lines.
+        root.resetDragState()
+
+        if (canDrop && srcList.length > 0 && targetId !== "") {
+            root.nodeDropped(srcList, targetId, targetPos, isCopy)
+        }
+    }
+
     function toggleExpand(id) {
         let copy = Object.assign({}, root.expandedIds)
         let currentExp = copy[id]
@@ -315,7 +361,8 @@ Item {
     }
 
     Keys.onPressed: function(event) {
-        if (event.key === Qt.Key_Control) {
+        if (!event) return
+        if (event.key === Qt.Key_Control || event.key === Qt.Key_Meta) {
             root.isCtrlHeld = true
         }
         var isCtrl = (event.modifiers & Qt.ControlModifier) || (event.modifiers & Qt.MetaModifier)
@@ -356,6 +403,7 @@ Item {
         }
         if (event.key === Qt.Key_Escape) {
             event.accepted = true
+            root.resetDragState()
             root.nodeCut([])
             root.nodeCopied([])
             return
@@ -390,7 +438,8 @@ Item {
     }
 
     Keys.onReleased: function(event) {
-        if (event.key === Qt.Key_Control) {
+        if (!event) return
+        if (event.key === Qt.Key_Control || event.key === Qt.Key_Meta) {
             root.isCtrlHeld = false
         }
     }
@@ -579,6 +628,7 @@ Item {
                     enabled: root.enableDnd
 
                     onPositionChanged: function(drag) {
+                        if (!root.isDragging) return
                         var ratio = drag.y / parent.height
                         var pos = "inside"
                         if (ratio < 0.25) pos = "before"
@@ -587,8 +637,10 @@ Item {
 
                         root.dropTargetId = modelData.id
                         root.dropPosition = pos
-                        root.isDropValid = !root.isDescendantOrSelf(root.draggedId, modelData.id)
-                        root.isCtrlHeld = (drag.keyboardModifiers & Qt.ControlModifier) !== 0 || (Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0
+                        root.isDropValid = root.isDropValidFor(modelData.id)
+                        if (drag.accept) {
+                            drag.accept(root.isCtrlHeld ? Qt.CopyAction : Qt.MoveAction)
+                        }
                     }
 
                     onExited: {
@@ -600,17 +652,7 @@ Item {
 
                     onDropped: function(drop) {
                         if (drop) drop.acceptProposedAction()
-                        if (root.isDropValid && root.dropTargetId === modelData.id) {
-                            var srcList = root.draggedIds.length > 0 ? root.draggedIds : [root.draggedId]
-                            var isCopy = root.isCtrlHeld || (Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0 || (drop.keyboardModifiers & Qt.ControlModifier) !== 0
-                            root.nodeDropped(srcList, modelData.id, root.dropPosition, isCopy)
-                        }
-                        root.isDragging = false
-                        root.draggedId = ""
-                        root.draggedIds = []
-                        root.dropTargetId = ""
-                        root.dropPosition = ""
-                        root.isCtrlHeld = false
+                        root.executeDrop()
                     }
                 }
 
@@ -636,43 +678,45 @@ Item {
                     hoverEnabled: true
                     cursorShape: root.enableDnd ? (drag.active ? Qt.ClosedHandCursor : Qt.PointingHandCursor) : Qt.PointingHandCursor
                     drag.target: root.enableDnd ? dragProxy : undefined
+                    preventStealing: root.enableDnd && (drag.active || root.isDragging)
 
                     onPressed: function(mouse) {
+                        dragProxy.x = 0
+                        dragProxy.y = 0
                         root.forceActiveFocus()
                         if (root.enableDnd) {
                             root.draggedId = parent.modelData.id
                             root.draggedIds = root.selectedIds.length > 0 && root.selectedIds.indexOf(parent.modelData.id) !== -1 ? root.selectedIds : [parent.modelData.id]
-                            root.isCtrlHeld = (mouse.modifiers & Qt.ControlModifier) !== 0 || (Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0
+                            if ((mouse.modifiers & Qt.ControlModifier) !== 0 || (mouse.modifiers & Qt.MetaModifier) !== 0) {
+                                root.isCtrlHeld = true
+                            }
                         }
                     }
 
                     onReleased: function(mouse) {
+                        dragProxy.x = 0
+                        dragProxy.y = 0
                         if (root.enableDnd && root.isDragging) {
+                            var isCopy = root.isCtrlHeld || ((mouse.modifiers & Qt.ControlModifier) !== 0) || ((mouse.modifiers & Qt.MetaModifier) !== 0)
                             dragProxy.Drag.drop()
+                            root.executeDrop(isCopy)
+                        } else {
+                            root.resetDragState()
                         }
-                        root.isDragging = false
-                        root.draggedId = ""
-                        root.draggedIds = []
-                        root.dropTargetId = ""
-                        root.dropPosition = ""
-                        root.isCtrlHeld = false
                     }
 
                     onCanceled: {
-                        root.isDragging = false
-                        root.draggedId = ""
-                        root.draggedIds = []
-                        root.dropTargetId = ""
-                        root.dropPosition = ""
-                        root.isCtrlHeld = false
+                        dragProxy.x = 0
+                        dragProxy.y = 0
+                        root.resetDragState()
                     }
 
                     onPositionChanged: function(mouse) {
                         if (drag.active && !root.isDragging) {
                             root.isDragging = true
                         }
-                        if (root.isDragging) {
-                            root.isCtrlHeld = (mouse.modifiers & Qt.ControlModifier) !== 0 || (Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0
+                        if ((mouse.modifiers & Qt.ControlModifier) !== 0 || (mouse.modifiers & Qt.MetaModifier) !== 0) {
+                            root.isCtrlHeld = true
                         }
                         if (root.modality !== "pointer") {
                             var dx = Math.abs(mouse.x - root.lastPointerX)

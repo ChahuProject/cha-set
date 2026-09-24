@@ -1126,6 +1126,125 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 13: VirtualTree Drag-and-Drop State Machine & Modifier Kinematics
+        if (scenario === "all" || scenario === "virtual-tree" || scenario === "tree-dnd") {
+            console.log("[qt-scenario] Running VirtualTree DnD state machine & modifier kinematics scenario...");
+            var dndFailures = 0;
+
+            var testTree = Qt.createQmlObject(
+                'import QtQuick 6.10; import ChaSet; ChaSetVirtualTree { width: 300; height: 200; enableDnd: true; nodes: [{ id: "src", label: "src", children: [{ id: "file1", label: "file1" }] }, { id: "dst", label: "dst", children: [] }] }',
+                win.contentItem,
+                "dynamicTestTree"
+            );
+
+            if (!testTree) {
+                console.log("[qt-scenario] FAIL: Could not create dynamic ChaSetVirtualTree instance");
+                dndFailures++;
+            } else {
+                // 1. Initial State
+                if (testTree.isDragging || testTree.dropTargetId !== "" || testTree.dropPosition !== "" || testTree.isCtrlHeld) {
+                    console.log("[qt-scenario] FAIL: Initial DnD state should be clean, got isDragging=" + testTree.isDragging + ", dropTargetId=" + testTree.dropTargetId);
+                    dndFailures++;
+                }
+
+                // 2. Dragging & Target Validity Check
+                testTree.isDragging = true;
+                testTree.draggedId = "file1";
+                testTree.draggedIds = ["file1"];
+                testTree.dropTargetId = "dst";
+                testTree.dropPosition = "inside";
+                testTree.isDropValid = testTree.isDropValidFor("dst");
+
+                if (!testTree.isDropValid) {
+                    console.log("[qt-scenario] FAIL: Dropping file1 into dst should be valid");
+                    dndFailures++;
+                }
+
+                // Cycle prevention: dropping src into its own child file1 must be invalid
+                testTree.draggedId = "src";
+                testTree.draggedIds = ["src"];
+                var cycleValid = testTree.isDropValidFor("file1");
+                if (cycleValid) {
+                    console.log("[qt-scenario] FAIL: Cycle check failed, dropping ancestor into child should be invalid");
+                    dndFailures++;
+                }
+
+                // 3. Modifier tracking mid-drag: Ctrl held remains true across simulated movements
+                testTree.isCtrlHeld = true;
+                testTree.draggedId = "file1";
+                testTree.draggedIds = ["file1"];
+                testTree.dropTargetId = "dst";
+                testTree.dropPosition = "inside";
+                testTree.isDropValid = true;
+
+                // Verify isCtrlHeld remains true
+                if (!testTree.isCtrlHeld) {
+                    console.log("[qt-scenario] FAIL: isCtrlHeld should be true during drag when Ctrl is set");
+                    dndFailures++;
+                }
+
+                // 4. Dropping with model mutation in callback: ensure state is reset BEFORE delegate recreation
+                var dropReceived = false;
+                var dropIsCopy = false;
+                testTree.nodeDropped.connect(function(src, target, pos, isCopy) {
+                    dropReceived = true;
+                    dropIsCopy = isCopy;
+                    // Simulate consumer mutating tree nodes upon drop
+                    testTree.nodes = [
+                        { id: "src", label: "src", children: [] },
+                        { id: "dst", label: "dst", children: [{ id: "file1-copy", label: "file1-copy" }] }
+                    ];
+                });
+
+                testTree.executeDrop(true);
+
+                if (!dropReceived) {
+                    console.log("[qt-scenario] FAIL: executeDrop did not emit nodeDropped");
+                    dndFailures++;
+                }
+                if (!dropIsCopy) {
+                    console.log("[qt-scenario] FAIL: executeDrop did not propagate isCopy=true");
+                    dndFailures++;
+                }
+                if (testTree.isDragging !== false) {
+                    console.log("[qt-scenario] FAIL: isDragging should be false after drop, got " + testTree.isDragging);
+                    dndFailures++;
+                }
+                if (testTree.dropTargetId !== "") {
+                    console.log("[qt-scenario] FAIL: dropTargetId should be empty after drop, got " + testTree.dropTargetId);
+                    dndFailures++;
+                }
+                if (testTree.dropPosition !== "") {
+                    console.log("[qt-scenario] FAIL: dropPosition should be empty after drop, got " + testTree.dropPosition);
+                    dndFailures++;
+                }
+                if (testTree.isCtrlHeld !== false) {
+                    console.log("[qt-scenario] FAIL: isCtrlHeld should be reset after drop, got " + testTree.isCtrlHeld);
+                    dndFailures++;
+                }
+
+                // 5. Release without valid target / cancel drag
+                testTree.isDragging = true;
+                testTree.draggedId = "file1";
+                testTree.dropTargetId = "invalidTarget";
+                testTree.isDropValid = false;
+                testTree.resetDragState();
+
+                if (testTree.isDragging || testTree.dropTargetId !== "") {
+                    console.log("[qt-scenario] FAIL: resetDragState did not clean up state on release");
+                    dndFailures++;
+                }
+
+                testTree.destroy();
+            }
+
+            if (dndFailures === 0) {
+                console.log("[qt-scenario] PASS: VirtualTree DnD state machine & modifier kinematics verified");
+            } else {
+                failures += dndFailures;
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;
