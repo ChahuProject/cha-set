@@ -31,6 +31,24 @@ export interface FilterGroup {
   children: (FilterCondition | FilterGroup)[];
 }
 
+export type QueryField = {
+  id?: string;
+  key?: string;
+  label: string;
+  type?: string;
+  operators?: FilterOperator[];
+  [key: string]: any;
+};
+
+export type QueryRuleGroup = {
+  id?: string;
+  combinator?: string;
+  connector?: QueryConnector;
+  rules?: any[];
+  children?: any[];
+  [key: string]: any;
+};
+
 export function isFilterGroup(item: FilterCondition | FilterGroup): item is FilterGroup {
   return 'connector' in item && 'children' in item;
 }

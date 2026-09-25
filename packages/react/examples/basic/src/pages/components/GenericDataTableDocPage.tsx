@@ -37,7 +37,7 @@ export function GenericDataTableDocPage() {
     {
       accessorKey: 'status',
       header: 'Status',
-      cell: ({ row }) => (
+      cell: ({ row }: { row: any }) => (
         <Badge
           size="sm"
           variant={

@@ -211,7 +211,7 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
 
   useEffect(() => {
     if (items.length > 0 && !items.some((item) => item.id === activeId)) {
-      setActiveId(items[0].id);
+      setActiveId(items[0]!.id);
     }
   }, [items, activeId]);
 
@@ -251,11 +251,13 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
       let currentActive = flat[0]?.id;
 
       for (let i = 0; i < flat.length; i++) {
-        const el = document.getElementById(flat[i].id);
+        const item = flat[i];
+        if (!item) continue;
+        const el = document.getElementById(item.id);
         if (!el) continue;
         const rect = el.getBoundingClientRect();
         if (rect.top <= threshold) {
-          currentActive = flat[i].id;
+          currentActive = item.id;
         }
       }
 
@@ -263,11 +265,13 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
       const distFromBottom = scrollHeight - (scrollY + innerHeight);
       if (distFromBottom < innerHeight * 0.4) {
         for (let i = flat.length - 1; i >= 0; i--) {
-          const el = document.getElementById(flat[i].id);
+          const item = flat[i];
+          if (!item) continue;
+          const el = document.getElementById(item.id);
           if (!el) continue;
           const rect = el.getBoundingClientRect();
           if (rect.top < innerHeight * 0.8 && rect.bottom > 0) {
-            currentActive = flat[i].id;
+            currentActive = item.id;
             break;
           }
         }

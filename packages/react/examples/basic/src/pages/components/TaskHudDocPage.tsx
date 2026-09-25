@@ -4,6 +4,8 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { PropsTable } from '../../components/PropsTable';
 
 export function TaskHudDocPage() {
   const [tasks, setTasks] = useState<TaskItem[]>([
@@ -12,6 +14,7 @@ export function TaskHudDocPage() {
       title: 'Packaging Bundle',
       detail: 'Compiling assets and modules',
       progress: 0.65,
+      indeterminate: false,
       status: 'running',
       elapsedMs: 2400,
     },
@@ -19,6 +22,8 @@ export function TaskHudDocPage() {
       id: 'task-2',
       title: 'Database Migration',
       detail: 'Applied 12 schema patches',
+      progress: 1.0,
+      indeterminate: false,
       status: 'success',
       total: 12,
       done: 12,
@@ -36,6 +41,7 @@ export function TaskHudDocPage() {
       title: `Build Job #${tasks.length + 1}`,
       detail: 'Processing dependencies',
       progress: 0.35,
+      indeterminate: false,
       status: 'running',
       elapsedMs: 800,
     };
@@ -48,6 +54,7 @@ export function TaskHudDocPage() {
       id,
       title: `Analyzing AST #${tasks.length + 1}`,
       detail: 'Indexing symbols',
+      progress: 0,
       status: 'running',
       indeterminate: true,
     };
@@ -58,9 +65,10 @@ export function TaskHudDocPage() {
     setTasks((prev) => {
       const runningIdx = prev.findIndex((t) => t.status === 'running');
       if (runningIdx === -1) return prev;
+      const target = prev[runningIdx]!;
       const next = [...prev];
       next[runningIdx] = {
-        ...next[runningIdx],
+        ...target,
         status: 'success',
         progress: 1.0,
         detail: 'Completed successfully',
@@ -73,9 +81,10 @@ export function TaskHudDocPage() {
     setTasks((prev) => {
       const runningIdx = prev.findIndex((t) => t.status === 'running');
       if (runningIdx === -1) return prev;
+      const target = prev[runningIdx]!;
       const next = [...prev];
       next[runningIdx] = {
-        ...next[runningIdx],
+        ...target,
         status: 'error',
         detail: 'Compilation error (exit code 1)',
       };

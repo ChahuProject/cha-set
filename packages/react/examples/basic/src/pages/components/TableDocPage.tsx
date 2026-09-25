@@ -132,7 +132,7 @@ export function TableDocPage() {
               <Checkbox
                 size="sm"
                 checked={showCaption}
-                onCheckedChange={(v) => setShowCaption(v)}
+                onCheckedChange={(v) => setShowCaption(Boolean(v))}
                 label="Show Caption"
               />
             </div>

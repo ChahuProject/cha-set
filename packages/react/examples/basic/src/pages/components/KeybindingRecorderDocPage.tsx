@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { KeybindingRecorder, Card, CodeBlock } from '@chahu/cha-set';
+import { KeybindingRecorder, formatKeybinding, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -39,7 +39,7 @@ export function KeybindingRecorderDocPage() {
           <div className="flex flex-col items-center gap-4 w-full max-w-sm">
             <KeybindingRecorder
               value={binding}
-              onValueChange={setBinding}
+              onValueChange={(val) => setBinding(typeof val === 'string' ? val : formatKeybinding(val))}
               placeholder="Press shortcut keys..."
             />
             <span className="text-xs text-muted-foreground">

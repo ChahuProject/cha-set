@@ -14,13 +14,14 @@ import {
   type FilterCondition,
   type FilterFieldDefinition,
   type FilterGroup,
+  type QueryField,
   createFilterGroup,
   isFilterGroup,
   newConditionId,
 } from './types';
 
 export interface QueryBuilderProps<TRecord = any> {
-  fields: FilterFieldDefinition<TRecord>[];
+  fields: (FilterFieldDefinition<TRecord> | QueryField)[];
   rootGroup?: FilterGroup;
   /** Alias for rootGroup */
   query?: any;

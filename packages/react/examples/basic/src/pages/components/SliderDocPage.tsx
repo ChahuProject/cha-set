@@ -125,28 +125,28 @@ export function SliderDocPage() {
               <Checkbox
                 size="sm"
                 checked={disabled}
-                onCheckedChange={(val) => setDisabled(val)}
+                onCheckedChange={(val) => setDisabled(Boolean(val))}
                 label="Disabled"
               />
 
               <Checkbox
                 size="sm"
                 checked={readOnly}
-                onCheckedChange={(val) => setReadOnly(val)}
+                onCheckedChange={(val) => setReadOnly(Boolean(val))}
                 label="Read-Only"
               />
 
               <Checkbox
                 size="sm"
                 checked={showTooltip}
-                onCheckedChange={(val) => setShowTooltip(val)}
+                onCheckedChange={(val) => setShowTooltip(Boolean(val))}
                 label="Tooltip"
               />
 
               <Checkbox
                 size="sm"
                 checked={showTicks}
-                onCheckedChange={(val) => setShowTicks(val)}
+                onCheckedChange={(val) => setShowTicks(Boolean(val))}
                 label="Ticks"
               />
             </div>

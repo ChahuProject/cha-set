@@ -10,6 +10,7 @@ describe('TaskHud', () => {
       title: 'Packaging Bundle',
       detail: 'Compiling assets',
       progress: 0.45,
+      indeterminate: false,
       status: 'running',
       elapsedMs: 1200,
     },
@@ -17,6 +18,8 @@ describe('TaskHud', () => {
       id: 'task-2',
       title: 'Database Migration',
       detail: 'Applied 12 scripts',
+      progress: 1,
+      indeterminate: false,
       status: 'success',
       total: 12,
       done: 12,
@@ -25,12 +28,16 @@ describe('TaskHud', () => {
       id: 'task-3',
       title: 'Lint Check',
       detail: '2 warnings found',
+      progress: 0,
+      indeterminate: false,
       status: 'warning',
     },
     {
       id: 'task-4',
       title: 'Deployment Sync',
       detail: 'Network timeout',
+      progress: 0,
+      indeterminate: false,
       status: 'error',
     },
   ];
@@ -44,7 +51,7 @@ describe('TaskHud', () => {
   });
 
   it('supports determinate progress bars', () => {
-    render(<TaskHud tasks={[sampleTasks[0]]} forceVisible />);
+    render(<TaskHud tasks={[sampleTasks[0]!]} forceVisible />);
     const progressBar = screen.getByTestId('task-progress-task-1');
     expect(progressBar).toHaveStyle({ width: '45%' });
   });
@@ -54,6 +61,7 @@ describe('TaskHud', () => {
       id: 'task-indet',
       title: 'Analyzing repository',
       status: 'running',
+      progress: 0,
       indeterminate: true,
     };
     render(<TaskHud tasks={[indeterminateTask]} forceVisible />);
@@ -62,7 +70,7 @@ describe('TaskHud', () => {
 
   it('calls onDismiss callback when dismiss button is clicked', () => {
     const handleDismiss = vi.fn();
-    render(<TaskHud tasks={[sampleTasks[0]]} onDismiss={handleDismiss} forceVisible />);
+    render(<TaskHud tasks={[sampleTasks[0]!]} onDismiss={handleDismiss} forceVisible />);
     const dismissBtn = screen.getByTestId('task-dismiss-task-1');
     fireEvent.click(dismissBtn);
     expect(handleDismiss).toHaveBeenCalledWith('task-1');
@@ -76,7 +84,7 @@ describe('TaskHud', () => {
 
   it('auto-hides after delay when tasks list becomes empty', () => {
     vi.useFakeTimers();
-    const { rerender } = render(<TaskHud tasks={[sampleTasks[0]]} autoHideDelay={500} />);
+    const { rerender } = render(<TaskHud tasks={[sampleTasks[0]!]} autoHideDelay={500} />);
     expect(screen.getByText('Packaging Bundle')).toBeInTheDocument();
 
     // Pass empty tasks

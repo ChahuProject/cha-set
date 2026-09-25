@@ -111,7 +111,7 @@ export function TooltipDocPage() {
               <Checkbox
                 size="sm"
                 checked={disabled}
-                onCheckedChange={(val) => setDisabled(val)}
+                onCheckedChange={(val) => setDisabled(Boolean(val))}
                 label="Disabled"
               />
             </div>

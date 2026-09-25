@@ -121,11 +121,11 @@ export function TableOfContentsDocPage() {
                   <span className="text-muted-foreground">Banner Height:</span>
                   <div className="w-24">
                     <Slider
-                      value={[bannerHeight]}
+                      value={bannerHeight}
                       min={24}
                       max={80}
                       step={4}
-                      onValueChange={(val) => setBannerHeight(val[0])}
+                      onValueChange={(val) => setBannerHeight(val)}
                     />
                   </div>
                   <span className="text-foreground font-mono">{bannerHeight}</span>

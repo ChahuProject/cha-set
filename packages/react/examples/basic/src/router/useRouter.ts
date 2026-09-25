@@ -11,14 +11,15 @@ export function parseRouteAndAnchor(rawHash: string): { route: string; sectionId
   }
 
   // If parts[0] begins with '/', it's a page route path (e.g. '/components/slider')
-  if (parts[0].startsWith('/')) {
-    const route = `#${parts[0]}`;
+  const firstPart = parts[0] ?? '';
+  if (firstPart.startsWith('/')) {
+    const route = `#${firstPart}`;
     const sectionId = parts[1] || '';
     return { route, sectionId };
   }
 
   // Bare anchor like 'props' or 'overview'
-  return { route: '', sectionId: parts[0] };
+  return { route: '', sectionId: firstPart };
 }
 
 export function useRouter() {

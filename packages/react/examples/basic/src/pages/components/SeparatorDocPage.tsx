@@ -142,7 +142,7 @@ export function SeparatorDocPage() {
                   <Checkbox
                     size="sm"
                     checked={hasLabel}
-                    onCheckedChange={(val) => setHasLabel(val)}
+                    onCheckedChange={(val) => setHasLabel(Boolean(val))}
                     label="Label"
                   />
 
@@ -164,7 +164,7 @@ export function SeparatorDocPage() {
               <Checkbox
                 size="sm"
                 checked={decorative}
-                onCheckedChange={(val) => setDecorative(val)}
+                onCheckedChange={(val) => setDecorative(Boolean(val))}
                 label={`Decorative (${decorative ? 'role="none"' : 'role="separator"'})`}
               />
             </div>

@@ -23,7 +23,7 @@ import { ScaleOsd } from '../scale-osd';
 import { Collapsible, CollapsibleTrigger } from '../collapsible';
 import { Badge } from '../badge';
 import { Card } from '../card';
-import { Splitter, SplitterPanel } from '../splitter';
+import { Splitter } from '../splitter';
 import { SplitterHandle } from '../splitter-handle';
 import { DraggableModal } from '../draggable-modal';
 import { WindowTitleBar } from '../window-title-bar';
@@ -68,10 +68,10 @@ const contract: CursorContract = JSON.parse(readFileSync(contractPath, 'utf8'));
 describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
   it('contract exists and contains verified semanticTypes', () => {
     expect(contract.version).toBe(1);
-    expect(contract.semanticTypes.action.web.idle).toBe('cursor-pointer');
-    expect(contract.semanticTypes.action.web.disabled).toBe('cursor-not-allowed');
-    expect(contract.semanticTypes.text.web.idle).toBe('cursor-text');
-    expect(contract.semanticTypes.text.web.disabled).toBe('cursor-not-allowed');
+    expect(contract.semanticTypes['action']!.web.idle).toBe('cursor-pointer');
+    expect(contract.semanticTypes['action']!.web.disabled).toBe('cursor-not-allowed');
+    expect(contract.semanticTypes['text']!.web.idle).toBe('cursor-text');
+    expect(contract.semanticTypes['text']!.web.disabled).toBe('cursor-not-allowed');
   });
 
   describe('Action Controls (idle -> pointer, disabled -> not-allowed)', () => {
@@ -112,12 +112,12 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
     it('SplitButton inherits cursor-pointer and disabled cursor-not-allowed on both parts', () => {
       const { rerender } = render(<SplitButton label="Save" />);
       const buttons = screen.getAllByRole('button');
-      expect(buttons[0].className).toContain('cursor-pointer');
-      expect(buttons[1].className).toContain('cursor-pointer');
+      expect(buttons[0]!.className).toContain('cursor-pointer');
+      expect(buttons[1]!.className).toContain('cursor-pointer');
 
       rerender(<SplitButton label="Save" disabled />);
-      expect(buttons[0].className).toContain('cursor-not-allowed');
-      expect(buttons[1].className).toContain('cursor-not-allowed');
+      expect(buttons[0]!.className).toContain('cursor-not-allowed');
+      expect(buttons[1]!.className).toContain('cursor-not-allowed');
     });
 
     it('CopyButton inherits cursor-pointer and disabled cursor-not-allowed', () => {
@@ -161,7 +161,7 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
         />,
       );
       const options = screen.getAllByRole('radio');
-      expect(options[0].className).toContain('cursor-pointer');
+      expect(options[0]!.className).toContain('cursor-pointer');
 
       rerender(
         <SegmentedControl
@@ -173,8 +173,8 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
         />,
       );
       const disabledOptions = screen.getAllByRole('radio');
-      expect(disabledOptions[0].className).toContain('disabled:cursor-not-allowed');
-      expect(disabledOptions[0].className).not.toContain('disabled:pointer-events-none');
+      expect(disabledOptions[0]!.className).toContain('disabled:cursor-not-allowed');
+      expect(disabledOptions[0]!.className).not.toContain('disabled:pointer-events-none');
     });
 
     it('DropdownMenuItem exhibits cursor-pointer and data-disabled cursor-not-allowed without pointer-events-none', () => {
@@ -329,7 +329,7 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
     });
 
     it('ReadOnlyInput exhibits selectable text and cursor-default or cursor-pointer when copyable', () => {
-      const { rerender, container } = render(<ReadOnlyInput value="Secret API Token" copyable />);
+      const { rerender, container } = render(<ReadOnlyInput value="Secret API Token" showCopy />);
       const box = container.firstChild as HTMLElement;
       expect(box).toBeDefined();
 
@@ -340,11 +340,11 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
 
   describe('Sliders & Splitters (track -> pointer, splitter -> col-resize/row-resize)', () => {
     it('Slider exhibits cursor-pointer and disabled cursor-not-allowed without blocking pointer-events', () => {
-      const { rerender, container } = render(<Slider defaultValue={[50]} />);
+      const { rerender, container } = render(<Slider defaultValue={50} />);
       const slider = container.querySelector('[role="slider"]') || container.firstChild;
       expect(slider).toBeDefined();
 
-      rerender(<Slider defaultValue={[50]} disabled />);
+      rerender(<Slider defaultValue={50} disabled />);
       const disabledSlider = container.querySelector('[role="slider"]') as HTMLElement;
       if (disabledSlider) {
         expect(disabledSlider.className).toContain('cursor-not-allowed');
@@ -371,11 +371,10 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
 
     it('Splitter and SplitterHandle exhibit col-resize cursor', () => {
       const { container } = render(
-        <Splitter orientation="horizontal">
-          <SplitterPanel defaultSize={50}>Left</SplitterPanel>
-          <SplitterHandle />
-          <SplitterPanel defaultSize={50}>Right</SplitterPanel>
-        </Splitter>,
+        <div style={{ position: 'relative', width: 200, height: 200 }}>
+          <Splitter orientation="horizontal" />
+          <SplitterHandle edge="left" />
+        </div>,
       );
       const handle = container.querySelector('[data-slot="splitter-handle"]') || container.querySelector('[role="separator"]');
       if (handle) {
@@ -387,7 +386,7 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
   describe('Window & Modal Header (header -> cursor-move)', () => {
     it('DraggableModal header exhibits cursor-move', () => {
       const { container } = render(
-        <DraggableModal open title="Settings Dialog">
+        <DraggableModal title="Settings Dialog">
           <div>Content</div>
         </DraggableModal>,
       );

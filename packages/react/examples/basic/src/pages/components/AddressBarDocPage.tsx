@@ -4,6 +4,8 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { PropsTable } from '../../components/PropsTable';
 
 export function AddressBarDocPage() {
   const [currentPath, setCurrentPath] = useState('C:/Users/Development/Projects/cha-set');
@@ -33,7 +35,7 @@ export function AddressBarDocPage() {
     if (canGoBack) {
       const nextIdx = historyIndex - 1;
       setHistoryIndex(nextIdx);
-      setCurrentPath(history[nextIdx]);
+      setCurrentPath(history[nextIdx] ?? '');
     }
   };
 
@@ -41,7 +43,7 @@ export function AddressBarDocPage() {
     if (canGoForward) {
       const nextIdx = historyIndex + 1;
       setHistoryIndex(nextIdx);
-      setCurrentPath(history[nextIdx]);
+      setCurrentPath(history[nextIdx] ?? '');
     }
   };
 

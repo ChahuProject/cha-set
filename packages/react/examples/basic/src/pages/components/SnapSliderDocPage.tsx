@@ -4,6 +4,8 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { PropsTable } from '../../components/PropsTable';
 
 export function SnapSliderDocPage() {
   const [value, setValue] = useState(1);

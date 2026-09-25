@@ -5,6 +5,8 @@ export {
   type FilterGroup,
   type FilterOperator,
   type QueryConnector,
+  type QueryField,
+  type QueryRuleGroup,
   createFilterGroup,
   newConditionId,
   newGroupId,

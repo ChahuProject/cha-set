@@ -170,14 +170,14 @@ export function ScrollAreaDocPage() {
                 <Checkbox
                   size="sm"
                   checked={showButtons}
-                  onCheckedChange={(val) => setShowButtons(val)}
+                  onCheckedChange={(val) => setShowButtons(Boolean(val))}
                   label="Show Stepper Buttons"
                 />
 
                 <Checkbox
                   size="sm"
                   checked={smoothScroll}
-                  onCheckedChange={(val) => setSmoothScroll(val)}
+                  onCheckedChange={(val) => setSmoothScroll(Boolean(val))}
                   label="Smooth Scroll"
                 />
               </div>

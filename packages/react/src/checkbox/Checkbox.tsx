@@ -13,7 +13,7 @@ export interface CheckboxProps
   description?: React.ReactNode;
   invalid?: boolean;
   readOnly?: boolean;
-  onCheckedChange?: (checked: boolean | 'indeterminate') => void;
+  onCheckedChange?: (checked: boolean) => void;
   forceHover?: boolean;
   forceFocus?: boolean;
   wrapperClassName?: string;
