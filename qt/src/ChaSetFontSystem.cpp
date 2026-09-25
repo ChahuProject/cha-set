@@ -1,6 +1,7 @@
 #include "ChaSetFontSystem.h"
 #include <QFontDatabase>
 #include <QQuickWindow>
+#include <QFile>
 #include <QDebug>
 
 namespace ChaSet {
@@ -142,6 +143,9 @@ void FontSystem::initialize(QGuiApplication* /*app*/)
     appFont.setFamilies(sans);
 
     QGuiApplication::setFont(appFont);
+
+    // Register Material Symbols Outlined variable font
+    registerMaterialSymbolsFont();
 }
 
 void FontSystem::setSansFamilies(const QStringList& families)
@@ -179,6 +183,48 @@ QStringList FontSystem::loadedFontFamilies(int fontId)
 bool FontSystem::isFontAvailable(const QString& familyName)
 {
     return QFontDatabase::families().contains(familyName, Qt::CaseInsensitive);
+}
+
+bool FontSystem::registerMaterialSymbolsFont()
+{
+    const QString expected = materialSymbolsFamily();
+    if (isFontAvailable(expected)) {
+        return true;
+    }
+
+    const QStringList candidatePaths = {
+        QStringLiteral(":/qt/qml/ChaSet/resources/fonts/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf"),
+        QStringLiteral(":/ChaSet/resources/fonts/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf"),
+        QStringLiteral("../third_party/material_symbols/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf"),
+        QStringLiteral("../../third_party/material_symbols/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf"),
+        QStringLiteral("third_party/material_symbols/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf")
+    };
+
+    for (const QString& path : candidatePaths) {
+        QFile file(path);
+        if (file.open(QIODevice::ReadOnly)) {
+            const QByteArray data = file.readAll();
+            int id = QFontDatabase::addApplicationFontFromData(data);
+            if (id >= 0) {
+                qInfo() << "[ChaSet][FontSystem] Registered Material Symbols font from" << path
+                        << "families:" << QFontDatabase::applicationFontFamilies(id);
+                return true;
+            }
+        }
+    }
+
+    qWarning() << "[ChaSet][FontSystem] Could not register Material Symbols font!";
+    return false;
+}
+
+bool FontSystem::isMaterialSymbolsAvailable()
+{
+    return isFontAvailable(materialSymbolsFamily());
+}
+
+QString FontSystem::materialSymbolsFamily()
+{
+    return QStringLiteral("Material Symbols Outlined");
 }
 
 } // namespace ChaSet

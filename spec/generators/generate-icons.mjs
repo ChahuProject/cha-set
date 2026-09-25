@@ -212,6 +212,29 @@ const reactDefinitions = JSON.stringify(
   2,
 );
 
+const materialSymbols = Object.fromEntries(
+  iconNames.map((name) => [
+    name,
+    {
+      symbol: spec.icons[name]?.materialSymbol || name,
+      codepoint: spec.icons[name]?.codepoint || '',
+    },
+  ]),
+);
+
+const materialCodepoints = Object.fromEntries(
+  iconNames
+    .filter((name) => spec.icons[name]?.codepoint)
+    .map((name) => [name, String.fromCharCode(parseInt(spec.icons[name].codepoint, 16))]),
+);
+
+const windowsIcons = {
+  'window-minimize': { glyph: '\ue921', family: 'Segoe Fluent Icons' },
+  'window-maximize': { glyph: '\ue922', family: 'Segoe Fluent Icons' },
+  'window-restore': { glyph: '\ue923', family: 'Segoe Fluent Icons' },
+  'window-close': { glyph: '\ue8bb', family: 'Segoe Fluent Icons' },
+};
+
 const reactExports = iconNames
   .map((name) => `export const ${componentName(name)} = /*#__PURE__*/ makeIcon('${name}', '${componentName(name)}');`)
   .join('\n');
@@ -319,6 +342,11 @@ export interface IconAudit {
   withinTolerance: boolean;
 }
 
+export interface IconMaterialSymbol {
+  symbol: string;
+  codepoint: string;
+}
+
 /** Identifier of the specification that produced this file (see spec/icons/registry.json). */
 export const ICON_SPEC_ID = '${specId}';
 export const ICON_SPEC_TITLE = ${JSON.stringify(spec.title)};
@@ -336,6 +364,8 @@ export const ICON_ADOPTION = ${JSON.stringify(adoption, null, 2)};
 export const ICON_AUDIT: Record<string, IconAudit> = ${JSON.stringify(iconAudit, null, 2)};
 
 export type IconName = keyof typeof ICON_ELEMENTS;
+
+export const ICON_MATERIAL_SYMBOLS: Record<IconName, IconMaterialSymbol> = ${JSON.stringify(materialSymbols, null, 2)};
 
 export const ICON_ELEMENTS = ${reactDefinitions} as const;
 
@@ -461,6 +491,12 @@ QtObject {
     readonly property var aliases: (${JSON.stringify(spec.aliases || {})})
     readonly property var names: ${JSON.stringify(iconNames)}
 
+    // name -> material symbol glyph (Material Symbols Outlined)
+    readonly property var materialCodepoints: (${JSON.stringify(materialCodepoints)})
+
+    // Windows native titlebar chrome icons (Segoe Fluent Icons)
+    readonly property var windowsIcons: (${JSON.stringify(windowsIcons)})
+
     // name -> [{ grid, gridSize, strokeWidth, linecap, linejoin, d, fill }]
     readonly property var shapes: (${JSON.stringify(compiledShapes)})
 
@@ -475,6 +511,51 @@ QtObject {
         if (root.shapes[key] !== undefined) return key;
         if (root.aliases[key] !== undefined) return root.aliases[key];
         return "";
+    }
+
+    function resolve(name, size) {
+        var key = resolveIcon(name);
+        if (key === "") {
+            return {
+                "hasGlyph": false,
+                "glyph": "",
+                "family": "",
+                "isWindows": false,
+                "usesFallback": true
+            };
+        }
+
+        // 1. Windows titlebar glyphs (Segoe Fluent Icons)
+        if (Qt.platform.os === "windows" && root.windowsIcons[key] !== undefined) {
+            var winEntry = root.windowsIcons[key];
+            return {
+                "hasGlyph": true,
+                "glyph": winEntry.glyph,
+                "family": winEntry.family,
+                "isWindows": true,
+                "usesFallback": false
+            };
+        }
+
+        // 2. Material Symbols Outlined font
+        if (root.materialCodepoints[key] !== undefined) {
+            return {
+                "hasGlyph": true,
+                "glyph": root.materialCodepoints[key],
+                "family": "Material Symbols Outlined",
+                "isWindows": false,
+                "usesFallback": false
+            };
+        }
+
+        // 3. Fallback to vector shape
+        return {
+            "hasGlyph": false,
+            "glyph": "",
+            "family": "",
+            "isWindows": false,
+            "usesFallback": true
+        };
     }
 
     function shapesFor(name) {

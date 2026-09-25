@@ -1,0 +1,12 @@
+Material Symbols Outlined
+Copyright 2026 Google LLC
+
+This distribution vendors the official Material Symbols Outlined variable font and
+matching codepoint mapping from the Google Material Design Icons repository at
+revision 528cb964c01fb2b09bc3b9208f82b6d8f8c1c1e2.
+
+The upstream repository does not contain a NOTICE file at that revision. The
+applicable Apache License, Version 2.0 text is included in LICENSE. Preserve this
+NOTICE and LICENSE when redistributing these vendored assets.
+
+Upstream repository: https://github.com/google/material-design-icons

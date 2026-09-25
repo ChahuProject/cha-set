@@ -99,6 +99,8 @@ qt_add_qml_module(ChaSet
         src/ChaSetClipboard.cpp
         src/ChaSetFontSystem.h
         src/ChaSetFontSystem.cpp
+    RESOURCES
+        resources/fonts/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf
     QML_FILES
         src/ChaSetScrollBar.qml
         src/ChaSetScrollArea.qml

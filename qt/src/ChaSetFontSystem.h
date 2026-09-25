@@ -105,6 +105,15 @@ public:
     /// Re-apply font substitutions and refresh application font.
     static void applySubstitutions();
 
+    /// Register the embedded Material Symbols Outlined variable font.
+    static bool registerMaterialSymbolsFont();
+
+    /// Returns true if Material Symbols Outlined font is available in QFontDatabase.
+    static bool isMaterialSymbolsAvailable();
+
+    /// Canonical family name: "Material Symbols Outlined".
+    static QString materialSymbolsFamily();
+
 private:
     static QStringList s_customSansFamilies;
     static QStringList s_customMonoFamilies;

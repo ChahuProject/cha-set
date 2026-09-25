@@ -107,6 +107,11 @@ export interface IconAudit {
   withinTolerance: boolean;
 }
 
+export interface IconMaterialSymbol {
+  symbol: string;
+  codepoint: string;
+}
+
 /** Identifier of the specification that produced this file (see spec/icons/registry.json). */
 export const ICON_SPEC_ID = 'stroke-monoline';
 export const ICON_SPEC_TITLE = "Stroke Monoline";
@@ -1370,6 +1375,245 @@ export const ICON_AUDIT: Record<string, IconAudit> = {
 };
 
 export type IconName = keyof typeof ICON_ELEMENTS;
+
+export const ICON_MATERIAL_SYMBOLS: Record<IconName, IconMaterialSymbol> = {
+  "check": {
+    "symbol": "check",
+    "codepoint": "e668"
+  },
+  "chevron-right": {
+    "symbol": "chevron_right",
+    "codepoint": "e5cc"
+  },
+  "chevron-left": {
+    "symbol": "chevron_left",
+    "codepoint": "e5cb"
+  },
+  "chevron-down": {
+    "symbol": "keyboard_arrow_down",
+    "codepoint": "e313"
+  },
+  "chevron-up": {
+    "symbol": "keyboard_arrow_up",
+    "codepoint": "e316"
+  },
+  "x": {
+    "symbol": "close",
+    "codepoint": "e5cd"
+  },
+  "grip-horizontal": {
+    "symbol": "drag_indicator",
+    "codepoint": "e945"
+  },
+  "copy": {
+    "symbol": "content_copy",
+    "codepoint": "e14d"
+  },
+  "pencil": {
+    "symbol": "edit",
+    "codepoint": "f097"
+  },
+  "keyboard": {
+    "symbol": "keyboard",
+    "codepoint": "e312"
+  },
+  "search": {
+    "symbol": "search",
+    "codepoint": "ef7a"
+  },
+  "arrow-up-down": {
+    "symbol": "swap_vert",
+    "codepoint": "e8d5"
+  },
+  "maximize-2": {
+    "symbol": "open_in_full",
+    "codepoint": "f1ce"
+  },
+  "panel-left": {
+    "symbol": "dock_to_left",
+    "codepoint": "f7e5"
+  },
+  "clock": {
+    "symbol": "schedule",
+    "codepoint": "efd6"
+  },
+  "sun": {
+    "symbol": "light_mode",
+    "codepoint": "e518"
+  },
+  "moon": {
+    "symbol": "dark_mode",
+    "codepoint": "e51c"
+  },
+  "monitor": {
+    "symbol": "desktop_windows",
+    "codepoint": "e30c"
+  },
+  "rotate-ccw": {
+    "symbol": "replay",
+    "codepoint": "e042"
+  },
+  "sliders": {
+    "symbol": "tune",
+    "codepoint": "e429"
+  },
+  "palette": {
+    "symbol": "palette",
+    "codepoint": "e40a"
+  },
+  "download": {
+    "symbol": "download",
+    "codepoint": "f090"
+  },
+  "upload": {
+    "symbol": "upload",
+    "codepoint": "f09b"
+  },
+  "settings": {
+    "symbol": "settings",
+    "codepoint": "e8b8"
+  },
+  "eye": {
+    "symbol": "visibility",
+    "codepoint": "e8f4"
+  },
+  "eye-off": {
+    "symbol": "visibility_off",
+    "codepoint": "e8f5"
+  },
+  "info": {
+    "symbol": "info",
+    "codepoint": "e88e"
+  },
+  "lock": {
+    "symbol": "lock",
+    "codepoint": "e899"
+  },
+  "globe": {
+    "symbol": "globe",
+    "codepoint": "e64c"
+  },
+  "zap": {
+    "symbol": "bolt",
+    "codepoint": "ea0b"
+  },
+  "target": {
+    "symbol": "target",
+    "codepoint": "e719"
+  },
+  "rocket": {
+    "symbol": "rocket_launch",
+    "codepoint": "eb9b"
+  },
+  "trash": {
+    "symbol": "delete",
+    "codepoint": "e92e"
+  },
+  "folder": {
+    "symbol": "folder",
+    "codepoint": "e2c7"
+  },
+  "home": {
+    "symbol": "home",
+    "codepoint": "e9b2"
+  },
+  "tag": {
+    "symbol": "label",
+    "codepoint": "e893"
+  },
+  "package": {
+    "symbol": "package_2",
+    "codepoint": "f569"
+  },
+  "stop": {
+    "symbol": "stop",
+    "codepoint": "e047"
+  },
+  "star": {
+    "symbol": "star",
+    "codepoint": "f09a"
+  },
+  "mail": {
+    "symbol": "mail",
+    "codepoint": "e159"
+  },
+  "table": {
+    "symbol": "table",
+    "codepoint": "f191"
+  },
+  "file-text": {
+    "symbol": "description",
+    "codepoint": "e873"
+  },
+  "layers": {
+    "symbol": "layers",
+    "codepoint": "e53b"
+  },
+  "grid": {
+    "symbol": "grid_view",
+    "codepoint": "e9b0"
+  },
+  "list": {
+    "symbol": "list",
+    "codepoint": "e896"
+  },
+  "user": {
+    "symbol": "person",
+    "codepoint": "f0d3"
+  },
+  "credit-card": {
+    "symbol": "credit_card",
+    "codepoint": "e8a1"
+  },
+  "log-out": {
+    "symbol": "logout",
+    "codepoint": "e9ba"
+  },
+  "chaset": {
+    "symbol": "coffee",
+    "codepoint": "efef"
+  },
+  "plus": {
+    "symbol": "add",
+    "codepoint": "e145"
+  },
+  "minus": {
+    "symbol": "remove",
+    "codepoint": "e15b"
+  },
+  "arrow-left": {
+    "symbol": "arrow_back",
+    "codepoint": "e5c4"
+  },
+  "arrow-right": {
+    "symbol": "arrow_forward",
+    "codepoint": "e5c8"
+  },
+  "arrow-up": {
+    "symbol": "arrow_upward",
+    "codepoint": "e5d8"
+  },
+  "chart": {
+    "symbol": "bar_chart",
+    "codepoint": "e26b"
+  },
+  "window-minimize": {
+    "symbol": "minimize",
+    "codepoint": "e931"
+  },
+  "window-maximize": {
+    "symbol": "crop_square",
+    "codepoint": "e3c6"
+  },
+  "window-restore": {
+    "symbol": "filter_none",
+    "codepoint": "e3e0"
+  },
+  "window-close": {
+    "symbol": "close",
+    "codepoint": "e5cd"
+  }
+};
 
 export const ICON_ELEMENTS = {
   "check": {

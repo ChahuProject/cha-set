@@ -20,6 +20,11 @@
       "file": "qt/src/ChaSetColorPicker.qml",
       "contains": "? 8 : 9",
       "reason": "Dense-mode slider label: 8/9px sub-nano jitter below the scale floor (Typography.sizeNano = 9). Pending a design call on whether dense mode should snap to 9."
+    },
+    {
+      "file": "qt/src/ChaSetIcon.qml",
+      "contains": "Math.round(root.effectiveSize * 0.6) : root.effectiveSize",
+      "reason": "Material Symbols variable font / Segoe Fluent glyph renderer dynamic size dynamically parameterized by component size prop (e.g. 14, 16, 20, 24), not static typography roles."
     }
   ]
 }

@@ -115,9 +115,25 @@ Sizing: omit `size` and the primitive applies `size-4` (16 units, matching `size
 ```qml
 ChaSetIcon { name: "rotate-ccw"; size: 16; color: ThemeTokens.text }
 ChaSetIcon { name: "search"; size: 16 }                       // colour defaults to ThemeTokens.text
+ChaSetIcon { name: "star"; fill: 1.0; weight: 600; size: 20 } // variable axes modulation
 ```
 
-`ChaSetIcon` renders each shape as a `Shape` + `ShapePath` + `PathSvg` inside a `Repeater`, scaling the whole drawing box by `effectiveSize / gridSize` with `transformOrigin: Item.Center`. Because the artwork is drawn at its native grid resolution and scaled once, a 10-unit chrome glyph and a 24-unit UI glyph share one code path. `effectiveSize` is `ThemeTokens.dp(size)` unless `ignoreUiScale` is set (used by the scale-invariant OSD overlay). Sizes still scale with the interface scale — see `docs/architecture/typography-system.md` for the `dp` contract.
+`ChaSetIcon` implements a high-fidelity **dual-engine rendering architecture**:
+
+1. **Google Material Symbols Outlined Variable Font Engine**:
+   - Registered process-wide at C++ bootstrap (`ChaSetFontSystem::registerMaterialSymbolsFont()` loading `MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf`).
+   - Renders icons via native Qt `Text` items using DirectWrite/FreeType grayscale and subpixel anti-aliasing with optical hinting. This completely eliminates the jagged polygon staircasing inherent in CPU vector geometry triangulation (`QtQuick.Shapes`).
+   - Supports continuous variable font axes via `font.variableAxes`:
+     - `FILL`: Fill mode (`0.0` outline to `1.0` solid fill).
+     - `wght`: Weight axis (`100` to `700`, default `400`).
+     - `GRAD`: Visual emphasis grade (`-25` to `200`, default `0`).
+     - `opsz`: Optical sizing (automatically bound to `effectiveSize`).
+2. **Windows Segoe Fluent / MDL2 Chrome Fallback**:
+   - For native OS window chrome (minimize, maximize, restore, close), `ChaSetIcons.resolve(name, size)` maps to Windows `Segoe Fluent Icons` / `Segoe MDL2 Assets` with optical scale compensation (`0.6` factor) to maintain 1:1 visual parity across platforms.
+3. **Vector Path Fallback (`QtQuick.Shapes`)**:
+   - If an icon is not mapped in the font codepoints table (or is a custom hand-authored vector), `ChaSetIcon` seamlessly falls back to `Shape` + `ShapePath` + `PathSvg` scaling the drawing box by `effectiveSize / gridSize`.
+
+`effectiveSize` is `ThemeTokens.dp(size)` unless `ignoreUiScale` is set (used by the scale-invariant OSD overlay). Sizes scale cleanly with the interface scale — see `docs/architecture/typography-system.md` for the `dp` contract.
 
 An unresolved name does **not** vanish: `resolveIcon` falls back to a square marker, so a typo is visible in the UI instead of rendering nothing. Legacy desktop names are mapped through `ICON_ALIASES` (`close` → `x`, `gear` → `settings`, `logo` → `chaset`, `minimize` → `window-minimize`, …).
 

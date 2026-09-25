@@ -1,20 +1,11 @@
-// ChaSetIcon.qml — Specification-driven vector icon primitive for ChaSet.
+// ChaSetIcon.qml — Cross-platform vector & typography icon primitive for ChaSet.
 //
-// Geometry, grid and stroke width all come from the active icon specification
-// (spec/icons/registry.json, code-generated into ChaSetIcons.generated.qml), so this
-// component contains no per-icon branching and no hand-drawn artwork of its own.
-//
-// Two consequences worth stating explicitly, because they are the reason the component
-// was rewritten:
-//
-//  1. Weight can no longer drift. A control that renders three icons renders three
-//     strokes of the same width, because width is a property of the specification rather
-//     than of the caller.
-//  2. Centering is geometry, not typography. The old implementation centred text glyphs
-//     (+, U+2212, U+27F3) inside a box, which inherits the font's asymmetric ascent and
-//     descent and pushes the symbol visually low. Every icon is now a path drawn on a
-//     declared grid, and the gate proves the painted bounding box is symmetric about the
-//     grid centre (see scripts/check-icon-spec.mjs).
+// Dual-rendering icon component:
+// 1. Text-based glyph rendering via Google Material Symbols Outlined variable font
+//    (with Segoe Fluent Icons fallback on Windows for window chrome).
+//    Subpixel grayscale anti-aliasing eliminates all aliasing and jagged triangle edges.
+// 2. Variable-axis support: fill (0..1), weight (100..700), grade (-25..200), opsz.
+// 3. Vector Shape fallback (PathSvg) if a custom or unmapped icon is requested.
 import QtQuick 6.10
 import QtQuick.Shapes
 import ChaSet
@@ -29,6 +20,16 @@ Item {
     /** Paint colour. Defaults to the text token; consumers override per context. */
     property color color: ThemeTokens.text
     /**
+     * Variable font axes for Material Symbols:
+     * - fill: 0 (outlined) or 1 (filled)
+     * - weight: 100..700 (default 400 regular)
+     * - grade: -25..200 (default 0)
+     */
+    property real fill: 0
+    property int weight: 400
+    property int grade: 0
+
+    /**
      * Keep a fixed physical size instead of following the interface scale.
      *
      * Only scale-invariant overlays use this (ChaSetScaleOsd draws in physical pixels so
@@ -40,6 +41,8 @@ Item {
 
     readonly property int effectiveSize: root.ignoreUiScale ? root.size : ThemeTokens.dp(root.size)
     readonly property string resolvedName: ChaSetIcons.resolveIcon(root.name)
+    readonly property var resolution: ChaSetIcons.resolve(root.name, root.effectiveSize)
+    readonly property bool hasGlyph: resolution && resolution.hasGlyph
     readonly property var shapes: ChaSetIcons.shapesFor(root.name)
 
     implicitWidth: effectiveSize
@@ -47,8 +50,30 @@ Item {
     width: implicitWidth
     height: implicitHeight
 
+    // 1. Native Text glyph rendering (Anti-aliased Material Symbols / Segoe Fluent Icons)
+    Text {
+        id: glyphText
+        anchors.centerIn: parent
+        width: root.effectiveSize
+        height: root.effectiveSize
+        visible: root.hasGlyph
+        text: root.hasGlyph ? root.resolution.glyph : ""
+        color: root.color
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        font.family: root.hasGlyph ? root.resolution.family : ""
+        font.pixelSize: root.hasGlyph && root.resolution.isWindows ? Math.round(root.effectiveSize * 0.6) : root.effectiveSize
+        font.variableAxes: ({
+            "FILL": root.fill,
+            "wght": root.weight,
+            "GRAD": root.grade,
+            "opsz": root.effectiveSize
+        })
+    }
+
+    // 2. Vector Shape fallback (when no glyph exists)
     Repeater {
-        model: root.shapes
+        model: !root.hasGlyph ? root.shapes : 0
 
         delegate: Shape {
             id: shapeDelegate

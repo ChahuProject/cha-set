@@ -138,7 +138,9 @@
               "t": "polyline",
               "points": "20 6 9 17 4 12"
             }
-          ]
+          ],
+          "materialSymbol": "check",
+          "codepoint": "e668"
         },
         "chevron-right": {
           "grid": "default",
@@ -147,7 +149,9 @@
               "t": "path",
               "d": "m9 18 6-6-6-6"
             }
-          ]
+          ],
+          "materialSymbol": "chevron_right",
+          "codepoint": "e5cc"
         },
         "chevron-left": {
           "grid": "default",
@@ -156,7 +160,9 @@
               "t": "path",
               "d": "m15 18-6-6 6-6"
             }
-          ]
+          ],
+          "materialSymbol": "chevron_left",
+          "codepoint": "e5cb"
         },
         "chevron-down": {
           "grid": "default",
@@ -165,7 +171,9 @@
               "t": "path",
               "d": "m6 9 6 6 6-6"
             }
-          ]
+          ],
+          "materialSymbol": "keyboard_arrow_down",
+          "codepoint": "e313"
         },
         "chevron-up": {
           "grid": "default",
@@ -174,7 +182,9 @@
               "t": "path",
               "d": "m18 15-6-6-6 6"
             }
-          ]
+          ],
+          "materialSymbol": "keyboard_arrow_up",
+          "codepoint": "e316"
         },
         "x": {
           "grid": "default",
@@ -187,7 +197,9 @@
               "t": "path",
               "d": "m6 6 12 12"
             }
-          ]
+          ],
+          "materialSymbol": "close",
+          "codepoint": "e5cd"
         },
         "grip-horizontal": {
           "grid": "default",
@@ -228,7 +240,9 @@
               "cy": 15,
               "r": 1
             }
-          ]
+          ],
+          "materialSymbol": "drag_indicator",
+          "codepoint": "e945"
         },
         "copy": {
           "grid": "default",
@@ -246,7 +260,9 @@
               "t": "path",
               "d": "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
             }
-          ]
+          ],
+          "materialSymbol": "content_copy",
+          "codepoint": "e14d"
         },
         "pencil": {
           "grid": "default",
@@ -259,7 +275,9 @@
               "t": "path",
               "d": "m15 5 4 4"
             }
-          ]
+          ],
+          "materialSymbol": "edit",
+          "codepoint": "f097"
         },
         "keyboard": {
           "grid": "default",
@@ -300,7 +318,9 @@
               "t": "path",
               "d": "M10 12h4"
             }
-          ]
+          ],
+          "materialSymbol": "keyboard",
+          "codepoint": "e312"
         },
         "search": {
           "grid": "default",
@@ -315,7 +335,9 @@
               "t": "path",
               "d": "m21 21-4.3-4.3"
             }
-          ]
+          ],
+          "materialSymbol": "search",
+          "codepoint": "ef7a"
         },
         "arrow-up-down": {
           "grid": "default",
@@ -328,7 +350,9 @@
               "t": "path",
               "d": "m7 9 5-5 5 5"
             }
-          ]
+          ],
+          "materialSymbol": "swap_vert",
+          "codepoint": "e8d5"
         },
         "maximize-2": {
           "grid": "default",
@@ -355,7 +379,9 @@
               "x2": 10,
               "y2": 14
             }
-          ]
+          ],
+          "materialSymbol": "open_in_full",
+          "codepoint": "f1ce"
         },
         "panel-left": {
           "grid": "default",
@@ -372,7 +398,9 @@
               "t": "path",
               "d": "M9 3v18"
             }
-          ]
+          ],
+          "materialSymbol": "dock_to_left",
+          "codepoint": "f7e5"
         },
         "clock": {
           "grid": "default",
@@ -387,7 +415,9 @@
               "t": "polyline",
               "points": "12 6 12 12 16 14"
             }
-          ]
+          ],
+          "materialSymbol": "schedule",
+          "codepoint": "efd6"
         },
         "sun": {
           "grid": "default",
@@ -430,7 +460,9 @@
               "t": "path",
               "d": "m19.07 4.93-1.41 1.41"
             }
-          ]
+          ],
+          "materialSymbol": "light_mode",
+          "codepoint": "e518"
         },
         "moon": {
           "grid": "default",
@@ -439,7 +471,9 @@
               "t": "path",
               "d": "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
             }
-          ]
+          ],
+          "materialSymbol": "dark_mode",
+          "codepoint": "e51c"
         },
         "monitor": {
           "grid": "default",
@@ -466,7 +500,9 @@
               "x2": 12,
               "y2": 21
             }
-          ]
+          ],
+          "materialSymbol": "desktop_windows",
+          "codepoint": "e30c"
         },
         "rotate-ccw": {
           "grid": "default",
@@ -479,7 +515,9 @@
               "t": "path",
               "d": "M3 3v5h5"
             }
-          ]
+          ],
+          "materialSymbol": "replay",
+          "codepoint": "e042"
         },
         "sliders": {
           "grid": "default",
@@ -547,7 +585,9 @@
               "x2": 23,
               "y2": 16
             }
-          ]
+          ],
+          "materialSymbol": "tune",
+          "codepoint": "e429"
         },
         "palette": {
           "grid": "default",
@@ -584,7 +624,9 @@
               "t": "path",
               "d": "M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"
             }
-          ]
+          ],
+          "materialSymbol": "palette",
+          "codepoint": "e40a"
         },
         "download": {
           "grid": "default",
@@ -604,7 +646,9 @@
               "x2": 12,
               "y2": 3
             }
-          ]
+          ],
+          "materialSymbol": "download",
+          "codepoint": "f090"
         },
         "upload": {
           "grid": "default",
@@ -624,7 +668,9 @@
               "x2": 12,
               "y2": 15
             }
-          ]
+          ],
+          "materialSymbol": "upload",
+          "codepoint": "f09b"
         },
         "settings": {
           "grid": "default",
@@ -639,7 +685,9 @@
               "cy": 12,
               "r": 3
             }
-          ]
+          ],
+          "materialSymbol": "settings",
+          "codepoint": "e8b8"
         },
         "eye": {
           "grid": "default",
@@ -654,7 +702,9 @@
               "cy": 12,
               "r": 3
             }
-          ]
+          ],
+          "materialSymbol": "visibility",
+          "codepoint": "e8f4"
         },
         "eye-off": {
           "grid": "default",
@@ -678,7 +728,9 @@
               "x2": 22,
               "y2": 22
             }
-          ]
+          ],
+          "materialSymbol": "visibility_off",
+          "codepoint": "e8f5"
         },
         "info": {
           "grid": "default",
@@ -697,7 +749,9 @@
               "t": "path",
               "d": "M12 8h.01"
             }
-          ]
+          ],
+          "materialSymbol": "info",
+          "codepoint": "e88e"
         },
         "lock": {
           "grid": "default",
@@ -715,7 +769,9 @@
               "t": "path",
               "d": "M7 11V7a5 5 0 0 1 10 0v4"
             }
-          ]
+          ],
+          "materialSymbol": "lock",
+          "codepoint": "e899"
         },
         "globe": {
           "grid": "default",
@@ -734,7 +790,9 @@
               "t": "path",
               "d": "M2 12h20"
             }
-          ]
+          ],
+          "materialSymbol": "globe",
+          "codepoint": "e64c"
         },
         "zap": {
           "grid": "default",
@@ -743,7 +801,9 @@
               "t": "polygon",
               "points": "13 2 3 14 12 14 11 22 21 10 12 10 13 2"
             }
-          ]
+          ],
+          "materialSymbol": "bolt",
+          "codepoint": "ea0b"
         },
         "target": {
           "grid": "default",
@@ -766,7 +826,9 @@
               "cy": 12,
               "r": 2
             }
-          ]
+          ],
+          "materialSymbol": "target",
+          "codepoint": "e719"
         },
         "rocket": {
           "grid": "default",
@@ -787,7 +849,9 @@
               "t": "path",
               "d": "M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"
             }
-          ]
+          ],
+          "materialSymbol": "rocket_launch",
+          "codepoint": "eb9b"
         },
         "trash": {
           "grid": "default",
@@ -818,7 +882,9 @@
               "x2": 14,
               "y2": 17
             }
-          ]
+          ],
+          "materialSymbol": "delete",
+          "codepoint": "e92e"
         },
         "folder": {
           "grid": "default",
@@ -827,7 +893,9 @@
               "t": "path",
               "d": "M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"
             }
-          ]
+          ],
+          "materialSymbol": "folder",
+          "codepoint": "e2c7"
         },
         "home": {
           "grid": "default",
@@ -840,7 +908,9 @@
               "t": "polyline",
               "points": "9 22 9 12 15 12 15 22"
             }
-          ]
+          ],
+          "materialSymbol": "home",
+          "codepoint": "e9b2"
         },
         "tag": {
           "grid": "default",
@@ -856,7 +926,9 @@
               "r": 0.5,
               "fill": true
             }
-          ]
+          ],
+          "materialSymbol": "label",
+          "codepoint": "e893"
         },
         "package": {
           "grid": "default",
@@ -877,7 +949,9 @@
               "t": "path",
               "d": "M12 22V12"
             }
-          ]
+          ],
+          "materialSymbol": "package_2",
+          "codepoint": "f569"
         },
         "stop": {
           "grid": "default",
@@ -900,7 +974,9 @@
               "x2": 9,
               "y2": 15
             }
-          ]
+          ],
+          "materialSymbol": "stop",
+          "codepoint": "e047"
         },
         "star": {
           "grid": "default",
@@ -909,7 +985,9 @@
               "t": "polygon",
               "points": "12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
             }
-          ]
+          ],
+          "materialSymbol": "star",
+          "codepoint": "f09a"
         },
         "mail": {
           "grid": "default",
@@ -926,7 +1004,9 @@
               "t": "path",
               "d": "m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
             }
-          ]
+          ],
+          "materialSymbol": "mail",
+          "codepoint": "e159"
         },
         "table": {
           "grid": "default",
@@ -955,7 +1035,9 @@
               "t": "path",
               "d": "M15 3v18"
             }
-          ]
+          ],
+          "materialSymbol": "table",
+          "codepoint": "f191"
         },
         "file-text": {
           "grid": "default",
@@ -989,7 +1071,9 @@
               "x2": 8,
               "y2": 9
             }
-          ]
+          ],
+          "materialSymbol": "description",
+          "codepoint": "e873"
         },
         "layers": {
           "grid": "default",
@@ -1006,7 +1090,9 @@
               "t": "path",
               "d": "m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"
             }
-          ]
+          ],
+          "materialSymbol": "layers",
+          "codepoint": "e53b"
         },
         "grid": {
           "grid": "default",
@@ -1043,7 +1129,9 @@
               "height": 7,
               "rx": 1
             }
-          ]
+          ],
+          "materialSymbol": "grid_view",
+          "codepoint": "e9b0"
         },
         "list": {
           "grid": "default",
@@ -1090,7 +1178,9 @@
               "x2": 3.01,
               "y2": 18
             }
-          ]
+          ],
+          "materialSymbol": "list",
+          "codepoint": "e896"
         },
         "user": {
           "grid": "default",
@@ -1105,7 +1195,9 @@
               "cy": 7,
               "r": 4
             }
-          ]
+          ],
+          "materialSymbol": "person",
+          "codepoint": "f0d3"
         },
         "credit-card": {
           "grid": "default",
@@ -1125,7 +1217,9 @@
               "x2": 22,
               "y2": 10
             }
-          ]
+          ],
+          "materialSymbol": "credit_card",
+          "codepoint": "e8a1"
         },
         "log-out": {
           "grid": "default",
@@ -1145,7 +1239,9 @@
               "x2": 9,
               "y2": 12
             }
-          ]
+          ],
+          "materialSymbol": "logout",
+          "codepoint": "e9ba"
         },
         "chaset": {
           "grid": "default",
@@ -1179,7 +1275,9 @@
               "x2": 14,
               "y2": 4
             }
-          ]
+          ],
+          "materialSymbol": "coffee",
+          "codepoint": "efef"
         },
         "plus": {
           "grid": "default",
@@ -1192,7 +1290,9 @@
               "t": "path",
               "d": "M12 5v14"
             }
-          ]
+          ],
+          "materialSymbol": "add",
+          "codepoint": "e145"
         },
         "minus": {
           "grid": "default",
@@ -1201,7 +1301,9 @@
               "t": "path",
               "d": "M5 12h14"
             }
-          ]
+          ],
+          "materialSymbol": "remove",
+          "codepoint": "e15b"
         },
         "arrow-left": {
           "grid": "default",
@@ -1214,7 +1316,9 @@
               "t": "path",
               "d": "M19 12H5"
             }
-          ]
+          ],
+          "materialSymbol": "arrow_back",
+          "codepoint": "e5c4"
         },
         "arrow-right": {
           "grid": "default",
@@ -1227,7 +1331,9 @@
               "t": "path",
               "d": "m12 5 7 7-7 7"
             }
-          ]
+          ],
+          "materialSymbol": "arrow_forward",
+          "codepoint": "e5c8"
         },
         "arrow-up": {
           "grid": "default",
@@ -1240,7 +1346,9 @@
               "t": "path",
               "d": "M12 19V5"
             }
-          ]
+          ],
+          "materialSymbol": "arrow_upward",
+          "codepoint": "e5d8"
         },
         "chart": {
           "grid": "default",
@@ -1261,7 +1369,9 @@
               "t": "path",
               "d": "M17 21v-11"
             }
-          ]
+          ],
+          "materialSymbol": "bar_chart",
+          "codepoint": "e26b"
         },
         "window-minimize": {
           "grid": "chrome",
@@ -1270,7 +1380,9 @@
               "t": "path",
               "d": "M0.5 5h9"
             }
-          ]
+          ],
+          "materialSymbol": "minimize",
+          "codepoint": "e931"
         },
         "window-maximize": {
           "grid": "chrome",
@@ -1284,7 +1396,9 @@
               "rx": 0.5,
               "ry": 0.5
             }
-          ]
+          ],
+          "materialSymbol": "crop_square",
+          "codepoint": "e3c6"
         },
         "window-restore": {
           "grid": "chrome",
@@ -1307,7 +1421,9 @@
               "rx": 0.5,
               "ry": 0.5
             }
-          ]
+          ],
+          "materialSymbol": "filter_none",
+          "codepoint": "e3e0"
         },
         "window-close": {
           "grid": "chrome",
@@ -1320,7 +1436,9 @@
               "t": "path",
               "d": "M9.5 0.5 0.5 9.5"
             }
-          ]
+          ],
+          "materialSymbol": "close",
+          "codepoint": "e5cd"
         }
       },
       "aliases": {
@@ -1350,31 +1468,49 @@
           "id": "window-caption",
           "title": "Window caption controls",
           "note": "The three caption buttons and the close beside them. They are drawn in one row at one size, so a member on a different grid is lighter than its neighbours and a member using a different glyph proportion is a different size inside the same box. This is the family that shipped both mistakes: the close rendered the generic 24 unit x, whose artwork covers half its grid, where the caption glyphs cover nine tenths of theirs.",
-          "icons": ["window-minimize", "window-maximize", "window-restore", "window-close"]
+          "icons": [
+            "window-minimize",
+            "window-maximize",
+            "window-restore",
+            "window-close"
+          ]
         },
         {
           "id": "chevron-horizontal",
           "title": "Horizontal chevrons",
           "note": "Mirror images of each other. Shipping one without the other leaves a gap in the public icon set, and a hand-drawn stand-in for the missing half is how two directions drift apart.",
-          "icons": ["chevron-left", "chevron-right"]
+          "icons": [
+            "chevron-left",
+            "chevron-right"
+          ]
         },
         {
           "id": "scrollbar-steppers",
           "title": "Scroll bar steppers",
           "note": "The two ends of one track. They must agree on weight because they are read as a pair.",
-          "icons": ["chevron-up", "chevron-down"]
+          "icons": [
+            "chevron-up",
+            "chevron-down"
+          ]
         },
         {
           "id": "view-mode",
           "title": "View mode selector",
           "note": "Alternatives in a single segmented control; an icon that is heavier than its alternatives reads as selected.",
-          "icons": ["table", "grid", "list"]
+          "icons": [
+            "table",
+            "grid",
+            "list"
+          ]
         },
         {
           "id": "theme-toggle",
           "title": "Theme toggle",
           "note": "The two states of one button, so a difference in weight would make the toggle jump as it flips.",
-          "icons": ["sun", "moon"]
+          "icons": [
+            "sun",
+            "moon"
+          ]
         }
       ],
       "categories": [
