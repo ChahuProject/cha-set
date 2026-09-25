@@ -290,6 +290,47 @@ Item {
         root.expandedIds = ({})
     }
 
+    function expandId(id) {
+        if (id === undefined || id === null) return
+        let copy = Object.assign({}, root.expandedIds)
+        if (copy[id] === true) return
+        copy[id] = true
+        root.expandedIds = copy
+        root.nodeToggled(id, true)
+        root.nodeExpanded(id)
+    }
+
+    function expandIds(idsArray) {
+        if (!idsArray || idsArray.length === 0) return
+        let copy = Object.assign({}, root.expandedIds)
+        let changed = false
+        for (let i = 0; i < idsArray.length; i++) {
+            let id = idsArray[i]
+            if (id !== undefined && id !== null && copy[id] !== true) {
+                copy[id] = true
+                changed = true
+            }
+        }
+        if (changed) {
+            root.expandedIds = copy
+        }
+    }
+
+    function collapseId(id) {
+        if (id === undefined || id === null) return
+        let copy = Object.assign({}, root.expandedIds)
+        if (copy[id] === false) return
+        copy[id] = false
+        root.expandedIds = copy
+        root.nodeToggled(id, false)
+        root.nodeCollapsed(id)
+    }
+
+    function isExpanded(id) {
+        if (root.expandedIds && root.expandedIds[id] !== undefined) return !!root.expandedIds[id]
+        return false
+    }
+
     function scrollToIndex(index) {
         if (treeList) {
             treeList.positionViewAtIndex(index, ListView.Beginning)
@@ -618,13 +659,22 @@ Item {
                     }
 
                     Text {
-                        visible: !modelData.hasChildren
+                        visible: !modelData.hasChildren && !modelData.iconName && !modelData.icon
                         anchors.verticalCenter: parent.verticalCenter
                         text: "•"
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeCaption
                         width: ThemeTokens.dp(16)
                         horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    ChaSetIcon {
+                        id: nodeIcon
+                        visible: !!(modelData.iconName || modelData.icon)
+                        anchors.verticalCenter: parent.verticalCenter
+                        name: modelData.iconName ? modelData.iconName : (modelData.icon ? modelData.icon : "")
+                        size: 16
+                        color: isSelected ? ThemeTokens.focus : (modelData.iconColor ? modelData.iconColor : ThemeTokens.subduedText)
                     }
 
                     Text {
@@ -640,10 +690,10 @@ Item {
 
                 ChaSetBadge {
                     id: dirBadge
-                    visible: root.showBadges && !!modelData.hasChildren
+                    visible: root.showBadges && modelData.badge !== undefined && modelData.badge !== ""
                     size: "sm"
                     variant: "outline"
-                    text: modelData.badge !== undefined ? modelData.badge : "dir"
+                    text: modelData.badge !== undefined ? modelData.badge : ""
                     anchors.right: parent.right
                     anchors.rightMargin: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
