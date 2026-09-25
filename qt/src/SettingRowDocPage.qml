@@ -23,10 +23,6 @@ DocLayout {
         resetTimer.restart();
     }
 
-    `
-        language: "qml"
-    }
-
     ComponentPreview {
         id: heroPreview
         title: "Setting Row Sandbox"
@@ -167,21 +163,10 @@ ChaSetSettingRow {
     }
 
     // Keyboard Navigation
-    DocText {
-        text: "Keyboard Navigation"
-        font.pixelSize: Typography.sizeTitleSm
-        font.bold: true
-        color: ThemeTokens.text
-    }
-
-    KeyboardShortcutsTable {
+        ComponentReference {
+        name: "SettingRow"
         componentId: "setting-row"
-    }
-
-    // Props Reference
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "name", type: "string", default: "''", description: "Primary title of the setting row" },
             { name: "description", type: "string", default: "''", description: "Secondary subtitle description text" },
             { name: "icon", type: "string", default: "''", description: "Optional leading icon" },
@@ -194,4 +179,3 @@ ChaSetSettingRow {
         ]
     }
 }
-

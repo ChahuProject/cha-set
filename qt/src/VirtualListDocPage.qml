@@ -119,7 +119,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -134,12 +134,6 @@ ChaSetVirtualList {
 <VirtualList count={10000} itemHeight={36} renderItem={(index) => <div>Row {index}</div>} />`
     }
 
-
-
-    "
-        language: "qml"
-    }
-
     ComponentReference {
         name: "VirtualList"
         componentId: "virtual-list"
@@ -152,9 +146,6 @@ ChaSetVirtualList {
             { name: "overscan", type: "int", default: "8", description: "Number of buffer items rendered beyond viewport bounds." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the list viewport container." },
             { name: "scrollToIndex(index)", type: "function", default: "function", description: "Programmatically scrolls to the target item index." }
-        ]
-    }
-}
         ]
     }
 }

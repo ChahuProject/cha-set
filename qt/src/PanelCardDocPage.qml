@@ -69,7 +69,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -84,12 +84,6 @@ ChaSetPanelCard {
 </PanelCard>`
     }
 
-
-
-    "
-        language: "qml"
-    }
-
     
     ComponentReference {
         name: "PanelCard"
@@ -100,9 +94,6 @@ ChaSetPanelCard {
             { name: "collapsible", type: "bool", default: "false", description: "Whether the panel card can be expanded and collapsed." },
             { name: "collapsed", type: "bool", default: "false", description: "Current collapsed state of the panel." },
             { name: "customRadius", type: "int", default: "8", description: "Corner radius of the card surface." }
-        ]
-    }
-}
         ]
     }
 }

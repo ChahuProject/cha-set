@@ -131,9 +131,7 @@ DocLayout {
         ]
     }
 
-    }
-
-    // Section 3: Anatomy
+        // Section 3: Anatomy
     DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet\n\nChaSetTooltip {\n    text: "Add to library"\n    side: "top"\n    delay: 200\n    ChaSetButton { text: "Hover me"; variant: "outline" }\n}`
@@ -403,5 +401,4 @@ DocLayout {
                 }
             ]
     }
-}
 }

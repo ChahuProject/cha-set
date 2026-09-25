@@ -13,10 +13,6 @@ DocLayout {
     property int demoDuration: 200
     property bool demoMapShift: false
 
-    "
-        language: "qml"
-    }
-
     ComponentPreview {
         id: heroPreview
         title: "Smooth Wheel Handler Sandbox"

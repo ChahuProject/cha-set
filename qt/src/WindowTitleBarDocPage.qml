@@ -99,7 +99,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -112,12 +112,6 @@ ChaSetWindowTitleBar {
 <WindowTitleBar title="ChaSet Desktop" onMinimize={() => {}} onMaximize={() => {}} onClose={() => {}} />`
     }
 
-
-
-    "
-        language: "qml"
-    }
-
     
     ComponentReference {
         name: "WindowTitleBar"
@@ -126,9 +120,6 @@ ChaSetWindowTitleBar {
             { name: "title", type: "string", default: "'ChaSet Desktop Studio'", description: "Headline text in the title bar." },
             { name: "icon", type: "string", default: "'logo'", description: "Vector icon identifier for application branding." },
             { name: "maximized", type: "bool", default: "false", description: "Whether the window is in maximized state." }
-        ]
-    }
-}
         ]
     }
 }

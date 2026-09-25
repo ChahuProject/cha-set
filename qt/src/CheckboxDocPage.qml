@@ -62,6 +62,7 @@ DocLayout {
 
         controlsData: [
             Row {
+                width: childrenRect.width
                 spacing: 8
                 DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetTabs {
@@ -75,49 +76,59 @@ DocLayout {
                 }
             },
 
-            ChaSetCheckbox {
-                size: "sm"
-                label: "Checked"
-                checked: root.demoChecked && !root.demoIndeterminate
-                onToggled: (val) => {
-                    root.demoChecked = val;
-                    if (root.demoIndeterminate) root.demoIndeterminate = false;
+            Row {
+                width: childrenRect.width
+                spacing: 12
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Checked"
+                    checked: root.demoChecked && !root.demoIndeterminate
+                    onToggled: (val) => {
+                        root.demoChecked = val;
+                        if (root.demoIndeterminate) root.demoIndeterminate = false;
+                    }
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Indeterminate"
+                    checked: root.demoIndeterminate
+                    onToggled: (val) => root.demoIndeterminate = val
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Disabled"
+                    checked: root.demoDisabled
+                    onToggled: (val) => root.demoDisabled = val
                 }
             },
 
-            ChaSetCheckbox {
-                size: "sm"
-                label: "Indeterminate"
-                checked: root.demoIndeterminate
-                onToggled: (val) => root.demoIndeterminate = val
-            },
+            Row {
+                width: childrenRect.width
+                spacing: 12
 
-            ChaSetCheckbox {
-                size: "sm"
-                label: "Disabled"
-                checked: root.demoDisabled
-                onToggled: (val) => root.demoDisabled = val
-            },
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Read-Only"
+                    checked: root.demoReadOnly
+                    onToggled: (val) => root.demoReadOnly = val
+                }
 
-            ChaSetCheckbox {
-                size: "sm"
-                label: "Read-Only"
-                checked: root.demoReadOnly
-                onToggled: (val) => root.demoReadOnly = val
-            },
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Invalid"
+                    checked: root.demoInvalid
+                    onToggled: (val) => root.demoInvalid = val
+                }
 
-            ChaSetCheckbox {
-                size: "sm"
-                label: "Invalid"
-                checked: root.demoInvalid
-                onToggled: (val) => root.demoInvalid = val
-            },
-
-            ChaSetCheckbox {
-                size: "sm"
-                label: "Description"
-                checked: root.demoShowDesc
-                onToggled: (val) => root.demoShowDesc = val
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Description"
+                    checked: root.demoShowDesc
+                    onToggled: (val) => root.demoShowDesc = val
+                }
             }
         ]
     }

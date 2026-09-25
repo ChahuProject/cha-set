@@ -259,7 +259,7 @@ DocLayout {
         }
     }
 
-    // 2. Anatomy
+        // 2. Anatomy
     DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet\n\nChaSetTableOfContents {\n    items: demoItems\n    activeId: currentSectionId\n    onSelectItem: (item) => scrollTo(item)\n}`
@@ -349,4 +349,3 @@ DocLayout {
         ]
     }
     }
-}

@@ -19,10 +19,6 @@ DocLayout {
     property string currentSize: "default"
     property bool disabledState: false
 
-    ,\n        { label: \"List\", value: \"list\", icon: \"list\" }\n    ]\n    value: \"grid\"\n}"
-        language: "qml"
-    }
-
     ComponentPreview {
         id: heroPreview
         title: "Segmented Control Sandbox"
@@ -266,21 +262,10 @@ ChaSetSegmentedControl {
     }
 
     // Keyboard Navigation
-    DocText {
-        text: "Keyboard Navigation"
-        font.pixelSize: Typography.sizeTitleSm
-        font.bold: true
-        color: ThemeTokens.text
-    }
-
-    KeyboardShortcutsTable {
+        ComponentReference {
+        name: "SegmentedControl"
         componentId: "segmented-control"
-    }
-
-    // Props Reference
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "options", type: "array", default: "[]", description: "Array of segment options: [{ label, value, icon?, badge?, disabled? }]" },
             { name: "value", type: "var", default: "undefined", description: "Currently active selected value" },
             { name: "size", type: "string", default: "'default'", description: "Size variant: 'sm', 'default', or 'lg'" },
@@ -292,4 +277,3 @@ ChaSetSegmentedControl {
         ]
     }
 }
-

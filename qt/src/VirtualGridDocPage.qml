@@ -125,7 +125,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -142,12 +142,6 @@ ChaSetVirtualGrid {
 <VirtualGrid rowCount={1000} columnCount={50} rowHeight={32} columnWidth={100} />`
     }
 
-
-
-    "
-        language: "qml"
-    }
-
     ComponentReference {
         name: "VirtualGrid"
         componentId: "virtual-grid"
@@ -161,9 +155,6 @@ ChaSetVirtualGrid {
             { name: "overscan", type: "int", default: "4", description: "Buffer rows rendered outside visible bounds." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the grid container." },
             { name: "scrollToIndex(index)", type: "function", default: "function", description: "Scrolls the virtual grid to the target card index." }
-        ]
-    }
-}
         ]
     }
 }

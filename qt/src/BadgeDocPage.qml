@@ -71,6 +71,7 @@ DocLayout {
 
         controlsData: [
             Row {
+                width: childrenRect.width
                 spacing: 8
                 DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetTabs {
@@ -89,6 +90,7 @@ DocLayout {
             },
 
             Row {
+                width: childrenRect.width
                 spacing: 8
                 DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetTabs {
@@ -102,20 +104,25 @@ DocLayout {
                 }
             },
 
-            ChaSetCheckbox {
-                size: "sm"
-                label: "Status Dot"
-                checked: root.demoDot
-                onToggled: (v) => root.demoDot = v
-            },
+            Row {
+                width: childrenRect.width
+                spacing: 12
 
-            ChaSetCheckbox {
-                size: "sm"
-                label: "Removable"
-                checked: root.demoRemovable
-                onToggled: (v) => {
-                    root.demoRemovable = v
-                    root.demoRemoved = false
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Status Dot"
+                    checked: root.demoDot
+                    onToggled: (v) => root.demoDot = v
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Removable"
+                    checked: root.demoRemovable
+                    onToggled: (v) => {
+                        root.demoRemovable = v
+                        root.demoRemoved = false
+                    }
                 }
             }
         ]
@@ -258,4 +265,3 @@ DocLayout {
         ]
     }
     }
-}

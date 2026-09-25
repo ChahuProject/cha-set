@@ -114,9 +114,7 @@ DocLayout {
         ]
     }
 
-    }
-
-    // Section 3: Anatomy
+        // Section 3: Anatomy
     DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet\n\nChaSetTable {\n    width: parent.width\n    caption: "A list of recent records."\n    columns: [\n        { key: "name", title: "Name" },\n        { key: "status", title: "Status" }\n    ]\n    rows: [\n        { name: "Alpha", status: "Active" }\n    ]\n}`
@@ -254,5 +252,4 @@ DocLayout {
                 }
             ]
     }
-}
 }

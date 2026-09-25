@@ -104,7 +104,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -119,12 +119,6 @@ Column {
   <Skeleton className="h-4 w-48" />
   <Skeleton className="h-4 w-32" />
 </div>`
-    }
-
-
-
-    "
-        language: "qml"
     }
 
     // Animations
@@ -148,9 +142,6 @@ Column {
             { name: "rounded", type: "string", default: "'md'", description: "Corner radius preset: 'none' | 'sm' | 'md' | 'lg' | 'full'." },
             { name: "customRadius", type: "int", default: "-1", description: "Custom corner radius override." },
             { name: "animate", type: "bool", default: "true", description: "Convenience flag to enable or disable animation." }
-        ]
-    }
-}
         ]
     }
 }

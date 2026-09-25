@@ -6,7 +6,8 @@ import ChaSet
 ChaSetCard {
     id: root
     width: parent ? parent.width : ThemeTokens.dp(760)
-    implicitHeight: previewContainer.implicitHeight
+    implicitHeight: previewContainer.height
+    height: implicitHeight
     clip: true
 
     property string title: ""
@@ -24,6 +25,7 @@ ChaSetCard {
     Column {
         id: previewContainer
         width: parent.width
+        height: childrenRect.height
 
         // Tab Navigation Header (44px height matching React px-3 py-2 with default size SegmentedControl)
         Rectangle {
@@ -113,12 +115,13 @@ ChaSetCard {
         // Preview Mode Content
         Column {
             visible: root.activeTab === "preview"
-            width: parent.width
+            width: root.width
+            height: childrenRect.height
 
             // Center Stage
             Item {
                 id: stageContainer
-                width: parent.width
+                width: root.width
                 height: ThemeTokens.dp(root.stageHeight)
                 clip: true
             }
@@ -127,8 +130,10 @@ ChaSetCard {
             Rectangle {
                 id: controlsBar
                 visible: controlsContainer.children.length > 0
-                width: parent.width
+                width: root.width
                 implicitHeight: controlsContainer.implicitHeight + ThemeTokens.dp(24)
+                height: implicitHeight
+                clip: true
                 color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.2) : Qt.rgba(241/255, 245/255, 249/255, 0.2)
                 radius: root.radius
 
@@ -150,13 +155,35 @@ ChaSetCard {
 
                 Flow {
                     id: controlsContainer
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.leftMargin: ThemeTokens.dp(16)
-                    anchors.rightMargin: ThemeTokens.dp(16)
+                    width: root.width - ThemeTokens.dp(32)
+                    anchors.horizontalCenter: parent.horizontalCenter
                     anchors.top: parent.top
                     anchors.topMargin: ThemeTokens.dp(12)
                     spacing: ThemeTokens.dp(16)
+
+                    function triggerReflow() {
+                        controlsContainer.flow = Flow.TopToBottom;
+                        controlsContainer.flow = Flow.LeftToRight;
+                    }
+
+                    onChildrenChanged: {
+                        for (var i = 0; i < children.length; ++i) {
+                            var child = children[i];
+                            if (child && child.widthChanged !== undefined) {
+                                child.widthChanged.connect(reflowTimer.restart);
+                            }
+                        }
+                        reflowTimer.restart();
+                    }
+
+                    Component.onCompleted: Qt.callLater(triggerReflow)
+
+                    Timer {
+                        id: reflowTimer
+                        interval: 16
+                        repeat: false
+                        onTriggered: controlsContainer.triggerReflow()
+                    }
                 }
             }
         }

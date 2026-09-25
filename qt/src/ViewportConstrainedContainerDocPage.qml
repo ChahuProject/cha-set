@@ -135,12 +135,12 @@ ChaSetViewportConstrainedContainer {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "Strict 150 Limit"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetViewportConstrainedContainer {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         maxHeight: 150
                     }
                 }
@@ -150,12 +150,12 @@ ChaSetViewportConstrainedContainer {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "Always Scroll Overflow"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetViewportConstrainedContainer {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         maxHeight: 150
                         overflow: "scroll"
                     }
@@ -166,12 +166,12 @@ ChaSetViewportConstrainedContainer {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "High Margin (48)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetViewportConstrainedContainer {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         maxHeight: 150
                         margin: 48
                     }

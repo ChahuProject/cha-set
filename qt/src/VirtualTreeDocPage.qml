@@ -427,7 +427,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -439,12 +439,6 @@ ChaSetVirtualTree {
         reactCode: `import { VirtualTree } from '@chahu/cha-set';
 
 <VirtualTree data={treeNodes} onNodeSelect={(node) => console.log(node)} />`
-    }
-
-
-
-    "
-        language: "qml"
     }
 
     ComponentReference {
@@ -467,9 +461,6 @@ ChaSetVirtualTree {
             { name: "collapseAll()", type: "function", default: "function", description: "Collapses all open tree branches." },
             { name: "selectAll()", type: "function", default: "function", description: "Selects all visible nodes in multiple mode." },
             { name: "scrollToIndex(index)", type: "function", default: "function", description: "Scrolls the virtual tree to the specified index." }
-        ]
-    }
-}
         ]
     }
 }

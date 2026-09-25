@@ -96,7 +96,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -114,12 +114,6 @@ ChaSetDraggableModal {
 >
   <div className="p-4">Floating window content</div>
 </DraggableModal>`
-    }
-
-
-
-    "
-        language: "qml"
     }
 
     ComponentReference {
@@ -140,7 +134,3 @@ ChaSetDraggableModal {
         ]
     }
 }
-        ]
-    }
-}
-

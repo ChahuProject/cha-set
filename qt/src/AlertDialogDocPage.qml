@@ -148,12 +148,6 @@ ChaSetAlertDialog {
 </AlertDialog>`
     }
 
-
-
-    "
-        language: "qml"
-    }
-
     ComponentReference {
         name: "AlertDialog"
         componentId: "alert-dialog"
@@ -168,9 +162,6 @@ ChaSetAlertDialog {
             { name: "actionVariant", type: "string", default: "'destructive'", description: "Custom button variant for confirmation ('destructive', 'default', etc.)." },
             { name: "closeOnOverlayClick", type: "bool", default: "false", description: "Whether clicking the backdrop automatically dismisses the dialog." },
             { name: "closeOnEscape", type: "bool", default: "true", description: "Whether pressing the Escape key dismisses the dialog." }
-        ]
-    }
-}
         ]
     }
 }

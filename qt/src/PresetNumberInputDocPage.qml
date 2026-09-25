@@ -88,12 +88,12 @@ ChaSetPresetNumberInput {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "Custom Presets (Small)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetPresetNumberInput {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         presets: [8, 16, 32, 64, 128]
                         value: "64"
                         clearLabel: "Auto"
@@ -105,12 +105,12 @@ ChaSetPresetNumberInput {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "Disallow Clear (Mandatory)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetPresetNumberInput {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         value: "256"
                         allowClear: false
                     }
@@ -121,12 +121,12 @@ ChaSetPresetNumberInput {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "Disabled State"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetPresetNumberInput {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         value: "2048"
                         disabled: true
                     }

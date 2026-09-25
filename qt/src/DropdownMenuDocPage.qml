@@ -73,7 +73,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -106,9 +106,6 @@ ChaSetDropdownMenu {
             { name: "items", type: "var[]", default: "[]", description: "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }." },
             { name: "menuWidth", type: "int", default: "180", description: "Width dimension of the popup menu panel." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the menu panel." }
-        ]
-    }
-}
         ]
     }
 }

@@ -89,7 +89,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -102,12 +102,6 @@ ChaSetQueryBuilder {
 <QueryBuilder fields={fields} value={rules} onChange={setRules} />`
     }
 
-
-
-    "
-        language: "qml"
-    }
-
     
     ComponentReference {
         name: "QueryBuilder"
@@ -117,9 +111,6 @@ ChaSetQueryBuilder {
             { name: "fields", type: "var[]", default: "[]", description: "Array of queryable field definitions." },
             { name: "rules", type: "var[]", default: "[]", description: "Array of active condition rules." },
             { name: "customRadius", type: "int", default: "8", description: "Corner radius of the rule builder container." }
-        ]
-    }
-}
         ]
     }
 }

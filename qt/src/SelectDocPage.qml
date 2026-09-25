@@ -67,7 +67,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -99,9 +99,6 @@ ChaSetSelect {
             { name: "options", type: "var[]", default: "[]", description: "Array of selectable option objects: { value, label, disabled }." },
             { name: "disabled", type: "bool", default: "false", description: "Whether the select control is disabled." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the select trigger." }
-        ]
-    }
-}
         ]
     }
 }

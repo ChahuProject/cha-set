@@ -289,10 +289,6 @@ ChaSetSplitterHandle {
         }
     }
 
-    "
-        language: "qml"
-    }
-
     // Animations Section
     Column {
         width: parent.width
@@ -344,14 +340,10 @@ ChaSetSplitterHandle {
         color: ThemeTokens.text
     }
 
-    KeyboardShortcutsTable {
+        ComponentReference {
+        name: "SplitterHandle"
         componentId: "splitter-handle"
-    }
-
-    // Props Reference
-    PropsTable {
-        title: "Props Reference"
-        props: [
+        propsModel: [
             { name: "edge", type: "string", default: "'left'", description: "Which edge of the target panel the resize handle controls ('left', 'right', 'top', 'bottom')." },
             { name: "targetSize", type: "real", default: "200", description: "Current size (width or height) of the target element being resized." },
             { name: "minSize", type: "real", default: "100", description: "Minimum allowed size bound." },

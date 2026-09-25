@@ -237,8 +237,8 @@ ChaSetPopover {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "With Directional Arrow"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Anchored triangle indicator pointed directly at the trigger"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
@@ -263,8 +263,8 @@ ChaSetPopover {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "Movable Drag Handle"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     DocText { text: "Interactive drag header to freely reposition the popover layer"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }

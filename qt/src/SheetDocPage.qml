@@ -166,7 +166,7 @@ ChaSetSheet {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -188,12 +188,6 @@ ChaSetSheet {
     </SheetHeader>
   </SheetContent>
 </Sheet>`
-    }
-
-
-
-    "
-        language: "qml"
     }
 
     // Animations
@@ -223,9 +217,6 @@ ChaSetSheet {
             { name: "showCloseButton", type: "bool", default: "true", description: "Whether the header close button is displayed." },
             { name: "closeOnOverlayClick", type: "bool", default: "true", description: "Whether clicking outside dismisses the sheet." },
             { name: "closeOnEscape", type: "bool", default: "true", description: "Whether pressing Escape dismisses the sheet." }
-        ]
-    }
-}
         ]
     }
 }

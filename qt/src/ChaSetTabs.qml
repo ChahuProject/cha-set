@@ -19,4 +19,6 @@ Item {
 
     implicitWidth: childrenRect.width
     implicitHeight: childrenRect.height
+    width: implicitWidth
+    height: implicitHeight
 }

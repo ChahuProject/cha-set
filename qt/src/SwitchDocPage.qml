@@ -119,9 +119,7 @@ DocLayout {
         ]
     }
 
-    }
-
-    // Section 3: Anatomy
+        // Section 3: Anatomy
     DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet\n\nChaSetSwitch {\n    checked: enabled\n    label: "Enable Notifications"\n    description: "Receive daily push updates on this device."\n    onToggled: enabled = checked\n}`
@@ -333,5 +331,4 @@ DocLayout {
                 }
             ]
     }
-}
 }

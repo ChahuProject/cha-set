@@ -127,9 +127,7 @@ DocLayout {
         ]
     }
 
-    }
-
-    // Section 3: Anatomy
+        // Section 3: Anatomy
     DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet\n\nChaSetCard {\n    variant: "default"\n    ChaSetCardHeader {\n        ChaSetCardTitle { text: "Card Title" }\n        ChaSetCardDescription { text: "Card Description" }\n    }\n    ChaSetCardContent {\n        ChaSetLabel { text: "Main content area" }\n    }\n    ChaSetCardFooter {\n        ChaSetButton { size: "sm"; text: "Footer action" }\n    }\n}`
@@ -273,5 +271,4 @@ DocLayout {
                 }
             ]
     }
-}
 }

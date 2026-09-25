@@ -68,7 +68,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: "import ChaSet\n\nChaSetSplitButton {\n    text: \"Deploy\"\n    variant: \"default\"\n    menuItems: [\n        { id: \"staging\", label: \"Deploy to Staging\" }\n    ]\n}"
         reactCode: "import { SplitButton } from '@chahu/cha-set';\n\n<SplitButton\n  text=\"Deploy\"\n  variant=\"default\"\n  menuItems={[{ label: 'Deploy to Staging', onSelect: () => {} }]}\n/>"
@@ -107,4 +107,3 @@ DocLayout {
         ]
     }
     }
-}

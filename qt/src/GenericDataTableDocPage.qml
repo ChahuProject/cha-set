@@ -60,7 +60,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -75,12 +75,6 @@ ChaSetGenericDataTable {
 <GenericDataTable data={data} columns={columns} pageSize={10} />`
     }
 
-
-
-    "
-        language: "qml"
-    }
-
     
     ComponentReference {
         name: "DataTable"
@@ -90,9 +84,6 @@ ChaSetGenericDataTable {
             { name: "rows", type: "var[]", default: "[]", description: "Array of arbitrary records to display (alias: tableData)." },
             { name: "pageSize", type: "int", default: "5", description: "Number of rows per page." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the table border frame." }
-        ]
-    }
-}
         ]
     }
 }

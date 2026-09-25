@@ -170,34 +170,47 @@ DocLayout {
         // Bottom Controls Bar
         controlsData: [
             Row {
+                width: childrenRect.width
                 spacing: 6
                 DocText { text: "Mode:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
-                Repeater {
-                    model: [["vertical", "Vertical"], ["horizontal", "Horizontal"], ["both", "2D Dual-Axis"]]
-                    delegate: ChaSetButton {
-                        required property var modelData
-                        size: "sm"
-                        variant: root.heroMode === modelData[0] ? "default" : "outline"
-                        text: modelData[1]
-                        onClicked: root.heroMode = modelData[0]
-                    }
+                ChaSetButton {
+                    size: "sm"
+                    variant: root.heroMode === "vertical" ? "default" : "outline"
+                    text: "Vertical"
+                    onClicked: root.heroMode = "vertical"
+                }
+                ChaSetButton {
+                    size: "sm"
+                    variant: root.heroMode === "horizontal" ? "default" : "outline"
+                    text: "Horizontal"
+                    onClicked: root.heroMode = "horizontal"
+                }
+                ChaSetButton {
+                    size: "sm"
+                    variant: root.heroMode === "both" ? "default" : "outline"
+                    text: "2D Dual-Axis"
+                    onClicked: root.heroMode = "both"
                 }
             },
             Row {
+                width: childrenRect.width
                 spacing: 6
                 DocText { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
-                Repeater {
-                    model: [["default", "Default"], ["sm", "Compact (sm)"]]
-                    delegate: ChaSetButton {
-                        required property var modelData
-                        size: "sm"
-                        variant: root.heroSize === modelData[0] ? "default" : "outline"
-                        text: modelData[1]
-                        onClicked: root.heroSize = modelData[0]
-                    }
+                ChaSetButton {
+                    size: "sm"
+                    variant: root.heroSize === "default" ? "default" : "outline"
+                    text: "Default"
+                    onClicked: root.heroSize = "default"
+                }
+                ChaSetButton {
+                    size: "sm"
+                    variant: root.heroSize === "sm" ? "default" : "outline"
+                    text: "Compact (sm)"
+                    onClicked: root.heroSize = "sm"
                 }
             },
             Row {
+                width: childrenRect.width
                 spacing: 12
                 ChaSetCheckbox {
                     size: "sm"

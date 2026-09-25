@@ -41,17 +41,9 @@ Rectangle {
         return cCard
     }
 
-    default property alias contentData: contentColumn.data
-
     implicitWidth: contentColumn.implicitWidth
     implicitHeight: contentColumn.implicitHeight
     height: implicitHeight
-
-    Column {
-        id: contentColumn
-        width: Math.max(1, root.width > 0 ? root.width : implicitWidth)
-        spacing: 0
-    }
 
     MouseArea {
         id: mouseArea
@@ -62,4 +54,12 @@ Rectangle {
         cursorShape: root.interactive ? Qt.PointingHandCursor : undefined
         onClicked: root.clicked()
     }
+
+    Column {
+        id: contentColumn
+        width: Math.max(1, root.width > 0 ? root.width : implicitWidth)
+        spacing: 0
+    }
+
+    default property alias contentData: contentColumn.data
 }

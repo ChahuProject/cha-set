@@ -94,12 +94,12 @@ ChaSetDurationInput {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "Compact Size (sm)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetDurationInput {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         size: "sm"
                         value: 300
                     }
@@ -110,12 +110,12 @@ ChaSetDurationInput {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "Large Size (lg)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetDurationInput {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         size: "lg"
                         value: 7200
                     }
@@ -126,12 +126,12 @@ ChaSetDurationInput {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: ThemeTokens.dp(8)
                 Column {
-                    anchors.fill: parent
-                    anchors.margins: ThemeTokens.dp(14)
+                    width: parent.width
+                    padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "Disabled State"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetDurationInput {
-                        width: parent.width
+                        width: parent.width - ThemeTokens.dp(28)
                         value: 900
                         disabled: true
                     }

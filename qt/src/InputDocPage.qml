@@ -34,8 +34,112 @@ DocLayout {
         reactCode: `<Input\n  type="${root.demoType}"\n  size="${root.demoSize}"\n  placeholder="${root.demoPlaceholder}"\n  value="${root.demoText}"\n  disabled={${root.demoDisabled}}\n  invalid={${root.demoInvalid}}\n  clearable={${root.demoClearable}}\n  passwordToggle={${root.demoPasswordToggle}}\n  onChange={(e) => setValue(e.target.value)}\n/>`
         qtCode: `ChaSetInput {\n    width: 280\n    size: "${root.demoSize}"\n    type: "${root.demoType}"\n    placeholderText: "${root.demoPlaceholder}"\n    text: "${root.demoText}"\n    disabled: ${root.demoDisabled}\n    invalid: ${root.demoInvalid}\n    clearable: ${root.demoClearable}\n    passwordToggle: ${root.demoPasswordToggle}\n    onTextEdited: { /* handle text */ }\n}`
 
-        stageData: [
+                stageData: [
+            Column {
+                anchors.centerIn: parent
+                width: ThemeTokens.dp(320)
+                spacing: ThemeTokens.dp(8)
+
+                Row {
+                    width: parent.width
+                    DocText {
+                        text: "Email address"
+                        color: root.cMutedFg
+                        font.pixelSize: Typography.sizeSmall
+                    }
+                    Item { width: 1; height: 1 }
+                }
+
+                ChaSetInput {
+                    id: sandboxInput
+                    width: parent.width
+                    size: root.demoSize
+                    type: root.demoType
+                    placeholderText: root.demoPlaceholder
+                    text: root.demoText
+                    disabled: root.demoDisabled
+                    invalid: root.demoInvalid
+                    clearable: root.demoClearable
+                    passwordToggle: root.demoPasswordToggle
+                    onTextEdited: root.demoText = text
+                }
+
+                DocText {
+                    text: root.demoInvalid ? "Please enter a valid corporate email address." : "We will never share your email with anyone else."
+                    color: root.demoInvalid ? (ThemeTokens.dark ? Qt.rgba(248.0 / 255.0, 113.0 / 255.0, 113.0 / 255.0, 1.0) : Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)) : root.cMutedFg
+                    font.pixelSize: Typography.sizeCaption
+                }
             }
+        ]
+
+        controlsData: [
+            Row {
+                spacing: 16
+
+                Row {
+                    spacing: 8
+                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetTabs {
+                        anchors.verticalCenter: parent.verticalCenter
+                        currentValue: root.demoSize
+                        onCurrentValueChanged: root.demoSize = currentValue
+                        ChaSetTabsList {
+                            ChaSetTabsTrigger { value: "default"; text: "Default" }
+                            ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
+                        }
+                    }
+                }
+
+                Row {
+                    spacing: 8
+                    DocText { text: "Type:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetTabs {
+                        anchors.verticalCenter: parent.verticalCenter
+                        currentValue: root.demoType
+                        onCurrentValueChanged: root.demoType = currentValue
+                        ChaSetTabsList {
+                            ChaSetTabsTrigger { value: "text"; text: "Text" }
+                            ChaSetTabsTrigger { value: "password"; text: "Password" }
+                        }
+                    }
+                }
+
+                Row {
+                    spacing: 12
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Disabled"
+                        checked: root.demoDisabled
+                        onToggled: (val) => root.demoDisabled = val
+                    }
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Invalid"
+                        checked: root.demoInvalid
+                        onToggled: (val) => root.demoInvalid = val
+                    }
+
+                    ChaSetCheckbox {
+                        size: "sm"
+                        label: "Clearable"
+                        checked: root.demoClearable
+                        onToggled: (val) => root.demoClearable = val
+                    }
+
+                    ChaSetCheckbox {
+                        visible: root.demoType === "password"
+                        size: "sm"
+                        label: "Password Toggle"
+                        checked: root.demoPasswordToggle
+                        onToggled: (val) => root.demoPasswordToggle = val
+                    }
+                }
+            }
+        ]
+    }
 
     // Section 3: Anatomy
     DocAnatomy {
@@ -243,5 +347,4 @@ DocLayout {
                 }
             ]
     }
-}
 }

@@ -264,7 +264,7 @@ DocLayout {
         }
     }
 
-    DocAnatomy {
+        DocAnatomy {
         width: parent.width
         qtCode: `import ChaSet
 
@@ -278,12 +278,6 @@ ChaSetSidebar {
   <SidebarContent>Navigation items...</SidebarContent>
   <SidebarFooter>User Profile</SidebarFooter>
 </Sidebar>`
-    }
-
-
-
-    "
-        language: "qml"
     }
 
     
@@ -300,9 +294,6 @@ ChaSetSidebar {
             { name: "variant", type: "string", default: "'sidebar'", description: "Visual container variant: 'sidebar' | 'floating' | 'inset'." },
             { name: "collapsible", type: "string", default: "'icon'", description: "Collapse strategy: 'offcanvas' | 'icon' | 'none'." },
             { name: "resizable", type: "bool", default: "true", description: "Enables interactive edge dragging rail for dynamic resizing." }
-        ]
-    }
-}
         ]
     }
 }
