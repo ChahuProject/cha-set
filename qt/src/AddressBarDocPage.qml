@@ -220,7 +220,9 @@ ChaSetAddressBar {
             { name: "canGoForward", type: "bool", defaultVal: "false", description: "Enables the forward history navigation button." },
             { name: "showNavButtons", type: "bool", defaultVal: "true", description: "Whether to show back, forward, up, and refresh navigation buttons." },
             { name: "showRefresh", type: "bool", defaultVal: "true", description: "Whether to show the refresh button." },
-            { name: "suggestions", type: "var", defaultVal: "[]", description: "List of auto-complete or history path strings in the dropdown popover." },
+            { name: "showSearch", type: "bool", defaultVal: "false", description: "Whether to show the integrated search input on the right side." },
+            { name: "suggestions", type: "var", defaultVal: "[]", description: "List of auto-complete path strings in the dropdown popover." },
+            { name: "history", type: "var", defaultVal: "[]", description: "Recent typed path history for dropdown display." },
             { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all interactions and input editing." }
         ]
     }

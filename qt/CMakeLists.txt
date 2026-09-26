@@ -99,6 +99,11 @@ qt_add_qml_module(ChaSet
         src/ChaSetClipboard.cpp
         src/ChaSetFontSystem.h
         src/ChaSetFontSystem.cpp
+        src/ChaSetPathUtil.h
+        src/ChaSetPathHistoryStore.h
+        src/ChaSetPathHistoryStore.cpp
+        src/ChaSetAddressBarController.h
+        src/ChaSetAddressBarController.cpp
     RESOURCES
         resources/fonts/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf
     QML_FILES
@@ -172,6 +177,9 @@ qt_add_qml_module(ChaSet
         src/ChaSetStatusIcon.qml
         src/ChaSetIcon.qml
         src/ChaSetPipelineView.qml
+        src/ChaSetBreadcrumb.qml
+        src/ChaSetAddressBarSuggestPopup.qml
+        src/ChaSetAddressBarOverflowPopup.qml
         src/ChaSetAddressBar.qml
         src/ChaSetThemeSettings.qml
         src/ChaSetLanguageSettings.qml

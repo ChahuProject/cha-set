@@ -1,8 +1,25 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
 import type { PathSegment, AddressBarApi } from '@chahu/spec/address-bar';
+import { Breadcrumb } from './Breadcrumb';
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ArrowUpIcon,
+  RotateCcwIcon,
+  SearchIcon,
+  ClockIcon,
+  FolderIcon,
+} from '../lib/icons';
 
 export type { PathSegment, AddressBarApi };
+
+export interface AddressBarFileSystemAdapter {
+  /** Enumerate direct subfolders for a path */
+  getSubfolders?: (path: string) => Promise<PathSegment[]> | PathSegment[];
+  /** Search suggestions for typed text */
+  getSuggestions?: (query: string) => Promise<string[]> | string[];
+}
 
 export interface AddressBarProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
@@ -16,16 +33,24 @@ export interface AddressBarProps
   showRefresh?: boolean;
   /** Whether to show right-side search/filter input */
   showSearch?: boolean;
+  /** Search input placeholder */
+  searchPlaceholder?: string;
   /** Whether backward navigation is available */
   canGoBack?: boolean;
   /** Whether forward navigation is available */
   canGoForward?: boolean;
   /** Path auto-complete or history suggestions */
   suggestions?: string[];
+  /** Recent typed path history */
+  history?: string[];
+  /** File system adapter for subfolder enumeration and suggestions */
+  fileSystemAdapter?: AddressBarFileSystemAdapter;
   /** Disabled state */
   disabled?: boolean;
   /** Callback when user navigates to a new path */
   onNavigate?: (path: string) => void;
+  /** Callback when user navigates with a target file selected */
+  onNavigateWithSelection?: (path: string, selectionPath: string) => void;
   /** Callback for back button */
   onBack?: () => void;
   /** Callback for forward button */
@@ -38,6 +63,36 @@ export interface AddressBarProps
   onSearch?: (query: string) => void;
 }
 
+const DEFAULT_VIRTUAL_FS: Record<string, string[]> = {
+  '': ['C:/', 'D:/', 'C:/Users/Development/Documents', 'C:/Users/Development/Downloads'],
+  'C:': ['Users', 'Windows', 'Program Files'],
+  'C:/': ['Users', 'Windows', 'Program Files'],
+  'C:/Users': ['Development', 'Public'],
+  'C:/Users/Development': ['cha-set', 'Projects', 'Documents', 'Downloads'],
+  'C:/Users/Development/cha-set': ['packages', 'qt', 'spec', 'docs', 'scripts'],
+  'C:/Windows': ['System32', 'Fonts', 'Temp'],
+  'D:': ['Media', 'Games', 'Backups'],
+  'D:/': ['Media', 'Games', 'Backups'],
+};
+
+export const defaultVirtualFileSystemAdapter: AddressBarFileSystemAdapter = {
+  getSubfolders: (dirPath: string) => {
+    const normalized = (dirPath || '').replace(/\\/g, '/').replace(/\/+$/, '');
+    const lookupKey = normalized || (dirPath === '' ? '' : dirPath);
+    const children = DEFAULT_VIRTUAL_FS[lookupKey] || DEFAULT_VIRTUAL_FS[`${lookupKey}/`] || [];
+    return children.map((name) => {
+      const full = lookupKey ? `${lookupKey.endsWith('/') ? lookupKey : `${lookupKey}/`}${name}` : name;
+      return {
+        label: name.includes('/') ? name.split('/').filter(Boolean).pop() || name : name,
+        path: full,
+        realPath: full,
+        isDrive: name.endsWith(':/') || name.endsWith(':'),
+        icon: name.endsWith(':/') ? 'package' : 'folder',
+      };
+    });
+  },
+};
+
 export function parsePathSegments(rawPath: string): PathSegment[] {
   if (!rawPath || typeof rawPath !== 'string') return [];
   const normalized = rawPath.replace(/\\/g, '/');
@@ -47,13 +102,15 @@ export function parsePathSegments(rawPath: string): PathSegment[] {
   if (winMatch) {
     const drive = winMatch[1]!;
     const rest = winMatch[2] || '';
-    const segments: PathSegment[] = [{ label: drive, path: `${drive}/` }];
+    const segments: PathSegment[] = [
+      { label: drive, path: `${drive}/`, realPath: `${drive}/`, isDrive: true, icon: 'package' },
+    ];
     if (rest) {
       const parts = rest.split('/').filter(Boolean);
       let accum = `${drive}/`;
       for (const part of parts) {
         accum = `${accum}${accum.endsWith('/') ? '' : '/'}${part}`;
-        segments.push({ label: part, path: accum });
+        segments.push({ label: part, path: accum, realPath: accum, icon: 'folder' });
       }
     }
     return segments;
@@ -62,11 +119,11 @@ export function parsePathSegments(rawPath: string): PathSegment[] {
   // POSIX path: /home/user or /
   if (normalized.startsWith('/')) {
     const parts = normalized.split('/').filter(Boolean);
-    const segments: PathSegment[] = [{ label: '/', path: '/' }];
+    const segments: PathSegment[] = [{ label: '/', path: '/', realPath: '/', isRoot: true, icon: 'folder' }];
     let accum = '';
     for (const part of parts) {
       accum = `${accum}/${part}`;
-      segments.push({ label: part, path: accum });
+      segments.push({ label: part, path: accum, realPath: accum, icon: 'folder' });
     }
     return segments;
   }
@@ -77,7 +134,7 @@ export function parsePathSegments(rawPath: string): PathSegment[] {
   let accum = '';
   for (const part of parts) {
     accum = accum ? `${accum}/${part}` : part;
-    segments.push({ label: part, path: accum });
+    segments.push({ label: part, path: accum, realPath: accum, icon: 'folder' });
   }
   return segments;
 }
@@ -104,11 +161,15 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
       showNavButtons = true,
       showRefresh = true,
       showSearch = false,
+      searchPlaceholder = '搜索...',
       canGoBack = false,
       canGoForward = false,
       suggestions = [],
+      history = [],
+      fileSystemAdapter = defaultVirtualFileSystemAdapter,
       disabled = false,
       onNavigate,
+      onNavigateWithSelection,
       onBack,
       onForward,
       onUp,
@@ -128,6 +189,9 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
     const [editValue, setEditValue] = React.useState(activePath);
     const [searchQuery, setSearchQuery] = React.useState('');
     const [showSuggestions, setShowSuggestions] = React.useState(false);
+    const [highlightedIndex, setHighlightedIndex] = React.useState(0);
+    const [openSegmentIndex, setOpenSegmentIndex] = React.useState(-1);
+    const [subfolders, setSubfolders] = React.useState<PathSegment[]>([]);
 
     const inputRef = React.useRef<HTMLInputElement>(null);
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -143,8 +207,10 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
     const startEditing = () => {
       if (disabled) return;
       setIsEditing(true);
+      setOpenSegmentIndex(-1);
       setEditValue(activePath);
-      setShowSuggestions(suggestions.length > 0);
+      setShowSuggestions(true);
+      setHighlightedIndex(0);
       requestAnimationFrame(() => {
         if (inputRef.current) {
           inputRef.current.focus();
@@ -171,31 +237,32 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
       setEditValue(activePath);
     };
 
-    const handleSegmentClick = (segmentPath: string, e: React.MouseEvent) => {
-      e.stopPropagation();
-      if (disabled) return;
-      if (controlledPath === undefined) {
-        setInternalPath(segmentPath);
-      }
-      onNavigate?.(segmentPath);
-    };
-
     const handleUpClick = () => {
       if (disabled) return;
       const parent = getParentPath(activePath);
-      if (parent) {
-        if (controlledPath === undefined) {
-          setInternalPath(parent);
-        }
-        onUp ? onUp() : onNavigate?.(parent);
+      if (controlledPath === undefined) {
+        setInternalPath(parent);
+      }
+      onUp ? onUp() : onNavigate?.(parent);
+    };
+
+    // Subfolders loading for breadcrumb chevron
+    const handleOpenSubfolders = async (index: number, segPath: string) => {
+      if (fileSystemAdapter?.getSubfolders) {
+        const res = await fileSystemAdapter.getSubfolders(segPath);
+        setSubfolders(res || []);
       }
     };
 
-    // Global keyboard shortcuts (Alt+D or Ctrl+L to focus address bar)
+    // Global keyboard shortcuts (Alt+D or Ctrl+L or F4 to focus address bar)
     React.useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (disabled) return;
-        if ((e.altKey && (e.key === 'd' || e.key === 'D')) || (e.ctrlKey && (e.key === 'l' || e.key === 'L'))) {
+        if (
+          (e.altKey && (e.key === 'd' || e.key === 'D')) ||
+          (e.ctrlKey && (e.key === 'l' || e.key === 'L')) ||
+          e.key === 'F4'
+        ) {
           e.preventDefault();
           startEditing();
         }
@@ -204,11 +271,27 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
       return () => window.removeEventListener('keydown', handleKeyDown);
     }, [disabled, activePath]);
 
-    const filteredSuggestions = React.useMemo(() => {
-      if (!suggestions.length || !editValue) return suggestions;
-      const lower = editValue.toLowerCase();
-      return suggestions.filter((s) => s.toLowerCase().includes(lower));
-    }, [suggestions, editValue]);
+    // Combined suggestions (typed history + suggestions)
+    const combinedSuggestions = React.useMemo(() => {
+      const list: Array<{ text: string; icon: 'clock' | 'folder' }> = [];
+      const lower = (editValue || '').toLowerCase();
+
+      // Recent history
+      for (const h of history) {
+        if (!lower || h.toLowerCase().includes(lower)) {
+          list.push({ text: h, icon: 'clock' });
+        }
+      }
+
+      // Suggestions
+      for (const s of suggestions) {
+        if ((!lower || s.toLowerCase().includes(lower)) && !list.some((item) => item.text === s)) {
+          list.push({ text: s, icon: 'folder' });
+        }
+      }
+
+      return list.slice(0, 12);
+    }, [history, suggestions, editValue]);
 
     return (
       <div
@@ -216,7 +299,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
         role="toolbar"
         aria-label="Address bar"
         className={cn(
-          'relative flex items-center gap-1.5 h-9 w-full rounded-md border border-border bg-card text-card-foreground px-1.5 select-none transition-colors text-sm',
+          'relative flex items-center gap-1 h-9 w-full rounded-md border border-border bg-card text-card-foreground px-1 select-none transition-colors text-sm',
           disabled && 'opacity-60 pointer-events-none',
           className
         )}
@@ -239,10 +322,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                   : 'text-muted-foreground/40 cursor-not-allowed'
               )}
             >
-              <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="19" y1="12" x2="5" y2="12" />
-                <polyline points="12 19 5 12 12 5" />
-              </svg>
+              <ArrowLeftIcon className="size-3.5" />
             </button>
 
             {/* Forward Button */}
@@ -258,29 +338,23 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                   : 'text-muted-foreground/40 cursor-not-allowed'
               )}
             >
-              <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
+              <ArrowRightIcon className="size-3.5" />
             </button>
 
-            {/* Up Button */}
+            {/* Up (Parent) Button */}
             <button
               type="button"
               aria-label="Up to parent directory"
-              disabled={disabled || !activePath || activePath === '/' || activePath.match(/^[a-zA-Z]:[/\\]?$/) !== null}
+              disabled={disabled || !activePath || activePath === '/' || /^[a-zA-Z]:[/\\]?$/.test(activePath)}
               onClick={handleUpClick}
               className={cn(
                 'size-7 rounded flex items-center justify-center transition-colors',
-                activePath && !disabled
+                activePath && activePath !== '/' && !/^[a-zA-Z]:[/\\]?$/.test(activePath) && !disabled
                   ? 'text-foreground hover:bg-accent/40 cursor-pointer'
                   : 'text-muted-foreground/40 cursor-not-allowed'
               )}
             >
-              <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="19" x2="12" y2="5" />
-                <polyline points="5 12 12 5 19 12" />
-              </svg>
+              <ArrowUpIcon className="size-3.5" />
             </button>
 
             {/* Refresh Button */}
@@ -297,134 +371,140 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                     : 'text-muted-foreground/40 cursor-not-allowed'
                 )}
               >
-                <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 2v6h-6" />
-                  <path d="M3 12a9 9 0 0 1 15.5-5.5L21 8" />
-                  <path d="M3 22v-6h6" />
-                  <path d="M21 12a9 9 0 0 1-15.5 5.5L3 16" />
-                </svg>
+                <RotateCcwIcon className="size-3.5" />
               </button>
             )}
+
+            <div className="w-[0.0625rem] h-4 bg-border mx-0.5" />
           </div>
         )}
 
-        {/* Separator between nav buttons and breadcrumb area */}
-        {showNavButtons && <div className="h-4 w-[0.0625rem] bg-border mx-0.5" />}
+        {/* Central Address Bar Field */}
+        <div ref={containerRef} className="relative flex-1 flex items-center h-full min-w-0">
+          {!isEditing ? (
+            <div className="flex-1 flex items-center h-full min-w-0">
+              <Breadcrumb
+                segments={segments}
+                activePath={activePath}
+                disabled={disabled}
+                subfolders={subfolders}
+                openSegmentIndex={openSegmentIndex}
+                onOpenSegmentChange={setOpenSegmentIndex}
+                onNavigate={(targetPath) => {
+                  if (controlledPath === undefined) {
+                    setInternalPath(targetPath);
+                  }
+                  onNavigate?.(targetPath);
+                }}
+                onOpenSubfolders={handleOpenSubfolders}
+                className="flex-1 min-w-0"
+              />
 
-        {/* Path Display and Edit Container */}
-        <div
-          ref={containerRef}
-          onClick={!isEditing ? startEditing : undefined}
-          className={cn(
-            'flex-1 relative flex items-center h-7 px-2 rounded overflow-hidden min-w-0 bg-background/50 border border-transparent',
-            !isEditing && 'hover:border-border cursor-text',
-            isEditing && 'border-primary ring-1 ring-primary bg-background'
-          )}
-        >
-          {/* Edit Mode Input */}
-          {isEditing ? (
-            <input
-              ref={inputRef}
-              type="text"
-              aria-label="Address path input"
-              value={editValue}
-              disabled={disabled}
-              onChange={(e) => {
-                setEditValue(e.target.value);
-                setShowSuggestions(true);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  commitEdit(editValue);
-                } else if (e.key === 'Escape') {
-                  e.preventDefault();
-                  cancelEdit();
-                }
-              }}
-              onBlur={() => {
-                // Delay so suggestion clicks can register
-                setTimeout(() => {
-                  cancelEdit();
-                }, 150);
-              }}
-              className="w-full h-full bg-transparent text-foreground outline-none text-xs font-mono cursor-text"
-            />
+              {/* Blank Area Click to Edit */}
+              <div
+                onClick={startEditing}
+                className="flex-1 h-full min-w-[2.5rem] cursor-text"
+                title="Click to edit address"
+              />
+            </div>
           ) : (
-            /* Breadcrumbs Mode */
-            <div className="flex items-center gap-0.5 flex-1 min-w-0 overflow-x-auto no-scrollbar py-0.5">
-              {segments.length === 0 ? (
-                <span className="text-muted-foreground text-xs">{activePath || 'Enter address...'}</span>
-              ) : (
-                segments.map((seg, idx) => {
-                  const isLast = idx === segments.length - 1;
-                  return (
-                    <React.Fragment key={seg.path}>
-                      <button
-                        type="button"
-                        data-testid={`address-segment-${idx}`}
-                        onClick={(e) => handleSegmentClick(seg.path, e)}
-                        className={cn(
-                          'px-1.5 py-0.5 rounded text-xs truncate max-w-40 hover:bg-accent/40 transition-colors cursor-pointer',
-                          isLast ? 'font-semibold text-foreground' : 'text-muted-foreground hover:text-foreground'
-                        )}
-                        title={seg.path}
-                      >
-                        {seg.label}
-                      </button>
-                      {!isLast && (
-                        <span className="text-muted-foreground/60 text-xs px-0.5 pointer-events-none select-none">
-                          ›
-                        </span>
+            <div className="flex-1 flex items-center h-full relative">
+              <input
+                ref={inputRef}
+                type="text"
+                aria-label="Address path input"
+                value={editValue}
+                disabled={disabled}
+                onChange={(e) => {
+                  setEditValue(e.target.value);
+                  setShowSuggestions(true);
+                  setHighlightedIndex(0);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape') {
+                    e.preventDefault();
+                    cancelEdit();
+                  } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (
+                      showSuggestions &&
+                      combinedSuggestions.length > 0 &&
+                      highlightedIndex >= 0 &&
+                      highlightedIndex < combinedSuggestions.length
+                    ) {
+                      commitEdit(combinedSuggestions[highlightedIndex]!.text);
+                    } else {
+                      commitEdit(editValue);
+                    }
+                  } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    setHighlightedIndex((prev) => Math.min(prev + 1, combinedSuggestions.length - 1));
+                  } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    setHighlightedIndex((prev) => Math.max(prev - 1, 0));
+                  }
+                }}
+                onBlur={(e) => {
+                  if (!containerRef.current?.contains(e.relatedTarget as Node)) {
+                    cancelEdit();
+                  }
+                }}
+                className="w-full h-7 px-2 text-sm bg-transparent border-0 outline-none text-foreground placeholder:text-muted-foreground cursor-text"
+              />
+
+              {/* Suggestions / History Popover */}
+              {showSuggestions && combinedSuggestions.length > 0 && (
+                <div
+                  role="listbox"
+                  className="absolute top-full left-0 mt-1 w-full max-w-[25rem] max-h-[16.25rem] overflow-y-auto rounded-md border border-border bg-popover text-popover-foreground shadow-md p-1 z-50 animate-in fade-in-0 zoom-in-95"
+                >
+                  {combinedSuggestions.map((item, idx) => (
+                    <button
+                      key={`${item.text}-${idx}`}
+                      type="button"
+                      role="option"
+                      aria-selected={idx === highlightedIndex}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        commitEdit(item.text);
+                      }}
+                      onMouseEnter={() => setHighlightedIndex(idx)}
+                      className={cn(
+                        'w-full h-8 px-2 rounded flex items-center gap-2 text-sm text-foreground cursor-pointer text-left transition-colors',
+                        idx === highlightedIndex
+                          ? 'bg-accent text-accent-foreground'
+                          : 'hover:bg-accent/50'
                       )}
-                    </React.Fragment>
-                  );
-                })
+                    >
+                      {item.icon === 'clock' ? (
+                        <ClockIcon className="size-3.5 text-muted-foreground shrink-0" />
+                      ) : (
+                        <FolderIcon className="size-3.5 text-muted-foreground shrink-0" />
+                      )}
+                      <span className="truncate">{item.text}</span>
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
           )}
         </div>
 
-        {/* Optional Search / Quick Filter Input */}
+        {/* Optional Right Search Box */}
         {showSearch && (
-          <div className="shrink-0 flex items-center w-36 h-7 px-2 rounded bg-background/50 border border-border focus-within:border-primary">
-            <svg className="size-3 text-muted-foreground mr-1.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
+          <div className="flex items-center gap-1 h-7 w-[10rem] px-2 rounded bg-muted/40 border border-border shrink-0">
+            <SearchIcon className="size-3.5 text-muted-foreground shrink-0" />
             <input
               type="text"
-              placeholder="Search..."
               value={searchQuery}
+              placeholder={searchPlaceholder}
               disabled={disabled}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
                 onSearch?.(e.target.value);
               }}
-              className="w-full bg-transparent text-foreground outline-none text-xs cursor-text"
+              className="w-full bg-transparent border-0 outline-none text-xs text-foreground placeholder:text-muted-foreground cursor-text"
             />
-          </div>
-        )}
-
-        {/* Suggestions Popover */}
-        {isEditing && showSuggestions && filteredSuggestions.length > 0 && (
-          <div
-            data-testid="address-bar-suggestions"
-            className="absolute left-0 right-0 top-full mt-1 z-50 rounded-md border border-border bg-popover text-popover-foreground shadow-md max-h-48 overflow-y-auto p-1 text-xs"
-          >
-            {filteredSuggestions.map((sug) => (
-              <div
-                key={sug}
-                data-testid={`suggestion-${sug}`}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  commitEdit(sug);
-                }}
-                className="px-2.5 py-1.5 rounded hover:bg-accent hover:text-accent-foreground cursor-pointer font-mono truncate"
-              >
-                {sug}
-              </div>
-            ))}
           </div>
         )}
       </div>

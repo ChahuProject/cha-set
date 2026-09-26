@@ -1,6 +1,6 @@
-// ChaSet AddressBar for Qt (QML), implementing the API contract from
-// spec/components/address-bar.ts and capabilities in spec/capabilities.json.
-// Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing.
+// qt/src/ChaSetAddressBar.qml
+// ChaSet AddressBar for Qt (QML) — Explorer and browser-style navigation bar
+// with interactive breadcrumbs, subfolder enumeration, inline editing, and typed path history.
 import QtQuick 6.10
 import QtQuick.Controls 6.10
 import QtQuick.Layouts 6.10
@@ -11,8 +11,8 @@ Item {
 
     // API Contract
     property string path: ""
-    property bool canGoBack: false
-    property bool canGoForward: false
+    property bool canGoBack: controller.canGoBack
+    property bool canGoForward: controller.canGoForward
     property bool showNavButtons: true
     property bool showRefresh: true
     property bool showSearch: false
@@ -20,415 +20,304 @@ Item {
     property string searchPlaceholder: qsTr("搜索...")
     property bool disabled: false
     property var suggestions: []
-    property bool editing: false
+    property bool editing: controller.editing
     property int highlightedIndex: -1
 
     signal navigateRequested(string path)
+    signal navigateRequestedWithSelection(string path, string selectionPath)
     signal backRequested()
     signal forwardRequested()
     signal upRequested()
     signal refreshRequested()
     signal searchRequested(string query)
+    signal dropRequested(string targetPath, var urls)
 
     property string editValue: path
 
-    readonly property var filteredSuggestions: {
-        if (!root.suggestions || !root.suggestions.length) return [];
-        if (!root.editValue) return root.suggestions;
-        var lower = root.editValue.toLowerCase();
-        var result = [];
-        for (var i = 0; i < root.suggestions.length; i++) {
-            var item = String(root.suggestions[i]);
-            if (item.toLowerCase().indexOf(lower) >= 0) {
-                result.push(item);
+    implicitHeight: ThemeTokens.dp(36)
+    implicitWidth: ThemeTokens.dp(500)
+
+    ChaSetAddressBarController {
+        id: controller
+        currentPath: root.path
+        onNavigateRequested: (targetPath) => {
+            root.path = targetPath
+            root.navigateRequested(targetPath)
+        }
+        onNavigateRequestedWithSelection: (targetPath, selection) => {
+            root.path = targetPath
+            root.navigateRequestedWithSelection(targetPath, selection)
+        }
+        onEditingChanged: {
+            if (controller.editing) {
+                editInput.text = root.path
+                editInput.selectAll()
+                editInput.forceActiveFocus()
+                showHistoryPopup()
+            } else {
+                suggestPopup.close()
+                subfolderPopup.close()
             }
         }
-        return result;
     }
 
     onPathChanged: {
         if (!editing) {
-            editValue = path;
+            editValue = path
+            controller.currentPath = path
         }
     }
 
-    function parseSegments(rawPath) {
-        if (!rawPath) return [];
-        var normalized = String(rawPath).replace(/\\/g, "/");
-
-        // Windows drive: C:/ or C:/foo/bar
-        var winMatch = normalized.match(/^([a-zA-Z]:)(?:\/(.*))?$/);
-        if (winMatch) {
-            var drive = winMatch[1];
-            var rest = winMatch[2] || "";
-            var segments = [{ label: drive, path: drive + "/" }];
-            if (rest) {
-                var parts = rest.split("/").filter(function(p) { return p.length > 0; });
-                var accum = drive + "/";
-                for (var i = 0; i < parts.length; i++) {
-                    accum = accum + (accum.endsWith("/") ? "" : "/") + parts[i];
-                    segments.push({ label: parts[i], path: accum });
-                }
-            }
-            return segments;
-        }
-
-        // POSIX path: /home/user or /
-        if (normalized.startsWith("/")) {
-            var pParts = normalized.split("/").filter(function(p) { return p.length > 0; });
-            var pSegments = [{ label: "/", path: "/" }];
-            var pAccum = "";
-            for (var j = 0; j < pParts.length; j++) {
-                pAccum = pAccum + "/" + pParts[j];
-                pSegments.push({ label: pParts[j], path: pAccum });
-            }
-            return pSegments;
-        }
-
-        // Relative path
-        var rParts = normalized.split("/").filter(function(p) { return p.length > 0; });
-        var rSegments = [];
-        var rAccum = "";
-        for (var k = 0; k < rParts.length; k++) {
-            rAccum = rAccum ? (rAccum + "/" + rParts[k]) : rParts[k];
-            rSegments.push({ label: rParts[k], path: rAccum });
-        }
-        return rSegments;
-    }
-
-    function getParent(rawPath) {
-        if (!rawPath) return "";
-        var normalized = String(rawPath).replace(/\\/g, "/").replace(/\/+$/, "");
-        var lastSlash = normalized.lastIndexOf("/");
-        if (lastSlash < 0) return "";
-        if (lastSlash === 2 && normalized.charAt(1) === ":") {
-            return normalized.slice(0, 3);
-        }
-        if (lastSlash === 0) return "/";
-        return normalized.slice(0, lastSlash);
-    }
-
-    function startEditing() {
-        if (disabled) return;
-        editing = true;
-        editValue = path;
-        highlightedIndex = -1;
-        editInput.selectAll();
-        editInput.forceActiveFocus();
-    }
-
-    function commitEdit(targetPath) {
-        var trimmed = (targetPath !== undefined ? targetPath : editValue).trim();
-        editing = false;
-        highlightedIndex = -1;
-        if (trimmed !== root.path) {
-            root.path = trimmed;
-            root.navigateRequested(trimmed);
-        }
-    }
-
-    function cancelEdit() {
-        editing = false;
-        highlightedIndex = -1;
-        editValue = path;
-    }
-
-    function navigateUp() {
-        if (disabled) return;
-        var p = getParent(path);
-        if (p) {
-            root.path = p;
-            root.upRequested();
-            root.navigateRequested(p);
-        }
-    }
-
-    // Geometry binding
-    implicitWidth: ThemeTokens.dp(500)
-    implicitHeight: ThemeTokens.dp(36)
-    width: implicitWidth
-    height: implicitHeight
-
-    opacity: disabled ? 0.6 : 1.0
-
-    // Background panel
+    // Outer container surface
     Rectangle {
-        id: bgPanel
+        id: bgRect
         anchors.fill: parent
         radius: ThemeTokens.dp(6)
-        color: root.editing ? ThemeTokens.panel : ThemeTokens.panelRaised
+        color: editInput.activeFocus ? ThemeTokens.panel : ThemeTokens.panelRaised
         border.width: 1
-        border.color: root.editing ? ThemeTokens.accent : ThemeTokens.border
-
-        Behavior on color {
-            enabled: ThemeTokens.animationsEnabled
-            ColorAnimation { duration: ThemeTokens.motionQuick }
-        }
+        border.color: editInput.activeFocus ? ThemeTokens.accent : ThemeTokens.border
     }
 
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: ThemeTokens.dp(4)
         anchors.rightMargin: ThemeTokens.dp(4)
-        spacing: 2
+        spacing: ThemeTokens.dp(2)
 
-        // Back Button
-        Rectangle {
-            id: backBtn
+        // Navigation Command Buttons
+        Row {
+            id: navButtonsRow
             visible: root.showNavButtons
-            Layout.preferredWidth: ThemeTokens.dp(26)
-            Layout.preferredHeight: ThemeTokens.dp(26)
-            radius: ThemeTokens.dp(4)
-            color: backHover.hovered && root.canGoBack && !root.disabled ? ThemeTokens.hover : "transparent"
-            opacity: (root.canGoBack && !root.disabled) ? 1.0 : 0.35
+            spacing: ThemeTokens.dp(2)
+            Layout.alignment: Qt.AlignVCenter
 
-            ChaSetIcon {
-                anchors.centerIn: parent
-                name: "arrow-left"
-                size: 16
-                color: ThemeTokens.text
+            // Back
+            Rectangle {
+                width: ThemeTokens.dp(26)
+                height: ThemeTokens.dp(26)
+                radius: ThemeTokens.dp(4)
+                color: backHover.hovered && root.canGoBack && !root.disabled ? ThemeTokens.hover : "transparent"
+                opacity: (root.canGoBack && !root.disabled) ? 1.0 : 0.35
+
+                ChaSetIcon {
+                    anchors.centerIn: parent
+                    name: "arrow-left"
+                    size: 16
+                    color: ThemeTokens.text
+                }
+
+                HoverHandler {
+                    id: backHover
+                    cursorShape: (root.canGoBack && !root.disabled) ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                }
+
+                TapHandler {
+                    enabled: root.canGoBack && !root.disabled
+                    onTapped: {
+                        controller.goBack()
+                        root.backRequested()
+                    }
+                }
             }
 
-            HoverHandler {
-                id: backHover
-                cursorShape: (root.canGoBack && !root.disabled) ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+            // Forward
+            Rectangle {
+                width: ThemeTokens.dp(26)
+                height: ThemeTokens.dp(26)
+                radius: ThemeTokens.dp(4)
+                color: forwardHover.hovered && root.canGoForward && !root.disabled ? ThemeTokens.hover : "transparent"
+                opacity: (root.canGoForward && !root.disabled) ? 1.0 : 0.35
+
+                ChaSetIcon {
+                    anchors.centerIn: parent
+                    name: "arrow-right"
+                    size: 16
+                    color: ThemeTokens.text
+                }
+
+                HoverHandler {
+                    id: forwardHover
+                    cursorShape: (root.canGoForward && !root.disabled) ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                }
+
+                TapHandler {
+                    enabled: root.canGoForward && !root.disabled
+                    onTapped: {
+                        controller.goForward()
+                        root.forwardRequested()
+                    }
+                }
             }
 
-            TapHandler {
-                enabled: root.canGoBack && !root.disabled
-                onTapped: root.backRequested()
+            // Up
+            Rectangle {
+                width: ThemeTokens.dp(26)
+                height: ThemeTokens.dp(26)
+                radius: ThemeTokens.dp(4)
+                readonly property bool canUp: Boolean(root.path && root.path !== "/" && !root.path.match(/^[a-zA-Z]:[/\\]?$/))
+                color: upHover.hovered && canUp && !root.disabled ? ThemeTokens.hover : "transparent"
+                opacity: (canUp && !root.disabled) ? 1.0 : 0.35
+
+                ChaSetIcon {
+                    anchors.centerIn: parent
+                    name: "arrow-up"
+                    size: 16
+                    color: ThemeTokens.text
+                }
+
+                HoverHandler {
+                    id: upHover
+                    cursorShape: (parent.canUp && !root.disabled) ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                }
+
+                TapHandler {
+                    enabled: parent.canUp && !root.disabled
+                    onTapped: {
+                        controller.navigateUp()
+                        root.upRequested()
+                    }
+                }
+            }
+
+            // Refresh
+            Rectangle {
+                visible: root.showRefresh
+                width: ThemeTokens.dp(26)
+                height: ThemeTokens.dp(26)
+                radius: ThemeTokens.dp(4)
+                color: refreshHover.hovered && !root.disabled ? ThemeTokens.hover : "transparent"
+                opacity: !root.disabled ? 1.0 : 0.35
+
+                ChaSetIcon {
+                    anchors.centerIn: parent
+                    name: "rotate-ccw"
+                    size: 16
+                    color: ThemeTokens.text
+                }
+
+                HoverHandler {
+                    id: refreshHover
+                    cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                }
+
+                TapHandler {
+                    enabled: !root.disabled
+                    onTapped: root.refreshRequested()
+                }
+            }
+
+            // Divider
+            Rectangle {
+                width: 1
+                height: ThemeTokens.dp(16)
+                color: ThemeTokens.border
+                anchors.verticalCenter: parent.verticalCenter
             }
         }
 
-        // Forward Button
-        Rectangle {
-            id: forwardBtn
-            visible: root.showNavButtons
-            Layout.preferredWidth: ThemeTokens.dp(26)
-            Layout.preferredHeight: ThemeTokens.dp(26)
-            radius: ThemeTokens.dp(4)
-            color: forwardHover.hovered && root.canGoForward && !root.disabled ? ThemeTokens.hover : "transparent"
-            opacity: (root.canGoForward && !root.disabled) ? 1.0 : 0.35
-
-            ChaSetIcon {
-                anchors.centerIn: parent
-                name: "arrow-right"
-                size: 16
-                color: ThemeTokens.text
-            }
-
-            HoverHandler {
-                id: forwardHover
-                cursorShape: (root.canGoForward && !root.disabled) ? Qt.PointingHandCursor : Qt.ForbiddenCursor
-            }
-
-            TapHandler {
-                enabled: root.canGoForward && !root.disabled
-                onTapped: root.forwardRequested()
-            }
-        }
-
-        // Up Button
-        Rectangle {
-            id: upBtn
-            visible: root.showNavButtons
-            Layout.preferredWidth: ThemeTokens.dp(26)
-            Layout.preferredHeight: ThemeTokens.dp(26)
-            radius: ThemeTokens.dp(4)
-            readonly property bool canUp: Boolean(root.path && root.path !== "/" && !root.path.match(/^[a-zA-Z]:[/\\]?$/))
-            color: upHover.hovered && canUp && !root.disabled ? ThemeTokens.hover : "transparent"
-            opacity: (canUp && !root.disabled) ? 1.0 : 0.35
-
-            ChaSetIcon {
-                anchors.centerIn: parent
-                name: "arrow-up"
-                size: 16
-                color: ThemeTokens.text
-            }
-
-            HoverHandler {
-                id: upHover
-                cursorShape: (upBtn.canUp && !root.disabled) ? Qt.PointingHandCursor : Qt.ForbiddenCursor
-            }
-
-            TapHandler {
-                enabled: upBtn.canUp && !root.disabled
-                onTapped: root.navigateUp()
-            }
-        }
-
-        // Refresh Button
-        Rectangle {
-            id: refreshBtn
-            visible: root.showNavButtons && root.showRefresh
-            Layout.preferredWidth: ThemeTokens.dp(26)
-            Layout.preferredHeight: ThemeTokens.dp(26)
-            radius: ThemeTokens.dp(4)
-            color: refreshHover.hovered && !root.disabled ? ThemeTokens.hover : "transparent"
-            opacity: !root.disabled ? 1.0 : 0.35
-
-            ChaSetIcon {
-                anchors.centerIn: parent
-                name: "rotate-ccw"
-                size: 16
-                color: ThemeTokens.text
-            }
-
-            HoverHandler {
-                id: refreshHover
-                cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
-            }
-
-            TapHandler {
-                enabled: !root.disabled
-                onTapped: root.refreshRequested()
-            }
-        }
-
-        // Divider
-        Rectangle {
-            visible: root.showNavButtons
-            Layout.preferredWidth: 1
-            Layout.preferredHeight: ThemeTokens.dp(16)
-            Layout.leftMargin: 2
-            Layout.rightMargin: ThemeTokens.dp(4)
-            color: ThemeTokens.border
-        }
-
-        // Central Path & Breadcrumb Area
+        // Central Address Bar Field (Breadcrumbs + Input)
         Item {
-            id: pathArea
+            id: centerField
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            // Breadcrumbs Mode
-            Row {
-                id: breadcrumbsRow
-                visible: !root.editing
+            // 1. Breadcrumbs Mode
+            RowLayout {
+                id: breadcrumbsContainer
                 anchors.fill: parent
-                anchors.leftMargin: ThemeTokens.dp(4)
-                anchors.rightMargin: ThemeTokens.dp(4)
-                spacing: 2
+                visible: !root.editing
+                spacing: 0
 
-                Repeater {
-                    model: root.parseSegments(root.path)
-                    delegate: Row {
-                        id: segRow
-                        required property var modelData
-                        required property int index
-                        spacing: 2
-                        anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+                ChaSetBreadcrumb {
+                    id: breadcrumbPrimitive
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    segments: controller.segments
+                    disabled: root.disabled
 
-                        Rectangle {
-                            id: segPill
-                            height: ThemeTokens.dp(24)
-                            width: segText.implicitWidth + ThemeTokens.dp(10)
-                            radius: ThemeTokens.dp(4)
-                            color: segHover.hovered && !root.disabled ? ThemeTokens.hover : "transparent"
+                    onNavigateRequested: (targetPath) => {
+                        controller.navigate(targetPath)
+                    }
 
-                            Text {
-                                id: segText
-                                anchors.centerIn: parent
-                                text: segRow.modelData.label
-                                color: (segRow.index === root.parseSegments(root.path).length - 1) ? ThemeTokens.text : ThemeTokens.subduedText
-                                font.pixelSize: Typography.sizeSmall
-                                font.weight: (segRow.index === root.parseSegments(root.path).length - 1) ? Typography.weightSemibold : Typography.weightRegular
-                            }
-
-                            HoverHandler {
-                                id: segHover
-                                cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-                            }
-
-                            TapHandler {
-                                enabled: !root.disabled
-                                onTapped: {
-                                    root.path = segRow.modelData.path;
-                                    root.navigateRequested(segRow.modelData.path);
-                                }
-                            }
+                    onOpenSubfoldersRequested: (index, targetPath) => {
+                        var list = controller.subfolders(targetPath)
+                        subfolderPopup.setItems(list)
+                        if (list.length > 0) {
+                            subfolderPopup.open()
                         }
+                    }
 
-                        Text {
-                            visible: segRow.index < root.parseSegments(root.path).length - 1
-                            text: "›"
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeSmall
-                            anchors.verticalCenter: parent.verticalCenter
+                    onDropRequested: (targetPath, urls) => {
+                        root.dropRequested(targetPath, urls)
+                    }
+                }
+
+                // Blank area to click into edit mode
+                MouseArea {
+                    id: blankClickArea
+                    objectName: "blankClickArea"
+                    Layout.preferredWidth: ThemeTokens.dp(30)
+                    Layout.fillHeight: true
+                    cursorShape: Qt.IBeamCursor
+                    onClicked: {
+                        if (!root.disabled) {
+                            controller.enterEditMode()
                         }
                     }
                 }
             }
 
-            // Click empty space in breadcrumb area to enter edit mode
-            TapHandler {
-                enabled: !root.editing && !root.disabled
-                onTapped: root.startEditing()
-            }
-
-            // Edit Mode Input Field
-            Item {
+            // 2. Edit Mode (Inline text field)
+            TextInput {
+                id: editInput
                 visible: root.editing
                 anchors.fill: parent
                 anchors.leftMargin: ThemeTokens.dp(6)
                 anchors.rightMargin: ThemeTokens.dp(6)
+                verticalAlignment: TextInput.AlignVCenter
+                color: ThemeTokens.text
+                font.pixelSize: Typography.sizeSmall
+                selectByMouse: true
+                selectionColor: ThemeTokens.accent
 
-                TextInput {
-                    id: editInput
-                    anchors.fill: parent
-                    verticalAlignment: TextInput.AlignVCenter
-                    text: root.editValue
-                    font.pixelSize: Typography.sizeSmall
-                    font.family: Typography.familyMono
-                    color: ThemeTokens.text
-                    selectionColor: ThemeTokens.accent
-                    selectedTextColor: ThemeTokens.text
-                    selectByMouse: true
+                HoverHandler {
+                    cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
+                }
 
-                    onTextChanged: {
-                        root.editValue = text;
-                    }
+                onTextEdited: {
+                    refreshSuggestions()
+                }
 
-                    Keys.onDownPressed: {
-                        if (root.filteredSuggestions.length > 0) {
-                            root.highlightedIndex = Math.min(root.filteredSuggestions.length - 1, root.highlightedIndex + 1);
+                Keys.onPressed: (event) => {
+                    if (event.key === Qt.Key_Escape) {
+                        event.accepted = true
+                        controller.exitEditMode()
+                    } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                        event.accepted = true
+                        commitEdit()
+                    } else if (event.key === Qt.Key_Down) {
+                        if (suggestPopup.opened) {
+                            event.accepted = true
+                            suggestPopup.highlightedIndex = Math.min(suggestPopup.highlightedIndex + 1, suggestPopup.suggestionList.count - 1)
                         }
-                    }
-
-                    Keys.onUpPressed: {
-                        if (root.filteredSuggestions.length > 0) {
-                            root.highlightedIndex = Math.max(-1, root.highlightedIndex - 1);
+                    } else if (event.key === Qt.Key_Up) {
+                        if (suggestPopup.opened) {
+                            event.accepted = true
+                            suggestPopup.highlightedIndex = Math.max(suggestPopup.highlightedIndex - 1, 0)
                         }
-                    }
-
-                    Keys.onReturnPressed: {
-                        if (root.highlightedIndex >= 0 && root.highlightedIndex < root.filteredSuggestions.length) {
-                            root.commitEdit(root.filteredSuggestions[root.highlightedIndex]);
-                        } else {
-                            root.commitEdit(editInput.text);
-                        }
-                    }
-
-                    Keys.onEscapePressed: {
-                        root.cancelEdit();
-                    }
-
-                    HoverHandler {
-                        cursorShape: Qt.IBeamCursor
                     }
                 }
             }
         }
 
-        // Search Input Box
+        // Optional Right Search Input
         Rectangle {
             id: searchBox
             visible: root.showSearch
-            Layout.preferredWidth: ThemeTokens.dp(140)
+            Layout.preferredWidth: ThemeTokens.dp(160)
             Layout.preferredHeight: ThemeTokens.dp(26)
-            Layout.alignment: Qt.AlignVCenter
             radius: ThemeTokens.dp(4)
-            color: searchInput.activeFocus ? ThemeTokens.panel : ThemeTokens.panelRaised
+            color: ThemeTokens.panel
             border.width: 1
             border.color: searchInput.activeFocus ? ThemeTokens.accent : ThemeTokens.border
 
@@ -442,18 +331,25 @@ Item {
                     name: "search"
                     size: 14
                     color: ThemeTokens.subduedText
+                    Layout.alignment: Qt.AlignVCenter
                 }
 
                 TextInput {
                     id: searchInput
                     Layout.fillWidth: true
+                    Layout.fillHeight: true
                     verticalAlignment: TextInput.AlignVCenter
-                    text: root.searchQuery
-                    font.pixelSize: Typography.sizeSmall
                     color: ThemeTokens.text
-                    selectionColor: ThemeTokens.accent
-                    selectedTextColor: ThemeTokens.text
-                    selectByMouse: true
+                    font.pixelSize: Typography.sizeSmall
+                    text: root.searchQuery
+                    onTextEdited: {
+                        root.searchQuery = text
+                        root.searchRequested(text)
+                    }
+
+                    HoverHandler {
+                        cursorShape: Qt.IBeamCursor
+                    }
 
                     Text {
                         anchors.fill: parent
@@ -463,131 +359,92 @@ Item {
                         font.pixelSize: Typography.sizeSmall
                         visible: !searchInput.text && !searchInput.activeFocus
                     }
-
-                    onTextChanged: {
-                        root.searchQuery = text;
-                        root.searchRequested(text);
-                    }
-
-                    Keys.onReturnPressed: {
-                        root.searchRequested(root.searchQuery);
-                    }
-                }
-
-                // Clear button
-                Rectangle {
-                    visible: root.searchQuery.length > 0
-                    Layout.preferredWidth: ThemeTokens.dp(16)
-                    Layout.preferredHeight: ThemeTokens.dp(16)
-                    radius: ThemeTokens.dp(8)
-                    color: clearHover.hovered ? ThemeTokens.hover : "transparent"
-
-                    ChaSetIcon {
-                        anchors.centerIn: parent
-                        name: "x"
-                        size: 10
-                        color: ThemeTokens.subduedText
-                    }
-
-                    HoverHandler {
-                        id: clearHover
-                        cursorShape: Qt.PointingHandCursor
-                    }
-
-                    TapHandler {
-                        onTapped: {
-                            searchInput.text = "";
-                            root.searchQuery = "";
-                            root.searchRequested("");
-                        }
-                    }
                 }
             }
         }
     }
 
-    // Suggestions Popover
-    Rectangle {
-        id: suggestionsDropdown
-        visible: root.editing && root.filteredSuggestions.length > 0
-        z: 999
-        anchors.top: parent.bottom
-        anchors.topMargin: ThemeTokens.dp(4)
-        anchors.left: parent.left
-        anchors.right: parent.right
-        implicitHeight: Math.min(sugCol.implicitHeight + ThemeTokens.dp(8), ThemeTokens.dp(200))
-        height: implicitHeight
-        radius: ThemeTokens.dp(6)
-        color: ThemeTokens.panelRaised
-        border.width: 1
-        border.color: ThemeTokens.border
-        clip: true
-
-        Flickable {
-            anchors.fill: parent
-            anchors.margins: ThemeTokens.dp(4)
-            contentWidth: width
-            contentHeight: sugCol.implicitHeight
-            clip: true
-
-            Column {
-                id: sugCol
-                width: parent.width
-                spacing: 2
-
-                Repeater {
-                    model: root.filteredSuggestions
-                    delegate: Rectangle {
-                        id: sugRow
-                        required property var modelData
-                        required property int index
-
-                        width: sugCol.width
-                        height: ThemeTokens.dp(28)
-                        radius: ThemeTokens.dp(4)
-                        color: (root.highlightedIndex === index || sugRowHover.hovered)
-                               ? ThemeTokens.hover : "transparent"
-
-                        Text {
-                            anchors.fill: parent
-                            anchors.leftMargin: ThemeTokens.dp(8)
-                            anchors.rightMargin: ThemeTokens.dp(8)
-                            verticalAlignment: Text.AlignVCenter
-                            text: sugRow.modelData
-                            color: ThemeTokens.text
-                            font.pixelSize: Typography.sizeSmall
-                            font.family: Typography.familyMono
-                            elide: Text.ElideMiddle
-                        }
-
-                        HoverHandler {
-                            id: sugRowHover
-                            cursorShape: Qt.PointingHandCursor
-                            onHoveredChanged: {
-                                if (hovered) root.highlightedIndex = sugRow.index;
-                            }
-                        }
-
-                        TapHandler {
-                            onTapped: {
-                                root.commitEdit(sugRow.modelData);
-                            }
-                        }
-                    }
-                }
-            }
+    // Auto-complete / Typed History Suggestions Popup
+    ChaSetAddressBarSuggestPopup {
+        id: suggestPopup
+        x: centerField.x
+        y: root.height + ThemeTokens.dp(4)
+        onNavigateRequested: (targetPath) => {
+            controller.navigate(targetPath)
         }
     }
 
+    // Subfolders dropdown popup
+    ChaSetAddressBarSuggestPopup {
+        id: subfolderPopup
+        x: centerField.x
+        y: root.height + ThemeTokens.dp(4)
+        onNavigateRequested: (targetPath) => {
+            breadcrumbPrimitive.openSegmentIndex = -1
+            controller.navigate(targetPath)
+        }
+        onClosed: {
+            breadcrumbPrimitive.openSegmentIndex = -1
+        }
+    }
+
+    function showHistoryPopup() {
+        var hist = controller.history
+        var entries = []
+        for (var i = 0; i < hist.length; i++) {
+            entries.push({ displayName: hist[i], realPath: hist[i], icon: "clock" })
+        }
+        suggestPopup.setItems(entries)
+        if (entries.length > 0) {
+            suggestPopup.open()
+        }
+    }
+
+    function refreshSuggestions() {
+        var items = controller.suggestions(editInput.text)
+        suggestPopup.setItems(items)
+        if (items.length > 0) {
+            suggestPopup.open()
+        } else {
+            suggestPopup.close()
+        }
+    }
+
+    function commitEdit() {
+        var text = editInput.text.trim()
+        if (controller.navigate(text)) {
+            return
+        }
+        if (suggestPopup.opened && suggestPopup.highlightedIndex >= 0) {
+            var item = suggestPopup.suggestionList.model.get(suggestPopup.highlightedIndex)
+            if (item && item.realPath && controller.navigate(item.realPath)) {
+                return
+            }
+        }
+        // Fallback: search or cancel
+        root.searchRequested(text)
+        controller.exitEditMode()
+    }
+
+    // Global focus shortcut (Alt+D or Ctrl+L or F4)
     Shortcut {
         sequence: "Alt+D"
-        enabled: !root.disabled
-        onActivated: root.startEditing()
+        onActivated: {
+            if (!root.disabled) controller.enterEditMode()
+        }
     }
 
     Shortcut {
         sequence: "Ctrl+L"
-        enabled: !root.disabled
-        onActivated: root.startEditing()
+        onActivated: {
+            if (!root.disabled) controller.enterEditMode()
+        }
+    }
+
+    Shortcut {
+        sequence: "F4"
+        onActivated: {
+            if (!root.disabled) controller.enterEditMode()
+        }
     }
 }

@@ -665,6 +665,12 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
     }
 
     auto findExpectedCursor = [](QQuickItem* item, QQuickItem* pageRoot) -> int {
+        // Layout and positioner containers (Row, Column, RowLayout, etc.) arrange children spatially
+        // and are not themselves interactive controls.
+        if (item->inherits("QQuickLayout") || item->inherits("QQuickBasePositioner")) {
+            return -1;
+        }
+
         // 1. First find if item or its direct children has an interactive shape
         int shape = -1;
         QVariant directShape = item->property("cursorShape");

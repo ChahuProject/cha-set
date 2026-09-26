@@ -465,12 +465,6 @@ export const ICON_ADOPTION = {
       "reasons": []
     },
     {
-      "file": "packages/react/src/address-bar/AddressBar.tsx",
-      "count": 5,
-      "exempted": 0,
-      "reasons": []
-    },
-    {
       "file": "packages/react/src/badge/Badge.tsx",
       "count": 1,
       "exempted": 0,

@@ -8,20 +8,20 @@ describe('AddressBar', () => {
     it('parses Windows drive letter paths correctly', () => {
       const segments = parsePathSegments('C:/Users/Development/cha-set');
       expect(segments).toEqual([
-        { label: 'C:', path: 'C:/' },
-        { label: 'Users', path: 'C:/Users' },
-        { label: 'Development', path: 'C:/Users/Development' },
-        { label: 'cha-set', path: 'C:/Users/Development/cha-set' },
+        { label: 'C:', path: 'C:/', realPath: 'C:/', isDrive: true, icon: 'package' },
+        { label: 'Users', path: 'C:/Users', realPath: 'C:/Users', icon: 'folder' },
+        { label: 'Development', path: 'C:/Users/Development', realPath: 'C:/Users/Development', icon: 'folder' },
+        { label: 'cha-set', path: 'C:/Users/Development/cha-set', realPath: 'C:/Users/Development/cha-set', icon: 'folder' },
       ]);
     });
 
     it('parses POSIX paths correctly', () => {
       const segments = parsePathSegments('/var/log/nginx');
       expect(segments).toEqual([
-        { label: '/', path: '/' },
-        { label: 'var', path: '/var' },
-        { label: 'log', path: '/var/log' },
-        { label: 'nginx', path: '/var/log/nginx' },
+        { label: '/', path: '/', realPath: '/', isRoot: true, icon: 'folder' },
+        { label: 'var', path: '/var', realPath: '/var', icon: 'folder' },
+        { label: 'log', path: '/var/log', realPath: '/var/log', icon: 'folder' },
+        { label: 'nginx', path: '/var/log/nginx', realPath: '/var/log/nginx', icon: 'folder' },
       ]);
     });
 
@@ -132,5 +132,51 @@ describe('AddressBar', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Up to parent directory' }));
       expect(handleUp).toHaveBeenCalled();
     });
+
+    it('renders standalone Breadcrumb and triggers onOpenSubfolders on chevron click', () => {
+      const handleNavigate = vi.fn();
+      const handleSubfolders = vi.fn();
+      const segments = [
+        { label: 'C:', path: 'C:/', realPath: 'C:/', isDrive: true, icon: 'package' },
+        { label: 'Users', path: 'C:/Users', realPath: 'C:/Users', icon: 'folder' },
+      ];
+
+      render(
+        <AddressBar
+          path="C:/Users"
+          onNavigate={handleNavigate}
+          fileSystemAdapter={{
+            getSubfolders: handleSubfolders,
+          }}
+        />
+      );
+
+      const chevrons = screen.getAllByRole('button', { name: /open subfolders/i });
+      expect(chevrons.length).toBeGreaterThan(0);
+      fireEvent.click(chevrons[0]!);
+      expect(handleSubfolders).toHaveBeenCalled();
+    });
+
+    it('shows suggestions dropdown and navigates with arrow keys in edit mode', () => {
+      const handleNavigate = vi.fn();
+      render(
+        <AddressBar
+          path="C:/Users"
+          onNavigate={handleNavigate}
+          suggestions={['C:/Users/Development', 'C:/Users/Public']}
+          history={['C:/Windows']}
+        />
+      );
+
+      const addressBar = screen.getByRole('toolbar', { name: 'Address bar' });
+      fireEvent.click(addressBar.querySelector('div.cursor-text')!);
+
+      const input = screen.getByRole('textbox', { name: 'Address path input' });
+      fireEvent.keyDown(input, { key: 'ArrowDown' });
+      fireEvent.keyDown(input, { key: 'Enter' });
+
+      expect(handleNavigate).toHaveBeenCalled();
+    });
   });
 });
+

@@ -241,7 +241,31 @@ ChaSetAddressBar {
               name: 'suggestions',
               type: 'string[]',
               default: '[]',
-              description: 'List of auto-complete or history path strings in the dropdown popover.',
+              description: 'List of auto-complete path strings in the dropdown popover.',
+            },
+            {
+              name: 'history',
+              type: 'string[]',
+              default: '[]',
+              description: 'Recent typed path history for dropdown display.',
+            },
+            {
+              name: 'showSearch',
+              type: 'boolean',
+              default: 'false',
+              description: 'Whether to show the integrated search/filter input on the right side.',
+            },
+            {
+              name: 'fileSystemAdapter',
+              type: 'AddressBarFileSystemAdapter',
+              default: 'defaultVirtualFileSystemAdapter',
+              description: 'File system adapter providing subfolder enumeration and suggestion querying.',
+            },
+            {
+              name: 'onNavigateWithSelection',
+              type: '(path: string, selectionPath: string) => void',
+              default: 'undefined',
+              description: 'Callback when navigating with a specific file item selected.',
             },
             {
               name: 'disabled',
