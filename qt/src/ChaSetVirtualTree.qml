@@ -72,6 +72,7 @@ Item {
     property var stickyItems: []
 
     signal nodeSelected(string nodeId)
+    signal nodeClicked(string nodeId)
     signal nodeExpanded(string nodeId)
     signal nodeCollapsed(string nodeId)
     signal nodeToggled(string nodeId, bool isExpanded)
@@ -302,6 +303,9 @@ Item {
         if (nextExp) {
             root.nodeExpanded(id)
         } else {
+            root.selectedId = id
+            root.selectedIds = [id]
+            root.nodeSelected(id)
             root.nodeCollapsed(id)
         }
     }
@@ -358,6 +362,9 @@ Item {
         if (copy[id] === false) return
         copy[id] = false
         root.expandedIds = copy
+        root.selectedId = id
+        root.selectedIds = [id]
+        root.nodeSelected(id)
         root.nodeToggled(id, false)
         root.nodeCollapsed(id)
     }
@@ -847,6 +854,10 @@ Item {
 
                     onPositionChanged: function(drag) {
                         if (!root.isDragging) return
+                        var ctrlHeld = ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || (drag.keyboardModifiers !== undefined && (drag.keyboardModifiers & Qt.ControlModifier) !== 0)
+                        if (ctrlHeld) {
+                            root.isCtrlHeld = true
+                        }
                         var pos = "inside"
                         if (root.allowReorder) {
                             var ratio = drag.y / parent.height
@@ -876,7 +887,7 @@ Item {
 
                     onDropped: function(drop) {
                         if (drop) drop.acceptProposedAction()
-                        var isCopy = root.effectiveIsCopy || (drop && ((drop.keyboardModifiers & Qt.ControlModifier) !== 0 || (drop.keyboardModifiers & Qt.MetaModifier) !== 0))
+                        var isCopy = root.effectiveIsCopy || (drop && drop.keyboardModifiers !== undefined && ((drop.keyboardModifiers & Qt.ControlModifier) !== 0 || (drop.keyboardModifiers & Qt.MetaModifier) !== 0)) || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)
                         root.executeDrop(isCopy, modelData.id, root.dropPosition)
                     }
                 }
@@ -912,7 +923,7 @@ Item {
                         if (root.enableDnd) {
                             root.draggedId = parent.modelData.id
                             root.draggedIds = root.selectedIds.length > 0 && root.selectedIds.indexOf(parent.modelData.id) !== -1 ? root.selectedIds : [parent.modelData.id]
-                            if ((mouse.modifiers & Qt.ControlModifier) !== 0 || (mouse.modifiers & Qt.MetaModifier) !== 0) {
+                            if ((mouse.modifiers & Qt.ControlModifier) !== 0 || (mouse.modifiers & Qt.MetaModifier) !== 0 || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)) {
                                 root.isCtrlHeld = true
                             }
                         }
@@ -920,7 +931,7 @@ Item {
 
                     onReleased: function(mouse) {
                         if (root.enableDnd && root.isDragging) {
-                            var isCopy = root.effectiveIsCopy || ((mouse.modifiers & Qt.ControlModifier) !== 0) || ((mouse.modifiers & Qt.MetaModifier) !== 0)
+                            var isCopy = root.effectiveIsCopy || ((mouse.modifiers & Qt.ControlModifier) !== 0) || ((mouse.modifiers & Qt.MetaModifier) !== 0) || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)
                             var targetId = root.dropTargetId
                             var targetPos = root.dropPosition
                             dragProxy.Drag.drop()
@@ -942,7 +953,7 @@ Item {
                         if (drag.active && !root.isDragging) {
                             root.isDragging = true
                         }
-                        if ((mouse.modifiers & Qt.ControlModifier) !== 0 || (mouse.modifiers & Qt.MetaModifier) !== 0) {
+                        if ((mouse.modifiers & Qt.ControlModifier) !== 0 || (mouse.modifiers & Qt.MetaModifier) !== 0 || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)) {
                             root.isCtrlHeld = true
                         }
                         if (root.modality !== "pointer") {
@@ -958,6 +969,7 @@ Item {
 
                     onClicked: function(mouse) {
                         root.forceActiveFocus()
+                        root.nodeClicked(parent.modelData.id)
                         root.handleNodeClick(parent.index, mouse.modifiers)
                     }
 
