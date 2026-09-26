@@ -27,6 +27,7 @@ Item {
 
     // Drag and Drop properties
     property bool enableDnd: false
+    property bool allowReorder: true
     property bool isDragging: false
     property bool isDropping: false
     property bool isCtrlHeld: false
@@ -36,6 +37,29 @@ Item {
     property string dropTargetId: ""
     property string dropPosition: "" // "before" | "inside" | "after"
     property bool isDropValid: true
+
+    property real _savedScrollY: 0
+    property bool _preserveScrollPending: false
+
+    function _saveScrollPosition() {
+        if (treeList) {
+            root._savedScrollY = treeList.contentY
+            root._preserveScrollPending = true
+        }
+    }
+
+    function _restoreScroll() {
+        if (!root._preserveScrollPending || !treeList) return
+        root._preserveScrollPending = false
+        var maxScroll = Math.max(0, treeList.contentHeight - treeList.height)
+        treeList.contentY = Math.max(0, Math.min(root._savedScrollY, maxScroll))
+    }
+
+    onFlatItemsChanged: {
+        if (root._preserveScrollPending) {
+            Qt.callLater(root._restoreScroll)
+        }
+    }
 
     property int anchorIndex: -1
 
@@ -205,6 +229,7 @@ Item {
 
     function isDropValidFor(targetId) {
         if (!targetId) return false
+        if (!root.allowReorder && (root.dropPosition === "before" || root.dropPosition === "after")) return false
         var srcList = root.draggedIds.length > 0 ? root.draggedIds : (root.draggedId ? [root.draggedId] : [])
         for (var i = 0; i < srcList.length; i++) {
             if (root.isDescendantOrSelf(srcList[i], targetId)) return false
@@ -252,6 +277,7 @@ Item {
     }
 
     function toggleExpand(id) {
+        root._saveScrollPosition()
         let copy = Object.assign({}, root.expandedIds)
         let currentExp = copy[id]
         if (currentExp === undefined) {
@@ -693,7 +719,7 @@ Item {
 
                 // Drop Indicator: Before Line
                 Rectangle {
-                    visible: isDropTarget && root.dropPosition === "before" && root.isDropValid
+                    visible: isDropTarget && root.dropPosition === "before" && root.isDropValid && root.allowReorder
                     anchors.top: parent.top
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -704,7 +730,7 @@ Item {
 
                 // Drop Indicator: After Line
                 Rectangle {
-                    visible: isDropTarget && root.dropPosition === "after" && root.isDropValid
+                    visible: isDropTarget && root.dropPosition === "after" && root.isDropValid && root.allowReorder
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -821,11 +847,15 @@ Item {
 
                     onPositionChanged: function(drag) {
                         if (!root.isDragging) return
-                        var ratio = drag.y / parent.height
                         var pos = "inside"
-                        if (ratio < 0.25) pos = "before"
-                        else if (ratio > 0.75) pos = "after"
-                        else pos = modelData.hasChildren ? "inside" : (ratio < 0.5 ? "before" : "after")
+                        if (root.allowReorder) {
+                            var ratio = drag.y / parent.height
+                            if (ratio < 0.25) pos = "before"
+                            else if (ratio > 0.75) pos = "after"
+                            else pos = modelData.hasChildren ? "inside" : (ratio < 0.5 ? "before" : "after")
+                        } else {
+                            pos = "inside"
+                        }
 
                         root.dropTargetId = modelData.id
                         root.dropPosition = pos
