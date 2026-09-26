@@ -315,4 +315,58 @@ describe('VirtualTree', () => {
     expect(row0).toBeDefined();
     expect(row0.style.transform).toMatch(/translateY\(\d+px\)/);
   });
+
+  it('pins the frozen ancestor chain above the scroll area (stickyItems)', () => {
+    const onStickySelect = vi.fn();
+    const onStickyToggle = vi.fn();
+    const { container } = render(
+      <VirtualTree
+        rootNodes={treeData}
+        defaultExpandDepth={2}
+        getChildren={(node) => node.children ?? []}
+        getNodeKey={(node) => node.id}
+        estimateSize={32}
+        stickyItems={[
+          { id: 'root-1', label: 'Folder 1', depth: 0, hasChildren: true, isExpanded: true },
+          { id: 'child-1-1', label: 'File 1.1', depth: 1, hasChildren: false, isExpanded: false },
+        ]}
+        onStickySelect={onStickySelect}
+        onStickyToggle={onStickyToggle}
+      />,
+    );
+
+    const sticky = container.querySelector('[data-slot="virtual-tree-sticky"]') as HTMLElement;
+    expect(sticky).toBeDefined();
+    expect(sticky.className).toContain('sticky');
+
+    const stickyRows = container.querySelectorAll('[data-slot="virtual-tree-sticky-row"]');
+    expect(stickyRows).toHaveLength(2);
+    expect(stickyRows[0]!.getAttribute('data-sticky-id')).toBe('root-1');
+    expect(stickyRows[1]!.getAttribute('data-sticky-id')).toBe('child-1-1');
+    // Indentation mirrors the original row depth so the pinned chain reads as a path.
+    expect((stickyRows[1] as HTMLElement).style.paddingLeft).toBe('1.5rem');
+
+    // Clicking a pinned row selects it (host navigates); the chevron only toggles.
+    fireEvent.click(stickyRows[0]!);
+    expect(onStickySelect).toHaveBeenCalledTimes(1);
+    expect(onStickyToggle).not.toHaveBeenCalled();
+
+    const chevron = stickyRows[0]!.querySelector('[data-slot="virtual-tree-sticky-chevron"]') as HTMLElement;
+    expect(chevron).not.toBeNull();
+    fireEvent.click(chevron);
+    expect(onStickyToggle).toHaveBeenCalledTimes(1);
+    // stopPropagation: toggling a pinned ancestor must not also navigate.
+    expect(onStickySelect).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders no frozen strip when stickyItems is empty', () => {
+    const { container } = render(
+      <VirtualTree
+        rootNodes={treeData}
+        getChildren={(node) => node.children ?? []}
+        getNodeKey={(node) => node.id}
+      />,
+    );
+    expect(container.querySelector('[data-slot="virtual-tree-sticky"]')).toBeNull();
+  });
 });

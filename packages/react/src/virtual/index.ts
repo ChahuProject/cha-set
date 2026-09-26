@@ -3,6 +3,7 @@ export {
   VirtualTree,
   type VirtualTreeProps,
   type VirtualTreeRowContext,
+  type VirtualTreeStickyItem,
   type VirtualTreeHandle,
   type TreeNode,
   type DropPosition,

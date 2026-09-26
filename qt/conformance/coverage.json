@@ -195,7 +195,8 @@
   },
   "virtualTree": {
     "hierarchicalFlattening": true,
-    "toggleExpand": true
+    "toggleExpand": true,
+    "stickyAncestorRows": true
   },
   "virtualGrid": {
     "responsiveColumns": true,

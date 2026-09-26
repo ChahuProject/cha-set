@@ -58,6 +58,22 @@ export interface VirtualTreeRowContext<T> {
   selectNode: (e?: React.MouseEvent) => void;
 }
 
+/**
+ * One pinned ancestor row rendered in the frozen (sticky) strip above the
+ * scrollable rows. Callers pass the chain outermost -> innermost; the component
+ * only renders it, it never derives the chain itself (tree shape and "which
+ * levels count as open" are host policy).
+ */
+export interface VirtualTreeStickyItem {
+  /** Node key — also used as the React key and the data-sticky-id attribute. */
+  id: string;
+  label?: string;
+  /** Indentation level of the original row. */
+  depth?: number;
+  hasChildren?: boolean;
+  isExpanded?: boolean;
+}
+
 export interface VirtualTreeProps<T> {
   rootNodes?: readonly T[];
   /** Alias for rootNodes */
@@ -102,6 +118,14 @@ export interface VirtualTreeProps<T> {
   showBadges?: boolean;
   onNodeToggle?: (node: T, isExpanded: boolean) => void;
 
+  // Multi-level frozen ancestors (sticky rows pinned above the scroll area).
+  // The host computes the chain (outermost -> innermost) from its own notion of
+  // "the currently open path, restricted to already-expanded levels"; this
+  // component pins and renders it so ancestors stay visible while scrolling.
+  stickyItems?: readonly VirtualTreeStickyItem[];
+  onStickySelect?: (item: VirtualTreeStickyItem) => void;
+  onStickyToggle?: (item: VirtualTreeStickyItem) => void;
+
   ref?: React.Ref<VirtualTreeHandle>;
 }
 
@@ -144,6 +168,9 @@ export function VirtualTree<T>({
   canDrag,
   canDrop,
   onDropNode,
+  stickyItems,
+  onStickySelect,
+  onStickyToggle,
   ref,
 }: VirtualTreeProps<T>) {
   const safeRootNodes = rootNodes ?? nodes ?? [];
@@ -783,6 +810,12 @@ export function VirtualTree<T>({
     [renderRow],
   );
 
+  // Frozen ancestor strip metrics. Row height mirrors the virtualizer's own
+  // conversion (identical to `estimateSize` in scaled CSS pixels) so pinned rows
+  // line up pixel-for-pixel with the rows they mirror.
+  const stickyRows = stickyItems ?? [];
+  const stickyRowHeight = (estimateSize / 16) * getRootFontSize();
+
   return (
     <div
       ref={scrollContainerRef}
@@ -796,6 +829,53 @@ export function VirtualTree<T>({
         className,
       )}
     >
+      {stickyRows.length > 0 && (
+        <div
+          data-slot="virtual-tree-sticky"
+          className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur-xs"
+        >
+          {stickyRows.map((sticky) => {
+            const stickyDepth = sticky.depth ?? 0;
+            const stickySelected = currentSelectedSet.has(sticky.id);
+            return (
+              <div
+                key={sticky.id}
+                data-slot="virtual-tree-sticky-row"
+                data-sticky-id={sticky.id}
+                data-selected={stickySelected ? true : undefined}
+                className={cn(
+                  'flex items-center gap-2 px-2 text-xs cursor-pointer select-none',
+                  stickySelected
+                    ? 'bg-primary/15 text-primary font-medium'
+                    : 'hover:bg-muted/50 text-foreground',
+                )}
+                style={{
+                  height: `${stickyRowHeight}px`,
+                  paddingLeft: `${stickyDepth * 1 + 0.5}rem`,
+                }}
+                onClick={() => onStickySelect?.(sticky)}
+              >
+                {sticky.hasChildren ? (
+                  <span
+                    data-slot="virtual-tree-sticky-chevron"
+                    className="text-micro w-3.5 text-muted-foreground hover:text-foreground cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onStickyToggle?.(sticky);
+                    }}
+                  >
+                    {sticky.isExpanded ? '▼' : '▶'}
+                  </span>
+                ) : (
+                  <span className="w-3.5 text-micro text-muted-foreground/50">•</span>
+                )}
+                <span className="font-mono truncate">{sticky.label ?? sticky.id}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       {visibleNodes.length === 0 ? (
         emptyNode ?? null
       ) : (

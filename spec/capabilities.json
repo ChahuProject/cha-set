@@ -237,7 +237,8 @@
     },
     "virtualTree": {
       "hierarchicalFlattening": { "requirement": "must", "description": "flattens hierarchical nodes into virtualized rows" },
-      "toggleExpand": { "requirement": "must", "description": "expands and collapses node children" }
+      "toggleExpand": { "requirement": "must", "description": "expands and collapses node children" },
+      "stickyAncestorRows": { "requirement": "must", "description": "pins the expanded ancestor chain of the open node above the scroll area so parents stay visible" }
     },
     "virtualGrid": {
       "responsiveColumns": { "requirement": "must", "description": "computes responsive column count from container width" },

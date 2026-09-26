@@ -18,5 +18,17 @@ describe('VirtualTree conformance (spec contract)', () => {
     };
     expect(coverage.virtualTree?.hierarchicalFlattening).toBe(true);
     expect(coverage.virtualTree?.toggleExpand).toBe(true);
+    expect(coverage.virtualTree?.stickyAncestorRows).toBe(true);
+  });
+
+  it('accepts the frozen ancestor chain contract (stickyItems)', () => {
+    const parsed = virtualTreeSchema.parse({
+      stickyItems: [{ id: 'C:/Users/me', label: 'me', depth: 2, hasChildren: true, isExpanded: true }],
+    });
+    expect(parsed.stickyItems).toHaveLength(1);
+    expect(parsed.stickyItems[0]!.id).toBe('C:/Users/me');
+    expect(parsed.stickyItems[0]!.depth).toBe(2);
+    // Defaults keep the contract backward compatible for hosts that never pin rows.
+    expect(virtualTreeSchema.parse({}).stickyItems).toEqual([]);
   });
 });

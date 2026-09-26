@@ -39,6 +39,14 @@ Item {
 
     property int anchorIndex: -1
 
+    // Multi-level frozen ancestors (multi-level sticky rows).
+    // The host supplies the chain outermost -> innermost, already filtered down
+    // to the levels that are actually expanded ("only freeze the opened levels on
+    // the path, not every level"). The component pins those rows above the scroll
+    // area so the parent chain stays visible while scrolling the subtree.
+    // Must mirror the React VirtualTree `stickyItems` prop 1:1.
+    property var stickyItems: []
+
     signal nodeSelected(string nodeId)
     signal nodeExpanded(string nodeId)
     signal nodeCollapsed(string nodeId)
@@ -49,6 +57,8 @@ Item {
     signal nodePasted(string targetId, string position)
     signal nodeDeleted(var ids)
     signal nodeDropped(var sourceIds, string targetId, string position, bool isCopy)
+    signal stickyNodeSelected(string nodeId)
+    signal stickyNodeToggled(string nodeId)
 
     implicitWidth: ThemeTokens.dp(320)
     implicitHeight: ThemeTokens.dp(280)
@@ -521,10 +531,114 @@ Item {
         radius: root.customRadius
         clip: true
 
+        // Frozen ancestor strip: pinned above the scroll area (its own layout
+        // space, so no duplicated rows are drawn inside the scrollable area).
+        Column {
+            id: stickyColumn
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.topMargin: ThemeTokens.dp(8)
+            anchors.leftMargin: ThemeTokens.dp(8)
+            anchors.rightMargin: ThemeTokens.dp(8)
+            height: root.stickyItems.length * root.effectiveEstimateSize
+            visible: root.stickyItems.length > 0
+            z: 12
+
+            Repeater {
+                model: root.stickyItems
+                delegate: Rectangle {
+                    id: stickyRow
+                    required property var modelData
+                    required property int index
+
+                    readonly property bool isStickySelected: root.isSelected(modelData.id)
+
+                    width: stickyColumn.width
+                    height: root.effectiveEstimateSize
+                    color: isStickySelected
+                        ? Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15)
+                        : ThemeTokens.panel
+                    border.color: ThemeTokens.border
+                    border.width: index === root.stickyItems.length - 1 ? 1 : 0
+                    radius: ThemeTokens.dp(4)
+
+                    Row {
+                        anchors.left: parent.left
+                        anchors.leftMargin: ThemeTokens.dp(8) + (modelData.depth !== undefined ? modelData.depth : 0) * ThemeTokens.dp(16)
+                        anchors.right: parent.right
+                        anchors.rightMargin: ThemeTokens.dp(8)
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: ThemeTokens.dp(6)
+                        z: 2
+
+                        Item {
+                            width: ThemeTokens.dp(16)
+                            height: ThemeTokens.dp(24)
+                            anchors.verticalCenter: parent.verticalCenter
+                            visible: !!modelData.hasChildren
+
+                            Text {
+                                anchors.centerIn: parent
+                                text: modelData.isExpanded ? "▾" : "▸"
+                                color: stickyChevronMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText
+                                font.pixelSize: Typography.sizeCaption
+                            }
+
+                            MouseArea {
+                                id: stickyChevronMouse
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: Qt.PointingHandCursor
+                                z: 10
+                                onClicked: function(mouse) {
+                                    mouse.accepted = true
+                                    root.forceActiveFocus()
+                                    root.stickyNodeToggled(modelData.id)
+                                }
+                            }
+                        }
+
+                        Text {
+                            visible: !modelData.hasChildren
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: "•"
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeCaption
+                            width: ThemeTokens.dp(16)
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: modelData.label !== undefined ? modelData.label : modelData.id
+                            color: isStickySelected ? ThemeTokens.focus : ThemeTokens.text
+                            font.pixelSize: Typography.sizeSmall
+                            font.family: Typography.familyMono
+                            font.weight: isStickySelected ? Typography.weightMedium : Font.Normal
+                        }
+                    }
+
+                    MouseArea {
+                        id: stickyRowMouse
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: function(mouse) {
+                            mouse.accepted = true
+                            root.forceActiveFocus()
+                            root.stickyNodeSelected(modelData.id)
+                        }
+                    }
+                }
+            }
+        }
+
         ListView {
             id: treeList
             anchors.fill: parent
             anchors.margins: ThemeTokens.dp(8)
+            anchors.topMargin: ThemeTokens.dp(8) + (stickyColumn.visible ? stickyColumn.height : 0)
             model: root.flatItems
             boundsBehavior: Flickable.StopAtBounds
             clip: true
