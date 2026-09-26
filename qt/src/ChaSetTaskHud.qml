@@ -59,6 +59,7 @@ ChaSetActivityStack {
         onTriggered: {
             root._cleared = true
             root._revision++
+            root.rebuild()
         }
     }
 
@@ -107,6 +108,7 @@ ChaSetActivityStack {
             }
         }
         root._revision++
+        root.rebuild()
     }
 
     Connections {
