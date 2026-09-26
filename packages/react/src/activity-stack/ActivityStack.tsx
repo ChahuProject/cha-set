@@ -353,13 +353,18 @@ export const ActivityStack = React.forwardRef<HTMLDivElement, ActivityStackProps
       aria-live={ariaLive}
       data-testid="activity-stack"
       data-placement={placement}
-      data-collapsed={collapsed ? 'true' : 'false'}
+      tabIndex={collapsed ? -1 : 0}
+      onFocus={(e) => {
+        if (e.target === e.currentTarget && !collapsed) {
+          focusEntry('first');
+        }
+      }}
       onKeyDown={handleKeyDown}
       onPointerEnter={() => onHoverChange?.(true)}
       onPointerLeave={() => onHoverChange?.(false)}
       style={{ ...placementStyle(placement, offset), transform: placementTransform(placement) }}
       className={cn(
-        'pointer-events-none fixed z-50 flex select-none flex-col gap-2.5',
+        'pointer-events-none fixed z-50 flex select-none flex-col gap-2.5 outline-none',
         'w-88 max-w-[calc(100vw-2rem)]',
         ALIGN_CLASS[PLACEMENT_AXES[placement].align],
         className,

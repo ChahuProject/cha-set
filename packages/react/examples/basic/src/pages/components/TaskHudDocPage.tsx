@@ -5,6 +5,8 @@ import {
   type TaskHudPlacement,
   Button,
   SegmentedControl,
+  Badge,
+  CodeBlock,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -14,8 +16,10 @@ import { PropsTable } from '../../components/PropsTable';
 
 const PLACEMENT_OPTIONS: { label: string; value: TaskHudPlacement }[] = [
   { label: 'Bottom Right', value: 'bottom-right' },
-  { label: 'Top Right', value: 'top-right' },
   { label: 'Bottom Left', value: 'bottom-left' },
+  { label: 'Top Right', value: 'top-right' },
+  { label: 'Top Left', value: 'top-left' },
+  { label: 'Bottom Center', value: 'bottom-center' },
 ];
 
 const TASK_DEFAULTS = {
@@ -130,7 +134,15 @@ export function TaskHudDocPage() {
     <DocLayout
       category="Overlays & Feedback"
       title="Task HUD"
-      description="Floating task progress and notification HUD stack for background executions."
+      description="Floating stack of background executions with progress, overflow and collapse-to-summary."
+      tocItems={[
+        { id: 'overview', title: 'Interactive Overview' },
+        { id: 'installation', title: 'Installation' },
+        { id: 'anatomy', title: 'Anatomy' },
+        { id: 'animations', title: 'Animations' },
+        { id: 'keyboard', title: 'Keyboard Navigation' },
+        { id: 'props', title: 'Props Reference' },
+      ]}
     >
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
@@ -165,11 +177,13 @@ export function TaskHudDocPage() {
             </div>
           }
         >
-          <div className="relative flex min-h-80 w-full items-center justify-center rounded-xl border border-dashed border-border bg-muted/20 p-6">
+          <div className="relative min-h-80 w-full overflow-hidden rounded-xl border border-dashed border-border bg-muted/20 p-6">
             {tasks.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                Task HUD is idle and hidden. Press "Add Running" to simulate background jobs.
-              </p>
+              <div className="flex h-64 items-center justify-center">
+                <p className="text-sm text-muted-foreground">
+                  Task HUD is idle and hidden. Press "Add Running" to simulate background jobs.
+                </p>
+              </div>
             ) : null}
             <TaskHud
               tasks={tasks}
@@ -177,66 +191,73 @@ export function TaskHudDocPage() {
               onCancel={cancel}
               maxVisible={3}
               forceVisible
-              className="!relative !right-0 !bottom-0 !w-full max-w-sm"
+              className="!absolute max-w-sm"
             />
           </div>
         </ComponentPreview>
-      </section>
 
-      <section id="overflow" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Collapse & Overflow</h2>
-        <ComponentPreview
-          title="Collapsed & Overflow"
-          reactCode={overflowReactCode}
-          qtCode={`ChaSetTaskHud {
+        <div className="space-y-4 pt-6">
+          <h3 className="text-lg font-semibold text-foreground">Collapse & Overflow</h3>
+          <ComponentPreview
+            title="Collapsed & Overflow"
+            reactCode={overflowReactCode}
+            qtCode={`ChaSetTaskHud {
     tasks: backlogTasks
     maxVisible: 3
     placement: "bottom-right"
     collapsible: true
     defaultCollapsed: false
 }`}
-          controls={
-            <div className="flex flex-wrap items-center gap-4 text-xs">
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Max Visible:</span>
-                <SegmentedControl
-                  value={maxVisible}
-                  onValueChange={(value) => setMaxVisible(String(value))}
-                  options={[
-                    { label: '2', value: '2' },
-                    { label: '3', value: '3' },
-                    { label: '5', value: '5' },
-                  ]}
-                />
+            controls={
+              <div className="flex flex-wrap items-center gap-4 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground">Max Visible:</span>
+                  <SegmentedControl
+                    value={maxVisible}
+                    onValueChange={(value) => setMaxVisible(String(value))}
+                    options={[
+                      { label: '2', value: '2' },
+                      { label: '3', value: '3' },
+                      { label: '5', value: '5' },
+                    ]}
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground">Placement:</span>
+                  <SegmentedControl
+                    value={placement}
+                    onValueChange={(value) => setPlacement(value as TaskHudPlacement)}
+                    options={PLACEMENT_OPTIONS.map((option) => ({ label: option.label, value: option.value }))}
+                  />
+                </div>
+                <Button variant="outline" size="sm" onClick={() => setCollapsed((prev) => !prev)}>
+                  {collapsed ? 'Expand Stack' : 'Collapse Stack'}
+                </Button>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Placement:</span>
-                <SegmentedControl
-                  value={placement}
-                  onValueChange={(value) => setPlacement(value as TaskHudPlacement)}
-                  options={PLACEMENT_OPTIONS.map((option) => ({ label: option.label, value: option.value }))}
-                />
+            }
+          >
+            <div className="relative min-h-96 w-full overflow-hidden rounded-xl border border-dashed border-border bg-muted/20 p-6">
+              <TaskHud
+                key={collapsed ? 'collapsed' : 'expanded'}
+                tasks={backlog}
+                maxVisible={Number(maxVisible)}
+                placement={placement}
+                defaultCollapsed={collapsed}
+                className="!absolute max-w-sm"
+              />
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2">
+                <Badge variant="secondary" size="sm">
+                  anchor: {placement}
+                </Badge>
               </div>
-              <Button variant="outline" size="sm" onClick={() => setCollapsed((prev) => !prev)}>
-                {collapsed ? 'Expand Stack' : 'Collapse Stack'}
-              </Button>
             </div>
-          }
-        >
-          <div className="relative flex min-h-80 w-full items-start justify-center rounded-xl border border-dashed border-border bg-muted/20 p-6">
-            <TaskHud
-              key={collapsed ? 'collapsed' : 'expanded'}
-              tasks={backlog}
-              maxVisible={Number(maxVisible)}
-              placement={placement}
-              defaultCollapsed={collapsed}
-              className="!relative !right-0 !bottom-0 !w-full max-w-sm"
-            />
-            <p className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-muted-foreground md:text-[0.6875rem]">
-              anchor: <code className="rounded bg-muted px-1">{placement}</code>
-            </p>
-          </div>
-        </ComponentPreview>
+          </ComponentPreview>
+        </div>
+      </section>
+
+      <section id="installation" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
+        <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
       <DocAnatomy

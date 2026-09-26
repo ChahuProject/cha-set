@@ -89,6 +89,14 @@ Item {
         return Math.max(ThemeTokens.dp(120), Math.min(ThemeTokens.dp(512), ceiling))
     }
 
+    readonly property real maxStackHeight: {
+        var anchorH = root.anchor ? root.anchor.height : 0
+        if (anchorH <= 0) return ThemeTokens.dp(512)
+        var margin = ThemeTokens.dp(root.offset * 2)
+        var pillSpace = frame.pillVisible ? frame.pillExtent : 0
+        return Math.max(ThemeTokens.dp(120), anchorH - margin - pillSpace)
+    }
+
     // Tail of the array is newest: bottom anchors render as-is (newest last, i.e.
     // nearest the bottom edge), top anchors reverse so newest sits nearest the top.
     readonly property var orderedAll: {
@@ -132,6 +140,9 @@ Item {
         if (!root.activeFocus) {
             root._focusIndex = -1
             root._applyFocus()
+        } else if (root._focusIndex < 0 && root._live.length > 0) {
+            root._focusIndex = 0
+            root._applyFocus()
         }
     }
 
@@ -152,17 +163,25 @@ Item {
     function anchorX() {
         var anchorW = root.anchor ? root.anchor.width : 0
         if (anchorW <= 0) return 0
-        if (root.alignMode === "left") return ThemeTokens.dp(root.offset)
-        if (root.alignMode === "right") return anchorW - ThemeTokens.dp(root.offset) - root.width
-        return (anchorW - root.width) / 2
+        var offsetDp = ThemeTokens.dp(root.offset)
+        if (root.alignMode === "left") return offsetDp
+        if (root.alignMode === "right") {
+            var rightX = anchorW - offsetDp - root.width
+            return Math.max(offsetDp, rightX)
+        }
+        return Math.max(offsetDp, (anchorW - root.width) / 2)
     }
 
     function anchorY() {
         var anchorH = root.anchor ? root.anchor.height : 0
         if (anchorH <= 0) return 0
-        if (root.isTop) return ThemeTokens.dp(root.offset)
-        if (root.placement.indexOf("bottom") === 0) return anchorH - ThemeTokens.dp(root.offset) - root.height
-        return (anchorH - root.height) / 2
+        var offsetDp = ThemeTokens.dp(root.offset)
+        if (root.isTop) return offsetDp
+        if (root.placement.indexOf("bottom") === 0) {
+            var bottomY = anchorH - offsetDp - root.height
+            return Math.max(offsetDp, bottomY)
+        }
+        return Math.max(offsetDp, (anchorH - root.height) / 2)
     }
 
     function alignOffset(childWidth) {
@@ -489,9 +508,11 @@ Item {
             y: frame.topInset
             width: frame.width
             visible: !root.collapsed
-            showVerticalScrollBar: root.expanded
+            showVerticalScrollBar: root.expanded || root._wellContentHeight > root.maxStackHeight
             showHorizontalScrollBar: false
-            height: root.expanded ? Math.min(root._wellContentHeight, root.maxWellHeight) : root._wellContentHeight
+            height: root.expanded
+                ? Math.min(root._wellContentHeight, root.maxWellHeight)
+                : Math.min(root._wellContentHeight, root.maxStackHeight)
 
             Item {
                 id: cardsHost

@@ -25,7 +25,7 @@ ChaSetActivityStack {
     property bool dismissEnabled: true
 
     /** Emitted when a cancellable running task's Cancel control is pressed. */
-    signal cancelled(string taskId)
+    signal cancelled(string id)
 
     label: "Task Progress HUD"
     summaryLabel: "进行中"
@@ -99,7 +99,12 @@ ChaSetActivityStack {
             graceTimer.stop()
             root._cleared = false
         } else {
-            graceTimer.restart()
+            if (root.autoHideDelay <= 0) {
+                graceTimer.stop()
+                root._cleared = true
+            } else {
+                graceTimer.restart()
+            }
         }
         root._revision++
     }

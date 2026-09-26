@@ -108,6 +108,10 @@ export const TaskHud = React.forwardRef<HTMLDivElement, TaskHudProps>(function T
       setCleared(false);
       return undefined;
     }
+    if (autoHideDelay <= 0) {
+      setCleared(true);
+      return undefined;
+    }
     const timer = window.setTimeout(() => setCleared(true), autoHideDelay);
     return () => window.clearTimeout(timer);
   }, [taskCount, forceVisible, autoHideDelay]);
@@ -119,7 +123,7 @@ export const TaskHud = React.forwardRef<HTMLDivElement, TaskHudProps>(function T
     // off the schema because importing a runtime value from `@chahu/spec` would
     // pull zod into the component bundle.
     const status: ActivityStatus = task.status ?? 'running';
-    const presentation = STATUS_PRESENTATION[status];
+    const presentation = STATUS_PRESENTATION[status] ?? STATUS_PRESENTATION.running;
     const running = status === 'running';
     const indeterminate = Boolean(task.indeterminate) && running;
     const counter = task.total != null && task.done != null ? `${task.done}/${task.total}` : null;

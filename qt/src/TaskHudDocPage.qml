@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Overlays & Feedback"
     pageTitle: "Task HUD"
-    description: "Floating task progress and notification HUD stack for background executions."
+    description: "Floating stack of background executions with progress, overflow and collapse-to-summary."
     tocItems: [
         { id: "overview", title: "Interactive Overview" },
-        { id: "overflow", title: "Collapse & Overflow" },
+        { id: "installation", title: "Installation" },
         { id: "anatomy", title: "Anatomy" },
         { id: "animations", title: "Animations" },
         { id: "keyboard", title: "Keyboard Navigation" },
@@ -20,7 +20,7 @@ DocLayout {
     ComponentPreview {
         width: parent.width
         title: "Task HUD Sandbox"
-        stageHeight: 360
+        stageHeight: 420
         reactCode: `const [tasks, setTasks] = useState<TaskItem[]>(initialTasks);
 
 <TaskHud
@@ -85,6 +85,7 @@ DocLayout {
             anchors.fill: parent
             anchors.margins: ThemeTokens.dp(16)
             radius: ThemeTokens.dp(12)
+            clip: true
             color: Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.2)
             border.width: 1
             border.color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.7)
@@ -116,7 +117,7 @@ DocLayout {
         property string sectionTitle: "Collapse & Overflow"
         width: parent.width
         title: "Collapsed & Overflow"
-        stageHeight: 380
+        stageHeight: 420
         reactCode: `// maxVisible caps the rendered cards; the remaining jobs collapse into an
 // overflow pill that expands the stack into a scrollable list.
 <TaskHud
@@ -164,8 +165,10 @@ DocLayout {
                     value: root.overflowPlacement
                     options: [
                         { label: "Bottom Right", value: "bottom-right" },
+                        { label: "Bottom Left", value: "bottom-left" },
                         { label: "Top Right", value: "top-right" },
-                        { label: "Bottom Left", value: "bottom-left" }
+                        { label: "Top Left", value: "top-left" },
+                        { label: "Bottom Center", value: "bottom-center" }
                     ]
                     onValueSelected: function(val) { root.overflowPlacement = val }
                 }
@@ -183,6 +186,7 @@ DocLayout {
             anchors.fill: parent
             anchors.margins: ThemeTokens.dp(16)
             radius: ThemeTokens.dp(12)
+            clip: true
             color: Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.2)
             border.width: 1
             border.color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.7)
@@ -197,14 +201,39 @@ DocLayout {
                 cancelEnabled: false
             }
 
-            Text {
+            ChaSetBadge {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: ThemeTokens.dp(8)
                 text: "anchor: " + root.overflowPlacement
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeCaption
-                font.family: Typography.familyMono
+                variant: "secondary"
+                size: "sm"
+            }
+        }
+    }
+
+    Rectangle {
+        property string sectionId: "installation"
+        width: parent.width
+        implicitHeight: instCol.implicitHeight + ThemeTokens.dp(16)
+        color: "transparent"
+
+        Column {
+            id: instCol
+            width: parent.width
+            spacing: ThemeTokens.dp(8)
+
+            DocText {
+                text: "Installation"
+                font.pixelSize: Typography.sizeTitleSm
+                font.bold: true
+                color: ThemeTokens.text
+            }
+
+            ChaSetCodeBlock {
+                width: parent.width
+                language: "bash"
+                code: "pnpm add @chahu/cha-set"
             }
         }
     }

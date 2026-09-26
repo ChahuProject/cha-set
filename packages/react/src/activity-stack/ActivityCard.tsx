@@ -126,10 +126,10 @@ export const ActivityCard = React.forwardRef<HTMLDivElement, ActivityCardProps>(
         </div>
 
         <div className="min-w-0 flex-1 pr-1">
-          <div className="flex items-center justify-between gap-2">
-            <span className="truncate text-sm font-semibold text-foreground">{title}</span>
+          <div className="flex min-w-0 items-center justify-between gap-2">
+            <span className="min-w-0 truncate text-sm font-semibold text-foreground">{title}</span>
             {meta != null && (
-              <span className="whitespace-nowrap text-micro text-muted-foreground">{meta}</span>
+              <span className="shrink-0 whitespace-nowrap text-micro text-muted-foreground">{meta}</span>
             )}
           </div>
           {detail != null && (
