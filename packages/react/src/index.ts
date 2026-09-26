@@ -30,6 +30,7 @@ export * from './range-slider';
 export * from './snap-slider';
 export * from './scale-osd';
 export * from './task-hud';
+export * from './notification-stack';
 export * from './read-only-input';
 export * from './preset-number-input';
 export * from './keybinding-recorder';
@@ -60,6 +61,11 @@ export * from './typography';
 export * from './lib/splitFixedFooter';
 export {
   CheckIcon,
+  AlertTriangleIcon,
+  LoaderIcon,
+  CircleDashedIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
   XIcon,
   GripHorizontalIcon,
   CopyIcon,

@@ -316,7 +316,13 @@
         "id": "task-hud",
         "title": "Task HUD",
         "href": "#/components/task-hud",
-        "desc": "Floating task progress and notification HUD stack for background executions."
+        "desc": "Floating stack of background executions with progress, overflow and collapse-to-summary."
+      },
+      {
+        "id": "notification-stack",
+        "title": "Notification Stack",
+        "href": "#/components/notification-stack",
+        "desc": "Floating, severity-coded notification stack with per-item lifetimes and inline actions."
       }
     ]
   },

@@ -358,7 +358,24 @@
       "determinateProgress": { "requirement": "must", "description": "progress bar width reflecting percentage for determinate tasks" },
       "indeterminateProgress": { "requirement": "must", "description": "animated shimmer progress bar for running indeterminate tasks" },
       "dismiss": { "requirement": "must", "description": "dismiss button with callback event" },
+      "cancel": { "requirement": "must", "description": "cancel control on running tasks with callback event" },
+      "overflow": { "requirement": "must", "description": "caps visible cards and expands the remainder into a scrollable list" },
+      "collapsible": { "requirement": "must", "description": "collapses the stack into a single summary row and restores it" },
+      "placement": { "requirement": "must", "description": "anchors the stack to any of the eight viewport placements" },
+      "keyboard": { "requirement": "must", "description": "arrow/Home/End traversal of cards and Escape collapse" },
       "autoHide": { "requirement": "should", "description": "auto-hides when task queue is empty" }
+    },
+    "notificationStack": {
+      "rendersNotifications": { "requirement": "must", "description": "renders notification cards with title and description" },
+      "levels": { "requirement": "must", "description": "severity coding for info, success, warning, and error" },
+      "actions": { "requirement": "must", "description": "inline action buttons emitting an action callback" },
+      "dismiss": { "requirement": "must", "description": "dismiss button with callback event" },
+      "autoExpire": { "requirement": "must", "description": "per-item lifetime that expires and dismisses the notification" },
+      "pauseOnHover": { "requirement": "must", "description": "suspends expiry countdowns while the pointer rests on the stack" },
+      "overflow": { "requirement": "must", "description": "caps visible cards and expands the remainder into a scrollable list" },
+      "collapsible": { "requirement": "must", "description": "collapses the stack into a single summary row and restores it" },
+      "placement": { "requirement": "must", "description": "anchors the stack to any of the eight viewport placements" },
+      "keyboard": { "requirement": "must", "description": "arrow/Home/End traversal of cards and Escape collapse" }
     },
     "addressBar": {
       "breadcrumbs": { "requirement": "must", "description": "renders path parsed into interactive breadcrumb segments" },

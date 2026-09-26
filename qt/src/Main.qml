@@ -309,6 +309,7 @@ ApplicationWindow {
         case "snap-slider": return "SnapSliderDocPage.qml";
         case "scale-osd": return "ScaleOsdDocPage.qml";
         case "task-hud": return "TaskHudDocPage.qml";
+        case "notification-stack": return "NotificationStackDocPage.qml";
         case "read-only-input": return "ReadOnlyInputDocPage.qml";
         case "preset-number-input": return "PresetNumberInputDocPage.qml";
         case "keybinding-recorder": return "KeybindingRecorderDocPage.qml";

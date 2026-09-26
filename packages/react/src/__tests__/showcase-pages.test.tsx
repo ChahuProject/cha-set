@@ -20,6 +20,8 @@ import { InputDocPage } from '../../examples/basic/src/pages/components/InputDoc
 import { LabelDocPage } from '../../examples/basic/src/pages/components/LabelDocPage';
 import { CollapsibleDocPage } from '../../examples/basic/src/pages/components/CollapsibleDocPage';
 import { KeybindingRecorderDocPage } from '../../examples/basic/src/pages/components/KeybindingRecorderDocPage';
+import { NotificationStackDocPage } from '../../examples/basic/src/pages/components/NotificationStackDocPage';
+import { TaskHudDocPage } from '../../examples/basic/src/pages/components/TaskHudDocPage';
 import { PanelCardDocPage } from '../../examples/basic/src/pages/components/PanelCardDocPage';
 import { PopoverDocPage } from '../../examples/basic/src/pages/components/PopoverDocPage';
 import { QueryBuilderDocPage } from '../../examples/basic/src/pages/components/QueryBuilderDocPage';
@@ -71,6 +73,8 @@ const pages = [
   { name: 'LabelDocPage', Component: LabelDocPage },
   { name: 'CollapsibleDocPage', Component: CollapsibleDocPage },
   { name: 'KeybindingRecorderDocPage', Component: KeybindingRecorderDocPage },
+  { name: 'NotificationStackDocPage', Component: NotificationStackDocPage },
+  { name: 'TaskHudDocPage', Component: TaskHudDocPage },
   { name: 'PanelCardDocPage', Component: PanelCardDocPage },
   { name: 'PopoverDocPage', Component: PopoverDocPage },
   { name: 'QueryBuilderDocPage', Component: QueryBuilderDocPage },

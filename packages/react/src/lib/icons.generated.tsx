@@ -306,6 +306,9 @@ export const ICON_CATEGORIES: IconCategory[] = [
     "title": "Status & Signals",
     "icons": [
       "check",
+      "alert-triangle",
+      "loader",
+      "circle-dashed",
       "stop",
       "star",
       "clock",
@@ -530,12 +533,6 @@ export const ICON_ADOPTION = {
       "reasons": []
     },
     {
-      "file": "packages/react/src/task-hud/TaskHud.tsx",
-      "count": 6,
-      "exempted": 0,
-      "reasons": []
-    },
-    {
       "file": "packages/react/src/window-title-bar/WindowTitleBar.tsx",
       "count": 4,
       "exempted": 0,
@@ -558,6 +555,48 @@ export const ICON_AUDIT: Record<string, IconAudit> = {
     "minY": 5,
     "maxX": 21,
     "maxY": 18,
+    "withinTolerance": true
+  },
+  "alert-triangle": {
+    "grid": "default",
+    "gridSize": 24,
+    "strokeWidth": 2,
+    "centerX": 12,
+    "centerY": 12,
+    "offsetX": 0,
+    "offsetY": 0,
+    "minX": 1.5,
+    "minY": 3,
+    "maxX": 22.5,
+    "maxY": 21,
+    "withinTolerance": true
+  },
+  "loader": {
+    "grid": "default",
+    "gridSize": 24,
+    "strokeWidth": 2,
+    "centerX": 12,
+    "centerY": 12,
+    "offsetX": 0,
+    "offsetY": 0,
+    "minX": 2.5,
+    "minY": 2.5,
+    "maxX": 21.5,
+    "maxY": 21.5,
+    "withinTolerance": true
+  },
+  "circle-dashed": {
+    "grid": "default",
+    "gridSize": 24,
+    "strokeWidth": 2,
+    "centerX": 12,
+    "centerY": 12,
+    "offsetX": 0,
+    "offsetY": 0,
+    "minX": 0.997,
+    "minY": 0.997,
+    "maxX": 23.003,
+    "maxY": 23.003,
     "withinTolerance": true
   },
   "chevron-right": {
@@ -1381,6 +1420,18 @@ export const ICON_MATERIAL_SYMBOLS: Record<IconName, IconMaterialSymbol> = {
     "symbol": "check",
     "codepoint": "e668"
   },
+  "alert-triangle": {
+    "symbol": "warning",
+    "codepoint": "f083"
+  },
+  "loader": {
+    "symbol": "progress_activity",
+    "codepoint": "e9d0"
+  },
+  "circle-dashed": {
+    "symbol": "pending",
+    "codepoint": "ef64"
+  },
   "chevron-right": {
     "symbol": "chevron_right",
     "codepoint": "e5cc"
@@ -1622,6 +1673,97 @@ export const ICON_ELEMENTS = {
       {
         "t": "polyline",
         "points": "20 6 9 17 4 12"
+      }
+    ]
+  },
+  "alert-triangle": {
+    "grid": "default",
+    "elements": [
+      {
+        "t": "polygon",
+        "points": "12 4 21.5 20 2.5 20"
+      },
+      {
+        "t": "path",
+        "d": "M12 9.5 L12 13.5"
+      },
+      {
+        "t": "path",
+        "d": "M12 17h.01"
+      }
+    ]
+  },
+  "loader": {
+    "grid": "default",
+    "elements": [
+      {
+        "t": "path",
+        "d": "M12 6.5 L12 3.5"
+      },
+      {
+        "t": "path",
+        "d": "M15.89 8.11 L18.01 5.99"
+      },
+      {
+        "t": "path",
+        "d": "M17.5 12 L20.5 12"
+      },
+      {
+        "t": "path",
+        "d": "M15.89 15.89 L18.01 18.01"
+      },
+      {
+        "t": "path",
+        "d": "M12 17.5 L12 20.5"
+      },
+      {
+        "t": "path",
+        "d": "M8.11 15.89 L5.99 18.01"
+      },
+      {
+        "t": "path",
+        "d": "M6.5 12 L3.5 12"
+      },
+      {
+        "t": "path",
+        "d": "M8.11 8.11 L5.99 5.99"
+      }
+    ]
+  },
+  "circle-dashed": {
+    "grid": "default",
+    "elements": [
+      {
+        "t": "path",
+        "d": "M10.1 2.18a9.93 9.93 0 0 1 3.8 0"
+      },
+      {
+        "t": "path",
+        "d": "M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7"
+      },
+      {
+        "t": "path",
+        "d": "M21.82 10.1a9.93 9.93 0 0 1 0 3.8"
+      },
+      {
+        "t": "path",
+        "d": "M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69"
+      },
+      {
+        "t": "path",
+        "d": "M13.9 21.82a9.94 9.94 0 0 1-3.8 0"
+      },
+      {
+        "t": "path",
+        "d": "M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7"
+      },
+      {
+        "t": "path",
+        "d": "M2.18 13.9a9.93 9.93 0 0 1 0-3.8"
+      },
+      {
+        "t": "path",
+        "d": "M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69"
       }
     ]
   },
@@ -2919,6 +3061,9 @@ function makeIcon(name: IconName, displayName: string) {
 }
 
 export const CheckIcon = /*#__PURE__*/ makeIcon('check', 'CheckIcon');
+export const AlertTriangleIcon = /*#__PURE__*/ makeIcon('alert-triangle', 'AlertTriangleIcon');
+export const LoaderIcon = /*#__PURE__*/ makeIcon('loader', 'LoaderIcon');
+export const CircleDashedIcon = /*#__PURE__*/ makeIcon('circle-dashed', 'CircleDashedIcon');
 export const ChevronRightIcon = /*#__PURE__*/ makeIcon('chevron-right', 'ChevronRightIcon');
 export const ChevronLeftIcon = /*#__PURE__*/ makeIcon('chevron-left', 'ChevronLeftIcon');
 export const ChevronDownIcon = /*#__PURE__*/ makeIcon('chevron-down', 'ChevronDownIcon');

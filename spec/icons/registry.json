@@ -142,6 +142,103 @@
           "materialSymbol": "check",
           "codepoint": "e668"
         },
+        "alert-triangle": {
+          "grid": "default",
+          "elements": [
+            {
+              "t": "polygon",
+              "points": "12 4 21.5 20 2.5 20"
+            },
+            {
+              "t": "path",
+              "d": "M12 9.5 L12 13.5"
+            },
+            {
+              "t": "path",
+              "d": "M12 17h.01"
+            }
+          ],
+          "materialSymbol": "warning",
+          "codepoint": "f083"
+        },
+        "loader": {
+          "grid": "default",
+          "elements": [
+            {
+              "t": "path",
+              "d": "M12 6.5 L12 3.5"
+            },
+            {
+              "t": "path",
+              "d": "M15.89 8.11 L18.01 5.99"
+            },
+            {
+              "t": "path",
+              "d": "M17.5 12 L20.5 12"
+            },
+            {
+              "t": "path",
+              "d": "M15.89 15.89 L18.01 18.01"
+            },
+            {
+              "t": "path",
+              "d": "M12 17.5 L12 20.5"
+            },
+            {
+              "t": "path",
+              "d": "M8.11 15.89 L5.99 18.01"
+            },
+            {
+              "t": "path",
+              "d": "M6.5 12 L3.5 12"
+            },
+            {
+              "t": "path",
+              "d": "M8.11 8.11 L5.99 5.99"
+            }
+          ],
+          "materialSymbol": "progress_activity",
+          "codepoint": "e9d0"
+        },
+        "circle-dashed": {
+          "grid": "default",
+          "elements": [
+            {
+              "t": "path",
+              "d": "M10.1 2.18a9.93 9.93 0 0 1 3.8 0"
+            },
+            {
+              "t": "path",
+              "d": "M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7"
+            },
+            {
+              "t": "path",
+              "d": "M21.82 10.1a9.93 9.93 0 0 1 0 3.8"
+            },
+            {
+              "t": "path",
+              "d": "M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69"
+            },
+            {
+              "t": "path",
+              "d": "M13.9 21.82a9.94 9.94 0 0 1-3.8 0"
+            },
+            {
+              "t": "path",
+              "d": "M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7"
+            },
+            {
+              "t": "path",
+              "d": "M2.18 13.9a9.93 9.93 0 0 1 0-3.8"
+            },
+            {
+              "t": "path",
+              "d": "M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69"
+            }
+          ],
+          "materialSymbol": "pending",
+          "codepoint": "ef64"
+        },
         "chevron-right": {
           "grid": "default",
           "elements": [
@@ -1559,6 +1656,9 @@
           "title": "Status & Signals",
           "icons": [
             "check",
+            "alert-triangle",
+            "loader",
+            "circle-dashed",
             "stop",
             "star",
             "clock",
