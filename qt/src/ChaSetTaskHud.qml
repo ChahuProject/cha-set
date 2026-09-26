@@ -13,14 +13,26 @@ Item {
     property int autoHideDelay: 600
     property bool forceVisible: false
     property bool hudVisible: false
+    property int _modelRevision: 0
 
     signal dismissed(string taskId)
 
+    Connections {
+        target: (tasks && typeof tasks === "object") ? tasks : null
+        ignoreUnknownSignals: true
+        function onRowsInserted() { root._modelRevision++ }
+        function onRowsRemoved() { root._modelRevision++ }
+        function onModelReset() { root._modelRevision++ }
+        function onCountChanged() { root._modelRevision++ }
+        function onLayoutChanged() { root._modelRevision++ }
+    }
+
     readonly property int taskCount: {
+        var _rev = _modelRevision;
         if (!tasks) return 0;
-        if (typeof tasks.rowCount === "function") return tasks.rowCount();
         if (typeof tasks.count !== "undefined") return tasks.count;
         if (typeof tasks.length !== "undefined") return tasks.length;
+        if (typeof tasks.rowCount === "function") return tasks.rowCount();
         return 0;
     }
 
@@ -170,11 +182,26 @@ Item {
 
                     visible: index < root.maxVisible
 
-                    readonly property var itemObj: (typeof modelData !== "undefined" && modelData !== null) ? modelData : ((typeof model !== "undefined" && model !== null) ? model : {})
-                    readonly property string _id: String((itemObj && itemObj.id !== undefined) ? itemObj.id : ((typeof model !== "undefined" && model?.id !== undefined) ? model.id : ""))
-                    readonly property string _title: String((itemObj && itemObj.title !== undefined) ? itemObj.title : ((typeof model !== "undefined" && model?.title !== undefined) ? model.title : ""))
-                    readonly property string _detail: String((itemObj && itemObj.detail !== undefined) ? itemObj.detail : ((typeof model !== "undefined" && model?.detail !== undefined) ? model.detail : ""))
-                    readonly property var _rawStatus: (itemObj && itemObj.status !== undefined) ? itemObj.status : ((typeof model !== "undefined" && model?.status !== undefined) ? model.status : "running")
+                    readonly property string _id: {
+                        if (typeof model !== "undefined" && model && model.id !== undefined) return String(model.id);
+                        if (typeof modelData !== "undefined" && modelData && modelData.id !== undefined) return String(modelData.id);
+                        return "";
+                    }
+                    readonly property string _title: {
+                        if (typeof model !== "undefined" && model && model.title !== undefined) return String(model.title);
+                        if (typeof modelData !== "undefined" && modelData && modelData.title !== undefined) return String(modelData.title);
+                        return "";
+                    }
+                    readonly property string _detail: {
+                        if (typeof model !== "undefined" && model && model.detail !== undefined) return String(model.detail);
+                        if (typeof modelData !== "undefined" && modelData && modelData.detail !== undefined) return String(modelData.detail);
+                        return "";
+                    }
+                    readonly property var _rawStatus: {
+                        if (typeof model !== "undefined" && model && model.status !== undefined) return model.status;
+                        if (typeof modelData !== "undefined" && modelData && modelData.status !== undefined) return modelData.status;
+                        return "running";
+                    }
                     readonly property string _statusStr: {
                         if (typeof _rawStatus === "number") {
                             if (_rawStatus === 1) return "success";
@@ -190,11 +217,32 @@ Item {
                     readonly property bool isSuccess: _statusStr === "success"
                     readonly property bool isWarning: _statusStr === "warning"
                     readonly property bool isError: _statusStr === "failure" || _statusStr === "error"
-                    readonly property bool isIndeterminate: Boolean((itemObj && itemObj.indeterminate !== undefined) ? itemObj.indeterminate : ((typeof model !== "undefined" && model?.indeterminate !== undefined) ? model.indeterminate : false)) && isRunning
-                    readonly property double _progress: typeof (itemObj && itemObj.progress) === "number" ? itemObj.progress : (typeof model !== "undefined" && typeof model?.progress === "number" ? model.progress : -1)
-                    readonly property int _total: typeof (itemObj && itemObj.total) === "number" ? itemObj.total : (typeof model !== "undefined" && typeof model?.total === "number" ? model.total : -1)
-                    readonly property int _done: typeof (itemObj && itemObj.done) === "number" ? itemObj.done : (typeof model !== "undefined" && typeof model?.done === "number" ? model.done : 0)
-                    readonly property int _elapsedMs: typeof (itemObj && itemObj.elapsedMs) === "number" ? itemObj.elapsedMs : (typeof model !== "undefined" && typeof model?.elapsedMs === "number" ? model.elapsedMs : 0)
+                    readonly property bool isIndeterminate: {
+                        var ind = false;
+                        if (typeof model !== "undefined" && model && typeof model.indeterminate !== "undefined") ind = Boolean(model.indeterminate);
+                        else if (typeof modelData !== "undefined" && modelData && typeof modelData.indeterminate !== "undefined") ind = Boolean(modelData.indeterminate);
+                        return ind && isRunning;
+                    }
+                    readonly property double _progress: {
+                        if (typeof model !== "undefined" && model && typeof model.progress === "number") return model.progress;
+                        if (typeof modelData !== "undefined" && modelData && typeof modelData.progress === "number") return modelData.progress;
+                        return -1;
+                    }
+                    readonly property int _total: {
+                        if (typeof model !== "undefined" && model && typeof model.total === "number") return model.total;
+                        if (typeof modelData !== "undefined" && modelData && typeof modelData.total === "number") return modelData.total;
+                        return -1;
+                    }
+                    readonly property int _done: {
+                        if (typeof model !== "undefined" && model && typeof model.done === "number") return model.done;
+                        if (typeof modelData !== "undefined" && modelData && typeof modelData.done === "number") return modelData.done;
+                        return 0;
+                    }
+                    readonly property int _elapsedMs: {
+                        if (typeof model !== "undefined" && model && typeof model.elapsedMs === "number") return model.elapsedMs;
+                        if (typeof modelData !== "undefined" && modelData && typeof modelData.elapsedMs === "number") return modelData.elapsedMs;
+                        return 0;
+                    }
 
                     width: stack.width
                     implicitHeight: cardContent.implicitHeight + ThemeTokens.dp(14) + (showProgress ? ThemeTokens.dp(12) : 0)
