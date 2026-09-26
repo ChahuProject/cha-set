@@ -109,6 +109,12 @@ ChaSetActivityStack {
         root._revision++
     }
 
+    Connections {
+        target: (root.tasks && typeof root.tasks.countChanged === "function") ? root.tasks : null
+        function onCountChanged() { root.sync() }
+        function onDataChanged() { root.sync() }
+    }
+
     // ---- Status presentation (mirrors STATUS_PRESENTATION) ----------------
 
     function normalizeStatus(raw) {
@@ -117,6 +123,7 @@ ChaSetActivityStack {
             if (raw === 1) return "success"
             if (raw === 2) return "warning"
             if (raw === 3) return "error"
+            if (raw === 4) return "cancelled"
             return "running"
         }
         var value = String(raw).toLowerCase()
