@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { createPortal } from 'react-dom';
 import { cn } from '../lib/utils';
 import type { PathSegment, AddressBarApi } from '@chahu/spec/address-bar';
 import { Breadcrumb } from './Breadcrumb';
@@ -192,9 +193,35 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
     const [highlightedIndex, setHighlightedIndex] = React.useState(0);
     const [openSegmentIndex, setOpenSegmentIndex] = React.useState(-1);
     const [subfolders, setSubfolders] = React.useState<PathSegment[]>([]);
+    const [popoverPos, setPopoverPos] = React.useState<{ top: number; left: number; width: number } | null>(null);
 
     const inputRef = React.useRef<HTMLInputElement>(null);
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const popoverRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+      if (isEditing && showSuggestions && containerRef.current) {
+        const updatePos = () => {
+          const rect = containerRef.current?.getBoundingClientRect();
+          if (rect) {
+            setPopoverPos({
+              top: rect.bottom + 4,
+              left: rect.left,
+              width: Math.min(rect.width, 420),
+            });
+          }
+        };
+        updatePos();
+        window.addEventListener('resize', updatePos);
+        window.addEventListener('scroll', updatePos, true);
+        return () => {
+          window.removeEventListener('resize', updatePos);
+          window.removeEventListener('scroll', updatePos, true);
+        };
+      } else {
+        setPopoverPos(null);
+      }
+    }, [isEditing, showSuggestions]);
 
     React.useEffect(() => {
       if (!isEditing) {
@@ -397,13 +424,13 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                   onNavigate?.(targetPath);
                 }}
                 onOpenSubfolders={handleOpenSubfolders}
-                className="flex-1 min-w-0"
+                className="min-w-0"
               />
 
               {/* Blank Area Click to Edit */}
               <div
                 onClick={startEditing}
-                className="flex-1 h-full min-w-[2.5rem] cursor-text"
+                className="flex-1 h-full min-w-[2rem] cursor-text"
                 title="Click to edit address"
               />
             </div>
@@ -445,18 +472,29 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                   }
                 }}
                 onBlur={(e) => {
-                  if (!containerRef.current?.contains(e.relatedTarget as Node)) {
+                  if (
+                    !containerRef.current?.contains(e.relatedTarget as Node) &&
+                    !popoverRef.current?.contains(e.relatedTarget as Node)
+                  ) {
                     cancelEdit();
                   }
                 }}
                 className="w-full h-7 px-2 text-sm bg-transparent border-0 outline-none text-foreground placeholder:text-muted-foreground cursor-text"
               />
 
-              {/* Suggestions / History Popover */}
-              {showSuggestions && combinedSuggestions.length > 0 && (
+              {/* Suggestions / History Popover (Portaled to document.body) */}
+              {showSuggestions && combinedSuggestions.length > 0 && popoverPos && typeof document !== 'undefined' && createPortal(
                 <div
+                  ref={popoverRef}
                   role="listbox"
-                  className="absolute top-full left-0 mt-1 w-full max-w-[25rem] max-h-[16.25rem] overflow-y-auto rounded-md border border-border bg-popover text-popover-foreground shadow-md p-1 z-50 animate-in fade-in-0 zoom-in-95"
+                  style={{
+                    position: 'fixed',
+                    top: `${popoverPos.top * 0.0625}rem`,
+                    left: `${popoverPos.left * 0.0625}rem`,
+                    width: `${popoverPos.width * 0.0625}rem`,
+                    zIndex: 9999,
+                  }}
+                  className="max-h-[16.25rem] overflow-y-auto rounded-md border border-border bg-popover text-popover-foreground shadow-lg p-1 animate-in fade-in-0 zoom-in-95"
                 >
                   {combinedSuggestions.map((item, idx) => (
                     <button
@@ -484,7 +522,8 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                       <span className="truncate">{item.text}</span>
                     </button>
                   ))}
-                </div>
+                </div>,
+                document.body
               )}
             </div>
           )}
