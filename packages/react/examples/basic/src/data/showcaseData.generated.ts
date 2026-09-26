@@ -1427,8 +1427,15 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "task-hud",
         "title": "Task HUD",
         "href": "#/components/task-hud",
-        "desc": "Floating task progress and notification HUD stack for background executions.",
-        "description": "Floating task progress and notification HUD stack for background executions."
+        "desc": "Floating stack of background executions with progress, overflow and collapse-to-summary.",
+        "description": "Floating stack of background executions with progress, overflow and collapse-to-summary."
+      },
+      {
+        "id": "notification-stack",
+        "title": "Notification Stack",
+        "href": "#/components/notification-stack",
+        "desc": "Floating, severity-coded notification stack with per-item lifetimes and inline actions.",
+        "description": "Floating, severity-coded notification stack with per-item lifetimes and inline actions."
       }
     ]
   },
@@ -2238,12 +2245,46 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
   ],
   "task-hud": [
     {
-      "key": "Tab / Shift + Tab",
-      "action": "Focus through task dismiss buttons in the stack"
+      "key": "Tab",
+      "action": "Enter the stack as a single tab stop and focus the nearest card"
+    },
+    {
+      "key": "↑ / ↓",
+      "action": "Move the roving focus through the cards in the stack"
+    },
+    {
+      "key": "Home / End",
+      "action": "Jump to the first or last card in the stack"
     },
     {
       "key": "Space / Enter",
-      "action": "Dismiss the currently focused task notification"
+      "action": "Activate the focused card's dismiss or cancel control"
+    },
+    {
+      "key": "Escape",
+      "action": "Leave the expanded list, then collapse the stack into its summary row"
+    }
+  ],
+  "notification-stack": [
+    {
+      "key": "Tab",
+      "action": "Enter the live region as a single tab stop and focus the nearest notification"
+    },
+    {
+      "key": "↑ / ↓",
+      "action": "Move the roving focus through the notification cards"
+    },
+    {
+      "key": "Home / End",
+      "action": "Jump to the first or last notification in the stack"
+    },
+    {
+      "key": "Space / Enter",
+      "action": "Activate the focused notification's action or dismiss control"
+    },
+    {
+      "key": "Escape",
+      "action": "Leave the expanded list, then collapse the stack into its summary row"
     }
   ],
   "address-bar": [

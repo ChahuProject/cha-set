@@ -20,6 +20,7 @@ Item {
   function normalize(s) {
     var str = (s || "").toLowerCase()
     if (str === "success" || str === "成功") return "success"
+    if (str === "warning" || str === "警告") return "warning"
     if (str === "failure" || str === "failed" || str === "失败") return "failure"
     if (str === "running" || str === "运行中") return "running"
     if (str === "compiling" || str === "编译中") return "compiling"
@@ -35,6 +36,7 @@ Item {
     if (root.overrideColor.a > 0) return root.overrideColor
     switch (normStatus) {
       case "success": return "#10b981"
+      case "warning": return "#f59e0b"
       case "failure": return "#ef4444"
       case "running":
       case "compiling": return "#3b82f6"
@@ -43,16 +45,56 @@ Item {
     }
   }
 
-  // Outer circle for success, failure, cancelled, queued
+  // Outer circle for success, failure, cancelled, queued (the warning triangle stands alone)
   Rectangle {
     id: outerCircle
-    visible: !root.isSpinning
+    visible: !root.isSpinning && root.normStatus !== "warning"
     anchors.fill: parent
     radius: width / 2
     color: "transparent"
     border.width: 1.4
     border.color: root.statusColor
     opacity: root.normStatus === "queued" ? 0.6 : 1.0
+  }
+
+  // Warning triangle with an exclamation stem and dot
+  Shape {
+    visible: root.normStatus === "warning"
+    anchors.fill: parent
+    asynchronous: false
+    antialiasing: true
+
+    ShapePath {
+      strokeColor: root.statusColor
+      strokeWidth: 1.4
+      fillColor: "transparent"
+      capStyle: ShapePath.RoundCap
+      joinStyle: ShapePath.RoundJoin
+      startX: root.width * 0.5
+      startY: root.height * 0.14
+      PathLine { x: root.width * 0.9; y: root.height * 0.84 }
+      PathLine { x: root.width * 0.1; y: root.height * 0.84 }
+      PathLine { x: root.width * 0.5; y: root.height * 0.14 }
+    }
+    ShapePath {
+      strokeColor: root.statusColor
+      strokeWidth: 1.4
+      fillColor: "transparent"
+      capStyle: ShapePath.RoundCap
+      startX: root.width * 0.5
+      startY: root.height * 0.4
+      PathLine { x: root.width * 0.5; y: root.height * 0.6 }
+    }
+  }
+
+  Rectangle {
+    visible: root.normStatus === "warning"
+    anchors.horizontalCenter: parent.horizontalCenter
+    y: root.height * 0.72
+    width: 1.4
+    height: 1.4
+    radius: 0.7
+    color: root.statusColor
   }
 
   // Checkmark for success

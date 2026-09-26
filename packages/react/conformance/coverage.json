@@ -329,7 +329,24 @@
     "determinateProgress": true,
     "indeterminateProgress": true,
     "dismiss": true,
+    "cancel": true,
+    "overflow": true,
+    "collapsible": true,
+    "placement": true,
+    "keyboard": true,
     "autoHide": true
+  },
+  "notificationStack": {
+    "rendersNotifications": true,
+    "levels": true,
+    "actions": true,
+    "dismiss": true,
+    "autoExpire": true,
+    "pauseOnHover": true,
+    "overflow": true,
+    "collapsible": true,
+    "placement": true,
+    "keyboard": true
   },
   "addressBar": {
     "breadcrumbs": true,

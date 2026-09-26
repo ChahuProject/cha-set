@@ -57,6 +57,8 @@
     "./pipeline-view": "./components/pipeline-view.ts",
     "./scale-osd": "./components/scale-osd.ts",
     "./task-hud": "./components/task-hud.ts",
+    "./notification-stack": "./components/notification-stack.ts",
+    "./shared/placement": "./shared/placement.ts",
     "./address-bar": "./components/address-bar.ts",
     "./theme-settings": "./components/theme-settings.ts",
     "./table-of-contents": "./components/table-of-contents.ts"

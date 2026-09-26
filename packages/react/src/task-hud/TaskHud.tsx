@@ -1,321 +1,183 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
-import type { TaskItem, TaskStatus, TaskHudPlacement } from '@chahu/spec/task-hud';
+import { Button } from '../button';
+import { ActivityCard } from '../activity-stack/ActivityCard';
+import { ActivityStack, type ActivityStackEntry } from '../activity-stack/ActivityStack';
+import {
+  AlertTriangleIcon,
+  CheckIcon,
+  CircleDashedIcon,
+  LoaderIcon,
+  MinusIcon,
+  XIcon,
+} from '../lib/icons';
+import type { ActivityStatus, TaskItem, TaskHudPlacement } from '@chahu/spec/task-hud';
 
-export type { TaskItem, TaskStatus, TaskHudPlacement };
+export type { ActivityStatus, TaskItem, TaskHudPlacement };
 
-export interface TaskHudProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Array of active or completed tasks */
+export interface TaskHudProps {
+  /** Background executions to surface, oldest first. */
   tasks: TaskItem[];
-  /** Callback when user dismisses a task */
+  /** Renders the per-card dismiss control. */
   onDismiss?: (id: string) => void;
-  /** Maximum number of cards visible in the stack at once (default 3) */
+  /** Renders a cancel control on cancellable running tasks. */
+  onCancel?: (id: string) => void;
+  /** Cards rendered before the stack overflows into its "show all" pill. @default 3 */
   maxVisible?: number;
-  /** Delay in milliseconds before hiding the HUD when tasks array becomes empty (default 600) */
+  /** Grace period an emptied HUD stays on screen before it fades out. @default 600 */
   autoHideDelay?: number;
-  /** Placement anchor on viewport (default 'bottom-right') */
+  /** Viewport anchor. @default 'bottom-right' */
   placement?: TaskHudPlacement;
-  /** Whether the HUD is forced visible for inspection / static presentation */
+  /** Inset from the anchored viewport edges, in logical units. @default 16 */
+  offset?: number;
+  /** Offer the collapse-to-summary-row control. @default true */
+  collapsible?: boolean;
+  /** Render collapsed on first paint. @default false */
+  defaultCollapsed?: boolean;
+  /** Keep the HUD mounted even while no task is running. @default false */
   forceVisible?: boolean;
+  /** Accessible name of the HUD region. @default 'Task Progress HUD' */
+  label?: string;
+  className?: string;
 }
 
-const placementClasses: Record<TaskHudPlacement, string> = {
-  'bottom-right': 'fixed bottom-4 right-4 items-end',
-  'bottom-left': 'fixed bottom-4 left-4 items-start',
-  'top-right': 'fixed top-4 right-4 items-end',
-  'top-left': 'fixed top-4 left-4 items-start',
+interface StatusPresentation {
+  tone: 'neutral' | 'success' | 'warning' | 'danger';
+  icon: (className: string) => React.ReactNode;
+}
+
+const STATUS_PRESENTATION: Record<ActivityStatus, StatusPresentation> = {
+  queued: { tone: 'neutral', icon: (className) => <CircleDashedIcon className={className} /> },
+  running: {
+    tone: 'neutral',
+    // `motion-safe` keeps the spinner still for users who asked for reduced motion.
+    icon: (className) => <LoaderIcon className={cn(className, 'motion-safe:animate-spin')} />,
+  },
+  success: { tone: 'success', icon: (className) => <CheckIcon className={className} /> },
+  warning: { tone: 'warning', icon: (className) => <AlertTriangleIcon className={className} /> },
+  error: { tone: 'danger', icon: (className) => <XIcon className={className} /> },
+  cancelled: { tone: 'neutral', icon: (className) => <MinusIcon className={className} /> },
 };
 
-function normalizeStatus(status: TaskStatus | number): TaskStatus {
-  if (typeof status === 'number') {
-    switch (status) {
-      case 1:
-        return 'success';
-      case 2:
-        return 'warning';
-      case 3:
-        return 'error';
-      default:
-        return 'running';
-    }
-  }
-  return status;
+function formatElapsed(ms: number): string {
+  const seconds = Math.max(0, Math.floor(ms / 1000));
+  const minutes = Math.floor(seconds / 60);
+  const rest = seconds % 60;
+  return minutes > 0 ? `${minutes}m ${String(rest).padStart(2, '0')}s` : `${rest}s`;
 }
 
-export const TaskHud = React.forwardRef<HTMLDivElement, TaskHudProps>(
-  (
-    {
-      className,
-      tasks = [],
-      onDismiss,
-      maxVisible = 3,
-      autoHideDelay = 600,
-      placement = 'bottom-right',
-      forceVisible = false,
-      style,
-      ...props
-    },
-    ref
-  ) => {
-    const [isVisible, setIsVisible] = React.useState(tasks.length > 0 || forceVisible);
-    const hideTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+/**
+ * Floating HUD for background executions.
+ *
+ * A thin adapter over `ActivityStack`: it maps a `TaskItem` onto an
+ * `ActivityCard` and holds the one piece of state the stack does not — the
+ * grace period an emptied HUD lingers for, so the final card fades out instead
+ * of disappearing the instant the last job reports success.
+ */
+export const TaskHud = React.forwardRef<HTMLDivElement, TaskHudProps>(function TaskHud(
+  {
+    tasks,
+    onDismiss,
+    onCancel,
+    maxVisible = 3,
+    autoHideDelay = 600,
+    placement = 'bottom-right',
+    offset = 16,
+    collapsible = true,
+    defaultCollapsed = false,
+    forceVisible = false,
+    label = 'Task Progress HUD',
+    className,
+  },
+  ref,
+) {
+  const taskCount = tasks.length;
 
-    React.useEffect(() => {
-      if (forceVisible || tasks.length > 0) {
-        if (hideTimerRef.current) {
-          clearTimeout(hideTimerRef.current);
-          hideTimerRef.current = null;
-        }
-        setIsVisible(true);
-      } else {
-        hideTimerRef.current = setTimeout(() => {
-          setIsVisible(false);
-        }, autoHideDelay);
-      }
+  // Frozen last-frame data: an emptied HUD keeps rendering the final snapshot
+  // until the grace period lapses, and only then does the stack see an empty
+  // list and play the exit animation. The flag is inverted (rather than a
+  // `lingering` flag set by the effect) because a render with the list already
+  // cleared would register the exit before the grace period had even begun,
+  // leaving a live card and its ghost mounted at the same time.
+  const lastTasksRef = React.useRef<TaskItem[]>(tasks);
+  if (taskCount > 0) lastTasksRef.current = tasks;
+  const [cleared, setCleared] = React.useState(false);
 
-      return () => {
-        if (hideTimerRef.current) {
-          clearTimeout(hideTimerRef.current);
-        }
-      };
-    }, [tasks.length, forceVisible, autoHideDelay]);
-
-    if (!isVisible) {
-      return null;
+  React.useEffect(() => {
+    if (taskCount > 0 || forceVisible) {
+      setCleared(false);
+      return undefined;
     }
+    const timer = window.setTimeout(() => setCleared(true), autoHideDelay);
+    return () => window.clearTimeout(timer);
+  }, [taskCount, forceVisible, autoHideDelay]);
 
-    const visibleTasks = tasks.slice(0, maxVisible);
-    const hiddenCount = Math.max(0, tasks.length - maxVisible);
+  const source = taskCount > 0 || forceVisible ? tasks : cleared ? [] : lastTasksRef.current;
 
-    return (
-      <div
-        ref={ref}
-        role="region"
-        aria-label="Task Progress HUD"
-        className={cn(
-          'z-50 flex flex-col gap-2.5 pointer-events-none select-none w-88 max-w-[calc(100vw-2rem)]',
-          placementClasses[placement],
-          className
-        )}
-        style={style}
-        {...props}
-      >
-        {/* Overflow pill indicator */}
-        {hiddenCount > 0 && (
-          <div
-            data-testid="task-hud-overflow-pill"
-            className="pointer-events-auto flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-muted/90 text-muted-foreground border border-border/60 shadow-sm backdrop-blur-sm self-center"
-          >
-            <span>{`还有 ${hiddenCount} 项`}</span>
-            <svg
-              className="size-3 text-muted-foreground"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="18 15 12 9 6 15" />
-            </svg>
-          </div>
-        )}
+  const entries: ActivityStackEntry[] = source.map((task) => {
+    // Defaults mirror `taskItemSchema`. They are restated here rather than read
+    // off the schema because importing a runtime value from `@chahu/spec` would
+    // pull zod into the component bundle.
+    const status: ActivityStatus = task.status ?? 'running';
+    const presentation = STATUS_PRESENTATION[status];
+    const running = status === 'running';
+    const indeterminate = Boolean(task.indeterminate) && running;
+    const counter = task.total != null && task.done != null ? `${task.done}/${task.total}` : null;
+    const cancellable = Boolean(task.cancellable) && running && Boolean(onCancel);
+    const dismissible = Boolean(onDismiss) && !cancellable;
 
-        {/* Task Cards Stack */}
-        <div className="flex flex-col gap-2.5 w-full">
-          {visibleTasks.map((task) => {
-            const status = normalizeStatus(task.status);
-            const isRunning = status === 'running';
-            const isSuccess = status === 'success';
-            const isWarning = status === 'warning';
-            const isError = status === 'error';
-            const isIndeterminate = Boolean(task.indeterminate && isRunning);
-            const progress = task.progress ?? -1;
-
-            return (
-              <div
-                key={task.id}
-                data-testid={`task-card-${task.id}`}
-                className={cn(
-                  'pointer-events-auto relative overflow-hidden rounded-xl border p-3.5 shadow-lg backdrop-blur-md transition-all duration-200',
-                  'bg-card/95 text-card-foreground',
-                  isError
-                    ? 'border-destructive/50'
-                    : isSuccess
-                    ? 'border-primary/40'
-                    : isWarning
-                    ? 'border-amber-500/40'
-                    : 'border-border/80'
+    return {
+      id: task.id,
+      badge: presentation.icon('size-3.5'),
+      node: (
+        <ActivityCard
+          itemId={task.id}
+          icon={presentation.icon('size-4')}
+          tone={presentation.tone}
+          title={task.title}
+          detail={
+            task.detail || counter ? (
+              <>
+                {task.detail}
+                {counter && (
+                  <span className={cn('text-muted-foreground/70', task.detail && 'ml-2')}>
+                    {counter}
+                  </span>
                 )}
-              >
-                {/* Top subtle highlight line */}
-                {(isSuccess || isWarning) && (
-                  <div
-                    className={cn(
-                      'absolute top-0 left-2 right-2 h-[0.0625rem] rounded-full opacity-60',
-                      isSuccess ? 'bg-primary' : 'bg-amber-500'
-                    )}
-                  />
-                )}
+              </>
+            ) : undefined
+          }
+          meta={task.elapsedMs && task.elapsedMs > 0 ? formatElapsed(task.elapsedMs) : undefined}
+          progress={task.progress ?? -1}
+          indeterminate={indeterminate}
+          dismissLabel={`Dismiss ${task.title}`}
+          onDismiss={dismissible ? () => onDismiss?.(task.id) : undefined}
+          actions={
+            cancellable ? (
+              <Button size="xs" variant="ghost" onClick={() => onCancel?.(task.id)}>
+                Cancel
+              </Button>
+            ) : undefined
+          }
+        />
+      ),
+    };
+  });
 
-                <div className="flex items-center gap-3">
-                  {/* Status Icon */}
-                  <div
-                    className={cn(
-                      'size-9 rounded-full flex items-center justify-center shrink-0 border',
-                      isError
-                        ? 'bg-destructive/10 text-destructive border-destructive/25'
-                        : isSuccess
-                        ? 'bg-primary/10 text-primary border-primary/25'
-                        : isWarning
-                        ? 'bg-amber-500/10 text-amber-500 border-amber-500/25'
-                        : 'bg-muted/80 text-muted-foreground border-border/50'
-                    )}
-                  >
-                    {isRunning && (
-                      <svg
-                        className="size-4 animate-spin text-muted-foreground"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-                      </svg>
-                    )}
-                    {isSuccess && (
-                      <svg
-                        className="size-4 text-primary"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    )}
-                    {isWarning && (
-                      <svg
-                        className="size-4 text-amber-500"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-                        <line x1="12" y1="9" x2="12" y2="13" />
-                        <line x1="12" y1="17" x2="12.01" y2="17" />
-                      </svg>
-                    )}
-                    {isError && (
-                      <svg
-                        className="size-4 text-destructive"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                        <line x1="15" y1="9" x2="9" y2="15" />
-                        <line x1="9" y1="9" x2="15" y2="15" />
-                      </svg>
-                    )}
-                  </div>
-
-                  {/* Task Content */}
-                  <div className="flex-1 min-w-0 pr-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="font-semibold text-sm text-foreground truncate">
-                        {task.title}
-                      </span>
-                      {isRunning && task.elapsedMs && task.elapsedMs > 0 ? (
-                        <span className="text-micro text-muted-foreground whitespace-nowrap">
-                          {task.elapsedMs < 1000
-                            ? `${task.elapsedMs}ms`
-                            : `${(task.elapsedMs / 1000).toFixed(1)}s`}
-                        </span>
-                      ) : null}
-                    </div>
-
-                    {/* Detail text or fraction */}
-                    <p className="text-xs text-muted-foreground truncate mt-0.5">
-                      {task.total && task.total > 0
-                        ? `${task.detail ? `${task.detail}  ` : ''}${task.done ?? 0}/${task.total}`
-                        : task.detail || ''}
-                    </p>
-                  </div>
-
-                  {/* Dismiss Close Button */}
-                  <button
-                    type="button"
-                    aria-label={`Dismiss task ${task.title}`}
-                    data-testid={`task-dismiss-${task.id}`}
-                    onClick={() => onDismiss?.(task.id)}
-                    className="size-6 shrink-0 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors cursor-pointer"
-                  >
-                    <svg
-                      className="size-3.5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <line x1="18" y1="6" x2="6" y2="18" />
-                      <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                  </button>
-                </div>
-
-                {/* Progress Bar */}
-                {(isRunning || progress >= 0) && (
-                  <div className="relative w-full h-[0.1875rem] bg-muted/40 rounded-full overflow-hidden mt-3">
-                    {/* Determinate progress fill */}
-                    {!isIndeterminate && (
-                      <div
-                        data-testid={`task-progress-${task.id}`}
-                        className={cn(
-                          'h-full rounded-full transition-all duration-300 ease-out',
-                          isError
-                            ? 'bg-destructive'
-                            : isWarning
-                            ? 'bg-amber-500'
-                            : 'bg-primary'
-                        )}
-                        style={{
-                          width: `${Math.max(0, Math.min(100, (progress < 0 ? 0 : progress) * 100))}%`,
-                        }}
-                      />
-                    )}
-
-                    {/* Indeterminate shimmer */}
-                    {isIndeterminate && (
-                      <div
-                        data-testid={`task-indeterminate-${task.id}`}
-                        className="absolute top-0 bottom-0 w-2/5 rounded-full bg-primary animate-[shimmer_1.4s_infinite_linear]"
-                        style={{
-                          animation: 'shimmer 1.4s infinite ease-in-out',
-                        }}
-                      />
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
-);
+  return (
+    <ActivityStack
+      ref={ref}
+      entries={entries}
+      placement={placement}
+      offset={offset}
+      maxVisible={maxVisible}
+      collapsible={collapsible}
+      defaultCollapsed={defaultCollapsed}
+      label={label}
+      summaryLabel="进行中"
+      className={className}
+    />
+  );
+});
 
 TaskHud.displayName = 'TaskHud';
