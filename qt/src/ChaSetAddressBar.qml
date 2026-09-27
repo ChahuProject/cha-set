@@ -26,6 +26,8 @@ Item {
     property bool disabled: false
     property var suggestions: []
     property bool editing: controller.editing
+    readonly property bool isEditing: controller.editing
+    readonly property bool anyPopupOpen: suggestPopup.opened || subfolderPopup.opened || (breadcrumbPrimitive ? breadcrumbPrimitive.isAnyPopupOpen : false)
     property int highlightedIndex: -1
 
     signal navigateRequested(string path)
@@ -568,7 +570,10 @@ Item {
     function closeAllPopups() {
         suggestPopup.close()
         subfolderPopup.close()
-        breadcrumbPrimitive.openSegmentIndex = -1
+        if (breadcrumbPrimitive) {
+            breadcrumbPrimitive.closePopups()
+            breadcrumbPrimitive.openSegmentIndex = -1
+        }
         if (controller.editing) {
             controller.exitEditMode()
         }

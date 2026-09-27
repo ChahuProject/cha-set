@@ -12,6 +12,11 @@ Item {
     property int openSegmentIndex: -1
     property int firstVisibleIndex: 0
     property bool overflowVisible: false
+    readonly property bool isAnyPopupOpen: overflowPopup.opened
+
+    function closePopups() {
+        overflowPopup.close()
+    }
 
     signal navigateRequested(string path)
     signal openSubfoldersRequested(int index, string path)
