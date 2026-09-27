@@ -27,14 +27,20 @@ public:
     Q_INVOKABLE void add(const QString &path);
     Q_INVOKABLE void clear();
 
+    [[nodiscard]] QString storageFilePath() const;
+    Q_INVOKABLE void setStorageFilePath(const QString &path);
+    [[nodiscard]] QString baseDir() const;
+    Q_INVOKABLE void setBaseDir(const QString &dir);
+
 signals:
     void historyChanged();
 
 private:
     void load();
     void save() const;
-    QString storageFilePath() const;
 
     static constexpr int kCapacity = 50;
     QStringList m_entries;
+    QString m_customFilePath;
+    QString m_baseDir;
 };

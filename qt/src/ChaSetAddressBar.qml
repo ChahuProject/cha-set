@@ -11,13 +11,18 @@ Item {
 
     // API Contract
     property string path: ""
+    property alias currentPath: root.path
+    property alias controller: controller
     property bool canGoBack: controller.canGoBack
     property bool canGoForward: controller.canGoForward
     property bool showNavButtons: true
     property bool showRefresh: true
-    property bool showSearch: false
+    property bool showSearch: true
     property string searchQuery: ""
     property string searchPlaceholder: qsTr("搜索...")
+    property alias searchText: searchInput.text
+    property bool searchCollapsible: true
+    readonly property bool isSearchExpanded: !searchCollapsible || searchInput.activeFocus || (root.searchQuery.length > 0)
     property bool disabled: false
     property var suggestions: []
     property bool editing: controller.editing
@@ -39,6 +44,7 @@ Item {
 
     ChaSetAddressBarController {
         id: controller
+        objectName: "addressBarController"
         currentPath: root.path
         onNavigateRequested: (targetPath) => {
             root.path = targetPath
@@ -57,6 +63,9 @@ Item {
             } else {
                 suggestPopup.close()
                 subfolderPopup.close()
+            }
+            if (typeof windowUi !== "undefined" && windowUi && typeof windowUi.setAddressBarEditing === "function") {
+                windowUi.setAddressBarEditing(controller.editing)
             }
         }
     }
@@ -93,11 +102,15 @@ Item {
 
             // Back
             Rectangle {
+                id: backButton
+                objectName: "backButton"
+                property bool actionEnabled: root.canGoBack && !root.disabled
+                property string tooltipText: qsTr("后退")
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
                 radius: ThemeTokens.dp(4)
-                color: backHover.hovered && root.canGoBack && !root.disabled ? ThemeTokens.hover : "transparent"
-                opacity: (root.canGoBack && !root.disabled) ? 1.0 : 0.35
+                color: backHover.hovered && actionEnabled ? ThemeTokens.hover : "transparent"
+                opacity: actionEnabled ? 1.0 : 0.35
 
                 ChaSetIcon {
                     anchors.centerIn: parent
@@ -108,11 +121,15 @@ Item {
 
                 HoverHandler {
                     id: backHover
-                    cursorShape: (root.canGoBack && !root.disabled) ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                    cursorShape: backButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
+                ToolTip.visible: backHover.hovered
+                ToolTip.text: backButton.tooltipText
+                ToolTip.delay: 400
+
                 TapHandler {
-                    enabled: root.canGoBack && !root.disabled
+                    enabled: backButton.actionEnabled
                     onTapped: {
                         controller.goBack()
                         root.backRequested()
@@ -122,11 +139,15 @@ Item {
 
             // Forward
             Rectangle {
+                id: forwardButton
+                objectName: "forwardButton"
+                property bool actionEnabled: root.canGoForward && !root.disabled
+                property string tooltipText: qsTr("前进")
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
                 radius: ThemeTokens.dp(4)
-                color: forwardHover.hovered && root.canGoForward && !root.disabled ? ThemeTokens.hover : "transparent"
-                opacity: (root.canGoForward && !root.disabled) ? 1.0 : 0.35
+                color: forwardHover.hovered && actionEnabled ? ThemeTokens.hover : "transparent"
+                opacity: actionEnabled ? 1.0 : 0.35
 
                 ChaSetIcon {
                     anchors.centerIn: parent
@@ -137,11 +158,15 @@ Item {
 
                 HoverHandler {
                     id: forwardHover
-                    cursorShape: (root.canGoForward && !root.disabled) ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                    cursorShape: forwardButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
+                ToolTip.visible: forwardHover.hovered
+                ToolTip.text: forwardButton.tooltipText
+                ToolTip.delay: 400
+
                 TapHandler {
-                    enabled: root.canGoForward && !root.disabled
+                    enabled: forwardButton.actionEnabled
                     onTapped: {
                         controller.goForward()
                         root.forwardRequested()
@@ -151,12 +176,16 @@ Item {
 
             // Up
             Rectangle {
+                id: upButton
+                objectName: "upButton"
+                readonly property bool canUp: Boolean(root.path && root.path !== "/" && !root.path.match(/^[a-zA-Z]:[/\\]?$/))
+                property bool actionEnabled: canUp && !root.disabled
+                property string tooltipText: qsTr("上一级")
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
                 radius: ThemeTokens.dp(4)
-                readonly property bool canUp: Boolean(root.path && root.path !== "/" && !root.path.match(/^[a-zA-Z]:[/\\]?$/))
-                color: upHover.hovered && canUp && !root.disabled ? ThemeTokens.hover : "transparent"
-                opacity: (canUp && !root.disabled) ? 1.0 : 0.35
+                color: upHover.hovered && actionEnabled ? ThemeTokens.hover : "transparent"
+                opacity: actionEnabled ? 1.0 : 0.35
 
                 ChaSetIcon {
                     anchors.centerIn: parent
@@ -167,11 +196,15 @@ Item {
 
                 HoverHandler {
                     id: upHover
-                    cursorShape: (parent.canUp && !root.disabled) ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                    cursorShape: upButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
+                ToolTip.visible: upHover.hovered
+                ToolTip.text: upButton.tooltipText
+                ToolTip.delay: 400
+
                 TapHandler {
-                    enabled: parent.canUp && !root.disabled
+                    enabled: upButton.actionEnabled
                     onTapped: {
                         controller.navigateUp()
                         root.upRequested()
@@ -181,12 +214,16 @@ Item {
 
             // Refresh
             Rectangle {
+                id: refreshButton
+                objectName: "refreshButton"
                 visible: root.showRefresh
+                property bool actionEnabled: !root.disabled
+                property string tooltipText: qsTr("刷新")
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
                 radius: ThemeTokens.dp(4)
-                color: refreshHover.hovered && !root.disabled ? ThemeTokens.hover : "transparent"
-                opacity: !root.disabled ? 1.0 : 0.35
+                color: refreshHover.hovered && actionEnabled ? ThemeTokens.hover : "transparent"
+                opacity: actionEnabled ? 1.0 : 0.35
 
                 ChaSetIcon {
                     anchors.centerIn: parent
@@ -197,11 +234,15 @@ Item {
 
                 HoverHandler {
                     id: refreshHover
-                    cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                    cursorShape: refreshButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
+                ToolTip.visible: refreshHover.hovered
+                ToolTip.text: refreshButton.tooltipText
+                ToolTip.delay: 400
+
                 TapHandler {
-                    enabled: !root.disabled
+                    enabled: refreshButton.actionEnabled
                     onTapped: root.refreshRequested()
                 }
             }
@@ -256,7 +297,8 @@ Item {
                 MouseArea {
                     id: blankClickArea
                     objectName: "blankClickArea"
-                    Layout.preferredWidth: ThemeTokens.dp(30)
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: ThemeTokens.dp(30)
                     Layout.fillHeight: true
                     cursorShape: Qt.IBeamCursor
                     onClicked: {
@@ -270,6 +312,7 @@ Item {
             // 2. Edit Mode (Inline text field)
             TextInput {
                 id: editInput
+                objectName: "addressBarEditField"
                 visible: root.editing
                 anchors.fill: parent
                 anchors.leftMargin: ThemeTokens.dp(6)
@@ -284,6 +327,16 @@ Item {
                     cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
                 }
 
+                onActiveFocusChanged: {
+                    // 外部点击（失焦）：一步到位退出，同时关闭下拉和编辑态，杜绝两步轮流退出的迟滞
+                    if (!activeFocus) {
+                        suggestPopup.close()
+                        if (controller.editing) {
+                            controller.exitEditMode()
+                        }
+                    }
+                }
+
                 onTextEdited: {
                     refreshSuggestions()
                 }
@@ -291,6 +344,8 @@ Item {
                 Keys.onPressed: (event) => {
                     if (event.key === Qt.Key_Escape) {
                         event.accepted = true
+                        // 按 Esc：一步到位同时关闭下拉和编辑态
+                        suggestPopup.close()
                         controller.exitEditMode()
                     } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                         event.accepted = true
@@ -310,16 +365,41 @@ Item {
             }
         }
 
-        // Optional Right Search Input
+        // Responsive Right Search Input ("需要用户输入就出现的搜索框")
         Rectangle {
             id: searchBox
+            objectName: "searchBox"
             visible: root.showSearch
-            Layout.preferredWidth: ThemeTokens.dp(160)
+            Layout.preferredWidth: root.isSearchExpanded ? ThemeTokens.dp(180) : ThemeTokens.dp(28)
             Layout.preferredHeight: ThemeTokens.dp(26)
             radius: ThemeTokens.dp(4)
-            color: ThemeTokens.panel
+            color: (searchInput.activeFocus || searchBoxHover.hovered) ? ThemeTokens.panelRaised : ThemeTokens.panel
             border.width: 1
             border.color: searchInput.activeFocus ? ThemeTokens.accent : ThemeTokens.border
+            clip: true
+
+            Behavior on Layout.preferredWidth {
+                NumberAnimation {
+                    duration: (typeof ThemeTokens !== "undefined" && ThemeTokens.animationsEnabled) ? 150 : 0
+                    easing.type: Easing.OutCubic
+                }
+            }
+
+            HoverHandler {
+                id: searchBoxHover
+                cursorShape: (!root.isSearchExpanded && !root.disabled) ? Qt.PointingHandCursor : Qt.ArrowCursor
+            }
+
+            ToolTip.visible: !root.isSearchExpanded && searchBoxHover.hovered
+            ToolTip.text: qsTr("搜索")
+            ToolTip.delay: 400
+
+            TapHandler {
+                enabled: !root.isSearchExpanded && !root.disabled
+                onTapped: {
+                    root.focusSearch()
+                }
+            }
 
             RowLayout {
                 anchors.fill: parent
@@ -330,12 +410,14 @@ Item {
                 ChaSetIcon {
                     name: "search"
                     size: 14
-                    color: ThemeTokens.subduedText
+                    color: searchInput.activeFocus ? ThemeTokens.accent : ThemeTokens.subduedText
                     Layout.alignment: Qt.AlignVCenter
                 }
 
                 TextInput {
                     id: searchInput
+                    objectName: "addressBarSearchField"
+                    visible: root.isSearchExpanded
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     verticalAlignment: TextInput.AlignVCenter
@@ -345,6 +427,21 @@ Item {
                     onTextEdited: {
                         root.searchQuery = text
                         root.searchRequested(text)
+                    }
+                    onAccepted: {
+                        root.searchRequested(text)
+                    }
+                    Keys.onPressed: (event) => {
+                        if (event.key === Qt.Key_Escape) {
+                            event.accepted = true
+                            if (text.length > 0) {
+                                text = ""
+                                root.searchQuery = ""
+                                root.searchRequested("")
+                            } else {
+                                searchInput.focus = false
+                            }
+                        }
                     }
 
                     HoverHandler {
@@ -367,16 +464,25 @@ Item {
     // Auto-complete / Typed History Suggestions Popup
     ChaSetAddressBarSuggestPopup {
         id: suggestPopup
+        objectName: "suggestPopup"
         x: centerField.x
         y: root.height + ThemeTokens.dp(4)
         onNavigateRequested: (targetPath) => {
             controller.navigate(targetPath)
+        }
+        onClosed: {
+            breadcrumbPrimitive.openSegmentIndex = -1
+            // 点击外部时，历史下拉关闭的同时一并退出可编辑状态，杜绝两步轮流退出的迟滞
+            if (controller.editing && !editInput.activeFocus) {
+                controller.exitEditMode()
+            }
         }
     }
 
     // Subfolders dropdown popup
     ChaSetAddressBarSuggestPopup {
         id: subfolderPopup
+        objectName: "subfolderPopup"
         x: centerField.x
         y: root.height + ThemeTokens.dp(4)
         onNavigateRequested: (targetPath) => {
@@ -421,9 +527,51 @@ Item {
                 return
             }
         }
-        // Fallback: search or cancel
+        // 非路径输入回车 → 触发搜索并进入搜索框
+        root.searchQuery = text
         root.searchRequested(text)
         controller.exitEditMode()
+    }
+
+    function focusSearch() {
+        if (root.showSearch && !root.disabled) {
+            searchInput.forceActiveFocus()
+            searchInput.selectAll()
+        }
+    }
+
+    function navigateTo(targetPath) {
+        return controller.navigate(targetPath)
+    }
+
+    function enterEditMode() {
+        controller.enterEditMode()
+    }
+
+    function exitEditMode() {
+        suggestPopup.close()
+        controller.exitEditMode()
+    }
+
+    function goBack() {
+        controller.goBack()
+    }
+
+    function goForward() {
+        controller.goForward()
+    }
+
+    function navigateUp() {
+        controller.navigateUp()
+    }
+
+    function closeAllPopups() {
+        suggestPopup.close()
+        subfolderPopup.close()
+        breadcrumbPrimitive.openSegmentIndex = -1
+        if (controller.editing) {
+            controller.exitEditMode()
+        }
     }
 
     // Global focus shortcut (Alt+D or Ctrl+L or F4)
@@ -445,6 +593,13 @@ Item {
         sequence: "F4"
         onActivated: {
             if (!root.disabled) controller.enterEditMode()
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+F"
+        onActivated: {
+            if (!root.disabled && root.showSearch) focusSearch()
         }
     }
 }

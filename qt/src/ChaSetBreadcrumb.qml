@@ -20,8 +20,64 @@ Item {
     implicitHeight: ThemeTokens.dp(30)
     implicitWidth: crumbsRow.implicitWidth
 
+    FontMetrics {
+        id: segFontMetrics
+        font.pixelSize: Typography.sizeSmall
+    }
+
+    function getSegmentWidth(index) {
+        if (!root.segments || index < 0 || index >= root.segments.length)
+            return 0
+        var seg = root.segments[index]
+        var name = String(seg.displayName || seg.label || "")
+        segFontMetrics.font.weight = (index === root.segments.length - 1) ? Typography.weightSemibold : Typography.weightRegular
+        var textW = segFontMetrics.advanceWidth(name)
+        var pillW = ThemeTokens.dp(16) + ThemeTokens.dp(4) + textW + ThemeTokens.dp(12)
+        var hasChevron = (index < root.segments.length - 1) || (root.segments.length === 1) || Boolean(seg.hasSubfolders)
+        var chevronW = hasChevron ? ThemeTokens.dp(20) : 0
+        return pillW + chevronW
+    }
+
+    function relayoutSegments() {
+        var count = root.segments ? root.segments.length : 0
+        if (count <= 1) {
+            root.firstVisibleIndex = 0
+            root.overflowVisible = false
+            return
+        }
+        var avail = root.width
+        if (avail <= 0) {
+            root.firstVisibleIndex = 0
+            root.overflowVisible = false
+            return
+        }
+
+        var overflowW = ThemeTokens.dp(26)
+        var lastW = getSegmentWidth(count - 1)
+        var total = lastW
+        var first = count - 1
+
+        for (var i = count - 2; i >= 0; --i) {
+            var w = getSegmentWidth(i)
+            var neededOverflow = (i > 0) ? overflowW : 0
+            if (total + w + neededOverflow > avail) {
+                break
+            }
+            total += w
+            first = i
+        }
+
+        root.firstVisibleIndex = first
+        root.overflowVisible = (first > 0)
+    }
+
+    onWidthChanged: relayoutSegments()
+    onSegmentsChanged: relayoutSegments()
+    Component.onCompleted: relayoutSegments()
+
     RowLayout {
         id: crumbsRow
+        objectName: "crumbsRow"
         anchors.fill: parent
         spacing: 0
         clip: true
@@ -29,6 +85,7 @@ Item {
         // Overflow ellipsis button
         Rectangle {
             id: overflowBtn
+            objectName: "overflowBtn"
             visible: root.overflowVisible
             Layout.preferredWidth: ThemeTokens.dp(24)
             Layout.preferredHeight: ThemeTokens.dp(26)
@@ -59,6 +116,7 @@ Item {
 
         Repeater {
             id: segRepeater
+            objectName: "segRepeater"
             model: root.segments
 
             delegate: Item {
@@ -142,6 +200,7 @@ Item {
 
                         ChaSetIcon {
                             id: chevronIcon
+                            objectName: "segChevronIcon"
                             name: "chevron-right"
                             size: 14
                             color: (chevronMouse.containsMouse || segItem.isMenuOpen) ? ThemeTokens.text : ThemeTokens.subduedText

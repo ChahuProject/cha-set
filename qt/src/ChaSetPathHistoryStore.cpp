@@ -27,11 +27,37 @@ ChaSetPathHistoryStore::ChaSetPathHistoryStore(QObject *parent)
 }
 
 QString ChaSetPathHistoryStore::storageFilePath() const {
+    if (!m_customFilePath.isEmpty()) {
+        return m_customFilePath;
+    }
+    if (!m_baseDir.isEmpty()) {
+        return QDir(m_baseDir).filePath(QLatin1String(kHistoryFileName));
+    }
     const QString base = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     if (base.isEmpty()) {
         return QDir::temp().filePath(QLatin1String(kHistoryFileName));
     }
     return QDir(base).filePath(QLatin1String(kHistoryFileName));
+}
+
+void ChaSetPathHistoryStore::setStorageFilePath(const QString &filePath) {
+    if (m_customFilePath == filePath)
+        return;
+    m_customFilePath = filePath;
+    load();
+    emit historyChanged();
+}
+
+QString ChaSetPathHistoryStore::baseDir() const {
+    return m_baseDir;
+}
+
+void ChaSetPathHistoryStore::setBaseDir(const QString &dir) {
+    if (m_baseDir == dir)
+        return;
+    m_baseDir = dir;
+    load();
+    emit historyChanged();
 }
 
 void ChaSetPathHistoryStore::add(const QString &path) {
