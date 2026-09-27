@@ -46,7 +46,7 @@ Item {
 
     WheelHandler {
         id: wheelHandler
-        parent: root.parent
+        parent: root.targetItem ? root.targetItem : root.parent
         target: null
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
         orientation: (root.scrollOrientation === Qt.Horizontal || root.mapVerticalToHorizontal)
