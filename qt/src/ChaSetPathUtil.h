@@ -86,7 +86,7 @@ inline void appendDriveSegment(std::vector<Segment> &segs, const QChar &letter, 
     Segment seg;
     seg.displayName = formatDriveName(letter, label);
     seg.realPath = driveRoot;
-    seg.icon = QStringLiteral("package");
+    seg.icon = QStringLiteral("storage");
     seg.isDrive = true;
     segs.push_back(std::move(seg));
 }
@@ -102,7 +102,7 @@ inline std::vector<Segment> splitPath(
     Segment root;
     root.displayName = QCoreApplication::translate("ChaSet", "此电脑");
     root.realPath = QString();
-    root.icon = QStringLiteral("monitor");
+    root.icon = QStringLiteral("computer");
     root.isRoot = true;
     segs.push_back(std::move(root));
 
@@ -121,7 +121,7 @@ inline std::vector<Segment> splitPath(
         Segment srv;
         srv.displayName = server;
         srv.realPath = serverPath;
-        srv.icon = QStringLiteral("monitor");
+        srv.icon = QStringLiteral("computer");
         srv.isRoot = true;
         segs.push_back(std::move(srv));
 

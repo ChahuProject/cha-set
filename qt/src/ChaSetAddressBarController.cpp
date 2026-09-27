@@ -78,12 +78,13 @@ bool ChaSetAddressBarController::navigate(const QString &path) {
 bool ChaSetAddressBarController::navigateValidated(const QString &rawPath, bool recordStack) {
     const QString expanded = chaset::expandEnvVars(rawPath.trimmed());
     if (expanded.isEmpty()) {
-        if (recordStack && !m_currentPath.isEmpty() &&
-            (m_backStack.isEmpty() || m_backStack.last() != m_currentPath)) {
-            m_backStack.append(m_currentPath);
-        }
-        if (!m_forwardStack.isEmpty()) {
-            m_forwardStack.clear();
+        if (recordStack && !m_currentPath.isEmpty()) {
+            if (m_backStack.isEmpty() || m_backStack.last() != m_currentPath) {
+                m_backStack.append(m_currentPath);
+            }
+            if (!m_forwardStack.isEmpty()) {
+                m_forwardStack.clear();
+            }
             emit navigationStackChanged();
         }
         navigateToThisPc();
@@ -96,41 +97,31 @@ bool ChaSetAddressBarController::navigateValidated(const QString &rawPath, bool 
         return false;
     }
 
-    if (info.isFile()) {
-        const QString parentDir = QFileInfo(info.absolutePath()).absoluteFilePath();
-        const QString selectionPath = info.absoluteFilePath();
-        if (recordStack && !m_currentPath.isEmpty() &&
-            (m_backStack.isEmpty() || m_backStack.last() != m_currentPath)) {
+    QString target = QFileInfo(info.absoluteFilePath()).absoluteFilePath();
+    QString selectPath;
+    if (!info.isDir()) {
+        selectPath = target;
+        target = QFileInfo(target).absolutePath();
+    }
+
+    if (recordStack && target != m_currentPath) {
+        if (m_backStack.isEmpty() || m_backStack.last() != m_currentPath) {
             m_backStack.append(m_currentPath);
         }
         if (!m_forwardStack.isEmpty()) {
             m_forwardStack.clear();
-            emit navigationStackChanged();
         }
-        ChaSetPathHistoryStore::instance().add(parentDir);
-        setCurrentPath(parentDir);
-        setEditing(false);
-        emit navigateRequestedWithSelection(parentDir, selectionPath);
-        return true;
-    }
-
-    if (!info.isDir()) {
-        return false;
-    }
-
-    const QString abs = QFileInfo(info.absoluteFilePath()).absoluteFilePath();
-    if (recordStack && !m_currentPath.isEmpty() &&
-        (m_backStack.isEmpty() || m_backStack.last() != m_currentPath)) {
-        m_backStack.append(m_currentPath);
-    }
-    if (!m_forwardStack.isEmpty()) {
-        m_forwardStack.clear();
         emit navigationStackChanged();
     }
-    ChaSetPathHistoryStore::instance().add(abs);
-    setCurrentPath(abs);
+
+    ChaSetPathHistoryStore::instance().add(target);
+    setCurrentPath(target);
     setEditing(false);
-    emit navigateRequested(abs);
+    if (selectPath.isEmpty()) {
+        emit navigateRequested(target);
+    } else {
+        emit navigateRequestedWithSelection(target, selectPath);
+    }
     return true;
 }
 
@@ -141,8 +132,7 @@ void ChaSetAddressBarController::goBack() {
     const QString expanded = chaset::expandEnvVars(target.trimmed());
     if (expanded.isEmpty()) {
         m_backStack.removeLast();
-        if (!m_currentPath.isEmpty() &&
-            (m_forwardStack.isEmpty() || m_forwardStack.last() != m_currentPath)) {
+        if (m_forwardStack.isEmpty() || m_forwardStack.last() != m_currentPath) {
             m_forwardStack.append(m_currentPath);
         }
         emit navigationStackChanged();
@@ -171,8 +161,7 @@ void ChaSetAddressBarController::goForward() {
     const QString expanded = chaset::expandEnvVars(target.trimmed());
     if (expanded.isEmpty()) {
         m_forwardStack.removeLast();
-        if (!m_currentPath.isEmpty() &&
-            (m_backStack.isEmpty() || m_backStack.last() != m_currentPath)) {
+        if (m_backStack.isEmpty() || m_backStack.last() != m_currentPath) {
             m_backStack.append(m_currentPath);
         }
         emit navigationStackChanged();
