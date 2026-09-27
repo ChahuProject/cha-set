@@ -45,7 +45,7 @@ void ChaSetAddressBarController::rebuildSegments() {
     for (qsizetype i = 0; i <= lastIndex; ++i) {
         chaset::Segment seg = segs[static_cast<std::size_t>(i)];
         if (i == lastIndex && m_currentPath.size() >= 3 && seg.icon == QLatin1String("folder")) {
-            seg.icon = QStringLiteral("folder");
+            seg.icon = QStringLiteral("folder_open");
         }
         QVariantMap map = chaset::segmentToVariantMap(seg);
         if (i == lastIndex) {

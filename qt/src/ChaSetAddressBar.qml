@@ -108,11 +108,20 @@ Item {
                 objectName: "backButton"
                 property bool actionEnabled: root.canGoBack && !root.disabled
                 property string tooltipText: qsTr("后退")
+                property string iconName: "arrow_back"
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
                 radius: ThemeTokens.dp(4)
-                color: backHover.hovered && actionEnabled ? ThemeTokens.hover : "transparent"
+                color: "transparent"
                 opacity: actionEnabled ? 1.0 : 0.35
+
+                Rectangle {
+                    id: backBtnBg
+                    objectName: "navBtnBg"
+                    anchors.fill: parent
+                    radius: ThemeTokens.dp(4)
+                    color: backHover.hovered && backButton.actionEnabled ? ThemeTokens.hover : "transparent"
+                }
 
                 ChaSetIcon {
                     anchors.centerIn: parent
@@ -123,6 +132,7 @@ Item {
 
                 HoverHandler {
                     id: backHover
+                    objectName: "navHover"
                     cursorShape: backButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
@@ -145,11 +155,20 @@ Item {
                 objectName: "forwardButton"
                 property bool actionEnabled: root.canGoForward && !root.disabled
                 property string tooltipText: qsTr("前进")
+                property string iconName: "arrow_forward"
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
                 radius: ThemeTokens.dp(4)
-                color: forwardHover.hovered && actionEnabled ? ThemeTokens.hover : "transparent"
+                color: "transparent"
                 opacity: actionEnabled ? 1.0 : 0.35
+
+                Rectangle {
+                    id: forwardBtnBg
+                    objectName: "navBtnBg"
+                    anchors.fill: parent
+                    radius: ThemeTokens.dp(4)
+                    color: forwardHover.hovered && forwardButton.actionEnabled ? ThemeTokens.hover : "transparent"
+                }
 
                 ChaSetIcon {
                     anchors.centerIn: parent
@@ -160,6 +179,7 @@ Item {
 
                 HoverHandler {
                     id: forwardHover
+                    objectName: "navHover"
                     cursorShape: forwardButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
@@ -183,11 +203,20 @@ Item {
                 readonly property bool canUp: Boolean(root.path && root.path !== "/" && !root.path.match(/^[a-zA-Z]:[/\\]?$/))
                 property bool actionEnabled: canUp && !root.disabled
                 property string tooltipText: qsTr("上一级")
+                property string iconName: "arrow_upward"
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
                 radius: ThemeTokens.dp(4)
-                color: upHover.hovered && actionEnabled ? ThemeTokens.hover : "transparent"
+                color: "transparent"
                 opacity: actionEnabled ? 1.0 : 0.35
+
+                Rectangle {
+                    id: upBtnBg
+                    objectName: "navBtnBg"
+                    anchors.fill: parent
+                    radius: ThemeTokens.dp(4)
+                    color: upHover.hovered && upButton.actionEnabled ? ThemeTokens.hover : "transparent"
+                }
 
                 ChaSetIcon {
                     anchors.centerIn: parent
@@ -198,6 +227,7 @@ Item {
 
                 HoverHandler {
                     id: upHover
+                    objectName: "navHover"
                     cursorShape: upButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
@@ -221,11 +251,20 @@ Item {
                 visible: root.showRefresh
                 property bool actionEnabled: !root.disabled
                 property string tooltipText: qsTr("刷新")
+                property string iconName: "refresh"
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
                 radius: ThemeTokens.dp(4)
-                color: refreshHover.hovered && actionEnabled ? ThemeTokens.hover : "transparent"
+                color: "transparent"
                 opacity: actionEnabled ? 1.0 : 0.35
+
+                Rectangle {
+                    id: refreshBtnBg
+                    objectName: "navBtnBg"
+                    anchors.fill: parent
+                    radius: ThemeTokens.dp(4)
+                    color: refreshHover.hovered && refreshButton.actionEnabled ? ThemeTokens.hover : "transparent"
+                }
 
                 ChaSetIcon {
                     anchors.centerIn: parent
@@ -236,6 +275,7 @@ Item {
 
                 HoverHandler {
                     id: refreshHover
+                    objectName: "navHover"
                     cursorShape: refreshButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
@@ -576,6 +616,65 @@ Item {
         }
         if (controller.editing) {
             controller.exitEditMode()
+        }
+    }
+
+    // Tooltip popup support for host and tests
+    FontMetrics {
+        id: tooltipFontMetrics
+        font.pixelSize: Typography.sizeSmall
+    }
+
+    Popup {
+        id: tooltipPopup
+        objectName: "tooltipPopup"
+        popupType: Popup.Item
+        closePolicy: Popup.NoAutoClose
+        property string tooltipText: ""
+        padding: ThemeTokens.dp(6)
+        width: Math.min(ThemeTokens.dp(320), tooltipFontMetrics.advanceWidth(tooltipPopup.tooltipText) + ThemeTokens.dp(12))
+        height: ThemeTokens.dp(24)
+        contentItem: Text {
+            text: tooltipPopup.tooltipText
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeSmall
+            elide: Text.ElideRight
+            verticalAlignment: Text.AlignVCenter
+        }
+        background: Rectangle {
+            color: ThemeTokens.panel
+            radius: ThemeTokens.dp(4)
+            border.color: ThemeTokens.border
+            border.width: 1
+        }
+    }
+
+    property var _tooltipRequest: null
+    Timer {
+        id: tooltipDelayTimer
+        interval: 400
+        repeat: false
+        onTriggered: {
+            if (!_tooltipRequest || !_tooltipRequest.item) return
+            var req = _tooltipRequest
+            tooltipPopup.tooltipText = req.text
+            var mapped = req.item.mapToItem(root, req.item.width / 2 - tooltipPopup.width / 2, -tooltipPopup.height - 3)
+            tooltipPopup.x = Math.max(0, Math.min(root.width - tooltipPopup.width, mapped.x))
+            tooltipPopup.y = mapped.y
+            tooltipPopup.open()
+        }
+    }
+
+    function requestTooltip(item, text) {
+        _tooltipRequest = { item: item, text: text }
+        tooltipDelayTimer.restart()
+    }
+
+    function clearTooltip(item) {
+        if (_tooltipRequest && _tooltipRequest.item === item) {
+            _tooltipRequest = null
+            tooltipDelayTimer.stop()
+            tooltipPopup.close()
         }
     }
 
