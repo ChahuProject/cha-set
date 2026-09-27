@@ -16,6 +16,7 @@ Item {
     property bool canGoBack: controller.canGoBack
     property bool canGoForward: controller.canGoForward
     property bool showNavButtons: true
+    property alias showNavigationButtons: root.showNavButtons
     property bool showRefresh: true
     property bool showSearch: true
     property string searchQuery: ""
