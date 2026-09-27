@@ -467,6 +467,9 @@ Item {
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeSmall
                     text: root.searchQuery
+                    onTextChanged: {
+                        if (root.searchQuery !== text) root.searchQuery = text
+                    }
                     onTextEdited: {
                         root.searchQuery = text
                         root.searchRequested(text)
