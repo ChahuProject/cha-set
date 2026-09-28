@@ -25,6 +25,11 @@ const sizeStyles: Record<InputSize, string> = {
   sm: 'h-7 px-2 py-0.5 text-xs',
 };
 
+const inputSizeStyles: Record<InputSize, string> = {
+  default: 'h-8 py-1 text-sm',
+  sm: 'h-7 py-0.5 text-xs',
+};
+
 const addonContainerSizeStyles: Record<InputSize, string> = {
   default: 'h-8 text-sm px-2.5',
   sm: 'h-7 text-xs px-2',
@@ -165,7 +170,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          className={`flex-1 min-w-0 w-full bg-transparent border-0 outline-none placeholder:text-muted-foreground text-foreground text-inherit p-0 disabled:cursor-not-allowed cursor-text ${sizeStyles[size]} ${disabled ? 'disabled:opacity-50' : ''} ${invalid ? 'border-destructive' : ''} ${className}`.trim()}
+          className={`flex-1 min-w-0 w-full bg-transparent border-0 outline-none placeholder:text-muted-foreground text-foreground text-inherit p-0 px-0 disabled:cursor-not-allowed cursor-text ${inputSizeStyles[size]} ${disabled ? 'disabled:opacity-50' : ''} ${invalid ? 'border-destructive' : ''} ${className}`.trim()}
           {...props}
         />
 
@@ -251,7 +256,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {/* Win11 style bottom focus underline */}
         <div
           data-slot="input-focus-underline"
-          className={`absolute -bottom-[0.0625rem] -left-[0.0625rem] -right-[0.0625rem] h-[0.125rem] rounded-b-md pointer-events-none transition-all duration-quick z-10 ${
+          className={`absolute bottom-0 left-[0.125rem] right-[0.125rem] h-[0.125rem] rounded-full pointer-events-none transition-all duration-quick z-10 ${
             isFocused ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
           } ${invalid ? 'bg-destructive' : 'bg-primary'}`}
         />

@@ -132,7 +132,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
           aria-hidden="true"
           data-slot="checkbox-indicator"
           className={cn(
-            size === 'sm' ? 'size-2.5' : 'size-3',
+            size === 'sm' ? 'size-2.5' : 'size-3.5',
             'transition-[opacity,scale] duration-quick ease-entrance',
             isChecked || isExplicitIndeterminate ? 'opacity-100 scale-100' : 'opacity-0 scale-50',
           )}

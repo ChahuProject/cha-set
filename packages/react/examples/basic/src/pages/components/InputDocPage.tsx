@@ -136,7 +136,7 @@ export function InputDocPage() {
           <div className="w-full max-w-sm flex flex-col gap-3 py-4">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <span>Email address</span>
-              {value && <span className="text-[10px] font-mono opacity-70">{value.length} chars</span>}
+              {value && <span className="text-xs font-mono opacity-70">{value.length} chars</span>}
             </div>
             <Input
               type={type}
@@ -151,7 +151,7 @@ export function InputDocPage() {
               passwordToggle={passwordToggle}
               onChange={(e) => setValue(e.target.value)}
             />
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {invalid ? (
                 <span className="text-destructive font-medium">Please enter a valid corporate email address.</span>
               ) : (

@@ -64,15 +64,15 @@ export function Header({
         <Button
           type="button"
           variant="outline"
-          size="sm"
+          size="default"
           onClick={onOpenSearch}
-          className="hidden sm:inline-flex items-center justify-between gap-3 w-64 md:w-80 text-muted-foreground font-normal bg-muted/30 hover:bg-muted/60"
+          className="hidden sm:inline-flex items-center justify-between gap-3 h-9 w-72 md:w-96 px-3.5 text-sm text-muted-foreground font-normal bg-muted/30 hover:bg-muted/60"
         >
           <div className="flex items-center gap-2">
-            <SearchIcon size={14} />
+            <SearchIcon className="size-4 shrink-0" />
             <span>{t('showcase.searchPlaceholder', 'Search components & docs...')}</span>
           </div>
-          <kbd className="rounded border border-border bg-background px-1.5 py-0.5 font-mono text-[0.625rem] text-muted-foreground">
+          <kbd className="rounded border border-border bg-background/80 px-2 py-0.5 font-mono text-xs text-muted-foreground">
             ⌘K
           </kbd>
         </Button>

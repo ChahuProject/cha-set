@@ -71,7 +71,12 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
         e.preventDefault();
         if (isOpen) onClose();
       } else if (e.key === 'Escape' && isOpen) {
-        onClose();
+        if (query) {
+          e.preventDefault();
+          setQuery('');
+        } else {
+          onClose();
+        }
       } else if (e.key === 'ArrowDown' && isOpen) {
         e.preventDefault();
         setSelectedIndex((prev) => Math.min(prev + 1, Math.max(0, filtered.length - 1)));

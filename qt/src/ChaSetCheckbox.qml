@@ -114,12 +114,14 @@ Item {
             ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
         }
 
-        // Indicator Canvas (Checkmark or Dash)
-        Canvas {
-            id: indicatorCanvas
-            anchors.fill: parent
-            antialiasing: true
-            renderTarget: Canvas.Image
+        // Indicator Icon (Checkmark or Minus Dash)
+        ChaSetIcon {
+            id: indicatorIcon
+            anchors.centerIn: parent
+            name: root.indeterminate ? "minus" : "check"
+            size: root.isSm ? 11 : 13
+            color: "#ffffff"
+            weight: 600
             opacity: root.isCheckedOrIndeterminate ? 1.0 : 0.0
             scale: root.isCheckedOrIndeterminate ? 1.0 : 0.5
             visible: opacity > 0.01
@@ -132,53 +134,6 @@ Item {
                 enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
                 NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeEntrance }
             }
-
-            onPaint: {
-                var ctx = getContext("2d");
-                ctx.reset();
-                ctx.clearRect(0, 0, width, height);
-
-                if (!root.checked && !root.indeterminate) {
-                    return;
-                }
-
-                ctx.strokeStyle = "#ffffff";
-                ctx.lineWidth = root.isSm ? 1.75 : 2.0;
-                ctx.lineCap = "round";
-                ctx.lineJoin = "round";
-                ctx.beginPath();
-
-                if (root.indeterminate) {
-                    var cy = Math.round(height / 2);
-                    var xPad = root.isSm ? 3.5 : 4.0;
-                    ctx.moveTo(xPad, cy);
-                    ctx.lineTo(width - xPad, cy);
-                    ctx.stroke();
-                } else if (root.checked) {
-                    if (root.isSm) {
-                        ctx.moveTo(3.0, 6.8);
-                        ctx.lineTo(5.6, 9.6);
-                        ctx.lineTo(11.0, 4.0);
-                    } else {
-                        ctx.moveTo(3.5, 8.0);
-                        ctx.lineTo(6.5, 11.0);
-                        ctx.lineTo(12.5, 4.5);
-                    }
-                    ctx.stroke();
-                }
-            }
-
-            Connections {
-                target: root
-                function onCheckedChanged() { indicatorCanvas.requestPaint() }
-                function onIndeterminateChanged() { indicatorCanvas.requestPaint() }
-                function onSizeChanged() { indicatorCanvas.requestPaint() }
-            }
-            Connections {
-                target: ThemeTokens
-                function onDarkChanged() { indicatorCanvas.requestPaint() }
-            }
-            Component.onCompleted: indicatorCanvas.requestPaint()
         }
     }
 

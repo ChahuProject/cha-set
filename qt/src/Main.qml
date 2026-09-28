@@ -1769,19 +1769,50 @@ ApplicationWindow {
                         border.color: win.cBorder
                         anchors.centerIn: parent
 
-                        Row {
-                            anchors.fill: parent
-                            anchors.leftMargin: ThemeTokens.dp(10)
+                        // Right-anchored keyboard shortcut badge
+                        Rectangle {
+                            id: headerKbdBadge
+                            anchors.right: parent.right
                             anchors.rightMargin: ThemeTokens.dp(8)
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: ThemeTokens.dp(32)
+                            height: ThemeTokens.dp(18)
+                            radius: ThemeTokens.dp(3)
+                            color: win.cCard
+                            border.color: win.cBorder
+
+                            Text {
+                                anchors.centerIn: parent
+                                text: "⌘K"
+                                color: win.cMutedFg
+                                font.pixelSize: Typography.sizeMicro
+                                font.family: Typography.familyMono
+                            }
+                        }
+
+                        // Left icon and placeholder text
+                        Row {
+                            anchors.left: parent.left
+                            anchors.leftMargin: ThemeTokens.dp(10)
+                            anchors.right: headerKbdBadge.left
+                            anchors.rightMargin: ThemeTokens.dp(8)
+                            anchors.verticalCenter: parent.verticalCenter
                             spacing: ThemeTokens.dp(8)
 
-                            ChaSetIcon { name: "search"; size: 14; color: win.cMutedFg; anchors.verticalCenter: parent.verticalCenter }
-                            Text { text: ChaSetI18n.tr("showcase.searchPlaceholder", "Search components & docs..."); color: win.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                            Item { width: Math.max(0, parent.width - ThemeTokens.dp(240)); height: 1 }
-                            Rectangle {
-                                width: ThemeTokens.dp(32); height: ThemeTokens.dp(18); radius: ThemeTokens.dp(3); color: win.cCard; border.color: win.cBorder
+                            ChaSetIcon {
+                                name: "search"
+                                size: 14
+                                color: win.cMutedFg
                                 anchors.verticalCenter: parent.verticalCenter
-                                Text { anchors.centerIn: parent; text: "⌘K"; color: win.cMutedFg; font.pixelSize: Typography.sizeMicro; font.family: Typography.familyMono }
+                            }
+
+                            Text {
+                                text: ChaSetI18n.tr("showcase.searchPlaceholder", "Search components & docs...")
+                                color: win.cMutedFg
+                                font.pixelSize: Typography.sizeSmall
+                                anchors.verticalCenter: parent.verticalCenter
+                                elide: Text.ElideRight
+                                width: Math.min(implicitWidth, parent.width - ThemeTokens.dp(22))
                             }
                         }
 

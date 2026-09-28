@@ -126,21 +126,24 @@ Rectangle {
         anchors.rightMargin: ThemeTokens.dp(root.isSm ? 6 : 8)
         anchors.verticalCenter: parent.verticalCenter
         spacing: ThemeTokens.dp(4)
+        z: 5
 
         // Clear button
         Rectangle {
             id: clearBtn
             visible: root.clearable && !root.disabled && !root.readOnly && root.text.length > 0
-            width: ThemeTokens.dp(root.isSm ? 16 : 18)
-            height: ThemeTokens.dp(root.isSm ? 16 : 18)
+            width: ThemeTokens.dp(root.isSm ? 15 : 17)
+            height: ThemeTokens.dp(root.isSm ? 15 : 17)
             radius: width / 2
             color: clearMouse.containsMouse ? ThemeTokens.hover : "transparent"
+            border.width: 1
+            border.color: clearMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText
             anchors.verticalCenter: parent.verticalCenter
 
             ChaSetIcon {
                 anchors.centerIn: parent
                 name: "x"
-                size: root.isSm ? 12 : 14
+                size: root.isSm ? 8 : 10
                 color: clearMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText
             }
 
