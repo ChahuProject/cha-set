@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter, SheetClose, Button, Input, type SheetSide, type SheetSize, CodeBlock } from '@chahu/cha-set';
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter, SheetClose, Button, Input, Checkbox, type SheetSide, type SheetSize, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -106,12 +106,10 @@ ChaSetSheet {
 
               <span className="mx-2 text-border">|</span>
 
-              <label className="flex items-center gap-1.5 cursor-pointer text-muted-foreground hover:text-foreground">
-                <input
-                  type="checkbox"
+              <label className="flex items-center gap-1.5 cursor-pointer text-muted-foreground hover:text-foreground text-xs">
+                <Checkbox
                   checked={closeOnOverlay}
-                  onChange={(e) => setCloseOnOverlay(e.target.checked)}
-                  className="rounded"
+                  onCheckedChange={(val) => setCloseOnOverlay(Boolean(val))}
                 />
                 <span>Close on overlay</span>
               </label>

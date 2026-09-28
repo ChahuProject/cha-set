@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, type CardVariant, Button, Badge, Tabs, TabsList, TabsTrigger, CodeBlock } from '@chahu/cha-set';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, type CardVariant, Button, Badge, Tabs, TabsList, TabsTrigger, CodeBlock, Checkbox } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -93,11 +93,9 @@ export function CardDocPage() {
                 </Tabs>
               </div>
               <label className="flex items-center gap-2 cursor-pointer select-none text-sm text-foreground">
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={interactive}
-                  onChange={(e) => setInteractive(e.target.checked)}
-                  className="rounded border-border text-primary focus:ring-ring"
+                  onCheckedChange={(val) => setInteractive(Boolean(val))}
                 />
                 Interactive Feedback
               </label>

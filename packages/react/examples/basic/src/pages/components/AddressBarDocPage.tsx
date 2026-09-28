@@ -8,15 +8,16 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 import { PropsTable } from '../../components/PropsTable';
 
 export function AddressBarDocPage() {
-  const [currentPath, setCurrentPath] = useState('C:/Users/Development/Projects/cha-set');
+  const [currentPath, setCurrentPath] = useState('此电脑/C:/Users/Development/Projects/cha-set');
   const [history, setHistory] = useState<string[]>([
-    'C:/',
-    'C:/Users',
-    'C:/Users/Development',
-    'C:/Users/Development/Projects',
-    'C:/Users/Development/Projects/cha-set',
+    '此电脑',
+    '此电脑/C:',
+    '此电脑/C:/Users',
+    '此电脑/C:/Users/Development',
+    '此电脑/C:/Users/Development/Projects',
+    '此电脑/C:/Users/Development/Projects/cha-set',
   ]);
-  const [historyIndex, setHistoryIndex] = useState(4);
+  const [historyIndex, setHistoryIndex] = useState(5);
   const [refreshCount, setRefreshCount] = useState(0);
 
   const canGoBack = historyIndex > 0;

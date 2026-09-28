@@ -1758,13 +1758,6 @@ ApplicationWindow {
                                 onClicked: win.activePage = "intro"
                             }
                         }
-
-                        ChaSetBadge {
-                            variant: "outline"
-                            size: "sm"
-                            text: "v0.1.0"
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
                     }
 
                     // Center Search Bar Trigger
@@ -1917,6 +1910,14 @@ ApplicationWindow {
                                     }
                                 }
                             }
+                        }
+
+                        // Version Badge (Right-aligned, top-right of chrome)
+                        ChaSetBadge {
+                            variant: "outline"
+                            size: "sm"
+                            text: "v0.1.0"
+                            anchors.verticalCenter: parent.verticalCenter
                         }
                     }
                 }

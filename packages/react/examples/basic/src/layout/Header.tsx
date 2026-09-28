@@ -58,9 +58,6 @@ export function Header({
             <ChaSetLogoIcon className="size-5 text-primary shrink-0" />
             <span className="text-base tracking-tight">ChaSet</span>
           </a>
-          <Badge variant="outline" size="sm" className="font-medium text-muted-foreground bg-muted/60">
-            v0.1.0
-          </Badge>
         </div>
 
         {/* Center Search Trigger */}
@@ -212,6 +209,11 @@ export function Header({
               </a>
             </Button>
           </Tooltip>
+
+          {/* Version Badge */}
+          <Badge variant="outline" size="sm" className="font-medium text-muted-foreground bg-muted/60 shrink-0">
+            v0.1.0
+          </Badge>
         </div>
       </div>
     </header>

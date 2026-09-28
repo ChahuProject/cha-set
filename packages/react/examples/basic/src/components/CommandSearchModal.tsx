@@ -10,6 +10,18 @@ export interface CommandSearchModalProps {
 
 export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchModalProps) {
   const [query, setQuery] = useState('');
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      requestAnimationFrame(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          inputRef.current.select();
+        }
+      });
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -61,7 +73,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
         <div className="flex items-center px-3">
           <SearchIcon className="size-4 text-muted-foreground mr-2 shrink-0" />
           <Input
-            autoFocus
+            ref={inputRef}
             type="text"
             placeholder="Search documentation and components..."
             value={query}

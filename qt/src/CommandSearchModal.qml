@@ -42,6 +42,13 @@ Rectangle {
     signal selectPage(string pageId)
     signal close()
 
+    onVisibleChanged: {
+        if (visible) {
+            searchInput.forceActiveFocus()
+            searchInput.selectAll()
+        }
+    }
+
     MouseArea { anchors.fill: parent; onClicked: root.close() }
 
     ChaSetCard {
