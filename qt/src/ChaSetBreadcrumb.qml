@@ -19,15 +19,30 @@ Item {
     }
 
     signal navigateRequested(string path)
-    signal openSubfoldersRequested(int index, string path)
+    signal openSubfoldersRequested(int index, string path, Item chevronItem)
     signal dropRequested(string targetPath, var urls)
 
     implicitHeight: ThemeTokens.dp(30)
-    implicitWidth: crumbsRow.implicitWidth
+    implicitWidth: {
+        var total = 0
+        if (root.segments) {
+            for (var i = 0; i < root.segments.length; i++) {
+                total += getSegmentWidth(i)
+            }
+        }
+        return total
+    }
 
     FontMetrics {
         id: segFontMetrics
         font.pixelSize: Typography.sizeSmall
+        font.weight: Typography.weightRegular
+    }
+
+    FontMetrics {
+        id: segBoldFontMetrics
+        font.pixelSize: Typography.sizeSmall
+        font.weight: Typography.weightSemibold
     }
 
     function getSegmentWidth(index) {
@@ -35,9 +50,9 @@ Item {
             return 0
         var seg = root.segments[index]
         var name = String(seg.displayName || seg.label || "")
-        segFontMetrics.font.weight = (index === root.segments.length - 1) ? Typography.weightSemibold : Typography.weightRegular
-        var textW = segFontMetrics.advanceWidth(name)
-        var pillW = ThemeTokens.dp(16) + ThemeTokens.dp(4) + textW + ThemeTokens.dp(12)
+        var fm = (index === root.segments.length - 1) ? segBoldFontMetrics : segFontMetrics
+        var textW = fm.advanceWidth(name)
+        var pillW = textW + ThemeTokens.dp(12)
         var hasChevron = (index < root.segments.length - 1) || (root.segments.length === 1) || Boolean(seg.hasSubfolders)
         var chevronW = hasChevron ? ThemeTokens.dp(20) : 0
         return pillW + chevronW
@@ -117,6 +132,10 @@ Item {
                     }
                 }
             }
+
+            ToolTip.visible: overflowMouse.containsMouse && !root.disabled
+            ToolTip.text: qsTr("显示隐藏的祖先文件夹")
+            ToolTip.delay: 400
         }
 
         Repeater {
@@ -145,7 +164,7 @@ Item {
                     anchors.fill: parent
                     spacing: 0
 
-                    // Segment Pill
+                    // Segment Pill (No leading icon, auto-expanding content width)
                     Rectangle {
                         id: segPill
                         width: pillContent.implicitWidth + ThemeTokens.dp(12)
@@ -157,14 +176,6 @@ Item {
                         Row {
                             id: pillContent
                             anchors.centerIn: parent
-                            spacing: ThemeTokens.dp(4)
-
-                            ChaSetIcon {
-                                name: segItem.segIcon
-                                size: 16
-                                color: segItem.isCurrent ? ThemeTokens.accent : ThemeTokens.subduedText
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
 
                             Text {
                                 text: segItem.segName
@@ -188,6 +199,10 @@ Item {
                                 }
                             }
                         }
+
+                        ToolTip.visible: pillMouse.containsMouse && !root.disabled
+                        ToolTip.text: segItem.segPath || segItem.segName
+                        ToolTip.delay: 400
                     }
 
                     // Independent Chevron dropdown
@@ -236,11 +251,15 @@ Item {
                                         root.openSegmentIndex = -1
                                     } else {
                                         root.openSegmentIndex = segItem.index
-                                        root.openSubfoldersRequested(segItem.index, segItem.segPath)
+                                        root.openSubfoldersRequested(segItem.index, segItem.segPath, chevronBox)
                                     }
                                 }
                             }
                         }
+
+                        ToolTip.visible: chevronMouse.containsMouse && !root.disabled
+                        ToolTip.text: qsTr("展开 %1 的子文件夹").arg(segItem.segName)
+                        ToolTip.delay: 400
                     }
                 }
             }

@@ -306,16 +306,18 @@ Item {
             Layout.fillHeight: true
 
             // 1. Breadcrumbs Mode
-            RowLayout {
+            Item {
                 id: breadcrumbsContainer
                 anchors.fill: parent
                 visible: !root.editing
-                spacing: 0
+                clip: true
 
                 ChaSetBreadcrumb {
                     id: breadcrumbPrimitive
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    width: Math.min(parent.width, implicitWidth)
                     segments: controller.segments
                     disabled: root.disabled
 
@@ -323,10 +325,18 @@ Item {
                         controller.navigate(targetPath)
                     }
 
-                    onOpenSubfoldersRequested: (index, targetPath) => {
+                    onOpenSubfoldersRequested: (index, targetPath, chevronItem) => {
                         var list = controller.subfolders(targetPath)
                         subfolderPopup.setItems(list)
                         if (list.length > 0) {
+                            if (chevronItem) {
+                                var pt = chevronItem.mapToItem(root, 0, chevronItem.height)
+                                subfolderPopup.x = pt.x
+                                subfolderPopup.y = pt.y + ThemeTokens.dp(4)
+                            } else {
+                                subfolderPopup.x = centerField.x
+                                subfolderPopup.y = root.height + ThemeTokens.dp(4)
+                            }
                             subfolderPopup.open()
                         }
                     }
@@ -337,16 +347,24 @@ Item {
                 }
 
                 // Blank area to click into edit mode
-                MouseArea {
-                    id: blankClickArea
-                    objectName: "blankClickArea"
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: ThemeTokens.dp(30)
-                    Layout.fillHeight: true
-                    cursorShape: Qt.IBeamCursor
-                    onClicked: {
-                        if (!root.disabled) {
-                            controller.enterEditMode()
+                Item {
+                    id: blankAreaWrapper
+                    objectName: "blankAreaWrapper"
+                    anchors.left: breadcrumbPrimitive.right
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    visible: width > 2
+
+                    MouseArea {
+                        id: blankClickArea
+                        objectName: "blankClickArea"
+                        anchors.fill: parent
+                        cursorShape: Qt.IBeamCursor
+                        onClicked: {
+                            if (!root.disabled) {
+                                controller.enterEditMode()
+                            }
                         }
                     }
                 }
@@ -501,6 +519,37 @@ Item {
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                         visible: !searchInput.text && !searchInput.activeFocus
+                    }
+                }
+
+                // Clear button
+                Rectangle {
+                    id: searchClearBtn
+                    visible: root.isSearchExpanded && searchInput.text.length > 0 && !root.disabled
+                    Layout.preferredWidth: ThemeTokens.dp(16)
+                    Layout.preferredHeight: ThemeTokens.dp(16)
+                    Layout.alignment: Qt.AlignVCenter
+                    radius: ThemeTokens.dp(8)
+                    color: searchClearMouse.containsMouse ? ThemeTokens.hover : "transparent"
+
+                    ChaSetIcon {
+                        name: "x"
+                        size: 12
+                        color: ThemeTokens.subduedText
+                        anchors.centerIn: parent
+                    }
+
+                    MouseArea {
+                        id: searchClearMouse
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+                            searchInput.text = ""
+                            root.searchQuery = ""
+                            root.searchRequested("")
+                            searchInput.forceActiveFocus()
+                        }
                     }
                 }
             }

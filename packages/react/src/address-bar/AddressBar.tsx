@@ -12,6 +12,8 @@ import {
   ClockIcon,
   FolderIcon,
 } from '../lib/icons';
+import { Tooltip } from '../tooltip/Tooltip';
+import { Input } from '../input/Input';
 
 export type { PathSegment, AddressBarApi };
 
@@ -66,6 +68,8 @@ export interface AddressBarProps
 
 const DEFAULT_VIRTUAL_FS: Record<string, string[]> = {
   '': ['C:/', 'D:/', 'C:/Users/Development/Documents', 'C:/Users/Development/Downloads'],
+  '此电脑': ['C:/', 'D:/'],
+  '此电脑/': ['C:/', 'D:/'],
   'C:': ['Users', 'Windows', 'Program Files'],
   'C:/': ['Users', 'Windows', 'Program Files'],
   'C:/Users': ['Development', 'Public'],
@@ -97,6 +101,22 @@ export const defaultVirtualFileSystemAdapter: AddressBarFileSystemAdapter = {
 export function parsePathSegments(rawPath: string): PathSegment[] {
   if (!rawPath || typeof rawPath !== 'string') return [];
   const normalized = rawPath.replace(/\\/g, '/');
+
+  // Handle explicit "此电脑" root prefix
+  if (normalized === '此电脑' || normalized.startsWith('此电脑/')) {
+    const rootSeg: PathSegment = {
+      label: '此电脑',
+      path: '此电脑',
+      realPath: '',
+      isRoot: true,
+      icon: 'computer',
+      hasSubfolders: true,
+    };
+    const rest = normalized.slice('此电脑'.length).replace(/^\/+/, '');
+    if (!rest) return [rootSeg];
+    const sub = parsePathSegments(rest);
+    return [rootSeg, ...sub];
+  }
 
   // Windows drive letter: C:/ or C:/foo/bar
   const winMatch = normalized.match(/^([a-zA-Z]:)(?:\/(.*))?$/);
@@ -264,6 +284,27 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
       setEditValue(activePath);
     };
 
+    // Close editing mode on external click and allow immediate re-entry
+    React.useEffect(() => {
+      if (!isEditing) return;
+
+      const handleDocMouseDown = (e: MouseEvent) => {
+        const target = e.target as Node;
+        if (
+          containerRef.current?.contains(target) ||
+          popoverRef.current?.contains(target)
+        ) {
+          return;
+        }
+        cancelEdit();
+      };
+
+      document.addEventListener('mousedown', handleDocMouseDown);
+      return () => {
+        document.removeEventListener('mousedown', handleDocMouseDown);
+      };
+    }, [isEditing, activePath]);
+
     const handleUpClick = () => {
       if (disabled) return;
       const parent = getParentPath(activePath);
@@ -337,69 +378,77 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
         {showNavButtons && (
           <div className="flex items-center gap-0.5 shrink-0">
             {/* Back Button */}
-            <button
-              type="button"
-              aria-label="Back"
-              disabled={disabled || !canGoBack}
-              onClick={onBack}
-              className={cn(
-                'size-7 rounded flex items-center justify-center transition-colors',
-                canGoBack && !disabled
-                  ? 'text-foreground hover:bg-accent/40 cursor-pointer'
-                  : 'text-muted-foreground/40 cursor-not-allowed'
-              )}
-            >
-              <ArrowLeftIcon className="size-3.5" />
-            </button>
-
-            {/* Forward Button */}
-            <button
-              type="button"
-              aria-label="Forward"
-              disabled={disabled || !canGoForward}
-              onClick={onForward}
-              className={cn(
-                'size-7 rounded flex items-center justify-center transition-colors',
-                canGoForward && !disabled
-                  ? 'text-foreground hover:bg-accent/40 cursor-pointer'
-                  : 'text-muted-foreground/40 cursor-not-allowed'
-              )}
-            >
-              <ArrowRightIcon className="size-3.5" />
-            </button>
-
-            {/* Up (Parent) Button */}
-            <button
-              type="button"
-              aria-label="Up to parent directory"
-              disabled={disabled || !activePath || activePath === '/' || /^[a-zA-Z]:[/\\]?$/.test(activePath)}
-              onClick={handleUpClick}
-              className={cn(
-                'size-7 rounded flex items-center justify-center transition-colors',
-                activePath && activePath !== '/' && !/^[a-zA-Z]:[/\\]?$/.test(activePath) && !disabled
-                  ? 'text-foreground hover:bg-accent/40 cursor-pointer'
-                  : 'text-muted-foreground/40 cursor-not-allowed'
-              )}
-            >
-              <ArrowUpIcon className="size-3.5" />
-            </button>
-
-            {/* Refresh Button */}
-            {showRefresh && (
+            <Tooltip content="后退" side="bottom">
               <button
                 type="button"
-                aria-label="Refresh"
-                disabled={disabled}
-                onClick={onRefresh}
+                aria-label="Back"
+                disabled={disabled || !canGoBack}
+                onClick={onBack}
                 className={cn(
                   'size-7 rounded flex items-center justify-center transition-colors',
-                  !disabled
+                  canGoBack && !disabled
                     ? 'text-foreground hover:bg-accent/40 cursor-pointer'
                     : 'text-muted-foreground/40 cursor-not-allowed'
                 )}
               >
-                <RotateCcwIcon className="size-3.5" />
+                <ArrowLeftIcon className="size-3.5" />
               </button>
+            </Tooltip>
+
+            {/* Forward Button */}
+            <Tooltip content="前进" side="bottom">
+              <button
+                type="button"
+                aria-label="Forward"
+                disabled={disabled || !canGoForward}
+                onClick={onForward}
+                className={cn(
+                  'size-7 rounded flex items-center justify-center transition-colors',
+                  canGoForward && !disabled
+                    ? 'text-foreground hover:bg-accent/40 cursor-pointer'
+                    : 'text-muted-foreground/40 cursor-not-allowed'
+                )}
+              >
+                <ArrowRightIcon className="size-3.5" />
+              </button>
+            </Tooltip>
+
+            {/* Up (Parent) Button */}
+            <Tooltip content="上一级" side="bottom">
+              <button
+                type="button"
+                aria-label="Up to parent directory"
+                disabled={disabled || !activePath || activePath === '/' || /^[a-zA-Z]:[/\\]?$/.test(activePath)}
+                onClick={handleUpClick}
+                className={cn(
+                  'size-7 rounded flex items-center justify-center transition-colors',
+                  activePath && activePath !== '/' && !/^[a-zA-Z]:[/\\]?$/.test(activePath) && !disabled
+                    ? 'text-foreground hover:bg-accent/40 cursor-pointer'
+                    : 'text-muted-foreground/40 cursor-not-allowed'
+                )}
+              >
+                <ArrowUpIcon className="size-3.5" />
+              </button>
+            </Tooltip>
+
+            {/* Refresh Button */}
+            {showRefresh && (
+              <Tooltip content="刷新" side="bottom">
+                <button
+                  type="button"
+                  aria-label="Refresh"
+                  disabled={disabled}
+                  onClick={onRefresh}
+                  className={cn(
+                    'size-7 rounded flex items-center justify-center transition-colors',
+                    !disabled
+                      ? 'text-foreground hover:bg-accent/40 cursor-pointer'
+                      : 'text-muted-foreground/40 cursor-not-allowed'
+                  )}
+                >
+                  <RotateCcwIcon className="size-3.5" />
+                </button>
+              </Tooltip>
             )}
 
             <div className="w-[0.0625rem] h-4 bg-border mx-0.5" />
@@ -409,7 +458,14 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
         {/* Central Address Bar Field */}
         <div ref={containerRef} className="relative flex-1 flex items-center h-full min-w-0">
           {!isEditing ? (
-            <div className="flex-1 flex items-center h-full min-w-0">
+            <div
+              className="flex-1 flex items-center h-full min-w-0 cursor-text"
+              onClick={(e) => {
+                if (!(e.target as HTMLElement).closest('button')) {
+                  startEditing();
+                }
+              }}
+            >
               <Breadcrumb
                 segments={segments}
                 activePath={activePath}
@@ -471,14 +527,6 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                     setHighlightedIndex((prev) => Math.max(prev - 1, 0));
                   }
                 }}
-                onBlur={(e) => {
-                  if (
-                    !containerRef.current?.contains(e.relatedTarget as Node) &&
-                    !popoverRef.current?.contains(e.relatedTarget as Node)
-                  ) {
-                    cancelEdit();
-                  }
-                }}
                 className="w-full h-7 px-2 text-sm bg-transparent border-0 outline-none text-foreground placeholder:text-muted-foreground cursor-text"
               />
 
@@ -529,12 +577,13 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
           )}
         </div>
 
-        {/* Optional Right Search Box */}
+        {/* Optional Right Search Box with Clear Button */}
         {showSearch && (
-          <div className="flex items-center gap-1 h-7 w-[10rem] px-2 rounded bg-muted/40 border border-border shrink-0">
-            <SearchIcon className="size-3.5 text-muted-foreground shrink-0" />
-            <input
-              type="text"
+          <div className="w-[10rem] shrink-0">
+            <Input
+              size="sm"
+              icon="search"
+              clearable
               value={searchQuery}
               placeholder={searchPlaceholder}
               disabled={disabled}
@@ -542,7 +591,10 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                 setSearchQuery(e.target.value);
                 onSearch?.(e.target.value);
               }}
-              className="w-full bg-transparent border-0 outline-none text-xs text-foreground placeholder:text-muted-foreground cursor-text"
+              onClear={() => {
+                setSearchQuery('');
+                onSearch?.('');
+              }}
             />
           </div>
         )}
