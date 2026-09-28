@@ -21,6 +21,7 @@ Item {
     signal navigateRequested(string path)
     signal openSubfoldersRequested(int index, string path, Item chevronItem)
     signal dropRequested(string targetPath, var urls)
+    signal blankAreaClicked()
 
     implicitHeight: ThemeTokens.dp(30)
     implicitWidth: {
@@ -100,7 +101,6 @@ Item {
         objectName: "crumbsRow"
         anchors.fill: parent
         spacing: 0
-        clip: true
 
         // Overflow ellipsis button
         Rectangle {
@@ -125,7 +125,7 @@ Item {
                 id: overflowMouse
                 anchors.fill: parent
                 hoverEnabled: true
-                cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 onClicked: {
                     if (!root.disabled) {
                         overflowPopup.open()
@@ -133,9 +133,13 @@ Item {
                 }
             }
 
-            ToolTip.visible: overflowMouse.containsMouse && !root.disabled
-            ToolTip.text: qsTr("显示隐藏的祖先文件夹")
-            ToolTip.delay: 400
+            ChaSetTooltip {
+                target: overflowBtn
+                text: qsTr("显示隐藏的祖先文件夹")
+                side: "bottom"
+                delay: 400
+                disabled: root.disabled
+            }
         }
 
         Repeater {
@@ -192,17 +196,25 @@ Item {
                             objectName: "pillMouse"
                             anchors.fill: parent
                             hoverEnabled: true
-                            cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                            cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                             onClicked: {
                                 if (!root.disabled) {
-                                    root.navigateRequested(segItem.segPath)
+                                    if (segItem.isCurrent) {
+                                        root.blankAreaClicked()
+                                    } else {
+                                        root.navigateRequested(segItem.segPath)
+                                    }
                                 }
                             }
                         }
 
-                        ToolTip.visible: pillMouse.containsMouse && !root.disabled
-                        ToolTip.text: segItem.segPath || segItem.segName
-                        ToolTip.delay: 400
+                        ChaSetTooltip {
+                            target: segPill
+                            text: segItem.segPath || segItem.segName
+                            side: "bottom"
+                            delay: 400
+                            disabled: root.disabled
+                        }
                     }
 
                     // Independent Chevron dropdown
@@ -244,7 +256,7 @@ Item {
                             objectName: "chevronMouse"
                             anchors.fill: parent
                             hoverEnabled: true
-                            cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                            cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                             onClicked: {
                                 if (!root.disabled) {
                                     if (root.openSegmentIndex === segItem.index) {
@@ -257,9 +269,28 @@ Item {
                             }
                         }
 
-                        ToolTip.visible: chevronMouse.containsMouse && !root.disabled
-                        ToolTip.text: qsTr("展开 %1 的子文件夹").arg(segItem.segName)
-                        ToolTip.delay: 400
+                        ChaSetTooltip {
+                            target: chevronBox
+                            text: qsTr("展开 %1 的子文件夹").arg(segItem.segName)
+                            side: "bottom"
+                            delay: 400
+                            disabled: root.disabled
+                        }
+                    }
+                }
+            }
+        }
+
+        // Blank space filler to click into edit mode
+        Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: !root.disabled ? Qt.IBeamCursor : Qt.ForbiddenCursor
+                onClicked: {
+                    if (!root.disabled) {
+                        root.blankAreaClicked()
                     }
                 }
             }

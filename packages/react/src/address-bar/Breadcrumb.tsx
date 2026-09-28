@@ -81,8 +81,10 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
     const [subfolderSearch, setSubfolderSearch] = React.useState('');
     const [isSearchOpen, setIsSearchOpen] = React.useState(false);
     const [highlightedIndex, setHighlightedIndex] = React.useState(0);
-    const [dropdownSize, setDropdownSize] = React.useState({ width: 240, height: 260 });
+    const [dropdownWidth, setDropdownWidth] = React.useState(260);
+    const [dropdownMaxHeight, setDropdownMaxHeight] = React.useState(260);
     const searchInputRef = React.useRef<HTMLInputElement>(null);
+    const segmentWidthsRef = React.useRef<number[]>([]);
 
     const filteredSubfolders = React.useMemo(() => {
       if (!subfolderSearch.trim()) return subfolders;
@@ -108,7 +110,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       setHighlightedIndex(0);
     }, [activeOpenIndex, isOverflowOpen]);
 
-    // Dynamic overflow measurement when maxVisibleItems is not specified
+    // Dynamic backward-accumulating overflow measurement
     React.useEffect(() => {
       if (maxVisibleItems !== undefined) return;
       const el = containerRef.current;
@@ -118,16 +120,49 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
         if (!containerRef.current) return;
         const parent = containerRef.current.parentElement;
         if (!parent) return;
-        if (containerRef.current.scrollWidth > parent.clientWidth + 2 && segments.length > 2) {
-          setFirstVisibleIndex((prev) => Math.min(prev + 1, segments.length - 2));
+
+        const count = segments.length;
+        if (count <= 1) {
+          setFirstVisibleIndex(0);
+          return;
         }
+
+        const avail = parent.clientWidth;
+        if (avail <= 0) return;
+
+        // Collect DOM segment widths
+        const segEls = containerRef.current.querySelectorAll<HTMLElement>('[data-seg-idx]');
+        segEls.forEach((item) => {
+          const idx = Number(item.dataset.segIdx);
+          if (!isNaN(idx) && item.offsetWidth > 0) {
+            segmentWidthsRef.current[idx] = item.offsetWidth;
+          }
+        });
+
+        const overflowW = 34;
+        const lastW = segmentWidthsRef.current[count - 1] || 60;
+        let total = lastW;
+        let first = count - 1;
+
+        for (let i = count - 2; i >= 0; i--) {
+          const w = segmentWidthsRef.current[i] || 60;
+          const neededOverflow = i > 0 ? overflowW : 0;
+          if (total + w + neededOverflow > avail) {
+            break;
+          }
+          total += w;
+          first = i;
+        }
+
+        setFirstVisibleIndex(first);
       };
 
+      checkOverflow();
       const ro = new ResizeObserver(checkOverflow);
       ro.observe(el);
       if (el.parentElement) ro.observe(el.parentElement);
       return () => ro.disconnect();
-    }, [segments.length, maxVisibleItems]);
+    }, [segments, maxVisibleItems]);
 
     const effectiveFirstIndex =
       maxVisibleItems !== undefined
@@ -212,19 +247,21 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       return () => window.removeEventListener('keydown', handleKeyDown);
     }, [activeOpenIndex, isOverflowOpen, filteredSubfolders, highlightedIndex, isSearchOpen, effectiveFirstIndex, segments]);
 
-    const handleResizeMouseDown = (e: React.MouseEvent) => {
+    const handleResizeStart = (e: React.MouseEvent, edge: 'right' | 'bottom' | 'corner') => {
       e.preventDefault();
       e.stopPropagation();
       const startX = e.clientX;
       const startY = e.clientY;
-      const startW = dropdownSize.width;
-      const startH = dropdownSize.height;
+      const startW = dropdownWidth;
+      const startH = dropdownMaxHeight;
 
       const onMouseMove = (ev: MouseEvent) => {
-        setDropdownSize({
-          width: Math.max(160, startW + (ev.clientX - startX)),
-          height: Math.max(120, startH + (ev.clientY - startY)),
-        });
+        if (edge === 'right' || edge === 'corner') {
+          setDropdownWidth(Math.max(180, startW + (ev.clientX - startX)));
+        }
+        if (edge === 'bottom' || edge === 'corner') {
+          setDropdownMaxHeight(Math.max(120, startH + (ev.clientY - startY)));
+        }
       };
 
       const onMouseUp = () => {
@@ -244,9 +281,10 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
         setDropdownPos(null);
       } else {
         const rect = e.currentTarget.getBoundingClientRect();
+        const left = typeof window !== 'undefined' ? Math.max(8, Math.min(rect.left, window.innerWidth - dropdownWidth - 8)) : rect.left;
         setDropdownPos({
           top: rect.bottom + 4,
-          left: rect.left,
+          left,
         });
         setOpenIndex(index);
         setIsOverflowOpen(false);
@@ -321,7 +359,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
             const showChevron = !isLast || segments.length === 1 || Boolean(seg.hasSubfolders);
 
             return (
-              <div key={`${seg.path || seg.label}-${idx}`} className="flex items-center shrink-0">
+              <div key={`${seg.path || seg.label}-${idx}`} data-seg-idx={idx} className="flex items-center shrink-0">
                 {/* Segment Pill (No leading icon, auto-expanding width) */}
                 <Tooltip content={seg.realPath || seg.path || seg.label || seg.displayName} side="bottom">
                   <button
@@ -370,7 +408,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
         </div>
 
         {/* Subfolders Dropdown Menu (Portaled to document.body, resizable, keyboard-navigable, with search) */}
-        {activeOpenIndex >= 0 && dropdownPos && subfolders.length > 0 && typeof document !== 'undefined' && createPortal(
+        {activeOpenIndex >= 0 && dropdownPos && typeof document !== 'undefined' && createPortal(
           <div
             ref={dropdownMenuRef}
             role="menu"
@@ -378,11 +416,11 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
               position: 'fixed',
               top: `${dropdownPos.top * 0.0625}rem`,
               left: `${dropdownPos.left * 0.0625}rem`,
-              width: `${dropdownSize.width * 0.0625}rem`,
-              height: `${dropdownSize.height * 0.0625}rem`,
+              width: `${dropdownWidth * 0.0625}rem`,
+              maxHeight: `${dropdownMaxHeight * 0.0625}rem`,
               zIndex: 9999,
             }}
-            className="flex flex-col relative rounded-md border border-border bg-popover text-popover-foreground shadow-lg p-1 animate-in fade-in-0 zoom-in-95"
+            className="flex flex-col relative rounded-md border border-border bg-popover text-popover-foreground shadow-lg p-1 animate-in fade-in-0 zoom-in-95 select-none"
           >
             {/* Search Box on Type */}
             {isSearchOpen && (
@@ -439,24 +477,44 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
                 </button>
               ))}
               {filteredSubfolders.length === 0 && (
-                <div className="px-2 py-4 text-center text-xs text-muted-foreground">
-                  未找到匹配项
+                <div className="px-3 py-6 text-center text-xs text-muted-foreground">
+                  {subfolderSearch ? '未找到匹配文件夹' : '（空文件夹）'}
                 </div>
               )}
             </div>
 
-            {/* Drag Resize Grip */}
-            <div
-              onMouseDown={handleResizeMouseDown}
-              className="absolute bottom-0.5 right-0.5 size-3 cursor-se-resize flex items-center justify-center text-muted-foreground/60 hover:text-foreground select-none"
-              title="拖拽调整大小"
-            >
-              <svg className="size-2.5" viewBox="0 0 6 6" fill="currentColor">
-                <circle cx="5" cy="5" r="0.8" />
-                <circle cx="5" cy="2" r="0.8" />
-                <circle cx="2" cy="5" r="0.8" />
-              </svg>
+            {/* Bottom Keyboard Shortcut Bar */}
+            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-[0.6875rem] text-muted-foreground mt-1 rounded-b shrink-0 select-none">
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-1">
+                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Up</kbd>
+                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Down</kbd>
+                  <span>导航</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Enter</kbd>
+                  <span>打开</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Esc</kbd>
+                  <span>关闭</span>
+                </span>
+              </div>
             </div>
+
+            {/* Border Drag Resize Handles */}
+            <div
+              onMouseDown={(e) => handleResizeStart(e, 'right')}
+              className="absolute top-0 right-0 bottom-2 w-1.5 cursor-col-resize z-50 select-none"
+            />
+            <div
+              onMouseDown={(e) => handleResizeStart(e, 'bottom')}
+              className="absolute bottom-0 left-0 right-2 h-1.5 cursor-row-resize z-50 select-none"
+            />
+            <div
+              onMouseDown={(e) => handleResizeStart(e, 'corner')}
+              className="absolute bottom-0 right-0 size-2.5 cursor-se-resize z-50 select-none"
+            />
           </div>,
           document.body
         )}
@@ -470,11 +528,11 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
               position: 'fixed',
               top: `${overflowPos.top * 0.0625}rem`,
               left: `${overflowPos.left * 0.0625}rem`,
-              width: `${dropdownSize.width * 0.0625}rem`,
-              height: `${dropdownSize.height * 0.0625}rem`,
+              width: `${dropdownWidth * 0.0625}rem`,
+              maxHeight: `${dropdownMaxHeight * 0.0625}rem`,
               zIndex: 9999,
             }}
-            className="flex flex-col relative rounded-md border border-border bg-popover text-popover-foreground shadow-lg p-1 animate-in fade-in-0 zoom-in-95"
+            className="flex flex-col relative rounded-md border border-border bg-popover text-popover-foreground shadow-lg p-1 animate-in fade-in-0 zoom-in-95 select-none"
           >
             <div className="flex-1 overflow-y-auto space-y-0.5 min-h-0">
               {segments.slice(0, effectiveFirstIndex).map((seg, sIdx) => (
@@ -499,18 +557,38 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
               ))}
             </div>
 
-            {/* Drag Resize Grip */}
-            <div
-              onMouseDown={handleResizeMouseDown}
-              className="absolute bottom-0.5 right-0.5 size-3 cursor-se-resize flex items-center justify-center text-muted-foreground/60 hover:text-foreground select-none"
-              title="拖拽调整大小"
-            >
-              <svg className="size-2.5" viewBox="0 0 6 6" fill="currentColor">
-                <circle cx="5" cy="5" r="0.8" />
-                <circle cx="5" cy="2" r="0.8" />
-                <circle cx="2" cy="5" r="0.8" />
-              </svg>
+            {/* Bottom Keyboard Shortcut Bar */}
+            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-[0.6875rem] text-muted-foreground mt-1 rounded-b shrink-0 select-none">
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-1">
+                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Up</kbd>
+                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Down</kbd>
+                  <span>导航</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Enter</kbd>
+                  <span>打开</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Esc</kbd>
+                  <span>关闭</span>
+                </span>
+              </div>
             </div>
+
+            {/* Border Drag Resize Handles */}
+            <div
+              onMouseDown={(e) => handleResizeStart(e, 'right')}
+              className="absolute top-0 right-0 bottom-2 w-1.5 cursor-col-resize z-50 select-none"
+            />
+            <div
+              onMouseDown={(e) => handleResizeStart(e, 'bottom')}
+              className="absolute bottom-0 left-0 right-2 h-1.5 cursor-row-resize z-50 select-none"
+            />
+            <div
+              onMouseDown={(e) => handleResizeStart(e, 'corner')}
+              className="absolute bottom-0 right-0 size-2.5 cursor-se-resize z-50 select-none"
+            />
           </div>,
           document.body
         )}

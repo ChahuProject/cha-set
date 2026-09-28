@@ -232,12 +232,15 @@ Rectangle {
         selectionColor: isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
         cursorVisible: activeFocus
 
-        Keys.onEscapePressed: {
+        Keys.onEscapePressed: (event) => {
             if (root.clearable && root.text.length > 0) {
+                event.accepted = true;
                 root.text = "";
                 inputInner.text = "";
                 root.textEdited();
                 root.cleared();
+            } else {
+                event.accepted = false;
             }
         }
 
@@ -253,7 +256,7 @@ Rectangle {
             text: root.placeholderText
             font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
             color: isDark ? Qt.rgba(148.0 / 255.0, 163.0 / 255.0, 184.0 / 255.0, 1.0) : Qt.rgba(100.0 / 255.0, 116.0 / 255.0, 139.0 / 255.0, 1.0)
-            visible: inputInner.text === "" && !inputInner.activeFocus
+            visible: inputInner.text === ""
         }
     }
 

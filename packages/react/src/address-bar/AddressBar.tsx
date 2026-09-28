@@ -75,6 +75,10 @@ const DEFAULT_VIRTUAL_FS: Record<string, string[]> = {
   'C:/Users': ['Development', 'Public'],
   'C:/Users/Development': ['cha-set', 'Projects', 'Documents', 'Downloads'],
   'C:/Users/Development/cha-set': ['packages', 'qt', 'spec', 'docs', 'scripts'],
+  'C:/Users/Development/Projects': ['cha-set', 'react-app', 'docs'],
+  'C:/Users/Development/Projects/cha-set': ['packages', 'qt', 'spec', 'docs', 'scripts'],
+  'C:/Users/Development/Projects/cha-set/packages': ['react', 'icons', 'tokens'],
+  'C:/Users/Development/Projects/cha-set/qt': ['src', 'tests', 'cmake'],
   'C:/Windows': ['System32', 'Fonts', 'Temp'],
   'D:': ['Media', 'Games', 'Backups'],
   'D:/': ['Media', 'Games', 'Backups'],
@@ -84,7 +88,16 @@ export const defaultVirtualFileSystemAdapter: AddressBarFileSystemAdapter = {
   getSubfolders: (dirPath: string) => {
     const normalized = (dirPath || '').replace(/\\/g, '/').replace(/\/+$/, '');
     const lookupKey = normalized || (dirPath === '' ? '' : dirPath);
-    const children = DEFAULT_VIRTUAL_FS[lookupKey] || DEFAULT_VIRTUAL_FS[`${lookupKey}/`] || [];
+    let children = DEFAULT_VIRTUAL_FS[lookupKey] || DEFAULT_VIRTUAL_FS[`${lookupKey}/`];
+    if (!children) {
+      const stripped = lookupKey.replace(/^此电脑\/?/, '');
+      if (stripped) {
+        children = DEFAULT_VIRTUAL_FS[stripped] || DEFAULT_VIRTUAL_FS[`${stripped}/`];
+      }
+    }
+    if (!children || children.length === 0) {
+      children = ['Documents', 'Downloads', 'Media', 'Projects'];
+    }
     return children.map((name) => {
       const full = lookupKey ? `${lookupKey.endsWith('/') ? lookupKey : `${lookupKey}/`}${name}` : name;
       return {
@@ -459,7 +472,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
         <div ref={containerRef} className="relative flex-1 flex items-center h-full min-w-0">
           {!isEditing ? (
             <div
-              className="flex-1 flex items-center h-full min-w-0 cursor-text"
+              className="flex-1 flex items-center h-full min-w-0 cursor-text overflow-hidden"
               onClick={(e) => {
                 if (!(e.target as HTMLElement).closest('button')) {
                   startEditing();
@@ -480,7 +493,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                   onNavigate?.(targetPath);
                 }}
                 onOpenSubfolders={handleOpenSubfolders}
-                className="min-w-0"
+                className="min-w-0 max-w-full overflow-hidden"
               />
 
               {/* Blank Area Click to Edit */}

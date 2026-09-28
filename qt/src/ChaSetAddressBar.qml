@@ -137,9 +137,13 @@ Item {
                     cursorShape: backButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
-                ToolTip.visible: backHover.hovered
-                ToolTip.text: backButton.tooltipText
-                ToolTip.delay: 400
+                ChaSetTooltip {
+                    target: backButton
+                    text: backButton.tooltipText
+                    side: "bottom"
+                    delay: 400
+                    disabled: !backButton.actionEnabled
+                }
 
                 TapHandler {
                     enabled: backButton.actionEnabled
@@ -184,9 +188,13 @@ Item {
                     cursorShape: forwardButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
-                ToolTip.visible: forwardHover.hovered
-                ToolTip.text: forwardButton.tooltipText
-                ToolTip.delay: 400
+                ChaSetTooltip {
+                    target: forwardButton
+                    text: forwardButton.tooltipText
+                    side: "bottom"
+                    delay: 400
+                    disabled: !forwardButton.actionEnabled
+                }
 
                 TapHandler {
                     enabled: forwardButton.actionEnabled
@@ -232,9 +240,13 @@ Item {
                     cursorShape: upButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
-                ToolTip.visible: upHover.hovered
-                ToolTip.text: upButton.tooltipText
-                ToolTip.delay: 400
+                ChaSetTooltip {
+                    target: upButton
+                    text: upButton.tooltipText
+                    side: "bottom"
+                    delay: 400
+                    disabled: !upButton.actionEnabled
+                }
 
                 TapHandler {
                     enabled: upButton.actionEnabled
@@ -280,9 +292,13 @@ Item {
                     cursorShape: refreshButton.actionEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                 }
 
-                ToolTip.visible: refreshHover.hovered
-                ToolTip.text: refreshButton.tooltipText
-                ToolTip.delay: 400
+                ChaSetTooltip {
+                    target: refreshButton
+                    text: refreshButton.tooltipText
+                    side: "bottom"
+                    delay: 400
+                    disabled: !refreshButton.actionEnabled
+                }
 
                 TapHandler {
                     enabled: refreshButton.actionEnabled
@@ -310,7 +326,6 @@ Item {
                 id: breadcrumbsContainer
                 anchors.fill: parent
                 visible: !root.editing
-                clip: true
 
                 ChaSetBreadcrumb {
                     id: breadcrumbPrimitive
@@ -323,6 +338,10 @@ Item {
 
                     onNavigateRequested: (targetPath) => {
                         controller.navigate(targetPath)
+                    }
+
+                    onBlankAreaClicked: {
+                        controller.enterEditMode()
                     }
 
                     onOpenSubfoldersRequested: (index, targetPath, chevronItem) => {
@@ -360,7 +379,7 @@ Item {
                         id: blankClickArea
                         objectName: "blankClickArea"
                         anchors.fill: parent
-                        cursorShape: Qt.IBeamCursor
+                        cursorShape: !root.disabled ? Qt.IBeamCursor : Qt.ForbiddenCursor
                         onClicked: {
                             if (!root.disabled) {
                                 controller.enterEditMode()
@@ -451,9 +470,13 @@ Item {
                 cursorShape: (!root.isSearchExpanded && !root.disabled) ? Qt.PointingHandCursor : Qt.ArrowCursor
             }
 
-            ToolTip.visible: !root.isSearchExpanded && searchBoxHover.hovered
-            ToolTip.text: qsTr("搜索")
-            ToolTip.delay: 400
+            ChaSetTooltip {
+                target: searchBox
+                text: qsTr("搜索")
+                side: "bottom"
+                delay: 400
+                disabled: root.isSearchExpanded || root.disabled
+            }
 
             TapHandler {
                 enabled: !root.isSearchExpanded && !root.disabled
@@ -518,7 +541,7 @@ Item {
                         text: root.searchPlaceholder
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
-                        visible: !searchInput.text && !searchInput.activeFocus
+                        visible: !searchInput.text
                     }
                 }
 
