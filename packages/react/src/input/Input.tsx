@@ -17,6 +17,7 @@ export interface InputProps
   iconPosition?: 'left' | 'right';
   clearIcon?: React.ReactNode;
   reserveIconSlot?: boolean;
+  bordered?: boolean;
 }
 
 const sizeStyles: Record<InputSize, string> = {
@@ -47,6 +48,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       iconPosition = 'left',
       clearIcon,
       reserveIconSlot = false,
+      bordered = true,
       disabled = false,
       readOnly = false,
       value,
@@ -122,20 +124,22 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       onBlur?.(e);
     };
 
-    const containerForcedClass = forceFocus
-      ? invalid
-        ? 'ring-1 ring-destructive border-destructive'
-        : 'ring-1 ring-ring border-ring'
-      : invalid
-      ? 'border-destructive focus-within:ring-1 focus-within:ring-destructive focus-within:border-destructive'
-      : 'border-input focus-within:ring-1 focus-within:ring-ring';
+    const borderClass = bordered
+      ? forceFocus
+        ? invalid
+          ? 'border-destructive'
+          : 'border-ring'
+        : invalid
+        ? 'border-destructive focus-within:border-destructive'
+        : 'border-input focus-within:border-ring'
+      : 'border-transparent';
 
     return (
       <div
         data-slot="input-container"
         data-size={size}
         onClick={() => inputRef.current?.focus()}
-        className={`relative overflow-hidden flex items-center w-full rounded-md border bg-transparent dark:bg-input/20 shadow-xs transition-[color,background-color,border-color,box-shadow] duration-quick ease-standard text-foreground ${addonContainerSizeStyles[size]} ${containerForcedClass} ${
+        className={`relative flex items-center w-full rounded-md border bg-transparent dark:bg-input/20 shadow-xs transition-[color,background-color,border-color] duration-quick ease-standard text-foreground ${addonContainerSizeStyles[size]} ${borderClass} ${
           disabled ? 'cursor-not-allowed opacity-50' : 'cursor-text'
         } ${className}`.trim()}
       >
@@ -172,21 +176,20 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               tabIndex={-1}
               aria-label="Clear input"
               onClick={handleClear}
-              className="p-0.5 rounded text-muted-foreground hover:text-foreground transition-colors duration-quick ease-standard cursor-pointer"
+              className="p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors duration-quick ease-standard cursor-pointer flex items-center justify-center shrink-0"
             >
               {clearIcon ? (
                 clearIcon
               ) : (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  className={size === 'sm' ? 'size-3.5' : 'size-4'}
                 >
                   <circle cx="12" cy="12" r="10" />
                   <path d="m15 9-6 6" />
@@ -202,19 +205,18 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               tabIndex={-1}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
               onClick={() => setShowPassword(!showPassword)}
-              className="p-0.5 rounded text-muted-foreground hover:text-foreground transition-colors duration-quick ease-standard cursor-pointer"
+              className="p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors duration-quick ease-standard cursor-pointer flex items-center justify-center shrink-0"
             >
               {showPassword ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  className={size === 'sm' ? 'size-3.5' : 'size-4'}
                 >
                   <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
                   <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
@@ -224,14 +226,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               ) : (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  className={size === 'sm' ? 'size-3.5' : 'size-4'}
                 >
                   <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                   <circle cx="12" cy="12" r="3" />
@@ -250,7 +251,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {/* Win11 style bottom focus underline */}
         <div
           data-slot="input-focus-underline"
-          className={`absolute bottom-0 left-0 right-0 h-[0.125rem] pointer-events-none transition-all duration-quick z-10 ${
+          className={`absolute -bottom-[0.0625rem] -left-[0.0625rem] -right-[0.0625rem] h-[0.125rem] rounded-b-md pointer-events-none transition-all duration-quick z-10 ${
             isFocused ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
           } ${invalid ? 'bg-destructive' : 'bg-primary'}`}
         />

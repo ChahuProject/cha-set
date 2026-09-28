@@ -24,6 +24,7 @@ export const inputSchema = z.object({
   invalid: z.boolean().default(false),
   clearable: z.boolean().default(true),
   passwordToggle: z.boolean().default(false),
+  bordered: z.boolean().default(true),
   placeholder: z.string().optional(),
   value: z.string().optional(),
   defaultValue: z.string().optional(),

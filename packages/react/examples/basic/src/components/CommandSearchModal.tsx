@@ -1,5 +1,13 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Button, ScrollArea, Badge, Card, Input, Separator, SearchIcon } from '@chahu/cha-set';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import {
+  Badge,
+  Card,
+  Input,
+  Separator,
+  SearchIcon,
+  VirtualList,
+  type VirtualListHandle,
+} from '@chahu/cha-set';
 import { NAVIGATION_CONFIG, type NavItem } from '../types/navigation';
 
 export interface CommandSearchModalProps {
@@ -10,10 +18,13 @@ export interface CommandSearchModalProps {
 
 export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchModalProps) {
   const [query, setQuery] = useState('');
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<VirtualListHandle>(null);
 
   useEffect(() => {
     if (isOpen) {
+      setSelectedIndex(0);
       requestAnimationFrame(() => {
         if (inputRef.current) {
           inputRef.current.focus();
@@ -22,22 +33,6 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
       });
     }
   }, [isOpen]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        if (isOpen) onClose();
-        else {
-          // Open handled by parent or custom state
-        }
-      } else if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
 
   const allItems = useMemo(() => {
     const list: { category: string; item: NavItem }[] = [];
@@ -60,65 +55,149 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
     );
   }, [allItems, query]);
 
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [query]);
+
+  useEffect(() => {
+    if (filtered.length > 0 && selectedIndex >= 0) {
+      listRef.current?.scrollToIndex(selectedIndex, 'auto');
+    }
+  }, [selectedIndex, filtered.length]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        if (isOpen) onClose();
+      } else if (e.key === 'Escape' && isOpen) {
+        onClose();
+      } else if (e.key === 'ArrowDown' && isOpen) {
+        e.preventDefault();
+        setSelectedIndex((prev) => Math.min(prev + 1, Math.max(0, filtered.length - 1)));
+      } else if (e.key === 'ArrowUp' && isOpen) {
+        e.preventDefault();
+        setSelectedIndex((prev) => Math.max(prev - 1, 0));
+      } else if (e.key === 'Enter' && isOpen) {
+        if (filtered.length > 0 && selectedIndex < filtered.length) {
+          e.preventDefault();
+          onSelect(filtered[selectedIndex].item.href);
+          onClose();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose, onSelect, filtered, selectedIndex]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 bg-background/80 backdrop-blur-xs animate-in fade-in-0 duration-150">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 bg-background/80 backdrop-blur-xs animate-in fade-in-0 duration-150">
       <div
         className="fixed inset-0 bg-transparent"
         onClick={onClose}
         aria-hidden="true"
       />
-      <Card className="relative w-full max-w-lg shadow-2xl overflow-hidden z-10 animate-in zoom-in-95 duration-150">
-        <div className="flex items-center px-3">
-          <SearchIcon className="size-4 text-muted-foreground mr-2 shrink-0" />
+      <Card className="relative w-full max-w-xl shadow-2xl overflow-hidden z-10 animate-in zoom-in-95 duration-150 flex flex-col bg-card border-border">
+        {/* Search Input using clean borderless Input with search icon & clearable button */}
+        <div className="p-3">
           <Input
             ref={inputRef}
             type="text"
-            placeholder="Search documentation and components..."
+            placeholder="搜索组件与文档..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full border-0 shadow-none focus-visible:ring-0 rounded-none py-3 text-sm bg-transparent"
+            onClear={() => setQuery('')}
+            bordered={false}
+            clearable={true}
+            icon={<SearchIcon className="size-4" />}
+            className="text-sm bg-transparent"
           />
-          <kbd className="text-[0.625rem] font-mono bg-muted text-muted-foreground px-1.5 py-0.5 rounded border border-border">
-            ESC
-          </kbd>
         </div>
         <Separator />
 
-        <ScrollArea className="max-h-80 w-full" viewportClassName="p-2">
+        {/* Results VirtualList */}
+        <div className="h-80 w-full p-2">
           {filtered.length === 0 ? (
-            <div className="p-4 text-center text-xs text-muted-foreground">No matching pages found.</div>
+            <div className="p-8 text-center text-xs text-muted-foreground">未找到匹配页面</div>
           ) : (
-            filtered.map(({ category, item }) => (
-              <Button
-                key={item.id}
-                variant="ghost"
-                type="button"
-                onClick={() => {
-                  onSelect(item.href);
-                  onClose();
-                }}
-                className="w-full flex items-center justify-between px-3 py-2.5 h-auto rounded-lg text-left text-sm hover:bg-muted transition-colors cursor-pointer group"
-              >
-                <div>
-                  <div className="font-medium text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
-                    {item.title}
-                    {item.badge && (
-                      <Badge size="sm" variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-                        {item.badge}
+            <VirtualList
+              ref={listRef}
+              items={filtered}
+              estimateSize={56}
+              className="h-full w-full"
+              renderItem={({ category, item }, index) => {
+                const isSelected = index === selectedIndex;
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => {
+                      onSelect(item.href);
+                      onClose();
+                    }}
+                    onMouseEnter={() => setSelectedIndex(index)}
+                    className={`relative w-full p-2.5 rounded-lg text-left transition-colors cursor-pointer select-none ${
+                      isSelected ? 'bg-muted text-foreground' : 'hover:bg-muted/60 text-foreground'
+                    }`}
+                  >
+                    {/* Badge anchored directly to top-right corner */}
+                    <div className="absolute top-2.5 right-3">
+                      <Badge
+                        size="sm"
+                        variant="outline"
+                        className="text-muted-foreground bg-muted/80 font-normal text-[0.6875rem]"
+                      >
+                        {category}
                       </Badge>
-                    )}
+                    </div>
+
+                    {/* Content area padded on the right so long text never collides with or overflows the badge */}
+                    <div className="pr-24 flex flex-col gap-0.5">
+                      <div className="font-medium text-sm flex items-center gap-2">
+                        <span className="truncate">{item.title}</span>
+                        {item.badge && (
+                          <Badge
+                            size="sm"
+                            variant="secondary"
+                            className="bg-primary/10 text-primary border-primary/20 shrink-0 text-[0.6875rem]"
+                          >
+                            {item.badge}
+                          </Badge>
+                        )}
+                      </div>
+                      {item.description && (
+                        <div className="text-xs text-muted-foreground truncate">
+                          {item.description}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  {item.description && <div className="text-xs text-muted-foreground truncate max-w-sm">{item.description}</div>}
-                </div>
-                <Badge size="sm" variant="outline" className="text-muted-foreground bg-muted font-normal">
-                  {category}
-                </Badge>
-              </Button>
-            ))
+                );
+              }}
+            />
           )}
-        </ScrollArea>
+        </div>
+
+        {/* Bottom Keyboard Shortcut & Result Count Bar */}
+        <div className="flex items-center justify-between px-3.5 py-2 border-t border-border bg-muted/40 text-xs text-muted-foreground">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-1.5 py-0.5 text-[0.625rem] font-mono rounded bg-muted border border-border">Up</kbd>
+              <kbd className="px-1.5 py-0.5 text-[0.625rem] font-mono rounded bg-muted border border-border">Down</kbd>
+              <span>导航</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-1.5 py-0.5 text-[0.625rem] font-mono rounded bg-muted border border-border">Enter</kbd>
+              <span>打开</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-1.5 py-0.5 text-[0.625rem] font-mono rounded bg-muted border border-border">Esc</kbd>
+              <span>关闭</span>
+            </span>
+          </div>
+          <span className="text-[0.6875rem]">{filtered.length} 个结果</span>
+        </div>
       </Card>
     </div>
   );

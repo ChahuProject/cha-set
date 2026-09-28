@@ -23,6 +23,7 @@ Rectangle {
     property string icon: ""
     property string iconPosition: "left"
     property bool reserveIconSlot: false
+    property bool bordered: true
     property bool forceHover: false
     property bool forceFocus: false
     property int customRadius: -1
@@ -56,8 +57,9 @@ Rectangle {
 
     opacity: root.disabled ? 0.5 : 1.0
 
-    border.width: 1
+    border.width: root.bordered ? 1 : 0
     border.color: {
+        if (!root.bordered) return "transparent";
         if (root.invalid) {
             return destructiveColor;
         }
@@ -78,26 +80,14 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.leftMargin: root.radius > 0 ? ThemeTokens.dp(2) : 0
-        anchors.rightMargin: root.radius > 0 ? ThemeTokens.dp(2) : 0
-        anchors.bottomMargin: 1
+        anchors.leftMargin: (root.bordered && root.radius > 0) ? ThemeTokens.dp(2) : 0
+        anchors.rightMargin: (root.bordered && root.radius > 0) ? ThemeTokens.dp(2) : 0
+        anchors.bottomMargin: 0
         height: ThemeTokens.dp(2)
         radius: ThemeTokens.dp(1)
         color: root.invalid ? root.destructiveColor : ThemeTokens.accent
         visible: root.isFocused
         z: 2
-    }
-
-    // Focus ring (1px offset matching Tailwind ring-1)
-    Rectangle {
-        id: focusRing
-        anchors.fill: root
-        anchors.margins: -1
-        radius: (root.customRadius >= 0 ? root.customRadius : ThemeTokens.dp(6)) + 1
-        color: "transparent"
-        border.width: 1
-        border.color: root.isFocused ? (root.invalid ? root.destructiveColor : (isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0))) : "transparent"
-        visible: root.isFocused
     }
 
     // Left Icon Slot

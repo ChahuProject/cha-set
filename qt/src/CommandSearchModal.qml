@@ -54,7 +54,7 @@ Rectangle {
     ChaSetCard {
         id: searchCard
         width: Math.min(parent.width - ThemeTokens.dp(40), ThemeTokens.dp(560))
-        height: Math.min(parent.height - ThemeTokens.dp(80), ThemeTokens.dp(380))
+        height: Math.min(parent.height - ThemeTokens.dp(80), ThemeTokens.dp(420))
         customRadius: ThemeTokens.dp(8)
         anchors.centerIn: parent
 
@@ -66,17 +66,21 @@ Rectangle {
 
             Column {
                 anchors.fill: parent
-                anchors.margins: ThemeTokens.dp(14)
-                spacing: ThemeTokens.dp(10)
+                anchors.margins: ThemeTokens.dp(12)
+                spacing: ThemeTokens.dp(8)
 
-                // Search Input
+                // Search Input with search icon, clearable, borderless
                 ChaSetInput {
                     id: searchInput
                     width: parent.width
-                    placeholderText: "Search components & docs..."
+                    placeholderText: qsTr("搜索组件与文档...")
                     text: root.query
+                    bordered: false
+                    clearable: true
+                    icon: "search"
                     selectByMouse: true
                     onTextEdited: { root.query = text; root.selectedIndex = 0 }
+                    onCleared: { root.query = ""; root.selectedIndex = 0 }
                     onAccepted: {
                         if (root.filteredItems.length > 0 && root.selectedIndex < root.filteredItems.length) {
                             root.selectPage(root.filteredItems[root.selectedIndex].id)
@@ -85,10 +89,16 @@ Rectangle {
                     }
                     Keys.onEscapePressed: root.close()
                     Keys.onDownPressed: {
-                        if (root.selectedIndex < root.filteredItems.length - 1) root.selectedIndex++
+                        if (root.selectedIndex < root.filteredItems.length - 1) {
+                            root.selectedIndex++
+                            resultsList.positionViewAtIndex(root.selectedIndex, ListView.Contain)
+                        }
                     }
                     Keys.onUpPressed: {
-                        if (root.selectedIndex > 0) root.selectedIndex--
+                        if (root.selectedIndex > 0) {
+                            root.selectedIndex--
+                            resultsList.positionViewAtIndex(root.selectedIndex, ListView.Contain)
+                        }
                     }
                     Component.onCompleted: forceActiveFocus()
                 }
@@ -97,11 +107,11 @@ Rectangle {
                     id: searchSeparator
                 }
 
-                // Results List
+                // Results List (Virtualized via Qt Quick ListView)
                 ListView {
                     id: resultsList
                     width: parent.width
-                    height: Math.max(0, parent.height - searchInput.height - searchSeparator.height - ThemeTokens.dp(20))
+                    height: Math.max(0, parent.height - searchInput.height - searchSeparator.height - footerBar.height - ThemeTokens.dp(24))
                     clip: true
                     model: root.filteredItems
                     ScrollBar.vertical: ChaSetScrollBar {
@@ -112,42 +122,48 @@ Rectangle {
                         required property var modelData
                         required property int index
                         width: resultsList.width
-                        height: ThemeTokens.dp(48)
+                        height: ThemeTokens.dp(50)
                         radius: ThemeTokens.dp(6)
                         color: root.selectedIndex === itemDelegate.index ? ThemeTokens.hover : "transparent"
 
-                        Row {
-                            anchors.fill: parent
-                            anchors.margins: ThemeTokens.dp(8)
-                            spacing: ThemeTokens.dp(10)
-                            Column {
-                                anchors.verticalCenter: parent.verticalCenter
-                                spacing: ThemeTokens.dp(2)
-                                Row {
-                                    spacing: ThemeTokens.dp(6)
-                                    Text {
-                                        text: itemDelegate.modelData ? (itemDelegate.modelData.title || "") : ""
-                                        color: ThemeTokens.text
-                                        font.family: Typography.familySans
-                                        font.pixelSize: Typography.sizeBody
-                                        font.weight: Typography.weightBold
-                                        anchors.verticalCenter: parent.verticalCenter
-                                    }
-                                    ChaSetBadge {
-                                        size: "sm"
-                                        variant: "outline"
-                                        text: itemDelegate.modelData ? (itemDelegate.modelData.category || "") : ""
-                                        anchors.verticalCenter: parent.verticalCenter
-                                    }
-                                }
-                                Text {
-                                    text: itemDelegate.modelData ? (itemDelegate.modelData.desc || "") : ""
-                                    color: ThemeTokens.subduedText
-                                    font.family: Typography.familySans
-                                    font.pixelSize: Typography.sizeCaption
-                                    elide: Text.ElideRight
-                                    width: Math.max(0, resultsList.width - ThemeTokens.dp(24))
-                                }
+                        // Top-right anchored category badge (independent of content, never overflows)
+                        ChaSetBadge {
+                            id: categoryBadge
+                            anchors.top: parent.top
+                            anchors.topMargin: ThemeTokens.dp(6)
+                            anchors.right: parent.right
+                            anchors.rightMargin: ThemeTokens.dp(8)
+                            size: "sm"
+                            variant: "outline"
+                            text: itemDelegate.modelData ? (itemDelegate.modelData.category || "") : ""
+                        }
+
+                        // Content column constrained between left and categoryBadge
+                        Column {
+                            anchors.left: parent.left
+                            anchors.leftMargin: ThemeTokens.dp(10)
+                            anchors.right: categoryBadge.left
+                            anchors.rightMargin: ThemeTokens.dp(10)
+                            anchors.verticalCenter: parent.verticalCenter
+                            spacing: ThemeTokens.dp(2)
+
+                            Text {
+                                text: itemDelegate.modelData ? (itemDelegate.modelData.title || "") : ""
+                                color: root.selectedIndex === itemDelegate.index ? ThemeTokens.accent : ThemeTokens.text
+                                font.family: Typography.familySans
+                                font.pixelSize: Typography.sizeBody
+                                font.weight: Typography.weightBold
+                                elide: Text.ElideRight
+                                width: parent.width
+                            }
+
+                            Text {
+                                text: itemDelegate.modelData ? (itemDelegate.modelData.desc || "") : ""
+                                color: ThemeTokens.subduedText
+                                font.family: Typography.familySans
+                                font.pixelSize: Typography.sizeCaption
+                                elide: Text.ElideRight
+                                width: parent.width
                             }
                         }
 
@@ -163,6 +179,70 @@ Rectangle {
                                 }
                             }
                         }
+                    }
+                }
+
+                // Bottom Keyboard Shortcut & Result Count Footer Bar
+                Rectangle {
+                    id: footerBar
+                    width: parent.width
+                    height: ThemeTokens.dp(30)
+                    color: ThemeTokens.panelRaised
+                    border.width: 1
+                    border.color: ThemeTokens.border
+                    radius: ThemeTokens.dp(6)
+
+                    Row {
+                        anchors.left: parent.left
+                        anchors.leftMargin: ThemeTokens.dp(10)
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: ThemeTokens.dp(12)
+
+                        Row {
+                            spacing: ThemeTokens.dp(4)
+                            anchors.verticalCenter: parent.verticalCenter
+                            ChaSetBadge { size: "sm"; variant: "outline"; text: "Up"; height: ThemeTokens.dp(18) }
+                            ChaSetBadge { size: "sm"; variant: "outline"; text: "Down"; height: ThemeTokens.dp(18) }
+                            Text {
+                                text: qsTr("导航")
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: Typography.sizeCaption
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+
+                        Row {
+                            spacing: ThemeTokens.dp(4)
+                            anchors.verticalCenter: parent.verticalCenter
+                            ChaSetBadge { size: "sm"; variant: "outline"; text: "Enter"; height: ThemeTokens.dp(18) }
+                            Text {
+                                text: qsTr("打开")
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: Typography.sizeCaption
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+
+                        Row {
+                            spacing: ThemeTokens.dp(4)
+                            anchors.verticalCenter: parent.verticalCenter
+                            ChaSetBadge { size: "sm"; variant: "outline"; text: "Esc"; height: ThemeTokens.dp(18) }
+                            Text {
+                                text: qsTr("关闭")
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: Typography.sizeCaption
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+                    }
+
+                    Text {
+                        anchors.right: parent.right
+                        anchors.rightMargin: ThemeTokens.dp(10)
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: qsTr("%1 个结果").arg(root.filteredItems.length)
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeCaption
                     }
                 }
             }

@@ -23,6 +23,8 @@ DocLayout {
     property bool demoInvalid: false
     property bool demoClearable: true
     property bool demoPasswordToggle: true
+    property bool demoShowIcon: true
+    property bool demoBordered: true
     property string demoText: "user@chahu.dev"
     property string demoPlaceholder: "Enter your email..."
 
@@ -31,8 +33,8 @@ DocLayout {
         id: heroPreview
         width: parent.width
         title: "Input Sandbox"
-        reactCode: `<Input\n  type="${root.demoType}"\n  size="${root.demoSize}"\n  placeholder="${root.demoPlaceholder}"\n  value="${root.demoText}"\n  disabled={${root.demoDisabled}}\n  invalid={${root.demoInvalid}}\n  clearable={${root.demoClearable}}\n  passwordToggle={${root.demoPasswordToggle}}\n  onChange={(e) => setValue(e.target.value)}\n/>`
-        qtCode: `ChaSetInput {\n    width: 280\n    size: "${root.demoSize}"\n    type: "${root.demoType}"\n    placeholderText: "${root.demoPlaceholder}"\n    text: "${root.demoText}"\n    disabled: ${root.demoDisabled}\n    invalid: ${root.demoInvalid}\n    clearable: ${root.demoClearable}\n    passwordToggle: ${root.demoPasswordToggle}\n    onTextEdited: { /* handle text */ }\n}`
+        reactCode: `<Input\n  type="${root.demoType}"\n  size="${root.demoSize}"\n  placeholder="${root.demoPlaceholder}"\n  value="${root.demoText}"\n  disabled={${root.demoDisabled}}\n  invalid={${root.demoInvalid}}\n  clearable={${root.demoClearable}}\n  bordered={${root.demoBordered}}\n  passwordToggle={${root.demoPasswordToggle}}${root.demoShowIcon ? '\n  icon={<MailIcon className="size-4" />}' : ''}\n  onChange={(e) => setValue(e.target.value)}\n/>`
+        qtCode: `ChaSetInput {\n    width: 280\n    size: "${root.demoSize}"\n    type: "${root.demoType}"\n    placeholderText: "${root.demoPlaceholder}"\n    text: "${root.demoText}"\n    disabled: ${root.demoDisabled}\n    invalid: ${root.demoInvalid}\n    clearable: ${root.demoClearable}\n    bordered: ${root.demoBordered}\n    passwordToggle: ${root.demoPasswordToggle}${root.demoShowIcon ? '\n    icon: "mail"' : ''}\n    onTextEdited: { /* handle text */ }\n}`
 
                 stageData: [
             Column {
@@ -60,6 +62,8 @@ DocLayout {
                     disabled: root.demoDisabled
                     invalid: root.demoInvalid
                     clearable: root.demoClearable
+                    bordered: root.demoBordered
+                    icon: root.demoShowIcon ? "mail" : ""
                     passwordToggle: root.demoPasswordToggle
                     onTextEdited: root.demoText = text
                 }
@@ -74,68 +78,83 @@ DocLayout {
 
         controlsData: [
             Row {
-                spacing: 16
-
-                Row {
-                    spacing: 8
-                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
-                        anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoSize
-                        onCurrentValueChanged: root.demoSize = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default" }
-                            ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
-                        }
-                    }
-                }
-
-                Row {
-                    spacing: 8
-                    DocText { text: "Type:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
-                        anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoType
-                        onCurrentValueChanged: root.demoType = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "text"; text: "Text" }
-                            ChaSetTabsTrigger { value: "password"; text: "Password" }
-                        }
-                    }
-                }
-
-                Row {
-                    spacing: 12
+                spacing: ThemeTokens.dp(8)
+                DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetTabs {
                     anchors.verticalCenter: parent.verticalCenter
-
-                    ChaSetCheckbox {
-                        size: "sm"
-                        label: "Disabled"
-                        checked: root.demoDisabled
-                        onToggled: (val) => root.demoDisabled = val
+                    currentValue: root.demoSize
+                    onCurrentValueChanged: root.demoSize = currentValue
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "default"; text: "Default" }
+                        ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
                     }
+                }
+            },
 
-                    ChaSetCheckbox {
-                        size: "sm"
-                        label: "Invalid"
-                        checked: root.demoInvalid
-                        onToggled: (val) => root.demoInvalid = val
+            Row {
+                spacing: ThemeTokens.dp(8)
+                DocText { text: "Type:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetTabs {
+                    anchors.verticalCenter: parent.verticalCenter
+                    currentValue: root.demoType
+                    onCurrentValueChanged: root.demoType = currentValue
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "text"; text: "Text" }
+                        ChaSetTabsTrigger { value: "password"; text: "Password" }
                     }
+                }
+            },
 
-                    ChaSetCheckbox {
-                        size: "sm"
-                        label: "Clearable"
-                        checked: root.demoClearable
-                        onToggled: (val) => root.demoClearable = val
-                    }
+            Row {
+                width: childrenRect.width
+                spacing: ThemeTokens.dp(12)
 
-                    ChaSetCheckbox {
-                        visible: root.demoType === "password"
-                        size: "sm"
-                        label: "Password Toggle"
-                        checked: root.demoPasswordToggle
-                        onToggled: (val) => root.demoPasswordToggle = val
-                    }
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Disabled"
+                    checked: root.demoDisabled
+                    onToggled: (val) => root.demoDisabled = val
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Invalid"
+                    checked: root.demoInvalid
+                    onToggled: (val) => root.demoInvalid = val
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Clearable"
+                    checked: root.demoClearable
+                    onToggled: (val) => root.demoClearable = val
+                }
+            },
+
+            Row {
+                width: childrenRect.width
+                spacing: ThemeTokens.dp(12)
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Show Icon"
+                    checked: root.demoShowIcon
+                    onToggled: (val) => root.demoShowIcon = val
+                }
+
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Bordered"
+                    checked: root.demoBordered
+                    onToggled: (val) => root.demoBordered = val
+                }
+
+                ChaSetCheckbox {
+                    visible: root.demoType === "password"
+                    size: "sm"
+                    label: "Password Toggle"
+                    checked: root.demoPasswordToggle
+                    onToggled: (val) => root.demoPasswordToggle = val
                 }
             }
         ]

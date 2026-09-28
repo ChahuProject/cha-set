@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, type InputSize, Button, Badge, Tabs, TabsList, TabsTrigger, Checkbox, CodeBlock } from '@chahu/cha-set';
+import { Input, type InputSize, Button, Badge, Tabs, TabsList, TabsTrigger, Checkbox, CodeBlock, MailIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from "../../components/ComponentReference";
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -11,6 +11,8 @@ export function InputDocPage() {
   const [invalid, setInvalid] = useState(false);
   const [clearable, setClearable] = useState(true);
   const [passwordToggle, setPasswordToggle] = useState(true);
+  const [showIcon, setShowIcon] = useState(true);
+  const [bordered, setBordered] = useState(true);
   const [value, setValue] = useState('user@chahu.dev');
   const [placeholder, setPlaceholder] = useState('Enter your email...');
   const [type, setType] = useState<'text' | 'password'>('text');
@@ -24,7 +26,8 @@ export function InputDocPage() {
     disabled={${disabled}}
     invalid={${invalid}}
     clearable={${clearable}}
-    passwordToggle={${passwordToggle}}
+    bordered={${bordered}}
+    passwordToggle={${passwordToggle}}${showIcon ? '\n    icon={<MailIcon className="size-4" />}' : ''}
     onChange={(e) => setValue(e.target.value)}
   />
 </div>`;
@@ -38,7 +41,8 @@ export function InputDocPage() {
     disabled: ${disabled}
     invalid: ${invalid}
     clearable: ${clearable}
-    passwordToggle: ${passwordToggle}
+    bordered: ${bordered}
+    passwordToggle: ${passwordToggle}${showIcon ? '\n    icon: "mail"' : ''}
     onTextEdited: { /* handle text */ }
 }`;
 
@@ -105,6 +109,18 @@ export function InputDocPage() {
                   onCheckedChange={(val) => setClearable(val)}
                   label="Clearable"
                 />
+                <Checkbox
+                  size="sm"
+                  checked={showIcon}
+                  onCheckedChange={(val) => setShowIcon(val)}
+                  label="Show Icon"
+                />
+                <Checkbox
+                  size="sm"
+                  checked={bordered}
+                  onCheckedChange={(val) => setBordered(val)}
+                  label="Bordered"
+                />
                 {type === 'password' && (
                   <Checkbox
                     size="sm"
@@ -130,6 +146,8 @@ export function InputDocPage() {
               disabled={disabled}
               invalid={invalid}
               clearable={clearable}
+              bordered={bordered}
+              icon={showIcon ? <MailIcon className="size-4" /> : undefined}
               passwordToggle={passwordToggle}
               onChange={(e) => setValue(e.target.value)}
             />
