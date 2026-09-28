@@ -305,11 +305,38 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
       style,
       ...props
     },
-    ref,
+    ref
   ) => {
     const { isOpen, side: contextSide, tooltipId } = useTooltip();
     const side = propSide || contextSide || 'top';
     const { visible, exiting } = useExitAnimation(isOpen);
+
+    const innerRef = React.useRef<HTMLDivElement>(null);
+    React.useImperativeHandle(ref, () => innerRef.current!);
+
+    const [inwardOffset, setInwardOffset] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+    React.useLayoutEffect(() => {
+      if (!visible || !innerRef.current || typeof window === 'undefined') return;
+      const rect = innerRef.current.getBoundingClientRect();
+      const margin = 8;
+      let shiftX = 0;
+      let shiftY = 0;
+
+      if (rect.right > window.innerWidth - margin) {
+        shiftX = -(rect.right - (window.innerWidth - margin));
+      } else if (rect.left < margin) {
+        shiftX = margin - rect.left;
+      }
+
+      if (rect.bottom > window.innerHeight - margin) {
+        shiftY = -(rect.bottom - (window.innerHeight - margin));
+      } else if (rect.top < margin) {
+        shiftY = margin - rect.top;
+      }
+
+      setInwardOffset({ x: shiftX, y: shiftY });
+    }, [visible, children, shortcut]);
 
     if (!visible) {
       return null;
@@ -324,9 +351,18 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
       else if (side === 'right') computedStyle.marginLeft = remVal;
     }
 
+    if (inwardOffset.x !== 0) {
+      const existingMargin = typeof computedStyle.marginLeft === 'string' ? parseFloat(computedStyle.marginLeft) : 0;
+      computedStyle.marginLeft = `${(existingMargin + inwardOffset.x * 0.0625).toFixed(4)}rem`;
+    }
+    if (inwardOffset.y !== 0) {
+      const existingMargin = typeof computedStyle.marginTop === 'string' ? parseFloat(computedStyle.marginTop) : 0;
+      computedStyle.marginTop = `${(existingMargin + inwardOffset.y * 0.0625).toFixed(4)}rem`;
+    }
+
     return (
       <div
-        ref={ref}
+        ref={innerRef}
         role="tooltip"
         id={tooltipId}
         data-slot="tooltip-content"

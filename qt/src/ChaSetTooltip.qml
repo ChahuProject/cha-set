@@ -82,6 +82,42 @@ Item {
         }
     }
 
+    readonly property real clampedX: {
+        var base = calculatedX
+        var win = root.Window.window
+        var margin = ThemeTokens.dp(8)
+        if (win) {
+            try {
+                var mapped = root.mapToItem(null, base, 0)
+                if (mapped.x + bubble.width > win.width - margin) {
+                    base -= (mapped.x + bubble.width - (win.width - margin))
+                }
+                if (mapped.x < margin) {
+                    base += (margin - mapped.x)
+                }
+            } catch (e) {}
+        }
+        return base
+    }
+
+    readonly property real clampedY: {
+        var base = calculatedY
+        var win = root.Window.window
+        var margin = ThemeTokens.dp(8)
+        if (win) {
+            try {
+                var mappedY = root.mapToItem(null, 0, base)
+                if (mappedY.y + bubble.height > win.height - margin) {
+                    base -= (mappedY.y + bubble.height - (win.height - margin))
+                }
+                if (mappedY.y < margin) {
+                    base += (margin - mappedY.y)
+                }
+            } catch (e) {}
+        }
+        return base
+    }
+
     readonly property bool shouldShow: (root.active || root.forceHover) && !root.disabled && (root.text.length > 0)
 
     HoverHandler {
@@ -124,8 +160,8 @@ Item {
     Rectangle {
         id: bubble
         z: 999
-        x: Math.round(root.calculatedX)
-        y: Math.round(root.calculatedY)
+        x: Math.round(root.clampedX)
+        y: Math.round(root.clampedY)
         visible: root.shouldShow
         opacity: visible ? 1.0 : 0.0
         scale: visible ? 1.0 : 0.95

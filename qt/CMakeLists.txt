@@ -124,6 +124,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetCardContent.qml
         src/ChaSetCardFooter.qml
         src/ChaSetInput.qml
+        src/ChaSetHistoryInput.qml
         src/ChaSetCheckbox.qml
         src/ChaSetSwitch.qml
         src/ChaSetSeparator.qml

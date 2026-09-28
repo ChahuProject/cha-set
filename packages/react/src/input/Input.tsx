@@ -13,6 +13,10 @@ export interface InputProps
   passwordToggle?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
+  clearIcon?: React.ReactNode;
+  reserveIconSlot?: boolean;
 }
 
 const sizeStyles: Record<InputSize, string> = {
@@ -34,17 +38,23 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       forceHover = false,
       forceFocus = false,
       invalid = false,
-      clearable = false,
+      clearable = true,
       onClear,
       passwordToggle = false,
       leftIcon,
       rightIcon,
+      icon,
+      iconPosition = 'left',
+      clearIcon,
+      reserveIconSlot = false,
       disabled = false,
       readOnly = false,
       value,
       defaultValue,
       onChange,
       onKeyDown,
+      onFocus,
+      onBlur,
       ...props
     },
     ref,
@@ -54,17 +64,20 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const [innerValue, setInnerValue] = useState(value ?? defaultValue ?? '');
     const [showPassword, setShowPassword] = useState(false);
+    const [focused, setFocused] = useState(false);
 
     const isControlled = value !== undefined;
     const currentValue = isControlled ? String(value) : String(innerValue);
     const hasValue = currentValue.length > 0;
+    const isFocused = forceFocus || focused;
 
     const effectiveType =
       type === 'password' && passwordToggle && showPassword ? 'text' : type;
 
-    const hasAddons = Boolean(
-      leftIcon || rightIcon || clearable || (type === 'password' && passwordToggle),
-    );
+    const effectiveLeftIcon =
+      leftIcon ?? (icon && iconPosition === 'left' ? icon : undefined);
+    const effectiveRightIcon =
+      rightIcon ?? (icon && iconPosition === 'right' ? icon : undefined);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (!isControlled) {
@@ -99,34 +112,15 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       onKeyDown?.(e);
     };
 
-    let forcedStateClass = '';
-    if (forceFocus) {
-      forcedStateClass = invalid
-        ? 'ring-1 ring-destructive border-destructive outline-hidden'
-        : 'ring-1 ring-ring border-ring outline-hidden';
-    } else if (invalid) {
-      forcedStateClass = 'border-destructive focus-visible:ring-destructive focus-visible:border-destructive';
-    }
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+      setFocused(true);
+      onFocus?.(e);
+    };
 
-    if (!hasAddons) {
-      return (
-        <input
-          ref={inputRef}
-          type={effectiveType}
-          data-slot="input"
-          data-size={size}
-          disabled={disabled}
-          readOnly={readOnly}
-          aria-invalid={invalid ? true : undefined}
-          value={value}
-          defaultValue={defaultValue}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          className={`flex w-full rounded-md border border-input bg-transparent dark:bg-input/20 shadow-xs transition-[color,background-color,border-color,box-shadow] duration-quick ease-standard file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 text-foreground ${sizeStyles[size]} ${forcedStateClass} ${className}`.trim()}
-          {...props}
-        />
-      );
-    }
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      setFocused(false);
+      onBlur?.(e);
+    };
 
     const containerForcedClass = forceFocus
       ? invalid
@@ -141,15 +135,18 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         data-slot="input-container"
         data-size={size}
         onClick={() => inputRef.current?.focus()}
-        className={`flex items-center w-full rounded-md border bg-transparent dark:bg-input/20 shadow-xs transition-[color,background-color,border-color,box-shadow] duration-quick ease-standard text-foreground ${addonContainerSizeStyles[size]} ${containerForcedClass} ${
+        className={`relative overflow-hidden flex items-center w-full rounded-md border bg-transparent dark:bg-input/20 shadow-xs transition-[color,background-color,border-color,box-shadow] duration-quick ease-standard text-foreground ${addonContainerSizeStyles[size]} ${containerForcedClass} ${
           disabled ? 'cursor-not-allowed opacity-50' : 'cursor-text'
         } ${className}`.trim()}
       >
-        {leftIcon && (
+        {effectiveLeftIcon ? (
           <span className="flex items-center justify-center mr-2 text-muted-foreground shrink-0 select-none">
-            {leftIcon}
+            {effectiveLeftIcon}
           </span>
-        )}
+        ) : reserveIconSlot ? (
+          <span className="w-4 mr-2 shrink-0 select-none" aria-hidden="true" />
+        ) : null}
+
         <input
           ref={inputRef}
           type={effectiveType}
@@ -162,9 +159,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           defaultValue={defaultValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          className="flex-1 min-w-0 w-full bg-transparent border-0 outline-none placeholder:text-muted-foreground text-foreground text-inherit p-0 disabled:cursor-not-allowed"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          className={`flex-1 min-w-0 w-full bg-transparent border-0 outline-none placeholder:text-muted-foreground text-foreground text-inherit p-0 disabled:cursor-not-allowed cursor-text ${sizeStyles[size]} ${disabled ? 'disabled:opacity-50' : ''} ${invalid ? 'border-destructive' : ''} ${className}`.trim()}
           {...props}
         />
+
         <div className="flex items-center gap-1 ml-1.5 shrink-0">
           {clearable && hasValue && !disabled && !readOnly && (
             <button
@@ -174,23 +174,28 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               onClick={handleClear}
               className="p-0.5 rounded text-muted-foreground hover:text-foreground transition-colors duration-quick ease-standard cursor-pointer"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="m15 9-6 6" />
-                <path d="m9 9 6 6" />
-              </svg>
+              {clearIcon ? (
+                clearIcon
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="m15 9-6 6" />
+                  <path d="m9 9 6 6" />
+                </svg>
+              )}
             </button>
           )}
+
           {type === 'password' && passwordToggle && !disabled && (
             <button
               type="button"
@@ -234,12 +239,21 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               )}
             </button>
           )}
-          {rightIcon && (
+
+          {effectiveRightIcon && (
             <span className="flex items-center justify-center text-muted-foreground select-none">
-              {rightIcon}
+              {effectiveRightIcon}
             </span>
           )}
         </div>
+
+        {/* Win11 style bottom focus underline */}
+        <div
+          data-slot="input-focus-underline"
+          className={`absolute bottom-0 left-0 right-0 h-[0.125rem] pointer-events-none transition-all duration-quick z-10 ${
+            isFocused ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+          } ${invalid ? 'bg-destructive' : 'bg-primary'}`}
+        />
       </div>
     );
   },

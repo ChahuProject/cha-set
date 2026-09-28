@@ -15,11 +15,14 @@ Rectangle {
     property bool disabled: false
     property bool readOnly: false
     property bool invalid: false
-    property bool clearable: false
+    property bool clearable: true
     property bool passwordToggle: false
     property bool showPassword: false
     property string leftIconSource: ""
     property string rightIconSource: ""
+    property string icon: ""
+    property string iconPosition: "left"
+    property bool reserveIconSlot: false
     property bool forceHover: false
     property bool forceFocus: false
     property int customRadius: -1
@@ -35,6 +38,10 @@ Rectangle {
         inputInner.forceActiveFocus();
     }
 
+    function selectAll() {
+        inputInner.selectAll();
+    }
+
     readonly property bool isSm: root.size === "sm"
     readonly property bool isFocused: root.forceFocus || inputInner.activeFocus
     readonly property bool isHovered: root.forceHover || containerClickArea.containsMouse
@@ -45,6 +52,7 @@ Rectangle {
     implicitHeight: ThemeTokens.dp(isSm ? 28 : 32)
     radius: customRadius >= 0 ? customRadius : ThemeTokens.dp(6)
     color: "transparent"
+    clip: true
 
     opacity: root.disabled ? 0.5 : 1.0
 
@@ -64,6 +72,22 @@ Rectangle {
         ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
     }
 
+    // Win11-style bottom theme underline inside input
+    Rectangle {
+        id: bottomFocusUnderline
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: root.radius > 0 ? ThemeTokens.dp(2) : 0
+        anchors.rightMargin: root.radius > 0 ? ThemeTokens.dp(2) : 0
+        anchors.bottomMargin: 1
+        height: ThemeTokens.dp(2)
+        radius: ThemeTokens.dp(1)
+        color: root.invalid ? root.destructiveColor : ThemeTokens.accent
+        visible: root.isFocused
+        z: 2
+    }
+
     // Focus ring (1px offset matching Tailwind ring-1)
     Rectangle {
         id: focusRing
@@ -76,19 +100,33 @@ Rectangle {
         visible: root.isFocused
     }
 
-    // Left Icon
-    Image {
+    // Left Icon Slot
+    Item {
         id: leftIcon
-        visible: root.leftIconSource !== ""
+        readonly property bool hasIcon: root.leftIconSource !== "" || (root.icon !== "" && root.iconPosition === "left")
+        visible: hasIcon || root.reserveIconSlot
         anchors.left: parent.left
         anchors.leftMargin: ThemeTokens.dp(root.isSm ? 8 : 10)
         anchors.verticalCenter: parent.verticalCenter
         width: ThemeTokens.dp(root.isSm ? 14 : 16)
         height: ThemeTokens.dp(root.isSm ? 14 : 16)
-        source: root.leftIconSource
-        sourceSize.width: ThemeTokens.dp(root.isSm ? 14 : 16)
-        sourceSize.height: ThemeTokens.dp(root.isSm ? 14 : 16)
-        fillMode: Image.PreserveAspectFit
+
+        Image {
+            anchors.fill: parent
+            visible: root.leftIconSource !== ""
+            source: root.leftIconSource
+            sourceSize.width: parent.width
+            sourceSize.height: parent.height
+            fillMode: Image.PreserveAspectFit
+        }
+
+        ChaSetIcon {
+            anchors.centerIn: parent
+            visible: root.leftIconSource === "" && root.icon !== "" && root.iconPosition === "left"
+            name: root.icon
+            size: root.isSm ? 14 : 16
+            color: ThemeTokens.subduedText
+        }
     }
 
     // Right Actions (Clear button, Password toggle, Right icon)
@@ -158,16 +196,29 @@ Rectangle {
         }
 
         // Right icon
-        Image {
+        Item {
             id: rightIcon
-            visible: root.rightIconSource !== ""
+            visible: root.rightIconSource !== "" || (root.icon !== "" && root.iconPosition === "right")
             width: ThemeTokens.dp(root.isSm ? 14 : 16)
             height: ThemeTokens.dp(root.isSm ? 14 : 16)
-            source: root.rightIconSource
-            sourceSize.width: ThemeTokens.dp(root.isSm ? 14 : 16)
-            sourceSize.height: ThemeTokens.dp(root.isSm ? 14 : 16)
-            fillMode: Image.PreserveAspectFit
             anchors.verticalCenter: parent.verticalCenter
+
+            Image {
+                anchors.fill: parent
+                visible: root.rightIconSource !== ""
+                source: root.rightIconSource
+                sourceSize.width: parent.width
+                sourceSize.height: parent.height
+                fillMode: Image.PreserveAspectFit
+            }
+
+            ChaSetIcon {
+                anchors.centerIn: parent
+                visible: root.rightIconSource === "" && root.icon !== "" && root.iconPosition === "right"
+                name: root.icon
+                size: root.isSm ? 14 : 16
+                color: ThemeTokens.subduedText
+            }
         }
     }
 

@@ -13,15 +13,18 @@ Item {
     property int estimateSize: 36
     property int gap: 0
     property int overscan: 8
-    property int customRadius: 6
+    property bool searchable: false
+    property bool searchDefaultOpen: false
+    property string searchQuery: ""
+    property string searchPlaceholder: qsTr("搜索...")
+    property bool isSearchOpen: searchDefaultOpen || (searchQuery.length > 0)
 
-    readonly property int effectiveItemHeight: ThemeTokens.dp(root.itemHeight)
-    readonly property int effectiveEstimateSize: ThemeTokens.dp(root.estimateSize)
+    signal searchRequested(string query)
 
-    function scrollToIndex(index) {
-        if (listView) {
-            listView.positionViewAtIndex(index, ListView.Beginning);
-            listView.currentIndex = index;
+    function openSearch() {
+        if (searchable) {
+            isSearchOpen = true;
+            searchField.forceActiveFocus();
         }
     }
 
@@ -52,6 +55,12 @@ Item {
         } else if (event.key === Qt.Key_End) {
             event.accepted = true
             listView.currentIndex = Math.max(0, listView.count - 1)
+        } else if (root.searchable && !root.isSearchOpen && event.text.length === 1 && !event.modifiers) {
+            event.accepted = true
+            root.isSearchOpen = true
+            root.searchQuery = event.text
+            root.searchRequested(event.text)
+            searchField.forceActiveFocus()
         }
     }
 
@@ -63,9 +72,55 @@ Item {
         radius: ThemeTokens.dp(root.customRadius)
         clip: true
 
-        ListView {
-            id: listView
+        Column {
             anchors.fill: parent
+
+            // Search Box Header
+            Item {
+                id: searchHeader
+                visible: root.searchable && root.isSearchOpen
+                width: parent.width
+                height: visible ? ThemeTokens.dp(36) : 0
+
+                ChaSetInput {
+                    id: searchField
+                    anchors.fill: parent
+                    anchors.margins: ThemeTokens.dp(3)
+                    size: "sm"
+                    text: root.searchQuery
+                    placeholderText: root.searchPlaceholder
+                    clearable: true
+                    icon: "search"
+
+                    onTextEdited: {
+                        root.searchQuery = text
+                        root.searchRequested(text)
+                    }
+
+                    onCleared: {
+                        root.searchQuery = ""
+                        root.searchRequested("")
+                        if (!root.searchDefaultOpen) {
+                            root.isSearchOpen = false
+                        }
+                    }
+
+                    Keys.onEscapePressed: {
+                        if (root.searchQuery.length > 0) {
+                            root.searchQuery = ""
+                            root.searchRequested("")
+                        } else if (!root.searchDefaultOpen) {
+                            root.isSearchOpen = false
+                            root.forceActiveFocus()
+                        }
+                    }
+                }
+            }
+
+            ListView {
+                id: listView
+                width: parent.width
+                height: parent.height - (searchHeader.visible ? searchHeader.height : 0)
             boundsBehavior: Flickable.StopAtBounds
             clip: true
             reuseItems: true
@@ -85,4 +140,5 @@ Item {
             }
         }
     }
+}
 }
