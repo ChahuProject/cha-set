@@ -482,6 +482,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
             <div
               className="flex-1 flex items-center h-full min-w-0 cursor-text overflow-hidden"
               onClick={(e) => {
+                if (openSegmentIndex >= 0) return;
                 if (!(e.target as HTMLElement).closest('button')) {
                   startEditing();
                 }
@@ -506,7 +507,10 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
 
               {/* Blank Area Click to Edit */}
               <div
-                onClick={startEditing}
+                onClick={() => {
+                  if (openSegmentIndex >= 0) return;
+                  startEditing();
+                }}
                 className="flex-1 h-full min-w-[1.5rem] cursor-text"
                 title="Click to edit address"
               />

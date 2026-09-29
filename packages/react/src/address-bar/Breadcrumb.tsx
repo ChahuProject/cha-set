@@ -306,13 +306,18 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       const startW = currentRect ? currentRect.width : dropdownWidth;
       const startH = currentRect ? currentRect.height : dropdownHeight;
 
+      let hasMoved = false;
+
       const onMouseMove = (ev: MouseEvent) => {
+        const deltaX = ev.clientX - startX;
+        const deltaY = ev.clientY - startY;
+        if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
+          hasMoved = true;
+        }
         if (edge === 'right' || edge === 'corner') {
-          const deltaX = ev.clientX - startX;
           setDropdownWidth(Math.max(180, Math.round(startW + deltaX)));
         }
         if (edge === 'bottom' || edge === 'corner') {
-          const deltaY = ev.clientY - startY;
           setDropdownHeight(Math.max(100, Math.round(startH + deltaY)));
         }
       };
@@ -320,6 +325,19 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       const onMouseUp = () => {
         window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('mouseup', onMouseUp);
+        if (hasMoved) {
+          // Block any synthetic click that fires right after releasing the drag
+          const captureClick = (ev: MouseEvent) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            ev.stopImmediatePropagation();
+            window.removeEventListener('click', captureClick, true);
+          };
+          window.addEventListener('click', captureClick, true);
+          setTimeout(() => {
+            window.removeEventListener('click', captureClick, true);
+          }, 100);
+        }
       };
 
       window.addEventListener('mousemove', onMouseMove);
@@ -578,7 +596,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
             {/* Bottom Keyboard Shortcut Bar (flush at bottom) */}
             <ShortcutBar
               preset="address-bar"
-              className="border-t border-border bg-muted/40 px-2.5 py-1"
+              className="w-full shrink-0 border-t border-border bg-muted/40 px-2 py-1"
             />
 
 
@@ -640,7 +658,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
             {/* Bottom Keyboard Shortcut Bar (flush at bottom) */}
             <ShortcutBar
               preset="address-bar"
-              className="border-t border-border bg-muted/40 px-2.5 py-1"
+              className="w-full shrink-0 border-t border-border bg-muted/40 px-2 py-1"
             />
 
 
