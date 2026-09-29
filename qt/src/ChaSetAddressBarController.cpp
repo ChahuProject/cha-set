@@ -100,7 +100,7 @@ QStringList ChaSetAddressBarController::history() const {
 }
 
 void ChaSetAddressBarController::setCurrentPath(const QString &path) {
-    const QString cleaned = QDir::fromNativeSeparators(QDir::cleanPath(path));
+    const QString cleaned = path.trimmed().isEmpty() ? QString() : QDir::fromNativeSeparators(QDir::cleanPath(path));
     if (cleaned == m_currentPath)
         return;
     m_currentPath = cleaned;
