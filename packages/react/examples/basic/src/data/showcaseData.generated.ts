@@ -1162,6 +1162,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/elided-text",
         "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated.",
         "description": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
+      },
+      {
+        "id": "kbd",
+        "title": "Kbd",
+        "href": "#/components/kbd",
+        "desc": "Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation.",
+        "description": "Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation."
       }
     ]
   },
@@ -2353,6 +2360,12 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Tab / Shift + Tab",
       "action": "Move focus into and out of table of contents navigation"
+    }
+  ],
+  "kbd": [
+    {
+      "key": "—",
+      "action": "Non-interactive visual indicator representing keyboard shortcuts and key combinations"
     }
   ]
 };

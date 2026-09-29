@@ -86,6 +86,12 @@
         "title": "Elided Text",
         "href": "#/components/elided-text",
         "desc": "Smart single-line text that elides overflow and displays an interactive tooltip only when truncated."
+      },
+      {
+        "id": "kbd",
+        "title": "Kbd",
+        "href": "#/components/kbd",
+        "desc": "Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation."
       }
     ]
   },

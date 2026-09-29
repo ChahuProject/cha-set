@@ -188,6 +188,8 @@ qt_add_qml_module(ChaSet
         src/ChaSetThemeSettings.qml
         src/ChaSetLanguageSettings.qml
         src/ChaSetTableOfContents.qml
+        src/ChaSetKbd.qml
+        src/ChaSetShortcut.qml
         src/ThemeTokens.generated.qml
         src/ChaSetIcons.generated.qml
 
@@ -304,6 +306,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/ThemeSettingsDocPage.qml
             src/LanguageSettingsDocPage.qml
             src/TableOfContentsDocPage.qml
+            src/KbdDocPage.qml
             src/CommandSearchModal.qml
 
             src/ExportModal.qml

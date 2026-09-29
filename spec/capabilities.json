@@ -410,6 +410,14 @@
       "keyboard": { "requirement": "must", "description": "arrow key spatial navigation and Enter/Space activation" },
       "variant": { "requirement": "should", "description": "supports default, track, and flat visual variants" },
       "disabled": { "requirement": "should", "description": "disabled items block click and navigation" }
+    },
+    "kbd": {
+      "variant": { "requirement": "must", "description": "switches visual appearance between subtle, outline, solid, and inverted" },
+      "size": { "requirement": "must", "description": "supports xs, sm, and default sizing scales" },
+      "shortcutParsing": { "requirement": "must", "description": "automatically parses key combinations and branches" },
+      "compactSymbols": { "requirement": "must", "description": "supports converting verbose modifiers to compact symbols" },
+      "styling": { "requirement": "must", "description": "token-aligned keycap rendering with mono typography" },
+      "responsive": { "requirement": "should", "description": "handles narrow layouts and container clipping gracefully" }
     }
   }
 }

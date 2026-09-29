@@ -61,7 +61,8 @@
     "./shared/placement": "./shared/placement.ts",
     "./address-bar": "./components/address-bar.ts",
     "./theme-settings": "./components/theme-settings.ts",
-    "./table-of-contents": "./components/table-of-contents.ts"
+    "./table-of-contents": "./components/table-of-contents.ts",
+    "./kbd": "./components/kbd.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

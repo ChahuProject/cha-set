@@ -381,5 +381,13 @@
     "keyboard": true,
     "variant": true,
     "disabled": true
+  },
+  "kbd": {
+    "variant": true,
+    "size": true,
+    "shortcutParsing": true,
+    "compactSymbols": true,
+    "styling": true,
+    "responsive": true
   }
 }

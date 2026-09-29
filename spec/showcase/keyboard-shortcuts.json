@@ -309,6 +309,9 @@
     { "key": "Home / End", "action": "Jump directly to the first / last outline item" },
     { "key": "Space / Enter", "action": "Activate selected item and scroll to target section" },
     { "key": "Tab / Shift + Tab", "action": "Move focus into and out of table of contents navigation" }
+  ],
+  "kbd": [
+    { "key": "—", "action": "Non-interactive visual indicator representing keyboard shortcuts and key combinations" }
   ]
 }
 

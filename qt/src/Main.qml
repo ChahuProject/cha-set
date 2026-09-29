@@ -365,6 +365,7 @@ ApplicationWindow {
         case "theme-settings": return "ThemeSettingsDocPage.qml";
         case "language-settings": return "LanguageSettingsDocPage.qml";
         case "table-of-contents": return "TableOfContentsDocPage.qml";
+        case "kbd": return "KbdDocPage.qml";
         default: return "ButtonDocPage.qml";
 
         }

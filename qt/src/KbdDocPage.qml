@@ -1,0 +1,446 @@
+// KbdDocPage.qml — Living Documentation and Interactive Sandbox for ChaSetKbd & ChaSetShortcut
+import QtQuick 6.10
+import QtQuick.Controls 6.10
+import ChaSet
+
+DocLayout {
+    id: root
+    category: "Base Primitives"
+    pageTitle: "Kbd"
+    description: "Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation."
+
+    property color cFg: ThemeTokens.text
+    property color cMutedFg: ThemeTokens.subduedText
+    property color cCard: ThemeTokens.panel
+    property color cBorder: ThemeTokens.border
+    property color cPrimary: ThemeTokens.accent
+    property color cAccentBg: ThemeTokens.hover
+
+    property string demoVariant: "outline"
+    property string demoSize: "default"
+    property string demoCompact: "auto"
+
+    // Section 1: Overview
+    ComponentPreview {
+        id: heroPreview
+        width: parent.width
+        title: "Kbd Sandbox"
+        reactCode: `<Kbd
+  variant="${root.demoVariant}"
+  size="${root.demoSize}"
+  compact="${root.demoCompact}"
+  shortcut="Ctrl+Shift+P"
+/>`
+        qtCode: `ChaSetKbd {
+    variant: "${root.demoVariant}"
+    size: "${root.demoSize}"
+    compact: "${root.demoCompact}"
+    shortcut: "Ctrl+Shift+P"
+}`
+
+        stageData: [
+            Item {
+                anchors.centerIn: parent
+                width: kbdItem.width
+                height: kbdItem.height
+
+                ChaSetKbd {
+                    id: kbdItem
+                    anchors.centerIn: parent
+                    variant: root.demoVariant
+                    size: root.demoSize
+                    compact: root.demoCompact
+                    shortcut: "Ctrl+Shift+P"
+                }
+            }
+        ]
+
+        controlsData: [
+            Row {
+                width: childrenRect.width
+                spacing: ThemeTokens.dp(8)
+                DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetTabs {
+                    anchors.verticalCenter: parent.verticalCenter
+                    currentValue: root.demoVariant
+                    onCurrentValueChanged: root.demoVariant = currentValue
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "outline"; text: "Outline" }
+                        ChaSetTabsTrigger { value: "solid"; text: "Solid" }
+                        ChaSetTabsTrigger { value: "subtle"; text: "Subtle" }
+                        ChaSetTabsTrigger { value: "inverted"; text: "Inverted" }
+                    }
+                }
+            },
+
+            Row {
+                width: childrenRect.width
+                spacing: ThemeTokens.dp(8)
+                DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetTabs {
+                    anchors.verticalCenter: parent.verticalCenter
+                    currentValue: root.demoSize
+                    onCurrentValueChanged: root.demoSize = currentValue
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "xs"; text: "Extra Small (xs)" }
+                        ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
+                        ChaSetTabsTrigger { value: "default"; text: "Default" }
+                    }
+                }
+            },
+
+            Row {
+                width: childrenRect.width
+                spacing: ThemeTokens.dp(8)
+                DocText { text: "Compact:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetTabs {
+                    anchors.verticalCenter: parent.verticalCenter
+                    currentValue: root.demoCompact
+                    onCurrentValueChanged: root.demoCompact = currentValue
+                    ChaSetTabsList {
+                        ChaSetTabsTrigger { value: "auto"; text: "Auto" }
+                        ChaSetTabsTrigger { value: "always"; text: "Always" }
+                        ChaSetTabsTrigger { value: "never"; text: "Never" }
+                    }
+                }
+            }
+        ]
+    }
+
+    // Section 2: Anatomy
+    DocAnatomy {
+        id: anatomy
+        reactCode: `import { Kbd, Shortcut } from '@chahu/cha-set';\n\n<Kbd shortcut="Ctrl+K" />`
+        qtCode: `import ChaSet\n\nChaSetKbd {\n    shortcut: "Ctrl+K"\n}`
+    }
+
+    // Section 3: Variants
+    Column {
+        width: parent.width
+        spacing: ThemeTokens.dp(8)
+        property string sectionId: "variants"
+        property string sectionTitle: "Variants"
+
+        DocText { text: "Variants"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "Four distinct visual styles designed for menus, search fields, dialogs, and inverted tooltips."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+
+        ChaSetCard {
+            width: parent.width
+
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: ThemeTokens.dp(32)
+                topPadding: ThemeTokens.dp(16)
+                bottomPadding: ThemeTokens.dp(16)
+
+                Column {
+                    spacing: ThemeTokens.dp(8)
+                    anchors.verticalCenter: parent.verticalCenter
+                    DocText { text: "Outline (Default)"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
+                    ChaSetKbd { variant: "outline"; shortcut: "Ctrl+K"; compact: "never"; anchors.horizontalCenter: parent.horizontalCenter }
+                }
+
+                Column {
+                    spacing: ThemeTokens.dp(8)
+                    anchors.verticalCenter: parent.verticalCenter
+                    DocText { text: "Solid"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
+                    ChaSetKbd { variant: "solid"; shortcut: "Ctrl+K"; compact: "never"; anchors.horizontalCenter: parent.horizontalCenter }
+                }
+
+                Column {
+                    spacing: ThemeTokens.dp(8)
+                    anchors.verticalCenter: parent.verticalCenter
+                    DocText { text: "Subtle"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
+                    ChaSetKbd { variant: "subtle"; shortcut: "Ctrl+K"; compact: "never"; anchors.horizontalCenter: parent.horizontalCenter }
+                }
+
+                Rectangle {
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: ThemeTokens.dark ? "#f8fafc" : "#020817"
+                    radius: ThemeTokens.dp(6)
+                    implicitWidth: invertedCol.implicitWidth + ThemeTokens.dp(24)
+                    implicitHeight: invertedCol.implicitHeight + ThemeTokens.dp(16)
+
+                    Column {
+                        id: invertedCol
+                        anchors.centerIn: parent
+                        spacing: ThemeTokens.dp(6)
+                        DocText { text: "Inverted (Tooltip)"; color: ThemeTokens.dark ? "#020817" : "#f8fafc"; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
+                        ChaSetKbd { variant: "inverted"; shortcut: "Ctrl+S"; compact: "never"; anchors.horizontalCenter: parent.horizontalCenter }
+                    }
+                }
+            }
+        }
+    }
+
+    // Section 4: Key Combinations & Symbols
+    Column {
+        width: parent.width
+        spacing: ThemeTokens.dp(8)
+        property string sectionId: "combinations"
+        property string sectionTitle: "Key Combinations & Symbols"
+
+        DocText { text: "Key Combinations & Symbols"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "Support for multi-key combinations, alternative choices, and compact modifier symbols."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+
+        ChaSetCard {
+            width: parent.width
+
+            Column {
+                width: parent.width - ThemeTokens.dp(32)
+                anchors.horizontalCenter: parent.horizontalCenter
+                topPadding: ThemeTokens.dp(16)
+                bottomPadding: ThemeTokens.dp(16)
+                spacing: ThemeTokens.dp(14)
+
+                Item {
+                    width: parent.width
+                    height: Math.max(symbolsText.implicitHeight, symbolsKbd.implicitHeight)
+                    DocText {
+                        id: symbolsText
+                        text: "Compact Modifier Symbols:"
+                        color: root.cFg
+                        font.pixelSize: Typography.sizeBody
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    ChaSetKbd {
+                        id: symbolsKbd
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        shortcut: "Ctrl+Alt+Shift+P"
+                        compact: "always"
+                    }
+                }
+
+                Item {
+                    width: parent.width
+                    height: Math.max(altText.implicitHeight, altKbd.implicitHeight)
+                    DocText {
+                        id: altText
+                        text: "Alternative Key Choices:"
+                        color: root.cFg
+                        font.pixelSize: Typography.sizeBody
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    ChaSetKbd {
+                        id: altKbd
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        shortcut: "Space / Enter"
+                        compact: "never"
+                    }
+                }
+
+                Item {
+                    width: parent.width
+                    height: Math.max(seqText.implicitHeight, seqKbd.implicitHeight)
+                    DocText {
+                        id: seqText
+                        text: "Multi-Modifier Sequence:"
+                        color: root.cFg
+                        font.pixelSize: Typography.sizeBody
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    ChaSetKbd {
+                        id: seqKbd
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        shortcut: "Ctrl + Shift + P"
+                        compact: "never"
+                    }
+                }
+            }
+        }
+    }
+
+    // Section 5: Menu Trailing Shortcuts
+    Column {
+        width: parent.width
+        spacing: ThemeTokens.dp(8)
+        property string sectionId: "menu-shortcuts"
+        property string sectionTitle: "Menu Trailing Shortcuts"
+
+        DocText { text: "Menu Trailing Shortcuts"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "Dedicated Shortcut component with built-in right-alignment and non-shrinking behavior for menu items."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+
+        ChaSetCard {
+            width: ThemeTokens.dp(320)
+
+            Column {
+                width: parent.width - ThemeTokens.dp(16)
+                anchors.horizontalCenter: parent.horizontalCenter
+                topPadding: ThemeTokens.dp(10)
+                bottomPadding: ThemeTokens.dp(10)
+                spacing: ThemeTokens.dp(4)
+
+                Rectangle {
+                    width: parent.width
+                    height: ThemeTokens.dp(32)
+                    radius: ThemeTokens.dp(4)
+                    color: "transparent"
+
+                    DocText {
+                        text: "New File"
+                        anchors.left: parent.left
+                        anchors.leftMargin: ThemeTokens.dp(8)
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: root.cFg
+                        font.pixelSize: Typography.sizeSmall
+                    }
+                    ChaSetShortcut {
+                        anchors.right: parent.right
+                        anchors.rightMargin: ThemeTokens.dp(8)
+                        anchors.verticalCenter: parent.verticalCenter
+                        value: "Ctrl+N"
+                    }
+                }
+
+                Rectangle {
+                    width: parent.width
+                    height: ThemeTokens.dp(32)
+                    radius: ThemeTokens.dp(4)
+                    color: "transparent"
+
+                    DocText {
+                        text: "Save Document"
+                        anchors.left: parent.left
+                        anchors.leftMargin: ThemeTokens.dp(8)
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: root.cFg
+                        font.pixelSize: Typography.sizeSmall
+                    }
+                    ChaSetShortcut {
+                        anchors.right: parent.right
+                        anchors.rightMargin: ThemeTokens.dp(8)
+                        anchors.verticalCenter: parent.verticalCenter
+                        value: "Ctrl+S"
+                    }
+                }
+
+                Rectangle {
+                    width: parent.width
+                    height: ThemeTokens.dp(32)
+                    radius: ThemeTokens.dp(4)
+                    color: "transparent"
+
+                    DocText {
+                        text: "Command Palette"
+                        anchors.left: parent.left
+                        anchors.leftMargin: ThemeTokens.dp(8)
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: root.cFg
+                        font.pixelSize: Typography.sizeSmall
+                    }
+                    ChaSetShortcut {
+                        anchors.right: parent.right
+                        anchors.rightMargin: ThemeTokens.dp(8)
+                        anchors.verticalCenter: parent.verticalCenter
+                        value: "Ctrl+Shift+P"
+                    }
+                }
+            }
+        }
+    }
+
+    // Section 6: Narrow Container Adaptation
+    Column {
+        width: parent.width
+        spacing: ThemeTokens.dp(8)
+        property string sectionId: "narrow-container"
+        property string sectionTitle: "Narrow Container Adaptation"
+
+        DocText { text: "Narrow Container Adaptation"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: "When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+
+        ChaSetCard {
+            width: ThemeTokens.dp(224)
+
+            Column {
+                width: parent.width - ThemeTokens.dp(16)
+                anchors.horizontalCenter: parent.horizontalCenter
+                topPadding: ThemeTokens.dp(10)
+                bottomPadding: ThemeTokens.dp(10)
+                spacing: ThemeTokens.dp(4)
+
+                Row {
+                    width: parent.width
+                    spacing: ThemeTokens.dp(8)
+                    Text {
+                        text: "Very Long Action Name That Truncates"
+                        width: parent.width - narrowKbd1.width - ThemeTokens.dp(12)
+                        elide: Text.ElideRight
+                        color: root.cFg
+                        font.pixelSize: Typography.sizeSmall
+                        font.family: Typography.familySans
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    ChaSetShortcut {
+                        id: narrowKbd1
+                        anchors.verticalCenter: parent.verticalCenter
+                        value: "Ctrl+P"
+                        compact: "always"
+                    }
+                }
+
+                Row {
+                    width: parent.width
+                    spacing: ThemeTokens.dp(8)
+                    Text {
+                        text: "Export Project as Archive"
+                        width: parent.width - narrowKbd2.width - ThemeTokens.dp(12)
+                        elide: Text.ElideRight
+                        color: root.cFg
+                        font.pixelSize: Typography.sizeSmall
+                        font.family: Typography.familySans
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    ChaSetShortcut {
+                        id: narrowKbd2
+                        anchors.verticalCenter: parent.verticalCenter
+                        value: "Ctrl+Shift+E"
+                        compact: "always"
+                    }
+                }
+            }
+        }
+    }
+
+    // Section 7: Animations
+    Column {
+        width: parent.width
+        spacing: ThemeTokens.dp(8)
+
+        DocText {
+            text: "Animations"
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
+            color: ThemeTokens.text
+        }
+
+        DocText {
+            text: "Interactive state changes (hover and active) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
+    // Section 8: Component Reference
+    ComponentReference {
+        name: "Kbd"
+        componentId: "kbd"
+        propsModel: [
+            { name: "variant", type: "'outline' | 'solid' | 'subtle' | 'inverted'", defaultValue: "'outline'", desc: "Visual presentation variant matching container surfaces." },
+            { name: "size", type: "'xs' | 'sm' | 'default' | 'md'", defaultValue: "'default'", desc: "Size scale controlling keycap height, padding, and font size." },
+            { name: "compact", type: "'auto' | 'always' | 'never'", defaultValue: "'auto'", desc: "Whether to convert verbose modifiers to compact symbols (Ctrl to ⌃)." },
+            { name: "overflow", type: "'collapse' | 'hide' | 'visible'", defaultValue: "'collapse'", desc: "Overflow strategy when space is constrained in narrow containers." },
+            { name: "shortcut", type: "string", defaultValue: "''", desc: "Serialized shortcut combination string to parse automatically." },
+            { name: "separator", type: "string", defaultValue: "'+'", desc: "Custom separator character between combination keys." },
+            { name: "text", type: "string", defaultValue: "''", desc: "Direct single key text to display." }
+        ]
+    }
+}
