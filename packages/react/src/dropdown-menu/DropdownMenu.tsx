@@ -3,6 +3,8 @@ import * as React from 'react';
 import { cn } from '../lib/utils';
 import { CheckIcon, ChevronRightIcon } from '../lib/icons';
 import { Shortcut } from '../kbd/Shortcut';
+import { ShortcutBar } from '../kbd/ShortcutBar';
+import type { ShortcutItem } from '@chahu/spec/kbd';
 
 export interface DropdownMenuProps
   extends React.ComponentProps<typeof MenuPrimitive.Root> {}
@@ -57,7 +59,14 @@ export type DropdownMenuPositionerProps = Pick<
 
 export interface DropdownMenuContentProps
   extends React.ComponentProps<typeof MenuPrimitive.Popup>,
-    DropdownMenuPositionerProps {}
+    DropdownMenuPositionerProps {
+  /** Whether to show the bottom keyboard shortcut hint bar */
+  showShortcuts?: boolean;
+  /** Custom list of shortcuts to render (defaults to standard dropdown navigation) */
+  shortcuts?: ShortcutItem[];
+  /** Additional shortcuts to append to the default dropdown shortcuts */
+  additionalShortcuts?: ShortcutItem[];
+}
 
 export function DropdownMenuContent({
   className,
@@ -67,8 +76,14 @@ export function DropdownMenuContent({
   alignOffset = 0,
   collisionPadding,
   anchor,
+  showShortcuts = false,
+  shortcuts,
+  additionalShortcuts,
+  children,
   ...props
 }: DropdownMenuContentProps) {
+  const hasShortcuts = showShortcuts || Boolean(shortcuts?.length) || Boolean(additionalShortcuts?.length);
+
   return (
     <MenuPrimitive.Portal>
       <MenuPrimitive.Positioner
@@ -90,11 +105,22 @@ export function DropdownMenuContent({
             className,
           )}
           {...props}
-        />
+        >
+          {children}
+          {hasShortcuts && (
+            <ShortcutBar
+              preset="dropdown"
+              items={shortcuts}
+              additionalShortcuts={additionalShortcuts}
+              className="-mx-1 -mb-1 mt-1 border-t border-border bg-muted/40 px-2 py-1"
+            />
+          )}
+        </MenuPrimitive.Popup>
       </MenuPrimitive.Positioner>
     </MenuPrimitive.Portal>
   );
 }
+
 
 export interface DropdownMenuGroupProps
   extends React.ComponentProps<typeof MenuPrimitive.Group> {}

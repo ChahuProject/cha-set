@@ -249,69 +249,16 @@ Popup {
             }
 
             // Bottom Keyboard Shortcut & Action Footer Bar (Flush to bottom, no margins, no enclosing card)
-            Rectangle {
+            ChaSetShortcutBar {
                 id: footerBar
                 Layout.fillWidth: true
                 Layout.preferredHeight: ThemeTokens.dp(26)
                 Layout.leftMargin: 1
                 Layout.rightMargin: 1
                 Layout.bottomMargin: 1
-                color: ThemeTokens.panelRaised
-                bottomLeftRadius: Math.max(0, ThemeTokens.dp(6) - 1)
-                bottomRightRadius: Math.max(0, ThemeTokens.dp(6) - 1)
-
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    height: 1
-                    color: ThemeTokens.border
-                }
-
-                Row {
-                    anchors.left: parent.left
-                    anchors.leftMargin: ThemeTokens.dp(8)
-                    anchors.verticalCenter: parent.verticalCenter
-                    spacing: ThemeTokens.dp(10)
-
-                    Row {
-                        spacing: ThemeTokens.dp(3)
-                        anchors.verticalCenter: parent.verticalCenter
-                        ChaSetBadge { size: "sm"; variant: "outline"; text: "Up"; height: ThemeTokens.dp(16) }
-                        ChaSetBadge { size: "sm"; variant: "outline"; text: "Down"; height: ThemeTokens.dp(16) }
-                        Text {
-                            text: qsTr("导航")
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeCaption
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-
-                    Row {
-                        spacing: ThemeTokens.dp(3)
-                        anchors.verticalCenter: parent.verticalCenter
-                        ChaSetBadge { size: "sm"; variant: "outline"; text: "Enter"; height: ThemeTokens.dp(16) }
-                        Text {
-                            text: qsTr("打开")
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeCaption
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-
-                    Row {
-                        spacing: ThemeTokens.dp(3)
-                        anchors.verticalCenter: parent.verticalCenter
-                        ChaSetBadge { size: "sm"; variant: "outline"; text: "Esc"; height: ThemeTokens.dp(16) }
-                        Text {
-                            text: qsTr("关闭")
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeCaption
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-                }
+                preset: "address-bar"
             }
+
         }
 
         // Right edge resize handle (Sitting on the true outer right edge)

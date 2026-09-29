@@ -406,7 +406,28 @@ DocLayout {
                 }
             }
         }
+
+        DocText {
+            text: "Responsive ShortcutBar in narrow popup (auto-compact & overflow fold):"
+            color: root.cMutedFg
+            font.pixelSize: Typography.sizeCaption
+        }
+
+        ChaSetCard {
+            width: ThemeTokens.dp(224)
+            clip: true
+
+            ChaSetShortcutBar {
+                width: parent.width
+                preset: "address-bar"
+                additionalShortcuts: [
+                    { "id": "tab", "keys": ["Tab"], "label": qsTr("补全"), "priority": 2 },
+                    { "id": "copy", "keys": ["Ctrl", "C"], "label": qsTr("复制路径"), "priority": 4 }
+                ]
+            }
+        }
     }
+
 
     // Section 7: Animations
     Column {

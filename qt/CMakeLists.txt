@@ -190,6 +190,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetTableOfContents.qml
         src/ChaSetKbd.qml
         src/ChaSetShortcut.qml
+        src/ChaSetShortcutBar.qml
         src/ThemeTokens.generated.qml
         src/ChaSetIcons.generated.qml
 

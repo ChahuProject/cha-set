@@ -85,12 +85,14 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
         e.preventDefault();
         setSelectedIndex((prev) => Math.max(prev - 1, 0));
       } else if (e.key === 'Enter' && isOpen) {
-        if (filtered.length > 0 && selectedIndex < filtered.length) {
+        const target = filtered[selectedIndex];
+        if (target) {
           e.preventDefault();
-          onSelect(filtered[selectedIndex].item.href);
+          onSelect(target.item.href);
           onClose();
         }
       }
+
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);

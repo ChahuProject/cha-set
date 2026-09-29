@@ -10,7 +10,7 @@ import {
 } from '../lib/icons';
 import { Tooltip } from '../tooltip/Tooltip';
 import { Input } from '../input/Input';
-import { Kbd } from '../kbd';
+import { Kbd, ShortcutBar } from '../kbd';
 
 export interface BreadcrumbProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Array of path segments */
@@ -576,23 +576,11 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
             </div>
 
             {/* Bottom Keyboard Shortcut Bar (flush at bottom) */}
-            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-micro text-muted-foreground shrink-0 select-none">
-              <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1">
-                  <Kbd size="xs" variant="outline">Up</Kbd>
-                  <Kbd size="xs" variant="outline">Down</Kbd>
-                  <span>导航</span>
-                </span>
-                <span className="flex items-center gap-1">
-                  <Kbd size="xs" variant="outline">Enter</Kbd>
-                  <span>打开</span>
-                </span>
-                <span className="flex items-center gap-1">
-                  <Kbd size="xs" variant="outline">Esc</Kbd>
-                  <span>关闭</span>
-                </span>
-              </div>
-            </div>
+            <ShortcutBar
+              preset="address-bar"
+              className="border-t border-border bg-muted/40 px-2.5 py-1"
+            />
+
 
             {/* True Border Drag Resize Handles */}
             <div
@@ -650,23 +638,11 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
             </div>
 
             {/* Bottom Keyboard Shortcut Bar (flush at bottom) */}
-            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-micro text-muted-foreground shrink-0 select-none">
-              <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1">
-                  <Kbd size="xs" variant="outline">Up</Kbd>
-                  <Kbd size="xs" variant="outline">Down</Kbd>
-                  <span>导航</span>
-                </span>
-                <span className="flex items-center gap-1">
-                  <Kbd size="xs" variant="outline">Enter</Kbd>
-                  <span>打开</span>
-                </span>
-                <span className="flex items-center gap-1">
-                  <Kbd size="xs" variant="outline">Esc</Kbd>
-                  <span>关闭</span>
-                </span>
-              </div>
-            </div>
+            <ShortcutBar
+              preset="address-bar"
+              className="border-t border-border bg-muted/40 px-2.5 py-1"
+            />
+
 
             {/* True Border Drag Resize Handles */}
             <div

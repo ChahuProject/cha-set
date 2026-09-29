@@ -8,9 +8,13 @@ Item {
 
     property bool open: false
     property var items: [] // [{ id, label, icon, shortcut, destructive, disabled, separator, isLabel, checked, onSelect }]
+    property bool showShortcuts: false
+    property var shortcuts: []
+    property var additionalShortcuts: []
     property int menuWidth: 180
     property int customRadius: 6
     property string align: "start" // "start" | "end"
+
     property int sideOffset: 4
     property int highlightedIndex: -1
     property string modality: "pointer" // "pointer" | "keyboard"
@@ -314,6 +318,17 @@ Item {
                     }
                 }
             }
+
+            // Bottom Keyboard Shortcut Hint Bar
+            ChaSetShortcutBar {
+                visible: root.showShortcuts || (root.shortcuts && root.shortcuts.length > 0) || (root.additionalShortcuts && root.additionalShortcuts.length > 0)
+                width: parent.width + ThemeTokens.dp(8)
+                x: -ThemeTokens.dp(4)
+                preset: "dropdown"
+                items: root.shortcuts
+                additionalShortcuts: root.additionalShortcuts
+            }
         }
     }
 }
+

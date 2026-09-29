@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Kbd,
   Shortcut,
+  ShortcutBar,
   type KbdVariant,
   type KbdSize,
   type KbdCompact,
@@ -194,17 +195,33 @@ export function KbdDocPage() {
         <p className="text-sm text-muted-foreground mb-4">
           When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols.
         </p>
-        <Card className="w-56 p-2 space-y-1 border-dashed">
-          <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm">
-            <span className="flex-1 min-w-0 truncate text-foreground">Very Long Action Name That Truncates</span>
-            <Shortcut value="Ctrl+P" compact="always" />
+        <div className="flex flex-col gap-4">
+          <Card className="w-56 p-2 space-y-1 border-dashed">
+            <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm">
+              <span className="flex-1 min-w-0 truncate text-foreground">Very Long Action Name That Truncates</span>
+              <Shortcut value="Ctrl+P" compact="always" />
+            </div>
+            <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm">
+              <span className="flex-1 min-w-0 truncate text-foreground">Export Project as Archive</span>
+              <Shortcut value="Ctrl+Shift+E" compact="always" />
+            </div>
+          </Card>
+
+          <div className="space-y-2">
+            <span className="text-xs text-muted-foreground">Responsive ShortcutBar in narrow popup (auto-compact & overflow fold):</span>
+            <Card className="w-56 p-2 border-dashed overflow-hidden">
+              <ShortcutBar
+                preset="address-bar"
+                additionalShortcuts={[
+                  { id: 'tab', keys: ['Tab'], label: '补全', priority: 2 },
+                  { id: 'copy', keys: ['Ctrl', 'C'], label: '复制路径', priority: 4 },
+                ]}
+              />
+            </Card>
           </div>
-          <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm">
-            <span className="flex-1 min-w-0 truncate text-foreground">Export Project as Archive</span>
-            <Shortcut value="Ctrl+Shift+E" compact="always" />
-          </div>
-        </Card>
+        </div>
       </section>
+
 
       {/* 7. Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
