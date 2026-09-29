@@ -121,6 +121,34 @@ describe('ShortcutBar Component', () => {
     expect(tooltip).toHaveTextContent('打印');
     expect(tooltip).toHaveTextContent('退出');
   });
+
+  it('renders a focused tooltip when hovering over any visible shortcut item', () => {
+    const { container } = render(
+      <ShortcutBar
+        items={[
+          { id: 'nav', keys: ['Up', 'Down'], label: '导航' },
+          { id: 'copy', keys: ['Ctrl', 'C'], label: '复制路径' },
+        ]}
+      />,
+    );
+
+    const items = container.querySelectorAll('[data-slot="shortcut-item"]');
+    expect(items.length).toBe(2);
+
+    // Hover on the second item ('复制路径')
+    fireEvent.mouseEnter(items[1]!);
+
+    // Tooltip should appear with both label and full key names
+    const tooltips = screen.getAllByRole('tooltip');
+    const activeTooltip = tooltips[tooltips.length - 1];
+    expect(activeTooltip).toBeInTheDocument();
+    expect(activeTooltip).toHaveTextContent('复制路径');
+    expect(activeTooltip).toHaveTextContent('Ctrl');
+    expect(activeTooltip).toHaveTextContent('C');
+
+    // Unhover should schedule dismissal
+    fireEvent.mouseLeave(items[1]!);
+  });
 });
 
 

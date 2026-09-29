@@ -19,7 +19,7 @@ DocLayout {
     property string demoVariant: "outline"
     property string demoSize: "default"
     property string demoCompact: "auto"
-    property real playgroundWidth: ThemeTokens.dp(340)
+    property real playgroundWidth: 340
 
     // Section 1: Overview
     ComponentPreview {
@@ -455,11 +455,17 @@ DocLayout {
                             min: 160
                             max: 540
                             step: 1
-                            value: Math.round(root.playgroundWidth / ThemeTokens.density)
+                            value: root.playgroundWidth
                             onValueMoved: function(val) {
-                                root.playgroundWidth = ThemeTokens.dp(val)
+                                root.playgroundWidth = Math.round(val)
                             }
                             anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        Binding {
+                            target: widthSlider
+                            property: "value"
+                            value: root.playgroundWidth
                         }
                     }
 
@@ -476,42 +482,30 @@ DocLayout {
 
                         ChaSetButton {
                             size: "xs"
-                            variant: Math.round(root.playgroundWidth / ThemeTokens.density) === 460 ? "secondary" : "outline"
+                            variant: Math.round(root.playgroundWidth) === 460 ? "secondary" : "outline"
                             text: "Full (460)"
-                            onClicked: {
-                                root.playgroundWidth = ThemeTokens.dp(460)
-                                widthSlider.value = 460
-                            }
+                            onClicked: root.playgroundWidth = 460
                         }
 
                         ChaSetButton {
                             size: "xs"
-                            variant: Math.round(root.playgroundWidth / ThemeTokens.density) === 330 ? "secondary" : "outline"
+                            variant: Math.round(root.playgroundWidth) === 330 ? "secondary" : "outline"
                             text: "Squeezed (330)"
-                            onClicked: {
-                                root.playgroundWidth = ThemeTokens.dp(330)
-                                widthSlider.value = 330
-                            }
+                            onClicked: root.playgroundWidth = 330
                         }
 
                         ChaSetButton {
                             size: "xs"
-                            variant: Math.round(root.playgroundWidth / ThemeTokens.density) === 250 ? "secondary" : "outline"
+                            variant: Math.round(root.playgroundWidth) === 250 ? "secondary" : "outline"
                             text: "Compact (250)"
-                            onClicked: {
-                                root.playgroundWidth = ThemeTokens.dp(250)
-                                widthSlider.value = 250
-                            }
+                            onClicked: root.playgroundWidth = 250
                         }
 
                         ChaSetButton {
                             size: "xs"
-                            variant: Math.round(root.playgroundWidth / ThemeTokens.density) === 180 ? "secondary" : "outline"
+                            variant: Math.round(root.playgroundWidth) === 180 ? "secondary" : "outline"
                             text: "Folded (180)"
-                            onClicked: {
-                                root.playgroundWidth = ThemeTokens.dp(180)
-                                widthSlider.value = 180
-                            }
+                            onClicked: root.playgroundWidth = 180
                         }
                     }
                 }
@@ -522,7 +516,7 @@ DocLayout {
 
                     ChaSetBadge {
                         variant: "outline"
-                        text: "Width: " + Math.round(root.playgroundWidth / ThemeTokens.density)
+                        text: "Width: " + Math.round(root.playgroundWidth)
                     }
 
                     ChaSetBadge {
@@ -541,13 +535,12 @@ DocLayout {
                 // Resizable Container Frame
                 Rectangle {
                     id: playgroundFrame
-                    width: Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(540), root.playgroundWidth))
+                    width: Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(540), ThemeTokens.dp(root.playgroundWidth)))
                     height: ThemeTokens.dp(32)
                     radius: ThemeTokens.dp(6)
                     color: ThemeTokens.panel
                     border.color: ThemeTokens.border
                     border.width: ThemeTokens.dp(1)
-                    clip: true
 
                     ChaSetShortcutBar {
                         id: playgroundShortcutBar
@@ -594,10 +587,10 @@ DocLayout {
                             onPositionChanged: function(mouse) {
                                 if (pressed) {
                                     var pt = mapToGlobal(mouse.x, mouse.y)
-                                    var delta = pt.x - startGlobalX
-                                    var nw = Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(540), startW + delta))
+                                    var scale = (ThemeTokens.uiScale > 0) ? ThemeTokens.uiScale : 1.0
+                                    var delta = (pt.x - startGlobalX) / scale
+                                    var nw = Math.max(160, Math.min(540, Math.round(startW + delta)))
                                     root.playgroundWidth = nw
-                                    widthSlider.value = Math.round(nw / ThemeTokens.density)
                                 }
                             }
                         }

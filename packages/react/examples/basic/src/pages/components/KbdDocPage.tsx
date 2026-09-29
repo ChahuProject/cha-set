@@ -33,6 +33,8 @@ export function KbdDocPage() {
     setIsDragging(true);
     const startX = e.clientX;
     const startW = playgroundWidth;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
 
     const onMouseMove = (moveEvent: MouseEvent) => {
       const delta = moveEvent.clientX - startX;
@@ -42,6 +44,8 @@ export function KbdDocPage() {
 
     const onMouseUp = () => {
       setIsDragging(false);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
     };
@@ -337,8 +341,10 @@ export function KbdDocPage() {
             <div className="pt-2">
               <div
                 style={{ width: `${playgroundWidth * 0.0625}rem` }}
-                className={`relative flex items-center rounded-md border border-dashed border-border bg-background transition-[width] duration-75 ease-out shadow-xs ${
-                  isDragging ? 'ring-1 ring-ring' : ''
+                className={`relative flex items-center rounded-md border border-dashed border-border bg-background shadow-xs ${
+                  isDragging
+                    ? 'ring-1 ring-ring transition-none'
+                    : 'transition-[width] duration-150 ease-out'
                 }`}
               >
                 <div className="flex-1 min-w-0 overflow-hidden py-1 px-2">

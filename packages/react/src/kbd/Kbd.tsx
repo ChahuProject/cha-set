@@ -228,10 +228,10 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
       );
     }
 
-    // Direct children keycap rendering: apply formatKeyToken if children is a string
+    // Direct children keycap rendering: apply formatKeyToken if compact === 'always'
     const renderedContent =
-      typeof children === 'string'
-        ? formatKeyToken(children, isCompact)
+      compact === 'always' && typeof children === 'string'
+        ? formatKeyToken(children, true)
         : children;
 
     if (isSubtle) {
