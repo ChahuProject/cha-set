@@ -55,6 +55,44 @@ Item {
         { id: "custom", name: "Custom", hex: "#30a0ff" }
     ]
 
+    readonly property var canonicalScaleOptions: [
+        { label: "25%", value: "0.25" },
+        { label: "33%", value: "0.33" },
+        { label: "50%", value: "0.5" },
+        { label: "67%", value: "0.67" },
+        { label: "75%", value: "0.75" },
+        { label: "80%", value: "0.8" },
+        { label: "90%", value: "0.9" },
+        { label: "100%", value: "1" },
+        { label: "110%", value: "1.1" },
+        { label: "125%", value: "1.25" },
+        { label: "150%", value: "1.5" },
+        { label: "175%", value: "1.75" },
+        { label: "200%", value: "2" },
+        { label: "250%", value: "2.5" },
+        { label: "300%", value: "3" },
+        { label: "400%", value: "4" },
+        { label: "500%", value: "5" }
+    ]
+
+    readonly property var uiScaleOptions: {
+        var currentScale = root.config && typeof root.config.uiScale === "number" ? root.config.uiScale : 1.0;
+        var found = false;
+        var list = [];
+        for (var i = 0; i < root.canonicalScaleOptions.length; i++) {
+            var opt = root.canonicalScaleOptions[i];
+            if (Math.abs(Number(opt.value) - currentScale) < 0.001) {
+                found = true;
+            }
+            list.push(opt);
+        }
+        if (!found) {
+            list.push({ label: Math.round(currentScale * 100) + "%", value: String(currentScale) });
+            list.sort(function(a, b) { return Number(a.value) - Number(b.value); });
+        }
+        return list;
+    }
+
     function updateConfig(mutator) {
         if (root.disabled) return;
         var current = root.config ? JSON.parse(JSON.stringify(root.config)) : {};
@@ -625,20 +663,20 @@ Item {
                     width: ThemeTokens.dp(140)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    value: String(root.config?.uiScale || 1.0)
-                    options: [
-                        { label: "75%", value: "0.75" },
-                        { label: "90%", value: "0.9" },
-                        { label: "100%", value: "1" },
-                        { label: "110%", value: "1.1" },
-                        { label: "125%", value: "1.25" },
-                        { label: "150%", value: "1.5" },
-                        { label: "175%", value: "1.75" },
-                        { label: "200%", value: "2" }
-                    ]
+                    value: {
+                        var currentScale = root.config && typeof root.config.uiScale === "number" ? root.config.uiScale : 1.0;
+                        for (var i = 0; i < root.uiScaleOptions.length; i++) {
+                            if (Math.abs(Number(root.uiScaleOptions[i].value) - currentScale) < 0.001) {
+                                return root.uiScaleOptions[i].value;
+                            }
+                        }
+                        return String(currentScale);
+                    }
+                    options: root.uiScaleOptions
                     onValueChanged: {
                         var num = Number(value);
-                        if (!isNaN(num) && num > 0 && num !== (root.config?.uiScale || 1.0)) {
+                        var cur = root.config && typeof root.config.uiScale === "number" ? root.config.uiScale : 1.0;
+                        if (!isNaN(num) && num > 0 && Math.abs(num - cur) > 0.001) {
                             root.updateConfig(function(cfg) { cfg.uiScale = num; });
                         }
                     }

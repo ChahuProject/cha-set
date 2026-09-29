@@ -61,6 +61,12 @@ DocLayout {
                         root.resetRequested();
                     }
                 }
+
+                Binding {
+                    target: settingsComp
+                    property: "config"
+                    value: root.activeConfig
+                }
             }
         }
     }

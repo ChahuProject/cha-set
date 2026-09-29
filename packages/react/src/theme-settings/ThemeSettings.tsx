@@ -71,6 +71,26 @@ export const CANONICAL_PALETTES: Array<{ id: PaletteId; name: string; hex: strin
   { id: 'custom', name: 'Custom', hex: '#30a0ff' },
 ];
 
+export const CANONICAL_SCALE_OPTIONS: Array<{ value: string; label: string }> = [
+  { value: '0.25', label: '25%' },
+  { value: '0.33', label: '33%' },
+  { value: '0.5', label: '50%' },
+  { value: '0.67', label: '67%' },
+  { value: '0.75', label: '75%' },
+  { value: '0.8', label: '80%' },
+  { value: '0.9', label: '90%' },
+  { value: '1', label: '100%' },
+  { value: '1.1', label: '110%' },
+  { value: '1.25', label: '125%' },
+  { value: '1.5', label: '150%' },
+  { value: '1.75', label: '175%' },
+  { value: '2', label: '200%' },
+  { value: '2.5', label: '250%' },
+  { value: '3', label: '300%' },
+  { value: '4', label: '400%' },
+  { value: '5', label: '500%' },
+];
+
 export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps>(
   (
     {
@@ -681,30 +701,43 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
               name={t('theme.settings.uiscale.title', 'Interface Scale')}
               description={t('theme.settings.uiscale.desc', 'Global display density and UI scaling factor')}
             >
-              <Select
-                value={String(config.uiScale)}
-                onValueChange={(val) => {
-                  const num = Number(val);
-                  if (!isNaN(num) && num > 0) {
-                    handleUiScaleChange(num);
-                  }
-                }}
-                disabled={disabled}
-              >
-                <SelectTrigger className="w-28 h-8">
-                  <SelectValue placeholder="Scale" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="0.75">75%</SelectItem>
-                  <SelectItem value="0.9">90%</SelectItem>
-                  <SelectItem value="1">100%</SelectItem>
-                  <SelectItem value="1.1">110%</SelectItem>
-                  <SelectItem value="1.25">125%</SelectItem>
-                  <SelectItem value="1.5">150%</SelectItem>
-                  <SelectItem value="1.75">175%</SelectItem>
-                  <SelectItem value="2">200%</SelectItem>
-                </SelectContent>
-              </Select>
+              {(() => {
+                const currentScale = typeof config.uiScale === 'number' ? config.uiScale : 1.0;
+                const matchedOption = CANONICAL_SCALE_OPTIONS.find(
+                  (opt) => Math.abs(Number(opt.value) - currentScale) < 0.001
+                );
+                const normalizedValue = matchedOption?.value ?? String(currentScale);
+                const options = matchedOption
+                  ? CANONICAL_SCALE_OPTIONS
+                  : [
+                      ...CANONICAL_SCALE_OPTIONS,
+                      { value: String(currentScale), label: `${Math.round(currentScale * 100)}%` },
+                    ].sort((a, b) => Number(a.value) - Number(b.value));
+
+                return (
+                  <Select
+                    value={normalizedValue}
+                    onValueChange={(val) => {
+                      const num = Number(val);
+                      if (!isNaN(num) && num > 0) {
+                        handleUiScaleChange(num);
+                      }
+                    }}
+                    disabled={disabled}
+                  >
+                    <SelectTrigger className="w-28 h-8">
+                      <SelectValue placeholder="Scale" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {options.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                );
+              })()}
             </SettingRow>
           </>
         )}
