@@ -15,13 +15,14 @@ Popup {
     property bool isSearchOpen: false
     property int customWidth: ThemeTokens.dp(260)
     property int customHeight: ThemeTokens.dp(260)
+    property bool userResized: false
 
     readonly property int naturalContentHeight: {
-        var h = (root.isSearchOpen ? ThemeTokens.dp(34) : 0);
+        var h = (root.isSearchOpen ? ThemeTokens.dp(36) : 0);
         var count = suggestModel.count;
         h += (count > 0 ? (count * ThemeTokens.dp(32)) : ThemeTokens.dp(44));
-        h += ThemeTokens.dp(24) + ThemeTokens.dp(4); // footerBar + spacing
-        h += ThemeTokens.dp(12); // padding
+        h += ThemeTokens.dp(26); // footerBar
+        h += ThemeTokens.dp(12); // content spacing
         return h;
     }
 
@@ -48,8 +49,8 @@ Popup {
     }
 
     width: customWidth
-    height: Math.min(customHeight, naturalContentHeight)
-    padding: ThemeTokens.dp(6)
+    height: userResized ? customHeight : Math.min(customHeight, naturalContentHeight)
+    padding: 0
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
     background: Rectangle {
@@ -101,52 +102,60 @@ Popup {
         }
         ColumnLayout {
             anchors.fill: parent
-            spacing: ThemeTokens.dp(4)
+            spacing: 0
 
             // Search box on typing
-            ChaSetInput {
-                id: searchInput
+            Item {
                 visible: root.isSearchOpen
                 Layout.fillWidth: true
-                size: "sm"
-                placeholderText: qsTr("搜索...")
-                clearable: true
-                text: root.searchQuery
-                onTextEdited: {
-                    root.searchQuery = text
-                    root.applyFilter()
-                }
-                onCleared: {
-                    root.searchQuery = ""
-                    root.applyFilter()
-                }
-                Keys.onPressed: (event) => {
-                    if (event.key === Qt.Key_Escape) {
-                        event.accepted = true
-                        if (root.searchQuery.length > 0) {
-                            root.searchQuery = ""
-                            root.applyFilter()
-                        } else {
-                            root.close()
-                        }
-                    } else if (event.key === Qt.Key_Down) {
-                        if (suggestModel.count > 0) {
+                Layout.preferredHeight: searchInput.implicitHeight + ThemeTokens.dp(6)
+                Layout.leftMargin: ThemeTokens.dp(6)
+                Layout.rightMargin: ThemeTokens.dp(6)
+                Layout.topMargin: ThemeTokens.dp(6)
+
+                ChaSetInput {
+                    id: searchInput
+                    anchors.fill: parent
+                    size: "sm"
+                    placeholderText: qsTr("搜索...")
+                    clearable: true
+                    text: root.searchQuery
+                    onTextEdited: {
+                        root.searchQuery = text
+                        root.applyFilter()
+                    }
+                    onCleared: {
+                        root.searchQuery = ""
+                        root.applyFilter()
+                    }
+                    Keys.onPressed: (event) => {
+                        if (event.key === Qt.Key_Escape) {
                             event.accepted = true
-                            root.highlightedIndex = (root.highlightedIndex + 1) % suggestModel.count
-                            suggestList.positionViewAtIndex(root.highlightedIndex, ListView.Contain)
-                        }
-                    } else if (event.key === Qt.Key_Up) {
-                        if (suggestModel.count > 0) {
-                            event.accepted = true
-                            root.highlightedIndex = (root.highlightedIndex - 1 + suggestModel.count) % suggestModel.count
-                            suggestList.positionViewAtIndex(root.highlightedIndex, ListView.Contain)
-                        }
-                    } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-                        if (root.highlightedIndex >= 0 && root.highlightedIndex < suggestModel.count) {
-                            event.accepted = true
-                            var item = suggestModel.get(root.highlightedIndex)
-                            root.close()
-                            root.navigateRequested(item.realPath || item.path)
+                            if (root.searchQuery.length > 0) {
+                                root.searchQuery = ""
+                                root.applyFilter()
+                            } else {
+                                root.close()
+                            }
+                        } else if (event.key === Qt.Key_Down) {
+                            if (suggestModel.count > 0) {
+                                event.accepted = true
+                                root.highlightedIndex = (root.highlightedIndex + 1) % suggestModel.count
+                                suggestList.positionViewAtIndex(root.highlightedIndex, ListView.Contain)
+                            }
+                        } else if (event.key === Qt.Key_Up) {
+                            if (suggestModel.count > 0) {
+                                event.accepted = true
+                                root.highlightedIndex = (root.highlightedIndex - 1 + suggestModel.count) % suggestModel.count
+                                suggestList.positionViewAtIndex(root.highlightedIndex, ListView.Contain)
+                            }
+                        } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                            if (root.highlightedIndex >= 0 && root.highlightedIndex < suggestModel.count) {
+                                event.accepted = true
+                                var item = suggestModel.get(root.highlightedIndex)
+                                root.close()
+                                root.navigateRequested(item.realPath || item.path)
+                            }
                         }
                     }
                 }
@@ -157,6 +166,10 @@ Popup {
                 id: suggestList
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.leftMargin: ThemeTokens.dp(6)
+                Layout.rightMargin: ThemeTokens.dp(6)
+                Layout.topMargin: root.isSearchOpen ? ThemeTokens.dp(4) : ThemeTokens.dp(6)
+                Layout.bottomMargin: ThemeTokens.dp(4)
                 clip: true
                 visible: suggestModel.count > 0
                 model: ListModel { id: suggestModel }
@@ -221,6 +234,8 @@ Popup {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.preferredHeight: ThemeTokens.dp(44)
+                Layout.leftMargin: ThemeTokens.dp(6)
+                Layout.rightMargin: ThemeTokens.dp(6)
 
                 Text {
                     anchors.centerIn: parent
@@ -230,15 +245,20 @@ Popup {
                 }
             }
 
-            // Bottom Keyboard Shortcut & Action Footer Bar
+            // Bottom Keyboard Shortcut & Action Footer Bar (Flush to bottom, no margins, no enclosing card)
             Rectangle {
                 id: footerBar
                 Layout.fillWidth: true
-                Layout.preferredHeight: ThemeTokens.dp(24)
+                Layout.preferredHeight: ThemeTokens.dp(26)
                 color: ThemeTokens.panelRaised
-                border.width: 1
-                border.color: ThemeTokens.border
-                radius: ThemeTokens.dp(4)
+
+                Rectangle {
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: 1
+                    color: ThemeTokens.border
+                }
 
                 Row {
                     anchors.left: parent.left
@@ -286,46 +306,50 @@ Popup {
             }
         }
 
-        // Right edge resize handle
+        // Right edge resize handle (Sitting on the true outer right edge)
         MouseArea {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: ThemeTokens.dp(6)
-            width: ThemeTokens.dp(5)
+            width: ThemeTokens.dp(6)
             cursorShape: Qt.SizeHorCursor
             z: 99
-            property real startX: 0
+            property real startGlobalX: 0
             property real startW: 0
             onPressed: (mouse) => {
-                startX = mouse.x
+                var pt = mapToGlobal(mouse.x, mouse.y)
+                startGlobalX = pt.x
                 startW = root.width
+                root.userResized = true
             }
             onPositionChanged: (mouse) => {
                 if (pressed) {
-                    root.customWidth = Math.max(ThemeTokens.dp(180), startW + (mouse.x - startX))
+                    var pt = mapToGlobal(mouse.x, mouse.y)
+                    root.customWidth = Math.max(ThemeTokens.dp(180), startW + (pt.x - startGlobalX))
                 }
             }
         }
 
-        // Bottom edge resize handle
+        // Bottom edge resize handle (Sitting on the true outer bottom edge)
         MouseArea {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.rightMargin: ThemeTokens.dp(6)
-            height: ThemeTokens.dp(5)
+            height: ThemeTokens.dp(6)
             cursorShape: Qt.SizeVerCursor
             z: 99
-            property real startY: 0
+            property real startGlobalY: 0
             property real startH: 0
             onPressed: (mouse) => {
-                startY = mouse.y
+                var pt = mapToGlobal(mouse.x, mouse.y)
+                startGlobalY = pt.y
                 startH = root.height
+                root.userResized = true
             }
             onPositionChanged: (mouse) => {
                 if (pressed) {
-                    root.customHeight = Math.max(ThemeTokens.dp(100), startH + (mouse.y - startY))
+                    var pt = mapToGlobal(mouse.x, mouse.y)
+                    root.customHeight = Math.max(ThemeTokens.dp(100), startH + (pt.y - startGlobalY))
                 }
             }
         }
@@ -334,24 +358,27 @@ Popup {
         MouseArea {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
-            width: ThemeTokens.dp(8)
-            height: ThemeTokens.dp(8)
+            width: ThemeTokens.dp(10)
+            height: ThemeTokens.dp(10)
             cursorShape: Qt.SizeFDiagCursor
             z: 100
-            property real startX: 0
-            property real startY: 0
+            property real startGlobalX: 0
+            property real startGlobalY: 0
             property real startW: 0
             property real startH: 0
             onPressed: (mouse) => {
-                startX = mouse.x
-                startY = mouse.y
+                var pt = mapToGlobal(mouse.x, mouse.y)
+                startGlobalX = pt.x
+                startGlobalY = pt.y
                 startW = root.width
                 startH = root.height
+                root.userResized = true
             }
             onPositionChanged: (mouse) => {
                 if (pressed) {
-                    root.customWidth = Math.max(ThemeTokens.dp(180), startW + (mouse.x - startX))
-                    root.customHeight = Math.max(ThemeTokens.dp(100), startH + (mouse.y - startY))
+                    var pt = mapToGlobal(mouse.x, mouse.y)
+                    root.customWidth = Math.max(ThemeTokens.dp(180), startW + (pt.x - startGlobalX))
+                    root.customHeight = Math.max(ThemeTokens.dp(100), startH + (pt.y - startGlobalY))
                 }
             }
         }

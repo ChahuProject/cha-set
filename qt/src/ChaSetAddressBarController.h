@@ -6,6 +6,8 @@
 
 #include <QHash>
 #include <QObject>
+#include <QPointer>
+#include <QQuickItem>
 #include <QString>
 #include <QStringList>
 #include <QVariantList>
@@ -21,10 +23,24 @@ class ChaSetAddressBarController : public QObject {
     Q_PROPERTY(QStringList history READ history NOTIFY historyChanged)
     Q_PROPERTY(bool canGoBack READ canGoBack NOTIFY navigationStackChanged)
     Q_PROPERTY(bool canGoForward READ canGoForward NOTIFY navigationStackChanged)
+    Q_PROPERTY(QQuickItem* visualItem READ visualItem WRITE setVisualItem NOTIFY visualItemChanged)
+    Q_PROPERTY(QObject* suggestPopup READ suggestPopup WRITE setSuggestPopup NOTIFY suggestPopupChanged)
+    Q_PROPERTY(QObject* subfolderPopup READ subfolderPopup WRITE setSubfolderPopup NOTIFY subfolderPopupChanged)
 
 public:
     explicit ChaSetAddressBarController(QObject *parent = nullptr);
-    ~ChaSetAddressBarController() override = default;
+    ~ChaSetAddressBarController() override;
+
+    [[nodiscard]] QQuickItem *visualItem() const { return m_visualItem; }
+    void setVisualItem(QQuickItem *item);
+
+    [[nodiscard]] QObject *suggestPopup() const { return m_suggestPopup; }
+    void setSuggestPopup(QObject *popup);
+
+    [[nodiscard]] QObject *subfolderPopup() const { return m_subfolderPopup; }
+    void setSubfolderPopup(QObject *popup);
+
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
     [[nodiscard]] QString currentPath() const { return m_currentPath; }
     void setCurrentPath(const QString &path);
@@ -54,6 +70,9 @@ signals:
     void segmentsChanged();
     void historyChanged();
     void navigationStackChanged();
+    void visualItemChanged();
+    void suggestPopupChanged();
+    void subfolderPopupChanged();
     void navigateRequested(const QString &path);
     void navigateRequestedWithSelection(const QString &path, const QString &selectionPath);
 
@@ -70,6 +89,10 @@ private:
     QVariantList m_segments;
     QStringList m_backStack;
     QStringList m_forwardStack;
+
+    QPointer<QQuickItem> m_visualItem;
+    QPointer<QObject> m_suggestPopup;
+    QPointer<QObject> m_subfolderPopup;
 
     mutable bool m_foldersDirty = true;
     mutable QHash<QString, QString> m_knownFolders;

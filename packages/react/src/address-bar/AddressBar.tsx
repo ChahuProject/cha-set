@@ -9,6 +9,7 @@ import {
   ArrowUpIcon,
   RotateCcwIcon,
   SearchIcon,
+  XIcon,
   ClockIcon,
   FolderIcon,
 } from '../lib/icons';
@@ -186,6 +187,11 @@ export function getParentPath(rawPath: string): string {
   return normalized.slice(0, lastSlash);
 }
 
+function getRootFontSize(): number {
+  if (typeof window === 'undefined') return 16;
+  return parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16;
+}
+
 export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
   (
     {
@@ -194,7 +200,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
       defaultValue = '',
       showNavButtons = true,
       showRefresh = true,
-      showSearch = false,
+      showSearch = true,
       searchPlaceholder = '搜索...',
       canGoBack = false,
       canGoForward = false,
@@ -222,6 +228,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
     const [isEditing, setIsEditing] = React.useState(false);
     const [editValue, setEditValue] = React.useState(activePath);
     const [searchQuery, setSearchQuery] = React.useState('');
+    const [isSearchExpanded, setIsSearchExpanded] = React.useState(false);
     const [showSuggestions, setShowSuggestions] = React.useState(false);
     const [highlightedIndex, setHighlightedIndex] = React.useState(0);
     const [openSegmentIndex, setOpenSegmentIndex] = React.useState(-1);
@@ -229,6 +236,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
     const [popoverPos, setPopoverPos] = React.useState<{ top: number; left: number; width: number } | null>(null);
 
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const searchInputRef = React.useRef<HTMLInputElement>(null);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const popoverRef = React.useRef<HTMLDivElement>(null);
 
@@ -550,9 +558,9 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                   role="listbox"
                   style={{
                     position: 'fixed',
-                    top: `${popoverPos.top * 0.0625}rem`,
-                    left: `${popoverPos.left * 0.0625}rem`,
-                    width: `${popoverPos.width * 0.0625}rem`,
+                    top: `${(popoverPos.top / getRootFontSize()).toFixed(4)}rem`,
+                    left: `${(popoverPos.left / getRootFontSize()).toFixed(4)}rem`,
+                    width: `${(popoverPos.width / getRootFontSize()).toFixed(4)}rem`,
                     zIndex: 9999,
                   }}
                   className="max-h-[16.25rem] overflow-y-auto rounded-md border border-border bg-popover text-popover-foreground shadow-lg p-1 animate-in fade-in-0 zoom-in-95"
@@ -590,25 +598,77 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
           )}
         </div>
 
-        {/* Optional Right Search Box with Clear Button */}
+        {/* Responsive Right Search Input / Collapsible Button */}
         {showSearch && (
-          <div className="w-[10rem] shrink-0">
-            <Input
-              size="sm"
-              icon="search"
-              clearable
-              value={searchQuery}
-              placeholder={searchPlaceholder}
-              disabled={disabled}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                onSearch?.(e.target.value);
-              }}
-              onClear={() => {
-                setSearchQuery('');
-                onSearch?.('');
-              }}
-            />
+          <div className="shrink-0 flex items-center">
+            {!isSearchExpanded ? (
+              <Tooltip content="搜索" side="bottom">
+                <button
+                  type="button"
+                  aria-label="搜索"
+                  disabled={disabled}
+                  onClick={() => {
+                    if (disabled) return;
+                    setIsSearchExpanded(true);
+                    requestAnimationFrame(() => {
+                      searchInputRef.current?.focus();
+                    });
+                  }}
+                  className={cn(
+                    'size-7 rounded flex items-center justify-center transition-colors text-muted-foreground hover:text-foreground hover:bg-accent/40 cursor-pointer shrink-0',
+                    disabled && 'cursor-not-allowed opacity-60'
+                  )}
+                >
+                  <SearchIcon className="size-3.5" />
+                </button>
+              </Tooltip>
+            ) : (
+              <div className="relative flex items-center h-7 w-[11.25rem] rounded-md border border-border bg-card px-2 shrink-0 transition-all duration-150">
+                <SearchIcon className="size-3.5 text-muted-foreground mr-1.5 shrink-0" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder={searchPlaceholder}
+                  value={searchQuery}
+                  disabled={disabled}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    onSearch?.(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                      e.stopPropagation();
+                      if (searchQuery) {
+                        setSearchQuery('');
+                        onSearch?.('');
+                      } else {
+                        setIsSearchExpanded(false);
+                      }
+                    }
+                  }}
+                  onBlur={() => {
+                    if (!searchQuery) {
+                      setIsSearchExpanded(false);
+                    }
+                  }}
+                  className="flex-1 bg-transparent border-0 outline-none text-xs text-foreground placeholder:text-muted-foreground min-w-0"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    aria-label="Clear search"
+                    onClick={() => {
+                      setSearchQuery('');
+                      onSearch?.('');
+                      searchInputRef.current?.focus();
+                    }}
+                    className="size-4 rounded-full flex items-center justify-center hover:bg-accent/50 text-muted-foreground hover:text-foreground cursor-pointer shrink-0 ml-1"
+                  >
+                    <XIcon className="size-3" />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>

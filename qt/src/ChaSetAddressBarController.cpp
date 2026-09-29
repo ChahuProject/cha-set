@@ -24,6 +24,77 @@ ChaSetAddressBarController::ChaSetAddressBarController(QObject *parent)
     rebuildSegments();
 }
 
+ChaSetAddressBarController::~ChaSetAddressBarController() {
+    if (qGuiApp) {
+        qGuiApp->removeEventFilter(this);
+    }
+}
+
+void ChaSetAddressBarController::setVisualItem(QQuickItem *item) {
+    if (m_visualItem != item) {
+        m_visualItem = item;
+        emit visualItemChanged();
+    }
+}
+
+void ChaSetAddressBarController::setSuggestPopup(QObject *popup) {
+    if (m_suggestPopup != popup) {
+        m_suggestPopup = popup;
+        emit suggestPopupChanged();
+    }
+}
+
+void ChaSetAddressBarController::setSubfolderPopup(QObject *popup) {
+    if (m_subfolderPopup != popup) {
+        m_subfolderPopup = popup;
+        emit subfolderPopupChanged();
+    }
+}
+
+bool ChaSetAddressBarController::eventFilter(QObject *watched, QEvent *event) {
+    if (m_editing && (event->type() == QEvent::MouseButtonPress || event->type() == QEvent::TouchBegin)) {
+        if (m_visualItem && m_visualItem->window()) {
+            QPointF globalPos;
+            if (event->type() == QEvent::MouseButtonPress) {
+                globalPos = static_cast<QMouseEvent *>(event)->globalPosition();
+            } else if (event->type() == QEvent::TouchBegin) {
+                auto *touch = static_cast<QTouchEvent *>(event);
+                if (!touch->points().isEmpty()) {
+                    globalPos = touch->points().first().globalPosition();
+                }
+            }
+
+            const QPointF localPos = m_visualItem->mapFromGlobal(globalPos);
+            bool inside = m_visualItem->boundingRect().contains(localPos);
+
+            if (!inside && m_suggestPopup && m_suggestPopup->property("opened").toBool()) {
+                const qreal px = m_suggestPopup->property("x").toReal();
+                const qreal py = m_suggestPopup->property("y").toReal();
+                const qreal pw = m_suggestPopup->property("width").toReal();
+                const qreal ph = m_suggestPopup->property("height").toReal();
+                if (QRectF(px, py, pw, ph).contains(localPos)) {
+                    inside = true;
+                }
+            }
+
+            if (!inside && m_subfolderPopup && m_subfolderPopup->property("opened").toBool()) {
+                const qreal px = m_subfolderPopup->property("x").toReal();
+                const qreal py = m_subfolderPopup->property("y").toReal();
+                const qreal pw = m_subfolderPopup->property("width").toReal();
+                const qreal ph = m_subfolderPopup->property("height").toReal();
+                if (QRectF(px, py, pw, ph).contains(localPos)) {
+                    inside = true;
+                }
+            }
+
+            if (!inside) {
+                exitEditMode();
+            }
+        }
+    }
+    return QObject::eventFilter(watched, event);
+}
+
 QStringList ChaSetAddressBarController::history() const {
     return ChaSetPathHistoryStore::instance().entries();
 }
@@ -60,6 +131,13 @@ void ChaSetAddressBarController::setEditing(bool editing) {
     if (m_editing == editing)
         return;
     m_editing = editing;
+    if (qGuiApp) {
+        if (m_editing) {
+            qGuiApp->installEventFilter(this);
+        } else {
+            qGuiApp->removeEventFilter(this);
+        }
+    }
     emit editingChanged();
 }
 

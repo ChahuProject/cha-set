@@ -56,6 +56,7 @@ export function AddressBarDocPage() {
   path={currentPath}
   canGoBack={canGoBack}
   canGoForward={canGoForward}
+  showSearch
   onNavigate={(newPath) => setCurrentPath(newPath)}
   onBack={handleBack}
   onForward={handleForward}

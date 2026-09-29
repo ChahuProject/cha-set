@@ -49,6 +49,9 @@ Item {
         id: controller
         objectName: "addressBarController"
         currentPath: root.path
+        visualItem: root
+        suggestPopup: suggestPopup
+        subfolderPopup: subfolderPopup
         onNavigateRequested: (targetPath) => {
             root.path = targetPath
             root.navigateRequested(targetPath)
@@ -590,8 +593,7 @@ Item {
         }
         onClosed: {
             breadcrumbPrimitive.openSegmentIndex = -1
-            // 点击外部时，历史下拉关闭的同时一并退出可编辑状态，杜绝两步轮流退出的迟滞
-            if (controller.editing && !editInput.activeFocus) {
+            if (controller.editing) {
                 controller.exitEditMode()
             }
         }

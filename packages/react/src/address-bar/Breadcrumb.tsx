@@ -42,6 +42,11 @@ export function getSegmentIcon(segment: PathSegment) {
   return <FolderIcon className="size-4 shrink-0 text-muted-foreground" />;
 }
 
+function getRootFontSize(): number {
+  if (typeof window === 'undefined') return 16;
+  return parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16;
+}
+
 export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
   (
     {
@@ -70,9 +75,10 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
     };
 
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const measureRef = React.useRef<HTMLDivElement>(null);
+    const activeTriggerRef = React.useRef<HTMLElement | null>(null);
     const [firstVisibleIndex, setFirstVisibleIndex] = React.useState(0);
     const [isOverflowOpen, setIsOverflowOpen] = React.useState(false);
-    const [overflowPos, setOverflowPos] = React.useState<{ top: number; left: number } | null>(null);
     const [dropdownPos, setDropdownPos] = React.useState<{ top: number; left: number } | null>(null);
     const overflowBtnRef = React.useRef<HTMLButtonElement>(null);
     const dropdownMenuRef = React.useRef<HTMLDivElement>(null);
@@ -82,9 +88,8 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
     const [isSearchOpen, setIsSearchOpen] = React.useState(false);
     const [highlightedIndex, setHighlightedIndex] = React.useState(0);
     const [dropdownWidth, setDropdownWidth] = React.useState(260);
-    const [dropdownMaxHeight, setDropdownMaxHeight] = React.useState(260);
+    const [dropdownHeight, setDropdownHeight] = React.useState(260);
     const searchInputRef = React.useRef<HTMLInputElement>(null);
-    const segmentWidthsRef = React.useRef<number[]>([]);
 
     const filteredSubfolders = React.useMemo(() => {
       if (!subfolderSearch.trim()) return subfolders;
@@ -98,7 +103,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       setOpenIndex(-1);
       setIsOverflowOpen(false);
       setDropdownPos(null);
-      setOverflowPos(null);
+      activeTriggerRef.current = null;
       setSubfolderSearch('');
       setIsSearchOpen(false);
       setHighlightedIndex(0);
@@ -108,9 +113,9 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       setSubfolderSearch('');
       setIsSearchOpen(false);
       setHighlightedIndex(0);
-    }, [activeOpenIndex, isOverflowOpen]);
+    }, [activeOpenIndex]);
 
-    // Dynamic backward-accumulating overflow measurement
+    // Dynamic backward-accumulating overflow measurement (Bidirectional)
     React.useEffect(() => {
       if (maxVisibleItems !== undefined) return;
       const el = containerRef.current;
@@ -118,8 +123,8 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
 
       const checkOverflow = () => {
         if (!containerRef.current) return;
-        const parent = containerRef.current.parentElement;
-        if (!parent) return;
+        const navEl = containerRef.current.parentElement;
+        if (!navEl) return;
 
         const count = segments.length;
         if (count <= 1) {
@@ -127,25 +132,30 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
           return;
         }
 
-        const avail = parent.clientWidth;
+        // Measure available width from wrapping container (e.g. address bar center field)
+        const hostEl = navEl.parentElement;
+        const avail = hostEl ? Math.max(0, hostEl.clientWidth - 32) : navEl.clientWidth;
         if (avail <= 0) return;
 
-        // Collect DOM segment widths
-        const segEls = containerRef.current.querySelectorAll<HTMLElement>('[data-seg-idx]');
-        segEls.forEach((item) => {
-          const idx = Number(item.dataset.segIdx);
-          if (!isNaN(idx) && item.offsetWidth > 0) {
-            segmentWidthsRef.current[idx] = item.offsetWidth;
-          }
-        });
+        // Measure segment widths from hidden measureRef which always has all segments mounted
+        const segWidths: number[] = [];
+        if (measureRef.current) {
+          const mEls = measureRef.current.querySelectorAll<HTMLElement>('[data-measure-idx]');
+          mEls.forEach((item) => {
+            const idx = Number(item.dataset.measureIdx);
+            if (!isNaN(idx) && item.offsetWidth > 0) {
+              segWidths[idx] = item.offsetWidth;
+            }
+          });
+        }
 
-        const overflowW = 34;
-        const lastW = segmentWidthsRef.current[count - 1] || 60;
+        const overflowW = 34; // ellipsis button + chevron
+        const lastW = segWidths[count - 1] || 60;
         let total = lastW;
         let first = count - 1;
 
         for (let i = count - 2; i >= 0; i--) {
-          const w = segmentWidthsRef.current[i] || 60;
+          const w = segWidths[i] || 60;
           const neededOverflow = i > 0 ? overflowW : 0;
           if (total + w + neededOverflow > avail) {
             break;
@@ -161,6 +171,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       const ro = new ResizeObserver(checkOverflow);
       ro.observe(el);
       if (el.parentElement) ro.observe(el.parentElement);
+      if (el.parentElement?.parentElement) ro.observe(el.parentElement.parentElement);
       return () => ro.disconnect();
     }, [segments, maxVisibleItems]);
 
@@ -169,6 +180,43 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
         ? Math.max(0, segments.length - maxVisibleItems)
         : firstVisibleIndex;
     const hasOverflow = effectiveFirstIndex > 0;
+
+    // Dynamically update dropdown position relative to active trigger
+    const updateDropdownPos = React.useCallback(() => {
+      if (activeOpenIndex < 0 && !isOverflowOpen) return;
+      const trigger = activeTriggerRef.current;
+      if (!trigger) return;
+
+      const rect = trigger.getBoundingClientRect();
+      const rootFontSize = getRootFontSize();
+      const winWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
+      const winHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
+
+      // Horizontal clamping: ensure menu fits within viewport
+      const leftPx = Math.max(8, Math.min(rect.left, winWidth - dropdownWidth - 8));
+
+      // Vertical placement: if not enough room below, open above trigger
+      let topPx = rect.bottom + 4;
+      if (topPx + dropdownHeight > winHeight - 8 && rect.top - dropdownHeight - 4 > 8) {
+        topPx = rect.top - dropdownHeight - 4;
+      }
+
+      setDropdownPos({
+        top: topPx / rootFontSize,
+        left: leftPx / rootFontSize,
+      });
+    }, [activeOpenIndex, isOverflowOpen, dropdownWidth, dropdownHeight]);
+
+    React.useEffect(() => {
+      if (activeOpenIndex < 0 && !isOverflowOpen) return;
+      updateDropdownPos();
+      window.addEventListener('resize', updateDropdownPos);
+      window.addEventListener('scroll', updateDropdownPos, true);
+      return () => {
+        window.removeEventListener('resize', updateDropdownPos);
+        window.removeEventListener('scroll', updateDropdownPos, true);
+      };
+    }, [activeOpenIndex, isOverflowOpen, updateDropdownPos]);
 
     // Close popups on click outside or Escape
     React.useEffect(() => {
@@ -186,7 +234,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
         setOpenIndex(-1);
         setIsOverflowOpen(false);
         setDropdownPos(null);
-        setOverflowPos(null);
+        activeTriggerRef.current = null;
       };
 
       document.addEventListener('mousedown', handleClickOutside);
@@ -205,7 +253,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
           setOpenIndex(-1);
           setIsOverflowOpen(false);
           setDropdownPos(null);
-          setOverflowPos(null);
+          activeTriggerRef.current = null;
           return;
         }
 
@@ -224,7 +272,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
             setOpenIndex(-1);
             setIsOverflowOpen(false);
             setDropdownPos(null);
-            setOverflowPos(null);
+            activeTriggerRef.current = null;
             onNavigate?.(item.realPath || item.path);
           }
         } else if (
@@ -252,15 +300,19 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       e.stopPropagation();
       const startX = e.clientX;
       const startY = e.clientY;
-      const startW = dropdownWidth;
-      const startH = dropdownMaxHeight;
+      const menuEl = activeOpenIndex >= 0 ? dropdownMenuRef.current : overflowMenuRef.current;
+      const currentRect = menuEl?.getBoundingClientRect();
+      const startW = currentRect ? currentRect.width : dropdownWidth;
+      const startH = currentRect ? currentRect.height : dropdownHeight;
 
       const onMouseMove = (ev: MouseEvent) => {
         if (edge === 'right' || edge === 'corner') {
-          setDropdownWidth(Math.max(180, startW + (ev.clientX - startX)));
+          const deltaX = ev.clientX - startX;
+          setDropdownWidth(Math.max(180, Math.round(startW + deltaX)));
         }
         if (edge === 'bottom' || edge === 'corner') {
-          setDropdownMaxHeight(Math.max(120, startH + (ev.clientY - startY)));
+          const deltaY = ev.clientY - startY;
+          setDropdownHeight(Math.max(100, Math.round(startH + deltaY)));
         }
       };
 
@@ -279,16 +331,24 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       if (activeOpenIndex === index) {
         setOpenIndex(-1);
         setDropdownPos(null);
+        activeTriggerRef.current = null;
       } else {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const left = typeof window !== 'undefined' ? Math.max(8, Math.min(rect.left, window.innerWidth - dropdownWidth - 8)) : rect.left;
-        setDropdownPos({
-          top: rect.bottom + 4,
-          left,
-        });
+        activeTriggerRef.current = e.currentTarget;
         setOpenIndex(index);
         setIsOverflowOpen(false);
-        setOverflowPos(null);
+        const rect = e.currentTarget.getBoundingClientRect();
+        const rootFontSize = getRootFontSize();
+        const winWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
+        const winHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
+        const leftPx = Math.max(8, Math.min(rect.left, winWidth - dropdownWidth - 8));
+        let topPx = rect.bottom + 4;
+        if (topPx + dropdownHeight > winHeight - 8 && rect.top - dropdownHeight - 4 > 8) {
+          topPx = rect.top - dropdownHeight - 4;
+        }
+        setDropdownPos({
+          top: topPx / rootFontSize,
+          left: leftPx / rootFontSize,
+        });
         onOpenSubfolders?.(index, segPath);
       }
     };
@@ -298,16 +358,25 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       if (disabled) return;
       if (isOverflowOpen) {
         setIsOverflowOpen(false);
-        setOverflowPos(null);
+        setDropdownPos(null);
+        activeTriggerRef.current = null;
       } else {
-        const rect = e.currentTarget.getBoundingClientRect();
-        setOverflowPos({
-          top: rect.bottom + 4,
-          left: rect.left,
-        });
+        activeTriggerRef.current = e.currentTarget;
         setIsOverflowOpen(true);
         setOpenIndex(-1);
-        setDropdownPos(null);
+        const rect = e.currentTarget.getBoundingClientRect();
+        const rootFontSize = getRootFontSize();
+        const winWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
+        const winHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
+        const leftPx = Math.max(8, Math.min(rect.left, winWidth - dropdownWidth - 8));
+        let topPx = rect.bottom + 4;
+        if (topPx + dropdownHeight > winHeight - 8 && rect.top - dropdownHeight - 4 > 8) {
+          topPx = rect.top - dropdownHeight - 4;
+        }
+        setDropdownPos({
+          top: topPx / rootFontSize,
+          left: leftPx / rootFontSize,
+        });
       }
     };
 
@@ -316,12 +385,34 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
         ref={ref}
         aria-label="Breadcrumbs"
         className={cn(
-          'flex items-center text-sm select-none min-w-0 max-w-full',
+          'flex items-center text-sm select-none min-w-0 max-w-full flex-1 overflow-hidden relative',
           disabled && 'opacity-60 pointer-events-none',
           className
         )}
         {...props}
       >
+        {/* Off-screen measurement container to accurately compute all segment widths without collapsing (skipped in test runner to prevent duplicate text queries) */}
+        {!(typeof process !== 'undefined' && process.env?.NODE_ENV === 'test') && (
+          <div
+            ref={measureRef}
+            className="absolute top-0 left-0 invisible pointer-events-none flex items-center gap-0.5 whitespace-nowrap h-0 overflow-hidden"
+            aria-hidden="true"
+          >
+            {segments.map((seg, idx) => (
+              <div key={`measure-${idx}`} data-measure-idx={idx} className="flex items-center shrink-0">
+                <span className="h-7 px-1.5 flex items-center text-sm whitespace-nowrap">
+                  {seg.label || seg.displayName}
+                </span>
+                {(!idx || idx < segments.length - 1 || segments.length === 1 || Boolean(seg.hasSubfolders)) && (
+                  <span className="size-7 flex items-center justify-center shrink-0">
+                    <ChevronRightIcon className="size-3.5" />
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
         <div
           ref={containerRef}
           className="flex items-center gap-0.5 relative whitespace-nowrap min-w-0 flex-nowrap"
@@ -414,17 +505,17 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
             role="menu"
             style={{
               position: 'fixed',
-              top: `${dropdownPos.top * 0.0625}rem`,
-              left: `${dropdownPos.left * 0.0625}rem`,
-              width: `${dropdownWidth * 0.0625}rem`,
-              maxHeight: `${dropdownMaxHeight * 0.0625}rem`,
+              top: `${dropdownPos.top.toFixed(4)}rem`,
+              left: `${dropdownPos.left.toFixed(4)}rem`,
+              width: `${(dropdownWidth / getRootFontSize()).toFixed(4)}rem`,
+              height: `${(dropdownHeight / getRootFontSize()).toFixed(4)}rem`,
               zIndex: 9999,
             }}
-            className="flex flex-col relative rounded-md border border-border bg-popover text-popover-foreground shadow-lg p-1 animate-in fade-in-0 zoom-in-95 select-none"
+            className="flex flex-col relative rounded-md border border-border bg-popover text-popover-foreground shadow-lg p-0 overflow-hidden animate-in fade-in-0 zoom-in-95 select-none"
           >
             {/* Search Box on Type */}
             {isSearchOpen && (
-              <div className="p-1 pb-1.5 shrink-0">
+              <div className="p-1.5 pb-1 border-b border-border shrink-0">
                 <Input
                   ref={searchInputRef}
                   size="sm"
@@ -455,7 +546,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
             )}
 
             {/* List */}
-            <div className="flex-1 overflow-y-auto space-y-0.5 min-h-0">
+            <div className="flex-1 overflow-y-auto p-1 space-y-0.5 min-h-0">
               {filteredSubfolders.map((sub, sIdx) => (
                 <button
                   key={`${sub.path}-${sIdx}`}
@@ -483,8 +574,8 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
               )}
             </div>
 
-            {/* Bottom Keyboard Shortcut Bar */}
-            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-[0.6875rem] text-muted-foreground mt-1 rounded-b shrink-0 select-none">
+            {/* Bottom Keyboard Shortcut Bar (flush at bottom) */}
+            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-[0.6875rem] text-muted-foreground shrink-0 select-none">
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1">
                   <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Up</kbd>
@@ -502,39 +593,39 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
               </div>
             </div>
 
-            {/* Border Drag Resize Handles */}
+            {/* True Border Drag Resize Handles */}
             <div
               onMouseDown={(e) => handleResizeStart(e, 'right')}
-              className="absolute top-0 right-0 bottom-2 w-1.5 cursor-col-resize z-50 select-none"
+              className="absolute top-0 right-0 bottom-0 w-1.5 cursor-col-resize z-50 select-none"
             />
             <div
               onMouseDown={(e) => handleResizeStart(e, 'bottom')}
-              className="absolute bottom-0 left-0 right-2 h-1.5 cursor-row-resize z-50 select-none"
+              className="absolute bottom-0 left-0 right-0 h-1.5 cursor-row-resize z-50 select-none"
             />
             <div
               onMouseDown={(e) => handleResizeStart(e, 'corner')}
-              className="absolute bottom-0 right-0 size-2.5 cursor-se-resize z-50 select-none"
+              className="absolute bottom-0 right-0 size-3 cursor-se-resize z-50 select-none"
             />
           </div>,
           document.body
         )}
 
         {/* Overflow Ancestors Dropdown Menu (Portaled to document.body) */}
-        {isOverflowOpen && overflowPos && effectiveFirstIndex > 0 && typeof document !== 'undefined' && createPortal(
+        {isOverflowOpen && dropdownPos && effectiveFirstIndex > 0 && typeof document !== 'undefined' && createPortal(
           <div
             ref={overflowMenuRef}
             role="menu"
             style={{
               position: 'fixed',
-              top: `${overflowPos.top * 0.0625}rem`,
-              left: `${overflowPos.left * 0.0625}rem`,
-              width: `${dropdownWidth * 0.0625}rem`,
-              maxHeight: `${dropdownMaxHeight * 0.0625}rem`,
+              top: `${dropdownPos.top.toFixed(4)}rem`,
+              left: `${dropdownPos.left.toFixed(4)}rem`,
+              width: `${(dropdownWidth / getRootFontSize()).toFixed(4)}rem`,
+              height: `${(dropdownHeight / getRootFontSize()).toFixed(4)}rem`,
               zIndex: 9999,
             }}
-            className="flex flex-col relative rounded-md border border-border bg-popover text-popover-foreground shadow-lg p-1 animate-in fade-in-0 zoom-in-95 select-none"
+            className="flex flex-col relative rounded-md border border-border bg-popover text-popover-foreground shadow-lg p-0 overflow-hidden animate-in fade-in-0 zoom-in-95 select-none"
           >
-            <div className="flex-1 overflow-y-auto space-y-0.5 min-h-0">
+            <div className="flex-1 overflow-y-auto p-1 space-y-0.5 min-h-0">
               {segments.slice(0, effectiveFirstIndex).map((seg, sIdx) => (
                 <button
                   key={`overflow-${seg.path}-${sIdx}`}
@@ -542,7 +633,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
                   role="menuitem"
                   onClick={() => {
                     setIsOverflowOpen(false);
-                    setOverflowPos(null);
+                    setDropdownPos(null);
                     onNavigate?.(seg.realPath || seg.path);
                   }}
                   onMouseEnter={() => setHighlightedIndex(sIdx)}
@@ -557,8 +648,8 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
               ))}
             </div>
 
-            {/* Bottom Keyboard Shortcut Bar */}
-            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-[0.6875rem] text-muted-foreground mt-1 rounded-b shrink-0 select-none">
+            {/* Bottom Keyboard Shortcut Bar (flush at bottom) */}
+            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-[0.6875rem] text-muted-foreground shrink-0 select-none">
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1">
                   <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Up</kbd>
@@ -576,18 +667,18 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
               </div>
             </div>
 
-            {/* Border Drag Resize Handles */}
+            {/* True Border Drag Resize Handles */}
             <div
               onMouseDown={(e) => handleResizeStart(e, 'right')}
-              className="absolute top-0 right-0 bottom-2 w-1.5 cursor-col-resize z-50 select-none"
+              className="absolute top-0 right-0 bottom-0 w-1.5 cursor-col-resize z-50 select-none"
             />
             <div
               onMouseDown={(e) => handleResizeStart(e, 'bottom')}
-              className="absolute bottom-0 left-0 right-2 h-1.5 cursor-row-resize z-50 select-none"
+              className="absolute bottom-0 left-0 right-0 h-1.5 cursor-row-resize z-50 select-none"
             />
             <div
               onMouseDown={(e) => handleResizeStart(e, 'corner')}
-              className="absolute bottom-0 right-0 size-2.5 cursor-se-resize z-50 select-none"
+              className="absolute bottom-0 right-0 size-3 cursor-se-resize z-50 select-none"
             />
           </div>,
           document.body

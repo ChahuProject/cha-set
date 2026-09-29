@@ -177,6 +177,37 @@ describe('AddressBar', () => {
 
       expect(handleNavigate).toHaveBeenCalled();
     });
+
+    it('expands search input on button click and collapses on Escape', () => {
+      const handleSearch = vi.fn();
+      render(
+        <AddressBar
+          path="C:/Users"
+          showSearch
+          onSearch={handleSearch}
+        />
+      );
+
+      const searchButton = screen.getByRole('button', { name: '搜索' });
+      expect(searchButton).toBeInTheDocument();
+
+      fireEvent.click(searchButton);
+      const searchInput = screen.getByPlaceholderText('搜索...');
+      expect(searchInput).toBeInTheDocument();
+
+      fireEvent.change(searchInput, { target: { value: 'file.txt' } });
+      expect(handleSearch).toHaveBeenCalledWith('file.txt');
+
+      // Clear search
+      const clearBtn = screen.getByRole('button', { name: 'Clear search' });
+      fireEvent.click(clearBtn);
+      expect(handleSearch).toHaveBeenCalledWith('');
+
+      // Escape collapses
+      fireEvent.keyDown(searchInput, { key: 'Escape' });
+      expect(screen.getByRole('button', { name: '搜索' })).toBeInTheDocument();
+    });
   });
 });
+
 
