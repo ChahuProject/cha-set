@@ -19,6 +19,7 @@ DocLayout {
     property string demoVariant: "outline"
     property string demoSize: "default"
     property string demoCompact: "auto"
+    property real playgroundWidth: ThemeTokens.dp(340)
 
     // Section 1: Overview
     ComponentPreview {
@@ -407,23 +408,201 @@ DocLayout {
             }
         }
 
-        DocText {
-            text: "Responsive ShortcutBar in narrow popup (auto-compact & overflow fold):"
-            color: root.cMutedFg
-            font.pixelSize: Typography.sizeCaption
-        }
-
         ChaSetCard {
-            width: ThemeTokens.dp(224)
-            clip: true
+            width: parent.width
 
-            ChaSetShortcutBar {
-                width: parent.width
-                preset: "address-bar"
-                additionalShortcuts: [
-                    { "id": "tab", "keys": ["Tab"], "label": qsTr("补全"), "priority": 2 },
-                    { "id": "copy", "keys": ["Ctrl", "C"], "label": qsTr("复制路径"), "priority": 4 }
-                ]
+            Column {
+                width: parent.width - ThemeTokens.dp(24)
+                anchors.horizontalCenter: parent.horizontalCenter
+                topPadding: ThemeTokens.dp(14)
+                bottomPadding: ThemeTokens.dp(14)
+                spacing: ThemeTokens.dp(12)
+
+                DocText {
+                    text: "Interactive Multi-Stage Responsive Playground"
+                    font.pixelSize: Typography.sizeBody
+                    font.weight: Typography.weightBold
+                    color: root.cFg
+                }
+
+                DocText {
+                    text: "Drag the right handle or adjust the slider to observe how the shortcut bar progresses through 4 adaptive stages: Full scale → Squeezed micro-scale → Compact symbols → +N folded badge with floating popover."
+                    font.pixelSize: Typography.sizeCaption
+                    color: root.cMutedFg
+                    wrapMode: Text.WordWrap
+                    width: parent.width
+                }
+
+                // Controls: Slider & Quick Presets
+                Row {
+                    width: parent.width
+                    spacing: ThemeTokens.dp(16)
+
+                    Row {
+                        spacing: ThemeTokens.dp(8)
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        DocText {
+                            text: "Width:"
+                            font.pixelSize: Typography.sizeCaption
+                            color: root.cMutedFg
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        ChaSetSlider {
+                            id: widthSlider
+                            width: ThemeTokens.dp(160)
+                            min: 160
+                            max: 540
+                            step: 1
+                            value: Math.round(root.playgroundWidth / ThemeTokens.density)
+                            onValueMoved: function(val) {
+                                root.playgroundWidth = ThemeTokens.dp(val)
+                            }
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                    Row {
+                        spacing: ThemeTokens.dp(6)
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        DocText {
+                            text: "Presets:"
+                            font.pixelSize: Typography.sizeCaption
+                            color: root.cMutedFg
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        ChaSetButton {
+                            size: "xs"
+                            variant: Math.round(root.playgroundWidth / ThemeTokens.density) === 460 ? "secondary" : "outline"
+                            text: "Full (460)"
+                            onClicked: {
+                                root.playgroundWidth = ThemeTokens.dp(460)
+                                widthSlider.value = 460
+                            }
+                        }
+
+                        ChaSetButton {
+                            size: "xs"
+                            variant: Math.round(root.playgroundWidth / ThemeTokens.density) === 330 ? "secondary" : "outline"
+                            text: "Squeezed (330)"
+                            onClicked: {
+                                root.playgroundWidth = ThemeTokens.dp(330)
+                                widthSlider.value = 330
+                            }
+                        }
+
+                        ChaSetButton {
+                            size: "xs"
+                            variant: Math.round(root.playgroundWidth / ThemeTokens.density) === 250 ? "secondary" : "outline"
+                            text: "Compact (250)"
+                            onClicked: {
+                                root.playgroundWidth = ThemeTokens.dp(250)
+                                widthSlider.value = 250
+                            }
+                        }
+
+                        ChaSetButton {
+                            size: "xs"
+                            variant: Math.round(root.playgroundWidth / ThemeTokens.density) === 180 ? "secondary" : "outline"
+                            text: "Folded (180)"
+                            onClicked: {
+                                root.playgroundWidth = ThemeTokens.dp(180)
+                                widthSlider.value = 180
+                            }
+                        }
+                    }
+                }
+
+                // Live Telemetry Badges
+                Row {
+                    spacing: ThemeTokens.dp(8)
+
+                    ChaSetBadge {
+                        variant: "outline"
+                        text: "Width: " + Math.round(root.playgroundWidth / ThemeTokens.density)
+                    }
+
+                    ChaSetBadge {
+                        variant: "outline"
+                        text: {
+                            var s = playgroundShortcutBar.responsiveStage
+                            if (s === "full") return "Stage 1: Full (完整文字)"
+                            if (s === "squeezed") return "Stage 2: Squeezed (等比微缩)"
+                            if (s === "compact") return "Stage 3: Compact (图标符号)"
+                            if (s === "folded") return "Stage 4: Folded (+N 折叠)"
+                            return "Stage: " + s
+                        }
+                    }
+                }
+
+                // Resizable Container Frame
+                Rectangle {
+                    id: playgroundFrame
+                    width: Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(540), root.playgroundWidth))
+                    height: ThemeTokens.dp(32)
+                    radius: ThemeTokens.dp(6)
+                    color: ThemeTokens.panel
+                    border.color: ThemeTokens.border
+                    border.width: ThemeTokens.dp(1)
+                    clip: true
+
+                    ChaSetShortcutBar {
+                        id: playgroundShortcutBar
+                        anchors.left: parent.left
+                        anchors.right: playgroundResizeGrip.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        preset: "address-bar"
+                        additionalShortcuts: [
+                            { "id": "tab", "keys": ["Tab"], "label": qsTr("补全"), "priority": 2 },
+                            { "id": "copy", "keys": ["Ctrl", "C"], "label": qsTr("复制路径"), "priority": 4 }
+                        ]
+                    }
+
+                    Rectangle {
+                        id: playgroundResizeGrip
+                        width: ThemeTokens.dp(14)
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        color: gripMouse.containsMouse || gripMouse.pressed ? ThemeTokens.hover : "transparent"
+
+                        Column {
+                            anchors.centerIn: parent
+                            spacing: ThemeTokens.dp(2)
+                            Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: ThemeTokens.dp(1.5); color: ThemeTokens.subduedText }
+                            Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: ThemeTokens.dp(1.5); color: ThemeTokens.subduedText }
+                            Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: ThemeTokens.dp(1.5); color: ThemeTokens.subduedText }
+                        }
+
+                        MouseArea {
+                            id: gripMouse
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.SizeHorCursor
+                            property real startGlobalX: 0
+                            property real startW: 0
+
+                            onPressed: function(mouse) {
+                                var pt = mapToGlobal(mouse.x, mouse.y)
+                                startGlobalX = pt.x
+                                startW = root.playgroundWidth
+                            }
+
+                            onPositionChanged: function(mouse) {
+                                if (pressed) {
+                                    var pt = mapToGlobal(mouse.x, mouse.y)
+                                    var delta = pt.x - startGlobalX
+                                    var nw = Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(540), startW + delta))
+                                    root.playgroundWidth = nw
+                                    widthSlider.value = Math.round(nw / ThemeTokens.density)
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -228,12 +228,17 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
       );
     }
 
-    // Direct children keycap rendering
+    // Direct children keycap rendering: apply formatKeyToken if children is a string
+    const renderedContent =
+      typeof children === 'string'
+        ? formatKeyToken(children, isCompact)
+        : children;
+
     if (isSubtle) {
       return (
         <span
           ref={ref as React.Ref<HTMLSpanElement>}
-          data-slot="kbd"
+          data-slot={dataSlot ?? 'kbd'}
           data-variant={variant}
           data-size={size}
           className={cn(
@@ -244,7 +249,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
           )}
           {...props}
         >
-          {children}
+          {renderedContent}
         </span>
       );
     }
@@ -252,7 +257,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
     return (
       <kbd
         ref={ref}
-        data-slot="kbd"
+        data-slot={dataSlot ?? 'kbd'}
         data-variant={variant}
         data-size={size}
         className={cn(
@@ -266,7 +271,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
         )}
         {...props}
       >
-        {children}
+        {renderedContent}
       </kbd>
     );
   },

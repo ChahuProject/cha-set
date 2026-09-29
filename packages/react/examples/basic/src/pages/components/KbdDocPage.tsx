@@ -11,6 +11,9 @@ import {
   TabsTrigger,
   Card,
   DropdownMenuItem,
+  Badge,
+  Button,
+  Slider,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -21,6 +24,31 @@ export function KbdDocPage() {
   const [variant, setVariant] = useState<KbdVariant>('outline');
   const [size, setSize] = useState<KbdSize>('default');
   const [compact, setCompact] = useState<KbdCompact>('auto');
+  const [playgroundWidth, setPlaygroundWidth] = useState<number>(340);
+  const [activeStage, setActiveStage] = useState<'full' | 'squeezed' | 'compact' | 'folded'>('squeezed');
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+
+  const handleDragStart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+    const startX = e.clientX;
+    const startW = playgroundWidth;
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const delta = moveEvent.clientX - startX;
+      const nextW = Math.max(160, Math.min(540, Math.round(startW + delta)));
+      setPlaygroundWidth(nextW);
+    };
+
+    const onMouseUp = () => {
+      setIsDragging(false);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+  };
 
   const heroReactCode = `<Kbd
   variant="${variant}"
@@ -195,7 +223,7 @@ export function KbdDocPage() {
         <p className="text-sm text-muted-foreground mb-4">
           When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols.
         </p>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <Card className="w-56 p-2 space-y-1 border-dashed">
             <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm">
               <span className="flex-1 min-w-0 truncate text-foreground">Very Long Action Name That Truncates</span>
@@ -207,17 +235,141 @@ export function KbdDocPage() {
             </div>
           </Card>
 
-          <div className="space-y-2">
-            <span className="text-xs text-muted-foreground">Responsive ShortcutBar in narrow popup (auto-compact & overflow fold):</span>
-            <Card className="w-56 p-2 border-dashed overflow-hidden">
-              <ShortcutBar
-                preset="address-bar"
-                additionalShortcuts={[
-                  { id: 'tab', keys: ['Tab'], label: '补全', priority: 2 },
-                  { id: 'copy', keys: ['Ctrl', 'C'], label: '复制路径', priority: 4 },
-                ]}
-              />
-            </Card>
+          {/* Interactive Multi-Stage Responsive Playground */}
+          <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
+            <div className="flex flex-col gap-1">
+              <h3 className="text-sm font-semibold text-foreground">
+                Interactive Multi-Stage Responsive Playground
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Drag the right handle or adjust the slider to observe how the shortcut bar progresses through 4 adaptive stages:
+                Full scale → Squeezed micro-scale → Compact symbols → +N folded badge with floating popover.
+              </p>
+            </div>
+
+            {/* Controls: Slider & Quick Presets */}
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3 w-full sm:w-64">
+                <span className="text-xs text-muted-foreground shrink-0">Width:</span>
+                <Slider
+                  value={playgroundWidth}
+                  min={160}
+                  max={540}
+                  step={1}
+                  onValueChange={setPlaygroundWidth}
+                  className="flex-1"
+                />
+              </div>
+
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-xs text-muted-foreground mr-1">Presets:</span>
+                <Button
+                  variant={playgroundWidth === 460 ? 'secondary' : 'outline'}
+                  size="xs"
+                  onClick={() => setPlaygroundWidth(460)}
+                >
+                  Full (28.75rem)
+                </Button>
+                <Button
+                  variant={playgroundWidth === 330 ? 'secondary' : 'outline'}
+                  size="xs"
+                  onClick={() => setPlaygroundWidth(330)}
+                >
+                  Squeezed (20.63rem)
+                </Button>
+                <Button
+                  variant={playgroundWidth === 250 ? 'secondary' : 'outline'}
+                  size="xs"
+                  onClick={() => setPlaygroundWidth(250)}
+                >
+                  Compact (15.63rem)
+                </Button>
+                <Button
+                  variant={playgroundWidth === 180 ? 'secondary' : 'outline'}
+                  size="xs"
+                  onClick={() => setPlaygroundWidth(180)}
+                >
+                  Folded (11.25rem)
+                </Button>
+              </div>
+            </div>
+
+            {/* Live Telemetry Badges */}
+            <div className="flex items-center gap-2 pt-1">
+              <Badge variant="outline" className="font-mono text-xs">
+                Width: {(playgroundWidth * 0.0625).toFixed(2)}rem
+              </Badge>
+              {activeStage === 'full' && (
+                <Badge
+                  variant="outline"
+                  className="border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs"
+                >
+                  Stage 1: Full (完整文字)
+                </Badge>
+              )}
+              {activeStage === 'squeezed' && (
+                <Badge
+                  variant="outline"
+                  className="border-sky-500/40 bg-sky-500/10 text-sky-600 dark:text-sky-400 text-xs"
+                >
+                  Stage 2: Squeezed (等比微缩)
+                </Badge>
+              )}
+              {activeStage === 'compact' && (
+                <Badge
+                  variant="outline"
+                  className="border-amber-500/40 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs"
+                >
+                  Stage 3: Compact (图标符号)
+                </Badge>
+              )}
+              {activeStage === 'folded' && (
+                <Badge
+                  variant="outline"
+                  className="border-purple-500/40 bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs"
+                >
+                  Stage 4: Folded (+N 折叠)
+                </Badge>
+              )}
+            </div>
+
+            {/* Interactive Resizable Frame */}
+            <div className="pt-2">
+              <div
+                style={{ width: `${playgroundWidth * 0.0625}rem` }}
+                className={`relative flex items-center rounded-md border border-dashed border-border bg-background transition-[width] duration-75 ease-out shadow-xs ${
+                  isDragging ? 'ring-1 ring-ring' : ''
+                }`}
+              >
+                <div className="flex-1 min-w-0 overflow-hidden py-1 px-2">
+                  <ShortcutBar
+                    preset="address-bar"
+                    additionalShortcuts={[
+                      { id: 'tab', keys: ['Tab'], label: '补全', priority: 2 },
+                      { id: 'copy', keys: ['Ctrl', 'C'], label: '复制路径', priority: 4 },
+                    ]}
+                    onStageChange={setActiveStage}
+                  />
+                </div>
+
+                {/* Right Edge Drag Handle */}
+                <div
+                  onMouseDown={handleDragStart}
+                  className={`group relative flex w-3.5 shrink-0 cursor-col-resize select-none items-center justify-center self-stretch rounded-r transition-colors ${
+                    isDragging
+                      ? 'bg-accent text-accent-foreground'
+                      : 'hover:bg-accent/70'
+                  }`}
+                  title="Drag right handle to resize container width"
+                >
+                  <div className="flex flex-col gap-0.5 items-center">
+                    <span className="block h-1 w-1 rounded-full bg-muted-foreground/50 group-hover:bg-foreground/70 transition-colors" />
+                    <span className="block h-1 w-1 rounded-full bg-muted-foreground/50 group-hover:bg-foreground/70 transition-colors" />
+                    <span className="block h-1 w-1 rounded-full bg-muted-foreground/50 group-hover:bg-foreground/70 transition-colors" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

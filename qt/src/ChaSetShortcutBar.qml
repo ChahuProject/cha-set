@@ -82,33 +82,52 @@ Item {
         return res
     }
 
-    // Responsive width and compact calculations
+    // Responsive width and progressive multi-stage calculations
+    // Stage 1 (full): Normal words & normal scale
+    // Stage 2 (squeezed): Normal words & cohesive unit scale-down (font micro, gap 5dp)
+    // Stage 3 (compact): Keys convert to compact symbols/icons (↑, ↵, ⎋, ⌃), shortLabels
+    // Stage 4 (folded): Lowest priority items fold into +N badge
     readonly property real availableWidth: Math.max(0, root.width - ThemeTokens.dp(16))
 
-    function estimateItemWidth(item, isComp) {
+    function estimateItemWidth(item, mode) {
+        var isComp = (mode === "compact")
+        var isSq = (mode === "squeezed")
         var numKeys = (item.keys && item.keys.length) ? item.keys.length : 1
         var keysW = 0
         for (var k = 0; k < numKeys; ++k) {
             var keyStr = String(item.keys[k] || "")
             var isSymbol = (keyStr === "Up" || keyStr === "Down" || keyStr === "Left" || keyStr === "Right" || keyStr === "ArrowUp" || keyStr === "ArrowDown" || keyStr === "ArrowLeft" || keyStr === "ArrowRight")
-            var kw = (isComp && isSymbol) ? ThemeTokens.dp(16) : Math.max(ThemeTokens.dp(16), keyStr.length * ThemeTokens.dp(8) + ThemeTokens.dp(8))
-            keysW += kw + (k > 0 ? ThemeTokens.dp(3) : 0)
+            var kw = (isComp && isSymbol) ? ThemeTokens.dp(16) : Math.max(ThemeTokens.dp(isComp ? 16 : isSq ? 18 : 22), keyStr.length * ThemeTokens.dp(isSq ? 7 : 8) + ThemeTokens.dp(isSq ? 6 : 8))
+            keysW += kw + (k > 0 ? ThemeTokens.dp(isSq || isComp ? 2 : 3) : 0)
         }
         var labelStr = (isComp && item.shortLabel) ? item.shortLabel : (item.label || "")
-        var labelW = labelStr.length * ThemeTokens.dp(12)
-        return keysW + ThemeTokens.dp(4) + labelW
+        var labelW = labelStr.length * ThemeTokens.dp(isSq || isComp ? 10 : 12)
+        var keyToLabelGap = ThemeTokens.dp(isSq || isComp ? 2 : 4)
+        return keysW + keyToLabelGap + labelW
     }
 
-    readonly property bool isCompact: {
-        if (root.forceCompact || root.compact === "always") return true
-        if (root.compact === "never") return false
-        var totalW = 0
-        var gap = ThemeTokens.dp(10)
+    readonly property string responsiveStage: {
+        if (root.forceCompact || root.compact === "always") return "compact"
+        var gapNormal = ThemeTokens.dp(10)
+        var gapTight = ThemeTokens.dp(5)
+
+        var totalFullW = 0
+        var totalSqW = 0
+        var totalCompW = 0
+
         for (var i = 0; i < effectiveItems.length; ++i) {
-            totalW += estimateItemWidth(effectiveItems[i], false) + (i > 0 ? gap : 0)
+            totalFullW += estimateItemWidth(effectiveItems[i], "full") + (i > 0 ? gapNormal : 0)
+            totalSqW += estimateItemWidth(effectiveItems[i], "squeezed") + (i > 0 ? gapTight : 0)
+            totalCompW += estimateItemWidth(effectiveItems[i], "compact") + (i > 0 ? gapTight : 0)
         }
-        return totalW > availableWidth
+
+        if (totalFullW <= availableWidth && root.compact !== "always") return "full"
+        if (totalSqW <= availableWidth && root.compact !== "always") return "squeezed"
+        if (totalCompW <= availableWidth && root.compact !== "never") return "compact"
+        return "folded"
     }
+
+    readonly property bool isCompact: responsiveStage === "compact" || responsiveStage === "folded" || root.compact === "always" || root.forceCompact
 
     readonly property var partitionedItems: {
         if (effectiveItems.length === 0) return { "visible": [], "overflow": [] }
@@ -119,21 +138,18 @@ Item {
             }
         }
 
-        var badgeW = ThemeTokens.dp(32)
-        var gap = ThemeTokens.dp(10)
-        var isComp = root.isCompact
-        var avail = availableWidth - (root.showOverflowCount ? (badgeW + gap) : 0)
-
-        var totalW = 0
-        var itemWidths = []
-        for (var i = 0; i < effectiveItems.length; ++i) {
-            var w = estimateItemWidth(effectiveItems[i], isComp)
-            itemWidths.push(w)
-            totalW += w + (i > 0 ? gap : 0)
+        if (responsiveStage === "full" || responsiveStage === "squeezed" || responsiveStage === "compact") {
+            return { "visible": effectiveItems, "overflow": [] }
         }
 
-        if (totalW <= availableWidth) {
-            return { "visible": effectiveItems, "overflow": [] }
+        // Folded stage: fold lower priority items into +N badge
+        var badgeW = ThemeTokens.dp(28)
+        var gap = ThemeTokens.dp(5)
+        var avail = availableWidth - (root.showOverflowCount ? (badgeW + gap) : 0)
+
+        var itemWidths = []
+        for (var i = 0; i < effectiveItems.length; ++i) {
+            itemWidths.push(estimateItemWidth(effectiveItems[i], "compact"))
         }
 
         // Rank by priority ascending (1 = highest priority kept)
@@ -155,7 +171,7 @@ Item {
             if (accW + needed <= avail) {
                 accW += needed
                 acceptedIndices[indexed[k].index] = true
-            } else if (Object.keys(acceptedIndices).length === 0 && availableWidth > ThemeTokens.dp(60)) {
+            } else if (Object.keys(acceptedIndices).length === 0 && availableWidth > ThemeTokens.dp(50)) {
                 accW += indexed[k].width
                 acceptedIndices[indexed[k].index] = true
             }
@@ -220,7 +236,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: ThemeTokens.dp(8)
         anchors.verticalCenter: parent.verticalCenter
-        spacing: ThemeTokens.dp(10)
+        spacing: (root.responsiveStage === "full") ? ThemeTokens.dp(10) : ThemeTokens.dp(5)
 
         Repeater {
             model: root.visibleItems
@@ -228,18 +244,18 @@ Item {
                 id: itemDelegate
                 required property var modelData
                 required property int index
-                spacing: ThemeTokens.dp(4)
+                spacing: (root.responsiveStage === "full") ? ThemeTokens.dp(4) : ThemeTokens.dp(2)
                 anchors.verticalCenter: parent ? parent.verticalCenter : undefined
 
                 Repeater {
                     model: itemDelegate.modelData.keys || []
                     delegate: ChaSetKbd {
                         required property var modelData
-                        size: root.size
+                        size: (root.responsiveStage === "full") ? root.size : "xs"
                         variant: root.variant
                         compact: root.isCompact ? "always" : "never"
                         text: modelData
-                        height: ThemeTokens.dp(16)
+                        height: (root.responsiveStage === "full") ? ThemeTokens.dp(18) : ThemeTokens.dp(16)
                         anchors.verticalCenter: parent ? parent.verticalCenter : undefined
                     }
                 }
@@ -247,7 +263,7 @@ Item {
                 Text {
                     text: (root.isCompact && itemDelegate.modelData.shortLabel) ? itemDelegate.modelData.shortLabel : (itemDelegate.modelData.label || "")
                     color: ThemeTokens.subduedText
-                    font.pixelSize: Typography.sizeCaption
+                    font.pixelSize: (root.responsiveStage === "full") ? Typography.sizeCaption : Typography.sizeMicro
                     verticalAlignment: Text.AlignVCenter
                     anchors.verticalCenter: parent ? parent.verticalCenter : undefined
                 }

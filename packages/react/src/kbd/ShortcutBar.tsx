@@ -17,22 +17,37 @@ import type {
 /**
  * Fallback width calculation for SSR or jsdom test environments
  */
-function estimateFallbackWidth(item: ShortcutItem, isCompact: boolean): number {
+function estimateFallbackWidth(
+  item: ShortcutItem,
+  mode: 'full' | 'squeezed' | 'compact',
+): number {
+  const isCompact = mode === 'compact';
+  const isSqueezed = mode === 'squeezed';
   const numKeys = item.keys.length || 1;
   let keysW = 0;
   for (let i = 0; i < numKeys; i++) {
     const k = item.keys[i] || '';
     const isArrow = /^(Up|Down|Left|Right|ArrowUp|ArrowDown|ArrowLeft|ArrowRight)$/i.test(k);
-    const kw = isCompact && isArrow ? 20 : Math.max(24, k.length * 8 + 12);
-    keysW += kw + (i > 0 ? 4 : 0);
+    const kw =
+      isCompact && isArrow
+        ? 18
+        : isCompact
+          ? Math.max(18, k.length * 7 + 10)
+          : isSqueezed
+            ? Math.max(20, k.length * 7 + 10)
+            : Math.max(24, k.length * 8 + 12);
+    keysW += kw + (i > 0 ? (isCompact || isSqueezed ? 2 : 4) : 0);
   }
   const label = isCompact && item.shortLabel ? item.shortLabel : item.label || '';
   let labelW = 0;
+  const cjkCharW = isSqueezed || isCompact ? 11 : 14;
+  const latinCharW = isSqueezed || isCompact ? 6 : 8;
   for (let i = 0; i < label.length; i++) {
     const code = label.charCodeAt(i);
-    labelW += code >= 0x4e00 && code <= 0x9fff ? 14 : 8;
+    labelW += code >= 0x4e00 && code <= 0x9fff ? cjkCharW : latinCharW;
   }
-  return keysW + 4 + labelW;
+  const keyToLabelGap = isSqueezed || isCompact ? 2 : 4;
+  return keysW + keyToLabelGap + labelW;
 }
 
 export interface ShortcutBarProps
@@ -61,6 +76,8 @@ export interface ShortcutBarProps
   forceCompact?: boolean;
   /** Maximum number of visible items before collapsing (optional override) */
   maxVisibleItems?: number;
+  /** Optional callback notified whenever responsive stage transitions between full, squeezed, compact, and folded */
+  onStageChange?: (stage: 'full' | 'squeezed' | 'compact' | 'folded') => void;
 }
 
 /**
@@ -82,6 +99,7 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
       showOverflowCount = true,
       forceCompact = false,
       maxVisibleItems,
+      onStageChange,
       className,
       ...props
     },
@@ -90,6 +108,7 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
     const containerRef = React.useRef<HTMLDivElement | null>(null);
     const badgeRef = React.useRef<HTMLDivElement | null>(null);
     const normalStripRef = React.useRef<HTMLDivElement | null>(null);
+    const squeezedStripRef = React.useRef<HTMLDivElement | null>(null);
     const compactStripRef = React.useRef<HTMLDivElement | null>(null);
     const badgeMeasureRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -113,8 +132,9 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
     const [measureVersion, setMeasureVersion] = React.useState<number>(0);
     const [popoverPos, setPopoverPos] = React.useState<{
       top: number;
+      bottom: number;
       left: number;
-      transform: string;
+      placeBelow: boolean;
     } | null>(null);
 
     // Observe container width
@@ -124,7 +144,7 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
 
       const ro = new ResizeObserver((entries) => {
         for (const entry of entries) {
-          const width = entry.contentRect.width;
+          const width = el.clientWidth || entry.contentRect.width;
           if (width > 0) {
             setContainerWidth(width);
           }
@@ -132,7 +152,9 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
       });
 
       ro.observe(el);
-      setContainerWidth(el.clientWidth);
+      if (el.clientWidth > 0) {
+        setContainerWidth(el.clientWidth);
+      }
 
       return () => ro.disconnect();
     }, []);
@@ -144,174 +166,221 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
 
     // Measure strip widths
     const getMeasuredWidths = React.useCallback(
-      (strip: HTMLDivElement | null, isComp: boolean): number[] => {
+      (
+        strip: HTMLDivElement | null,
+        mode: 'full' | 'squeezed' | 'compact',
+      ): number[] => {
         if (!strip) {
-          return effectiveItems.map((it) => estimateFallbackWidth(it, isComp));
+          return effectiveItems.map((it) => estimateFallbackWidth(it, mode));
         }
         const children = Array.from(strip.children) as HTMLElement[];
         if (children.length !== effectiveItems.length) {
-          return effectiveItems.map((it) => estimateFallbackWidth(it, isComp));
+          return effectiveItems.map((it) => estimateFallbackWidth(it, mode));
         }
         return children.map((el, i) => {
           const rect = el.getBoundingClientRect();
           const w = rect.width || el.offsetWidth;
-          return w > 0 ? w : estimateFallbackWidth(effectiveItems[i]!, isComp);
+          return w > 0 ? w : estimateFallbackWidth(effectiveItems[i]!, mode);
         });
       },
       [effectiveItems],
     );
 
-    // Calculate item visibility & compact decision
-    const { visibleItems, overflowItems, effectiveCompact } = React.useMemo(() => {
-      if (effectiveItems.length === 0) {
-        return {
-          visibleItems: [],
-          overflowItems: [],
-          effectiveCompact: compact === 'always' || forceCompact,
-        };
-      }
+    // Progressive Multi-Stage Responsive Engine:
+    // Stage 1 (full): Normal words & normal scale
+    // Stage 2 (squeezed): Normal words & cohesive unit scale-down (font 10px, gap 6px)
+    // Stage 3 (compact): Keys convert to compact symbols/icons (↑, ↵, ⎋, ⌃), shortLabels
+    // Stage 4 (folded): Lowest priority items fold into +N badge
+    const { visibleItems, overflowItems, responsiveStage, effectiveCompact } =
+      React.useMemo(() => {
+        if (effectiveItems.length === 0) {
+          return {
+            visibleItems: [],
+            overflowItems: [],
+            responsiveStage: 'full' as const,
+            effectiveCompact: compact === 'always' || forceCompact,
+          };
+        }
 
-      if (maxVisibleItems !== undefined) {
-        const vis = effectiveItems.slice(0, maxVisibleItems);
-        const ov = effectiveItems.slice(maxVisibleItems);
+        if (maxVisibleItems !== undefined) {
+          const vis = effectiveItems.slice(0, maxVisibleItems);
+          const ov = effectiveItems.slice(maxVisibleItems);
+          return {
+            visibleItems: vis,
+            overflowItems: ov,
+            responsiveStage: ov.length > 0 ? ('folded' as const) : ('full' as const),
+            effectiveCompact: compact === 'always' || forceCompact,
+          };
+        }
+
+        if (containerWidth <= 0) {
+          return {
+            visibleItems: effectiveItems,
+            overflowItems: [],
+            responsiveStage: 'full' as const,
+            effectiveCompact: compact === 'always' || forceCompact,
+          };
+        }
+
+        // Account for horizontal container padding (e.g. px-2.5 = 20px)
+        const availableInnerWidth = Math.max(0, containerWidth - 20);
+
+        const normalGap = 12; // gap-3 = 12px
+        const squeezedGap = 6; // gap-1.5 = 6px
+        const compactGap = 6; // gap-1.5 = 6px
+
+        const measuredBadgeWidth = badgeMeasureRef.current
+          ? badgeMeasureRef.current.getBoundingClientRect().width ||
+            badgeMeasureRef.current.offsetWidth
+          : 0;
+        const badgeWidth = measuredBadgeWidth > 0 ? measuredBadgeWidth : 36;
+
+        const normalWidths = getMeasuredWidths(normalStripRef.current, 'full');
+        const squeezedWidths = getMeasuredWidths(squeezedStripRef.current, 'squeezed');
+        const compactWidths = getMeasuredWidths(compactStripRef.current, 'compact');
+
+        const totalNormalWidth =
+          normalWidths.reduce((sum, w) => sum + w, 0) +
+          Math.max(0, effectiveItems.length - 1) * normalGap;
+
+        const totalSqueezedWidth =
+          squeezedWidths.reduce((sum, w) => sum + w, 0) +
+          Math.max(0, effectiveItems.length - 1) * squeezedGap;
+
+        const totalCompactWidth =
+          compactWidths.reduce((sum, w) => sum + w, 0) +
+          Math.max(0, effectiveItems.length - 1) * compactGap;
+
+        // Stage 1: Full normal mode
+        if (
+          totalNormalWidth <= availableInnerWidth &&
+          compact !== 'always' &&
+          !forceCompact
+        ) {
+          return {
+            visibleItems: effectiveItems,
+            overflowItems: [],
+            responsiveStage: 'full' as const,
+            effectiveCompact: false,
+          };
+        }
+
+        // Stage 2: Squeezed mode (words intact, unit scales down together)
+        if (
+          totalSqueezedWidth <= availableInnerWidth &&
+          compact !== 'always' &&
+          !forceCompact
+        ) {
+          return {
+            visibleItems: effectiveItems,
+            overflowItems: [],
+            responsiveStage: 'squeezed' as const,
+            effectiveCompact: false,
+          };
+        }
+
+        // Stage 3: Compact symbols mode (words transform into symbols/icons)
+        if (totalCompactWidth <= availableInnerWidth && compact !== 'never') {
+          return {
+            visibleItems: effectiveItems,
+            overflowItems: [],
+            responsiveStage: 'compact' as const,
+            effectiveCompact: true,
+          };
+        }
+
+        // Stage 4: Overflow fold into +N badge (items in compact mode)
+        const shouldUseCompact = compact !== 'never';
+        const activeWidths = shouldUseCompact
+          ? compactWidths
+          : totalSqueezedWidth <= totalNormalWidth
+            ? squeezedWidths
+            : normalWidths;
+        const activeGap = shouldUseCompact || totalSqueezedWidth <= totalNormalWidth ? 6 : 12;
+
+        const spaceForItems = Math.max(
+          0,
+          availableInnerWidth - (showOverflowCount ? badgeWidth + activeGap : 0),
+        );
+
+        // Strict Atomic Units: Rank by priority ascending (1 = highest priority kept)
+        const indexed = effectiveItems.map((item, idx) => ({
+          item,
+          index: idx,
+          priority: item.priority ?? 1,
+          width: activeWidths[idx] ?? 50,
+        }));
+
+        const sortedByPriority = [...indexed].sort((a, b) => {
+          if (a.priority !== b.priority) return a.priority - b.priority;
+          return a.index - b.index;
+        });
+
+        let accumulatedWidth = 0;
+        let acceptedCount = 0;
+        const acceptedIndices = new Set<number>();
+
+        for (const entry of sortedByPriority) {
+          const needed = entry.width + (acceptedCount > 0 ? activeGap : 0);
+          if (accumulatedWidth + needed <= spaceForItems) {
+            accumulatedWidth += needed;
+            acceptedCount++;
+            acceptedIndices.add(entry.index);
+          }
+        }
+
+        if (acceptedCount === 0 && effectiveItems.length > 0) {
+          acceptedIndices.add(sortedByPriority[0]!.index);
+        }
+
+        const vis: ShortcutItem[] = [];
+        const ov: ShortcutItem[] = [];
+
+        for (let i = 0; i < effectiveItems.length; i++) {
+          if (acceptedIndices.has(i)) {
+            vis.push(effectiveItems[i]!);
+          } else {
+            ov.push(effectiveItems[i]!);
+          }
+        }
+
         return {
           visibleItems: vis,
           overflowItems: ov,
-          effectiveCompact: compact === 'always' || forceCompact,
+          responsiveStage: 'folded' as const,
+          effectiveCompact: shouldUseCompact,
         };
-      }
+      }, [
+        effectiveItems,
+        containerWidth,
+        compact,
+        forceCompact,
+        maxVisibleItems,
+        showOverflowCount,
+        measureVersion,
+        getMeasuredWidths,
+      ]);
 
-      if (containerWidth <= 0) {
-        return {
-          visibleItems: effectiveItems,
-          overflowItems: [],
-          effectiveCompact: compact === 'always' || forceCompact,
-        };
-      }
-
-      const gap = 12; // gap-3 = 0.75rem = 12px
-      const measuredBadgeWidth = badgeMeasureRef.current
-        ? badgeMeasureRef.current.getBoundingClientRect().width || badgeMeasureRef.current.offsetWidth
-        : 0;
-      const badgeWidth = measuredBadgeWidth > 0 ? measuredBadgeWidth : 40;
-
-      const normalWidths = getMeasuredWidths(normalStripRef.current, false);
-      const compactWidths = getMeasuredWidths(compactStripRef.current, true);
-
-      const totalNormalWidth =
-        normalWidths.reduce((sum, w) => sum + w, 0) +
-        Math.max(0, effectiveItems.length - 1) * gap;
-
-      const fitsAllNormal = totalNormalWidth <= containerWidth;
-
-      if (fitsAllNormal && compact !== 'always' && !forceCompact) {
-        return {
-          visibleItems: effectiveItems,
-          overflowItems: [],
-          effectiveCompact: false,
-        };
-      }
-
-      const totalCompactWidth =
-        compactWidths.reduce((sum, w) => sum + w, 0) +
-        Math.max(0, effectiveItems.length - 1) * gap;
-
-      const fitsAllCompact = totalCompactWidth <= containerWidth;
-
-      if (fitsAllCompact && compact !== 'never') {
-        return {
-          visibleItems: effectiveItems,
-          overflowItems: [],
-          effectiveCompact: true,
-        };
-      }
-
-      // Does NOT fit all items. Partition into visible + overflow (+N badge).
-      const shouldUseCompact = compact !== 'never';
-      const activeWidths = shouldUseCompact ? compactWidths : normalWidths;
-
-      // Space strictly budgeted for visible items reserving space for badge + gap
-      const spaceForItems = Math.max(
-        0,
-        containerWidth - (showOverflowCount ? badgeWidth + gap : 0),
-      );
-
-      // Strict Atomic Units: Rank by priority ascending (1 = highest priority kept)
-      const indexed = effectiveItems.map((item, idx) => ({
-        item,
-        index: idx,
-        priority: item.priority ?? 1,
-        width: activeWidths[idx] ?? 60,
-      }));
-
-      // Sort by priority ascending. Tie-break by original index
-      const sortedByPriority = [...indexed].sort((a, b) => {
-        if (a.priority !== b.priority) return a.priority - b.priority;
-        return a.index - b.index;
-      });
-
-      let accumulatedWidth = 0;
-      let acceptedCount = 0;
-      const acceptedIndices = new Set<number>();
-
-      for (const entry of sortedByPriority) {
-        const needed = entry.width + (acceptedCount > 0 ? gap : 0);
-        if (accumulatedWidth + needed <= spaceForItems) {
-          accumulatedWidth += needed;
-          acceptedCount++;
-          acceptedIndices.add(entry.index);
-        }
-      }
-
-      // Fallback: If 0 items fit within spaceForItems, guarantee at least the single highest priority item
-      if (acceptedCount === 0 && effectiveItems.length > 0) {
-        acceptedIndices.add(sortedByPriority[0]!.index);
-      }
-
-      const vis: ShortcutItem[] = [];
-      const ov: ShortcutItem[] = [];
-
-      for (let i = 0; i < effectiveItems.length; i++) {
-        if (acceptedIndices.has(i)) {
-          vis.push(effectiveItems[i]!);
-        } else {
-          ov.push(effectiveItems[i]!);
-        }
-      }
-
-      return {
-        visibleItems: vis,
-        overflowItems: ov,
-        effectiveCompact: shouldUseCompact,
-      };
-    }, [
-      effectiveItems,
-      containerWidth,
-      compact,
-      forceCompact,
-      maxVisibleItems,
-      showOverflowCount,
-      measureVersion,
-      getMeasuredWidths,
-    ]);
-
-    // Construct tooltip text for fallback title
-    const overflowTooltipText = React.useMemo(() => {
-      if (overflowItems.length === 0) return '';
-      return overflowItems
-        .map((it) => `${it.keys.join('+')}: ${it.label}`)
-        .join(' | ');
-    }, [overflowItems]);
+    // Notify stage change listener if provided
+    React.useEffect(() => {
+      onStageChange?.(responsiveStage);
+    }, [responsiveStage, onStageChange]);
 
     // Position calculation for portal popover
     const updatePopoverPos = React.useCallback(() => {
       if (!badgeRef.current) return;
       const rect = badgeRef.current.getBoundingClientRect();
       const placeBelow = rect.top < 160;
-      const top = placeBelow ? rect.bottom + 6 : rect.top - 6;
-      const left = Math.max(16, Math.min(window.innerWidth - 16, rect.left + rect.width / 2));
-      const transform = placeBelow ? 'translate(-50%, 0)' : 'translate(-50%, -100%)';
-      setPopoverPos({ top, left, transform });
+      const top = rect.bottom + 6;
+      const bottom =
+        typeof window !== 'undefined' ? window.innerHeight - rect.top + 6 : 0;
+      const popoverWidth = 176; // 11rem
+      const center = rect.left + rect.width / 2;
+      const left =
+        typeof window !== 'undefined'
+          ? Math.max(16, Math.min(window.innerWidth - popoverWidth - 16, center - popoverWidth / 2))
+          : rect.left;
+      setPopoverPos({ top, bottom, left, placeBelow });
     }, []);
 
     const handleBadgeMouseEnter = () => {
@@ -393,8 +462,9 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
       <div
         ref={setRefs}
         data-slot="shortcut-bar"
+        data-stage={responsiveStage}
         className={cn(
-          'relative flex h-6.5 min-w-0 max-w-full shrink-0 select-none items-center overflow-visible whitespace-nowrap text-micro text-muted-foreground',
+          'relative flex h-6.5 w-full min-w-0 max-w-full shrink-0 select-none items-center overflow-hidden whitespace-nowrap text-micro text-muted-foreground',
           className,
         )}
         {...props}
@@ -406,7 +476,7 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
           style={{ zIndex: -9999 }}
         >
           {/* Normal strip */}
-          <div ref={normalStripRef} className="flex items-center gap-3 whitespace-nowrap">
+          <div ref={normalStripRef} className="flex items-center gap-3 whitespace-nowrap text-micro">
             {effectiveItems.map((item) => (
               <span
                 key={`meas-norm-${item.id}`}
@@ -427,19 +497,43 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
             ))}
           </div>
 
+          {/* Squeezed strip */}
+          <div ref={squeezedStripRef} className="flex items-center gap-1.5 whitespace-nowrap text-nano">
+            {effectiveItems.map((item) => (
+              <span
+                key={`meas-sq-${item.id}`}
+                className="inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap"
+              >
+                {item.keys.map((k, kIdx) => (
+                  <Kbd
+                    key={`meas-k-sq-${item.id}-${kIdx}`}
+                    size="xs"
+                    variant={variant}
+                    compact="never"
+                    className="h-4 min-w-4 px-0.5 text-nano"
+                  >
+                    {k}
+                  </Kbd>
+                ))}
+                <span className="whitespace-nowrap">{item.label}</span>
+              </span>
+            ))}
+          </div>
+
           {/* Compact strip */}
-          <div ref={compactStripRef} className="flex items-center gap-3 whitespace-nowrap">
+          <div ref={compactStripRef} className="flex items-center gap-1.5 whitespace-nowrap text-nano">
             {effectiveItems.map((item) => (
               <span
                 key={`meas-comp-${item.id}`}
-                className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap"
+                className="inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap"
               >
                 {item.keys.map((k, kIdx) => (
                   <Kbd
                     key={`meas-k-comp-${item.id}-${kIdx}`}
-                    size={size}
+                    size="xs"
                     variant={variant}
                     compact="always"
+                    className="h-4 min-w-4 px-0.5 text-nano"
                   >
                     {k}
                   </Kbd>
@@ -453,35 +547,51 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
 
           {/* Badge measurement */}
           <div ref={badgeMeasureRef} className="inline-flex shrink-0 items-center">
-            <Kbd size={size} variant="outline" className="font-medium">
+            <Kbd size="xs" variant="outline" className="font-medium h-4 min-w-4 px-1 text-nano">
               +{effectiveItems.length}
             </Kbd>
           </div>
         </div>
 
         {/* Visible Shortcut Items - Strict Atomic Units */}
-        <div className="flex shrink-0 items-center gap-3">
+        <div
+          className={cn(
+            'flex min-w-0 shrink-0 items-center transition-all duration-150',
+            responsiveStage === 'full' ? 'gap-3 text-micro' : 'gap-1.5 text-nano',
+          )}
+        >
           {visibleItems.map((item) => (
             <span
               key={`visible-${item.id}`}
               data-slot="shortcut-item"
               className={cn(
-                'inline-flex shrink-0 items-center gap-1 whitespace-nowrap',
+                'inline-flex shrink-0 items-center whitespace-nowrap transition-all duration-150',
+                responsiveStage === 'full' ? 'gap-1' : 'gap-0.5',
                 item.disabled && 'opacity-50',
               )}
             >
               {item.keys.map((keyStr, kIdx) => (
                 <Kbd
                   key={`key-${item.id}-${kIdx}`}
-                  size={size}
+                  size={responsiveStage === 'full' ? size : 'xs'}
                   variant={variant}
-                  compact={effectiveCompact ? 'always' : 'never'}
+                  compact={
+                    responsiveStage === 'compact' || responsiveStage === 'folded'
+                      ? 'always'
+                      : 'never'
+                  }
+                  className={cn(
+                    responsiveStage !== 'full' && 'h-4 min-w-4 px-0.5 text-nano',
+                  )}
                 >
                   {keyStr}
                 </Kbd>
               ))}
               <span className="shrink-0 whitespace-nowrap">
-                {effectiveCompact && item.shortLabel ? item.shortLabel : item.label}
+                {(responsiveStage === 'compact' || responsiveStage === 'folded') &&
+                item.shortLabel
+                  ? item.shortLabel
+                  : item.label}
               </span>
             </span>
           ))}
@@ -491,15 +601,17 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
         {showOverflowCount && overflowItems.length > 0 && (
           <div
             ref={badgeRef}
-            className="relative ml-2 inline-flex shrink-0 items-center"
+            className="relative ml-1.5 inline-flex shrink-0 items-center"
             onMouseEnter={handleBadgeMouseEnter}
             onMouseLeave={handleBadgeMouseLeave}
           >
             <Kbd
-              size={size}
+              size="xs"
               variant="outline"
-              title={overflowTooltipText}
-              className="cursor-pointer font-medium hover:border-primary/50 hover:text-foreground"
+              className={cn(
+                'cursor-pointer font-medium hover:border-primary/50 hover:text-foreground',
+                responsiveStage !== 'full' && 'h-4 min-w-4 px-1 text-nano',
+              )}
               tabIndex={0}
               role="button"
               aria-label={`更多 ${overflowItems.length} 个快捷键`}
@@ -523,12 +635,13 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
           createPortal(
             <div
               role="tooltip"
-              className="fixed z-[9999] rounded-md border border-border bg-popover px-3 py-2 text-micro text-popover-foreground shadow-lg animate-in fade-in-0 zoom-in-95 pointer-events-auto select-none"
+              className="fixed z-[9999] rounded-md border border-border bg-popover px-3 py-2 text-micro text-popover-foreground shadow-lg pointer-events-auto select-none transition-opacity duration-150 animate-in fade-in-0"
               style={{
-                top: `${popoverPos.top * 0.0625}rem`,
+                ...(popoverPos.placeBelow
+                  ? { top: `${popoverPos.top * 0.0625}rem` }
+                  : { bottom: `${popoverPos.bottom * 0.0625}rem` }),
                 left: `${popoverPos.left * 0.0625}rem`,
-                transform: popoverPos.transform,
-                minWidth: '10rem',
+                minWidth: '11rem',
               }}
               onMouseEnter={handlePopoverMouseEnter}
               onMouseLeave={handlePopoverMouseLeave}
