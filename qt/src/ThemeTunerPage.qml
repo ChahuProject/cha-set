@@ -40,6 +40,8 @@ DocLayout {
                                          root.overrideCard !== "" ||
                                          root.overrideRing !== ""
 
+    property string themeMode: "system"
+    signal changeThemeMode(string mode)
     signal requestExport()
     signal logAction(string msg)
 
@@ -175,18 +177,17 @@ DocLayout {
                         font.letterSpacing: 0.5
                     }
                     ChaSetTabs {
-                        currentValue: ThemeTokens.dark ? "dark" : "light"
+                        currentValue: root.themeMode
                         onCurrentValueChanged: {
-                            if (currentValue === "dark") {
-                                ThemeTokens.dark = true
-                            } else if (currentValue === "light") {
-                                ThemeTokens.dark = false
+                            if (currentValue !== root.themeMode) {
+                                root.changeThemeMode(currentValue);
                             }
                             root.logAction("Mode: " + currentValue)
                         }
                         ChaSetTabsList {
                             ChaSetTabsTrigger { value: "light"; text: "Light" }
                             ChaSetTabsTrigger { value: "dark"; text: "Dark" }
+                            ChaSetTabsTrigger { value: "system"; text: "System" }
                         }
                     }
                 }

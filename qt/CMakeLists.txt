@@ -46,6 +46,7 @@ set_source_files_properties(src/ShowcaseData.generated.qml PROPERTIES
 set_source_files_properties(src/ChaSetIcons.generated.qml PROPERTIES
     QT_QML_SINGLETON_TYPE TRUE
     QT_QML_SOURCE_TYPENAME ChaSetIcons
+    QT_QML_SKIP_CACHEGEN TRUE
 )
 
 # Shared syntax lexer + its palette (emitted from spec/highlight/* and
@@ -104,6 +105,8 @@ qt_add_qml_module(ChaSet
         src/ChaSetPathHistoryStore.cpp
         src/ChaSetAddressBarController.h
         src/ChaSetAddressBarController.cpp
+        src/ChaSetSystemTheme.h
+        src/ChaSetSystemTheme.cpp
     RESOURCES
         resources/fonts/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf
     QML_FILES

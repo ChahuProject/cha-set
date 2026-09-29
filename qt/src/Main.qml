@@ -64,10 +64,42 @@ ApplicationWindow {
         SelectionHub.clearAll();
     }
 
+    property string themeMode: (typeof startupDark !== "undefined" && startupDark === true)
+        ? "dark"
+        : ((typeof startupLight !== "undefined" && startupLight === true) ? "light" : "system")
+
+    function updateEffectiveTheme() {
+        if (win.themeMode === "dark") {
+            ThemeTokens.dark = true;
+        } else if (win.themeMode === "light") {
+            ThemeTokens.dark = false;
+        } else {
+            ThemeTokens.dark = ChaSetSystemTheme.isDark;
+        }
+    }
+
+    function setThemeMode(mode) {
+        if (mode === "dark" || mode === "light" || mode === "system") {
+            win.themeMode = mode;
+            win.updateEffectiveTheme();
+            win.syncGlobalThemeConfig();
+        }
+    }
+
+    Connections {
+        target: ChaSetSystemTheme
+        function onColorSchemeChanged() {
+            if (win.themeMode === "system") {
+                win.updateEffectiveTheme();
+                win.syncGlobalThemeConfig();
+            }
+        }
+    }
+
     function syncGlobalThemeConfig() {
         win.globalThemeConfig = {
             version: 1,
-            mode: ThemeTokens.dark ? "dark" : "light",
+            mode: win.themeMode,
             palette: {
                 id: win.activeAccent !== "" ? win.activeAccent : (win.overridePrimary !== "" ? "custom" : "neutral"),
                 customHex: win.overridePrimary !== "" ? win.overridePrimary : "#30a0ff"
@@ -89,12 +121,8 @@ ApplicationWindow {
         if (!cfg || typeof cfg !== "object") return;
 
         // 1. Mode
-        if (cfg.mode === "dark") {
-            ThemeTokens.dark = true;
-        } else if (cfg.mode === "light") {
-            ThemeTokens.dark = false;
-        } else if (cfg.mode === "system") {
-            ThemeTokens.dark = false;
+        if (cfg.mode === "dark" || cfg.mode === "light" || cfg.mode === "system") {
+            win.setThemeMode(cfg.mode);
         }
 
         // 2. Palette
@@ -141,6 +169,7 @@ ApplicationWindow {
     }
 
     function resetThemeConfig() {
+        win.themeMode = "light";
         ThemeTokens.dark = false;
         win.activeAccent = "";
         win.overridePrimary = "";
@@ -356,6 +385,7 @@ ApplicationWindow {
         target: ThemeTokens
         property: "dark"
         value: typeof startupDark !== "undefined" && startupDark === true
+        when: typeof startupDark !== "undefined" && startupDark === true
     }
 
     readonly property var scaleSteps: [0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0]
@@ -431,9 +461,10 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        if (typeof startupDark !== "undefined" && startupDark === true) ThemeTokens.dark = true
-        else if (typeof startupLight !== "undefined" && startupLight === true) ThemeTokens.dark = false
-        else ThemeTokens.dark = false
+        if (typeof startupDark !== "undefined" && startupDark === true) win.themeMode = "dark"
+        else if (typeof startupLight !== "undefined" && startupLight === true) win.themeMode = "light"
+        else win.themeMode = "system"
+        win.updateEffectiveTheme()
         // Deterministic headless runs: scenario/pixel tests must not race with
         // animations (Behavior durations would make assertions / grabs flaky).
         if ((typeof testScenario !== "undefined" && testScenario !== "")
@@ -1762,11 +1793,12 @@ ApplicationWindow {
 
                     // Center Search Bar Trigger
                     Rectangle {
-                        width: Math.max(ThemeTokens.dp(120), Math.min(parent.width - ThemeTokens.dp(500), ThemeTokens.dp(320)))
-                        height: ThemeTokens.dp(32)
+                        width: Math.max(ThemeTokens.dp(200), Math.min(parent.width - ThemeTokens.dp(450), ThemeTokens.dp(360)))
+                        height: ThemeTokens.dp(36)
                         radius: ThemeTokens.dp(6)
-                        color: win.cAccentBg
+                        color: searchTriggerMouse.containsMouse ? ThemeTokens.hover : win.cAccentBg
                         border.color: win.cBorder
+                        border.width: 1
                         anchors.centerIn: parent
 
                         // Right-anchored keyboard shortcut badge
@@ -1775,31 +1807,35 @@ ApplicationWindow {
                             anchors.right: parent.right
                             anchors.rightMargin: ThemeTokens.dp(8)
                             anchors.verticalCenter: parent.verticalCenter
-                            width: ThemeTokens.dp(32)
-                            height: ThemeTokens.dp(18)
-                            radius: ThemeTokens.dp(3)
-                            color: win.cCard
+                            width: headerKbdText.implicitWidth + ThemeTokens.dp(14)
+                            height: ThemeTokens.dp(20)
+                            radius: ThemeTokens.dp(4)
+                            color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 1.0)
                             border.color: win.cBorder
+                            border.width: 1
 
                             Text {
+                                id: headerKbdText
                                 anchors.centerIn: parent
                                 text: "⌘K"
                                 color: win.cMutedFg
-                                font.pixelSize: Typography.sizeMicro
+                                font.pixelSize: Typography.sizeNano
                                 font.family: Typography.familyMono
+                                font.weight: Font.Medium
                             }
                         }
 
                         // Left icon and placeholder text
                         Row {
                             anchors.left: parent.left
-                            anchors.leftMargin: ThemeTokens.dp(10)
+                            anchors.leftMargin: ThemeTokens.dp(12)
                             anchors.right: headerKbdBadge.left
                             anchors.rightMargin: ThemeTokens.dp(8)
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: ThemeTokens.dp(8)
 
                             ChaSetIcon {
+                                id: searchIco
                                 name: "search"
                                 size: 14
                                 color: win.cMutedFg
@@ -1812,12 +1848,14 @@ ApplicationWindow {
                                 font.pixelSize: Typography.sizeSmall
                                 anchors.verticalCenter: parent.verticalCenter
                                 elide: Text.ElideRight
-                                width: Math.min(implicitWidth, parent.width - ThemeTokens.dp(22))
+                                width: Math.max(0, parent.width - searchIco.width - parent.spacing)
                             }
                         }
 
                         MouseArea {
+                            id: searchTriggerMouse
                             anchors.fill: parent
+                            hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
                             onClicked: win.searchModalOpen = true
                         }
@@ -1899,17 +1937,22 @@ ApplicationWindow {
 
                         ChaSetSeparator { orientation: "vertical"; height: ThemeTokens.dp(18); anchors.verticalCenter: parent.verticalCenter }
 
-                        // Dark/Light Mode Toggle Button
+                        // Dark/Light/System Mode Toggle Button
                         ChaSetTooltip {
-                            text: ThemeTokens.dark ? "Switch to light mode" : "Switch to dark mode"
+                            text: win.themeMode === "dark" ? ChaSetI18n.tr("theme.mode.dark", "Dark") : (win.themeMode === "system" ? ChaSetI18n.tr("theme.mode.system", "Follow System") : ChaSetI18n.tr("theme.mode.light", "Light"))
                             side: "bottom"
                             ChaSetButton {
                                 size: "icon"
                                 variant: "outline"
-                                icon: ThemeTokens.dark ? "sun" : "moon"
+                                icon: win.themeMode === "dark" ? "moon" : (win.themeMode === "system" ? "monitor" : "sun")
                                 onClicked: {
-                                    ThemeTokens.dark = !ThemeTokens.dark;
-                                    win.syncGlobalThemeConfig();
+                                    if (win.themeMode === "light") {
+                                        win.setThemeMode("dark");
+                                    } else if (win.themeMode === "dark") {
+                                        win.setThemeMode("system");
+                                    } else {
+                                        win.setThemeMode("light");
+                                    }
                                 }
                             }
                         }
@@ -2123,6 +2166,8 @@ ApplicationWindow {
                                     if ("overrideBackground" in item) { item.overrideBackground = win.overrideBackground; item.overrideBackgroundChanged.connect(function() { win.overrideBackground = item.overrideBackground }) }
                                     if ("overrideCard" in item) { item.overrideCard = win.overrideCard; item.overrideCardChanged.connect(function() { win.overrideCard = item.overrideCard }) }
                                     if ("overrideRing" in item) { item.overrideRing = win.overrideRing; item.overrideRingChanged.connect(function() { win.overrideRing = item.overrideRing }) }
+                                    if ("themeMode" in item) item.themeMode = Qt.binding(function() { return win.themeMode })
+                                    if ("changeThemeMode" in item) item.changeThemeMode.connect(function(m) { win.setThemeMode(m) })
                                     if ("activeConfig" in item) item.activeConfig = Qt.binding(function() { return win.globalThemeConfig })
                                     if ("configModified" in item) item.configModified.connect(function(cfg) { win.applyThemeConfig(cfg) })
                                     if ("resetRequested" in item) item.resetRequested.connect(function() { win.resetThemeConfig() })

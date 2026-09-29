@@ -173,7 +173,16 @@ export function Header({
           <Separator orientation="vertical" className="h-4 mx-1" />
 
           {/* Theme Mode Toggle */}
-          <Tooltip content={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'} side="bottom">
+          <Tooltip
+            content={
+              mode === 'dark'
+                ? t('theme.mode.dark', 'Dark')
+                : mode === 'system'
+                ? t('theme.mode.system', 'Follow System')
+                : t('theme.mode.light', 'Light')
+            }
+            side="bottom"
+          >
             <Button
               type="button"
               variant="outline"
@@ -182,9 +191,11 @@ export function Header({
               aria-label="Toggle theme appearance"
             >
               {mode === 'dark' ? (
-                <SunIcon className="size-4" />
-              ) : (
                 <MoonIcon className="size-4" />
+              ) : mode === 'system' ? (
+                <MonitorIcon className="size-4" />
+              ) : (
+                <SunIcon className="size-4" />
               )}
             </Button>
           </Tooltip>

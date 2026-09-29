@@ -112,11 +112,11 @@ export const CODE_BLOCK_HARNESS_SOURCE = [
   '}',
 ].join('\n');
 
-function applyTheme(mode: string, accent: string, overrides: ThemeOverrides, uiScale: number = 1.0) {
+function applyTheme(effectiveIsDark: boolean, accent: string, overrides: ThemeOverrides, uiScale: number = 1.0) {
   const html = document.documentElement;
 
   // 1. Toggle dark mode class
-  html.classList.toggle('dark', mode === 'dark');
+  html.classList.toggle('dark', effectiveIsDark);
 
   // 2. Set accent dataset
   if (accent) html.setAttribute('data-theme', accent);
@@ -603,9 +603,26 @@ export function App() {
   }
 
   const { currentHash, navigate } = useRouter();
+  // System dark mode preference detection & live listener
+  const [systemIsDark, setSystemIsDark] = useState(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e: MediaQueryListEvent) => {
+      setSystemIsDark(e.matches);
+    };
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
+
   // ?theme=light|dark deep link wins over the persisted toggle so visual-diff
   // runs (and shared links) can pin the workbench theme deterministically.
-  const [mode, setMode] = useState(() => searchParams?.get('theme') ?? localStorage.getItem('cs-mode') ?? 'light');
+  const [mode, setMode] = useState<string>(() => searchParams?.get('theme') ?? localStorage.getItem('cs-mode') ?? 'system');
+  const effectiveIsDark = mode === 'dark' || (mode === 'system' && systemIsDark);
   const [accent, setAccent] = useState(() => localStorage.getItem('cs-accent') ?? '');
   const [overrides, setOverrides] = useState<ThemeOverrides>(() => {
     try {
@@ -638,7 +655,7 @@ export function App() {
 
   const themeConfig: ThemeConfig = {
     version: 1,
-    mode: (mode === 'dark' || mode === 'light' || mode === 'system') ? mode : 'light',
+    mode: (mode === 'dark' || mode === 'light' || mode === 'system') ? mode : 'system',
     palette: {
       id: (accent || (overrides.primary ? 'custom' : 'neutral')) as any,
       customHex: overrides.primary || '#30a0ff',
@@ -657,7 +674,7 @@ export function App() {
   const handleThemeConfigChange = (next: ThemeConfig) => {
     // 1. Mode
     if (next.mode) {
-      setMode(next.mode === 'dark' ? 'dark' : 'light');
+      setMode(next.mode);
     }
 
     // 2. Palette
@@ -704,14 +721,14 @@ export function App() {
   };
 
   useEffect(() => {
-    applyTheme(mode, accent, overrides, uiScale);
+    applyTheme(effectiveIsDark, accent, overrides, uiScale);
     localStorage.setItem('cs-mode', mode);
     localStorage.setItem('cs-accent', accent);
     localStorage.setItem('cs-overrides', JSON.stringify(overrides));
     localStorage.setItem('cs-uiscale', String(uiScale));
-  }, [mode, accent, overrides, uiScale]);
+  }, [mode, effectiveIsDark, accent, overrides, uiScale]);
 
-  const themeKey = `${mode}:${accent}:${JSON.stringify(overrides)}:${uiScale}`;
+  const themeKey = `${mode}:${effectiveIsDark}:${accent}:${JSON.stringify(overrides)}:${uiScale}`;
 
   const renderActivePage = () => {
     switch (currentHash) {
@@ -869,7 +886,7 @@ export function App() {
         {/* Top Navbar */}
         <Header
           mode={mode}
-          onToggleMode={() => setMode((m) => (m === 'dark' ? 'light' : 'dark'))}
+          onToggleMode={() => setMode((m) => (m === 'light' ? 'dark' : m === 'dark' ? 'system' : 'light'))}
           onOpenSearch={() => setSearchModalOpen(true)}
           onOpenTuner={() => navigate('#/get-started/theme-tuner')}
           isTunerActive={currentHash === '#/get-started/theme-tuner'}

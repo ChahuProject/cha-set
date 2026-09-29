@@ -1,4 +1,4 @@
-import { Button, Tabs, TabsList, TabsTrigger, Badge, Input, Slider, Tooltip, ColorPicker, PaletteIcon, CopyIcon, SunIcon, MoonIcon } from '@chahu/cha-set';
+import { Button, Tabs, TabsList, TabsTrigger, Badge, Input, Slider, Tooltip, ColorPicker, PaletteIcon, CopyIcon, SunIcon, MoonIcon, MonitorIcon } from '@chahu/cha-set';
 
 export interface ThemeOverrides {
   primary?: string;
@@ -92,6 +92,7 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
             <TabsList>
               <TabsTrigger value="light" icon={<SunIcon className="size-3.5" />}>Light</TabsTrigger>
               <TabsTrigger value="dark" icon={<MoonIcon className="size-3.5" />}>Dark</TabsTrigger>
+              <TabsTrigger value="system" icon={<MonitorIcon className="size-3.5" />}>System</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
