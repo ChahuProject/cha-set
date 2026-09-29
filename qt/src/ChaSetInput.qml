@@ -43,6 +43,12 @@ Rectangle {
         inputInner.selectAll();
     }
 
+    onTextChanged: {
+        if (inputInner.text !== root.text) {
+            inputInner.text = root.text;
+        }
+    }
+
     readonly property bool isSm: root.size === "sm"
     readonly property bool isFocused: root.forceFocus || inputInner.activeFocus
     readonly property bool isHovered: root.forceHover || containerClickArea.containsMouse
@@ -132,18 +138,16 @@ Rectangle {
         Rectangle {
             id: clearBtn
             visible: root.clearable && !root.disabled && !root.readOnly && root.text.length > 0
-            width: ThemeTokens.dp(root.isSm ? 15 : 17)
-            height: ThemeTokens.dp(root.isSm ? 15 : 17)
+            width: ThemeTokens.dp(root.isSm ? 18 : 20)
+            height: ThemeTokens.dp(root.isSm ? 18 : 20)
             radius: width / 2
             color: clearMouse.containsMouse ? ThemeTokens.hover : "transparent"
-            border.width: 1
-            border.color: clearMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText
             anchors.verticalCenter: parent.verticalCenter
 
             ChaSetIcon {
                 anchors.centerIn: parent
                 name: "x"
-                size: root.isSm ? 8 : 10
+                size: root.isSm ? 12 : 14
                 color: clearMouse.containsMouse ? ThemeTokens.text : ThemeTokens.subduedText
             }
 
@@ -153,8 +157,8 @@ Rectangle {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    root.text = "";
                     inputInner.text = "";
+                    root.text = "";
                     root.textEdited();
                     root.cleared();
                     inputInner.forceActiveFocus();

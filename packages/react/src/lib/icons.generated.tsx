@@ -486,7 +486,7 @@ export const ICON_ADOPTION = {
     },
     {
       "file": "packages/react/src/input/Input.tsx",
-      "count": 3,
+      "count": 2,
       "exempted": 0,
       "reasons": []
     },
