@@ -10,8 +10,8 @@ Item {
     id: root
 
     // API Contract
-    property string path: ""
-    property alias currentPath: root.path
+    property alias path: controller.currentPath
+    property alias currentPath: controller.currentPath
     property alias controller: controller
     property bool canGoBack: controller.canGoBack
     property bool canGoForward: controller.canGoForward
@@ -40,7 +40,7 @@ Item {
     signal searchRequested(string query)
     signal dropRequested(string targetPath, var urls)
 
-    property string editValue: path
+    property string editValue: controller.currentPath
 
     implicitHeight: ThemeTokens.dp(36)
     implicitWidth: ThemeTokens.dp(500)
@@ -48,21 +48,23 @@ Item {
     ChaSetAddressBarController {
         id: controller
         objectName: "addressBarController"
-        currentPath: root.path
         visualItem: root
         suggestPopup: suggestPopup
         subfolderPopup: subfolderPopup
         onNavigateRequested: (targetPath) => {
-            root.path = targetPath
             root.navigateRequested(targetPath)
         }
         onNavigateRequestedWithSelection: (targetPath, selection) => {
-            root.path = targetPath
             root.navigateRequestedWithSelection(targetPath, selection)
+        }
+        onCurrentPathChanged: {
+            if (!controller.editing) {
+                root.editValue = controller.currentPath
+            }
         }
         onEditingChanged: {
             if (controller.editing) {
-                editInput.text = root.path
+                editInput.text = controller.currentPath
                 editInput.selectAll()
                 editInput.forceActiveFocus()
                 showHistoryPopup()
@@ -73,13 +75,6 @@ Item {
             if (typeof windowUi !== "undefined" && windowUi && typeof windowUi.setAddressBarEditing === "function") {
                 windowUi.setAddressBarEditing(controller.editing)
             }
-        }
-    }
-
-    onPathChanged: {
-        if (!editing) {
-            editValue = path
-            controller.currentPath = path
         }
     }
 

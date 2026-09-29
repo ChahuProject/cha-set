@@ -100,7 +100,11 @@ QStringList ChaSetAddressBarController::history() const {
 }
 
 void ChaSetAddressBarController::setCurrentPath(const QString &path) {
-    const QString cleaned = path.trimmed().isEmpty() ? QString() : QDir::fromNativeSeparators(QDir::cleanPath(path));
+    QString trimmed = path.trimmed();
+    if (trimmed.length() == 2 && trimmed.at(1) == QLatin1Char(':')) {
+        trimmed.append(QLatin1Char('/'));
+    }
+    const QString cleaned = trimmed.isEmpty() ? QString() : QDir::fromNativeSeparators(QDir::cleanPath(trimmed));
     if (cleaned == m_currentPath)
         return;
     m_currentPath = cleaned;
@@ -154,7 +158,7 @@ bool ChaSetAddressBarController::navigate(const QString &path) {
 }
 
 bool ChaSetAddressBarController::navigateValidated(const QString &rawPath, bool recordStack) {
-    const QString expanded = chaset::expandEnvVars(rawPath.trimmed());
+    QString expanded = chaset::expandEnvVars(rawPath.trimmed());
     if (expanded.isEmpty()) {
         if (recordStack && !m_currentPath.isEmpty()) {
             if (m_backStack.isEmpty() || m_backStack.last() != m_currentPath) {
@@ -167,6 +171,10 @@ bool ChaSetAddressBarController::navigateValidated(const QString &rawPath, bool 
         }
         navigateToThisPc();
         return true;
+    }
+
+    if (expanded.length() == 2 && expanded.at(1) == QLatin1Char(':')) {
+        expanded.append(QLatin1Char('/'));
     }
 
     const QString cleaned = QDir::cleanPath(expanded);
