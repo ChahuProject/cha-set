@@ -16,6 +16,7 @@ Flickable {
     property bool showVerticalScrollBar: true
     property bool showHorizontalScrollBar: false
     property bool showButtons: true
+    property bool floating: true
     property int hitSize: ThemeTokens.dp(size === "sm" ? 10 : 14)
     property int collapsedSize: ThemeTokens.dp(size === "sm" ? 2 : 4)
     property int expandedSize: ThemeTokens.dp(size === "sm" ? 6 : 10)
@@ -27,26 +28,32 @@ Flickable {
     property var parentScrollArea: null
     property bool horizontalWheelWithVertical: false
 
+    readonly property real availableWidth: width - ((!root.floating && vScrollBar.visible) ? vScrollBar.width : 0)
+    readonly property real availableHeight: height - ((!root.floating && hScrollBar.visible) ? hScrollBar.height : 0)
+
+    rightMargin: (!root.floating && vScrollBar.visible) ? vScrollBar.width : 0
+    bottomMargin: (!root.floating && hScrollBar.visible) ? hScrollBar.height : 0
+
     onContentWidthChanged: {
-        var maxX = Math.max(0, contentWidth - width)
+        var maxX = Math.max(0, contentWidth - availableWidth)
         if (contentX > maxX) contentX = maxX
     }
     onContentHeightChanged: {
-        var maxY = Math.max(0, contentHeight - height)
+        var maxY = Math.max(0, contentHeight - availableHeight)
         if (contentY > maxY) contentY = maxY
     }
 
     readonly property bool isAtTop: root.contentY <= 1
-    readonly property bool isAtBottom: root.contentHeight > root.height ? (root.contentY + root.height >= root.contentHeight - 2) : true
+    readonly property bool isAtBottom: root.contentHeight > root.availableHeight ? (root.contentY + root.availableHeight >= root.contentHeight - 2) : true
     readonly property bool isAtLeft: root.contentX <= 1
-    readonly property bool isAtRight: root.contentWidth > root.width ? (root.contentX + root.width >= root.contentWidth - 2) : true
+    readonly property bool isAtRight: root.contentWidth > root.availableWidth ? (root.contentX + root.availableWidth >= root.contentWidth - 2) : true
 
     boundsBehavior: Flickable.StopAtBounds
     clip: true
     interactive: false
 
-    contentWidth: contentItem.childrenRect.width > 0 ? contentItem.childrenRect.width : width
-    contentHeight: contentItem.childrenRect.height > 0 ? contentItem.childrenRect.height : height
+    contentWidth: contentItem.childrenRect.width > 0 ? contentItem.childrenRect.width : availableWidth
+    contentHeight: contentItem.childrenRect.height > 0 ? contentItem.childrenRect.height : availableHeight
 
     // Kinematic animations for smooth scrolling
     NumberAnimation {
@@ -79,7 +86,7 @@ Flickable {
 
     function scrollToBottom(smooth) {
         var useSmooth = (typeof smooth !== "undefined") ? smooth : (root.smoothScroll && ThemeTokens.animationsEnabled)
-        var targetY = Math.max(0, root.contentHeight - root.height)
+        var targetY = Math.max(0, root.contentHeight - root.availableHeight)
         if (useSmooth && ThemeTokens.animationsEnabled) {
             animY.stop()
             animY.to = targetY
@@ -93,7 +100,7 @@ Flickable {
     function scrollToY(targetY, smooth) {
         if (typeof targetY !== "number" || isNaN(targetY)) return
         var useSmooth = (typeof smooth !== "undefined") ? smooth : (root.smoothScroll && ThemeTokens.animationsEnabled)
-        var maxScrollY = Math.max(0, root.contentHeight - root.height)
+        var maxScrollY = Math.max(0, root.contentHeight - root.availableHeight)
         var clampedY = Math.max(0, Math.min(maxScrollY, targetY))
         if (useSmooth && ThemeTokens.animationsEnabled) {
             animY.stop()
@@ -108,7 +115,7 @@ Flickable {
     function scrollToX(targetX, smooth) {
         if (typeof targetX !== "number" || isNaN(targetX)) return
         var useSmooth = (typeof smooth !== "undefined") ? smooth : (root.smoothScroll && ThemeTokens.animationsEnabled)
-        var maxScrollX = Math.max(0, root.contentWidth - root.width)
+        var maxScrollX = Math.max(0, root.contentWidth - root.availableWidth)
         var clampedX = Math.max(0, Math.min(maxScrollX, targetX))
         if (useSmooth && ThemeTokens.animationsEnabled) {
             animX.stop()
@@ -122,7 +129,7 @@ Flickable {
 
     function pageUp(smooth) {
         var useSmooth = (typeof smooth !== "undefined") ? smooth : root.smoothScroll
-        var targetY = Math.max(0, root.contentY - root.height * root.pageStepRatio)
+        var targetY = Math.max(0, root.contentY - root.availableHeight * root.pageStepRatio)
         if (useSmooth) {
             animY.stop()
             animY.to = targetY
@@ -135,8 +142,8 @@ Flickable {
 
     function pageDown(smooth) {
         var useSmooth = (typeof smooth !== "undefined") ? smooth : root.smoothScroll
-        var maxScrollY = Math.max(0, root.contentHeight - root.height)
-        var targetY = Math.min(maxScrollY, root.contentY + root.height * root.pageStepRatio)
+        var maxScrollY = Math.max(0, root.contentHeight - root.availableHeight)
+        var targetY = Math.min(maxScrollY, root.contentY + root.availableHeight * root.pageStepRatio)
         if (useSmooth) {
             animY.stop()
             animY.to = targetY
@@ -161,7 +168,7 @@ Flickable {
 
     function scrollToRight(smooth) {
         var useSmooth = (typeof smooth !== "undefined") ? smooth : root.smoothScroll
-        var targetX = Math.max(0, root.contentWidth - root.width)
+        var targetX = Math.max(0, root.contentWidth - root.availableWidth)
         if (useSmooth) {
             animX.stop()
             animX.to = targetX
@@ -174,7 +181,7 @@ Flickable {
 
     function pageLeft(smooth) {
         var useSmooth = (typeof smooth !== "undefined") ? smooth : root.smoothScroll
-        var targetX = Math.max(0, root.contentX - root.width * root.pageStepRatio)
+        var targetX = Math.max(0, root.contentX - root.availableWidth * root.pageStepRatio)
         if (useSmooth) {
             animX.stop()
             animX.to = targetX
@@ -187,8 +194,8 @@ Flickable {
 
     function pageRight(smooth) {
         var useSmooth = (typeof smooth !== "undefined") ? smooth : root.smoothScroll
-        var maxScrollX = Math.max(0, root.contentWidth - root.width)
-        var targetX = Math.min(maxScrollX, root.contentX + root.width * root.pageStepRatio)
+        var maxScrollX = Math.max(0, root.contentWidth - root.availableWidth)
+        var targetX = Math.min(maxScrollX, root.contentX + root.availableWidth * root.pageStepRatio)
         if (useSmooth) {
             animX.stop()
             animX.to = targetX
@@ -201,7 +208,7 @@ Flickable {
 
     function simulateThumbDrag(deltaPixels) {
         animY.stop()
-        var maxScrollY = Math.max(0, root.contentHeight - root.height)
+        var maxScrollY = Math.max(0, root.contentHeight - root.availableHeight)
         root.contentY = Math.max(0, Math.min(maxScrollY, root.contentY + deltaPixels))
     }
 
@@ -243,7 +250,7 @@ Flickable {
     }
 
     function handleVerticalWheel(deltaY) {
-        var maxScrollY = Math.max(0, root.contentHeight - root.height)
+        var maxScrollY = Math.max(0, root.contentHeight - root.availableHeight)
         if (maxScrollY <= 1.0) {
             var parentArea = resolveParentScrollArea()
             if (parentArea && typeof parentArea.handleVerticalWheel === "function") {
@@ -278,7 +285,7 @@ Flickable {
     }
 
     function handleHorizontalWheel(deltaX) {
-        var maxScrollX = Math.max(0, root.contentWidth - root.width)
+        var maxScrollX = Math.max(0, root.contentWidth - root.availableWidth)
         if (maxScrollX <= 1.0) {
             var parentArea = resolveParentScrollArea()
             if (parentArea && typeof parentArea.handleHorizontalWheel === "function") {
@@ -317,7 +324,7 @@ Flickable {
         target: null
         orientation: Qt.Vertical
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-        enabled: (root.contentHeight - root.height) > 1.0 || (root.contentWidth - root.width) > 1.0
+        enabled: (root.contentHeight - root.availableHeight) > 1.0 || (root.contentWidth - root.availableWidth) > 1.0
         onWheel: function(event) {
             if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) return
             var isShift = Boolean(event.modifiers & Qt.ShiftModifier)
@@ -343,7 +350,7 @@ Flickable {
         target: null
         orientation: Qt.Horizontal
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-        enabled: (root.contentWidth - root.width) > 1.0
+        enabled: (root.contentWidth - root.availableWidth) > 1.0
         onWheel: function(event) {
             if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) return
             var delta = event.angleDelta.x !== 0 ? event.angleDelta.x : (root.horizontalWheelWithVertical ? event.angleDelta.y : 0)
@@ -360,7 +367,9 @@ Flickable {
         id: vScrollBar
         scrollArea: root
         barSize: root.size
-        visible: root.showVerticalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentHeight > root.height))
+        floating: root.floating
+        height: (hScrollBar.visible) ? (root.height - hScrollBar.height) : root.height
+        visible: root.showVerticalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentHeight > root.availableHeight))
         showButtons: root.showButtons
         collapsedSize: root.collapsedSize
         expandedSize: root.expandedSize
@@ -376,7 +385,9 @@ Flickable {
         id: hScrollBar
         scrollArea: root
         barSize: root.size
-        visible: root.showHorizontalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentWidth > root.width))
+        floating: root.floating
+        width: (vScrollBar.visible) ? (root.width - vScrollBar.width) : root.width
+        visible: root.showHorizontalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentWidth > root.availableWidth))
         showButtons: root.showButtons
         collapsedSize: root.collapsedSize
         expandedSize: root.expandedSize
@@ -396,8 +407,17 @@ Flickable {
         z: 20
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        width: root.expandedSize
-        height: root.expandedSize
-        color: "transparent"
+        width: vScrollBar.width
+        height: hScrollBar.height
+        color: !root.floating ? (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.45) : Qt.rgba(241/255, 245/255, 249/255, 0.6)) : "transparent"
+
+        Rectangle {
+            visible: !root.floating
+            width: parent.width; height: 1; x: 0; y: 0; color: ThemeTokens.border
+        }
+        Rectangle {
+            visible: !root.floating
+            width: 1; height: parent.height; x: 0; y: 0; color: ThemeTokens.border
+        }
     }
 }

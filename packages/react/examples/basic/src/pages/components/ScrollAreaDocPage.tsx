@@ -57,6 +57,7 @@ export function ScrollAreaDocPage() {
   const [heroSize, setHeroSize] = useState<'default' | 'sm'>('default');
   const [showButtons, setShowButtons] = useState(true);
   const [smoothScroll, setSmoothScroll] = useState(true);
+  const [floating, setFloating] = useState(true);
 
   const reactCode = `<ScrollArea
   className="h-72 w-full rounded-md border border-border"
@@ -65,6 +66,7 @@ export function ScrollAreaDocPage() {
   showHorizontalScrollBar={${heroMode !== 'vertical'}}
   showButtons={${showButtons}}
   smoothScroll={${smoothScroll}}
+  floating={${floating}}
 >
   ${
     heroMode === 'horizontal'
@@ -100,6 +102,7 @@ export function ScrollAreaDocPage() {
     showVerticalScrollBar: ${heroMode !== 'horizontal'}
     showHorizontalScrollBar: ${heroMode !== 'vertical'}
     smoothScroll: ${smoothScroll}
+    floating: ${floating}
 
     ${
       heroMode === 'horizontal'
@@ -165,7 +168,7 @@ export function ScrollAreaDocPage() {
                 ))}
               </div>
 
-              {/* Stepper Buttons Toggle */}
+              {/* Stepper Buttons & Modality Toggles */}
               <div className="flex items-center gap-3">
                 <Checkbox
                   size="sm"
@@ -180,6 +183,13 @@ export function ScrollAreaDocPage() {
                   onCheckedChange={(val) => setSmoothScroll(Boolean(val))}
                   label="Smooth Scroll"
                 />
+
+                <Checkbox
+                  size="sm"
+                  checked={floating}
+                  onCheckedChange={(val) => setFloating(Boolean(val))}
+                  label="Floating"
+                />
               </div>
             </div>
           }
@@ -193,6 +203,7 @@ export function ScrollAreaDocPage() {
                 showHorizontalScrollBar={false}
                 showButtons={showButtons}
                 smoothScroll={smoothScroll}
+                floating={floating}
               >
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-3">
@@ -232,6 +243,7 @@ export function ScrollAreaDocPage() {
                 showHorizontalScrollBar
                 showButtons={showButtons}
                 smoothScroll={smoothScroll}
+                floating={floating}
               >
                 <div className="flex gap-3 p-4 w-max">
                   {SAMPLE_CARDS.map((card) => (
@@ -261,6 +273,7 @@ export function ScrollAreaDocPage() {
                 showHorizontalScrollBar
                 showButtons={showButtons}
                 smoothScroll={smoothScroll}
+                floating={floating}
               >
                 <div className="p-4 w-[53.125rem]">
                   <div className="flex items-center justify-between mb-3">
@@ -506,6 +519,12 @@ export const CrossStackSpecification = {
             description: "Whether stepper buttons use smooth scrolling behavior.",
           },
           {
+            name: "floating",
+            type: "boolean",
+            default: "true",
+            description: "Whether scrollbars float over viewport content or occupy dedicated gutter layout space.",
+          },
+          {
             name: "viewportClassName",
             type: "string",
             default: "undefined",
@@ -530,6 +549,12 @@ export const CrossStackSpecification = {
             type: "'default' | 'sm'",
             default: "'default'",
             description: "Scrollbar density and scale.",
+          },
+          {
+            name: "floating",
+            type: "boolean",
+            default: "true",
+            description: "Whether the scrollbar floats over viewport content or occupies dedicated gutter layout space.",
           },
           {
             name: "hitSize",

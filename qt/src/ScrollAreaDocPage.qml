@@ -13,6 +13,7 @@ DocLayout {
     property string heroSize: "default"
     property bool showButtons: true
     property bool smoothScroll: true
+    property bool floating: true
     property int customRadius: 8
     property color cFg: ThemeTokens.text
     property color cMutedFg: ThemeTokens.subduedText
@@ -35,6 +36,7 @@ DocLayout {
   showHorizontalScrollBar={${root.heroMode !== "vertical"}}
   showButtons={${root.showButtons}}
   smoothScroll={${root.smoothScroll}}
+  floating={${root.floating}}
 >
   {/* Content */}
 </ScrollArea>`
@@ -46,6 +48,7 @@ DocLayout {
     showVerticalScrollBar: ${root.heroMode !== "horizontal"}
     showHorizontalScrollBar: ${root.heroMode !== "vertical"}
     smoothScroll: ${root.smoothScroll}
+    floating: ${root.floating}
 
     // Viewport Content
 }`
@@ -68,6 +71,7 @@ DocLayout {
                 size: root.heroSize
                 showButtons: root.showButtons
                 smoothScroll: root.smoothScroll
+                floating: root.floating
                 contentWidth: parent.width - 20
                 contentHeight: vertCol.implicitHeight + 16
 
@@ -104,6 +108,7 @@ DocLayout {
                 showHorizontalScrollBar: true
                 showButtons: root.showButtons
                 smoothScroll: root.smoothScroll
+                floating: root.floating
                 contentWidth: horizRow.implicitWidth + 24
                 contentHeight: parent.height - 20
 
@@ -148,6 +153,7 @@ DocLayout {
                 showHorizontalScrollBar: true
                 showButtons: root.showButtons
                 smoothScroll: root.smoothScroll
+                floating: root.floating
                 contentWidth: ThemeTokens.dp(800)
                 contentHeight: ThemeTokens.dp(600)
 
@@ -223,6 +229,12 @@ DocLayout {
                     label: "Smooth Scroll"
                     checked: root.smoothScroll
                     onToggled: (val) => root.smoothScroll = val
+                }
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: "Floating"
+                    checked: root.floating
+                    onToggled: (val) => root.floating = val
                 }
             }
         ]
@@ -506,7 +518,8 @@ export const CrossStackSpecification = {
             ["showHorizontalScrollBar", "bool", "false", "Whether to render horizontal scrollbar."],
             ["showButtons", "bool", "true", "Whether stepper navigation buttons appear on hover."],
             ["pageStepRatio", "real", "0.85", "Viewport dimension ratio for page up / down."],
-            ["smoothScroll", "bool", "true", "Whether stepper buttons trigger animated smooth scrolling."]
+            ["smoothScroll", "bool", "true", "Whether stepper buttons trigger animated smooth scrolling."],
+            ["floating", "bool", "true", "Whether scrollbars float over content or occupy dedicated gutter space."]
         ]
     }
 
@@ -517,6 +530,7 @@ export const CrossStackSpecification = {
         propsModel: [
             ["orientation", "Qt::Orientation", "Qt.Vertical", "Scrollbar orientation axis."],
             ["barSize", "string", "\"default\"", "Scrollbar density and scale (\"default\" | \"sm\")."],
+            ["floating", "bool", "true", "Whether the scrollbar floats over content or occupies dedicated gutter space."],
             ["collapsedSize", "int", "4", "Thickness of the visual indicator when idle."],
             ["expandedSize", "int", "10", "Thickness of the visual indicator when hovered."],
             ["hitSize", "int", "14", "Thickness of the pointer-capture hot-zone (preventing Win32 resize border conflict)."]

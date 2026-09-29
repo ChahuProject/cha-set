@@ -22,7 +22,8 @@
       "trackJump": { "requirement": "must", "description": "clicking track jumps thumb under cursor accurately" },
       "boundaryClamp": { "requirement": "should", "description": "disables buttons when at scroll boundary" },
       "smoothScroll": { "requirement": "should", "description": "smooth scroll animation for stepper actions" },
-      "size": { "requirement": "should", "description": "supports default and compact sm sizes" }
+      "size": { "requirement": "should", "description": "supports default and compact sm sizes" },
+      "floating": { "requirement": "should", "description": "supports floating overlay and non-floating gutter layout modes" }
     },
     "tabs": {
       "selection": { "requirement": "must", "description": "selecting a tab switches active panel and state" },

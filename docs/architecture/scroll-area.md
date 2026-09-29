@@ -69,6 +69,14 @@ To ensure desktop-grade ergonomics and cross-stack parity, all implementations M
   readonly property color _panelRaised: _themeSource.panelRaised
   ```
 
+### 2.8 Floating Overlay vs Non-Floating Gutter Modality
+- **Rule**: ScrollArea and ScrollBar default to floating overlay mode (`floating: true`), where the scrollbar is positioned absolutely above the content viewport without shrinking container bounds.
+- **Non-Floating Mode (`floating: false`)**:
+  - The scrollbar occupies dedicated layout space (gutter channel).
+  - In Web (React): Base UI Root uses CSS grid layout allocating explicit tracks (`minmax(0,1fr)` for viewport, `auto` for scrollbars and corner), preventing content from slipping beneath the scrollbar.
+  - In Desktop (Qt Quick): ChaSetScrollArea calculates `availableWidth` and `availableHeight` factoring in active scrollbar thickness, setting `rightMargin` / `bottomMargin` so Flickable boundaries isolate content from the scrollbar runway.
+  - Non-floating runways render a visible tinted surface with content-side divider borders (`border-l` / `border-t`), providing persistent visual grounding.
+
 ---
 
 ## 3. Code Module Mapping Table

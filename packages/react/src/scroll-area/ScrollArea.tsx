@@ -20,6 +20,8 @@ export interface ScrollAreaProps
   smoothScroll?: boolean;
   /** Whether scrollbars stay mounted in DOM when not overflowing. @default false */
   keepMounted?: boolean;
+  /** Whether scrollbars float over viewport content. If false, scrollbars occupy dedicated layout space. @default true */
+  floating?: boolean;
   /** Force scrollbar into hovered visual state (for deterministic testing). */
   forceHover?: boolean;
   /** Force scrollbar into active/dragging visual state (for deterministic testing). */
@@ -74,6 +76,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       pageStepRatio = 0.85,
       smoothScroll = true,
       keepMounted = false,
+      floating = true,
       forceHover = false,
       forceActive = false,
       ...props
@@ -278,12 +281,21 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       <ScrollAreaContext.Provider value={contextValue}>
         <BaseScrollArea.Root
           ref={ref}
-          className={cn('relative overflow-hidden', className)}
+          data-floating={floating ? 'true' : 'false'}
+          className={cn(
+            'relative overflow-hidden',
+            !floating && 'grid grid-cols-[minmax(0,1fr)_auto] grid-rows-[minmax(0,1fr)_auto]',
+            className,
+          )}
           {...props}
         >
           <BaseScrollArea.Viewport
             ref={viewportRef}
-            className={cn('size-full max-h-[inherit] max-w-[inherit] rounded-[inherit]', viewportClassName)}
+            className={cn(
+              'size-full max-h-[inherit] max-w-[inherit] rounded-[inherit]',
+              !floating && '[grid-area:1/1/2/2] min-w-0 min-h-0',
+              viewportClassName,
+            )}
           >
             <BaseScrollArea.Content
               ref={contentRef}
@@ -306,8 +318,10 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}
               keepMounted={keepMounted}
+              floating={floating}
               forceHover={forceHover}
               forceActive={forceActive}
+              className={cn(!floating && '[grid-area:1/2/2/3]')}
             />
           )}
 
@@ -319,12 +333,14 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}
               keepMounted={keepMounted}
+              floating={floating}
               forceHover={forceHover}
               forceActive={forceActive}
+              className={cn(!floating && '[grid-area:2/1/3/2]')}
             />
           )}
 
-          <BaseScrollArea.Corner />
+          <BaseScrollArea.Corner className={cn(!floating && '[grid-area:2/2/3/3]')} />
         </BaseScrollArea.Root>
       </ScrollAreaContext.Provider>
     );

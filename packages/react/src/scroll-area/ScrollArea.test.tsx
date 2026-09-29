@@ -28,6 +28,7 @@ const covered: Record<string, boolean> = {
   thumbDrag: true,
   trackJump: false,
   size: false,
+  floating: false,
 };
 
 afterAll(() => {
@@ -284,5 +285,36 @@ describe('ScrollArea and ScrollBar', () => {
     scrollbar = container.querySelector('[data-orientation="vertical"]');
     expect(scrollbar).toHaveAttribute('data-size', 'default');
     covered.size = true;
+  });
+
+  it('supports floating toggle for overlay and non-floating gutter layouts', () => {
+    // 1. Default floating mode: floating=true, scrollbar is absolute overlay
+    const { container, rerender } = render(
+      <ScrollArea className="h-64 w-64">
+        <div style={{ height: 1000 }}>Floating Content</div>
+      </ScrollArea>,
+    );
+
+    const rootEl = container.firstElementChild as HTMLElement;
+    expect(rootEl).toHaveAttribute('data-floating', 'true');
+    let scrollbar = container.querySelector('[data-orientation="vertical"]') as HTMLElement;
+    expect(scrollbar).toHaveAttribute('data-floating', 'true');
+    expect(scrollbar.className).toContain('absolute');
+
+    // 2. Non-floating mode: floating=false, root applies grid and scrollbar is relative gutter
+    rerender(
+      <ScrollArea floating={false} className="h-64 w-64">
+        <div style={{ height: 1000 }}>Non-Floating Content</div>
+      </ScrollArea>,
+    );
+
+    expect(rootEl).toHaveAttribute('data-floating', 'false');
+    expect(rootEl.className).toContain('grid');
+    scrollbar = container.querySelector('[data-orientation="vertical"]') as HTMLElement;
+    expect(scrollbar).toHaveAttribute('data-floating', 'false');
+    expect(scrollbar.className).toContain('relative');
+    expect(scrollbar.className).toContain('shrink-0');
+
+    covered.floating = true;
   });
 });

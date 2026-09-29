@@ -20,7 +20,8 @@
     "wheelScroll": true,
     "thumbDrag": true,
     "trackJump": true,
-    "size": true
+    "size": true,
+    "floating": true
   },
   "tabs": {
     "selection": true,

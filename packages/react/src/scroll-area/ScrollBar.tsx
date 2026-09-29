@@ -26,6 +26,8 @@ export interface ScrollBarProps
   keepMounted?: boolean;
   /** Whether to automatically hide when content does not overflow. @default true */
   autoHide?: boolean;
+  /** Whether the scrollbar floats over viewport content. If false, it occupies dedicated layout space. @default true */
+  floating?: boolean;
   /** Force scrollbar into hovered visual state (for deterministic testing). */
   forceHover?: boolean;
   /** Force scrollbar into active/dragging visual state (for deterministic testing). */
@@ -54,6 +56,7 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
       expandedSize = size === 'sm' ? 6 : 8,
       keepMounted = false,
       autoHide = true,
+      floating = true,
       forceHover = false,
       forceActive = false,
       forceButtonState,
@@ -83,31 +86,47 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         ref={ref}
         data-orientation={orientation}
         data-size={size}
+        data-floating={floating ? 'true' : 'false'}
         data-has-overflow={hasOverflow ? '' : undefined}
         style={{
-          ...(isVertical
-            ? {
-                width: toRem(hitSize),
-                top: 0,
-                bottom: 'var(--scroll-area-corner-height, 0px)',
-                right: 0,
-              }
-            : {
-                height: toRem(hitSize),
-                left: 0,
-                right: 'var(--scroll-area-corner-width, 0px)',
-                bottom: 0,
-              }),
+          ...(floating
+            ? (isVertical
+                ? {
+                    width: toRem(hitSize),
+                    top: 0,
+                    bottom: 'var(--scroll-area-corner-height, 0px)',
+                    right: 0,
+                  }
+                : {
+                    height: toRem(hitSize),
+                    left: 0,
+                    right: 'var(--scroll-area-corner-width, 0px)',
+                    bottom: 0,
+                  })
+            : (isVertical
+                ? {
+                    width: toRem(hitSize),
+                    height: '100%',
+                  }
+                : {
+                    height: toRem(hitSize),
+                    width: '100%',
+                  })),
           ...(!hasOverflow ? { display: 'none' } : undefined),
           ...style,
         }}
         className={cn(
-          'group absolute select-none touch-none transition-colors duration-short ease-standard z-20 flex',
+          'group select-none touch-none transition-colors duration-short ease-standard z-20 flex',
+          floating ? 'absolute' : 'relative shrink-0',
           !hasOverflow && 'hidden',
           isVertical
-            ? 'flex-col items-center hover:bg-muted/80'
-            : 'flex-row items-center hover:bg-muted/80',
-          isExpanded && 'bg-muted/80',
+            ? floating
+              ? 'flex-col items-center hover:bg-muted/80'
+              : 'flex-col items-center bg-muted/30 border-l border-border/40 hover:bg-muted/60'
+            : floating
+              ? 'flex-row items-center hover:bg-muted/80'
+              : 'flex-row items-center bg-muted/30 border-t border-border/40 hover:bg-muted/60',
+          isExpanded && (floating ? 'bg-muted/80' : 'bg-muted/60'),
           className,
         )}
         {...props}

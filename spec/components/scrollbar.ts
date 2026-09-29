@@ -19,6 +19,7 @@ export const scrollBarSchema = z.object({
   smoothScroll: z.boolean().default(true),
   visibilityMode: scrollBarVisibilitySchema.default('hover'),
   autoHideDelay: z.number().default(1000),
+  floating: z.boolean().default(true),
 });
 
 export const scrollAreaSchema = z.object({
@@ -28,6 +29,7 @@ export const scrollAreaSchema = z.object({
   showVerticalScrollBar: z.boolean().default(true),
   showHorizontalScrollBar: z.boolean().default(false),
   showButtons: z.boolean().default(true),
+  floating: z.boolean().default(true),
 });
 
 export type ScrollBarApi = z.infer<typeof scrollBarSchema>;

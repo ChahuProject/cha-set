@@ -24,6 +24,7 @@ T.ScrollBar {
     property int minThumbLength: ThemeTokens.dp(isSm ? 20 : 30)
     property int buttonLength: ThemeTokens.dp(isSm ? 10 : 14)
     property bool showButtons: true
+    property bool floating: true
     property bool autoRepeat: true
     property int autoRepeatDelay: 400
     property int autoRepeatInterval: 100
@@ -77,7 +78,8 @@ T.ScrollBar {
 
     // ---- Overflow & Visibility ----
     readonly property bool hasOverflow: _scrollTarget
-        ? (isVertical ? (_scrollTarget.contentHeight > _scrollTarget.height) : (_scrollTarget.contentWidth > _scrollTarget.width))
+        ? (isVertical ? (_scrollTarget.contentHeight > (typeof _scrollTarget.availableHeight !== "undefined" ? _scrollTarget.availableHeight : _scrollTarget.height))
+                      : (_scrollTarget.contentWidth > (typeof _scrollTarget.availableWidth !== "undefined" ? _scrollTarget.availableWidth : _scrollTarget.width)))
         : (size > 0 && size < 0.99)
 
     policy: ScrollBar.AsNeeded
@@ -145,10 +147,21 @@ T.ScrollBar {
         objectName: "runwayBackground"
         implicitWidth: control.vertical ? control.hitThickness : 0
         implicitHeight: control.horizontal ? control.hitThickness : 0
-        color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8)
-        opacity: control._isExpanded ? 1.0 : 0.0
+        color: !control.floating
+            ? (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.45) : Qt.rgba(241/255, 245/255, 249/255, 0.6))
+            : (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8))
+        opacity: (!control.floating || control._isExpanded) ? 1.0 : 0.0
         radius: 0
         Behavior on opacity { enabled: ThemeTokens.animationsEnabled && !control.forceHover && !control.forceActive && (typeof harnessMode === "undefined" || harnessMode === ""); NumberAnimation { duration: ThemeTokens.motionShort } }
+
+        Rectangle {
+            visible: !control.floating
+            width: control.vertical ? 1 : parent.width
+            height: control.vertical ? parent.height : 1
+            x: 0
+            y: 0
+            color: control._border
+        }
     }
 
     // Centered Thumb Item with Min Length Clamping

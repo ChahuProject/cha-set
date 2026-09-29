@@ -19,7 +19,9 @@
     "thumbDrag": true,
     "trackJump": true,
     "boundaryClamp": true,
-    "smoothScroll": true
+    "smoothScroll": true,
+    "size": true,
+    "floating": true
   },
   "tabs": {
     "selection": true,
