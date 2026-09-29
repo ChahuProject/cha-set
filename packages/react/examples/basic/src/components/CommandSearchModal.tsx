@@ -3,6 +3,7 @@ import {
   Badge,
   Card,
   Input,
+  Kbd,
   Separator,
   SearchIcon,
   VirtualList,
@@ -188,20 +189,20 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
         <div className="flex items-center justify-between px-3.5 py-2 border-t border-border bg-muted/40 text-xs text-muted-foreground">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 text-[0.625rem] font-mono rounded bg-muted border border-border">Up</kbd>
-              <kbd className="px-1.5 py-0.5 text-[0.625rem] font-mono rounded bg-muted border border-border">Down</kbd>
+              <Kbd size="xs" variant="outline">Up</Kbd>
+              <Kbd size="xs" variant="outline">Down</Kbd>
               <span>导航</span>
             </span>
             <span className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 text-[0.625rem] font-mono rounded bg-muted border border-border">Enter</kbd>
+              <Kbd size="xs" variant="outline">Enter</Kbd>
               <span>打开</span>
             </span>
             <span className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 text-[0.625rem] font-mono rounded bg-muted border border-border">Esc</kbd>
+              <Kbd size="xs" variant="outline">Esc</Kbd>
               <span>关闭</span>
             </span>
           </div>
-          <span className="text-[0.6875rem]">{filtered.length} 个结果</span>
+          <span className="text-micro">{filtered.length} 个结果</span>
         </div>
       </Card>
     </div>

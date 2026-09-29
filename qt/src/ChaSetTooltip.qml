@@ -199,26 +199,14 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            Rectangle {
+            ChaSetKbd {
                 id: shortcutBadge
                 visible: root.shortcut.length > 0
-                anchors.verticalCenter: parent.verticalCenter
-                radius: ThemeTokens.dp(3)
-                color: ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.1) : Qt.rgba(255, 255, 255, 0.2)
-                border.color: ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.15) : Qt.rgba(255, 255, 255, 0.2)
-                border.width: 1
-                implicitWidth: shortcutText.implicitWidth + ThemeTokens.dp(8)
-                implicitHeight: shortcutText.implicitHeight + ThemeTokens.dp(4)
-
-                Text {
-                    id: shortcutText
-                    anchors.centerIn: parent
-                    text: root.shortcut
-                    color: ThemeTokens.dark ? "#020817" : "#f8fafc"
-                    font.pixelSize: Typography.sizeMicro
-                    font.family: Typography.familyMono
-                    font.weight: Font.Medium
-                }
+                anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+                variant: "inverted"
+                size: "xs"
+                compact: "never"
+                shortcut: root.shortcut
             }
         }
 

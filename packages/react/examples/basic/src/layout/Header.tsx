@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Button,
   Badge,
+  Kbd,
   Tooltip,
   DropdownMenu,
   DropdownMenuTrigger,
@@ -72,9 +73,9 @@ export function Header({
             <SearchIcon className="size-4 shrink-0" />
             <span>{t('showcase.searchPlaceholder', 'Search components & docs...')}</span>
           </div>
-          <kbd className="rounded border border-border bg-background/80 px-2 py-0.5 font-mono text-xs text-muted-foreground">
+          <Kbd variant="outline" size="sm">
             ⌘K
-          </kbd>
+          </Kbd>
         </Button>
 
         {/* Right Actions */}

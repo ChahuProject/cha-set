@@ -230,16 +230,13 @@ Item {
                         }
                     }
 
-                    Text {
+                    ChaSetShortcut {
                         id: shortcutText
                         anchors.right: parent.right
                         anchors.rightMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
                         visible: !!parent.modelData.shortcut
-                        text: parent.modelData.shortcut || ""
-                        color: ThemeTokens.subduedText
-                        font.pixelSize: Typography.sizeMicro
-                        font.family: Typography.familyMono
+                        value: parent.modelData.shortcut || ""
                     }
 
                     MouseArea {

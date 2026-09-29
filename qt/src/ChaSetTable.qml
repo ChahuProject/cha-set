@@ -261,64 +261,20 @@ Rectangle {
                             }
 
                             // Key Combo Chips rendering (kbd)
-                            Row {
+                            ChaSetKbd {
                                 id: kbdContainer
                                 visible: Boolean(columnDef && columnDef.kbd)
-                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.verticalCenter: parent ? parent.verticalCenter : undefined
                                 anchors.left: parent.left
                                 anchors.leftMargin: ThemeTokens.dp(12)
-                                spacing: ThemeTokens.dp(6)
-
-                                readonly property string rawKeyStr: {
+                                size: "xs"
+                                variant: "outline"
+                                compact: "never"
+                                shortcut: {
                                     if (!rowRecord || !columnDef || columnDef.key === undefined) return "";
                                     var val = rowRecord[columnDef.key];
                                     return val !== undefined && val !== null ? String(val) : "";
                                 }
-
-                                readonly property var comboList: rawKeyStr.length > 0 ? rawKeyStr.split(" / ") : []
-
-                                    Repeater {
-                                        model: kbdContainer.comboList
-                                        delegate: Row {
-                                            id: comboRow
-                                            required property var modelData
-                                            required property int index
-                                            spacing: ThemeTokens.dp(4)
-
-                                            Text {
-                                                visible: comboRow.index > 0
-                                                text: "or"
-                                                color: root.cSubduedText
-                                                font.family: Typography.familySans
-                                                font.pixelSize: Typography.sizeCaption
-                                                anchors.verticalCenter: parent.verticalCenter
-                                            }
-
-                                            Repeater {
-                                                model: comboRow.modelData ? String(comboRow.modelData).split(" + ") : []
-                                                delegate: Rectangle {
-                                                    id: chipRect
-                                                    required property var modelData
-                                                    height: ThemeTokens.dp(20)
-                                                    width: Math.max(ThemeTokens.dp(18), keyChipLabel.implicitWidth + ThemeTokens.dp(10))
-                                                    radius: ThemeTokens.dp(4)
-                                                    color: ThemeTokens.dark ? Qt.rgba(1, 1, 1, 0.08) : Qt.rgba(0, 0, 0, 0.05)
-                                                    border.color: root.cBorder
-                                                    border.width: 1
-
-                                                    Text {
-                                                        id: keyChipLabel
-                                                        anchors.centerIn: parent
-                                                        text: chipRect.modelData ? String(chipRect.modelData) : ""
-                                                        color: root.cText
-                                                        font.pixelSize: Typography.sizeMicro
-                                                        font.family: Typography.familyMono
-                                                        font.weight: Typography.weightSemibold
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
                             }
 
                             // Standard Text / Code rendering

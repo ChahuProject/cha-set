@@ -1,5 +1,6 @@
 import React from 'react';
 import { Badge } from '../badge/Badge';
+import { Kbd } from '../kbd';
 import { cn } from '../lib/utils';
 
 export type TableColumnAlign = 'left' | 'center' | 'right';
@@ -49,29 +50,7 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
 
     if (columns && effectiveRows) {
       const renderKeyCombo = (rawKey: string) => {
-        const parts = String(rawKey).split(' / ');
-        return (
-          <div className="flex flex-wrap items-center gap-1.5">
-            {parts.map((combo, idx) => {
-              const keys = combo.split(' + ');
-              return (
-                <React.Fragment key={combo}>
-                  {idx > 0 && <span className="text-muted-foreground text-xs font-normal">or</span>}
-                  <span className="inline-flex items-center gap-1">
-                    {keys.map((k) => (
-                      <kbd
-                        key={k}
-                        className="inline-flex items-center justify-center px-1.5 py-0.5 text-caption font-mono font-semibold rounded border border-border bg-muted/60 text-foreground shadow-xs"
-                      >
-                        {k}
-                      </kbd>
-                    ))}
-                  </span>
-                </React.Fragment>
-              );
-            })}
-          </div>
-        );
+        return <Kbd shortcut={String(rawKey)} compact="never" size="xs" variant="outline" />;
       };
 
       return (

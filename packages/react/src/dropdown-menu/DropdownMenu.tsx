@@ -2,6 +2,7 @@ import { Menu as MenuPrimitive } from '@base-ui/react/menu';
 import * as React from 'react';
 import { cn } from '../lib/utils';
 import { CheckIcon, ChevronRightIcon } from '../lib/icons';
+import { Shortcut } from '../kbd/Shortcut';
 
 export interface DropdownMenuProps
   extends React.ComponentProps<typeof MenuPrimitive.Root> {}
@@ -265,18 +266,21 @@ export function DropdownMenuSeparator({
 }
 
 export interface DropdownMenuShortcutProps
-  extends React.ComponentProps<'span'> {}
+  extends React.ComponentProps<typeof Shortcut> {}
 
 export function DropdownMenuShortcut({
   className,
+  children,
   ...props
 }: DropdownMenuShortcutProps) {
   return (
-    <span
+    <Shortcut
       data-slot="dropdown-menu-shortcut"
-      className={cn('ml-auto text-xs tracking-widest text-muted-foreground', className)}
+      className={className}
       {...props}
-    />
+    >
+      {children}
+    </Shortcut>
   );
 }
 

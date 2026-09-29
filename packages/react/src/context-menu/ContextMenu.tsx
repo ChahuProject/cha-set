@@ -2,6 +2,7 @@ import { ContextMenu as ContextMenuPrimitive } from '@base-ui/react/context-menu
 import * as React from 'react';
 import { cn } from '../lib/utils';
 import { CheckIcon, ChevronRightIcon } from '../lib/icons';
+import { Shortcut } from '../kbd/Shortcut';
 
 export interface ContextMenuProps
   extends React.ComponentProps<typeof ContextMenuPrimitive.Root> {}
@@ -245,18 +246,21 @@ export function ContextMenuRadioItem({
 }
 
 export interface ContextMenuShortcutProps
-  extends React.ComponentProps<'span'> {}
+  extends React.ComponentProps<typeof Shortcut> {}
 
 export function ContextMenuShortcut({
   className,
+  children,
   ...props
 }: ContextMenuShortcutProps) {
   return (
-    <span
+    <Shortcut
       data-slot="context-menu-shortcut"
-      className={cn('ml-auto text-xs tracking-widest text-muted-foreground', className)}
+      className={className}
       {...props}
-    />
+    >
+      {children}
+    </Shortcut>
   );
 }
 

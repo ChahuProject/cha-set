@@ -10,6 +10,7 @@ import {
 } from '../lib/icons';
 import { Tooltip } from '../tooltip/Tooltip';
 import { Input } from '../input/Input';
+import { Kbd } from '../kbd';
 
 export interface BreadcrumbProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Array of path segments */
@@ -575,19 +576,19 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
             </div>
 
             {/* Bottom Keyboard Shortcut Bar (flush at bottom) */}
-            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-[0.6875rem] text-muted-foreground shrink-0 select-none">
+            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-micro text-muted-foreground shrink-0 select-none">
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1">
-                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Up</kbd>
-                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Down</kbd>
+                  <Kbd size="xs" variant="outline">Up</Kbd>
+                  <Kbd size="xs" variant="outline">Down</Kbd>
                   <span>导航</span>
                 </span>
                 <span className="flex items-center gap-1">
-                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Enter</kbd>
+                  <Kbd size="xs" variant="outline">Enter</Kbd>
                   <span>打开</span>
                 </span>
                 <span className="flex items-center gap-1">
-                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Esc</kbd>
+                  <Kbd size="xs" variant="outline">Esc</Kbd>
                   <span>关闭</span>
                 </span>
               </div>
@@ -649,19 +650,19 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
             </div>
 
             {/* Bottom Keyboard Shortcut Bar (flush at bottom) */}
-            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-[0.6875rem] text-muted-foreground shrink-0 select-none">
+            <div className="flex items-center justify-between px-2.5 py-1.5 border-t border-border bg-muted/40 text-micro text-muted-foreground shrink-0 select-none">
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1">
-                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Up</kbd>
-                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Down</kbd>
+                  <Kbd size="xs" variant="outline">Up</Kbd>
+                  <Kbd size="xs" variant="outline">Down</Kbd>
                   <span>导航</span>
                 </span>
                 <span className="flex items-center gap-1">
-                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Enter</kbd>
+                  <Kbd size="xs" variant="outline">Enter</Kbd>
                   <span>打开</span>
                 </span>
                 <span className="flex items-center gap-1">
-                  <kbd className="px-1 py-0.5 text-nano font-mono rounded bg-muted border border-border">Esc</kbd>
+                  <Kbd size="xs" variant="outline">Esc</Kbd>
                   <span>关闭</span>
                 </span>
               </div>
