@@ -412,8 +412,7 @@ Item {
 
                 onActiveFocusChanged: {
                     // 外部点击（失焦）：一步到位退出，同时关闭下拉和编辑态，杜绝两步轮流退出的迟滞
-                    if (!activeFocus) {
-                        suggestPopup.close()
+                    if (!activeFocus && (!suggestPopup || !suggestPopup.opened)) {
                         if (controller.editing) {
                             controller.exitEditMode()
                         }
@@ -586,6 +585,7 @@ Item {
     ChaSetAddressBarSuggestPopup {
         id: suggestPopup
         objectName: "suggestPopup"
+        takeFocus: false
         x: centerField.x
         y: root.height + ThemeTokens.dp(4)
         onNavigateRequested: (targetPath) => {
@@ -655,6 +655,9 @@ Item {
 
     function focusSearch() {
         if (root.showSearch && !root.disabled) {
+            if (controller.editing) {
+                controller.exitEditMode()
+            }
             searchInput.forceActiveFocus()
             searchInput.selectAll()
         }

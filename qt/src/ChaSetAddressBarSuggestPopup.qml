@@ -6,8 +6,9 @@ import ChaSet
 
 Popup {
     id: root
-    focus: true
+    focus: root.takeFocus
 
+    property bool takeFocus: true
     property alias suggestionList: suggestList
     property int highlightedIndex: -1
     property var rawItems: []
@@ -61,12 +62,14 @@ Popup {
     }
 
     onOpened: {
-        popupContent.forceActiveFocus()
+        if (root.takeFocus) {
+            popupContent.forceActiveFocus()
+        }
     }
 
     contentItem: Item {
         id: popupContent
-        focus: true
+        focus: root.takeFocus
 
         Keys.onPressed: (event) => {
             if (event.key === Qt.Key_Escape) {
@@ -250,7 +253,12 @@ Popup {
                 id: footerBar
                 Layout.fillWidth: true
                 Layout.preferredHeight: ThemeTokens.dp(26)
+                Layout.leftMargin: 1
+                Layout.rightMargin: 1
+                Layout.bottomMargin: 1
                 color: ThemeTokens.panelRaised
+                bottomLeftRadius: Math.max(0, ThemeTokens.dp(6) - 1)
+                bottomRightRadius: Math.max(0, ThemeTokens.dp(6) - 1)
 
                 Rectangle {
                     anchors.top: parent.top

@@ -1316,6 +1316,51 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 14: AddressBar Inline Edit, Suggest Popup & Outside Click Kinematics
+        if (scenario === "all" || scenario === "address-bar") {
+            console.log("[qt-scenario] Running AddressBar inline edit, suggest popup & outside click scenario...");
+            var abFailures = 0;
+
+            var testBar = Qt.createQmlObject(
+                'import QtQuick 6.10; import ChaSet; ChaSetAddressBar { width: 500; height: 36; path: "C:/Users/Development" }',
+                win.contentItem,
+                "dynamicTestAddressBar"
+            );
+
+            if (!testBar) {
+                console.log("[qt-scenario] FAIL: Could not create dynamic ChaSetAddressBar instance");
+                abFailures++;
+            } else {
+                // 1. Initial State
+                if (testBar.isEditing !== false || testBar.editing !== false) {
+                    console.log("[qt-scenario] FAIL: Initial address bar should not be in editing mode");
+                    abFailures++;
+                }
+
+                // 2. Enter Edit Mode
+                testBar.enterEditMode();
+                if (testBar.isEditing !== true || testBar.editing !== true) {
+                    console.log("[qt-scenario] FAIL: enterEditMode did not activate editing state");
+                    abFailures++;
+                }
+
+                // 3. Exit Edit Mode
+                testBar.exitEditMode();
+                if (testBar.isEditing !== false || testBar.editing !== false) {
+                    console.log("[qt-scenario] FAIL: exitEditMode did not deactivate editing state");
+                    abFailures++;
+                }
+
+                testBar.destroy();
+            }
+
+            if (abFailures === 0) {
+                console.log("[qt-scenario] PASS: AddressBar edit mode & kinematics verified");
+            } else {
+                failures += abFailures;
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;

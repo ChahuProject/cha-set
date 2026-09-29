@@ -501,13 +501,13 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                   onNavigate?.(targetPath);
                 }}
                 onOpenSubfolders={handleOpenSubfolders}
-                className="min-w-0 max-w-full overflow-hidden"
+                className="min-w-0 max-w-full shrink-0"
               />
 
               {/* Blank Area Click to Edit */}
               <div
                 onClick={startEditing}
-                className="flex-1 h-full min-w-[2rem] cursor-text"
+                className="flex-1 h-full min-w-[1.5rem] cursor-text"
                 title="Click to edit address"
               />
             </div>

@@ -134,7 +134,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
 
         // Measure available width from wrapping container (e.g. address bar center field)
         const hostEl = navEl.parentElement;
-        const avail = hostEl ? Math.max(0, hostEl.clientWidth - 32) : navEl.clientWidth;
+        const avail = hostEl ? Math.max(0, hostEl.clientWidth - 24) : navEl.clientWidth;
         if (avail <= 0) return;
 
         // Measure segment widths from hidden measureRef which always has all segments mounted
@@ -385,7 +385,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
         ref={ref}
         aria-label="Breadcrumbs"
         className={cn(
-          'flex items-center text-sm select-none min-w-0 max-w-full flex-1 overflow-hidden relative',
+          'flex items-center text-sm select-none min-w-0 max-w-full overflow-hidden relative',
           disabled && 'opacity-60 pointer-events-none',
           className
         )}
