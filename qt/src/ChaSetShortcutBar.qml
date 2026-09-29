@@ -90,11 +90,12 @@ Item {
         var keysW = 0
         for (var k = 0; k < numKeys; ++k) {
             var keyStr = String(item.keys[k] || "")
-            var kw = isComp ? ThemeTokens.dp(16) : Math.max(ThemeTokens.dp(16), keyStr.length * ThemeTokens.dp(7) + ThemeTokens.dp(6))
+            var isSymbol = (keyStr === "Up" || keyStr === "Down" || keyStr === "Left" || keyStr === "Right" || keyStr === "ArrowUp" || keyStr === "ArrowDown" || keyStr === "ArrowLeft" || keyStr === "ArrowRight")
+            var kw = (isComp && isSymbol) ? ThemeTokens.dp(16) : Math.max(ThemeTokens.dp(16), keyStr.length * ThemeTokens.dp(8) + ThemeTokens.dp(8))
             keysW += kw + (k > 0 ? ThemeTokens.dp(3) : 0)
         }
         var labelStr = (isComp && item.shortLabel) ? item.shortLabel : (item.label || "")
-        var labelW = labelStr.length * ThemeTokens.dp(11)
+        var labelW = labelStr.length * ThemeTokens.dp(12)
         return keysW + ThemeTokens.dp(4) + labelW
     }
 
@@ -118,7 +119,7 @@ Item {
             }
         }
 
-        var badgeW = ThemeTokens.dp(28)
+        var badgeW = ThemeTokens.dp(32)
         var gap = ThemeTokens.dp(10)
         var isComp = root.isCompact
         var avail = availableWidth - (root.showOverflowCount ? (badgeW + gap) : 0)
@@ -191,7 +192,12 @@ Item {
 
     implicitWidth: layoutRow.implicitWidth + ThemeTokens.dp(16)
     height: implicitHeight
-    clip: true
+
+    onVisibleItemsChanged: {
+        if (!overflowItems || overflowItems.length === 0) {
+            overflowPopup.close()
+        }
+    }
 
     Rectangle {
         id: bgRect
@@ -248,26 +254,145 @@ Item {
             }
         }
 
-        // Overflow '+N' badge with tooltip
-        ChaSetTooltip {
+        // Overflow '+N' badge with interactive overlay Popup
+        ChaSetBadge {
+            id: overflowBadge
             visible: root.showOverflowCount && root.overflowItems && root.overflowItems.length > 0
-            text: root.overflowTooltipText
-            side: "top"
+            size: "sm"
+            variant: "outline"
+            text: root.overflowBadgeText
+            height: ThemeTokens.dp(16)
+            interactive: true
             anchors.verticalCenter: parent ? parent.verticalCenter : undefined
 
-
-            ChaSetBadge {
-                id: overflowBadge
-                size: "sm"
-                variant: "outline"
-                text: root.overflowBadgeText
-                height: ThemeTokens.dp(16)
-                anchors.verticalCenter: parent.verticalCenter
-
-
-                HoverHandler {
-                    cursorShape: Qt.PointingHandCursor
+            onHoveredChanged: {
+                if (hovered) {
+                    closeTimer.stop()
+                    overflowPopup.open()
+                } else {
+                    closeTimer.restart()
                 }
+            }
+
+            onClicked: {
+                if (overflowPopup.visible) {
+                    overflowPopup.close()
+                } else {
+                    overflowPopup.open()
+                }
+            }
+
+            Popup {
+                id: overflowPopup
+                parent: overflowBadge
+                modal: false
+                dim: false
+                focus: false
+                closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+                x: {
+                    var win = root.Window.window
+                    if (!win) return (overflowBadge.width - implicitWidth) / 2
+                    var mapped = overflowBadge.mapToItem(null, 0, 0)
+                    var targetX = mapped.x + (overflowBadge.width - implicitWidth) / 2
+                    var clampedX = Math.max(ThemeTokens.dp(8), Math.min(win.width - implicitWidth - ThemeTokens.dp(8), targetX))
+                    return clampedX - mapped.x
+                }
+                y: {
+                    var win = root.Window.window
+                    var gap = ThemeTokens.dp(6)
+                    if (!win) return -implicitHeight - gap
+                    var mapped = overflowBadge.mapToItem(null, 0, 0)
+                    if (mapped.y - implicitHeight - gap < ThemeTokens.dp(8)) {
+                        return overflowBadge.height + gap
+                    }
+                    return -implicitHeight - gap
+                }
+
+                padding: ThemeTokens.dp(8)
+
+                background: Rectangle {
+                    color: ThemeTokens.panel
+                    border.color: ThemeTokens.border
+                    border.width: 1
+                    radius: ThemeTokens.dp(6)
+                }
+
+                contentItem: Column {
+                    spacing: ThemeTokens.dp(6)
+
+                    HoverHandler {
+                        id: popupHoverHandler
+                        onHoveredChanged: {
+                            if (hovered) {
+                                closeTimer.stop()
+                            } else {
+                                closeTimer.restart()
+                            }
+                        }
+                    }
+
+                    Row {
+                        width: parent.width
+                        Text {
+                            text: qsTr("更多快捷键")
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeCaption
+                            font.weight: Font.Medium
+                        }
+                    }
+
+                    Rectangle {
+                        width: parent.width
+                        height: 1
+                        color: ThemeTokens.border
+                    }
+
+                    Repeater {
+                        model: root.overflowItems
+                        delegate: Row {
+                            id: ovRow
+                            required property var modelData
+                            required property int index
+                            spacing: ThemeTokens.dp(12)
+
+                            Row {
+                                spacing: ThemeTokens.dp(3)
+                                anchors.verticalCenter: parent.verticalCenter
+                                Repeater {
+                                    model: ovRow.modelData.keys || []
+                                    delegate: ChaSetKbd {
+                                        required property var modelData
+                                        size: "xs"
+                                        variant: "outline"
+                                        compact: "never"
+                                        text: modelData
+                                        height: ThemeTokens.dp(16)
+                                    }
+                                }
+                            }
+
+                            Text {
+                                text: ovRow.modelData.label || ""
+                                color: ThemeTokens.text
+                                font.pixelSize: Typography.sizeCaption
+                                verticalAlignment: Text.AlignVCenter
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Timer {
+        id: closeTimer
+        interval: 150
+        repeat: false
+        onTriggered: {
+            if (!overflowBadge.hovered && !popupHoverHandler.hovered) {
+                overflowPopup.close()
             }
         }
     }

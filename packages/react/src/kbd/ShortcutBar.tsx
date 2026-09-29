@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { createPortal } from 'react-dom';
 import { cn } from '../lib/utils';
 import { Kbd } from './Kbd';
 import {
@@ -12,6 +13,27 @@ import type {
   KbdVariant,
   KbdCompact,
 } from '@chahu/spec/kbd';
+
+/**
+ * Fallback width calculation for SSR or jsdom test environments
+ */
+function estimateFallbackWidth(item: ShortcutItem, isCompact: boolean): number {
+  const numKeys = item.keys.length || 1;
+  let keysW = 0;
+  for (let i = 0; i < numKeys; i++) {
+    const k = item.keys[i] || '';
+    const isArrow = /^(Up|Down|Left|Right|ArrowUp|ArrowDown|ArrowLeft|ArrowRight)$/i.test(k);
+    const kw = isCompact && isArrow ? 20 : Math.max(24, k.length * 8 + 12);
+    keysW += kw + (i > 0 ? 4 : 0);
+  }
+  const label = isCompact && item.shortLabel ? item.shortLabel : item.label || '';
+  let labelW = 0;
+  for (let i = 0; i < label.length; i++) {
+    const code = label.charCodeAt(i);
+    labelW += code >= 0x4e00 && code <= 0x9fff ? 14 : 8;
+  }
+  return keysW + 4 + labelW;
+}
 
 export interface ShortcutBarProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -66,7 +88,12 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
     ref,
   ) => {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
-    const measureRef = React.useRef<HTMLDivElement | null>(null);
+    const badgeRef = React.useRef<HTMLDivElement | null>(null);
+    const normalStripRef = React.useRef<HTMLDivElement | null>(null);
+    const compactStripRef = React.useRef<HTMLDivElement | null>(null);
+    const badgeMeasureRef = React.useRef<HTMLDivElement | null>(null);
+
+    const closeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // Merge shortcuts through composition engine
     const effectiveItems = React.useMemo(() => {
@@ -83,6 +110,12 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
     // Responsive measurement states
     const [containerWidth, setContainerWidth] = React.useState<number>(0);
     const [isHoveringOverflow, setIsHoveringOverflow] = React.useState<boolean>(false);
+    const [measureVersion, setMeasureVersion] = React.useState<number>(0);
+    const [popoverPos, setPopoverPos] = React.useState<{
+      top: number;
+      left: number;
+      transform: string;
+    } | null>(null);
 
     // Observe container width
     React.useEffect(() => {
@@ -99,11 +132,34 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
       });
 
       ro.observe(el);
-      // Initial measure
       setContainerWidth(el.clientWidth);
 
       return () => ro.disconnect();
     }, []);
+
+    // Trigger measurement tick when relevant props change
+    React.useLayoutEffect(() => {
+      setMeasureVersion((v) => v + 1);
+    }, [effectiveItems, size, variant, compact]);
+
+    // Measure strip widths
+    const getMeasuredWidths = React.useCallback(
+      (strip: HTMLDivElement | null, isComp: boolean): number[] => {
+        if (!strip) {
+          return effectiveItems.map((it) => estimateFallbackWidth(it, isComp));
+        }
+        const children = Array.from(strip.children) as HTMLElement[];
+        if (children.length !== effectiveItems.length) {
+          return effectiveItems.map((it) => estimateFallbackWidth(it, isComp));
+        }
+        return children.map((el, i) => {
+          const rect = el.getBoundingClientRect();
+          const w = rect.width || el.offsetWidth;
+          return w > 0 ? w : estimateFallbackWidth(effectiveItems[i]!, isComp);
+        });
+      },
+      [effectiveItems],
+    );
 
     // Calculate item visibility & compact decision
     const { visibleItems, overflowItems, effectiveCompact } = React.useMemo(() => {
@@ -115,8 +171,6 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
         };
       }
 
-      // If containerWidth hasn't been measured yet (e.g. first paint or SSR),
-      // or if maxVisibleItems is explicitly specified:
       if (maxVisibleItems !== undefined) {
         const vis = effectiveItems.slice(0, maxVisibleItems);
         const ov = effectiveItems.slice(maxVisibleItems);
@@ -127,8 +181,7 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
         };
       }
 
-      const measureEl = measureRef.current;
-      if (!measureEl || containerWidth <= 0) {
+      if (containerWidth <= 0) {
         return {
           visibleItems: effectiveItems,
           overflowItems: [],
@@ -136,27 +189,22 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
         };
       }
 
-      // Check width of items from measureEl
-      const childNodes = Array.from(measureEl.children) as HTMLElement[];
-      const badgeWidth = 36; // estimated badge width in px
-      const gap = 12; // gap-3 = 12px
+      const gap = 12; // gap-3 = 0.75rem = 12px
+      const measuredBadgeWidth = badgeMeasureRef.current
+        ? badgeMeasureRef.current.getBoundingClientRect().width || badgeMeasureRef.current.offsetWidth
+        : 0;
+      const badgeWidth = measuredBadgeWidth > 0 ? measuredBadgeWidth : 40;
 
-      let totalNormalWidth = 0;
-      const itemWidths: number[] = [];
+      const normalWidths = getMeasuredWidths(normalStripRef.current, false);
+      const compactWidths = getMeasuredWidths(compactStripRef.current, true);
 
-      for (let i = 0; i < childNodes.length; i++) {
-        const w = childNodes[i]?.offsetWidth || 60;
-        itemWidths.push(w);
-        totalNormalWidth += w + (i > 0 ? gap : 0);
-      }
+      const totalNormalWidth =
+        normalWidths.reduce((sum, w) => sum + w, 0) +
+        Math.max(0, effectiveItems.length - 1) * gap;
 
-      const fitsNormal = totalNormalWidth <= containerWidth;
-      const shouldCompact =
-        forceCompact ||
-        compact === 'always' ||
-        (compact === 'auto' && !fitsNormal);
+      const fitsAllNormal = totalNormalWidth <= containerWidth;
 
-      if (fitsNormal && compact !== 'always' && !forceCompact) {
+      if (fitsAllNormal && compact !== 'always' && !forceCompact) {
         return {
           visibleItems: effectiveItems,
           overflowItems: [],
@@ -164,67 +212,169 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
         };
       }
 
-      // In compact mode, items shrink by ~30%
-      const compactScale = 0.75;
+      const totalCompactWidth =
+        compactWidths.reduce((sum, w) => sum + w, 0) +
+        Math.max(0, effectiveItems.length - 1) * gap;
+
+      const fitsAllCompact = totalCompactWidth <= containerWidth;
+
+      if (fitsAllCompact && compact !== 'never') {
+        return {
+          visibleItems: effectiveItems,
+          overflowItems: [],
+          effectiveCompact: true,
+        };
+      }
+
+      // Does NOT fit all items. Partition into visible + overflow (+N badge).
+      const shouldUseCompact = compact !== 'never';
+      const activeWidths = shouldUseCompact ? compactWidths : normalWidths;
+
+      // Space strictly budgeted for visible items reserving space for badge + gap
+      const spaceForItems = Math.max(
+        0,
+        containerWidth - (showOverflowCount ? badgeWidth + gap : 0),
+      );
+
+      // Strict Atomic Units: Rank by priority ascending (1 = highest priority kept)
+      const indexed = effectiveItems.map((item, idx) => ({
+        item,
+        index: idx,
+        priority: item.priority ?? 1,
+        width: activeWidths[idx] ?? 60,
+      }));
+
+      // Sort by priority ascending. Tie-break by original index
+      const sortedByPriority = [...indexed].sort((a, b) => {
+        if (a.priority !== b.priority) return a.priority - b.priority;
+        return a.index - b.index;
+      });
+
       let accumulatedWidth = 0;
+      let acceptedCount = 0;
+      const acceptedIndices = new Set<number>();
+
+      for (const entry of sortedByPriority) {
+        const needed = entry.width + (acceptedCount > 0 ? gap : 0);
+        if (accumulatedWidth + needed <= spaceForItems) {
+          accumulatedWidth += needed;
+          acceptedCount++;
+          acceptedIndices.add(entry.index);
+        }
+      }
+
+      // Fallback: If 0 items fit within spaceForItems, guarantee at least the single highest priority item
+      if (acceptedCount === 0 && effectiveItems.length > 0) {
+        acceptedIndices.add(sortedByPriority[0]!.index);
+      }
+
       const vis: ShortcutItem[] = [];
       const ov: ShortcutItem[] = [];
 
-      // Sort items by priority ascending (1 = high priority kept first)
-      const indexedItems = effectiveItems.map((item, originalIndex) => ({
-        item,
-        originalIndex,
-        width: (itemWidths[originalIndex] || 60) * (shouldCompact ? compactScale : 1),
-      }));
-
-      // High priority items first for space allocation
-      const sortedByPriority = [...indexedItems].sort(
-        (a, b) => (a.item.priority ?? 1) - (b.item.priority ?? 1),
-      );
-
-      const availableSpace = containerWidth - (showOverflowCount ? badgeWidth + gap : 0);
-
-      // Greedily pick items by priority that fit
-      const acceptedOriginalIndices = new Set<number>();
-
-      for (const entry of sortedByPriority) {
-        const itemNeeded = entry.width + (acceptedOriginalIndices.size > 0 ? gap : 0);
-        if (accumulatedWidth + itemNeeded <= availableSpace) {
-          accumulatedWidth += itemNeeded;
-          acceptedOriginalIndices.add(entry.originalIndex);
-        } else if (acceptedOriginalIndices.size === 0 && containerWidth > 80) {
-          // Guarantee at least the single highest priority item if width allows
-          accumulatedWidth += entry.width;
-          acceptedOriginalIndices.add(entry.originalIndex);
-        }
-      }
-
-      // Partition preserving original display sequence
       for (let i = 0; i < effectiveItems.length; i++) {
-        const it = effectiveItems[i];
-        if (!it) continue;
-        if (acceptedOriginalIndices.has(i)) {
-          vis.push(it);
+        if (acceptedIndices.has(i)) {
+          vis.push(effectiveItems[i]!);
         } else {
-          ov.push(it);
+          ov.push(effectiveItems[i]!);
         }
       }
-
 
       return {
-        visibleItems: vis.length > 0 ? vis : effectiveItems.slice(0, 1),
-        overflowItems: vis.length > 0 ? ov : effectiveItems.slice(1),
-        effectiveCompact: shouldCompact,
+        visibleItems: vis,
+        overflowItems: ov,
+        effectiveCompact: shouldUseCompact,
       };
-    }, [effectiveItems, containerWidth, compact, forceCompact, maxVisibleItems, showOverflowCount]);
+    }, [
+      effectiveItems,
+      containerWidth,
+      compact,
+      forceCompact,
+      maxVisibleItems,
+      showOverflowCount,
+      measureVersion,
+      getMeasuredWidths,
+    ]);
 
-    // Construct tooltip text for overflow badge
+    // Construct tooltip text for fallback title
     const overflowTooltipText = React.useMemo(() => {
       if (overflowItems.length === 0) return '';
       return overflowItems
         .map((it) => `${it.keys.join('+')}: ${it.label}`)
         .join(' | ');
     }, [overflowItems]);
+
+    // Position calculation for portal popover
+    const updatePopoverPos = React.useCallback(() => {
+      if (!badgeRef.current) return;
+      const rect = badgeRef.current.getBoundingClientRect();
+      const placeBelow = rect.top < 160;
+      const top = placeBelow ? rect.bottom + 6 : rect.top - 6;
+      const left = Math.max(16, Math.min(window.innerWidth - 16, rect.left + rect.width / 2));
+      const transform = placeBelow ? 'translate(-50%, 0)' : 'translate(-50%, -100%)';
+      setPopoverPos({ top, left, transform });
+    }, []);
+
+    const handleBadgeMouseEnter = () => {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+      updatePopoverPos();
+      setIsHoveringOverflow(true);
+    };
+
+    const handleBadgeMouseLeave = () => {
+      closeTimerRef.current = setTimeout(() => {
+        setIsHoveringOverflow(false);
+      }, 150);
+    };
+
+    const handlePopoverMouseEnter = () => {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+    };
+
+    const handlePopoverMouseLeave = () => {
+      closeTimerRef.current = setTimeout(() => {
+        setIsHoveringOverflow(false);
+      }, 150);
+    };
+
+    // Close on escape or update position on scroll/resize
+    React.useEffect(() => {
+      if (!isHoveringOverflow) return;
+
+      const handleScrollOrResize = () => {
+        updatePopoverPos();
+      };
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setIsHoveringOverflow(false);
+        }
+      };
+
+      window.addEventListener('scroll', handleScrollOrResize, true);
+      window.addEventListener('resize', handleScrollOrResize);
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        window.removeEventListener('scroll', handleScrollOrResize, true);
+        window.removeEventListener('resize', handleScrollOrResize);
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }, [isHoveringOverflow, updatePopoverPos]);
+
+    // Cleanup timer on unmount
+    React.useEffect(() => {
+      return () => {
+        if (closeTimerRef.current) {
+          clearTimeout(closeTimerRef.current);
+        }
+      };
+    }, []);
 
     // Forward ref assignment
     const setRefs = React.useCallback(
@@ -249,33 +399,74 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
         )}
         {...props}
       >
-        {/* Hidden measurement strip */}
+        {/* Hidden measurement strips */}
         <div
-          ref={measureRef}
           aria-hidden="true"
-          className="pointer-events-none invisible absolute left-0 top-0 flex items-center gap-3 whitespace-nowrap opacity-0"
-          style={{ position: 'absolute', zIndex: -999 }}
+          className="pointer-events-none invisible fixed -left-[624.9375rem] -top-[624.9375rem] flex flex-col select-none opacity-0"
+          style={{ zIndex: -9999 }}
         >
-          {effectiveItems.map((item) => (
-            <div key={`measure-${item.id}`} className="flex items-center gap-1 shrink-0">
-              {item.keys.map((k, kIdx) => (
-                <Kbd key={`measure-${item.id}-${kIdx}`} size={size} variant={variant} compact="never">
-                  {k}
-                </Kbd>
-              ))}
-              <span>{item.label}</span>
-            </div>
-          ))}
+          {/* Normal strip */}
+          <div ref={normalStripRef} className="flex items-center gap-3 whitespace-nowrap">
+            {effectiveItems.map((item) => (
+              <span
+                key={`meas-norm-${item.id}`}
+                className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap"
+              >
+                {item.keys.map((k, kIdx) => (
+                  <Kbd
+                    key={`meas-k-norm-${item.id}-${kIdx}`}
+                    size={size}
+                    variant={variant}
+                    compact="never"
+                  >
+                    {k}
+                  </Kbd>
+                ))}
+                <span className="whitespace-nowrap">{item.label}</span>
+              </span>
+            ))}
+          </div>
+
+          {/* Compact strip */}
+          <div ref={compactStripRef} className="flex items-center gap-3 whitespace-nowrap">
+            {effectiveItems.map((item) => (
+              <span
+                key={`meas-comp-${item.id}`}
+                className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap"
+              >
+                {item.keys.map((k, kIdx) => (
+                  <Kbd
+                    key={`meas-k-comp-${item.id}-${kIdx}`}
+                    size={size}
+                    variant={variant}
+                    compact="always"
+                  >
+                    {k}
+                  </Kbd>
+                ))}
+                <span className="whitespace-nowrap">
+                  {item.shortLabel || item.label}
+                </span>
+              </span>
+            ))}
+          </div>
+
+          {/* Badge measurement */}
+          <div ref={badgeMeasureRef} className="inline-flex shrink-0 items-center">
+            <Kbd size={size} variant="outline" className="font-medium">
+              +{effectiveItems.length}
+            </Kbd>
+          </div>
         </div>
 
-        {/* Visible Shortcut Items */}
-        <div className="flex min-w-0 items-center gap-3 overflow-hidden">
+        {/* Visible Shortcut Items - Strict Atomic Units */}
+        <div className="flex shrink-0 items-center gap-3">
           {visibleItems.map((item) => (
             <span
               key={`visible-${item.id}`}
               data-slot="shortcut-item"
               className={cn(
-                'inline-flex shrink-0 items-center gap-1',
+                'inline-flex shrink-0 items-center gap-1 whitespace-nowrap',
                 item.disabled && 'opacity-50',
               )}
             >
@@ -289,61 +480,85 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
                   {keyStr}
                 </Kbd>
               ))}
-              <span className="truncate">
+              <span className="shrink-0 whitespace-nowrap">
                 {effectiveCompact && item.shortLabel ? item.shortLabel : item.label}
               </span>
             </span>
           ))}
         </div>
 
-        {/* Overflow '+N' Badge with interactive hover card */}
+        {/* Overflow '+N' Badge with interactive trigger */}
         {showOverflowCount && overflowItems.length > 0 && (
           <div
+            ref={badgeRef}
             className="relative ml-2 inline-flex shrink-0 items-center"
-            onMouseEnter={() => setIsHoveringOverflow(true)}
-            onMouseLeave={() => setIsHoveringOverflow(false)}
+            onMouseEnter={handleBadgeMouseEnter}
+            onMouseLeave={handleBadgeMouseLeave}
           >
             <Kbd
               size={size}
               variant="outline"
               title={overflowTooltipText}
               className="cursor-pointer font-medium hover:border-primary/50 hover:text-foreground"
+              tabIndex={0}
+              role="button"
+              aria-label={`更多 ${overflowItems.length} 个快捷键`}
+              aria-expanded={isHoveringOverflow}
+              onMouseEnter={handleBadgeMouseEnter}
+              onMouseLeave={handleBadgeMouseLeave}
+              onFocus={handleBadgeMouseEnter}
+              onBlur={handleBadgeMouseLeave}
             >
               +{overflowItems.length}
             </Kbd>
-
-            {/* Floating Popover on Hover */}
-            {isHoveringOverflow && (
-              <div
-                role="tooltip"
-                className="absolute bottom-full left-1/2 z-50 mb-1.5 -translate-x-1/2 rounded-md border border-border bg-popover px-2.5 py-1.5 text-nano text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95"
-              >
-                <div className="flex flex-col gap-1">
-                  <span className="text-micro font-medium text-muted-foreground">
-                    更多快捷键
-                  </span>
-                  <div className="flex flex-col gap-1">
-                    {overflowItems.map((ovItem) => (
-                      <div
-                        key={`ov-${ovItem.id}`}
-                        className="flex items-center justify-between gap-3"
-                      >
-                        <div className="flex items-center gap-0.5">
-                          {ovItem.keys.map((k, kIdx) => (
-                            <Kbd key={`ov-kbd-${kIdx}`} size="xs" variant="outline" compact="auto">
-                              {k}
-                            </Kbd>
-                          ))}
-                        </div>
-                        <span className="text-foreground">{ovItem.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         )}
+
+        {/* Floating Popover on Hover rendered via Portal into document.body */}
+        {showOverflowCount &&
+          overflowItems.length > 0 &&
+          isHoveringOverflow &&
+          popoverPos &&
+          typeof document !== 'undefined' &&
+          createPortal(
+            <div
+              role="tooltip"
+              className="fixed z-[9999] rounded-md border border-border bg-popover px-3 py-2 text-micro text-popover-foreground shadow-lg animate-in fade-in-0 zoom-in-95 pointer-events-auto select-none"
+              style={{
+                top: `${popoverPos.top * 0.0625}rem`,
+                left: `${popoverPos.left * 0.0625}rem`,
+                transform: popoverPos.transform,
+                minWidth: '10rem',
+              }}
+              onMouseEnter={handlePopoverMouseEnter}
+              onMouseLeave={handlePopoverMouseLeave}
+            >
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between border-b border-border/50 pb-1 text-micro font-medium text-muted-foreground">
+                  <span>更多快捷键</span>
+                  <span className="text-nano opacity-75">+{overflowItems.length}</span>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  {overflowItems.map((ovItem) => (
+                    <div
+                      key={`ov-${ovItem.id}`}
+                      className="flex items-center justify-between gap-4 py-0.5 text-micro"
+                    >
+                      <div className="flex items-center gap-1">
+                        {ovItem.keys.map((k, kIdx) => (
+                          <Kbd key={`ov-kbd-${kIdx}`} size="xs" variant="outline" compact="never">
+                            {k}
+                          </Kbd>
+                        ))}
+                      </div>
+                      <span className="whitespace-nowrap text-foreground">{ovItem.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>,
+            document.body,
+          )}
       </div>
     );
   },

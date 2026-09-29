@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { ShortcutBar } from './ShortcutBar';
 import { composeShortcuts } from './composeShortcuts';
 
@@ -89,5 +89,38 @@ describe('ShortcutBar Component', () => {
     expect(bar).toBeInTheDocument();
     expect(bar).toHaveClass('custom-bar');
   });
+
+  it('renders overflow items inside a floating portal on hover without truncation in visible items', () => {
+    const { container } = render(
+      <ShortcutBar
+        items={[
+          { id: '1', keys: ['Ctrl', 'S'], label: '保存文件' },
+          { id: '2', keys: ['Ctrl', 'P'], label: '打印' },
+          { id: '3', keys: ['Esc'], label: '退出' },
+        ]}
+        maxVisibleItems={1}
+      />,
+    );
+
+    // Strict atomic item check: visible label must not have truncate class
+    const visibleLabel = container.querySelector('[data-slot="shortcut-item"] span:last-child');
+    expect(visibleLabel).not.toHaveClass('truncate');
+    expect(visibleLabel).toHaveClass('whitespace-nowrap');
+
+    // Find +2 badge
+    const badge = screen.getByRole('button', { name: /更多 2 个快捷键/i });
+    expect(badge).toBeInTheDocument();
+
+    // Hover badge
+    fireEvent.mouseEnter(badge);
+
+    // Portal tooltip should now be present in document.body
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent('更多快捷键');
+    expect(tooltip).toHaveTextContent('打印');
+    expect(tooltip).toHaveTextContent('退出');
+  });
 });
+
 
