@@ -38,6 +38,22 @@ Item {
     property string dropPosition: "" // "before" | "inside" | "after"
     property bool isDropValid: true
 
+    // Floating drag HUD position: display at bottom when pointer is in upper half, display at top when in lower half
+    property real dragPointerY: 0
+    property bool hudAtTop: false
+
+    function updateDragPointer(yPos) {
+        if (!root.enableDnd || !root.isDragging) return
+        root.dragPointerY = yPos
+        if (root.height <= 0) return
+        var threshold = root.height * 0.5
+        if (!root.hudAtTop && yPos > threshold + root.height * 0.05) {
+            root.hudAtTop = true
+        } else if (root.hudAtTop && yPos < threshold - root.height * 0.05) {
+            root.hudAtTop = false
+        }
+    }
+
     property real _savedScrollY: 0
     property bool _preserveScrollPending: false
 
@@ -246,6 +262,8 @@ Item {
         root.dropTargetId = ""
         root.dropPosition = ""
         root.isCtrlHeld = false
+        root.dragPointerY = 0
+        root.hudAtTop = false
     }
 
     function executeDrop(forceCopy, explicitTargetId, explicitPos) {
@@ -854,6 +872,8 @@ Item {
 
                     onPositionChanged: function(drag) {
                         if (!root.isDragging) return
+                        var globalDropPos = mapToItem(root, drag.x, drag.y)
+                        root.updateDragPointer(globalDropPos.y)
                         var ctrlHeld = ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || (drag.keyboardModifiers !== undefined && (drag.keyboardModifiers & Qt.ControlModifier) !== 0)
                         if (ctrlHeld) {
                             root.isCtrlHeld = true
@@ -953,6 +973,10 @@ Item {
                         if (drag.active && !root.isDragging) {
                             root.isDragging = true
                         }
+                        if (drag.active || root.isDragging) {
+                            var mouseGlobalPos = mapToItem(root, mouse.x, mouse.y)
+                            root.updateDragPointer(mouseGlobalPos.y)
+                        }
                         if ((mouse.modifiers & Qt.ControlModifier) !== 0 || (mouse.modifiers & Qt.MetaModifier) !== 0 || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)) {
                             root.isCtrlHeld = true
                         }
@@ -981,13 +1005,24 @@ Item {
             }
         }
 
-        // Floating Drag Modifier HUD Tooltip
+        // Fallback DropArea covering the entire tree container
+        DropArea {
+            id: containerDropArea
+            anchors.fill: parent
+            enabled: root.enableDnd && root.isDragging
+            z: 1
+            onPositionChanged: function(drag) {
+                root.updateDragPointer(drag.y)
+            }
+        }
+
+        // Floating Drag Modifier HUD Tooltip (dynamically placed at bottom or top)
         Rectangle {
             id: dragHud
             visible: root.enableDnd && root.isDragging && root.draggedId !== ""
-            anchors.bottom: parent.bottom
+            y: root.hudAtTop ? ThemeTokens.dp(8) : Math.max(0, parent.height - height - ThemeTokens.dp(8))
             anchors.right: parent.right
-            anchors.margins: ThemeTokens.dp(8)
+            anchors.rightMargin: ThemeTokens.dp(8)
             height: ThemeTokens.dp(24)
             width: hudRow.implicitWidth + ThemeTokens.dp(16)
             radius: ThemeTokens.dp(4)
@@ -995,6 +1030,11 @@ Item {
             border.color: ThemeTokens.border
             border.width: 1
             z: 100
+
+            Behavior on y {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionNormal; easing.type: ThemeTokens.easeStandard }
+            }
 
             Row {
                 id: hudRow

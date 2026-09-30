@@ -243,6 +243,23 @@ export function VirtualTree<T>({
   // Drag and Drop internal state
   const [draggedKeys, setDraggedKeys] = React.useState<string[] | null>(null);
   const [dragModifier, setDragModifier] = React.useState<'move' | 'copy'>('move');
+  const [hudAtTop, setHudAtTop] = React.useState(false);
+
+  const updateDragPointer = React.useCallback((clientY: number) => {
+    if (!scrollContainerRef.current) return;
+    const rect = scrollContainerRef.current.getBoundingClientRect();
+    const relativeY = clientY - rect.top;
+    const threshold = rect.height * 0.5;
+    setHudAtTop((currentAtTop) => {
+      if (!currentAtTop && relativeY > threshold + rect.height * 0.05) {
+        return true;
+      }
+      if (currentAtTop && relativeY < threshold - rect.height * 0.05) {
+        return false;
+      }
+      return currentAtTop;
+    });
+  }, []);
   const [dropTarget, setDropTarget] = React.useState<{
     key: string;
     position: DropPosition;
@@ -473,6 +490,9 @@ export function VirtualTree<T>({
     const rect = e.currentTarget.getBoundingClientRect();
     const rowHeight = rect.height || (rect.bottom - rect.top) || 32;
     const rawClientY = typeof e.clientY === 'number' ? e.clientY : (e.nativeEvent as any)?.clientY;
+    if (typeof rawClientY === 'number' && !isNaN(rawClientY)) {
+      updateDragPointer(rawClientY);
+    }
     const ratio = typeof rawClientY === 'number' && !isNaN(rawClientY)
       ? (rawClientY - rect.top) / rowHeight
       : (flatNode.hasChildren ? 0.5 : 0.8);
@@ -555,12 +575,14 @@ export function VirtualTree<T>({
     setDraggedKeys(null);
     setDropTarget(null);
     setDragModifier('move');
+    setHudAtTop(false);
   };
 
   const handleDragEnd = () => {
     setDraggedKeys(null);
     setDropTarget(null);
     setDragModifier('move');
+    setHudAtTop(false);
   };
 
   const getRootFontSize = React.useCallback(() => {
@@ -823,6 +845,13 @@ export function VirtualTree<T>({
       aria-multiselectable={selectionMode === 'multiple' ? true : undefined}
       tabIndex={0}
       onKeyDown={handleKeyDown}
+      onDragOver={(e) => {
+        if (!enableDnd || !draggedKeys) return;
+        const rawClientY = typeof e.clientY === 'number' ? e.clientY : (e.nativeEvent as any)?.clientY;
+        if (typeof rawClientY === 'number' && !isNaN(rawClientY)) {
+          updateDragPointer(rawClientY);
+        }
+      }}
       data-slot="virtual-tree"
       className={cn(
         'relative overflow-y-auto outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-md',
@@ -972,7 +1001,12 @@ export function VirtualTree<T>({
         <div
           role="status"
           aria-live="polite"
-          className="pointer-events-none absolute bottom-2 right-2 flex items-center gap-1.5 rounded-md bg-popover/95 px-2.5 py-1 text-xs text-popover-foreground shadow-md border border-border backdrop-blur-xs z-30 transition-all select-none"
+          data-slot="virtual-tree-drag-hud"
+          data-hud-position={hudAtTop ? 'top' : 'bottom'}
+          className={cn(
+            'pointer-events-none absolute right-2 flex items-center gap-1.5 rounded-md bg-popover/95 px-2.5 py-1 text-xs text-popover-foreground shadow-md border border-border backdrop-blur-xs z-30 transition-all duration-200 select-none',
+            hudAtTop ? 'top-2' : 'bottom-2',
+          )}
         >
           <span className="font-medium">{dragModifier === 'copy' ? 'Copying' : 'Moving'}</span>
           <span className="text-muted-foreground">({dragModifier === 'copy' ? 'Ctrl held' : 'Hold Ctrl to copy'})</span>

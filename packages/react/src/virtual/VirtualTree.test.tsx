@@ -369,4 +369,78 @@ describe('VirtualTree', () => {
     );
     expect(container.querySelector('[data-slot="virtual-tree-sticky"]')).toBeNull();
   });
+
+  it('dynamically flips drag modifier HUD between bottom and top depending on pointer position', () => {
+    const { container } = render(
+      <VirtualTree
+        rootNodes={treeData}
+        enableDnd
+        defaultExpandDepth={2}
+        getChildren={(node) => node.children ?? []}
+        getNodeKey={(node) => node.id}
+        estimateSize={32}
+      />,
+    );
+
+    const row0 = container.querySelector('[data-index="0"]') as HTMLElement;
+    expect(row0).toBeDefined();
+
+    const dataTransfer = {
+      setData: vi.fn(),
+      getData: vi.fn(),
+      effectAllowed: 'none',
+      dropEffect: 'none',
+    };
+
+    // Start dragging root-1
+    fireEvent.dragStart(row0, { dataTransfer });
+
+    const scrollContainer = container.querySelector('[data-slot="virtual-tree"]') as HTMLElement;
+    expect(scrollContainer).toBeDefined();
+
+    // Mock getBoundingClientRect: top = 0, height = 200
+    vi.spyOn(scrollContainer, 'getBoundingClientRect').mockReturnValue({
+      top: 0,
+      bottom: 200,
+      left: 0,
+      right: 200,
+      width: 200,
+      height: 200,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    } as DOMRect);
+
+    // Pointer in upper half (clientY = 40): HUD should be at bottom
+    const evtTop = createEvent.dragOver(scrollContainer, { dataTransfer });
+    Object.defineProperty(evtTop, 'clientY', { value: 40 });
+    fireEvent(scrollContainer, evtTop);
+
+    let hud = container.querySelector('[data-slot="virtual-tree-drag-hud"]') as HTMLElement;
+    expect(hud).not.toBeNull();
+    expect(hud.getAttribute('data-hud-position')).toBe('bottom');
+    expect(hud.className).toContain('bottom-2');
+
+    // Pointer moves to lower half (clientY = 160): HUD should flip to top
+    const evtBottom = createEvent.dragOver(scrollContainer, { dataTransfer });
+    Object.defineProperty(evtBottom, 'clientY', { value: 160 });
+    fireEvent(scrollContainer, evtBottom);
+
+    hud = container.querySelector('[data-slot="virtual-tree-drag-hud"]') as HTMLElement;
+    expect(hud.getAttribute('data-hud-position')).toBe('top');
+    expect(hud.className).toContain('top-2');
+
+    // Pointer moves back to upper half (clientY = 30): HUD should flip back to bottom
+    const evtTopAgain = createEvent.dragOver(scrollContainer, { dataTransfer });
+    Object.defineProperty(evtTopAgain, 'clientY', { value: 30 });
+    fireEvent(scrollContainer, evtTopAgain);
+
+    hud = container.querySelector('[data-slot="virtual-tree-drag-hud"]') as HTMLElement;
+    expect(hud.getAttribute('data-hud-position')).toBe('bottom');
+    expect(hud.className).toContain('bottom-2');
+
+    // Drag ends: HUD is cleaned up
+    fireEvent.dragEnd(row0);
+    expect(container.querySelector('[data-slot="virtual-tree-drag-hud"]')).toBeNull();
+  });
 });
