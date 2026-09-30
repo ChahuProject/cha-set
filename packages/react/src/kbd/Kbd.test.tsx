@@ -110,4 +110,26 @@ describe('Kbd Component', () => {
       ['⌘', '⇧', 'P'],
     ]);
   });
+
+  it('renders mouse glyphs with illuminated button state', () => {
+    const { container: c1 } = render(<Kbd shortcut="mouse-left" />);
+    const glyph1 = c1.querySelector('[data-slot="mouse-glyph"]');
+    expect(glyph1).toBeInTheDocument();
+    expect(glyph1).toHaveAttribute('data-button', 'left');
+
+    const { container: c2 } = render(<Kbd shortcut="Ctrl+mouse-right" compact="never" />);
+    expect(screen.getByText('Ctrl')).toBeInTheDocument();
+    const glyph2 = c2.querySelector('[data-slot="mouse-glyph"]');
+    expect(glyph2).toBeInTheDocument();
+    expect(glyph2).toHaveAttribute('data-button', 'right');
+
+    const { container: c3 } = render(<Kbd shortcut="mouse-middle" />);
+    const glyph3 = c3.querySelector('[data-slot="mouse-glyph"]');
+    expect(glyph3).toBeInTheDocument();
+    expect(glyph3).toHaveAttribute('data-button', 'middle');
+
+    render(<Kbd shortcut="mouse-left:拖拽" />);
+    expect(screen.getByText('拖拽')).toBeInTheDocument();
+  });
 });
+

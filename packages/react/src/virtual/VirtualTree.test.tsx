@@ -439,6 +439,15 @@ describe('VirtualTree', () => {
     expect(hud.getAttribute('data-hud-position')).toBe('bottom');
     expect(hud.className).toContain('bottom-2');
 
+    // Multi-line HUD content verification
+    expect(hud.textContent).toContain('松开左键');
+    expect(hud.textContent).toContain('移动到目标');
+    expect(hud.textContent).toContain('按住 Ctrl');
+    expect(hud.textContent).toContain('复制到目标');
+    expect(hud.textContent).toContain('按 Esc');
+    const mouseGlyphs = hud.querySelectorAll('[data-slot="mouse-glyph"]');
+    expect(mouseGlyphs.length).toBeGreaterThanOrEqual(1);
+
     // Drag ends: HUD is cleaned up
     fireEvent.dragEnd(row0);
     expect(container.querySelector('[data-slot="virtual-tree-drag-hud"]')).toBeNull();

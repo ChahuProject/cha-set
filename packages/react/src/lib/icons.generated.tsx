@@ -491,6 +491,12 @@ export const ICON_ADOPTION = {
       "reasons": []
     },
     {
+      "file": "packages/react/src/kbd/Kbd.tsx",
+      "count": 1,
+      "exempted": 0,
+      "reasons": []
+    },
+    {
       "file": "packages/react/src/language-settings/LanguageSettings.tsx",
       "count": 3,
       "exempted": 0,

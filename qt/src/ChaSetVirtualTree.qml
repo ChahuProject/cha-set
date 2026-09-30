@@ -131,6 +131,16 @@ Item {
 
     readonly property var flatItems: flatten(root.nodes, 0)
 
+    function getDropTargetLabel() {
+        if (!root.dropTargetId) return ""
+        for (var i = 0; i < root.flatItems.length; i++) {
+            if (root.flatItems[i].id === root.dropTargetId) {
+                return root.flatItems[i].label || root.flatItems[i].id
+            }
+        }
+        return root.dropTargetId
+    }
+
     function isSelected(id) {
         if (root.selectionMode === "multiple") {
             return root.selectedIds && root.selectedIds.indexOf(id) !== -1
@@ -1016,16 +1026,16 @@ Item {
             }
         }
 
-        // Floating Drag Modifier HUD Tooltip (dynamically placed at bottom or top)
+        // Floating Drag Modifier HUD Card (dynamically placed at bottom or top)
         Rectangle {
             id: dragHud
             visible: root.enableDnd && root.isDragging && root.draggedId !== ""
             y: root.hudAtTop ? ThemeTokens.dp(8) : Math.max(0, parent.height - height - ThemeTokens.dp(8))
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(8)
-            height: ThemeTokens.dp(24)
-            width: hudRow.implicitWidth + ThemeTokens.dp(16)
-            radius: ThemeTokens.dp(4)
+            height: hudCol.implicitHeight + ThemeTokens.dp(16)
+            width: ThemeTokens.dp(210)
+            radius: ThemeTokens.dp(6)
             color: ThemeTokens.panelRaised
             border.color: ThemeTokens.border
             border.width: 1
@@ -1036,14 +1046,160 @@ Item {
                 NumberAnimation { duration: ThemeTokens.motionNormal; easing.type: ThemeTokens.easeStandard }
             }
 
-            Row {
-                id: hudRow
+            Column {
+                id: hudCol
                 anchors.centerIn: parent
-                spacing: ThemeTokens.dp(4)
-                Text {
-                    text: root.effectiveIsCopy ? "Copying (Ctrl held)" : "Moving (Hold Ctrl to copy)"
-                    color: ThemeTokens.text
-                    font.pixelSize: Typography.sizeSmall
+                spacing: ThemeTokens.dp(6)
+                width: parent.width - ThemeTokens.dp(16)
+
+                // 目标动作即时反馈
+                Row {
+                    width: parent.width
+                    spacing: ThemeTokens.dp(6)
+
+                    Rectangle {
+                        width: ThemeTokens.dp(6)
+                        height: ThemeTokens.dp(6)
+                        radius: ThemeTokens.dp(3)
+                        color: root.dropTargetId !== "" ? ThemeTokens.accent : ThemeTokens.subduedText
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    Text {
+                        text: {
+                            if (root.dropTargetId !== "") {
+                                var targetName = root.getDropTargetLabel();
+                                if (root.dropPosition === "inside") {
+                                    return (root.effectiveIsCopy ? qsTr("复制到") : qsTr("移入")) + ": " + targetName;
+                                } else {
+                                    return qsTr("放置在同级: %1").arg(targetName);
+                                }
+                            }
+                            var count = (root.draggedIds && root.draggedIds.length > 0) ? root.draggedIds.length : 1;
+                            return qsTr("拖拽中 (%1 项)").arg(count);
+                        }
+                        color: ThemeTokens.text
+                        font.pixelSize: Typography.sizeSmall
+                        font.weight: Typography.weightMedium
+                        elide: Text.ElideRight
+                        width: parent.width - ThemeTokens.dp(14)
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+
+                // 细分割线
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: ThemeTokens.border
+                    opacity: 0.6
+                }
+
+                // 指南行 1: 松开左键 -> 移动
+                Item {
+                    width: parent.width
+                    height: ThemeTokens.dp(18)
+                    opacity: !root.effectiveIsCopy ? 1.0 : 0.7
+
+                    Row {
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: ThemeTokens.dp(6)
+
+                        ChaSetKbd {
+                            size: "xs"
+                            variant: !root.effectiveIsCopy ? "solid" : "subtle"
+                            shortcut: "mouse-left"
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        Text {
+                            text: qsTr("松开左键")
+                            color: !root.effectiveIsCopy ? ThemeTokens.text : ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeMicro
+                            font.weight: !root.effectiveIsCopy ? Typography.weightMedium : Typography.weightRegular
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                    Text {
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: qsTr("移动到目标")
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeMicro
+                    }
+                }
+
+                // 指南行 2: Ctrl+左键 -> 复制
+                Item {
+                    width: parent.width
+                    height: ThemeTokens.dp(18)
+                    opacity: root.effectiveIsCopy ? 1.0 : 0.7
+
+                    Row {
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: ThemeTokens.dp(6)
+
+                        ChaSetKbd {
+                            size: "xs"
+                            variant: root.effectiveIsCopy ? "solid" : "subtle"
+                            shortcut: "Ctrl+mouse-left"
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        Text {
+                            text: qsTr("按住 Ctrl")
+                            color: root.effectiveIsCopy ? ThemeTokens.text : ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeMicro
+                            font.weight: root.effectiveIsCopy ? Typography.weightMedium : Typography.weightRegular
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                    Text {
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: qsTr("复制到目标")
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeMicro
+                    }
+                }
+
+                // 指南行 3: Esc -> 取消
+                Item {
+                    width: parent.width
+                    height: ThemeTokens.dp(18)
+                    opacity: 0.7
+
+                    Row {
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: ThemeTokens.dp(6)
+
+                        ChaSetKbd {
+                            size: "xs"
+                            variant: "subtle"
+                            shortcut: "Esc"
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        Text {
+                            text: qsTr("按 Esc")
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeMicro
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                    Text {
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: qsTr("取消")
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeMicro
+                    }
                 }
             }
         }

@@ -137,6 +137,30 @@ Item {
         }
     }
 
+    // Parse token for keyboard key or mouse button indicator (e.g. "mouse-left", "mouse-right", "mouse-middle")
+    function parseKeyToken(rawKey) {
+        if (!rawKey) return { isMouse: false, button: "none", text: "", label: "" };
+        var rawStr = String(rawKey).trim();
+        var colonIdx = rawStr.indexOf(":");
+        var keyPart = colonIdx >= 0 ? rawStr.substring(0, colonIdx).trim() : rawStr;
+        var labelPart = colonIdx >= 0 ? rawStr.substring(colonIdx + 1).trim() : "";
+        var l = keyPart.toLowerCase();
+
+        if (l === "mouse-left" || l === "left-click" || l === "lmb" || l === "mouse_left") {
+            return { isMouse: true, button: "left", text: "LMB", label: labelPart };
+        }
+        if (l === "mouse-right" || l === "right-click" || l === "rmb" || l === "mouse_right") {
+            return { isMouse: true, button: "right", text: "RMB", label: labelPart };
+        }
+        if (l === "mouse-middle" || l === "middle-click" || l === "mmb" || l === "wheel" || l === "mouse_middle") {
+            return { isMouse: true, button: "middle", text: "MMB", label: labelPart };
+        }
+        if (l === "mouse" || l === "click") {
+            return { isMouse: true, button: "left", text: "Click", label: labelPart };
+        }
+        return { isMouse: false, button: "none", text: root.formatKey(rawStr), label: "" };
+    }
+
     // Parsed shortcut structure: list of branches (split by " / "), each containing list of keys (split by "+")
     readonly property var parsedBranches: {
         var raw = root.shortcut.length > 0 ? root.shortcut : root.text;
@@ -208,55 +232,130 @@ Item {
                 }
 
                 // Non-subtle variants render individual keycap badges
-                Repeater {
-                    visible: !root.isSubtle
-                    model: branchRow.modelData
-                    delegate: Row {
-                        id: keyWrapper
-                        required property var modelData
-                        required property int index
-                        spacing: ThemeTokens.dp(2)
-                        anchors.verticalCenter: parent ? parent.verticalCenter : undefined
-
-                        Text {
-                            visible: keyWrapper.index > 0 && !root.isCompact
-                            text: root.separator
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeMicro
-                            font.family: Typography.familyMono
+                    Repeater {
+                        visible: !root.isSubtle
+                        model: branchRow.modelData
+                        delegate: Row {
+                            id: keyWrapper
+                            required property var modelData
+                            required property int index
+                            readonly property var tokenInfo: root.parseKeyToken(keyWrapper.modelData)
+                            spacing: ThemeTokens.dp(2)
                             anchors.verticalCenter: parent ? parent.verticalCenter : undefined
-                        }
-
-                        Rectangle {
-                            id: keyBox
-                            height: root.keyHeight
-                            width: Math.max(height, keyLabel.implicitWidth + root.keyPaddingH * 2)
-                            radius: root.keyRadius
-                            color: root.bgFillColor
-                            border.color: root.borderColor
-                            border.width: (root.variant === "outline" || root.variant === "inverted") ? 1 : 0
-                            anchors.verticalCenter: parent ? parent.verticalCenter : undefined
-
-                            Behavior on color {
-                                enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive
-                                ColorAnimation {
-                                    duration: ThemeTokens.motionQuick
-                                    easing.type: ThemeTokens.easeStandard
-                                }
-                            }
 
                             Text {
-                                id: keyLabel
-                                anchors.centerIn: parent
-                                text: root.formatKey(keyWrapper.modelData)
-                                color: root.fgTextColor
-                                font.pixelSize: root.fontSize
+                                visible: keyWrapper.index > 0 && !root.isCompact
+                                text: root.separator
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: Typography.sizeMicro
                                 font.family: Typography.familyMono
-                                font.weight: Typography.weightMedium
+                                anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+                            }
+
+                            Rectangle {
+                                id: keyBox
+                                height: root.keyHeight
+                                width: Math.max(height, contentRow.implicitWidth + root.keyPaddingH * 2)
+                                radius: root.keyRadius
+                                color: root.bgFillColor
+                                border.color: root.borderColor
+                                border.width: (root.variant === "outline" || root.variant === "inverted") ? 1 : 0
+                                anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+
+                                Behavior on color {
+                                    enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive
+                                    ColorAnimation {
+                                        duration: ThemeTokens.motionQuick
+                                        easing.type: ThemeTokens.easeStandard
+                                    }
+                                }
+
+                                Row {
+                                    id: contentRow
+                                    anchors.centerIn: parent
+                                    spacing: ThemeTokens.dp(4)
+
+                                    // 鼠标按键微型图示（当 tokenInfo.isMouse 为 true 时激活，高亮对应按键）
+                                    Item {
+                                        id: mouseGlyph
+                                        visible: tokenInfo.isMouse
+                                        width: ThemeTokens.dp(11)
+                                        height: Math.max(ThemeTokens.dp(14), Math.round(root.keyHeight * 0.62))
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        readonly property color strokeCol: root.forceActive ? ThemeTokens.text : root.fgTextColor
+                                        readonly property color highlightCol: root.forceActive ? ThemeTokens.accent : ThemeTokens.focus
+
+                                        // 下半身掌托握柄
+                                        Rectangle {
+                                            anchors.left: parent.left
+                                            anchors.right: parent.right
+                                            anchors.bottom: parent.bottom
+                                            anchors.top: parent.top
+                                            anchors.topMargin: Math.round(parent.height * 0.44)
+                                            bottomLeftRadius: width / 2
+                                            bottomRightRadius: width / 2
+                                            color: Qt.rgba(strokeCol.r, strokeCol.g, strokeCol.b, 0.12)
+                                            border.color: strokeCol
+                                            border.width: 1
+                                        }
+
+                                        // 左按键（高亮状态亮起指定的左按键）
+                                        Rectangle {
+                                            x: 0
+                                            y: 0
+                                            width: Math.floor((parent.width - 1) / 2)
+                                            height: Math.round(parent.height * 0.44)
+                                            topLeftRadius: ThemeTokens.dp(3)
+                                            topRightRadius: 0
+                                            bottomLeftRadius: 0
+                                            bottomRightRadius: 0
+                                            color: (tokenInfo.button === "left" || tokenInfo.button === "both") ? highlightCol : "transparent"
+                                            border.color: strokeCol
+                                            border.width: 1
+                                        }
+
+                                        // 右按键（高亮状态亮起指定的右按键）
+                                        Rectangle {
+                                            x: Math.ceil((parent.width + 1) / 2) - 1
+                                            y: 0
+                                            width: Math.floor((parent.width - 1) / 2)
+                                            height: Math.round(parent.height * 0.44)
+                                            topLeftRadius: 0
+                                            topRightRadius: ThemeTokens.dp(3)
+                                            bottomLeftRadius: 0
+                                            bottomRightRadius: 0
+                                            color: (tokenInfo.button === "right" || tokenInfo.button === "both") ? highlightCol : "transparent"
+                                            border.color: strokeCol
+                                            border.width: 1
+                                        }
+
+                                        // 滚轮小药丸
+                                        Rectangle {
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            y: Math.round(parent.height * 0.10)
+                                            width: ThemeTokens.dp(2)
+                                            height: Math.round(parent.height * 0.22)
+                                            radius: 1
+                                            color: tokenInfo.button === "middle" ? highlightCol : strokeCol
+                                        }
+                                    }
+
+                                    // 按键文本（普通按键显示 keyName，鼠标按键若带 label 则显示 label）
+                                    Text {
+                                        id: keyLabel
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        visible: !tokenInfo.isMouse || (tokenInfo.label && tokenInfo.label.length > 0)
+                                        text: tokenInfo.isMouse ? tokenInfo.label : tokenInfo.text
+                                        color: root.fgTextColor
+                                        font.pixelSize: root.fontSize
+                                        font.family: Typography.familyMono
+                                        font.weight: Typography.weightMedium
+                                    }
+                                }
                             }
                         }
                     }
-                }
             }
         }
     }

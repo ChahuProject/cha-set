@@ -95,6 +95,94 @@ export function formatKeyToken(rawKey: string, compactMode: boolean): string {
   return trimmed;
 }
 
+export interface ParsedKeyToken {
+  isMouse: boolean;
+  button: 'left' | 'right' | 'middle';
+  text: string;
+  label?: string;
+}
+
+export function parseKeyToken(rawKey: string, compactMode: boolean): ParsedKeyToken {
+  const trimmed = rawKey.trim();
+  const colonIdx = trimmed.indexOf(':');
+  const keyPart = colonIdx >= 0 ? trimmed.substring(0, colonIdx).trim() : trimmed;
+  const labelPart = colonIdx >= 0 ? trimmed.substring(colonIdx + 1).trim() : undefined;
+  const lower = keyPart.toLowerCase();
+
+  if (lower === 'mouse-left' || lower === 'left-click' || lower === 'lmb' || lower === 'mouse_left') {
+    return { isMouse: true, button: 'left', text: 'LMB', label: labelPart };
+  }
+  if (lower === 'mouse-right' || lower === 'right-click' || lower === 'rmb' || lower === 'mouse_right') {
+    return { isMouse: true, button: 'right', text: 'RMB', label: labelPart };
+  }
+  if (lower === 'mouse-middle' || lower === 'middle-click' || lower === 'mmb' || lower === 'wheel' || lower === 'mouse_middle') {
+    return { isMouse: true, button: 'middle', text: 'MMB', label: labelPart };
+  }
+  if (lower === 'mouse' || lower === 'click') {
+    return { isMouse: true, button: 'left', text: 'Click', label: labelPart };
+  }
+  return { isMouse: false, button: 'left', text: formatKeyToken(trimmed, compactMode), label: labelPart };
+}
+
+export function MouseGlyph({
+  button = 'left',
+  className,
+}: {
+  button?: 'left' | 'right' | 'middle';
+  className?: string;
+}) {
+  const isLeft = button === 'left';
+  const isRight = button === 'right';
+  const isMiddle = button === 'middle';
+
+  return (
+    <svg
+      data-slot="mouse-glyph"
+      data-button={button}
+      width="11"
+      height="15"
+      viewBox="0 0 11 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('inline-block shrink-0', className)}
+    >
+      {/* Palm body */}
+      <path
+        d="M1 6.5V10.5C1 12.9853 3.01472 15 5.5 15C7.98528 15 10 12.9853 10 10.5V6.5H1Z"
+        fill="currentColor"
+        fillOpacity="0.12"
+        stroke="currentColor"
+        strokeWidth="1"
+      />
+      {/* Left button */}
+      <path
+        d="M1 4.5C1 2.567 2.567 1 4.5 1V6.5H1V4.5Z"
+        fill={isLeft ? 'currentColor' : 'none'}
+        stroke="currentColor"
+        strokeWidth="1"
+      />
+      {/* Right button */}
+      <path
+        d="M6.5 1C8.433 1 10 2.567 10 4.5V6.5H6.5V1Z"
+        fill={isRight ? 'currentColor' : 'none'}
+        stroke="currentColor"
+        strokeWidth="1"
+      />
+      {/* Middle wheel */}
+      <rect
+        x="4.75"
+        y="2.5"
+        width="1.5"
+        height="2.5"
+        rx="0.75"
+        fill={isMiddle ? 'currentColor' : 'none'}
+        stroke="currentColor"
+        strokeWidth="0.7"
+      />
+    </svg>
+  );
+}
+
 /**
  * Parses a shortcut string into branches (split by ' / ') and key tokens (split by '+').
  */
@@ -195,7 +283,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
                   </span>
                 ) : (
                   keys.map((k, keyIdx) => {
-                    const formatted = formatKeyToken(k, isCompact);
+                    const parsed = parseKeyToken(k, isCompact);
                     return (
                       <React.Fragment key={`key-${keyIdx}-${k}`}>
                         {keyIdx > 0 && !isCompact && (
@@ -207,15 +295,19 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
                           data-slot="kbd"
                           data-variant={variant}
                           data-size={size}
+                          data-is-mouse={parsed.isMouse ? true : undefined}
                           className={cn(
-                            'inline-flex items-center justify-center font-mono font-medium leading-none select-none transition-colors duration-quick ease-standard',
+                            'inline-flex items-center justify-center font-mono font-medium leading-none select-none transition-colors duration-quick ease-standard gap-1',
                             variantClasses[variant],
                             sizeClasses[size],
                             forceHover && 'border-primary/50 text-foreground',
                             forceActive && 'bg-accent text-accent-foreground',
                           )}
                         >
-                          {formatted}
+                          {parsed.isMouse && <MouseGlyph button={parsed.button} />}
+                          {(!parsed.isMouse || parsed.label) && (
+                            <span>{parsed.isMouse ? parsed.label : parsed.text}</span>
+                          )}
                         </kbd>
                       </React.Fragment>
                     );

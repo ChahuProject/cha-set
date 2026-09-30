@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { observeElementRect, useVirtualizer } from '@tanstack/react-virtual';
 import { cn } from '../lib/utils';
+import { Kbd } from '../kbd';
 
 export interface TreeNode {
   id: string;
@@ -996,7 +997,7 @@ export function VirtualTree<T>({
         </div>
       )}
 
-      {/* Floating Drag Modifier HUD Tooltip */}
+      {/* Floating Drag Modifier HUD Card */}
       {enableDnd && draggedKeys && (
         <div
           role="status"
@@ -1004,12 +1005,87 @@ export function VirtualTree<T>({
           data-slot="virtual-tree-drag-hud"
           data-hud-position={hudAtTop ? 'top' : 'bottom'}
           className={cn(
-            'pointer-events-none absolute right-2 flex items-center gap-1.5 rounded-md bg-popover/95 px-2.5 py-1 text-xs text-popover-foreground shadow-md border border-border backdrop-blur-xs z-30 transition-all duration-200 select-none',
+            'pointer-events-none absolute right-2 flex flex-col gap-2 rounded-lg bg-popover/95 p-2.5 text-xs text-popover-foreground shadow-lg border border-border backdrop-blur-xs z-30 transition-all duration-200 select-none min-w-[200px]',
             hudAtTop ? 'top-2' : 'bottom-2',
           )}
         >
-          <span className="font-medium">{dragModifier === 'copy' ? 'Copying' : 'Moving'}</span>
-          <span className="text-muted-foreground">({dragModifier === 'copy' ? 'Ctrl held' : 'Hold Ctrl to copy'})</span>
+          {/* Realtime Target Status */}
+          <div className="flex items-center gap-1.5 font-medium">
+            <span
+              className={cn(
+                'inline-block size-2 rounded-full',
+                dropTarget ? 'bg-primary' : 'bg-muted-foreground/60',
+              )}
+            />
+            <span>
+              {dropTarget ? (
+                dropTarget.position === 'inside'
+                  ? `${dragModifier === 'copy' ? '复制到' : '移入'}: ${
+                      visibleNodes.find((n) => n.key === dropTarget.key)?.node?.label ||
+                      visibleNodes.find((n) => n.key === dropTarget.key)?.node?.name ||
+                      dropTarget.key
+                    }`
+                  : `放置在同级: ${
+                      visibleNodes.find((n) => n.key === dropTarget.key)?.node?.label ||
+                      visibleNodes.find((n) => n.key === dropTarget.key)?.node?.name ||
+                      dropTarget.key
+                    }`
+              ) : (
+                `拖拽中 (${draggedKeys.length} 项)`
+              )}
+            </span>
+          </div>
+
+          <div className="h-px bg-border/60" />
+
+          {/* Action Guidelines with Kbd */}
+          <div className="flex flex-col gap-1.5">
+            <div
+              className={cn(
+                'flex items-center justify-between gap-3 transition-colors',
+                dragModifier === 'move'
+                  ? 'text-foreground font-medium'
+                  : 'text-muted-foreground/75',
+              )}
+            >
+              <span className="flex items-center gap-1.5">
+                <Kbd
+                  size="xs"
+                  variant={dragModifier === 'move' ? 'solid' : 'subtle'}
+                  shortcut="mouse-left"
+                />
+                <span>松开左键</span>
+              </span>
+              <span className="text-micro font-sans">移动到目标</span>
+            </div>
+
+            <div
+              className={cn(
+                'flex items-center justify-between gap-3 transition-colors',
+                dragModifier === 'copy'
+                  ? 'text-foreground font-medium'
+                  : 'text-muted-foreground/75',
+              )}
+            >
+              <span className="flex items-center gap-1.5">
+                <Kbd
+                  size="xs"
+                  variant={dragModifier === 'copy' ? 'solid' : 'subtle'}
+                  shortcut="Ctrl+mouse-left"
+                />
+                <span>按住 Ctrl</span>
+              </span>
+              <span className="text-micro font-sans">复制到目标</span>
+            </div>
+
+            <div className="flex items-center justify-between gap-3 text-muted-foreground/75">
+              <span className="flex items-center gap-1.5">
+                <Kbd size="xs" variant="subtle" shortcut="Esc" />
+                <span>按 Esc</span>
+              </span>
+              <span className="text-micro font-sans">取消</span>
+            </div>
+          </div>
         </div>
       )}
     </div>
