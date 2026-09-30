@@ -857,19 +857,20 @@ Item {
 
                 // Drop Indicator: Inside Highlight
                 Rectangle {
+                    id: insideHighlight
                     visible: isDropTarget && root.dropPosition === "inside" && root.isDropValid
                     anchors.fill: parent
                     readonly property bool isPendingDwell: root.enableDndDwell && !root.effectiveIsCopy && !root.isDndDwellArmed
-                    color: isPendingDwell
+                    color: insideHighlight.isPendingDwell
                         ? Qt.rgba(ThemeTokens.pendingAccent.r, ThemeTokens.pendingAccent.g, ThemeTokens.pendingAccent.b, 0.15)
                         : Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15)
-                    border.color: isPendingDwell ? ThemeTokens.pendingAccent : ThemeTokens.focus
+                    border.color: insideHighlight.isPendingDwell ? ThemeTokens.pendingAccent : ThemeTokens.focus
                     border.width: 1
                     radius: ThemeTokens.dp(4)
                     z: 20
 
                     Rectangle {
-                        visible: isPendingDwell
+                        visible: insideHighlight.isPendingDwell
                         anchors.bottom: parent.bottom
                         anchors.left: parent.left
                         height: ThemeTokens.dp(2)
