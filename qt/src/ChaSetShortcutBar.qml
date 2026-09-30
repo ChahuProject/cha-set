@@ -277,20 +277,14 @@ Item {
         itemTooltipPopup.close()
     }
 
+    property color backgroundColor: "transparent"
+
     Rectangle {
         id: bgRect
         anchors.fill: parent
-        color: ThemeTokens.panelRaised
+        color: root.backgroundColor
+        visible: root.backgroundColor !== "transparent" && root.backgroundColor.a > 0
         z: -1
-    }
-
-    // Top border divider line
-    Rectangle {
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: 1
-        color: ThemeTokens.border
     }
 
     Row {

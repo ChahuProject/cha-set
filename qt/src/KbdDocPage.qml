@@ -539,7 +539,7 @@ DocLayout {
                     width: Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(540), ThemeTokens.dp(root.playgroundWidth)))
                     height: ThemeTokens.dp(32)
                     radius: ThemeTokens.dp(6)
-                    color: ThemeTokens.panel
+                    color: ThemeTokens.background
                     border.color: ThemeTokens.border
                     border.width: ThemeTokens.dp(1)
 
