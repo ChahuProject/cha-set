@@ -21,6 +21,11 @@ import {
   CANONICAL_SCALE_STEPS,
   ChaSetI18nProvider,
   DEFAULT_THEME_CONFIG,
+  SheetRoot,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  ChaSetLogoIcon,
   type ThemeConfig,
 } from '@chahu/cha-set';
 import { type ThemeOverrides } from './components/ThemeTuner';
@@ -28,7 +33,8 @@ import { ExportModal } from './components/ExportModal';
 import { CommandSearchModal } from './components/CommandSearchModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Header } from './layout/Header';
-import { Sidebar } from './layout/Sidebar';
+import { Sidebar, NavigationContent } from './layout/Sidebar';
+import { TocProvider } from './layout/TocContext';
 import { useRouter } from './router/useRouter';
 import { ButtonDocPage } from './pages/components/ButtonDocPage';
 import { ScrollAreaDocPage } from './pages/components/ScrollAreaDocPage';
@@ -653,6 +659,7 @@ export function App() {
 
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const themeConfig: ThemeConfig = {
     version: 1,
@@ -885,55 +892,74 @@ export function App() {
 
   return (
     <ChaSetI18nProvider>
-      <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20">
-        {/* Top Navbar */}
-        <Header
-          mode={mode}
-          onToggleMode={() => setMode((m) => (m === 'light' ? 'dark' : m === 'dark' ? 'system' : 'light'))}
-          onOpenSearch={() => setSearchModalOpen(true)}
-          onOpenTuner={() => navigate('#/get-started/theme-tuner')}
-          isTunerActive={currentHash === '#/get-started/theme-tuner'}
-          onOpenExport={() => setExportModalOpen(true)}
-        />
+      <TocProvider>
+        <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20">
+          {/* Top Navbar */}
+          <Header
+            mode={mode}
+            onToggleMode={() => setMode((m) => (m === 'light' ? 'dark' : m === 'dark' ? 'system' : 'light'))}
+            onOpenSearch={() => setSearchModalOpen(true)}
+            onOpenTuner={() => navigate('#/get-started/theme-tuner')}
+            isTunerActive={currentHash === '#/get-started/theme-tuner'}
+            onOpenExport={() => setExportModalOpen(true)}
+            onOpenSidebar={() => setMobileNavOpen(true)}
+          />
 
-        {/* Main 2-Column Showcase Layout */}
-        <div className="flex flex-1">
-          {/* Left SSOT Navigation Sidebar */}
-          <Sidebar currentHash={currentHash} />
+          {/* Main 2-Column Showcase Layout */}
+          <div className="flex flex-1">
+            {/* Left SSOT Navigation Sidebar (Desktop Persistent >= md) */}
+            <Sidebar currentHash={currentHash} />
 
-          {/* Right Main Documentation Viewport */}
-          <div className="flex-1 min-w-0">
-            <ErrorBoundary>
-              {renderActivePage()}
-            </ErrorBoundary>
+            {/* Right Main Documentation Viewport */}
+            <div className="flex-1 min-w-0">
+              <ErrorBoundary>
+                {renderActivePage()}
+              </ErrorBoundary>
+            </div>
           </div>
+
+          {/* Mobile Navigation Drawer Sheet (< md) */}
+          <SheetRoot open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+            <SheetContent side="left" className="w-72 max-w-[85vw] p-0" aria-label="Navigation">
+              <SheetHeader className="p-4 pb-2 border-b border-border flex flex-row items-center gap-2">
+                <ChaSetLogoIcon className="size-5 text-primary shrink-0" />
+                <SheetTitle className="text-sm font-bold">ChaSet Docs</SheetTitle>
+              </SheetHeader>
+              <ScrollArea className="h-[calc(100vh-4.5rem)]" viewportClassName="p-4">
+                <NavigationContent
+                  currentHash={currentHash}
+                  onItemClick={() => setMobileNavOpen(false)}
+                />
+              </ScrollArea>
+            </SheetContent>
+          </SheetRoot>
+
+          {/* Quick Search Dialog (Cmd+K) */}
+          <CommandSearchModal
+            isOpen={searchModalOpen}
+            onClose={() => setSearchModalOpen(false)}
+            onSelect={(href) => navigate(href)}
+          />
+
+          {/* One-Click Export Modal */}
+          <ExportModal
+            isOpen={exportModalOpen}
+            onClose={() => setExportModalOpen(false)}
+            mode={mode}
+            accent={accent}
+            overrides={overrides}
+          />
+
+          {/* Global Floating UI Scale OSD (Bottom Center) */}
+          <ScaleOsd
+            {...scaleOsd.bind}
+            size="lg"
+            ignoreUiScale={true}
+            placement="bottom-center"
+            format={(v) => `界面缩放 ${Math.round(v * 100)}%`}
+          />
         </div>
-
-        {/* Quick Search Dialog (Cmd+K) */}
-        <CommandSearchModal
-          isOpen={searchModalOpen}
-          onClose={() => setSearchModalOpen(false)}
-          onSelect={(href) => navigate(href)}
-        />
-
-        {/* One-Click Export Modal */}
-        <ExportModal
-          isOpen={exportModalOpen}
-          onClose={() => setExportModalOpen(false)}
-          mode={mode}
-          accent={accent}
-          overrides={overrides}
-        />
-
-        {/* Global Floating UI Scale OSD (Bottom Center) */}
-        <ScaleOsd
-          {...scaleOsd.bind}
-          size="lg"
-          ignoreUiScale={true}
-          placement="bottom-center"
-          format={(v) => `界面缩放 ${Math.round(v * 100)}%`}
-        />
-      </div>
+      </TocProvider>
     </ChaSetI18nProvider>
   );
 }

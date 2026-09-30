@@ -21,6 +21,11 @@ Item {
 
     readonly property bool showToc: root.effectiveTocItems && root.effectiveTocItems.length > 0 && layoutRow.width >= ThemeTokens.dp(600)
     property int activeTocIndex: 0
+    signal requestMobileToc()
+
+    function openMobileToc() {
+        root.requestMobileToc();
+    }
 
     readonly property var scrollAreaItem: {
         var p = root.parent;
@@ -521,6 +526,19 @@ Item {
                                 SelectionHub.showContextMenu(scenePos.x, scenePos.y, titleText);
                             }
                         }
+                    }
+
+                    ChaSetButton {
+                        id: mobileTocBtn
+                        visible: !root.showToc && root.effectiveTocItems && root.effectiveTocItems.length > 0
+                        anchors.right: copyBtn.left
+                        anchors.rightMargin: ThemeTokens.dp(8)
+                        anchors.verticalCenter: copyBtn.verticalCenter
+                        variant: "outline"
+                        size: "sm"
+                        icon: "list"
+                        text: ChaSetI18n.tr("showcase.outline", "Outline")
+                        onClicked: root.openMobileToc()
                     }
 
                     ChaSetCopyButton {

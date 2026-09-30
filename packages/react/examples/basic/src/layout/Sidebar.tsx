@@ -6,44 +6,56 @@ export interface SidebarProps {
   currentHash: string;
 }
 
-export function Sidebar({ currentHash }: SidebarProps) {
+export interface NavigationContentProps {
+  currentHash: string;
+  onItemClick?: () => void;
+}
+
+export function NavigationContent({ currentHash, onItemClick }: NavigationContentProps) {
   const { t } = useChaSetI18n();
 
   return (
+    <nav className="flex flex-col gap-6" aria-label="Documentation Navigation">
+      {NAVIGATION_CONFIG.map((cat) => (
+        <div key={cat.title} className="flex flex-col gap-1.5">
+          <h4 className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+            {t('showcase.categories.' + cat.title, cat.title)}
+          </h4>
+          <div className="flex flex-col gap-0.5">
+            {cat.items.map((item) => {
+              const isActive = currentHash === item.href || (currentHash === '#/' && item.href === '#/get-started/introduction');
+              return (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  onClick={onItemClick}
+                  className={`flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs transition-colors ${
+                    isActive
+                      ? 'bg-muted font-semibold text-foreground'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                  }`}
+                >
+                  <span>{item.title}</span>
+                  {item.badge && (
+                    <Badge size="sm" variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                      {item.badge}
+                    </Badge>
+                  )}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </nav>
+  );
+}
+
+export function Sidebar({ currentHash }: SidebarProps) {
+  return (
     <aside className="w-64 shrink-0 hidden md:block border-r border-border h-[calc(100vh-3.5rem)] sticky top-14 select-none bg-background/50 overflow-hidden">
       <ScrollArea className="h-full w-full" viewportClassName="p-4">
-        <nav className="flex flex-col gap-6" aria-label="Documentation Sidebar">
-        {NAVIGATION_CONFIG.map((cat) => (
-          <div key={cat.title} className="flex flex-col gap-1.5">
-            <h4 className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
-              {t('showcase.categories.' + cat.title, cat.title)}
-            </h4>
-            <div className="flex flex-col gap-0.5">
-              {cat.items.map((item) => {
-                const isActive = currentHash === item.href || (currentHash === '#/' && item.href === '#/get-started/introduction');
-                return (
-                  <a
-                    key={item.id}
-                    href={item.href}
-                    className={`flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs transition-colors ${
-                      isActive
-                        ? 'bg-muted font-semibold text-foreground'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                    }`}
-                  >
-                    <span>{item.title}</span>
-                    {item.badge && (
-                      <Badge size="sm" variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-                        {item.badge}
-                      </Badge>
-                    )}
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </nav>
+        <NavigationContent currentHash={currentHash} />
       </ScrollArea>
     </aside>
   );

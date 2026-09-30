@@ -20,6 +20,11 @@ ApplicationWindow {
     property string activeAccent: ""
     property int customRadius: 8
 
+    // ---- Reactive Navigation & Mobile Drawer State ----
+    readonly property bool isMobileNav: width < ThemeTokens.dp(768)
+    property bool mobileNavOpen: false
+    property bool mobileTocOpen: false
+
     // ---- Reactive Global Theme Config ----
     property var globalThemeConfig: ({
         version: 1,
@@ -1865,7 +1870,18 @@ ApplicationWindow {
                         id: brandGroup
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: ThemeTokens.dp(10)
+                        spacing: ThemeTokens.dp(8)
+
+                        // Mobile Sidebar Drawer Toggle Button
+                        ChaSetButton {
+                            id: mobileNavBtn
+                            visible: win.isMobileNav
+                            size: "icon"
+                            variant: "ghost"
+                            icon: "panel-left"
+                            anchors.verticalCenter: parent.verticalCenter
+                            onClicked: win.mobileNavOpen = true
+                        }
 
                         Item {
                             width: brandContentRow.implicitWidth
@@ -2002,6 +2018,20 @@ ApplicationWindow {
                                 variant: "outline"
                                 icon: "search"
                                 onClicked: win.searchModalOpen = true
+                            }
+                        }
+
+                        // Table of Contents Toggle Button (visible when TOC column is collapsed)
+                        ChaSetTooltip {
+                            text: ChaSetI18n.tr("showcase.onThisPage", "On this page")
+                            side: "bottom"
+                            visible: pageLoader.item && pageLoader.item.effectiveTocItems !== undefined && pageLoader.item.effectiveTocItems.length > 0 && pageLoader.item.showToc === false
+
+                            ChaSetButton {
+                                size: "icon"
+                                variant: "outline"
+                                icon: "list"
+                                onClicked: win.mobileTocOpen = true
                             }
                         }
 
@@ -2161,10 +2191,11 @@ ApplicationWindow {
                 anchors.top: topbar.bottom
                 anchors.bottom: parent.bottom
 
-                // Left Navigation Sidebar (240px width with right border)
+                // Left Navigation Sidebar (240px width with right border, hidden when win.isMobileNav)
                 Rectangle {
                     id: sidebar
-                    width: Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(240), Math.round(parent.width * 0.28)))
+                    visible: !win.isMobileNav
+                    width: win.isMobileNav ? 0 : Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(240), Math.round(parent.width * 0.28)))
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
@@ -2273,7 +2304,7 @@ ApplicationWindow {
                 ChaSetScrollArea {
                     id: contentScroll
                     objectName: "contentScroll"
-                    anchors.left: sidebar.right
+                    anchors.left: win.isMobileNav ? parent.left : sidebar.right
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
@@ -2304,6 +2335,11 @@ ApplicationWindow {
                             source: win.getPageSource(win.activePage)
                             onLoaded: {
                                 if (item) {
+                                    if ("requestMobileToc" in item) {
+                                        item.requestMobileToc.connect(function() {
+                                            win.mobileTocOpen = true;
+                                        });
+                                    }
                                     if ("customRadius" in item) item.customRadius = Qt.binding(function() { return win.customRadius })
                                     if ("cFg" in item) item.cFg = Qt.binding(function() { return win.cFg })
                                     if ("cMutedFg" in item) item.cMutedFg = Qt.binding(function() { return win.cMutedFg })
@@ -2364,6 +2400,141 @@ ApplicationWindow {
                 target: exportModalItem
                 property: "open"
                 value: win.exportModalOpen
+            }
+
+            // Mobile Navigation Drawer Sheet (< 768dp)
+            ChaSetSheet {
+                id: mobileNavSheet
+                open: win.mobileNavOpen
+                side: "left"
+                title: ChaSetI18n.tr("showcase.navigation", "Navigation")
+                description: ""
+                showCloseButton: true
+                onClosed: win.mobileNavOpen = false
+
+                ChaSetScrollArea {
+                    anchors.fill: parent
+                    anchors.margins: ThemeTokens.dp(16)
+                    showVerticalScrollBar: true
+                    showHorizontalScrollBar: false
+                    showButtons: false
+                    contentWidth: width
+                    contentHeight: mobileNavCol.implicitHeight + ThemeTokens.dp(32)
+
+                    Column {
+                        id: mobileNavCol
+                        width: parent.width
+                        spacing: ThemeTokens.dp(20)
+
+                        Repeater {
+                            model: ShowcaseData.navigation || []
+                            delegate: Column {
+                                required property var modelData
+                                width: parent.width
+                                spacing: ThemeTokens.dp(4)
+
+                                Text {
+                                    text: modelData.title ? ChaSetI18n.tr("showcase.categories." + modelData.title, modelData.title).toUpperCase() : ""
+                                    color: win.cMutedFg
+                                    font.pixelSize: Typography.sizeCaption
+                                    font.weight: Typography.weightSemibold
+                                    font.family: Typography.familySans
+                                }
+
+                                Item { width: 1; height: ThemeTokens.dp(4) }
+
+                                Repeater {
+                                    model: modelData.items || []
+                                    delegate: Rectangle {
+                                        id: mNavItemRect
+                                        required property var modelData
+                                        width: parent.width
+                                        height: ThemeTokens.dp(32)
+                                        radius: ThemeTokens.dp(6)
+
+                                        readonly property bool isActive: win.activePage === mNavItemRect.modelData.id
+                                        readonly property bool isHovered: mNavItemMouse.containsMouse
+
+                                        color: isActive ? win.cAccentBg : (isHovered ? ThemeTokens.hover : "transparent")
+
+                                        Behavior on color {
+                                            ColorAnimation { duration: 100 }
+                                        }
+
+                                        Text {
+                                            anchors.left: parent.left
+                                            anchors.leftMargin: ThemeTokens.dp(10)
+                                            anchors.right: mNavItemBadge.visible ? mNavItemBadge.left : parent.right
+                                            anchors.rightMargin: ThemeTokens.dp(8)
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            elide: Text.ElideRight
+                                            text: mNavItemRect.modelData.title || ""
+                                            color: (mNavItemRect.isActive || mNavItemRect.isHovered) ? win.cFg : win.cMutedFg
+                                            font.pixelSize: Typography.sizeSmall
+                                            font.weight: mNavItemRect.isActive ? Typography.weightSemibold : Typography.weightRegular
+                                        }
+
+                                        ChaSetBadge {
+                                            id: mNavItemBadge
+                                            visible: !!mNavItemRect.modelData.badge
+                                            variant: "secondary"
+                                            size: "sm"
+                                            text: mNavItemRect.modelData.badge || ""
+                                            anchors.right: parent.right
+                                            anchors.rightMargin: ThemeTokens.dp(10)
+                                            anchors.verticalCenter: parent.verticalCenter
+                                        }
+
+                                        MouseArea {
+                                            id: mNavItemMouse
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            cursorShape: Qt.PointingHandCursor
+                                            onClicked: {
+                                                win.activePage = mNavItemRect.modelData.id;
+                                                win.mobileNavOpen = false;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Mobile / Responsive Table of Contents Drawer Sheet
+            ChaSetSheet {
+                id: mobileTocSheet
+                open: win.mobileTocOpen
+                side: "right"
+                title: ChaSetI18n.tr("showcase.onThisPage", "On this page")
+                description: ""
+                showCloseButton: true
+                onClosed: win.mobileTocOpen = false
+
+                ChaSetScrollArea {
+                    anchors.fill: parent
+                    anchors.margins: ThemeTokens.dp(16)
+                    showVerticalScrollBar: true
+                    showHorizontalScrollBar: false
+                    showButtons: false
+                    contentWidth: width
+                    contentHeight: mobileTocList.implicitHeight + ThemeTokens.dp(32)
+
+                    ChaSetTableOfContents {
+                        id: mobileTocList
+                        width: parent.width
+                        items: (pageLoader.item && pageLoader.item.effectiveTocItems) ? pageLoader.item.effectiveTocItems : []
+                        activeId: (pageLoader.item && pageLoader.item.effectiveTocItems && pageLoader.item.effectiveTocItems.length > pageLoader.item.activeTocIndex && pageLoader.item.activeTocIndex >= 0) ? pageLoader.item.effectiveTocItems[pageLoader.item.activeTocIndex].id : ""
+                        onSelectItem: function(item) {
+                            if (pageLoader.item && pageLoader.item.scrollToSection) {
+                                pageLoader.item.scrollToSection(item);
+                            }
+                            win.mobileTocOpen = false;
+                        }
+                    }
+                }
             }
 
             // Floating UI Scale OSD (Bottom Center)

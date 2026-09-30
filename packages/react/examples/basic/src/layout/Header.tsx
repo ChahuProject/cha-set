@@ -25,7 +25,10 @@ import {
   MoonIcon,
   FileTextIcon,
   Maximize2Icon,
+  PanelLeftIcon,
+  ListIcon,
 } from '@chahu/cha-set';
+import { useToc } from './TocContext';
 
 export interface HeaderProps {
   mode: string;
@@ -34,6 +37,7 @@ export interface HeaderProps {
   onOpenTuner: () => void;
   isTunerActive: boolean;
   onOpenExport: () => void;
+  onOpenSidebar?: () => void;
 }
 
 export function Header({
@@ -43,9 +47,11 @@ export function Header({
   onOpenTuner,
   isTunerActive,
   onOpenExport,
+  onOpenSidebar,
 }: HeaderProps) {
   const { preference, setPreference, supportedLocales, locale, t } = useChaSetI18n();
   const activeLocaleMeta = supportedLocales.find((l) => l.code === locale) || { nativeName: locale, code: locale };
+  const tocContext = useToc();
 
   return (
     <header
@@ -54,7 +60,19 @@ export function Header({
     >
       <div className="flex h-14 items-center justify-between px-3 sm:px-4 md:px-6">
         {/* Brand Group */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          {onOpenSidebar && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={onOpenSidebar}
+              className="md:hidden -ml-1 text-muted-foreground hover:text-foreground"
+              aria-label="Open navigation sidebar"
+            >
+              <PanelLeftIcon className="size-4" />
+            </Button>
+          )}
           <a href="#/get-started/introduction" className="flex items-center gap-2 font-bold text-foreground hover:opacity-85 transition-opacity">
             <ChaSetLogoIcon className="size-5 text-primary shrink-0" />
             <span className="hidden min-[380px]:inline text-base tracking-tight font-bold">ChaSet</span>
@@ -93,6 +111,22 @@ export function Header({
               <SearchIcon className="size-4" />
             </Button>
           </Tooltip>
+
+          {/* Mobile/Tablet Table of Contents Trigger (< xl) */}
+          {tocContext.items.length > 0 && (
+            <Tooltip content={t('showcase.onThisPage', 'On this page')} side="bottom">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => tocContext.setTocOpen(true)}
+                className="inline-flex xl:hidden"
+                aria-label={t('showcase.onThisPage', 'On this page')}
+              >
+                <ListIcon className="size-4" />
+              </Button>
+            </Tooltip>
+          )}
 
           {/* Quick Jump Dropdown Menu */}
           <DropdownMenu>

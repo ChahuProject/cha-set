@@ -3,8 +3,14 @@ import {
   ScrollArea,
   TableOfContents as ChaSetTableOfContents,
   flattenTocItems,
+  SheetRoot,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  ListIcon,
   type TocItem,
 } from '@chahu/cha-set';
+import { useToc } from './TocContext';
 
 export type { TocItem };
 
@@ -208,6 +214,12 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
 
   const items = outline;
   const [activeId, setActiveId] = useState<string>(() => items[0]?.id || '');
+  const { setItems: setContextItems, tocOpen, setTocOpen } = useToc();
+
+  useEffect(() => {
+    setContextItems(items);
+    return () => setContextItems([]);
+  }, [items, setContextItems]);
 
   useEffect(() => {
     if (items.length > 0 && !items.some((item) => item.id === activeId)) {
@@ -307,18 +319,47 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
   };
 
   return (
-    <aside className="w-56 shrink-0 hidden xl:block border-l border-border h-[calc(100vh-3.5rem)] sticky top-14 text-xs bg-background/50 overflow-hidden">
-      <ScrollArea className="h-full w-full" viewportClassName="p-6">
-        <ChaSetTableOfContents
-          items={items}
-          activeId={activeId}
-          title="On this page"
-          showTitle={true}
-          showTrack={true}
-          targetOffset={bannerOffset}
-          onSelect={(item, e) => scrollToSection(e as any, item.id)}
-        />
-      </ScrollArea>
-    </aside>
+    <>
+      {/* Desktop Persistent Sidebar (>= xl) */}
+      <aside className="w-56 shrink-0 hidden xl:block border-l border-border h-[calc(100vh-3.5rem)] sticky top-14 text-xs bg-background/50 overflow-hidden">
+        <ScrollArea className="h-full w-full" viewportClassName="p-6">
+          <ChaSetTableOfContents
+            items={items}
+            activeId={activeId}
+            title="On this page"
+            showTitle={true}
+            showTrack={true}
+            targetOffset={bannerOffset}
+            onSelect={(item, e) => scrollToSection(e as any, item.id)}
+          />
+        </ScrollArea>
+      </aside>
+
+      {/* Mobile / Tablet Responsive TOC Drawer Sheet (< xl) */}
+      <SheetRoot open={tocOpen} onOpenChange={setTocOpen}>
+        <SheetContent side="right" className="w-72 max-w-[85vw] p-0" aria-label="Table of Contents">
+          <SheetHeader className="p-4 pb-2 border-b border-border">
+            <SheetTitle className="text-sm font-semibold flex items-center gap-2">
+              <ListIcon className="size-4 text-primary" />
+              <span>On this page</span>
+            </SheetTitle>
+          </SheetHeader>
+          <ScrollArea className="h-[calc(100vh-4.5rem)]" viewportClassName="p-4">
+            <ChaSetTableOfContents
+              items={items}
+              activeId={activeId}
+              title="On this page"
+              showTitle={false}
+              showTrack={true}
+              targetOffset={bannerOffset}
+              onSelect={(item, e) => {
+                scrollToSection(e as any, item.id);
+                setTocOpen(false);
+              }}
+            />
+          </ScrollArea>
+        </SheetContent>
+      </SheetRoot>
+    </>
   );
 }
