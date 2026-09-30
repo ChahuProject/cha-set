@@ -233,7 +233,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
     },
     ref,
   ) => {
-    const isCompact = compact === 'always' || compact === 'auto';
+    const isCompact = compact === 'always';
     const isSubtle = variant === 'subtle';
 
     // Overflow handling class

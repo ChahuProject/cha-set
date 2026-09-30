@@ -13,12 +13,12 @@ Item {
     property string shortcut: ""
     property string separator: "+"
     property string text: ""
+    property real availableWidth: -1    // Explicit available width constraint if provided by parent/caller
 
     // Test hooks
     property bool forceHover: false
     property bool forceActive: false
 
-    readonly property bool isCompact: compact === "always" || compact === "auto"
     readonly property bool isSubtle: variant === "subtle"
     readonly property bool isInverted: variant === "inverted"
     readonly property bool isSolid: variant === "solid"
@@ -88,26 +88,34 @@ Item {
         return ThemeTokens.text;
     }
 
-    // Modifier symbols lookup map
-    function formatKey(rawKey) {
+    // Modifier symbols & standard names lookup map
+    function formatKeyTokenWithMode(rawKey, compactMode) {
         if (!rawKey) return "";
         var k = String(rawKey).trim();
-        if (!root.isCompact) {
-            var lower = k.toLowerCase();
+        var lower = k.toLowerCase();
+        if (!compactMode) {
             if (lower === "ctrl" || lower === "control") return "Ctrl";
             if (lower === "shift") return "Shift";
             if (lower === "alt" || lower === "option" || lower === "opt") return "Alt";
-            if (lower === "cmd" || lower === "command" || lower === "meta" || lower === "win") return "Cmd";
+            if (lower === "cmd" || lower === "command" || lower === "meta") return "Cmd";
+            if (lower === "win") return "Win";
             if (lower === "enter" || lower === "return") return "Enter";
             if (lower === "backspace") return "Backspace";
             if (lower === "esc" || lower === "escape") return "Esc";
             if (lower === "tab") return "Tab";
             if (lower === "space") return "Space";
+            if (lower === "up") return "Up";
+            if (lower === "down") return "Down";
+            if (lower === "left") return "Left";
+            if (lower === "right") return "Right";
+            if (lower === "pageup" || lower === "pgup") return "PageUp";
+            if (lower === "pagedown" || lower === "pgdn") return "PageDown";
+            if (lower === "delete") return "Delete";
+            if (lower === "del") return "Del";
             return k;
         }
 
-        var l = k.toLowerCase();
-        switch (l) {
+        switch (lower) {
         case "ctrl":
         case "control": return "⌃";
         case "shift": return "⇧";
@@ -129,16 +137,22 @@ Item {
         case "down": return "↓";
         case "left": return "←";
         case "right": return "→";
-        case "pageup": return "⇞";
-        case "pagedown": return "⇟";
+        case "pageup":
+        case "pgup": return "⇞";
+        case "pagedown":
+        case "pgdn": return "⇟";
         case "delete":
         case "del": return "⌦";
         default: return k;
         }
     }
 
+    function formatKey(rawKey) {
+        return formatKeyTokenWithMode(rawKey, root.isCompact);
+    }
+
     // Parse token for keyboard key or mouse button indicator (e.g. "mouse-left", "mouse-right", "mouse-middle")
-    function parseKeyToken(rawKey) {
+    function parseKeyTokenWithMode(rawKey, compactMode) {
         if (!rawKey) return { isMouse: false, button: "none", text: "", label: "" };
         var rawStr = String(rawKey).trim();
         var colonIdx = rawStr.indexOf(":");
@@ -158,7 +172,11 @@ Item {
         if (l === "mouse" || l === "click") {
             return { isMouse: true, button: "left", text: "Click", label: labelPart };
         }
-        return { isMouse: false, button: "none", text: root.formatKey(rawStr), label: "" };
+        return { isMouse: false, button: "none", text: formatKeyTokenWithMode(rawStr, compactMode), label: "" };
+    }
+
+    function parseKeyToken(rawKey) {
+        return parseKeyTokenWithMode(rawKey, root.isCompact);
     }
 
     // Parsed shortcut structure: list of branches (split by " / "), each containing list of keys (split by "+")
@@ -185,10 +203,99 @@ Item {
         return res;
     }
 
+    // Estimate layout width for responsive auto-compaction and overflow handling
+    function estimateWidth(compactMode) {
+        var branches = root.parsedBranches;
+        if (!branches || branches.length === 0) return 0;
+
+        var charW = root.fontSize * 0.65;
+        var totalW = 0;
+        var orDividerW = ThemeTokens.dp(16);
+        var branchGap = ThemeTokens.dp(6);
+        var interKeyGap = ThemeTokens.dp(4);
+        var separatorW = ThemeTokens.dp(10); // '+' character plus spacing
+
+        for (var b = 0; b < branches.length; ++b) {
+            var branch = branches[b];
+            var branchW = 0;
+
+            for (var k = 0; k < branch.length; ++k) {
+                var token = parseKeyTokenWithMode(branch[k], compactMode);
+
+                if (k > 0 && !compactMode) {
+                    branchW += separatorW;
+                }
+
+                var contentW = 0;
+                if (token.isMouse) {
+                    contentW = ThemeTokens.dp(11);
+                    if (token.label && token.label.length > 0) {
+                        contentW += ThemeTokens.dp(4) + Math.ceil(token.label.length * charW);
+                    }
+                } else {
+                    contentW = Math.ceil(token.text.length * charW);
+                }
+
+                var keyBoxW = Math.max(root.keyHeight, contentW + root.keyPaddingH * 2);
+                branchW += keyBoxW;
+
+                if (k > 0) {
+                    branchW += interKeyGap;
+                }
+            }
+
+            if (b > 0) {
+                totalW += orDividerW + branchGap;
+            }
+            totalW += branchW;
+        }
+
+        return Math.round(totalW);
+    }
+
+    readonly property int estimatedFullWidth: estimateWidth(false)
+    readonly property int estimatedCompactWidth: estimateWidth(true)
+
+    // Responsive compaction calculation:
+    // If compact is "always" -> true
+    // If compact is "never" -> false
+    // If compact is "auto" -> full text ("Ctrl") when space permits, compact symbols ("⌃") when constrained
+    readonly property bool isCompact: {
+        if (root.compact === "always") return true;
+        if (root.compact === "never") return false;
+
+        // compact === "auto"
+        if (root.availableWidth >= 0) {
+            return root.availableWidth < root.estimatedFullWidth;
+        }
+
+        if (root.width > 0 && root.width < root.estimatedFullWidth) {
+            return true;
+        }
+
+        if (root.parent && !root.parent.hasOwnProperty("spacing") && root.parent.width > 0 && isFinite(root.parent.width)) {
+            var availInParent = root.parent.width - root.x;
+            if (availInParent > 0 && availInParent < root.estimatedFullWidth) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Overflow visibility handling
+    readonly property bool isOverflowHidden: {
+        if (root.overflow !== "hide") return false;
+        var limit = root.availableWidth >= 0 ? root.availableWidth : (root.width > 0 ? root.width : -1);
+        if (limit >= 0 && limit < root.estimatedCompactWidth) return true;
+        return false;
+    }
+
     implicitWidth: layoutRow.implicitWidth
     implicitHeight: layoutRow.implicitHeight
     width: implicitWidth
     height: implicitHeight
+    visible: !isOverflowHidden
 
     Row {
         id: layoutRow
@@ -220,14 +327,14 @@ Item {
                             required property var modelData
                             required property int index
                             readonly property var tokenInfo: root.parseKeyToken(keyWrapper.modelData)
-                            spacing: ThemeTokens.dp(2)
+                            spacing: ThemeTokens.dp(4)
                             anchors.verticalCenter: parent ? parent.verticalCenter : undefined
 
                             Text {
                                 visible: keyWrapper.index > 0 && !root.isCompact
                                 text: root.separator
                                 color: ThemeTokens.subduedText
-                                font.pixelSize: Typography.sizeMicro
+                                font.pixelSize: root.fontSize
                                 font.family: Typography.familyMono
                                 anchors.verticalCenter: parent ? parent.verticalCenter : undefined
                             }

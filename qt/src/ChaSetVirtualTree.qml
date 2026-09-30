@@ -1134,7 +1134,7 @@ Item {
                         }
 
                         Text {
-                            text: qsTr("松开左键")
+                            text: qsTr("松开")
                             color: !root.effectiveIsCopy ? ThemeTokens.text : ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeMicro
                             font.weight: !root.effectiveIsCopy ? Typography.weightMedium : Typography.weightRegular
@@ -1170,7 +1170,7 @@ Item {
                         }
 
                         Text {
-                            text: qsTr("按住 Ctrl")
+                            text: qsTr("按住")
                             color: root.effectiveIsCopy ? ThemeTokens.text : ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeMicro
                             font.weight: root.effectiveIsCopy ? Typography.weightMedium : Typography.weightRegular
@@ -1202,13 +1202,6 @@ Item {
                             size: "xs"
                             variant: "subtle"
                             shortcut: "Esc"
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-
-                        Text {
-                            text: qsTr("按 Esc")
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeMicro
                             anchors.verticalCenter: parent.verticalCenter
                         }
                     }

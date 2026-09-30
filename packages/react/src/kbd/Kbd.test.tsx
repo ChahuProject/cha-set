@@ -19,6 +19,12 @@ describe('Kbd Component', () => {
     expect(container.querySelectorAll('kbd').length).toBe(2);
   });
 
+  it('renders full text by default in auto mode when space is available', () => {
+    render(<Kbd shortcut="Ctrl+K" />);
+    expect(screen.getByText('Ctrl')).toBeInTheDocument();
+    expect(screen.getByText('K')).toBeInTheDocument();
+  });
+
   it('converts modifier names to compact symbols in compact mode', () => {
     render(<Kbd shortcut="Ctrl+Shift+P" compact="always" />);
     expect(screen.getByText('⌃')).toBeInTheDocument();
