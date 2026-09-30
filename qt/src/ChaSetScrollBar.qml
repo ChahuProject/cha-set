@@ -66,6 +66,9 @@ T.ScrollBar {
     implicitWidth: control.vertical ? control.hitThickness : 0
     implicitHeight: control.horizontal ? control.hitThickness : 0
 
+    // 供宿主容器内容排版参考的建议安全避让边距（非悬浮或需要物理避让时返回厚度，悬浮模式返回 0）
+    readonly property real contentSafetyMargin: (!control.floating && visible) ? control.hitThickness : 0
+
     // ---- Theme Fallback Adapter ----
     // Seamlessly reads 'theme' if available (in dunting-qt), or falls back to 'ThemeTokens' (in cha-set)
     readonly property var _themeSource: (typeof theme !== "undefined" && theme) ? theme : ThemeTokens

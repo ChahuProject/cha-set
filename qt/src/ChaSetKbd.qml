@@ -213,27 +213,7 @@ Item {
                     font.pixelSize: Typography.sizeMicro
                     anchors.verticalCenter: parent ? parent.verticalCenter : undefined
                 }
-
-                // Subtle variant renders streamlined monospace text directly
-                Text {
-                    visible: root.isSubtle
-                    anchors.verticalCenter: parent ? parent.verticalCenter : undefined
-                    text: {
-                        var parts = [];
-                        for (var k = 0; k < branchRow.modelData.length; ++k) {
-                            parts.push(root.formatKey(branchRow.modelData[k]));
-                        }
-                        return parts.join(root.isCompact ? "" : root.separator);
-                    }
-                    color: root.fgTextColor
-                    font.pixelSize: root.fontSize
-                    font.family: Typography.familyMono
-                    font.weight: Typography.weightRegular
-                }
-
-                // Non-subtle variants render individual keycap badges
-                    Repeater {
-                        visible: !root.isSubtle
+                Repeater {
                         model: branchRow.modelData
                         delegate: Row {
                             id: keyWrapper

@@ -270,7 +270,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
                 </span>
               )}
               <span className="inline-flex items-center gap-1">
-                {isSubtle ? (
+                {isSubtle && !keys.some((k) => parseKeyToken(k, isCompact).isMouse) ? (
                   <span
                     className={cn(
                       'inline-flex items-center text-muted-foreground font-mono tracking-widest',

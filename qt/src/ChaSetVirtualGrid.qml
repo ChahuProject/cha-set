@@ -16,10 +16,18 @@ Item {
     property int estimateSize: 180
     property int overscan: 4
     property int customRadius: 6
+    property int sideMargin: 8
+    property bool autoFit: true
 
     readonly property int effectiveCellWidth: ThemeTokens.dp(root.cellWidth)
     readonly property int effectiveCellHeight: ThemeTokens.dp(root.cellHeight)
     readonly property int effectiveEstimateSize: ThemeTokens.dp(root.estimateSize)
+    readonly property int effectiveSideMargin: ThemeTokens.dp(root.sideMargin)
+
+    // 自适应列宽与左右对称边距（均分填满视口宽，彻底杜绝右侧余数挤压与左窄右宽问题）
+    readonly property real availWidth: Math.max(0, gridView ? (gridView.width - effectiveSideMargin * 2) : 0)
+    readonly property int columns: (availWidth > 0 && effectiveCellWidth > 0) ? Math.max(1, Math.floor(availWidth / effectiveCellWidth)) : 1
+    readonly property real adaptiveCellWidth: (autoFit && availWidth > 0 && columns > 0) ? Math.max(ThemeTokens.dp(24), availWidth / columns) : effectiveCellWidth
 
     function scrollToIndex(index) {
         if (gridView) {
@@ -63,8 +71,12 @@ Item {
         GridView {
             id: gridView
             anchors.fill: parent
-            anchors.margins: ThemeTokens.dp(8)
-            cellWidth: root.effectiveCellWidth
+            leftMargin: root.effectiveSideMargin
+            rightMargin: root.effectiveSideMargin
+            topMargin: root.effectiveSideMargin
+            bottomMargin: root.effectiveSideMargin
+            contentX: -leftMargin
+            cellWidth: root.adaptiveCellWidth
             cellHeight: root.effectiveCellHeight
             boundsBehavior: Flickable.StopAtBounds
             clip: true

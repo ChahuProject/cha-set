@@ -25,6 +25,13 @@ Item {
     readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property bool showBadges: true
 
+    // 内容区左右边距（遵循全宽透传+双侧锚定规范，杜绝 ListView 强制 x=0 导致的边距吞噬）
+    property int contentLeftMargin: 0
+    property int contentRightMargin: 0
+    readonly property int effectiveContentLeftMargin: ThemeTokens.dp(root.contentLeftMargin)
+    readonly property int effectiveContentRightMargin: ThemeTokens.dp(root.contentRightMargin)
+    readonly property real safeRightMargin: effectiveContentRightMargin + (treeScrollBar && treeScrollBar.visible && !treeScrollBar.floating ? treeScrollBar.width : 0)
+
     // Drag and Drop properties
     property bool enableDnd: false
     property bool allowReorder: true
@@ -707,6 +714,7 @@ Item {
             cacheBuffer: root.overscan * root.estimateSize
 
             ScrollBar.vertical: ChaSetScrollBar {
+                id: treeScrollBar
                 orientation: Qt.Vertical
                 policy: ScrollBar.AsNeeded
             }
@@ -718,12 +726,23 @@ Item {
                 }
             }
 
-            delegate: Rectangle {
-                id: delegateRow
+            delegate: Item {
+                id: delegateRowRoot
                 required property var modelData
                 required property int index
-                width: treeList.width
+                width: ListView.view ? ListView.view.width : (parent ? parent.width : root.width)
                 height: root.effectiveEstimateSize
+
+                Rectangle {
+                    id: delegateRow
+                    readonly property var modelData: delegateRowRoot.modelData
+                    readonly property int index: delegateRowRoot.index
+                    anchors.left: parent.left
+                    anchors.leftMargin: root.effectiveContentLeftMargin
+                    anchors.right: parent.right
+                    anchors.rightMargin: root.safeRightMargin
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
 
                 readonly property bool isHovered: root.modality === "pointer" && (rowMouse.containsMouse || chevronMouse.containsMouse)
                 readonly property bool isKeyboardFocused: root.modality === "keyboard" && root.currentIndex === index
@@ -1014,6 +1033,7 @@ Item {
                 }
             }
         }
+    }
 
         // Fallback DropArea covering the entire tree container
         DropArea {
