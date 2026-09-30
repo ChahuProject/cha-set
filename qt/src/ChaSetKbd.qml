@@ -269,17 +269,7 @@ Item {
             return root.availableWidth < root.estimatedFullWidth;
         }
 
-        if (root.width > 0 && root.width < root.estimatedFullWidth) {
-            return true;
-        }
-
-        if (root.parent && !root.parent.hasOwnProperty("spacing") && root.parent.width > 0 && isFinite(root.parent.width)) {
-            var availInParent = root.parent.width - root.x;
-            if (availInParent > 0 && availInParent < root.estimatedFullWidth) {
-                return true;
-            }
-        }
-
+        // Default when space is available: render full text (e.g. "Ctrl", "Shift", "Esc")
         return false;
     }
 

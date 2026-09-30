@@ -733,6 +733,13 @@ Item {
                 width: ListView.view ? ListView.view.width : (parent ? parent.width : root.width)
                 height: root.effectiveEstimateSize
 
+                readonly property bool isHovered: root.modality === "pointer" && (rowMouse.containsMouse || chevronMouse.containsMouse)
+                readonly property bool isKeyboardFocused: root.modality === "keyboard" && root.currentIndex === index
+                readonly property bool isSelected: root.isSelected(modelData.id)
+                readonly property bool isDimmed: root.isDimmed(modelData.id)
+                readonly property bool isCopied: root.isCopied(modelData.id)
+                readonly property bool isDropTarget: root.enableDnd && root.isDragging && root.dropTargetId === modelData.id
+
                 Rectangle {
                     id: delegateRow
                     readonly property var modelData: delegateRowRoot.modelData
@@ -743,13 +750,6 @@ Item {
                     anchors.rightMargin: root.safeRightMargin
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-
-                readonly property bool isHovered: root.modality === "pointer" && (rowMouse.containsMouse || chevronMouse.containsMouse)
-                readonly property bool isKeyboardFocused: root.modality === "keyboard" && root.currentIndex === index
-                readonly property bool isSelected: root.isSelected(modelData.id)
-                readonly property bool isDimmed: root.isDimmed(modelData.id)
-                readonly property bool isCopied: root.isCopied(modelData.id)
-                readonly property bool isDropTarget: root.enableDnd && root.isDragging && root.dropTargetId === modelData.id
 
                 color: isSelected
                     ? (isHovered ? Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.20) : Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15))
