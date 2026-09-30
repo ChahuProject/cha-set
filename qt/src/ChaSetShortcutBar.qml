@@ -84,33 +84,39 @@ Item {
     }
 
     // Responsive width and progressive multi-stage calculations
-    readonly property real availableWidth: Math.max(0, root.width - ThemeTokens.dp(16))
+    readonly property real availableWidth: Math.max(0, root.width - ThemeTokens.dp(12))
 
     function estimateItemWidth(item, mode) {
         var isComp = (mode === "compact")
         var numKeys = (item.keys && item.keys.length) ? item.keys.length : 1
         var keysW = 0
+        var interKeyGap = ThemeTokens.dp(isComp ? 2 : 4)
         for (var k = 0; k < numKeys; ++k) {
             var keyStr = String(item.keys[k] || "")
-            var isSymbol = (keyStr === "Up" || keyStr === "Down" || keyStr === "Left" || keyStr === "Right" ||
-                            keyStr === "ArrowUp" || keyStr === "ArrowDown" || keyStr === "ArrowLeft" || keyStr === "ArrowRight" ||
-                            keyStr === "Enter" || keyStr === "Esc" || keyStr === "Escape" || keyStr === "Tab" || keyStr === "Space")
-            var kw = (isComp && isSymbol)
-                ? ThemeTokens.dp(16)
-                : Math.max(ThemeTokens.dp(isComp ? 16 : 18), keyStr.length * ThemeTokens.dp(isComp ? 5 : 6) + ThemeTokens.dp(isComp ? 6 : 8))
-            keysW += kw + (k > 0 ? ThemeTokens.dp(isComp ? 2 : 4) : 0)
+            var kw = 0
+            if (isComp) {
+                kw = ThemeTokens.dp(16)
+            } else {
+                var textW = Math.round(keyStr.length * ThemeTokens.dp(6))
+                kw = Math.max(ThemeTokens.dp(18), textW + ThemeTokens.dp(8))
+            }
+            keysW += kw + (k > 0 ? interKeyGap : 0)
         }
+
         var labelStr = (isComp && item.shortLabel) ? item.shortLabel : (item.label || "")
         var labelW = 0
         if (labelStr.length > 0) {
+            var cjkW = ThemeTokens.dp(isComp ? 9 : 10)
+            var latinW = ThemeTokens.dp(isComp ? 5 : 5.5)
             for (var c = 0; c < labelStr.length; ++c) {
                 var code = labelStr.charCodeAt(c)
                 var isCjk = (code >= 0x4e00 && code <= 0x9fff)
-                labelW += isCjk ? ThemeTokens.dp(isComp ? 11 : 13) : ThemeTokens.dp(isComp ? 6 : 7)
+                labelW += isCjk ? cjkW : latinW
             }
             labelW += ThemeTokens.dp(isComp ? 2 : 4)
         }
-        return keysW + labelW + ThemeTokens.dp(isComp ? 4 : 8)
+
+        return Math.round(keysW + labelW)
     }
 
     // Optimal progressive multi-stage layout engine (parity with React ShortcutBar.tsx)
@@ -141,7 +147,7 @@ Item {
         }
 
         var N = effectiveItems.length
-        var badgeW = ThemeTokens.dp(28)
+        var badgeW = ThemeTokens.dp(24)
         var gapNormal = ThemeTokens.dp(10)
         var gapCompact = ThemeTokens.dp(6)
 
@@ -290,7 +296,7 @@ Item {
     Row {
         id: layoutRow
         anchors.left: parent.left
-        anchors.leftMargin: ThemeTokens.dp(8)
+        anchors.leftMargin: ThemeTokens.dp(6)
         anchors.verticalCenter: parent.verticalCenter
         spacing: (root.responsiveStage === "full") ? ThemeTokens.dp(10) : ThemeTokens.dp(6)
 
@@ -337,7 +343,7 @@ Item {
                     visible: text.length > 0
                     text: (itemDelegate.modelData.isCompact && itemDelegate.modelData.shortLabel) ? itemDelegate.modelData.shortLabel : (itemDelegate.modelData.label || "")
                     color: ThemeTokens.subduedText
-                    font.pixelSize: (root.responsiveStage === "full" && !itemDelegate.modelData.isCompact) ? Typography.sizeCaption : Typography.sizeMicro
+                    font.pixelSize: (root.responsiveStage === "full" && !itemDelegate.modelData.isCompact) ? Typography.sizeMicro : Typography.sizeNano
                     verticalAlignment: Text.AlignVCenter
                     anchors.verticalCenter: parent ? parent.verticalCenter : undefined
                 }
