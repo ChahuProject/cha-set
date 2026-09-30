@@ -535,6 +535,7 @@ DocLayout {
                 // Resizable Container Frame
                 Rectangle {
                     id: playgroundFrame
+                    clip: true
                     width: Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(540), ThemeTokens.dp(root.playgroundWidth)))
                     height: ThemeTokens.dp(32)
                     radius: ThemeTokens.dp(6)

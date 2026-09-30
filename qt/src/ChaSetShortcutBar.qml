@@ -5,6 +5,7 @@ import ChaSet
 
 Item {
     id: root
+    clip: true
 
     property var items: []
     property string preset: ""
@@ -97,15 +98,15 @@ Item {
             var kw = (isComp && isSymbol)
                 ? ThemeTokens.dp(16)
                 : Math.max(ThemeTokens.dp(isComp ? 16 : 18), keyStr.length * ThemeTokens.dp(isComp ? 5 : 6) + ThemeTokens.dp(isComp ? 6 : 8))
-            keysW += kw + (k > 0 ? ThemeTokens.dp(isComp ? 2 : 3) : 0)
+            keysW += kw + (k > 0 ? ThemeTokens.dp(isComp ? 2 : 4) : 0)
         }
-        var labelStr = isComp ? (item.shortLabel || "") : (item.label || "")
+        var labelStr = (isComp && item.shortLabel) ? item.shortLabel : (item.label || "")
         var labelW = 0
         if (labelStr.length > 0) {
             for (var c = 0; c < labelStr.length; ++c) {
                 var code = labelStr.charCodeAt(c)
                 var isCjk = (code >= 0x4e00 && code <= 0x9fff)
-                labelW += isCjk ? ThemeTokens.dp(isComp ? 10 : 11) : ThemeTokens.dp(isComp ? 5 : 6)
+                labelW += isCjk ? ThemeTokens.dp(isComp ? 11 : 13) : ThemeTokens.dp(isComp ? 6 : 7)
             }
             labelW += ThemeTokens.dp(isComp ? 2 : 4)
         }
@@ -291,7 +292,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: ThemeTokens.dp(8)
         anchors.verticalCenter: parent.verticalCenter
-        spacing: (root.responsiveStage === "full") ? ThemeTokens.dp(10) : ThemeTokens.dp(5)
+        spacing: (root.responsiveStage === "full") ? ThemeTokens.dp(10) : ThemeTokens.dp(6)
 
         Repeater {
             model: root.visibleItems
@@ -332,7 +333,8 @@ Item {
                 }
 
                 Text {
-                    visible: !itemDelegate.modelData.isCompact || (itemDelegate.modelData.shortLabel && itemDelegate.modelData.shortLabel.length > 0)
+                    id: itemLabelText
+                    visible: text.length > 0
                     text: (itemDelegate.modelData.isCompact && itemDelegate.modelData.shortLabel) ? itemDelegate.modelData.shortLabel : (itemDelegate.modelData.label || "")
                     color: ThemeTokens.subduedText
                     font.pixelSize: (root.responsiveStage === "full" && !itemDelegate.modelData.isCompact) ? Typography.sizeCaption : Typography.sizeMicro

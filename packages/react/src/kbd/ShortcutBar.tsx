@@ -42,7 +42,7 @@ function estimateFallbackWidth(
           : Math.max(20, k.length * 7 + 8);
     keysW += kw + (i > 0 ? (isCompact ? 2 : 3) : 0);
   }
-  const label = isCompact ? (item.shortLabel || '') : (item.label || '');
+  const label = isCompact && item.shortLabel ? item.shortLabel : (item.label || '');
   let labelW = 0;
   if (label.length > 0) {
     const cjkCharW = isCompact ? 10 : 12;
@@ -269,7 +269,8 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
         const compactGap = 6;
 
         const measuredBadgeWidth = badgeMeasureRef.current
-          ? badgeMeasureRef.current.getBoundingClientRect().width ||
+          ? (badgeMeasureRef.current.firstElementChild as HTMLElement)?.getBoundingClientRect().width ||
+            badgeMeasureRef.current.getBoundingClientRect().width ||
             badgeMeasureRef.current.offsetWidth
           : 0;
         const badgeWidth = measuredBadgeWidth > 0 ? measuredBadgeWidth : 32;
@@ -485,8 +486,16 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
         {/* Hidden measurement strips */}
         <div
           aria-hidden="true"
-          className="pointer-events-none invisible fixed -left-[624.9375rem] -top-[624.9375rem] flex flex-col select-none opacity-0"
-          style={{ zIndex: -9999 }}
+          className="pointer-events-none select-none flex flex-col items-start"
+          style={{
+            position: 'fixed',
+            left: '-9999px',
+            top: '-9999px',
+            visibility: 'hidden',
+            pointerEvents: 'none',
+            opacity: 0,
+            zIndex: -9999,
+          }}
         >
           {/* Normal strip */}
           <div ref={normalStripRef} className="flex items-center gap-2.5 whitespace-nowrap text-micro">
@@ -551,17 +560,15 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
                     {k}
                   </Kbd>
                 ))}
-                {item.shortLabel && (
-                  <span className="whitespace-nowrap">
-                    {item.shortLabel}
-                  </span>
-                )}
+                <span className="whitespace-nowrap">
+                  {item.shortLabel || item.label}
+                </span>
               </span>
             ))}
           </div>
 
           {/* Badge measurement */}
-          <div ref={badgeMeasureRef} className="inline-flex shrink-0 items-center">
+          <div ref={badgeMeasureRef} className="inline-flex w-fit shrink-0 items-center self-start">
             <Kbd size="xs" variant="outline" className="font-medium h-4 min-w-4 px-1 text-nano">
               +{effectiveItems.length}
             </Kbd>
@@ -599,11 +606,9 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
                   {keyStr}
                 </Kbd>
               ))}
-              {(!isCompact || Boolean(item.shortLabel)) && (
-                <span className="shrink-0 whitespace-nowrap">
-                  {isCompact && item.shortLabel ? item.shortLabel : item.label}
-                </span>
-              )}
+              <span className="shrink-0 whitespace-nowrap">
+                {isCompact && item.shortLabel ? item.shortLabel : item.label}
+              </span>
             </span>
           ))}
         </div>
