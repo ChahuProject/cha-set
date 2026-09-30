@@ -44,7 +44,7 @@ describe('Kbd Component', () => {
 
     rerender(<Kbd variant="inverted">Esc</Kbd>);
     kbd = screen.getByText('Esc');
-    expect(kbd).toHaveClass('border-foreground/20');
+    expect(kbd).toHaveClass('border-current/20');
 
     rerender(<Kbd variant="subtle">Esc</Kbd>);
     kbd = screen.getByText('Esc');

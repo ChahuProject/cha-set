@@ -117,7 +117,7 @@ const variantClasses: Record<KbdVariant, string> = {
   subtle:
     'border-transparent bg-transparent text-muted-foreground font-normal tracking-wider',
   inverted:
-    'border border-foreground/20 bg-foreground/15 text-inherit shadow-2xs',
+    'border border-current/20 bg-current/15 text-inherit shadow-2xs',
 };
 
 const sizeClasses: Record<KbdSize, string> = {

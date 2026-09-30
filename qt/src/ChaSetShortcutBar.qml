@@ -94,13 +94,22 @@ Item {
             var isSymbol = (keyStr === "Up" || keyStr === "Down" || keyStr === "Left" || keyStr === "Right" ||
                             keyStr === "ArrowUp" || keyStr === "ArrowDown" || keyStr === "ArrowLeft" || keyStr === "ArrowRight" ||
                             keyStr === "Enter" || keyStr === "Esc" || keyStr === "Escape" || keyStr === "Tab" || keyStr === "Space")
-            var kw = (isComp && isSymbol) ? ThemeTokens.dp(16) : Math.max(ThemeTokens.dp(isComp ? 16 : 20), keyStr.length * ThemeTokens.dp(isComp ? 6 : 7) + ThemeTokens.dp(isComp ? 6 : 8))
+            var kw = (isComp && isSymbol)
+                ? ThemeTokens.dp(16)
+                : Math.max(ThemeTokens.dp(isComp ? 16 : 18), keyStr.length * ThemeTokens.dp(isComp ? 5 : 6) + ThemeTokens.dp(isComp ? 6 : 8))
             keysW += kw + (k > 0 ? ThemeTokens.dp(isComp ? 2 : 3) : 0)
         }
-        var labelStr = (isComp && item.shortLabel) ? item.shortLabel : (item.label || "")
-        var labelW = labelStr.length * ThemeTokens.dp(isComp ? 10 : 12)
-        var keyToLabelGap = ThemeTokens.dp(isComp ? 2 : 4)
-        return keysW + keyToLabelGap + labelW
+        var labelStr = isComp ? (item.shortLabel || "") : (item.label || "")
+        var labelW = 0
+        if (labelStr.length > 0) {
+            for (var c = 0; c < labelStr.length; ++c) {
+                var code = labelStr.charCodeAt(c)
+                var isCjk = (code >= 0x4e00 && code <= 0x9fff)
+                labelW += isCjk ? ThemeTokens.dp(isComp ? 10 : 11) : ThemeTokens.dp(isComp ? 5 : 6)
+            }
+            labelW += ThemeTokens.dp(isComp ? 2 : 4)
+        }
+        return keysW + labelW + ThemeTokens.dp(isComp ? 4 : 8)
     }
 
     // Optimal progressive multi-stage layout engine (parity with React ShortcutBar.tsx)
@@ -131,9 +140,9 @@ Item {
         }
 
         var N = effectiveItems.length
-        var badgeW = ThemeTokens.dp(30)
+        var badgeW = ThemeTokens.dp(28)
         var gapNormal = ThemeTokens.dp(10)
-        var gapCompact = ThemeTokens.dp(5)
+        var gapCompact = ThemeTokens.dp(6)
 
         // Priority order for overflow folding: lowest priority / rightmost items fold first
         var priorityOrder = []
@@ -197,7 +206,7 @@ Item {
                     totalW += iw
                 }
 
-                if (totalW <= targetAvail || k === 1) {
+                if (totalW <= targetAvail) {
                     var stage = hasOverflow
                         ? "folded"
                         : (c === k ? "compact" : (c > 0 ? "squeezed" : "full"))
@@ -323,6 +332,7 @@ Item {
                 }
 
                 Text {
+                    visible: !itemDelegate.modelData.isCompact || (itemDelegate.modelData.shortLabel && itemDelegate.modelData.shortLabel.length > 0)
                     text: (itemDelegate.modelData.isCompact && itemDelegate.modelData.shortLabel) ? itemDelegate.modelData.shortLabel : (itemDelegate.modelData.label || "")
                     color: ThemeTokens.subduedText
                     font.pixelSize: (root.responsiveStage === "full" && !itemDelegate.modelData.isCompact) ? Typography.sizeCaption : Typography.sizeMicro

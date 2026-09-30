@@ -14,6 +14,12 @@ import type {
   KbdCompact,
 } from '@chahu/spec/kbd';
 
+function getRootFontSize(): number {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return 16;
+  const parsed = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 16;
+}
+
 /**
  * Fallback width calculation for SSR or jsdom test environments
  */
@@ -32,20 +38,23 @@ function estimateFallbackWidth(
       isCompact && (isArrow || isSymbol)
         ? 18
         : isCompact
-          ? Math.max(18, k.length * 6 + 8)
-          : Math.max(22, k.length * 7 + 8);
+          ? Math.max(18, k.length * 6 + 6)
+          : Math.max(20, k.length * 7 + 8);
     keysW += kw + (i > 0 ? (isCompact ? 2 : 3) : 0);
   }
-  const label = isCompact && item.shortLabel ? item.shortLabel : item.label || '';
+  const label = isCompact ? (item.shortLabel || '') : (item.label || '');
   let labelW = 0;
-  const cjkCharW = isCompact ? 11 : 12;
-  const latinCharW = isCompact ? 6 : 7;
-  for (let i = 0; i < label.length; i++) {
-    const code = label.charCodeAt(i);
-    labelW += code >= 0x4e00 && code <= 0x9fff ? cjkCharW : latinCharW;
+  if (label.length > 0) {
+    const cjkCharW = isCompact ? 10 : 12;
+    const latinCharW = isCompact ? 6 : 7;
+    for (let i = 0; i < label.length; i++) {
+      const code = label.charCodeAt(i);
+      labelW += code >= 0x4e00 && code <= 0x9fff ? cjkCharW : latinCharW;
+    }
+    labelW += isCompact ? 2 : 4;
   }
-  const keyToLabelGap = isCompact ? 2 : 4;
-  return keysW + keyToLabelGap + labelW;
+  const itemPadding = isCompact ? 4 : 8; // px-1 = 8px padding
+  return keysW + labelW + itemPadding;
 }
 
 function formatShortcutTooltip(item: ShortcutItem): string {
@@ -318,7 +327,7 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
               totalW += w;
             }
 
-            if (totalW <= targetAvail || k === 1) {
+            if (totalW <= targetAvail) {
               const stage: 'full' | 'squeezed' | 'compact' | 'folded' = hasOverflow
                 ? 'folded'
                 : c === k
@@ -480,11 +489,11 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
           style={{ zIndex: -9999 }}
         >
           {/* Normal strip */}
-          <div ref={normalStripRef} className="flex items-center gap-3 whitespace-nowrap text-micro">
+          <div ref={normalStripRef} className="flex items-center gap-2.5 whitespace-nowrap text-micro">
             {effectiveItems.map((item) => (
               <span
                 key={`meas-norm-${item.id}`}
-                className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap"
+                className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap px-1 py-0.5"
               >
                 {item.keys.map((k, kIdx) => (
                   <Kbd
@@ -506,7 +515,7 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
             {effectiveItems.map((item) => (
               <span
                 key={`meas-sq-${item.id}`}
-                className="inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap"
+                className="inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap px-1 py-0.5"
               >
                 {item.keys.map((k, kIdx) => (
                   <Kbd
@@ -529,7 +538,7 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
             {effectiveItems.map((item) => (
               <span
                 key={`meas-comp-${item.id}`}
-                className="inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap"
+                className="inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap px-1 py-0.5"
               >
                 {item.keys.map((k, kIdx) => (
                   <Kbd
@@ -542,9 +551,11 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
                     {k}
                   </Kbd>
                 ))}
-                <span className="whitespace-nowrap">
-                  {item.shortLabel || item.label}
-                </span>
+                {item.shortLabel && (
+                  <span className="whitespace-nowrap">
+                    {item.shortLabel}
+                  </span>
+                )}
               </span>
             ))}
           </div>
@@ -588,9 +599,11 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
                   {keyStr}
                 </Kbd>
               ))}
-              <span className="shrink-0 whitespace-nowrap">
-                {isCompact && item.shortLabel ? item.shortLabel : item.label}
-              </span>
+              {(!isCompact || Boolean(item.shortLabel)) && (
+                <span className="shrink-0 whitespace-nowrap">
+                  {isCompact && item.shortLabel ? item.shortLabel : item.label}
+                </span>
+              )}
             </span>
           ))}
         </div>
@@ -601,16 +614,25 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
           createPortal(
             <div
               role="tooltip"
-              className="fixed z-[9999] pointer-events-none rounded-md bg-primary px-2.5 py-1 text-xs text-primary-foreground shadow-md inline-flex items-center gap-2 select-none animate-in fade-in-0 duration-100"
+              className="fixed z-[9999] pointer-events-none rounded-md bg-foreground px-2.5 py-1 text-xs text-background shadow-md inline-flex items-center gap-2 select-none animate-in fade-in-0 duration-100"
               style={{
-                ...(activeTooltip.rect.top < 60
-                  ? { top: `${(activeTooltip.rect.bottom + 6) * 0.0625}rem` }
-                  : { bottom: `${(window.innerHeight - activeTooltip.rect.top + 6) * 0.0625}rem` }),
-                left: `${(activeTooltip.rect.left + activeTooltip.rect.width / 2) * 0.0625}rem`,
-                transform: 'translateX(-50%)',
+                top: `${((activeTooltip.rect.top < 60
+                  ? activeTooltip.rect.bottom + 6
+                  : activeTooltip.rect.top - 6) / getRootFontSize()).toFixed(4)}rem`,
+                left: `${(Math.max(
+                  16,
+                  Math.min(
+                    typeof window !== 'undefined' ? window.innerWidth - 16 : 800,
+                    activeTooltip.rect.left + activeTooltip.rect.width / 2,
+                  ),
+                ) / getRootFontSize()).toFixed(4)}rem`,
+                transform:
+                  activeTooltip.rect.top < 60
+                    ? 'translate(-50%, 0)'
+                    : 'translate(-50%, -100%)',
               }}
             >
-              <span className="font-medium text-xs text-primary-foreground">
+              <span className="font-medium text-xs text-background">
                 {activeTooltip.item.label}
               </span>
               {activeTooltip.formattedShortcut && (
@@ -666,9 +688,9 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
               className="fixed z-[9999] rounded-md border border-border bg-popover px-3 py-2 text-micro text-popover-foreground shadow-lg pointer-events-auto select-none transition-opacity duration-150 animate-in fade-in-0"
               style={{
                 ...(popoverPos.placeBelow
-                  ? { top: `${popoverPos.top * 0.0625}rem` }
-                  : { bottom: `${popoverPos.bottom * 0.0625}rem` }),
-                left: `${popoverPos.left * 0.0625}rem`,
+                  ? { top: `${(popoverPos.top / getRootFontSize()).toFixed(4)}rem` }
+                  : { bottom: `${(popoverPos.bottom / getRootFontSize()).toFixed(4)}rem` }),
+                left: `${(popoverPos.left / getRootFontSize()).toFixed(4)}rem`,
                 minWidth: '11rem',
               }}
               onMouseEnter={handlePopoverMouseEnter}

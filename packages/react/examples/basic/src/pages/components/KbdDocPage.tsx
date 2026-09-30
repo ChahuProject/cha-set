@@ -27,18 +27,26 @@ export function KbdDocPage() {
   const [playgroundWidth, setPlaygroundWidth] = useState<number>(340);
   const [activeStage, setActiveStage] = useState<'full' | 'squeezed' | 'compact' | 'folded'>('squeezed');
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const frameRef = React.useRef<HTMLDivElement>(null);
 
   const handleDragStart = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsDragging(true);
-    const startX = e.clientX;
-    const startW = playgroundWidth;
     document.body.style.cursor = 'col-resize';
     document.body.style.userSelect = 'none';
 
+    const frameEl = frameRef.current;
+    if (!frameEl) return;
+    const frameLeft = frameEl.getBoundingClientRect().left;
+    const rootFontSize =
+      typeof window !== 'undefined'
+        ? parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16
+        : 16;
+
     const onMouseMove = (moveEvent: MouseEvent) => {
-      const delta = moveEvent.clientX - startX;
-      const nextW = Math.max(160, Math.min(540, Math.round(startW + delta)));
+      const rawPx = moveEvent.clientX - frameLeft;
+      const logicalW = Math.round((rawPx / rootFontSize) * 16);
+      const nextW = Math.max(160, Math.min(540, logicalW));
       setPlaygroundWidth(nextW);
     };
 
@@ -164,8 +172,8 @@ export function KbdDocPage() {
             <span className="text-xs text-muted-foreground">Subtle</span>
             <Kbd variant="subtle" shortcut="Ctrl+K" compact="never" />
           </div>
-          <div className="flex flex-col items-center gap-2 rounded-md bg-primary p-3 text-primary-foreground">
-            <span className="text-xs text-primary-foreground/80">Inverted (Tooltip)</span>
+          <div className="flex flex-col items-center gap-2 rounded-md bg-foreground p-3 text-background">
+            <span className="text-xs text-background/80">Inverted (Tooltip)</span>
             <Kbd variant="inverted" shortcut="Ctrl+S" compact="never" />
           </div>
         </Card>
@@ -340,6 +348,7 @@ export function KbdDocPage() {
             {/* Interactive Resizable Frame */}
             <div className="pt-2">
               <div
+                ref={frameRef}
                 style={{ width: `${playgroundWidth * 0.0625}rem` }}
                 className={`relative flex items-center rounded-md border border-dashed border-border bg-background shadow-xs ${
                   isDragging
