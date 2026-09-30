@@ -52,96 +52,60 @@ export function Header({
       data-slot="showcase-top-banner"
       className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md"
     >
-      <div className="flex h-14 items-center justify-between px-4 md:px-6">
+      <div className="flex h-14 items-center justify-between px-3 sm:px-4 md:px-6">
         {/* Brand Group */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <a href="#/get-started/introduction" className="flex items-center gap-2 font-bold text-foreground hover:opacity-85 transition-opacity">
             <ChaSetLogoIcon className="size-5 text-primary shrink-0" />
-            <span className="text-base tracking-tight">ChaSet</span>
+            <span className="hidden min-[380px]:inline text-base tracking-tight font-bold">ChaSet</span>
           </a>
         </div>
 
-        {/* Center Search Trigger */}
+        {/* Center Search Trigger (Desktop & Tablet >= sm) */}
         <Button
           type="button"
           variant="outline"
           size="default"
           onClick={onOpenSearch}
-          className="hidden sm:inline-flex items-center justify-between gap-3 h-9 w-72 md:w-96 px-3.5 text-sm text-muted-foreground font-normal bg-muted/30 hover:bg-muted/60"
+          className="hidden sm:inline-flex items-center justify-between gap-3 h-8 w-64 md:w-80 lg:w-96 px-3 text-sm text-muted-foreground font-normal bg-muted/30 hover:bg-muted/60"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             <SearchIcon className="size-4 shrink-0" />
-            <span>{t('showcase.searchPlaceholder', 'Search components & docs...')}</span>
+            <span className="truncate">{t('showcase.searchPlaceholder', 'Search components & docs...')}</span>
           </div>
-          <Kbd variant="outline" size="sm">
+          <Kbd variant="outline" size="sm" className="shrink-0">
             ⌘K
           </Kbd>
         </Button>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-2">
-          {/* Language Switcher Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="inline-flex items-center gap-1.5" aria-label={t('showcase.switchLanguage', 'Switch Language')}>
-                <GlobeIcon className="size-4" />
-                <span className="hidden sm:inline font-medium">{activeLocaleMeta.nativeName}</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" sideOffset={8} className="w-48">
-              <DropdownMenuGroup>
-                <DropdownMenuLabel>{t('showcase.switchLanguage', 'Switch Language')}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setPreference('system')}>
-                  <span className={`flex items-center gap-1.5 ${preference === 'system' ? 'font-semibold text-primary' : ''}`}>
-                    <MonitorIcon className="size-3.5" />
-                    {t('language.followSystem', 'Follow System')}
-                  </span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {supportedLocales.map((loc) => (
-                  <DropdownMenuItem key={loc.code} onClick={() => setPreference(loc.code)}>
-                    <span className={preference === loc.code ? 'font-semibold text-primary' : ''}>
-                      {loc.nativeName} ({loc.code})
-                    </span>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <Tooltip content="Toggle theme controls" side="bottom">
-            <Button
-              type="button"
-              variant={isTunerActive ? 'default' : 'outline'}
-              size="sm"
-              onClick={onOpenTuner}
-              className="gap-1.5"
-            >
-              <PaletteIcon className="size-4" />
-              <span className="hidden md:inline">{t('showcase.studioTuner', 'Studio Tuner')}</span>
-            </Button>
-          </Tooltip>
-
-          <Tooltip content="Export Theme Config" side="bottom">
+        <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 shrink-0">
+          {/* Mobile Search Icon Trigger (< sm) */}
+          <Tooltip content={t('showcase.searchPlaceholder', 'Search components & docs...')} side="bottom">
             <Button
               type="button"
               variant="outline"
-              size="sm"
-              onClick={onOpenExport}
-              className="gap-1.5"
+              size="icon"
+              onClick={onOpenSearch}
+              className="inline-flex sm:hidden"
+              aria-label={t('showcase.searchPlaceholder', 'Search components & docs...')}
             >
-              <CopyIcon className="size-4" />
-              <span className="hidden md:inline">{t('showcase.exportTheme', 'Export')}</span>
+              <SearchIcon className="size-4" />
             </Button>
           </Tooltip>
 
           {/* Quick Jump Dropdown Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="hidden lg:inline-flex items-center gap-1.5">
-                <ZapIcon className="size-3.5 text-primary" />
-                <span>{t('showcase.jumpTo', 'Jump to')}</span>
+              <Button
+                variant="outline"
+                size="icon"
+                className="inline-flex lg:w-auto lg:px-2.5 lg:gap-1.5"
+                title={t('showcase.jumpTo', 'Jump to')}
+                aria-label={t('showcase.jumpTo', 'Jump to')}
+              >
+                <ZapIcon className="size-4 text-primary shrink-0" />
+                <span className="hidden lg:inline text-xs">{t('showcase.jumpTo', 'Jump to')}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={8} className="w-52">
@@ -171,7 +135,73 @@ export function Header({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Separator orientation="vertical" className="h-4 mx-1" />
+          {/* Studio Tuner */}
+          <Tooltip content={t('showcase.studioTuner', 'Studio Tuner')} side="bottom">
+            <Button
+              type="button"
+              variant={isTunerActive ? 'default' : 'outline'}
+              size="icon"
+              onClick={onOpenTuner}
+              className="inline-flex md:w-auto md:px-2.5 md:gap-1.5"
+              aria-label={t('showcase.studioTuner', 'Studio Tuner')}
+            >
+              <PaletteIcon className="size-4 shrink-0" />
+              <span className="hidden md:inline text-xs">{t('showcase.studioTuner', 'Studio Tuner')}</span>
+            </Button>
+          </Tooltip>
+
+          {/* Export Theme Config */}
+          <Tooltip content={t('showcase.exportTheme', 'Export')} side="bottom">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={onOpenExport}
+              className="inline-flex md:w-auto md:px-2.5 md:gap-1.5"
+              aria-label={t('showcase.exportTheme', 'Export')}
+            >
+              <CopyIcon className="size-4 shrink-0" />
+              <span className="hidden md:inline text-xs">{t('showcase.exportTheme', 'Export')}</span>
+            </Button>
+          </Tooltip>
+
+          {/* Language Switcher Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="inline-flex sm:w-auto sm:px-2.5 sm:gap-1.5"
+                title={t('showcase.switchLanguage', 'Switch Language')}
+                aria-label={t('showcase.switchLanguage', 'Switch Language')}
+              >
+                <GlobeIcon className="size-4 shrink-0" />
+                <span className="hidden sm:inline text-xs font-medium">{activeLocaleMeta.nativeName}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" sideOffset={8} className="w-48">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>{t('showcase.switchLanguage', 'Switch Language')}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setPreference('system')}>
+                  <span className={`flex items-center gap-1.5 ${preference === 'system' ? 'font-semibold text-primary' : ''}`}>
+                    <MonitorIcon className="size-3.5" />
+                    {t('language.followSystem', 'Follow System')}
+                  </span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                {supportedLocales.map((loc) => (
+                  <DropdownMenuItem key={loc.code} onClick={() => setPreference(loc.code)}>
+                    <span className={preference === loc.code ? 'font-semibold text-primary' : ''}>
+                      {loc.nativeName} ({loc.code})
+                    </span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <Separator orientation="vertical" className="h-4 mx-0.5 sm:mx-1 hidden sm:block" />
 
           {/* Theme Mode Toggle */}
           <Tooltip
@@ -223,7 +253,7 @@ export function Header({
           </Tooltip>
 
           {/* Version Badge */}
-          <Badge variant="outline" size="sm" className="font-medium text-muted-foreground bg-muted/60 shrink-0">
+          <Badge variant="outline" size="sm" className="hidden md:inline-flex font-medium text-muted-foreground bg-muted/60 shrink-0">
             v0.1.0
           </Badge>
         </div>

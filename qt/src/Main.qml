@@ -1783,6 +1783,11 @@ ApplicationWindow {
                 z: 50
                 color: win.cBg
 
+                // Responsive Breakpoints
+                readonly property bool isWide: topbar.width >= ThemeTokens.dp(1050)
+                readonly property bool isMedium: topbar.width >= ThemeTokens.dp(860)
+                readonly property bool isNarrow: topbar.width < ThemeTokens.dp(680)
+
                 // Continuous 1px bottom border across entire window width
                 Rectangle {
                     anchors.bottom: parent.bottom
@@ -1794,8 +1799,8 @@ ApplicationWindow {
                 Item {
                     id: topbarInner
                     anchors.fill: parent
-                    anchors.leftMargin: ThemeTokens.dp(20)
-                    anchors.rightMargin: ThemeTokens.dp(20)
+                    anchors.leftMargin: topbar.isNarrow ? ThemeTokens.dp(12) : ThemeTokens.dp(20)
+                    anchors.rightMargin: topbar.isNarrow ? ThemeTokens.dp(12) : ThemeTokens.dp(20)
 
                     // Left Brand Group
                     Row {
@@ -1826,6 +1831,7 @@ ApplicationWindow {
                                     font.pixelSize: Typography.sizeHeading
                                     font.weight: Typography.weightBold
                                     anchors.verticalCenter: parent.verticalCenter
+                                    visible: topbar.width >= ThemeTokens.dp(380)
                                 }
                             }
 
@@ -1837,8 +1843,10 @@ ApplicationWindow {
                         }
                     }
 
-                    // Center Search Bar Trigger
+                    // Center Search Bar Trigger (Visible on desktop/wide screens >= 860dp)
                     Rectangle {
+                        id: centerSearchTrigger
+                        visible: topbar.isMedium
                         width: Math.max(ThemeTokens.dp(200), Math.min(parent.width - ThemeTokens.dp(450), ThemeTokens.dp(360)))
                         height: ThemeTokens.dp(36)
                         radius: ThemeTokens.dp(6)
@@ -1911,77 +1919,106 @@ ApplicationWindow {
                     Row {
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: ThemeTokens.dp(8)
+                        spacing: topbar.isNarrow ? ThemeTokens.dp(4) : ThemeTokens.dp(8)
 
-                        // Language Switcher Dropdown Menu
-                        ChaSetDropdownMenu {
-                            id: langDropdown
-                            anchors.verticalCenter: parent.verticalCenter
-                            width: ThemeTokens.dp(100)
-                            height: ThemeTokens.dp(32)
-                            menuWidth: 190
-                            align: "end"
-                            sideOffset: 8
-                            items: win.languageMenuItems
+                        // Compact Search Trigger Button (visible when center search bar is hidden)
+                        ChaSetTooltip {
+                            text: ChaSetI18n.tr("showcase.searchPlaceholder", "Search components & docs...")
+                            side: "bottom"
+                            visible: !topbar.isMedium
 
                             ChaSetButton {
-                                anchors.fill: parent
+                                size: "icon"
                                 variant: "outline"
-                                size: "sm"
-                                icon: "globe"
-                                text: win.currentLanguageName
-                                onClicked: langDropdown.open = !langDropdown.open
+                                icon: "search"
+                                onClicked: win.searchModalOpen = true
+                            }
+                        }
+
+                        // Quick Jump Dropdown Menu (Zap)
+                        ChaSetTooltip {
+                            text: ChaSetI18n.tr("showcase.jumpTo", "Jump to")
+                            side: "bottom"
+                            disabled: quickJumpDropdown.open
+
+                            ChaSetDropdownMenu {
+                                id: quickJumpDropdown
+                                width: topbar.isWide ? ThemeTokens.dp(96) : ThemeTokens.dp(32)
+                                height: ThemeTokens.dp(32)
+                                menuWidth: 200
+                                align: "end"
+                                sideOffset: 8
+                                items: win.quickJumpMenuItems
+
+                                ChaSetButton {
+                                    anchors.fill: parent
+                                    variant: "outline"
+                                    size: topbar.isWide ? "sm" : "icon"
+                                    icon: "zap"
+                                    text: topbar.isWide ? ChaSetI18n.tr("showcase.jumpTo", "Jump to") : ""
+                                    onClicked: quickJumpDropdown.open = !quickJumpDropdown.open
+                                }
                             }
                         }
 
                         // Style Tuner Button
                         ChaSetTooltip {
-                            text: "Toggle theme controls"
+                            text: ChaSetI18n.tr("showcase.studioTuner", "Studio Tuner")
                             side: "bottom"
                             ChaSetButton {
                                 variant: win.activePage === "theme-tuner" ? "default" : "outline"
-                                size: "sm"
+                                size: topbar.isMedium ? "sm" : "icon"
                                 icon: "palette"
-                                text: ChaSetI18n.tr("showcase.studioTuner", "Studio Tuner")
+                                text: topbar.isMedium ? ChaSetI18n.tr("showcase.studioTuner", "Studio Tuner") : ""
                                 onClicked: win.activePage = "theme-tuner"
                             }
                         }
 
                         // Export Button
                         ChaSetTooltip {
-                            text: "Export Theme Config"
+                            text: ChaSetI18n.tr("showcase.exportTheme", "Export")
                             side: "bottom"
                             ChaSetButton {
                                 variant: "outline"
-                                size: "sm"
+                                size: topbar.isMedium ? "sm" : "icon"
                                 icon: "copy"
-                                text: ChaSetI18n.tr("showcase.exportTheme", "Export")
+                                text: topbar.isMedium ? ChaSetI18n.tr("showcase.exportTheme", "Export") : ""
                                 onClicked: win.exportModalOpen = true
                             }
                         }
 
-                        // Quick Jump Dropdown Menu
-                        ChaSetDropdownMenu {
-                            id: quickJumpDropdown
-                            anchors.verticalCenter: parent.verticalCenter
-                            width: ThemeTokens.dp(96)
-                            height: ThemeTokens.dp(32)
-                            menuWidth: 200
-                            align: "end"
-                            sideOffset: 8
-                            items: win.quickJumpMenuItems
+                        // Language Switcher Dropdown Menu
+                        ChaSetTooltip {
+                            text: ChaSetI18n.tr("showcase.switchLanguage", "Switch Language")
+                            side: "bottom"
+                            disabled: langDropdown.open
 
-                            ChaSetButton {
-                                anchors.fill: parent
-                                variant: "outline"
-                                size: "sm"
-                                icon: "zap"
-                                text: ChaSetI18n.tr("showcase.jumpTo", "Jump to")
-                                onClicked: quickJumpDropdown.open = !quickJumpDropdown.open
+                            ChaSetDropdownMenu {
+                                id: langDropdown
+                                width: topbar.isNarrow ? ThemeTokens.dp(32) : ThemeTokens.dp(100)
+                                height: ThemeTokens.dp(32)
+                                menuWidth: 190
+                                align: "end"
+                                sideOffset: 8
+                                items: win.languageMenuItems
+
+                                ChaSetButton {
+                                    anchors.fill: parent
+                                    variant: "outline"
+                                    size: topbar.isNarrow ? "icon" : "sm"
+                                    icon: "globe"
+                                    text: topbar.isNarrow ? "" : win.currentLanguageName
+                                    onClicked: langDropdown.open = !langDropdown.open
+                                }
                             }
                         }
 
-                        ChaSetSeparator { orientation: "vertical"; height: ThemeTokens.dp(18); anchors.verticalCenter: parent.verticalCenter }
+                        ChaSetSeparator {
+                            orientation: "vertical"
+                            height: ThemeTokens.dp(18)
+                            anchors.verticalCenter: parent.verticalCenter
+                            visible: !topbar.isNarrow
+                        }
 
                         // Dark/Light/System Mode Toggle Button
                         ChaSetTooltip {
@@ -2038,6 +2075,7 @@ ApplicationWindow {
                             size: "sm"
                             text: "v0.1.0"
                             anchors.verticalCenter: parent.verticalCenter
+                            visible: topbar.width >= ThemeTokens.dp(720)
                         }
                     }
                 }
