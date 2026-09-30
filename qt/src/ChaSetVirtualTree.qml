@@ -61,6 +61,58 @@ Item {
         }
     }
 
+    // Dwell-to-Drop Guard (防误触悬停倒计时门禁)
+    property bool enableDndDwell: false
+    property int dndDwellDurationMs: 500
+    property real dndDwellProgress: 0.0
+    property bool isDndDwellArmed: !enableDndDwell || effectiveIsCopy
+    property string _dwellTargetId: ""
+
+    Timer {
+        id: dndDwellTimer
+        interval: Math.max(50, root.dndDwellDurationMs)
+        repeat: false
+        onTriggered: {
+            root.isDndDwellArmed = true
+            root.dndDwellProgress = 1.0
+        }
+    }
+
+    NumberAnimation {
+        id: dndDwellAnim
+        target: root
+        property: "dndDwellProgress"
+        from: 0.0
+        to: 1.0
+        duration: Math.max(50, root.dndDwellDurationMs)
+        easing.type: Easing.Linear
+    }
+
+    onDropTargetIdChanged: {
+        if (!root.enableDndDwell || root.effectiveIsCopy || !root.isDragging) {
+            root.isDndDwellArmed = !root.enableDndDwell || root.effectiveIsCopy
+            root.dndDwellProgress = 1.0
+            dndDwellTimer.stop()
+            dndDwellAnim.stop()
+            return
+        }
+        if (root.dropTargetId !== "" && root.dropPosition === "inside" && root.isDropValid) {
+            if (root._dwellTargetId !== root.dropTargetId) {
+                root._dwellTargetId = root.dropTargetId
+                root.isDndDwellArmed = false
+                root.dndDwellProgress = 0.0
+                dndDwellTimer.restart()
+                dndDwellAnim.restart()
+            }
+        } else {
+            root._dwellTargetId = ""
+            root.isDndDwellArmed = false
+            root.dndDwellProgress = 0.0
+            dndDwellTimer.stop()
+            dndDwellAnim.stop()
+        }
+    }
+
     property real _savedScrollY: 0
     property bool _preserveScrollPending: false
 
@@ -281,11 +333,21 @@ Item {
         root.isCtrlHeld = false
         root.dragPointerY = 0
         root.hudAtTop = false
+        root._dwellTargetId = ""
+        dndDwellTimer.stop()
+        dndDwellAnim.stop()
+        root.dndDwellProgress = 0.0
+        root.isDndDwellArmed = !root.enableDndDwell || root.effectiveIsCopy
     }
 
     function executeDrop(forceCopy, explicitTargetId, explicitPos) {
         if (!root.enableDnd || !root.isDragging || root.isDropping) {
             if (!root.isDropping) root.resetDragState()
+            return
+        }
+        var isCopy = (forceCopy === true) || root.effectiveIsCopy
+        if (root.enableDndDwell && !isCopy && !root.isDndDwellArmed) {
+            root.resetDragState()
             return
         }
         root.isDropping = true
@@ -294,7 +356,6 @@ Item {
         var targetPos = (explicitPos !== undefined && explicitPos !== "") ? explicitPos : root.dropPosition
         var canDrop = targetId !== "" && root.isDropValidFor(targetId)
         var srcList = root.draggedIds.length > 0 ? root.draggedIds.slice() : (root.draggedId ? [root.draggedId] : [])
-        var isCopy = (forceCopy === true) || root.effectiveIsCopy
 
         if (canDrop && targetPos === "inside") {
             let expCopy = Object.assign({}, root.expandedIds)
@@ -798,11 +859,24 @@ Item {
                 Rectangle {
                     visible: isDropTarget && root.dropPosition === "inside" && root.isDropValid
                     anchors.fill: parent
-                    color: Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15)
-                    border.color: ThemeTokens.focus
+                    readonly property bool isPendingDwell: root.enableDndDwell && !root.effectiveIsCopy && !root.isDndDwellArmed
+                    color: isPendingDwell
+                        ? Qt.rgba(ThemeTokens.pendingAccent.r, ThemeTokens.pendingAccent.g, ThemeTokens.pendingAccent.b, 0.15)
+                        : Qt.rgba(ThemeTokens.focus.r, ThemeTokens.focus.g, ThemeTokens.focus.b, 0.15)
+                    border.color: isPendingDwell ? ThemeTokens.pendingAccent : ThemeTokens.focus
                     border.width: 1
                     radius: ThemeTokens.dp(4)
                     z: 20
+
+                    Rectangle {
+                        visible: isPendingDwell
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        height: ThemeTokens.dp(2)
+                        width: parent.width * root.dndDwellProgress
+                        color: ThemeTokens.pendingAccent
+                        radius: ThemeTokens.dp(1)
+                    }
                 }
 
                 // Drop Indicator: Invalid Target
