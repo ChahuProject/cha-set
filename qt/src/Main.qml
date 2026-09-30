@@ -1862,6 +1862,7 @@ ApplicationWindow {
 
                     // Left Brand Group
                     Row {
+                        id: brandGroup
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: ThemeTokens.dp(10)
@@ -1901,80 +1902,91 @@ ApplicationWindow {
                         }
                     }
 
-                    // Center Search Bar Trigger (Visible on desktop/wide screens >= 860dp)
-                    Rectangle {
-                        id: centerSearchTrigger
-                        visible: topbar.isMedium
-                        width: Math.max(ThemeTokens.dp(200), Math.min(parent.width - ThemeTokens.dp(450), ThemeTokens.dp(360)))
+                    // Center Search Bar Trigger (Strictly bounded between Brand and Right Actions)
+                    Item {
+                        id: centerSearchArea
+                        anchors.left: brandGroup.right
+                        anchors.leftMargin: ThemeTokens.dp(16)
+                        anchors.right: rightActionsRow.left
+                        anchors.rightMargin: ThemeTokens.dp(16)
+                        anchors.verticalCenter: parent.verticalCenter
                         height: ThemeTokens.dp(36)
-                        radius: ThemeTokens.dp(6)
-                        color: searchTriggerMouse.containsMouse ? ThemeTokens.hover : win.cAccentBg
-                        border.color: win.cBorder
-                        border.width: 1
-                        anchors.centerIn: parent
+                        visible: width >= ThemeTokens.dp(200)
 
-                        // Right-anchored keyboard shortcut badge
                         Rectangle {
-                            id: headerKbdBadge
-                            anchors.right: parent.right
-                            anchors.rightMargin: ThemeTokens.dp(8)
-                            anchors.verticalCenter: parent.verticalCenter
-                            width: headerKbdText.implicitWidth + ThemeTokens.dp(14)
-                            height: ThemeTokens.dp(20)
-                            radius: ThemeTokens.dp(4)
-                            color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 1.0)
+                            id: centerSearchTrigger
+                            anchors.centerIn: parent
+                            width: Math.min(parent.width, ThemeTokens.dp(360))
+                            height: parent.height
+                            radius: ThemeTokens.dp(6)
+                            color: searchTriggerMouse.containsMouse ? ThemeTokens.hover : win.cAccentBg
                             border.color: win.cBorder
                             border.width: 1
 
-                            Text {
-                                id: headerKbdText
-                                anchors.centerIn: parent
-                                text: "⌘K"
-                                color: win.cMutedFg
-                                font.pixelSize: Typography.sizeNano
-                                font.family: Typography.familyMono
-                                font.weight: Font.Medium
-                            }
-                        }
-
-                        // Left icon and placeholder text
-                        Row {
-                            anchors.left: parent.left
-                            anchors.leftMargin: ThemeTokens.dp(12)
-                            anchors.right: headerKbdBadge.left
-                            anchors.rightMargin: ThemeTokens.dp(8)
-                            anchors.verticalCenter: parent.verticalCenter
-                            spacing: ThemeTokens.dp(8)
-
-                            ChaSetIcon {
-                                id: searchIco
-                                name: "search"
-                                size: 14
-                                color: win.cMutedFg
+                            // Right-anchored keyboard shortcut badge
+                            Rectangle {
+                                id: headerKbdBadge
+                                anchors.right: parent.right
+                                anchors.rightMargin: ThemeTokens.dp(8)
                                 anchors.verticalCenter: parent.verticalCenter
+                                width: headerKbdText.implicitWidth + ThemeTokens.dp(14)
+                                height: ThemeTokens.dp(20)
+                                radius: ThemeTokens.dp(4)
+                                color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 1.0)
+                                border.color: win.cBorder
+                                border.width: 1
+
+                                Text {
+                                    id: headerKbdText
+                                    anchors.centerIn: parent
+                                    text: "⌘K"
+                                    color: win.cMutedFg
+                                    font.pixelSize: Typography.sizeNano
+                                    font.family: Typography.familyMono
+                                    font.weight: Font.Medium
+                                }
                             }
 
-                            Text {
-                                text: ChaSetI18n.tr("showcase.searchPlaceholder", "Search components & docs...")
-                                color: win.cMutedFg
-                                font.pixelSize: Typography.sizeSmall
+                            // Left icon and placeholder text
+                            Row {
+                                anchors.left: parent.left
+                                anchors.leftMargin: ThemeTokens.dp(12)
+                                anchors.right: headerKbdBadge.left
+                                anchors.rightMargin: ThemeTokens.dp(8)
                                 anchors.verticalCenter: parent.verticalCenter
-                                elide: Text.ElideRight
-                                width: Math.max(0, parent.width - searchIco.width - parent.spacing)
-                            }
-                        }
+                                spacing: ThemeTokens.dp(8)
 
-                        MouseArea {
-                            id: searchTriggerMouse
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: win.searchModalOpen = true
+                                ChaSetIcon {
+                                    id: searchIco
+                                    name: "search"
+                                    size: 14
+                                    color: win.cMutedFg
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
+                                Text {
+                                    text: ChaSetI18n.tr("showcase.searchPlaceholder", "Search components & docs...")
+                                    color: win.cMutedFg
+                                    font.pixelSize: Typography.sizeSmall
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    elide: Text.ElideRight
+                                    width: Math.max(0, parent.width - searchIco.width - parent.spacing)
+                                }
+                            }
+
+                            MouseArea {
+                                id: searchTriggerMouse
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: win.searchModalOpen = true
+                            }
                         }
                     }
 
                     // Right Actions
                     Row {
+                        id: rightActionsRow
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: topbar.isNarrow ? ThemeTokens.dp(4) : ThemeTokens.dp(8)
@@ -1983,7 +1995,7 @@ ApplicationWindow {
                         ChaSetTooltip {
                             text: ChaSetI18n.tr("showcase.searchPlaceholder", "Search components & docs...")
                             side: "bottom"
-                            visible: !topbar.isMedium
+                            visible: !centerSearchArea.visible
 
                             ChaSetButton {
                                 size: "icon"
@@ -2001,7 +2013,7 @@ ApplicationWindow {
 
                             ChaSetDropdownMenu {
                                 id: quickJumpDropdown
-                                width: topbar.isWide ? ThemeTokens.dp(96) : ThemeTokens.dp(32)
+                                width: topbar.width >= ThemeTokens.dp(1100) ? ThemeTokens.dp(96) : ThemeTokens.dp(32)
                                 height: ThemeTokens.dp(32)
                                 menuWidth: 200
                                 align: "end"
@@ -2011,9 +2023,9 @@ ApplicationWindow {
                                 ChaSetButton {
                                     anchors.fill: parent
                                     variant: "outline"
-                                    size: topbar.isWide ? "sm" : "icon"
+                                    size: topbar.width >= ThemeTokens.dp(1100) ? "sm" : "icon"
                                     icon: "zap"
-                                    text: topbar.isWide ? ChaSetI18n.tr("showcase.jumpTo", "Jump to") : ""
+                                    text: topbar.width >= ThemeTokens.dp(1100) ? ChaSetI18n.tr("showcase.jumpTo", "Jump to") : ""
                                     onClicked: quickJumpDropdown.open = !quickJumpDropdown.open
                                 }
                             }
@@ -2025,9 +2037,9 @@ ApplicationWindow {
                             side: "bottom"
                             ChaSetButton {
                                 variant: win.activePage === "theme-tuner" ? "default" : "outline"
-                                size: topbar.isMedium ? "sm" : "icon"
+                                size: topbar.width >= ThemeTokens.dp(1000) ? "sm" : "icon"
                                 icon: "palette"
-                                text: topbar.isMedium ? ChaSetI18n.tr("showcase.studioTuner", "Studio Tuner") : ""
+                                text: topbar.width >= ThemeTokens.dp(1000) ? ChaSetI18n.tr("showcase.studioTuner", "Studio Tuner") : ""
                                 onClicked: win.activePage = "theme-tuner"
                             }
                         }
@@ -2038,9 +2050,9 @@ ApplicationWindow {
                             side: "bottom"
                             ChaSetButton {
                                 variant: "outline"
-                                size: topbar.isMedium ? "sm" : "icon"
+                                size: topbar.width >= ThemeTokens.dp(920) ? "sm" : "icon"
                                 icon: "copy"
-                                text: topbar.isMedium ? ChaSetI18n.tr("showcase.exportTheme", "Export") : ""
+                                text: topbar.width >= ThemeTokens.dp(920) ? ChaSetI18n.tr("showcase.exportTheme", "Export") : ""
                                 onClicked: win.exportModalOpen = true
                             }
                         }
@@ -2053,7 +2065,7 @@ ApplicationWindow {
 
                             ChaSetDropdownMenu {
                                 id: langDropdown
-                                width: topbar.isNarrow ? ThemeTokens.dp(32) : ThemeTokens.dp(100)
+                                width: topbar.width >= ThemeTokens.dp(820) ? ThemeTokens.dp(100) : ThemeTokens.dp(32)
                                 height: ThemeTokens.dp(32)
                                 menuWidth: 190
                                 align: "end"
@@ -2063,9 +2075,9 @@ ApplicationWindow {
                                 ChaSetButton {
                                     anchors.fill: parent
                                     variant: "outline"
-                                    size: topbar.isNarrow ? "icon" : "sm"
+                                    size: topbar.width >= ThemeTokens.dp(820) ? "sm" : "icon"
                                     icon: "globe"
-                                    text: topbar.isNarrow ? "" : win.currentLanguageName
+                                    text: topbar.width >= ThemeTokens.dp(820) ? win.currentLanguageName : ""
                                     onClicked: langDropdown.open = !langDropdown.open
                                 }
                             }

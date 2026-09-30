@@ -116,7 +116,7 @@ export function MyView() {
 
       <section id="packages" className="my-10">
         <h2 className="text-xl font-bold tracking-tight mb-3">Packages</h2>
-        <Table columns={PACKAGE_COLUMNS} data={PACKAGE_ROWS} bordered />
+        <Table columns={PACKAGE_COLUMNS} data={PACKAGE_ROWS} bordered containerClassName="w-full max-w-full overflow-x-auto" />
       </section>
     </DocLayout>
   );

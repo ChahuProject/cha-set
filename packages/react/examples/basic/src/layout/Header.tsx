@@ -61,13 +61,13 @@ export function Header({
           </a>
         </div>
 
-        {/* Center Search Trigger (Desktop & Tablet >= sm) */}
+        {/* Center Search Trigger (Desktop >= lg) */}
         <Button
           type="button"
           variant="outline"
           size="default"
           onClick={onOpenSearch}
-          className="hidden sm:inline-flex items-center justify-between gap-3 h-8 w-64 md:w-80 lg:w-96 px-3 text-sm text-muted-foreground font-normal bg-muted/30 hover:bg-muted/60"
+          className="hidden lg:inline-flex items-center justify-between gap-3 h-8 flex-1 max-w-sm mx-4 px-3 text-sm text-muted-foreground font-normal bg-muted/30 hover:bg-muted/60 min-w-0"
         >
           <div className="flex items-center gap-2 min-w-0">
             <SearchIcon className="size-4 shrink-0" />
@@ -80,14 +80,14 @@ export function Header({
 
         {/* Right Actions */}
         <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 shrink-0">
-          {/* Mobile Search Icon Trigger (< sm) */}
+          {/* Mobile/Tablet Search Icon Trigger (< lg) */}
           <Tooltip content={t('showcase.searchPlaceholder', 'Search components & docs...')} side="bottom">
             <Button
               type="button"
               variant="outline"
               size="icon"
               onClick={onOpenSearch}
-              className="inline-flex sm:hidden"
+              className="inline-flex lg:hidden"
               aria-label={t('showcase.searchPlaceholder', 'Search components & docs...')}
             >
               <SearchIcon className="size-4" />
@@ -100,12 +100,12 @@ export function Header({
               <Button
                 variant="outline"
                 size="icon"
-                className="inline-flex lg:w-auto lg:px-2.5 lg:gap-1.5"
+                className="inline-flex xl:w-auto xl:px-2.5 xl:gap-1.5"
                 title={t('showcase.jumpTo', 'Jump to')}
                 aria-label={t('showcase.jumpTo', 'Jump to')}
               >
                 <ZapIcon className="size-4 text-primary shrink-0" />
-                <span className="hidden lg:inline text-xs">{t('showcase.jumpTo', 'Jump to')}</span>
+                <span className="hidden xl:inline text-xs">{t('showcase.jumpTo', 'Jump to')}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={8} className="w-52">
@@ -142,11 +142,11 @@ export function Header({
               variant={isTunerActive ? 'default' : 'outline'}
               size="icon"
               onClick={onOpenTuner}
-              className="inline-flex md:w-auto md:px-2.5 md:gap-1.5"
+              className="inline-flex lg:w-auto lg:px-2.5 lg:gap-1.5"
               aria-label={t('showcase.studioTuner', 'Studio Tuner')}
             >
               <PaletteIcon className="size-4 shrink-0" />
-              <span className="hidden md:inline text-xs">{t('showcase.studioTuner', 'Studio Tuner')}</span>
+              <span className="hidden lg:inline text-xs">{t('showcase.studioTuner', 'Studio Tuner')}</span>
             </Button>
           </Tooltip>
 
@@ -157,11 +157,11 @@ export function Header({
               variant="outline"
               size="icon"
               onClick={onOpenExport}
-              className="inline-flex md:w-auto md:px-2.5 md:gap-1.5"
+              className="inline-flex lg:w-auto lg:px-2.5 lg:gap-1.5"
               aria-label={t('showcase.exportTheme', 'Export')}
             >
               <CopyIcon className="size-4 shrink-0" />
-              <span className="hidden md:inline text-xs">{t('showcase.exportTheme', 'Export')}</span>
+              <span className="hidden lg:inline text-xs">{t('showcase.exportTheme', 'Export')}</span>
             </Button>
           </Tooltip>
 
@@ -171,12 +171,12 @@ export function Header({
               <Button
                 variant="outline"
                 size="icon"
-                className="inline-flex sm:w-auto sm:px-2.5 sm:gap-1.5"
+                className="inline-flex md:w-auto md:px-2.5 md:gap-1.5"
                 title={t('showcase.switchLanguage', 'Switch Language')}
                 aria-label={t('showcase.switchLanguage', 'Switch Language')}
               >
                 <GlobeIcon className="size-4 shrink-0" />
-                <span className="hidden sm:inline text-xs font-medium">{activeLocaleMeta.nativeName}</span>
+                <span className="hidden md:inline text-xs font-medium">{activeLocaleMeta.nativeName}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={8} className="w-48">
@@ -238,6 +238,7 @@ export function Header({
               variant="outline"
               size="icon"
               aria-label="GitHub Repository"
+              className="hidden sm:inline-flex"
             >
               <a
                 href="https://github.com/chahu/cha-set"
@@ -253,7 +254,7 @@ export function Header({
           </Tooltip>
 
           {/* Version Badge */}
-          <Badge variant="outline" size="sm" className="hidden md:inline-flex font-medium text-muted-foreground bg-muted/60 shrink-0">
+          <Badge variant="outline" size="sm" className="hidden xl:inline-flex font-medium text-muted-foreground bg-muted/60 shrink-0">
             v0.1.0
           </Badge>
         </div>
