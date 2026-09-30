@@ -295,8 +295,8 @@ Item {
                                             anchors.topMargin: Math.round(parent.height * 0.44)
                                             bottomLeftRadius: width / 2
                                             bottomRightRadius: width / 2
-                                            color: Qt.rgba(strokeCol.r, strokeCol.g, strokeCol.b, 0.12)
-                                            border.color: strokeCol
+                                            color: Qt.rgba(mouseGlyph.strokeCol.r, mouseGlyph.strokeCol.g, mouseGlyph.strokeCol.b, 0.12)
+                                            border.color: mouseGlyph.strokeCol
                                             border.width: 1
                                         }
 
@@ -310,8 +310,8 @@ Item {
                                             topRightRadius: 0
                                             bottomLeftRadius: 0
                                             bottomRightRadius: 0
-                                            color: (tokenInfo.button === "left" || tokenInfo.button === "both") ? highlightCol : "transparent"
-                                            border.color: strokeCol
+                                            color: (tokenInfo.button === "left" || tokenInfo.button === "both") ? mouseGlyph.highlightCol : "transparent"
+                                            border.color: mouseGlyph.strokeCol
                                             border.width: 1
                                         }
 
@@ -325,8 +325,8 @@ Item {
                                             topRightRadius: ThemeTokens.dp(3)
                                             bottomLeftRadius: 0
                                             bottomRightRadius: 0
-                                            color: (tokenInfo.button === "right" || tokenInfo.button === "both") ? highlightCol : "transparent"
-                                            border.color: strokeCol
+                                            color: (tokenInfo.button === "right" || tokenInfo.button === "both") ? mouseGlyph.highlightCol : "transparent"
+                                            border.color: mouseGlyph.strokeCol
                                             border.width: 1
                                         }
 
@@ -337,7 +337,7 @@ Item {
                                             width: ThemeTokens.dp(2)
                                             height: Math.round(parent.height * 0.22)
                                             radius: 1
-                                            color: tokenInfo.button === "middle" ? highlightCol : strokeCol
+                                            color: tokenInfo.button === "middle" ? mouseGlyph.highlightCol : mouseGlyph.strokeCol
                                         }
                                     }
 
