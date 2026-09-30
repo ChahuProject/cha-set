@@ -704,6 +704,7 @@ Item {
 
         ListView {
             id: treeList
+            z: 1
             anchors.fill: parent
             anchors.margins: ThemeTokens.dp(8)
             anchors.topMargin: ThemeTokens.dp(8) + (stickyColumn.visible ? stickyColumn.height : 0)
@@ -949,6 +950,10 @@ Item {
                     Drag.source: delegateRow
                     Drag.hotSpot.x: ThemeTokens.dp(10)
                     Drag.hotSpot.y: ThemeTokens.dp(10)
+                    Drag.mimeData: {
+                        "text/plain": (root.draggedIds.length > 1 ? root.draggedIds.join("\n") : parent.modelData.id),
+                        "application/x-chaset-tree-ids": (root.draggedIds.length > 1 ? root.draggedIds.join("\n") : parent.modelData.id)
+                    }
                     onXChanged: {
                         if (rowMouse.drag.active && !root.isDragging) root.isDragging = true
                     }
@@ -971,7 +976,17 @@ Item {
                         root.forceActiveFocus()
                         if (root.enableDnd) {
                             root.draggedId = parent.modelData.id
-                            root.draggedIds = root.selectedIds.length > 0 && root.selectedIds.indexOf(parent.modelData.id) !== -1 ? root.selectedIds : [parent.modelData.id]
+                            if (root.selectedIds && root.selectedIds.length > 1) {
+                                if (root.selectedIds.indexOf(parent.modelData.id) !== -1) {
+                                    root.draggedIds = root.selectedIds.slice()
+                                } else {
+                                    var copy = root.selectedIds.slice()
+                                    if (copy.indexOf(parent.modelData.id) === -1) copy.push(parent.modelData.id)
+                                    root.draggedIds = copy
+                                }
+                            } else {
+                                root.draggedIds = [parent.modelData.id]
+                            }
                             if ((mouse.modifiers & Qt.ControlModifier) !== 0 || (mouse.modifiers & Qt.MetaModifier) !== 0 || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)) {
                                 root.isCtrlHeld = true
                             }
@@ -1001,6 +1016,18 @@ Item {
                     onPositionChanged: function(mouse) {
                         if (drag.active && !root.isDragging) {
                             root.isDragging = true
+                            root.draggedId = parent.modelData.id
+                            if (root.selectedIds && root.selectedIds.length > 1) {
+                                if (root.selectedIds.indexOf(parent.modelData.id) !== -1) {
+                                    root.draggedIds = root.selectedIds.slice()
+                                } else {
+                                    var copy = root.selectedIds.slice()
+                                    if (copy.indexOf(parent.modelData.id) === -1) copy.push(parent.modelData.id)
+                                    root.draggedIds = copy
+                                }
+                            } else {
+                                root.draggedIds = [parent.modelData.id]
+                            }
                         }
                         if (drag.active || root.isDragging) {
                             var mouseGlobalPos = mapToItem(root, mouse.x, mouse.y)
@@ -1040,16 +1067,21 @@ Item {
             id: containerDropArea
             anchors.fill: parent
             enabled: root.enableDnd && root.isDragging
-            z: 1
+            z: 0
             onPositionChanged: function(drag) {
                 root.updateDragPointer(drag.y)
+                if (root.dropTargetId !== "") {
+                    root.dropTargetId = ""
+                    root.dropPosition = ""
+                    root.isDropValid = false
+                }
             }
         }
 
         // Floating Drag Modifier HUD Card (dynamically placed at bottom or top)
         Rectangle {
             id: dragHud
-            visible: root.enableDnd && root.isDragging && root.draggedId !== ""
+            visible: root.enableDnd && root.isDragging && (root.draggedId !== "" || (root.draggedIds && root.draggedIds.length > 0))
             y: root.hudAtTop ? ThemeTokens.dp(8) : Math.max(0, parent.height - height - ThemeTokens.dp(8))
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(8)
@@ -1087,15 +1119,16 @@ Item {
 
                     Text {
                         text: {
+                            var count = (root.draggedIds && root.draggedIds.length > 0) ? root.draggedIds.length : 1;
+                            var countPrefix = count > 1 ? qsTr("%1 项 · ").arg(count) : "";
                             if (root.dropTargetId !== "") {
                                 var targetName = root.getDropTargetLabel();
                                 if (root.dropPosition === "inside") {
-                                    return (root.effectiveIsCopy ? qsTr("复制到") : qsTr("移入")) + ": " + targetName;
+                                    return countPrefix + (root.effectiveIsCopy ? qsTr("复制到") : qsTr("移入")) + ": " + targetName;
                                 } else {
-                                    return qsTr("放置在同级: %1").arg(targetName);
+                                    return countPrefix + qsTr("放置在同级: %1").arg(targetName);
                                 }
                             }
-                            var count = (root.draggedIds && root.draggedIds.length > 0) ? root.draggedIds.length : 1;
                             return qsTr("拖拽中 (%1 项)").arg(count);
                         }
                         color: ThemeTokens.text
