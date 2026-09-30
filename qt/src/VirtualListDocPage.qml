@@ -12,23 +12,32 @@ DocLayout {
     ComponentPreview {
         title: "Virtual List Sandbox"
         stageHeight: 380
-        reactCode: `<VirtualList
+        reactCode: `const listRef = useRef<VirtualListHandle>(null);
+
+// Programmatic jump
+listRef.current?.scrollToIndex(500, 'center');
+
+<VirtualList
+  ref={listRef}
   items={items}
   estimateSize={36}
-  renderItem={(item) => (
-    <div className="flex justify-between px-3 h-9">
+  className="h-64 border rounded-md"
+  renderItem={(item, index) => (
+    <div className="flex items-center justify-between px-3 h-9 border-b border-border/50 text-xs">
       <span>{item.title}</span>
-      <Badge>{item.tag}</Badge>
+      <Badge size="sm">{item.tag}</Badge>
     </div>
   )}
 />`
         qtCode: `ChaSetVirtualList {
-    width: 340
-    height: 260
+    id: virtualList
+    width: 360
+    height: 240
     model: 10000
     delegate: Rectangle {
-        width: parent.width
-        height: 36
+        required property int index
+        width: ListView.view.width
+        height: virtualList.effectiveItemHeight
         // ...delegate...
     }
 }`
@@ -56,28 +65,28 @@ DocLayout {
                         text: "Top (#1)"
                         variant: "outline"
                         size: "sm"
-                        onClicked: virtualList.scrollToIndex(0)
+                        onClicked: virtualList.scrollToIndex(0, "start")
                     }
 
                     ChaSetButton {
                         text: "Index #500"
                         variant: "outline"
                         size: "sm"
-                        onClicked: virtualList.scrollToIndex(500)
+                        onClicked: virtualList.scrollToIndex(500, "center")
                     }
 
                     ChaSetButton {
-                        text: "Index #5,000"
+                        text: "Index #2,500"
                         variant: "outline"
                         size: "sm"
-                        onClicked: virtualList.scrollToIndex(5000)
+                        onClicked: virtualList.scrollToIndex(2500, "center")
                     }
 
                     ChaSetButton {
                         text: "Bottom (#10,000)"
                         variant: "outline"
                         size: "sm"
-                        onClicked: virtualList.scrollToIndex(9999)
+                        onClicked: virtualList.scrollToIndex(9999, "end")
                     }
                 }
 
@@ -87,8 +96,9 @@ DocLayout {
                     height: ThemeTokens.dp(240)
                     model: 10000
                     delegate: Rectangle {
-                        width: parent ? parent.width : 0
-                        height: virtualList.effectiveItemHeight
+                        required property int index
+                        width: ListView.view ? ListView.view.width : (parent ? parent.width : virtualList.width)
+                        height: virtualList.effectiveItemHeight > 0 ? virtualList.effectiveItemHeight : ThemeTokens.dp(36)
                         color: index % 2 === 0 ? ThemeTokens.hover : "transparent"
 
                         DocText {
@@ -97,7 +107,7 @@ DocLayout {
                             anchors.right: badgeItem.left
                             anchors.rightMargin: ThemeTokens.dp(8)
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "Dataset Record #" + (index + 1)
+                            text: "Dataset Item #" + (index + 1)
                             color: ThemeTokens.text
                             font.pixelSize: Typography.sizeSmall
                             font.family: Typography.familyMono
@@ -109,9 +119,18 @@ DocLayout {
                             anchors.right: parent.right
                             anchors.rightMargin: ThemeTokens.dp(12)
                             anchors.verticalCenter: parent.verticalCenter
-                            text: index % 3 === 0 ? "Production" : "Staging"
-                            variant: index % 3 === 0 ? "default" : "secondary"
+                            text: index % 2 === 0 ? "Production" : "Staging"
+                            variant: index % 2 === 0 ? "secondary" : "outline"
                             size: "sm"
+                        }
+
+                        Rectangle {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.bottom: parent.bottom
+                            height: 1
+                            color: ThemeTokens.border
+                            opacity: 0.3
                         }
                     }
                 }
@@ -145,7 +164,7 @@ ChaSetVirtualList {
             { name: "gap", type: "int", default: "0", description: "Vertical spacing between adjacent items." },
             { name: "overscan", type: "int", default: "8", description: "Number of buffer items rendered beyond viewport bounds." },
             { name: "customRadius", type: "int", default: "6", description: "Corner radius of the list viewport container." },
-            { name: "scrollToIndex(index)", type: "function", default: "function", description: "Programmatically scrolls to the target item index." }
+            { name: "scrollToIndex(index, align)", type: "function", default: "function", description: "Programmatically scrolls to the target item index." }
         ]
     }
 }

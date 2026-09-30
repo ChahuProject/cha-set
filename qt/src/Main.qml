@@ -1362,6 +1362,64 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 15: ChaSetVirtualList Virtualization & Programmatic Navigation Parity
+        if (scenario === "all" || scenario === "virtual-list") {
+            console.log("[qt-scenario] Running VirtualList virtualization & programmatic navigation scenario...");
+            var vlFailures = 0;
+
+            var testVList = Qt.createQmlObject(
+                'import QtQuick 6.10; import ChaSet; ChaSetVirtualList { width: 360; height: 240; model: 1000; itemHeight: 36; delegate: Item { width: 360; height: 36 } }',
+                win.contentItem,
+                "dynamicTestVirtualList"
+            );
+
+            if (!testVList) {
+                console.log("[qt-scenario] FAIL: Could not create dynamic ChaSetVirtualList instance");
+                vlFailures++;
+            } else {
+                // 1. Initial State & Metric Dimensions
+                if (testVList.effectiveItemHeight !== ThemeTokens.dp(36)) {
+                    console.log("[qt-scenario] FAIL: effectiveItemHeight expected " + ThemeTokens.dp(36) + ", got " + testVList.effectiveItemHeight);
+                    vlFailures++;
+                }
+                if (testVList.effectiveRadius !== ThemeTokens.dp(6)) {
+                    console.log("[qt-scenario] FAIL: effectiveRadius expected " + ThemeTokens.dp(6) + ", got " + testVList.effectiveRadius);
+                    vlFailures++;
+                }
+                if (typeof testVList.scrollToIndex !== "function") {
+                    console.log("[qt-scenario] FAIL: scrollToIndex is not a function");
+                    vlFailures++;
+                } else {
+                    // 2. Programmatic scrollToIndex tests
+                    testVList.scrollToIndex(500, "center");
+                    if (testVList.currentIndex !== 500) {
+                        console.log("[qt-scenario] FAIL: scrollToIndex(500) did not set currentIndex to 500, got " + testVList.currentIndex);
+                        vlFailures++;
+                    }
+
+                    testVList.scrollToIndex(0, "start");
+                    if (testVList.currentIndex !== 0) {
+                        console.log("[qt-scenario] FAIL: scrollToIndex(0) did not set currentIndex to 0, got " + testVList.currentIndex);
+                        vlFailures++;
+                    }
+
+                    testVList.scrollToIndex(999, "end");
+                    if (testVList.currentIndex !== 999) {
+                        console.log("[qt-scenario] FAIL: scrollToIndex(999) did not set currentIndex to 999, got " + testVList.currentIndex);
+                        vlFailures++;
+                    }
+                }
+
+                testVList.destroy();
+            }
+
+            if (vlFailures === 0) {
+                console.log("[qt-scenario] PASS: ChaSetVirtualList metrics & scrollToIndex programmatic navigation verified");
+            } else {
+                failures += vlFailures;
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;
