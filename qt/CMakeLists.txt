@@ -140,6 +140,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetDropdownMenu.qml
         src/ChaSetSelect.qml
         src/ChaSetPopover.qml
+        src/ChaSetHoverPopover.qml
         src/ChaSetContextMenu.qml
         src/ChaSetAlertDialog.qml
         src/ChaSetSheet.qml
