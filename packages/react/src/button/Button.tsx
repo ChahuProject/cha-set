@@ -10,7 +10,8 @@ export type ButtonVariant =
   | 'outline'
   | 'secondary'
   | 'ghost'
-  | 'link';
+  | 'link'
+  | 'overlay';
 
 export type ButtonSize =
   | 'default'
@@ -44,6 +45,8 @@ export const buttonVariants = cva(
           'hover:bg-muted hover:text-foreground active:bg-muted/80',
         link:
           'text-primary underline-offset-4 hover:underline',
+        overlay:
+          'border border-[rgba(203,213,225,0.6)] bg-[rgba(232,236,243,0.85)] text-foreground shadow-none hover:border-[rgba(203,213,225,0.9)] hover:bg-[rgba(255,255,255,0.96)] active:border-[rgba(203,213,225,0.9)] active:bg-white dark:border-[rgba(60,72,88,0.6)] dark:bg-[rgba(37,45,61,0.85)] dark:hover:border-[rgba(60,72,88,0.9)] dark:hover:bg-[rgba(48,59,79,0.94)] dark:active:border-[rgba(60,72,88,0.9)] dark:active:bg-[rgba(55,67,89,0.97)]',
       },
       size: {
         default: 'h-8 gap-1.5 px-2.5 text-sm',
@@ -79,6 +82,12 @@ export interface ButtonProps
   /** Optional icon rendered after label/children. */
   rightIcon?: React.ReactNode;
   /**
+   * Logical unscaled icon size; enlarges or overrides the size of any icon
+   * (leftIcon / rightIcon / inline svg) rendered inside the button.
+   * When omitted, icons keep their size-variant defaults.
+   */
+  iconSize?: number;
+  /**
    * shadcn-compatible prop: when true, merges props onto the immediate child element.
    * In Base UI, this maps directly to the `render` prop.
    */
@@ -96,6 +105,7 @@ const forceHoverClasses: Record<string, string> = {
   secondary: 'bg-secondary/80',
   ghost: 'bg-muted text-foreground',
   link: 'underline',
+  overlay: 'border-[rgba(203,213,225,0.9)] bg-[rgba(255,255,255,0.96)] dark:border-[rgba(60,72,88,0.9)] dark:bg-[rgba(48,59,79,0.94)]',
 };
 
 const forceActiveClasses: Record<string, string> = {
@@ -105,6 +115,7 @@ const forceActiveClasses: Record<string, string> = {
   secondary: 'bg-secondary/70',
   ghost: 'bg-muted/80 text-foreground',
   link: 'underline',
+  overlay: 'border-[rgba(203,213,225,0.9)] bg-[rgba(255,255,255,1)] dark:border-[rgba(60,72,88,0.9)] dark:bg-[rgba(55,67,89,0.97)]',
 };
 
 export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
@@ -117,6 +128,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
     pressed = false,
     leftIcon,
     rightIcon,
+    iconSize,
     asChild = false,
     forceHover = false,
     forceActive = false,
@@ -124,6 +136,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
     type = 'button',
     disabled,
     children,
+    style,
     render,
     ...rest
   },
@@ -142,8 +155,13 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
     buttonVariants({ variant, size }),
     forceClass,
     fullWidth && 'w-full',
+    iconSize !== undefined && "[&_svg:not([class*='size-'])]:size-[var(--cs-icon-size)]!",
     className,
   );
+  const mergedStyle =
+    iconSize !== undefined
+      ? ({ '--cs-icon-size': `${iconSize * 0.0625}rem`, ...(style ?? {}) } as unknown as React.CSSProperties)
+      : style;
   const isDisabled = disabled || loading;
 
   const effectiveRender = asChild && React.isValidElement(children) ? children : render;
@@ -153,6 +171,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
       ref={ref}
       type={type}
       className={classes}
+      style={mergedStyle}
       disabled={isDisabled}
       aria-busy={loading || undefined}
       aria-pressed={pressed ? true : undefined}

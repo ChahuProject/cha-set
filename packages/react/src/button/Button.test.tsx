@@ -73,7 +73,7 @@ describe('Button', () => {
     expect(screen.getByRole('button', { name: 'Search' })).toHaveClass('size-9');
   });
 
-  it('supports shadcn outline, secondary, ghost, and link variants', () => {
+  it('supports shadcn outline, secondary, ghost, link, and overlay variants', () => {
     const { rerender } = render(<Button variant="outline">Outline</Button>);
     expect(screen.getByRole('button', { name: 'Outline' })).toHaveClass(
       'border',
@@ -99,6 +99,28 @@ describe('Button', () => {
       'text-primary',
       'underline-offset-4',
     );
+
+    rerender(<Button variant="overlay">Overlay</Button>);
+    const overlayButton = screen.getByRole('button', { name: 'Overlay' });
+    expect(overlayButton).toHaveAttribute('data-variant', 'overlay');
+    expect(overlayButton).toHaveClass(
+      'border',
+      'border-[rgba(203,213,225,0.6)]',
+      'bg-[rgba(232,236,243,0.85)]',
+      'text-foreground',
+      'shadow-none',
+    );
+  });
+
+  it('applies iconSize to enlarge icons via an inline custom property', () => {
+    render(
+      <Button iconSize={28} aria-label="Sized Icon">
+        <svg data-testid="sized-icon" />
+      </Button>,
+    );
+    const button = screen.getByRole('button', { name: 'Sized Icon' });
+    expect(button.getAttribute('style')).toContain('--cs-icon-size: 1.75rem');
+    expect(button).toHaveClass("[&_svg:not([class*='size-'])]:size-[var(--cs-icon-size)]!");
   });
 
   it('supports icon size', () => {

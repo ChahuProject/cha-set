@@ -62,6 +62,7 @@ export function ButtonDocPage() {
                     { label: 'Ghost', value: 'ghost' },
                     { label: 'Destructive', value: 'destructive' },
                     { label: 'Link', value: 'link' },
+                    { label: 'Overlay', value: 'overlay' },
                   ]}
                 />
               </div>
@@ -169,9 +170,10 @@ export function ButtonDocPage() {
             <Button variant="ghost">Ghost</Button>
             <Button variant="destructive">Destructive</Button>
             <Button variant="link">Link</Button>
+            <Button variant="overlay">Overlay</Button>
           </div>
           <CodeBlock
-            code={`<Button variant="default">Default</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="outline">Outline</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="destructive">Destructive</Button>\n<Button variant="link">Link</Button>`}
+            code={`<Button variant="default">Default</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="outline">Outline</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="destructive">Destructive</Button>\n<Button variant="link">Link</Button>\n<Button variant="overlay">Overlay</Button>`}
             language="tsx"
             className="mt-3"
           />
@@ -270,7 +272,7 @@ export function ButtonDocPage() {
         props={[
           {
             name: 'variant',
-            type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'",
+            type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'overlay'",
             default: "'default'",
             description: 'Visual appearance and semantic intent.',
           },
@@ -309,6 +311,12 @@ export function ButtonDocPage() {
             type: 'ReactNode',
             default: 'undefined',
             description: 'Optional trailing icon displayed after children.',
+          },
+          {
+            name: 'iconSize',
+            type: 'number',
+            default: 'undefined',
+            description: 'Logical unscaled icon size; enlarges or overrides icons rendered inside the button.',
           },
           {
             name: 'fullWidth',

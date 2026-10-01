@@ -8,7 +8,7 @@ Item {
     id: root
 
     // ---- API Contract (shadcn/ui aligned) ----
-    property string variant: "default"   // default | destructive | outline | secondary | ghost | link
+    property string variant: "default"   // default | destructive | outline | secondary | ghost | link | overlay
     property string size: "default"      // default | sm | lg | icon | xs | icon-xs | icon-sm | icon-lg
     property bool loading: false
     property string loadingText: ""
@@ -19,6 +19,8 @@ Item {
     property string icon: ""
     property string iconSource: ""
     property string iconPosition: "left" // left | right
+    // 0 = auto (derive from size); otherwise logical units, scaled internally by ChaSetIcon
+    property int iconSize: 0
     property int customRadius: 8
     readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property bool roundLeft: true
@@ -81,6 +83,12 @@ Item {
     readonly property color cSecondaryFg: cAccentFg
 
     function bgColor() {
+        if (variant === "overlay") {
+            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(55.0 / 255.0, 67.0 / 255.0, 89.0 / 255.0, 0.97) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
+            if (effectiveHovered) return ThemeTokens.dark ? Qt.rgba(48.0 / 255.0, 59.0 / 255.0, 79.0 / 255.0, 0.94) : Qt.rgba(1.0, 1.0, 1.0, 0.96)
+            return ThemeTokens.dark ? Qt.rgba(37.0 / 255.0, 45.0 / 255.0, 61.0 / 255.0, 0.85) : Qt.rgba(232.0 / 255.0, 236.0 / 255.0, 243.0 / 255.0, 0.85)
+        }
+
         if (variant === "ghost" || variant === "link") {
             if (variant === "link") return "transparent"
             if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
@@ -118,6 +126,7 @@ Item {
         case "destructive": return cDestructive
         case "outline":     return (effectiveHovered || (pressed && !effectiveDisabled)) ? cAccentFg : cFg
         case "secondary":   return cSecondaryFg
+        case "overlay":     return cFg
         case "ghost":       return (effectiveHovered || (pressed && !effectiveDisabled)) ? cAccentFg : cFg
         case "link":        return cPrimary
         case "default":
@@ -127,10 +136,16 @@ Item {
     }
 
     function hasBorder() {
-        return variant === "outline"
+        return variant === "outline" || variant === "overlay"
     }
 
     function borderColor() {
+        if (variant === "overlay") {
+            if (effectiveHovered || (pressed && !effectiveDisabled)) {
+                return ThemeTokens.dark ? Qt.rgba(60.0 / 255.0, 72.0 / 255.0, 88.0 / 255.0, 0.9) : Qt.rgba(203.0 / 255.0, 213.0 / 255.0, 225.0 / 255.0, 0.9)
+            }
+            return ThemeTokens.dark ? Qt.rgba(60.0 / 255.0, 72.0 / 255.0, 88.0 / 255.0, 0.6) : Qt.rgba(203.0 / 255.0, 213.0 / 255.0, 225.0 / 255.0, 0.6)
+        }
         if (!hasBorder()) return "transparent"
         if (effectiveHovered || (pressed && !effectiveDisabled)) {
             return ThemeTokens.dark ? Qt.lighter(cBorder, 1.4) : Qt.darker(cBorder, 1.18)
@@ -171,7 +186,7 @@ Item {
         color: root.hasBorder() || root.variant === "default" || root.variant === "primary" || root.variant === "secondary" || root.variant === "destructive"
                ? Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.25 : 0.06)
                : "transparent"
-        visible: !root.effectiveDown && !root.pressed && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link" && root.variant !== "destructive")
+        visible: !root.effectiveDown && !root.pressed && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link" && root.variant !== "destructive" && root.variant !== "overlay")
 
         Rectangle {
             visible: !root.roundRight && root.effectiveRadius > 0
@@ -317,7 +332,7 @@ Item {
             visible: !root.loading && root.icon !== ""
             anchors.verticalCenter: parent.verticalCenter
             name: root.icon
-            size: root.size === "sm" || root.size === "xs" || root.size === "icon-xs" || root.size === "icon-sm" ? 14 : 16
+            size: root.iconSize > 0 ? root.iconSize : (root.size === "sm" || root.size === "xs" || root.size === "icon-xs" || root.size === "icon-sm" ? 14 : 16)
             color: root.fgColor()
         }
 

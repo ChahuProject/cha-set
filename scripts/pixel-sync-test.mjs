@@ -33,6 +33,7 @@ const buttonMatrix = [
   { id: 'btn-secondary-idle', variant: 'secondary', size: 'default', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
   { id: 'btn-ghost-idle', variant: 'ghost', size: 'default', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
   { id: 'btn-link-idle', variant: 'link', size: 'default', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-overlay-idle', variant: 'overlay', size: 'default', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.2 },
 
   // 2. Behavioral States (Hover & Active/Pressed for Default, Outline, Secondary, Ghost)
   { id: 'btn-default-hover', variant: 'default', size: 'default', state: 'hover', label: '·', width: 220, height: 80, maxDiff: 0.2 },
@@ -41,6 +42,11 @@ const buttonMatrix = [
   { id: 'btn-outline-active', variant: 'outline', size: 'default', state: 'active', label: '·', width: 220, height: 80, maxDiff: 0.2 },
   { id: 'btn-secondary-hover', variant: 'secondary', size: 'default', state: 'hover', label: '·', width: 220, height: 80, maxDiff: 0.2 },
   { id: 'btn-ghost-hover', variant: 'ghost', size: 'default', state: 'hover', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+
+  // 2b. Overlay variant (translucent raised surface floating over content)
+  { id: 'btn-overlay-hover', variant: 'overlay', size: 'default', state: 'hover', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-overlay-active', variant: 'overlay', size: 'default', state: 'active', label: '·', width: 220, height: 80, maxDiff: 0.2 },
+  { id: 'btn-overlay-dark-idle', variant: 'overlay', size: 'default', state: 'idle', theme: 'dark', label: '·', width: 220, height: 80, maxDiff: 0.2 },
 
   // 3. Sizes
   { id: 'btn-size-sm', variant: 'default', size: 'sm', state: 'idle', label: '·', width: 220, height: 80, maxDiff: 0.7 },
@@ -473,6 +479,7 @@ try {
         size: tc.size,
         label: tc.label,
         state: tc.state,
+        theme: tc.theme ?? 'light',
         disabled: tc.disabled ? 'true' : 'false',
         loading: tc.loading ? 'true' : 'false',
       }).toString();
@@ -594,6 +601,7 @@ try {
         '--shot', qtPngPath,
         ...(tc.disabled ? ['--disabled'] : []),
         ...(tc.loading ? ['--loading'] : []),
+        ...(tc.theme === 'dark' ? ['--dark'] : ['--light']),
       ];
     }
 

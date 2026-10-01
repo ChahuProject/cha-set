@@ -79,7 +79,8 @@ DocLayout {
                         { label: "Outline", value: "outline" },
                         { label: "Ghost", value: "ghost" },
                         { label: "Destructive", value: "destructive" },
-                        { label: "Link", value: "link" }
+                        { label: "Link", value: "link" },
+                        { label: "Overlay", value: "overlay" }
                     ]
                     onValueSelected: function(v) { root.btnVariant = String(v); }
                 }
@@ -183,13 +184,14 @@ DocLayout {
                         ChaSetButton { variant: "ghost"; text: "Ghost" }
                         ChaSetButton { variant: "destructive"; text: "Destructive" }
                         ChaSetButton { variant: "link"; text: "Link" }
+                        ChaSetButton { variant: "overlay"; text: "Overlay" }
                     }
                 }
             }
             ChaSetCodeBlock {
                 width: parent.width
                 language: "qml"
-                code: "ChaSetButton { variant: \"default\"; text: \"Default\" }\nChaSetButton { variant: \"secondary\"; text: \"Secondary\" }\nChaSetButton { variant: \"outline\"; text: \"Outline\" }\nChaSetButton { variant: \"ghost\"; text: \"Ghost\" }\nChaSetButton { variant: \"destructive\"; text: \"Destructive\" }\nChaSetButton { variant: \"link\"; text: \"Link\" }"
+                code: "ChaSetButton { variant: \"default\"; text: \"Default\" }\nChaSetButton { variant: \"secondary\"; text: \"Secondary\" }\nChaSetButton { variant: \"outline\"; text: \"Outline\" }\nChaSetButton { variant: \"ghost\"; text: \"Ghost\" }\nChaSetButton { variant: \"destructive\"; text: \"Destructive\" }\nChaSetButton { variant: \"link\"; text: \"Link\" }\nChaSetButton { variant: \"overlay\"; text: \"Overlay\" }"
             }
         }
 
@@ -284,7 +286,7 @@ DocLayout {
         name: "Button"
         componentId: "button"
         propsModel: [
-            ["variant", "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", "'default'", "Visual appearance and semantic intent."],
+            ["variant", "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'overlay'", "'default'", "Visual appearance and semantic intent."],
             ["size", "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'", "'default'", "Standardized dimensions scale."],
             ["loading", "bool", "false", "Shows spinning indicator and disables user interaction."],
             ["loadingText", "string", "\"\"", "Optional label displayed while in loading state."],
@@ -293,6 +295,7 @@ DocLayout {
             ["disabled", "bool", "false", "Blocks clicks and applies muted disabled styling."],
             ["iconSource", "string", "\"\"", "Optional icon image source URL."],
             ["iconPosition", "string", "\"left\"", "Placement of iconSource: left or right."],
+            ["iconSize", "int", "0", "Logical icon size; 0 = auto (derive from size), otherwise logical units scaled internally."],
             ["text", "string", "\"\"", "Button label text content."]
         ]
     }

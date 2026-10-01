@@ -13,6 +13,7 @@ export const buttonVariantSchema = z.enum([
   'secondary',
   'ghost',
   'link',
+  'overlay',
 ]);
 export const buttonSizeSchema = z.enum([
   'default',
@@ -33,6 +34,8 @@ export const buttonSchema = z.object({
   disabled: z.boolean().default(false),
   type: z.enum(['button', 'submit', 'reset']).default('button'),
   pressed: z.boolean().default(false),
+  /** Logical unscaled icon size; enlarges/overrides the icon rendered inside the button. */
+  iconSize: z.number().int().positive().optional(),
 });
 
 export type ButtonApi = z.infer<typeof buttonSchema>;
