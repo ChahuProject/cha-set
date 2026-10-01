@@ -65,8 +65,11 @@ Item {
 
     function isHovered() {
         if (targetHover && targetHover.hovered) return true
+        if (effectiveTarget && effectiveTarget.containsMouse) return true
         if (popoverHover && popoverHover.hovered) return true
+        if (popoverMouseArea && popoverMouseArea.containsMouse) return true
         if (bridgeHover && bridgeHover.hovered) return true
+        if (bridgeMouseArea && bridgeMouseArea.containsMouse) return true
         if (keepAlivePredicate && keepAlivePredicate()) return true
         return false
     }
@@ -206,28 +209,28 @@ Item {
             if (root.side === "top" || root.side === "bottom") {
                 return Math.min(root.targetX, popoverFrame.x) - 4
             } else {
-                return root.side === "left" ? popoverFrame.x + popoverFrame.width : root.targetX + root.targetW
+                return root.side === "left" ? (popoverFrame.x + popoverFrame.width - 4) : (root.targetX + root.targetW - 4)
             }
         }
         y: {
             if (root.side === "left" || root.side === "right") {
                 return Math.min(root.targetY, popoverFrame.y) - 4
             } else {
-                return root.side === "top" ? popoverFrame.y + popoverFrame.height : root.targetY + root.targetH
+                return root.side === "top" ? (popoverFrame.y + popoverFrame.height - 4) : (root.targetY + root.targetH - 4)
             }
         }
         width: {
             if (root.side === "top" || root.side === "bottom") {
                 return Math.max(root.targetX + root.targetW, popoverFrame.x + popoverFrame.width) - x + 4
             } else {
-                return root.sideOffset + 8
+                return Math.max(root.sideOffset + 8, Math.abs(popoverFrame.x - root.targetX) + 8)
             }
         }
         height: {
             if (root.side === "left" || root.side === "right") {
                 return Math.max(root.targetY + root.targetH, popoverFrame.y + popoverFrame.height) - y + 4
             } else {
-                return root.sideOffset + 8
+                return Math.max(root.sideOffset + 8, Math.abs(popoverFrame.y - root.targetY) + 8)
             }
         }
 
@@ -238,6 +241,19 @@ Item {
                 if (hovered) {
                     closeTimer.stop()
                 } else if (!root.isHovered()) {
+                    closeTimer.restart()
+                }
+            }
+        }
+
+        MouseArea {
+            id: bridgeMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.NoButton
+            onEntered: closeTimer.stop()
+            onExited: {
+                if (!root.isHovered()) {
                     closeTimer.restart()
                 }
             }
@@ -267,6 +283,20 @@ Item {
                 if (hovered) {
                     closeTimer.stop()
                 } else if (!root.isHovered()) {
+                    closeTimer.restart()
+                }
+            }
+        }
+
+        MouseArea {
+            id: popoverMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.NoButton
+            z: -1
+            onEntered: closeTimer.stop()
+            onExited: {
+                if (!root.isHovered()) {
                     closeTimer.restart()
                 }
             }
