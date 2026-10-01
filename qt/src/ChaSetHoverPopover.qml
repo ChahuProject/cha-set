@@ -63,11 +63,28 @@ Item {
         else show()
     }
 
+    function keepAlive() {
+        closeTimer.stop()
+    }
+
+    function _hasAnyHoveredChild(item) {
+        if (!item) return false
+        if (item.containsMouse === true || item.hovered === true) return true
+        var ch = item.children
+        if (ch) {
+            for (var i = 0; i < ch.length; ++i) {
+                if (_hasAnyHoveredChild(ch[i])) return true
+            }
+        }
+        return false
+    }
+
     function isHovered() {
         if (targetHover && targetHover.hovered) return true
-        if (effectiveTarget && effectiveTarget.containsMouse) return true
+        if (effectiveTarget && (effectiveTarget.containsMouse || _hasAnyHoveredChild(effectiveTarget))) return true
         if (popoverHover && popoverHover.hovered) return true
         if (popoverMouseArea && popoverMouseArea.containsMouse) return true
+        if (_hasAnyHoveredChild(popoverContent)) return true
         if (bridgeHover && bridgeHover.hovered) return true
         if (bridgeMouseArea && bridgeMouseArea.containsMouse) return true
         if (keepAlivePredicate && keepAlivePredicate()) return true
@@ -103,6 +120,28 @@ Item {
                 openTimer.stop()
                 if (root.open) {
                     closeTimer.restart()
+                }
+            }
+        }
+    }
+
+    Connections {
+        target: root.effectiveTarget
+        ignoreUnknownSignals: true
+        function onContainsMouseChanged() {
+            if (!root.disabled && root.effectiveTarget) {
+                if (root.effectiveTarget.containsMouse) {
+                    closeTimer.stop()
+                    if (root.openDelay <= 0) {
+                        root.open = true
+                    } else {
+                        openTimer.restart()
+                    }
+                } else {
+                    openTimer.stop()
+                    if (root.open && !root.isHovered()) {
+                        closeTimer.restart()
+                    }
                 }
             }
         }
@@ -268,7 +307,7 @@ Item {
         y: Math.round(root.clampedY)
         width: root.popoverWidth
         height: root.popoverHeight
-        visible: opacity > 0.001
+        visible: root.open || opacity > 0.001
         opacity: root.open ? 1.0 : 0.0
 
         Behavior on opacity {
