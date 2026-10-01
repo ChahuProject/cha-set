@@ -14,6 +14,11 @@ Item {
     property bool overflowVisible: false
     readonly property bool isAnyPopupOpen: overflowPopup.opened
 
+    // —— 分段拖放状态（拖拽文件悬停到某一级面包屑即把该级目录作为投放目标）——
+    property int activeDropSegmentIndex: -1
+    readonly property bool isDropActive: activeDropSegmentIndex >= 0
+    readonly property string activeDropPath: segmentPathAt(activeDropSegmentIndex)
+
     function closePopups() {
         overflowPopup.close()
     }
@@ -22,6 +27,65 @@ Item {
     signal openSubfoldersRequested(int index, string path, Item chevronItem)
     signal dropRequested(string targetPath, var urls)
     signal blankAreaClicked()
+
+    // 解析拖拽载荷中的本地文件路径：OS 拖入优先 urls；内部拖拽（QQuick Drag）回退
+    // 多行文本载荷（每行一条路径）。
+    function extractDropPaths(drag) {
+        var paths = []
+        if (!drag) return paths
+        if (drag.hasUrls && drag.urls && drag.urls.length > 0) {
+            for (var u = 0; u < drag.urls.length; ++u) {
+                var raw = String(drag.urls[u])
+                var local = raw.replace(/^file:\/\/\//i, "").replace(/^file:\/\//i, "")
+                if (local.length > 0) paths.push(decodeURIComponent(local))
+            }
+            return paths
+        }
+        var text = ""
+        if (typeof drag.getDataAsString === "function") {
+            text = drag.getDataAsString("text/plain") || ""
+        }
+        if (!text && drag.text) text = drag.text
+        if (text) {
+            var lines = text.split("\n")
+            for (var i = 0; i < lines.length; ++i) {
+                var line = lines[i].replace(/\r$/, "")
+                if (line.length > 0) paths.push(line)
+            }
+        }
+        return paths
+    }
+
+    function segmentPathAt(index) {
+        if (!root.segments || index < 0 || index >= root.segments.length) return ""
+        var seg = root.segments[index]
+        return String(seg.realPath || seg.path || "")
+    }
+
+    // 拖拽悬停到某分段：命中则记录为当前投放目标并返回其路径（宿主据此校验/高亮）。
+    function updateSegmentDrop(index, drag) {
+        var target = root.disabled ? "" : segmentPathAt(index)
+        if (target === "" || extractDropPaths(drag).length === 0) {
+            clearSegmentDrop()
+            return ""
+        }
+        root.activeDropSegmentIndex = index
+        return target
+    }
+
+    function clearSegmentDrop() {
+        root.activeDropSegmentIndex = -1
+    }
+
+    // 提交投放：向宿主发出 dropRequested(targetPath, urls)，返回是否已提交。
+    function commitSegmentDrop(index, drag) {
+        var paths = extractDropPaths(drag)
+        var target = root.disabled ? "" : segmentPathAt(index)
+        clearSegmentDrop()
+        if (target === "" || paths.length === 0) return false
+        root.dropRequested(target, paths)
+        return true
+    }
 
     implicitHeight: ThemeTokens.dp(30)
     implicitWidth: {
@@ -158,6 +222,7 @@ Item {
                 readonly property bool segHasSubfolders: Boolean(modelData.hasSubfolders)
                 readonly property bool isCurrent: segItem.index === (root.segments.length - 1)
                 readonly property bool isMenuOpen: segItem.index === root.openSegmentIndex
+                readonly property bool isDropTarget: root.activeDropSegmentIndex === segItem.index
 
                 visible: segItem.index >= root.firstVisibleIndex
                 Layout.preferredWidth: segPill.implicitWidth + (chevronBox.visible ? chevronBox.width : 0)
@@ -175,7 +240,11 @@ Item {
                         height: parent.height
                         implicitWidth: width
                         radius: ThemeTokens.dp(4)
-                        color: pillMouse.containsMouse && !root.disabled ? ThemeTokens.hover : "transparent"
+                        color: (segItem.isDropTarget || (pillMouse.containsMouse && !root.disabled))
+                            ? ThemeTokens.hover : "transparent"
+                        // 拖拽悬停到该级：描边高亮，明确「松手即投放到此目录」
+                        border.width: segItem.isDropTarget ? 1 : 0
+                        border.color: ThemeTokens.accent
 
                         Row {
                             id: pillContent
@@ -275,6 +344,38 @@ Item {
                             side: "bottom"
                             delay: 400
                             disabled: root.disabled
+                        }
+                    }
+                }
+
+                // 该级分段的投放区：拖拽文件悬停即高亮，松手后由宿主把文件移动/复制到该级目录
+                DropArea {
+                    id: segDropArea
+                    objectName: "breadcrumbSegmentDropArea"
+                    anchors.fill: parent
+
+                    function dragIsCopy(drag) {
+                        return (drag && drag.keyboardModifiers !== undefined
+                                && ((drag.keyboardModifiers & Qt.ControlModifier) !== 0
+                                    || (drag.keyboardModifiers & Qt.MetaModifier) !== 0))
+                    }
+
+                    function acceptIfTargeted(drag) {
+                        var target = root.updateSegmentDrop(segItem.index, drag)
+                        if (target !== "" && drag && drag.accept) {
+                            drag.accept(dragIsCopy(drag) ? Qt.CopyAction : Qt.MoveAction)
+                        } else if (drag && drag.accept) {
+                            drag.accept(Qt.IgnoreAction)
+                        }
+                    }
+
+                    onEntered: (drag) => acceptIfTargeted(drag)
+                    onPositionChanged: (drag) => acceptIfTargeted(drag)
+                    onExited: root.clearSegmentDrop()
+                    onDropped: (drop) => {
+                        if (root.commitSegmentDrop(segItem.index, drop)
+                                && drop && typeof drop.acceptProposedAction === "function") {
+                            drop.acceptProposedAction()
                         }
                     }
                 }

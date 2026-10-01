@@ -31,6 +31,11 @@ Item {
     readonly property bool anyPopupOpen: suggestPopup.opened || subfolderPopup.opened || (breadcrumbPrimitive ? breadcrumbPrimitive.isAnyPopupOpen : false)
     property int highlightedIndex: -1
 
+    // 面包屑分段拖放：宿主可读取当前悬停级别以提示目标，或按需禁用（默认启用）。
+    property bool acceptBreadcrumbDrops: true
+    readonly property bool isBreadcrumbDropActive: acceptBreadcrumbDrops && breadcrumbPrimitive.isDropActive
+    readonly property string activeBreadcrumbDropPath: acceptBreadcrumbDrops ? breadcrumbPrimitive.activeDropPath : ""
+
     signal navigateRequested(string path)
     signal navigateRequestedWithSelection(string path, string selectionPath)
     signal backRequested()
@@ -327,12 +332,13 @@ Item {
 
                 ChaSetBreadcrumb {
                     id: breadcrumbPrimitive
+                    objectName: "addressBarBreadcrumb"
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     width: Math.min(parent.width, implicitWidth)
                     segments: controller.segments
-                    disabled: root.disabled
+                    disabled: root.disabled || !root.acceptBreadcrumbDrops
 
                     onNavigateRequested: (targetPath) => {
                         controller.navigate(targetPath)
