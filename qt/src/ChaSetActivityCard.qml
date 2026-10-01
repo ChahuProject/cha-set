@@ -79,7 +79,11 @@ Item {
     // `bg-card/95` + `text-card-foreground`, declared as an explicit pair so the card
     // is self-contained and never inherits an ambient foreground.
     readonly property color surface: Qt.rgba(ThemeTokens.panel.r, ThemeTokens.panel.g, ThemeTokens.panel.b, 0.95)
-    readonly property color onSurface: ThemeTokens.text
+    // QML reserves on<CapitalLetter> for signal handlers (e.g. onSurface is interpreted as
+    // the handler for the 'surface' property), causing property onSurface to evaluate to invalid/black.
+    // We expose surfaceForeground and onSurfaceColor.
+    readonly property color surfaceForeground: ThemeTokens.text
+    readonly property color onSurfaceColor: surfaceForeground
 
     readonly property int horizontalPadding: ThemeTokens.dp(14)
     readonly property int verticalPadding: ThemeTokens.dp(14)
@@ -211,7 +215,7 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
                             width: parent.width - (metaText.visible ? metaText.width + ThemeTokens.dp(8) : 0)
                             text: root.title
-                            color: root.onSurface
+                            color: root.surfaceForeground
                             font.pixelSize: Typography.sizeBody
                             font.weight: Typography.weightSemibold
                             font.family: Typography.familySans
@@ -265,7 +269,7 @@ Item {
                         anchors.centerIn: parent
                         name: "x"
                         size: 14
-                        color: dismissHover.hovered ? root.onSurface : ThemeTokens.subduedText
+                        color: dismissHover.hovered ? root.surfaceForeground : ThemeTokens.subduedText
                     }
 
                     Accessible.role: Accessible.Button
