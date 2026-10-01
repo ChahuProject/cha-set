@@ -113,21 +113,75 @@ Item {
         }
     }
 
+    // —— 展开/折叠滚动位置记忆与鼠标锚定 ——
     property real _savedScrollY: 0
     property bool _preserveScrollPending: false
+    property string _anchorId: ""
+    property real _anchorVisualY: 0
+    property real _bottomAnchorPadding: 0
+    property bool _isProgrammaticScroll: false
 
-    function _saveScrollPosition() {
-        if (treeList) {
-            root._savedScrollY = treeList.contentY
-            root._preserveScrollPending = true
+    function _saveScrollPosition(targetId) {
+        if (!treeList) return
+        root._savedScrollY = treeList.contentY
+        root._preserveScrollPending = true
+
+        var id = (targetId !== undefined && targetId !== null && targetId !== "")
+            ? String(targetId) : root._anchorId
+        if (id && id !== "") {
+            for (var i = 0; i < root.flatItems.length; i++) {
+                if (String(root.flatItems[i].id) === id) {
+                    root._anchorId = id
+                    var step = root.effectiveEstimateSize + (root.gap > 0 ? ThemeTokens.dp(root.gap) : ThemeTokens.dp(2))
+                    root._anchorVisualY = i * step - treeList.contentY
+                    return
+                }
+            }
+        }
+        var topStep = root.effectiveEstimateSize + (root.gap > 0 ? ThemeTokens.dp(root.gap) : ThemeTokens.dp(2))
+        var topIdx = Math.max(0, Math.floor(treeList.contentY / Math.max(1, topStep)))
+        if (topIdx < root.flatItems.length) {
+            root._anchorId = String(root.flatItems[topIdx].id)
+            root._anchorVisualY = topIdx * topStep - treeList.contentY
+        } else {
+            root._anchorId = ""
+            root._anchorVisualY = 0
         }
     }
 
     function _restoreScroll() {
         if (!root._preserveScrollPending || !treeList) return
         root._preserveScrollPending = false
-        var maxScroll = Math.max(0, treeList.contentHeight - treeList.height)
-        treeList.contentY = Math.max(0, Math.min(root._savedScrollY, maxScroll))
+
+        var targetContentY = root._savedScrollY
+        var step = root.effectiveEstimateSize + (root.gap > 0 ? ThemeTokens.dp(root.gap) : ThemeTokens.dp(2))
+        if (root._anchorId !== "") {
+            for (var i = 0; i < root.flatItems.length; i++) {
+                if (String(root.flatItems[i].id) === root._anchorId) {
+                    targetContentY = i * step - root._anchorVisualY
+                    break
+                }
+            }
+        }
+
+        var naturalContentHeight = root.flatItems.length * step
+        var viewHeight = treeList.height
+        var maxScrollWithoutPadding = Math.max(0, naturalContentHeight - viewHeight)
+
+        if (targetContentY > maxScrollWithoutPadding && viewHeight > 0) {
+            root._bottomAnchorPadding = targetContentY - maxScrollWithoutPadding
+        } else {
+            root._bottomAnchorPadding = 0
+        }
+
+        var effectiveMaxScroll = Math.max(0, naturalContentHeight + root._bottomAnchorPadding - viewHeight)
+        var finalY = Math.max(0, Math.min(targetContentY, effectiveMaxScroll))
+
+        root._isProgrammaticScroll = true
+        treeList.contentY = finalY
+        root._savedScrollY = finalY
+        root._isProgrammaticScroll = false
+        root._anchorId = ""
     }
 
     onFlatItemsChanged: {
@@ -374,7 +428,7 @@ Item {
     }
 
     function toggleExpand(id) {
-        root._saveScrollPosition()
+        root._saveScrollPosition(id)
         let copy = Object.assign({}, root.expandedIds)
         let currentExp = copy[id]
         if (currentExp === undefined) {
@@ -774,16 +828,27 @@ Item {
             clip: true
             spacing: root.gap > 0 ? ThemeTokens.dp(root.gap) : ThemeTokens.dp(2)
             cacheBuffer: root.overscan * root.estimateSize
+            bottomMargin: root._bottomAnchorPadding
 
             ScrollBar.vertical: ChaSetScrollBar {
                 id: treeScrollBar
                 orientation: Qt.Vertical
                 policy: ScrollBar.AsNeeded
+                onPressedChanged: {
+                    if (pressed) {
+                        root._preserveScrollPending = false
+                        root._anchorId = ""
+                        root._bottomAnchorPadding = 0
+                    }
+                }
             }
 
             WheelHandler {
                 target: treeList
                 onWheel: function(event) {
+                    root._preserveScrollPending = false
+                    root._anchorId = ""
+                    root._bottomAnchorPadding = 0
                     treeList.flick(0, event.angleDelta.y * 5)
                 }
             }
