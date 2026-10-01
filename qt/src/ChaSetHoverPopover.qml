@@ -234,29 +234,44 @@ Item {
     }
 
     // Clamped coordinates to stay inside parent/window boundary
+    property Item boundaryItem: null
+    readonly property Item effectiveBoundaryItem: {
+        if (boundaryItem) return boundaryItem
+        if (root.Window && root.Window.window && root.Window.window.contentItem) {
+            return root.Window.window.contentItem
+        }
+        return root.parent
+    }
+
     readonly property real clampedX: {
         var base = calculatedX
-        var boundaryW = root.parent ? root.parent.width : (root.width > 0 ? root.width : 10000)
+        var bItem = effectiveBoundaryItem
+        if (!bItem) return base
         var margin = ThemeTokens.dp(4)
-        if (base + root.popoverWidth > boundaryW - margin) {
-            base = boundaryW - margin - root.popoverWidth
-        }
-        if (base < margin) {
-            base = margin
-        }
+        try {
+            var minX = root.mapFromItem(bItem, 0, 0).x + margin
+            var maxX = root.mapFromItem(bItem, bItem.width, 0).x - root.popoverWidth - margin
+            if (minX <= maxX) {
+                if (base < minX) base = minX
+                else if (base > maxX) base = maxX
+            }
+        } catch (e) {}
         return base
     }
 
     readonly property real clampedY: {
         var base = calculatedY
-        var boundaryH = root.parent ? root.parent.height : (root.height > 0 ? root.height : 10000)
+        var bItem = effectiveBoundaryItem
+        if (!bItem) return base
         var margin = ThemeTokens.dp(4)
-        if (base + root.popoverHeight > boundaryH - margin) {
-            base = boundaryH - margin - root.popoverHeight
-        }
-        if (base < margin) {
-            base = margin
-        }
+        try {
+            var minY = root.mapFromItem(bItem, 0, 0).y + margin
+            var maxY = root.mapFromItem(bItem, 0, bItem.height).y - root.popoverHeight - margin
+            if (minY <= maxY) {
+                if (base < minY) base = minY
+                else if (base > maxY) base = maxY
+            }
+        } catch (e) {}
         return base
     }
 
