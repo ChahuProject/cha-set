@@ -71,6 +71,7 @@ Item {
     function _hasAnyHoveredChild(item) {
         if (!item) return false
         if (item.containsMouse === true || item.hovered === true) return true
+        if (item.contentItem && _hasAnyHoveredChild(item.contentItem)) return true
         var ch = item.children
         if (ch) {
             for (var i = 0; i < ch.length; ++i) {
@@ -275,37 +276,45 @@ Item {
         return base
     }
 
-    // Safe Corridor / Invisible Bridge between target and popover
+    // Safe Corridor / Invisible Bridge between target and popover (spans gap only, does not occlude target)
     Item {
         id: safeBridge
         visible: root.open
         z: 99
         x: {
             if (root.side === "top" || root.side === "bottom") {
-                return Math.min(root.targetX, popoverFrame.x) - 4
+                return Math.min(root.targetX, popoverFrame.x)
             } else {
-                return root.side === "left" ? (popoverFrame.x + popoverFrame.width - 4) : (root.targetX + root.targetW - 4)
+                return root.side === "left"
+                    ? (popoverFrame.x + popoverFrame.width - 2)
+                    : (root.targetX + root.targetW - 2)
             }
         }
         y: {
             if (root.side === "left" || root.side === "right") {
-                return Math.min(root.targetY, popoverFrame.y) - 4
+                return Math.min(root.targetY, popoverFrame.y)
             } else {
-                return root.side === "top" ? (popoverFrame.y + popoverFrame.height - 4) : (root.targetY + root.targetH - 4)
+                return root.side === "top"
+                    ? (popoverFrame.y + popoverFrame.height - 2)
+                    : (root.targetY + root.targetH - 2)
             }
         }
         width: {
             if (root.side === "top" || root.side === "bottom") {
-                return Math.max(root.targetX + root.targetW, popoverFrame.x + popoverFrame.width) - x + 4
+                return Math.max(root.targetX + root.targetW, popoverFrame.x + popoverFrame.width) - x
             } else {
-                return Math.max(root.sideOffset + 8, Math.abs(popoverFrame.x - root.targetX) + 8)
+                return root.side === "left"
+                    ? Math.max(0, root.targetX - (popoverFrame.x + popoverFrame.width) + 4)
+                    : Math.max(0, popoverFrame.x - (root.targetX + root.targetW) + 4)
             }
         }
         height: {
             if (root.side === "left" || root.side === "right") {
-                return Math.max(root.targetY + root.targetH, popoverFrame.y + popoverFrame.height) - y + 4
+                return Math.max(root.targetY + root.targetH, popoverFrame.y + popoverFrame.height) - y
             } else {
-                return Math.max(root.sideOffset + 8, Math.abs(popoverFrame.y - root.targetY) + 8)
+                return root.side === "top"
+                    ? Math.max(0, root.targetY - (popoverFrame.y + popoverFrame.height) + 4)
+                    : Math.max(0, popoverFrame.y - (root.targetY + root.targetH) + 4)
             }
         }
 
@@ -331,6 +340,18 @@ Item {
                 if (!root.isHovered()) {
                     closeTimer.restart()
                 }
+            }
+        }
+    }
+
+    Timer {
+        id: hoverWatchdog
+        interval: 120
+        repeat: true
+        running: root.open
+        onTriggered: {
+            if (!root.isHovered() && !closeTimer.running) {
+                closeTimer.restart()
             }
         }
     }
