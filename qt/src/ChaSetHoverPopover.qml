@@ -45,6 +45,7 @@ Item {
 
     function show() {
         closeTimer.stop()
+        updateTargetPos()
         if (openDelay > 0 && !open) {
             openTimer.restart()
         } else {
@@ -92,9 +93,18 @@ Item {
     }
 
     onOpenChanged: {
-        if (open) root.opened()
-        else root.closed()
+        if (open) {
+            updateTargetPos()
+            root.opened()
+        } else {
+            root.closed()
+        }
     }
+
+    onEffectiveTargetChanged: updateTargetPos()
+    onWidthChanged: updateTargetPos()
+    onHeightChanged: updateTargetPos()
+    Component.onCompleted: updateTargetPos()
 
     // Optional container for wrapped trigger component
     Item {
@@ -111,6 +121,7 @@ Item {
         onHoveredChanged: {
             if (hovered && !root.disabled) {
                 closeTimer.stop()
+                root.updateTargetPos()
                 if (root.openDelay <= 0) {
                     root.open = true
                 } else {
@@ -128,10 +139,15 @@ Item {
     Connections {
         target: root.effectiveTarget
         ignoreUnknownSignals: true
+        function onXChanged() { root.updateTargetPos() }
+        function onYChanged() { root.updateTargetPos() }
+        function onWidthChanged() { root.updateTargetPos() }
+        function onHeightChanged() { root.updateTargetPos() }
         function onContainsMouseChanged() {
             if (!root.disabled && root.effectiveTarget) {
                 if (root.effectiveTarget.containsMouse) {
                     closeTimer.stop()
+                    root.updateTargetPos()
                     if (root.openDelay <= 0) {
                         root.open = true
                     } else {
@@ -152,6 +168,7 @@ Item {
         interval: Math.max(0, root.openDelay)
         repeat: false
         onTriggered: {
+            root.updateTargetPos()
             if (!root.disabled && root.isHovered()) {
                 root.open = true
             }
@@ -169,13 +186,17 @@ Item {
     }
 
     // Anchor Coordinate Calculation
-    readonly property point targetPosInRoot: {
-        if (!effectiveTarget) return Qt.point(0, 0)
-        if (effectiveTarget === root) return Qt.point(0, 0)
+    property point targetPosInRoot: Qt.point(0, 0)
+
+    function updateTargetPos() {
+        if (!effectiveTarget || effectiveTarget === root) {
+            targetPosInRoot = Qt.point(0, 0)
+            return
+        }
         try {
-            return root.mapFromItem(effectiveTarget, 0, 0)
+            targetPosInRoot = root.mapFromItem(effectiveTarget, 0, 0)
         } catch (e) {
-            return Qt.point(0, 0)
+            targetPosInRoot = Qt.point(0, 0)
         }
     }
 
