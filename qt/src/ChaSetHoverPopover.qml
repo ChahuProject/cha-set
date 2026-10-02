@@ -83,7 +83,7 @@ Item {
 
     function isHovered() {
         if (targetHover && targetHover.hovered) return true
-        if (effectiveTarget && (effectiveTarget.containsMouse || _hasAnyHoveredChild(effectiveTarget))) return true
+        if (effectiveTarget && (effectiveTarget.containsMouse || effectiveTarget.hovered || _hasAnyHoveredChild(effectiveTarget))) return true
         if (popoverHover && popoverHover.hovered) return true
         if (popoverMouseArea && popoverMouseArea.containsMouse) return true
         if (_hasAnyHoveredChild(popoverContent)) return true
@@ -130,7 +130,7 @@ Item {
                 }
             } else {
                 openTimer.stop()
-                if (root.open) {
+                if (root.open && !root.isHovered()) {
                     closeTimer.restart()
                 }
             }
@@ -286,8 +286,8 @@ Item {
                 return Math.min(root.targetX, popoverFrame.x)
             } else {
                 return root.side === "left"
-                    ? (popoverFrame.x + popoverFrame.width - 2)
-                    : (root.targetX + root.targetW - 2)
+                    ? (popoverFrame.x + popoverFrame.width)
+                    : (root.targetX + root.targetW)
             }
         }
         y: {
@@ -295,8 +295,8 @@ Item {
                 return Math.min(root.targetY, popoverFrame.y)
             } else {
                 return root.side === "top"
-                    ? (popoverFrame.y + popoverFrame.height - 2)
-                    : (root.targetY + root.targetH - 2)
+                    ? (popoverFrame.y + popoverFrame.height)
+                    : (root.targetY + root.targetH)
             }
         }
         width: {
@@ -304,8 +304,8 @@ Item {
                 return Math.max(root.targetX + root.targetW, popoverFrame.x + popoverFrame.width) - x
             } else {
                 return root.side === "left"
-                    ? Math.max(0, root.targetX - (popoverFrame.x + popoverFrame.width) + 4)
-                    : Math.max(0, popoverFrame.x - (root.targetX + root.targetW) + 4)
+                    ? Math.max(0, root.targetX - (popoverFrame.x + popoverFrame.width))
+                    : Math.max(0, popoverFrame.x - (root.targetX + root.targetW))
             }
         }
         height: {
@@ -313,8 +313,8 @@ Item {
                 return Math.max(root.targetY + root.targetH, popoverFrame.y + popoverFrame.height) - y
             } else {
                 return root.side === "top"
-                    ? Math.max(0, root.targetY - (popoverFrame.y + popoverFrame.height) + 4)
-                    : Math.max(0, popoverFrame.y - (root.targetY + root.targetH) + 4)
+                    ? Math.max(0, root.targetY - (popoverFrame.y + popoverFrame.height))
+                    : Math.max(0, popoverFrame.y - (root.targetY + root.targetH))
             }
         }
 
