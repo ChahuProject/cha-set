@@ -125,7 +125,7 @@ Item {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        height: root.showTime ? ThemeTokens.dp(16) : parent.height
+        height: root.showTime ? ThemeTokens.dp(22) : parent.height
 
         // 底轨
         Rectangle {
@@ -225,18 +225,18 @@ Item {
         id: timeRow
         visible: root.showTime
         anchors.top: trackContainer.bottom
-        anchors.topMargin: ThemeTokens.dp(2)
+        anchors.topMargin: 0
         anchors.left: parent.left
         anchors.leftMargin: ThemeTokens.dp(2)
         spacing: ThemeTokens.dp(4)
-        height: ThemeTokens.dp(16)
+        height: ThemeTokens.dp(14)
 
         // 位置胶囊（支持悬停高亮、点击切换正/倒计时、右键菜单）
         Rectangle {
             id: posPill
             objectName: "mediaTimePositionPill"
             anchors.verticalCenter: parent.verticalCenter
-            height: ThemeTokens.dp(16)
+            height: ThemeTokens.dp(14)
             width: posText.implicitWidth + ThemeTokens.dp(8)
             radius: ThemeTokens.dp(3)
             color: posMouseArea.pressed
