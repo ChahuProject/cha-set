@@ -50,7 +50,7 @@ Item {
     readonly property real effectiveRatio: Math.max(0.0, Math.min(1.0, root.ratio))
 
     // 实际生效的时间格式：无帧率概念时，即便被设为 "frames" 也回退到时分秒
-    readonly property string effectiveTimeFormat: (root.effectiveTimeFormat === "frames" && !root.framesAvailable) ? "hms" : root.timeFormat
+    readonly property string effectiveTimeFormat: (root.timeFormat === "frames" && !root.framesAvailable) ? "hms" : root.timeFormat
 
     // —— 格式化辅助函数 ——
     function pad2(n) {
