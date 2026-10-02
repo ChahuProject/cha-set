@@ -33,8 +33,10 @@ Item {
 
     // 面包屑分段拖放：宿主可读取当前悬停级别以提示目标，或按需禁用（默认启用）。
     property bool acceptBreadcrumbDrops: true
+    property alias activeDraggedPaths: breadcrumbPrimitive.activeDraggedPaths
     readonly property bool isBreadcrumbDropActive: acceptBreadcrumbDrops && breadcrumbPrimitive.isDropActive
     readonly property string activeBreadcrumbDropPath: acceptBreadcrumbDrops ? breadcrumbPrimitive.activeDropPath : ""
+    readonly property alias breadcrumbDropPointerX: breadcrumbPrimitive.dropPointerX
 
     signal navigateRequested(string path)
     signal navigateRequestedWithSelection(string path, string selectionPath)

@@ -16,6 +16,8 @@ Item {
 
     // —— 分段拖放状态（拖拽文件悬停到某一级面包屑即把该级目录作为投放目标）——
     property int activeDropSegmentIndex: -1
+    property var activeDraggedPaths: []
+    property real dropPointerX: 0
     readonly property bool isDropActive: activeDropSegmentIndex >= 0
     readonly property string activeDropPath: segmentPathAt(activeDropSegmentIndex)
 
@@ -29,9 +31,26 @@ Item {
     signal blankAreaClicked()
 
     // 解析拖拽载荷中的本地文件路径：OS 拖入优先 urls；内部拖拽（QQuick Drag）回退
-    // 多行文本载荷（每行一条路径）。
+    // 宿主注入路径或多行文本载荷（每行一条路径）。
     function extractDropPaths(drag) {
         var paths = []
+        if (root.activeDraggedPaths && root.activeDraggedPaths.length > 0) {
+            return root.activeDraggedPaths
+        }
+        if (drag && drag.source) {
+            if (drag.source.draggedPaths && drag.source.draggedPaths.length > 0) {
+                return drag.source.draggedPaths
+            }
+            if (drag.source.draggedIds && drag.source.draggedIds.length > 0) {
+                return drag.source.draggedIds
+            }
+            if (drag.source.itemPath) {
+                return [drag.source.itemPath]
+            }
+            if (drag.source.draggedId) {
+                return [drag.source.draggedId]
+            }
+        }
         if (!drag) return paths
         if (drag.hasUrls && drag.urls && drag.urls.length > 0) {
             for (var u = 0; u < drag.urls.length; ++u) {
@@ -43,7 +62,7 @@ Item {
         }
         var text = ""
         if (typeof drag.getDataAsString === "function") {
-            text = drag.getDataAsString("text/plain") || ""
+            text = drag.getDataAsString("application/x-dunting-path") || drag.getDataAsString("text/plain") || ""
         }
         if (!text && drag.text) text = drag.text
         if (text) {
@@ -234,151 +253,165 @@ Item {
                     spacing: 0
 
                     // Segment Pill (No leading icon, auto-expanding content width)
-                    Rectangle {
-                        id: segPill
-                        width: pillContent.implicitWidth + ThemeTokens.dp(12)
-                        height: parent.height
-                        implicitWidth: width
-                        radius: ThemeTokens.dp(4)
-                        color: (segItem.isDropTarget || (pillMouse.containsMouse && !root.disabled))
-                            ? ThemeTokens.hover : "transparent"
-                        // 拖拽悬停到该级：描边高亮，明确「松手即投放到此目录」
-                        border.width: segItem.isDropTarget ? 1 : 0
-                        border.color: ThemeTokens.accent
-
-                        Row {
-                            id: pillContent
-                            anchors.centerIn: parent
-
-                            Text {
-                                text: segItem.segName
-                                color: segItem.isCurrent ? ThemeTokens.text : ThemeTokens.subduedText
-                                font.pixelSize: Typography.sizeSmall
-                                font.weight: segItem.isCurrent ? Typography.weightSemibold : Typography.weightRegular
-                                verticalAlignment: Text.AlignVCenter
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-
-                        MouseArea {
-                            id: pillMouse
-                            objectName: "pillMouse"
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
-                            onClicked: {
-                                if (!root.disabled) {
-                                    if (segItem.isCurrent) {
-                                        root.blankAreaClicked()
-                                    } else {
-                                        root.navigateRequested(segItem.segPath)
-                                    }
-                                }
-                            }
-                        }
-
-                        ChaSetTooltip {
-                            target: segPill
-                            text: segItem.segPath || segItem.segName
-                            side: "bottom"
-                            delay: 400
-                            disabled: root.disabled
-                        }
-                    }
-
-                    // Independent Chevron dropdown
-                    Item {
-                        id: chevronBox
-                        width: ThemeTokens.dp(20)
-                        height: parent.height
-                        visible: segItem.index < (root.segments.length - 1) || root.segments.length === 1 || segItem.segHasSubfolders
-
                         Rectangle {
-                            anchors.fill: parent
+                            id: segPill
+                            width: pillContent.implicitWidth + ThemeTokens.dp(12)
+                            height: parent.height
+                            implicitWidth: width
                             radius: ThemeTokens.dp(4)
-                            color: (chevronMouse.containsMouse || segItem.isMenuOpen) && !root.disabled ? ThemeTokens.hover : "transparent"
-                        }
+                            color: segItem.isDropTarget
+                                ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.18)
+                                : ((pillMouse.containsMouse && !root.disabled) ? ThemeTokens.hover : "transparent")
+                            // 拖拽悬停到该级：描边与背景双重高亮，明确「松手即投放到此目录」
+                            border.width: segItem.isDropTarget ? 1.5 : 0
+                            border.color: ThemeTokens.accent
 
-                        ChaSetIcon {
-                            id: chevronIcon
-                            objectName: "segChevronIcon"
-                            name: "chevron-right"
-                            size: 14
-                            color: (chevronMouse.containsMouse || segItem.isMenuOpen) ? ThemeTokens.text : ThemeTokens.subduedText
-                            anchors.centerIn: parent
+                            Row {
+                                id: pillContent
+                                anchors.centerIn: parent
 
-                            transform: Rotation {
-                                origin.x: ThemeTokens.dp(7)
-                                origin.y: ThemeTokens.dp(7)
-                                angle: segItem.isMenuOpen ? 90 : 0
-                                Behavior on angle {
-                                    NumberAnimation {
-                                        duration: 120
-                                        easing.type: Easing.OutCubic
+                                Text {
+                                    text: segItem.segName
+                                    color: segItem.isCurrent ? ThemeTokens.text : ThemeTokens.subduedText
+                                    font.pixelSize: Typography.sizeSmall
+                                    font.weight: segItem.isCurrent ? Typography.weightSemibold : Typography.weightRegular
+                                    verticalAlignment: Text.AlignVCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+                            }
+
+                            MouseArea {
+                                id: pillMouse
+                                objectName: "pillMouse"
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                                onClicked: {
+                                    if (!root.disabled) {
+                                        if (segItem.isCurrent) {
+                                            root.blankAreaClicked()
+                                        } else {
+                                            root.navigateRequested(segItem.segPath)
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        MouseArea {
-                            id: chevronMouse
-                            objectName: "chevronMouse"
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
-                            onClicked: {
-                                if (!root.disabled) {
-                                    if (root.openSegmentIndex === segItem.index) {
-                                        root.openSegmentIndex = -1
-                                    } else {
-                                        root.openSegmentIndex = segItem.index
-                                        root.openSubfoldersRequested(segItem.index, segItem.segPath, chevronBox)
-                                    }
-                                }
+                            ChaSetTooltip {
+                                target: segPill
+                                text: segItem.segPath || segItem.segName
+                                side: "bottom"
+                                delay: 400
+                                disabled: root.disabled
                             }
                         }
 
-                        ChaSetTooltip {
-                            target: chevronBox
-                            text: qsTr("展开 %1 的子文件夹").arg(segItem.segName)
-                            side: "bottom"
-                            delay: 400
-                            disabled: root.disabled
+                        // Independent Chevron dropdown
+                        Item {
+                            id: chevronBox
+                            width: ThemeTokens.dp(20)
+                            height: parent.height
+                            visible: segItem.index < (root.segments.length - 1) || root.segments.length === 1 || segItem.segHasSubfolders
+
+                            Rectangle {
+                                anchors.fill: parent
+                                radius: ThemeTokens.dp(4)
+                                color: (chevronMouse.containsMouse || segItem.isMenuOpen) && !root.disabled ? ThemeTokens.hover : "transparent"
+                            }
+
+                            ChaSetIcon {
+                                id: chevronIcon
+                                objectName: "segChevronIcon"
+                                name: "chevron-right"
+                                size: 14
+                                color: (chevronMouse.containsMouse || segItem.isMenuOpen) ? ThemeTokens.text : ThemeTokens.subduedText
+                                anchors.centerIn: parent
+
+                                transform: Rotation {
+                                    origin.x: ThemeTokens.dp(7)
+                                    origin.y: ThemeTokens.dp(7)
+                                    angle: segItem.isMenuOpen ? 90 : 0
+                                    Behavior on angle {
+                                        NumberAnimation {
+                                            duration: 120
+                                            easing.type: Easing.OutCubic
+                                        }
+                                    }
+                                }
+                            }
+
+                            MouseArea {
+                                id: chevronMouse
+                                objectName: "chevronMouse"
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                                onClicked: {
+                                    if (!root.disabled) {
+                                        if (root.openSegmentIndex === segItem.index) {
+                                            root.openSegmentIndex = -1
+                                        } else {
+                                            root.openSegmentIndex = segItem.index
+                                            root.openSubfoldersRequested(segItem.index, segItem.segPath, chevronBox)
+                                        }
+                                    }
+                                }
+                            }
+
+                            ChaSetTooltip {
+                                target: chevronBox
+                                text: qsTr("展开 %1 的子文件夹").arg(segItem.segName)
+                                side: "bottom"
+                                delay: 400
+                                disabled: root.disabled
+                            }
                         }
                     }
-                }
 
-                // 该级分段的投放区：拖拽文件悬停即高亮，松手后由宿主把文件移动/复制到该级目录
-                DropArea {
-                    id: segDropArea
-                    objectName: "breadcrumbSegmentDropArea"
-                    anchors.fill: parent
+                    // 该级分段的投放区：拖拽文件悬停即高亮，松手后由宿主把文件移动/复制到该级目录
+                    DropArea {
+                        id: segDropArea
+                        objectName: "breadcrumbSegmentDropArea"
+                        anchors.fill: parent
 
-                    function dragIsCopy(drag) {
-                        return (drag && drag.keyboardModifiers !== undefined
-                                && ((drag.keyboardModifiers & Qt.ControlModifier) !== 0
-                                    || (drag.keyboardModifiers & Qt.MetaModifier) !== 0))
-                    }
+                        function dragIsCopy(drag) {
+                            if (typeof windowUi !== "undefined" && windowUi && typeof windowUi.isCtrlDown === "function" && windowUi.isCtrlDown()) {
+                                return true
+                            }
+                            return (drag && drag.keyboardModifiers !== undefined
+                                    && ((drag.keyboardModifiers & Qt.ControlModifier) !== 0
+                                        || (drag.keyboardModifiers & Qt.MetaModifier) !== 0))
+                                || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0)
+                                || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)
+                        }
 
-                    function acceptIfTargeted(drag) {
-                        var target = root.updateSegmentDrop(segItem.index, drag)
-                        if (target !== "" && drag && drag.accept) {
-                            drag.accept(dragIsCopy(drag) ? Qt.CopyAction : Qt.MoveAction)
-                        } else if (drag && drag.accept) {
-                            drag.accept(Qt.IgnoreAction)
+                        function acceptIfTargeted(drag) {
+                            var target = root.updateSegmentDrop(segItem.index, drag)
+                            if (target !== "" && drag && drag.accept) {
+                                drag.accept(dragIsCopy(drag) ? Qt.CopyAction : Qt.MoveAction)
+                            } else if (drag && drag.accept) {
+                                drag.accept(Qt.IgnoreAction)
+                            }
+                        }
+
+                        onEntered: (drag) => {
+                            var pt = segDropArea.mapToItem(root, drag.x, drag.y)
+                            root.dropPointerX = pt.x
+                            acceptIfTargeted(drag)
+                        }
+                        onPositionChanged: (drag) => {
+                            var pt = segDropArea.mapToItem(root, drag.x, drag.y)
+                            root.dropPointerX = pt.x
+                            acceptIfTargeted(drag)
+                        }
+                        onExited: root.clearSegmentDrop()
+                        onDropped: (drop) => {
+                            if (root.commitSegmentDrop(segItem.index, drop)
+                                    && drop && typeof drop.acceptProposedAction === "function") {
+                                drop.acceptProposedAction()
+                            }
                         }
                     }
-
-                    onEntered: (drag) => acceptIfTargeted(drag)
-                    onPositionChanged: (drag) => acceptIfTargeted(drag)
-                    onExited: root.clearSegmentDrop()
-                    onDropped: (drop) => {
-                        if (root.commitSegmentDrop(segItem.index, drop)
-                                && drop && typeof drop.acceptProposedAction === "function") {
-                            drop.acceptProposedAction()
-                        }
-                    }
-                }
             }
         }
 
