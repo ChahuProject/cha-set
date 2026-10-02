@@ -133,6 +133,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetSwitch.qml
         src/ChaSetSeparator.qml
         src/ChaSetSlider.qml
+        src/ChaSetMediaProgressBar.qml
         src/ChaSetDialog.qml
         src/ChaSetTooltip.qml
         src/ChaSetTable.qml
