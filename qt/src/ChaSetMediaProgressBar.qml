@@ -278,7 +278,10 @@ Item {
             ChaSetTooltip {
                 anchors.fill: parent
                 target: posPill
-                side: "bottom"
+                // 时间胶囊位于控制条最底部：tooltip 必须朝上（top）显示，
+                // 否则 "bottom" 的浮泡会超出窗口底边被 clampedY 拉回，
+                // 正好叠回胶囊上，遮挡鼠标悬停处的内容（用户反馈看不清）。
+                side: "top"
                 active: posMouseArea.containsMouse && !contextMenuPopup.visible
                 text: root.timingMode === "elapsed"
                       ? qsTr("当前：正计时 (已播放时间)")
