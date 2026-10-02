@@ -18,6 +18,7 @@ export const mediaProgressBarSchema = z.object({
   showThumb: z.boolean().default(true),
   interactive: z.boolean().default(true),
   disabled: z.boolean().default(false),
+  framesAvailable: z.boolean().default(true),
   dragging: z.boolean().default(false),
   hoverActive: z.boolean().default(false),
   hoverRatio: z.number().default(-1),

@@ -22,6 +22,8 @@ Item {
     property bool showThumb: true
     property bool interactive: true
     property bool disabled: false
+    // 帧率概念是否可用（音频等无逐帧概念的媒体应设为 false，隐藏「按帧率显示」菜单项）
+    property bool framesAvailable: true
 
     // —— 状态 ——
     property bool dragging: false
@@ -46,6 +48,9 @@ Item {
     opacity: root.disabled ? 0.45 : 1.0
 
     readonly property real effectiveRatio: Math.max(0.0, Math.min(1.0, root.ratio))
+
+    // 实际生效的时间格式：无帧率概念时，即便被设为 "frames" 也回退到时分秒
+    readonly property string effectiveTimeFormat: (root.effectiveTimeFormat === "frames" && !root.framesAvailable) ? "hms" : root.timeFormat
 
     // —— 格式化辅助函数 ——
     function pad2(n) {
@@ -88,9 +93,9 @@ Item {
         const isRemaining = root.timingMode === "remaining"
         const ms = isRemaining ? root.currentRemainingMs : root.currentElapsedMs
         const prefix = isRemaining ? "-" : ""
-        if (root.timeFormat === "seconds") {
+        if (root.effectiveTimeFormat === "seconds") {
             return prefix + formatSeconds(ms)
-        } else if (root.timeFormat === "frames") {
+        } else if (root.effectiveTimeFormat === "frames") {
             return prefix + formatFrames(ms)
         } else {
             return prefix + formatHms(ms)
@@ -98,9 +103,9 @@ Item {
     }
 
     readonly property string durationText: {
-        if (root.timeFormat === "seconds") {
+        if (root.effectiveTimeFormat === "seconds") {
             return formatSeconds(root.duration)
-        } else if (root.timeFormat === "frames") {
+        } else if (root.effectiveTimeFormat === "frames") {
             return formatFrames(root.duration)
         } else {
             return formatHms(root.duration)
@@ -463,7 +468,7 @@ Item {
                     spacing: ThemeTokens.dp(6)
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: root.timeFormat === "hms" ? "✓" : " "
+                        text: root.effectiveTimeFormat === "hms" ? "✓" : " "
                         font.pixelSize: ThemeTokens.sp(11)
                         color: ThemeTokens.accent
                         width: ThemeTokens.dp(14)
@@ -501,7 +506,7 @@ Item {
                     spacing: ThemeTokens.dp(6)
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: root.timeFormat === "seconds" ? "✓" : " "
+                        text: root.effectiveTimeFormat === "seconds" ? "✓" : " "
                         font.pixelSize: ThemeTokens.sp(11)
                         color: ThemeTokens.accent
                         width: ThemeTokens.dp(14)
@@ -528,8 +533,9 @@ Item {
             // 按帧率显示
             Rectangle {
                 objectName: "mediaMenuFramesItem"
+                visible: root.framesAvailable
                 width: parent.width
-                height: ThemeTokens.dp(24)
+                height: root.framesAvailable ? ThemeTokens.dp(24) : 0
                 radius: ThemeTokens.dp(4)
                 color: frameMouse.containsMouse ? ThemeTokens.hover : "transparent"
                 Row {
@@ -539,7 +545,7 @@ Item {
                     spacing: ThemeTokens.dp(6)
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: root.timeFormat === "frames" ? "✓" : " "
+                        text: root.effectiveTimeFormat === "frames" ? "✓" : " "
                         font.pixelSize: ThemeTokens.sp(11)
                         color: ThemeTokens.accent
                         width: ThemeTokens.dp(14)
