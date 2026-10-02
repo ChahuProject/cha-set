@@ -40,8 +40,6 @@ Item {
     // —— 信号 ——
     signal seekRequested(real ratio)
     signal hoverChanged(real ratio, bool active)
-    signal timingModeChanged(string mode)
-    signal timeFormatChanged(string format)
 
     implicitHeight: root.showTime ? ThemeTokens.dp(36) : ThemeTokens.dp(22)
     height: implicitHeight
@@ -271,7 +269,6 @@ Item {
                 onClicked: (mouse) => {
                     if (mouse.button === Qt.LeftButton) {
                         root.timingMode = (root.timingMode === "elapsed" ? "remaining" : "elapsed")
-                        root.timingModeChanged(root.timingMode)
                     } else if (mouse.button === Qt.RightButton) {
                         root.openContextMenu()
                     }
@@ -387,7 +384,6 @@ Item {
                     cursorShape: Qt.PointingHandCursor
                     onClicked: {
                         root.timingMode = "elapsed"
-                        root.timingModeChanged("elapsed")
                         contextMenuPopup.close()
                     }
                 }
@@ -426,7 +422,6 @@ Item {
                     cursorShape: Qt.PointingHandCursor
                     onClicked: {
                         root.timingMode = "remaining"
-                        root.timingModeChanged("remaining")
                         contextMenuPopup.close()
                     }
                 }
@@ -484,7 +479,6 @@ Item {
                     cursorShape: Qt.PointingHandCursor
                     onClicked: {
                         root.timeFormat = "hms"
-                        root.timeFormatChanged("hms")
                         contextMenuPopup.close()
                     }
                 }
@@ -523,7 +517,6 @@ Item {
                     cursorShape: Qt.PointingHandCursor
                     onClicked: {
                         root.timeFormat = "seconds"
-                        root.timeFormatChanged("seconds")
                         contextMenuPopup.close()
                     }
                 }
@@ -562,7 +555,6 @@ Item {
                     cursorShape: Qt.PointingHandCursor
                     onClicked: {
                         root.timeFormat = "frames"
-                        root.timeFormatChanged("frames")
                         contextMenuPopup.close()
                     }
                 }
