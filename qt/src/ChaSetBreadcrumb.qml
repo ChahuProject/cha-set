@@ -41,6 +41,9 @@ Item {
             if (drag.source.draggedPaths && drag.source.draggedPaths.length > 0) {
                 return drag.source.draggedPaths
             }
+            if (drag.source.viewDraggedPaths && drag.source.viewDraggedPaths.length > 0) {
+                return drag.source.viewDraggedPaths
+            }
             if (drag.source.draggedIds && drag.source.draggedIds.length > 0) {
                 return drag.source.draggedIds
             }
@@ -245,11 +248,13 @@ Item {
 
                 visible: segItem.index >= root.firstVisibleIndex
                 Layout.preferredWidth: segPill.implicitWidth + (chevronBox.visible ? chevronBox.width : 0)
-                Layout.preferredHeight: ThemeTokens.dp(26)
-                Layout.alignment: Qt.AlignVCenter
+                Layout.fillHeight: true
 
                 Row {
-                    anchors.fill: parent
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: ThemeTokens.dp(26)
                     spacing: 0
 
                     // Segment Pill (No leading icon, auto-expanding content width)
@@ -260,7 +265,7 @@ Item {
                             implicitWidth: width
                             radius: ThemeTokens.dp(4)
                             color: segItem.isDropTarget
-                                ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.18)
+                                ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.22)
                                 : ((pillMouse.containsMouse && !root.disabled) ? ThemeTokens.hover : "transparent")
                             // 拖拽悬停到该级：描边与背景双重高亮，明确「松手即投放到此目录」
                             border.width: segItem.isDropTarget ? 1.5 : 0
@@ -269,12 +274,21 @@ Item {
                             Row {
                                 id: pillContent
                                 anchors.centerIn: parent
+                                spacing: ThemeTokens.dp(4)
+
+                                ChaSetIcon {
+                                    visible: segItem.isDropTarget
+                                    name: segDropArea.dragIsCopy(null) ? "copy" : "folder"
+                                    size: 14
+                                    color: ThemeTokens.accent
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
 
                                 Text {
                                     text: segItem.segName
-                                    color: segItem.isCurrent ? ThemeTokens.text : ThemeTokens.subduedText
+                                    color: segItem.isDropTarget ? ThemeTokens.accent : (segItem.isCurrent ? ThemeTokens.text : ThemeTokens.subduedText)
                                     font.pixelSize: Typography.sizeSmall
-                                    font.weight: segItem.isCurrent ? Typography.weightSemibold : Typography.weightRegular
+                                    font.weight: (segItem.isDropTarget || segItem.isCurrent) ? Typography.weightSemibold : Typography.weightRegular
                                     verticalAlignment: Text.AlignVCenter
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
@@ -375,13 +389,14 @@ Item {
                         anchors.fill: parent
 
                         function dragIsCopy(drag) {
-                            if (typeof windowUi !== "undefined" && windowUi && typeof windowUi.isCtrlDown === "function" && windowUi.isCtrlDown()) {
-                                return true
+                            if (typeof windowUi !== "undefined" && windowUi && typeof windowUi.isCtrlDown === "function") {
+                                return windowUi.isCtrlDown()
                             }
-                            return (drag && drag.keyboardModifiers !== undefined
-                                    && ((drag.keyboardModifiers & Qt.ControlModifier) !== 0
-                                        || (drag.keyboardModifiers & Qt.MetaModifier) !== 0))
-                                || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0)
+                            if (drag && drag.keyboardModifiers !== undefined) {
+                                return ((drag.keyboardModifiers & Qt.ControlModifier) !== 0
+                                        || (drag.keyboardModifiers & Qt.MetaModifier) !== 0)
+                            }
+                            return ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0)
                                 || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)
                         }
 
@@ -415,16 +430,67 @@ Item {
             }
         }
 
-        // Blank space filler to click into edit mode
+        // Blank space filler to click into edit mode or drop onto current folder
         Item {
+            id: blankCrumbFiller
             Layout.fillWidth: true
             Layout.fillHeight: true
+
             MouseArea {
                 anchors.fill: parent
                 cursorShape: !root.disabled ? Qt.IBeamCursor : Qt.ForbiddenCursor
                 onClicked: {
                     if (!root.disabled) {
                         root.blankAreaClicked()
+                    }
+                }
+            }
+
+            DropArea {
+                id: blankFillerDropArea
+                objectName: "breadcrumbBlankFillerDropArea"
+                anchors.fill: parent
+                enabled: !root.disabled
+
+                function dragIsCopy(drag) {
+                    if (typeof windowUi !== "undefined" && windowUi && typeof windowUi.isCtrlDown === "function") {
+                        return windowUi.isCtrlDown()
+                    }
+                    if (drag && drag.keyboardModifiers !== undefined) {
+                        return ((drag.keyboardModifiers & Qt.ControlModifier) !== 0
+                                || (drag.keyboardModifiers & Qt.MetaModifier) !== 0)
+                    }
+                    return ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0)
+                        || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)
+                }
+
+                function acceptIfTargeted(drag) {
+                    var lastIdx = root.segments ? root.segments.length - 1 : -1
+                    if (lastIdx < 0) return
+                    var target = root.updateSegmentDrop(lastIdx, drag)
+                    if (target !== "" && drag && drag.accept) {
+                        drag.accept(dragIsCopy(drag) ? Qt.CopyAction : Qt.MoveAction)
+                    } else if (drag && drag.accept) {
+                        drag.accept(Qt.IgnoreAction)
+                    }
+                }
+
+                onEntered: (drag) => {
+                    var pt = blankFillerDropArea.mapToItem(root, drag.x, drag.y)
+                    root.dropPointerX = pt.x
+                    acceptIfTargeted(drag)
+                }
+                onPositionChanged: (drag) => {
+                    var pt = blankFillerDropArea.mapToItem(root, drag.x, drag.y)
+                    root.dropPointerX = pt.x
+                    acceptIfTargeted(drag)
+                }
+                onExited: root.clearSegmentDrop()
+                onDropped: (drop) => {
+                    var lastIdx = root.segments ? root.segments.length - 1 : -1
+                    if (lastIdx >= 0 && root.commitSegmentDrop(lastIdx, drop)
+                            && drop && typeof drop.acceptProposedAction === "function") {
+                        drop.acceptProposedAction()
                     }
                 }
             }

@@ -74,7 +74,6 @@ Item {
                 editInput.text = controller.currentPath
                 editInput.selectAll()
                 editInput.forceActiveFocus()
-                showHistoryPopup()
             } else {
                 suggestPopup.close()
                 subfolderPopup.close()
@@ -326,6 +325,11 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
+            HoverHandler {
+                enabled: root.editing
+                cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
+            }
+
             // 1. Breadcrumbs Mode
             Item {
                 id: breadcrumbsContainer
@@ -371,7 +375,7 @@ Item {
                     }
                 }
 
-                // Blank area to click into edit mode
+                // Blank area to click into edit mode or drop onto current folder
                 Item {
                     id: blankAreaWrapper
                     objectName: "blankAreaWrapper"
@@ -392,6 +396,61 @@ Item {
                             }
                         }
                     }
+
+                    DropArea {
+                        id: blankDropArea
+                        objectName: "addressBarBlankDropArea"
+                        anchors.fill: parent
+                        enabled: root.acceptBreadcrumbDrops && !root.disabled && !root.editing
+
+                        function dragIsCopy(drag) {
+                            if (typeof windowUi !== "undefined" && windowUi && typeof windowUi.isCtrlDown === "function") {
+                                return windowUi.isCtrlDown()
+                            }
+                            if (drag && drag.keyboardModifiers !== undefined) {
+                                return ((drag.keyboardModifiers & Qt.ControlModifier) !== 0
+                                        || (drag.keyboardModifiers & Qt.MetaModifier) !== 0)
+                            }
+                            return ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0)
+                                || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)
+                        }
+
+                        onEntered: (drag) => {
+                            var lastIdx = breadcrumbPrimitive.segments ? breadcrumbPrimitive.segments.length - 1 : -1
+                            if (lastIdx >= 0) {
+                                var pt = blankDropArea.mapToItem(root, drag.x, drag.y)
+                                breadcrumbPrimitive.dropPointerX = pt.x
+                                var target = breadcrumbPrimitive.updateSegmentDrop(lastIdx, drag)
+                                if (target !== "" && drag && drag.accept) {
+                                    drag.accept(dragIsCopy(drag) ? Qt.CopyAction : Qt.MoveAction)
+                                } else if (drag && drag.accept) {
+                                    drag.accept(Qt.IgnoreAction)
+                                }
+                            }
+                        }
+                        onPositionChanged: (drag) => {
+                            var lastIdx = breadcrumbPrimitive.segments ? breadcrumbPrimitive.segments.length - 1 : -1
+                            if (lastIdx >= 0) {
+                                var pt = blankDropArea.mapToItem(root, drag.x, drag.y)
+                                breadcrumbPrimitive.dropPointerX = pt.x
+                                var target = breadcrumbPrimitive.updateSegmentDrop(lastIdx, drag)
+                                if (target !== "" && drag && drag.accept) {
+                                    drag.accept(dragIsCopy(drag) ? Qt.CopyAction : Qt.MoveAction)
+                                } else if (drag && drag.accept) {
+                                    drag.accept(Qt.IgnoreAction)
+                                }
+                            }
+                        }
+                        onExited: breadcrumbPrimitive.clearSegmentDrop()
+                        onDropped: (drop) => {
+                            var lastIdx = breadcrumbPrimitive.segments ? breadcrumbPrimitive.segments.length - 1 : -1
+                            if (lastIdx >= 0 && breadcrumbPrimitive.commitSegmentDrop(lastIdx, drop)) {
+                                if (drop && typeof drop.acceptProposedAction === "function") {
+                                    drop.acceptProposedAction()
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -407,7 +466,9 @@ Item {
                 color: ThemeTokens.text
                 font.pixelSize: Typography.sizeSmall
                 selectByMouse: true
+                mouseSelectionMode: TextInput.SelectCharacters
                 selectionColor: ThemeTokens.accent
+                selectedTextColor: (typeof ThemeTokens !== "undefined" && ThemeTokens.accentText) ? ThemeTokens.accentText : "#ffffff"
 
                 HoverHandler {
                     cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
@@ -429,9 +490,11 @@ Item {
                 Keys.onPressed: (event) => {
                     if (event.key === Qt.Key_Escape) {
                         event.accepted = true
-                        // 按 Esc：一步到位同时关闭下拉和编辑态
-                        suggestPopup.close()
-                        controller.exitEditMode()
+                        if (suggestPopup.opened) {
+                            suggestPopup.close()
+                        } else {
+                            controller.exitEditMode()
+                        }
                     } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                         event.accepted = true
                         commitEdit()
@@ -439,6 +502,9 @@ Item {
                         if (suggestPopup.opened) {
                             event.accepted = true
                             suggestPopup.highlightedIndex = Math.min(suggestPopup.highlightedIndex + 1, suggestPopup.suggestionList.count - 1)
+                        } else {
+                            event.accepted = true
+                            showHistoryPopup()
                         }
                     } else if (event.key === Qt.Key_Up) {
                         if (suggestPopup.opened) {
@@ -596,7 +662,7 @@ Item {
         }
         onClosed: {
             breadcrumbPrimitive.openSegmentIndex = -1
-            if (controller.editing) {
+            if (!editInput.activeFocus && controller.editing) {
                 controller.exitEditMode()
             }
         }
@@ -697,9 +763,6 @@ Item {
         if (breadcrumbPrimitive) {
             breadcrumbPrimitive.closePopups()
             breadcrumbPrimitive.openSegmentIndex = -1
-        }
-        if (controller.editing) {
-            controller.exitEditMode()
         }
     }
 
