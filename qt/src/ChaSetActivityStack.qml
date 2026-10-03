@@ -256,7 +256,7 @@ Item {
         ghost.obj.focused = false
         ghost.obj.slideOffset = root.slideY * ThemeTokens.dp(10)
         ghost.obj.slideOffsetX = root.slideX * ThemeTokens.dp(10)
-        ghostTimerComp.createObject(root, { ghost: ghost })
+        ghostTimerComp.createObject(root, { ghostId: String(ghost.id) })
     }
 
     function composeDisplay() {
@@ -377,6 +377,9 @@ Item {
 
     HoverHandler {
         id: stackHover
+        // 无内容时不得成为 hover 命中目标：空态 HUD 若因任何原因仍可见，
+        // 也不能拦截底层控件的悬停（Qt hover 只投递给最顶层命中项+祖先链）。
+        enabled: root.hasContent
         onHoveredChanged: root.hoverChanged(stackHover.hovered)
     }
 
@@ -587,16 +590,27 @@ Item {
 
         Timer {
             id: ghostTimer
-            property var ghost
+            // 只携带幽灵 id：createObject 的初始化属性映射会经 QVariant 转换，
+            // 若把整个 ghost JS 对象塞进 var 属性，读回时已不是同一引用，
+            // onTriggered 里的 indexOf 恒失配 → 幽灵条目永久泄漏（HUD 空态常显
+            // 并持续拦截底层输入）。按 id 在 _ghosts 中查找可避免同一性问题。
+            property string ghostId: ""
             running: true
             repeat: false
             interval: ThemeTokens.animationsEnabled ? ThemeTokens.motionDuration(180) : 1
 
             onTriggered: {
-                var target = ghostTimer.ghost
-                if (target) {
-                    var index = root._ghosts.indexOf(target)
-                    if (index >= 0) root._ghosts.splice(index, 1)
+                var targetIndex = -1
+                var target = null
+                for (var i = 0; i < root._ghosts.length; i++) {
+                    if (String(root._ghosts[i].id) === ghostTimer.ghostId) {
+                        targetIndex = i
+                        target = root._ghosts[i]
+                        break
+                    }
+                }
+                if (targetIndex >= 0) {
+                    root._ghosts.splice(targetIndex, 1)
                     root._ghosts = root._ghosts.slice()
                     if (target.obj) {
                         try {
