@@ -21,6 +21,12 @@ Item {
     readonly property bool isDropActive: activeDropSegmentIndex >= 0
     readonly property string activeDropPath: segmentPathAt(activeDropSegmentIndex)
 
+    // 拖拽修饰键（Ctrl=复制）响应式追踪：宿主注入 dragModifierState 上下文属性时
+    // 直接绑定其 ctrlHeld；独立运行/测试环境回退到 manualCtrlHeld（由宿主手动赋值）。
+    property var dragModifierTracker: (typeof dragModifierState !== "undefined") ? dragModifierState : null
+    property bool manualCtrlHeld: false
+    readonly property bool dragCopyModifier: dragModifierTracker ? dragModifierTracker.ctrlHeld : manualCtrlHeld
+
     function closePopups() {
         overflowPopup.close()
     }
@@ -277,8 +283,8 @@ Item {
                                 spacing: ThemeTokens.dp(4)
 
                                 ChaSetIcon {
-                                    visible: segItem.isDropTarget
-                                    name: segDropArea.dragIsCopy(null) ? "copy" : "folder"
+                                    visible: segItem.isDropTarget && root.dragCopyModifier
+                                    name: "copy"
                                     size: 14
                                     color: ThemeTokens.accent
                                     anchors.verticalCenter: parent.verticalCenter
@@ -388,6 +394,9 @@ Item {
                         objectName: "breadcrumbSegmentDropArea"
                         anchors.fill: parent
 
+                        // 记录当前悬停的 drag 对象：Ctrl 按下/松开时无需移动鼠标即可重算接受状态
+                        property var currentDrag: null
+
                         function dragIsCopy(drag) {
                             if (typeof windowUi !== "undefined" && windowUi && typeof windowUi.isCtrlDown === "function") {
                                 return windowUi.isCtrlDown()
@@ -403,23 +412,37 @@ Item {
                         function acceptIfTargeted(drag) {
                             var target = root.updateSegmentDrop(segItem.index, drag)
                             if (target !== "" && drag && drag.accept) {
-                                drag.accept(dragIsCopy(drag) ? Qt.CopyAction : Qt.MoveAction)
+                                drag.accept((root.dragCopyModifier || dragIsCopy(drag)) ? Qt.CopyAction : Qt.MoveAction)
                             } else if (drag && drag.accept) {
                                 drag.accept(Qt.IgnoreAction)
                             }
                         }
 
+                        Connections {
+                            target: root
+                            function onDragCopyModifierChanged() {
+                                if (segDropArea.currentDrag) {
+                                    segDropArea.acceptIfTargeted(segDropArea.currentDrag)
+                                }
+                            }
+                        }
+
                         onEntered: (drag) => {
+                            segDropArea.currentDrag = drag
                             var pt = segDropArea.mapToItem(root, drag.x, drag.y)
                             root.dropPointerX = pt.x
                             acceptIfTargeted(drag)
                         }
                         onPositionChanged: (drag) => {
+                            segDropArea.currentDrag = drag
                             var pt = segDropArea.mapToItem(root, drag.x, drag.y)
                             root.dropPointerX = pt.x
                             acceptIfTargeted(drag)
                         }
-                        onExited: root.clearSegmentDrop()
+                        onExited: {
+                            segDropArea.currentDrag = null
+                            root.clearSegmentDrop()
+                        }
                         onDropped: (drop) => {
                             if (root.commitSegmentDrop(segItem.index, drop)
                                     && drop && typeof drop.acceptProposedAction === "function") {
@@ -452,6 +475,9 @@ Item {
                 anchors.fill: parent
                 enabled: !root.disabled
 
+                // 记录当前悬停的 drag 对象：Ctrl 按下/松开时无需移动鼠标即可重算接受状态
+                property var currentDrag: null
+
                 function dragIsCopy(drag) {
                     if (typeof windowUi !== "undefined" && windowUi && typeof windowUi.isCtrlDown === "function") {
                         return windowUi.isCtrlDown()
@@ -469,23 +495,37 @@ Item {
                     if (lastIdx < 0) return
                     var target = root.updateSegmentDrop(lastIdx, drag)
                     if (target !== "" && drag && drag.accept) {
-                        drag.accept(dragIsCopy(drag) ? Qt.CopyAction : Qt.MoveAction)
+                        drag.accept((root.dragCopyModifier || dragIsCopy(drag)) ? Qt.CopyAction : Qt.MoveAction)
                     } else if (drag && drag.accept) {
                         drag.accept(Qt.IgnoreAction)
                     }
                 }
 
+                Connections {
+                    target: root
+                    function onDragCopyModifierChanged() {
+                        if (blankFillerDropArea.currentDrag) {
+                            blankFillerDropArea.acceptIfTargeted(blankFillerDropArea.currentDrag)
+                        }
+                    }
+                }
+
                 onEntered: (drag) => {
+                    blankFillerDropArea.currentDrag = drag
                     var pt = blankFillerDropArea.mapToItem(root, drag.x, drag.y)
                     root.dropPointerX = pt.x
                     acceptIfTargeted(drag)
                 }
                 onPositionChanged: (drag) => {
+                    blankFillerDropArea.currentDrag = drag
                     var pt = blankFillerDropArea.mapToItem(root, drag.x, drag.y)
                     root.dropPointerX = pt.x
                     acceptIfTargeted(drag)
                 }
-                onExited: root.clearSegmentDrop()
+                onExited: {
+                    blankFillerDropArea.currentDrag = null
+                    root.clearSegmentDrop()
+                }
                 onDropped: (drop) => {
                     var lastIdx = root.segments ? root.segments.length - 1 : -1
                     if (lastIdx >= 0 && root.commitSegmentDrop(lastIdx, drop)
