@@ -38,7 +38,6 @@ Item {
                                ? ThemeTokens.panelRaised : Qt.rgba(0.12, 0.12, 0.12, 0.96)
     property color borderColor: (typeof ThemeTokens !== "undefined" && ThemeTokens.border)
                                 ? ThemeTokens.border : Qt.rgba(1, 1, 1, 0.22)
-    property bool shadowEnabled: true
 
     signal opened()
     signal closed()
@@ -396,16 +395,6 @@ Item {
                     closeTimer.restart()
                 }
             }
-        }
-
-        // Soft elevation shadow
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: -ThemeTokens.dp(3)
-            radius: root.customRadius + ThemeTokens.dp(2)
-            color: Qt.rgba(0, 0, 0, 0.35)
-            visible: root.shadowEnabled
-            z: -1
         }
 
         // Panel Background
