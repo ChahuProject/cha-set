@@ -289,7 +289,11 @@ Item {
                                     text: segItem.segName
                                     color: segItem.isDropTarget ? ThemeTokens.accent : (segItem.isCurrent ? ThemeTokens.text : ThemeTokens.subduedText)
                                     font.pixelSize: Typography.sizeSmall
-                                    font.weight: (segItem.isDropTarget || segItem.isCurrent) ? Typography.weightSemibold : Typography.weightRegular
+                                    // 拖拽高亮严禁切换字重：Regular↔Semibold 翻转会改变文本宽度，
+                                    // pill 随内容自适应加宽导致后续面包屑整体位移。高亮仅通过
+                                    // 背景 / 描边 / 文字颜色表达（几何零变化），且必须与
+                                    // getSegmentWidth 的度量口径（仅末级 Semibold）保持一致。
+                                    font.weight: segItem.isCurrent ? Typography.weightSemibold : Typography.weightRegular
                                     verticalAlignment: Text.AlignVCenter
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
