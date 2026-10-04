@@ -38,6 +38,12 @@ Item {
     readonly property string activeBreadcrumbDropPath: acceptBreadcrumbDrops ? breadcrumbPrimitive.activeDropPath : ""
     readonly property alias breadcrumbDropPointerX: breadcrumbPrimitive.dropPointerX
 
+    // 拖拽修饰键（Ctrl=复制）响应式追踪：宿主注入 dragModifierState 上下文属性时
+    // 直接绑定其 ctrlHeld；独立运行/测试环境回退到 manualCtrlHeld（由宿主手动赋值）。
+    property var dragModifierTracker: (typeof dragModifierState !== "undefined") ? dragModifierState : null
+    property bool manualCtrlHeld: false
+    readonly property bool dragCopyModifier: dragModifierTracker ? dragModifierTracker.ctrlHeld : manualCtrlHeld
+
     signal navigateRequested(string path)
     signal navigateRequestedWithSelection(string path, string selectionPath)
     signal backRequested()
@@ -403,6 +409,9 @@ Item {
                         anchors.fill: parent
                         enabled: root.acceptBreadcrumbDrops && !root.disabled && !root.editing
 
+                        // 记录当前悬停的 drag 对象：Ctrl 按下/松开时无需移动鼠标即可重算接受状态
+                        property var currentDrag: null
+
                         function dragIsCopy(drag) {
                             if (typeof windowUi !== "undefined" && windowUi && typeof windowUi.isCtrlDown === "function") {
                                 return windowUi.isCtrlDown()
@@ -415,33 +424,42 @@ Item {
                                 || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)
                         }
 
-                        onEntered: (drag) => {
+                        function acceptIfTargeted(drag) {
                             var lastIdx = breadcrumbPrimitive.segments ? breadcrumbPrimitive.segments.length - 1 : -1
-                            if (lastIdx >= 0) {
-                                var pt = blankDropArea.mapToItem(root, drag.x, drag.y)
-                                breadcrumbPrimitive.dropPointerX = pt.x
-                                var target = breadcrumbPrimitive.updateSegmentDrop(lastIdx, drag)
-                                if (target !== "" && drag && drag.accept) {
-                                    drag.accept(dragIsCopy(drag) ? Qt.CopyAction : Qt.MoveAction)
-                                } else if (drag && drag.accept) {
-                                    drag.accept(Qt.IgnoreAction)
+                            if (lastIdx < 0) return
+                            var target = breadcrumbPrimitive.updateSegmentDrop(lastIdx, drag)
+                            if (target !== "" && drag && drag.accept) {
+                                drag.accept((root.dragCopyModifier || dragIsCopy(drag)) ? Qt.CopyAction : Qt.MoveAction)
+                            } else if (drag && drag.accept) {
+                                drag.accept(Qt.IgnoreAction)
+                            }
+                        }
+
+                        Connections {
+                            target: root
+                            function onDragCopyModifierChanged() {
+                                if (blankDropArea.currentDrag) {
+                                    blankDropArea.acceptIfTargeted(blankDropArea.currentDrag)
                                 }
                             }
+                        }
+
+                        onEntered: (drag) => {
+                            blankDropArea.currentDrag = drag
+                            var pt = blankDropArea.mapToItem(root, drag.x, drag.y)
+                            breadcrumbPrimitive.dropPointerX = pt.x
+                            acceptIfTargeted(drag)
                         }
                         onPositionChanged: (drag) => {
-                            var lastIdx = breadcrumbPrimitive.segments ? breadcrumbPrimitive.segments.length - 1 : -1
-                            if (lastIdx >= 0) {
-                                var pt = blankDropArea.mapToItem(root, drag.x, drag.y)
-                                breadcrumbPrimitive.dropPointerX = pt.x
-                                var target = breadcrumbPrimitive.updateSegmentDrop(lastIdx, drag)
-                                if (target !== "" && drag && drag.accept) {
-                                    drag.accept(dragIsCopy(drag) ? Qt.CopyAction : Qt.MoveAction)
-                                } else if (drag && drag.accept) {
-                                    drag.accept(Qt.IgnoreAction)
-                                }
-                            }
+                            blankDropArea.currentDrag = drag
+                            var pt = blankDropArea.mapToItem(root, drag.x, drag.y)
+                            breadcrumbPrimitive.dropPointerX = pt.x
+                            acceptIfTargeted(drag)
                         }
-                        onExited: breadcrumbPrimitive.clearSegmentDrop()
+                        onExited: {
+                            blankDropArea.currentDrag = null
+                            breadcrumbPrimitive.clearSegmentDrop()
+                        }
                         onDropped: (drop) => {
                             var lastIdx = breadcrumbPrimitive.segments ? breadcrumbPrimitive.segments.length - 1 : -1
                             if (lastIdx >= 0 && breadcrumbPrimitive.commitSegmentDrop(lastIdx, drop)) {
