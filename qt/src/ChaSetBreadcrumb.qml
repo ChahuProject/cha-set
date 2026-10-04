@@ -282,14 +282,9 @@ Item {
                                 anchors.centerIn: parent
                                 spacing: ThemeTokens.dp(4)
 
-                                ChaSetIcon {
-                                    visible: segItem.isDropTarget && root.dragCopyModifier
-                                    name: "copy"
-                                    size: 14
-                                    color: ThemeTokens.accent
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
-
+                                // 拖拽到该级且按住 Ctrl（复制模式）时不在面包屑内显示任何图标：
+                                // 复制意图已由拖拽跟随幽灵（pageDragGhost）的 content_copy 图标表达，
+                                // 面包屑内再出现复制图标属于重复示意，故移除。
                                 Text {
                                     text: segItem.segName
                                     color: segItem.isDropTarget ? ThemeTokens.accent : (segItem.isCurrent ? ThemeTokens.text : ThemeTokens.subduedText)
