@@ -27,10 +27,13 @@ Popup {
     signal navigateRequested(string path)
 
     readonly property var filteredItems: {
+        // 防御性归一化：items/searchQuery 在宿主异步到达前可能为 undefined，
+        // 此处不设防会使本属性整体为 undefined，连锁污染所有 .length 读取点。
         var list = root.items || []
-        var q = root.searchQuery.trim().toLowerCase()
+        var q = String(root.searchQuery || "").trim().toLowerCase()
         if (!q) return list
         return list.filter(function(it) {
+            if (!it) return false
             var name = String(it.displayName || it.label || it.path || "").toLowerCase()
             return name.indexOf(q) >= 0
         })
