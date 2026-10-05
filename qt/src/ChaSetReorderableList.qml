@@ -308,6 +308,8 @@ Item {
                             id: actionBtn
                             required property var modelData
                             required property int index
+                            objectName: (actionBtn.modelData && actionBtn.modelData.objectName)
+                                        ? String(actionBtn.modelData.objectName) : "chaSetActionBtn"
                             width: ThemeTokens.dp(26)
                             height: ThemeTokens.dp(24)
 
