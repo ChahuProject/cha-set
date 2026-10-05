@@ -244,7 +244,7 @@ Item {
             ChaSetSettingRow {
                 name: root.trText("theme.settings.mode.title", "Appearance Mode")
                 description: root.trText("theme.settings.mode.desc", "Switch between Light, Dark, or System OS appearance")
-                controlWidth: 260
+                controlWidth: ThemeTokens.dp(260)
 
                 Row {
                     spacing: ThemeTokens.dp(8)
@@ -390,7 +390,7 @@ Item {
             ChaSetSettingRow {
                 name: root.trText("theme.settings.palette.title", "Accent Palette")
                 description: root.trText("theme.settings.palette.desc", "Choose from 10 canonical theme palettes or custom accent")
-                controlWidth: 320
+                controlWidth: ThemeTokens.dp(320)
 
                 Row {
                     spacing: ThemeTokens.dp(6)
@@ -489,11 +489,13 @@ Item {
             ChaSetSettingRow {
                 name: root.trText("theme.settings.style.title", "Interface Style")
                 description: root.trText("theme.settings.style.desc", "Simple flat presentation or expressive rich layered styling")
-                controlWidth: 220
+                controlWidth: ThemeTokens.dp(220)
 
                 ChaSetSegmentedControl {
                     size: "sm"
                     width: ThemeTokens.dp(200)
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
                     value: root.config?.decoration?.styleId || "simple"
                     options: [
                         { label: root.trText("theme.style.simple", "Simple"), value: "simple" },
@@ -515,7 +517,7 @@ Item {
                 name: root.trText("theme.settings.decoration.title", "Decoration Level")
                 description: root.trText("theme.settings.decoration.desc", "Master slider (0-100) driving corner radii, shadows, and motion")
                 badge: (root.config?.decoration?.level || 50) + "%"
-                controlWidth: 260
+                controlWidth: ThemeTokens.dp(260)
 
                 Row {
                     spacing: ThemeTokens.dp(8)
@@ -657,7 +659,7 @@ Item {
             ChaSetSettingRow {
                 name: root.trText("theme.settings.uiscale.title", "Interface Scale")
                 description: root.trText("theme.settings.uiscale.desc", "Global display density and UI scaling factor")
-                controlWidth: 160
+                controlWidth: ThemeTokens.dp(160)
 
                 ChaSetSelect {
                     width: ThemeTokens.dp(140)

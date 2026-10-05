@@ -472,8 +472,44 @@ Item {
                 NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
             }
 
-            x: root.movable ? root.dragOffsetX : 0
-            y: root.movable ? root.dragOffsetY : 0
+            x: (root.mode === "inline" && root.movable) ? root.dragOffsetX : 0
+            y: (root.mode === "inline" && root.movable) ? root.dragOffsetY : 0
+
+            // Top header drag handler (covers drag handle + preview header)
+            MouseArea {
+                id: topHeaderDragArea
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: cardColumn.y + (tabSwitcher.y > 0 ? tabSwitcher.y : ThemeTokens.dp(50))
+                z: 10
+                visible: root.movable
+                enabled: root.movable && !root.disabled
+                cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
+                property real startMouseX: 0
+                property real startMouseY: 0
+                property real startOffsetX: 0
+                property real startOffsetY: 0
+
+                onPressed: function(mouse) {
+                    startMouseX = mouse.x;
+                    startMouseY = mouse.y;
+                    startOffsetX = root.dragOffsetX;
+                    startOffsetY = root.dragOffsetY;
+                }
+
+                onPositionChanged: function(mouse) {
+                    if (pressed) {
+                        root.dragOffsetX = startOffsetX + (mouse.x - startMouseX);
+                        root.dragOffsetY = startOffsetY + (mouse.y - startMouseY);
+                    }
+                }
+
+                onDoubleClicked: {
+                    root.dragOffsetX = 0;
+                    root.dragOffsetY = 0;
+                }
+            }
 
             // Background drag handler for movable mode
             MouseArea {
@@ -515,6 +551,23 @@ Item {
                 anchors.margins: ThemeTokens.dp(12)
                 spacing: ThemeTokens.dp(10)
 
+                // 0. Drag Handle Bar (when movable)
+                Item {
+                    id: dragHandleBar
+                    width: parent.width
+                    height: root.movable ? ThemeTokens.dp(8) : 0
+                    visible: root.movable
+
+                    Rectangle {
+                        id: dragPill
+                        width: ThemeTokens.dp(36)
+                        height: ThemeTokens.dp(4)
+                        radius: ThemeTokens.dp(2)
+                        anchors.centerIn: parent
+                        color: root.isDark ? Qt.rgba(1, 1, 1, 0.3) : Qt.rgba(0, 0, 0, 0.22)
+                    }
+                }
+
                 // 1. Preview Header
                 Row {
                     width: parent.width
@@ -551,6 +604,7 @@ Item {
 
                 // 2. View Tab Switcher (Square / Circle / Triangle / Swatches)
                 Rectangle {
+                    id: tabSwitcher
                     width: parent.width
                     height: ThemeTokens.dp(28)
                     radius: ThemeTokens.dp(6)
@@ -1390,16 +1444,75 @@ Item {
     // Popover Floating Dropdown
     Popup {
         id: colorPopup
-        y: popoverTrigger.height + ThemeTokens.dp(4)
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         padding: 0
         background: Item {}
-        onVisibleChanged: root.popoverOpen = colorPopup.visible
+
+        property real calculatedX: 0
+        property real calculatedY: popoverTrigger.height + ThemeTokens.dp(4)
+
+        function updatePosition() {
+            var globalPos = root.mapToItem(null, 0, 0);
+            var win = root.Window.window;
+            var winW = win ? win.width : 1920;
+            var winH = win ? win.height : 1080;
+            var margin = ThemeTokens.dp(8);
+            var cardW = root.cardWidth;
+            var cardH = popoverCardLoader.item ? popoverCardLoader.item.height : ThemeTokens.dp(520);
+
+            // Horizontal positioning: default align left edge with trigger
+            var targetGlobalX = globalPos.x;
+            if (targetGlobalX + cardW > winW - margin) {
+                // If overflows right, try aligning right edge of card with right edge of trigger
+                targetGlobalX = globalPos.x + root.width - cardW;
+            }
+            // Clamp within window bounds
+            targetGlobalX = Math.max(margin, Math.min(targetGlobalX, winW - cardW - margin));
+            calculatedX = targetGlobalX - globalPos.x;
+
+            // Vertical positioning: default below trigger
+            var belowGlobalY = globalPos.y + root.height + ThemeTokens.dp(4);
+            var aboveGlobalY = globalPos.y - cardH - ThemeTokens.dp(4);
+            var targetGlobalY = belowGlobalY;
+            if (belowGlobalY + cardH > winH - margin) {
+                // Bottom overflows, open upwards if fits or has more space above
+                if (aboveGlobalY >= margin || (globalPos.y > (winH - globalPos.y - root.height))) {
+                    targetGlobalY = Math.max(margin, aboveGlobalY);
+                } else {
+                    targetGlobalY = Math.max(margin, Math.min(belowGlobalY, winH - cardH - margin));
+                }
+            }
+            calculatedY = targetGlobalY - globalPos.y;
+        }
+
+        onAboutToShow: {
+            root.dragOffsetX = 0;
+            root.dragOffsetY = 0;
+            updatePosition();
+        }
+
+        onVisibleChanged: {
+            root.popoverOpen = colorPopup.visible;
+            if (colorPopup.visible) {
+                updatePosition();
+            }
+        }
+
+        x: calculatedX + (root.movable ? root.dragOffsetX : 0)
+        y: calculatedY + (root.movable ? root.dragOffsetY : 0)
 
         Loader {
+            id: popoverCardLoader
             active: root.mode === "popover" && colorPopup.visible
             sourceComponent: pickerCardComponent
+            onLoaded: colorPopup.updatePosition()
         }
+    }
+
+    Connections {
+        target: root.Window.window
+        function onWidthChanged() { if (colorPopup.visible) colorPopup.updatePosition(); }
+        function onHeightChanged() { if (colorPopup.visible) colorPopup.updatePosition(); }
     }
 
     // Inline Card Loader
