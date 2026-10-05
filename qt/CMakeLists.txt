@@ -161,6 +161,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetPresetNumberInput.qml
         src/ChaSetKeybindingRecorder.qml
         src/ChaSetVirtualList.qml
+        src/ChaSetReorderableList.qml
         src/ChaSetVirtualTree.qml
         src/ChaSetVirtualGrid.qml
         src/ChaSetDraggableModal.qml
