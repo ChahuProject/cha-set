@@ -17,7 +17,8 @@ Popup {
 
     readonly property int naturalContentHeight: {
         var h = (root.isSearchOpen ? ThemeTokens.dp(34) : 0);
-        var count = root.filteredItems.length;
+        var shown = root.filteredItems || [];
+        var count = shown.length;
         h += (count > 0 ? (count * ThemeTokens.dp(32)) : ThemeTokens.dp(44));
         h += ThemeTokens.dp(24) + ThemeTokens.dp(4); // footerBar + spacing
         h += ThemeTokens.dp(12); // padding
@@ -42,7 +43,9 @@ Popup {
     onItemsChanged: {
         root.searchQuery = ""
         root.isSearchOpen = false
-        root.highlightedIndex = filteredItems.length > 0 ? 0 : -1
+        // 启动瞬间异步到达前 filteredItems 可能瞬态为 undefined，
+        // 与本文件其它读取点一致做空合并（正确值恒为数组，不掩盖真问题）。
+        root.highlightedIndex = (filteredItems || []).length > 0 ? 0 : -1
     }
 
     width: customWidth
@@ -59,7 +62,7 @@ Popup {
 
     onOpened: {
         popupContent.forceActiveFocus()
-        root.highlightedIndex = filteredItems.length > 0 ? 0 : -1
+        root.highlightedIndex = (filteredItems || []).length > 0 ? 0 : -1
     }
 
     contentItem: Item {
