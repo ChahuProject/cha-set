@@ -2974,7 +2974,11 @@ export const ICON_ALIASES: Record<string, IconName> = {
   "remove": "minus",
   "minimize": "window-minimize",
   "maximize": "window-maximize",
-  "restore": "window-restore"
+  "restore": "window-restore",
+  "drag_indicator": "grip-horizontal",
+  "drag-indicator": "grip-horizontal",
+  "drag_handle": "grip-horizontal",
+  "drag-handle": "grip-horizontal"
 };
 
 export function resolveIconName(name: string | undefined | null): IconName | undefined {

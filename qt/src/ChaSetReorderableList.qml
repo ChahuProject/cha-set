@@ -252,7 +252,7 @@ Item {
                     anchors.leftMargin: ThemeTokens.dp(6)
                     anchors.verticalCenter: parent.verticalCenter
                     name: "grip-horizontal"
-                    size: ThemeTokens.dp(14)
+                    size: 14
                     color: ThemeTokens.subduedText
                 }
 
