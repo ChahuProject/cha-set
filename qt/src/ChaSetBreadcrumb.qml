@@ -540,8 +540,11 @@ Item {
         id: overflowPopup
         items: {
             var list = []
+            // segments 在路径异步到达前可能为 undefined（与本文件其它各处判空一致），
+            // 此处不设防会导致绑定抛异常并连锁污染溢出弹窗的 filteredItems。
+            var segs = root.segments || []
             for (var i = 0; i < root.firstVisibleIndex; i++) {
-                if (root.segments[i]) list.push(root.segments[i])
+                if (segs[i]) list.push(segs[i])
             }
             return list
         }
