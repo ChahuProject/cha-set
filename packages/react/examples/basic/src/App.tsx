@@ -95,6 +95,8 @@ import { ThemeSettingsDocPage } from './pages/components/ThemeSettingsDocPage';
 import { LanguageSettingsDocPage } from './pages/components/LanguageSettingsDocPage';
 import { TableOfContentsDocPage } from './pages/components/TableOfContentsDocPage';
 import { KbdDocPage } from './pages/components/KbdDocPage';
+import { SquircleDocPage } from './pages/components/SquircleDocPage';
+import { MediaProgressBarDocPage } from './pages/components/MediaProgressBarDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
 
 import { TokensPage } from './pages/get-started/TokensPage';
@@ -883,6 +885,10 @@ export function App() {
         return <TableOfContentsDocPage />;
       case '#/components/kbd':
         return <KbdDocPage />;
+      case '#/components/squircle':
+        return <SquircleDocPage />;
+      case '#/components/media-progress-bar':
+        return <MediaProgressBarDocPage />;
       case '#/components/button':
 
       default:

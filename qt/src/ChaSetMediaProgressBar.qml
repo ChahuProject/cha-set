@@ -259,7 +259,7 @@ Item {
                 anchors.centerIn: parent
                 text: root.positionText
                 color: posMouseArea.containsMouse ? ThemeTokens.text : root.timeColor
-                font.pixelSize: ThemeTokens.sp(11)
+                font.pixelSize: Typography.sizeCaption
             }
 
             MouseArea {
@@ -301,7 +301,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             text: "/"
             color: root.timeSubduedColor
-            font.pixelSize: ThemeTokens.sp(11)
+            font.pixelSize: Typography.sizeCaption
         }
 
         // 总时长
@@ -311,7 +311,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             text: root.durationText
             color: root.timeSubduedColor
-            font.pixelSize: ThemeTokens.sp(11)
+            font.pixelSize: Typography.sizeCaption
 
             MouseArea {
                 anchors.fill: parent
@@ -351,7 +351,7 @@ Item {
             // 计时方式标题
             Text {
                 text: qsTr("计时方式")
-                font.pixelSize: ThemeTokens.sp(10)
+                font.pixelSize: Typography.sizeMicro
                 font.bold: true
                 color: ThemeTokens.subduedText
                 leftPadding: ThemeTokens.dp(8)
@@ -371,17 +371,22 @@ Item {
                     anchors.leftMargin: ThemeTokens.dp(6)
                     anchors.rightMargin: ThemeTokens.dp(6)
                     spacing: ThemeTokens.dp(6)
-                    Text {
+                    Item {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: root.timingMode === "elapsed" ? "✓" : " "
-                        font.pixelSize: ThemeTokens.sp(11)
-                        color: ThemeTokens.accent
                         width: ThemeTokens.dp(14)
+                        height: ThemeTokens.dp(14)
+                        ChaSetIcon {
+                            anchors.centerIn: parent
+                            name: "check"
+                            size: ThemeTokens.dp(12)
+                            color: ThemeTokens.accent
+                            visible: root.timingMode === "elapsed"
+                        }
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("正计时 (已播放)")
-                        font.pixelSize: ThemeTokens.sp(11)
+                        font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
                 }
@@ -409,17 +414,22 @@ Item {
                     anchors.leftMargin: ThemeTokens.dp(6)
                     anchors.rightMargin: ThemeTokens.dp(6)
                     spacing: ThemeTokens.dp(6)
-                    Text {
+                    Item {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: root.timingMode === "remaining" ? "✓" : " "
-                        font.pixelSize: ThemeTokens.sp(11)
-                        color: ThemeTokens.accent
                         width: ThemeTokens.dp(14)
+                        height: ThemeTokens.dp(14)
+                        ChaSetIcon {
+                            anchors.centerIn: parent
+                            name: "check"
+                            size: ThemeTokens.dp(12)
+                            color: ThemeTokens.accent
+                            visible: root.timingMode === "remaining"
+                        }
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("倒计时 (剩余)")
-                        font.pixelSize: ThemeTokens.sp(11)
+                        font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
                 }
@@ -446,7 +456,7 @@ Item {
             // 时间格式标题
             Text {
                 text: qsTr("时间格式")
-                font.pixelSize: ThemeTokens.sp(10)
+                font.pixelSize: Typography.sizeMicro
                 font.bold: true
                 color: ThemeTokens.subduedText
                 leftPadding: ThemeTokens.dp(8)
@@ -466,17 +476,22 @@ Item {
                     anchors.leftMargin: ThemeTokens.dp(6)
                     anchors.rightMargin: ThemeTokens.dp(6)
                     spacing: ThemeTokens.dp(6)
-                    Text {
+                    Item {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: root.effectiveTimeFormat === "hms" ? "✓" : " "
-                        font.pixelSize: ThemeTokens.sp(11)
-                        color: ThemeTokens.accent
                         width: ThemeTokens.dp(14)
+                        height: ThemeTokens.dp(14)
+                        ChaSetIcon {
+                            anchors.centerIn: parent
+                            name: "check"
+                            size: ThemeTokens.dp(12)
+                            color: ThemeTokens.accent
+                            visible: root.effectiveTimeFormat === "hms"
+                        }
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("时分秒 (00:00)")
-                        font.pixelSize: ThemeTokens.sp(11)
+                        font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
                 }
@@ -504,17 +519,22 @@ Item {
                     anchors.leftMargin: ThemeTokens.dp(6)
                     anchors.rightMargin: ThemeTokens.dp(6)
                     spacing: ThemeTokens.dp(6)
-                    Text {
+                    Item {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: root.effectiveTimeFormat === "seconds" ? "✓" : " "
-                        font.pixelSize: ThemeTokens.sp(11)
-                        color: ThemeTokens.accent
                         width: ThemeTokens.dp(14)
+                        height: ThemeTokens.dp(14)
+                        ChaSetIcon {
+                            anchors.centerIn: parent
+                            name: "check"
+                            size: ThemeTokens.dp(12)
+                            color: ThemeTokens.accent
+                            visible: root.effectiveTimeFormat === "seconds"
+                        }
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("按秒显示 (0.0s)")
-                        font.pixelSize: ThemeTokens.sp(11)
+                        font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
                 }
@@ -543,17 +563,22 @@ Item {
                     anchors.leftMargin: ThemeTokens.dp(6)
                     anchors.rightMargin: ThemeTokens.dp(6)
                     spacing: ThemeTokens.dp(6)
-                    Text {
+                    Item {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: root.effectiveTimeFormat === "frames" ? "✓" : " "
-                        font.pixelSize: ThemeTokens.sp(11)
-                        color: ThemeTokens.accent
                         width: ThemeTokens.dp(14)
+                        height: ThemeTokens.dp(14)
+                        ChaSetIcon {
+                            anchors.centerIn: parent
+                            name: "check"
+                            size: ThemeTokens.dp(12)
+                            color: ThemeTokens.accent
+                            visible: root.effectiveTimeFormat === "frames"
+                        }
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("按帧率显示 (0 帧)")
-                        font.pixelSize: ThemeTokens.sp(11)
+                        font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
                 }

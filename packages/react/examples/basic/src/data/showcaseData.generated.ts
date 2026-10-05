@@ -1169,6 +1169,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/kbd",
         "desc": "Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation.",
         "description": "Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation."
+      },
+      {
+        "id": "squircle",
+        "title": "Squircle",
+        "href": "#/components/squircle",
+        "desc": "iOS 连续曲率超椭圆圆角（G2 连续律）。消除了传统圆弧角在直线与切点处曲率突变导致的生硬折痕，为整个项目提供平滑、有机的现代圆角设计。",
+        "description": "iOS 连续曲率超椭圆圆角（G2 连续律）。消除了传统圆弧角在直线与切点处曲率突变导致的生硬折痕，为整个项目提供平滑、有机的现代圆角设计。"
       }
     ]
   },
@@ -1272,6 +1279,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/keybinding-recorder",
         "desc": "Interactive recorder that captures accelerator keyboard sequences for desktop apps.",
         "description": "Interactive recorder that captures accelerator keyboard sequences for desktop apps."
+      },
+      {
+        "id": "media-progress-bar",
+        "title": "MediaProgressBar",
+        "href": "#/components/media-progress-bar",
+        "desc": "通用媒体播放进度条组件，支持拖拽擦洗、点击 seek、悬停预览、左下方「位置 / 总长」时间显示、点击翻转正/倒计时与右键格式菜单。",
+        "description": "通用媒体播放进度条组件，支持拖拽擦洗、点击 seek、悬停预览、左下方「位置 / 总长」时间显示、点击翻转正/倒计时与右键格式菜单。"
       }
     ]
   },
@@ -2366,6 +2380,30 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "—",
       "action": "Non-interactive visual indicator representing keyboard shortcuts and key combinations"
+    }
+  ],
+  "squircle": [
+    {
+      "key": "—",
+      "action": "Non-interactive geometric continuous-curvature squircle container"
+    }
+  ],
+  "media-progress-bar": [
+    {
+      "key": "← / →",
+      "action": "Seek backward / forward by step increment"
+    },
+    {
+      "key": "Home / End",
+      "action": "Jump directly to beginning / end of media"
+    },
+    {
+      "key": "Space",
+      "action": "Toggle playback play/pause or trigger seek"
+    },
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Move focus between interactive controls"
     }
   ]
 };

@@ -145,4 +145,6 @@ export {
 } from './lib/icons';
 export type { IconName, IconProps, NamedIconProps, IconDefinition, IconGrid, IconGridId, IconRule, IconCategory, IconFamily, IconSpecSummary, IconAudit } from './lib/icons';
 
-
+
+export { Squircle, getSquircleSvgPath, type SquircleProps, type SquircleParams } from './squircle';
+export { MediaProgressBar, type MediaProgressBarProps } from './media-progress-bar';

@@ -54,6 +54,24 @@
         }
       }
     },
+    "corner-shape": {
+      "$type": "string",
+      "presets": {
+        "launcher": {
+          "dark": "squircle",
+          "light": "squircle"
+        }
+      }
+    },
+    "corner-smoothing": {
+      "$type": "number",
+      "presets": {
+        "launcher": {
+          "dark": "0.6",
+          "light": "0.6"
+        }
+      }
+    },
     "sidebar": {
       "$type": "color",
       "presets": {

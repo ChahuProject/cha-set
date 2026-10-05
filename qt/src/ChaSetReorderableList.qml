@@ -251,8 +251,8 @@ Item {
                     anchors.left: parent.left
                     anchors.leftMargin: ThemeTokens.dp(6)
                     anchors.verticalCenter: parent.verticalCenter
-                    name: "drag_indicator"
-                    size: 14
+                    name: "grip-horizontal"
+                    size: ThemeTokens.dp(14)
                     color: ThemeTokens.subduedText
                 }
 
@@ -278,7 +278,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     elide: Text.ElideRight
                     text: itemRow.itemLabel
-                    font.pixelSize: ThemeTokens.sp(12)
+                    font.pixelSize: Typography.sizeSmall
                     color: {
                         // 若所有 action 均为 false，弱化显示
                         var anyActive = false

@@ -327,6 +327,8 @@ ${COLOR_ORDER.map((f) => `    readonly property color ${f}: color("${f}")`).join
     // property onAccent evaluates to invalid/black. Expose primaryForeground and onAccentColor.
     readonly property color primaryForeground: color("onAccent")
     readonly property color onAccentColor: color("onAccent")
+    readonly property real cornerSmoothing: 0.6
+    readonly property string cornerShape: "squircle"
 
 ${intProps(SPACE_ORDER, derivedQt.space)}
 

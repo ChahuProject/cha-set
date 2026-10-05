@@ -92,6 +92,12 @@
         "title": "Kbd",
         "href": "#/components/kbd",
         "desc": "Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation."
+      },
+      {
+        "id": "squircle",
+        "title": "Squircle",
+        "href": "#/components/squircle",
+        "desc": "iOS 连续曲率超椭圆圆角（G2 连续律）。消除了传统圆弧角在直线与切点处曲率突变导致的生硬折痕，为整个项目提供平滑、有机的现代圆角设计。"
       }
     ]
   },
@@ -181,6 +187,12 @@
         "title": "Keybinding Recorder",
         "href": "#/components/keybinding-recorder",
         "desc": "Interactive recorder that captures accelerator keyboard sequences for desktop apps."
+      },
+      {
+        "id": "media-progress-bar",
+        "title": "MediaProgressBar",
+        "href": "#/components/media-progress-bar",
+        "desc": "通用媒体播放进度条组件，支持拖拽擦洗、点击 seek、悬停预览、左下方「位置 / 总长」时间显示、点击翻转正/倒计时与右键格式菜单。"
       }
     ]
   },

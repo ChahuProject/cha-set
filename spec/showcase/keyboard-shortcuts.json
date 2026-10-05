@@ -312,6 +312,15 @@
   ],
   "kbd": [
     { "key": "—", "action": "Non-interactive visual indicator representing keyboard shortcuts and key combinations" }
+  ],
+  "squircle": [
+    { "key": "—", "action": "Non-interactive geometric continuous-curvature squircle container" }
+  ],
+  "media-progress-bar": [
+    { "key": "← / →", "action": "Seek backward / forward by step increment" },
+    { "key": "Home / End", "action": "Jump directly to beginning / end of media" },
+    { "key": "Space", "action": "Toggle playback play/pause or trigger seek" },
+    { "key": "Tab / Shift + Tab", "action": "Move focus between interactive controls" }
   ]
 }
 

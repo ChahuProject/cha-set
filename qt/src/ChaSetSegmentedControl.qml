@@ -218,7 +218,7 @@ Item {
         font.pixelSize: root.itemFontSize
     }
 
-    Rectangle {
+    ChaSetSquircle {
         id: track
         anchors.left: root.hasTitle ? titleLabel.right : parent.left
         anchors.leftMargin: root.hasTitle ? ThemeTokens.dp(6) : 0
@@ -234,7 +234,7 @@ Item {
         readonly property real segSpacing: ThemeTokens.dp(2)
 
         // Sliding indicator pill
-        Rectangle {
+        ChaSetSquircle {
             id: indicator
             readonly property int selIdx: root.getSelectedIndex()
             visible: selIdx >= 0
@@ -259,7 +259,7 @@ Item {
 
         Repeater {
             model: root.options
-            delegate: Rectangle {
+            delegate: ChaSetSquircle {
                 id: segItem
                 required property int index
                 required property var modelData

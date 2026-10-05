@@ -371,6 +371,8 @@ ApplicationWindow {
         case "language-settings": return "LanguageSettingsDocPage.qml";
         case "table-of-contents": return "TableOfContentsDocPage.qml";
         case "kbd": return "KbdDocPage.qml";
+        case "squircle": return "SquircleDocPage.qml";
+        case "media-progress-bar": return "MediaProgressBarDocPage.qml";
         default: return "ButtonDocPage.qml";
 
         }

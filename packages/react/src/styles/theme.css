@@ -190,4 +190,17 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* iOS Continuous Corner Curvature (Squircle) via CSS Borders Level 4 corner-shape */
+  @supports (corner-shape: squircle) {
+    *, ::before, ::after {
+      corner-shape: squircle;
+    }
+
+    /* Preserve pure circular geometry for pill and full circle elements */
+    .rounded-full,
+    [data-shape="round"] {
+      corner-shape: round;
+    }
+  }
 }

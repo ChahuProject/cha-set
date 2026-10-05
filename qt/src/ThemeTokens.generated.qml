@@ -209,6 +209,8 @@ QtObject {
     // property onAccent evaluates to invalid/black. Expose primaryForeground and onAccentColor.
     readonly property color primaryForeground: color("onAccent")
     readonly property color onAccentColor: color("onAccent")
+    readonly property real cornerSmoothing: 0.6
+    readonly property string cornerShape: "squircle"
 
     readonly property int space0: 0
     readonly property int space1: 2
