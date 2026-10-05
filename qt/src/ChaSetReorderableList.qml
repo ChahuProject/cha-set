@@ -346,7 +346,7 @@ Item {
                                 hoverEnabled: true
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: (mouse) => {
-                                    root.handleActionClick(itemRow.index, actionBtn.colKey, mouse.modifiers)
+                                    root.handleActionClick(itemRow.index, actionBtn.colKey, (mouse && typeof mouse.modifiers !== "undefined") ? mouse.modifiers : 0)
                                 }
                             }
                         }
