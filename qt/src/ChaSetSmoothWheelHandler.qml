@@ -72,6 +72,10 @@ Item {
 
     // Interaction Mutex: when user drags the scrollbar thumb or flicks with finger,
     // abort smooth animation immediately and resync targetPos to eliminate physical drag fight.
+    // Programmatic sync: while idle, any external contentY/contentX change
+    // (positionViewAtIndex, direct assignment, margin change side-effect)
+    // is adopted into targetPos so the next wheel event starts from the true
+    // position instead of a stale target (top-at-0-but-still-scrolls jump).
     Connections {
         target: root.targetItem
         ignoreUnknownSignals: true
@@ -87,6 +91,18 @@ Item {
                 root.syncToCurrent()
             }
         }
+        function onContentYChanged() {
+            if (root.targetItem && !smoothAnim.running
+                    && root.isVerticalTarget()) {
+                root.syncToCurrent()
+            }
+        }
+        function onContentXChanged() {
+            if (root.targetItem && !smoothAnim.running
+                    && !root.isVerticalTarget()) {
+                root.syncToCurrent()
+            }
+        }
     }
 
     function syncToCurrent() {
@@ -99,12 +115,37 @@ Item {
         return (scrollOrientation === Qt.Vertical && !mapVerticalToHorizontal)
     }
 
-    function calculateMaxScroll() {
+    // Flickable 真实滚动下界：origin - margin（无 margin 时为 0）。
+    // 不含此项时，带 topMargin/leftMargin 的视图滚轮最小值与原生滚动条不一致。
+    function calculateMinScroll() {
         if (!targetItem) return 0
         if (isVerticalTarget()) {
-            return Math.max(0, targetItem.contentHeight - targetItem.height)
+            var origin = (typeof targetItem.originY === "number") ? targetItem.originY : 0
+            var top = (typeof targetItem.topMargin === "number") ? targetItem.topMargin : 0
+            return origin - top
         } else {
-            return Math.max(0, targetItem.contentWidth - targetItem.width)
+            var originX = (typeof targetItem.originX === "number") ? targetItem.originX : 0
+            var left = (typeof targetItem.leftMargin === "number") ? targetItem.leftMargin : 0
+            return originX - left
+        }
+    }
+
+    // Flickable 真实滚动上界：origin + content - viewport + margin。
+    // 旧实现漏算 topMargin/bottomMargin（及 origin），导致带 bottomMargin
+    // （如文件树锚定垫高）的视图滚轮到不了底，而原生滚动条可以到底。
+    function calculateMaxScroll() {
+        if (!targetItem) return 0
+        var min = calculateMinScroll()
+        if (isVerticalTarget()) {
+            var topM = (typeof targetItem.topMargin === "number") ? targetItem.topMargin : 0
+            var bottomM = (typeof targetItem.bottomMargin === "number") ? targetItem.bottomMargin : 0
+            var range = targetItem.contentHeight - targetItem.height + topM + bottomM
+            return Math.max(min, min + Math.max(0, range))
+        } else {
+            var leftM = (typeof targetItem.leftMargin === "number") ? targetItem.leftMargin : 0
+            var rightM = (typeof targetItem.rightMargin === "number") ? targetItem.rightMargin : 0
+            var rangeH = targetItem.contentWidth - targetItem.width + leftM + rightM
+            return Math.max(min, min + Math.max(0, rangeH))
         }
     }
 
@@ -115,6 +156,7 @@ Item {
 
     function scrollBy(deltaAmount) {
         if (!targetItem) return
+        const minScroll = calculateMinScroll()
         const maxScroll = calculateMaxScroll()
         const cur = currentPos()
 
@@ -123,9 +165,12 @@ Item {
             if (Math.abs(targetPos - cur) <= Math.max(targetItem.width, targetItem.height) * 2) {
                 base = targetPos
             }
+            // 在途目标若因外部布局变化（展开/折叠、margin 变化）已越界，
+            // 先收敛回合法区间再累加，避免顶部到顶仍能滚动/底部空一截。
+            base = Math.max(minScroll, Math.min(maxScroll, base))
         }
 
-        const nextTarget = Math.max(0, Math.min(maxScroll, base + deltaAmount))
+        const nextTarget = Math.max(minScroll, Math.min(maxScroll, base + deltaAmount))
         targetPos = nextTarget
 
         const dur = root.duration
@@ -147,9 +192,10 @@ Item {
 
     function scrollTo(absolutePos) {
         if (!targetItem) return
+        const minScroll = calculateMinScroll()
         const maxScroll = calculateMaxScroll()
         const cur = currentPos()
-        const nextTarget = Math.max(0, Math.min(maxScroll, absolutePos))
+        const nextTarget = Math.max(minScroll, Math.min(maxScroll, absolutePos))
         targetPos = nextTarget
 
         const dur = root.duration
