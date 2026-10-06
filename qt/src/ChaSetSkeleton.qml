@@ -10,8 +10,9 @@ Rectangle {
     property bool animate: animation !== "none"
     property int customRadius: -1
 
+    readonly property int effectiveRadius: root.customRadius >= 0 ? ThemeTokens.dp(root.customRadius) : (root.rounded === "none" ? 0 : (root.rounded === "sm" ? ThemeTokens.dp(2) : (root.rounded === "lg" ? ThemeTokens.dp(8) : (root.rounded === "full" ? Math.min(width, height) / 2 : ThemeTokens.dp(4)))))
     color: ThemeTokens.hover
-    radius: root.customRadius >= 0 ? root.customRadius : (root.rounded === "none" ? 0 : (root.rounded === "sm" ? ThemeTokens.dp(2) : (root.rounded === "lg" ? ThemeTokens.dp(8) : (root.rounded === "full" ? Math.min(width, height) / 2 : ThemeTokens.dp(4)))))
+    radius: root.effectiveRadius
     clip: true
     opacity: root.animate && root.animation === "pulse" ? 0.6 : 0.85
 

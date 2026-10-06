@@ -57,7 +57,8 @@ ChaSetSquircle {
 
     implicitWidth: ThemeTokens.dp(200)
     implicitHeight: ThemeTokens.dp(isSm ? 28 : 32)
-    radius: customRadius >= 0 ? customRadius : ThemeTokens.dp(6)
+    readonly property int effectiveRadius: customRadius >= 0 ? ThemeTokens.dp(customRadius) : ThemeTokens.dp(6)
+    radius: effectiveRadius
     color: "transparent"
     clip: true
 

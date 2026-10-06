@@ -13,7 +13,7 @@ DocLayout {
         { id: "type", title: "Typography & Radius" }
     ]
 
-    property int customRadius: ThemeTokens.dp(8)
+    property int customRadius: 8
     property color cFg: ThemeTokens.text
     property color cMutedFg: ThemeTokens.subduedText
     property color cCard: ThemeTokens.panel

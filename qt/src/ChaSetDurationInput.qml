@@ -16,7 +16,8 @@ Item {
     property string minutesLabel: "Minutes"
     property string secondsLabel: "Seconds"
     property string presetsLabel: "Presets"
-    property int customRadius: ThemeTokens.dp(6)
+    property int customRadius: 6
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
 
     property var presets: [
         {
@@ -155,7 +156,7 @@ Item {
                 id: hoursBox
                 width: root.segmentBoxWidth
                 height: root.boxHeight
-                radius: root.customRadius
+                radius: root.effectiveRadius
                 color: "transparent"
                 border.color: hoursInput.activeFocus ? ThemeTokens.accent : ThemeTokens.border
                 border.width: 1
@@ -287,7 +288,7 @@ Item {
                 id: minutesBox
                 width: root.segmentBoxWidth
                 height: root.boxHeight
-                radius: root.customRadius
+                radius: root.effectiveRadius
                 color: "transparent"
                 border.color: minutesInput.activeFocus ? ThemeTokens.accent : ThemeTokens.border
                 border.width: 1
@@ -418,7 +419,7 @@ Item {
                 id: secondsBox
                 width: root.segmentBoxWidth
                 height: root.boxHeight
-                radius: root.customRadius
+                radius: root.effectiveRadius
                 color: "transparent"
                 border.color: secondsInput.activeFocus ? ThemeTokens.accent : ThemeTokens.border
                 border.width: 1
@@ -540,7 +541,7 @@ Item {
                 visible: root.showPresets
                 height: root.boxHeight
                 width: presetBtnRow.implicitWidth + ThemeTokens.dp(16)
-                radius: root.customRadius
+                radius: root.effectiveRadius
                 color: presetMouse.containsMouse ? ThemeTokens.hover : "transparent"
                 border.color: ThemeTokens.border
                 border.width: 1
@@ -634,7 +635,7 @@ Item {
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
-            radius: root.customRadius
+            radius: root.effectiveRadius
         }
 
         contentItem: Column {

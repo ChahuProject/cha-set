@@ -22,10 +22,15 @@ Item {
     property int horizontalPadding: isSm ? 16 : 24
     property int spacing: 0
 
+    readonly property int effectiveTopPadding: ThemeTokens.dp(topPadding)
+    readonly property int effectiveBottomPadding: ThemeTokens.dp(bottomPadding)
+    readonly property int effectiveHorizontalPadding: ThemeTokens.dp(horizontalPadding)
+    readonly property int effectiveSpacing: ThemeTokens.dp(spacing)
+
     default property alias contentData: col.data
 
-    implicitWidth: Math.max(col.implicitWidth, col.childrenRect.width) + horizontalPadding * 2
-    implicitHeight: Math.max(col.implicitHeight, col.childrenRect.height) + topPadding + bottomPadding
+    implicitWidth: Math.max(col.implicitWidth, col.childrenRect.width) + effectiveHorizontalPadding * 2
+    implicitHeight: Math.max(col.implicitHeight, col.childrenRect.height) + effectiveTopPadding + effectiveBottomPadding
     width: parent ? parent.width : implicitWidth
     height: implicitHeight
 
@@ -34,9 +39,9 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.leftMargin: root.horizontalPadding
-        anchors.rightMargin: root.horizontalPadding
-        anchors.topMargin: root.topPadding
-        spacing: root.spacing
+        anchors.leftMargin: root.effectiveHorizontalPadding
+        anchors.rightMargin: root.effectiveHorizontalPadding
+        anchors.topMargin: root.effectiveTopPadding
+        spacing: root.effectiveSpacing
     }
 }

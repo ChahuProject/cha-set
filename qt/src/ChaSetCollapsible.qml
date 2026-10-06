@@ -12,7 +12,8 @@ Rectangle {
     property bool disabled: false
     property string variant: "default" // "default" | "card" | "ghost"
     property string title: ""
-    property int customRadius: ThemeTokens.dp(6)
+    property int customRadius: 6
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property bool forceHover: false
     property bool forceActive: false
 
@@ -29,7 +30,7 @@ Rectangle {
     color: root.variant === "card" ? ThemeTokens.card : "transparent"
     border.color: root.variant === "card" ? ThemeTokens.border : "transparent"
     border.width: root.variant === "card" ? 1 : 0
-    radius: root.customRadius
+    radius: root.effectiveRadius
     clip: true
 
     implicitWidth: ThemeTokens.dp(320)

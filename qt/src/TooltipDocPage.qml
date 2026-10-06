@@ -164,8 +164,7 @@ DocLayout {
             // Top Placement
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
-                customRadius: ThemeTokens.dp(8)
-
+                customRadius: 8
                 Column {
                     width: parent.width
                     topPadding: ThemeTokens.dp(14)
@@ -191,8 +190,7 @@ DocLayout {
             // Bottom Placement
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
-                customRadius: ThemeTokens.dp(8)
-
+                customRadius: 8
                 Column {
                     width: parent.width
                     topPadding: ThemeTokens.dp(14)
@@ -218,8 +216,7 @@ DocLayout {
             // Left Placement
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
-                customRadius: ThemeTokens.dp(8)
-
+                customRadius: 8
                 Column {
                     width: parent.width
                     topPadding: ThemeTokens.dp(14)
@@ -245,8 +242,7 @@ DocLayout {
             // Right Placement
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
-                customRadius: ThemeTokens.dp(8)
-
+                customRadius: 8
                 Column {
                     width: parent.width
                     topPadding: ThemeTokens.dp(14)
@@ -272,8 +268,7 @@ DocLayout {
             // Keyboard Shortcut Hint
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
-                customRadius: ThemeTokens.dp(8)
-
+                customRadius: 8
                 Column {
                     width: parent.width
                     topPadding: ThemeTokens.dp(14)
@@ -300,8 +295,7 @@ DocLayout {
             // Directional Arrow
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
-                customRadius: ThemeTokens.dp(8)
-
+                customRadius: 8
                 Column {
                     width: parent.width
                     topPadding: ThemeTokens.dp(14)

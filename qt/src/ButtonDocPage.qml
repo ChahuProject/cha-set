@@ -138,7 +138,7 @@ DocLayout {
                 ChaSetInput {
                     width: ThemeTokens.dp(100)
                     size: "sm"
-                    customRadius: ThemeTokens.dp(4)
+                    customRadius: 4
                     text: root.btnLabel
                     onTextEdited: root.btnLabel = text
                 }
@@ -168,7 +168,7 @@ DocLayout {
             DocText { text: "Use the variant prop to change the visual hierarchy."; isMuted: true; font.pixelSize: Typography.sizeSmall }
             ChaSetCard {
                 width: parent.width
-                customRadius: ThemeTokens.dp(8)
+                customRadius: 8
 
                 Column {
                     width: parent.width
@@ -203,7 +203,7 @@ DocLayout {
             DocText { text: "Available in standardized sizes: xs, sm, default, lg, and icon variants."; isMuted: true; font.pixelSize: Typography.sizeSmall }
             ChaSetCard {
                 width: parent.width
-                customRadius: ThemeTokens.dp(8)
+                customRadius: 8
 
                 Column {
                     width: parent.width
@@ -236,7 +236,7 @@ DocLayout {
             DocText { text: "Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events."; isMuted: true; font.pixelSize: Typography.sizeSmall }
             ChaSetCard {
                 width: parent.width
-                customRadius: ThemeTokens.dp(8)
+                customRadius: 8
 
                 Column {
                     width: parent.width

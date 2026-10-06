@@ -11,7 +11,8 @@ Item {
     property var options: [] // [{ value: "apple", label: "Apple", disabled: false }]
     property bool disabled: false
     property bool closeOnEscape: true
-    property int customRadius: ThemeTokens.dp(6)
+    property int customRadius: 6
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property int highlightedIndex: -1
     property string modality: "pointer" // "pointer" | "keyboard"
     property real lastPointerSceneX: -1
@@ -164,7 +165,7 @@ Item {
     ChaSetSquircle {
         id: triggerBox
         anchors.fill: parent
-        radius: root.customRadius
+        radius: root.effectiveRadius
         color: ThemeTokens.panel
         border.color: (selectPopup.visible || root.activeFocus) ? ThemeTokens.accent : (triggerMouse.containsMouse ? ThemeTokens.border : ThemeTokens.border)
         border.width: 1
@@ -236,7 +237,7 @@ Item {
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
-            radius: root.customRadius
+            radius: root.effectiveRadius
             opacity: selectPopup.visible ? 1.0 : 0.0
             scale: selectPopup.visible ? 1.0 : 0.95
 

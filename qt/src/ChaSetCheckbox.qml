@@ -34,7 +34,7 @@ Item {
 
     readonly property bool isSm: root.size === "sm"
     readonly property int boxSize: ThemeTokens.dp(isSm ? 14 : 16)
-    readonly property int effectiveRadius: customRadius >= 0 ? customRadius : ThemeTokens.dp(isSm ? 3 : 4)
+    readonly property int effectiveRadius: customRadius >= 0 ? ThemeTokens.dp(customRadius) : ThemeTokens.dp(isSm ? 3 : 4)
     readonly property bool isHovered: (root.forceHover || mouseArea.containsMouse) && !root.disabled && !root.readOnly
     readonly property bool isFocused: (root.forceFocus || root.activeFocus) && !root.disabled
     readonly property bool isDark: ThemeTokens.dark

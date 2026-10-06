@@ -9,10 +9,14 @@ Item {
     property bool open: false
     property string side: "bottom"      // "top" | "bottom" | "left" | "right"
     property string align: "start"      // "start" | "center" | "end"
-    property int sideOffset: ThemeTokens.dp(8)
-    property int popoverWidth: ThemeTokens.dp(260)
-    property int popoverHeight: ThemeTokens.dp(160)
-    property int customRadius: ThemeTokens.dp(8)
+    property int sideOffset: 8
+    property int popoverWidth: 260
+    property int popoverHeight: 160
+    readonly property int effectiveSideOffset: ThemeTokens.dp(sideOffset)
+    readonly property int effectivePopoverWidth: ThemeTokens.dp(popoverWidth)
+    readonly property int effectivePopoverHeight: ThemeTokens.dp(popoverHeight)
+    property int customRadius: 8
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property bool modal: false
     property bool movable: false
     property string moveLabel: "Drag to move"
@@ -72,31 +76,31 @@ Item {
         x: {
             var baseX = 0
             if (root.side === "left") {
-                baseX = -root.popoverWidth - root.sideOffset
+                baseX = -root.effectivePopoverWidth - root.effectiveSideOffset
             } else if (root.side === "right") {
-                baseX = root.width + root.sideOffset
+                baseX = root.width + root.effectiveSideOffset
             } else {
                 if (root.align === "start") baseX = 0
-                else if (root.align === "end") baseX = root.width - root.popoverWidth
-                else baseX = (root.width - root.popoverWidth) / 2
+                else if (root.align === "end") baseX = root.width - root.effectivePopoverWidth
+                else baseX = (root.width - root.effectivePopoverWidth) / 2
             }
             return baseX + root.dragOffsetX
         }
         y: {
             var baseY = 0
             if (root.side === "top") {
-                baseY = -root.popoverHeight - root.sideOffset
+                baseY = -root.effectivePopoverHeight - root.effectiveSideOffset
             } else if (root.side === "bottom") {
-                baseY = root.height + root.sideOffset
+                baseY = root.height + root.effectiveSideOffset
             } else {
                 if (root.align === "start") baseY = 0
-                else if (root.align === "end") baseY = root.height - root.popoverHeight
-                else baseY = (root.height - root.popoverHeight) / 2
+                else if (root.align === "end") baseY = root.height - root.effectivePopoverHeight
+                else baseY = (root.height - root.effectivePopoverHeight) / 2
             }
             return baseY + root.dragOffsetY
         }
-        width: root.popoverWidth
-        height: root.popoverHeight
+        width: root.effectivePopoverWidth
+        height: root.effectivePopoverHeight
         padding: ThemeTokens.dp(12)
         topPadding: root.movable ? ThemeTokens.dp(22) : ThemeTokens.dp(12)
         modal: root.modal
@@ -108,7 +112,7 @@ Item {
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
-            radius: root.customRadius
+            radius: root.effectiveRadius
             opacity: popup.visible ? 1.0 : 0.0
             scale: popup.visible ? 1.0 : 0.95
 

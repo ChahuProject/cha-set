@@ -92,7 +92,7 @@ ChaSetDurationInput {
 
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
-                customRadius: ThemeTokens.dp(8)
+                customRadius: 8
                 Column {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
@@ -108,7 +108,7 @@ ChaSetDurationInput {
 
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
-                customRadius: ThemeTokens.dp(8)
+                customRadius: 8
                 Column {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
@@ -124,7 +124,7 @@ ChaSetDurationInput {
 
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(32)) / 3
-                customRadius: ThemeTokens.dp(8)
+                customRadius: 8
                 Column {
                     width: parent.width
                     padding: ThemeTokens.dp(14)

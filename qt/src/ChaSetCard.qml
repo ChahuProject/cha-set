@@ -18,7 +18,8 @@ ChaSetSquircle {
     readonly property color cBorder: isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 0.8)
     readonly property color cSecondary: isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(241.0 / 255.0, 245.0 / 255.0, 249.0 / 255.0, 1.0)
 
-    radius: customRadius >= 0 ? ThemeTokens.dp(customRadius) : ThemeTokens.dp(12)
+    readonly property int effectiveRadius: customRadius >= 0 ? ThemeTokens.dp(customRadius) : ThemeTokens.dp(12)
+    radius: effectiveRadius
     border.width: 1
     border.color: (root.interactive && mouseArea.containsMouse) ? ThemeTokens.accent : cBorder
 

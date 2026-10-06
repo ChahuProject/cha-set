@@ -7,7 +7,8 @@ Rectangle {
 
     property bool open: true
     property string title: "Inspector Window"
-    property int customRadius: ThemeTokens.dp(8)
+    property int customRadius: 8
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property string initialPositionMode: "center" // "center" | "top"
     property int topMargin: ThemeTokens.dp(72)
     property var sizeOptions: []
@@ -25,7 +26,7 @@ Rectangle {
     color: ThemeTokens.panel
     border.color: ThemeTokens.border
     border.width: 1
-    radius: root.customRadius
+    radius: root.effectiveRadius
     visible: root.open
     clip: true
     opacity: root.open ? 1.0 : 0.0

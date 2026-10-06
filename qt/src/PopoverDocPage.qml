@@ -235,7 +235,7 @@ ChaSetPopover {
 
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
-                customRadius: ThemeTokens.dp(8)
+                customRadius: 8
                 Column {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
@@ -261,7 +261,7 @@ ChaSetPopover {
 
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
-                customRadius: ThemeTokens.dp(8)
+                customRadius: 8
                 Column {
                     width: parent.width
                     padding: ThemeTokens.dp(14)

@@ -7,8 +7,10 @@ Item {
     id: root
 
     property var items: [] // [{ id, label, icon, shortcut, destructive, disabled, onSelect }]
-    property int menuWidth: ThemeTokens.dp(180)
-    property int customRadius: ThemeTokens.dp(6)
+    property int menuWidth: 180
+    readonly property int effectiveMenuWidth: ThemeTokens.dp(menuWidth)
+    property int customRadius: 6
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property int highlightedIndex: -1
     property string modality: "pointer" // "pointer" | "keyboard"
     property real lastPointerSceneX: -1
@@ -86,7 +88,7 @@ Item {
         var targetY = localPos.y
         var winW = (root.Window && root.Window.window) ? root.Window.window.width : (parent ? parent.width : 1000)
         var winH = (root.Window && root.Window.window) ? root.Window.window.height : (parent ? parent.height : 800)
-        var menuW = root.menuWidth
+        var menuW = root.effectiveMenuWidth
         var estimatedMenuH = ((root.items && root.items.length > 0) ? root.items.length : 3) * ThemeTokens.dp(28) + ThemeTokens.dp(16)
         if (sceneX + menuW > winW) {
             targetX = Math.max(0, targetX - menuW)
@@ -125,7 +127,7 @@ Item {
 
     Popup {
         id: contextPopup
-        width: root.menuWidth
+        width: root.effectiveMenuWidth
         padding: ThemeTokens.dp(4)
         modal: false
         focus: true
@@ -145,7 +147,7 @@ Item {
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
-            radius: root.customRadius
+            radius: root.effectiveRadius
             opacity: contextPopup.visible ? 1.0 : 0.0
             scale: contextPopup.visible ? 1.0 : 0.95
 

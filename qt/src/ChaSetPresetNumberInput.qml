@@ -12,7 +12,8 @@ Item {
     property bool disabled: false
     property bool allowClear: true
     property string clearLabel: "None"
-    property int customRadius: ThemeTokens.dp(6)
+    property int customRadius: 6
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
 
     implicitWidth: ThemeTokens.dp(140)
     implicitHeight: ThemeTokens.dp(32)
@@ -177,7 +178,7 @@ Item {
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
-            radius: root.customRadius
+            radius: root.effectiveRadius
         }
 
         contentItem: Column {

@@ -8,7 +8,8 @@ Item {
     property string value: ""
     property string placeholder: ""
     property string colorScheme: "default"
-    property int customRadius: ThemeTokens.dp(6)
+    property int customRadius: 6
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property bool showCopy: true
     property bool masked: false
     property string maskChar: "•"
@@ -40,7 +41,7 @@ Item {
         color: ThemeTokens.panel
         border.color: root.borderColor
         border.width: 1
-        radius: root.customRadius
+        radius: root.effectiveRadius
 
         Behavior on border.color {
             enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")

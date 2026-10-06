@@ -27,11 +27,16 @@ Item {
     // —— Geometry & Placement ——
     property string side: "top"         // "top" | "bottom" | "left" | "right"
     property string align: "center"     // "start" | "center" | "end"
-    property int sideOffset: ThemeTokens.dp(8)
+    property int sideOffset: 8
+    readonly property int effectiveSideOffset: ThemeTokens.dp(sideOffset)
     property int alignOffset: 0
-    property int popoverWidth: popoverContent.implicitWidth > 0 ? popoverContent.implicitWidth : ThemeTokens.dp(200)
-    property int popoverHeight: popoverContent.implicitHeight > 0 ? popoverContent.implicitHeight : ThemeTokens.dp(120)
-    property int customRadius: ThemeTokens.dp(8)
+    readonly property int effectiveAlignOffset: ThemeTokens.dp(alignOffset)
+    property int popoverWidth: 0
+    property int popoverHeight: 0
+    readonly property int effectivePopoverWidth: root.popoverWidth > 0 ? ThemeTokens.dp(root.popoverWidth) : (popoverContent.implicitWidth > 0 ? popoverContent.implicitWidth : ThemeTokens.dp(200))
+    readonly property int effectivePopoverHeight: root.popoverHeight > 0 ? ThemeTokens.dp(root.popoverHeight) : (popoverContent.implicitHeight > 0 ? popoverContent.implicitHeight : ThemeTokens.dp(120))
+    property int customRadius: 8
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
 
     // —— Styling ——
     property color panelColor: (typeof ThemeTokens !== "undefined" && ThemeTokens.panelRaised)
@@ -208,29 +213,29 @@ Item {
     readonly property real calculatedX: {
         var bx = 0
         if (root.side === "left") {
-            bx = targetX - root.popoverWidth - root.sideOffset
+            bx = targetX - root.effectivePopoverWidth - root.effectiveSideOffset
         } else if (root.side === "right") {
-            bx = targetX + targetW + root.sideOffset
+            bx = targetX + targetW + root.effectiveSideOffset
         } else {
             if (root.align === "start") bx = targetX
-            else if (root.align === "end") bx = targetX + targetW - root.popoverWidth
-            else bx = targetX + (targetW - root.popoverWidth) / 2
+            else if (root.align === "end") bx = targetX + targetW - root.effectivePopoverWidth
+            else bx = targetX + (targetW - root.effectivePopoverWidth) / 2
         }
-        return bx + root.alignOffset
+        return bx + root.effectiveAlignOffset
     }
 
     readonly property real calculatedY: {
         var by = 0
         if (root.side === "top") {
-            by = targetY - root.popoverHeight - root.sideOffset
+            by = targetY - root.effectivePopoverHeight - root.effectiveSideOffset
         } else if (root.side === "bottom") {
-            by = targetY + targetH + root.sideOffset
+            by = targetY + targetH + root.effectiveSideOffset
         } else {
             if (root.align === "start") by = targetY
-            else if (root.align === "end") by = targetY + targetH - root.popoverHeight
-            else by = targetY + (targetH - root.popoverHeight) / 2
+            else if (root.align === "end") by = targetY + targetH - root.effectivePopoverHeight
+            else by = targetY + (targetH - root.effectivePopoverHeight) / 2
         }
-        return by + root.alignOffset
+        return by + root.effectiveAlignOffset
     }
 
     // Clamped coordinates to stay inside parent/window boundary
@@ -250,7 +255,7 @@ Item {
         var margin = ThemeTokens.dp(4)
         try {
             var minX = root.mapFromItem(bItem, 0, 0).x + margin
-            var maxX = root.mapFromItem(bItem, bItem.width, 0).x - root.popoverWidth - margin
+            var maxX = root.mapFromItem(bItem, bItem.width, 0).x - root.effectivePopoverWidth - margin
             if (minX <= maxX) {
                 if (base < minX) base = minX
                 else if (base > maxX) base = maxX
@@ -266,7 +271,7 @@ Item {
         var margin = ThemeTokens.dp(4)
         try {
             var minY = root.mapFromItem(bItem, 0, 0).y + margin
-            var maxY = root.mapFromItem(bItem, 0, bItem.height).y - root.popoverHeight - margin
+            var maxY = root.mapFromItem(bItem, 0, bItem.height).y - root.effectivePopoverHeight - margin
             if (minY <= maxY) {
                 if (base < minY) base = minY
                 else if (base > maxY) base = maxY
@@ -361,8 +366,8 @@ Item {
         z: 100
         x: Math.round(root.clampedX)
         y: Math.round(root.clampedY)
-        width: root.popoverWidth
-        height: root.popoverHeight
+        width: root.effectivePopoverWidth
+        height: root.effectivePopoverHeight
         visible: root.open || opacity > 0.001
         opacity: root.open ? 1.0 : 0.0
 
@@ -400,7 +405,7 @@ Item {
         // Panel Background
         ChaSetSquircle {
             anchors.fill: parent
-            radius: root.customRadius
+            radius: root.effectiveRadius
             color: root.panelColor
             border.color: root.borderColor
             border.width: 1

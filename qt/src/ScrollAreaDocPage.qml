@@ -419,8 +419,7 @@ export const CrossStackSpecification = {
 
         ChaSetCard {
             width: parent.width
-            customRadius: ThemeTokens.dp(8)
-
+            customRadius: 8
             Column {
                 width: parent.width
                 topPadding: ThemeTokens.dp(14)
@@ -473,8 +472,7 @@ export const CrossStackSpecification = {
 
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(14)) / 2
-                customRadius: ThemeTokens.dp(8)
-
+                customRadius: 8
                 Column {
                     width: parent.width
                     topPadding: ThemeTokens.dp(14)
@@ -491,8 +489,7 @@ export const CrossStackSpecification = {
 
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(14)) / 2
-                customRadius: ThemeTokens.dp(8)
-
+                customRadius: 8
                 Column {
                     width: parent.width
                     topPadding: ThemeTokens.dp(14)

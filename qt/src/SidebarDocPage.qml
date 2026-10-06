@@ -89,7 +89,7 @@ DocLayout {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
-                    sidebarWidth: ThemeTokens.dp(220)
+                    sidebarWidth: 220
                     collapsed: root.demoCollapsed
                     variant: root.demoVariant
                     collapsible: root.demoCollapsible

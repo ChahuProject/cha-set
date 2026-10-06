@@ -8,7 +8,8 @@ Item {
     property string keybinding: "Ctrl+K"
     property string value: keybinding
     property bool recording: false
-    property int customRadius: ThemeTokens.dp(6)
+    property int customRadius: 6
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property bool clearable: true
     property string size: "default" // "default" | "sm"
     property bool disabled: false
@@ -46,7 +47,7 @@ Item {
         color: root.recording ? ThemeTokens.hover : ThemeTokens.panel
         border.color: root.recording ? ThemeTokens.accent : ThemeTokens.border
         border.width: root.recording ? 2 : 1
-        radius: root.customRadius
+        radius: root.effectiveRadius
         focus: root.recording
 
         Behavior on color {

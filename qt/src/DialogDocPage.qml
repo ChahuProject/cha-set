@@ -79,8 +79,7 @@ DocLayout {
 
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
-                customRadius: ThemeTokens.dp(8)
-
+                customRadius: 8
                 Column {
                     width: parent.width
                     topPadding: ThemeTokens.dp(16)
@@ -115,8 +114,7 @@ DocLayout {
 
             ChaSetCard {
                 width: (parent.width - ThemeTokens.dp(16)) / 2
-                customRadius: ThemeTokens.dp(8)
-
+                customRadius: 8
                 Column {
                     width: parent.width
                     topPadding: ThemeTokens.dp(16)

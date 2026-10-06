@@ -198,11 +198,11 @@ ChaSetSegmentedControl {
             bottomPadding: 16
             horizontalPadding: 16
             Column {
-                spacing: 16
+                spacing: ThemeTokens.dp(16)
                 width: parent.width
 
                 Column {
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "Auto-fit width (hugs content)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         options: [
@@ -217,10 +217,10 @@ ChaSetSegmentedControl {
                 ChaSetSeparator { width: parent.width }
 
                 Column {
-                    spacing: 6
+                    spacing: ThemeTokens.dp(6)
                     DocText { text: "Fixed width with truncation (itemWidth: 120)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
-                        itemWidth: ThemeTokens.dp(120)
+                        itemWidth: 120
                         options: [
                             { label: "Compact", value: "compact" },
                             { label: "Very Long Option Text That Truncates", value: "long" },

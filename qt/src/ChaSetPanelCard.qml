@@ -10,14 +10,15 @@ Rectangle {
     property string badgeText: ""
     property bool collapsible: false
     property bool collapsed: false
-    property int customRadius: ThemeTokens.dp(8)
+    property int customRadius: 8
+    readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
 
     default property alias contentData: bodyContent.data
 
     color: ThemeTokens.panel
     border.color: ThemeTokens.border
     border.width: 1
-    radius: root.customRadius
+    radius: root.effectiveRadius
     implicitWidth: ThemeTokens.dp(360)
     implicitHeight: headerRow.height + (root.collapsed ? 0 : bodyContent.implicitHeight + ThemeTokens.dp(20))
     clip: true
