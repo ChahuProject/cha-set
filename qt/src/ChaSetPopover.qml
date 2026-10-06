@@ -17,6 +17,8 @@ Item {
     property bool movable: false
     property string moveLabel: "Drag to move"
     property bool arrow: false
+    /// Set false to keep this overlay out of Escape dismissal (custom Escape semantics).
+    property bool closeOnEscape: true
 
     property real dragOffsetX: 0
     property real dragOffsetY: 0
@@ -33,13 +35,39 @@ Item {
         }
     }
 
+    // Registry / Escape contract — see ChaSetOverlayHub. Escape dismisses only the topmost
+    // layer and must never leak through to host key bindings.
+    //
+    // Escape is served by two complementary layers (see docs, "overlay Escape"):
+    //  - this window-level Shortcut reaches overlays that never hold focus, and is gated on
+    //    Hub.isTop() so exactly one layer responds at a time;
+    //  - the popup below declares focus: true, so its own
+    //    `closePolicy: Popup.CloseOnEscape` already covers the focused case. No extra Keys
+    //    branch is needed here because the popover has no key semantics of its own.
+    function close(reason) {
+        if (!root.open) return;
+        root.open = false;
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        autoRepeat: false
+        enabled: root.open && root.closeOnEscape && ChaSetOverlayHub.isTop(root)
+        onActivated: root.close("escape")
+    }
+
     Popup {
         id: popup
         visible: root.open
         onVisibleChanged: {
             if (root.open !== visible) root.open = visible
-            if (visible) root.opened()
-            else root.closed()
+            if (visible) {
+                ChaSetOverlayHub.register(root)
+                root.opened()
+            } else {
+                ChaSetOverlayHub.unregister(root)
+                root.closed()
+            }
         }
         x: {
             var baseX = 0
