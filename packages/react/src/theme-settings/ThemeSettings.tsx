@@ -554,7 +554,6 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
           description={t('theme.settings.style.desc', 'Simple flat presentation or expressive rich layered styling')}
         >
           <SegmentedControl
-            size="sm"
             value={config.decoration.styleId}
             onChange={handleStyleChange}
             disabled={disabled}

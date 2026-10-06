@@ -532,7 +532,6 @@ Item {
 
                 ChaSetSegmentedControl {
                     id: uiStyleSegment
-                    size: "sm"
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     // 宽度自适应：不钉死固定宽度，由两个选项的实际文本自然撑开；

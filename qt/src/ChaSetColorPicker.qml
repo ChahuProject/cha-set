@@ -28,11 +28,18 @@ Item {
     // Registry / Escape contract — see ChaSetOverlayHub.
     property bool closeOnEscape: true
 
+    function close(reason) {
+        if (root.mode === "popover" && colorPopup.visible) {
+            colorPopup.close();
+            root.popoverOpen = false;
+        }
+    }
+
     Shortcut {
         sequence: "Escape"
         autoRepeat: false
-        enabled: colorPopup.opened && root.closeOnEscape && ChaSetOverlayHub.isTop(colorPopup)
-        onActivated: colorPopup.close()
+        enabled: (colorPopup.visible || colorPopup.opened) && root.closeOnEscape && (ChaSetOverlayHub.top === colorPopup || ChaSetOverlayHub.top === root || ChaSetOverlayHub.isTop(colorPopup) || ChaSetOverlayHub.isTop(root))
+        onActivated: root.close("escape")
     }
 
     // Movable drag offsets
@@ -483,6 +490,11 @@ Item {
                         row.userChanged(Math.min(row.toVal, Math.max(row.fromVal, parsed)));
                     }
                 }
+
+                Keys.onEscapePressed: function(event) {
+                    event.accepted = true;
+                    root.close("escape");
+                }
             }
         }
     }
@@ -493,6 +505,11 @@ Item {
 
         Rectangle {
             id: cardRect
+            focus: true
+            Keys.onEscapePressed: function(event) {
+                event.accepted = true;
+                root.close("escape");
+            }
             width: root.cardWidth
             implicitHeight: cardColumn.implicitHeight + ThemeTokens.dp(24)
             height: implicitHeight
@@ -1128,6 +1145,10 @@ Item {
                             onAccepted: {
                                 root.setFromHex(hexInput.text);
                             }
+                            Keys.onEscapePressed: function(event) {
+                                event.accepted = true;
+                                root.close("escape");
+                            }
                         }
 
                         // Copy button
@@ -1478,6 +1499,7 @@ Item {
         id: colorPopup
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         padding: 0
+        focus: true
         background: Item {}
         property real calculatedX: 0
         property real calculatedY: popoverTrigger.height + ThemeTokens.dp(4)
@@ -1534,6 +1556,8 @@ Item {
         }
 
         onClosed: {
+            ChaSetOverlayHub.unregister(colorPopup);
+            root.popoverOpen = false;
             root._lastClosedTimestamp = Date.now();
         }
 
@@ -1560,5 +1584,9 @@ Item {
         active: root.mode === "inline"
         visible: root.mode === "inline"
         sourceComponent: pickerCardComponent
+    }
+
+    Component.onDestruction: {
+        ChaSetOverlayHub.unregister(colorPopup);
     }
 }
