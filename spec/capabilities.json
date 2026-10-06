@@ -419,6 +419,13 @@
       "compactSymbols": { "requirement": "must", "description": "supports converting verbose modifiers to compact symbols" },
       "styling": { "requirement": "must", "description": "token-aligned keycap rendering with mono typography" },
       "responsive": { "requirement": "should", "description": "handles narrow layouts and container clipping gracefully" }
+    },
+    "squircle": {
+      "continuousCurvature": { "requirement": "must", "description": "iOS continuous corner curvature (G2 continuity) via cubic Bezier superellipse" },
+      "cornerSmoothing": { "requirement": "must", "description": "customizable corner smoothing parameter from 0.0 to 1.0" },
+      "independentRadii": { "requirement": "must", "description": "supports distinct corner radii for topLeft, topRight, bottomLeft, bottomRight" },
+      "border": { "requirement": "should", "description": "inner border stroke conforming to box-sizing border-box" },
+      "cornerToggle": { "requirement": "should", "description": "selective per-corner or per-side rounding toggle" }
     }
   }
 }

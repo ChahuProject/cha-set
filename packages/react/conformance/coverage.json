@@ -390,5 +390,12 @@
     "compactSymbols": true,
     "styling": true,
     "responsive": true
+  },
+  "squircle": {
+    "continuousCurvature": true,
+    "cornerSmoothing": true,
+    "independentRadii": true,
+    "border": true,
+    "cornerToggle": true
   }
 }
