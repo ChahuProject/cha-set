@@ -33,8 +33,32 @@ Item {
     readonly property int effectiveAlignOffset: ThemeTokens.dp(alignOffset)
     property int popoverWidth: 0
     property int popoverHeight: 0
-    readonly property int effectivePopoverWidth: root.popoverWidth > 0 ? ThemeTokens.dp(root.popoverWidth) : (popoverContent.implicitWidth > 0 ? popoverContent.implicitWidth : ThemeTokens.dp(200))
-    readonly property int effectivePopoverHeight: root.popoverHeight > 0 ? ThemeTokens.dp(root.popoverHeight) : (popoverContent.implicitHeight > 0 ? popoverContent.implicitHeight : ThemeTokens.dp(120))
+
+    readonly property Item contentItem: {
+        var list = popoverContent.children
+        for (var i = 0; i < list.length; ++i) {
+            var ch = list[i]
+            if (ch && ch.visible !== false) return ch
+        }
+        return list.length > 0 ? list[0] : null
+    }
+
+    readonly property real _inferredWidth: {
+        if (contentItem && contentItem.implicitWidth > 0) return contentItem.implicitWidth
+        if (popoverContent.implicitWidth > 0) return popoverContent.implicitWidth
+        if (popoverContent.childrenRect.width > 0) return popoverContent.childrenRect.width
+        return ThemeTokens.dp(200)
+    }
+
+    readonly property real _inferredHeight: {
+        if (contentItem && contentItem.implicitHeight > 0) return contentItem.implicitHeight
+        if (popoverContent.implicitHeight > 0) return popoverContent.implicitHeight
+        if (popoverContent.childrenRect.height > 0) return popoverContent.childrenRect.height
+        return ThemeTokens.dp(120)
+    }
+
+    readonly property int effectivePopoverWidth: root.popoverWidth > 0 ? ThemeTokens.dp(root.popoverWidth) : Math.round(_inferredWidth)
+    readonly property int effectivePopoverHeight: root.popoverHeight > 0 ? ThemeTokens.dp(root.popoverHeight) : Math.round(_inferredHeight)
     property int customRadius: 8
     readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
 
