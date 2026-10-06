@@ -809,6 +809,46 @@ ApplicationWindow {
             }
             scaleOsd.hide();
 
+            // 5. Test Component Scale Linearity & Double-Scaling Prevention
+            var testSegmented = Qt.createQmlObject(
+                'import QtQuick 6.10; import ChaSet; ChaSetSegmentedControl { itemWidth: 100; options: ["Tab 1", "Tab 2"] }',
+                win.contentItem,
+                "scaleTestSegmented"
+            );
+            var testCard = Qt.createQmlObject(
+                'import QtQuick 6.10; import ChaSet; ChaSetCard { customRadius: 16 }',
+                win.contentItem,
+                "scaleTestCard"
+            );
+
+            if (testSegmented && testCard) {
+                ThemeTokens.uiScale = 1.0;
+                var segWidth1 = testSegmented.effectiveItemWidth;
+                var cardRadius1 = testCard.effectiveRadius;
+
+                ThemeTokens.uiScale = 2.0;
+                var segWidth2 = testSegmented.effectiveItemWidth;
+                var cardRadius2 = testCard.effectiveRadius;
+
+                ThemeTokens.uiScale = 1.0; // restore
+
+                if (Math.abs(segWidth1 - 100) > 1 || Math.abs(segWidth2 - 200) > 2) {
+                    console.log("[qt-scenario] FAIL: SegmentedControl itemWidth scale linearity failed: w1=" + segWidth1 + " (expected 100), w2=" + segWidth2 + " (expected 200, ratio=" + (segWidth2 / segWidth1) + ")");
+                    themeFailures++;
+                } else if (cardRadius1 !== 16 || cardRadius2 !== 32) {
+                    console.log("[qt-scenario] FAIL: Card customRadius scale linearity failed: r1=" + cardRadius1 + " (expected 16), r2=" + cardRadius2 + " (expected 32)");
+                    themeFailures++;
+                } else {
+                    console.log("[qt-scenario] PASS: Component scale linearity verified (SegmentedControl 100 -> 200, Card radius 16 -> 32, zero double-scaling)");
+                }
+
+                testSegmented.destroy();
+                testCard.destroy();
+            } else {
+                console.log("[qt-scenario] FAIL: Could not create dynamic test components for scale linearity verification");
+                themeFailures++;
+            }
+
             if (themeFailures === 0) {
                 console.log("[qt-scenario] PASS: Global Theme Control & Authentic UI Scale verified (mode, palette, decoration, uiScale, reset, scaleOsd)");
             } else {
