@@ -48,8 +48,8 @@ export function PopoverDocPage() {
         align: "${align}"
         arrow: ${arrow}
         movable: ${movable}
-        popoverWidth: 260
-        popoverHeight: 160
+        popoverWidth: 320
+        popoverHeight: 180
 
         Column {
             anchors.fill: parent

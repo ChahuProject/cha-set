@@ -8,6 +8,7 @@ import {
 } from '../dropdown-menu';
 import { Maximize2Icon } from '../lib/icons';
 import { Kbd } from '../kbd';
+import { ScrollArea } from '../scroll-area';
 import { cn } from '../lib/utils';
 
 export interface DraggableModalSizeOption {
@@ -236,13 +237,11 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     if (!shouldAutoFit || !content || !rnd || hasManuallyAdjustedRef.current) return;
     if (typeof window === 'undefined') return;
 
-    // Temporarily release flex-1 / overflow to measure natural scrollHeight
-    content.style.flex = 'none';
-    content.style.overflow = 'visible';
     const footerH = footerRef.current?.offsetHeight ?? 0;
-    const neededH = content.scrollHeight + footerH;
-    content.style.flex = '';
-    content.style.overflow = '';
+    const contentH = content.scrollHeight || content.offsetHeight;
+    const paddingH = 3 * rem; // 1.5rem top + 1.5rem bottom = 3rem (p-6)
+    const borderExtra = 4; // border & subpixel headroom to prevent false overflow
+    const neededH = contentH + paddingH + footerH + borderExtra;
 
     const topOffset = isTopMode ? topMarginPx : 16;
     const bottomMargin = (isTopMode ? 2 : 1) * rem;
@@ -396,13 +395,19 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
       )}
       {...(restProps as any)}
     >
-      <div
-        ref={contentRef}
-        data-slot="draggable-modal-content"
-        className={cn('flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-6', finalContentClassName)}
+      <ScrollArea
+        className="flex min-h-0 flex-1 flex-col"
+        contentClassName={cn('flex flex-col gap-4 p-6', finalContentClassName)}
+        showHorizontalScrollBar={false}
       >
-        {children}
-      </div>
+        <div
+          ref={contentRef}
+          data-slot="draggable-modal-content"
+          className="flex flex-col gap-4"
+        >
+          {children}
+        </div>
+      </ScrollArea>
 
       {finalFixedFooter && (
         <div ref={footerRef} className="shrink-0 border-t border-border/50">

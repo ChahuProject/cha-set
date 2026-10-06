@@ -6,6 +6,7 @@ import ChaSet
 
 Rectangle {
     id: root
+    parent: (typeof Overlay !== "undefined" && Overlay.overlay) ? Overlay.overlay : ((Window.window && Window.window.contentItem) ? Window.window.contentItem : undefined)
     anchors.fill: parent
     z: 200
     color: Qt.rgba(0, 0, 0, 0.6)
@@ -21,7 +22,7 @@ Rectangle {
         case "default": return ThemeTokens.dp(500)
         case "lg": return ThemeTokens.dp(680)
         case "xl": return ThemeTokens.dp(840)
-        case "full": return Math.min(parent.width - ThemeTokens.dp(40), ThemeTokens.dp(1100))
+        case "full": return Math.min(parent ? (parent.width - ThemeTokens.dp(40)) : ThemeTokens.dp(1100), ThemeTokens.dp(1100))
         default: return ThemeTokens.dp(500)
         }
     }
@@ -57,6 +58,7 @@ Rectangle {
 
     onOpenChanged: {
         if (root.open) {
+            resetCardPosition()
             ChaSetOverlayHub.register(root)
             root.forceActiveFocus()
             root.opened()
@@ -64,6 +66,12 @@ Rectangle {
             ChaSetOverlayHub.unregister(root)
             root.closed()
         }
+    }
+
+    function resetCardPosition() {
+        if (!root.parent) return;
+        card.x = Math.max(ThemeTokens.dp(20), Math.round((root.width - card.width) / 2));
+        card.y = Math.max(ThemeTokens.dp(20), Math.round((root.height - card.height) / 2));
     }
 
     Shortcut {
@@ -98,10 +106,11 @@ Rectangle {
     // Modal Card Container
     ChaSetSquircle {
         id: card
-        width: Math.min(parent.width - ThemeTokens.dp(40), root.dialogWidth)
+        width: Math.min((parent ? parent.width : ThemeTokens.dp(1000)) - ThemeTokens.dp(40), root.dialogWidth)
         implicitHeight: cardLayout.implicitHeight + ThemeTokens.dp(40)
-        height: Math.min(parent.height - ThemeTokens.dp(40), implicitHeight)
-        anchors.centerIn: parent
+        height: Math.min((parent ? parent.height : ThemeTokens.dp(800)) - ThemeTokens.dp(40), implicitHeight)
+        x: Math.max(ThemeTokens.dp(20), Math.round((parent ? (parent.width - width) / 2 : 0)))
+        y: Math.max(ThemeTokens.dp(20), Math.round((parent ? (parent.height - height) / 2 : 0)))
         color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1

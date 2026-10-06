@@ -1,6 +1,7 @@
 // ChaSetPopover.qml — Cross-Stack Popover Component
 import QtQuick 6.10
 import QtQuick.Controls 6.10
+import QtQuick.Shapes 6.10
 import ChaSet
 
 Item {
@@ -102,7 +103,10 @@ Item {
         width: root.effectivePopoverWidth
         height: root.effectivePopoverHeight
         padding: ThemeTokens.dp(12)
-        topPadding: root.movable ? ThemeTokens.dp(22) : ThemeTokens.dp(12)
+        topPadding: root.movable ? ThemeTokens.dp(28) : ThemeTokens.dp(12)
+        bottomPadding: ThemeTokens.dp(12)
+        leftPadding: ThemeTokens.dp(12)
+        rightPadding: ThemeTokens.dp(12)
         modal: root.modal
         dim: root.modal
         focus: true
@@ -125,48 +129,133 @@ Item {
                 NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
             }
 
-            Rectangle {
+            // Seamless triangle pointer arrow indicator
+            Shape {
                 id: arrowIndicator
                 visible: root.arrow
-                width: ThemeTokens.dp(10)
-                height: ThemeTokens.dp(10)
-                rotation: 45
-                color: ThemeTokens.panel
-                border.color: ThemeTokens.border
-                border.width: 1
-                z: -1
+                z: 1
+                readonly property int arrowW: ThemeTokens.dp(12)
+                readonly property int arrowH: ThemeTokens.dp(6)
+                width: (root.side === "left" || root.side === "right") ? (arrowH + 1) : arrowW
+                height: (root.side === "left" || root.side === "right") ? arrowW : (arrowH + 1)
                 x: {
                     switch (root.side) {
-                    case "left": return parent.width - ThemeTokens.dp(5)
-                    case "right": return -ThemeTokens.dp(5)
+                    case "left": return parent.width - 1
+                    case "right": return -arrowH
                     default:
                         if (root.align === "start") return ThemeTokens.dp(16)
-                        if (root.align === "end") return parent.width - ThemeTokens.dp(26)
+                        if (root.align === "end") return parent.width - ThemeTokens.dp(16) - width
                         return (parent.width - width) / 2
                     }
                 }
                 y: {
                     switch (root.side) {
-                    case "top": return parent.height - ThemeTokens.dp(5)
-                    case "bottom": return -ThemeTokens.dp(5)
+                    case "top": return parent.height - 1
+                    case "bottom": return -arrowH
                     default:
                         if (root.align === "start") return ThemeTokens.dp(16)
-                        if (root.align === "end") return parent.height - ThemeTokens.dp(26)
+                        if (root.align === "end") return parent.height - ThemeTokens.dp(16) - height
                         return (parent.height - height) / 2
+                    }
+                }
+
+                // Fill triangle covering container border line
+                ShapePath {
+                    strokeWidth: 0
+                    strokeColor: "transparent"
+                    fillColor: ThemeTokens.panel
+                    startX: {
+                        if (root.side === "bottom" || root.side === "top" || root.side === "left") return 0
+                        return arrowIndicator.arrowH + 1 // right
+                    }
+                    startY: {
+                        if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                        return 0
+                    }
+                    PathLine {
+                        x: {
+                            if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW / 2
+                            if (root.side === "right") return 0
+                            return arrowIndicator.arrowH + 1 // left
+                        }
+                        y: {
+                            if (root.side === "bottom") return 0
+                            if (root.side === "top") return arrowIndicator.arrowH + 1
+                            return arrowIndicator.arrowW / 2
+                        }
+                    }
+                    PathLine {
+                        x: {
+                            if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW
+                            if (root.side === "right") return arrowIndicator.arrowH + 1
+                            return 0 // left
+                        }
+                        y: {
+                            if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                            if (root.side === "top") return 0
+                            return arrowIndicator.arrowW
+                        }
+                    }
+                    PathLine {
+                        x: {
+                            if (root.side === "bottom" || root.side === "top" || root.side === "left") return 0
+                            return arrowIndicator.arrowH + 1 // right
+                        }
+                        y: {
+                            if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                            return 0
+                        }
+                    }
+                }
+
+                // Angled border strokes with open base
+                ShapePath {
+                    strokeWidth: 1
+                    strokeColor: ThemeTokens.border
+                    fillColor: "transparent"
+                    startX: {
+                        if (root.side === "bottom" || root.side === "top" || root.side === "left") return 0
+                        return arrowIndicator.arrowH + 1 // right
+                    }
+                    startY: {
+                        if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                        return 0
+                    }
+                    PathLine {
+                        x: {
+                            if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW / 2
+                            if (root.side === "right") return 0
+                            return arrowIndicator.arrowH + 1 // left
+                        }
+                        y: {
+                            if (root.side === "bottom") return 0
+                            if (root.side === "top") return arrowIndicator.arrowH + 1
+                            return arrowIndicator.arrowW / 2
+                        }
+                    }
+                    PathLine {
+                        x: {
+                            if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW
+                            if (root.side === "right") return arrowIndicator.arrowH + 1
+                            return 0 // left
+                        }
+                        y: {
+                            if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                            if (root.side === "top") return 0
+                            return arrowIndicator.arrowW
+                        }
                     }
                 }
             }
         }
 
         contentItem: Item {
-            anchors.fill: parent
-
             // Move Handle if movable is enabled
             Rectangle {
                 id: dragHandle
                 visible: root.movable
                 anchors.top: parent.top
-                anchors.topMargin: -ThemeTokens.dp(14)
+                anchors.topMargin: -ThemeTokens.dp(16)
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width
                 height: ThemeTokens.dp(14)
@@ -191,9 +280,6 @@ Item {
                     anchors.fill: parent
                     cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
 
-                    // 场景坐标基准：手柄随 Popup 一起位移，若用自身局部坐标求差，
-                    // 位移量会（负反馈）被吃回一半并抖动 —— 即常见的「浮层跟不上
-                    // 鼠标」。mapToItem(null, …) 取窗口坐标，与自身变换无关。
                     property real startSceneX: 0
                     property real startSceneY: 0
                     property real startOffsetX: 0

@@ -46,23 +46,18 @@ Column {
             width: parent.width
             spacing: 0
 
-            // Header strip. Qt's Rectangle clip is square, so every full-bleed
-            // child that touches a card corner must re-apply the card radius and
-            // square off the interior side with a same-colored patch.
-            Rectangle {
+            // Header strip. Uses ChaSetSquircle with roundTop: true and roundBottom: false
+            // so top corners follow card radius and bottom corners remain strictly square,
+            // avoiding alpha blending overlap artifacts.
+            ChaSetSquircle {
                 id: header
                 width: parent.width
                 height: ThemeTokens.dp(44)
                 radius: card.radius
+                roundTop: true
+                roundBottom: false
+                border.width: 0
                 color: card.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.4) : Qt.rgba(241/255, 245/255, 249/255, 0.4)
-
-                // Squares the bottom corners; the card owns the top rounding.
-                Rectangle {
-                    anchors.bottom: parent.bottom
-                    width: parent.width
-                    height: parent.radius
-                    color: parent.color
-                }
 
                 Rectangle {
                     anchors.bottom: parent.bottom
@@ -87,9 +82,7 @@ Column {
                 }
             }
 
-            // QML Code Block — rounded on the bottom corner (flush with the card),
-            // squared on the top interior edge by a same-colored patch inset by the
-            // card hairline so the card's side border stays unbroken.
+            // QML Code Block — square at top interior edge, rounded at bottom corners to match card.
             ChaSetCodeBlock {
                 id: qtBlock
                 visible: root.activeTab === "qt"
@@ -97,20 +90,12 @@ Column {
                 code: root.qtCode.trim()
                 language: "qml"
                 radius: card.radius
-
-                Rectangle {
-                    z: -1
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.leftMargin: 1
-                    anchors.rightMargin: 1
-                    height: card.radius
-                    color: parent.color
-                }
+                roundTop: false
+                roundBottom: true
+                border.width: 0
             }
 
-            // React Code Block
+            // React Code Block — square at top interior edge, rounded at bottom corners to match card.
             ChaSetCodeBlock {
                 id: reactBlock
                 visible: root.activeTab === "react" && root.reactCode !== ""
@@ -118,17 +103,9 @@ Column {
                 code: root.reactCode.trim()
                 language: "tsx"
                 radius: card.radius
-
-                Rectangle {
-                    z: -1
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.leftMargin: 1
-                    anchors.rightMargin: 1
-                    height: card.radius
-                    color: parent.color
-                }
+                roundTop: false
+                roundBottom: true
+                border.width: 0
             }
         }
     }

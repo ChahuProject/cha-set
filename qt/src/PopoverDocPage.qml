@@ -41,8 +41,8 @@ DocLayout {
         align: "${root.demoAlign}"
         arrow: ${root.demoArrow}
         movable: ${root.demoMovable}
-        popoverWidth: 260
-        popoverHeight: 160
+        popoverWidth: 320
+        popoverHeight: 180
         // ...popover content...
     }
 }`
@@ -121,26 +121,31 @@ DocLayout {
                         align: root.demoAlign
                         arrow: root.demoArrow
                         movable: root.demoMovable
-                        popoverWidth: 260
-                        popoverHeight: 160
+                        popoverWidth: 320
+                        popoverHeight: 180
 
                         Column {
                             anchors.fill: parent
-                            spacing: 12
+                            spacing: ThemeTokens.dp(12)
 
-                            DocText {
-                                text: "Dimensions Settings"
-                                color: ThemeTokens.text
-                                font.pixelSize: Typography.sizeBody
-                                font.weight: Typography.weightSemibold
-                            }
-
-                            DocText {
-                                text: "Set the width and height layers for the active canvas."
-                                color: ThemeTokens.subduedText
-                                font.pixelSize: Typography.sizeCaption
-                                wrapMode: TextEdit.WordWrap
+                            Column {
                                 width: parent.width
+                                spacing: ThemeTokens.dp(3)
+
+                                DocText {
+                                    text: "Dimensions"
+                                    color: ThemeTokens.text
+                                    font.pixelSize: Typography.sizeSmall
+                                    font.weight: Typography.weightSemibold
+                                }
+
+                                DocText {
+                                    text: "Set the dimensions for the layer."
+                                    color: ThemeTokens.subduedText
+                                    font.pixelSize: Typography.sizeCaption
+                                    wrapMode: TextEdit.WordWrap
+                                    width: parent.width
+                                }
                             }
 
                             Row {
@@ -148,15 +153,15 @@ DocLayout {
                                 width: parent.width
 
                                 DocText {
-                                    text: "Width:"
-                                    color: ThemeTokens.text
+                                    text: "Width"
+                                    color: ThemeTokens.subduedText
                                     font.pixelSize: Typography.sizeSmall
                                     anchors.verticalCenter: parent.verticalCenter
-                                    width: ThemeTokens.dp(50)
+                                    width: ThemeTokens.dp(60)
                                 }
 
                                 ChaSetInput {
-                                    width: ThemeTokens.dp(160)
+                                    width: parent.width - ThemeTokens.dp(68)
                                     height: ThemeTokens.dp(28)
                                     text: "" + root.layerWidth
                                     onTextEdited: root.layerWidth = parseInt(text) || 0
@@ -168,15 +173,15 @@ DocLayout {
                                 width: parent.width
 
                                 DocText {
-                                    text: "Height:"
-                                    color: ThemeTokens.text
+                                    text: "Height"
+                                    color: ThemeTokens.subduedText
                                     font.pixelSize: Typography.sizeSmall
                                     anchors.verticalCenter: parent.verticalCenter
-                                    width: ThemeTokens.dp(50)
+                                    width: ThemeTokens.dp(60)
                                 }
 
                                 ChaSetInput {
-                                    width: ThemeTokens.dp(160)
+                                    width: parent.width - ThemeTokens.dp(68)
                                     height: ThemeTokens.dp(28)
                                     text: "" + root.layerHeight
                                     onTextEdited: root.layerHeight = parseInt(text) || 0

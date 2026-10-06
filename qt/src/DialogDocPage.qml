@@ -20,6 +20,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
+        stageHeight: 200
         title: "Dialog Sandbox"
         reactCode: `<Dialog open={open} onOpenChange={setOpen}>\n  <DialogTrigger asChild>\n    <Button variant="outline">Open Profile Dialog</Button>\n  </DialogTrigger>\n  <DialogContent>\n    <DialogHeader>\n      <DialogTitle>Edit profile</DialogTitle>\n      <DialogDescription>\n        Make changes to your profile here. Click save when you're done.\n      </DialogDescription>\n    </DialogHeader>\n    <div className="grid gap-4 py-4">\n      <div className="grid grid-cols-4 items-center gap-4">\n        <label className="text-right text-sm">Name</label>\n        <Input className="col-span-3" defaultValue="Alex Rivera" />\n      </div>\n      <div className="grid grid-cols-4 items-center gap-4">\n        <label className="text-right text-sm">Username</label>\n        <Input className="col-span-3" defaultValue="@arivera" />\n      </div>\n    </div>\n    <DialogFooter>\n      <DialogClose asChild>\n        <Button variant="outline">Cancel</Button>\n      </DialogClose>\n      <Button>Save changes</Button>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>`
         qtCode: `ChaSetDialog {\n    id: profileDialog\n    title: "Edit profile"\n    description: "Make changes to your profile here. Click save when you're done."\n    dialogWidth: 480\n\n    Column {\n        width: parent.width\n        spacing: 12\n\n        Row {\n            spacing: 10\n            Text { text: "Name:"; width: 70; color: ThemeTokens.text }\n            ChaSetInput { width: 340; text: "Alex Rivera" }\n        }\n        Row {\n            spacing: 10\n            Text { text: "Username:"; width: 70; color: ThemeTokens.text }\n            ChaSetInput { width: 340; text: "@arivera" }\n        }\n    }\n\n    Row {\n        anchors.right: parent.right\n        spacing: 10\n        ChaSetButton {\n            variant: "outline"\n            text: "Cancel"\n            onClicked: profileDialog.reject()\n        }\n        ChaSetButton {\n            text: "Save changes"\n            onClicked: profileDialog.accept()\n        }\n    }\n}`
@@ -67,18 +68,53 @@ DocLayout {
         }
 
         DocText {
-            text: "Common modal dialog patterns: confirmation dialogs, forms, and informational notices."
+            text: "Common modal dialog patterns: desktop draggable windows, confirmation dialogs, and alert notices."
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
 
         Grid {
             width: parent.width
-            columns: 2
+            columns: 3
             spacing: ThemeTokens.dp(16)
 
             ChaSetCard {
-                width: (parent.width - ThemeTokens.dp(16)) / 2
+                width: (parent.width - ThemeTokens.dp(32)) / 3
+                customRadius: 8
+                Column {
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(16)
+                    bottomPadding: ThemeTokens.dp(16)
+                    leftPadding: ThemeTokens.dp(16)
+                    rightPadding: ThemeTokens.dp(16)
+                    spacing: ThemeTokens.dp(8)
+
+                    DocText {
+                        text: "Desktop Draggable Modal"
+                        color: root.cFg
+                        font.pixelSize: Typography.sizeBody
+                        font.weight: Typography.weightSemibold
+                    }
+
+                    DocText {
+                        text: "Draggable modal with size presets, auto-fitting height, ESC badge, and fixed footer."
+                        color: root.cMutedFg
+                        font.pixelSize: Typography.sizeSmall
+                        wrapMode: TextEdit.WordWrap
+                        width: parent.width - ThemeTokens.dp(32)
+                    }
+
+                    ChaSetButton {
+                        size: "sm"
+                        variant: "outline"
+                        text: "Open Draggable Window"
+                        onClicked: desktopDialog.open = true
+                    }
+                }
+            }
+
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: 8
                 Column {
                     width: parent.width
@@ -113,7 +149,7 @@ DocLayout {
             }
 
             ChaSetCard {
-                width: (parent.width - ThemeTokens.dp(16)) / 2
+                width: (parent.width - ThemeTokens.dp(32)) / 3
                 customRadius: 8
                 Column {
                     width: parent.width
@@ -327,6 +363,33 @@ DocLayout {
                 size: "sm"
                 text: "Save changes"
                 onClicked: profileDialog.accept()
+            }
+        }
+    }
+
+    // Desktop Draggable Modal Instance
+    ChaSetDialog {
+        id: desktopDialog
+        title: "Advanced Desktop Tool"
+        description: "Drag the title bar or window body to reposition. Switch size presets from the top-right button."
+        dialogWidth: 520
+        draggable: true
+        showEscBadge: true
+
+        DocText {
+            text: "The bottom actions area is extracted as a fixed footer that stays pinned during vertical scrolling."
+            color: root.cMutedFg
+            font.pixelSize: Typography.sizeSmall
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+
+        Row {
+            anchors.right: parent.right
+            ChaSetButton {
+                size: "sm"
+                text: "Confirm"
+                onClicked: desktopDialog.accept()
             }
         }
     }

@@ -28,20 +28,15 @@ ChaSetCard {
         height: childrenRect.height
 
         // Tab Navigation Header (44px height matching React px-3 py-2 with default size SegmentedControl)
-        Rectangle {
+        ChaSetSquircle {
             id: headerRect
             width: parent.width
             height: ThemeTokens.dp(44)
             color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.4) : Qt.rgba(241/255, 245/255, 249/255, 0.4)
             radius: root.radius
-
-            // Square bottom corners so only top-left and top-right follow the card radius
-            Rectangle {
-                anchors.bottom: parent.bottom
-                width: parent.width
-                height: parent.radius
-                color: parent.color
-            }
+            roundTop: true
+            roundBottom: false
+            border.width: 0
 
             // Bottom border matching React border-b border-border
             Rectangle {
@@ -127,7 +122,7 @@ ChaSetCard {
             }
 
             // Controls Bar (matching React border-t border-border/40 bg-muted/20)
-            Rectangle {
+            ChaSetSquircle {
                 id: controlsBar
                 visible: controlsContainer.children.length > 0
                 width: root.width
@@ -136,14 +131,9 @@ ChaSetCard {
                 clip: true
                 color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.2) : Qt.rgba(241/255, 245/255, 249/255, 0.2)
                 radius: root.radius
-
-                // Square top corners so only bottom-left and bottom-right follow the card radius
-                Rectangle {
-                    anchors.top: parent.top
-                    width: parent.width
-                    height: parent.radius
-                    color: parent.color
-                }
+                roundTop: false
+                roundBottom: true
+                border.width: 0
 
                 // Top border divider matching React border-t
                 Rectangle {
@@ -188,26 +178,16 @@ ChaSetCard {
             }
         }
 
-        // Qt QML Code Tab. Qt's Rectangle clip is square, so the code block
-        // re-applies the card radius for the bottom corners and squares its top
-        // interior edge with a same-colored patch inset by the card hairline.
+        // Qt QML Code Tab
         ChaSetCodeBlock {
             visible: root.activeTab === "qt"
             width: parent.width
             code: root.effectiveQtCode
             language: "qml"
             radius: root.radius
-
-            Rectangle {
-                z: -1
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: 1
-                anchors.rightMargin: 1
-                height: root.radius
-                color: parent.color
-            }
+            roundTop: false
+            roundBottom: true
+            border.width: 0
         }
 
         // React Code Tab
@@ -217,17 +197,9 @@ ChaSetCard {
             code: root.effectiveReactCode
             language: "tsx"
             radius: root.radius
-
-            Rectangle {
-                z: -1
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: 1
-                anchors.rightMargin: 1
-                height: root.radius
-                color: parent.color
-            }
+            roundTop: false
+            roundBottom: true
+            border.width: 0
         }
     }
 }
