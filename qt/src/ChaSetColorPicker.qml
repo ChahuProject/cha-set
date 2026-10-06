@@ -29,6 +29,36 @@ Item {
     property real dragOffsetX: 0
     property real dragOffsetY: 0
 
+    // Drag gesture bookkeeping.
+    // The drag MouseAreas travel WITH the surface they move, so a delta taken
+    // from their own local coordinates feeds the surface's displacement back
+    // into the next measurement (dx = mouseΔ − movedΔ). That converges to half
+    // the real distance and oscillates — visually "the panel does not follow
+    // the cursor". Anchor the gesture to window (scene) coordinates instead:
+    // they are independent of the surface's own transform, so the offset tracks
+    // the cursor 1:1 on both axes.
+    property real _dragSceneX: 0
+    property real _dragSceneY: 0
+    property real _dragStartOffsetX: 0
+    property real _dragStartOffsetY: 0
+
+    function beginDrag(sceneX, sceneY) {
+        _dragSceneX = sceneX;
+        _dragSceneY = sceneY;
+        _dragStartOffsetX = root.dragOffsetX;
+        _dragStartOffsetY = root.dragOffsetY;
+    }
+
+    function updateDrag(sceneX, sceneY) {
+        root.dragOffsetX = _dragStartOffsetX + (sceneX - _dragSceneX);
+        root.dragOffsetY = _dragStartOffsetY + (sceneY - _dragSceneY);
+    }
+
+    function resetDrag() {
+        root.dragOffsetX = 0;
+        root.dragOffsetY = 0;
+    }
+
     // Popover floating dropdown open state (for entrance animation)
     property bool popoverOpen: false
 
@@ -486,28 +516,20 @@ Item {
                 visible: root.movable
                 enabled: root.movable && !root.disabled
                 cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
-                property real startMouseX: 0
-                property real startMouseY: 0
-                property real startOffsetX: 0
-                property real startOffsetY: 0
 
                 onPressed: function(mouse) {
-                    startMouseX = mouse.x;
-                    startMouseY = mouse.y;
-                    startOffsetX = root.dragOffsetX;
-                    startOffsetY = root.dragOffsetY;
+                    var p = mapToItem(null, mouse.x, mouse.y);
+                    root.beginDrag(p.x, p.y);
                 }
 
                 onPositionChanged: function(mouse) {
-                    if (pressed) {
-                        root.dragOffsetX = startOffsetX + (mouse.x - startMouseX);
-                        root.dragOffsetY = startOffsetY + (mouse.y - startMouseY);
-                    }
+                    if (!pressed) return;
+                    var p = mapToItem(null, mouse.x, mouse.y);
+                    root.updateDrag(p.x, p.y);
                 }
 
                 onDoubleClicked: {
-                    root.dragOffsetX = 0;
-                    root.dragOffsetY = 0;
+                    root.resetDrag();
                 }
             }
 
@@ -518,28 +540,20 @@ Item {
                 visible: root.movable
                 enabled: root.movable && !root.disabled
                 cursorShape: root.movable ? (pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor) : undefined
-                property real startMouseX: 0
-                property real startMouseY: 0
-                property real startOffsetX: 0
-                property real startOffsetY: 0
 
                 onPressed: function(mouse) {
-                    startMouseX = mouse.x;
-                    startMouseY = mouse.y;
-                    startOffsetX = root.dragOffsetX;
-                    startOffsetY = root.dragOffsetY;
+                    var p = mapToItem(null, mouse.x, mouse.y);
+                    root.beginDrag(p.x, p.y);
                 }
 
                 onPositionChanged: function(mouse) {
-                    if (pressed) {
-                        root.dragOffsetX = startOffsetX + (mouse.x - startMouseX);
-                        root.dragOffsetY = startOffsetY + (mouse.y - startMouseY);
-                    }
+                    if (!pressed) return;
+                    var p = mapToItem(null, mouse.x, mouse.y);
+                    root.updateDrag(p.x, p.y);
                 }
 
                 onDoubleClicked: {
-                    root.dragOffsetX = 0;
-                    root.dragOffsetY = 0;
+                    root.resetDrag();
                 }
             }
 

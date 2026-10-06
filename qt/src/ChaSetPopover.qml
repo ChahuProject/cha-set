@@ -157,21 +157,29 @@ Item {
 
                 MouseArea {
                     anchors.fill: parent
-                    cursorShape: Qt.OpenHandCursor
-                    property real startMouseX: 0
-                    property real startMouseY: 0
+                    cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
+
+                    // 场景坐标基准：手柄随 Popup 一起位移，若用自身局部坐标求差，
+                    // 位移量会（负反馈）被吃回一半并抖动 —— 即常见的「浮层跟不上
+                    // 鼠标」。mapToItem(null, …) 取窗口坐标，与自身变换无关。
+                    property real startSceneX: 0
+                    property real startSceneY: 0
+                    property real startOffsetX: 0
+                    property real startOffsetY: 0
+
                     onPressed: (mouse) => {
-                        startMouseX = mouse.x
-                        startMouseY = mouse.y
-                        cursorShape = Qt.ClosedHandCursor
+                        var p = mapToItem(null, mouse.x, mouse.y)
+                        startSceneX = p.x
+                        startSceneY = p.y
+                        startOffsetX = root.dragOffsetX
+                        startOffsetY = root.dragOffsetY
                     }
                     onPositionChanged: (mouse) => {
-                        if (pressed) {
-                            root.dragOffsetX += (mouse.x - startMouseX)
-                            root.dragOffsetY += (mouse.y - startMouseY)
-                        }
+                        if (!pressed) return
+                        var p = mapToItem(null, mouse.x, mouse.y)
+                        root.dragOffsetX = startOffsetX + (p.x - startSceneX)
+                        root.dragOffsetY = startOffsetY + (p.y - startSceneY)
                     }
-                    onReleased: cursorShape = Qt.OpenHandCursor
                     onDoubleClicked: {
                         root.dragOffsetX = 0
                         root.dragOffsetY = 0
