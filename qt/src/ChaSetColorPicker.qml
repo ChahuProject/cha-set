@@ -71,6 +71,7 @@ Item {
 
     // Popover floating dropdown open state (for entrance animation)
     property bool popoverOpen: false
+    property double _lastClosedTimestamp: 0
 
     // Internal HSV state (0.0 to 1.0)
     property real currentH: 0.58
@@ -1413,12 +1414,14 @@ Item {
 
         Keys.onReturnPressed: function(event) {
             event.accepted = true
-            colorPopup.open()
+            if (colorPopup.visible) colorPopup.close()
+            else colorPopup.open()
         }
 
         Keys.onSpacePressed: function(event) {
             event.accepted = true
-            colorPopup.open()
+            if (colorPopup.visible) colorPopup.close()
+            else colorPopup.open()
         }
 
         Row {
@@ -1460,7 +1463,12 @@ Item {
             hoverEnabled: !root.disabled
             onClicked: {
                 popoverTrigger.forceActiveFocus()
-                colorPopup.open();
+                var now = Date.now()
+                if (colorPopup.visible || (now - root._lastClosedTimestamp < 350)) {
+                    colorPopup.close();
+                } else {
+                    colorPopup.open();
+                }
             }
         }
     }
@@ -1523,6 +1531,10 @@ Item {
             if (colorPopup.visible) {
                 updatePosition();
             }
+        }
+
+        onClosed: {
+            root._lastClosedTimestamp = Date.now();
         }
 
         x: calculatedX + (root.movable ? root.dragOffsetX : 0)
