@@ -24,6 +24,17 @@ Item {
     property bool showTypography: false
     property string variant: "card" // "card" | "embedded"
 
+    // 受控模式（等价于 React 版 ThemeSettings 的 props + onChange 语义）：
+    // 宿主用 `config` 绑定输入、用 `configModified` 接收输出。开启后本组件
+    // **绝不**自行写回 `config`。
+    //
+    // 为什么必须提供这个开关：非受控时 updateConfig 会把「本地快照」写回
+    // `config`，这一写就永久破坏了宿主的声明式绑定 —— 此后宿主侧的真实状态
+    // （例如 uiScale）再也推送不进来，而组件交互时又会拿这份过期快照整包回灌，
+    // 把用户没碰过的字段（界面缩放）一起写回旧值 —— 表现为「切换界面风格会
+    // 重置界面缩放」。
+    property bool controlled: false
+
     property bool showOverrides: false
 
     signal configModified(var nextConfig)
@@ -104,9 +115,33 @@ Item {
         if (typeof current.uiScale !== "number") current.uiScale = 1.0;
 
         mutator(current);
-        root.config = current;
+        // 受控模式下只上抛，不回写：回写会用本地快照覆盖宿主的绑定（见 controlled 注释）。
+        if (!root.controlled) root.config = current;
         root.configModified(current);
     }
+
+    /// 界面缩放档位下拉的当前值串（宿主 uiScale 与档位表对齐）。
+    function uiScaleOptionValue() {
+        var currentScale = root.config && typeof root.config.uiScale === "number" ? root.config.uiScale : 1.0;
+        for (var i = 0; i < root.uiScaleOptions.length; i++) {
+            if (Math.abs(Number(root.uiScaleOptions[i].value) - currentScale) < 0.001) {
+                return root.uiScaleOptions[i].value;
+            }
+        }
+        return String(currentScale);
+    }
+
+    /// 宿主回灌新配置后，把「会自行写 value」的控件显式重新对齐。
+    /// ChaSetSegmentedControl / ChaSetSelect 在用户操作时会直接给自身 value
+    /// 赋值（切断声明式绑定），故不能只依赖绑定跟随外部配置变化。
+    function syncControlsFromConfig() {
+        if (typeof uiStyleSegment !== "undefined" && uiStyleSegment)
+            uiStyleSegment.syncFromConfig();
+        if (typeof uiScaleSelect !== "undefined" && uiScaleSelect)
+            uiScaleSelect.syncFromConfig();
+    }
+
+    onConfigChanged: syncControlsFromConfig()
 
     function requestReset() {
         if (root.disabled) return;
@@ -118,9 +153,10 @@ Item {
             typography: { familyId: "system", scaleId: "default" },
             uiScale: 1.0
         };
-        root.config = defaultConfig;
+        if (!root.controlled) root.config = defaultConfig;
         root.resetRequested();
         root.configModified(defaultConfig);
+        if (root.controlled) root.syncControlsFromConfig();
     }
 
     function exportConfig() {
@@ -151,8 +187,9 @@ Item {
                 },
                 uiScale: typeof parsed.uiScale === "number" ? Math.max(0.75, Math.min(2.0, parsed.uiScale)) : 1.0
             };
-            root.config = validated;
+            if (!root.controlled) root.config = validated;
             root.configChanged(validated);
+            root.configModified(validated);
             return true;
         } catch (e) {
             return false;
@@ -466,11 +503,14 @@ Item {
                     }
 
                     // Custom Color Popover Trigger
+                    // movable: 调色板浮层可拖动，避免遮挡下方的设置行；拖动位移按
+                    // 窗口坐标计算，面板与鼠标 1:1 跟随（见 ChaSetColorPicker.beginDrag）。
                     ChaSetColorPicker {
                         id: customPicker
                         visible: (root.config?.palette?.id || "neutral") === "custom"
                         size: "sm"
                         mode: "popover"
+                        movable: true
                         value: root.config?.palette?.customHex || "#30a0ff"
                         onColorChanged: function(c) {
                             root.updateConfig(function(cfg) {
@@ -489,18 +529,27 @@ Item {
             ChaSetSettingRow {
                 name: root.trText("theme.settings.style.title", "Interface Style")
                 description: root.trText("theme.settings.style.desc", "Simple flat presentation or expressive rich layered styling")
-                controlWidth: ThemeTokens.dp(220)
 
                 ChaSetSegmentedControl {
+                    id: uiStyleSegment
                     size: "sm"
-                    width: ThemeTokens.dp(200)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    // 宽度自适应：不钉死固定宽度，由两个选项的实际文本自然撑开；
+                    // 配合右锚定与「不声明 controlWidth」，控件右边缘与其它行的
+                    // 下拉框严格对齐，且控制区不再预留多余的空白（宽度随内容自适应）。
                     value: root.config?.decoration?.styleId || "simple"
                     options: [
                         { label: root.trText("theme.style.simple", "Simple"), value: "simple" },
                         { label: root.trText("theme.style.expressive", "Expressive"), value: "expressive" }
                     ]
+                    /// 受控回灌：用户点击后分段控件已自写 value（绑定被切断），
+                    /// 宿主推来新配置时必须显式重新对齐。
+                    function syncFromConfig() {
+                        var next = (root.config && root.config.decoration && root.config.decoration.styleId)
+                                   ? root.config.decoration.styleId : "simple";
+                        if (String(value) !== String(next)) value = next;
+                    }
                     onValueSelected: function(val) {
                         root.updateConfig(function(cfg) {
                             if (!cfg.decoration) cfg.decoration = {};
@@ -662,19 +711,19 @@ Item {
                 controlWidth: ThemeTokens.dp(160)
 
                 ChaSetSelect {
+                    id: uiScaleSelect
                     width: ThemeTokens.dp(140)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    value: {
-                        var currentScale = root.config && typeof root.config.uiScale === "number" ? root.config.uiScale : 1.0;
-                        for (var i = 0; i < root.uiScaleOptions.length; i++) {
-                            if (Math.abs(Number(root.uiScaleOptions[i].value) - currentScale) < 0.001) {
-                                return root.uiScaleOptions[i].value;
-                            }
-                        }
-                        return String(currentScale);
-                    }
+                    value: root.uiScaleOptionValue()
                     options: root.uiScaleOptions
+                    /// 受控回灌：用户选过档位后本控件已自写 value（绑定被切断），
+                    /// 此后外部变更缩放（Ctrl+滚轮 / 重置 / 宿主推入新配置）必须显式
+                    /// 重新对齐，否则下拉框会停留在旧档位。
+                    function syncFromConfig() {
+                        var next = root.uiScaleOptionValue();
+                        if (String(value) !== String(next)) value = next;
+                    }
                     onValueChanged: {
                         var num = Number(value);
                         var cur = root.config && typeof root.config.uiScale === "number" ? root.config.uiScale : 1.0;

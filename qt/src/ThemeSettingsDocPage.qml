@@ -111,6 +111,8 @@ ChaSetThemeSettings {
         componentId: "theme-settings"
         propsModel: [
             { name: "config", type: "var", defaultVal: "{}", description: "Canonical theme configuration object matching ThemeConfig schema." },
+            { name: "controlled", type: "bool", defaultVal: "false", description: "Controlled mode: the component never writes back to `config`; every edit is emitted through configModified only. Enable it when the host drives `config` from its own state (a declarative binding), so a local snapshot can never overwrite host-owned fields such as uiScale." },
+            { name: "variant", type: "string", defaultVal: "\"card\"", description: "Container treatment: \"card\" wraps the rows in a panel, \"embedded\" renders them bare." },
             { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all interactive controls and dims opacity." },
             { name: "showReset", type: "bool", defaultVal: "true", description: "Whether to display the reset button in header." },
             { name: "showExport", type: "bool", defaultVal: "true", description: "Whether to display the export JSON button in header." },
