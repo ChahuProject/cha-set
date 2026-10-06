@@ -3,7 +3,7 @@
 import QtQuick 6.10
 import ChaSet
 
-Rectangle {
+ChaSetSquircle {
     id: root
 
     property string value: ""
@@ -51,7 +51,7 @@ Rectangle {
     implicitHeight: height
     implicitWidth: Math.max(ThemeTokens.dp(isSm ? 28 : 36), contentRow.implicitWidth + ThemeTokens.dp(isLine ? (isSm ? 12 : 16) : (isSm ? 16 : 24)))
     width: implicitWidth
-    radius: isLine ? 0 : ThemeTokens.dp(isSm ? 4 : 6)
+    radius: isLine ? 0 : (parentList ? ThemeTokens.innerRadius(parentList.effectiveRadius, parentList.effectivePadding) : ThemeTokens.dp(4))
     opacity: disabled ? 0.5 : 1.0
 
     color: isLine

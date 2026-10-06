@@ -258,12 +258,12 @@ Item {
 
             Repeater {
                 model: root.options
-                delegate: Rectangle {
+                delegate: ChaSetSquircle {
                     required property var modelData
                     required property int index
                     width: parent ? parent.width : 0
                     height: ThemeTokens.dp(28)
-                    radius: ThemeTokens.dp(4)
+                    radius: ThemeTokens.innerRadius(root.customRadius, selectPopup.padding)
                     readonly property bool isSelected: String(modelData.value) === String(root.value)
                     readonly property bool isHighlighted: index === root.highlightedIndex
                     color: isHighlighted ? ThemeTokens.hover : "transparent"

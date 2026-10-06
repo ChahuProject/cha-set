@@ -141,7 +141,7 @@ Item {
             root.highlightedIndex = -1
         }
 
-        background: Rectangle {
+        background: ChaSetSquircle {
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
@@ -193,12 +193,12 @@ Item {
             }
             Repeater {
                 model: root.items
-                delegate: Rectangle {
+                delegate: ChaSetSquircle {
                     required property var modelData
                     required property int index
                     width: parent ? parent.width : 0
                     height: ThemeTokens.dp(28)
-                    radius: ThemeTokens.dp(4)
+                    radius: ThemeTokens.innerRadius(root.customRadius, contextPopup.padding)
                     readonly property bool isHighlighted: index === root.highlightedIndex
                     color: isHighlighted ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
                     opacity: modelData.disabled ? 0.4 : 1.0

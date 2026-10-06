@@ -94,7 +94,7 @@ export function ContextMenuItem({
       data-variant={variant}
       data-inset={inset}
       className={cn(
-        'relative flex cursor-pointer items-center gap-1.5 rounded-md px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'relative flex cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive',
@@ -170,7 +170,7 @@ export function ContextMenuCheckboxItem({
       data-slot="context-menu-checkbox-item"
       data-inset={inset}
       className={cn(
-        'relative flex cursor-pointer items-center gap-1.5 rounded-md py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'relative flex cursor-pointer items-center gap-1.5 rounded-sm py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-disabled:cursor-not-allowed data-disabled:opacity-50',
@@ -223,7 +223,7 @@ export function ContextMenuRadioItem({
       data-slot="context-menu-radio-item"
       data-inset={inset}
       className={cn(
-        'relative flex cursor-pointer items-center gap-1.5 rounded-md py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'relative flex cursor-pointer items-center gap-1.5 rounded-sm py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-disabled:cursor-not-allowed data-disabled:opacity-50',
@@ -289,7 +289,7 @@ export function ContextMenuSubTrigger({
       data-slot="context-menu-sub-trigger"
       data-inset={inset}
       className={cn(
-        'flex cursor-pointer items-center gap-1.5 rounded-md px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'flex cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-open:bg-accent data-open:text-accent-foreground',

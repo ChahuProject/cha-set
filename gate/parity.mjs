@@ -303,6 +303,28 @@ if (existsSync(qtTreeDndCheckPath)) {
   console.log(`[gate] OK — Qt VirtualTree DnD & Visual Parity Gate passed (${treeDndRes.checkedCount} invariants verified)`);
 }
 
+// 2.14 Mandatory Cross-Stack Concentric Corner Radius Parity Gate
+// Strictly enforces concentric corner radii (R_inner = max(0, R_outer - Padding))
+// across React and Qt nested container components.
+const concentricCheckPath = resolve(root, 'scripts/check-concentric-radii.mjs');
+if (existsSync(concentricCheckPath)) {
+  const { verifyConcentricRadii, selfTest } = await import(pathToFileURL(concentricCheckPath).href);
+  const st = selfTest();
+  if (!st.ok) {
+    console.error('[gate] FAIL: Concentric corner radii gate self-test failed');
+    process.exit(1);
+  }
+  const concentricRes = verifyConcentricRadii({ quiet: true });
+  if (!concentricRes.ok) {
+    console.error(`[gate] FAIL: Concentric Corner Radii Parity Gate failed (${concentricRes.errors.length} violation(s)):`);
+    for (const err of concentricRes.errors) {
+      console.error(`  - ${err}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Concentric Corner Radii Parity Gate passed (${concentricRes.checkedCount} concentric assertions verified)`);
+}
+
 // 3. Executable Behavioral Parity Checks
 const skipQt = process.argv.includes('--skip-qt') || process.env.CHASE_SKIP_QT === '1';
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');

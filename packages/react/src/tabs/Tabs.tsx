@@ -70,8 +70,8 @@ export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
                 size === 'sm' ? 'h-8' : 'h-9',
               )
             : cn(
-                'inline-flex items-center justify-center rounded-lg bg-muted text-muted-foreground w-fit',
-                size === 'sm' ? 'h-7 p-0.5' : 'h-8 p-1',
+                'inline-flex items-center justify-center bg-muted text-muted-foreground w-fit',
+                size === 'sm' ? 'h-7 p-0.5 rounded-md' : 'h-8 p-1 rounded-lg',
               ),
           className,
         )}
@@ -83,10 +83,7 @@ export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
             'absolute pointer-events-none transition-[left,width,top,height] duration-200 ease-standard z-0',
             variant === 'line'
               ? 'bottom-0 h-0.5 bg-primary'
-              : cn(
-                  'rounded-md bg-background shadow-xs',
-                  size === 'sm' && 'rounded',
-                ),
+              : 'rounded-sm bg-background shadow-xs',
           )}
           style={{
             left: 'var(--active-tab-left)',
@@ -134,7 +131,7 @@ export const TabsTrigger = forwardRef<HTMLElement, TabsTriggerProps>(
     const size = sizeProp ?? context.size;
 
     const defaultVariantClasses = cn(
-      size === 'sm' ? 'rounded px-2 py-0.5 text-xs' : 'rounded-md px-3 py-1 text-sm',
+      size === 'sm' ? 'rounded-sm px-2 py-0.5 text-xs' : 'rounded-sm px-3 py-1 text-sm',
       'data-active:bg-background data-active:text-foreground data-active:shadow-xs',
       'data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-xs',
       forceActive && 'bg-background text-foreground shadow-xs',

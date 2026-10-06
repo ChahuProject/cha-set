@@ -264,10 +264,10 @@ Item {
                     }
 
                     // Interactive Item Container
-                    Rectangle {
+                    ChaSetSquircle {
                         visible: !delegateItem.isSep && !delegateItem.isLbl
                         anchors.fill: parent
-                        radius: ThemeTokens.dp(4)
+                        radius: ThemeTokens.innerRadius(ThemeTokens.dp(root.customRadius), menuPopup.padding)
                         readonly property bool isHighlighted: delegateItem.index === root.highlightedIndex
                         color: isHighlighted ? (delegateItem.modelData && delegateItem.modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
                         opacity: delegateItem.modelData && delegateItem.modelData.disabled ? 0.4 : 1.0

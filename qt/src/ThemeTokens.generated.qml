@@ -22,6 +22,10 @@ QtObject {
         return Math.round(val * uiScale);
     }
 
+    function innerRadius(outerRadius, padding) {
+        return Math.max(0, outerRadius - padding);
+    }
+
     function motionDuration(baseMs) {
         if (!animationsEnabled) return 0;
         const factor = (animSpeed > 0.01) ? (animSpeed / 0.2) : 1.0;

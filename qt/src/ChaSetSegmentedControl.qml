@@ -56,7 +56,7 @@ Item {
         }
     }
 
-    readonly property int itemRadius: controlRadius - root.padding
+    readonly property int itemRadius: ThemeTokens.innerRadius(controlRadius, root.padding)
 
     FontMetrics {
         id: textFontMetrics

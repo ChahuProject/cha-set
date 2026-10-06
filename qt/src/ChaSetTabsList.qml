@@ -24,7 +24,7 @@ ChaSetSquircle {
     default property alias contentData: contentLayout.data
 
     property int padding: variant === "line" ? 0 : (size === "sm" ? 2 : 4)
-    property int customRadius: variant === "line" ? 0 : 8
+    property int customRadius: variant === "line" ? 0 : (size === "sm" ? 6 : 8)
 
     readonly property bool isVert: orientation === "vertical"
     readonly property bool isLine: variant === "line"
@@ -68,7 +68,7 @@ ChaSetSquircle {
     }
 
     // Smooth sliding indicator pill for variant === "default"
-    Rectangle {
+    ChaSetSquircle {
         id: pillIndicator
         z: 0
         visible: !root.isLine && root.activeTrigger !== null
@@ -76,7 +76,7 @@ ChaSetSquircle {
         y: root.activeTrigger ? (contentLayout.y + root.activeTrigger.y) : 0
         width: root.activeTrigger ? root.activeTrigger.width : 0
         height: root.activeTrigger ? root.activeTrigger.height : 0
-        radius: ThemeTokens.dp(root.isSm ? 4 : 6)
+        radius: ThemeTokens.innerRadius(root.effectiveRadius, root.effectivePadding)
         color: ThemeTokens.dark ? Qt.rgba(2.0 / 255.0, 8.0 / 255.0, 23.0 / 255.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
         border.width: 1
         border.color: ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 0.8)

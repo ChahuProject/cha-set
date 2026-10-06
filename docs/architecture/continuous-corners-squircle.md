@@ -141,3 +141,75 @@ Ensure `ThemeTokens.cornerSmoothing` is configured in your theme manager:
 // In your custom ThemeManager or theme singleton:
 readonly property real cornerSmoothing: 0.6 // 0.0 (circle) -> 1.0 (full squircle)
 ```
+
+---
+
+## 4. Concentric Corner Radii Architecture (同心圆角几何体系)
+
+### 4.1 Micro-Curvature vs. Macro-Geometry: Complementary Harmony
+A frequent misconception is that continuous curvature (Squircle) and concentric corner radii (同心圆角) are competing concepts. In truth, they operate at two distinct, complementary dimensional layers:
+- **Micro-Curvature (Squircle / G2 Continuity)**: Governs the **derivative continuity along a single perimeter curve**, eliminating the optical crease (Mach banding) between flat edges and corner arcs.
+- **Macro-Geometry (Concentricity / Equidistant Offset)**: Governs the **spatial relationship between nested boundaries**, maintaining uniform spacing between an outer container and its inner child elements.
+
+Apple's design system across iOS and macOS uses both simultaneously: an outer squircle container with padding contains an inner squircle element whose corner radius is precisely offset.
+
+### 4.2 The Mathematical Concentric Radius Law
+When an outer container with radius $R_{outer}$ and internal padding $P$ contains an inner element (active pill indicator, selected item background, menu item hover/active highlight), the inner corner radius $R_{inner}$ **MUST** obey:
+
+$$R_{inner} = \max(0, R_{outer} - P)$$
+
+#### Why This Law Holds:
+1. **Shared Center of Curvature**:
+   The outer curve begins at offset $(R_{outer}, R_{outer})$ from the outer corner. The inner element begins at offset $(P, P)$. By setting $R_{inner} = R_{outer} - P$, the inner curve's center is located at:
+   $$(P + R_{inner}, P + R_{inner}) = (P + R_{outer} - P, P + R_{outer} - P) = (R_{outer}, R_{outer})$$
+   Because both curves share the **exact same center**, the distance between the inner and outer curves is constant ($P$) at every single angle $\theta \in [0, \pi/2]$ along the arc!
+2. **Visual Pinch Elimination**:
+   If an inner item uses an arbitrary radius (e.g. $R_{outer} = 8\text{px}$, $P = 4\text{px}$, but $R_{inner} = 6\text{px}$), the corner gap narrows from $4\text{px}$ down to $8 - 6 = 2\text{px}$ at the 45-degree diagonal. The inner corner bulges out toward the container boundary, producing an unsightly visual pinch.
+3. **Natural Degeneration**:
+   When padding $P \ge R_{outer}$, the formula yields $R_{inner} = 0$. The inner corners naturally flatten to sharp 90-degree corners because the padding fully absorbs the outer curve.
+
+### 4.3 Dual-Stack Implementation Contract
+
+#### Web (React) Implementation
+The ChaSet radius token scale derives from `--radius` (default `0.5rem` = 8px):
+- `--radius-lg`: `0.5rem` (8px)
+- `--radius-md`: `0.375rem` (6px)
+- `--radius-sm`: `0.25rem` (4px)
+- `--radius-xs`: `0.125rem` (2px)
+
+Standard concentric pairings in ChaSet:
+| Component | Outer Radius | Padding | Inner Radius Formula | React Class Pairing |
+| :--- | :--- | :--- | :--- | :--- |
+| `SegmentedControl` (default/lg) | 8px (`rounded-lg`) | 2px (`p-0.5`) | $8 - 2 = 6\text{px}$ | `rounded-lg p-0.5` + `rounded-md` |
+| `SegmentedControl` (sm) | 6px (`rounded-md`) | 2px (`p-0.5`) | $6 - 2 = 4\text{px}$ | `rounded-md p-0.5` + `rounded-sm` |
+| `Tabs` (default) | 8px (`rounded-lg`) | 4px (`p-1`) | $8 - 4 = 4\text{px}$ | `rounded-lg p-1` + `rounded-sm` |
+| `Tabs` (sm) | 6px (`rounded-md`) | 2px (`p-0.5`) | $6 - 2 = 4\text{px}$ | `rounded-md p-0.5` + `rounded-sm` |
+| `DropdownMenu` | 8px (`rounded-lg`) | 4px (`p-1`) | $8 - 4 = 4\text{px}$ | `rounded-lg p-1` + `rounded-sm` |
+| `ContextMenu` | 8px (`rounded-lg`) | 4px (`p-1`) | $8 - 4 = 4\text{px}$ | `rounded-lg p-1` + `rounded-sm` |
+| `Select` | 8px (`rounded-lg`) | 4px (`p-1`) | $8 - 4 = 4\text{px}$ | `rounded-lg p-1` + `rounded-sm` |
+
+#### Desktop (Qt / QML) Implementation
+The Qt singleton `ThemeTokens` exposes the canonical concentric helper:
+```qml
+function innerRadius(outerRadius, padding) {
+    return Math.max(0, outerRadius - padding);
+}
+```
+Components bind inner delegates and indicator pills reactively:
+```qml
+ChaSetSquircle {
+    id: pillIndicator
+    radius: ThemeTokens.innerRadius(root.effectiveRadius, root.effectivePadding)
+}
+```
+
+### 4.4 Automated Mechanical Parity Gate (`check:concentric`)
+Concentricity is not left to human discretion or manual inspection. ChaSet enforces it automatically through `scripts/check-concentric-radii.mjs`, wired directly into `pnpm gate` (Step 2.14):
+1. **Contract Verification**: Mechanically asserts that all audited nested components declare and compute radii matching $R_{inner} = \max(0, R_{outer} - P)$.
+2. **Static AST Anti-Pattern Scanner**: Scans component source code to detect any container with `rounded-lg` and `p-1` where an inner item inadvertently uses `rounded-md` instead of `rounded-sm`.
+3. **Self-Test Validation**: Executes guard verification prior to code scans, ensuring any potential regressions fail loud immediately.
+
+Run the concentric check anytime via:
+```bash
+pnpm check:concentric
+```

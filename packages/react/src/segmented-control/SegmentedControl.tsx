@@ -32,7 +32,7 @@ export const segmentedItemVariants = cva(
   {
     variants: {
       size: {
-        sm: 'h-[1.125rem] px-2 text-caption leading-none rounded-[0.25rem]',
+        sm: 'h-[1.125rem] px-2 text-caption leading-none rounded-sm',
         default: 'h-6 px-2.5 text-xs rounded-md',
         lg: 'h-8 px-3 text-sm rounded-md',
       },
@@ -211,7 +211,7 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
               aria-hidden="true"
               className={cn(
                 'absolute bg-background shadow-xs pointer-events-none transition-[left,top,width,height] duration-200 ease-standard',
-                size === 'sm' ? 'rounded-[0.25rem]' : 'rounded-md'
+                size === 'sm' ? 'rounded-sm' : 'rounded-md'
               )}
               style={{
                 left: `${indicatorStyle.left}rem`,
