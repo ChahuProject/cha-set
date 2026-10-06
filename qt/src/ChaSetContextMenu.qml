@@ -16,6 +16,16 @@ Item {
 
     signal itemSelected(string itemId)
 
+    // Registry / Escape contract — see ChaSetOverlayHub.
+    property bool closeOnEscape: true
+
+    Shortcut {
+        sequence: "Escape"
+        autoRepeat: false
+        enabled: contextPopup.opened && root.closeOnEscape && ChaSetOverlayHub.isTop(contextPopup)
+        onActivated: contextPopup.close()
+    }
+
     function handlePointerMove(idx, sceneX, sceneY) {
         if (Math.abs(sceneX - lastPointerSceneX) < 1.5 && Math.abs(sceneY - lastPointerSceneY) < 1.5) {
             return
@@ -122,10 +132,12 @@ Item {
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
         onOpened: {
+            ChaSetOverlayHub.register(contextPopup)
             root.highlightedIndex = -1
             contextPopup.contentItem.forceActiveFocus()
         }
         onClosed: {
+            ChaSetOverlayHub.unregister(contextPopup)
             root.highlightedIndex = -1
         }
 
@@ -177,9 +189,8 @@ Item {
             }
             Keys.onEscapePressed: (event) => {
                 event.accepted = true
-                contextPopup.close()
+                if (root.closeOnEscape) contextPopup.close()
             }
-
             Repeater {
                 model: root.items
                 delegate: Rectangle {

@@ -10,6 +10,7 @@ Item {
     property string placeholder: "Select an option..."
     property var options: [] // [{ value: "apple", label: "Apple", disabled: false }]
     property bool disabled: false
+    property bool closeOnEscape: true
     property int customRadius: ThemeTokens.dp(6)
     property int highlightedIndex: -1
     property string modality: "pointer" // "pointer" | "keyboard"
@@ -132,12 +133,33 @@ Item {
             selectHighlighted()
         } else if (event.key === Qt.Key_Escape) {
             event.accepted = true
-            selectPopup.close()
-            root.forceActiveFocus()
+            dismissOnEscape()
         }
     }
 
     Keys.onPressed: (event) => handleKeyEvent(event)
+
+    // Registry / Escape contract — see ChaSetOverlayHub. Escape closes the popup and
+    // returns focus to the trigger.
+    //
+    // Escape is served by two complementary layers, and they never both fire:
+    //  - the window-level Shortcut reaches focus-less overlays (the reason this registry
+    //    exists) and is gated on `isTop`, so only the topmost layer responds;
+    //  - the local Keys path below covers a focused overlay and any consumer that drives key
+    //    semantics programmatically instead of through the shortcut map (e.g. harnesses).
+    // While the Shortcut is enabled it consumes the key, leaving the local path inert.
+    function dismissOnEscape() {
+        if (!root.closeOnEscape) return;
+        selectPopup.close()
+        root.forceActiveFocus()
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        autoRepeat: false
+        enabled: selectPopup.opened && root.closeOnEscape && ChaSetOverlayHub.isTop(selectPopup)
+        onActivated: dismissOnEscape()
+    }
 
     Rectangle {
         id: triggerBox
@@ -201,10 +223,12 @@ Item {
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
         onOpened: {
+            ChaSetOverlayHub.register(selectPopup)
             root.initHighlight()
             selectPopup.contentItem.forceActiveFocus()
         }
         onClosed: {
+            ChaSetOverlayHub.unregister(selectPopup)
             root.highlightedIndex = -1
         }
 

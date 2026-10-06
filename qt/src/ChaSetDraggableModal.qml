@@ -35,15 +35,41 @@ Rectangle {
         NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
     }
 
-    Shortcut {
-        sequence: "Escape"
-        enabled: root.open
-        onActivated: root.open = false
+    // Registry / Escape contract — see ChaSetOverlayHub.
+    property bool closeOnEscape: true
+
+    // Central dismissal so the hub, the window-level Shortcut and the local Keys path all
+    // share one implementation.
+    function close(reason) {
+        if (!root.open) return;
+        root.open = false;
     }
 
+    onOpenChanged: syncRegistration()
+
+    // `open` defaults to true, so the modal can already be open the moment it is created —
+    // `onOpenChanged` never fires in that case, so registration is synced explicitly below.
+    function syncRegistration() {
+        if (root.open) ChaSetOverlayHub.register(root);
+        else ChaSetOverlayHub.unregister(root);
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        autoRepeat: false
+        enabled: root.open && root.closeOnEscape && ChaSetOverlayHub.isTop(root)
+        onActivated: root.close("escape")
+    }
+
+    // Local Keys path: covers the focused modal and consumers that deliver key semantics
+    // programmatically instead of through the shortcut map. When the Shortcut above is
+    // enabled it consumes the key, so this handler stays inert and Escape is never
+    // double-handled.
     Keys.onEscapePressed: function(event) {
-        event.accepted = true
-        root.open = false
+        if (root.closeOnEscape) {
+            event.accepted = true
+            root.close("escape")
+        }
     }
 
     Keys.onLeftPressed: function(event) {
@@ -78,6 +104,7 @@ Rectangle {
 
     Component.onCompleted: {
         applyInitialPosition()
+        syncRegistration()
     }
 
     onParentChanged: {

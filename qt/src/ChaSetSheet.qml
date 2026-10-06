@@ -49,20 +49,33 @@ Rectangle {
         NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: ThemeTokens.easeEmphasized }
     }
 
-    Shortcut {
-        sequence: "Escape"
-        enabled: root.open && root.closeOnEscape
-        onActivated: {
-            root.open = false
-            root.closed()
-        }
+    // Registry / Escape contract — see ChaSetOverlayHub.
+    function close(reason) {
+        if (!root.open) return;
+        root.open = false;
+        root.closed();
     }
 
+    onOpenChanged: {
+        if (root.open) ChaSetOverlayHub.register(root);
+        else ChaSetOverlayHub.unregister(root);
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        autoRepeat: false
+        enabled: root.open && root.closeOnEscape && ChaSetOverlayHub.isTop(root)
+        onActivated: root.close("escape")
+    }
+
+    // Local Keys path: covers the focused sheet and consumers that deliver key semantics
+    // programmatically instead of through the shortcut map. When the Shortcut above is
+    // enabled it consumes the key, so this handler stays inert and Escape is never
+    // double-handled.
     Keys.onEscapePressed: function(event) {
         if (root.closeOnEscape) {
             event.accepted = true
-            root.open = false
-            root.closed()
+            root.close("escape")
         }
     }
 

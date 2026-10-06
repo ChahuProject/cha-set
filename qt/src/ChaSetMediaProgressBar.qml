@@ -43,6 +43,16 @@ Item {
     signal seekRequested(real ratio)
     signal hoverChanged(real ratio, bool active)
 
+    // Registry / Escape contract — see ChaSetOverlayHub.
+    property bool closeOnEscape: true
+
+    Shortcut {
+        sequence: "Escape"
+        autoRepeat: false
+        enabled: contextMenuPopup.opened && root.closeOnEscape && ChaSetOverlayHub.isTop(contextMenuPopup)
+        onActivated: contextMenuPopup.close()
+    }
+
     implicitHeight: root.showTime ? ThemeTokens.dp(36) : ThemeTokens.dp(22)
     height: implicitHeight
     opacity: root.disabled ? 0.45 : 1.0
@@ -330,6 +340,8 @@ Item {
     Popup {
         id: contextMenuPopup
         objectName: "mediaTimeContextMenu"
+        onOpened: ChaSetOverlayHub.register(contextMenuPopup)
+        onClosed: ChaSetOverlayHub.unregister(contextMenuPopup)
         x: timeRow.x
         width: ThemeTokens.dp(168)
         padding: ThemeTokens.dp(4)

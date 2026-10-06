@@ -25,6 +25,16 @@ Item {
 
     signal colorChanged(color color)
 
+    // Registry / Escape contract — see ChaSetOverlayHub.
+    property bool closeOnEscape: true
+
+    Shortcut {
+        sequence: "Escape"
+        autoRepeat: false
+        enabled: colorPopup.opened && root.closeOnEscape && ChaSetOverlayHub.isTop(colorPopup)
+        onActivated: colorPopup.close()
+    }
+
     // Movable drag offsets
     property real dragOffsetX: 0
     property real dragOffsetY: 0
@@ -1461,7 +1471,6 @@ Item {
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         padding: 0
         background: Item {}
-
         property real calculatedX: 0
         property real calculatedY: popoverTrigger.height + ThemeTokens.dp(4)
 
@@ -1506,6 +1515,10 @@ Item {
         }
 
         onVisibleChanged: {
+            // ChaSet 浮层注册表（见 ChaSetOverlayHub）：Esc 只关最上层浮层；
+            // 宿主读 Hub 计数来压制产品热键，Esc 才不会被产品动作吃掉。
+            if (colorPopup.visible) ChaSetOverlayHub.register(colorPopup);
+            else ChaSetOverlayHub.unregister(colorPopup);
             root.popoverOpen = colorPopup.visible;
             if (colorPopup.visible) {
                 updatePosition();

@@ -75,6 +75,16 @@ set_source_files_properties(src/SelectionHub.qml PROPERTIES
     QT_QML_SOURCE_TYPENAME SelectionHub
 )
 
+# Process-wide overlay registry: the single source of truth for "which floating layers
+# are open right now". Hosts read `count` to suppress product-level key bindings, and
+# every ChaSet overlay registers itself so Escape always dismisses exactly the topmost
+# layer — never leaking through to a host action. Registration is explicit because
+# overlays that do not take focus are invisible to focus-chain sniffing.
+set_source_files_properties(src/ChaSetOverlayHub.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME ChaSetOverlayHub
+)
+
 set_source_files_properties(src/ChaSetI18nData.generated.qml PROPERTIES
     QT_QML_SINGLETON_TYPE TRUE
     QT_QML_SOURCE_TYPENAME ChaSetI18nData
@@ -211,6 +221,8 @@ qt_add_qml_module(ChaSet
         src/Typography.generated.qml
 
         src/SelectionHub.qml
+        src/ChaSetOverlayHub.qml
+        src/ChaSetOverlayEscapeFilter.qml
     NO_GENERATE_EXTRA_QMLDIRS
 )
 

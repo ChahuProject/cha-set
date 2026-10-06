@@ -33,6 +33,14 @@ Item {
         }
     }
 
+    // While capturing, Escape cancels the recording — so the overlay registry must stand
+    // down, otherwise a window-level Escape consumer would dismiss a host layer instead.
+    onRecordingChanged: ChaSetOverlayHub.escapeSuspended = root.recording
+
+    Component.onDestruction: {
+        if (root.recording) ChaSetOverlayHub.escapeSuspended = false
+    }
+
     Rectangle {
         anchors.fill: parent
         color: root.recording ? ThemeTokens.hover : ThemeTokens.panel

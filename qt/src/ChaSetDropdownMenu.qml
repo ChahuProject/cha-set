@@ -9,6 +9,7 @@ Item {
     property bool open: false
     property var items: [] // [{ id, label, icon, shortcut, destructive, disabled, separator, isLabel, checked, onSelect }]
     property bool showShortcuts: false
+    property bool closeOnEscape: true
     property var shortcuts: []
     property var additionalShortcuts: []
     property int menuWidth: 180
@@ -116,11 +117,31 @@ Item {
             triggerHighlighted()
         } else if (event.key === Qt.Key_Escape) {
             event.accepted = true
-            root.open = false
+            dismissOnEscape()
         }
     }
 
     Keys.onPressed: (event) => handleKeyEvent(event)
+
+    // Registry / Escape contract — see ChaSetOverlayHub. Lives on the root (not inside the
+    // Popup) so it fires without focus, and only for the topmost overlay.
+    //
+    // Escape is served by two complementary layers, and they never both fire:
+    //  - this window-level Shortcut reaches focus-less overlays and is gated on `isTop`;
+    //  - the local Keys paths (handleKeyEvent and the menu content item) cover a focused
+    //    menu and consumers that drive key semantics programmatically.
+    // While the Shortcut is enabled it consumes the key, leaving the local paths inert.
+    function dismissOnEscape() {
+        if (!root.closeOnEscape) return;
+        root.open = false
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        autoRepeat: false
+        enabled: root.open && root.closeOnEscape && ChaSetOverlayHub.isTop(root)
+        onActivated: dismissOnEscape()
+    }
 
     default property alias triggerData: triggerContainer.data
 
@@ -135,9 +156,11 @@ Item {
         onVisibleChanged: {
             if (root.open !== visible) root.open = visible
             if (visible) {
+                ChaSetOverlayHub.register(root)
                 root.highlightedIndex = -1
                 root.opened()
             } else {
+                ChaSetOverlayHub.unregister(root)
                 root.highlightedIndex = -1
                 root.closed()
             }
@@ -202,9 +225,8 @@ Item {
             }
             Keys.onEscapePressed: (event) => {
                 event.accepted = true
-                root.open = false
+                root.dismissOnEscape()
             }
-
             Repeater {
                 model: root.items
                 delegate: Item {
