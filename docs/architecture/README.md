@@ -30,6 +30,7 @@
 | [`showcase-architecture.md`](./showcase-architecture.md) | Showcase living documentation infrastructure, automated "On this page" TOC scanning, zero-drift heading synchronization, and SPAS verification | `packages/react/examples/basic/src/layout/`, `qt/src/DocLayout.qml`, `scripts/verify-showcase-parity.mjs` | `[Authoritative Specification]` |
 | [`table-of-contents.md`](./table-of-contents.md) | Table of Contents & Anchor navigation component: tree-structured multi-level headings, guide tracks, and dynamic banner offset adaptation | `spec/components/table-of-contents.ts`, `packages/react/src/table-of-contents/`, `qt/src/ChaSetTableOfContents.qml` | `[Authoritative Specification]` |
 | [`continuous-corners-squircle.md`](./continuous-corners-squircle.md) | iOS continuous corner curvature (Squircle) architecture: G2 continuity superellipse math, dual-stack strategies, and host project adoption guide | `spec/components/squircle.ts`, `packages/react/src/squircle/`, `qt/src/ChaSetSquircle*` | `[Authoritative Specification]` |
+| [`ui-scaling.md`](./ui-scaling.md) | UI scaling & dimension property contracts: density multiplier topology, internal component scaling, double-scaling prevention, and scale linearity verification | `spec/tokens/`, `spec/generators/generate-qt.mjs`, `scripts/check-qt-scaling.mjs`, `scripts/check-ui-scale-dimensions.mjs`, `qt/src/` | `[Authoritative Specification]` |
 
 ---
 
