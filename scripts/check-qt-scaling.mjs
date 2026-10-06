@@ -1,6 +1,7 @@
 // scripts/check-qt-scaling.mjs
 // Automated verification gate: strictly enforces authentic UI scaling (ThemeTokens.dp / sp)
-// across all ChaSet Qt Quick components, preventing unscaled raw pixel regressions.
+// across all ChaSet Qt Quick components, preventing unscaled raw pixel regressions
+// and eliminating call-site double-scaling anti-patterns.
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -9,15 +10,48 @@ const rootDir = resolve(fileURLToPath(import.meta.url), '../..');
 const srcDir = resolve(rootDir, 'qt/src');
 
 /**
- * Audit all ChaSet*.qml component files for unscaled geometry numbers (> 2px).
- * Values of 0, 1, 2 are exempt as they represent hairlines, crisp borders, and optical alignment.
+ * List of known ChaSet component properties that internally scale their values
+ * via ThemeTokens.dp(...) according to Style A (Internal Component Scaling).
+ * Callers MUST pass raw logical units and MUST NEVER wrap arguments with ThemeTokens.dp(...).
+ */
+export const INTERNALLY_SCALED_PROPS = [
+  'customRadius',
+  'itemWidth',
+  'rowHeight',
+  'headerHeight',
+  'gutterSize',
+  'hitThickness',
+  'handleThickness',
+  'cellWidth',
+  'cellHeight',
+  'estimateSize',
+  'sideMargin',
+  'contentLeftMargin',
+  'contentRightMargin',
+  'customSheetSize',
+  'sidebarWidth',
+  'iconWidth',
+  'sideOffset',
+  'menuWidth',
+  'popoverWidth',
+  'popoverHeight',
+];
+
+/**
+ * Audit:
+ * 1. All ChaSet*.qml component files for unscaled geometry numbers (> 2px).
+ * 2. All QML files in qt/src for call-site double-scaling invocations.
  */
 export function verifyQtScaling({ quiet = false } = {}) {
-  const files = readdirSync(srcDir).filter(f => (f.startsWith('ChaSet') || f === 'CommandSearchModal.qml') && f.endsWith('.qml'));
+  const componentFiles = readdirSync(srcDir).filter(f => (f.startsWith('ChaSet') || f === 'CommandSearchModal.qml') && f.endsWith('.qml'));
+  const allQmlFiles = readdirSync(srcDir).filter(f => f.endsWith('.qml'));
   const errors = [];
   let checkedCount = 0;
 
-  for (const file of files) {
+  // =========================================================================
+  // Pass 1: Audit ChaSet*.qml component internal scaling integrity
+  // =========================================================================
+  for (const file of componentFiles) {
     checkedCount++;
     const content = readFileSync(join(srcDir, file), 'utf8');
     const lines = content.split(/\r?\n/);
@@ -79,23 +113,54 @@ export function verifyQtScaling({ quiet = false } = {}) {
     });
   }
 
+  // =========================================================================
+  // Pass 2: Audit all QML files for call-site double-scaling anti-patterns
+  // =========================================================================
+  const doubleScalePropRegex = new RegExp(`^(?:(?:[a-zA-Z_]\\w*\\.)?(${INTERNALLY_SCALED_PROPS.join('|')}))\\s*:\\s*(.*ThemeTokens\\.dp.*)$`);
+
+  for (const file of allQmlFiles) {
+    const content = readFileSync(join(srcDir, file), 'utf8');
+    const lines = content.split(/\r?\n/);
+
+    lines.forEach((line, idx) => {
+      const lineNum = idx + 1;
+      const trimmed = line.trim();
+
+      // Skip comments
+      if (trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) {
+        return;
+      }
+
+      // Skip property declarations inside component definitions (e.g. property int hitThickness: ThemeTokens.dp(...))
+      if (/^(?:readonly\s+)?property\s+/.test(trimmed)) {
+        return;
+      }
+
+      const match = trimmed.match(doubleScalePropRegex);
+      if (match) {
+        const prop = match[1];
+        errors.push(`[${file}:L${lineNum}] Double-scaling anti-pattern detected: "${trimmed}". Property "${prop}" is already scaled internally by the component contract. Pass raw logical number (e.g. "${prop}: 120") instead of ThemeTokens.dp(...)`);
+      }
+    });
+  }
+
   const ok = errors.length === 0;
   if (!quiet) {
     if (ok) {
-      console.log(`[check-qt-scaling] OK — All ${checkedCount} ChaSet Qt components adhere to authentic UI scaling (ThemeTokens.dp/sp)`);
+      console.log(`[check-qt-scaling] OK — All ${checkedCount} ChaSet Qt components adhere to authentic UI scaling (ThemeTokens.dp/sp), and all ${allQmlFiles.length} QML files have zero double-scaling anti-patterns.`);
     } else {
-      console.error(`[check-qt-scaling] FAIL — Found ${errors.length} unscaled geometry violation(s):`);
+      console.error(`[check-qt-scaling] FAIL — Found ${errors.length} UI scaling violation(s):`);
       for (const err of errors) {
         console.error(`  - ${err}`);
       }
     }
   }
 
-  return { ok, errors, checkedCount };
+  return { ok, errors, checkedCount, allQmlCheckedCount: allQmlFiles.length };
 }
 
 // Direct CLI execution
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && fileURLToPath(import.meta.url).toLowerCase() === resolve(process.argv[1]).toLowerCase()) {
   const { ok } = verifyQtScaling({ quiet: false });
   process.exit(ok ? 0 : 1);
 }
