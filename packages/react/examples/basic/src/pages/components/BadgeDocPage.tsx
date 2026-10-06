@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Badge, type BadgeVariant, type BadgeSize, Tabs, TabsList, TabsTrigger, Checkbox, Card } from '@chahu/cha-set';
+import { Badge, type BadgeVariant, type BadgeSize, SegmentedControl, Checkbox, Card } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
@@ -48,26 +48,32 @@ export function BadgeDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Variant:</span>
-                <Tabs value={variant} onValueChange={(v) => setVariant(v as BadgeVariant)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="secondary" className="h-6 px-2 text-xs">Secondary</TabsTrigger>
-                    <TabsTrigger value="destructive" className="h-6 px-2 text-xs">Destructive</TabsTrigger>
-                    <TabsTrigger value="outline" className="h-6 px-2 text-xs">Outline</TabsTrigger>
-                    <TabsTrigger value="ghost" className="h-6 px-2 text-xs">Ghost</TabsTrigger>
-                    <TabsTrigger value="link" className="h-6 px-2 text-xs">Link</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={variant}
+                  onChange={(v) => setVariant(v as BadgeVariant)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Secondary', value: 'secondary' },
+                    { label: 'Destructive', value: 'destructive' },
+                    { label: 'Outline', value: 'outline' },
+                    { label: 'Ghost', value: 'ghost' },
+                    { label: 'Link', value: 'link' },
+                  ]}
+                />
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Size:</span>
-                <Tabs value={size} onValueChange={(s) => setSize(s as BadgeSize)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={size}
+                  onChange={(s) => setSize(s as BadgeSize)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Small (sm)', value: 'sm' },
+                  ]}
+                />
               </div>
 
               <Checkbox

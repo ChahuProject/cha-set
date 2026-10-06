@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Separator, type SeparatorOrientation, type SeparatorVariant, type SeparatorLabelPosition, Tabs, TabsList, TabsTrigger, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Checkbox } from '@chahu/cha-set';
+import { Separator, type SeparatorOrientation, type SeparatorVariant, type SeparatorLabelPosition, SegmentedControl, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Checkbox } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
@@ -118,23 +118,29 @@ export function SeparatorDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Orientation:</span>
-                <Tabs value={orientation} onValueChange={(v) => setOrientation(v as SeparatorOrientation)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="horizontal" className="h-6 px-2.5 text-xs">Horizontal</TabsTrigger>
-                    <TabsTrigger value="vertical" className="h-6 px-2.5 text-xs">Vertical</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={orientation}
+                  onChange={(v) => setOrientation(v as SeparatorOrientation)}
+                  options={[
+                    { label: 'Horizontal', value: 'horizontal' },
+                    { label: 'Vertical', value: 'vertical' },
+                  ]}
+                />
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Style:</span>
-                <Tabs value={variant} onValueChange={(v) => setVariant(v as SeparatorVariant)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="solid" className="h-6 px-2.5 text-xs">Solid</TabsTrigger>
-                    <TabsTrigger value="dashed" className="h-6 px-2.5 text-xs">Dashed</TabsTrigger>
-                    <TabsTrigger value="dotted" className="h-6 px-2.5 text-xs">Dotted</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={variant}
+                  onChange={(v) => setVariant(v as SeparatorVariant)}
+                  options={[
+                    { label: 'Solid', value: 'solid' },
+                    { label: 'Dashed', value: 'dashed' },
+                    { label: 'Dotted', value: 'dotted' },
+                  ]}
+                />
               </div>
 
               {orientation === 'horizontal' && (
@@ -149,13 +155,16 @@ export function SeparatorDocPage() {
                   {hasLabel && (
                     <div className="flex items-center gap-2">
                       <span className="text-muted-foreground text-xs">Position:</span>
-                      <Tabs value={labelPosition} onValueChange={(v) => setLabelPosition(v as SeparatorLabelPosition)}>
-                        <TabsList className="h-8">
-                          <TabsTrigger value="left" className="h-6 px-2.5 text-xs">Left</TabsTrigger>
-                          <TabsTrigger value="center" className="h-6 px-2.5 text-xs">Center</TabsTrigger>
-                          <TabsTrigger value="right" className="h-6 px-2.5 text-xs">Right</TabsTrigger>
-                        </TabsList>
-                      </Tabs>
+                      <SegmentedControl
+                        size="sm"
+                        value={labelPosition}
+                        onChange={(v) => setLabelPosition(v as SeparatorLabelPosition)}
+                        options={[
+                          { label: 'Left', value: 'left' },
+                          { label: 'Center', value: 'center' },
+                          { label: 'Right', value: 'right' },
+                        ]}
+                      />
                     </div>
                   )}
                 </>

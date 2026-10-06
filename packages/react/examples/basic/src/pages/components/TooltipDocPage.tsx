@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Tabs, TabsList, TabsTrigger, Checkbox, Input, Tooltip, TooltipProvider, TooltipTrigger, TooltipContent, type TooltipSide, CodeBlock } from '@chahu/cha-set';
+import { Button, Card, SegmentedControl, Checkbox, Input, Tooltip, TooltipProvider, TooltipTrigger, TooltipContent, type TooltipSide, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -55,26 +55,32 @@ export function TooltipDocPage() {
               {/* Side Selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Side:</span>
-                <Tabs value={side} onValueChange={(v) => setSide(v as TooltipSide)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="top" className="h-6 px-2.5 text-xs">Top</TabsTrigger>
-                    <TabsTrigger value="bottom" className="h-6 px-2.5 text-xs">Bottom</TabsTrigger>
-                    <TabsTrigger value="left" className="h-6 px-2.5 text-xs">Left</TabsTrigger>
-                    <TabsTrigger value="right" className="h-6 px-2.5 text-xs">Right</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={side}
+                  onChange={(v) => setSide(v as TooltipSide)}
+                  options={[
+                    { label: 'Top', value: 'top' },
+                    { label: 'Bottom', value: 'bottom' },
+                    { label: 'Left', value: 'left' },
+                    { label: 'Right', value: 'right' },
+                  ]}
+                />
               </div>
 
               {/* Delay Selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Delay:</span>
-                <Tabs value={String(delay)} onValueChange={(v) => setDelay(Number(v))}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="0" className="h-6 px-2.5 text-xs">Instant (0ms)</TabsTrigger>
-                    <TabsTrigger value="200" className="h-6 px-2.5 text-xs">Default (200ms)</TabsTrigger>
-                    <TabsTrigger value="500" className="h-6 px-2.5 text-xs">500ms</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={String(delay)}
+                  onChange={(v) => setDelay(Number(v))}
+                  options={[
+                    { label: 'Instant (0ms)', value: '0' },
+                    { label: 'Default (200ms)', value: '200' },
+                    { label: '500ms', value: '500' },
+                  ]}
+                />
               </div>
 
               {/* Text Input */}

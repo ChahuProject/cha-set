@@ -176,19 +176,20 @@ DocLayout {
                         font.weight: Typography.weightBold
                         font.letterSpacing: 0.5
                     }
-                    ChaSetTabs {
-                        currentValue: root.themeMode
-                        onCurrentValueChanged: {
-                            if (currentValue !== root.themeMode) {
-                                root.changeThemeMode(currentValue);
+                    ChaSetSegmentedControl {
+                        size: "sm"
+                        value: root.themeMode
+                        onValueSelected: function(val) {
+                            if (val !== root.themeMode) {
+                                root.changeThemeMode(String(val));
                             }
-                            root.logAction("Mode: " + currentValue)
+                            root.logAction("Mode: " + val);
                         }
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "light"; text: "Light" }
-                            ChaSetTabsTrigger { value: "dark"; text: "Dark" }
-                            ChaSetTabsTrigger { value: "system"; text: "System" }
-                        }
+                        options: [
+                            { label: "Light", value: "light" },
+                            { label: "Dark", value: "dark" },
+                            { label: "System", value: "system" }
+                        ]
                     }
                 }
 

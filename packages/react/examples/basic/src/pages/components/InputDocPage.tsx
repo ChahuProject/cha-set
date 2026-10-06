@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, type InputSize, Button, Badge, Tabs, TabsList, TabsTrigger, Checkbox, CodeBlock, MailIcon } from '@chahu/cha-set';
+import { Input, type InputSize, Button, Badge, SegmentedControl, Checkbox, CodeBlock, MailIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from "../../components/ComponentReference";
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -70,23 +70,29 @@ export function InputDocPage() {
               {/* Size Selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Size:</span>
-                <Tabs value={size} onValueChange={(v) => setSize(v as InputSize)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={size}
+                  onChange={(v) => setSize(v as InputSize)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Small (sm)', value: 'sm' },
+                  ]}
+                />
               </div>
 
               {/* Type Selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Type:</span>
-                <Tabs value={type} onValueChange={(v) => setType(v as 'text' | 'password')}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="text" className="h-6 px-2.5 text-xs">Text</TabsTrigger>
-                    <TabsTrigger value="password" className="h-6 px-2.5 text-xs">Password</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={type}
+                  onChange={(v) => setType(v as 'text' | 'password')}
+                  options={[
+                    { label: 'Text', value: 'text' },
+                    { label: 'Password', value: 'password' },
+                  ]}
+                />
               </div>
 
               {/* Toggles */}

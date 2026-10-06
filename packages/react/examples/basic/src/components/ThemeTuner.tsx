@@ -1,4 +1,4 @@
-import { Button, Tabs, TabsList, TabsTrigger, Badge, Input, Slider, Tooltip, ColorPicker, PaletteIcon, CopyIcon, SunIcon, MoonIcon, MonitorIcon } from '@chahu/cha-set';
+import { Button, SegmentedControl, Badge, Input, Slider, Tooltip, ColorPicker, PaletteIcon, CopyIcon, SunIcon, MoonIcon, MonitorIcon } from '@chahu/cha-set';
 
 export interface ThemeOverrides {
   primary?: string;
@@ -88,13 +88,16 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
         {/* Preset Modes */}
         <div className="tuner-group">
           <label className="tuner-label">Appearance & Mode</label>
-          <Tabs value={mode} onValueChange={(v) => setMode(v as string)}>
-            <TabsList>
-              <TabsTrigger value="light" icon={<SunIcon className="size-3.5" />}>Light</TabsTrigger>
-              <TabsTrigger value="dark" icon={<MoonIcon className="size-3.5" />}>Dark</TabsTrigger>
-              <TabsTrigger value="system" icon={<MonitorIcon className="size-3.5" />}>System</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <SegmentedControl
+            size="sm"
+            value={mode}
+            onChange={(v) => setMode(v as string)}
+            options={[
+              { label: 'Light', value: 'light', icon: <SunIcon className="size-3.5" /> },
+              { label: 'Dark', value: 'dark', icon: <MoonIcon className="size-3.5" /> },
+              { label: 'System', value: 'system', icon: <MonitorIcon className="size-3.5" /> },
+            ]}
+          />
         </div>
 
         {/* Accent Themes */}

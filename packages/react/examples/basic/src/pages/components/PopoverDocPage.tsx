@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Popover, PopoverTrigger, PopoverContent, Button, Input, Tabs, TabsList, TabsTrigger, Checkbox, CodeBlock } from '@chahu/cha-set';
+import { Popover, PopoverTrigger, PopoverContent, Button, Input, SegmentedControl, Checkbox, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -83,26 +83,32 @@ export function PopoverDocPage() {
               {/* Side Selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Side:</span>
-                <Tabs value={side} onValueChange={(v) => setSide(v as any)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="top" className="h-6 px-2.5 text-xs">Top</TabsTrigger>
-                    <TabsTrigger value="bottom" className="h-6 px-2.5 text-xs">Bottom</TabsTrigger>
-                    <TabsTrigger value="left" className="h-6 px-2.5 text-xs">Left</TabsTrigger>
-                    <TabsTrigger value="right" className="h-6 px-2.5 text-xs">Right</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={side}
+                  onChange={(v) => setSide(v as any)}
+                  options={[
+                    { label: 'Top', value: 'top' },
+                    { label: 'Bottom', value: 'bottom' },
+                    { label: 'Left', value: 'left' },
+                    { label: 'Right', value: 'right' },
+                  ]}
+                />
               </div>
 
               {/* Align Selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Align:</span>
-                <Tabs value={align} onValueChange={(v) => setAlign(v as any)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="start" className="h-6 px-2.5 text-xs">Start</TabsTrigger>
-                    <TabsTrigger value="center" className="h-6 px-2.5 text-xs">Center</TabsTrigger>
-                    <TabsTrigger value="end" className="h-6 px-2.5 text-xs">End</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={align}
+                  onChange={(v) => setAlign(v as any)}
+                  options={[
+                    { label: 'Start', value: 'start' },
+                    { label: 'Center', value: 'center' },
+                    { label: 'End', value: 'end' },
+                  ]}
+                />
               </div>
 
               {/* Arrow Toggle */}

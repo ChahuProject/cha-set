@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, Tabs, TabsList, TabsTrigger, type CollapsibleVariant, CodeBlock, LockIcon } from '@chahu/cha-set';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, SegmentedControl, type CollapsibleVariant, CodeBlock, LockIcon } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -98,33 +98,42 @@ export function CollapsibleDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">State:</span>
-                <Tabs value={open ? 'true' : 'false'} onValueChange={(v) => setOpen(v === 'true')}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="false" className="h-6 px-2.5 text-xs">Collapsed</TabsTrigger>
-                    <TabsTrigger value="true" className="h-6 px-2.5 text-xs">Expanded</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={open ? 'true' : 'false'}
+                  onChange={(v) => setOpen(v === 'true')}
+                  options={[
+                    { label: 'Collapsed', value: 'false' },
+                    { label: 'Expanded', value: 'true' },
+                  ]}
+                />
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">Variant:</span>
-                <Tabs value={variant} onValueChange={(v) => setVariant(v as CollapsibleVariant)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="card" className="h-6 px-2.5 text-xs">Card</TabsTrigger>
-                    <TabsTrigger value="ghost" className="h-6 px-2.5 text-xs">Ghost</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={variant}
+                  onChange={(v) => setVariant(v as CollapsibleVariant)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Card', value: 'card' },
+                    { label: 'Ghost', value: 'ghost' },
+                  ]}
+                />
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">Disabled:</span>
-                <Tabs value={disabled ? 'true' : 'false'} onValueChange={(v) => setDisabled(v === 'true')}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="false" className="h-6 px-2.5 text-xs">False</TabsTrigger>
-                    <TabsTrigger value="true" className="h-6 px-2.5 text-xs">True</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={disabled ? 'true' : 'false'}
+                  onChange={(v) => setDisabled(v === 'true')}
+                  options={[
+                    { label: 'False', value: 'false' },
+                    { label: 'True', value: 'true' },
+                  ]}
+                />
               </div>
             </div>
           }

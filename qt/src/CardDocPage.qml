@@ -91,29 +91,31 @@ DocLayout {
                 Row {
                     spacing: ThemeTokens.dp(8)
                     DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoVariant
-                        onCurrentValueChanged: root.demoVariant = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default" }
-                            ChaSetTabsTrigger { value: "secondary"; text: "Secondary" }
-                            ChaSetTabsTrigger { value: "outline"; text: "Outline" }
-                        }
+                        size: "sm"
+                        value: root.demoVariant
+                        options: [
+                            { label: "Default", value: "default" },
+                            { label: "Secondary", value: "secondary" },
+                            { label: "Outline", value: "outline" }
+                        ]
+                        onValueSelected: function(v) { root.demoVariant = String(v); }
                     }
                 }
 
                 Row {
-                    spacing: 8
+                    spacing: ThemeTokens.dp(8)
                     DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoSize
-                        onCurrentValueChanged: root.demoSize = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default" }
-                            ChaSetTabsTrigger { value: "sm"; text: "Compact (sm)" }
-                        }
+                        size: "sm"
+                        value: root.demoSize
+                        options: [
+                            { label: "Default", value: "default" },
+                            { label: "Compact (sm)", value: "sm" }
+                        ]
+                        onValueSelected: function(v) { root.demoSize = String(v); }
                     }
                 }
 

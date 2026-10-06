@@ -6,9 +6,7 @@ import {
   type KbdVariant,
   type KbdSize,
   type KbdCompact,
-  Tabs,
-  TabsList,
-  TabsTrigger,
+  SegmentedControl,
   Card,
   DropdownMenuItem,
   Badge,
@@ -99,36 +97,45 @@ export function KbdDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Variant:</span>
-                <Tabs value={variant} onValueChange={(v) => setVariant(v as KbdVariant)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="outline" className="h-6 px-2 text-xs">Outline</TabsTrigger>
-                    <TabsTrigger value="solid" className="h-6 px-2 text-xs">Solid</TabsTrigger>
-                    <TabsTrigger value="subtle" className="h-6 px-2 text-xs">Subtle</TabsTrigger>
-                    <TabsTrigger value="inverted" className="h-6 px-2 text-xs">Inverted</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={variant}
+                  onChange={(v) => setVariant(v as KbdVariant)}
+                  options={[
+                    { label: 'Outline', value: 'outline' },
+                    { label: 'Solid', value: 'solid' },
+                    { label: 'Subtle', value: 'subtle' },
+                    { label: 'Inverted', value: 'inverted' },
+                  ]}
+                />
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Size:</span>
-                <Tabs value={size} onValueChange={(s) => setSize(s as KbdSize)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="xs" className="h-6 px-2.5 text-xs">Extra Small (xs)</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={size}
+                  onChange={(s) => setSize(s as KbdSize)}
+                  options={[
+                    { label: 'Extra Small (xs)', value: 'xs' },
+                    { label: 'Small (sm)', value: 'sm' },
+                    { label: 'Default', value: 'default' },
+                  ]}
+                />
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Compact:</span>
-                <Tabs value={compact} onValueChange={(c) => setCompact(c as KbdCompact)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="auto" className="h-6 px-2.5 text-xs">Auto</TabsTrigger>
-                    <TabsTrigger value="always" className="h-6 px-2.5 text-xs">Always</TabsTrigger>
-                    <TabsTrigger value="never" className="h-6 px-2.5 text-xs">Never</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={compact}
+                  onChange={(c) => setCompact(c as KbdCompact)}
+                  options={[
+                    { label: 'Auto', value: 'auto' },
+                    { label: 'Always', value: 'always' },
+                    { label: 'Never', value: 'never' },
+                  ]}
+                />
               </div>
             </div>
           }

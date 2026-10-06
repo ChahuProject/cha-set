@@ -93,43 +93,67 @@ DocLayout {
 }`
 
         controlsData: [
-            {
-                type: "switch",
-                label: "Top Banner",
-                value: root.showBanner,
-                onChanged: function(val) { root.showBanner = val; }
+            Row {
+                spacing: ThemeTokens.dp(8)
+                anchors.verticalCenter: parent.verticalCenter
+                DocText {
+                    text: "Variant:"
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: Typography.sizeSmall
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                ChaSetSegmentedControl {
+                    anchors.verticalCenter: parent.verticalCenter
+                    size: "sm"
+                    value: root.variant
+                    options: [
+                        { label: "Default", value: "default" },
+                        { label: "Track", value: "track" },
+                        { label: "Flat", value: "flat" }
+                    ]
+                    onValueSelected: function(val) { root.variant = String(val); }
+                }
             },
-            {
-                type: "segmented",
-                label: "Variant",
-                value: root.variant,
-                options: [
-                    { label: "Default", value: "default" },
-                    { label: "Track", value: "track" },
-                    { label: "Flat", value: "flat" }
-                ],
-                onChanged: function(val) { root.variant = val; }
+            Row {
+                spacing: ThemeTokens.dp(8)
+                anchors.verticalCenter: parent.verticalCenter
+                DocText {
+                    text: "Size:"
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: Typography.sizeSmall
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                ChaSetSegmentedControl {
+                    anchors.verticalCenter: parent.verticalCenter
+                    size: "sm"
+                    value: root.size
+                    options: [
+                        { label: "Default", value: "default" },
+                        { label: "Small", value: "sm" }
+                    ]
+                    onValueSelected: function(val) { root.size = String(val); }
+                }
             },
-            {
-                type: "segmented",
-                label: "Size",
-                value: root.size,
-                options: [
-                    { label: "Default", value: "default" },
-                    { label: "Small", value: "sm" }
-                ],
-                onChanged: function(val) { root.size = val; }
+            Row {
+                spacing: ThemeTokens.dp(8)
+                anchors.verticalCenter: parent.verticalCenter
+                DocText {
+                    text: "Show Track:"
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: Typography.sizeSmall
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                ChaSetSwitch {
+                    anchors.verticalCenter: parent.verticalCenter
+                    checked: root.showTrack
+                    onToggled: function(val) { root.showTrack = val; }
+                }
             },
-            {
-                type: "switch",
-                label: "Show Track",
-                value: root.showTrack,
-                onChanged: function(val) { root.showTrack = val; }
-            },
-            {
-                type: "button",
-                label: "Reset",
-                icon: "rotate-ccw",
+            ChaSetButton {
+                anchors.verticalCenter: parent.verticalCenter
+                size: "sm"
+                variant: "outline"
+                text: "Reset"
                 onClicked: function() { root.resetDemo(); }
             }
         ]

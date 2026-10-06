@@ -55,16 +55,17 @@ DocLayout {
                 Row {
                     spacing: 8
                     DocText { text: "Side:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoSide
-                        onCurrentValueChanged: root.demoSide = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "top"; text: "Top" }
-                            ChaSetTabsTrigger { value: "bottom"; text: "Bottom" }
-                            ChaSetTabsTrigger { value: "left"; text: "Left" }
-                            ChaSetTabsTrigger { value: "right"; text: "Right" }
-                        }
+                        size: "sm"
+                        value: root.demoSide
+                        options: [
+                            { label: "Top", value: "top" },
+                            { label: "Bottom", value: "bottom" },
+                            { label: "Left", value: "left" },
+                            { label: "Right", value: "right" }
+                        ]
+                        onValueSelected: function(s) { root.demoSide = String(s); }
                     }
                 }
 
@@ -72,15 +73,16 @@ DocLayout {
                 Row {
                     spacing: 8
                     DocText { text: "Align:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoAlign
-                        onCurrentValueChanged: root.demoAlign = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "start"; text: "Start" }
-                            ChaSetTabsTrigger { value: "center"; text: "Center" }
-                            ChaSetTabsTrigger { value: "end"; text: "End" }
-                        }
+                        size: "sm"
+                        value: root.demoAlign
+                        options: [
+                            { label: "Start", value: "start" },
+                            { label: "Center", value: "center" },
+                            { label: "End", value: "end" }
+                        ]
+                        onValueSelected: function(a) { root.demoAlign = String(a); }
                     }
                 }
 

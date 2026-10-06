@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Slider, type SliderOrientation, type SliderSize, Tabs, TabsList, TabsTrigger, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
+import { Slider, type SliderOrientation, type SliderSize, SegmentedControl, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -86,39 +86,45 @@ export function SliderDocPage() {
               {/* Size selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Size:</span>
-                <Tabs value={size} onValueChange={(v) => setSize(v as SliderSize)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={size}
+                  onChange={(v) => setSize(v as SliderSize)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Small (sm)', value: 'sm' },
+                  ]}
+                />
               </div>
 
               {/* Step selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Step:</span>
-                <Tabs value={String(step)} onValueChange={(v) => setStep(Number(v))}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="1" className="h-6 px-2.5 text-xs">1</TabsTrigger>
-                    <TabsTrigger value="5" className="h-6 px-2.5 text-xs">5</TabsTrigger>
-                    <TabsTrigger value="10" className="h-6 px-2.5 text-xs">10</TabsTrigger>
-                    <TabsTrigger value="25" className="h-6 px-2.5 text-xs">25</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={String(step)}
+                  onChange={(v) => setStep(Number(v))}
+                  options={[
+                    { label: '1', value: '1' },
+                    { label: '5', value: '5' },
+                    { label: '10', value: '10' },
+                    { label: '25', value: '25' },
+                  ]}
+                />
               </div>
 
               {/* Orientation selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Orientation:</span>
-                <Tabs
+                <SegmentedControl
+                  size="sm"
                   value={orientation}
-                  onValueChange={(v) => setOrientation(v as SliderOrientation)}
-                >
-                  <TabsList className="h-8">
-                    <TabsTrigger value="horizontal" className="h-6 px-2.5 text-xs">Horizontal</TabsTrigger>
-                    <TabsTrigger value="vertical" className="h-6 px-2.5 text-xs">Vertical</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                  onChange={(v) => setOrientation(v as SliderOrientation)}
+                  options={[
+                    { label: 'Horizontal', value: 'horizontal' },
+                    { label: 'Vertical', value: 'vertical' },
+                  ]}
+                />
               </div>
 
               {/* Toggles */}

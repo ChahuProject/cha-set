@@ -80,28 +80,30 @@ DocLayout {
             Row {
                 spacing: ThemeTokens.dp(8)
                 DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoSize
-                    onCurrentValueChanged: root.demoSize = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "default"; text: "Default" }
-                        ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
-                    }
+                    size: "sm"
+                    value: root.demoSize
+                    options: [
+                        { label: "Default", value: "default" },
+                        { label: "Small (sm)", value: "sm" }
+                    ]
+                    onValueSelected: function(s) { root.demoSize = String(s); }
                 }
             },
 
             Row {
                 spacing: ThemeTokens.dp(8)
                 DocText { text: "Type:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoType
-                    onCurrentValueChanged: root.demoType = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "text"; text: "Text" }
-                        ChaSetTabsTrigger { value: "password"; text: "Password" }
-                    }
+                    size: "sm"
+                    value: root.demoType
+                    options: [
+                        { label: "Text", value: "text" },
+                        { label: "Password", value: "password" }
+                    ]
+                    onValueSelected: function(t) { root.demoType = String(t); }
                 }
             },
 

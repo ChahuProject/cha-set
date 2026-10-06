@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent, type TabsVariant, type TabsSize, Card, CodeBlock } from '@chahu/cha-set';
+import { Tabs, TabsList, TabsTrigger, TabsContent, type TabsVariant, type TabsSize, Card, SegmentedControl, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
@@ -91,32 +91,41 @@ export function TabsDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">Variant:</span>
-                <Tabs value={variant} onValueChange={(v) => setVariant(v as TabsVariant)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Pill (default)</TabsTrigger>
-                    <TabsTrigger value="line" className="h-6 px-2.5 text-xs">Line</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={variant}
+                  onChange={(v) => setVariant(v as TabsVariant)}
+                  options={[
+                    { label: 'Pill (default)', value: 'default' },
+                    { label: 'Line', value: 'line' },
+                  ]}
+                />
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">Size:</span>
-                <Tabs value={size} onValueChange={(s) => setSize(s as TabsSize)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={size}
+                  onChange={(s) => setSize(s as TabsSize)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Small (sm)', value: 'sm' },
+                  ]}
+                />
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">Orientation:</span>
-                <Tabs value={orientation} onValueChange={(v) => setOrientation(v as any)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="horizontal" className="h-6 px-2.5 text-xs">Horizontal</TabsTrigger>
-                    <TabsTrigger value="vertical" className="h-6 px-2.5 text-xs">Vertical</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={orientation}
+                  onChange={(v) => setOrientation(v as any)}
+                  options={[
+                    { label: 'Horizontal', value: 'horizontal' },
+                    { label: 'Vertical', value: 'vertical' },
+                  ]}
+                />
               </div>
             </div>
           }

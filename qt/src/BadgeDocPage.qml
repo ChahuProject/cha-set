@@ -74,18 +74,19 @@ DocLayout {
                 width: childrenRect.width
                 spacing: 8
                 DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoVariant
-                    onCurrentValueChanged: root.demoVariant = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "default"; text: "Default" }
-                        ChaSetTabsTrigger { value: "secondary"; text: "Secondary" }
-                        ChaSetTabsTrigger { value: "destructive"; text: "Destructive" }
-                        ChaSetTabsTrigger { value: "outline"; text: "Outline" }
-                        ChaSetTabsTrigger { value: "ghost"; text: "Ghost" }
-                        ChaSetTabsTrigger { value: "link"; text: "Link" }
-                    }
+                    size: "sm"
+                    value: root.demoVariant
+                    options: [
+                        { label: "Default", value: "default" },
+                        { label: "Secondary", value: "secondary" },
+                        { label: "Destructive", value: "destructive" },
+                        { label: "Outline", value: "outline" },
+                        { label: "Ghost", value: "ghost" },
+                        { label: "Link", value: "link" }
+                    ]
+                    onValueSelected: function(v) { root.demoVariant = String(v); }
                 }
             },
 
@@ -93,14 +94,15 @@ DocLayout {
                 width: childrenRect.width
                 spacing: 8
                 DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoSize
-                    onCurrentValueChanged: root.demoSize = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "default"; text: "Default" }
-                        ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
-                    }
+                    size: "sm"
+                    value: root.demoSize
+                    options: [
+                        { label: "Default", value: "default" },
+                        { label: "Small (sm)", value: "sm" }
+                    ]
+                    onValueSelected: function(s) { root.demoSize = String(s); }
                 }
             },
 

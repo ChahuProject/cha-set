@@ -134,29 +134,31 @@ DocLayout {
                 Row {
                     spacing: 8
                     DocText { text: "Orientation:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoOrientation
-                        onCurrentValueChanged: root.demoOrientation = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "horizontal"; text: "Horizontal" }
-                            ChaSetTabsTrigger { value: "vertical"; text: "Vertical" }
-                        }
+                        size: "sm"
+                        value: root.demoOrientation
+                        options: [
+                            { label: "Horizontal", value: "horizontal" },
+                            { label: "Vertical", value: "vertical" }
+                        ]
+                        onValueSelected: function(o) { root.demoOrientation = String(o); }
                     }
                 }
 
                 Row {
                     spacing: 8
                     DocText { text: "Style:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoVariant
-                        onCurrentValueChanged: root.demoVariant = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "solid"; text: "Solid" }
-                            ChaSetTabsTrigger { value: "dashed"; text: "Dashed" }
-                            ChaSetTabsTrigger { value: "dotted"; text: "Dotted" }
-                        }
+                        size: "sm"
+                        value: root.demoVariant
+                        options: [
+                            { label: "Solid", value: "solid" },
+                            { label: "Dashed", value: "dashed" },
+                            { label: "Dotted", value: "dotted" }
+                        ]
+                        onValueSelected: function(v) { root.demoVariant = String(v); }
                     }
                 }
 
@@ -173,15 +175,16 @@ DocLayout {
                     visible: root.demoOrientation === "horizontal" && root.demoHasLabel
                     spacing: 8
                     DocText { text: "Position:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoLabelPosition
-                        onCurrentValueChanged: root.demoLabelPosition = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "left"; text: "Left" }
-                            ChaSetTabsTrigger { value: "center"; text: "Center" }
-                            ChaSetTabsTrigger { value: "right"; text: "Right" }
-                        }
+                        size: "sm"
+                        value: root.demoLabelPosition
+                        options: [
+                            { label: "Left", value: "left" },
+                            { label: "Center", value: "center" },
+                            { label: "Right", value: "right" }
+                        ]
+                        onValueSelected: function(p) { root.demoLabelPosition = String(p); }
                     }
                 }
             }

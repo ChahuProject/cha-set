@@ -96,14 +96,15 @@ DocLayout {
                         font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoSize
-                        onCurrentValueChanged: root.demoSize = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default" }
-                            ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
-                        }
+                        size: "sm"
+                        value: root.demoSize
+                        options: [
+                            { label: "Default", value: "default" },
+                            { label: "Small (sm)", value: "sm" }
+                        ]
+                        onValueSelected: function(s) { root.demoSize = String(s); }
                     }
                 }
 
@@ -115,16 +116,17 @@ DocLayout {
                         font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoStep.toString()
-                        onCurrentValueChanged: root.demoStep = parseFloat(currentValue)
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "1"; text: "1" }
-                            ChaSetTabsTrigger { value: "5"; text: "5" }
-                            ChaSetTabsTrigger { value: "10"; text: "10" }
-                            ChaSetTabsTrigger { value: "25"; text: "25" }
-                        }
+                        size: "sm"
+                        value: root.demoStep.toString()
+                        options: [
+                            { label: "1", value: "1" },
+                            { label: "5", value: "5" },
+                            { label: "10", value: "10" },
+                            { label: "25", value: "25" }
+                        ]
+                        onValueSelected: function(stepVal) { root.demoStep = parseFloat(stepVal); }
                     }
                 }
 
@@ -136,14 +138,15 @@ DocLayout {
                         font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoOrientation
-                        onCurrentValueChanged: root.demoOrientation = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "horizontal"; text: "H" }
-                            ChaSetTabsTrigger { value: "vertical"; text: "V" }
-                        }
+                        size: "sm"
+                        value: root.demoOrientation
+                        options: [
+                            { label: "H", value: "horizontal" },
+                            { label: "V", value: "vertical" }
+                        ]
+                        onValueSelected: function(o) { root.demoOrientation = String(o); }
                     }
                 }
 

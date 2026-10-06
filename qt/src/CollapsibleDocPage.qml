@@ -87,43 +87,46 @@ DocLayout {
                 Row {
                     spacing: 8
                     DocText { text: "State:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoOpen ? "true" : "false"
-                        onCurrentValueChanged: root.demoOpen = (currentValue === "true")
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "false"; text: "Collapsed" }
-                            ChaSetTabsTrigger { value: "true"; text: "Expanded" }
-                        }
+                        size: "sm"
+                        value: root.demoOpen ? "true" : "false"
+                        options: [
+                            { label: "Collapsed", value: "false" },
+                            { label: "Expanded", value: "true" }
+                        ]
+                        onValueSelected: function(v) { root.demoOpen = (String(v) === "true"); }
                     }
                 }
 
                 Row {
                     spacing: 8
                     DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoVariant
-                        onCurrentValueChanged: root.demoVariant = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default" }
-                            ChaSetTabsTrigger { value: "card"; text: "Card" }
-                            ChaSetTabsTrigger { value: "ghost"; text: "Ghost" }
-                        }
+                        size: "sm"
+                        value: root.demoVariant
+                        options: [
+                            { label: "Default", value: "default" },
+                            { label: "Card", value: "card" },
+                            { label: "Ghost", value: "ghost" }
+                        ]
+                        onValueSelected: function(v) { root.demoVariant = String(v); }
                     }
                 }
 
                 Row {
                     spacing: 8
                     DocText { text: "Disabled:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoDisabled ? "true" : "false"
-                        onCurrentValueChanged: root.demoDisabled = (currentValue === "true")
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "false"; text: "False" }
-                            ChaSetTabsTrigger { value: "true"; text: "True" }
-                        }
+                        size: "sm"
+                        value: root.demoDisabled ? "true" : "false"
+                        options: [
+                            { label: "False", value: "false" },
+                            { label: "True", value: "true" }
+                        ]
+                        onValueSelected: function(v) { root.demoDisabled = (String(v) === "true"); }
                     }
                 }
             }

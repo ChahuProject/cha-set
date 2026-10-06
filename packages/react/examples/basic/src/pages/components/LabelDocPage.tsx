@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Label, type LabelSize, Input, Checkbox, Tabs, TabsList, TabsTrigger, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock } from '@chahu/cha-set';
+import { Label, type LabelSize, Input, Checkbox, SegmentedControl, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -72,12 +72,15 @@ export function LabelDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">Size:</span>
-                <Tabs value={size} onValueChange={(s) => setSize(s as LabelSize)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={size}
+                  onChange={(s) => setSize(s as LabelSize)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Small (sm)', value: 'sm' },
+                  ]}
+                />
               </div>
 
               <Checkbox

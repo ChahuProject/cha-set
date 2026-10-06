@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ColorPicker, type ColorPickerMode, type ColorPickerSize, Tabs, TabsList, TabsTrigger, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
+import { ColorPicker, type ColorPickerMode, type ColorPickerSize, SegmentedControl, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
@@ -65,23 +65,29 @@ export function ColorPickerDocPage() {
               {/* Mode toggle */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Mode:</span>
-                <Tabs value={mode} onValueChange={(v) => setMode(v as ColorPickerMode)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="inline" className="h-6 px-2.5 text-xs">Inline</TabsTrigger>
-                    <TabsTrigger value="popover" className="h-6 px-2.5 text-xs">Popover</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={mode}
+                  onChange={(v) => setMode(v as ColorPickerMode)}
+                  options={[
+                    { label: 'Inline', value: 'inline' },
+                    { label: 'Popover', value: 'popover' },
+                  ]}
+                />
               </div>
 
               {/* Size selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Size:</span>
-                <Tabs value={size} onValueChange={(v) => setSize(v as ColorPickerSize)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">SM</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={size}
+                  onChange={(v) => setSize(v as ColorPickerSize)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'SM', value: 'sm' },
+                  ]}
+                />
               </div>
 
               {/* Disabled toggle */}

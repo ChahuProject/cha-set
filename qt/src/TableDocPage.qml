@@ -90,16 +90,17 @@ DocLayout {
                     spacing: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
                     DocText { text: "Status:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.statusFilter
-                        onCurrentValueChanged: root.statusFilter = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "all"; text: "All" }
-                            ChaSetTabsTrigger { value: "paid"; text: "Paid" }
-                            ChaSetTabsTrigger { value: "pending"; text: "Pending" }
-                            ChaSetTabsTrigger { value: "unpaid"; text: "Unpaid" }
-                        }
+                        size: "sm"
+                        value: root.statusFilter
+                        options: [
+                            { label: "All", value: "all" },
+                            { label: "Paid", value: "paid" },
+                            { label: "Pending", value: "pending" },
+                            { label: "Unpaid", value: "unpaid" }
+                        ]
+                        onValueSelected: function(v) { root.statusFilter = String(v); }
                     }
                 }
 

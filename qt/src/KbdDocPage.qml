@@ -61,16 +61,17 @@ DocLayout {
                 width: childrenRect.width
                 spacing: ThemeTokens.dp(8)
                 DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoVariant
-                    onCurrentValueChanged: root.demoVariant = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "outline"; text: "Outline" }
-                        ChaSetTabsTrigger { value: "solid"; text: "Solid" }
-                        ChaSetTabsTrigger { value: "subtle"; text: "Subtle" }
-                        ChaSetTabsTrigger { value: "inverted"; text: "Inverted" }
-                    }
+                    size: "sm"
+                    value: root.demoVariant
+                    options: [
+                        { label: "Outline", value: "outline" },
+                        { label: "Solid", value: "solid" },
+                        { label: "Subtle", value: "subtle" },
+                        { label: "Inverted", value: "inverted" }
+                    ]
+                    onValueSelected: function(v) { root.demoVariant = String(v); }
                 }
             },
 
@@ -78,15 +79,16 @@ DocLayout {
                 width: childrenRect.width
                 spacing: ThemeTokens.dp(8)
                 DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoSize
-                    onCurrentValueChanged: root.demoSize = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "xs"; text: "Extra Small (xs)" }
-                        ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
-                        ChaSetTabsTrigger { value: "default"; text: "Default" }
-                    }
+                    size: "sm"
+                    value: root.demoSize
+                    options: [
+                        { label: "Extra Small (xs)", value: "xs" },
+                        { label: "Small (sm)", value: "sm" },
+                        { label: "Default", value: "default" }
+                    ]
+                    onValueSelected: function(s) { root.demoSize = String(s); }
                 }
             },
 
@@ -94,15 +96,16 @@ DocLayout {
                 width: childrenRect.width
                 spacing: ThemeTokens.dp(8)
                 DocText { text: "Compact:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoCompact
-                    onCurrentValueChanged: root.demoCompact = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "auto"; text: "Auto" }
-                        ChaSetTabsTrigger { value: "always"; text: "Always" }
-                        ChaSetTabsTrigger { value: "never"; text: "Never" }
-                    }
+                    size: "sm"
+                    value: root.demoCompact
+                    options: [
+                        { label: "Auto", value: "auto" },
+                        { label: "Always", value: "always" },
+                        { label: "Never", value: "never" }
+                    ]
+                    onValueSelected: function(c) { root.demoCompact = String(c); }
                 }
             }
         ]

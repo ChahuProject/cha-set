@@ -144,42 +144,45 @@ DocLayout {
                 Row {
                     spacing: 8
                     DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoVariant
-                        onCurrentValueChanged: root.demoVariant = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Pill (default)" }
-                            ChaSetTabsTrigger { value: "line"; text: "Line" }
-                        }
+                        size: "sm"
+                        value: root.demoVariant
+                        onValueSelected: function(v) { root.demoVariant = String(v); }
+                        options: [
+                            { label: "Pill (default)", value: "default" },
+                            { label: "Line", value: "line" }
+                        ]
                     }
                 }
 
                 Row {
                     spacing: 8
                     DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoSize
-                        onCurrentValueChanged: root.demoSize = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "default"; text: "Default" }
-                            ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
-                        }
+                        size: "sm"
+                        value: root.demoSize
+                        onValueSelected: function(v) { root.demoSize = String(v); }
+                        options: [
+                            { label: "Default", value: "default" },
+                            { label: "Small (sm)", value: "sm" }
+                        ]
                     }
                 }
 
                 Row {
                     spacing: 8
                     DocText { text: "Orientation:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetTabs {
+                    ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
-                        currentValue: root.demoOrientation
-                        onCurrentValueChanged: root.demoOrientation = currentValue
-                        ChaSetTabsList {
-                            ChaSetTabsTrigger { value: "horizontal"; text: "Horizontal" }
-                            ChaSetTabsTrigger { value: "vertical"; text: "Vertical" }
-                        }
+                        size: "sm"
+                        value: root.demoOrientation
+                        onValueSelected: function(v) { root.demoOrientation = String(v); }
+                        options: [
+                            { label: "Horizontal", value: "horizontal" },
+                            { label: "Vertical", value: "vertical" }
+                        ]
                     }
                 }
             }

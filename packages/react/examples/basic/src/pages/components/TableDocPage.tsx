@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption, Badge, Input, Tabs, TabsList, TabsTrigger, Checkbox, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock } from '@chahu/cha-set';
+import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption, Badge, Input, SegmentedControl, Checkbox, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -118,14 +118,17 @@ export function TableDocPage() {
               {/* Status Filter */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Status:</span>
-                <Tabs value={statusFilter} onValueChange={setStatusFilter}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="all" className="h-6 px-2.5 text-xs">All</TabsTrigger>
-                    <TabsTrigger value="paid" className="h-6 px-2.5 text-xs">Paid</TabsTrigger>
-                    <TabsTrigger value="pending" className="h-6 px-2.5 text-xs">Pending</TabsTrigger>
-                    <TabsTrigger value="unpaid" className="h-6 px-2.5 text-xs">Unpaid</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={statusFilter}
+                  onChange={(v) => setStatusFilter(String(v))}
+                  options={[
+                    { label: 'All', value: 'all' },
+                    { label: 'Paid', value: 'paid' },
+                    { label: 'Pending', value: 'pending' },
+                    { label: 'Unpaid', value: 'unpaid' },
+                  ]}
+                />
               </div>
 
               {/* Caption Toggle */}

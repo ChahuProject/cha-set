@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Switch, type SwitchSize, Checkbox, Tabs, TabsList, TabsTrigger, Card, CodeBlock } from '@chahu/cha-set';
+import { Switch, type SwitchSize, Checkbox, SegmentedControl, Card, CodeBlock } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -59,12 +59,15 @@ export function SwitchDocPage() {
               {/* Size Selector */}
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">Size:</span>
-                <Tabs value={size} onValueChange={(v) => setSize(v as SwitchSize)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Small (sm)</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={size}
+                  onChange={(v) => setSize(v as SwitchSize)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Small (sm)', value: 'sm' },
+                  ]}
+                />
               </div>
 
               {/* Toggles */}

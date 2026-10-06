@@ -60,16 +60,17 @@ DocLayout {
             Row {
                 spacing: 8
                 DocText { text: "Side:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoSide
-                    onCurrentValueChanged: root.demoSide = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "top"; text: "Top" }
-                        ChaSetTabsTrigger { value: "bottom"; text: "Bottom" }
-                        ChaSetTabsTrigger { value: "left"; text: "Left" }
-                        ChaSetTabsTrigger { value: "right"; text: "Right" }
-                    }
+                    size: "sm"
+                    value: root.demoSide
+                    onValueSelected: function(v) { root.demoSide = String(v); }
+                    options: [
+                        { label: "Top", value: "top" },
+                        { label: "Bottom", value: "bottom" },
+                        { label: "Left", value: "left" },
+                        { label: "Right", value: "right" }
+                    ]
                 }
             },
 
@@ -77,15 +78,16 @@ DocLayout {
             Row {
                 spacing: 8
                 DocText { text: "Delay:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: String(root.demoDelay)
-                    onCurrentValueChanged: root.demoDelay = parseInt(currentValue)
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "0"; text: "0ms" }
-                        ChaSetTabsTrigger { value: "200"; text: "200ms" }
-                        ChaSetTabsTrigger { value: "500"; text: "500ms" }
-                    }
+                    size: "sm"
+                    value: String(root.demoDelay)
+                    onValueSelected: function(v) { root.demoDelay = parseInt(v); }
+                    options: [
+                        { label: "0ms", value: "0" },
+                        { label: "200ms", value: "200" },
+                        { label: "500ms", value: "500" }
+                    ]
                 }
             },
 

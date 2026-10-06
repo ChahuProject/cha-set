@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, type CardVariant, Button, Badge, Tabs, TabsList, TabsTrigger, CodeBlock, Checkbox } from '@chahu/cha-set';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, type CardVariant, Button, Badge, SegmentedControl, CodeBlock, Checkbox } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -75,22 +75,28 @@ export function CardDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-sm">Variant:</span>
-                <Tabs value={variant} onValueChange={(v) => setVariant(v as CardVariant)}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="secondary" className="h-6 px-2.5 text-xs">Secondary</TabsTrigger>
-                    <TabsTrigger value="outline" className="h-6 px-2.5 text-xs">Outline</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={variant}
+                  onChange={(v) => setVariant(v as CardVariant)}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Secondary', value: 'secondary' },
+                    { label: 'Outline', value: 'outline' },
+                  ]}
+                />
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground text-sm">Size:</span>
-                <Tabs value={size} onValueChange={(v) => setSize(v as 'default' | 'sm')}>
-                  <TabsList className="h-8">
-                    <TabsTrigger value="default" className="h-6 px-2.5 text-xs">Default</TabsTrigger>
-                    <TabsTrigger value="sm" className="h-6 px-2.5 text-xs">Compact (sm)</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <SegmentedControl
+                  size="sm"
+                  value={size}
+                  onChange={(v) => setSize(v as 'default' | 'sm')}
+                  options={[
+                    { label: 'Default', value: 'default' },
+                    { label: 'Compact (sm)', value: 'sm' },
+                  ]}
+                />
               </div>
               <label className="flex items-center gap-2 cursor-pointer select-none text-sm text-foreground">
                 <Checkbox

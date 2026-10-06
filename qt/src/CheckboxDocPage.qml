@@ -65,14 +65,15 @@ DocLayout {
                 width: childrenRect.width
                 spacing: 8
                 DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoSize
-                    onCurrentValueChanged: root.demoSize = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "default"; text: "Default" }
-                        ChaSetTabsTrigger { value: "sm"; text: "Small (sm)" }
-                    }
+                    size: "sm"
+                    value: root.demoSize
+                    options: [
+                        { label: "Default", value: "default" },
+                        { label: "Small (sm)", value: "sm" }
+                    ]
+                    onValueSelected: function(s) { root.demoSize = String(s); }
                 }
             },
 

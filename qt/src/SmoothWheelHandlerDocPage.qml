@@ -120,41 +120,44 @@ DocLayout {
 
         controlsData: [
             Row {
-                spacing: 12
+                spacing: ThemeTokens.dp(8)
                 DocText {
                     text: "Speed Multiplier:"
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                Repeater {
-                    model: [1.0, 1.2, 1.5, 2.0]
-                    delegate: ChaSetButton {
-                        required property var modelData
-                        size: "sm"
-                        variant: root.demoSpeed === modelData ? "default" : "outline"
-                        text: modelData + "x"
-                        onClicked: root.demoSpeed = modelData
-                    }
+                ChaSetSegmentedControl {
+                    anchors.verticalCenter: parent.verticalCenter
+                    size: "sm"
+                    value: root.demoSpeed
+                    options: [
+                        { label: "1.0x", value: 1.0 },
+                        { label: "1.2x", value: 1.2 },
+                        { label: "1.5x", value: 1.5 },
+                        { label: "2.0x", value: 2.0 }
+                    ]
+                    onValueSelected: function(v) { root.demoSpeed = Number(v); }
                 }
             },
             Row {
-                spacing: 12
+                spacing: ThemeTokens.dp(8)
                 DocText {
                     text: "Damping Duration:"
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                Repeater {
-                    model: [100, 200, 350]
-                    delegate: ChaSetButton {
-                        required property var modelData
-                        size: "sm"
-                        variant: root.demoDuration === modelData ? "default" : "outline"
-                        text: modelData + "ms"
-                        onClicked: root.demoDuration = modelData
-                    }
+                ChaSetSegmentedControl {
+                    anchors.verticalCenter: parent.verticalCenter
+                    size: "sm"
+                    value: root.demoDuration
+                    options: [
+                        { label: "100ms", value: 100 },
+                        { label: "200ms", value: 200 },
+                        { label: "350ms", value: 350 }
+                    ]
+                    onValueSelected: function(v) { root.demoDuration = Number(v); }
                 }
             }
         ]

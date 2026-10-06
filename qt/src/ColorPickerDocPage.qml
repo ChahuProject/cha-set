@@ -99,14 +99,15 @@ DocLayout {
                     font.pixelSize: Typography.sizeSmall
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoMode
-                    onCurrentValueChanged: root.demoMode = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "inline"; text: "Inline" }
-                        ChaSetTabsTrigger { value: "popover"; text: "Popover" }
-                    }
+                    size: "sm"
+                    value: root.demoMode
+                    options: [
+                        { label: "Inline", value: "inline" },
+                        { label: "Popover", value: "popover" }
+                    ]
+                    onValueSelected: function(m) { root.demoMode = String(m); }
                 }
             },
 
@@ -118,14 +119,15 @@ DocLayout {
                     font.pixelSize: Typography.sizeSmall
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                ChaSetTabs {
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    currentValue: root.demoSize
-                    onCurrentValueChanged: root.demoSize = currentValue
-                    ChaSetTabsList {
-                        ChaSetTabsTrigger { value: "default"; text: "Default" }
-                        ChaSetTabsTrigger { value: "sm"; text: "SM" }
-                    }
+                    size: "sm"
+                    value: root.demoSize
+                    options: [
+                        { label: "Default", value: "default" },
+                        { label: "SM", value: "sm" }
+                    ]
+                    onValueSelected: function(s) { root.demoSize = String(s); }
                 }
             },
 
