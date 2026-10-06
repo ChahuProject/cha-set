@@ -40,9 +40,26 @@ Item {
     property bool ignoreUiScale: false
 
     readonly property int effectiveSize: root.ignoreUiScale ? root.size : ThemeTokens.dp(root.size)
-    readonly property string resolvedName: ChaSetIcons.resolveIcon(root.name)
-    readonly property var resolution: ChaSetIcons.resolve(root.name, root.effectiveSize)
-    readonly property bool hasGlyph: resolution && resolution.hasGlyph
+    readonly property var hostResolution: {
+        var resolver = (typeof universalIconResolver !== "undefined" && universalIconResolver)
+            ? universalIconResolver
+            : ((typeof materialSymbolResolver !== "undefined" && materialSymbolResolver) ? materialSymbolResolver : null);
+        if (resolver && typeof resolver.resolve === "function") {
+            return resolver.resolve(root.name, root.effectiveSize, 0);
+        }
+        return null;
+    }
+    readonly property bool hostHasGlyph: hostResolution !== null && !hostResolution.usesFallback && String(hostResolution.glyph || "").length > 0
+
+    readonly property string resolvedName: hostHasGlyph ? root.name : ChaSetIcons.resolveIcon(root.name)
+    readonly property var resolution: hostHasGlyph ? ({
+        "hasGlyph": true,
+        "glyph": hostResolution.glyph,
+        "family": hostResolution.family,
+        "isWindows": hostResolution.family === "Segoe Fluent Icons",
+        "usesFallback": false
+    }) : ChaSetIcons.resolve(root.name, root.effectiveSize)
+    readonly property bool hasGlyph: hostHasGlyph || (resolution && resolution.hasGlyph)
     readonly property var shapes: ChaSetIcons.shapesFor(root.name)
 
     implicitWidth: effectiveSize
@@ -62,7 +79,14 @@ Item {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.family: root.hasGlyph ? root.resolution.family : ""
-        font.pixelSize: root.hasGlyph && root.resolution.isWindows ? Math.round(root.effectiveSize * 0.6) : root.effectiveSize
+        font.pixelSize: {
+            if (root.hostHasGlyph) {
+                return (root.hostResolution.family === "Material Symbols Outlined")
+                    ? root.effectiveSize
+                    : Math.round(root.effectiveSize * 0.6);
+            }
+            return (root.hasGlyph && root.resolution.isWindows) ? Math.round(root.effectiveSize * 0.6) : root.effectiveSize;
+        }
         font.variableAxes: ({
             "FILL": root.fill,
             "wght": root.weight,
