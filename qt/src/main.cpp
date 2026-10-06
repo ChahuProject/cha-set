@@ -10,6 +10,7 @@
 #include <QTest>
 #include <QWheelEvent>
 #include <QKeyEvent>
+#include <QMouseEvent>
 #include <QDateTime>
 #include <QElapsedTimer>
 #include "ChaSetFontSystem.h"
@@ -43,10 +44,33 @@ protected:
                     return true;
                 }
             }
+        } else if (event->type() == QEvent::MouseButtonPress) {
+            auto* me = static_cast<QMouseEvent*>(event);
+            if (me->button() == Qt::BackButton || me->button() == Qt::ForwardButton) {
+                event->accept();
+                return true;
+            }
+        } else if (event->type() == QEvent::MouseButtonRelease) {
+            auto* me = static_cast<QMouseEvent*>(event);
+            if (me->button() == Qt::BackButton) {
+                if (m_window != nullptr) {
+                    QMetaObject::invokeMethod(m_window, "goBack");
+                }
+                event->accept();
+                return true;
+            } else if (me->button() == Qt::ForwardButton) {
+                if (m_window != nullptr) {
+                    QMetaObject::invokeMethod(m_window, "goForward");
+                }
+                event->accept();
+                return true;
+            }
         } else if (event->type() == QEvent::ShortcutOverride) {
             auto* ke = static_cast<QKeyEvent*>(event);
             if ((ke->key() == Qt::Key_C && (ke->modifiers() & (Qt::ControlModifier | Qt::MetaModifier))) ||
-                (ke->key() == Qt::Key_Insert && (ke->modifiers() & Qt::ControlModifier))) {
+                (ke->key() == Qt::Key_Insert && (ke->modifiers() & Qt::ControlModifier)) ||
+                ((ke->key() == Qt::Key_Left || ke->key() == Qt::Key_Right) && (ke->modifiers() & Qt::AltModifier)) ||
+                ke->key() == Qt::Key_Back || ke->key() == Qt::Key_Forward) {
                 event->accept();
                 return true;
             }
@@ -75,6 +99,18 @@ protected:
                     event->accept();
                     return true;
                 }
+            } else if ((ke->key() == Qt::Key_Left && (ke->modifiers() & Qt::AltModifier)) || ke->key() == Qt::Key_Back) {
+                if (m_window != nullptr) {
+                    QMetaObject::invokeMethod(m_window, "goBack");
+                }
+                event->accept();
+                return true;
+            } else if ((ke->key() == Qt::Key_Right && (ke->modifiers() & Qt::AltModifier)) || ke->key() == Qt::Key_Forward) {
+                if (m_window != nullptr) {
+                    QMetaObject::invokeMethod(m_window, "goForward");
+                }
+                event->accept();
+                return true;
             }
         }
         return false;
@@ -529,6 +565,103 @@ static bool runRealKeyboardVerification(QQuickWindow* window) {
     }
 
     qInfo("[qt-scenario] PASS: Authentic C++ QTest keyboard navigation verified for Select, DropdownMenu, and Ctrl+C selection copy");
+    return true;
+}
+
+static bool runRealNavigationHistoryVerification(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running authentic C++ navigation history & mouse back/forward verification...");
+
+    // 1. Initial State: reset navigation stack cleanly to 'intro'
+    window->setProperty("isNavigatingHistory", true);
+    window->setProperty("navHistory", QVariantList{"intro"});
+    window->setProperty("navHistoryIndex", 0);
+    window->setProperty("activePage", "intro");
+    window->setProperty("isNavigatingHistory", false);
+    QTest::qWait(60);
+
+    if (window->property("canGoBack").toBool() || window->property("canGoForward").toBool()) {
+        qCritical() << "[qt-scenario] FAIL: Expected canGoBack and canGoForward to be false at clean initial state";
+        return false;
+    }
+
+    // 2. Navigate: intro -> button -> badge
+    window->setProperty("activePage", "button");
+    QTest::qWait(60);
+    window->setProperty("activePage", "badge");
+    QTest::qWait(60);
+
+    if (window->property("activePage").toString() != "badge") {
+        qCritical() << "[qt-scenario] FAIL: Expected activePage 'badge', got" << window->property("activePage").toString();
+        return false;
+    }
+    if (!window->property("canGoBack").toBool()) {
+        qCritical() << "[qt-scenario] FAIL: Expected canGoBack to be true after navigating to 'badge'";
+        return false;
+    }
+
+    // 3. Test Alt+Left Keyboard Shortcut to navigate back to "button"
+    QKeyEvent altLeftPress(QEvent::KeyPress, Qt::Key_Left, Qt::AltModifier);
+    QCoreApplication::sendEvent(window, &altLeftPress);
+    QTest::qWait(60);
+
+    if (window->property("activePage").toString() != "button") {
+        qCritical() << "[qt-scenario] FAIL: Alt+Left did not go back to 'button', got" << window->property("activePage").toString();
+        return false;
+    }
+
+    // 4. Test Mouse Back Button to navigate back to "intro"
+    QPointF localPt(100, 100);
+    QPointF globalPt = window->mapToGlobal(QPoint(100, 100));
+    QMouseEvent mouseBackPress(QEvent::MouseButtonPress, localPt, globalPt, Qt::BackButton, Qt::BackButton, Qt::NoModifier);
+    QCoreApplication::sendEvent(window, &mouseBackPress);
+    QMouseEvent mouseBackRelease(QEvent::MouseButtonRelease, localPt, globalPt, Qt::BackButton, Qt::NoButton, Qt::NoModifier);
+    QCoreApplication::sendEvent(window, &mouseBackRelease);
+    QTest::qWait(60);
+
+    if (window->property("activePage").toString() != "intro") {
+        qCritical() << "[qt-scenario] FAIL: Mouse Back button did not go back to 'intro', got" << window->property("activePage").toString();
+        return false;
+    }
+    if (window->property("canGoBack").toBool()) {
+        qCritical() << "[qt-scenario] FAIL: canGoBack should be false at start of history";
+        return false;
+    }
+    if (!window->property("canGoForward").toBool()) {
+        qCritical() << "[qt-scenario] FAIL: canGoForward should be true after going back";
+        return false;
+    }
+
+    // 5. Test Mouse Forward Button to advance to "button"
+    QMouseEvent mouseFwdPress(QEvent::MouseButtonPress, localPt, globalPt, Qt::ForwardButton, Qt::ForwardButton, Qt::NoModifier);
+    QCoreApplication::sendEvent(window, &mouseFwdPress);
+    QMouseEvent mouseFwdRelease(QEvent::MouseButtonRelease, localPt, globalPt, Qt::ForwardButton, Qt::NoButton, Qt::NoModifier);
+    QCoreApplication::sendEvent(window, &mouseFwdRelease);
+    QTest::qWait(60);
+
+    if (window->property("activePage").toString() != "button") {
+        qCritical() << "[qt-scenario] FAIL: Mouse Forward button did not advance to 'button', got" << window->property("activePage").toString();
+        return false;
+    }
+
+    // 6. Test Alt+Right to advance to "badge"
+    QKeyEvent altRightPress(QEvent::KeyPress, Qt::Key_Right, Qt::AltModifier);
+    QCoreApplication::sendEvent(window, &altRightPress);
+    QTest::qWait(60);
+
+    if (window->property("activePage").toString() != "badge") {
+        qCritical() << "[qt-scenario] FAIL: Alt+Right did not advance to 'badge', got" << window->property("activePage").toString();
+        return false;
+    }
+    if (window->property("canGoForward").toBool()) {
+        qCritical() << "[qt-scenario] FAIL: canGoForward should be false at end of history";
+        return false;
+    }
+
+    // 7. Reset back to intro for clean state
+    window->setProperty("activePage", "intro");
+    QTest::qWait(60);
+
+    qInfo("[qt-scenario] PASS: Authentic C++ navigation history, mouse back/forward, and keyboard shortcuts verified successfully");
     return true;
 }
 
@@ -1186,6 +1319,13 @@ int main(int argc, char* argv[])
                         if (testScenario == "all" || testScenario == "typography" || testScenario == "font") {
                             bool typoOk = runRealTypographyVerification(window);
                             if (!typoOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                        }
+                        if (testScenario == "all" || testScenario == "navigation" || testScenario == "history") {
+                            bool navOk = runRealNavigationHistoryVerification(window);
+                            if (!navOk) {
                                 QCoreApplication::exit(1);
                                 return;
                             }

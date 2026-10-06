@@ -31,6 +31,64 @@ ApplicationWindow {
         }
     }
 
+    // ---- Page Navigation History State & Kinematics ----
+    property var navHistory: []
+    property int navHistoryIndex: -1
+    property bool isNavigatingHistory: false
+
+    readonly property bool canGoBack: navHistoryIndex > 0
+    readonly property bool canGoForward: navHistoryIndex >= 0 && navHistoryIndex < navHistory.length - 1
+
+    function goBack() {
+        if (canGoBack) {
+            isNavigatingHistory = true;
+            navHistoryIndex--;
+            activePage = navHistory[navHistoryIndex];
+            isNavigatingHistory = false;
+            return true;
+        }
+        return false;
+    }
+
+    function goForward() {
+        if (canGoForward) {
+            isNavigatingHistory = true;
+            navHistoryIndex++;
+            activePage = navHistory[navHistoryIndex];
+            isNavigatingHistory = false;
+            return true;
+        }
+        return false;
+    }
+
+    onActivePageChanged: {
+        if (contentScroll && contentScroll.flickableItem) {
+            contentScroll.flickableItem.contentY = 0;
+        }
+
+        if (isNavigatingHistory) return;
+        if (!activePage || activePage === "") return;
+
+        // If activePage matches current history position, do nothing
+        if (navHistory.length > 0 && navHistoryIndex >= 0 && navHistoryIndex < navHistory.length) {
+            if (navHistory[navHistoryIndex] === activePage) {
+                return;
+            }
+        }
+
+        // Branch history: truncate forward history and append new page
+        var nextHistory = navHistory.slice(0, navHistoryIndex + 1);
+        nextHistory.push(activePage);
+
+        // Limit stack depth to 50
+        if (nextHistory.length > 50) {
+            nextHistory = nextHistory.slice(nextHistory.length - 50);
+        }
+
+        navHistory = nextHistory;
+        navHistoryIndex = nextHistory.length - 1;
+    }
+
     // ---- Reactive Global Theme Config ----
     property var globalThemeConfig: ({
         version: 1,
@@ -474,11 +532,25 @@ ApplicationWindow {
         onActivated: win.resetZoom()
     }
 
+    // Global Page Navigation Shortcuts
+    Shortcut {
+        sequences: ["Alt+Left", "Back"]
+        onActivated: win.goBack()
+    }
+    Shortcut {
+        sequences: ["Alt+Right", "Forward"]
+        onActivated: win.goForward()
+    }
+
     Component.onCompleted: {
         if (typeof startupDark !== "undefined" && startupDark === true) win.themeMode = "dark"
         else if (typeof startupLight !== "undefined" && startupLight === true) win.themeMode = "light"
         else win.themeMode = "system"
         win.updateEffectiveTheme()
+        if (win.activePage && win.activePage !== "") {
+            win.navHistory = [win.activePage]
+            win.navHistoryIndex = 0
+        }
         // Deterministic headless runs: scenario/pixel tests must not race with
         // animations (Behavior durations would make assertions / grabs flaky).
         if ((typeof testScenario !== "undefined" && testScenario !== "")
@@ -1433,6 +1505,77 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 16: Navigation History Kinematics (goBack, goForward, branching, boundary invariants)
+        if (scenario === "all" || scenario === "navigation" || scenario === "history") {
+            console.log("[qt-scenario] Running navigation history & kinematics scenario...");
+            var navFailures = 0;
+            var savedPage = win.activePage;
+            var savedHistory = win.navHistory.slice();
+            var savedIndex = win.navHistoryIndex;
+
+            // Reset test stack
+            win.isNavigatingHistory = true;
+            win.navHistory = ["intro"];
+            win.navHistoryIndex = 0;
+            win.activePage = "intro";
+            win.isNavigatingHistory = false;
+
+            if (win.canGoBack || win.canGoForward) {
+                console.log("[qt-scenario] FAIL: Initial canGoBack/canGoForward expected false");
+                navFailures++;
+            }
+
+            // Step 1: Navigate to 'button' then 'badge'
+            win.activePage = "button";
+            win.activePage = "badge";
+
+            if (win.activePage !== "badge" || !win.canGoBack || win.canGoForward) {
+                console.log("[qt-scenario] FAIL: History push failed (page=" + win.activePage + ", canGoBack=" + win.canGoBack + ", canGoForward=" + win.canGoForward + ")");
+                navFailures++;
+            }
+
+            // Step 2: goBack to 'button'
+            var wentBack1 = win.goBack();
+            if (!wentBack1 || win.activePage !== "button" || !win.canGoBack || !win.canGoForward) {
+                console.log("[qt-scenario] FAIL: goBack to 'button' failed (page=" + win.activePage + ")");
+                navFailures++;
+            }
+
+            // Step 3: goBack to 'intro'
+            var wentBack2 = win.goBack();
+            if (!wentBack2 || win.activePage !== "intro" || win.canGoBack || !win.canGoForward) {
+                console.log("[qt-scenario] FAIL: goBack to 'intro' failed (page=" + win.activePage + ")");
+                navFailures++;
+            }
+
+            // Step 4: goForward to 'button'
+            var wentFwd1 = win.goForward();
+            if (!wentFwd1 || win.activePage !== "button" || !win.canGoBack || !win.canGoForward) {
+                console.log("[qt-scenario] FAIL: goForward to 'button' failed (page=" + win.activePage + ")");
+                navFailures++;
+            }
+
+            // Step 5: Branching navigation from 'button' to 'card' (should prune 'badge')
+            win.activePage = "card";
+            if (win.activePage !== "card" || win.canGoForward || !win.canGoBack) {
+                console.log("[qt-scenario] FAIL: History branching failed (canGoForward expected false)");
+                navFailures++;
+            }
+
+            // Restore state
+            win.isNavigatingHistory = true;
+            win.navHistory = savedHistory;
+            win.navHistoryIndex = savedIndex;
+            win.activePage = savedPage;
+            win.isNavigatingHistory = false;
+
+            if (navFailures === 0) {
+                console.log("[qt-scenario] PASS: Navigation history kinematics verified (push, goBack, goForward, branching)");
+            } else {
+                failures += navFailures;
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;
@@ -1462,6 +1605,19 @@ ApplicationWindow {
                 if (event.angleDelta.y === 0) return;
                 win.stepZoom(event.angleDelta.y > 0 ? 1 : -1);
                 event.accepted = true;
+            }
+        }
+
+        // Fallback QML TapHandler for standalone QML runtime mouse back/forward button navigation
+        TapHandler {
+            target: null
+            acceptedButtons: Qt.BackButton | Qt.ForwardButton
+            onTapped: function(eventPoint, button) {
+                if (button === Qt.BackButton) {
+                    win.goBack();
+                } else if (button === Qt.ForwardButton) {
+                    win.goForward();
+                }
             }
         }
 
@@ -2257,20 +2413,36 @@ ApplicationWindow {
 
                                 Repeater {
                                     model: modelData.items || []
-                                    delegate: Rectangle {
+                                    delegate: Item {
                                         id: navItemRect
                                         required property var modelData
                                         width: parent.width
                                         height: ThemeTokens.dp(32)
-                                        radius: ThemeTokens.dp(6)
+                                        implicitWidth: parent ? parent.width : ThemeTokens.dp(200)
+                                        implicitHeight: ThemeTokens.dp(32)
 
                                         readonly property bool isActive: win.activePage === navItemRect.modelData.id
                                         readonly property bool isHovered: navItemMouse.containsMouse
 
-                                        color: isActive ? win.cAccentBg : (isHovered ? ThemeTokens.hover : "transparent")
+                                        Rectangle {
+                                            id: navItemActiveBg
+                                            anchors.fill: parent
+                                            radius: ThemeTokens.dp(6)
+                                            color: win.cAccentBg
+                                            visible: navItemRect.isActive
+                                        }
 
-                                        Behavior on color {
-                                            ColorAnimation { duration: 100 }
+                                        Rectangle {
+                                            id: navItemHoverBg
+                                            anchors.fill: parent
+                                            radius: ThemeTokens.dp(6)
+                                            color: ThemeTokens.hover
+                                            opacity: (!navItemRect.isActive && navItemRect.isHovered) ? 1.0 : 0.0
+
+                                            Behavior on opacity {
+                                                enabled: ThemeTokens.animationsEnabled
+                                                NumberAnimation { duration: ThemeTokens.motionQuick }
+                                            }
                                         }
 
                                         Text {
@@ -2457,20 +2629,36 @@ ApplicationWindow {
 
                                 Repeater {
                                     model: modelData.items || []
-                                    delegate: Rectangle {
+                                    delegate: Item {
                                         id: mNavItemRect
                                         required property var modelData
                                         width: parent.width
                                         height: ThemeTokens.dp(32)
-                                        radius: ThemeTokens.dp(6)
+                                        implicitWidth: parent ? parent.width : ThemeTokens.dp(200)
+                                        implicitHeight: ThemeTokens.dp(32)
 
                                         readonly property bool isActive: win.activePage === mNavItemRect.modelData.id
                                         readonly property bool isHovered: mNavItemMouse.containsMouse
 
-                                        color: isActive ? win.cAccentBg : (isHovered ? ThemeTokens.hover : "transparent")
+                                        Rectangle {
+                                            id: mNavItemActiveBg
+                                            anchors.fill: parent
+                                            radius: ThemeTokens.dp(6)
+                                            color: win.cAccentBg
+                                            visible: mNavItemRect.isActive
+                                        }
 
-                                        Behavior on color {
-                                            ColorAnimation { duration: 100 }
+                                        Rectangle {
+                                            id: mNavItemHoverBg
+                                            anchors.fill: parent
+                                            radius: ThemeTokens.dp(6)
+                                            color: ThemeTokens.hover
+                                            opacity: (!mNavItemRect.isActive && mNavItemRect.isHovered) ? 1.0 : 0.0
+
+                                            Behavior on opacity {
+                                                enabled: ThemeTokens.animationsEnabled
+                                                NumberAnimation { duration: ThemeTokens.motionQuick }
+                                            }
                                         }
 
                                         Text {
