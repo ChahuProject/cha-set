@@ -416,7 +416,7 @@ Item {
     Item {
         id: layoutRow
         anchors.horizontalCenter: parent.horizontalCenter
-        width: Math.max(ThemeTokens.dp(320), Math.min(parent.width - ThemeTokens.dp(48), ThemeTokens.dp(1000)))
+        width: Math.min(Math.max(0, parent ? (parent.width - ThemeTokens.dp(parent.width < ThemeTokens.dp(680) ? 24 : 48)) : ThemeTokens.dp(320)), ThemeTokens.dp(1000))
         implicitHeight: Math.max(mainCol.implicitHeight, tocCol.implicitHeight)
 
         // Main Center Content Column (max-w-4xl)
@@ -424,8 +424,8 @@ Item {
             id: mainCol
             anchors.left: parent.left
             width: root.showToc
-                ? Math.max(ThemeTokens.dp(280), layoutRow.width - ThemeTokens.dp(180) - ThemeTokens.dp(32))
-                : Math.max(ThemeTokens.dp(280), layoutRow.width)
+                ? Math.max(0, layoutRow.width - ThemeTokens.dp(180) - ThemeTokens.dp(32))
+                : layoutRow.width
             spacing: ThemeTokens.dp(24)
 
             // Breadcrumb

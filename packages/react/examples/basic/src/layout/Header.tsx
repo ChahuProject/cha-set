@@ -29,6 +29,7 @@ import {
   ListIcon,
 } from '@chahu/cha-set';
 import { useToc } from './TocContext';
+import { useResponsive } from './useResponsive';
 
 export interface HeaderProps {
   mode: string;
@@ -52,6 +53,7 @@ export function Header({
   const { preference, setPreference, supportedLocales, locale, t } = useChaSetI18n();
   const activeLocaleMeta = supportedLocales.find((l) => l.code === locale) || { nativeName: locale, code: locale };
   const tocContext = useToc();
+  const { isMobile, isTablet, isWide, effectiveWidth } = useResponsive();
 
   return (
     <header
@@ -61,13 +63,13 @@ export function Header({
       <div className="flex h-14 items-center justify-between px-3 sm:px-4 md:px-6">
         {/* Brand Group */}
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-          {onOpenSidebar && (
+          {onOpenSidebar && isMobile && (
             <Button
               type="button"
               variant="ghost"
               size="icon"
               onClick={onOpenSidebar}
-              className="md:hidden -ml-1 text-muted-foreground hover:text-foreground"
+              className="-ml-1 text-muted-foreground hover:text-foreground cursor-pointer"
               aria-label="Open navigation sidebar"
             >
               <PanelLeftIcon className="size-4" />
@@ -75,52 +77,58 @@ export function Header({
           )}
           <a href="#/get-started/introduction" className="flex items-center gap-2 font-bold text-foreground hover:opacity-85 transition-opacity">
             <ChaSetLogoIcon className="size-5 text-primary shrink-0" />
-            <span className="hidden min-[380px]:inline text-base tracking-tight font-bold">ChaSet</span>
+            {effectiveWidth >= 380 && (
+              <span className="text-base tracking-tight font-bold">ChaSet</span>
+            )}
           </a>
         </div>
 
-        {/* Center Search Trigger (Desktop >= lg) */}
-        <Button
-          type="button"
-          variant="outline"
-          size="default"
-          onClick={onOpenSearch}
-          className="hidden lg:inline-flex items-center justify-between gap-3 h-8 flex-1 max-w-sm mx-4 px-3 text-sm text-muted-foreground font-normal bg-muted/30 hover:bg-muted/60 min-w-0"
-        >
-          <div className="flex items-center gap-2 min-w-0">
-            <SearchIcon className="size-4 shrink-0" />
-            <span className="truncate">{t('showcase.searchPlaceholder', 'Search components & docs...')}</span>
-          </div>
-          <Kbd variant="outline" size="sm" className="shrink-0">
-            ⌘K
-          </Kbd>
-        </Button>
+        {/* Center Search Trigger (Desktop >= 1024 effectiveWidth) */}
+        {!isTablet && (
+          <Button
+            type="button"
+            variant="outline"
+            size="default"
+            onClick={onOpenSearch}
+            className="inline-flex items-center justify-between gap-3 h-8 flex-1 max-w-sm mx-4 px-3 text-sm text-muted-foreground font-normal bg-muted/30 hover:bg-muted/60 min-w-0"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <SearchIcon className="size-4 shrink-0" />
+              <span className="truncate">{t('showcase.searchPlaceholder', 'Search components & docs...')}</span>
+            </div>
+            <Kbd variant="outline" size="sm" className="shrink-0">
+              ⌘K
+            </Kbd>
+          </Button>
+        )}
 
         {/* Right Actions */}
         <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 shrink-0">
-          {/* Mobile/Tablet Search Icon Trigger (< lg) */}
-          <Tooltip content={t('showcase.searchPlaceholder', 'Search components & docs...')} side="bottom">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={onOpenSearch}
-              className="inline-flex lg:hidden"
-              aria-label={t('showcase.searchPlaceholder', 'Search components & docs...')}
-            >
-              <SearchIcon className="size-4" />
-            </Button>
-          </Tooltip>
+          {/* Mobile/Tablet Search Icon Trigger (< 1024 effectiveWidth) */}
+          {isTablet && (
+            <Tooltip content={t('showcase.searchPlaceholder', 'Search components & docs...')} side="bottom">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={onOpenSearch}
+                className="inline-flex"
+                aria-label={t('showcase.searchPlaceholder', 'Search components & docs...')}
+              >
+                <SearchIcon className="size-4" />
+              </Button>
+            </Tooltip>
+          )}
 
-          {/* Mobile/Tablet Table of Contents Trigger (< xl) */}
-          {tocContext.items.length > 0 && (
+          {/* Mobile/Tablet Table of Contents Trigger (< 1280 effectiveWidth) */}
+          {!isWide && tocContext.items.length > 0 && (
             <Tooltip content={t('showcase.onThisPage', 'On this page')} side="bottom">
               <Button
                 type="button"
                 variant="outline"
                 size="icon"
                 onClick={() => tocContext.setTocOpen(true)}
-                className="inline-flex xl:hidden"
+                className="inline-flex"
                 aria-label={t('showcase.onThisPage', 'On this page')}
               >
                 <ListIcon className="size-4" />
@@ -133,13 +141,13 @@ export function Header({
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                size="icon"
-                className="inline-flex xl:w-auto xl:px-2.5 xl:gap-1.5"
+                size={isWide ? 'default' : 'icon'}
+                className={isWide ? 'inline-flex w-auto px-2.5 gap-1.5' : 'inline-flex'}
                 title={t('showcase.jumpTo', 'Jump to')}
                 aria-label={t('showcase.jumpTo', 'Jump to')}
               >
                 <ZapIcon className="size-4 text-primary shrink-0" />
-                <span className="hidden xl:inline text-xs">{t('showcase.jumpTo', 'Jump to')}</span>
+                {isWide && <span className="text-xs">{t('showcase.jumpTo', 'Jump to')}</span>}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={8} className="w-52">
@@ -174,13 +182,13 @@ export function Header({
             <Button
               type="button"
               variant={isTunerActive ? 'default' : 'outline'}
-              size="icon"
+              size={!isTablet ? 'default' : 'icon'}
               onClick={onOpenTuner}
-              className="inline-flex lg:w-auto lg:px-2.5 lg:gap-1.5"
+              className={!isTablet ? 'inline-flex w-auto px-2.5 gap-1.5' : 'inline-flex'}
               aria-label={t('showcase.studioTuner', 'Studio Tuner')}
             >
               <PaletteIcon className="size-4 shrink-0" />
-              <span className="hidden lg:inline text-xs">{t('showcase.studioTuner', 'Studio Tuner')}</span>
+              {!isTablet && <span className="text-xs">{t('showcase.studioTuner', 'Studio Tuner')}</span>}
             </Button>
           </Tooltip>
 
@@ -189,13 +197,13 @@ export function Header({
             <Button
               type="button"
               variant="outline"
-              size="icon"
+              size={!isTablet ? 'default' : 'icon'}
               onClick={onOpenExport}
-              className="inline-flex lg:w-auto lg:px-2.5 lg:gap-1.5"
+              className={!isTablet ? 'inline-flex w-auto px-2.5 gap-1.5' : 'inline-flex'}
               aria-label={t('showcase.exportTheme', 'Export')}
             >
               <CopyIcon className="size-4 shrink-0" />
-              <span className="hidden lg:inline text-xs">{t('showcase.exportTheme', 'Export')}</span>
+              {!isTablet && <span className="text-xs">{t('showcase.exportTheme', 'Export')}</span>}
             </Button>
           </Tooltip>
 
@@ -204,13 +212,13 @@ export function Header({
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                size="icon"
-                className="inline-flex md:w-auto md:px-2.5 md:gap-1.5"
+                size={!isMobile ? 'default' : 'icon'}
+                className={!isMobile ? 'inline-flex w-auto px-2.5 gap-1.5' : 'inline-flex'}
                 title={t('showcase.switchLanguage', 'Switch Language')}
                 aria-label={t('showcase.switchLanguage', 'Switch Language')}
               >
                 <GlobeIcon className="size-4 shrink-0" />
-                <span className="hidden md:inline text-xs font-medium">{activeLocaleMeta.nativeName}</span>
+                {!isMobile && <span className="text-xs font-medium">{activeLocaleMeta.nativeName}</span>}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={8} className="w-48">
@@ -235,7 +243,9 @@ export function Header({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Separator orientation="vertical" className="h-4 mx-0.5 sm:mx-1 hidden sm:block" />
+          {effectiveWidth >= 640 && (
+            <Separator orientation="vertical" className="h-4 mx-0.5 sm:mx-1" />
+          )}
 
           {/* Theme Mode Toggle */}
           <Tooltip
@@ -266,31 +276,35 @@ export function Header({
           </Tooltip>
 
           {/* GitHub Icon */}
-          <Tooltip content="GitHub Repository" side="bottom">
-            <Button
-              asChild
-              variant="outline"
-              size="icon"
-              aria-label="GitHub Repository"
-              className="hidden sm:inline-flex"
-            >
-              <a
-                href="https://github.com/chahu/cha-set"
-                target="_blank"
-                rel="noreferrer"
+          {effectiveWidth >= 640 && (
+            <Tooltip content="GitHub Repository" side="bottom">
+              <Button
+                asChild
+                variant="outline"
+                size="icon"
+                aria-label="GitHub Repository"
+                className="inline-flex"
               >
-                {/* chaset-icon-exempt: GitHub brand mark — a filled 24-unit logotype with its own proportions, not a stroke glyph */}
-                <svg className="size-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                </svg>
-              </a>
-            </Button>
-          </Tooltip>
+                <a
+                  href="https://github.com/chahu/cha-set"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {/* chaset-icon-exempt: GitHub brand mark — a filled 24-unit logotype with its own proportions, not a stroke glyph */}
+                  <svg className="size-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                  </svg>
+                </a>
+              </Button>
+            </Tooltip>
+          )}
 
           {/* Version Badge */}
-          <Badge variant="outline" size="sm" className="hidden xl:inline-flex font-medium text-muted-foreground bg-muted/60 shrink-0">
-            v0.1.0
-          </Badge>
+          {isWide && (
+            <Badge variant="outline" size="sm" className="inline-flex font-medium text-muted-foreground bg-muted/60 shrink-0">
+              v0.1.0
+            </Badge>
+          )}
         </div>
       </div>
     </header>

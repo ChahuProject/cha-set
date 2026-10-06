@@ -105,8 +105,12 @@ Rectangle {
             if (root.side === "bottom") return root.open ? (root.height - height) : root.height
             return 0
         }
-        width: (root.side === "left" || root.side === "right") ? root.sheetSize : root.width
-        height: (root.side === "top" || root.side === "bottom") ? root.sheetSize : root.height
+        width: (root.side === "left" || root.side === "right")
+            ? Math.min(root.width, Math.max(ThemeTokens.dp(200), Math.min(root.sheetSize, Math.round(root.width * 0.88))))
+            : root.width
+        height: (root.side === "top" || root.side === "bottom")
+            ? Math.min(root.height, Math.max(ThemeTokens.dp(160), Math.min(root.sheetSize, Math.round(root.height * 0.88))))
+            : root.height
 
         Behavior on x {
             enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")

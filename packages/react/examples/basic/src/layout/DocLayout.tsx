@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, CopyButton, Separator, ListIcon } from '@chahu/cha-set';
 import { TableOfContents, type TocItem } from './TableOfContents';
 import { useToc } from './TocContext';
+import { useResponsive } from './useResponsive';
 
 export interface DocLayoutProps {
   category: string;
@@ -20,6 +21,7 @@ export function DocLayout({
 }: DocLayoutProps) {
   const contentRef = React.useRef<HTMLDivElement>(null);
   const { items, setTocOpen } = useToc();
+  const { isWide } = useResponsive();
 
   return (
     <div className="flex w-full min-w-0 justify-center">
@@ -40,13 +42,13 @@ export function DocLayout({
               {title}
             </h1>
             <div className="flex items-center gap-2">
-              {items.length > 0 && (
+              {items.length > 0 && !isWide && (
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => setTocOpen(true)}
-                  className="xl:hidden gap-1.5 cursor-pointer"
+                  className="gap-1.5 cursor-pointer"
                 >
                   <ListIcon className="size-3.5" />
                   <span>Outline</span>

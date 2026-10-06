@@ -25,6 +25,12 @@ ApplicationWindow {
     property bool mobileNavOpen: false
     property bool mobileTocOpen: false
 
+    onIsMobileNavChanged: {
+        if (!isMobileNav) {
+            mobileNavOpen = false;
+        }
+    }
+
     // ---- Reactive Global Theme Config ----
     property var globalThemeConfig: ({
         version: 1,
@@ -1870,6 +1876,7 @@ ApplicationWindow {
                     // Left Brand Group
                     Row {
                         id: brandGroup
+                        z: 10
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: ThemeTokens.dp(8)
@@ -1929,7 +1936,7 @@ ApplicationWindow {
                         anchors.rightMargin: ThemeTokens.dp(16)
                         anchors.verticalCenter: parent.verticalCenter
                         height: ThemeTokens.dp(36)
-                        visible: width >= ThemeTokens.dp(200)
+                        visible: width >= ThemeTokens.dp(200) && rightActionsRow.x > (brandGroup.x + brandGroup.width + ThemeTokens.dp(24))
 
                         Rectangle {
                             id: centerSearchTrigger
@@ -2042,6 +2049,7 @@ ApplicationWindow {
                             text: ChaSetI18n.tr("showcase.jumpTo", "Jump to")
                             side: "bottom"
                             disabled: quickJumpDropdown.open
+                            visible: topbar.width >= ThemeTokens.dp(440)
 
                             ChaSetDropdownMenu {
                                 id: quickJumpDropdown
@@ -2080,6 +2088,7 @@ ApplicationWindow {
                         ChaSetTooltip {
                             text: ChaSetI18n.tr("showcase.exportTheme", "Export")
                             side: "bottom"
+                            visible: topbar.width >= ThemeTokens.dp(540)
                             ChaSetButton {
                                 variant: "outline"
                                 size: topbar.width >= ThemeTokens.dp(920) ? "sm" : "icon"
@@ -2119,7 +2128,7 @@ ApplicationWindow {
                             orientation: "vertical"
                             height: ThemeTokens.dp(18)
                             anchors.verticalCenter: parent.verticalCenter
-                            visible: !topbar.isNarrow
+                            visible: topbar.width >= ThemeTokens.dp(640)
                         }
 
                         // Dark/Light/System Mode Toggle Button
@@ -2146,6 +2155,7 @@ ApplicationWindow {
                         ChaSetTooltip {
                             text: "GitHub Repository"
                             side: "bottom"
+                            visible: topbar.width >= ThemeTokens.dp(640)
                             ChaSetButton {
                                 id: githubBtn
                                 size: "icon"
@@ -2326,7 +2336,7 @@ ApplicationWindow {
 
                     Item {
                         id: pageContainer
-                        width: Math.max(contentScroll.width, pageLoader.item ? pageLoader.item.implicitWidth : 0, ThemeTokens.dp(600))
+                        width: Math.max(contentScroll.width, pageLoader.item ? pageLoader.item.implicitWidth : 0)
                         implicitHeight: (pageLoader.item ? Math.max(pageLoader.item.implicitHeight, pageLoader.item.height, ThemeTokens.dp(800)) : ThemeTokens.dp(800)) + ThemeTokens.dp(20)
 
                         Loader {

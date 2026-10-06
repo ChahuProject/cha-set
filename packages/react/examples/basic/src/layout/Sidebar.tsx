@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollArea, Badge, useChaSetI18n } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG } from '../types/navigation';
+import { useResponsive } from './useResponsive';
 
 export interface SidebarProps {
   currentHash: string;
@@ -52,11 +53,18 @@ export function NavigationContent({ currentHash, onItemClick }: NavigationConten
 }
 
 export function Sidebar({ currentHash }: SidebarProps) {
+  const { isMobile } = useResponsive();
+
   return (
-    <aside className="w-64 shrink-0 hidden md:block border-r border-border h-[calc(100vh-3.5rem)] sticky top-14 select-none bg-background/50 overflow-hidden">
+    <aside
+      className={`w-64 shrink-0 border-r border-border h-[calc(100vh-3.5rem)] sticky top-14 select-none bg-background/50 overflow-hidden ${
+        isMobile ? 'hidden' : 'block'
+      }`}
+    >
       <ScrollArea className="h-full w-full" viewportClassName="p-4">
         <NavigationContent currentHash={currentHash} />
       </ScrollArea>
     </aside>
   );
 }
+

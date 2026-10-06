@@ -11,6 +11,7 @@ import {
   type TocItem,
 } from '@chahu/cha-set';
 import { useToc } from './TocContext';
+import { useResponsive } from './useResponsive';
 
 export type { TocItem };
 
@@ -188,6 +189,7 @@ export interface TableOfContentsProps {
 export function TableOfContents({ items: propItems, containerRef }: TableOfContentsProps) {
   const [outline, setOutline] = useState<TocItem[]>([]);
   const bannerOffset = useBannerOffset();
+  const { isWide } = useResponsive();
 
   useEffect(() => {
     const hasExplicit = !!propItems && propItems.length > 0;
@@ -320,8 +322,12 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
 
   return (
     <>
-      {/* Desktop Persistent Sidebar (>= xl) */}
-      <aside className="w-56 shrink-0 hidden xl:block border-l border-border h-[calc(100vh-3.5rem)] sticky top-14 text-xs bg-background/50 overflow-hidden">
+      {/* Desktop Persistent Sidebar (>= 1280 effectiveWidth) */}
+      <aside
+        className={`w-56 shrink-0 border-l border-border h-[calc(100vh-3.5rem)] sticky top-14 text-xs bg-background/50 overflow-hidden ${
+          !isWide ? 'hidden' : 'block'
+        }`}
+      >
         <ScrollArea className="h-full w-full" viewportClassName="p-6">
           <ChaSetTableOfContents
             items={items}
@@ -335,7 +341,7 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
         </ScrollArea>
       </aside>
 
-      {/* Mobile / Tablet Responsive TOC Drawer Sheet (< xl) */}
+      {/* Mobile / Tablet Responsive TOC Drawer Sheet (< 1280 effectiveWidth) */}
       <SheetRoot open={tocOpen} onOpenChange={setTocOpen}>
         <SheetContent side="right" className="w-72 max-w-[85vw] p-0" aria-label="Table of Contents">
           <SheetHeader className="p-4 pb-2 border-b border-border">
