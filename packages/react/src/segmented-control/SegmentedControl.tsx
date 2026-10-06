@@ -12,13 +12,13 @@ export interface SegmentedControlOption {
 }
 
 export const segmentedControlVariants = cva(
-  'inline-flex items-center rounded-lg bg-muted p-0.5 text-muted-foreground select-none border border-border/50',
+  'inline-flex items-center bg-muted p-0.5 text-muted-foreground select-none',
   {
     variants: {
       size: {
-        sm: 'h-[1.375rem] text-xs gap-0.5',
-        default: 'h-7 text-xs gap-1',
-        lg: 'h-9 text-sm gap-1',
+        sm: 'h-[1.375rem] text-xs gap-0.5 rounded-md',
+        default: 'h-7 text-xs gap-1 rounded-lg',
+        lg: 'h-9 text-sm gap-1 rounded-lg',
       },
     },
     defaultVariants: {
@@ -28,13 +28,13 @@ export const segmentedControlVariants = cva(
 );
 
 export const segmentedItemVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-[0.3125rem] font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer gap-1.5',
+  'inline-flex items-center justify-center whitespace-nowrap font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer gap-1.5',
   {
     variants: {
       size: {
-        sm: 'h-[1.125rem] px-2 text-caption leading-none',
-        default: 'h-6 px-2.5 text-xs',
-        lg: 'h-8 px-3 text-sm',
+        sm: 'h-[1.125rem] px-2 text-caption leading-none rounded-[0.25rem]',
+        default: 'h-6 px-2.5 text-xs rounded-md',
+        lg: 'h-8 px-3 text-sm rounded-md',
       },
     },
     defaultVariants: {
@@ -209,7 +209,10 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
             <span
               data-slot="segmented-indicator"
               aria-hidden="true"
-              className="absolute rounded-[0.3125rem] bg-background shadow-xs pointer-events-none transition-[left,top,width,height] duration-200 ease-standard"
+              className={cn(
+                'absolute bg-background shadow-xs pointer-events-none transition-[left,top,width,height] duration-200 ease-standard',
+                size === 'sm' ? 'rounded-[0.25rem]' : 'rounded-md'
+              )}
               style={{
                 left: `${indicatorStyle.left}rem`,
                 top: `${indicatorStyle.top}rem`,

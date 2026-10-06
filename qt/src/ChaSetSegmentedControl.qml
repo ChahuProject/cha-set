@@ -22,6 +22,8 @@ Item {
     readonly property real titleWidth: hasTitle ? (titleLabel.implicitWidth + 8) : 0
     readonly property real availableWidth: Math.max(0, root.width - titleWidth)
 
+    readonly property real padding: ThemeTokens.dp(2)
+
     readonly property int effectiveHeight: {
         switch (root.size) {
         case "sm": return ThemeTokens.dp(22);
@@ -33,8 +35,8 @@ Item {
     readonly property int itemHeight: {
         switch (root.size) {
         case "sm": return ThemeTokens.dp(18);
-        case "lg": return ThemeTokens.dp(30);
-        default:   return ThemeTokens.dp(22);
+        case "lg": return ThemeTokens.dp(32);
+        default:   return ThemeTokens.dp(24);
         }
     }
 
@@ -48,13 +50,13 @@ Item {
 
     readonly property int controlRadius: {
         switch (root.size) {
-        case "sm": return ThemeTokens.dp(5);
+        case "sm": return ThemeTokens.dp(6);
         case "lg": return ThemeTokens.dp(8);
-        default:   return ThemeTokens.dp(6);
+        default:   return ThemeTokens.dp(8);
         }
     }
 
-    readonly property int itemRadius: Math.max(1, controlRadius - 1)
+    readonly property int itemRadius: controlRadius - root.padding
 
     FontMetrics {
         id: textFontMetrics
@@ -106,14 +108,14 @@ Item {
         }
         if (root.equalWidth || root.fullWidth) {
             var totalSpacing = (options.length - 1) * track.segSpacing;
-            return Math.max(ThemeTokens.dp(20), (track.width - ThemeTokens.dp(6) - totalSpacing) / options.length);
+            return Math.max(ThemeTokens.dp(20), (track.width - (root.padding * 2) - totalSpacing) / options.length);
         }
         return naturalWidths[idx] || ThemeTokens.dp(40);
     }
 
     function getItemX(idx) {
-        if (idx <= 0) return ThemeTokens.dp(3);
-        var x = ThemeTokens.dp(3);
+        if (idx <= 0) return root.padding;
+        var x = root.padding;
         for (var i = 0; i < idx; i++) {
             x += getItemWidth(i) + track.segSpacing;
         }
@@ -123,19 +125,20 @@ Item {
     implicitHeight: effectiveHeight
     implicitWidth: {
         var base = hasTitle ? titleWidth : 0;
+        var pad2 = root.padding * 2;
         if (root.fullWidth) return parent ? parent.width : ThemeTokens.dp(200);
         if (root.effectiveItemWidth > 0) {
-            return base + ThemeTokens.dp(6) + (options.length * root.effectiveItemWidth) + ((options.length - 1) * track.segSpacing);
+            return base + pad2 + (options.length * root.effectiveItemWidth) + ((options.length - 1) * track.segSpacing);
         }
         if (root.equalWidth) {
             var maxW = ThemeTokens.dp(40);
             for (var i = 0; i < naturalWidths.length; i++) {
                 if (naturalWidths[i] > maxW) maxW = naturalWidths[i];
             }
-            return base + ThemeTokens.dp(6) + (options.length * maxW) + ((options.length - 1) * track.segSpacing);
+            return base + pad2 + (options.length * maxW) + ((options.length - 1) * track.segSpacing);
         }
         var totalSpacing = options.length > 1 ? (options.length - 1) * track.segSpacing : 0;
-        return base + ThemeTokens.dp(6) + totalNaturalWidth + totalSpacing;
+        return base + pad2 + totalNaturalWidth + totalSpacing;
     }
     width: implicitWidth
     height: implicitHeight
@@ -228,8 +231,8 @@ Item {
 
         radius: root.controlRadius
         color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.6) : Qt.rgba(241/255, 245/255, 249/255, 1.0)
-        border.color: root.activeFocus ? ThemeTokens.accent : ThemeTokens.border
-        border.width: 1
+        border.color: "transparent"
+        border.width: 0
 
         readonly property real segSpacing: ThemeTokens.dp(2)
 
@@ -244,8 +247,8 @@ Item {
             height: root.itemHeight
             radius: root.itemRadius
             color: ThemeTokens.dark ? ThemeTokens.panel : "#ffffff"
-            border.color: ThemeTokens.border
-            border.width: 1
+            border.color: "transparent"
+            border.width: 0
 
             Behavior on x {
                 enabled: ThemeTokens.animationsEnabled
