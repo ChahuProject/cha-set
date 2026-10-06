@@ -1021,22 +1021,22 @@ export function VirtualTree<T>({
               {dropTarget ? (
                 dropTarget.position === 'inside'
                   ? `${dragModifier === 'copy' ? '复制到' : '移入'}: ${
-                      visibleNodes.find((n) => n.key === dropTarget.key)?.node?.label ||
-                      visibleNodes.find((n) => n.key === dropTarget.key)?.node?.name ||
+                      (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.label ||
+                      (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.name ||
                       dropTarget.key
                     }`
                   : `放置在同级: ${
-                      visibleNodes.find((n) => n.key === dropTarget.key)?.node?.label ||
-                      visibleNodes.find((n) => n.key === dropTarget.key)?.node?.name ||
+                      (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.label ||
+                      (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.name ||
                       dropTarget.key
                     }`
               ) : (
-                `拖拽中 (${draggedKeys.length} 项)`
+                `拖拽中 (${draggedKeys?.length ?? 0} 项)`
               )}
             </span>
           </div>
 
-          <div className="h-px bg-border/60" />
+          <div className="h-[0.0625rem] bg-border/60" />
 
           {/* Action Guidelines with Kbd */}
           <div className="flex flex-col gap-1.5">

@@ -3,7 +3,7 @@ import { getSquircleSvgPath, type SquircleParams } from './squircle-path';
 
 export interface SquircleProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
-   * Corner radius in logical pixels or rem-equivalent units.
+   * Corner radius in logical units.
    * Defaults to 8.
    */
   radius?: number;
@@ -12,6 +12,10 @@ export interface SquircleProps extends React.HTMLAttributes<HTMLDivElement> {
    * Defaults to 0.6 (the Apple iOS continuous corner standard).
    */
   smoothing?: number;
+  /**
+   * Alias for smoothing to match spec schema.
+   */
+  cornerSmoothing?: number;
   /**
    * Top-left corner radius override.
    */
@@ -29,13 +33,41 @@ export interface SquircleProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   bottomRightRadius?: number;
   /**
-   * Border width in pixels. Defaults to 0.
+   * Whether the left side corners are rounded.
+   */
+  roundLeft?: boolean;
+  /**
+   * Whether the right side corners are rounded.
+   */
+  roundRight?: boolean;
+  /**
+   * Whether the top side corners are rounded.
+   */
+  roundTop?: boolean;
+  /**
+   * Whether the bottom side corners are rounded.
+   */
+  roundBottom?: boolean;
+  /**
+   * Border width in logical units. Defaults to 0.
    */
   borderWidth?: number;
   /**
    * Border stroke color.
    */
   borderColor?: string;
+  /**
+   * Background surface color.
+   */
+  color?: string;
+  /**
+   * Explicit width in logical units (optional, auto-measures via ResizeObserver if omitted).
+   */
+  width?: number;
+  /**
+   * Explicit height in logical units (optional, auto-measures via ResizeObserver if omitted).
+   */
+  height?: number;
   /**
    * Optional tag name or element type to render as. Defaults to 'div'.
    */
@@ -54,12 +86,20 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
     {
       radius = 8,
       smoothing = 0.6,
+      cornerSmoothing,
       topLeftRadius,
       topRightRadius,
       bottomLeftRadius,
       bottomRightRadius,
+      roundLeft = true,
+      roundRight = true,
+      roundTop = true,
+      roundBottom = true,
       borderWidth = 0,
       borderColor,
+      color,
+      width,
+      height,
       as: Component = 'div',
       className = '',
       style,
@@ -68,8 +108,52 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
     },
     ref
   ) => {
+    const rawId = React.useId();
+    const clipId = React.useMemo(() => rawId.replace(/:/g, '_'), [rawId]);
     const containerRef = React.useRef<HTMLDivElement | null>(null);
-    const [path, setPath] = React.useState<string>('');
+
+    const effectiveSmoothing = cornerSmoothing !== undefined ? cornerSmoothing : smoothing;
+
+    const computePath = React.useCallback(
+      (w: number, h: number) => {
+        if (w <= 0 || h <= 0) return '';
+        return getSquircleSvgPath({
+          width: w,
+          height: h,
+          cornerRadius: radius,
+          topLeftRadius,
+          topRightRadius,
+          bottomLeftRadius,
+          bottomRightRadius,
+          cornerSmoothing: effectiveSmoothing,
+          roundLeft,
+          roundRight,
+          roundTop,
+          roundBottom,
+        });
+      },
+      [
+        radius,
+        effectiveSmoothing,
+        topLeftRadius,
+        topRightRadius,
+        bottomLeftRadius,
+        bottomRightRadius,
+        roundLeft,
+        roundRight,
+        roundTop,
+        roundBottom,
+      ]
+    );
+
+    const initialPath = React.useMemo(() => {
+      if (width && height && width > 0 && height > 0) {
+        return computePath(width, height);
+      }
+      return '';
+    }, [width, height, computePath]);
+
+    const [path, setPath] = React.useState<string>(initialPath);
 
     // Combine forwarded ref and local ref
     const setRefs = React.useCallback(
@@ -85,22 +169,14 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
     );
 
     const updatePath = React.useCallback(() => {
-      if (!containerRef.current) return;
-      const { offsetWidth, offsetHeight } = containerRef.current;
-      if (offsetWidth > 0 && offsetHeight > 0) {
-        const p = getSquircleSvgPath({
-          width: offsetWidth,
-          height: offsetHeight,
-          cornerRadius: radius,
-          topLeftRadius,
-          topRightRadius,
-          bottomLeftRadius,
-          bottomRightRadius,
-          cornerSmoothing: smoothing,
-        });
+      const el = containerRef.current;
+      const w = width ?? (el ? el.offsetWidth : 0);
+      const h = height ?? (el ? el.offsetHeight : 0);
+      if (w > 0 && h > 0) {
+        const p = computePath(w, h);
         setPath(p);
       }
-    }, [radius, smoothing, topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius]);
+    }, [width, height, computePath]);
 
     React.useEffect(() => {
       updatePath();
@@ -114,7 +190,8 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       borderRadius: `${radius * 0.0625}rem`,
       // Progressive enhancement: corner-shape for modern browsers
       ['--cs-corner-shape' as string]: 'squircle',
-      ['--cs-corner-smoothing' as string]: smoothing,
+      ['--cs-corner-smoothing' as string]: effectiveSmoothing,
+      ...(color ? { backgroundColor: color } : {}),
       ...style,
     };
 
@@ -122,11 +199,37 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       <Component
         ref={setRefs}
         className={`relative ${className}`}
-        style={combinedStyle}
+        style={{
+          ...combinedStyle,
+          clipPath: path ? `url(#${clipId})` : undefined,
+        }}
         data-corner-shape="squircle"
-        data-corner-smoothing={smoothing}
+        data-corner-smoothing={effectiveSmoothing}
         {...rest}
       >
+        <svg
+          className="absolute pointer-events-none w-0 h-0 overflow-hidden"
+          aria-hidden="true"
+        >
+          <defs>
+            <clipPath id={clipId} clipPathUnits="userSpaceOnUse">
+              <path d={path} />
+            </clipPath>
+          </defs>
+        </svg>
+        {borderWidth > 0 && borderColor && (
+          <svg
+            className="absolute inset-0 pointer-events-none w-full h-full overflow-visible"
+            aria-hidden="true"
+          >
+            <path
+              d={path}
+              fill="none"
+              stroke={borderColor}
+              strokeWidth={borderWidth}
+            />
+          </svg>
+        )}
         {children}
       </Component>
     );

@@ -1,5 +1,7 @@
 import * as React from 'react';
-import type { MediaProgressBarTimingMode, MediaProgressBarTimeFormat } from '../../../../spec/components/media-progress-bar';
+
+export type MediaProgressBarTimingMode = 'elapsed' | 'remaining';
+export type MediaProgressBarTimeFormat = 'hms' | 'seconds' | 'frames';
 
 export interface MediaProgressBarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   ratio?: number;

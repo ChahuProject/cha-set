@@ -64,8 +64,8 @@ export function MediaProgressBarDocPage() {
       </section>
 
       <DocFooterSections
-        componentKey="media-progress-bar"
-        propsRows={[
+        componentId="media-progress-bar"
+        props={[
           { name: 'ratio', type: 'number', defaultValue: '0', description: 'Playback progress ratio from 0.0 to 1.0.' },
           { name: 'duration', type: 'number', defaultValue: '0', description: 'Total duration of the media in milliseconds.' },
           { name: 'position', type: 'number', defaultValue: '0', description: 'Current playback position in milliseconds.' },

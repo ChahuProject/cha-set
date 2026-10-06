@@ -147,4 +147,9 @@ export type { IconName, IconProps, NamedIconProps, IconDefinition, IconGrid, Ico
 
 
 export { Squircle, getSquircleSvgPath, type SquircleProps, type SquircleParams } from './squircle';
-export { MediaProgressBar, type MediaProgressBarProps } from './media-progress-bar';
+export {
+  MediaProgressBar,
+  type MediaProgressBarProps,
+  type MediaProgressBarTimingMode,
+  type MediaProgressBarTimeFormat,
+} from './media-progress-bar';
