@@ -27,6 +27,7 @@ Item {
 
     // —— 状态 ——
     property bool dragging: false
+    property real dragRatio: 0.0
     property bool hoverActive: false
     property real hoverRatio: -1.0
 
@@ -57,7 +58,9 @@ Item {
     height: implicitHeight
     opacity: root.disabled ? 0.45 : 1.0
 
-    readonly property real effectiveRatio: Math.max(0.0, Math.min(1.0, root.ratio))
+    readonly property real effectiveRatio: root.dragging
+        ? Math.max(0.0, Math.min(1.0, root.dragRatio))
+        : Math.max(0.0, Math.min(1.0, root.ratio))
 
     // 实际生效的时间格式：无帧率概念时，即便被设为 "frames" 也回退到时分秒
     readonly property string effectiveTimeFormat: (root.timeFormat === "frames" && !root.framesAvailable) ? "hms" : root.timeFormat
@@ -91,7 +94,7 @@ Item {
 
     readonly property real currentPositionMs: {
         if (root.dragging && root.duration > 0) {
-            return root.ratio * root.duration
+            return root.dragRatio * root.duration
         }
         return root.position
     }
@@ -206,7 +209,7 @@ Item {
                 root.hoverRatio = r
                 root.hoverChanged(r, true)
                 if (pressed && trackContainer.width > 0) {
-                    root.ratio = r
+                    root.dragRatio = r
                     root.seekRequested(r)
                 }
             }
@@ -217,7 +220,7 @@ Item {
                 if (trackContainer.width > 0) {
                     const r = Math.max(0.0, Math.min(1.0, m.x / trackContainer.width))
                     root.hoverRatio = r
-                    root.ratio = r
+                    root.dragRatio = r
                     root.seekRequested(r)
                     root.hoverChanged(r, true)
                 }
