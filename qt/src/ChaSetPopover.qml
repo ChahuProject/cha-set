@@ -104,7 +104,7 @@ Item {
         focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
-        background: Rectangle {
+        background: ChaSetSquircle {
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1

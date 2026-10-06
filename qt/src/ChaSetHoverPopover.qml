@@ -398,7 +398,7 @@ Item {
         }
 
         // Panel Background
-        Rectangle {
+        ChaSetSquircle {
             anchors.fill: parent
             radius: root.customRadius
             color: root.panelColor

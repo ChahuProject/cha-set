@@ -157,7 +157,7 @@ Item {
         }
     }
 
-    Rectangle {
+    ChaSetSquircle {
         id: bubble
         z: 999
         x: Math.round(root.clampedX)

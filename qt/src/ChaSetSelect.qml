@@ -161,7 +161,7 @@ Item {
         onActivated: dismissOnEscape()
     }
 
-    Rectangle {
+    ChaSetSquircle {
         id: triggerBox
         anchors.fill: parent
         radius: root.customRadius
@@ -232,7 +232,7 @@ Item {
             root.highlightedIndex = -1
         }
 
-        background: Rectangle {
+        background: ChaSetSquircle {
             color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1

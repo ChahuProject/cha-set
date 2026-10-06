@@ -96,7 +96,7 @@ Rectangle {
     }
 
     // Modal Card Container
-    Rectangle {
+    ChaSetSquircle {
         id: card
         width: Math.min(parent.width - ThemeTokens.dp(40), root.dialogWidth)
         implicitHeight: cardLayout.implicitHeight + ThemeTokens.dp(40)

@@ -78,7 +78,7 @@ Rectangle {
         }
     }
 
-    Rectangle {
+    ChaSetSquircle {
         id: card
         width: Math.min(parent.width - ThemeTokens.dp(40), root.dialogWidth)
         implicitHeight: cardCol.implicitHeight + ThemeTokens.dp(36)
