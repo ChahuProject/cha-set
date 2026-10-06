@@ -12,6 +12,7 @@ Item {
     property var steps: []
     property bool ignoreUiScale: true
     property int autoHideDuration: 1400
+    property int debounceDuration: 300
     property bool showControls: true
     property bool showTooltips: true
     property bool disabled: false
@@ -22,6 +23,7 @@ Item {
 
     signal stepTriggered(real delta)
     signal resetTriggered()
+    signal changeCommitted(real value)
 
     property bool defaultVisible: false
     property bool osdVisible: defaultVisible
@@ -84,6 +86,26 @@ Item {
 
     Component.onDestruction: {
         hideTimer.stop();
+        debounceCommitTimer.stop();
+    }
+
+    Timer {
+        id: debounceCommitTimer
+        interval: root.debounceDuration
+        repeat: false
+        running: false
+        onTriggered: {
+            root.changeCommitted(root.value);
+        }
+    }
+
+    function _scheduleCommit() {
+        if (root.debounceDuration > 0) {
+            debounceCommitTimer.restart();
+        } else {
+            debounceCommitTimer.stop();
+            root.changeCommitted(root.value);
+        }
     }
 
     function show() {
@@ -122,11 +144,13 @@ Item {
             }
             root.value = sorted[targetIdx];
             root.stepTriggered(delta > 0 ? 1 : -1);
+            _scheduleCommit();
             root.show();
         } else {
             var next = Math.max(root.min, Math.min(root.max, Math.round((root.value + delta) * 100) / 100));
             root.value = next;
             root.stepTriggered(delta);
+            _scheduleCommit();
             root.show();
         }
     }
@@ -135,6 +159,7 @@ Item {
         if (root.disabled) return;
         root.value = 1.0;
         root.resetTriggered();
+        _scheduleCommit();
         root.show();
     }
 

@@ -20,11 +20,18 @@ describe('React Showcase App Integration & Smoke Gate', () => {
       fireEvent.keyDown(window, { key: '=', ctrlKey: true });
     });
 
-    // ScaleOsd should now appear in the DOM
+    // ScaleOsd should now appear in the DOM immediately
     const scaleOsd = res!.container.querySelector('[data-slot="scale-osd"]');
     expect(scaleOsd).toBeTruthy();
     // First step above 1.0 in CANONICAL_SCALE_STEPS is 1.1 -> 110%
     expect(scaleOsd?.textContent).toContain('110%');
+    // Root font-size change is debounced to avoid freezing the browser during rapid wheel/key zoom
+    expect(document.documentElement.style.fontSize).toBe('');
+
+    // Wait for 350ms debounce timer to fire
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 350));
+    });
     expect(document.documentElement.style.fontSize).toBe('17.6px');
 
     // Trigger Ctrl + - to zoom out back to 100% (110% -> 100%)
@@ -32,6 +39,9 @@ describe('React Showcase App Integration & Smoke Gate', () => {
       fireEvent.keyDown(window, { key: '-', ctrlKey: true });
     });
     expect(res!.container.querySelector('[data-slot="scale-osd"]')?.textContent).toContain('100%');
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 350));
+    });
     expect(document.documentElement.style.fontSize).toBe('');
 
     // Trigger Ctrl + - again to zoom out to 90% (100% -> 90%)
@@ -39,6 +49,9 @@ describe('React Showcase App Integration & Smoke Gate', () => {
       fireEvent.keyDown(window, { key: '-', ctrlKey: true });
     });
     expect(res!.container.querySelector('[data-slot="scale-osd"]')?.textContent).toContain('90%');
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 350));
+    });
     expect(document.documentElement.style.fontSize).toBe('14.4px');
 
     // Trigger Ctrl + = to zoom in back to 100% (90% -> 100%)
@@ -46,15 +59,24 @@ describe('React Showcase App Integration & Smoke Gate', () => {
       fireEvent.keyDown(window, { key: '=', ctrlKey: true });
     });
     expect(res!.container.querySelector('[data-slot="scale-osd"]')?.textContent).toContain('100%');
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 350));
+    });
     expect(document.documentElement.style.fontSize).toBe('');
 
     // Trigger Ctrl + 0 to reset from a non-1.0 scale
     await act(async () => {
       fireEvent.keyDown(window, { key: '=', ctrlKey: true });
     });
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 350));
+    });
     expect(document.documentElement.style.fontSize).toBe('17.6px');
     await act(async () => {
       fireEvent.keyDown(window, { key: '0', ctrlKey: true });
+    });
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 350));
     });
     expect(document.documentElement.style.fontSize).toBe('');
   });

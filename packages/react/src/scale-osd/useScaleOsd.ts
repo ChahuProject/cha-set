@@ -23,6 +23,12 @@ export interface UseScaleOsdOptions {
   autoHideDuration?: number;
   /** Whether global Ctrl+Wheel and Ctrl++, Ctrl+-, Ctrl+0 shortcuts are enabled (default true) */
   enableShortcuts?: boolean;
+  /**
+   * Debounce delay in milliseconds for interactive zooming (wheel, shortcuts, buttons) (default 300, set 0 to disable).
+   * Visual indicator on the capsule updates immediately, while onChange is debounced.
+   * Direct calls to setScale() bypass debounce and apply immediately.
+   */
+  debounceMs?: number;
   /** Callback fired when scale changes */
   onChange?: (scale: number) => void;
 }
@@ -37,21 +43,39 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
     max = options.max ?? (steps && steps.length > 0 ? (steps[steps.length - 1] ?? 5.0) : 5.0),
     autoHideDuration = 1400,
     enableShortcuts = true,
+    debounceMs = 300,
     onChange,
   } = options;
 
   const isControlled = value !== undefined;
   const [internalScale, setInternalScale] = React.useState<number>(defaultValue);
+  const [pendingScale, setPendingScale] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    if (isControlled) {
+      setPendingScale(null);
+    }
+  }, [isControlled, value]);
+
+  const displayScale = pendingScale !== null ? pendingScale : (isControlled ? value : internalScale);
   const scale = isControlled ? value : internalScale;
 
   const [visible, setVisible] = React.useState<boolean>(false);
   const hideTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debounceTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const isHoveredRef = React.useRef<boolean>(false);
 
   const clearTimer = React.useCallback(() => {
     if (hideTimerRef.current != null) {
       clearTimeout(hideTimerRef.current);
       hideTimerRef.current = null;
+    }
+  }, []);
+
+  const clearDebounceTimer = React.useCallback(() => {
+    if (debounceTimerRef.current != null) {
+      clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = null;
     }
   }, []);
 
@@ -95,26 +119,46 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
   }, [scheduleHide]);
 
   const commitScale = React.useCallback(
-    (nextScale: number) => {
+    (nextScale: number, immediate = false) => {
       const clamped = Math.max(min, Math.min(max, Math.round(nextScale * 100) / 100));
+      setPendingScale(clamped);
       if (!isControlled) {
         setInternalScale(clamped);
       }
-      onChange?.(clamped);
       show();
+      clearDebounceTimer();
+
+      if (immediate || debounceMs <= 0) {
+        setPendingScale(null);
+        onChange?.(clamped);
+      } else {
+        debounceTimerRef.current = setTimeout(() => {
+          setPendingScale(null);
+          onChange?.(clamped);
+          debounceTimerRef.current = null;
+        }, debounceMs);
+      }
       return clamped;
     },
-    [isControlled, max, min, onChange, show],
+    [clearDebounceTimer, debounceMs, isControlled, max, min, onChange, show],
+  );
+
+  const setScale = React.useCallback(
+    (nextScale: number) => {
+      return commitScale(nextScale, true);
+    },
+    [commitScale],
   );
 
   const zoomIn = React.useCallback(() => {
+    const base = displayScale;
     if (steps && steps.length > 0) {
       let nearestIdx = 0;
       let minDiff = Infinity;
       for (let i = 0; i < steps.length; i++) {
         const stepVal = steps[i];
         if (stepVal !== undefined) {
-          const diff = Math.abs(stepVal - scale);
+          const diff = Math.abs(stepVal - base);
           if (diff < minDiff) {
             minDiff = diff;
             nearestIdx = i;
@@ -123,19 +167,20 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
       }
       const nextIdx = Math.min(steps.length - 1, nearestIdx + 1);
       const nextVal = steps[nextIdx];
-      return commitScale(nextVal !== undefined ? nextVal : scale + step);
+      return commitScale(nextVal !== undefined ? nextVal : base + step, false);
     }
-    return commitScale(scale + step);
-  }, [commitScale, scale, step, steps]);
+    return commitScale(base + step, false);
+  }, [commitScale, displayScale, step, steps]);
 
   const zoomOut = React.useCallback(() => {
+    const base = displayScale;
     if (steps && steps.length > 0) {
       let nearestIdx = 0;
       let minDiff = Infinity;
       for (let i = 0; i < steps.length; i++) {
         const stepVal = steps[i];
         if (stepVal !== undefined) {
-          const diff = Math.abs(stepVal - scale);
+          const diff = Math.abs(stepVal - base);
           if (diff < minDiff) {
             minDiff = diff;
             nearestIdx = i;
@@ -144,14 +189,29 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
       }
       const nextIdx = Math.max(0, nearestIdx - 1);
       const nextVal = steps[nextIdx];
-      return commitScale(nextVal !== undefined ? nextVal : scale - step);
+      return commitScale(nextVal !== undefined ? nextVal : base - step, false);
     }
-    return commitScale(scale - step);
-  }, [commitScale, scale, step, steps]);
+    return commitScale(base - step, false);
+  }, [commitScale, displayScale, step, steps]);
 
   const reset = React.useCallback(() => {
-    return commitScale(1.0);
+    return commitScale(1.0, false);
   }, [commitScale]);
+
+  const zoomInRef = React.useRef(zoomIn);
+  zoomInRef.current = zoomIn;
+  const zoomOutRef = React.useRef(zoomOut);
+  zoomOutRef.current = zoomOut;
+  const resetRef = React.useRef(reset);
+  resetRef.current = reset;
+
+  // Cleanup timers on unmount
+  React.useEffect(() => {
+    return () => {
+      clearTimer();
+      clearDebounceTimer();
+    };
+  }, [clearDebounceTimer, clearTimer]);
 
   // Window listeners for wheel and keydown when enableShortcuts is true
   React.useEffect(() => {
@@ -168,9 +228,9 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
       }
       e.preventDefault();
       if (e.deltaY < 0) {
-        zoomIn();
+        zoomInRef.current();
       } else if (e.deltaY > 0) {
-        zoomOut();
+        zoomOutRef.current();
       }
     };
 
@@ -193,13 +253,13 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
       const key = e.key;
       if (key === '+' || key === '=') {
         e.preventDefault();
-        zoomIn();
+        zoomInRef.current();
       } else if (key === '-' || key === '_') {
         e.preventDefault();
-        zoomOut();
+        zoomOutRef.current();
       } else if (key === '0') {
         e.preventDefault();
-        reset();
+        resetRef.current();
       }
     };
 
@@ -208,17 +268,16 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
     return () => {
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('keydown', onKeyDown);
-      clearTimer();
     };
-  }, [clearTimer, enableShortcuts, reset, zoomIn, zoomOut]);
+  }, [enableShortcuts]);
 
   const bind = React.useMemo(
     () => ({
-      value: scale,
+      value: displayScale,
       visible,
       steps,
       autoHideDuration,
-      onChange: commitScale,
+      onChange: setScale,
       onStep: (delta: number) => (delta > 0 ? zoomIn() : zoomOut()),
       onReset: reset,
       onVisibilityChange: setVisible,
@@ -227,11 +286,11 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
     }),
     [
       autoHideDuration,
-      commitScale,
+      displayScale,
       pauseHide,
       reset,
       resumeHide,
-      scale,
+      setScale,
       steps,
       visible,
       zoomIn,
@@ -240,12 +299,13 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
   );
 
   return {
-    scale,
+    scale: displayScale,
+    appliedScale: scale,
     visible,
     zoomIn,
     zoomOut,
     reset,
-    setScale: commitScale,
+    setScale,
     show,
     hide,
     pauseHide,

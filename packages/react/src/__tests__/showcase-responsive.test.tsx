@@ -80,6 +80,11 @@ describe('React Showcase Scale-Aware Responsive Layout Gate', () => {
       });
     }
 
+    // Wait for debounce timer to commit the final scale (1.75)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 350));
+    });
+
     // Now uiScale should be 1.75, effectiveWidth = 1200 / 1.75 = 686px (< 768px)
     // The mobile hamburger button MUST now appear!
     const hamburgerBtn = res!.container.querySelector('button[aria-label="Open navigation sidebar"]');
@@ -100,6 +105,11 @@ describe('React Showcase Scale-Aware Responsive Layout Gate', () => {
     // 4. Zoom back out to 1.0x with Ctrl + 0
     await act(async () => {
       fireEvent.keyDown(window, { key: '0', ctrlKey: true });
+    });
+
+    // Wait for debounce timer to commit reset (1.0)
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 350));
     });
 
     // Desktop sidebar should be restored (hidden class removed)!

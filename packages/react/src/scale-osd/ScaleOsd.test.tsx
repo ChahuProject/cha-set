@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, renderHook, screen, fireEvent, act } from '@testing-library/react';
 import { ScaleOsd } from './ScaleOsd';
+import { useScaleOsd } from './useScaleOsd';
 
 describe('ScaleOsd', () => {
   beforeEach(() => {
@@ -262,6 +263,88 @@ describe('ScaleOsd', () => {
     expect(zoomIn).not.toHaveAttribute('title');
     expect(zoomOut).not.toHaveAttribute('title');
     expect(reset).not.toHaveAttribute('title');
+  });
+
+  it('debounces button clicks when debounceMs is specified on ScaleOsd', () => {
+    const onChange = vi.fn();
+    render(
+      <ScaleOsd
+        visible
+        defaultValue={1.0}
+        step={0.1}
+        debounceMs={300}
+        onChange={onChange}
+      />,
+    );
+
+    const zoomIn = screen.getByLabelText('Zoom In');
+    fireEvent.click(zoomIn);
+    // Visual text updates immediately to 110%
+    expect(screen.getByText('110%')).toBeInTheDocument();
+    // onChange not called yet
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Click again before debounce expires
+    fireEvent.click(zoomIn);
+    expect(screen.getByText('120%')).toBeInTheDocument();
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Advance 299ms (timer still pending)
+    act(() => {
+      vi.advanceTimersByTime(299);
+    });
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Advance 1ms to reach 300ms
+    act(() => {
+      vi.advanceTimersByTime(1);
+    });
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(1.2);
+  });
+
+  it('useScaleOsd debounces interactive zoom while setScale applies immediately', () => {
+    const onChange = vi.fn();
+    const { result } = renderHook(() =>
+      useScaleOsd({
+        defaultValue: 1.0,
+        debounceMs: 300,
+        onChange,
+      }),
+    );
+
+    // Initial scale is 1.0
+    expect(result.current.scale).toBe(1.0);
+
+    // zoomIn 1: visual scale updates immediately to 1.1
+    act(() => {
+      result.current.zoomIn();
+    });
+    expect(result.current.scale).toBe(1.1);
+    expect(onChange).not.toHaveBeenCalled();
+
+    // zoomIn 2: visual scale updates immediately to 1.25 (canonical step)
+    act(() => {
+      result.current.zoomIn();
+    });
+    expect(result.current.scale).toBe(1.25);
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Advance past debounce timer
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(1.25);
+
+    // Direct setScale (e.g. from settings dropdown) applies immediately
+    onChange.mockClear();
+    act(() => {
+      result.current.setScale(1.5);
+    });
+    expect(result.current.scale).toBe(1.5);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(1.5);
   });
 });
 

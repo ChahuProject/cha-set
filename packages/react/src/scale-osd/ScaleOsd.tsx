@@ -42,6 +42,8 @@ export interface ScaleOsdProps
   ignoreUiScale?: boolean;
   /** Whether to show tooltip titles on buttons (default true) */
   showTooltips?: boolean;
+  /** Debounce delay in milliseconds for button clicks (default 0 for standalone component; useScaleOsd defaults to 300) */
+  debounceMs?: number;
   /** Callbacks */
   onChange?: (value: number) => void;
   onStep?: (delta: number) => void;
@@ -84,6 +86,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       animated = true,
       ignoreUiScale = true,
       showTooltips = true,
+      debounceMs = 0,
       onChange,
       onStep,
       onReset,
@@ -169,11 +172,21 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       }
     }, [isVisible, startHideTimer]);
 
+    const debounceTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const clearDebounceTimer = React.useCallback(() => {
+      if (debounceTimerRef.current != null) {
+        clearTimeout(debounceTimerRef.current);
+        debounceTimerRef.current = null;
+      }
+    }, []);
+
     React.useEffect(() => {
       return () => {
         clearHideTimer();
+        clearDebounceTimer();
       };
-    }, [clearHideTimer]);
+    }, [clearHideTimer, clearDebounceTimer]);
 
     const commitValue = React.useCallback(
       (newVal: number) => {
@@ -181,9 +194,17 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
         if (!isControlledValue) {
           setInternalValue(clamped);
         }
-        onChange?.(clamped);
+        clearDebounceTimer();
+        if (debounceMs <= 0) {
+          onChange?.(clamped);
+        } else {
+          debounceTimerRef.current = setTimeout(() => {
+            onChange?.(clamped);
+            debounceTimerRef.current = null;
+          }, debounceMs);
+        }
       },
-      [isControlledValue, max, min, onChange],
+      [clearDebounceTimer, debounceMs, isControlledValue, max, min, onChange],
     );
 
     const handleStep = React.useCallback(
