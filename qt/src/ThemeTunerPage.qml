@@ -46,13 +46,13 @@ DocLayout {
     signal logAction(string msg)
 
     readonly property var colorSpecs: [
-        { key: "primary", label: "Primary Action", placeholder: "e.g. #3b82f6", fallbackLight: "#1d7ae0", fallbackDark: "#30a0ff" },
-        { key: "primaryFg", label: "Primary Text", placeholder: "#ffffff", fallbackLight: "#ffffff", fallbackDark: "#ffffff" },
-        { key: "secondary", label: "Secondary Bg", placeholder: "var(--secondary)", fallbackLight: "#e8ecf3", fallbackDark: "#252d3d" },
-        { key: "destructive", label: "Destructive", placeholder: "var(--destructive)", fallbackLight: "#dc2626", fallbackDark: "#ef4444" },
-        { key: "background", label: "Page Background", placeholder: "var(--background)", fallbackLight: "#f4f6fa", fallbackDark: "#0a0c14" },
-        { key: "card", label: "Card / Panel", placeholder: "var(--card)", fallbackLight: "#ffffff", fallbackDark: "#161b26" },
-        { key: "ring", label: "Focus Ring", placeholder: "var(--ring)", fallbackLight: "#30a0ff", fallbackDark: "#30a0ff" }
+        { key: "primary", label: ChaSetI18n.tr("getStarted.themeTuner.tuner.primaryAction", "Primary Action"), placeholder: "e.g. #3b82f6", fallbackLight: "#1d7ae0", fallbackDark: "#30a0ff" },
+        { key: "primaryFg", label: ChaSetI18n.tr("getStarted.themeTuner.tuner.primaryText", "Primary Text"), placeholder: "#ffffff", fallbackLight: "#ffffff", fallbackDark: "#ffffff" },
+        { key: "secondary", label: ChaSetI18n.tr("getStarted.themeTuner.tuner.secondaryBg", "Secondary Bg"), placeholder: "var(--secondary)", fallbackLight: "#e8ecf3", fallbackDark: "#252d3d" },
+        { key: "destructive", label: ChaSetI18n.tr("getStarted.themeTuner.tuner.destructive", "Destructive"), placeholder: "var(--destructive)", fallbackLight: "#dc2626", fallbackDark: "#ef4444" },
+        { key: "background", label: ChaSetI18n.tr("getStarted.themeTuner.tuner.pageBackground", "Page Background"), placeholder: "var(--background)", fallbackLight: "#f4f6fa", fallbackDark: "#0a0c14" },
+        { key: "card", label: ChaSetI18n.tr("getStarted.themeTuner.tuner.cardPanel", "Card / Panel"), placeholder: "var(--card)", fallbackLight: "#ffffff", fallbackDark: "#161b26" },
+        { key: "ring", label: ChaSetI18n.tr("getStarted.themeTuner.tuner.focusRing", "Focus Ring"), placeholder: "var(--ring)", fallbackLight: "#30a0ff", fallbackDark: "#30a0ff" }
     ]
 
     function getColorOverride(key) {
@@ -131,7 +131,7 @@ DocLayout {
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         DocText {
-                            text: "Theme & Style Tuner"
+                            text: ChaSetI18n.tr("getStarted.themeTuner.tuner.title", "Theme & Style Tuner")
                             textColor: ThemeTokens.text
                             font.pixelSize: Typography.sizeHeading
                             font.weight: Typography.weightBold
@@ -149,7 +149,7 @@ DocLayout {
                             visible: root.hasOverrides
                             size: "sm"
                             variant: "secondary"
-                            text: "Reset"
+                            text: ChaSetI18n.tr("common.reset", "Reset")
                             onClicked: root.resetAll()
                         }
 
@@ -157,7 +157,7 @@ DocLayout {
                             size: "sm"
                             variant: "default"
                             icon: "copy"
-                            text: "Copy Config"
+                            text: ChaSetI18n.tr("getStarted.themeTuner.tuner.copyConfig", "Copy Config")
                             onClicked: root.requestExport()
                         }
                     }
@@ -170,7 +170,7 @@ DocLayout {
                     width: parent.width
                     spacing: ThemeTokens.dp(6)
                     DocText {
-                        text: "APPEARANCE & MODE"
+                        text: ChaSetI18n.tr("getStarted.themeTuner.tuner.appearance", "APPEARANCE & MODE")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeCaption
                         font.weight: Typography.weightBold
@@ -186,9 +186,9 @@ DocLayout {
                             root.logAction("Mode: " + val);
                         }
                         options: [
-                            { label: "Light", value: "light" },
-                            { label: "Dark", value: "dark" },
-                            { label: "System", value: "system" }
+                            { label: ChaSetI18n.tr("common.light", "Light"), value: "light" },
+                            { label: ChaSetI18n.tr("common.dark", "Dark"), value: "dark" },
+                            { label: ChaSetI18n.tr("common.system", "System"), value: "system" }
                         ]
                     }
                 }
@@ -198,7 +198,7 @@ DocLayout {
                     width: parent.width
                     spacing: ThemeTokens.dp(6)
                     DocText {
-                        text: "ACCENT THEME PRESET"
+                        text: ChaSetI18n.tr("getStarted.themeTuner.tuner.accentPreset", "ACCENT THEME PRESET")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeCaption
                         font.weight: Typography.weightBold
@@ -240,7 +240,7 @@ DocLayout {
                             id: radiusLabel
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "CORNER RADIUS (--RADIUS)"
+                            text: ChaSetI18n.tr("getStarted.themeTuner.tuner.cornerRadius", "CORNER RADIUS (--RADIUS)")
                             color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeCaption
                             font.weight: Typography.weightBold
@@ -253,7 +253,7 @@ DocLayout {
                             anchors.verticalCenter: parent.verticalCenter
                             size: "sm"
                             variant: "secondary"
-                            text: root.customRadius === 8 ? "0.5rem (Default)" : (root.customRadius + "px")
+                            text: root.customRadius === 8 ? ChaSetI18n.tr("getStarted.themeTuner.tuner.radiusDefault", "0.5rem (Default)") : (root.customRadius + "px")
                         }
                     }
 
@@ -275,7 +275,7 @@ DocLayout {
                         DocText {
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "0px (Sharp)"
+                            text: ChaSetI18n.tr("getStarted.themeTuner.tuner.radiusSharp", "0px (Sharp)")
                             color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeMicro
                         }
@@ -298,7 +298,7 @@ DocLayout {
                         DocText {
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "24px (Pill)"
+                            text: ChaSetI18n.tr("getStarted.themeTuner.tuner.radiusPill", "24px (Pill)")
                             color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeMicro
                         }
@@ -313,7 +313,7 @@ DocLayout {
                     spacing: ThemeTokens.dp(10)
 
                     DocText {
-                        text: "LIVE COLOR OVERRIDES"
+                        text: ChaSetI18n.tr("getStarted.themeTuner.tuner.liveColorOverrides", "LIVE COLOR OVERRIDES")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeCaption
                         font.weight: Typography.weightBold
@@ -391,7 +391,7 @@ DocLayout {
                             id: motionTitle
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "MOTION & ANIMATIONS"
+                            text: ChaSetI18n.tr("getStarted.themeTuner.tuner.motionTitle", "MOTION & ANIMATIONS")
                             color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeCaption
                             font.weight: Typography.weightBold
@@ -424,7 +424,7 @@ DocLayout {
                                 id: speedLabel
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: "ANIMATION SPEED DURATION FACTOR"
+                                text: ChaSetI18n.tr("getStarted.themeTuner.tuner.animSpeedFactor", "ANIMATION SPEED DURATION FACTOR")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeCaption
                                 font.weight: Typography.weightBold
@@ -459,7 +459,7 @@ DocLayout {
                             DocText {
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: "0.05s (Fast)"
+                                text: ChaSetI18n.tr("getStarted.themeTuner.tuner.speedFast", "0.05s (Fast)")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeMicro
                             }
@@ -467,14 +467,14 @@ DocLayout {
                                 anchors.horizontalCenter: parent.left
                                 anchors.horizontalCenterOffset: parent.width * ((0.20 - 0.05) / (0.80 - 0.05))
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: "0.20s (Default)"
+                                text: ChaSetI18n.tr("getStarted.themeTuner.tuner.speedDefault", "0.20s (Default)")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeMicro
                             }
                             DocText {
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: "0.80s (Slow)"
+                                text: ChaSetI18n.tr("getStarted.themeTuner.tuner.speedSlow", "0.80s (Slow)")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeMicro
                             }
@@ -493,13 +493,13 @@ DocLayout {
         Column {
             spacing: ThemeTokens.dp(4)
             DocText {
-                text: "Live Component Sandbox"
+                text: ChaSetI18n.tr("getStarted.themeTuner.playground.titleQml", "Live Component Sandbox")
                 color: ThemeTokens.text
                 font.pixelSize: Typography.sizeTitleSm
                 font.weight: Typography.weightBold
             }
             DocText {
-                text: "Interact with components rendering live under your current style settings:"
+                text: ChaSetI18n.tr("getStarted.themeTuner.playground.descQml", "Interact with components rendering live under your current style settings:")
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeBody
             }
@@ -525,7 +525,7 @@ DocLayout {
                     width: Math.min(sandboxFlow.width, ThemeTokens.dp(520))
                     spacing: ThemeTokens.dp(12)
                     DocText {
-                        text: "BUTTONS"
+                        text: ChaSetI18n.tr("getStarted.themeTuner.playground.buttons", "BUTTONS")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeCaption
                         font.weight: Typography.weightBold
@@ -534,18 +534,18 @@ DocLayout {
                     Flow {
                         width: parent.width
                         spacing: ThemeTokens.dp(8)
-                        ChaSetButton { variant: "default"; size: "default"; text: "Default Action"; onClicked: root.logAction("Clicked sandbox default") }
-                        ChaSetButton { variant: "outline"; size: "default"; text: "Outline"; onClicked: root.logAction("Clicked sandbox outline") }
-                        ChaSetButton { variant: "secondary"; size: "default"; text: "Secondary"; onClicked: root.logAction("Clicked sandbox secondary") }
-                        ChaSetButton { variant: "destructive"; size: "default"; text: "Danger"; onClicked: root.logAction("Clicked sandbox danger") }
+                        ChaSetButton { variant: "default"; size: "default"; text: ChaSetI18n.tr("getStarted.themeTuner.playground.defaultActionLabel", "Default Action"); onClicked: root.logAction("Clicked sandbox default") }
+                        ChaSetButton { variant: "outline"; size: "default"; text: ChaSetI18n.tr("getStarted.themeTuner.playground.outline", "Outline"); onClicked: root.logAction("Clicked sandbox outline") }
+                        ChaSetButton { variant: "secondary"; size: "default"; text: ChaSetI18n.tr("getStarted.themeTuner.playground.secondary", "Secondary"); onClicked: root.logAction("Clicked sandbox secondary") }
+                        ChaSetButton { variant: "destructive"; size: "default"; text: ChaSetI18n.tr("getStarted.themeTuner.playground.danger", "Danger"); onClicked: root.logAction("Clicked sandbox danger") }
                     }
                     Flow {
                         width: parent.width
                         spacing: ThemeTokens.dp(8)
-                        ChaSetButton { variant: "ghost"; size: "sm"; text: "Ghost Action" }
-                        ChaSetButton { variant: "link"; size: "sm"; text: "Link Action" }
-                        ChaSetButton { variant: "default"; size: "sm"; text: "Saving..."; loading: true }
-                        ChaSetButton { variant: "secondary"; size: "sm"; text: "Disabled"; disabled: true }
+                        ChaSetButton { variant: "ghost"; size: "sm"; text: ChaSetI18n.tr("getStarted.themeTuner.playground.ghostAction", "Ghost Action") }
+                        ChaSetButton { variant: "link"; size: "sm"; text: ChaSetI18n.tr("getStarted.themeTuner.playground.linkAction", "Link Action") }
+                        ChaSetButton { variant: "default"; size: "sm"; text: ChaSetI18n.tr("getStarted.themeTuner.playground.saving", "Saving..."); loading: true }
+                        ChaSetButton { variant: "secondary"; size: "sm"; text: ChaSetI18n.tr("getStarted.themeTuner.playground.disabled", "Disabled"); disabled: true }
                     }
                 }
 
@@ -554,7 +554,7 @@ DocLayout {
                     width: ThemeTokens.dp(240)
                     spacing: ThemeTokens.dp(12)
                     DocText {
-                        text: "MINI SCROLL VIEWPORT"
+                        text: ChaSetI18n.tr("getStarted.themeTuner.playground.miniScrollViewport", "MINI SCROLL VIEWPORT")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeCaption
                         font.weight: Typography.weightBold
@@ -580,7 +580,7 @@ DocLayout {
                                     color: ThemeTokens.hover
                                     DocText {
                                         anchors.centerIn: parent
-                                        text: "Item #" + (index + 1)
+                                        text: ChaSetI18n.tr("getStarted.themeTuner.playground.viewportItem", "Item #{{index}}", { index: index + 1 })
                                         color: ThemeTokens.text
                                         font.pixelSize: Typography.sizeCaption
                                     }

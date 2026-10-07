@@ -7,20 +7,13 @@ import {
   SegmentedControl,
   Badge,
   CodeBlock,
+  useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { PropsTable } from '../../components/PropsTable';
-
-const PLACEMENT_OPTIONS: { label: string; value: TaskHudPlacement }[] = [
-  { label: 'Bottom Right', value: 'bottom-right' },
-  { label: 'Bottom Left', value: 'bottom-left' },
-  { label: 'Top Right', value: 'top-right' },
-  { label: 'Top Left', value: 'top-left' },
-  { label: 'Bottom Center', value: 'bottom-center' },
-];
 
 const TASK_DEFAULTS = {
   progress: -1,
@@ -30,12 +23,22 @@ const TASK_DEFAULTS = {
 };
 
 export function TaskHudDocPage() {
+  const { t } = useChaSetI18n();
+
+  const PLACEMENT_OPTIONS: { label: string; value: TaskHudPlacement }[] = [
+    { label: t('overlays.taskHud.placementBottomRight', 'Bottom Right'), value: 'bottom-right' },
+    { label: t('overlays.taskHud.placementBottomLeft', 'Bottom Left'), value: 'bottom-left' },
+    { label: t('overlays.taskHud.placementTopRight', 'Top Right'), value: 'top-right' },
+    { label: t('overlays.taskHud.placementTopLeft', 'Top Left'), value: 'top-left' },
+    { label: t('overlays.taskHud.placementBottomCenter', 'Bottom Center'), value: 'bottom-center' },
+  ];
+
   // Preview 1 — live execution sandbox.
   const [tasks, setTasks] = useState<TaskItem[]>([
     {
       id: 'task-1',
-      title: 'Packaging Bundle',
-      detail: 'Compiling assets and modules',
+      title: t('overlays.taskHud.taskPackagingBundle', 'Packaging Bundle'),
+      detail: t('overlays.taskHud.taskPackagingBundleDetail', 'Compiling assets and modules'),
       progress: 0.65,
       status: 'running',
       elapsedMs: 2400,
@@ -43,8 +46,8 @@ export function TaskHudDocPage() {
     },
     {
       id: 'task-2',
-      title: 'Database Migration',
-      detail: 'Applied 12 schema patches',
+      title: t('overlays.taskHud.taskDatabaseMigration', 'Database Migration'),
+      detail: t('overlays.taskHud.taskDatabaseMigrationDetail', 'Applied 12 schema patches'),
       progress: 1,
       status: 'success',
       total: 12,
@@ -57,17 +60,17 @@ export function TaskHudDocPage() {
   const [placement, setPlacement] = useState<TaskHudPlacement>('bottom-right');
   const [collapsed, setCollapsed] = useState(false);
   const backlog: TaskItem[] = [
-    { ...TASK_DEFAULTS, id: 'queue-1', title: 'Indexing Symbols', detail: 'Scanning 4,182 files', indeterminate: true },
-    { ...TASK_DEFAULTS, id: 'queue-2', title: 'Optimizing Images', detail: 'Re-encoding 38 assets', progress: 0.42 },
-    { ...TASK_DEFAULTS, id: 'queue-3', title: 'Running Unit Tests', detail: 'Suite 7 of 12', progress: 0.58, total: 12, done: 7 },
-    { ...TASK_DEFAULTS, id: 'queue-4', title: 'Uploading Artifacts', detail: 'Waiting for credentials', status: 'queued' },
-    { ...TASK_DEFAULTS, id: 'queue-5', title: 'Generating Report', detail: 'Coverage summary', progress: -1 },
+    { ...TASK_DEFAULTS, id: 'queue-1', title: t('overlays.taskHud.taskIndexingSymbols', 'Indexing Symbols'), detail: t('overlays.taskHud.taskIndexingSymbolsDetail', 'Scanning 4,182 files'), indeterminate: true },
+    { ...TASK_DEFAULTS, id: 'queue-2', title: t('overlays.taskHud.taskOptimizingImages', 'Optimizing Images'), detail: t('overlays.taskHud.taskOptimizingImagesDetail', 'Re-encoding 38 assets'), progress: 0.42 },
+    { ...TASK_DEFAULTS, id: 'queue-3', title: t('overlays.taskHud.taskRunningUnitTests', 'Running Unit Tests'), detail: t('overlays.taskHud.taskRunningUnitTestsDetail', 'Suite 7 of 12'), progress: 0.58, total: 12, done: 7 },
+    { ...TASK_DEFAULTS, id: 'queue-4', title: t('overlays.taskHud.taskUploadingArtifacts', 'Uploading Artifacts'), detail: t('overlays.taskHud.taskUploadingArtifactsDetail', 'Waiting for credentials'), status: 'queued' },
+    { ...TASK_DEFAULTS, id: 'queue-5', title: t('overlays.taskHud.taskGeneratingReport', 'Generating Report'), detail: t('overlays.taskHud.taskGeneratingReportDetail', 'Coverage summary'), progress: -1 },
   ];
 
   const dismiss = (id: string) => setTasks((prev) => prev.filter((task) => task.id !== id));
   const cancel = (id: string) =>
     setTasks((prev) =>
-      prev.map((task) => (task.id === id ? { ...task, status: 'cancelled' as const, detail: 'Cancelled by user' } : task)),
+      prev.map((task) => (task.id === id ? { ...task, status: 'cancelled' as const, detail: t('overlays.taskHud.cancelledByUser', 'Cancelled by user') } : task)),
     );
 
   const addRunning = () =>
@@ -76,8 +79,8 @@ export function TaskHudDocPage() {
       {
         ...TASK_DEFAULTS,
         id: `task-${Date.now()}`,
-        title: `Build Job #${prev.length + 1}`,
-        detail: 'Processing dependencies',
+        title: t('overlays.taskHud.buildJob', 'Build Job #{{num}}', { num: prev.length + 1 }),
+        detail: t('overlays.taskHud.processingDependencies', 'Processing dependencies'),
         progress: 0.35,
         elapsedMs: 800,
         cancellable: true,
@@ -90,8 +93,8 @@ export function TaskHudDocPage() {
       {
         ...TASK_DEFAULTS,
         id: `task-${Date.now()}`,
-        title: `Analyzing AST #${prev.length + 1}`,
-        detail: 'Indexing symbols',
+        title: t('overlays.taskHud.analyzingAst', 'Analyzing AST #{{num}}', { num: prev.length + 1 }),
+        detail: t('overlays.taskHud.indexingSymbols', 'Indexing symbols'),
         indeterminate: true,
       },
     ]);
@@ -105,7 +108,7 @@ export function TaskHudDocPage() {
         ...next[index]!,
         status,
         progress: status === 'success' ? 1 : next[index]!.progress,
-        detail: status === 'success' ? 'Completed successfully' : 'Compilation error (exit code 1)',
+        detail: status === 'success' ? t('overlays.taskHud.completedSuccessfully', 'Completed successfully') : t('overlays.taskHud.compilationError', 'Compilation error (exit code 1)'),
       };
       return next;
     });
@@ -158,21 +161,21 @@ export function TaskHudDocPage() {
 }`}
           controls={
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="mr-1 text-muted-foreground">Simulate Tasks:</span>
+              <span className="mr-1 text-muted-foreground">{t('overlays.taskHud.simulateTasks', 'Simulate Tasks:')}</span>
               <Button variant="outline" size="sm" onClick={addRunning}>
-                Add Running
+                {t('overlays.taskHud.addRunning', 'Add Running')}
               </Button>
               <Button variant="outline" size="sm" onClick={addIndeterminate}>
-                Add Indeterminate
+                {t('overlays.taskHud.addIndeterminate', 'Add Indeterminate')}
               </Button>
               <Button variant="outline" size="sm" onClick={() => settleFirstRunning('success')}>
-                Succeed Task
+                {t('overlays.taskHud.succeedTask', 'Succeed Task')}
               </Button>
               <Button variant="outline" size="sm" onClick={() => settleFirstRunning('error')}>
-                Fail Task
+                {t('overlays.taskHud.failTask', 'Fail Task')}
               </Button>
               <Button variant="outline" size="sm" onClick={() => setTasks([])}>
-                Clear All
+                {t('overlays.taskHud.clearAll', 'Clear All')}
               </Button>
             </div>
           }
@@ -181,7 +184,7 @@ export function TaskHudDocPage() {
             {tasks.length === 0 ? (
               <div className="flex h-64 items-center justify-center">
                 <p className="text-sm text-muted-foreground">
-                  Task HUD is idle and hidden. Press "Add Running" to simulate background jobs.
+                  {t('overlays.taskHud.idleHidden', 'Task HUD is idle and hidden. Press "Add Running" to simulate background jobs.')}
                 </p>
               </div>
             ) : null}
@@ -211,7 +214,7 @@ export function TaskHudDocPage() {
             controls={
               <div className="flex flex-wrap items-center gap-4 text-xs">
                 <div className="flex items-center gap-2">
-                  <span className="text-muted-foreground">Max Visible:</span>
+                  <span className="text-muted-foreground">{t('overlays.taskHud.maxVisible', 'Max Visible:')}</span>
                   <SegmentedControl
                     value={maxVisible}
                     onValueChange={(value) => setMaxVisible(String(value))}
@@ -223,7 +226,7 @@ export function TaskHudDocPage() {
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-muted-foreground">Placement:</span>
+                  <span className="text-muted-foreground">{t('overlays.taskHud.placement', 'Placement:')}</span>
                   <SegmentedControl
                     value={placement}
                     onValueChange={(value) => setPlacement(value as TaskHudPlacement)}
@@ -231,7 +234,7 @@ export function TaskHudDocPage() {
                   />
                 </div>
                 <Button variant="outline" size="sm" onClick={() => setCollapsed((prev) => !prev)}>
-                  {collapsed ? 'Expand Stack' : 'Collapse Stack'}
+                  {collapsed ? t('overlays.taskHud.expandStack', 'Expand Stack') : t('overlays.taskHud.collapseStack', 'Collapse Stack')}
                 </Button>
               </div>
             }

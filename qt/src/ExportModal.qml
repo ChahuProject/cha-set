@@ -19,8 +19,8 @@ ChaSetDialog {
     property string overrideCard: ""
     property string overrideRing: ""
 
-    title: "Export & Copy Theme Configuration"
-    description: "One-click copy tailored styles and component code for your target framework."
+    title: ChaSetI18n.tr("exportTheme.title", "Export & Copy Theme Configuration")
+    description: ChaSetI18n.tr("exportTheme.description", "One-click copy tailored styles and component code for your target framework.")
     dialogWidth: ThemeTokens.dp(680)
 
     signal close()
@@ -167,11 +167,11 @@ ChaSetDialog {
         onCurrentValueChanged: root.exportTab = currentValue
 
         ChaSetTabsList {
-            ChaSetTabsTrigger { value: "css"; text: "CSS Variables" }
-            ChaSetTabsTrigger { value: "tailwind"; text: "Tailwind v4" }
-            ChaSetTabsTrigger { value: "react"; text: "React Code" }
-            ChaSetTabsTrigger { value: "qt"; text: "Qt / QML" }
-            ChaSetTabsTrigger { value: "json"; text: "JSON Spec" }
+            ChaSetTabsTrigger { value: "css"; text: ChaSetI18n.tr("exportTheme.cssVariables", "CSS Variables") }
+            ChaSetTabsTrigger { value: "tailwind"; text: ChaSetI18n.tr("exportTheme.tailwindV4", "Tailwind v4") }
+            ChaSetTabsTrigger { value: "react"; text: ChaSetI18n.tr("exportTheme.reactCode", "React Code") }
+            ChaSetTabsTrigger { value: "qt"; text: ChaSetI18n.tr("exportTheme.qtQml", "Qt / QML") }
+            ChaSetTabsTrigger { value: "json"; text: ChaSetI18n.tr("exportTheme.jsonSpec", "JSON Spec") }
         }
     }
 
@@ -206,7 +206,7 @@ ChaSetDialog {
             anchors.right: footerBtns.left
             anchors.rightMargin: ThemeTokens.dp(12)
             anchors.verticalCenter: parent.verticalCenter
-            text: "Tip: Drop this configuration directly into your project's stylesheet or theme manager."
+            text: ChaSetI18n.tr("exportTheme.tip", "Tip: Drop this configuration directly into your project's stylesheet or theme manager.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeCaption
             elide: Text.ElideRight
@@ -221,7 +221,7 @@ ChaSetDialog {
             ChaSetButton {
                 size: "sm"
                 variant: "secondary"
-                text: "Close"
+                text: ChaSetI18n.tr("common.close", "Close")
                 onClicked: { root.close(); root.closeDialog() }
             }
 
@@ -229,7 +229,7 @@ ChaSetDialog {
                 size: "sm"
                 variant: "default"
                 text: root.getSnippet()
-                label: "Copy to Clipboard"
+                label: ChaSetI18n.tr("common.copyToClipboard", "Copy to Clipboard")
             }
         }
     }

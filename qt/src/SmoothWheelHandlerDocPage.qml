@@ -99,7 +99,7 @@ DocLayout {
                                 DocText {
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
-                                    text: "Kinematic Scroll Item #" + (index + 1)
+                                    text: ChaSetI18n.tr("desktopComposite.smoothWheelHandler.itemLabel", "Kinematic Scroll Item #{{index}}", { index: index + 1 })
                                     color: ThemeTokens.text
                                     font.pixelSize: Typography.sizeSmall
                                     font.bold: true
@@ -109,7 +109,7 @@ DocLayout {
                                     anchors.right: parent.right
                                     anchors.verticalCenter: parent.verticalCenter
                                     variant: "outline"
-                                    text: "Item #" + (index + 1)
+                                    text: ChaSetI18n.tr("desktopComposite.smoothWheelHandler.itemBadge", "Item #{{index}}", { index: index + 1 })
                                 }
                             }
                         }
@@ -122,7 +122,7 @@ DocLayout {
             Row {
                 spacing: ThemeTokens.dp(8)
                 DocText {
-                    text: "Speed Multiplier:"
+                    text: ChaSetI18n.tr("desktopComposite.smoothWheelHandler.speedMultiplier", "Speed Multiplier:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
@@ -143,7 +143,7 @@ DocLayout {
             Row {
                 spacing: ThemeTokens.dp(8)
                 DocText {
-                    text: "Damping Duration:"
+                    text: ChaSetI18n.tr("desktopComposite.smoothWheelHandler.dampingDuration", "Damping Duration:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
@@ -180,11 +180,12 @@ ChaSetSmoothWheelHandler {
     // Kinematic Architecture
     Column {
         property string sectionId: "kinematics"
+        property string sectionTitle: "Kinematic Architecture"
         width: parent.width
         spacing: 12
 
         DocText {
-            text: "Kinematic Architecture"
+            text: ChaSetI18n.tr("desktopComposite.smoothWheelHandler.kinematicsTitle", "Kinematic Architecture")
             font.pixelSize: Typography.sizeTitleSm
             font.bold: true
             color: ThemeTokens.text
@@ -205,21 +206,21 @@ ChaSetSmoothWheelHandler {
                     DocText {
                         width: parent.width
                         wrapMode: TextEdit.Wrap
-                        text: "• Momentum Accumulation: Consecutive wheel clicks accumulate linearly to targetPos rather than interrupting or jerking the active transition."
+                        text: ChaSetI18n.tr("desktopComposite.smoothWheelHandler.bullet1", "• Momentum Accumulation: Consecutive wheel clicks accumulate linearly to targetPos rather than interrupting or jerking the active transition.")
                         color: ThemeTokens.text
                         font.pixelSize: Typography.sizeSmall
                     }
                     DocText {
                         width: parent.width
                         wrapMode: TextEdit.Wrap
-                        text: "• Gesture Decoupling: Automatically listens to targetItem.moving and targetItem.flicking. When the user touches or drags the view, smooth animations abort instantly to prevent motion fight."
+                        text: ChaSetI18n.tr("desktopComposite.smoothWheelHandler.bullet2", "• Gesture Decoupling: Automatically listens to targetItem.moving and targetItem.flicking. When the user touches or drags the view, smooth animations abort instantly to prevent motion fight.")
                         color: ThemeTokens.text
                         font.pixelSize: Typography.sizeSmall
                     }
                     DocText {
                         width: parent.width
                         wrapMode: TextEdit.Wrap
-                        text: "• Universal Drop-In: Targets any Flickable / ListView / GridView or ChaSetScrollArea without modifying existing visual hierarchies."
+                        text: ChaSetI18n.tr("desktopComposite.smoothWheelHandler.bullet3", "• Universal Drop-In: Targets any Flickable / ListView / GridView or ChaSetScrollArea without modifying existing visual hierarchies.")
                         color: ThemeTokens.text
                         font.pixelSize: Typography.sizeSmall
                     }

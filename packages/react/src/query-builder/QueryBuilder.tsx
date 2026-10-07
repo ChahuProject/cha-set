@@ -10,6 +10,7 @@ import {
 } from '../select/Select';
 import { XIcon } from '../lib/icons';
 import { cn } from '../lib/utils';
+import { useChaSetI18n } from '../i18n';
 import {
   type FilterCondition,
   type FilterFieldDefinition,
@@ -50,15 +51,17 @@ function normalizeGroup(g: any): FilterGroup {
   };
 }
 
-function normalizeFields(fields: any[]): FilterFieldDefinition<any>[] {
+function normalizeFields(fields: any[], t?: (k: string, d?: string) => string): FilterFieldDefinition<any>[] {
+  const equalsLabel = t ? t('desktopComposite.queryBuilder.equals', 'equals') : 'equals';
+  const containsLabel = t ? t('desktopComposite.queryBuilder.contains', 'contains') : 'contains';
   return (fields || []).map((f) => {
     const key = f.key || f.id || f.name || '';
     const operators =
       f.operators && f.operators.length > 0
         ? f.operators
         : [
-            { key: 'equals', label: 'equals', match: (r: any, v: any) => r == v },
-            { key: 'contains', label: 'contains', match: (r: any, v: any) => String(r).includes(String(v)) },
+            { key: 'equals', label: equalsLabel, match: (r: any, v: any) => r == v },
+            { key: 'contains', label: containsLabel, match: (r: any, v: any) => String(r).includes(String(v)) },
             { key: 'greaterThan', label: '>', match: (r: any, v: any) => Number(r) > Number(v) },
           ];
     return {
@@ -80,7 +83,8 @@ export function QueryBuilder<TRecord>({
   disabled = false,
   className,
 }: QueryBuilderProps<TRecord>) {
-  const safeFields = React.useMemo(() => normalizeFields(fields), [fields]);
+  const { t } = useChaSetI18n();
+  const safeFields = React.useMemo(() => normalizeFields(fields, t), [fields, t]);
   const safeGroup = React.useMemo(() => normalizeGroup(rootGroup ?? query), [rootGroup, query]);
   const handleChange = React.useCallback(
     (nextGroup: FilterGroup) => {
@@ -122,6 +126,7 @@ function GroupRenderer<TRecord>({
   onDeleteGroup?: () => void;
 }) {
   if (!group) return null;
+  const { t } = useChaSetI18n();
   const connector = group.connector || 'and';
   const children = Array.isArray(group.children) ? group.children : [];
 
@@ -201,7 +206,7 @@ function GroupRenderer<TRecord>({
             onClick={handleAddCondition}
             className="h-6 text-muted-foreground hover:text-foreground"
           >
-            + Add condition
+            {t('desktopComposite.queryBuilder.addCondition', '+ Add condition')}
           </Button>
 
           <Button
@@ -212,7 +217,7 @@ function GroupRenderer<TRecord>({
             onClick={handleAddSubgroup}
             className="h-6 text-muted-foreground hover:text-foreground"
           >
-            + Add group
+            {t('desktopComposite.queryBuilder.addGroup', '+ Add group')}
           </Button>
         </div>
 
@@ -224,7 +229,7 @@ function GroupRenderer<TRecord>({
             disabled={disabled}
             onClick={onDeleteGroup}
             className="size-6 text-muted-foreground hover:text-destructive"
-            title="Delete group"
+            title={t('desktopComposite.queryBuilder.deleteGroup', 'Delete group')}
           >
             <XIcon className="size-3" />
           </Button>
@@ -277,6 +282,7 @@ function ConditionRenderer<TRecord>({
   onChangeCondition: (cond: FilterCondition) => void;
   onDelete: () => void;
 }) {
+  const { t } = useChaSetI18n();
   const currentField = fields.find((f) => f.key === condition.field) ?? fields[0];
   const operators = currentField?.operators ?? [];
 
@@ -317,7 +323,7 @@ function ConditionRenderer<TRecord>({
         disabled={disabled}
       >
         <SelectTrigger className="h-7 w-36 text-xs">
-          <SelectValue placeholder="Field" />
+          <SelectValue placeholder={t('desktopComposite.queryBuilder.fieldPlaceholder', 'Field')} />
         </SelectTrigger>
         <SelectContent>
           {fields.map((f) => (
@@ -335,7 +341,7 @@ function ConditionRenderer<TRecord>({
         disabled={disabled}
       >
         <SelectTrigger className="h-7 w-32 text-xs">
-          <SelectValue placeholder="Operator" />
+          <SelectValue placeholder={t('desktopComposite.queryBuilder.operatorPlaceholder', 'Operator')} />
         </SelectTrigger>
         <SelectContent>
           {operators.map((op) => (
@@ -370,7 +376,7 @@ function ConditionRenderer<TRecord>({
           value={String(condition.value ?? '')}
           onChange={(e) => handleValueChange(e.target.value)}
           disabled={disabled}
-          placeholder="Value..."
+          placeholder={t('desktopComposite.queryBuilder.valuePlaceholder', 'Value...')}
           className="h-7 w-40 text-xs"
         />
       )}
@@ -383,8 +389,8 @@ function ConditionRenderer<TRecord>({
         disabled={disabled}
         onClick={onDelete}
         className="size-6 text-muted-foreground hover:text-destructive"
-        title="Remove condition"
-        aria-label="Remove condition"
+        title={t('desktopComposite.queryBuilder.removeCondition', 'Remove condition')}
+        aria-label={t('desktopComposite.queryBuilder.removeCondition', 'Remove condition')}
       >
         <XIcon className="size-3" />
       </Button>

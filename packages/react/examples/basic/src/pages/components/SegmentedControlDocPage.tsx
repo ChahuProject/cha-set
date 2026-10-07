@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
-import { SegmentedControl, Card, Button, Checkbox, CodeBlock, GridIcon, ListIcon, TableIcon } from '@chahu/cha-set';
+import { SegmentedControl, Card, Button, Checkbox, CodeBlock, GridIcon, ListIcon, TableIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SegmentedControlDocPage() {
+  const { t } = useChaSetI18n();
   const [selectedSize, setSelectedSize] = useState<'sm' | 'default' | 'lg'>('default');
   const [activeView, setActiveView] = useState<string | number>('grid');
   const [disabled, setDisabled] = useState(false);
 
   const viewOptions = [
-    { label: 'Grid', value: 'grid', icon: <GridIcon className="size-3.5" /> },
-    { label: 'List', value: 'list', icon: <ListIcon className="size-3.5" /> },
-    { label: 'Gallery', value: 'gallery', icon: <TableIcon className="size-3.5" />, badge: 3 },
+    { label: t('formsA.segmentedControl.grid', 'Grid'), value: 'grid', icon: <GridIcon className="size-3.5" /> },
+    { label: t('formsA.segmentedControl.list', 'List'), value: 'list', icon: <ListIcon className="size-3.5" /> },
+    { label: t('formsA.segmentedControl.gallery', 'Gallery'), value: 'gallery', icon: <TableIcon className="size-3.5" />, badge: 3 },
   ];
 
   const menuOptions = [
-    { label: 'Off', value: 0 },
-    { label: 'Line', value: 1 },
-    { label: 'Dot', value: 2 },
+    { label: t('formsA.segmentedControl.off', 'Off'), value: 0 },
+    { label: t('formsA.segmentedControl.line', 'Line'), value: 1 },
+    { label: t('formsA.segmentedControl.dot', 'Dot'), value: 2 },
   ];
 
   const heroReactCode = `<SegmentedControl
@@ -60,7 +61,7 @@ export function SegmentedControlDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-4 text-xs">
               <div className="flex items-center gap-1.5">
-                <span className="text-muted-foreground">Size:</span>
+                <span className="text-muted-foreground">{t('showcase.size', 'Size:')}</span>
                 <div className="flex items-center gap-1">
                   {(['sm', 'default', 'lg'] as const).map((s) => (
                     <Button
@@ -77,7 +78,7 @@ export function SegmentedControlDocPage() {
               <Checkbox
                 checked={disabled}
                 onCheckedChange={(c) => setDisabled(Boolean(c))}
-                label="Disabled"
+                label={t('common.disabled', 'Disabled')}
               />
             </div>
           }
@@ -91,7 +92,7 @@ export function SegmentedControlDocPage() {
               disabled={disabled}
             />
             <div className="text-xs text-muted-foreground">
-              Current selection: <span className="font-semibold text-foreground">{String(activeView)}</span>
+              {t('formsA.segmentedControl.currentSelection', 'Current selection: {{value}}', { value: String(activeView) })}
             </div>
           </div>
         </ComponentPreview>
@@ -124,15 +125,15 @@ ChaSetSegmentedControl {
         <h2 className="text-xl font-semibold text-foreground">Sizes & Badges</h2>
         <Card className="p-6 space-y-6">
           <div className="space-y-2">
-            <div className="text-xs font-semibold text-muted-foreground">Small (sm - Menu & Toolbar dense)</div>
+            <div className="text-xs font-semibold text-muted-foreground">{t('formsA.segmentedControl.smDesc', 'Small (sm - Menu & Toolbar dense)')}</div>
             <SegmentedControl size="sm" options={viewOptions} defaultValue="grid" />
           </div>
           <div className="space-y-2">
-            <div className="text-xs font-semibold text-muted-foreground">Default (Standard controls)</div>
+            <div className="text-xs font-semibold text-muted-foreground">{t('formsA.segmentedControl.defaultDesc', 'Default (Standard controls)')}</div>
             <SegmentedControl size="default" options={viewOptions} defaultValue="grid" />
           </div>
           <div className="space-y-2">
-            <div className="text-xs font-semibold text-muted-foreground">Large (lg - Prominent tabs style)</div>
+            <div className="text-xs font-semibold text-muted-foreground">{t('formsA.segmentedControl.lgDesc', 'Large (lg - Prominent tabs style)')}</div>
             <SegmentedControl size="lg" options={viewOptions} defaultValue="grid" />
           </div>
         </Card>
@@ -141,28 +142,28 @@ ChaSetSegmentedControl {
       <section id="fixed-width-truncation" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Fixed Width & Truncation</h2>
         <p className="text-sm text-muted-foreground">
-          By default, segments auto-adapt to their content length. When <code>equalWidth</code>, <code>fullWidth</code>, or <code>itemWidth</code> is configured, segments enforce equal or fixed dimensions and truncate overflowing text with an ellipsis.
+          {t('formsA.segmentedControl.truncationSubtitle', 'By default, segments auto-adapt to their content length. When equalWidth, fullWidth, or itemWidth is configured, segments enforce equal or fixed dimensions and truncate overflowing text with an ellipsis.')}
         </p>
         <Card className="p-6 space-y-6">
           <div className="space-y-2">
-            <div className="text-xs font-semibold text-muted-foreground">Auto-Adaptive Content Width (Default)</div>
+            <div className="text-xs font-semibold text-muted-foreground">{t('formsA.segmentedControl.autoAdaptiveTitle', 'Auto-Adaptive Content Width (Default)')}</div>
             <SegmentedControl
               options={[
-                { label: 'Short', value: 'short' },
-                { label: 'Variable Length Title', value: 'var' },
-                { label: 'Long Description Tab', value: 'long' },
+                { label: t('formsA.segmentedControl.optShort', 'Short'), value: 'short' },
+                { label: t('formsA.segmentedControl.optVar', 'Variable Length Title'), value: 'var' },
+                { label: t('formsA.segmentedControl.optLong', 'Long Description Tab'), value: 'long' },
               ]}
               defaultValue="var"
             />
           </div>
           <div className="space-y-2">
-            <div className="text-xs font-semibold text-muted-foreground">Fixed Width per Item with Ellipsis (itemWidth=110)</div>
+            <div className="text-xs font-semibold text-muted-foreground">{t('formsA.segmentedControl.fixedWidthTitle', 'Fixed Width per Item with Ellipsis (itemWidth=110)')}</div>
             <SegmentedControl
               itemWidth={110}
               options={[
-                { label: 'Compact', value: 'compact' },
-                { label: 'Very Long Option Text That Truncates', value: 'long' },
-                { label: 'Settings', value: 'settings' },
+                { label: t('formsA.segmentedControl.optCompact', 'Compact'), value: 'compact' },
+                { label: t('formsA.segmentedControl.optTruncate', 'Very Long Option Text That Truncates'), value: 'long' },
+                { label: t('formsA.segmentedControl.optSettings', 'Settings'), value: 'settings' },
               ]}
               defaultValue="compact"
             />
@@ -173,11 +174,11 @@ ChaSetSegmentedControl {
       <section id="menu-inline-title" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Menu & Inline Title</h2>
         <p className="text-sm text-muted-foreground">
-          Supports an optional prefix title to seamlessly embed within context menu rows and parameter settings panels.
+          {t('formsA.segmentedControl.menuTitleSubtitle', 'Supports an optional prefix title to seamlessly embed within context menu rows and parameter settings panels.')}
         </p>
         <Card className="p-6">
           <SegmentedControl
-            title="Grid Style:"
+            title={t('formsA.segmentedControl.gridStyleTitle', 'Grid Style:')}
             size="sm"
             options={menuOptions}
             defaultValue={1}

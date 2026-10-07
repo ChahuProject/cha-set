@@ -59,7 +59,7 @@ DocLayout {
 
                     Text {
                         anchors.centerIn: parent
-                        text: "Preview Box"
+                        text: ChaSetI18n.tr("overlays.scaleOsd.previewBox", "Preview Box")
                         color: ThemeTokens.accent
                         font.pixelSize: Typography.sizeSmall
                         font.bold: true

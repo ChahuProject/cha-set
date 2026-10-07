@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { DraggableModal, Button, Badge, CodeBlock, XIcon } from '@chahu/cha-set';
+import { DraggableModal, Button, Badge, CodeBlock, XIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function DraggableModalDocPage() {
+  const { t } = useChaSetI18n();
   const [open, setOpen] = useState(false);
 
   const reactCode = `{open && (
@@ -13,12 +14,12 @@ export function DraggableModalDocPage() {
     showEscBadge
     initialPositionMode="center"
     sizeOptions={[
-      { name: '默认', special: 'default' },
-      { name: '紧凑 (24rem x 18rem)', widthRem: 24, heightRem: 18 },
-      { name: '宽屏 (40rem x 24rem)', widthRem: 40, heightRem: 24 },
-      { name: '全窗口', special: 'fullscreen' },
+      { name: 'Default', special: 'default' },
+      { name: 'Compact (24rem x 18rem)', widthRem: 24, heightRem: 18 },
+      { name: 'Widescreen (40rem x 24rem)', widthRem: 40, heightRem: 24 },
+      { name: 'Fullscreen', special: 'fullscreen' },
     ]}
-    sizeMenuTooltip="调整弹窗尺寸"
+    sizeMenuTooltip="Adjust window size"
     topControls={
       <Button variant="ghost" size="icon-xs" onClick={() => setOpen(false)}>
         <XIcon className="size-3" />
@@ -27,14 +28,14 @@ export function DraggableModalDocPage() {
     fixedFooter={
       <div className="flex justify-end p-3 bg-muted/20">
         <Button variant="secondary" size="xs" onClick={() => setOpen(false)}>
-          关闭
+          Close
         </Button>
       </div>
     }
   >
     <div className="space-y-3 p-4 text-xs text-muted-foreground">
-      <h3 className="text-sm font-medium text-foreground">诊断监测器</h3>
-      <p>支持自由拖拽、边缘缩放、档位快速切换与高度自适应贴合。</p>
+      <h3 className="text-sm font-medium text-foreground">Memory & Shader Diagnostics</h3>
+      <p>Drag anywhere on the modal surface not occupied by controls to move; drag borders to resize.</p>
     </div>
   </DraggableModal>
 )}`;
@@ -43,14 +44,14 @@ export function DraggableModalDocPage() {
     <DocLayout
       category="Overlays & Feedback"
       title="Draggable Modal"
-      description="桌面可拖拽与尺寸调整弹窗体，支持尺寸档位切换、自动贴高与靠顶布局。"
+      description="Desktop floating window with dragging title bar and bound viewport constraints."
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          点击打开可拖拽弹窗体，支持通过右上角菜单切换尺寸档位、拖拽移动以及贴高自适应。
+          Click the button below to open the draggable modal window, supporting size presets, drag repositioning, and auto-fitting height.
         </p>
 
         <ComponentPreview
@@ -59,16 +60,16 @@ export function DraggableModalDocPage() {
     initialPositionMode: "center"
     showEscBadge: true
     sizeOptions: [
-        { name: "默认", special: "default" },
-        { name: "宽屏", widthRem: 32, heightRem: 20 },
-        { name: "全窗口", special: "fullscreen" }
+        { name: "Default", special: "default" },
+        { name: "Widescreen", widthRem: 32, heightRem: 20 },
+        { name: "Fullscreen", special: "fullscreen" }
     ]
     width: 300
     height: 200
 }`} title="Draggable Modal Sandbox" reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4">
             <Button variant="outline" onClick={() => setOpen(true)}>
-              {open ? '弹窗已打开' : '打开可拖拽诊断弹窗'}
+              {open ? t('overlays.draggableModal.modalOpen', 'Modal is open') : t('overlays.draggableModal.openModal', 'Open Draggable Diagnostic Window')}
             </Button>
 
             {open && (
@@ -76,12 +77,12 @@ export function DraggableModalDocPage() {
                 showEscBadge
                 initialPositionMode="center"
                 sizeOptions={[
-                  { name: '默认', special: 'default' },
-                  { name: '紧凑 (24rem x 18rem)', widthRem: 24, heightRem: 18 },
-                  { name: '宽屏 (40rem x 24rem)', widthRem: 40, heightRem: 24 },
-                  { name: '全窗口', special: 'fullscreen' },
+                  { name: t('overlays.draggableModal.presetDefault', 'Default'), special: 'default' },
+                  { name: t('overlays.draggableModal.presetCompact', 'Compact (24rem x 18rem)'), widthRem: 24, heightRem: 18 },
+                  { name: t('overlays.draggableModal.presetWidescreen', 'Widescreen (40rem x 24rem)'), widthRem: 40, heightRem: 24 },
+                  { name: t('overlays.draggableModal.presetFullscreen', 'Fullscreen'), special: 'fullscreen' },
                 ]}
-                sizeMenuTooltip="调整弹窗尺寸"
+                sizeMenuTooltip={t('overlays.draggableModal.adjustSize', 'Adjust window size')}
                 topControls={
                   <Button variant="ghost" size="icon-xs" onClick={() => setOpen(false)}>
                     <XIcon className="size-3" />
@@ -90,22 +91,22 @@ export function DraggableModalDocPage() {
                 fixedFooter={
                   <div className="flex justify-end p-3 bg-muted/20">
                     <Button variant="secondary" size="xs" onClick={() => setOpen(false)}>
-                      关闭
+                      {t('common.close', 'Close')}
                     </Button>
                   </div>
                 }
               >
                 <div className="space-y-3 p-4 text-xs text-muted-foreground">
-                  <h3 className="text-sm font-medium text-foreground">内存与着色器诊断</h3>
+                  <h3 className="text-sm font-medium text-foreground">{t('overlays.draggableModal.diagnosticsTitle', 'Memory & Shader Diagnostics')}</h3>
                   <p>
-                    拖动弹窗任意未被交互元素占用的区域即可移动位置；也可拉伸窗口边框调整尺寸。
+                    {t('overlays.draggableModal.diagnosticsDesc', 'Drag anywhere on the modal surface not occupied by controls to move; drag borders to resize.')}
                   </p>
                   <div className="flex items-center justify-between border-t border-border/50 pt-2 font-mono">
-                    <span>堆内存已用:</span>
+                    <span>{t('overlays.draggableModal.heapUsed', 'Heap Memory Used:')}</span>
                     <Badge variant="outline">42.8 MB</Badge>
                   </div>
                   <div className="flex items-center justify-between font-mono">
-                    <span>活跃纹理:</span>
+                    <span>{t('overlays.draggableModal.activeTextures', 'Active Textures:')}</span>
                     <Badge variant="secondary">128 alloc</Badge>
                   </div>
                 </div>

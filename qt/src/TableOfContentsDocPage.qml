@@ -19,42 +19,42 @@ DocLayout {
     readonly property var demoItems: [
         {
             id: "introduction",
-            title: "Introduction",
+            title: ChaSetI18n.tr("surfaces.tableOfContents.items.introduction"),
             level: 1,
             children: [
-                { id: "motivation", title: "Motivation & Goals", level: 2 },
-                { id: "design-principles", title: "Design Principles", level: 2 }
+                { id: "motivation", title: ChaSetI18n.tr("surfaces.tableOfContents.items.motivation"), level: 2 },
+                { id: "design-principles", title: ChaSetI18n.tr("surfaces.tableOfContents.items.designPrinciples"), level: 2 }
             ]
         },
         {
             id: "architecture",
-            title: "System Architecture",
+            title: ChaSetI18n.tr("surfaces.tableOfContents.items.architecture"),
             level: 1,
             children: [
                 {
                     id: "data-flow",
-                    title: "Core Data Flow",
+                    title: ChaSetI18n.tr("surfaces.tableOfContents.items.dataFlow"),
                     level: 2,
                     children: [
-                        { id: "signals", title: "Reactive Signals", level: 3 },
-                        { id: "batching", title: "Update Batching", level: 3 }
+                        { id: "signals", title: ChaSetI18n.tr("surfaces.tableOfContents.items.signals"), level: 3 },
+                        { id: "batching", title: ChaSetI18n.tr("surfaces.tableOfContents.items.batching"), level: 3 }
                     ]
                 },
-                { id: "boundary", title: "Platform Boundaries", level: 2 }
+                { id: "boundary", title: ChaSetI18n.tr("surfaces.tableOfContents.items.boundary"), level: 2 }
             ]
         },
         {
             id: "implementation",
-            title: "Implementation Notes",
+            title: ChaSetI18n.tr("surfaces.tableOfContents.items.implementation"),
             level: 1,
             children: [
-                { id: "banner-offset", title: "Banner Offset Handling", level: 2 },
-                { id: "tree-rendering", title: "Tree & Track Rendering", level: 2 }
+                { id: "banner-offset", title: ChaSetI18n.tr("surfaces.tableOfContents.items.bannerOffset"), level: 2 },
+                { id: "tree-rendering", title: ChaSetI18n.tr("surfaces.tableOfContents.items.treeRendering"), level: 2 }
             ]
         },
         {
             id: "changelog",
-            title: "Release Changelog",
+            title: ChaSetI18n.tr("surfaces.tableOfContents.items.changelog"),
             level: 1
         }
     ]
@@ -97,7 +97,7 @@ DocLayout {
                 spacing: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
                 DocText {
-                    text: "Variant:"
+                    text: ChaSetI18n.tr("showcase.variant")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                     anchors.verticalCenter: parent.verticalCenter
@@ -107,9 +107,9 @@ DocLayout {
                     size: "sm"
                     value: root.variant
                     options: [
-                        { label: "Default", value: "default" },
-                        { label: "Track", value: "track" },
-                        { label: "Flat", value: "flat" }
+                        { label: ChaSetI18n.tr("common.default"), value: "default" },
+                        { label: ChaSetI18n.tr("surfaces.tableOfContents.track"), value: "track" },
+                        { label: ChaSetI18n.tr("surfaces.tableOfContents.flat"), value: "flat" }
                     ]
                     onValueSelected: function(val) { root.variant = String(val); }
                 }
@@ -118,7 +118,7 @@ DocLayout {
                 spacing: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
                 DocText {
-                    text: "Size:"
+                    text: ChaSetI18n.tr("showcase.size")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                     anchors.verticalCenter: parent.verticalCenter
@@ -128,8 +128,8 @@ DocLayout {
                     size: "sm"
                     value: root.size
                     options: [
-                        { label: "Default", value: "default" },
-                        { label: "Small", value: "sm" }
+                        { label: ChaSetI18n.tr("common.default"), value: "default" },
+                        { label: ChaSetI18n.tr("surfaces.tableOfContents.small"), value: "sm" }
                     ]
                     onValueSelected: function(val) { root.size = String(val); }
                 }
@@ -138,7 +138,7 @@ DocLayout {
                 spacing: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
                 DocText {
-                    text: "Show Track:"
+                    text: ChaSetI18n.tr("surfaces.tableOfContents.showTrack")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                     anchors.verticalCenter: parent.verticalCenter
@@ -153,7 +153,7 @@ DocLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 size: "sm"
                 variant: "outline"
-                text: "Reset"
+                text: ChaSetI18n.tr("common.reset")
                 onClicked: function() { root.resetDemo(); }
             }
         ]
@@ -195,7 +195,7 @@ DocLayout {
                             anchors.rightMargin: ThemeTokens.dp(16)
 
                             Text {
-                                text: "Global System Announcement: Scheduled maintenance at 02:00 UTC"
+                                text: ChaSetI18n.tr("surfaces.tableOfContents.bannerText")
                                 color: ThemeTokens.accent
                                 font.family: Typography.familySans
                                 font.pixelSize: Typography.sizeCaption
@@ -225,7 +225,7 @@ DocLayout {
                                 spacing: ThemeTokens.dp(8)
 
                                 Text {
-                                    text: "Document Reading Pane"
+                                    text: ChaSetI18n.tr("surfaces.tableOfContents.readingPaneTitle")
                                     color: ThemeTokens.text
                                     font.family: Typography.familySans
                                     font.pixelSize: Typography.sizeBody
@@ -233,7 +233,7 @@ DocLayout {
                                 }
 
                                 Text {
-                                    text: "Active outline target: " + root.activeId
+                                    text: ChaSetI18n.tr("surfaces.tableOfContents.activeOutlineTarget", { "target": root.activeId })
                                     color: ThemeTokens.accent
                                     font.family: Typography.familyMono
                                     font.pixelSize: Typography.sizeSmall

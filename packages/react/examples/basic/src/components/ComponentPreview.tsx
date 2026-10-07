@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, TabsContent, Card, CodeBlock, SegmentedControl } from '@chahu/cha-set';
+import { Tabs, TabsContent, Card, CodeBlock, SegmentedControl, useChaSetI18n } from '@chahu/cha-set';
 import { ErrorBoundary } from './ErrorBoundary';
 
 export interface ComponentPreviewProps {
@@ -20,6 +20,9 @@ export function ComponentPreview({
   controls,
 }: ComponentPreviewProps) {
   const [activeTab, setActiveTab] = useState<'preview' | 'code' | 'qt'>('preview');
+  const { t } = useChaSetI18n();
+
+  const localizedTitle = title ? t(`showcase.previewTitles.${title}`, title) : '';
 
   const effectiveReactCode =
     reactCode?.trim() ||
@@ -38,13 +41,13 @@ export function ComponentPreview({
             value={activeTab}
             onValueChange={(val) => setActiveTab(val as 'preview' | 'code' | 'qt')}
             options={[
-              { label: 'Preview', value: 'preview' },
-              { label: 'React Code', value: 'code' },
-              { label: 'Qt QML', value: 'qt' },
+              { label: t('showcase.preview', 'Preview'), value: 'preview' },
+              { label: t('showcase.reactCode', 'React Code'), value: 'code' },
+              { label: t('showcase.qtQml', 'Qt QML'), value: 'qt' },
             ]}
           />
 
-          {title && <span className="text-xs font-medium text-muted-foreground hidden sm:inline">{title}</span>}
+          {localizedTitle && <span className="text-xs font-medium text-muted-foreground hidden sm:inline">{localizedTitle}</span>}
         </div>
 
         {/* Main Content Panels */}

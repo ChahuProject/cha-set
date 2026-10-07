@@ -8,6 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
   ListIcon,
+  useChaSetI18n,
   type TocItem,
 } from '@chahu/cha-set';
 import { useToc } from './TocContext';
@@ -215,13 +216,22 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
   }, [propItems, containerRef]);
 
   const items = outline;
+  const { t } = useChaSetI18n();
+
+  const localizedItems = React.useMemo(() => {
+    return items.map((item) => ({
+      ...item,
+      title: t(`showcase.toc.${item.id}`, item.title),
+    }));
+  }, [items, t]);
+
   const [activeId, setActiveId] = useState<string>(() => items[0]?.id || '');
   const { setItems: setContextItems, tocOpen, setTocOpen } = useToc();
 
   useEffect(() => {
-    setContextItems(items);
+    setContextItems(localizedItems);
     return () => setContextItems([]);
-  }, [items, setContextItems]);
+  }, [localizedItems, setContextItems]);
 
   useEffect(() => {
     if (items.length > 0 && !items.some((item) => item.id === activeId)) {
@@ -330,9 +340,9 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
       >
         <ScrollArea className="h-full w-full" viewportClassName="p-6">
           <ChaSetTableOfContents
-            items={items}
+            items={localizedItems}
             activeId={activeId}
-            title="On this page"
+            title={t('showcase.onThisPage', 'On this page')}
             showTitle={true}
             showTrack={true}
             targetOffset={bannerOffset}
@@ -347,14 +357,14 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
           <SheetHeader className="p-4 pb-2 border-b border-border">
             <SheetTitle className="text-sm font-semibold flex items-center gap-2">
               <ListIcon className="size-4 text-primary" />
-              <span>On this page</span>
+              <span>{t('showcase.onThisPage', 'On this page')}</span>
             </SheetTitle>
           </SheetHeader>
           <ScrollArea className="h-[calc(100vh-4.5rem)]" viewportClassName="p-4">
             <ChaSetTableOfContents
-              items={items}
+              items={localizedItems}
               activeId={activeId}
-              title="On this page"
+              title={t('showcase.onThisPage', 'On this page')}
               showTitle={false}
               showTrack={true}
               targetOffset={bannerOffset}

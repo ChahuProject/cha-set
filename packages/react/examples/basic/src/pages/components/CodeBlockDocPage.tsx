@@ -1,5 +1,5 @@
 import React from 'react';
-import { CodeBlock, Badge } from '@chahu/cha-set';
+import { CodeBlock, Badge, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -65,6 +65,7 @@ export function resolve(key: string): boolean {
 ];
 
 export function CodeBlockDocPage() {
+  const { t } = useChaSetI18n();
   const reactCode = `<CodeBlock
   code={source}
   language="tsx"
@@ -118,20 +119,19 @@ ChaSetCodeBlock {
 
 
 
-      <section id="variants" className="scroll-mt-20 my-10">
+      <section id="variants" data-toc-title="Variants & Options" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Variants & Options
+          {t('desktopComposite.codeBlock.variantsTitle', 'Variants & Options')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and
-          chrome-less embedding for inline prose.
+          {t('desktopComposite.codeBlock.variantsDesc', 'Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and chrome-less embedding for inline prose.')}
         </p>
 
         <div className="flex flex-col gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Badge variant="secondary">showLineNumbers</Badge>
-              <span className="text-xs text-muted-foreground">Gutter with right-aligned line numbers</span>
+              <span className="text-xs text-muted-foreground">{t('desktopComposite.codeBlock.gutterDesc', 'Gutter with right-aligned line numbers')}</span>
             </div>
             <CodeBlock code={TSX_SAMPLE} language="tsx" showLineNumbers maxHeight={220} />
           </div>
@@ -139,7 +139,7 @@ ChaSetCodeBlock {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Badge variant="secondary">wrap</Badge>
-              <span className="text-xs text-muted-foreground">Soft-wrap long lines instead of horizontal scroll</span>
+              <span className="text-xs text-muted-foreground">{t('desktopComposite.codeBlock.wrapDesc', 'Soft-wrap long lines instead of horizontal scroll')}</span>
             </div>
             <CodeBlock
               code={'const message = "A deliberately long single line that would otherwise require horizontal scrolling to read in full.";'}
@@ -151,7 +151,7 @@ ChaSetCodeBlock {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Badge variant="secondary">highlight={false}</Badge>
-              <span className="text-xs text-muted-foreground">Monochrome fallback using the same layout</span>
+              <span className="text-xs text-muted-foreground">{t('desktopComposite.codeBlock.monochromeDesc', 'Monochrome fallback using the same layout')}</span>
             </div>
             <CodeBlock code={TSX_SAMPLE} language="tsx" highlight={false} showLineNumbers />
           </div>
@@ -159,20 +159,19 @@ ChaSetCodeBlock {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Badge variant="secondary">embedded</Badge>
-              <span className="text-xs text-muted-foreground">Drop the card chrome and header for inline embedding</span>
+              <span className="text-xs text-muted-foreground">{t('desktopComposite.codeBlock.embeddedDesc', 'Drop the card chrome and header for inline embedding')}</span>
             </div>
             <CodeBlock code={`export const VERSION = '1.4.0';`} language="ts" embedded className="rounded-md border border-border" />
           </div>
         </div>
       </section>
 
-      <section id="multi-file" className="scroll-mt-20 my-10">
+      <section id="multi-file" data-toc-title="Multi-File Tabs" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Multi-File Tabs
+          {t('desktopComposite.codeBlock.multiFileTitle', 'Multi-File Tabs')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Pass a <code className="font-mono text-xs">files</code> array to render a tabbed group. Each
-          tab carries its own language, and the copy button always targets the active file.
+          {t('desktopComposite.codeBlock.multiFileDesc', 'Pass a files array to render a tabbed group. Each tab carries its own language, and the copy button always targets the active file.')}
         </p>
         <CodeBlock files={MULTI_FILE_SAMPLE} showLineNumbers />
       </section>

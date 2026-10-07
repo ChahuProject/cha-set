@@ -70,7 +70,7 @@ Rectangle {
             }
 
             ChaSetButton {
-                text: "+ Add condition"
+                text: ChaSetI18n.tr("desktopComposite.queryBuilder.addCondition", "+ Add condition")
                 variant: "ghost"
                 size: "xs"
                 onClicked: root.addCondition()

@@ -37,7 +37,7 @@ DocLayout {
 
                 ChaSetCollapsible {
                     width: parent.width
-                    title: "Repository Details"
+                    title: ChaSetI18n.tr("surfaces.collapsible.starredRepos", "@peduarte starred 3 repositories")
                     open: root.demoOpen
                     disabled: root.demoDisabled
                     variant: root.demoVariant
@@ -86,14 +86,14 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "State:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("surfaces.collapsible.state", "State:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
                         value: root.demoOpen ? "true" : "false"
                         options: [
-                            { label: "Collapsed", value: "false" },
-                            { label: "Expanded", value: "true" }
+                            { label: ChaSetI18n.tr("surfaces.collapsible.collapsed", "Collapsed"), value: "false" },
+                            { label: ChaSetI18n.tr("surfaces.collapsible.expanded", "Expanded"), value: "true" }
                         ]
                         onValueSelected: function(v) { root.demoOpen = (String(v) === "true"); }
                     }
@@ -101,15 +101,15 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("showcase.variant", "Variant:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
                         value: root.demoVariant
                         options: [
-                            { label: "Default", value: "default" },
-                            { label: "Card", value: "card" },
-                            { label: "Ghost", value: "ghost" }
+                            { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                            { label: ChaSetI18n.tr("surfaces.collapsible.card", "Card"), value: "card" },
+                            { label: ChaSetI18n.tr("common.ghost", "Ghost"), value: "ghost" }
                         ]
                         onValueSelected: function(v) { root.demoVariant = String(v); }
                     }
@@ -117,7 +117,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "Disabled:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("common.disabled", "Disabled:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"

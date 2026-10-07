@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SegmentedControl, Card } from '@chahu/cha-set';
+import { SegmentedControl, Card, useChaSetI18n } from '@chahu/cha-set';
 import { Checkbox, type CheckboxSize } from '../../../../../src/checkbox';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -7,6 +7,7 @@ import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from '../../components/ComponentReference';
 
 export function CheckboxDocPage() {
+  const { t } = useChaSetI18n();
   const [size, setSize] = useState<CheckboxSize>('default');
   const [checked, setChecked] = useState(true);
   const [indeterminate, setIndeterminate] = useState(false);
@@ -15,7 +16,8 @@ export function CheckboxDocPage() {
   const [readOnly, setReadOnly] = useState(false);
   const [showDesc, setShowDesc] = useState(true);
   const [label, setLabel] = useState('Accept terms and conditions');
-  const descriptionText = showDesc ? 'You agree to the automated billing policy and privacy guidelines.' : undefined;
+  const currentLabel = label === 'Accept terms and conditions' ? t('formsA.checkbox.sandboxLabel', 'Accept terms and conditions') : label;
+  const descriptionText = showDesc ? t('formsA.checkbox.sandboxDescription', 'You agree to the automated billing policy and privacy guidelines.') : undefined;
 
   const heroReactCode = `<Checkbox
   size="${size}"
@@ -51,7 +53,7 @@ export function CheckboxDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Test interactive checkbox toggling, indeterminate states, helper descriptions, error states, and sizes across Web and Qt Desktop.
+          {t('formsA.checkbox.overviewDesc', 'Test interactive checkbox toggling, indeterminate states, helper descriptions, error states, and sizes across Web and Qt Desktop.')}
         </p>
 
         <ComponentPreview
@@ -62,14 +64,14 @@ export function CheckboxDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               {/* Size Selector */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Size:</span>
+                <span className="text-muted-foreground text-xs">{t('showcase.size', 'Size:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={size}
                   onChange={(v) => setSize(v as CheckboxSize)}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Small (sm)', value: 'sm' },
+                    { label: t('common.default', 'Default'), value: 'default' },
+                    { label: t('formsA.checkbox.sizeSm', 'Small (sm)'), value: 'sm' },
                   ]}
                 />
               </div>
@@ -83,42 +85,42 @@ export function CheckboxDocPage() {
                     setChecked(val as boolean);
                     if (indeterminate) setIndeterminate(false);
                   }}
-                  label="Checked"
+                  label={t('formsA.checkbox.checked', 'Checked')}
                 />
 
                 <Checkbox
                   size="sm"
                   checked={indeterminate}
                   onCheckedChange={(val) => setIndeterminate(val as boolean)}
-                  label="Indeterminate"
+                  label={t('formsA.checkbox.indeterminate', 'Indeterminate')}
                 />
 
                 <Checkbox
                   size="sm"
                   checked={disabled}
                   onCheckedChange={(val) => setDisabled(val as boolean)}
-                  label="Disabled"
+                  label={t('common.disabled', 'Disabled')}
                 />
 
                 <Checkbox
                   size="sm"
                   checked={readOnly}
                   onCheckedChange={(val) => setReadOnly(val as boolean)}
-                  label="Read-Only"
+                  label={t('formsA.checkbox.readOnly', 'Read-Only')}
                 />
 
                 <Checkbox
                   size="sm"
                   checked={invalid}
                   onCheckedChange={(val) => setInvalid(val as boolean)}
-                  label="Invalid"
+                  label={t('formsA.checkbox.invalid', 'Invalid')}
                 />
 
                 <Checkbox
                   size="sm"
                   checked={showDesc}
                   onCheckedChange={(val) => setShowDesc(val as boolean)}
-                  label="Description"
+                  label={t('formsA.checkbox.descriptionLabel', 'Description')}
                 />
               </div>
             </div>
@@ -132,7 +134,7 @@ export function CheckboxDocPage() {
               disabled={disabled}
               readOnly={readOnly}
               invalid={invalid}
-              label={label}
+              label={currentLabel}
               description={descriptionText}
               onCheckedChange={(next) => {
                 if (indeterminate) setIndeterminate(false);
@@ -156,70 +158,70 @@ export function CheckboxDocPage() {
           Examples & States
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Visual matrix of common checkbox configurations, sizes, descriptions, and states.
+          {t('formsA.checkbox.examplesSubtitle', 'Visual matrix of common checkbox configurations, sizes, descriptions, and states.')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="flex flex-col gap-2 p-5">
-            <span className="text-xs font-semibold text-foreground">Unchecked & Checked</span>
-            <span className="text-xs text-muted-foreground mb-2">Standard interactive states</span>
+            <span className="text-xs font-semibold text-foreground">{t('formsA.checkbox.uncheckedCheckedTitle', 'Unchecked & Checked')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.checkbox.uncheckedCheckedDesc', 'Standard interactive states')}</span>
             <div className="flex flex-col gap-3">
-              <Checkbox defaultChecked={false} label="Unchecked by default" />
-              <Checkbox defaultChecked={true} label="Checked by default" />
+              <Checkbox defaultChecked={false} label={t('formsA.checkbox.uncheckedByDefault', 'Unchecked by default')} />
+              <Checkbox defaultChecked={true} label={t('formsA.checkbox.checkedByDefault', 'Checked by default')} />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-2 p-5">
-            <span className="text-xs font-semibold text-foreground">Indeterminate State</span>
-            <span className="text-xs text-muted-foreground mb-2">Represents partially selected sub-options</span>
+            <span className="text-xs font-semibold text-foreground">{t('formsA.checkbox.indeterminateTitle', 'Indeterminate State')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.checkbox.indeterminateDesc', 'Represents partially selected sub-options')}</span>
             <div className="flex flex-col gap-3">
-              <Checkbox indeterminate label="Select all sub-tasks" />
+              <Checkbox indeterminate label={t('formsA.checkbox.selectAllSubtasks', 'Select all sub-tasks')} />
               <div className="pl-6 flex flex-col gap-2">
-                <Checkbox defaultChecked label="Task 1: Requirements" size="sm" />
-                <Checkbox defaultChecked={false} label="Task 2: Implementation" size="sm" />
+                <Checkbox defaultChecked label={t('formsA.checkbox.task1', 'Task 1: Requirements')} size="sm" />
+                <Checkbox defaultChecked={false} label={t('formsA.checkbox.task2', 'Task 2: Implementation')} size="sm" />
               </div>
             </div>
           </Card>
 
           <Card className="flex flex-col gap-2 p-5">
-            <span className="text-xs font-semibold text-foreground">With Helper Description</span>
-            <span className="text-xs text-muted-foreground mb-2">Detailed multi-line label and subtext</span>
+            <span className="text-xs font-semibold text-foreground">{t('formsA.checkbox.helperDescTitle', 'With Helper Description')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.checkbox.helperDescSubtitle', 'Detailed multi-line label and subtext')}</span>
             <div className="flex flex-col gap-3">
               <Checkbox
                 defaultChecked
-                label="Automatic background syncing"
-                description="Sync data with remote servers every 5 minutes when idle."
+                label={t('formsA.checkbox.autoSyncLabel', 'Automatic background syncing')}
+                description={t('formsA.checkbox.autoSyncDesc', 'Sync data with remote servers every 5 minutes when idle.')}
               />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-2 p-5">
-            <span className="text-xs font-semibold text-foreground">Invalid / Error State</span>
-            <span className="text-xs text-muted-foreground mb-2">Highlights unchecked required confirmation</span>
+            <span className="text-xs font-semibold text-foreground">{t('formsA.checkbox.invalidTitle', 'Invalid / Error State')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.checkbox.invalidDesc', 'Highlights unchecked required confirmation')}</span>
             <div className="flex flex-col gap-3">
               <Checkbox
                 invalid
                 defaultChecked={false}
-                label="Mandatory compliance confirmation"
-                description="Must be accepted before proceeding with setup."
+                label={t('formsA.checkbox.mandatoryLabel', 'Mandatory compliance confirmation')}
+                description={t('formsA.checkbox.mandatoryDesc', 'Must be accepted before proceeding with setup.')}
               />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-2 p-5">
-            <span className="text-xs font-semibold text-foreground">Disabled & Read-Only States</span>
-            <span className="text-xs text-muted-foreground mb-2">Dimmed non-interactive vs locked presentation</span>
+            <span className="text-xs font-semibold text-foreground">{t('formsA.checkbox.disabledReadOnlyTitle', 'Disabled & Read-Only States')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.checkbox.disabledReadOnlyDesc', 'Dimmed non-interactive vs locked presentation')}</span>
             <div className="flex flex-col gap-3">
-              <Checkbox disabled defaultChecked={false} label="Disabled unchecked" />
-              <Checkbox readOnly defaultChecked={true} label="Read-only checked" />
+              <Checkbox disabled defaultChecked={false} label={t('formsA.checkbox.disabledUnchecked', 'Disabled unchecked')} />
+              <Checkbox readOnly defaultChecked={true} label={t('formsA.checkbox.readOnlyChecked', 'Read-only checked')} />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-2 p-5">
-            <span className="text-xs font-semibold text-foreground">Size Variants</span>
-            <span className="text-xs text-muted-foreground mb-2">Default vs Compact size</span>
+            <span className="text-xs font-semibold text-foreground">{t('formsA.checkbox.sizeVariantsTitle', 'Size Variants')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.checkbox.sizeVariantsDesc', 'Default vs Compact size')}</span>
             <div className="flex flex-col gap-3">
-              <Checkbox size="default" defaultChecked label="Default size (text-sm)" />
-              <Checkbox size="sm" defaultChecked label="Small size (sm, text-xs)" />
+              <Checkbox size="default" defaultChecked label={t('formsA.checkbox.defaultSizeLabel', 'Default size (text-sm)')} />
+              <Checkbox size="sm" defaultChecked label={t('formsA.checkbox.smSizeLabel', 'Small size (sm, text-xs)')} />
             </div>
           </Card>
         </div>

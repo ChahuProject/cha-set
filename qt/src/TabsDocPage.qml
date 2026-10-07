@@ -96,9 +96,9 @@ DocLayout {
                         orientation: root.demoOrientation
                         variant: root.demoVariant
                         size: root.demoSize
-                        ChaSetTabsTrigger { value: "account"; text: "Account" }
-                        ChaSetTabsTrigger { value: "password"; text: "Password" }
-                        ChaSetTabsTrigger { value: "settings"; text: "Settings" }
+                        ChaSetTabsTrigger { value: "account"; text: ChaSetI18n.tr("surfaces.tabs.account", "Account") }
+                        ChaSetTabsTrigger { value: "password"; text: ChaSetI18n.tr("surfaces.tabs.password", "Password") }
+                        ChaSetTabsTrigger { value: "settings"; text: ChaSetI18n.tr("surfaces.tabs.settings", "Settings") }
                     }
                 }
 
@@ -119,14 +119,14 @@ DocLayout {
 
                         DocText {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            text: root.demoTab === "account" ? "Account Information" : (root.demoTab === "password" ? "Security Credentials" : "App Settings")
+                            text: root.demoTab === "account" ? ChaSetI18n.tr("surfaces.tabs.accountTitle", "Account Information") : (root.demoTab === "password" ? ChaSetI18n.tr("surfaces.tabs.passwordTitle", "Security Credentials") : ChaSetI18n.tr("surfaces.tabs.settingsTitle", "App Settings"))
                             font.pixelSize: Typography.sizeBody
                             font.weight: Typography.weightBold
                             color: root.cFg
                         }
                         DocText {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            text: root.demoTab === "account" ? "Make changes to your account here." : (root.demoTab === "password" ? "Change your password credentials." : "Manage your notification preferences.")
+                            text: root.demoTab === "account" ? ChaSetI18n.tr("surfaces.tabs.accountDesc", "Make changes to your account here.") : (root.demoTab === "password" ? ChaSetI18n.tr("surfaces.tabs.passwordDesc", "Change your password credentials.") : ChaSetI18n.tr("surfaces.tabs.settingsDesc", "Manage your notification preferences."))
                             font.pixelSize: Typography.sizeCaption
                             color: root.cMutedFg
                             wrap: true
@@ -143,45 +143,45 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("showcase.variant", "Variant:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
                         value: root.demoVariant
                         onValueSelected: function(v) { root.demoVariant = String(v); }
                         options: [
-                            { label: "Pill (default)", value: "default" },
-                            { label: "Line", value: "line" }
+                            { label: ChaSetI18n.tr("surfaces.tabs.pill", "Pill (default)"), value: "default" },
+                            { label: ChaSetI18n.tr("surfaces.tabs.line", "Line"), value: "line" }
                         ]
                     }
                 }
 
                 Row {
                     spacing: 8
-                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("showcase.size", "Size:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
                         value: root.demoSize
                         onValueSelected: function(v) { root.demoSize = String(v); }
                         options: [
-                            { label: "Default", value: "default" },
-                            { label: "Small (sm)", value: "sm" }
+                            { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                            { label: ChaSetI18n.tr("surfaces.tabs.small", "Small (sm)"), value: "sm" }
                         ]
                     }
                 }
 
                 Row {
                     spacing: 8
-                    DocText { text: "Orientation:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("surfaces.tabs.orientation", "Orientation:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
                         value: root.demoOrientation
                         onValueSelected: function(v) { root.demoOrientation = String(v); }
                         options: [
-                            { label: "Horizontal", value: "horizontal" },
-                            { label: "Vertical", value: "vertical" }
+                            { label: ChaSetI18n.tr("surfaces.tabs.horizontal", "Horizontal"), value: "horizontal" },
+                            { label: ChaSetI18n.tr("surfaces.tabs.vertical", "Vertical"), value: "vertical" }
                         ]
                     }
                 }
@@ -249,15 +249,15 @@ DocLayout {
                         leftPadding: ThemeTokens.dp(14)
                         rightPadding: ThemeTokens.dp(14)
                         spacing: ThemeTokens.dp(8)
-                        DocText { text: "Line Variant (Underline)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                        DocText { text: "Full-width bottom accent border for navigation headers"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                        DocText { text: ChaSetI18n.tr("surfaces.tabs.lineVariantTitle", "Line Variant (Underline)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                        DocText { text: ChaSetI18n.tr("surfaces.tabs.lineVariantDesc", "Full-width bottom accent border for navigation headers"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                         ChaSetTabs {
                             currentValue: "all"
                             variant: "line"
                             ChaSetTabsList {
-                                ChaSetTabsTrigger { value: "all"; text: "All Items" }
-                                ChaSetTabsTrigger { value: "pending"; text: "Pending" }
-                                ChaSetTabsTrigger { value: "completed"; text: "Completed" }
+                                ChaSetTabsTrigger { value: "all"; text: ChaSetI18n.tr("surfaces.tabs.allItems", "All Items") }
+                                ChaSetTabsTrigger { value: "pending"; text: ChaSetI18n.tr("surfaces.tabs.pending", "Pending") }
+                                ChaSetTabsTrigger { value: "completed"; text: ChaSetI18n.tr("surfaces.tabs.completed", "Completed") }
                             }
                         }
                     }
@@ -273,14 +273,14 @@ DocLayout {
                         leftPadding: ThemeTokens.dp(14)
                         rightPadding: ThemeTokens.dp(14)
                         spacing: ThemeTokens.dp(8)
-                        DocText { text: "With Badges & Counts"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                        DocText { text: "Integrated status counters and notification count tags"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                        DocText { text: ChaSetI18n.tr("surfaces.tabs.badgesCountsTitle", "With Badges & Counts"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                        DocText { text: ChaSetI18n.tr("surfaces.tabs.badgesCountsDesc", "Integrated status counters and notification count tags"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                         ChaSetTabs {
                             currentValue: "inbox"
                             ChaSetTabsList {
-                                ChaSetTabsTrigger { value: "inbox"; text: "Inbox"; badge: "12" }
-                                ChaSetTabsTrigger { value: "unread"; text: "Unread"; badge: "3" }
-                                ChaSetTabsTrigger { value: "archived"; text: "Archived" }
+                                ChaSetTabsTrigger { value: "inbox"; text: ChaSetI18n.tr("surfaces.tabs.inbox", "Inbox"); badge: "12" }
+                                ChaSetTabsTrigger { value: "unread"; text: ChaSetI18n.tr("surfaces.tabs.unread", "Unread"); badge: "3" }
+                                ChaSetTabsTrigger { value: "archived"; text: ChaSetI18n.tr("surfaces.tabs.archived", "Archived") }
                             }
                         }
                     }
@@ -296,15 +296,15 @@ DocLayout {
                         leftPadding: ThemeTokens.dp(14)
                         rightPadding: ThemeTokens.dp(14)
                         spacing: ThemeTokens.dp(8)
-                        DocText { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                        DocText { text: "High-density tab triggers for compact headers and toolbars"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                        DocText { text: ChaSetI18n.tr("surfaces.tabs.compactTitle", "Compact Size (sm)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                        DocText { text: ChaSetI18n.tr("surfaces.tabs.compactDesc", "High-density tab triggers for compact headers and toolbars"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                         ChaSetTabs {
                             currentValue: "code"
                             size: "sm"
                             ChaSetTabsList {
-                                ChaSetTabsTrigger { value: "code"; text: "Code" }
-                                ChaSetTabsTrigger { value: "issues"; text: "Issues" }
-                                ChaSetTabsTrigger { value: "pulls"; text: "Pull Requests" }
+                                ChaSetTabsTrigger { value: "code"; text: ChaSetI18n.tr("surfaces.tabs.code", "Code") }
+                                ChaSetTabsTrigger { value: "issues"; text: ChaSetI18n.tr("surfaces.tabs.issues", "Issues") }
+                                ChaSetTabsTrigger { value: "pulls"; text: ChaSetI18n.tr("surfaces.tabs.pulls", "Pull Requests") }
                             }
                         }
                     }
@@ -320,13 +320,13 @@ DocLayout {
                         leftPadding: ThemeTokens.dp(14)
                         rightPadding: ThemeTokens.dp(14)
                         spacing: ThemeTokens.dp(8)
-                        DocText { text: "Disabled Trigger"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                        DocText { text: "Individual tab triggers blocked with 50% opacity"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                        DocText { text: ChaSetI18n.tr("surfaces.tabs.disabledTriggerTitle", "Disabled Trigger"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                        DocText { text: ChaSetI18n.tr("surfaces.tabs.disabledTriggerDesc", "Individual tab triggers blocked with 50% opacity"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                         ChaSetTabs {
                             currentValue: "active"
                             ChaSetTabsList {
-                                ChaSetTabsTrigger { value: "active"; text: "Active Tab" }
-                                ChaSetTabsTrigger { value: "disabled"; text: "Disabled Tab"; disabled: true }
+                                ChaSetTabsTrigger { value: "active"; text: ChaSetI18n.tr("surfaces.tabs.activeTab", "Active Tab") }
+                                ChaSetTabsTrigger { value: "disabled"; text: ChaSetI18n.tr("surfaces.tabs.disabledTab", "Disabled Tab"); disabled: true }
                             }
                         }
                     }

@@ -45,18 +45,18 @@ DocLayout {
                     width: ThemeTokens.dp(120)
                     height: ThemeTokens.dp(32)
                     items: [
-                        { id: "profile", label: "Profile", shortcut: "⌘P" },
-                        { id: "billing", label: "Billing", shortcut: "⌘B" },
-                        { id: "settings", label: "Settings", shortcut: "⌘S" },
-                        { id: "logout", label: "Log Out", destructive: true }
+                        { id: "profile", label: ChaSetI18n.tr("overlays.dropdownMenu.profile", "Profile"), shortcut: "⌘P" },
+                        { id: "billing", label: ChaSetI18n.tr("overlays.dropdownMenu.billing", "Billing"), shortcut: "⌘B" },
+                        { id: "settings", label: ChaSetI18n.tr("overlays.dropdownMenu.settings", "Settings"), shortcut: "⌘S" },
+                        { id: "logout", label: ChaSetI18n.tr("overlays.dropdownMenu.logout", "Log out"), destructive: true }
                     ]
                     onItemSelected: function(itemId) {
-                        root.lastAction = "Selected: " + itemId
+                        root.lastAction = itemId
                     }
 
                     ChaSetButton {
                         anchors.fill: parent
-                        text: "Options ▾"
+                        text: ChaSetI18n.tr("overlays.dropdownMenu.options", "Options ▾")
                         variant: "outline"
                         onClicked: demoMenu.open = !demoMenu.open
                     }
@@ -64,7 +64,7 @@ DocLayout {
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Action: " + root.lastAction
+                    text: root.lastAction === "None" ? ChaSetI18n.tr("overlays.dropdownMenu.actionNone", "Action: None") : ChaSetI18n.tr("overlays.dropdownMenu.actionSelected", "Action: Selected: {{id}}", { id: root.lastAction })
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono

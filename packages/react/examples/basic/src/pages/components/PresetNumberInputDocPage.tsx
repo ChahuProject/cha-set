@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { PresetNumberInput, CodeBlock } from '@chahu/cha-set';
+import { PresetNumberInput, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function PresetNumberInputDocPage() {
+  const { t } = useChaSetI18n();
   const [value, setValue] = useState('1024');
   const [smallPresetValue, setSmallPresetValue] = useState('64');
   const [noClearValue, setNoClearValue] = useState('256');
@@ -38,15 +39,15 @@ export function PresetNumberInputDocPage() {
 }`} title="Preset Number Input Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-xs flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-muted-foreground">Texture Dimension</label>
+              <label className="text-xs font-medium text-muted-foreground">{t('components.presetNumberInput.textureDimension', 'Texture Dimension')}</label>
               <PresetNumberInput
                 value={value}
                 onChange={setValue}
-                placeholder="Width / Height"
+                placeholder={t('components.presetNumberInput.placeholder', 'Width / Height')}
               />
             </div>
             <div className="text-xs text-muted-foreground font-mono">
-              Current value: <strong className="text-foreground">{value || '(empty)'}</strong>
+              {t('components.presetNumberInput.currentValue', 'Current value:')} <strong className="text-foreground">{value || t('components.presetNumberInput.empty', '(empty)')}</strong>
             </div>
           </div>
         </ComponentPreview>
@@ -78,17 +79,17 @@ ChaSetPresetNumberInput {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">Custom Presets (Small)</span>
+            <span className="text-xs font-semibold text-foreground">{t('components.presetNumberInput.customPresetsSmall', 'Custom Presets (Small)')}</span>
             <PresetNumberInput
               value={smallPresetValue}
               onChange={setSmallPresetValue}
               presets={[8, 16, 32, 64, 128]}
-              clearLabel="Auto"
+              clearLabel={t('components.presetNumberInput.auto', 'Auto')}
             />
           </div>
 
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">Disallow Clear (Mandatory)</span>
+            <span className="text-xs font-semibold text-foreground">{t('components.presetNumberInput.disallowClear', 'Disallow Clear (Mandatory)')}</span>
             <PresetNumberInput
               value={noClearValue}
               onChange={setNoClearValue}
@@ -97,7 +98,7 @@ ChaSetPresetNumberInput {
           </div>
 
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">Disabled State</span>
+            <span className="text-xs font-semibold text-foreground">{t('components.presetNumberInput.disabledTitle', 'Disabled State')}</span>
             <PresetNumberInput
               value="2048"
               disabled

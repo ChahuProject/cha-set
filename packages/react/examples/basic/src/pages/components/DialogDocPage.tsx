@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, type DialogSizeOption, CodeBlock } from '@chahu/cha-set';
+import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, type DialogSizeOption, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function DialogDocPage() {
+  const { t } = useChaSetI18n();
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [desktopOpen, setDesktopOpen] = useState(false);
@@ -82,9 +83,9 @@ export function DialogDocPage() {
 }`;
 
   const desktopSizeOptions: DialogSizeOption[] = [
-    { name: '默认', special: 'default' },
-    { name: '紧凑', widthRem: 26, heightRem: 20 },
-    { name: '全视口', special: 'fullscreen' },
+    { name: t('common.default', 'Default'), special: 'default' },
+    { name: t('overlays.dialog.presetCompact', 'Compact'), widthRem: 26, heightRem: 20 },
+    { name: t('overlays.dialog.presetFullscreen', 'Fullscreen'), special: 'fullscreen' },
   ];
 
   return (
@@ -110,20 +111,20 @@ export function DialogDocPage() {
           <div className="flex flex-col items-center justify-center gap-4 py-8">
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline">Open Profile Dialog</Button>
+                <Button variant="outline">{t('overlays.dialog.openProfile', 'Open Profile Dialog')}</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Edit profile</DialogTitle>
+                  <DialogTitle>{t('overlays.dialog.editProfileTitle', 'Edit profile')}</DialogTitle>
                   <DialogDescription>
-                    Make changes to your profile here. Click save when you're done.
+                    {t('overlays.dialog.editProfileDesc', "Make changes to your profile here. Click save when you're done.")}
                   </DialogDescription>
                 </DialogHeader>
 
                 <div className="grid gap-4 py-4">
                   <div className="grid grid-cols-4 items-center gap-4">
                     <label className="text-right text-sm font-medium text-foreground">
-                      Name
+                      {t('overlays.dialog.name', 'Name')}
                     </label>
                     <Input
                       className="col-span-3"
@@ -133,7 +134,7 @@ export function DialogDocPage() {
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <label className="text-right text-sm font-medium text-foreground">
-                      Username
+                      {t('overlays.dialog.username', 'Username')}
                     </label>
                     <Input
                       className="col-span-3"
@@ -145,17 +146,17 @@ export function DialogDocPage() {
 
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
+                    <Button variant="outline">{t('common.cancel', 'Cancel')}</Button>
                   </DialogClose>
                   <Button type="button" onClick={() => setOpen(false)}>
-                    Save changes
+                    {t('common.saveChanges', 'Save changes')}
                   </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
 
             <span className="text-xs text-muted-foreground">
-              Current profile: <strong className="text-foreground">{name}</strong> ({username})
+              {t('overlays.dialog.currentProfile', 'Current profile: {{name}} ({{username}})', { name, username })}
             </span>
           </div>
         </ComponentPreview>
@@ -180,14 +181,14 @@ export function DialogDocPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Desktop Draggable Modal */}
           <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
-            <span className="text-sm font-medium text-foreground">Desktop Draggable Modal</span>
+            <span className="text-sm font-medium text-foreground">{t('overlays.dialog.desktopDraggableTitle', 'Desktop Draggable Modal')}</span>
             <p className="text-xs text-muted-foreground mb-3">
-              Draggable modal with size presets, auto-fitting height, ESC badge, and fixed footer.
+              {t('overlays.dialog.desktopDraggableDesc', 'Draggable modal with size presets, auto-fitting height, ESC badge, and fixed footer.')}
             </p>
             <Dialog open={desktopOpen} onOpenChange={setDesktopOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm">
-                  Open Draggable Window
+                  {t('overlays.dialog.openDraggableWindow', 'Open Draggable Window')}
                 </Button>
               </DialogTrigger>
               <DialogContent
@@ -196,22 +197,22 @@ export function DialogDocPage() {
                 defaultWidthRem={32}
                 defaultHeightRem={22}
                 sizeOptions={desktopSizeOptions}
-                sizeMenuTooltip="调整窗口大小"
+                sizeMenuTooltip={t('overlays.dialog.adjustSize', 'Adjust window size')}
               >
                 <DialogHeader>
-                  <DialogTitle>Advanced Desktop Tool</DialogTitle>
+                  <DialogTitle>{t('overlays.dialog.advancedDesktopTitle', 'Advanced Desktop Tool')}</DialogTitle>
                   <DialogDescription>
-                    Drag the title bar or window body to reposition. Switch size presets from the top-right button.
+                    {t('overlays.dialog.advancedDesktopDesc', 'Drag the title bar or window body to reposition. Switch size presets from the top-right button.')}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-3 py-2 text-xs text-muted-foreground">
                   <p>
-                    The bottom actions area is extracted as a fixed footer that stays pinned during vertical scrolling.
+                    {t('overlays.dialog.fixedFooterDesc', 'The bottom actions area is extracted as a fixed footer that stays pinned during vertical scrolling.')}
                   </p>
                 </div>
                 <DialogFooter showCloseButton>
                   <Button size="sm" onClick={() => setDesktopOpen(false)}>
-                    Confirm
+                    {t('overlays.dialog.confirm', 'Confirm')}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -220,28 +221,27 @@ export function DialogDocPage() {
 
           {/* Confirmation / Destructive */}
           <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
-            <span className="text-sm font-medium text-foreground">Destructive Confirmation</span>
+            <span className="text-sm font-medium text-foreground">{t('overlays.dialog.destructiveConfirmationTitle', 'Destructive Confirmation')}</span>
             <p className="text-xs text-muted-foreground mb-3">
-              Dialog for destructive operations that require explicit confirmation.
+              {t('overlays.dialog.destructiveConfirmationDesc', 'Dialog for destructive operations that require explicit confirmation.')}
             </p>
             <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
               <DialogTrigger asChild>
                 <Button variant="destructive" size="sm">
-                  Delete Account
+                  {t('overlays.dialog.deleteAccount', 'Delete Account')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Are you absolutely sure?</DialogTitle>
+                  <DialogTitle>{t('overlays.dialog.areYouSure', 'Are you absolutely sure?')}</DialogTitle>
                   <DialogDescription>
-                    This action cannot be undone. This will permanently delete your account
-                    and remove your data from our servers.
+                    {t('overlays.dialog.deleteAccountDesc', 'This action cannot be undone. This will permanently delete your account and remove your data from our servers.')}
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                   <DialogClose asChild>
                     <Button variant="outline" size="sm">
-                      Cancel
+                      {t('common.cancel', 'Cancel')}
                     </Button>
                   </DialogClose>
                   <Button
@@ -249,7 +249,7 @@ export function DialogDocPage() {
                     size="sm"
                     onClick={() => setConfirmOpen(false)}
                   >
-                    Yes, delete account
+                    {t('overlays.dialog.yesDeleteAccount', 'Yes, delete account')}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -258,32 +258,32 @@ export function DialogDocPage() {
 
           {/* Simple Alert */}
           <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
-            <span className="text-sm font-medium text-foreground">Informational Notice</span>
+            <span className="text-sm font-medium text-foreground">{t('overlays.dialog.informationalNoticeTitle', 'Informational Notice')}</span>
             <p className="text-xs text-muted-foreground mb-3">
-              Lightweight alert modal for system notifications and messages.
+              {t('overlays.dialog.informationalNoticeDesc', 'Lightweight alert modal for system notifications and messages.')}
             </p>
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="secondary" size="sm">
-                  System Update Notice
+                  {t('overlays.dialog.systemUpdateNotice', 'System Update Notice')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <div className="flex items-center gap-2">
-                    <DialogTitle>Scheduled Maintenance</DialogTitle>
-                    <Badge variant="secondary">Notice</Badge>
+                    <DialogTitle>{t('overlays.dialog.scheduledMaintenance', 'Scheduled Maintenance')}</DialogTitle>
+                    <Badge variant="secondary">{t('overlays.dialog.notice', 'Notice')}</Badge>
                   </div>
                   <DialogDescription>
-                    The cloud service will be undergoing scheduled infrastructure updates tonight at 02:00 UTC.
+                    {t('overlays.dialog.maintenanceDesc', 'The cloud service will be undergoing scheduled infrastructure updates tonight at 02:00 UTC.')}
                   </DialogDescription>
                 </DialogHeader>
                 <p className="text-xs text-muted-foreground">
-                  Expected downtime is under 10 minutes. All data remains encrypted and safe.
+                  {t('overlays.dialog.downtimeDesc', 'Expected downtime is under 10 minutes. All data remains encrypted and safe.')}
                 </p>
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button size="sm">Understood</Button>
+                    <Button size="sm">{t('overlays.dialog.understood', 'Understood')}</Button>
                   </DialogClose>
                 </DialogFooter>
               </DialogContent>

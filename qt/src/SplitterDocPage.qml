@@ -77,8 +77,8 @@ DocLayout {
                                     anchors.margins: 16
                                     spacing: 8
 
-                                    DocText {
-                                        text: "Navigation Tree"
+                                     DocText {
+                                        text: ChaSetI18n.tr("surfaces.splitter.navTree", "Navigation Tree")
                                         color: ThemeTokens.text
                                         font.pixelSize: Typography.sizeSmall
                                         font.weight: Typography.weightSemibold
@@ -107,7 +107,7 @@ DocLayout {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         spacing: 8
                                         DocText {
-                                            text: "Editor Workspace"
+                                            text: ChaSetI18n.tr("surfaces.splitter.editorWorkspace", "Editor Workspace")
                                             color: ThemeTokens.text
                                             font.pixelSize: Typography.sizeSmall
                                             font.weight: Typography.weightSemibold
@@ -123,14 +123,14 @@ DocLayout {
 
                                     DocText {
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        text: "Drag splitter handle to resize panes"
+                                        text: ChaSetI18n.tr("surfaces.splitter.dragHint", "Drag splitter handle to resize panes")
                                         color: ThemeTokens.subduedText
                                         font.pixelSize: Typography.sizeCaption
                                     }
 
                                     ChaSetButton {
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        text: "Reset (35%)"
+                                        text: ChaSetI18n.tr("surfaces.splitter.reset35", "Reset (35%)")
                                         size: "xs"
                                         variant: "outline"
                                         onClicked: splitter.reset()
@@ -237,7 +237,7 @@ ChaSetSplitter {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         spacing: 8
                                         DocText {
-                                            text: "Editor Canvas"
+                                            text: ChaSetI18n.tr("surfaces.splitter.editorCanvas")
                                             color: ThemeTokens.text
                                             font.pixelSize: Typography.sizeSmall
                                             font.weight: Typography.weightSemibold
@@ -252,7 +252,7 @@ ChaSetSplitter {
                                     }
                                     DocText {
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        text: "Drag splitter handle vertically to resize"
+                                        text: ChaSetI18n.tr("surfaces.splitter.dragVerticalHint")
                                         color: ThemeTokens.subduedText
                                         font.pixelSize: Typography.sizeCaption
                                     }
@@ -273,7 +273,7 @@ ChaSetSplitter {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         spacing: 8
                                         DocText {
-                                            text: "Terminal Console"
+                                            text: ChaSetI18n.tr("surfaces.splitter.terminalConsole")
                                             color: ThemeTokens.text
                                             font.pixelSize: Typography.sizeSmall
                                             font.weight: Typography.weightSemibold
@@ -288,7 +288,7 @@ ChaSetSplitter {
                                     }
                                     ChaSetButton {
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        text: "Reset (65%)"
+                                        text: ChaSetI18n.tr("surfaces.splitter.reset65")
                                         size: "xs"
                                         variant: "outline"
                                         onClicked: verticalSplitter.reset()

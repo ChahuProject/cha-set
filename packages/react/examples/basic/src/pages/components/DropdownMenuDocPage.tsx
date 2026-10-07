@@ -1,11 +1,12 @@
 import React from 'react';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, Button, CodeBlock } from '@chahu/cha-set';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, Button, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function DropdownMenuDocPage() {
+  const { t } = useChaSetI18n();
   const reactCode = `<DropdownMenu>
   <DropdownMenuTrigger asChild>
     <Button variant="outline">Options ▾</Button>
@@ -67,28 +68,28 @@ export function DropdownMenuDocPage() {
 }`} title="Dropdown Menu Sandbox" reactCode={reactCode}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">Options ▾</Button>
+              <Button variant="outline">{t('overlays.dropdownMenu.options', 'Options ▾')}</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuGroup>
-                <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
+                <DropdownMenuLabel>{t('overlays.dropdownMenu.accountSettings', 'Account Settings')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  Profile
+                  {t('overlays.dropdownMenu.profile', 'Profile')}
                   <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  Billing
+                  {t('overlays.dropdownMenu.billing', 'Billing')}
                   <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  Keyboard shortcuts
+                  {t('overlays.dropdownMenu.shortcuts', 'Keyboard shortcuts')}
                   <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem variant="destructive">
-                Log out
+                {t('overlays.dropdownMenu.logout', 'Log out')}
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>

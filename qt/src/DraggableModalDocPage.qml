@@ -48,7 +48,7 @@ DocLayout {
 
                 DocText {
                     anchors.centerIn: parent
-                    text: "Drag the modal around within this bounded canvas"
+                    text: ChaSetI18n.tr("overlays.draggableModal.canvasHint", "Drag the modal around within this bounded canvas")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                 }
@@ -58,13 +58,13 @@ DocLayout {
                     y: ThemeTokens.dp(30)
                     width: ThemeTokens.dp(300)
                     height: ThemeTokens.dp(200)
-                    title: "Shader Debugger"
+                    title: ChaSetI18n.tr("overlays.draggableModal.shaderDebuggerTitle", "Shader Debugger")
                     showEscBadge: true
                     initialPositionMode: "center"
                     sizeOptions: [
-                        { name: "默认", special: "default" },
-                        { name: "宽屏", widthRem: 22, heightRem: 14 },
-                        { name: "全窗口", special: "fullscreen" }
+                        { name: ChaSetI18n.tr("overlays.draggableModal.presetDefault", "Default"), special: "default" },
+                        { name: ChaSetI18n.tr("overlays.draggableModal.presetWidescreenQt", "Widescreen"), widthRem: 22, heightRem: 14 },
+                        { name: ChaSetI18n.tr("overlays.draggableModal.presetFullscreen", "Fullscreen"), special: "fullscreen" }
                     ]
 
                     Column {
@@ -75,21 +75,21 @@ DocLayout {
                         Row {
                             spacing: 8
                             DocText {
-                                text: "Active Pass:"
+                                text: ChaSetI18n.tr("overlays.draggableModal.activePass", "Active Pass:")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeSmall
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                             ChaSetBadge {
-                                text: "G-Buffer Depth"
+                                text: ChaSetI18n.tr("overlays.draggableModal.gbufferDepth", "G-Buffer Depth")
                                 size: "sm"
                                 variant: "secondary"
                             }
                         }
 
-                        DocText { text: "Format: R32G32B32A32_FLOAT"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
-                        DocText { text: "Dimensions: 2560 x 1440"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                        ChaSetButton { text: "Export Buffer"; size: "xs"; variant: "outline" }
+                        DocText { text: ChaSetI18n.tr("overlays.draggableModal.format", "Format: R32G32B32A32_FLOAT"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
+                        DocText { text: ChaSetI18n.tr("overlays.draggableModal.dimensions", "Dimensions: 2560 x 1440"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                        ChaSetButton { text: ChaSetI18n.tr("overlays.draggableModal.exportBuffer", "Export Buffer"); size: "xs"; variant: "outline" }
                     }
                 }
             }

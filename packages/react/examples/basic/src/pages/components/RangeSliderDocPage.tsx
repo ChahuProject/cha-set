@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { RangeSlider, Card, CodeBlock } from '@chahu/cha-set';
+import { RangeSlider, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function RangeSliderDocPage() {
+  const { t } = useChaSetI18n();
   const [range, setRange] = useState<[number, number]>([20, 80]);
 
   const reactCode = `<RangeSlider
@@ -27,7 +28,7 @@ export function RangeSliderDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Drag either thumb to adjust minimum and maximum bounds.
+          {t('formsA.rangeSlider.overviewDesc', 'Drag either thumb to adjust minimum and maximum bounds.')}
         </p>
 
         <ComponentPreview
@@ -41,8 +42,8 @@ export function RangeSliderDocPage() {
 }`} title="Range Slider Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-sm flex flex-col gap-4">
             <div className="flex justify-between text-xs text-muted-foreground font-mono">
-              <span>Min: {range[0]}</span>
-              <span>Max: {range[1]}</span>
+              <span>{t('formsA.rangeSlider.minLabel', 'Min: {{value}}', { value: range[0] })}</span>
+              <span>{t('formsA.rangeSlider.maxLabel', 'Max: {{value}}', { value: range[1] })}</span>
             </div>
             <RangeSlider
               min={0}
@@ -79,7 +80,7 @@ ChaSetRangeSlider {
           Sizes & States
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Available in default and sm sizing tiers, with tooltips, read-only, and disabled states.
+          {t('formsA.rangeSlider.sizesAndStatesSubtitle', 'Available in default and sm sizing tiers, with tooltips, read-only, and disabled states.')}
         </p>
 
         <ComponentPreview
@@ -95,19 +96,19 @@ ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false 
         >
           <div className="w-full max-w-sm flex flex-col gap-6">
             <div className="flex flex-col gap-2">
-              <span className="text-xs text-muted-foreground">Default with Tooltips</span>
+              <span className="text-xs text-muted-foreground">{t('formsA.rangeSlider.defaultWithTooltips', 'Default with Tooltips')}</span>
               <RangeSlider size="default" defaultValue={[20, 80]} showTooltip />
             </div>
             <div className="flex flex-col gap-2">
-              <span className="text-xs text-muted-foreground">Compact sm Tier</span>
+              <span className="text-xs text-muted-foreground">{t('formsA.rangeSlider.compactSm', 'Compact sm Tier')}</span>
               <RangeSlider size="sm" defaultValue={[30, 70]} showTooltip />
             </div>
             <div className="flex flex-col gap-2">
-              <span className="text-xs text-muted-foreground">Read Only</span>
+              <span className="text-xs text-muted-foreground">{t('formsA.rangeSlider.readOnly', 'Read Only')}</span>
               <RangeSlider size="sm" defaultValue={[25, 75]} readOnly />
             </div>
             <div className="flex flex-col gap-2">
-              <span className="text-xs text-muted-foreground">Disabled</span>
+              <span className="text-xs text-muted-foreground">{t('formsA.rangeSlider.disabled', 'Disabled')}</span>
               <RangeSlider size="sm" defaultValue={[10, 90]} disabled />
             </div>
           </div>

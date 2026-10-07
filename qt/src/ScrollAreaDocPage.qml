@@ -178,40 +178,40 @@ DocLayout {
             Row {
                 width: childrenRect.width
                 spacing: 6
-                DocText { text: "Mode:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("surfaces.scrollArea.mode", "Mode:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetButton {
                     size: "sm"
                     variant: root.heroMode === "vertical" ? "default" : "outline"
-                    text: "Vertical"
+                    text: ChaSetI18n.tr("surfaces.scrollArea.vertical", "Vertical")
                     onClicked: root.heroMode = "vertical"
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: root.heroMode === "horizontal" ? "default" : "outline"
-                    text: "Horizontal"
+                    text: ChaSetI18n.tr("surfaces.scrollArea.horizontal", "Horizontal")
                     onClicked: root.heroMode = "horizontal"
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: root.heroMode === "both" ? "default" : "outline"
-                    text: "2D Dual-Axis"
+                    text: ChaSetI18n.tr("surfaces.scrollArea.dualAxis", "2D Dual-Axis")
                     onClicked: root.heroMode = "both"
                 }
             },
             Row {
                 width: childrenRect.width
                 spacing: 6
-                DocText { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("showcase.size", "Size:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetButton {
                     size: "sm"
                     variant: root.heroSize === "default" ? "default" : "outline"
-                    text: "Default"
+                    text: ChaSetI18n.tr("common.default", "Default")
                     onClicked: root.heroSize = "default"
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: root.heroSize === "sm" ? "default" : "outline"
-                    text: "Compact (sm)"
+                    text: ChaSetI18n.tr("surfaces.scrollArea.compact", "Compact (sm)")
                     onClicked: root.heroSize = "sm"
                 }
             },
@@ -220,19 +220,19 @@ DocLayout {
                 spacing: 12
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Show Steppers"
+                    label: ChaSetI18n.tr("surfaces.scrollArea.showSteppers", "Show Steppers")
                     checked: root.showButtons
                     onToggled: (val) => root.showButtons = val
                 }
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Smooth Scroll"
+                    label: ChaSetI18n.tr("surfaces.scrollArea.smoothScroll", "Smooth Scroll")
                     checked: root.smoothScroll
                     onToggled: (val) => root.smoothScroll = val
                 }
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Floating"
+                    label: ChaSetI18n.tr("surfaces.scrollArea.floating", "Floating")
                     checked: root.floating
                     onToggled: (val) => root.floating = val
                 }

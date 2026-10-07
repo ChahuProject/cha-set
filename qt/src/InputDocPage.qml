@@ -45,7 +45,7 @@ DocLayout {
                 Row {
                     width: parent.width
                     DocText {
-                        text: "Email address"
+                        text: ChaSetI18n.tr("formsA.input.emailAddress", "Email address")
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                     }
@@ -57,7 +57,7 @@ DocLayout {
                     width: parent.width
                     size: root.demoSize
                     type: root.demoType
-                    placeholderText: root.demoPlaceholder
+                    placeholderText: ChaSetI18n.tr("formsA.input.emailPlaceholder", "Enter your email...")
                     text: root.demoText
                     disabled: root.demoDisabled
                     invalid: root.demoInvalid
@@ -69,7 +69,7 @@ DocLayout {
                 }
 
                 DocText {
-                    text: root.demoInvalid ? "Please enter a valid corporate email address." : "We will never share your email with anyone else."
+                    text: root.demoInvalid ? ChaSetI18n.tr("formsA.input.emailError", "Please enter a valid corporate email address.") : ChaSetI18n.tr("formsA.input.emailHint", "We will never share your email with anyone else.")
                     color: root.demoInvalid ? (ThemeTokens.dark ? Qt.rgba(248.0 / 255.0, 113.0 / 255.0, 113.0 / 255.0, 1.0) : Qt.rgba(239.0 / 255.0, 68.0 / 255.0, 68.0 / 255.0, 1.0)) : root.cMutedFg
                     font.pixelSize: Typography.sizeCaption
                 }
@@ -79,14 +79,14 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: ThemeTokens.dp(8)
-                DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("showcase.size", "Size:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
                     size: "sm"
                     value: root.demoSize
                     options: [
-                        { label: "Default", value: "default" },
-                        { label: "Small (sm)", value: "sm" }
+                        { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                        { label: ChaSetI18n.tr("formsA.input.sizeSm", "Small (sm)"), value: "sm" }
                     ]
                     onValueSelected: function(s) { root.demoSize = String(s); }
                 }
@@ -94,14 +94,14 @@ DocLayout {
 
             Row {
                 spacing: ThemeTokens.dp(8)
-                DocText { text: "Type:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("formsA.input.typeLabel", "Type:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
                     size: "sm"
                     value: root.demoType
                     options: [
-                        { label: "Text", value: "text" },
-                        { label: "Password", value: "password" }
+                        { label: ChaSetI18n.tr("formsA.input.typeText", "Text"), value: "text" },
+                        { label: ChaSetI18n.tr("formsA.input.typePassword", "Password"), value: "password" }
                     ]
                     onValueSelected: function(t) { root.demoType = String(t); }
                 }
@@ -113,21 +113,21 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Disabled"
+                    label: ChaSetI18n.tr("common.disabled", "Disabled")
                     checked: root.demoDisabled
                     onToggled: (val) => root.demoDisabled = val
                 }
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Invalid"
+                    label: ChaSetI18n.tr("formsA.input.invalid", "Invalid")
                     checked: root.demoInvalid
                     onToggled: (val) => root.demoInvalid = val
                 }
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Clearable"
+                    label: ChaSetI18n.tr("formsA.input.clearable", "Clearable")
                     checked: root.demoClearable
                     onToggled: (val) => root.demoClearable = val
                 }
@@ -139,14 +139,14 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Show Icon"
+                    label: ChaSetI18n.tr("formsA.input.showIcon", "Show Icon")
                     checked: root.demoShowIcon
                     onToggled: (val) => root.demoShowIcon = val
                 }
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Bordered"
+                    label: ChaSetI18n.tr("formsA.input.bordered", "Bordered")
                     checked: root.demoBordered
                     onToggled: (val) => root.demoBordered = val
                 }
@@ -154,7 +154,7 @@ DocLayout {
                 ChaSetCheckbox {
                     visible: root.demoType === "password"
                     size: "sm"
-                    label: "Password Toggle"
+                    label: ChaSetI18n.tr("formsA.input.passwordToggle", "Password Toggle")
                     checked: root.demoPasswordToggle
                     onToggled: (val) => root.demoPasswordToggle = val
                 }
@@ -182,7 +182,7 @@ DocLayout {
         }
 
         DocText {
-            text: "Visual matrix of common input configurations and states in Qt Quick."
+            text: ChaSetI18n.tr("formsA.input.examplesSubtitle", "Visual matrix of common input configurations and states in Qt Quick.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -202,8 +202,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Default Input"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); placeholderText: "Enter username..." }
+                    DocText { text: ChaSetI18n.tr("formsA.input.defaultInputTitle", "Default Input"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); placeholderText: ChaSetI18n.tr("formsA.input.defaultInputPlaceholder", "Enter username...") }
                 }
             }
 
@@ -217,8 +217,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Small Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); size: "sm"; placeholderText: "Compact input..." }
+                    DocText { text: ChaSetI18n.tr("formsA.input.smInputTitle", "Small Size (sm)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); size: "sm"; placeholderText: ChaSetI18n.tr("formsA.input.smInputPlaceholder", "Compact input...") }
                 }
             }
 
@@ -232,7 +232,7 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Invalid / Error State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.input.invalidInputTitle", "Invalid / Error State"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetInput { width: parent.width - ThemeTokens.dp(28); invalid: true; text: "invalid-email@" }
                 }
             }
@@ -247,8 +247,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Clearable Field"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); clearable: true; text: "Click cross to clear" }
+                    DocText { text: ChaSetI18n.tr("formsA.input.clearableInputTitle", "Clearable Field"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); clearable: true; text: ChaSetI18n.tr("formsA.input.clearableInputVal", "Click cross to clear") }
                 }
             }
 
@@ -262,7 +262,7 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Password with Toggle"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.input.passwordInputTitle", "Password with Toggle"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetInput { width: parent.width - ThemeTokens.dp(28); type: "password"; passwordToggle: true; text: "supersecret123" }
                 }
             }
@@ -277,8 +277,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); disabled: true; placeholderText: "Disabled input"; text: "preset value" }
+                    DocText { text: ChaSetI18n.tr("formsA.input.disabledInputTitle", "Disabled State"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    ChaSetInput { width: parent.width - ThemeTokens.dp(28); disabled: true; placeholderText: ChaSetI18n.tr("formsA.input.disabledInputPlaceholder", "Disabled input"); text: ChaSetI18n.tr("formsA.input.disabledInputVal", "preset value") }
                 }
             }
         }

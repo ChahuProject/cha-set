@@ -1,3 +1,5 @@
+import { useChaSetI18n } from '@chahu/cha-set';
+
 const RADIUS_STEPS = [
   { id: 'sm', css: 'calc(var(--radius) - 0.25rem)' },
   { id: 'md', css: 'calc(var(--radius) - 0.125rem)' },
@@ -6,12 +8,13 @@ const RADIUS_STEPS = [
 ] as const;
 
 export default function TypeRadiusSection() {
+  const { t } = useChaSetI18n();
+
   return (
     <section className="block" id="type">
-      <h2>Typography / Radius / Charts</h2>
+      <h2>{t('getStarted.tokens.typographyRadius.title', 'Typography / Radius / Charts')}</h2>
       <p className="desc">
-        Radii derived from <code>--radius</code> (same sm/md/lg/xl derivation as shadcn); font
-        weights map to tokens.json primitives (500/600); chart five colors follow the accent.
+        {t('getStarted.tokens.typographyRadius.desc', 'Radii derived from --radius (same sm/md/lg/xl derivation as shadcn); font weights map to tokens.json primitives (500/600); chart five colors follow the accent.')}
       </p>
 
       <div className="radius-row">
@@ -24,43 +27,45 @@ export default function TypeRadiusSection() {
 
       <div className="mt-4 p-4 rounded-lg bg-card border border-border space-y-3">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-sm text-foreground">Font System · CJK Fallback & Typography Scale</span>
+          <span className="font-bold text-sm text-foreground">
+            {t('getStarted.tokens.typographyRadius.fontSystemTitle', 'Font System · CJK Fallback & Typography Scale')}
+          </span>
           <span className="inline-flex items-center px-2 py-0.5 rounded text-[0.6875rem] font-medium bg-secondary text-secondary-foreground border border-border">
-            Zero-SimSun Guarantee
+            {t('getStarted.tokens.typographyRadius.zeroSimSunBadge', 'Zero-SimSun Guarantee')}
           </span>
         </div>
 
         <p className="text-caption font-mono text-muted-foreground">
-          Fallback Stack (Sans): Segoe UI → Microsoft YaHei UI → Microsoft YaHei → PingFang SC → Noto Sans SC → sans-serif
+          {t('getStarted.tokens.typographyRadius.sansFallback', 'Fallback Stack (Sans): ')}Segoe UI → Microsoft YaHei UI → Microsoft YaHei → PingFang SC → Noto Sans SC → sans-serif
         </p>
 
         <div className="space-y-1 text-foreground">
           <p className="font-normal text-sm">
-            Regular 400 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)
+            {t('getStarted.tokens.typographyRadius.sampleRegular', 'Regular 400 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)')}
           </p>
           <p className="font-medium text-sm">
-            Medium 500 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)
+            {t('getStarted.tokens.typographyRadius.sampleMedium', 'Medium 500 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)')}
           </p>
           <p className="font-semibold text-sm">
-            Semibold 600 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)
+            {t('getStarted.tokens.typographyRadius.sampleSemibold', 'Semibold 600 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)')}
           </p>
           <p className="font-bold text-sm">
-            Bold 700 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)
+            {t('getStarted.tokens.typographyRadius.sampleBold', 'Bold 700 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)')}
           </p>
         </div>
 
         <div className="border-t border-border my-2" />
 
         <p className="text-caption font-mono text-muted-foreground">
-          Fallback Stack (Mono): Consolas → Cascadia Code → Microsoft YaHei UI → Microsoft YaHei → PingFang SC → Noto Sans SC → monospace
+          {t('getStarted.tokens.typographyRadius.monoFallback', 'Fallback Stack (Mono): ')}Consolas → Cascadia Code → Microsoft YaHei UI → Microsoft YaHei → PingFang SC → Noto Sans SC → monospace
         </p>
 
         <div className="p-2.5 rounded-md bg-muted border border-border font-mono text-xs space-y-1">
           <p className="text-foreground">
-            const fontSystem = ChaSet.FontSystem; // 自动处理中文字体回退，消除宋体锯齿
+            {t('getStarted.tokens.typographyRadius.codeComment1', 'const fontSystem = ChaSet.FontSystem; // 自动处理中文字体回退，消除宋体锯齿')}
           </p>
           <p className="text-muted-foreground">
-            console.log(`[ChaSet] CJK glyphs: 字体平滑清晰, zero raster artifacts`);
+            {t('getStarted.tokens.typographyRadius.codeComment2', 'console.log(`[ChaSet] CJK glyphs: 字体平滑清晰, zero raster artifacts`);')}
           </p>
         </div>
       </div>

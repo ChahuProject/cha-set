@@ -40,7 +40,7 @@ DocLayout {
             Row {
                 spacing: 8
                 DocText {
-                    text: "Push Notification:"
+                    text: ChaSetI18n.tr("overlays.notificationStack.pushNotification", "Push Notification:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
@@ -48,31 +48,31 @@ DocLayout {
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Info"
+                    text: ChaSetI18n.tr("overlays.notificationStack.levelInfo", "Info")
                     onClicked: root.push("info")
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Success"
+                    text: ChaSetI18n.tr("overlays.notificationStack.levelSuccess", "Success")
                     onClicked: root.push("success")
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Warning"
+                    text: ChaSetI18n.tr("overlays.notificationStack.levelWarning", "Warning")
                     onClicked: root.push("warning")
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Error"
+                    text: ChaSetI18n.tr("overlays.notificationStack.levelError", "Error")
                     onClicked: root.push("error")
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Clear All"
+                    text: ChaSetI18n.tr("overlays.notificationStack.clearAll", "Clear All")
                     onClicked: root.clearNotifications()
                 }
             }
@@ -94,7 +94,7 @@ DocLayout {
                 anchors.margins: ThemeTokens.dp(12)
                 visible: root.liveNotifications.length === 0
                 wrapMode: Text.WordWrap
-                text: "No notifications queued. Push one to watch its lifetime countdown; hover the stack to suspend every countdown at once."
+                text: ChaSetI18n.tr("overlays.notificationStack.noNotifications", "No notifications queued. Push one to watch its lifetime countdown; hover the stack to suspend every countdown at once.")
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
                 font.family: Typography.familySans
@@ -136,7 +136,7 @@ DocLayout {
             Row {
                 spacing: 16
                 DocText {
-                    text: "Placement:"
+                    text: ChaSetI18n.tr("overlays.notificationStack.placement", "Placement:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
@@ -145,20 +145,20 @@ DocLayout {
                     size: "sm"
                     value: root.levelPlacement
                     options: [
-                        { label: "Bottom Right", value: "bottom-right" },
-                        { label: "Top Right", value: "top-right" },
-                        { label: "Bottom Center", value: "bottom-center" }
+                        { label: ChaSetI18n.tr("overlays.taskHud.placementBottomRight", "Bottom Right"), value: "bottom-right" },
+                        { label: ChaSetI18n.tr("overlays.taskHud.placementTopRight", "Top Right"), value: "top-right" },
+                        { label: ChaSetI18n.tr("overlays.taskHud.placementBottomCenter", "Bottom Center"), value: "bottom-center" }
                     ]
                     onValueSelected: function(val) { root.levelPlacement = val }
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Reset Action Log"
-                    onClicked: root.actionReceipt = "(no action pressed yet)"
+                    text: ChaSetI18n.tr("overlays.notificationStack.resetActionLog", "Reset Action Log")
+                    onClicked: root.actionReceipt = ""
                 }
                 DocText {
-                    text: "last action: " + root.actionReceipt
+                    text: ChaSetI18n.tr("overlays.notificationStack.lastAction", "last action: {{receipt}}", { receipt: root.actionReceipt ? root.actionReceipt : ChaSetI18n.tr("overlays.notificationStack.noActionPressed", "(no action pressed yet)") })
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
@@ -329,15 +329,15 @@ ChaSetNotificationStack {
     // ---- Demo state -------------------------------------------------------
 
     property string levelPlacement: "bottom-right"
-    property string actionReceipt: "(no action pressed yet)"
+    property string actionReceipt: ""
     property int _pushSeq: 1
 
     property var liveNotifications: [
         {
             id: "live-1",
             level: "info",
-            title: "Sync started",
-            description: "Pulling 128 remote changes.",
+            title: ChaSetI18n.tr("overlays.notificationStack.syncStartedTitle", "Sync started"),
+            description: ChaSetI18n.tr("overlays.notificationStack.syncStartedDesc", "Pulling 128 remote changes."),
             duration: 8000
         }
     ]
@@ -346,37 +346,37 @@ ChaSetNotificationStack {
         {
             id: "level-info",
             level: "info",
-            title: "Heads up",
-            description: "A new major version is available.",
+            title: ChaSetI18n.tr("overlays.notificationStack.headsUpTitle", "Heads up"),
+            description: ChaSetI18n.tr("overlays.notificationStack.headsUpDesc", "A new major version is available."),
             duration: 0
         },
         {
             id: "level-success",
             level: "success",
-            title: "Build passed",
-            description: "All 318 contract checks green.",
+            title: ChaSetI18n.tr("overlays.notificationStack.buildPassedTitle", "Build passed"),
+            description: ChaSetI18n.tr("overlays.notificationStack.buildPassedDesc", "All 318 contract checks green."),
             duration: 0
         },
         {
             id: "level-warning",
             level: "warning",
-            title: "Quota at 84%",
-            description: "Storage usage is approaching the plan limit.",
+            title: ChaSetI18n.tr("overlays.notificationStack.quotaTitle", "Quota at 84%"),
+            description: ChaSetI18n.tr("overlays.notificationStack.quotaDesc", "Storage usage is approaching the plan limit."),
             duration: 0,
             actions: [
-                { id: "manage", label: "Manage", variant: "outline" },
-                { id: "upgrade", label: "Upgrade", variant: "default" }
+                { id: "manage", label: ChaSetI18n.tr("overlays.notificationStack.actionManage", "Manage"), variant: "outline" },
+                { id: "upgrade", label: ChaSetI18n.tr("overlays.notificationStack.actionUpgrade", "Upgrade"), variant: "default" }
             ]
         },
         {
             id: "level-error",
             level: "error",
-            title: "Job failed",
-            description: "Compilation exited with code 1.",
+            title: ChaSetI18n.tr("overlays.notificationStack.jobFailedTitle", "Job failed"),
+            description: ChaSetI18n.tr("overlays.notificationStack.jobFailedDesc", "Compilation exited with code 1."),
             duration: 0,
             actions: [
-                { id: "retry", label: "Retry", variant: "outline" },
-                { id: "logs", label: "View log", variant: "ghost" }
+                { id: "retry", label: ChaSetI18n.tr("overlays.notificationStack.actionRetry", "Retry"), variant: "outline" },
+                { id: "logs", label: ChaSetI18n.tr("overlays.notificationStack.actionLogs", "View log"), variant: "ghost" }
             ]
         }
     ]
@@ -389,10 +389,22 @@ ChaSetNotificationStack {
 
     function push(level) {
         var presets = {
-            "info": { title: "Index rebuilt", description: "Workspace symbols refreshed in 2.1s." },
-            "success": { title: "Deployment finished", description: "Release 0.2.0 is live on staging." },
-            "warning": { title: "Token expires soon", description: "Credentials expire in 3 days." },
-            "error": { title: "Upload rejected", description: "Artifact exceeds the 50 MB limit." }
+            "info": {
+                title: ChaSetI18n.tr("overlays.notificationStack.presetInfoTitle", "Index rebuilt"),
+                description: ChaSetI18n.tr("overlays.notificationStack.presetInfoDesc", "Workspace symbols refreshed in 2.1s.")
+            },
+            "success": {
+                title: ChaSetI18n.tr("overlays.notificationStack.presetSuccessTitle", "Deployment finished"),
+                description: ChaSetI18n.tr("overlays.notificationStack.presetSuccessDesc", "Release 0.2.0 is live on staging.")
+            },
+            "warning": {
+                title: ChaSetI18n.tr("overlays.notificationStack.presetWarningTitle", "Token expires soon"),
+                description: ChaSetI18n.tr("overlays.notificationStack.presetWarningDesc", "Credentials expire in 3 days.")
+            },
+            "error": {
+                title: ChaSetI18n.tr("overlays.notificationStack.presetErrorTitle", "Upload rejected"),
+                description: ChaSetI18n.tr("overlays.notificationStack.presetErrorDesc", "Artifact exceeds the 50 MB limit.")
+            }
         }
         var preset = presets[level]
         if (!preset) return

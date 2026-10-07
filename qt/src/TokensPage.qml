@@ -50,10 +50,10 @@ DocLayout {
         Column {
             width: parent.width
             spacing: ThemeTokens.dp(4)
-            DocText { text: "Palette · Semantic Core Tokens"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+            DocText { text: ChaSetI18n.tr("getStarted.tokens.palette.title", "Palette · Semantic Core Tokens"); textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
             DocText {
                 width: parent.width
-                text: "All derived from spec/tokens.json. Click any swatch to copy its CSS variable expression."
+                text: ChaSetI18n.tr("getStarted.tokens.palette.desc", "All derived from spec/tokens.json. Click any swatch to copy its CSS variable expression.")
                 isMuted: true
                 font.pixelSize: Typography.sizeBody
                 wrapMode: TextEdit.WordWrap
@@ -115,7 +115,7 @@ DocLayout {
                                     anchors.centerIn: parent
                                     spacing: ThemeTokens.dp(4)
                                     ChaSetIcon { name: "check"; size: 12; color: "#10b981"; anchors.verticalCenter: parent.verticalCenter }
-                                    DocText { text: "Copied"; color: "#10b981"; font.pixelSize: Typography.sizeMicro; font.weight: Typography.weightBold; anchors.verticalCenter: parent.verticalCenter }
+                                    DocText { text: ChaSetI18n.tr("common.copied", "Copied"); color: "#10b981"; font.pixelSize: Typography.sizeMicro; font.weight: Typography.weightBold; anchors.verticalCenter: parent.verticalCenter }
                                 }
                             }
                         }
@@ -158,10 +158,10 @@ DocLayout {
         Column {
             width: parent.width
             spacing: ThemeTokens.dp(4)
-            DocText { text: "Typography / Radius / Charts"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+            DocText { text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.title", "Typography / Radius / Charts"); textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
             DocText {
                 width: parent.width
-                text: "Radii derived from --radius (same sm/md/lg/xl derivation as shadcn); font weights map to tokens.json primitives (500/600); chart five colors follow the accent."
+                text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.desc", "Radii derived from --radius (same sm/md/lg/xl derivation as shadcn); font weights map to tokens.json primitives (500/600); chart five colors follow the accent.")
                 isMuted: true
                 font.pixelSize: Typography.sizeBody
                 wrapMode: TextEdit.WordWrap
@@ -177,7 +177,7 @@ DocLayout {
                 model: [
                     ["radius-sm", 4, "0.25rem"],
                     ["radius-md", 6, "0.375rem"],
-                    ["radius-lg", 8, "0.5rem (Default)"],
+                    ["radius-lg", 8, ChaSetI18n.tr("getStarted.tokens.typographyRadius.radiusDefault", "0.5rem (Default)")],
                     ["radius-xl", 12, "0.75rem"]
                 ]
                 delegate: Rectangle {
@@ -216,15 +216,15 @@ DocLayout {
 
                 Row {
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Font System · CJK Fallback & Typography Scale"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
-                    ChaSetBadge { text: "Zero-SimSun Guarantee"; variant: "secondary" }
+                    DocText { text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.fontSystemTitle", "Font System · CJK Fallback & Typography Scale"); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
+                    ChaSetBadge { text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.zeroSimSunBadge", "Zero-SimSun Guarantee"); variant: "secondary" }
                 }
 
                 DocText {
                     width: parent.width
                     wrap: true
                     height: contentHeight
-                    text: "Fallback Stack (Sans): " + Typography.familiesSans.join("  →  ")
+                    text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sansFallback", "Fallback Stack (Sans): ") + Typography.familiesSans.join("  →  ")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     font.family: Typography.familyMono
@@ -237,7 +237,7 @@ DocLayout {
                     DocText {
                         width: parent.width
                         wrap: true
-                        text: "Regular 400 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
+                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleRegular", "Regular 400 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)")
                         color: ThemeTokens.text
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeBody
@@ -246,7 +246,7 @@ DocLayout {
                     DocText {
                         width: parent.width
                         wrap: true
-                        text: "Medium 500 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
+                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleMedium", "Medium 500 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)")
                         color: ThemeTokens.text
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeBody
@@ -255,7 +255,7 @@ DocLayout {
                     DocText {
                         width: parent.width
                         wrap: true
-                        text: "Semibold 600 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
+                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleSemibold", "Semibold 600 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)")
                         color: ThemeTokens.text
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeBody
@@ -264,7 +264,7 @@ DocLayout {
                     DocText {
                         width: parent.width
                         wrap: true
-                        text: "Bold 700 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)"
+                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleBold", "Bold 700 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)")
                         color: ThemeTokens.text
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeBody
@@ -282,7 +282,7 @@ DocLayout {
                     width: parent.width
                     wrap: true
                     height: contentHeight
-                    text: "Fallback Stack (Mono): " + Typography.familiesMono.join("  →  ")
+                    text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.monoFallback", "Fallback Stack (Mono): ") + Typography.familiesMono.join("  →  ")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     font.family: Typography.familyMono
@@ -305,7 +305,7 @@ DocLayout {
                         DocText {
                             width: parent.width
                             wrap: true
-                            text: "const fontSystem = ChaSet.FontSystem; // 自动处理中文字体回退，消除宋体锯齿"
+                            text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.codeComment1", "const fontSystem = ChaSet.FontSystem; // 自动处理中文字体回退，消除宋体锯齿")
                             color: ThemeTokens.text
                             font.family: Typography.familyMono
                             font.pixelSize: Typography.sizeSmall
@@ -313,7 +313,7 @@ DocLayout {
                         DocText {
                             width: parent.width
                             wrap: true
-                            text: "console.log(`[ChaSet] CJK glyphs: 字体平滑清晰, zero raster artifacts`);"
+                            text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.codeComment2", "console.log(`[ChaSet] CJK glyphs: 字体平滑清晰, zero raster artifacts`);")
                             color: ThemeTokens.subduedText
                             font.family: Typography.familyMono
                             font.pixelSize: Typography.sizeSmall
@@ -326,7 +326,7 @@ DocLayout {
         // Chart Bars
         Column {
             spacing: ThemeTokens.dp(6)
-            DocText { text: "CHART PALETTE (FOLLOWS ACCENT)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.weight: Typography.weightBold; font.letterSpacing: 0.5 }
+            DocText { text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.chartPaletteTitle", "CHART PALETTE (FOLLOWS ACCENT)"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.weight: Typography.weightBold; font.letterSpacing: 0.5 }
             Row {
                 spacing: ThemeTokens.dp(10)
                 Repeater {

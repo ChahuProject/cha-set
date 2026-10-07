@@ -42,7 +42,7 @@ DocLayout {
             Row {
                 spacing: 8
                 DocText {
-                    text: "Simulate Tasks:"
+                    text: ChaSetI18n.tr("overlays.taskHud.simulateTasks", "Simulate Tasks:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
@@ -50,31 +50,31 @@ DocLayout {
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Add Running"
+                    text: ChaSetI18n.tr("overlays.taskHud.addRunning", "Add Running")
                     onClicked: root.addRunning()
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Add Indeterminate"
+                    text: ChaSetI18n.tr("overlays.taskHud.addIndeterminate", "Add Indeterminate")
                     onClicked: root.addIndeterminate()
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Succeed Task"
+                    text: ChaSetI18n.tr("overlays.taskHud.succeedTask", "Succeed Task")
                     onClicked: root.settleFirstRunning("success")
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Fail Task"
+                    text: ChaSetI18n.tr("overlays.taskHud.failTask", "Fail Task")
                     onClicked: root.settleFirstRunning("error")
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Clear All"
+                    text: ChaSetI18n.tr("overlays.taskHud.clearAll", "Clear All")
                     onClicked: root.clearAll()
                 }
             }
@@ -93,7 +93,7 @@ DocLayout {
             Text {
                 anchors.centerIn: parent
                 visible: root.demoTasks.length === 0
-                text: "Task HUD is idle and hidden. Press \"Add Running\" to simulate background jobs."
+                text: ChaSetI18n.tr("overlays.taskHud.idleHidden", "Task HUD is idle and hidden. Press \"Add Running\" to simulate background jobs.")
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
                 font.family: Typography.familySans
@@ -139,7 +139,7 @@ DocLayout {
             Row {
                 spacing: 16
                 DocText {
-                    text: "Max Visible:"
+                    text: ChaSetI18n.tr("overlays.taskHud.maxVisible", "Max Visible:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
@@ -155,7 +155,7 @@ DocLayout {
                     onValueSelected: function(val) { root.overflowMaxVisible = val }
                 }
                 DocText {
-                    text: "Placement:"
+                    text: ChaSetI18n.tr("overlays.taskHud.placement", "Placement:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
@@ -164,18 +164,18 @@ DocLayout {
                     size: "sm"
                     value: root.overflowPlacement
                     options: [
-                        { label: "Bottom Right", value: "bottom-right" },
-                        { label: "Bottom Left", value: "bottom-left" },
-                        { label: "Top Right", value: "top-right" },
-                        { label: "Top Left", value: "top-left" },
-                        { label: "Bottom Center", value: "bottom-center" }
+                        { label: ChaSetI18n.tr("overlays.taskHud.placementBottomRight", "Bottom Right"), value: "bottom-right" },
+                        { label: ChaSetI18n.tr("overlays.taskHud.placementBottomLeft", "Bottom Left"), value: "bottom-left" },
+                        { label: ChaSetI18n.tr("overlays.taskHud.placementTopRight", "Top Right"), value: "top-right" },
+                        { label: ChaSetI18n.tr("overlays.taskHud.placementTopLeft", "Top Left"), value: "top-left" },
+                        { label: ChaSetI18n.tr("overlays.taskHud.placementBottomCenter", "Bottom Center"), value: "bottom-center" }
                     ]
                     onValueSelected: function(val) { root.overflowPlacement = val }
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: overflowStack.collapsed ? "Expand Stack" : "Collapse Stack"
+                    text: overflowStack.collapsed ? ChaSetI18n.tr("overlays.taskHud.expandStack", "Expand Stack") : ChaSetI18n.tr("overlays.taskHud.collapseStack", "Collapse Stack")
                     onClicked: overflowStack.collapsed = !overflowStack.collapsed
                 }
             }
@@ -391,8 +391,8 @@ ChaSetTaskHud {
     property var demoTasks: [
         {
             id: "task-1",
-            title: "Packaging Bundle",
-            detail: "Compiling assets and modules",
+            title: ChaSetI18n.tr("overlays.taskHud.taskPackagingBundle", "Packaging Bundle"),
+            detail: ChaSetI18n.tr("overlays.taskHud.taskPackagingBundleDetail", "Compiling assets and modules"),
             progress: 0.65,
             status: "running",
             elapsedMs: 2400,
@@ -400,8 +400,8 @@ ChaSetTaskHud {
         },
         {
             id: "task-2",
-            title: "Database Migration",
-            detail: "Applied 12 schema patches",
+            title: ChaSetI18n.tr("overlays.taskHud.taskDatabaseMigration", "Database Migration"),
+            detail: ChaSetI18n.tr("overlays.taskHud.taskDatabaseMigrationDetail", "Applied 12 schema patches"),
             progress: 1,
             status: "success",
             total: 12,
@@ -410,11 +410,11 @@ ChaSetTaskHud {
     ]
 
     property var backlog: [
-        { id: "queue-1", title: "Indexing Symbols", detail: "Scanning 4,182 files", status: "running", indeterminate: true },
-        { id: "queue-2", title: "Optimizing Images", detail: "Re-encoding 38 assets", status: "running", progress: 0.42 },
-        { id: "queue-3", title: "Running Unit Tests", detail: "Suite 7 of 12", status: "running", progress: 0.58, total: 12, done: 7 },
-        { id: "queue-4", title: "Uploading Artifacts", detail: "Waiting for credentials", status: "queued" },
-        { id: "queue-5", title: "Generating Report", detail: "Coverage summary", status: "running", progress: -1 }
+        { id: "queue-1", title: ChaSetI18n.tr("overlays.taskHud.taskIndexingSymbols", "Indexing Symbols"), detail: ChaSetI18n.tr("overlays.taskHud.taskIndexingSymbolsDetail", "Scanning 4,182 files"), status: "running", indeterminate: true },
+        { id: "queue-2", title: ChaSetI18n.tr("overlays.taskHud.taskOptimizingImages", "Optimizing Images"), detail: ChaSetI18n.tr("overlays.taskHud.taskOptimizingImagesDetail", "Re-encoding 38 assets"), status: "running", progress: 0.42 },
+        { id: "queue-3", title: ChaSetI18n.tr("overlays.taskHud.taskRunningUnitTests", "Running Unit Tests"), detail: ChaSetI18n.tr("overlays.taskHud.taskRunningUnitTestsDetail", "Suite 7 of 12"), status: "running", progress: 0.58, total: 12, done: 7 },
+        { id: "queue-4", title: ChaSetI18n.tr("overlays.taskHud.taskUploadingArtifacts", "Uploading Artifacts"), detail: ChaSetI18n.tr("overlays.taskHud.taskUploadingArtifactsDetail", "Waiting for credentials"), status: "queued" },
+        { id: "queue-5", title: ChaSetI18n.tr("overlays.taskHud.taskGeneratingReport", "Generating Report"), detail: ChaSetI18n.tr("overlays.taskHud.taskGeneratingReportDetail", "Coverage summary"), status: "running", progress: -1 }
     ]
 
     function copyList(list) {
@@ -427,8 +427,8 @@ ChaSetTaskHud {
         var list = root.copyList(root.demoTasks)
         list.push({
             id: "task-" + Date.now(),
-            title: "Build Job #" + (root.demoTasks.length + 1),
-            detail: "Processing dependencies",
+            title: ChaSetI18n.tr("overlays.taskHud.buildJob", "Build Job #{{num}}", { num: (root.demoTasks.length + 1) }),
+            detail: ChaSetI18n.tr("overlays.taskHud.processingDependencies", "Processing dependencies"),
             progress: 0.35,
             status: "running",
             elapsedMs: 800,
@@ -441,8 +441,8 @@ ChaSetTaskHud {
         var list = root.copyList(root.demoTasks)
         list.push({
             id: "task-" + Date.now(),
-            title: "Analyzing AST #" + (root.demoTasks.length + 1),
-            detail: "Indexing symbols",
+            title: ChaSetI18n.tr("overlays.taskHud.analyzingAst", "Analyzing AST #{{num}}", { num: (root.demoTasks.length + 1) }),
+            detail: ChaSetI18n.tr("overlays.taskHud.indexingSymbols", "Indexing symbols"),
             status: "running",
             indeterminate: true
         })
@@ -456,7 +456,7 @@ ChaSetTaskHud {
                 list[i] = {
                     id: list[i].id,
                     title: list[i].title,
-                    detail: status === "success" ? "Completed successfully" : "Compilation error (exit code 1)",
+                    detail: status === "success" ? ChaSetI18n.tr("overlays.taskHud.completedSuccessfully", "Completed successfully") : ChaSetI18n.tr("overlays.taskHud.compilationError", "Compilation error (exit code 1)"),
                     progress: status === "success" ? 1 : list[i].progress,
                     status: status,
                     elapsedMs: list[i].elapsedMs
@@ -486,7 +486,7 @@ ChaSetTaskHud {
                 list[i] = {
                     id: list[i].id,
                     title: list[i].title,
-                    detail: "Cancelled by user",
+                    detail: ChaSetI18n.tr("overlays.taskHud.cancelledByUser", "Cancelled by user"),
                     status: "cancelled",
                     elapsedMs: list[i].elapsedMs
                 }

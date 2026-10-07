@@ -1,11 +1,12 @@
 import React from 'react';
-import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, CodeBlock } from '@chahu/cha-set';
+import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function ContextMenuDocPage() {
+  const { t } = useChaSetI18n();
   const reactCode = `<ContextMenu>
   <ContextMenuTrigger className="flex h-36 w-full max-w-xs items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
     Right click here
@@ -59,24 +60,24 @@ export function ContextMenuDocPage() {
 }`} title="Context Menu Sandbox" reactCode={reactCode}>
           <ContextMenu>
             <ContextMenuTrigger className="flex h-36 w-full max-w-xs items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground select-none bg-muted/20 hover:bg-muted/40 transition-colors">
-              Right click here
+              {t('overlays.contextMenu.rightClickHere', 'Right click here')}
             </ContextMenuTrigger>
             <ContextMenuContent className="w-64">
               <ContextMenuItem>
-                Back
+                {t('overlays.contextMenu.back', 'Back')}
                 <ContextMenuShortcut>⌘[</ContextMenuShortcut>
               </ContextMenuItem>
               <ContextMenuItem disabled>
-                Forward
+                {t('overlays.contextMenu.forward', 'Forward')}
                 <ContextMenuShortcut>⌘]</ContextMenuShortcut>
               </ContextMenuItem>
               <ContextMenuItem>
-                Reload
+                {t('overlays.contextMenu.reload', 'Reload')}
                 <ContextMenuShortcut>⌘R</ContextMenuShortcut>
               </ContextMenuItem>
               <ContextMenuSeparator />
-              <ContextMenuItem>Save As...</ContextMenuItem>
-              <ContextMenuItem>Inspect</ContextMenuItem>
+              <ContextMenuItem>{t('overlays.contextMenu.saveAs', 'Save As...')}</ContextMenuItem>
+              <ContextMenuItem>{t('overlays.contextMenu.inspect', 'Inspect')}</ContextMenuItem>
             </ContextMenuContent>
           </ContextMenu>
         </ComponentPreview>

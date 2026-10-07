@@ -10,33 +10,33 @@ DocLayout {
   description: "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
 
   property var sampleSteps: [
-    { name: "Parse SPIR-V Bytecode", status: "success", durationMs: 3200 },
-    { name: "Dead Code Elimination", status: "success", durationMs: 4100 },
-    { name: "Hardware Register Allocation", status: "running", durationMs: null },
-    { name: "Emit Target Binary", status: "queued", durationMs: null }
+    { name: ChaSetI18n.tr("desktopComposite.pipelineView.stepParseSpirv", "Parse SPIR-V Bytecode"), status: "success", durationMs: 3200 },
+    { name: ChaSetI18n.tr("desktopComposite.pipelineView.stepDeadCode", "Dead Code Elimination"), status: "success", durationMs: 4100 },
+    { name: ChaSetI18n.tr("desktopComposite.pipelineView.stepRegAlloc", "Hardware Register Allocation"), status: "running", durationMs: null },
+    { name: ChaSetI18n.tr("desktopComposite.pipelineView.stepEmitBinary", "Emit Target Binary"), status: "queued", durationMs: null }
   ]
 
   property var sampleJobs: [
     {
       id: "job-1",
-      name: "Shader Compilation",
+      name: ChaSetI18n.tr("desktopComposite.pipelineView.jobShaderComp", "Shader Compilation"),
       status: "success",
       durationMs: 12400,
       steps: [
-        { name: "Compile Vertex Stage", status: "success", durationMs: 5000 },
-        { name: "Compile Fragment Stage", status: "success", durationMs: 7400 }
+        { name: ChaSetI18n.tr("desktopComposite.pipelineView.stepCompileVertex", "Compile Vertex Stage"), status: "success", durationMs: 5000 },
+        { name: ChaSetI18n.tr("desktopComposite.pipelineView.stepCompileFragment", "Compile Fragment Stage"), status: "success", durationMs: 7400 }
       ]
     },
     {
       id: "job-2",
-      name: "Benchmark Suite",
+      name: ChaSetI18n.tr("desktopComposite.pipelineView.jobBenchmark", "Benchmark Suite"),
       status: "running",
       durationMs: null,
       steps: root.sampleSteps
     },
     {
       id: "job-3",
-      name: "Package Artifacts",
+      name: ChaSetI18n.tr("desktopComposite.pipelineView.jobPackage", "Package Artifacts"),
       status: "queued",
       durationMs: null,
       steps: []

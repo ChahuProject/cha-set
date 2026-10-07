@@ -20,13 +20,13 @@ DocLayout {
 
     readonly property var metrics: ChaSetIcons.metrics
     readonly property var specRows: [
-        { label: "Grid", value: root.metrics.grid + " units" },
-        { label: "Live area", value: root.metrics.liveArea + " units (safe margin " + (root.metrics.grid - root.metrics.liveArea) / 2 + ")" },
-        { label: "Stroke", value: root.metrics.strokeWidth + " units, " + root.metrics.linecap + " caps, " + root.metrics.linejoin + " joins" },
-        { label: "Fill policy", value: root.metrics.fillPolicy },
-        { label: "Centring tolerance", value: root.metrics.opticalCenterTolerance + " units" },
-        { label: "Colour", value: ChaSetIcons.colorPolicy.policy },
-        { label: "Resolved through", value: ChaSetIcons.specSource }
+        { label: ChaSetI18n.tr("getStarted.icons.specification.rowGrid", "Grid"), value: ChaSetI18n.tr("getStarted.icons.specification.valGrid", "{{grid}} units", { grid: root.metrics.grid }) },
+        { label: ChaSetI18n.tr("getStarted.icons.specification.rowLive", "Live area"), value: ChaSetI18n.tr("getStarted.icons.specification.valLive", "{{liveArea}} units (safe margin {{margin}})", { liveArea: root.metrics.liveArea, margin: (root.metrics.grid - root.metrics.liveArea) / 2 }) },
+        { label: ChaSetI18n.tr("getStarted.icons.specification.rowStroke", "Stroke"), value: ChaSetI18n.tr("getStarted.icons.specification.valStroke", "{{strokeWidth}} units, {{linecap}} caps, {{linejoin}} joins", { strokeWidth: root.metrics.strokeWidth, linecap: root.metrics.linecap, linejoin: root.metrics.linejoin }) },
+        { label: ChaSetI18n.tr("getStarted.icons.specification.rowFill", "Fill policy"), value: root.metrics.fillPolicy },
+        { label: ChaSetI18n.tr("getStarted.icons.specification.rowTolerance", "Centring tolerance"), value: ChaSetI18n.tr("getStarted.icons.specification.valTolerance", "{{tolerance}} units", { tolerance: root.metrics.opticalCenterTolerance }) },
+        { label: ChaSetI18n.tr("getStarted.icons.specification.rowColour", "Colour"), value: ChaSetIcons.colorPolicy.policy },
+        { label: ChaSetI18n.tr("getStarted.icons.specification.rowResolved", "Resolved through"), value: ChaSetIcons.specSource }
     ]
 
     // The three Scale OSD controls whose glyph/weight drift motivated the whole rule set.
@@ -35,10 +35,10 @@ DocLayout {
     readonly property var centeringProof: ["minus", "plus", "rotate-ccw", "x", "stop", "window-close"]
 
     readonly property var precedence: [
-        { label: "Environment variable CHASET_ICON_SPEC", value: "Highest priority — per shell, per CI job, no file edit." },
-        { label: "chaset.config.json → icons.spec", value: "Project-level switch; committed, so the choice travels with the repository." },
-        { label: "spec/icons/registry.json → activeSpec", value: "Library-level default when the host declares nothing." },
-        { label: "First implemented specification", value: "Last resort, so a missing switch never breaks a build." }
+        { label: ChaSetI18n.tr("getStarted.icons.configuration.stepEnvLabel", "Environment variable CHASET_ICON_SPEC"), value: ChaSetI18n.tr("getStarted.icons.configuration.stepEnvVal", "Highest priority — per shell, per CI job, no file edit.") },
+        { label: ChaSetI18n.tr("getStarted.icons.configuration.stepConfigLabel", "chaset.config.json → icons.spec"), value: ChaSetI18n.tr("getStarted.icons.configuration.stepConfigVal", "Project-level switch; committed, so the choice travels with the repository.") },
+        { label: ChaSetI18n.tr("getStarted.icons.configuration.stepRegistryLabel", "spec/icons/registry.json → activeSpec"), value: ChaSetI18n.tr("getStarted.icons.configuration.stepRegistryVal", "Library-level default when the host declares nothing.") },
+        { label: ChaSetI18n.tr("getStarted.icons.configuration.stepFallbackLabel", "First implemented specification"), value: ChaSetI18n.tr("getStarted.icons.configuration.stepFallbackVal", "Last resort, so a missing switch never breaks a build.") }
     ]
 
     readonly property int inlineSvgTotal: {
@@ -68,7 +68,7 @@ DocLayout {
         }
         return parts.length > 0
             ? parts.join("\n")
-            : "None. Every inline artwork site in the repository owes a migration.";
+            : ChaSetI18n.tr("getStarted.icons.extensibility.excusedNone", "None. Every inline artwork site in the repository owes a migration.");
     }
 
     // The tag name is escaped so this prose does not register as hand-authored artwork in
@@ -103,13 +103,13 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(4)
                 DocText {
-                    text: "Active Specification"
+                    text: ChaSetI18n.tr("getStarted.icons.specification.title", "Active Specification")
                     textColor: ThemeTokens.text
                     font.pixelSize: Typography.sizeTitleSm
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "Icons are declared once in spec/icons/registry.json and code-generated into both stacks. React renders the element vocabulary natively; Qt receives the same shapes compiled to path data. Neither stack owns artwork of its own, which is what makes the two platforms agree by construction rather than by review."
+                    text: ChaSetI18n.tr("getStarted.icons.specification.desc", "Icons are declared once in spec/icons/registry.json and code-generated into both stacks. React renders the element vocabulary natively; Qt receives the same shapes compiled to path data. Neither stack owns artwork of its own, which is what makes the two platforms agree by construction rather than by review.")
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -141,7 +141,10 @@ DocLayout {
                             font.weight: Typography.weightSemibold
                         }
                         ChaSetBadge { text: ChaSetIcons.specId; variant: "secondary" }
-                        ChaSetBadge { text: ChaSetIcons.names.length + " icons"; variant: "outline" }
+                        ChaSetBadge {
+                            text: ChaSetI18n.tr("getStarted.icons.specification.iconsCount", "{{count}} icons", { count: ChaSetIcons.names.length })
+                            variant: "outline"
+                        }
                     }
 
                     Rectangle {
@@ -192,13 +195,13 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(4)
                 DocText {
-                    text: "Governance Rules"
+                    text: ChaSetI18n.tr("getStarted.icons.rules.title", "Governance Rules")
                     textColor: ThemeTokens.text
                     font.pixelSize: Typography.sizeTitleSm
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "Each rule below is enforced by pnpm check:icons, which also runs inside pnpm gate. A rule that is not machine-checked would only be a slogan, so the enforcement column names the assertion that fails."
+                    text: ChaSetI18n.tr("getStarted.icons.rules.desc", "Each rule below is enforced by pnpm check:icons, which also runs inside pnpm gate. A rule that is not machine-checked would only be a slogan, so the enforcement column names the assertion that fails.")
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -275,13 +278,13 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(4)
                 DocText {
-                    text: "Grids, Weight & Size"
+                    text: ChaSetI18n.tr("getStarted.icons.grids.title", "Grids, Weight & Size")
                     textColor: ThemeTokens.text
                     font.pixelSize: Typography.sizeTitleSm
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "A grid pairs a drawing box with the stroke width that box expects, and states the render size it was drawn for. Two grids are declared: the default 24 unit grid for UI icons, drawn for a 16px render, and a dense 10 unit chrome grid whose 1 unit stroke stays hairline on window captions instead of collapsing to a sub-pixel smear. Because the ratio and the target are declared rather than improvised, a 10 unit caption glyph and a 24 unit toolbar glyph end up with the same apparent weight — and a glyph rendered below its grid's target is a number the gate can name instead of a defect a reviewer has to notice."
+                    text: ChaSetI18n.tr("getStarted.icons.grids.desc", "A grid pairs a drawing box with the stroke width that box expects, and states the render size it was drawn for. Two grids are declared: the default 24 unit grid for UI icons, drawn for a 16px render, and a dense 10 unit chrome grid whose 1 unit stroke stays hairline on window captions instead of collapsing to a sub-pixel smear. Because the ratio and the target are declared rather than improvised, a 10 unit caption glyph and a 24 unit toolbar glyph end up with the same apparent weight — and a glyph rendered below its grid's target is a number the gate can name instead of a defect a reviewer has to notice.")
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -324,25 +327,23 @@ DocLayout {
                                     font.weight: Typography.weightSemibold
                                 }
                                 ChaSetBadge {
-                                    text: gridCard.gridData.size + " units · stroke " + gridCard.gridData.strokeWidth
+                                    text: ChaSetI18n.tr("getStarted.icons.grids.gridBadge", "{{size}} units · stroke {{strokeWidth}}", { size: gridCard.gridData.size, strokeWidth: gridCard.gridData.strokeWidth })
                                     variant: "secondary"
                                 }
                                 DocText {
-                                    text: "safe margin " + gridCard.gridData.safeMargin
+                                    text: ChaSetI18n.tr("getStarted.icons.grids.safeMargin", "safe margin {{margin}}", { margin: gridCard.gridData.safeMargin })
                                     isMuted: true
                                     isMono: true
                                     font.pixelSize: Typography.sizeMicro
                                 }
                                 DocText {
-                                    text: "drawn for " + gridCard.gridData.renderSize + "px → "
-                                          + gridCard.gridData.strokeAtRenderSize + "px stroke"
+                                    text: ChaSetI18n.tr("getStarted.icons.grids.drawnFor", "drawn for {{renderSize}}px → {{stroke}}px stroke", { renderSize: gridCard.gridData.renderSize, stroke: gridCard.gridData.strokeAtRenderSize })
                                     isMuted: true
                                     isMono: true
                                     font.pixelSize: Typography.sizeMicro
                                 }
                                 DocText {
-                                    text: "floor " + gridCard.gridData.size + " / " + gridCard.gridData.strokeWidth
-                                          + " = " + gridCard.gridData.strokeFloor + "px"
+                                    text: ChaSetI18n.tr("getStarted.icons.grids.floor", "floor {{size}} / {{strokeWidth}} = {{floor}}px", { size: gridCard.gridData.size, strokeWidth: gridCard.gridData.strokeWidth, floor: gridCard.gridData.strokeFloor })
                                     isMuted: true
                                     isMono: true
                                     font.pixelSize: Typography.sizeMicro
@@ -359,16 +360,12 @@ DocLayout {
                             }
 
                             DocText {
-                                text: gridCard.gridData.renderSize + "px is the size this grid was drawn "
-                                      + "for, where its stroke paints " + gridCard.gridData.strokeAtRenderSize
-                                      + "px — the weight the artwork was proportioned to carry. Under "
-                                      + gridCard.gridData.strokeFloor + "px that stroke is under a pixel and "
-                                      + "the glyph ships lighter than its artwork declares, so the steps this "
-                                      + "grid is honest at are " + gridCard.gridData.renderSizes.join(", ")
-                                      + ". A size outside that list is not a smaller icon, it is a lighter "
-                                      + "one — measured rather than banned, because a 2x display forgives it, "
-                                      + "so the gate lists every reference below its floor and each one is a "
-                                      + "decision instead of an accident."
+                                text: ChaSetI18n.tr("getStarted.icons.grids.gridDesc", "{{renderSize}}px is the size this grid was drawn for, where its stroke paints {{stroke}}px — the weight the artwork was proportioned to carry. Under {{floor}}px that stroke is under a pixel and the glyph ships lighter than its artwork declares, so the steps this grid is honest at are {{sizes}}. A size outside that list is not a smaller icon, it is a lighter one — measured rather than banned, because a 2x display forgives it, so the gate lists every reference below its floor and each one is a decision instead of an accident.", {
+                                    renderSize: gridCard.gridData.renderSize,
+                                    stroke: gridCard.gridData.strokeAtRenderSize,
+                                    floor: gridCard.gridData.strokeFloor,
+                                    sizes: gridCard.gridData.renderSizes.join(", ")
+                                })
                                 isMuted: true
                                 font.pixelSize: Typography.sizeSmall
                                 width: parent.width
@@ -426,23 +423,19 @@ DocLayout {
                     Row {
                         spacing: ThemeTokens.dp(8)
                         DocText {
-                            text: "Control families"
+                            text: ChaSetI18n.tr("getStarted.icons.grids.familiesTitle", "Control families")
                             textColor: ThemeTokens.text
                             font.pixelSize: Typography.sizeBody
                             font.weight: Typography.weightSemibold
                         }
                         ChaSetBadge {
-                            text: ChaSetIcons.families.length + " declared"
+                            text: ChaSetI18n.tr("getStarted.icons.grids.familiesDeclared", "{{count}} declared", { count: ChaSetIcons.families.length })
                             variant: "outline"
                         }
                     }
 
                     DocText {
-                        text: "A family names icons that render together inside one control. Their grid is "
-                              + "then a promise about the control rather than about any single icon, which is "
-                              + "what the caption close button broke: every icon involved was individually "
-                              + "valid, and the row was still wrong. The gate asserts that no family spans "
-                              + "two grids."
+                        text: ChaSetI18n.tr("getStarted.icons.grids.familiesDesc", "A family names icons that render together inside one control. Their grid is then a promise about the control rather than about any single icon, which is what the caption close button broke: every icon involved was individually valid, and the row was still wrong. The gate asserts that no family spans two grids.")
                         isMuted: true
                         font.pixelSize: Typography.sizeSmall
                         width: parent.width
@@ -488,7 +481,7 @@ DocLayout {
                                         font.pixelSize: Typography.sizeMicro
                                     }
                                     ChaSetBadge {
-                                        text: ChaSetIcons.grids[familyCard.familyGrid].size + " unit grid"
+                                        text: ChaSetI18n.tr("getStarted.icons.grids.unitGridBadge", "{{size}} unit grid", { size: ChaSetIcons.grids[familyCard.familyGrid].size })
                                         variant: "secondary"
                                     }
                                 }
@@ -556,13 +549,13 @@ DocLayout {
                     Row {
                         spacing: ThemeTokens.dp(8)
                         DocText {
-                            text: "Weight"
+                            text: ChaSetI18n.tr("getStarted.icons.grids.weightTitle", "Weight")
                             textColor: ThemeTokens.text
                             font.pixelSize: Typography.sizeBody
                             font.weight: Typography.weightSemibold
                         }
                         ChaSetBadge {
-                            text: ChaSetIcons.weights.length + " permitted"
+                            text: ChaSetI18n.tr("getStarted.icons.grids.weightPermitted", "{{count}} permitted", { count: ChaSetIcons.weights.length })
                             variant: "outline"
                         }
                     }
@@ -588,7 +581,7 @@ DocLayout {
                                 font.pixelSize: Typography.sizeMicro
                             }
                             DocText {
-                                text: "stroke " + modelData.strokeWidth + " — " + modelData.usage
+                                text: ChaSetI18n.tr("getStarted.icons.grids.weightStrokePrefix", "stroke {{strokeWidth}} — ", { strokeWidth: modelData.strokeWidth }) + modelData.usage
                                 width: parent.width - ThemeTokens.dp(96) - parent.spacing
                                 textColor: ThemeTokens.text
                                 font.pixelSize: Typography.sizeSmall
@@ -605,7 +598,7 @@ DocLayout {
                     }
 
                     DocText {
-                        text: "Size ramp — one icon, every step of the scale, no hand scaling"
+                        text: ChaSetI18n.tr("getStarted.icons.grids.sizeRampTitle", "Size ramp — one icon, every step of the scale, no hand scaling")
                         isMuted: true
                         font.pixelSize: Typography.sizeMicro
                         font.weight: Typography.weightMedium
@@ -637,7 +630,7 @@ DocLayout {
                     }
 
                     DocText {
-                        text: "Desktop · " + ChaSetIcons.sizes.qt
+                        text: ChaSetI18n.tr("getStarted.icons.grids.desktopLabel", "Desktop · {{size}}", { size: ChaSetIcons.sizes.qt })
                         isMuted: true
                         font.pixelSize: Typography.sizeMicro
                     }
@@ -654,13 +647,13 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(4)
                 DocText {
-                    text: "Optical Centring"
+                    text: ChaSetI18n.tr("getStarted.icons.centering.title", "Optical Centring")
                     textColor: ThemeTokens.text
                     font.pixelSize: Typography.sizeTitleSm
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "Centring is a property of the geometry, not something a component fixes afterwards. The gate measures the painted bounding box (artwork plus half the stroke) and fails when its centre drifts more than " + root.metrics.opticalCenterTolerance + " units from the grid centre. Anchor offsets and padding are deliberately not an accepted fix: they centre a box, not the ink inside it."
+                    text: ChaSetI18n.tr("getStarted.icons.centering.desc", "Centring is a property of the geometry, not something a component fixes afterwards. The gate measures the painted bounding box (artwork plus half the stroke) and fails when its centre drifts more than {{tolerance}} units from the grid centre. Anchors offsets and padding are deliberately not an accepted fix: they centre a box, not the ink inside it.", { tolerance: root.metrics.opticalCenterTolerance })
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -686,7 +679,7 @@ DocLayout {
                     Row {
                         spacing: ThemeTokens.dp(8)
                         DocText {
-                            text: "The Scale OSD control trio"
+                            text: ChaSetI18n.tr("getStarted.icons.centering.osdTrioTitle", "The Scale OSD control trio")
                             textColor: ThemeTokens.text
                             font.pixelSize: Typography.sizeBody
                             font.weight: Typography.weightSemibold
@@ -695,7 +688,7 @@ DocLayout {
                     }
 
                     DocText {
-                        text: "These three controls used to be typography: a bold plus, a bold minus sign and a regular reset arrow. Besides the mixed weight, a font's ascent and descent are not symmetric, so the arrow inherited a baseline that pushed it visibly low inside its pill. They are now three icons from this specification — same stroke, same grid, centred by geometry."
+                        text: ChaSetI18n.tr("getStarted.icons.centering.osdTrioDesc", "These three controls used to be typography: a bold plus, a bold minus sign and a regular reset arrow. Besides the mixed weight, a font's ascent and descent are not symmetric, so the arrow inherited a baseline that pushed it visibly low inside its pill. They are now three icons from this specification — same stroke, same grid, centred by geometry.")
                         isMuted: true
                         font.pixelSize: Typography.sizeSmall
                         width: parent.width
@@ -787,7 +780,7 @@ DocLayout {
                     spacing: ThemeTokens.dp(12)
 
                     DocText {
-                        text: "Measured offsets — painted centre minus grid centre, in grid units"
+                        text: ChaSetI18n.tr("getStarted.icons.centering.measuredOffsetsTitle", "Measured offsets — painted centre minus grid centre, in grid units")
                         isMuted: true
                         font.pixelSize: Typography.sizeMicro
                         font.weight: Typography.weightMedium
@@ -859,13 +852,13 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(4)
                 DocText {
-                    text: "Icon Gallery"
+                    text: ChaSetI18n.tr("getStarted.icons.gallery.title", "Icon Gallery")
                     textColor: ThemeTokens.text
                     font.pixelSize: Typography.sizeTitleSm
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "Every icon of the active specification, rendered by name from the generated registry. Adding an icon to the registry makes it appear here on both stacks at once, and the gate refuses a name that has no geometry behind it."
+                    text: ChaSetI18n.tr("getStarted.icons.gallery.desc", "Every icon of the active specification, rendered by name from the generated registry. Adding an icon to the registry makes it appear here on both stacks at once, and the gate refuses a name that has no geometry behind it.")
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -976,13 +969,13 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(4)
                 DocText {
-                    text: "External Configuration"
+                    text: ChaSetI18n.tr("getStarted.icons.configuration.title", "External Configuration")
                     textColor: ThemeTokens.text
                     font.pixelSize: Typography.sizeTitleSm
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "A host that wants the whole of ChaSet pinned to one specification does not edit the library. It declares the id externally; the generator bakes the resolved id into both artifacts, so the choice is observable at runtime through ICON_SPEC_ID (web) and ChaSetIcons.specId (desktop)."
+                    text: ChaSetI18n.tr("getStarted.icons.configuration.desc", "A host that wants the whole of ChaSet pinned to one specification does not edit the library. It declares the id externally; the generator bakes the resolved id into both artifacts, so the choice is observable at runtime through ICON_SPEC_ID (web) and ChaSetIcons.specId (desktop).")
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -1008,12 +1001,15 @@ DocLayout {
                     Row {
                         spacing: ThemeTokens.dp(8)
                         DocText {
-                            text: "Resolution order"
+                            text: ChaSetI18n.tr("getStarted.icons.configuration.resolutionOrder", "Resolution order")
                             textColor: ThemeTokens.text
                             font.pixelSize: Typography.sizeBody
                             font.weight: Typography.weightSemibold
                         }
-                        ChaSetBadge { text: "first match wins"; variant: "outline" }
+                        ChaSetBadge {
+                            text: ChaSetI18n.tr("getStarted.icons.configuration.firstMatchWins", "first match wins")
+                            variant: "outline"
+                        }
                     }
 
                     Rectangle {
@@ -1059,7 +1055,7 @@ DocLayout {
                     }
 
                     DocText {
-                        text: "Currently resolved through " + ChaSetIcons.specSource + "."
+                        text: ChaSetI18n.tr("getStarted.icons.configuration.currentlyResolved", "Currently resolved through {{source}}.", { source: ChaSetIcons.specSource })
                         isMuted: true
                         font.pixelSize: Typography.sizeSmall
                     }
@@ -1075,13 +1071,13 @@ DocLayout {
                     spacing: ThemeTokens.dp(8)
 
                     DocText {
-                        text: "Project configuration file"
+                        text: ChaSetI18n.tr("getStarted.icons.configuration.projectConfigFile", "Project configuration file")
                         textColor: ThemeTokens.text
                         font.pixelSize: Typography.sizeCaption
                         font.weight: Typography.weightMedium
                     }
                     DocText {
-                        text: "Commit this next to your package manifest to pin the specification for everyone building the project."
+                        text: ChaSetI18n.tr("getStarted.icons.configuration.projectConfigDesc", "Commit this next to your package manifest to pin the specification for everyone building the project.")
                         isMuted: true
                         font.pixelSize: Typography.sizeSmall
                         width: parent.width
@@ -1101,13 +1097,13 @@ DocLayout {
                     spacing: ThemeTokens.dp(8)
 
                     DocText {
-                        text: "Environment override"
+                        text: ChaSetI18n.tr("getStarted.icons.configuration.envOverride", "Environment override")
                         textColor: ThemeTokens.text
                         font.pixelSize: Typography.sizeCaption
                         font.weight: Typography.weightMedium
                     }
                     DocText {
-                        text: "Useful for CI matrices that build the same sources under several specifications."
+                        text: ChaSetI18n.tr("getStarted.icons.configuration.envOverrideDesc", "Useful for CI matrices that build the same sources under several specifications.")
                         isMuted: true
                         font.pixelSize: Typography.sizeSmall
                         width: parent.width
@@ -1127,7 +1123,7 @@ DocLayout {
                     spacing: ThemeTokens.dp(8)
 
                     DocText {
-                        text: "Consuming icons"
+                        text: ChaSetI18n.tr("getStarted.icons.configuration.consumingIcons", "Consuming icons")
                         textColor: ThemeTokens.text
                         font.pixelSize: Typography.sizeCaption
                         font.weight: Typography.weightMedium
@@ -1151,13 +1147,13 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(4)
                 DocText {
-                    text: "Extending the Specification"
+                    text: ChaSetI18n.tr("getStarted.icons.extensibility.title", "Extending the Specification")
                     textColor: ThemeTokens.text
                     font.pixelSize: Typography.sizeTitleSm
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "The registry holds a list of specifications, not a single hard-coded one. A new specification is a new entry with its own grid, stroke and artwork; nothing in either stack needs to change, because both consume whichever entry the configuration selects."
+                    text: ChaSetI18n.tr("getStarted.icons.extensibility.desc", "The registry holds a list of specifications, not a single hard-coded one. A new specification is a new entry with its own grid, stroke and artwork; nothing in either stack needs to change, because both consume whichever entry the configuration selects.")
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -1236,7 +1232,7 @@ DocLayout {
                     spacing: ThemeTokens.dp(16)
 
                     DocText {
-                        text: "Workflow"
+                        text: ChaSetI18n.tr("getStarted.icons.extensibility.workflow", "Workflow")
                         textColor: ThemeTokens.text
                         font.pixelSize: Typography.sizeCaption
                         font.weight: Typography.weightMedium
@@ -1257,13 +1253,13 @@ DocLayout {
                             width: (parent.width - parent.spacing) / 2
                             spacing: ThemeTokens.dp(6)
                             DocText {
-                                text: "Adoption ratchet"
+                                text: ChaSetI18n.tr("getStarted.icons.extensibility.adoptionRatchet", "Adoption ratchet")
                                 textColor: ThemeTokens.text
                                 font.pixelSize: Typography.sizeMicro
                                 font.weight: Typography.weightMedium
                             }
                             DocText {
-                                text: root.inlineSvgTotal + " hand-authored " + root.svgTag + " site(s) remain in the frozen migration backlog against a budget of " + ChaSetIcons.adoption.maxInlineSvgSites + ". The gate fails when that number grows, so the backlog can only shrink."
+                                text: ChaSetI18n.tr("getStarted.icons.extensibility.adoptionRatchetDesc", "{{total}} hand-authored <svg> site(s) remain in the frozen migration backlog against a budget of {{budget}}. The gate fails when that number grows, so the backlog can only shrink.", { total: root.inlineSvgTotal, budget: ChaSetIcons.adoption.maxInlineSvgSites })
                                 isMuted: true
                                 font.pixelSize: Typography.sizeSmall
                                 width: parent.width
@@ -1276,13 +1272,13 @@ DocLayout {
                             width: (parent.width - parent.spacing) / 2
                             spacing: ThemeTokens.dp(6)
                             DocText {
-                                text: "Text glyphs used as icons"
+                                text: ChaSetI18n.tr("getStarted.icons.extensibility.textGlyphsTitle", "Text glyphs used as icons")
                                 textColor: ThemeTokens.text
                                 font.pixelSize: Typography.sizeMicro
                                 font.weight: Typography.weightMedium
                             }
                             DocText {
-                                text: ChaSetIcons.adoption.textGlyphSites.length + " remaining. Characters such as plus, minus sign and the reset arrow are typography: they inherit weight, size and baseline from surrounding copy — the mechanism behind both defects this specification was written to remove."
+                                text: ChaSetI18n.tr("getStarted.icons.extensibility.textGlyphsDesc", "{{count}} remaining. Characters such as plus, minus sign and the reset arrow are typography: they inherit weight, size and baseline from surrounding copy — the mechanism behind both defects this specification was written to remove.", { count: ChaSetIcons.adoption.textGlyphSites.length })
                                 isMuted: true
                                 font.pixelSize: Typography.sizeSmall
                                 width: parent.width
@@ -1296,7 +1292,7 @@ DocLayout {
                         width: parent.width
                         spacing: ThemeTokens.dp(6)
                         DocText {
-                            text: "Excused as non-iconography (" + root.exemptTotal + ")"
+                            text: ChaSetI18n.tr("getStarted.icons.extensibility.excusedTitle", "Excused as non-iconography ({{total}})", { total: root.exemptTotal })
                             textColor: ThemeTokens.text
                             font.pixelSize: Typography.sizeMicro
                             font.weight: Typography.weightMedium
@@ -1310,7 +1306,7 @@ DocLayout {
                             height: contentHeight
                         }
                         DocText {
-                            text: "Parametric vector art has no 24-grid stroke representation, so leaving it inside the budget would make the budget permanently unreachable. It is excluded instead — visibly, and only through a marker that carries a reason and must sit directly above the artwork it excuses. A marker that is unreasoned, dangling, or not attached to a following " + root.svgTag + " fails the gate."
+                            text: ChaSetI18n.tr("getStarted.icons.extensibility.excusedFootnote", "Parametric vector art has no 24-grid stroke representation, so leaving it inside the budget would make the budget permanently unreachable. It is excluded instead — visibly, and only through a marker that carries a reason and must sit directly above the artwork it excuses. A marker that is unreasoned, dangling, or not attached to a following <svg> fails the gate.")
                             isMuted: true
                             font.pixelSize: Typography.sizeSmall
                             width: parent.width

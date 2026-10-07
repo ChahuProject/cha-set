@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, SegmentedControl, type CollapsibleVariant, CodeBlock, LockIcon } from '@chahu/cha-set';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, SegmentedControl, type CollapsibleVariant, CodeBlock, LockIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function CollapsibleDocPage() {
+  const { t } = useChaSetI18n();
   const [open, setOpen] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [variant, setVariant] = useState<CollapsibleVariant>('default');
@@ -97,34 +98,34 @@ export function CollapsibleDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">State:</span>
+                <span className="text-xs text-muted-foreground">{t('surfaces.collapsible.state', 'State:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={open ? 'true' : 'false'}
                   onChange={(v) => setOpen(v === 'true')}
                   options={[
-                    { label: 'Collapsed', value: 'false' },
-                    { label: 'Expanded', value: 'true' },
+                    { label: t('surfaces.collapsible.collapsed', 'Collapsed'), value: 'false' },
+                    { label: t('surfaces.collapsible.expanded', 'Expanded'), value: 'true' },
                   ]}
                 />
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Variant:</span>
+                <span className="text-xs text-muted-foreground">{t('showcase.variant', 'Variant:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={variant}
                   onChange={(v) => setVariant(v as CollapsibleVariant)}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Card', value: 'card' },
-                    { label: 'Ghost', value: 'ghost' },
+                    { label: t('common.default', 'Default'), value: 'default' },
+                    { label: t('surfaces.collapsible.card', 'Card'), value: 'card' },
+                    { label: t('common.ghost', 'Ghost'), value: 'ghost' },
                   ]}
                 />
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Disabled:</span>
+                <span className="text-xs text-muted-foreground">{t('common.disabled', 'Disabled:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={disabled ? 'true' : 'false'}
@@ -142,7 +143,7 @@ export function CollapsibleDocPage() {
             <Collapsible open={open} onOpenChange={setOpen} disabled={disabled} variant={variant}>
               <div className="flex items-center justify-between space-x-4 px-4 py-2 border border-border rounded-md bg-card">
                 <h4 className="text-sm font-semibold text-foreground">
-                  @peduarte starred 3 repositories
+                  {t('surfaces.collapsible.starredRepos', '@peduarte starred 3 repositories')}
                 </h4>
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" size="sm" className="w-8 h-8 p-0" disabled={disabled}>

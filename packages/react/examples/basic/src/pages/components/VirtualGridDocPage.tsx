@@ -1,19 +1,21 @@
-import React, { useRef } from 'react';
-import { VirtualGrid, type VirtualGridHandle, Badge, Button, CodeBlock } from '@chahu/cha-set';
+import React, { useRef, useMemo } from 'react';
+import { VirtualGrid, type VirtualGridHandle, Badge, Button, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
-const SAMPLE_ITEMS = Array.from({ length: 60 }, (_, i) => ({
-  id: i + 1,
-  title: `Module #${i + 1}`,
-  description: `Virtual windowed card unit asset ${i + 1}`,
-  status: i % 3 === 0 ? 'Active' : 'Pending',
-}));
-
 export function VirtualGridDocPage() {
+  const { t } = useChaSetI18n();
   const gridRef = useRef<VirtualGridHandle>(null);
+
+  const sampleItems = useMemo(() => Array.from({ length: 60 }, (_, i) => ({
+    id: i + 1,
+    title: t('desktopComposite.virtualGrid.itemTitle', `Module #${i + 1}`, { index: i + 1 }),
+    description: t('desktopComposite.virtualGrid.itemDesc', `Virtual windowed card unit asset ${i + 1}`, { index: i + 1 }),
+    status: i % 3 === 0 ? t('common.active', 'Active') : t('desktopComposite.virtualGrid.pending', 'Pending'),
+    isActive: i % 3 === 0,
+  })), [t]);
 
   const reactCode = `const gridRef = useRef<VirtualGridHandle>(null);
 
@@ -70,34 +72,34 @@ gridRef.current?.scrollToIndex(20, 'center');
                 size="sm"
                 onClick={() => gridRef.current?.scrollToIndex(0, 'start')}
               >
-                Top (#1)
+                {t('desktopComposite.virtualGrid.btnTop', 'Top (#1)')}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => gridRef.current?.scrollToIndex(20, 'center')}
               >
-                Card #20
+                {t('desktopComposite.virtualGrid.btn20', 'Card #20')}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => gridRef.current?.scrollToIndex(40, 'center')}
               >
-                Card #40
+                {t('desktopComposite.virtualGrid.btn40', 'Card #40')}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => gridRef.current?.scrollToIndex(59, 'end')}
               >
-                Bottom (#60)
+                {t('desktopComposite.virtualGrid.btnBottom', 'Bottom (#60)')}
               </Button>
             </div>
 
             <VirtualGrid
               ref={gridRef}
-              items={SAMPLE_ITEMS}
+              items={sampleItems}
               minColumnWidthRem={10}
               gapRem={0.75}
               estimateSize={96}
@@ -109,7 +111,7 @@ gridRef.current?.scrollToIndex(20, 'center');
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs font-semibold text-foreground">{item.title}</span>
-                    <Badge size="sm" variant={item.status === 'Active' ? 'secondary' : 'outline'}>
+                    <Badge size="sm" variant={item.isActive ? 'secondary' : 'outline'}>
                       {item.status}
                     </Badge>
                   </div>

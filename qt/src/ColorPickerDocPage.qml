@@ -65,7 +65,7 @@ DocLayout {
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 8
                         DocText {
-                            text: "Selected Color:"
+                            text: ChaSetI18n.tr("components.colorPicker.selectedColor", "Selected Color:")
                             color: root.cMutedFg
                             font.pixelSize: Typography.sizeSmall
                             anchors.verticalCenter: parent.verticalCenter
@@ -94,7 +94,7 @@ DocLayout {
             Row {
                 spacing: 8
                 DocText {
-                    text: "Mode:"
+                    text: ChaSetI18n.tr("components.colorPicker.mode", "Mode:")
                     color: root.cMutedFg
                     font.pixelSize: Typography.sizeSmall
                     anchors.verticalCenter: parent.verticalCenter
@@ -104,8 +104,8 @@ DocLayout {
                     size: "sm"
                     value: root.demoMode
                     options: [
-                        { label: "Inline", value: "inline" },
-                        { label: "Popover", value: "popover" }
+                        { label: ChaSetI18n.tr("components.colorPicker.modeInline", "Inline"), value: "inline" },
+                        { label: ChaSetI18n.tr("components.colorPicker.modePopover", "Popover"), value: "popover" }
                     ]
                     onValueSelected: function(m) { root.demoMode = String(m); }
                 }
@@ -114,7 +114,7 @@ DocLayout {
             Row {
                 spacing: 8
                 DocText {
-                    text: "Size:"
+                    text: ChaSetI18n.tr("components.colorPicker.size", "Size:")
                     color: root.cMutedFg
                     font.pixelSize: Typography.sizeSmall
                     anchors.verticalCenter: parent.verticalCenter
@@ -124,8 +124,8 @@ DocLayout {
                     size: "sm"
                     value: root.demoSize
                     options: [
-                        { label: "Default", value: "default" },
-                        { label: "SM", value: "sm" }
+                        { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                        { label: ChaSetI18n.tr("components.colorPicker.sizeSm", "SM"), value: "sm" }
                     ]
                     onValueSelected: function(s) { root.demoSize = String(s); }
                 }
@@ -133,35 +133,35 @@ DocLayout {
 
             ChaSetCheckbox {
                 size: "sm"
-                label: "Disabled"
+                label: ChaSetI18n.tr("common.disabled", "Disabled")
                 checked: root.demoDisabled
                 onToggled: (val) => root.demoDisabled = val
             },
 
             ChaSetCheckbox {
                 size: "sm"
-                label: "Movable"
+                label: ChaSetI18n.tr("components.colorPicker.movable", "Movable")
                 checked: root.demoMovable
                 onToggled: (val) => root.demoMovable = val
             },
 
             ChaSetCheckbox {
                 size: "sm"
-                label: "Preview"
+                label: ChaSetI18n.tr("components.colorPicker.preview", "Preview")
                 checked: root.demoShowPreview
                 onToggled: (val) => root.demoShowPreview = val
             },
 
             ChaSetCheckbox {
                 size: "sm"
-                label: "HEX"
+                label: ChaSetI18n.tr("components.colorPicker.hexInput", "HEX")
                 checked: root.demoShowHex
                 onToggled: (val) => root.demoShowHex = val
             },
 
             ChaSetCheckbox {
                 size: "sm"
-                label: "Swatches"
+                label: ChaSetI18n.tr("components.colorPicker.swatches", "Swatches")
                 checked: root.demoShowSwatches
                 onToggled: (val) => root.demoShowSwatches = val
             }
@@ -208,8 +208,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Popover Dropdown Mode"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Compact swatch trigger opening floating overlay"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.popoverTitle", "Popover Dropdown Mode"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.popoverDesc", "Compact swatch trigger opening floating overlay"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
                         mode: "popover"
                         value: "#ef4444"
@@ -227,8 +227,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Smaller footprint suitable for toolbars and palettes"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.compactTitle", "Compact Size (sm)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.compactDesc", "Smaller footprint suitable for toolbars and palettes"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
                         mode: "popover"
                         size: "sm"
@@ -247,8 +247,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Non-interactive with 50% opacity"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.disabledTitle", "Disabled State"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.disabledDesc", "Non-interactive with 50% opacity"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
                         mode: "popover"
                         disabled: true
@@ -267,8 +267,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Custom Swatches Palette"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Configured with specialized palette colors"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.customPresetsTitle", "Custom Swatches Palette"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.customPresetsDesc", "Configured with specialized palette colors"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
                         mode: "popover"
                         value: "#f59e0b"

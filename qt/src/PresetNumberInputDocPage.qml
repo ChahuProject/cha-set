@@ -25,7 +25,7 @@ DocLayout {
 
                 Column {
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "Texture Dimension:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                    DocText { text: ChaSetI18n.tr("components.presetNumberInput.textureDimensionColon", "Texture Dimension:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetPresetNumberInput {
                         width: ThemeTokens.dp(220)
                         value: "1024"
@@ -34,12 +34,12 @@ DocLayout {
 
                 Column {
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "Custom Presets (Small):"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                    DocText { text: ChaSetI18n.tr("components.presetNumberInput.customPresetsSmallColon", "Custom Presets (Small):"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetPresetNumberInput {
                         width: ThemeTokens.dp(220)
                         presets: [8, 16, 32, 64, 128]
                         value: "64"
-                        clearLabel: "Auto"
+                        clearLabel: ChaSetI18n.tr("components.presetNumberInput.auto", "Auto")
                     }
                 }
             }
@@ -91,12 +91,12 @@ ChaSetPresetNumberInput {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Custom Presets (Small)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.presetNumberInput.customPresetsSmall", "Custom Presets (Small)"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetPresetNumberInput {
                         width: parent.width - ThemeTokens.dp(28)
                         presets: [8, 16, 32, 64, 128]
                         value: "64"
-                        clearLabel: "Auto"
+                        clearLabel: ChaSetI18n.tr("components.presetNumberInput.auto", "Auto")
                     }
                 }
             }
@@ -108,7 +108,7 @@ ChaSetPresetNumberInput {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Disallow Clear (Mandatory)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.presetNumberInput.disallowClear", "Disallow Clear (Mandatory)"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetPresetNumberInput {
                         width: parent.width - ThemeTokens.dp(28)
                         value: "256"
@@ -124,7 +124,7 @@ ChaSetPresetNumberInput {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Disabled State"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.presetNumberInput.disabledTitle", "Disabled State"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetPresetNumberInput {
                         width: parent.width - ThemeTokens.dp(28)
                         value: "2048"

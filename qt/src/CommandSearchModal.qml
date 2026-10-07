@@ -78,7 +78,7 @@ Rectangle {
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(12)
             height: ThemeTokens.dp(34)
-            placeholderText: qsTr("搜索组件与文档...")
+            placeholderText: ChaSetI18n.tr("common.searchPlaceholder", "搜索组件与文档...")
             text: root.query
             bordered: false
             clearable: true
@@ -126,7 +126,7 @@ Rectangle {
         DocText {
             anchors.centerIn: resultsList
             visible: root.filteredItems.length === 0
-            text: qsTr("未找到匹配页面")
+            text: ChaSetI18n.tr("common.noMatches", "未找到匹配页面")
             textColor: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeCaption
         }
@@ -164,7 +164,7 @@ Rectangle {
                     anchors.rightMargin: ThemeTokens.dp(8)
                     size: "sm"
                     variant: "outline"
-                    text: itemDelegate.modelData ? (itemDelegate.modelData.category || "") : ""
+                    text: itemDelegate.modelData ? ChaSetI18n.tr("categories." + itemDelegate.modelData.category, ChaSetI18n.tr("showcase.categories." + itemDelegate.modelData.category, itemDelegate.modelData.category || "")) : ""
                 }
 
                 // Content column constrained between left and categoryBadge
@@ -177,7 +177,7 @@ Rectangle {
                     spacing: ThemeTokens.dp(2)
 
                     Text {
-                        text: itemDelegate.modelData ? (itemDelegate.modelData.title || "") : ""
+                        text: itemDelegate.modelData ? ChaSetI18n.tr("navigation." + itemDelegate.modelData.id, itemDelegate.modelData.title || "") : ""
                         color: root.selectedIndex === itemDelegate.index ? ThemeTokens.accent : ThemeTokens.text
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeBody
@@ -187,7 +187,7 @@ Rectangle {
                     }
 
                     Text {
-                        text: itemDelegate.modelData ? (itemDelegate.modelData.desc || "") : ""
+                        text: itemDelegate.modelData ? ChaSetI18n.tr("components." + itemDelegate.modelData.id + ".description", itemDelegate.modelData.desc || "") : ""
                         color: ThemeTokens.subduedText
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeCaption
@@ -281,7 +281,7 @@ Rectangle {
                     }
 
                     Text {
-                        text: qsTr("导航")
+                        text: ChaSetI18n.tr("common.navigate", "导航")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
@@ -312,7 +312,7 @@ Rectangle {
                     }
 
                     Text {
-                        text: qsTr("打开")
+                        text: ChaSetI18n.tr("common.open", "打开")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
@@ -343,7 +343,7 @@ Rectangle {
                     }
 
                     Text {
-                        text: qsTr("关闭")
+                        text: ChaSetI18n.tr("common.close", "关闭")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
@@ -355,7 +355,7 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.rightMargin: ThemeTokens.dp(14)
                 anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("%1 个结果").arg(root.filteredItems.length)
+                text: ChaSetI18n.tr("common.resultCount", "{count} 个结果").replace("{count}", root.filteredItems.length)
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
             }

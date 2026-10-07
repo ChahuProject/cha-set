@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { ViewportConstrainedContainer, Button, Badge, CodeBlock } from '@chahu/cha-set';
+import { ViewportConstrainedContainer, Button, Badge, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function ViewportConstrainedContainerDocPage() {
+  const { t } = useChaSetI18n();
   const [limit, setLimit] = useState<number | undefined>(220);
   const [margin, setMargin] = useState(16);
 
@@ -80,21 +81,21 @@ export function ViewportConstrainedContainerDocPage() {
                 variant={limit === 180 ? 'default' : 'outline'}
                 onClick={() => setLimit(180)}
               >
-                180 Limit
+                {t('surfaces.viewportConstrainedContainer.limit180')}
               </Button>
               <Button
                 size="sm"
                 variant={limit === 260 ? 'default' : 'outline'}
                 onClick={() => setLimit(260)}
               >
-                260 Limit
+                {t('surfaces.viewportConstrainedContainer.limit260')}
               </Button>
               <Button
                 size="sm"
                 variant={limit === undefined ? 'default' : 'outline'}
                 onClick={() => setLimit(undefined)}
               >
-                Auto Viewport
+                {t('surfaces.viewportConstrainedContainer.autoViewport')}
               </Button>
             </div>
 
@@ -106,7 +107,7 @@ export function ViewportConstrainedContainerDocPage() {
             >
               <div className="p-3 space-y-2">
                 <div className="text-xs font-semibold text-foreground mb-1">
-                  Active Framebuffers ({sampleItems.length})
+                  {t('surfaces.viewportConstrainedContainer.activeFramebuffers', { count: sampleItems.length })}
                 </div>
                 {sampleItems.map((item) => (
                   <div
@@ -150,7 +151,7 @@ ChaSetViewportConstrainedContainer {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">Strict 150 Limit</span>
+            <span className="text-xs font-semibold text-foreground">{t('surfaces.viewportConstrainedContainer.strict150')}</span>
             <ViewportConstrainedContainer maxHeight={150} className="w-full">
               <div className="p-3 space-y-1.5">
                 {sampleItems.slice(0, 8).map((item) => (
@@ -163,7 +164,7 @@ ChaSetViewportConstrainedContainer {
           </div>
 
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">Always Scroll Overflow</span>
+            <span className="text-xs font-semibold text-foreground">{t('surfaces.viewportConstrainedContainer.alwaysScrollOverflow')}</span>
             <ViewportConstrainedContainer maxHeight={150} overflow="scroll" className="w-full">
               <div className="p-3 space-y-1.5">
                 {sampleItems.slice(0, 8).map((item) => (
@@ -176,7 +177,7 @@ ChaSetViewportConstrainedContainer {
           </div>
 
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">High Margin (48)</span>
+            <span className="text-xs font-semibold text-foreground">{t('surfaces.viewportConstrainedContainer.highMargin48')}</span>
             <ViewportConstrainedContainer margin={48} maxHeight={150} className="w-full">
               <div className="p-3 space-y-1.5">
                 {sampleItems.slice(0, 8).map((item) => (

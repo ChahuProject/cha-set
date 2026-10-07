@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { SettingRow, Switch, Card, Button, Separator, CodeBlock, ZapIcon, RotateCcwIcon } from '@chahu/cha-set';
+import { SettingRow, Switch, Card, Button, Separator, CodeBlock, ZapIcon, RotateCcwIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SettingRowDocPage() {
+  const { t } = useChaSetI18n();
   const [hardwareAccel, setHardwareAccel] = useState(true);
   const [highlightTarget, setHighlightTarget] = useState<string>('');
 
@@ -59,7 +60,7 @@ export function SettingRowDocPage() {
                 size="sm"
                 onClick={() => triggerHighlight('hw-accel')}
               >
-                Trigger Anchor Flash
+                {t('surfaces.settingRow.triggerFlash')}
               </Button>
             </div>
           }
@@ -67,10 +68,10 @@ export function SettingRowDocPage() {
           <div className="w-full max-w-lg mx-auto py-4">
             <Card className="p-2 space-y-1">
               <SettingRow
-                name="Hardware Acceleration"
+                name={t('surfaces.settingRow.hwAccelName')}
                 icon={<ZapIcon className="size-4 text-primary" />}
-                badge="Recommended"
-                description="Enable GPU-accelerated rasterization and smooth viewport rendering."
+                badge={t('surfaces.settingRow.recommended')}
+                description={t('surfaces.settingRow.hwAccelDesc')}
                 highlightId="hw-accel"
                 highlightTarget={highlightTarget}
               >
@@ -83,9 +84,9 @@ export function SettingRowDocPage() {
               <Separator className="my-1" />
 
               <SettingRow
-                name="Auto-Check Updates"
+                name={t('surfaces.settingRow.autoUpdateName')}
                 icon={<RotateCcwIcon className="size-4 text-muted-foreground" />}
-                description="Periodically verify semantic releases and download patches in background."
+                description={t('surfaces.settingRow.autoUpdateDesc')}
                 highlightId="auto-update"
                 highlightTarget={highlightTarget}
               >
@@ -118,9 +119,9 @@ ChaSetSettingRow {
 
 
       <section id="anchor-jump-flash" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Anchor Jump & Flash</h2>
+        <h2 className="text-xl font-semibold text-foreground" data-toc-title="Anchor Jump & Flash">{t('surfaces.settingRow.anchorJumpTitle')}</h2>
         <p className="text-sm text-muted-foreground">
-          Allows deep-linking or shortcut jumps from modal dialogs directly into a specific setting row. When <code>highlightTarget === highlightId</code>, a 3-cycle pulse flash draws attention to the targeted preference.
+          {t('surfaces.settingRow.anchorJumpDesc')}
         </p>
         <Card className="p-4 flex gap-2">
           <Button
@@ -128,14 +129,14 @@ ChaSetSettingRow {
             variant="outline"
             onClick={() => triggerHighlight('hw-accel')}
           >
-            Jump to Hardware Accel
+            {t('surfaces.settingRow.jumpHwAccel')}
           </Button>
           <Button
             size="sm"
             variant="outline"
             onClick={() => triggerHighlight('auto-update')}
           >
-            Jump to Auto-Updates
+            {t('surfaces.settingRow.jumpAutoUpdate')}
           </Button>
         </Card>
       </section>

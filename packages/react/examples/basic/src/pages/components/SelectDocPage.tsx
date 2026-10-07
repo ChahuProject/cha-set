@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel, CodeBlock } from '@chahu/cha-set';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SelectDocPage() {
+  const { t } = useChaSetI18n();
   const [value, setValue] = useState('apple');
 
   const reactCode = `<Select value={value} onValueChange={setValue}>
@@ -35,7 +36,7 @@ export function SelectDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Select an item from the menu. Selected value: <code>{value}</code>
+          {t('formsA.select.overviewDesc', 'Select an item from the menu. Selected value: {{value}}', { value })}
         </p>
 
         <ComponentPreview
@@ -51,16 +52,16 @@ export function SelectDocPage() {
 }`} title="Select Sandbox" reactCode={reactCode}>
           <Select value={value} onValueChange={setValue}>
             <SelectTrigger className="w-48">
-              <SelectValue placeholder="Select a fruit" />
+              <SelectValue placeholder={t('formsA.select.placeholder', 'Select a fruit')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Fruits</SelectLabel>
-                <SelectItem value="apple">Apple</SelectItem>
-                <SelectItem value="banana">Banana</SelectItem>
-                <SelectItem value="blueberry">Blueberry</SelectItem>
-                <SelectItem value="grapes">Grapes</SelectItem>
-                <SelectItem value="pineapple">Pineapple</SelectItem>
+                <SelectLabel>{t('formsA.select.fruitsGroup', 'Fruits')}</SelectLabel>
+                <SelectItem value="apple">{t('formsA.select.apple', 'Apple')}</SelectItem>
+                <SelectItem value="banana">{t('formsA.select.banana', 'Banana')}</SelectItem>
+                <SelectItem value="blueberry">{t('formsA.select.blueberry', 'Blueberry')}</SelectItem>
+                <SelectItem value="grapes">{t('formsA.select.grapes', 'Grapes')}</SelectItem>
+                <SelectItem value="pineapple">{t('formsA.select.pineapple', 'Pineapple')}</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

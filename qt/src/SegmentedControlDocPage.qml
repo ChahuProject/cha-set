@@ -10,9 +10,9 @@ DocLayout {
     description: "A compact pill-style segmented switch for toolbars, menus, and view toggles."
 
     property var viewOptions: [
-        { label: "Grid", value: "grid", icon: "grid" },
-        { label: "List", value: "list", icon: "list" },
-        { label: "Gallery", value: "gallery", icon: "table", badge: 3 }
+        { label: ChaSetI18n.tr("formsA.segmentedControl.grid", "Grid"), value: "grid", icon: "grid" },
+        { label: ChaSetI18n.tr("formsA.segmentedControl.list", "List"), value: "list", icon: "list" },
+        { label: ChaSetI18n.tr("formsA.segmentedControl.gallery", "Gallery"), value: "gallery", icon: "table", badge: 3 }
     ]
 
     property var selectedView: "grid"
@@ -64,7 +64,7 @@ DocLayout {
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Selected value: " + root.selectedView
+                    text: ChaSetI18n.tr("formsA.segmentedControl.selectedValue", "Selected value: {{value}}", { value: root.selectedView })
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                 }
@@ -76,7 +76,7 @@ DocLayout {
             Row {
                 spacing: 12
                 DocText {
-                    text: "Size:"
+                    text: ChaSetI18n.tr("showcase.size", "Size:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                     anchors.verticalCenter: parent.verticalCenter
@@ -96,7 +96,7 @@ DocLayout {
                 spacing: 12
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Disabled"
+                    label: ChaSetI18n.tr("common.disabled", "Disabled")
                     checked: root.disabledState
                     onToggled: (val) => root.disabledState = val
                 }
@@ -147,7 +147,7 @@ ChaSetSegmentedControl {
 
                 Column {
                     spacing: 6
-                    DocText { text: "Small (sm) - Compact menus & toolbars"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
+                    DocText { text: ChaSetI18n.tr("formsA.segmentedControl.smDesc", "Small (sm) - Compact menus & toolbars"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "sm"
                         options: root.viewOptions
@@ -159,7 +159,7 @@ ChaSetSegmentedControl {
 
                 Column {
                     spacing: 6
-                    DocText { text: "Default - Standard controls"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
+                    DocText { text: ChaSetI18n.tr("formsA.segmentedControl.defaultDesc", "Default - Standard controls"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "default"
                         options: root.viewOptions
@@ -171,7 +171,7 @@ ChaSetSegmentedControl {
 
                 Column {
                     spacing: 6
-                    DocText { text: "Large (lg) - Prominent tabs switch"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
+                    DocText { text: ChaSetI18n.tr("formsA.segmentedControl.lgDesc", "Large (lg) - Prominent tabs switch"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         size: "lg"
                         options: root.viewOptions
@@ -203,12 +203,12 @@ ChaSetSegmentedControl {
 
                 Column {
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "Auto-fit width (hugs content)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
+                    DocText { text: ChaSetI18n.tr("formsA.segmentedControl.autoAdaptiveTitle", "Auto-fit width (hugs content)"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         options: [
-                            { label: "Compact", value: "compact" },
-                            { label: "Very Long Option Text That Fits Comfortably", value: "long" },
-                            { label: "Settings", value: "settings" }
+                            { label: ChaSetI18n.tr("formsA.segmentedControl.optCompact", "Compact"), value: "compact" },
+                            { label: ChaSetI18n.tr("formsA.segmentedControl.optFitComfortably", "Very Long Option Text That Fits Comfortably"), value: "long" },
+                            { label: ChaSetI18n.tr("formsA.segmentedControl.optSettings", "Settings"), value: "settings" }
                         ]
                         value: "compact"
                     }
@@ -218,13 +218,13 @@ ChaSetSegmentedControl {
 
                 Column {
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "Fixed width with truncation (itemWidth: 120)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
+                    DocText { text: ChaSetI18n.tr("formsA.segmentedControl.fixedWidthTitle", "Fixed width with truncation (itemWidth: 120)"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
                     ChaSetSegmentedControl {
                         itemWidth: 120
                         options: [
-                            { label: "Compact", value: "compact" },
-                            { label: "Very Long Option Text That Truncates", value: "long" },
-                            { label: "Settings", value: "settings" }
+                            { label: ChaSetI18n.tr("formsA.segmentedControl.optCompact", "Compact"), value: "compact" },
+                            { label: ChaSetI18n.tr("formsA.segmentedControl.optTruncate", "Very Long Option Text That Truncates"), value: "long" },
+                            { label: ChaSetI18n.tr("formsA.segmentedControl.optSettings", "Settings"), value: "settings" }
                         ]
                         value: "compact"
                     }
@@ -249,12 +249,12 @@ ChaSetSegmentedControl {
             bottomPadding: 16
             horizontalPadding: 16
             ChaSetSegmentedControl {
-                title: "Grid Pattern:"
+                title: ChaSetI18n.tr("formsA.segmentedControl.gridPatternTitle", "Grid Pattern:")
                 size: "sm"
                 options: [
-                    { label: "Off", value: 0 },
-                    { label: "Line", value: 1 },
-                    { label: "Dot", value: 2 }
+                    { label: ChaSetI18n.tr("formsA.segmentedControl.off", "Off"), value: 0 },
+                    { label: ChaSetI18n.tr("formsA.segmentedControl.line", "Line"), value: 1 },
+                    { label: ChaSetI18n.tr("formsA.segmentedControl.dot", "Dot"), value: 2 }
                 ]
                 value: 1
             }

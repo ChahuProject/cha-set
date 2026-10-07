@@ -1,11 +1,12 @@
 import React from 'react';
-import { PanelCard, Button, CodeBlock } from '@chahu/cha-set';
+import { PanelCard, Button, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function PanelCardDocPage() {
+  const { t } = useChaSetI18n();
   const reactCode = `<PanelCard
   title="Panel Card"
   collapsible
@@ -47,23 +48,23 @@ export function PanelCardDocPage() {
 }`} title="Panel Card Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-md">
             <PanelCard
-              title="Shader Pipeline Status"
+              title={t('surfaces.panelCard.shaderTitle', 'Shader Pipeline Status')}
               collapsible
               defaultCollapsed={false}
-              actions={<Button variant="outline" size="xs">Recompile</Button>}
+              actions={<Button variant="outline" size="xs">{t('surfaces.panelCard.recompile', 'Recompile')}</Button>}
             >
               <div className="space-y-2 text-xs text-muted-foreground">
                 <div className="flex justify-between">
-                  <span>Vertex Shader:</span>
-                  <span className="text-foreground font-mono">OK (12 stages)</span>
+                  <span>{t('surfaces.panelCard.vertexShader', 'Vertex Shader:')}</span>
+                  <span className="text-foreground font-mono">{t('surfaces.panelCard.vertexOk', 'OK (12 stages)')}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Fragment Shader:</span>
-                  <span className="text-foreground font-mono">OK (4 attachments)</span>
+                  <span>{t('surfaces.panelCard.fragmentShader', 'Fragment Shader:')}</span>
+                  <span className="text-foreground font-mono">{t('surfaces.panelCard.fragmentOk', 'OK (4 attachments)')}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>WARP Driver:</span>
-                  <span className="text-emerald-500 font-medium">DirectX 11 Active</span>
+                  <span>{t('surfaces.panelCard.warpDriver', 'WARP Driver:')}</span>
+                  <span className="text-emerald-500 font-medium">{t('surfaces.panelCard.directXActive', 'DirectX 11 Active')}</span>
                 </div>
               </div>
             </PanelCard>

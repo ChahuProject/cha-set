@@ -93,7 +93,7 @@ DocLayout {
 
                             DocText {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text: "Sidebar"
+                                text: ChaSetI18n.tr("surfaces.splitterHandle.sidebar")
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.bold: true
@@ -128,14 +128,14 @@ DocLayout {
 
                             DocText {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text: "Main Content Viewport"
+                                text: ChaSetI18n.tr("surfaces.splitterHandle.mainContent")
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                             }
 
                             DocText {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text: "Focus handle and use arrow keys to resize"
+                                text: ChaSetI18n.tr("surfaces.splitterHandle.focusHint")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeCaption
                             }
@@ -154,7 +154,7 @@ DocLayout {
                     anchors.verticalCenter: parent.verticalCenter
                     DocText {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: "Current Width:"
+                        text: ChaSetI18n.tr("surfaces.splitterHandle.currentWidth")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                     }
@@ -168,7 +168,7 @@ DocLayout {
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Reset to 200"
+                    text: ChaSetI18n.tr("surfaces.splitterHandle.reset200")
                     onClicked: root.sidebarWidth = 200
                 }
             }
@@ -240,7 +240,7 @@ ChaSetSplitterHandle {
 
                             DocText {
                                 anchors.centerIn: parent
-                                text: "Editor / Log Canvas Area"
+                                text: ChaSetI18n.tr("surfaces.splitterHandle.editorCanvasArea")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeSmall
                             }
@@ -270,7 +270,7 @@ ChaSetSplitterHandle {
 
                                 DocText {
                                     anchors.verticalCenter: parent.verticalCenter
-                                    text: "Terminal / Output Console"
+                                    text: ChaSetI18n.tr("surfaces.splitterHandle.terminalConsole")
                                     color: ThemeTokens.text
                                     font.pixelSize: Typography.sizeSmall
                                     font.bold: true

@@ -9,6 +9,7 @@ Column {
     spacing: ThemeTokens.dp(10)
 
     property string title: ""
+    property string componentId: ""
     property var propsModel: []
     property alias props: root.propsModel
 
@@ -66,10 +67,10 @@ Column {
             height: implicitHeight
             interactive: false
             columns: [
-                { key: "prop", title: "PROP", width: 170, code: true },
-                { key: "type", title: "TYPE", width: 240, badge: true },
-                { key: "defaultVal", title: "DEFAULT", width: 110, code: true },
-                { key: "description", title: "DESCRIPTION", wrap: true }
+                { key: "prop", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.prop", "PROP").toUpperCase() : "PROP", width: 170, code: true },
+                { key: "type", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.type", "TYPE").toUpperCase() : "TYPE", width: 240, badge: true },
+                { key: "defaultVal", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.default", "DEFAULT").toUpperCase() : "DEFAULT", width: 110, code: true },
+                { key: "description", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.description", "DESCRIPTION").toUpperCase() : "DESCRIPTION", wrap: true }
             ]
             rows: {
                 var res = []
@@ -80,7 +81,9 @@ Column {
                     var req = !!(m.required || m[4])
                     var type = m.type || m.propType || m[1] || ""
                     var def = (m.default !== undefined) ? m.default : (m.defaultValue !== undefined ? m.defaultValue : (m.propDefault !== undefined ? m.propDefault : (m[2] !== undefined ? m[2] : "—")))
-                    var desc = m.description || m.propDescription || m[3] || ""
+                    var rawDesc = m.description || m.propDescription || m[3] || ""
+                    var descKey = root.componentId !== "" ? ("props." + root.componentId + "." + name) : ("props." + name)
+                    var desc = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr(descKey, rawDesc) : rawDesc
                     res.push({
                         prop: name + (req ? " *" : ""),
                         type: type,

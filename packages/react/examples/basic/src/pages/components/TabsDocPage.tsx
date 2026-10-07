@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent, type TabsVariant, type TabsSize, Card, SegmentedControl, CodeBlock } from '@chahu/cha-set';
+import { Tabs, TabsList, TabsTrigger, TabsContent, type TabsVariant, type TabsSize, Card, SegmentedControl, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
@@ -7,6 +7,7 @@ import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 
 export function TabsDocPage() {
+  const { t } = useChaSetI18n();
   const [activeTab, setActiveTab] = useState('account');
   const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>('horizontal');
   const [variant, setVariant] = useState<TabsVariant>('default');
@@ -90,40 +91,40 @@ export function TabsDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Variant:</span>
+                <span className="text-xs text-muted-foreground">{t('showcase.variant', 'Variant:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={variant}
                   onChange={(v) => setVariant(v as TabsVariant)}
                   options={[
-                    { label: 'Pill (default)', value: 'default' },
-                    { label: 'Line', value: 'line' },
+                    { label: t('surfaces.tabs.pill', 'Pill (default)'), value: 'default' },
+                    { label: t('surfaces.tabs.line', 'Line'), value: 'line' },
                   ]}
                 />
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Size:</span>
+                <span className="text-xs text-muted-foreground">{t('showcase.size', 'Size:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={size}
                   onChange={(s) => setSize(s as TabsSize)}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Small (sm)', value: 'sm' },
+                    { label: t('common.default', 'Default'), value: 'default' },
+                    { label: t('surfaces.tabs.small', 'Small (sm)'), value: 'sm' },
                   ]}
                 />
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Orientation:</span>
+                <span className="text-xs text-muted-foreground">{t('surfaces.tabs.orientation', 'Orientation:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={orientation}
                   onChange={(v) => setOrientation(v as any)}
                   options={[
-                    { label: 'Horizontal', value: 'horizontal' },
-                    { label: 'Vertical', value: 'vertical' },
+                    { label: t('surfaces.tabs.horizontal', 'Horizontal'), value: 'horizontal' },
+                    { label: t('surfaces.tabs.vertical', 'Vertical'), value: 'vertical' },
                   ]}
                 />
               </div>
@@ -140,28 +141,28 @@ export function TabsDocPage() {
             >
               <TabsList className={orientation === 'vertical' ? 'flex-col h-auto w-40 p-1' : ''}>
                 <TabsTrigger value="account" className={orientation === 'vertical' ? 'w-full justify-start' : ''}>
-                  Account
+                  {t('surfaces.tabs.account', 'Account')}
                 </TabsTrigger>
                 <TabsTrigger value="password" className={orientation === 'vertical' ? 'w-full justify-start' : ''}>
-                  Password
+                  {t('surfaces.tabs.password', 'Password')}
                 </TabsTrigger>
                 <TabsTrigger value="settings" className={orientation === 'vertical' ? 'w-full justify-start' : ''}>
-                  Settings
+                  {t('surfaces.tabs.settings', 'Settings')}
                 </TabsTrigger>
               </TabsList>
 
               <div className="mt-4 p-4 rounded-lg bg-muted/30 border border-border/50 min-h-24">
                 <TabsContent value="account" className="mt-0">
-                  <h4 className="font-semibold text-sm text-foreground mb-1">Account Information</h4>
-                  <p className="text-xs text-muted-foreground">Make changes to your account here. Click save when you're done.</p>
+                  <h4 className="font-semibold text-sm text-foreground mb-1">{t('surfaces.tabs.accountTitle', 'Account Information')}</h4>
+                  <p className="text-xs text-muted-foreground">{t('surfaces.tabs.accountDesc', "Make changes to your account here. Click save when you're done.")}</p>
                 </TabsContent>
                 <TabsContent value="password" className="mt-0">
-                  <h4 className="font-semibold text-sm text-foreground mb-1">Security Credentials</h4>
-                  <p className="text-xs text-muted-foreground">Change your password here. After saving, you'll be logged out.</p>
+                  <h4 className="font-semibold text-sm text-foreground mb-1">{t('surfaces.tabs.passwordTitle', 'Security Credentials')}</h4>
+                  <p className="text-xs text-muted-foreground">{t('surfaces.tabs.passwordDesc', "Change your password here. After saving, you'll be logged out.")}</p>
                 </TabsContent>
                 <TabsContent value="settings" className="mt-0">
-                  <h4 className="font-semibold text-sm text-foreground mb-1">App Settings</h4>
-                  <p className="text-xs text-muted-foreground">Manage your notification frequency and display preferences.</p>
+                  <h4 className="font-semibold text-sm text-foreground mb-1">{t('surfaces.tabs.settingsTitle', 'App Settings')}</h4>
+                  <p className="text-xs text-muted-foreground">{t('surfaces.tabs.settingsDesc', 'Manage your notification frequency and display preferences.')}</p>
                 </TabsContent>
               </div>
             </Tabs>
@@ -207,14 +208,14 @@ export function TabsDocPage() {
           <Card className="p-5">
             <div className="flex flex-col gap-3">
               <div>
-                <span className="text-xs font-medium text-foreground">Line Variant (Underline)</span>
-                <p className="text-xs text-muted-foreground">Full-width bottom accent border for navigation headers</p>
+                <span className="text-xs font-medium text-foreground">{t('surfaces.tabs.lineVariantTitle', 'Line Variant (Underline)')}</span>
+                <p className="text-xs text-muted-foreground">{t('surfaces.tabs.lineVariantDesc', 'Full-width bottom accent border for navigation headers')}</p>
               </div>
               <Tabs defaultValue="all" variant="line">
                 <TabsList>
-                  <TabsTrigger value="all">All Items</TabsTrigger>
-                  <TabsTrigger value="pending">Pending</TabsTrigger>
-                  <TabsTrigger value="completed">Completed</TabsTrigger>
+                  <TabsTrigger value="all">{t('surfaces.tabs.allItems', 'All Items')}</TabsTrigger>
+                  <TabsTrigger value="pending">{t('surfaces.tabs.pending', 'Pending')}</TabsTrigger>
+                  <TabsTrigger value="completed">{t('surfaces.tabs.completed', 'Completed')}</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
@@ -223,14 +224,14 @@ export function TabsDocPage() {
           <Card className="p-5">
             <div className="flex flex-col gap-3">
               <div>
-                <span className="text-xs font-medium text-foreground">With Badges & Counts</span>
-                <p className="text-xs text-muted-foreground">Integrated status counters and notification count tags</p>
+                <span className="text-xs font-medium text-foreground">{t('surfaces.tabs.badgesCountsTitle', 'With Badges & Counts')}</span>
+                <p className="text-xs text-muted-foreground">{t('surfaces.tabs.badgesCountsDesc', 'Integrated status counters and notification count tags')}</p>
               </div>
               <Tabs defaultValue="inbox">
                 <TabsList>
-                  <TabsTrigger value="inbox" badge="12">Inbox</TabsTrigger>
-                  <TabsTrigger value="unread" badge="3">Unread</TabsTrigger>
-                  <TabsTrigger value="archived">Archived</TabsTrigger>
+                  <TabsTrigger value="inbox" badge="12">{t('surfaces.tabs.inbox', 'Inbox')}</TabsTrigger>
+                  <TabsTrigger value="unread" badge="3">{t('surfaces.tabs.unread', 'Unread')}</TabsTrigger>
+                  <TabsTrigger value="archived">{t('surfaces.tabs.archived', 'Archived')}</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
@@ -239,14 +240,14 @@ export function TabsDocPage() {
           <Card className="p-5">
             <div className="flex flex-col gap-3">
               <div>
-                <span className="text-xs font-medium text-foreground">Compact Size (sm)</span>
-                <p className="text-xs text-muted-foreground">High-density tab triggers for compact headers and toolbars</p>
+                <span className="text-xs font-medium text-foreground">{t('surfaces.tabs.compactTitle', 'Compact Size (sm)')}</span>
+                <p className="text-xs text-muted-foreground">{t('surfaces.tabs.compactDesc', 'High-density tab triggers for compact headers and toolbars')}</p>
               </div>
               <Tabs defaultValue="code" size="sm">
                 <TabsList>
-                  <TabsTrigger value="code">Code</TabsTrigger>
-                  <TabsTrigger value="issues">Issues</TabsTrigger>
-                  <TabsTrigger value="pulls">Pull Requests</TabsTrigger>
+                  <TabsTrigger value="code">{t('surfaces.tabs.code', 'Code')}</TabsTrigger>
+                  <TabsTrigger value="issues">{t('surfaces.tabs.issues', 'Issues')}</TabsTrigger>
+                  <TabsTrigger value="pulls">{t('surfaces.tabs.pulls', 'Pull Requests')}</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
@@ -255,14 +256,14 @@ export function TabsDocPage() {
           <Card className="p-5">
             <div className="flex flex-col gap-3">
               <div>
-                <span className="text-xs font-medium text-foreground">Disabled Trigger</span>
-                <p className="text-xs text-muted-foreground">Individual tab triggers blocked with 50% opacity</p>
+                <span className="text-xs font-medium text-foreground">{t('surfaces.tabs.disabledTriggerTitle', 'Disabled Trigger')}</span>
+                <p className="text-xs text-muted-foreground">{t('surfaces.tabs.disabledTriggerDesc', 'Individual tab triggers blocked with 50% opacity')}</p>
               </div>
               <Tabs defaultValue="active">
                 <TabsList>
-                  <TabsTrigger value="active">Active Tab</TabsTrigger>
+                  <TabsTrigger value="active">{t('surfaces.tabs.activeTab', 'Active Tab')}</TabsTrigger>
                   <TabsTrigger value="disabled" disabled>
-                    Disabled Tab
+                    {t('surfaces.tabs.disabledTab', 'Disabled Tab')}
                   </TabsTrigger>
                 </TabsList>
               </Tabs>

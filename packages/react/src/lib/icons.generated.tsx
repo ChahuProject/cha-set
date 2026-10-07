@@ -459,6 +459,12 @@ export const ICON_ADOPTION = {
       ]
     },
     {
+      "file": "packages/react/examples/basic/src/pages/get-started/IconsPage.tsx",
+      "count": 2,
+      "exempted": 0,
+      "reasons": []
+    },
+    {
       "file": "packages/react/examples/basic/src/pages/get-started/IntroductionPage.tsx",
       "count": 1,
       "exempted": 0,
@@ -541,6 +547,18 @@ export const ICON_ADOPTION = {
     {
       "file": "packages/react/src/window-title-bar/WindowTitleBar.tsx",
       "count": 4,
+      "exempted": 0,
+      "reasons": []
+    },
+    {
+      "file": "qt/src/ChaSetI18nData.generated.qml",
+      "count": 4,
+      "exempted": 0,
+      "reasons": []
+    },
+    {
+      "file": "qt/src/IconsPage.qml",
+      "count": 2,
       "exempted": 0,
       "reasons": []
     }

@@ -8,8 +8,36 @@ const repoRoot = path.resolve(path.dirname(__filename), '..', '..');
 const i18nDir = path.resolve(repoRoot, 'spec', 'i18n');
 
 const meta = JSON.parse(fs.readFileSync(path.join(i18nDir, 'meta.json'), 'utf8'));
-const zhCN = JSON.parse(fs.readFileSync(path.join(i18nDir, 'locales', 'zh-CN.json'), 'utf8'));
-const enUS = JSON.parse(fs.readFileSync(path.join(i18nDir, 'locales', 'en-US.json'), 'utf8'));
+
+function deepMerge(target, source) {
+  if (!source || typeof source !== 'object') return target;
+  const result = Array.isArray(target) ? [...target] : { ...target };
+  for (const key of Object.keys(source)) {
+    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+      result[key] = deepMerge(result[key] || {}, source[key]);
+    } else {
+      result[key] = source[key];
+    }
+  }
+  return result;
+}
+
+function loadLocale(code) {
+  const mainFile = path.join(i18nDir, 'locales', `${code}.json`);
+  let data = fs.existsSync(mainFile) ? JSON.parse(fs.readFileSync(mainFile, 'utf8')) : {};
+  const subDir = path.join(i18nDir, 'locales', code);
+  if (fs.existsSync(subDir) && fs.statSync(subDir).isDirectory()) {
+    const files = fs.readdirSync(subDir).filter(f => f.endsWith('.json')).sort();
+    for (const f of files) {
+      const part = JSON.parse(fs.readFileSync(path.join(subDir, f), 'utf8'));
+      data = deepMerge(data, part);
+    }
+  }
+  return data;
+}
+
+const zhCN = loadLocale('zh-CN');
+const enUS = loadLocale('en-US');
 
 // 1. Validate Parity between Locales
 const interpolationRegex = /\{\{\s*([^}\s]+)\s*\}\}/g;

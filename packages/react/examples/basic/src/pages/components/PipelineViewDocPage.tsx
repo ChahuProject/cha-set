@@ -5,45 +5,12 @@ import {
   LogConsole,
   type PipelineJob,
   type PipelineStep,
+  useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-
-const SAMPLE_STEPS: PipelineStep[] = [
-  { name: 'Parse SPIR-V Bytecode', status: 'success', durationMs: 3200 },
-  { name: 'Dead Code Elimination', status: 'success', durationMs: 4100 },
-  { name: 'Hardware Register Allocation', status: 'running', durationMs: null },
-  { name: 'Emit Target Binary', status: 'queued', durationMs: null },
-];
-
-const SAMPLE_JOBS: PipelineJob[] = [
-  {
-    id: 'job-1',
-    name: 'Shader Compilation',
-    status: 'success',
-    durationMs: 12400,
-    steps: [
-      { name: 'Compile Vertex Stage', status: 'success', durationMs: 5000 },
-      { name: 'Compile Fragment Stage', status: 'success', durationMs: 7400 },
-    ],
-  },
-  {
-    id: 'job-2',
-    name: 'Benchmark Suite',
-    status: 'running',
-    durationMs: null,
-    steps: SAMPLE_STEPS,
-  },
-  {
-    id: 'job-3',
-    name: 'Package Artifacts',
-    status: 'queued',
-    durationMs: null,
-    steps: [],
-  },
-];
 
 const SAMPLE_LOGS: Record<string, string[]> = {
   'job-1': [
@@ -67,7 +34,42 @@ const SAMPLE_LOGS: Record<string, string[]> = {
 };
 
 export function PipelineViewDocPage() {
+  const { t } = useChaSetI18n();
   const [activeJobId, setActiveJobId] = React.useState<string | null>('job-2');
+
+  const sampleSteps: PipelineStep[] = React.useMemo(() => [
+    { name: t('desktopComposite.pipelineView.stepParseSpirv', 'Parse SPIR-V Bytecode'), status: 'success', durationMs: 3200 },
+    { name: t('desktopComposite.pipelineView.stepDeadCode', 'Dead Code Elimination'), status: 'success', durationMs: 4100 },
+    { name: t('desktopComposite.pipelineView.stepRegAlloc', 'Hardware Register Allocation'), status: 'running', durationMs: null },
+    { name: t('desktopComposite.pipelineView.stepEmitBinary', 'Emit Target Binary'), status: 'queued', durationMs: null },
+  ], [t]);
+
+  const sampleJobs: PipelineJob[] = React.useMemo(() => [
+    {
+      id: 'job-1',
+      name: t('desktopComposite.pipelineView.jobShaderComp', 'Shader Compilation'),
+      status: 'success',
+      durationMs: 12400,
+      steps: [
+        { name: t('desktopComposite.pipelineView.stepCompileVertex', 'Compile Vertex Stage'), status: 'success', durationMs: 5000 },
+        { name: t('desktopComposite.pipelineView.stepCompileFragment', 'Compile Fragment Stage'), status: 'success', durationMs: 7400 },
+      ],
+    },
+    {
+      id: 'job-2',
+      name: t('desktopComposite.pipelineView.jobBenchmark', 'Benchmark Suite'),
+      status: 'running',
+      durationMs: null,
+      steps: sampleSteps,
+    },
+    {
+      id: 'job-3',
+      name: t('desktopComposite.pipelineView.jobPackage', 'Package Artifacts'),
+      status: 'queued',
+      durationMs: null,
+      steps: [],
+    },
+  ], [t, sampleSteps]);
 
   const reactCode = `<PipelineView
   status="running"
@@ -109,7 +111,7 @@ export function PipelineViewDocPage() {
               status="running"
               startMs={0}
               endMs={null}
-              jobs={SAMPLE_JOBS}
+              jobs={sampleJobs}
               activeJobId={activeJobId}
               onSelectJob={setActiveJobId}
               getLogs={jobId => SAMPLE_LOGS[jobId] ?? []}

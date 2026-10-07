@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, type CardVariant, Button, Badge, SegmentedControl, CodeBlock, Checkbox } from '@chahu/cha-set';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, type CardVariant, Button, Badge, SegmentedControl, CodeBlock, Checkbox, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function CardDocPage() {
+  const { t } = useChaSetI18n();
   const [variant, setVariant] = useState<CardVariant>('default');
   const [size, setSize] = useState<'default' | 'sm'>('default');
   const [interactive, setInteractive] = useState(false);
@@ -74,27 +75,27 @@ export function CardDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-sm">Variant:</span>
+                <span className="text-muted-foreground text-sm">{t('showcase.variant', 'Variant:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={variant}
                   onChange={(v) => setVariant(v as CardVariant)}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Secondary', value: 'secondary' },
-                    { label: 'Outline', value: 'outline' },
+                    { label: t('common.default', 'Default'), value: 'default' },
+                    { label: t('common.secondary', 'Secondary'), value: 'secondary' },
+                    { label: t('common.outline', 'Outline'), value: 'outline' },
                   ]}
                 />
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-sm">Size:</span>
+                <span className="text-muted-foreground text-sm">{t('showcase.size', 'Size:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={size}
                   onChange={(v) => setSize(v as 'default' | 'sm')}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Compact (sm)', value: 'sm' },
+                    { label: t('common.default', 'Default'), value: 'default' },
+                    { label: t('surfaces.card.compact', 'Compact (sm)'), value: 'sm' },
                   ]}
                 />
               </div>
@@ -103,7 +104,7 @@ export function CardDocPage() {
                   checked={interactive}
                   onCheckedChange={(val) => setInteractive(Boolean(val))}
                 />
-                Interactive Feedback
+                {t('surfaces.card.interactiveFeedback', 'Interactive Feedback')}
               </label>
             </div>
           }
@@ -111,19 +112,19 @@ export function CardDocPage() {
           <Card variant={variant} size={size} interactive={interactive} className="w-full max-w-sm">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Create project</CardTitle>
-                <Badge variant="secondary">Pro</Badge>
+                <CardTitle>{t('surfaces.card.heroTitle', 'Create project')}</CardTitle>
+                <Badge variant="secondary">{t('surfaces.card.heroBadge', 'Pro')}</Badge>
               </div>
-              <CardDescription>Deploy your new project in one-click.</CardDescription>
+              <CardDescription>{t('surfaces.card.heroDescription', 'Deploy your new project in one-click.')}</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Your project will be deployed to the edge network automatically.
+                {t('surfaces.card.heroContent', 'Your project will be deployed to the edge network automatically.')}
               </p>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button variant="outline" size="sm">Cancel</Button>
-              <Button size="sm">Deploy</Button>
+              <Button variant="outline" size="sm">{t('common.cancel', 'Cancel')}</Button>
+              <Button size="sm">{t('surfaces.card.deploy', 'Deploy')}</Button>
             </CardFooter>
           </Card>
         </ComponentPreview>
@@ -148,20 +149,20 @@ export function CardDocPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card variant="default">
             <CardHeader>
-              <CardTitle className="text-base">Default Card</CardTitle>
-              <CardDescription>Elevated surface with panel background</CardDescription>
+              <CardTitle className="text-base">{t('surfaces.card.defaultCardTitle', 'Default Card')}</CardTitle>
+              <CardDescription>{t('surfaces.card.defaultCardDesc', 'Elevated surface with panel background')}</CardDescription>
             </CardHeader>
           </Card>
           <Card variant="secondary">
             <CardHeader>
-              <CardTitle className="text-base">Secondary Card</CardTitle>
-              <CardDescription>Subtle contrast for grouped secondary items</CardDescription>
+              <CardTitle className="text-base">{t('surfaces.card.secondaryCardTitle', 'Secondary Card')}</CardTitle>
+              <CardDescription>{t('surfaces.card.secondaryCardDesc', 'Subtle contrast for grouped secondary items')}</CardDescription>
             </CardHeader>
           </Card>
           <Card variant="outline">
             <CardHeader>
-              <CardTitle className="text-base">Outline Card</CardTitle>
-              <CardDescription>Transparent background with crisp border</CardDescription>
+              <CardTitle className="text-base">{t('surfaces.card.outlineCardTitle', 'Outline Card')}</CardTitle>
+              <CardDescription>{t('surfaces.card.outlineCardDesc', 'Transparent background with crisp border')}</CardDescription>
             </CardHeader>
           </Card>
         </div>
@@ -175,20 +176,20 @@ export function CardDocPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card interactive>
             <CardHeader>
-              <CardTitle className="text-base">Interactive Card</CardTitle>
-              <CardDescription>Hover over me to see cursor and elevation changes</CardDescription>
+              <CardTitle className="text-base">{t('surfaces.card.interactiveCardTitle', 'Interactive Card')}</CardTitle>
+              <CardDescription>{t('surfaces.card.interactiveCardDesc', 'Hover over me to see cursor and elevation changes')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">Clickable surface for dashboards and selectable items.</p>
+              <p className="text-xs text-muted-foreground">{t('surfaces.card.interactiveCardContent', 'Clickable surface for dashboards and selectable items.')}</p>
             </CardContent>
           </Card>
           <Card size="sm">
             <CardHeader>
-              <CardTitle className="text-base">Compact Card (sm)</CardTitle>
-              <CardDescription>Reduced padding for tight sidebars and mobile sheets</CardDescription>
+              <CardTitle className="text-base">{t('surfaces.card.compactCardTitle', 'Compact Card (sm)')}</CardTitle>
+              <CardDescription>{t('surfaces.card.compactCardDesc', 'Reduced padding for tight sidebars and mobile sheets')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">Streamlined layout with denser inner padding.</p>
+              <p className="text-xs text-muted-foreground">{t('surfaces.card.compactCardContent', 'Streamlined layout with denser inner padding.')}</p>
             </CardContent>
           </Card>
         </div>

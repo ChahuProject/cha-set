@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SnapSlider, Card, CodeBlock, Button } from '@chahu/cha-set';
+import { SnapSlider, Card, CodeBlock, Button, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -8,6 +8,7 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 import { PropsTable } from '../../components/PropsTable';
 
 export function SnapSliderDocPage() {
+  const { t } = useChaSetI18n();
   const [value, setValue] = useState(1);
   const labels = ['0.5x', '1.0x', '1.5x', '2.0x', '3.0x'];
 
@@ -41,27 +42,27 @@ export function SnapSliderDocPage() {
           reactCode={heroReactCode}
           controls={
             <div className="flex flex-wrap items-center gap-3 text-xs">
-              <span className="text-muted-foreground">Preset:</span>
+              <span className="text-muted-foreground">{t('formsA.snapSlider.presetLabel', 'Preset:')}</span>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setValue(0)}
               >
-                0.5x (Min)
+                {t('formsA.snapSlider.presetMin', '0.5x (Min)')}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setValue(1)}
               >
-                1.0x (Normal)
+                {t('formsA.snapSlider.presetNormal', '1.0x (Normal)')}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setValue(4)}
               >
-                3.0x (Max)
+                {t('formsA.snapSlider.presetMax', '3.0x (Max)')}
               </Button>
             </div>
           }
@@ -71,8 +72,8 @@ export function SnapSliderDocPage() {
               <SnapSlider
                 count={5}
                 labels={labels}
-                leftLabel="Slow"
-                rightLabel="Fast"
+                leftLabel={t('formsA.snapSlider.slow', 'Slow')}
+                rightLabel={t('formsA.snapSlider.fast', 'Fast')}
                 value={value}
                 onChange={setValue}
               />
@@ -100,7 +101,7 @@ ChaSetSnapSlider {
       <section id="animations" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">Animations</h2>
         <p className="text-sm text-muted-foreground">
-          Motion tokens and kinematic timing contracts for SnapSlider interaction.
+          {t('formsA.snapSlider.animationsDesc', 'Motion tokens and kinematic timing contracts for SnapSlider interaction.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>

@@ -118,7 +118,7 @@ ChaSetSheet {
 
                 ChaSetButton {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Open " + root.sheetSide + " Sheet (" + root.sheetSizePreset + ")"
+                    text: ChaSetI18n.tr("overlays.sheet.openSheetQt", "Open {{side}} Sheet ({{size}})", { side: root.sheetSide, size: root.sheetSizePreset })
                     variant: "outline"
                     onClicked: demoSheet.open = true
                 }
@@ -128,8 +128,8 @@ ChaSetSheet {
                 id: demoSheet
                 side: root.sheetSide
                 size: root.sheetSizePreset
-                title: "Edit Account Profile"
-                description: "Update your account handle and workspace configuration."
+                title: ChaSetI18n.tr("overlays.sheet.editAccountProfileTitle", "Edit Account Profile")
+                description: ChaSetI18n.tr("overlays.sheet.editAccountProfileDesc", "Update your account handle and workspace configuration.")
 
                 Column {
                     anchors.fill: parent
@@ -138,14 +138,14 @@ ChaSetSheet {
                     Column {
                         width: parent.width
                         spacing: 6
-                        DocText { text: "Display Name"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                        DocText { text: ChaSetI18n.tr("overlays.sheet.displayName", "Display Name"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                         ChaSetInput { width: parent.width; height: 32; text: "Alex Developer" }
                     }
 
                     Column {
                         width: parent.width
                         spacing: 6
-                        DocText { text: "Organization Role"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                        DocText { text: ChaSetI18n.tr("overlays.sheet.organizationRole", "Organization Role"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                         ChaSetInput { width: parent.width; height: 32; text: "Staff Infrastructure Architect" }
                     }
 
@@ -155,7 +155,7 @@ ChaSetSheet {
                         anchors.right: parent.right
                         spacing: 8
                         ChaSetButton {
-                            text: "Save Changes"
+                            text: ChaSetI18n.tr("common.saveChanges", "Save Changes")
                             variant: "default"
                             size: "sm"
                             onClicked: demoSheet.open = false

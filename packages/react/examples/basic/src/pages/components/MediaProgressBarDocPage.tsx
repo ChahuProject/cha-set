@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { MediaProgressBar, type MediaProgressBarTimingMode, type MediaProgressBarTimeFormat } from '@chahu/cha-set';
+import { MediaProgressBar, type MediaProgressBarTimingMode, type MediaProgressBarTimeFormat, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocFooterSections } from '../../components/DocFooterSections';
 
 export function MediaProgressBarDocPage() {
+  const { t } = useChaSetI18n();
   const [ratio, setRatio] = useState(0.35);
   const [duration] = useState(120000); // 2 minutes
   const [frameRate] = useState(30);
@@ -59,6 +60,10 @@ export function MediaProgressBarDocPage() {
               onTimingModeChanged={setTimingMode}
               onTimeFormatChanged={setTimeFormat}
             />
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <span>{t('components.mediaProgressBar.playbackStatus', 'Playback Progress')}: <strong className="text-foreground font-mono">{Math.round(ratio * 100)}%</strong></span>
+              <span>{t('components.mediaProgressBar.timingModeLabel', 'Timing Mode')}: <strong className="text-foreground font-mono">{timingMode}</strong></span>
+            </div>
           </div>
         </ComponentPreview>
       </section>

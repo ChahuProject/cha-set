@@ -40,7 +40,7 @@ DocLayout {
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Rendering 1,000 Grid Cards with Responsive Recycling:"
+                    text: ChaSetI18n.tr("desktopComposite.virtualGrid.hint", "Rendering 1,000 Grid Cards with Responsive Recycling:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                 }
@@ -50,28 +50,28 @@ DocLayout {
                     spacing: ThemeTokens.dp(8)
 
                     ChaSetButton {
-                        text: "Top (#1)"
+                        text: ChaSetI18n.tr("desktopComposite.virtualGrid.btnTop", "Top (#1)")
                         variant: "outline"
                         size: "sm"
                         onClicked: virtualGrid.scrollToIndex(0)
                     }
 
                     ChaSetButton {
-                        text: "Card #20"
+                        text: ChaSetI18n.tr("desktopComposite.virtualGrid.btn20", "Card #20")
                         variant: "outline"
                         size: "sm"
                         onClicked: virtualGrid.scrollToIndex(19)
                     }
 
                     ChaSetButton {
-                        text: "Card #500"
+                        text: ChaSetI18n.tr("desktopComposite.virtualGrid.btn500", "Card #500")
                         variant: "outline"
                         size: "sm"
                         onClicked: virtualGrid.scrollToIndex(499)
                     }
 
                     ChaSetButton {
-                        text: "Bottom (#1,000)"
+                        text: ChaSetI18n.tr("desktopComposite.virtualGrid.btnBottom1000", "Bottom (#1,000)")
                         variant: "outline"
                         size: "sm"
                         onClicked: virtualGrid.scrollToIndex(999)
@@ -104,7 +104,7 @@ DocLayout {
 
                                 DocText {
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    text: "Asset #" + (index + 1)
+                                    text: ChaSetI18n.tr("desktopComposite.virtualGrid.assetLabel", "Asset #{{index}}", { index: index + 1 })
                                     color: ThemeTokens.text
                                     font.pixelSize: Typography.sizeSmall
                                     font.weight: Typography.weightSemibold

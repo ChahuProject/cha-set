@@ -44,17 +44,17 @@ DocLayout {
                 height: ThemeTokens.dp(280)
                 pageSize: 5
                 columns: [
-                    { key: "id", header: "ID", width: 50 },
-                    { key: "name", header: "User Name", width: 130 },
-                    { key: "role", header: "Role", width: 160 },
-                    { key: "status", header: "Status", width: 90 }
+                    { key: "id", header: ChaSetI18n.tr("desktopComposite.genericDataTable.colId", "ID"), width: 50 },
+                    { key: "name", header: ChaSetI18n.tr("desktopComposite.genericDataTable.colName", "User Name"), width: 130 },
+                    { key: "role", header: ChaSetI18n.tr("desktopComposite.genericDataTable.colRole", "Role"), width: 160 },
+                    { key: "status", header: ChaSetI18n.tr("common.status", "Status"), width: 90 }
                 ]
                 rows: [
-                    { id: "1", name: "Alice Chen", role: "Lead Architect", status: "Active" },
-                    { id: "2", name: "Bob Smith", role: "Frontend Engineer", status: "Active" },
-                    { id: "3", name: "Carol White", role: "Qt Specialist", status: "Pending" },
-                    { id: "4", name: "David Lee", role: "DevOps Engineer", status: "Offline" },
-                    { id: "5", name: "Elena Rostova", role: "Product Manager", status: "Active" }
+                    { id: "1", name: "Alice Chen", role: ChaSetI18n.tr("desktopComposite.genericDataTable.roleArchitect", "Lead Architect"), status: ChaSetI18n.tr("common.active", "Active") },
+                    { id: "2", name: "Bob Smith", role: ChaSetI18n.tr("desktopComposite.genericDataTable.roleFrontend", "Frontend Engineer"), status: ChaSetI18n.tr("common.active", "Active") },
+                    { id: "3", name: "Carol White", role: ChaSetI18n.tr("desktopComposite.genericDataTable.roleQt", "Qt Specialist"), status: ChaSetI18n.tr("desktopComposite.genericDataTable.statusPending", "Pending") },
+                    { id: "4", name: "David Lee", role: ChaSetI18n.tr("desktopComposite.genericDataTable.roleDevOps", "DevOps Engineer"), status: ChaSetI18n.tr("desktopComposite.genericDataTable.statusOffline", "Offline") },
+                    { id: "5", name: "Elena Rostova", role: ChaSetI18n.tr("desktopComposite.genericDataTable.roleProduct", "Product Manager"), status: ChaSetI18n.tr("common.active", "Active") }
                 ]
             }
         }

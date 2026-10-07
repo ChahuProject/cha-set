@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AddressBar, Card, CodeBlock, Button } from '@chahu/cha-set';
+import { AddressBar, Card, CodeBlock, Button, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -8,6 +8,7 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 import { PropsTable } from '../../components/PropsTable';
 
 export function AddressBarDocPage() {
+  const { t } = useChaSetI18n();
   const [currentPath, setCurrentPath] = useState('此电脑/C:/Users/Development/Projects/cha-set');
   const [history, setHistory] = useState<string[]>([
     '此电脑',
@@ -92,13 +93,13 @@ export function AddressBarDocPage() {
           reactCode={heroReactCode}
           controls={
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-muted-foreground mr-1">Quick Locations:</span>
+              <span className="text-muted-foreground mr-1">{t('desktopComposite.addressBar.quickLocations', 'Quick Locations:')}</span>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => navigateTo('C:/Users/Development/cha-set')}
               >
-                Project Root
+                {t('desktopComposite.addressBar.locProjectRoot', 'Project Root')}
               </Button>
               <Button
                 variant="outline"
@@ -137,9 +138,9 @@ export function AddressBarDocPage() {
 
             <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-border/40">
               <span>
-                Active Path: <code className="text-foreground font-mono bg-muted px-1 py-0.5 rounded">{currentPath}</code>
+                {t('desktopComposite.addressBar.activePath', 'Active Path:')} <code className="text-foreground font-mono bg-muted px-1 py-0.5 rounded">{currentPath}</code>
               </span>
-              <span>Refreshes: {refreshCount}</span>
+              <span>{t('desktopComposite.addressBar.refreshes', 'Refreshes: {{count}}', { count: refreshCount })}</span>
             </div>
           </div>
         </ComponentPreview>

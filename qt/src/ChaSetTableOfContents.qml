@@ -38,7 +38,7 @@ Item {
             var depth = (item.level !== undefined && item.level > 0) ? item.level : d;
             var entry = {
                 id: item.id ? String(item.id) : "",
-                title: item.title ? String(item.title) : "",
+                title: item.title ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.toc." + String(item.id), String(item.title)) : String(item.title)) : "",
                 level: depth,
                 depth: depth,
                 disabled: !!item.disabled,
@@ -135,7 +135,7 @@ Item {
         Text {
             id: headerTitle
             visible: root.showTitle && root.title !== ""
-            text: root.title
+            text: root.title === "ON THIS PAGE" ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.onThisPage", "ON THIS PAGE").toUpperCase() : root.title) : root.title
             color: ThemeTokens.subduedText
             font.family: Typography.familySans
             font.pixelSize: Typography.sizeCaption

@@ -13,7 +13,7 @@ DocLayout {
     property var selectedIds: ["Button.tsx"]
     property var cutIds: []
     property var copiedIds: []
-    property string statusMessage: "Ready. Try selecting files or dragging to reorder (hold Ctrl to copy)."
+    property string statusMessage: ChaSetI18n.tr("desktopComposite.virtualTree.readyStatus", "Ready. Try selecting files or dragging to reorder (hold Ctrl to copy).")
 
     readonly property var initialNodes: [
         {
@@ -217,21 +217,21 @@ DocLayout {
                     spacing: ThemeTokens.dp(6)
 
                     ChaSetButton {
-                        text: "Expand All"
+                        text: ChaSetI18n.tr("desktopComposite.virtualTree.expandAll", "Expand All")
                         variant: "outline"
                         size: "sm"
                         onClicked: virtualTree.expandAll()
                     }
 
                     ChaSetButton {
-                        text: "Collapse All"
+                        text: ChaSetI18n.tr("desktopComposite.virtualTree.collapseAll", "Collapse All")
                         variant: "outline"
                         size: "sm"
                         onClicked: virtualTree.collapseAll()
                     }
 
                     ChaSetButton {
-                        text: "Mode: " + (root.selectionMode === "multiple" ? "Multi" : "Single")
+                        text: ChaSetI18n.tr("desktopComposite.virtualTree.mode", "Mode: {{mode}}", { mode: (root.selectionMode === "multiple" ? ChaSetI18n.tr("desktopComposite.virtualTree.multi", "Multi") : ChaSetI18n.tr("desktopComposite.virtualTree.single", "Single")) })
                         variant: "outline"
                         size: "sm"
                         onClicked: {
@@ -240,7 +240,7 @@ DocLayout {
                     }
 
                     ChaSetButton {
-                        text: "Copy (Ctrl+C)"
+                        text: ChaSetI18n.tr("desktopComposite.virtualTree.copyBtn", "Copy (Ctrl+C)")
                         variant: "outline"
                         size: "sm"
                         enabled: virtualTree.selectedIds.length > 0 || virtualTree.selectedId !== ""
@@ -248,12 +248,12 @@ DocLayout {
                             var ids = virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds : [virtualTree.selectedId]
                             root.copiedIds = ids
                             root.cutIds = []
-                            root.statusMessage = "Copied " + ids.length + " item(s) (pulsing). Select target and paste."
+                            root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.copyStatus", "Copied {{count}} item(s) (pulsing). Select a target and press Ctrl+V to paste or Esc to cancel.", { count: ids.length })
                         }
                     }
 
                     ChaSetButton {
-                        text: "Cut (Ctrl+X)"
+                        text: ChaSetI18n.tr("desktopComposite.virtualTree.cutBtn", "Cut (Ctrl+X)")
                         variant: "outline"
                         size: "sm"
                         enabled: virtualTree.selectedIds.length > 0 || virtualTree.selectedId !== ""
@@ -261,12 +261,12 @@ DocLayout {
                             var ids = virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds : [virtualTree.selectedId]
                             root.cutIds = ids
                             root.copiedIds = []
-                            root.statusMessage = "Cut " + ids.length + " item(s). Select target and paste."
+                            root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.cutStatus", "Cut {{count}} item(s) (dimmed). Select a target and press Ctrl+V to paste or Esc to cancel.", { count: ids.length })
                         }
                     }
 
                     ChaSetButton {
-                        text: "Paste (Ctrl+V)"
+                        text: ChaSetI18n.tr("desktopComposite.virtualTree.pasteBtn", "Paste (Ctrl+V)")
                         variant: "outline"
                         size: "sm"
                         enabled: root.cutIds.length > 0 || root.copiedIds.length > 0
@@ -275,18 +275,18 @@ DocLayout {
                             if (targetId !== "") {
                                 if (root.cutIds.length > 0) {
                                     root.treeNodes = root.moveNodesInTree(root.treeNodes, root.cutIds, targetId, "inside")
-                                    root.statusMessage = "Pasted (moved) " + root.cutIds.length + " item(s) into " + targetId
+                                    root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.pastedMoved", "Pasted (moved) {{count}} item(s) into/after \"{{target}}\".", { count: root.cutIds.length, target: targetId })
                                     root.cutIds = []
                                 } else if (root.copiedIds.length > 0) {
                                     root.treeNodes = root.copyNodesInTree(root.treeNodes, root.copiedIds, targetId, "inside")
-                                    root.statusMessage = "Pasted (copied) " + root.copiedIds.length + " item(s) into " + targetId
+                                    root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.pastedCopied", "Pasted (copied) {{count}} item(s) into/after \"{{target}}\".", { count: root.copiedIds.length, target: targetId })
                                 }
                             }
                         }
                     }
 
                     ChaSetButton {
-                        text: "Delete (Del)"
+                        text: ChaSetI18n.tr("desktopComposite.virtualTree.deleteBtn", "Delete (Del)")
                         variant: "outline"
                         size: "sm"
                         enabled: virtualTree.selectedIds.length > 0 || virtualTree.selectedId !== ""
@@ -297,13 +297,13 @@ DocLayout {
                                 root.selectedIds = []
                                 virtualTree.selectedIds = []
                                 virtualTree.selectedId = ""
-                                root.statusMessage = "Deleted " + ids.length + " item(s)."
+                                root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.deletedStatus", "Deleted {{count}} item(s).", { count: ids.length })
                             }
                         }
                     }
 
                     ChaSetButton {
-                        text: "Reset"
+                        text: ChaSetI18n.tr("common.reset", "Reset")
                         variant: "outline"
                         size: "sm"
                         onClicked: {
@@ -311,7 +311,7 @@ DocLayout {
                             root.cutIds = []
                             root.copiedIds = []
                             root.selectedIds = ["Button.tsx"]
-                            root.statusMessage = "Reset tree to default."
+                            root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.resetStatus", "Reset tree to default.")
                         }
                     }
                 }
@@ -335,24 +335,24 @@ DocLayout {
                     onNodeCopied: function(ids) {
                         root.copiedIds = ids
                         root.cutIds = []
-                        root.statusMessage = "Copied " + ids.length + " item(s) (pulsing). Select target and paste or Esc to cancel."
+                        root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.copyStatus", "Copied {{count}} item(s) (pulsing). Select target and paste or Esc to cancel.", { count: ids.length })
                     }
 
                     onNodeCut: function(ids) {
                         root.cutIds = ids
                         root.copiedIds = []
-                        root.statusMessage = "Cut " + ids.length + " item(s) (dimmed). Select target folder and paste or Esc to cancel."
+                        root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.cutStatus", "Cut {{count}} item(s) (dimmed). Select target folder and paste or Esc to cancel.", { count: ids.length })
                     }
 
                     onNodePasted: function(targetId, pos) {
                         if (targetId !== "") {
                             if (root.cutIds.length > 0) {
                                 root.treeNodes = root.moveNodesInTree(root.treeNodes, root.cutIds, targetId, pos)
-                                root.statusMessage = "Pasted (moved) " + root.cutIds.length + " item(s) into/after " + targetId
+                                root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.pastedMoved", "Pasted (moved) {{count}} item(s) into/after \"{{target}}\".", { count: root.cutIds.length, target: targetId })
                                 root.cutIds = []
                             } else if (root.copiedIds.length > 0) {
                                 root.treeNodes = root.copyNodesInTree(root.treeNodes, root.copiedIds, targetId, pos)
-                                root.statusMessage = "Pasted (copied) " + root.copiedIds.length + " item(s) into/after " + targetId
+                                root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.pastedCopied", "Pasted (copied) {{count}} item(s) into/after \"{{target}}\".", { count: root.copiedIds.length, target: targetId })
                             }
                         }
                     }
@@ -363,17 +363,17 @@ DocLayout {
                             root.selectedIds = []
                             virtualTree.selectedIds = []
                             virtualTree.selectedId = ""
-                            root.statusMessage = "Deleted " + ids.length + " item(s)."
+                            root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.deletedStatus", "Deleted {{count}} item(s).", { count: ids.length })
                         }
                     }
 
                     onNodeDropped: function(sourceIds, targetId, pos, isCopy) {
                         if (isCopy) {
                             root.treeNodes = root.copyNodesInTree(root.treeNodes, sourceIds, targetId, pos)
-                            root.statusMessage = "Copied " + sourceIds.join(", ") + " -> " + pos + " " + targetId
+                            root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.droppedCopied", "Copied {{source}} -> {{pos}} \"{{target}}\".", { source: sourceIds.join(", "), pos: pos, target: targetId })
                         } else {
                             root.treeNodes = root.moveNodesInTree(root.treeNodes, sourceIds, targetId, pos)
-                            root.statusMessage = "Moved " + sourceIds.join(", ") + " -> " + pos + " " + targetId
+                            root.statusMessage = ChaSetI18n.tr("desktopComposite.virtualTree.droppedMoved", "Moved {{source}} -> {{pos}} \"{{target}}\".", { source: sourceIds.join(", "), pos: pos, target: targetId })
                         }
                     }
                 }
@@ -395,20 +395,20 @@ DocLayout {
                         Row {
                             spacing: ThemeTokens.dp(8)
                             Text {
-                                text: "Selected: " + (virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds.join(", ") : (virtualTree.selectedId || "None"))
+                                text: ChaSetI18n.tr("desktopComposite.virtualTree.selectedLabel", "Selected:") + " " + (virtualTree.selectedIds.length > 0 ? virtualTree.selectedIds.join(", ") : (virtualTree.selectedId || ChaSetI18n.tr("desktopComposite.virtualTree.none", "None")))
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeCaption
                                 font.family: Typography.familyMono
                             }
                             Text {
                                 visible: root.cutIds.length > 0
-                                text: "[" + root.cutIds.length + " cut/dimmed]"
+                                text: ChaSetI18n.tr("desktopComposite.virtualTree.cutBadge", "[{{count}} cut/dimmed]", { count: root.cutIds.length })
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeCaption
                             }
                             Text {
                                 visible: root.copiedIds.length > 0
-                                text: "[" + root.copiedIds.length + " copied (pulsing)]"
+                                text: ChaSetI18n.tr("desktopComposite.virtualTree.copiedBadge", "[{{count}} copied (pulsing)]", { count: root.copiedIds.length })
                                 color: ThemeTokens.focus
                                 font.pixelSize: Typography.sizeCaption
                             }

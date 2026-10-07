@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption, Badge, Input, SegmentedControl, Checkbox, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock } from '@chahu/cha-set';
+import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption, Badge, Input, SegmentedControl, Checkbox, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -12,22 +12,23 @@ interface Invoice {
   amount: string;
 }
 
-const INVOICES: Invoice[] = [
-  { id: 'INV-001', status: 'Paid', method: 'Credit Card', amount: '$250.00' },
-  { id: 'INV-002', status: 'Pending', method: 'PayPal', amount: '$150.00' },
-  { id: 'INV-003', status: 'Unpaid', method: 'Bank Transfer', amount: '$350.00' },
-  { id: 'INV-004', status: 'Paid', method: 'Credit Card', amount: '$450.00' },
-  { id: 'INV-005', status: 'Paid', method: 'PayPal', amount: '$550.00' },
-];
-
 export function TableDocPage() {
+  const { t } = useChaSetI18n();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [showCaption, setShowCaption] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>('INV-001');
 
+  const invoices = useMemo<Invoice[]>(() => [
+    { id: 'INV-001', status: 'Paid', method: t('desktopComposite.table.methodCreditCard', 'Credit Card'), amount: '$250.00' },
+    { id: 'INV-002', status: 'Pending', method: 'PayPal', amount: '$150.00' },
+    { id: 'INV-003', status: 'Unpaid', method: t('desktopComposite.table.methodBankTransfer', 'Bank Transfer'), amount: '$350.00' },
+    { id: 'INV-004', status: 'Paid', method: t('desktopComposite.table.methodCreditCard', 'Credit Card'), amount: '$450.00' },
+    { id: 'INV-005', status: 'Paid', method: 'PayPal', amount: '$550.00' },
+  ], [t]);
+
   const filteredInvoices = useMemo(() => {
-    return INVOICES.filter((inv) => {
+    return invoices.filter((inv) => {
       const matchesSearch =
         inv.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         inv.method.toLowerCase().includes(searchTerm.toLowerCase());
@@ -35,7 +36,7 @@ export function TableDocPage() {
         statusFilter === 'all' || inv.status.toLowerCase() === statusFilter.toLowerCase();
       return matchesSearch && matchesStatus;
     });
-  }, [searchTerm, statusFilter]);
+  }, [invoices, searchTerm, statusFilter]);
 
   const heroReactCode = `<Table>
   ${showCaption ? '<TableCaption>A list of your recent invoices.</TableCaption>\n  ' : ''}<TableHeader>
@@ -109,7 +110,7 @@ export function TableDocPage() {
               <div className="w-48">
                 <Input
                   size="sm"
-                  placeholder="Filter invoices..."
+                  placeholder={t('desktopComposite.table.filterPlaceholder', 'Filter invoices...')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -117,16 +118,16 @@ export function TableDocPage() {
 
               {/* Status Filter */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Status:</span>
+                <span className="text-muted-foreground text-xs">{t('common.status', 'Status:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={statusFilter}
                   onChange={(v) => setStatusFilter(String(v))}
                   options={[
-                    { label: 'All', value: 'all' },
-                    { label: 'Paid', value: 'paid' },
-                    { label: 'Pending', value: 'pending' },
-                    { label: 'Unpaid', value: 'unpaid' },
+                    { label: t('desktopComposite.table.statusAll', 'All'), value: 'all' },
+                    { label: t('desktopComposite.table.statusPaid', 'Paid'), value: 'paid' },
+                    { label: t('desktopComposite.table.statusPending', 'Pending'), value: 'pending' },
+                    { label: t('desktopComposite.table.statusUnpaid', 'Unpaid'), value: 'unpaid' },
                   ]}
                 />
               </div>
@@ -136,7 +137,7 @@ export function TableDocPage() {
                 size="sm"
                 checked={showCaption}
                 onCheckedChange={(v) => setShowCaption(Boolean(v))}
-                label="Show Caption"
+                label={t('desktopComposite.table.showCaption', 'Show Caption')}
               />
             </div>
           }
@@ -144,14 +145,14 @@ export function TableDocPage() {
           <div className="w-full border border-border rounded-lg overflow-hidden bg-card">
             <Table>
               {showCaption && (
-                <TableCaption>A list of your recent invoices.</TableCaption>
+                <TableCaption>{t('desktopComposite.table.caption', 'A list of your recent invoices.')}</TableCaption>
               )}
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-24">Invoice</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Method</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
+                  <TableHead className="w-24">{t('desktopComposite.table.colInvoice', 'Invoice')}</TableHead>
+                  <TableHead>{t('common.status', 'Status')}</TableHead>
+                  <TableHead>{t('desktopComposite.table.colMethod', 'Method')}</TableHead>
+                  <TableHead className="text-right">{t('desktopComposite.table.colAmount', 'Amount')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -175,7 +176,11 @@ export function TableDocPage() {
                               : 'destructive'
                           }
                         >
-                          {inv.status}
+                          {inv.status === 'Paid'
+                            ? t('desktopComposite.table.statusPaid', 'Paid')
+                            : inv.status === 'Pending'
+                            ? t('desktopComposite.table.statusPending', 'Pending')
+                            : t('desktopComposite.table.statusUnpaid', 'Unpaid')}
                         </Badge>
                       </TableCell>
                       <TableCell>{inv.method}</TableCell>
@@ -185,14 +190,14 @@ export function TableDocPage() {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
-                      No results found.
+                      {t('desktopComposite.table.noResults', 'No results found.')}
                     </TableCell>
                   </TableRow>
                 )}
               </TableBody>
               <TableFooter>
                 <TableRow>
-                  <TableCell colSpan={3}>Total</TableCell>
+                  <TableCell colSpan={3}>{t('desktopComposite.table.total', 'Total')}</TableCell>
                   <TableCell className="text-right font-mono">$1,750.00</TableCell>
                 </TableRow>
               </TableFooter>
@@ -221,30 +226,30 @@ export function TableDocPage() {
           {/* Card: Clean Simple Table */}
           <Card className="flex flex-col">
             <CardHeader className="pb-3">
-              <CardTitle>Simple Data Table</CardTitle>
-              <CardDescription>Minimal table without header background or footer.</CardDescription>
+              <CardTitle>{t('desktopComposite.table.simpleTableTitle', 'Simple Data Table')}</CardTitle>
+              <CardDescription>{t('desktopComposite.table.simpleTableDesc', 'Minimal table without header background or footer.')}</CardDescription>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="border border-border rounded-lg overflow-hidden">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>User</TableHead>
-                      <TableHead>Role</TableHead>
+                      <TableHead>{t('desktopComposite.table.colUser', 'User')}</TableHead>
+                      <TableHead>{t('desktopComposite.table.colRole', 'Role')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     <TableRow>
                       <TableCell className="font-medium">Alice</TableCell>
-                      <TableCell>Administrator</TableCell>
+                      <TableCell>{t('desktopComposite.table.roleAdmin', 'Administrator')}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell className="font-medium">Bob</TableCell>
-                      <TableCell>Developer</TableCell>
+                      <TableCell>{t('desktopComposite.table.roleDev', 'Developer')}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell className="font-medium">Carol</TableCell>
-                      <TableCell>Designer</TableCell>
+                      <TableCell>{t('desktopComposite.table.roleDesigner', 'Designer')}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -255,35 +260,35 @@ export function TableDocPage() {
           {/* Card: Status Badges Table */}
           <Card className="flex flex-col">
             <CardHeader className="pb-3">
-              <CardTitle>Status Badges & Selection</CardTitle>
-              <CardDescription>Tables embedding status indicator badges and interactive row states.</CardDescription>
+              <CardTitle>{t('desktopComposite.table.statusCardTitle', 'Status Badges & Selection')}</CardTitle>
+              <CardDescription>{t('desktopComposite.table.statusCardDesc', 'Tables embedding status indicator badges and interactive row states.')}</CardDescription>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="border border-border rounded-lg overflow-hidden">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Task</TableHead>
-                      <TableHead className="text-right">State</TableHead>
+                      <TableHead>{t('desktopComposite.table.colTask', 'Task')}</TableHead>
+                      <TableHead className="text-right">{t('desktopComposite.table.colState', 'State')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     <TableRow data-state="selected">
                       <TableCell className="font-medium">API Integration</TableCell>
                       <TableCell className="text-right">
-                        <Badge size="sm" variant="default">Complete</Badge>
+                        <Badge size="sm" variant="default">{t('desktopComposite.table.stateComplete', 'Complete')}</Badge>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell className="font-medium">Unit Testing</TableCell>
                       <TableCell className="text-right">
-                        <Badge size="sm" variant="secondary">In Review</Badge>
+                        <Badge size="sm" variant="secondary">{t('desktopComposite.table.stateInReview', 'In Review')}</Badge>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell className="font-medium">Documentation</TableCell>
                       <TableCell className="text-right">
-                        <Badge size="sm" variant="outline">Planned</Badge>
+                        <Badge size="sm" variant="outline">{t('desktopComposite.table.statePlanned', 'Planned')}</Badge>
                       </TableCell>
                     </TableRow>
                   </TableBody>

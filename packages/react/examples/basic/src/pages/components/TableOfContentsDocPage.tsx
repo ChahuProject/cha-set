@@ -7,6 +7,7 @@ import {
   Slider,
   RotateCcwIcon,
   type TocItem,
+  useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -15,6 +16,7 @@ import { ComponentReference } from "../../components/ComponentReference";
 import type { PropItem } from '../../components/PropsTable';
 
 export function TableOfContentsDocPage() {
+  const { t } = useChaSetI18n();
   const [showBanner, setShowBanner] = useState<boolean>(true);
   const [bannerHeight, setBannerHeight] = useState<number>(40);
   const [variant, setVariant] = useState<'default' | 'track' | 'flat'>('default');
@@ -25,42 +27,42 @@ export function TableOfContentsDocPage() {
   const demoItems: TocItem[] = [
     {
       id: 'introduction',
-      title: 'Introduction',
+      title: t('surfaces.tableOfContents.items.introduction'),
       level: 1,
       children: [
-        { id: 'motivation', title: 'Motivation & Goals', level: 2 },
-        { id: 'design-principles', title: 'Design Principles', level: 2 },
+        { id: 'motivation', title: t('surfaces.tableOfContents.items.motivation'), level: 2 },
+        { id: 'design-principles', title: t('surfaces.tableOfContents.items.designPrinciples'), level: 2 },
       ],
     },
     {
       id: 'architecture',
-      title: 'System Architecture',
+      title: t('surfaces.tableOfContents.items.architecture'),
       level: 1,
       children: [
         {
           id: 'data-flow',
-          title: 'Core Data Flow',
+          title: t('surfaces.tableOfContents.items.dataFlow'),
           level: 2,
           children: [
-            { id: 'signals', title: 'Reactive Signals', level: 3 },
-            { id: 'batching', title: 'Update Batching', level: 3 },
+            { id: 'signals', title: t('surfaces.tableOfContents.items.signals'), level: 3 },
+            { id: 'batching', title: t('surfaces.tableOfContents.items.batching'), level: 3 },
           ],
         },
-        { id: 'boundary', title: 'Platform Boundaries', level: 2 },
+        { id: 'boundary', title: t('surfaces.tableOfContents.items.boundary'), level: 2 },
       ],
     },
     {
       id: 'implementation',
-      title: 'Implementation Notes',
+      title: t('surfaces.tableOfContents.items.implementation'),
       level: 1,
       children: [
-        { id: 'banner-offset', title: 'Banner Offset Handling', level: 2 },
-        { id: 'tree-rendering', title: 'Tree & Track Rendering', level: 2 },
+        { id: 'banner-offset', title: t('surfaces.tableOfContents.items.bannerOffset'), level: 2 },
+        { id: 'tree-rendering', title: t('surfaces.tableOfContents.items.treeRendering'), level: 2 },
       ],
     },
     {
       id: 'changelog',
-      title: 'Release Changelog',
+      title: t('surfaces.tableOfContents.items.changelog'),
       level: 1,
     },
   ];
@@ -112,13 +114,13 @@ export function TableOfContentsDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-4 text-xs">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Top Banner:</span>
+                <span className="text-muted-foreground">{t('surfaces.tableOfContents.topBanner')}</span>
                 <Switch checked={showBanner} onCheckedChange={setShowBanner} />
               </div>
 
               {showBanner && (
                 <div className="flex items-center gap-2">
-                  <span className="text-muted-foreground">Banner Height:</span>
+                  <span className="text-muted-foreground">{t('surfaces.tableOfContents.bannerHeight')}</span>
                   <div className="w-24">
                     <Slider
                       value={bannerHeight}
@@ -133,38 +135,38 @@ export function TableOfContentsDocPage() {
               )}
 
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Variant:</span>
+                <span className="text-muted-foreground">{t('showcase.variant')}</span>
                 <SegmentedControl
                   value={variant}
                   onValueChange={(val) => setVariant(val as 'default' | 'track' | 'flat')}
                   options={[
-                    { value: 'default', label: 'Default' },
-                    { value: 'track', label: 'Track' },
-                    { value: 'flat', label: 'Flat' },
+                    { value: 'default', label: t('common.default') },
+                    { value: 'track', label: t('surfaces.tableOfContents.track') },
+                    { value: 'flat', label: t('surfaces.tableOfContents.flat') },
                   ]}
                 />
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Size:</span>
+                <span className="text-muted-foreground">{t('showcase.size')}</span>
                 <SegmentedControl
                   value={size}
                   onValueChange={(val) => setSize(val as 'default' | 'sm')}
                   options={[
-                    { value: 'default', label: 'Default' },
-                    { value: 'sm', label: 'Small' },
+                    { value: 'default', label: t('common.default') },
+                    { value: 'sm', label: t('surfaces.tableOfContents.small') },
                   ]}
                 />
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Show Track:</span>
+                <span className="text-muted-foreground">{t('surfaces.tableOfContents.showTrack')}</span>
                 <Switch checked={showTrack} onCheckedChange={setShowTrack} />
               </div>
 
               <Button variant="outline" size="sm" onClick={handleReset}>
                 <RotateCcwIcon className="size-3.5 mr-1" />
-                Reset
+                {t('common.reset')}
               </Button>
             </div>
           }
@@ -178,7 +180,7 @@ export function TableOfContentsDocPage() {
                   className="w-full bg-primary/10 border-b border-primary/20 text-primary flex items-center justify-between px-4 transition-all duration-quick ease-standard"
                 >
                   <span className="text-xs font-semibold">
-                    Global System Announcement: Scheduled maintenance at 02:00 UTC
+                    {t('surfaces.tableOfContents.bannerText')}
                   </span>
                   <span className="text-[0.625rem] bg-primary/20 text-primary px-1.5 py-0.5 rounded font-mono">
                     Offset: {bannerHeight}
@@ -190,9 +192,9 @@ export function TableOfContentsDocPage() {
               <div className="p-6 flex flex-col md:flex-row gap-8 items-start">
                 <div className="flex-1 space-y-3">
                   <div className="p-4 rounded-md border border-border/80 bg-background/50 space-y-2">
-                    <h3 className="text-sm font-semibold text-foreground">Document Reading Pane</h3>
+                    <h3 className="text-sm font-semibold text-foreground">{t('surfaces.tableOfContents.readingPaneTitle')}</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                      Active outline target: <code className="text-primary font-mono">{activeId}</code>
+                      {t('surfaces.tableOfContents.activeOutlineTarget', { target: activeId })}
                     </p>
                     <p className="text-xs text-muted-foreground leading-relaxed">
                       Notice how the table of contents tree reflects the nested heading structure, and smoothly aligns with the top banner height offset.

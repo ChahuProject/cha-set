@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollArea, Button, Checkbox, CodeBlock, Table, type TableColumn } from '@chahu/cha-set';
+import { ScrollArea, Button, Checkbox, CodeBlock, Table, type TableColumn, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 
 const MATRIX_COLUMNS: TableColumn[] = [
@@ -53,6 +53,7 @@ const SAMPLE_MATRIX_ROWS = Array.from({ length: 100 }).map((_, i) => {
 });
 
 export function ScrollAreaDocPage() {
+  const { t } = useChaSetI18n();
   const [heroMode, setHeroMode] = useState<'vertical' | 'horizontal' | 'both'>('vertical');
   const [heroSize, setHeroSize] = useState<'default' | 'sm'>('default');
   const [showButtons, setShowButtons] = useState(true);
@@ -136,7 +137,7 @@ export function ScrollAreaDocPage() {
             <div className="flex flex-wrap items-center justify-between gap-4 w-full">
               {/* Orientation Mode */}
               <div className="flex items-center gap-1.5">
-                <span className="text-muted-foreground font-medium text-xs">Mode:</span>
+                <span className="text-muted-foreground font-medium text-xs">{t('surfaces.scrollArea.mode', 'Mode:')}</span>
                 {(['vertical', 'horizontal', 'both'] as ('vertical' | 'horizontal' | 'both')[]).map((m) => (
                   <Button
                     key={m}
@@ -146,14 +147,14 @@ export function ScrollAreaDocPage() {
                     onClick={() => setHeroMode(m)}
                     className="h-7 text-xs capitalize"
                   >
-                    {m === 'both' ? '2D Dual-Axis' : m}
+                    {m === 'both' ? t('surfaces.scrollArea.dualAxis', '2D Dual-Axis') : m === 'horizontal' ? t('surfaces.scrollArea.horizontal', 'Horizontal') : t('surfaces.scrollArea.vertical', 'Vertical')}
                   </Button>
                 ))}
               </div>
 
               {/* Size Scale Toggle */}
               <div className="flex items-center gap-1.5">
-                <span className="text-muted-foreground font-medium text-xs">Size:</span>
+                <span className="text-muted-foreground font-medium text-xs">{t('showcase.size', 'Size:')}</span>
                 {(['default', 'sm'] as const).map((s) => (
                   <Button
                     key={s}
@@ -163,7 +164,7 @@ export function ScrollAreaDocPage() {
                     onClick={() => setHeroSize(s)}
                     className="h-7 text-xs capitalize"
                   >
-                    {s === 'sm' ? 'Compact (sm)' : 'Default'}
+                    {s === 'sm' ? t('surfaces.scrollArea.compact', 'Compact (sm)') : t('common.default', 'Default')}
                   </Button>
                 ))}
               </div>
@@ -174,21 +175,21 @@ export function ScrollAreaDocPage() {
                   size="sm"
                   checked={showButtons}
                   onCheckedChange={(val) => setShowButtons(Boolean(val))}
-                  label="Show Stepper Buttons"
+                  label={t('surfaces.scrollArea.showSteppers', 'Show Stepper Buttons')}
                 />
 
                 <Checkbox
                   size="sm"
                   checked={smoothScroll}
                   onCheckedChange={(val) => setSmoothScroll(Boolean(val))}
-                  label="Smooth Scroll"
+                  label={t('surfaces.scrollArea.smoothScroll', 'Smooth Scroll')}
                 />
 
                 <Checkbox
                   size="sm"
                   checked={floating}
                   onCheckedChange={(val) => setFloating(Boolean(val))}
-                  label="Floating"
+                  label={t('surfaces.scrollArea.floating', 'Floating')}
                 />
               </div>
             </div>
@@ -208,9 +209,9 @@ export function ScrollAreaDocPage() {
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-3">
                     <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      Release Changelog & Tags (120 Items)
+                      {t('surfaces.scrollArea.releaseChangelog', 'Release Changelog & Tags (120 Items)')}
                     </h4>
-                    <span className="text-[0.625rem] text-muted-foreground font-mono">120 entries</span>
+                    <span className="text-[0.625rem] text-muted-foreground font-mono">{t('surfaces.scrollArea.entriesCount', '{{count}} entries', { count: 120 })}</span>
                   </div>
                   <div className="divide-y divide-border/50">
                     {SAMPLE_TAGS.map((item) => (
@@ -278,9 +279,9 @@ export function ScrollAreaDocPage() {
                 <div className="p-4 w-[53.125rem]">
                   <div className="flex items-center justify-between mb-3">
                     <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      Dual-Axis Matrix (100 Rows &times; 6 Columns)
+                      {t('surfaces.scrollArea.matrixHeader', 'Dual-Axis Matrix (100 Rows × 6 Columns)')}
                     </h4>
-                    <span className="text-[0.625rem] text-muted-foreground font-mono">100 items</span>
+                    <span className="text-[0.625rem] text-muted-foreground font-mono">{t('surfaces.scrollArea.itemsCount', '{{count}} items', { count: 100 })}</span>
                   </div>
                   <Table columns={MATRIX_COLUMNS} data={SAMPLE_MATRIX_ROWS} interactive />
                 </div>

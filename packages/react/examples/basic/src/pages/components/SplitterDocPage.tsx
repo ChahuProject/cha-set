@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Splitter, Badge, Button, CodeBlock } from '@chahu/cha-set';
+import { Splitter, Badge, Button, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SplitterDocPage() {
+  const { t } = useChaSetI18n();
   const [size, setSize] = useState(35);
   const [verticalSize, setVerticalSize] = useState(65);
 
@@ -76,7 +77,7 @@ export function SplitterDocPage() {
                 style={{ width: `${size}%` }}
                 className="h-full p-4 text-xs text-muted-foreground bg-muted/20 overflow-hidden shrink-0"
               >
-                <strong className="text-foreground block mb-2">Navigation Tree</strong>
+                <strong className="text-foreground block mb-2">{t('surfaces.splitter.navTree')}</strong>
                 <ul className="space-y-1 font-mono">
                   <li>▾ src</li>
                   <li className="pl-3">▸ components</li>
@@ -91,12 +92,12 @@ export function SplitterDocPage() {
                 className="h-full p-4 text-xs text-muted-foreground flex flex-col justify-center items-center gap-2 overflow-hidden shrink-0"
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-foreground font-medium">Editor Workspace</span>
+                  <span className="text-foreground font-medium">{t('surfaces.splitter.editorWorkspace')}</span>
                   <Badge variant="secondary">{Math.round(100 - size)}%</Badge>
                 </div>
-                <span>Drag splitter handle to resize panes</span>
+                <span>{t('surfaces.splitter.dragHint')}</span>
                 <Button variant="outline" size="xs" onClick={() => setSize(35)}>
-                  Reset (35%)
+                  {t('surfaces.splitter.reset35')}
                 </Button>
               </div>
             </div>
@@ -145,10 +146,10 @@ ChaSetSplitter {
                 className="w-full p-4 text-xs text-muted-foreground bg-muted/20 flex flex-col justify-center items-center gap-1 overflow-hidden shrink-0"
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-foreground font-medium">Editor Canvas</span>
+                  <span className="text-foreground font-medium">{t('surfaces.splitter.editorCanvas')}</span>
                   <Badge variant="secondary">{Math.round(verticalSize)}%</Badge>
                 </div>
-                <span>Drag splitter handle vertically to resize</span>
+                <span>{t('surfaces.splitter.dragVerticalHint')}</span>
               </div>
 
               <Splitter size={verticalSize} onChange={setVerticalSize} orientation="horizontal" minSize={20} maxSize={80} />
@@ -158,11 +159,11 @@ ChaSetSplitter {
                 className="w-full p-4 text-xs text-muted-foreground flex flex-col justify-center items-center gap-2 overflow-hidden shrink-0 bg-muted/30"
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-foreground font-medium">Terminal Console</span>
+                  <span className="text-foreground font-medium">{t('surfaces.splitter.terminalConsole')}</span>
                   <Badge variant="outline">{Math.round(100 - verticalSize)}%</Badge>
                 </div>
                 <Button variant="outline" size="xs" onClick={() => setVerticalSize(65)}>
-                  Reset (65%)
+                  {t('surfaces.splitter.reset65')}
                 </Button>
               </div>
             </div>

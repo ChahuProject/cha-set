@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter, SheetClose, Button, Input, Checkbox, type SheetSide, type SheetSize, CodeBlock } from '@chahu/cha-set';
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter, SheetClose, Button, Input, Checkbox, type SheetSide, type SheetSize, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SheetDocPage() {
+  const { t } = useChaSetI18n();
   const [side, setSide] = useState<SheetSide>('right');
   const [size, setSize] = useState<SheetSize>('default');
   const [closeOnOverlay, setCloseOnOverlay] = useState(true);
+
+  const sideLabels: Record<SheetSide, string> = {
+    top: t('overlays.sheet.sideTop', 'Top'),
+    right: t('overlays.sheet.sideRight', 'Right'),
+    bottom: t('overlays.sheet.sideBottom', 'Bottom'),
+    left: t('overlays.sheet.sideLeft', 'Left'),
+  };
 
   const reactCode = `<Sheet closeOnOverlayClick={${closeOnOverlay}}>
   <SheetTrigger asChild>
@@ -70,25 +78,25 @@ ChaSetSheet {
 }`} title="Sheet Sandbox" reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-wrap items-center justify-center gap-3 text-xs">
-              <span className="font-medium text-muted-foreground">Side:</span>
+              <span className="font-medium text-muted-foreground">{t('overlays.sheet.side', 'Side:')}</span>
               {(['top', 'right', 'bottom', 'left'] as const).map((s) => (
                 <button
                   key={s}
                   type="button"
                   onClick={() => setSide(s)}
-                  className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer capitalize ${
+                  className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
                     side === s
                       ? 'bg-primary text-primary-foreground font-medium'
                       : 'bg-muted text-muted-foreground hover:bg-accent'
                   }`}
                 >
-                  {s}
+                  {sideLabels[s]}
                 </button>
               ))}
 
               <span className="mx-2 text-border">|</span>
 
-              <span className="font-medium text-muted-foreground">Size:</span>
+              <span className="font-medium text-muted-foreground">{t('showcase.size', 'Size:')}</span>
               {(['sm', 'default', 'lg', 'xl', 'full'] as const).map((sz) => (
                 <button
                   key={sz}
@@ -111,36 +119,36 @@ ChaSetSheet {
                   checked={closeOnOverlay}
                   onCheckedChange={(val) => setCloseOnOverlay(Boolean(val))}
                 />
-                <span>Close on overlay</span>
+                <span>{t('overlays.sheet.closeOnOverlay', 'Close on overlay')}</span>
               </label>
             </div>
 
             <Sheet closeOnOverlayClick={closeOnOverlay}>
               <SheetTrigger asChild>
                 <Button variant="outline">
-                  Open {side} Drawer ({size})
+                  {t('overlays.sheet.openSheet', 'Open {{side}} Drawer ({{size}})', { side: sideLabels[side], size })}
                 </Button>
               </SheetTrigger>
               <SheetContent side={side} size={size}>
                 <SheetHeader>
-                  <SheetTitle>Edit profile</SheetTitle>
+                  <SheetTitle>{t('overlays.sheet.editProfileTitle', 'Edit profile')}</SheetTitle>
                   <SheetDescription>
-                    Make changes to your profile here. Click save when you're done.
+                    {t('overlays.sheet.editProfileDesc', "Make changes to your profile here. Click save when you're done.")}
                   </SheetDescription>
                 </SheetHeader>
                 <div className="grid gap-4 py-4 px-6">
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <span className="text-right text-xs text-muted-foreground">Name</span>
+                    <span className="text-right text-xs text-muted-foreground">{t('overlays.sheet.name', 'Name')}</span>
                     <Input defaultValue="Pedro Duarte" className="col-span-3" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <span className="text-right text-xs text-muted-foreground">Username</span>
+                    <span className="text-right text-xs text-muted-foreground">{t('overlays.sheet.username', 'Username')}</span>
                     <Input defaultValue="@peduarte" className="col-span-3" />
                   </div>
                 </div>
                 <SheetFooter>
                   <SheetClose asChild>
-                    <Button variant="default">Save changes</Button>
+                    <Button variant="default">{t('common.saveChanges', 'Save changes')}</Button>
                   </SheetClose>
                 </SheetFooter>
               </SheetContent>

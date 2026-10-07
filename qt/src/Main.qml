@@ -2492,7 +2492,7 @@ ApplicationWindow {
                                             anchors.rightMargin: ThemeTokens.dp(8)
                                             anchors.verticalCenter: parent.verticalCenter
                                             elide: Text.ElideRight
-                                            text: navItemRect.modelData.title || ""
+                                            text: navItemRect.modelData ? ChaSetI18n.tr("navigation." + navItemRect.modelData.id, navItemRect.modelData.title || "") : ""
                                             color: (navItemRect.isActive || navItemRect.isHovered) ? win.cFg : win.cMutedFg
                                             font.pixelSize: Typography.sizeSmall
                                             font.weight: navItemRect.isActive ? Typography.weightSemibold : Typography.weightRegular
@@ -2708,7 +2708,7 @@ ApplicationWindow {
                                             anchors.rightMargin: ThemeTokens.dp(8)
                                             anchors.verticalCenter: parent.verticalCenter
                                             elide: Text.ElideRight
-                                            text: mNavItemRect.modelData.title || ""
+                                            text: mNavItemRect.modelData ? ChaSetI18n.tr("navigation." + mNavItemRect.modelData.id, mNavItemRect.modelData.title || "") : ""
                                             color: (mNavItemRect.isActive || mNavItemRect.isHovered) ? win.cFg : win.cMutedFg
                                             font.pixelSize: Typography.sizeSmall
                                             font.weight: mNavItemRect.isActive ? Typography.weightSemibold : Typography.weightRegular

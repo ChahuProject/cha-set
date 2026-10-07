@@ -44,8 +44,8 @@ DocLayout {
                     disabled: root.demoDisabled
                     readOnly: root.demoReadOnly
                     loading: root.demoLoading
-                    label: "Airplane Mode"
-                    description: root.demoDescription
+                    label: ChaSetI18n.tr("formsA.switch.airplaneMode", "Airplane Mode")
+                    description: root.demoDescription.length > 0 ? ChaSetI18n.tr("formsA.switch.airplaneModeDesc", "Disable cellular, Wi-Fi, and Bluetooth radios.") : ""
                     onToggled: function(val) {
                         root.demoChecked = val
                     }
@@ -60,7 +60,7 @@ DocLayout {
                 Row {
                     spacing: 8
                     DocText {
-                        text: "Size:"
+                        text: ChaSetI18n.tr("showcase.size", "Size:")
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
@@ -70,8 +70,8 @@ DocLayout {
                         size: "sm"
                         value: root.demoSize
                         options: [
-                            { label: "Default", value: "default" },
-                            { label: "Small (sm)", value: "sm" }
+                            { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                            { label: ChaSetI18n.tr("formsA.switch.sizeSm", "Small (sm)"), value: "sm" }
                         ]
                         onValueSelected: function(s) { root.demoSize = String(s); }
                     }
@@ -79,7 +79,7 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Checked"
+                    label: ChaSetI18n.tr("formsA.switch.checked", "Checked")
                     checked: root.demoChecked
                     onToggled: (val) => root.demoChecked = val
                     anchors.verticalCenter: parent.verticalCenter
@@ -87,7 +87,7 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Disabled"
+                    label: ChaSetI18n.tr("common.disabled", "Disabled")
                     checked: root.demoDisabled
                     onToggled: (val) => root.demoDisabled = val
                     anchors.verticalCenter: parent.verticalCenter
@@ -95,7 +95,7 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Read-Only"
+                    label: ChaSetI18n.tr("formsA.switch.readOnly", "Read-Only")
                     checked: root.demoReadOnly
                     onToggled: (val) => root.demoReadOnly = val
                     anchors.verticalCenter: parent.verticalCenter
@@ -103,7 +103,7 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Loading"
+                    label: ChaSetI18n.tr("common.loading", "Loading")
                     checked: root.demoLoading
                     onToggled: (val) => root.demoLoading = val
                     anchors.verticalCenter: parent.verticalCenter
@@ -111,9 +111,9 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Description"
+                    label: ChaSetI18n.tr("formsA.switch.descriptionLabel", "Description")
                     checked: root.demoDescription.length > 0
-                    onToggled: (val) => root.demoDescription = val ? "Disables all wireless connections including Wi-Fi and Bluetooth" : ""
+                    onToggled: (val) => root.demoDescription = val ? "Disable cellular, Wi-Fi, and Bluetooth radios." : ""
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -140,7 +140,7 @@ DocLayout {
         }
 
         DocText {
-            text: "Visual matrix of common switch configurations and interactive states in Qt Quick."
+            text: ChaSetI18n.tr("formsA.switch.examplesSubtitle", "Visual matrix of common switch configurations and interactive states in Qt Quick.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -160,11 +160,11 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Default Toggle"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.switch.standardToggleTitle", "Default Toggle"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Row {
                         spacing: ThemeTokens.dp(20)
-                        ChaSetSwitch { checked: false; label: "Off" }
-                        ChaSetSwitch { checked: true; label: "On" }
+                        ChaSetSwitch { checked: false; label: ChaSetI18n.tr("formsA.switch.offLabel", "Off") }
+                        ChaSetSwitch { checked: true; label: ChaSetI18n.tr("formsA.switch.onLabel", "On") }
                     }
                 }
             }
@@ -179,11 +179,11 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Small Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.switch.sizeVariantsTitle", "Small Size (sm)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Row {
                         spacing: ThemeTokens.dp(20)
-                        ChaSetSwitch { size: "sm"; checked: false; label: "Compact Off" }
-                        ChaSetSwitch { size: "sm"; checked: true; label: "Compact On" }
+                        ChaSetSwitch { size: "sm"; checked: false; label: ChaSetI18n.tr("formsA.switch.compactOff", "Compact Off") }
+                        ChaSetSwitch { size: "sm"; checked: true; label: ChaSetI18n.tr("formsA.switch.compactOn", "Compact On") }
                     }
                 }
             }
@@ -198,11 +198,11 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.switch.disabledReadOnlyTitle", "Disabled State"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Row {
                         spacing: ThemeTokens.dp(20)
-                        ChaSetSwitch { disabled: true; checked: false; label: "Disabled Off" }
-                        ChaSetSwitch { disabled: true; checked: true; label: "Disabled On" }
+                        ChaSetSwitch { disabled: true; checked: false; label: ChaSetI18n.tr("formsA.switch.disabledOff", "Disabled Off") }
+                        ChaSetSwitch { disabled: true; checked: true; label: ChaSetI18n.tr("formsA.switch.disabledOn", "Disabled On") }
                     }
                 }
             }
@@ -217,11 +217,11 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Async Loading State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.switch.asyncLoadingTitle", "Async Loading State"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Row {
                         spacing: ThemeTokens.dp(20)
-                        ChaSetSwitch { loading: true; checked: false; label: "Connecting..." }
-                        ChaSetSwitch { loading: true; checked: true; label: "Syncing..." }
+                        ChaSetSwitch { loading: true; checked: false; label: ChaSetI18n.tr("formsA.switch.connecting", "Connecting...") }
+                        ChaSetSwitch { loading: true; checked: true; label: ChaSetI18n.tr("formsA.switch.syncing", "Syncing...") }
                     }
                 }
             }
@@ -236,11 +236,11 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Read-Only State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.switch.disabledReadOnlyTitle", "Read-Only State"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Row {
                         spacing: ThemeTokens.dp(20)
-                        ChaSetSwitch { readOnly: true; checked: false; label: "Locked Off" }
-                        ChaSetSwitch { readOnly: true; checked: true; label: "Locked On" }
+                        ChaSetSwitch { readOnly: true; checked: false; label: ChaSetI18n.tr("formsA.switch.readOnlyOff", "Locked Off") }
+                        ChaSetSwitch { readOnly: true; checked: true; label: ChaSetI18n.tr("formsA.switch.readOnlyOn", "Locked On") }
                     }
                 }
             }
@@ -255,11 +255,11 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "With Helper Description"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.switch.helperDescTitle", "With Helper Description"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetSwitch {
                         checked: true
-                        label: "Airplane Mode"
-                        description: "Disables all wireless connections including Wi-Fi, Cellular, and Bluetooth"
+                        label: ChaSetI18n.tr("formsA.switch.airplaneMode", "Airplane Mode")
+                        description: ChaSetI18n.tr("formsA.switch.airplaneModeDesc", "Disable cellular, Wi-Fi, and Bluetooth radios.")
                     }
                 }
             }

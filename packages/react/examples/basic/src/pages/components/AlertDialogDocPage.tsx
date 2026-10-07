@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel, Button, CodeBlock, Checkbox } from '@chahu/cha-set';
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel, Button, CodeBlock, Checkbox, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function AlertDialogDocPage() {
+  const { t } = useChaSetI18n();
   const [deleted, setDeleted] = useState(false);
   const [selectedSize, setSelectedSize] = useState<'sm' | 'default' | 'lg'>('default');
   const [closeOnOverlay, setCloseOnOverlay] = useState(false);
@@ -63,7 +64,7 @@ ChaSetAlertDialog {
 }`} title="Alert Dialog Sandbox" reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-wrap items-center gap-3 text-xs">
-              <span className="font-medium text-muted-foreground">Size:</span>
+              <span className="font-medium text-muted-foreground">{t('showcase.size', 'Size:')}</span>
               {(['sm', 'default', 'lg'] as const).map((s) => (
                 <button
                   key={s}
@@ -84,29 +85,28 @@ ChaSetAlertDialog {
                   checked={closeOnOverlay}
                   onCheckedChange={(val) => setCloseOnOverlay(Boolean(val))}
                 />
-                <span>Close on overlay click</span>
+                <span>{t('overlays.alertDialog.closeOnOverlay', 'Close on overlay click')}</span>
               </label>
             </div>
 
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive">Delete Account</Button>
+                <Button variant="destructive">{t('overlays.alertDialog.deleteAccount', 'Delete Account')}</Button>
               </AlertDialogTrigger>
               <AlertDialogContent size={selectedSize} closeOnOverlayClick={closeOnOverlay}>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogTitle>{t('overlays.alertDialog.areYouSure', 'Are you absolutely sure?')}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete your
-                    account and remove your data from our servers.
+                    {t('overlays.alertDialog.deleteAccountDesc', 'This action cannot be undone. This will permanently delete your account and remove your data from our servers.')}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel>{t('common.cancel', 'Cancel')}</AlertDialogCancel>
                   <AlertDialogAction
                     variant="destructive"
                     onClick={() => setDeleted(true)}
                   >
-                    Continue
+                    {t('overlays.alertDialog.continue', 'Continue')}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -114,7 +114,7 @@ ChaSetAlertDialog {
 
             {deleted && (
               <span className="text-xs text-destructive font-medium">
-                Action confirmed! Account deletion dispatched.
+                {t('overlays.alertDialog.accountDeletedNotice', 'Action confirmed! Account deletion dispatched.')}
               </span>
             )}
           </div>

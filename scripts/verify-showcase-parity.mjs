@@ -174,6 +174,10 @@ export function extractReactDocMetadata(content) {
         const hMatch = inner.match(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/);
         if (hMatch) {
           title = hMatch[1].replace(/<[^>]+>/g, '').trim();
+          const trMatch = title.match(/t\([^,]+,\s*['"]([^'"]+)['"]\)/);
+          if (trMatch) {
+            title = trMatch[1];
+          }
         }
       }
       if (!title) {
@@ -351,9 +355,9 @@ export function extractQtDocMetadata(content) {
       const stitleMatch = snippet.match(/(?:property\s+string\s+)?sectionTitle\s*:\s*["']([^"']+)["']/);
       let title = stitleMatch ? stitleMatch[1] : '';
       if (!title) {
-        const textMatch = snippet.match(/(?:DocText|Text)\s*\{[^}]*?text\s*:\s*["']([^"']+)["']/);
+        const textMatch = snippet.match(/(?:DocText|Text)\s*\{[^}]*?text\s*:\s*(?:ChaSetI18n\.tr\([^,]+,\s*["']([^"']+)["']|["']([^"']+)["'])/);
         if (textMatch) {
-          title = textMatch[1].trim();
+          title = (textMatch[1] || textMatch[2]).trim();
         }
       }
       if (!title) {

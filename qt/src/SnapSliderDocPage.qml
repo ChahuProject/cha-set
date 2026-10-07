@@ -43,8 +43,8 @@ DocLayout {
                     width: parent.width
                     count: 5
                     labels: root.demoLabels
-                    leftLabel: "Slow"
-                    rightLabel: "Fast"
+                    leftLabel: ChaSetI18n.tr("formsA.snapSlider.slow", "Slow")
+                    rightLabel: ChaSetI18n.tr("formsA.snapSlider.fast", "Fast")
                     currentIndex: root.demoIndex
                     onIndexChanged: function(idx) {
                         root.demoIndex = idx

@@ -73,13 +73,13 @@ DocLayout {
                                 anchors.left: parent.left
                                 anchors.leftMargin: ThemeTokens.dp(10)
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: "Constrained Item #" + (index + 1)
+                                text: ChaSetI18n.tr("surfaces.viewportConstrainedContainer.constrainedItem", { "index": index + 1 })
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeSmall
                             }
 
                             ChaSetBadge {
-                                text: "Active"
+                                text: ChaSetI18n.tr("common.active")
                                 variant: "outline"
                                 anchors.right: parent.right
                                 anchors.rightMargin: 8
@@ -138,7 +138,7 @@ ChaSetViewportConstrainedContainer {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Strict 150 Limit"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("surfaces.viewportConstrainedContainer.strict150"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetViewportConstrainedContainer {
                         width: parent.width - ThemeTokens.dp(28)
                         maxHeight: 150
@@ -153,7 +153,7 @@ ChaSetViewportConstrainedContainer {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Always Scroll Overflow"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("surfaces.viewportConstrainedContainer.alwaysScrollOverflow"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetViewportConstrainedContainer {
                         width: parent.width - ThemeTokens.dp(28)
                         maxHeight: 150
@@ -169,7 +169,7 @@ ChaSetViewportConstrainedContainer {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "High Margin (48)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("surfaces.viewportConstrainedContainer.highMargin48"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetViewportConstrainedContainer {
                         width: parent.width - ThemeTokens.dp(28)
                         maxHeight: 150

@@ -10,9 +10,9 @@ Column {
     spacing: ThemeTokens.dp(12)
 
     property string sectionId: "anatomy"
-    property string pageTitle: "Anatomy"
+    property string pageTitle: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.anatomy", "Anatomy") : "Anatomy"
     property string sectionTitle: pageTitle
-    property string description: "Import and structure definition for React and Qt Quick."
+    property string description: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.anatomyDesc", "Import and structure definition for React and Qt Quick.") : "Import and structure definition for React and Qt Quick."
     property string reactCode: ""
     property string qtCode: ""
     property string activeTab: "qt" // Qt showcase defaults to Qt QML tab

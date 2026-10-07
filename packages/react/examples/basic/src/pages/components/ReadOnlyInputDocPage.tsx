@@ -1,11 +1,12 @@
 import React from 'react';
-import { ReadOnlyInput, CodeBlock } from '@chahu/cha-set';
+import { ReadOnlyInput, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function ReadOnlyInputDocPage() {
+  const { t } = useChaSetI18n();
   const reactCode = `<ReadOnlyInput
   value="cs_live_94817264810294827104"
   showCopy
@@ -34,15 +35,21 @@ export function ReadOnlyInputDocPage() {
     showCopy: true
 }`} title="Read-Only Input Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-md flex flex-col gap-4">
-            <ReadOnlyInput
-              value="cs_live_94817264810294827104"
-              showCopy
-            />
-            <ReadOnlyInput
-              value="ghp_3847291847291048291048291840"
-              masked
-              showCopy
-            />
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-medium text-muted-foreground">{t('components.readOnlyInput.apiSecretKey', 'API Secret Key (Masked with Copy):')}</label>
+              <ReadOnlyInput
+                value="cs_live_94817264810294827104"
+                showCopy
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-medium text-muted-foreground">{t('components.readOnlyInput.personalAccessToken', 'GitHub Personal Access Token (Masked):')}</label>
+              <ReadOnlyInput
+                value="ghp_3847291847291048291048291840"
+                masked
+                showCopy
+              />
+            </div>
           </div>
         </ComponentPreview>
       </section>

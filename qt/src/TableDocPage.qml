@@ -21,10 +21,10 @@ DocLayout {
     property int selectedInvoiceIndex: 0
 
     readonly property var allInvoices: [
-        { id: "INV-001", status: "Paid", method: "Credit Card", amount: "$250.00" },
+        { id: "INV-001", status: "Paid", method: ChaSetI18n.tr("desktopComposite.table.methodCreditCard", "Credit Card"), amount: "$250.00" },
         { id: "INV-002", status: "Pending", method: "PayPal", amount: "$150.00" },
-        { id: "INV-003", status: "Unpaid", method: "Bank Transfer", amount: "$350.00" },
-        { id: "INV-004", status: "Paid", method: "Credit Card", amount: "$450.00" },
+        { id: "INV-003", status: "Unpaid", method: ChaSetI18n.tr("desktopComposite.table.methodBankTransfer", "Bank Transfer"), amount: "$350.00" },
+        { id: "INV-004", status: "Paid", method: ChaSetI18n.tr("desktopComposite.table.methodCreditCard", "Credit Card"), amount: "$450.00" },
         { id: "INV-005", status: "Paid", method: "PayPal", amount: "$550.00" }
     ]
 
@@ -59,12 +59,12 @@ DocLayout {
                 ChaSetTable {
                     anchors.centerIn: parent
                     width: parent.width > 540 ? 540 : parent.width
-                    caption: root.showCaption ? "A list of your recent invoices." : ""
+                    caption: root.showCaption ? ChaSetI18n.tr("desktopComposite.table.caption", "A list of your recent invoices.") : ""
                     columns: [
-                        { key: "id", title: "Invoice", width: 90 },
-                        { key: "status", title: "Status", width: 90, badge: true },
-                        { key: "method", title: "Method" },
-                        { key: "amount", title: "Amount", align: "right", width: 100 }
+                        { key: "id", title: ChaSetI18n.tr("desktopComposite.table.colInvoice", "Invoice"), width: 90 },
+                        { key: "status", title: ChaSetI18n.tr("common.status", "Status"), width: 90, badge: true },
+                        { key: "method", title: ChaSetI18n.tr("desktopComposite.table.colMethod", "Method") },
+                        { key: "amount", title: ChaSetI18n.tr("desktopComposite.table.colAmount", "Amount"), align: "right", width: 100 }
                     ]
                     rows: root.filteredInvoices
                     selectedIndex: root.selectedInvoiceIndex
@@ -80,7 +80,7 @@ DocLayout {
                 ChaSetInput {
                     width: ThemeTokens.dp(160)
                     size: "sm"
-                    placeholderText: "Filter invoices..."
+                    placeholderText: ChaSetI18n.tr("desktopComposite.table.filterPlaceholder", "Filter invoices...")
                     text: root.searchTerm
                     onTextEdited: root.searchTerm = text
                     anchors.verticalCenter: parent.verticalCenter
@@ -89,16 +89,16 @@ DocLayout {
                 Row {
                     spacing: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
-                    DocText { text: "Status:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("common.status", "Status:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
                         value: root.statusFilter
                         options: [
-                            { label: "All", value: "all" },
-                            { label: "Paid", value: "paid" },
-                            { label: "Pending", value: "pending" },
-                            { label: "Unpaid", value: "unpaid" }
+                            { label: ChaSetI18n.tr("desktopComposite.table.statusAll", "All"), value: "all" },
+                            { label: ChaSetI18n.tr("desktopComposite.table.statusPaid", "Paid"), value: "paid" },
+                            { label: ChaSetI18n.tr("desktopComposite.table.statusPending", "Pending"), value: "pending" },
+                            { label: ChaSetI18n.tr("desktopComposite.table.statusUnpaid", "Unpaid"), value: "unpaid" }
                         ]
                         onValueSelected: function(v) { root.statusFilter = String(v); }
                     }
@@ -106,7 +106,7 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Show Caption"
+                    label: ChaSetI18n.tr("desktopComposite.table.showCaption", "Show Caption")
                     checked: root.showCaption
                     onToggled: (v) => root.showCaption = v
                     anchors.verticalCenter: parent.verticalCenter
@@ -124,11 +124,13 @@ DocLayout {
 
     // Section 4: Examples & States
     Column {
+        property string sectionId: "states"
+        property string sectionTitle: "Examples & States"
         width: parent.width
         spacing: 12
 
         DocText {
-            text: "Examples & States"
+            text: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
             color: root.cFg
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
@@ -150,21 +152,21 @@ DocLayout {
                 customRadius: root.customRadius
 
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Simple Data Table" }
-                    ChaSetCardDescription { text: "Basic table showing users and roles." }
+                    ChaSetCardTitle { text: ChaSetI18n.tr("desktopComposite.table.simpleTableTitle", "Simple Data Table") }
+                    ChaSetCardDescription { text: ChaSetI18n.tr("desktopComposite.table.simpleTableDesc", "Minimal table without header background or footer.") }
                 }
 
                 ChaSetCardContent {
                     ChaSetTable {
                         width: parent.width
                         columns: [
-                            { key: "user", title: "User" },
-                            { key: "role", title: "Role", align: "right" }
+                            { key: "user", title: ChaSetI18n.tr("desktopComposite.table.colUser", "User") },
+                            { key: "role", title: ChaSetI18n.tr("desktopComposite.table.colRole", "Role"), align: "right" }
                         ]
                         rows: [
-                            { user: "Alice", role: "Administrator" },
-                            { user: "Bob", role: "Developer" },
-                            { user: "Carol", role: "Designer" }
+                            { user: "Alice", role: ChaSetI18n.tr("desktopComposite.table.roleAdmin", "Administrator") },
+                            { user: "Bob", role: ChaSetI18n.tr("desktopComposite.table.roleDev", "Developer") },
+                            { user: "Carol", role: ChaSetI18n.tr("desktopComposite.table.roleDesigner", "Designer") }
                         ]
                     }
                 }
@@ -176,8 +178,8 @@ DocLayout {
                 customRadius: root.customRadius
 
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Selected Row State" }
-                    ChaSetCardDescription { text: "Interactive row highlighting with active selection." }
+                    ChaSetCardTitle { text: ChaSetI18n.tr("desktopComposite.table.statusCardTitle", "Status Badges & Selection") }
+                    ChaSetCardDescription { text: ChaSetI18n.tr("desktopComposite.table.statusCardDesc", "Tables embedding status indicator badges and interactive row states.") }
                 }
 
                 ChaSetCardContent {
@@ -185,13 +187,13 @@ DocLayout {
                         width: parent.width
                         selectedIndex: 0
                         columns: [
-                            { key: "task", title: "Task" },
-                            { key: "state", title: "State", align: "right", badge: true }
+                            { key: "task", title: ChaSetI18n.tr("desktopComposite.table.colTask", "Task") },
+                            { key: "state", title: ChaSetI18n.tr("desktopComposite.table.colState", "State"), align: "right", badge: true }
                         ]
                         rows: [
-                            { task: "API Integration", state: "Complete" },
-                            { task: "Unit Testing", state: "In Review" },
-                            { task: "Documentation", state: "Planned" }
+                            { task: "API Integration", state: ChaSetI18n.tr("desktopComposite.table.stateComplete", "Complete") },
+                            { task: "Unit Testing", state: ChaSetI18n.tr("desktopComposite.table.stateInReview", "In Review") },
+                            { task: "Documentation", state: ChaSetI18n.tr("desktopComposite.table.statePlanned", "Planned") }
                         ]
                     }
                 }

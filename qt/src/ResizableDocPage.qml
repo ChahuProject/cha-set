@@ -75,7 +75,7 @@ DocLayout {
                             anchors.centerIn: parent
                             spacing: 8
                             DocText {
-                                text: "Explorer Tree"
+                                text: ChaSetI18n.tr("surfaces.resizable.explorerTree")
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.weight: Typography.weightSemibold
@@ -83,7 +83,7 @@ DocLayout {
                             }
                             ChaSetBadge {
                                 variant: "outline"
-                                text: ((navPanel.width + editorPanel.width > 0) ? Math.round((navPanel.width / (navPanel.width + editorPanel.width)) * 100) : 35) + "% Width"
+                                text: ChaSetI18n.tr("surfaces.resizable.percentWidth", { "width": ((navPanel.width + editorPanel.width > 0) ? Math.round((navPanel.width / (navPanel.width + editorPanel.width)) * 100) : 35) })
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }
@@ -99,7 +99,7 @@ DocLayout {
                             anchors.centerIn: parent
                             spacing: 8
                             DocText {
-                                text: "Source Code Editor"
+                                text: ChaSetI18n.tr("surfaces.resizable.sourceCodeEditor")
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.weight: Typography.weightSemibold
@@ -107,7 +107,7 @@ DocLayout {
                             }
                             ChaSetBadge {
                                 variant: "secondary"
-                                text: ((navPanel.width + editorPanel.width > 0) ? Math.round((editorPanel.width / (navPanel.width + editorPanel.width)) * 100) : 65) + "% Width"
+                                text: ChaSetI18n.tr("surfaces.resizable.percentWidth", { "width": ((navPanel.width + editorPanel.width > 0) ? Math.round((editorPanel.width / (navPanel.width + editorPanel.width)) * 100) : 65) })
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }
@@ -217,7 +217,7 @@ ChaSetResizable {
                             anchors.centerIn: parent
                             spacing: 6
                             DocText {
-                                text: "Sidebar"
+                                text: ChaSetI18n.tr("surfaces.resizable.sidebar")
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.weight: Typography.weightSemibold
@@ -225,7 +225,7 @@ ChaSetResizable {
                             }
                             ChaSetBadge {
                                 variant: "outline"
-                                text: ((nestedSidebar.width + nestedInner.width > 0) ? Math.round((nestedSidebar.width / (nestedSidebar.width + nestedInner.width)) * 100) : 28) + "% Width"
+                                text: ChaSetI18n.tr("surfaces.resizable.percentWidth", { "width": ((nestedSidebar.width + nestedInner.width > 0) ? Math.round((nestedSidebar.width / (nestedSidebar.width + nestedInner.width)) * 100) : 28) })
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }
@@ -248,7 +248,7 @@ ChaSetResizable {
                                 anchors.centerIn: parent
                                 spacing: 6
                                 DocText {
-                                    text: "Editor Viewport"
+                                    text: ChaSetI18n.tr("surfaces.resizable.editorViewport")
                                     color: ThemeTokens.text
                                     font.pixelSize: Typography.sizeBody
                                     font.weight: Typography.weightSemibold
@@ -256,7 +256,7 @@ ChaSetResizable {
                                 }
                                 ChaSetBadge {
                                     variant: "secondary"
-                                    text: ((nestedEditor.height + nestedTerminal.height > 0) ? Math.round((nestedEditor.height / (nestedEditor.height + nestedTerminal.height)) * 100) : 65) + "% Height"
+                                    text: ChaSetI18n.tr("surfaces.resizable.percentHeight", { "height": ((nestedEditor.height + nestedTerminal.height > 0) ? Math.round((nestedEditor.height / (nestedEditor.height + nestedTerminal.height)) * 100) : 65) })
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
                             }
@@ -272,7 +272,7 @@ ChaSetResizable {
                                 anchors.centerIn: parent
                                 spacing: 6
                                 DocText {
-                                    text: "Integrated Terminal"
+                                    text: ChaSetI18n.tr("surfaces.resizable.integratedTerminal")
                                     color: ThemeTokens.text
                                     font.pixelSize: Typography.sizeBody
                                     font.weight: Typography.weightSemibold
@@ -280,7 +280,7 @@ ChaSetResizable {
                                 }
                                 ChaSetBadge {
                                     variant: "outline"
-                                    text: ((nestedEditor.height + nestedTerminal.height > 0) ? Math.round((nestedTerminal.height / (nestedEditor.height + nestedTerminal.height)) * 100) : 35) + "% Height"
+                                    text: ChaSetI18n.tr("surfaces.resizable.percentHeight", { "height": ((nestedEditor.height + nestedTerminal.height > 0) ? Math.round((nestedTerminal.height / (nestedEditor.height + nestedTerminal.height)) * 100) : 35) })
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
                             }
@@ -333,15 +333,15 @@ ChaSetResizable {
                     anchors.verticalCenter: parent.verticalCenter
                     DocText {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: "Direction:"
+                        text: ChaSetI18n.tr("surfaces.resizable.direction")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                     }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         options: [
-                            { label: "Horizontal", value: "horizontal" },
-                            { label: "Vertical", value: "vertical" }
+                            { label: ChaSetI18n.tr("surfaces.resizable.horizontal"), value: "horizontal" },
+                            { label: ChaSetI18n.tr("surfaces.resizable.vertical"), value: "vertical" }
                         ]
                         value: root.playgroundDirection
                         onValueSelected: function(val) { root.playgroundDirection = val; }
@@ -351,7 +351,7 @@ ChaSetResizable {
                 ChaSetButton {
                     size: "sm"
                     variant: root.playgroundWithHandle ? "default" : "outline"
-                    text: root.playgroundWithHandle ? "Handle: Visible" : "Handle: Hidden"
+                    text: root.playgroundWithHandle ? ChaSetI18n.tr("surfaces.resizable.handleVisible") : ChaSetI18n.tr("surfaces.resizable.handleHidden")
                     onClicked: root.playgroundWithHandle = !root.playgroundWithHandle
                 }
             }
@@ -388,7 +388,7 @@ ChaSetResizable {
                             anchors.centerIn: parent
                             spacing: 6
                             DocText {
-                                text: "Panel Alpha"
+                                text: ChaSetI18n.tr("surfaces.resizable.panelAlpha")
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.weight: Typography.weightSemibold
@@ -400,11 +400,11 @@ ChaSetResizable {
                                     if (root.playgroundDirection === "horizontal") {
                                         var totalW = playPanel1.width + playPanel2.width
                                         var pctW = totalW > 0 ? Math.round((playPanel1.width / totalW) * 100) : 40
-                                        return pctW + "% Width"
+                                        return ChaSetI18n.tr("surfaces.resizable.percentWidth", { "width": pctW })
                                     } else {
                                         var totalH = playPanel1.height + playPanel2.height
                                         var pctH = totalH > 0 ? Math.round((playPanel1.height / totalH) * 100) : 40
-                                        return pctH + "% Height"
+                                        return ChaSetI18n.tr("surfaces.resizable.percentHeight", { "height": pctH })
                                     }
                                 }
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -424,7 +424,7 @@ ChaSetResizable {
                             anchors.centerIn: parent
                             spacing: 6
                             DocText {
-                                text: "Panel Beta"
+                                text: ChaSetI18n.tr("surfaces.resizable.panelBeta")
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.weight: Typography.weightSemibold
@@ -436,11 +436,11 @@ ChaSetResizable {
                                     if (root.playgroundDirection === "horizontal") {
                                         var totalW = playPanel1.width + playPanel2.width
                                         var pctW = totalW > 0 ? Math.round((playPanel2.width / totalW) * 100) : 60
-                                        return pctW + "% Width"
+                                        return ChaSetI18n.tr("surfaces.resizable.percentWidth", { "width": pctW })
                                     } else {
                                         var totalH = playPanel1.height + playPanel2.height
                                         var pctH = totalH > 0 ? Math.round((playPanel2.height / totalH) * 100) : 60
-                                        return pctH + "% Height"
+                                        return ChaSetI18n.tr("surfaces.resizable.percentHeight", { "height": pctH })
                                     }
                                 }
                                 anchors.horizontalCenter: parent.horizontalCenter

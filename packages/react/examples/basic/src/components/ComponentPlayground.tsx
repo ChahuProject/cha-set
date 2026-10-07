@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Badge, Input, Checkbox, CopyButton, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
+import { Button, Badge, Input, Checkbox, CopyButton, useChaSetI18n, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
 
 export const ComponentPlayground: React.FC = () => {
+  const { t } = useChaSetI18n();
   const [variant, setVariant] = useState<ButtonVariant>('default');
   const [size, setSize] = useState<ButtonSize>('default');
-  const [label, setLabel] = useState('Create Project');
+  const [label, setLabel] = useState(t('getStarted.themeTuner.playground.defaultProjectLabel', 'Create Project'));
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [fullWidth, setFullWidth] = useState(false);
@@ -24,9 +25,9 @@ export const ComponentPlayground: React.FC = () => {
     <section className="block playground-block" id="playground">
       <div className="block-header">
         <div>
-          <h2>Interactive Component Sandbox</h2>
+          <h2>{t('getStarted.themeTuner.playground.title', 'Interactive Component Sandbox')}</h2>
           <p className="desc">
-            Adjust props live, interact with the component, and copy ready-to-use code directly into your app.
+            {t('getStarted.themeTuner.playground.desc', 'Adjust props live, interact with the component, and copy ready-to-use code directly into your app.')}
           </p>
         </div>
       </div>
@@ -35,7 +36,7 @@ export const ComponentPlayground: React.FC = () => {
         {/* Controls Column */}
         <div className="playground-controls">
           <div className="control-field">
-            <label className="control-label">Variant</label>
+            <label className="control-label">{t('getStarted.themeTuner.playground.variant', 'Variant')}</label>
             <div className="chip-selector flex flex-wrap gap-1">
               {(['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'] as const).map((v) => (
                 <Button
@@ -53,7 +54,7 @@ export const ComponentPlayground: React.FC = () => {
           </div>
 
           <div className="control-field">
-            <label className="control-label">Size</label>
+            <label className="control-label">{t('getStarted.themeTuner.playground.size', 'Size')}</label>
             <div className="chip-selector flex flex-wrap gap-1">
               {(['default', 'sm', 'lg', 'icon'] as const).map((s) => (
                 <Button
@@ -71,12 +72,12 @@ export const ComponentPlayground: React.FC = () => {
           </div>
 
           <div className="control-field">
-            <label className="control-label">Button Label</label>
+            <label className="control-label">{t('getStarted.themeTuner.playground.buttonLabel', 'Button Label')}</label>
             <Input
               size="sm"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
-              placeholder="Button text"
+              placeholder={t('getStarted.themeTuner.playground.buttonPlaceholder', 'Button text')}
               className="h-8 text-xs"
             />
           </div>
@@ -86,28 +87,28 @@ export const ComponentPlayground: React.FC = () => {
               size="sm"
               checked={loading}
               onCheckedChange={(val) => setLoading(val)}
-              label="Loading State"
+              label={t('getStarted.themeTuner.playground.loadingState', 'Loading State')}
             />
 
             <Checkbox
               size="sm"
               checked={disabled}
               onCheckedChange={(val) => setDisabled(val)}
-              label="Disabled"
+              label={t('getStarted.themeTuner.playground.disabled', 'Disabled')}
             />
 
             <Checkbox
               size="sm"
               checked={fullWidth}
               onCheckedChange={(val) => setFullWidth(val)}
-              label="Full Width"
+              label={t('getStarted.themeTuner.playground.fullWidth', 'Full Width')}
             />
 
             <Checkbox
               size="sm"
               checked={renderAsLink}
               onCheckedChange={(val) => setRenderAsLink(val)}
-              label="Polymorphic (<a> link via Base UI)"
+              label={t('getStarted.themeTuner.playground.renderAsLink', 'Polymorphic (<a> link via Base UI)')}
             />
           </div>
         </div>
@@ -143,18 +144,18 @@ export const ComponentPlayground: React.FC = () => {
               )}
             </div>
             <div className="stage-feedback">
-              <span>Clicks: {clickCount}</span>
-              {loading && <Badge size="sm" variant="secondary">Loading spinner active</Badge>}
-              {disabled && <Badge size="sm" variant="destructive">Disabled</Badge>}
+              <span>{t('getStarted.themeTuner.playground.clicks', 'Clicks: {{count}}', { count: clickCount })}</span>
+              {loading && <Badge size="sm" variant="secondary">{t('getStarted.themeTuner.playground.loadingSpinnerActive', 'Loading spinner active')}</Badge>}
+              {disabled && <Badge size="sm" variant="destructive">{t('getStarted.themeTuner.playground.disabled', 'Disabled')}</Badge>}
             </div>
           </div>
 
           <div className="code-snippet-box">
             <div className="code-snippet-header">
-              <span>React JSX Usage</span>
+              <span>{t('getStarted.themeTuner.playground.jsxUsage', 'React JSX Usage')}</span>
               <CopyButton
                 text={generatedCode}
-                label="Copy JSX"
+                label={t('getStarted.themeTuner.playground.copyJsx', 'Copy JSX')}
                 variant="ghost"
                 size="sm"
                 className="h-6 px-2 text-xs"

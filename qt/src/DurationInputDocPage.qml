@@ -25,27 +25,39 @@ DocLayout {
 
                 Column {
                     spacing: 6
-                    DocText { text: "Timer Duration (Default):"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                    DocText { text: ChaSetI18n.tr("components.durationInput.timerDurationDefault", "Timer Duration (Default):"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetDurationInput {
                         value: 3665
+                        hoursLabel: ChaSetI18n.tr("components.durationInput.hours", "Hours")
+                        minutesLabel: ChaSetI18n.tr("components.durationInput.minutes", "Minutes")
+                        secondsLabel: ChaSetI18n.tr("components.durationInput.seconds", "Seconds")
+                        presetsLabel: ChaSetI18n.tr("components.durationInput.presets", "Presets")
                     }
                 }
 
                 Column {
                     spacing: 6
-                    DocText { text: "Compact Size (sm):"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                    DocText { text: ChaSetI18n.tr("components.durationInput.compactSizeColon", "Compact Size (sm):"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetDurationInput {
                         size: "sm"
                         value: 300
+                        hoursLabel: ChaSetI18n.tr("components.durationInput.hours", "Hours")
+                        minutesLabel: ChaSetI18n.tr("components.durationInput.minutes", "Minutes")
+                        secondsLabel: ChaSetI18n.tr("components.durationInput.seconds", "Seconds")
+                        presetsLabel: ChaSetI18n.tr("components.durationInput.presets", "Presets")
                     }
                 }
 
                 Column {
                     spacing: 6
-                    DocText { text: "Disabled State:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                    DocText { text: ChaSetI18n.tr("components.durationInput.disabledStateColon", "Disabled State:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetDurationInput {
                         value: 900
                         disabled: true
+                        hoursLabel: ChaSetI18n.tr("components.durationInput.hours", "Hours")
+                        minutesLabel: ChaSetI18n.tr("components.durationInput.minutes", "Minutes")
+                        secondsLabel: ChaSetI18n.tr("components.durationInput.seconds", "Seconds")
+                        presetsLabel: ChaSetI18n.tr("components.durationInput.presets", "Presets")
                     }
                 }
             }
@@ -97,11 +109,15 @@ ChaSetDurationInput {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Compact Size (sm)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.durationInput.compactTitle", "Compact Size (sm)"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetDurationInput {
                         width: parent.width - ThemeTokens.dp(28)
                         size: "sm"
                         value: 300
+                        hoursLabel: ChaSetI18n.tr("components.durationInput.hours", "Hours")
+                        minutesLabel: ChaSetI18n.tr("components.durationInput.minutes", "Minutes")
+                        secondsLabel: ChaSetI18n.tr("components.durationInput.seconds", "Seconds")
+                        presetsLabel: ChaSetI18n.tr("components.durationInput.presets", "Presets")
                     }
                 }
             }
@@ -113,11 +129,15 @@ ChaSetDurationInput {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Large Size (lg)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.durationInput.largeTitle", "Large Size (lg)"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetDurationInput {
                         width: parent.width - ThemeTokens.dp(28)
                         size: "lg"
                         value: 7200
+                        hoursLabel: ChaSetI18n.tr("components.durationInput.hours", "Hours")
+                        minutesLabel: ChaSetI18n.tr("components.durationInput.minutes", "Minutes")
+                        secondsLabel: ChaSetI18n.tr("components.durationInput.seconds", "Seconds")
+                        presetsLabel: ChaSetI18n.tr("components.durationInput.presets", "Presets")
                     }
                 }
             }
@@ -129,11 +149,15 @@ ChaSetDurationInput {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Disabled State"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.durationInput.disabledTitle", "Disabled State"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     ChaSetDurationInput {
                         width: parent.width - ThemeTokens.dp(28)
                         value: 900
                         disabled: true
+                        hoursLabel: ChaSetI18n.tr("components.durationInput.hours", "Hours")
+                        minutesLabel: ChaSetI18n.tr("components.durationInput.minutes", "Minutes")
+                        secondsLabel: ChaSetI18n.tr("components.durationInput.seconds", "Seconds")
+                        presetsLabel: ChaSetI18n.tr("components.durationInput.presets", "Presets")
                     }
                 }
             }

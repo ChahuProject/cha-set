@@ -48,7 +48,7 @@ DocLayout {
                         visible: root.demoOrientation === "horizontal"
                         width: parent.width
                         DocText {
-                            text: "Value:"
+                            text: ChaSetI18n.tr("formsA.slider.valueLabel", "Value:")
                             color: root.cMutedFg
                             font.pixelSize: Typography.sizeSmall
                         }
@@ -91,7 +91,7 @@ DocLayout {
                 Row {
                     spacing: 8
                     DocText {
-                        text: "Size:"
+                        text: ChaSetI18n.tr("showcase.size", "Size:")
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
@@ -101,8 +101,8 @@ DocLayout {
                         size: "sm"
                         value: root.demoSize
                         options: [
-                            { label: "Default", value: "default" },
-                            { label: "Small (sm)", value: "sm" }
+                            { label: ChaSetI18n.tr("formsA.slider.sizeDefault", "Default"), value: "default" },
+                            { label: ChaSetI18n.tr("formsA.slider.sizeSm", "Small (sm)"), value: "sm" }
                         ]
                         onValueSelected: function(s) { root.demoSize = String(s); }
                     }
@@ -111,7 +111,7 @@ DocLayout {
                 Row {
                     spacing: 8
                     DocText {
-                        text: "Step:"
+                        text: ChaSetI18n.tr("formsA.slider.stepLabel", "Step:")
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
@@ -133,7 +133,7 @@ DocLayout {
                 Row {
                     spacing: 8
                     DocText {
-                        text: "Orientation:"
+                        text: ChaSetI18n.tr("formsA.slider.orientationLabel", "Orientation:")
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                         anchors.verticalCenter: parent.verticalCenter
@@ -157,7 +157,7 @@ DocLayout {
 
                     ChaSetCheckbox {
                         size: "sm"
-                        label: "Disabled"
+                        label: ChaSetI18n.tr("common.disabled", "Disabled")
                         checked: root.demoDisabled
                         onToggled: (val) => root.demoDisabled = val
                         anchors.verticalCenter: parent.verticalCenter
@@ -165,7 +165,7 @@ DocLayout {
 
                     ChaSetCheckbox {
                         size: "sm"
-                        label: "Read-Only"
+                        label: ChaSetI18n.tr("formsA.slider.readOnly", "Read-Only")
                         checked: root.demoReadOnly
                         onToggled: (val) => root.demoReadOnly = val
                         anchors.verticalCenter: parent.verticalCenter
@@ -173,7 +173,7 @@ DocLayout {
 
                     ChaSetCheckbox {
                         size: "sm"
-                        label: "Tooltip"
+                        label: ChaSetI18n.tr("formsA.slider.tooltip", "Tooltip")
                         checked: root.demoShowTooltip
                         onToggled: (val) => root.demoShowTooltip = val
                         anchors.verticalCenter: parent.verticalCenter
@@ -181,7 +181,7 @@ DocLayout {
 
                     ChaSetCheckbox {
                         size: "sm"
-                        label: "Ticks"
+                        label: ChaSetI18n.tr("formsA.slider.ticks", "Ticks")
                         checked: root.demoShowTicks
                         onToggled: (val) => root.demoShowTicks = val
                         anchors.verticalCenter: parent.verticalCenter
@@ -213,7 +213,7 @@ DocLayout {
         }
 
         DocText {
-            text: "Visual matrix of common slider configurations, size scales, tooltips, and interactive states in Qt Quick."
+            text: ChaSetI18n.tr("formsA.slider.examplesSubtitle", "Visual matrix of common slider configurations, size scales, tooltips, and interactive states in Qt Quick.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -233,8 +233,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Floating Value Tooltip"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Interactive formatted indicator on thumb drag and hover"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.floatingTooltipTitle", "Floating Value Tooltip"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.floatingTooltipDesc", "Interactive formatted indicator on thumb drag and hover"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
                         width: parent.width - ThemeTokens.dp(28)
@@ -258,8 +258,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Compact Size (sm)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Reduced track thickness and thumb size for toolbars"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.compactTitle", "Compact Size (sm)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.compactDesc", "Reduced track thickness and thumb size for toolbars"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
                         width: parent.width - ThemeTokens.dp(28)
@@ -281,8 +281,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Read-Only State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Locked value without dimmed 50% opacity"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.readOnlyTitle", "Read-Only State"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.readOnlyDesc", "Locked value without dimmed 50% opacity"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
                         width: parent.width - ThemeTokens.dp(28)
@@ -304,8 +304,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Discrete Stops with Ticks"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Quantized stops with tick indicators and label marks"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.ticksTitle", "Discrete Stops with Ticks"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.ticksDesc", "Quantized stops with tick indicators and label marks"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
                         width: parent.width - ThemeTokens.dp(28)
@@ -329,8 +329,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Non-interactive with dimmed opacity for disabled controls"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.disabledTitle", "Disabled State"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.disabledDesc", "Non-interactive with dimmed opacity for disabled controls"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
                         width: parent.width - ThemeTokens.dp(28)
@@ -352,8 +352,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Custom Range (20 to 80)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Bounded custom minimum and maximum limits with step=5"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.customRangeTitle", "Custom Range (20 to 80)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("formsA.slider.customRangeDesc", "Bounded custom minimum and maximum limits with step=5"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     Item { width: parent.width; height: ThemeTokens.dp(6) }
                     ChaSetSlider {
                         width: parent.width - ThemeTokens.dp(28)

@@ -59,11 +59,13 @@ DocLayout {
 
     // Section: Variants & Options
     Column {
+        property string sectionId: "variants"
+        property string sectionTitle: "Variants & Options"
         width: parent.width
         spacing: 16
 
         DocText {
-            text: "Variants & Options"
+            text: ChaSetI18n.tr("desktopComposite.codeBlock.variantsTitle", "Variants & Options")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightSemibold
@@ -71,7 +73,7 @@ DocLayout {
         DocText {
             width: parent.width
             wrap: true
-            text: "Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and chrome-less embedding for inline prose."
+            text: ChaSetI18n.tr("desktopComposite.codeBlock.variantsDesc", "Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and chrome-less embedding for inline prose.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -83,7 +85,7 @@ DocLayout {
             Row {
                 spacing: 8
                 ChaSetBadge { variant: "secondary"; text: "showLineNumbers" }
-                DocText { text: "Gutter with right-aligned line numbers"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.gutterDesc", "Gutter with right-aligned line numbers"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
                 width: parent.width
@@ -101,7 +103,7 @@ DocLayout {
             Row {
                 spacing: 8
                 ChaSetBadge { variant: "secondary"; text: "wrap" }
-                DocText { text: "Soft-wrap long lines instead of horizontal scroll"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.wrapDesc", "Soft-wrap long lines instead of horizontal scroll"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
                 width: parent.width
@@ -118,7 +120,7 @@ DocLayout {
             Row {
                 spacing: 8
                 ChaSetBadge { variant: "secondary"; text: "highlight={false}" }
-                DocText { text: "Monochrome fallback using the same layout"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.monochromeDesc", "Monochrome fallback using the same layout"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
                 width: parent.width
@@ -136,7 +138,7 @@ DocLayout {
             Row {
                 spacing: 8
                 ChaSetBadge { variant: "secondary"; text: "embedded" }
-                DocText { text: "Drop the card chrome and header for inline embedding"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.embeddedDesc", "Drop the card chrome and header for inline embedding"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
                 width: parent.width
@@ -149,10 +151,12 @@ DocLayout {
 
     // Section: Multi-File Tabs
     Column {
+        property string sectionId: "multi-file"
+        property string sectionTitle: "Multi-File Tabs"
         width: parent.width
         spacing: 12
         DocText {
-            text: "Multi-File Tabs"
+            text: ChaSetI18n.tr("desktopComposite.codeBlock.multiFileTitle", "Multi-File Tabs")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightSemibold
@@ -160,7 +164,7 @@ DocLayout {
         DocText {
             width: parent.width
             wrap: true
-            text: "Pass a files array to render a tabbed group. Each tab carries its own language, and the copy button always targets the active file."
+            text: ChaSetI18n.tr("desktopComposite.codeBlock.multiFileDesc", "Pass a files array to render a tabbed group. Each tab carries its own language, and the copy button always targets the active file.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }

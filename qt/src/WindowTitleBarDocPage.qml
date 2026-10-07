@@ -9,7 +9,7 @@ DocLayout {
     pageTitle: "Window Title Bar"
     description: "Frameless desktop application window header with app branding, icon, drag region, and caption control buttons."
 
-    property string lastAction: "Idle"
+    property string lastActionKey: "idle"
 
     ComponentPreview {
         title: "Window Title Bar Sandbox"
@@ -51,11 +51,11 @@ DocLayout {
 
                         ChaSetWindowTitleBar {
                             width: parent.width
-                            title: "Chahu Render Studio v2.4"
+                            title: ChaSetI18n.tr("desktopComposite.windowTitleBar.appTitle", "Chahu Render Studio v2.4")
                             icon: "logo"
-                            onMinimizeClicked: root.lastAction = "Minimize clicked"
-                            onMaximizeClicked: root.lastAction = "Maximize / Restore clicked"
-                            onCloseClicked: root.lastAction = "Close clicked"
+                            onMinimizeClicked: root.lastActionKey = "minimizeClicked"
+                            onMaximizeClicked: root.lastActionKey = "maximizeClicked"
+                            onCloseClicked: root.lastActionKey = "closeClicked"
                         }
 
                         Item {
@@ -68,7 +68,7 @@ DocLayout {
 
                                 DocText {
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    text: "Desktop Mock Window Frame"
+                                    text: ChaSetI18n.tr("desktopComposite.windowTitleBar.clientArea", "Desktop Mock Window Frame")
                                     color: ThemeTokens.text
                                     font.pixelSize: Typography.sizeBody
                                     font.weight: Typography.weightSemibold
@@ -80,7 +80,7 @@ DocLayout {
 
                                     DocText {
                                         anchors.verticalCenter: parent.verticalCenter
-                                        text: "Caption Event:"
+                                        text: ChaSetI18n.tr("desktopComposite.windowTitleBar.captionEvent", "Caption Event:")
                                         color: ThemeTokens.subduedText
                                         font.pixelSize: Typography.sizeSmall
                                     }
@@ -88,7 +88,7 @@ DocLayout {
                                     ChaSetBadge {
                                         anchors.verticalCenter: parent.verticalCenter
                                         variant: "secondary"
-                                        text: root.lastAction
+                                        text: ChaSetI18n.tr("desktopComposite.windowTitleBar." + root.lastActionKey, "Idle")
                                     }
                                 }
                             }

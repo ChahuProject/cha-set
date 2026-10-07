@@ -145,7 +145,7 @@ DocLayout {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             icon: "home"
-                            text: demoSidebar.collapsed ? "" : "Overview"
+                            text: demoSidebar.collapsed ? "" : ChaSetI18n.tr("surfaces.sidebar.overview")
                             variant: "default"
                             size: "sm"
                         }
@@ -157,7 +157,7 @@ DocLayout {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             icon: "folder"
-                            text: demoSidebar.collapsed ? "" : "Projects"
+                            text: demoSidebar.collapsed ? "" : ChaSetI18n.tr("surfaces.sidebar.projects")
                             variant: "ghost"
                             size: "sm"
                         }
@@ -169,7 +169,7 @@ DocLayout {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             icon: "settings"
-                            text: demoSidebar.collapsed ? "" : "Preferences"
+                            text: demoSidebar.collapsed ? "" : ChaSetI18n.tr("surfaces.sidebar.preferences")
                             variant: "ghost"
                             size: "sm"
                         }
@@ -180,7 +180,7 @@ DocLayout {
                             anchors.bottom: parent.bottom
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            text: demoSidebar.collapsed ? "Expand" : "Collapse"
+                            text: demoSidebar.collapsed ? ChaSetI18n.tr("surfaces.sidebar.expand") : ChaSetI18n.tr("surfaces.sidebar.collapse")
                             variant: "outline"
                             size: "sm"
                             onClicked: {
@@ -207,7 +207,7 @@ DocLayout {
 
                         DocText {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            text: "Main Viewport Inset"
+                            text: ChaSetI18n.tr("surfaces.sidebar.mainViewportInset")
                             color: ThemeTokens.text
                             font.pixelSize: Typography.sizeHeading
                             font.weight: Typography.weightSemibold
@@ -219,7 +219,7 @@ DocLayout {
 
                             DocText {
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: "Sidebar Width:"
+                                text: ChaSetI18n.tr("surfaces.sidebar.sidebarWidth")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeSmall
                             }
@@ -233,7 +233,7 @@ DocLayout {
                             ChaSetBadge {
                                 anchors.verticalCenter: parent.verticalCenter
                                 variant: demoSidebar.collapsed ? "secondary" : "default"
-                                text: demoSidebar.collapsed ? "Collapsed" : "Expanded"
+                                text: demoSidebar.collapsed ? ChaSetI18n.tr("surfaces.sidebar.collapsed") : ChaSetI18n.tr("surfaces.sidebar.expanded")
                             }
                         }
 
@@ -242,14 +242,14 @@ DocLayout {
                             spacing: 8
 
                             ChaSetButton {
-                                text: demoSidebar.collapsed ? "Expand Sidebar" : "Collapse Sidebar"
+                                text: demoSidebar.collapsed ? ChaSetI18n.tr("surfaces.sidebar.expandSidebar") : ChaSetI18n.tr("surfaces.sidebar.collapseSidebar")
                                 variant: "outline"
                                 size: "sm"
                                 onClicked: demoSidebar.toggle()
                             }
 
                             ChaSetButton {
-                                text: "Reset Width (220)"
+                                text: ChaSetI18n.tr("surfaces.sidebar.resetWidth220")
                                 variant: "ghost"
                                 size: "sm"
                                 onClicked: {

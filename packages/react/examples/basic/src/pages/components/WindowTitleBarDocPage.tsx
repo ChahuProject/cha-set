@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { WindowTitleBar, Badge, CodeBlock, ChaSetLogoIcon } from '@chahu/cha-set';
+import { WindowTitleBar, Badge, CodeBlock, ChaSetLogoIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function WindowTitleBarDocPage() {
-  const [lastAction, setLastAction] = useState('Idle');
+  const { t } = useChaSetI18n();
+  const [lastActionKey, setLastActionKey] = useState<string>('idle');
 
   const reactCode = `<WindowTitleBar
   title="Window Title Bar"
@@ -41,17 +42,17 @@ export function WindowTitleBarDocPage() {
 }`} title="Window Title Bar Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-lg border border-border rounded-lg overflow-hidden shadow-sm">
             <WindowTitleBar
-              title="ChaSet Desktop Studio"
+              title={t('desktopComposite.windowTitleBar.appTitle', 'ChaSet Desktop Studio')}
               icon={<ChaSetLogoIcon className="size-4 text-primary" />}
-              onMinimize={() => setLastAction('Minimize clicked')}
-              onMaximize={() => setLastAction('Maximize / Restore clicked')}
-              onClose={() => setLastAction('Close clicked')}
+              onMinimize={() => setLastActionKey('minimizeClicked')}
+              onMaximize={() => setLastActionKey('maximizeClicked')}
+              onClose={() => setLastActionKey('closeClicked')}
             />
             <div className="h-32 p-4 bg-card text-xs text-muted-foreground flex flex-col items-center justify-center gap-2">
-              <span>Frameless Client Window Area</span>
+              <span>{t('desktopComposite.windowTitleBar.clientArea', 'Frameless Client Window Area')}</span>
               <div className="flex items-center gap-2">
-                <span>Caption Event:</span>
-                <Badge variant="secondary">{lastAction}</Badge>
+                <span>{t('desktopComposite.windowTitleBar.captionEvent', 'Caption Event:')}</span>
+                <Badge variant="secondary">{t(`desktopComposite.windowTitleBar.${lastActionKey}`, 'Idle')}</Badge>
               </div>
             </div>
           </div>

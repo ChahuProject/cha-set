@@ -9,7 +9,7 @@ DocLayout {
     pageTitle: "Context Menu"
     description: "Displays a contextual popup menu at pointer coordinates triggered by right-click interaction."
 
-    property string lastAction: "Right-click the target area below"
+    property string lastAction: "idle"
 
     ComponentPreview {
         title: "Context Menu Sandbox"
@@ -48,14 +48,14 @@ DocLayout {
                     width: ThemeTokens.dp(320)
                     height: ThemeTokens.dp(160)
                     items: [
-                        { id: "back", label: "Back", shortcut: "Alt+Left" },
-                        { id: "forward", label: "Forward", shortcut: "Alt+Right", disabled: true },
-                        { id: "reload", label: "Reload", shortcut: "Ctrl+R" },
-                        { id: "save", label: "Save As...", shortcut: "Ctrl+S" },
-                        { id: "inspect", label: "Inspect Element", shortcut: "F12" }
+                        { id: "back", label: ChaSetI18n.tr("overlays.contextMenu.back", "Back"), shortcut: "Alt+Left" },
+                        { id: "forward", label: ChaSetI18n.tr("overlays.contextMenu.forward", "Forward"), shortcut: "Alt+Right", disabled: true },
+                        { id: "reload", label: ChaSetI18n.tr("overlays.contextMenu.reload", "Reload"), shortcut: "Ctrl+R" },
+                        { id: "save", label: ChaSetI18n.tr("overlays.contextMenu.saveAs", "Save As..."), shortcut: "Ctrl+S" },
+                        { id: "inspect", label: ChaSetI18n.tr("overlays.contextMenu.inspectElement", "Inspect Element"), shortcut: "F12" }
                     ]
                     onItemSelected: function(itemId) {
-                        root.lastAction = "Action selected: " + itemId
+                        root.lastAction = itemId
                     }
 
                     Rectangle {
@@ -71,7 +71,7 @@ DocLayout {
 
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text: "Right Click Inside This Area"
+                                text: ChaSetI18n.tr("overlays.contextMenu.rightClickAreaTitle", "Right Click Inside This Area")
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.weight: Typography.weightSemibold
@@ -79,7 +79,7 @@ DocLayout {
 
                             Text {
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                text: "A native contextual popup will appear at pointer coordinates."
+                                text: ChaSetI18n.tr("overlays.contextMenu.rightClickAreaDesc", "A native contextual popup will appear at pointer coordinates.")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeCaption
                             }
@@ -89,7 +89,7 @@ DocLayout {
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: root.lastAction
+                    text: root.lastAction === "idle" ? ChaSetI18n.tr("overlays.contextMenu.statusIdle", "Right-click the target area below") : ChaSetI18n.tr("overlays.contextMenu.statusSelected", "Action selected: {{id}}", { id: root.lastAction })
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono

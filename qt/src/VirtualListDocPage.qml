@@ -52,7 +52,7 @@ listRef.current?.scrollToIndex(500, 'center');
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Rendering 10,000 Virtual Items with Native Wheel Flicking:"
+                    text: ChaSetI18n.tr("desktopComposite.virtualList.hint", "Rendering 10,000 Virtual Items with Native Wheel Flicking:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                 }
@@ -62,28 +62,28 @@ listRef.current?.scrollToIndex(500, 'center');
                     spacing: ThemeTokens.dp(8)
 
                     ChaSetButton {
-                        text: "Top (#1)"
+                        text: ChaSetI18n.tr("desktopComposite.virtualList.btnTop", "Top (#1)")
                         variant: "outline"
                         size: "sm"
                         onClicked: virtualList.scrollToIndex(0, "start")
                     }
 
                     ChaSetButton {
-                        text: "Index #500"
+                        text: ChaSetI18n.tr("desktopComposite.virtualList.btn500", "Index #500")
                         variant: "outline"
                         size: "sm"
                         onClicked: virtualList.scrollToIndex(500, "center")
                     }
 
                     ChaSetButton {
-                        text: "Index #2,500"
+                        text: ChaSetI18n.tr("desktopComposite.virtualList.btn2500", "Index #2,500")
                         variant: "outline"
                         size: "sm"
                         onClicked: virtualList.scrollToIndex(2500, "center")
                     }
 
                     ChaSetButton {
-                        text: "Bottom (#10,000)"
+                        text: ChaSetI18n.tr("desktopComposite.virtualList.btnBottom", "Bottom (#10,000)")
                         variant: "outline"
                         size: "sm"
                         onClicked: virtualList.scrollToIndex(9999, "end")
@@ -107,7 +107,7 @@ listRef.current?.scrollToIndex(500, 'center');
                             anchors.right: badgeItem.left
                             anchors.rightMargin: ThemeTokens.dp(8)
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "Dataset Item #" + (index + 1)
+                            text: ChaSetI18n.tr("desktopComposite.virtualList.itemTitle", "Dataset Item #{{index}}", { index: index + 1 })
                             color: ThemeTokens.text
                             font.pixelSize: Typography.sizeSmall
                             font.family: Typography.familyMono
@@ -119,7 +119,7 @@ listRef.current?.scrollToIndex(500, 'center');
                             anchors.right: parent.right
                             anchors.rightMargin: ThemeTokens.dp(12)
                             anchors.verticalCenter: parent.verticalCenter
-                            text: index % 2 === 0 ? "Production" : "Staging"
+                            text: index % 2 === 0 ? ChaSetI18n.tr("desktopComposite.virtualList.production", "Production") : ChaSetI18n.tr("desktopComposite.virtualList.staging", "Staging")
                             variant: index % 2 === 0 ? "secondary" : "outline"
                             size: "sm"
                         }

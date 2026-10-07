@@ -69,6 +69,29 @@ DocLayout {
                         onTimingModeChanged: (m) => root.demoTimingMode = m
                         onTimeFormatChanged: (f) => root.demoTimeFormat = f
                     }
+
+                    Item {
+                        width: parent.width
+                        height: Math.max(statusText.implicitHeight, timingText.implicitHeight)
+
+                        DocText {
+                            id: statusText
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: ChaSetI18n.tr("components.mediaProgressBar.playbackStatus", "Playback Progress") + ": " + Math.round(root.demoRatio * 100) + "%"
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeCaption
+                        }
+
+                        DocText {
+                            id: timingText
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: ChaSetI18n.tr("components.mediaProgressBar.timingModeLabel", "Timing Mode") + ": " + root.demoTimingMode
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeCaption
+                        }
+                    }
                 }
             }
         ]

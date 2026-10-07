@@ -17,6 +17,7 @@ import {
   Badge,
   SegmentedControl,
   CodeBlock,
+  useChaSetI18n,
 } from "@chahu/cha-set";
 import { DocLayout } from "../../layout/DocLayout";
 import { ComponentReference } from '../../components/ComponentReference';
@@ -24,6 +25,7 @@ import { ComponentPreview } from "../../components/ComponentPreview";
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SidebarDocPage() {
+  const { t } = useChaSetI18n();
   const [activeItem, setActiveItem] = useState("dashboard");
   const [collapsibleMode, setCollapsibleMode] = useState<"icon" | "offcanvas" | "none">("icon");
 
@@ -111,7 +113,7 @@ export function SidebarDocPage() {
               </SidebarHeader>
               <SidebarContent>
                 <SidebarGroup>
-                  <SidebarGroupLabel>Overview</SidebarGroupLabel>
+                  <SidebarGroupLabel>{t('surfaces.sidebar.overview')}</SidebarGroupLabel>
                   <SidebarGroupContent>
                     <SidebarMenu>
                       <SidebarMenuItem>
@@ -119,7 +121,7 @@ export function SidebarDocPage() {
                           isActive={activeItem === "dashboard"}
                           onClick={() => setActiveItem("dashboard")}
                         >
-                          <span>Dashboard</span>
+                          <span>{t('surfaces.sidebar.dashboard')}</span>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                       <SidebarMenuItem>
@@ -127,7 +129,7 @@ export function SidebarDocPage() {
                           isActive={activeItem === "projects"}
                           onClick={() => setActiveItem("projects")}
                         >
-                          <span>Projects</span>
+                          <span>{t('surfaces.sidebar.projects')}</span>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                       <SidebarMenuItem>
@@ -135,14 +137,14 @@ export function SidebarDocPage() {
                           isActive={activeItem === "diagnostics"}
                           onClick={() => setActiveItem("diagnostics")}
                         >
-                          <span>Diagnostics</span>
+                          <span>{t('surfaces.sidebar.diagnostics')}</span>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     </SidebarMenu>
                   </SidebarGroupContent>
                 </SidebarGroup>
                 <SidebarGroup>
-                  <SidebarGroupLabel>Configuration</SidebarGroupLabel>
+                  <SidebarGroupLabel>{t('surfaces.sidebar.configuration')}</SidebarGroupLabel>
                   <SidebarGroupContent>
                     <SidebarMenu>
                       <SidebarMenuItem>
@@ -150,7 +152,7 @@ export function SidebarDocPage() {
                           isActive={activeItem === "settings"}
                           onClick={() => setActiveItem("settings")}
                         >
-                          <span>Preferences</span>
+                          <span>{t('surfaces.sidebar.preferences')}</span>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     </SidebarMenu>
@@ -166,22 +168,22 @@ export function SidebarDocPage() {
               <div className="flex items-center gap-2">
                 <SidebarTrigger />
                 <span className="text-sm font-medium flex items-center gap-1.5">
-                  Selected View: <Badge variant="outline">{activeItem}</Badge>
+                  {t('surfaces.sidebar.selectedView')} <Badge variant="outline">{activeItem}</Badge>
                 </span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Drag the rail on the right edge of the sidebar to resize, or click the trigger to collapse/expand.
+                {t('surfaces.sidebar.dragHint')}
               </p>
               <div className="flex items-center gap-3 mt-auto">
-                <span className="text-xs text-muted-foreground font-medium">Collapsible Mode:</span>
+                <span className="text-xs text-muted-foreground font-medium">{t('surfaces.sidebar.collapsibleMode')}</span>
                 <SegmentedControl
                   size="sm"
                   value={collapsibleMode}
                   onValueChange={(val) => setCollapsibleMode(val as "icon" | "offcanvas" | "none")}
                   options={[
-                    { label: "Icon", value: "icon" },
-                    { label: "Offcanvas", value: "offcanvas" },
-                    { label: "None", value: "none" },
+                    { label: t('surfaces.sidebar.icon'), value: "icon" },
+                    { label: t('surfaces.sidebar.offcanvas'), value: "offcanvas" },
+                    { label: t('surfaces.sidebar.none'), value: "none" },
                   ]}
                 />
               </div>

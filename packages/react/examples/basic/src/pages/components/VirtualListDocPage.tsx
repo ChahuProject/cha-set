@@ -1,20 +1,21 @@
 import React, { useMemo, useRef } from 'react';
-import { VirtualList, type VirtualListHandle, Badge, Button, CodeBlock } from '@chahu/cha-set';
+import { VirtualList, type VirtualListHandle, Badge, Button, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function VirtualListDocPage() {
+  const { t } = useChaSetI18n();
   const listRef = useRef<VirtualListHandle>(null);
 
   const items = useMemo(() => {
     return Array.from({ length: 10000 }, (_, i) => ({
       id: i,
-      title: `Dataset Item #${i + 1}`,
-      tag: i % 2 === 0 ? 'Production' : 'Staging',
+      title: t('desktopComposite.virtualList.itemTitle', 'Dataset Item #{{index}}', { index: i + 1 }),
+      tag: i % 2 === 0 ? t('desktopComposite.virtualList.production', 'Production') : t('desktopComposite.virtualList.staging', 'Staging'),
     }));
-  }, []);
+  }, [t]);
 
   const reactCode = `const listRef = useRef<VirtualListHandle>(null);
 
@@ -66,28 +67,28 @@ listRef.current?.scrollToIndex(500, 'center');
                 size="sm"
                 onClick={() => listRef.current?.scrollToIndex(0, 'start')}
               >
-                Top (#1)
+                {t('desktopComposite.virtualList.btnTop', 'Top (#1)')}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => listRef.current?.scrollToIndex(500, 'center')}
               >
-                Index #500
+                {t('desktopComposite.virtualList.btn500', 'Index #500')}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => listRef.current?.scrollToIndex(2500, 'center')}
               >
-                Index #2,500
+                {t('desktopComposite.virtualList.btn2500', 'Index #2,500')}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => listRef.current?.scrollToIndex(items.length - 1, 'end')}
               >
-                Bottom (#10,000)
+                {t('desktopComposite.virtualList.btnBottom', 'Bottom (#10,000)')}
               </Button>
             </div>
 

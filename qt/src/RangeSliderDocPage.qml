@@ -43,14 +43,14 @@ DocLayout {
                     height: ThemeTokens.dp(16)
                     DocText {
                         anchors.left: parent.left
-                        text: "Min: " + Math.round(root.minPrice)
+                        text: ChaSetI18n.tr("formsA.rangeSlider.minLabel", "Min: {{value}}", { value: Math.round(root.minPrice) })
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                         font.family: Typography.familyMono
                     }
                     DocText {
                         anchors.right: parent.right
-                        text: "Max: " + Math.round(root.maxPrice)
+                        text: ChaSetI18n.tr("formsA.rangeSlider.maxLabel", "Max: {{value}}", { value: Math.round(root.maxPrice) })
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                         font.family: Typography.familyMono
@@ -113,28 +113,28 @@ ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false 
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Default with Tooltips"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("formsA.rangeSlider.defaultWithTooltips", "Default with Tooltips"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetRangeSlider { width: parent.width; size: "default"; firstValue: 20; secondValue: 80; showTooltip: true }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Compact sm Tier"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("formsA.rangeSlider.compactSm", "Compact sm Tier"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetRangeSlider { width: parent.width; size: "sm"; firstValue: 30; secondValue: 70; showTooltip: true }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Read Only"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("formsA.rangeSlider.readOnly", "Read Only"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetRangeSlider { width: parent.width; size: "sm"; firstValue: 25; secondValue: 75; readOnly: true }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Disabled"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("formsA.rangeSlider.disabled", "Disabled"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetRangeSlider { width: parent.width; size: "sm"; firstValue: 10; secondValue: 90; enabled: false }
                 }
             }

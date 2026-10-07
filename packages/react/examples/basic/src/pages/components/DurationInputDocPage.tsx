@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { DurationInput, CodeBlock } from '@chahu/cha-set';
+import { DurationInput, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function DurationInputDocPage() {
+  const { t } = useChaSetI18n();
   const [value, setValue] = useState(3665); // 1h 1m 5s
   const [smValue, setSmValue] = useState(300); // 5m
   const [lgValue, setLgValue] = useState(7200); // 2h
@@ -22,7 +23,7 @@ export function DurationInputDocPage() {
     const h = Math.floor(s / 3600);
     const m = Math.floor((s % 3600) / 60);
     const sec = s % 60;
-    return `${h}h ${m}m ${sec}s (${s}s total)`;
+    return t('components.durationInput.formattedSummary', `${h}h ${m}m ${sec}s (${s}s total)`, { h, m, sec, total: s });
   };
 
   return (
@@ -45,14 +46,18 @@ export function DurationInputDocPage() {
 }`} title="Duration Input Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-sm flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-muted-foreground">Timer Duration</label>
+              <label className="text-xs font-medium text-muted-foreground">{t('components.durationInput.timerDuration', 'Timer Duration')}</label>
               <DurationInput
                 value={value}
                 onChange={setValue}
+                hoursLabel={t('components.durationInput.hours', 'Hours')}
+                minutesLabel={t('components.durationInput.minutes', 'Minutes')}
+                secondsLabel={t('components.durationInput.seconds', 'Seconds')}
+                presetsLabel={t('components.durationInput.presets', 'Presets')}
               />
             </div>
             <div className="text-xs text-muted-foreground font-mono">
-              Formatted: <strong className="text-foreground">{formatHuman(value)}</strong>
+              {t('components.durationInput.formatted', 'Formatted:')} <strong className="text-foreground">{formatHuman(value)}</strong>
             </div>
           </div>
         </ComponentPreview>
@@ -84,28 +89,40 @@ ChaSetDurationInput {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">Compact Size (sm)</span>
+            <span className="text-xs font-semibold text-foreground">{t('components.durationInput.compactTitle', 'Compact Size (sm)')}</span>
             <DurationInput
               size="sm"
               value={smValue}
               onChange={setSmValue}
+              hoursLabel={t('components.durationInput.hours', 'Hours')}
+              minutesLabel={t('components.durationInput.minutes', 'Minutes')}
+              secondsLabel={t('components.durationInput.seconds', 'Seconds')}
+              presetsLabel={t('components.durationInput.presets', 'Presets')}
             />
           </div>
 
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">Large Size (lg)</span>
+            <span className="text-xs font-semibold text-foreground">{t('components.durationInput.largeTitle', 'Large Size (lg)')}</span>
             <DurationInput
               size="lg"
               value={lgValue}
               onChange={setLgValue}
+              hoursLabel={t('components.durationInput.hours', 'Hours')}
+              minutesLabel={t('components.durationInput.minutes', 'Minutes')}
+              secondsLabel={t('components.durationInput.seconds', 'Seconds')}
+              presetsLabel={t('components.durationInput.presets', 'Presets')}
             />
           </div>
 
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">
-            <span className="text-xs font-semibold text-foreground">Disabled State</span>
+            <span className="text-xs font-semibold text-foreground">{t('components.durationInput.disabledTitle', 'Disabled State')}</span>
             <DurationInput
               value={900}
               disabled
+              hoursLabel={t('components.durationInput.hours', 'Hours')}
+              minutesLabel={t('components.durationInput.minutes', 'Minutes')}
+              secondsLabel={t('components.durationInput.seconds', 'Seconds')}
+              presetsLabel={t('components.durationInput.presets', 'Presets')}
             />
           </div>
         </div>

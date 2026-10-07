@@ -46,19 +46,19 @@ DocLayout {
                     width: ThemeTokens.dp(200)
                     height: ThemeTokens.dp(32)
                     value: root.selectedFruit
-                    placeholder: "Select fruit..."
+                    placeholder: ChaSetI18n.tr("formsA.select.placeholder", "Select a fruit...")
                     options: [
-                        { value: "apple", label: "Apple" },
-                        { value: "banana", label: "Banana" },
-                        { value: "cherry", label: "Cherry" },
-                        { value: "dragonfruit", label: "Dragonfruit (Disabled)", disabled: true }
+                        { value: "apple", label: ChaSetI18n.tr("formsA.select.apple", "Apple") },
+                        { value: "banana", label: ChaSetI18n.tr("formsA.select.banana", "Banana") },
+                        { value: "cherry", label: ChaSetI18n.tr("formsA.select.cherry", "Cherry") },
+                        { value: "dragonfruit", label: ChaSetI18n.tr("formsA.select.dragonfruitDisabled", "Dragonfruit (Disabled)"), disabled: true }
                     ]
                     onValueChanged: root.selectedFruit = value
                 }
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Selected value: " + root.selectedFruit
+                    text: ChaSetI18n.tr("formsA.select.selectedLabel", "Selected value: {{value}}", { value: root.selectedFruit })
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono

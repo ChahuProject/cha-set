@@ -65,7 +65,7 @@ Column {
         }
 
         DocText {
-            text: "Keyboard shortcuts and interaction patterns for this component."
+            text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.keyboardDesc", "Keyboard shortcuts and interaction patterns for this component.") : "Keyboard shortcuts and interaction patterns for this component."
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -87,7 +87,7 @@ Column {
 
         DocText {
             visible: !root.isSubComponent
-            text: "Props Reference"
+            text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.propsReference", "Props Reference") : "Props Reference"
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
             color: ThemeTokens.text
@@ -102,6 +102,7 @@ Column {
 
         PropsTable {
             width: parent.width
+            componentId: root.componentId
             title: root.propTableTitle
             propsModel: root.propsModel
         }

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Slider, type SliderOrientation, type SliderSize, SegmentedControl, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
+import { Slider, type SliderOrientation, type SliderSize, SegmentedControl, Checkbox, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SliderDocPage() {
+  const { t } = useChaSetI18n();
   const [value, setValue] = useState(50);
   const [step, setStep] = useState(1);
   const [min] = useState(0);
@@ -66,7 +67,7 @@ export function SliderDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Explore interactive slider behaviors, sizes, steps, orientations, tooltips, and states across Web and Qt Desktop.
+          {t('formsA.slider.overviewDesc', 'Explore interactive slider behaviors, sizes, steps, orientations, tooltips, and states across Web and Qt Desktop.')}
         </p>
 
         <ComponentPreview
@@ -77,7 +78,7 @@ export function SliderDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               {/* Value display */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Value:</span>
+                <span className="text-muted-foreground text-xs">{t('formsA.slider.valueLabel', 'Value:')}</span>
                 <span className="font-mono text-xs font-semibold text-foreground px-2 py-0.5 rounded bg-muted">
                   {value}
                 </span>
@@ -85,21 +86,21 @@ export function SliderDocPage() {
 
               {/* Size selector */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Size:</span>
+                <span className="text-muted-foreground text-xs">{t('showcase.size', 'Size:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={size}
                   onChange={(v) => setSize(v as SliderSize)}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Small (sm)', value: 'sm' },
+                    { label: t('formsA.slider.sizeDefault', 'Default'), value: 'default' },
+                    { label: t('formsA.slider.sizeSm', 'Small (sm)'), value: 'sm' },
                   ]}
                 />
               </div>
 
               {/* Step selector */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Step:</span>
+                <span className="text-muted-foreground text-xs">{t('formsA.slider.stepLabel', 'Step:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={String(step)}
@@ -115,14 +116,14 @@ export function SliderDocPage() {
 
               {/* Orientation selector */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Orientation:</span>
+                <span className="text-muted-foreground text-xs">{t('formsA.slider.orientationLabel', 'Orientation:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={orientation}
                   onChange={(v) => setOrientation(v as SliderOrientation)}
                   options={[
-                    { label: 'Horizontal', value: 'horizontal' },
-                    { label: 'Vertical', value: 'vertical' },
+                    { label: t('formsA.slider.horizontal', 'Horizontal'), value: 'horizontal' },
+                    { label: t('formsA.slider.vertical', 'Vertical'), value: 'vertical' },
                   ]}
                 />
               </div>
@@ -132,28 +133,28 @@ export function SliderDocPage() {
                 size="sm"
                 checked={disabled}
                 onCheckedChange={(val) => setDisabled(Boolean(val))}
-                label="Disabled"
+                label={t('common.disabled', 'Disabled')}
               />
 
               <Checkbox
                 size="sm"
                 checked={readOnly}
                 onCheckedChange={(val) => setReadOnly(Boolean(val))}
-                label="Read-Only"
+                label={t('formsA.slider.readOnly', 'Read-Only')}
               />
 
               <Checkbox
                 size="sm"
                 checked={showTooltip}
                 onCheckedChange={(val) => setShowTooltip(Boolean(val))}
-                label="Tooltip"
+                label={t('formsA.slider.tooltip', 'Tooltip')}
               />
 
               <Checkbox
                 size="sm"
                 checked={showTicks}
                 onCheckedChange={(val) => setShowTicks(Boolean(val))}
-                label="Ticks"
+                label={t('formsA.slider.ticks', 'Ticks')}
               />
             </div>
           }
@@ -207,52 +208,52 @@ export function SliderDocPage() {
           Examples & States
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Visual matrix of common slider configurations, size scales, tooltips, and interactive states.
+          {t('formsA.slider.examplesSubtitle', 'Visual matrix of common slider configurations, size scales, tooltips, and interactive states.')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Floating Value Tooltip</span>
-            <span className="text-xs text-muted-foreground">Interactive formatted indicator on thumb drag and hover</span>
+            <span className="text-xs font-medium text-foreground">{t('formsA.slider.floatingTooltipTitle', 'Floating Value Tooltip')}</span>
+            <span className="text-xs text-muted-foreground">{t('formsA.slider.floatingTooltipDesc', 'Interactive formatted indicator on thumb drag and hover')}</span>
             <div className="pt-6 pb-2">
               <Slider defaultValue={75} showTooltip formatValue={(v) => `${v}%`} />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Compact Size (sm)</span>
-            <span className="text-xs text-muted-foreground">Reduced track thickness and thumb size for toolbars</span>
+            <span className="text-xs font-medium text-foreground">{t('formsA.slider.compactTitle', 'Compact Size (sm)')}</span>
+            <span className="text-xs text-muted-foreground">{t('formsA.slider.compactDesc', 'Reduced track thickness and thumb size for toolbars')}</span>
             <div className="pt-6 pb-2">
               <Slider size="sm" defaultValue={40} />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Read-Only State</span>
-            <span className="text-xs text-muted-foreground">Locked value without dimmed 50% opacity</span>
+            <span className="text-xs font-medium text-foreground">{t('formsA.slider.readOnlyTitle', 'Read-Only State')}</span>
+            <span className="text-xs text-muted-foreground">{t('formsA.slider.readOnlyDesc', 'Locked value without dimmed 50% opacity')}</span>
             <div className="pt-6 pb-2">
               <Slider readOnly defaultValue={60} />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Discrete Stops with Ticks</span>
-            <span className="text-xs text-muted-foreground">Quantized stops with tick indicators and label marks</span>
+            <span className="text-xs font-medium text-foreground">{t('formsA.slider.ticksTitle', 'Discrete Stops with Ticks')}</span>
+            <span className="text-xs text-muted-foreground">{t('formsA.slider.ticksDesc', 'Quantized stops with tick indicators and label marks')}</span>
             <div className="pt-6 pb-4">
               <Slider defaultValue={50} min={0} max={100} step={25} showTicks marks={['0%', '25%', '50%', '75%', '100%']} />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Disabled State</span>
-            <span className="text-xs text-muted-foreground">Non-interactive with dimmed opacity for disabled controls</span>
+            <span className="text-xs font-medium text-foreground">{t('formsA.slider.disabledTitle', 'Disabled State')}</span>
+            <span className="text-xs text-muted-foreground">{t('formsA.slider.disabledDesc', 'Non-interactive with dimmed opacity for disabled controls')}</span>
             <div className="pt-6 pb-2">
               <Slider disabled defaultValue={45} min={0} max={100} />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Custom Range (20 to 80)</span>
-            <span className="text-xs text-muted-foreground">Bounded custom minimum and maximum limits with step=5</span>
+            <span className="text-xs font-medium text-foreground">{t('formsA.slider.customRangeTitle', 'Custom Range (20 to 80)')}</span>
+            <span className="text-xs text-muted-foreground">{t('formsA.slider.customRangeDesc', 'Bounded custom minimum and maximum limits with step=5')}</span>
             <div className="pt-6 pb-2">
               <Slider defaultValue={50} min={20} max={80} step={5} />
             </div>

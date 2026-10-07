@@ -6,6 +6,7 @@ import {
   type NotificationStackPlacement,
   Button,
   SegmentedControl,
+  useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -13,69 +14,91 @@ import { DocAnatomy } from '../../components/DocAnatomy';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { PropsTable } from '../../components/PropsTable';
 
-const LEVEL_PRESETS: { label: string; level: NotificationLevel; title: string; description: string }[] = [
-  { label: 'Info', level: 'info', title: 'Index rebuilt', description: 'Workspace symbols refreshed in 2.1s.' },
-  { label: 'Success', level: 'success', title: 'Deployment finished', description: 'Release 0.2.0 is live on staging.' },
-  { label: 'Warning', level: 'warning', title: 'Token expires soon', description: 'Credentials expire in 3 days.' },
-  { label: 'Error', level: 'error', title: 'Upload rejected', description: 'Artifact exceeds the 50 MB limit.' },
-];
-
-const PLACEMENT_OPTIONS: { label: string; value: NotificationStackPlacement }[] = [
-  { label: 'Bottom Right', value: 'bottom-right' },
-  { label: 'Top Right', value: 'top-right' },
-  { label: 'Bottom Center', value: 'bottom-center' },
-];
-
 export function NotificationStackDocPage() {
+  const { t } = useChaSetI18n();
+
+  const LEVEL_PRESETS: { label: string; level: NotificationLevel; title: string; description: string }[] = [
+    {
+      label: t('overlays.notificationStack.levelInfo', 'Info'),
+      level: 'info',
+      title: t('overlays.notificationStack.presetInfoTitle', 'Index rebuilt'),
+      description: t('overlays.notificationStack.presetInfoDesc', 'Workspace symbols refreshed in 2.1s.'),
+    },
+    {
+      label: t('overlays.notificationStack.levelSuccess', 'Success'),
+      level: 'success',
+      title: t('overlays.notificationStack.presetSuccessTitle', 'Deployment finished'),
+      description: t('overlays.notificationStack.presetSuccessDesc', 'Release 0.2.0 is live on staging.'),
+    },
+    {
+      label: t('overlays.notificationStack.levelWarning', 'Warning'),
+      level: 'warning',
+      title: t('overlays.notificationStack.presetWarningTitle', 'Token expires soon'),
+      description: t('overlays.notificationStack.presetWarningDesc', 'Credentials expire in 3 days.'),
+    },
+    {
+      label: t('overlays.notificationStack.levelError', 'Error'),
+      level: 'error',
+      title: t('overlays.notificationStack.presetErrorTitle', 'Upload rejected'),
+      description: t('overlays.notificationStack.presetErrorDesc', 'Artifact exceeds the 50 MB limit.'),
+    },
+  ];
+
+  const PLACEMENT_OPTIONS: { label: string; value: NotificationStackPlacement }[] = [
+    { label: t('overlays.taskHud.placementBottomRight', 'Bottom Right'), value: 'bottom-right' },
+    { label: t('overlays.taskHud.placementTopRight', 'Top Right'), value: 'top-right' },
+    { label: t('overlays.taskHud.placementBottomCenter', 'Bottom Center'), value: 'bottom-center' },
+  ];
+
   // Preview 1 — live transient feed.
   const [live, setLive] = useState<NotificationItem[]>([
     {
       id: 'live-1',
       level: 'info',
-      title: 'Sync started',
-      description: 'Pulling 128 remote changes.',
+      title: t('overlays.notificationStack.syncStartedTitle', 'Sync started'),
+      description: t('overlays.notificationStack.syncStartedDesc', 'Pulling 128 remote changes.'),
       duration: 8000,
     },
   ]);
 
   // Preview 2 — severity levels, inline actions and placement.
   const [placement, setPlacement] = useState<NotificationStackPlacement>('bottom-right');
-  const [receipt, setReceipt] = useState('(no action pressed yet)');
+  const [receipt, setReceipt] = useState<string | null>(null);
   const levels: NotificationItem[] = [
     {
       id: 'level-info',
       level: 'info',
-      title: 'Heads up',
-      description: 'A new major version is available.',
+      title: t('overlays.notificationStack.headsUpTitle', 'Heads up'),
+      description: t('overlays.notificationStack.headsUpDesc', 'A new major version is available.'),
       duration: 0,
     },
     {
       id: 'level-success',
       level: 'success',
-      title: 'Build passed',
-      description: 'All 318 contract checks green.',
+      title: t('overlays.notificationStack.buildPassedTitle', 'Build passed'),
+      description: t('overlays.notificationStack.buildPassedDesc', 'All 318 contract checks green.'),
       duration: 0,
     },
     {
       id: 'level-warning',
       level: 'warning',
-      title: 'Quota at 84%',
-      description: 'Storage usage is approaching the plan limit.',
+      title: t('overlays.notificationStack.quotaTitle', 'Quota at 84%'),
+      description: t('overlays.notificationStack.quotaDesc', 'Storage usage is approaching the plan limit.'),
       duration: 0,
       actions: [
-        { id: 'manage', label: 'Manage', variant: 'outline' },
-        { id: 'upgrade', label: 'Upgrade', variant: 'default' },
+        { id: 'manage', label: t('overlays.notificationStack.actionManage', 'Manage'), variant: 'outline' },
+        { id: 'upgrade', label: t('overlays.notificationStack.actionUpgrade', 'Upgrade'), variant: 'default' },
       ],
     },
     {
       id: 'level-error',
       level: 'error',
-      title: 'Job failed',
-      description: 'Compilation exited with code 1.',
+      title: t('overlays.notificationStack.jobFailedTitle', 'Job failed'),
+      description: t('overlays.notificationStack.jobFailedDesc', 'Compilation exited with code 1.'),
       duration: 0,
       actions: [
-        { id: 'retry', label: 'Retry', variant: 'outline' },
-        { id: 'logs', label: 'View log', variant: 'ghost' },
+        { id: 'retry', label: t('overlays.notificationStack.actionRetry', 'Retry'), variant: 'outline' },
+        { id: 'logs', label: t('overlays.notificationStack.actionLogs', 'View log'), variant: 'ghost' },
       ],
     },
   ];
@@ -131,14 +154,14 @@ export function NotificationStackDocPage() {
 }`}
           controls={
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="mr-1 text-muted-foreground">Push Notification:</span>
+              <span className="mr-1 text-muted-foreground">{t('overlays.notificationStack.pushNotification', 'Push Notification:')}</span>
               {LEVEL_PRESETS.map((preset) => (
                 <Button key={preset.level} variant="outline" size="sm" onClick={() => push(preset)}>
                   {preset.label}
                 </Button>
               ))}
               <Button variant="outline" size="sm" onClick={() => setLive([])}>
-                Clear All
+                {t('overlays.notificationStack.clearAll', 'Clear All')}
               </Button>
             </div>
           }
@@ -146,8 +169,7 @@ export function NotificationStackDocPage() {
           <div className="relative flex min-h-80 w-full items-start justify-center rounded-xl border border-dashed border-border bg-muted/20 p-6">
             {live.length === 0 ? (
               <p className="text-sm text-muted-foreground">
-                No notifications queued. Push one to watch its lifetime countdown; hover the stack to suspend every
-                countdown at once.
+                {t('overlays.notificationStack.noNotifications', 'No notifications queued. Push one to watch its lifetime countdown; hover the stack to suspend every countdown at once.')}
               </p>
             ) : null}
             <NotificationStack
@@ -174,18 +196,20 @@ export function NotificationStackDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-4 text-xs">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Placement:</span>
+                <span className="text-muted-foreground">{t('overlays.notificationStack.placement', 'Placement:')}</span>
                 <SegmentedControl
                   value={placement}
                   onValueChange={(value) => setPlacement(value as NotificationStackPlacement)}
                   options={PLACEMENT_OPTIONS.map((option) => ({ label: option.label, value: option.value }))}
                 />
               </div>
-              <Button variant="outline" size="sm" onClick={() => setReceipt('(no action pressed yet)')}>
-                Reset Action Log
+              <Button variant="outline" size="sm" onClick={() => setReceipt(null)}>
+                {t('overlays.notificationStack.resetActionLog', 'Reset Action Log')}
               </Button>
               <span className="text-muted-foreground">
-                last action: <code className="rounded bg-muted px-1 text-foreground">{receipt}</code>
+                {t('overlays.notificationStack.lastAction', 'last action: {{receipt}}', {
+                  receipt: receipt ?? t('overlays.notificationStack.noActionPressed', '(no action pressed yet)'),
+                })}
               </span>
             </div>
           }

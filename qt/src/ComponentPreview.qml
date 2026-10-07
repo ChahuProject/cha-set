@@ -53,9 +53,9 @@ ChaSetCard {
                 size: "default"
                 value: root.activeTab
                 options: [
-                    { label: "Preview", value: "preview" },
-                    { label: "Qt QML", value: "qt" },
-                    { label: "React Code", value: "code" }
+                    { label: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.preview", "Preview") : "Preview", value: "preview" },
+                    { label: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.qtQml", "Qt QML") : "Qt QML", value: "qt" },
+                    { label: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.reactCode", "React Code") : "React Code", value: "code" }
                 ]
                 onValueSelected: function(val) {
                     root.activeTab = val
@@ -68,7 +68,7 @@ ChaSetCard {
                 anchors.right: parent.right
                 anchors.rightMargin: ThemeTokens.dp(14)
                 anchors.verticalCenter: parent.verticalCenter
-                text: root.title
+                text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.previewTitles." + root.title, root.title) : root.title
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
                 readOnly: true

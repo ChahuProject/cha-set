@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { ColorPicker, type ColorPickerMode, type ColorPickerSize, SegmentedControl, Checkbox, Card, CodeBlock } from '@chahu/cha-set';
+import { ColorPicker, type ColorPickerMode, type ColorPickerSize, SegmentedControl, Checkbox, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from '../../components/ComponentReference';
 
 export function ColorPickerDocPage() {
+  const { t } = useChaSetI18n();
   const [color, setColor] = useState('#1d7ae0');
   const [mode, setMode] = useState<ColorPickerMode>('inline');
   const [size, setSize] = useState<ColorPickerSize>('default');
@@ -64,28 +65,28 @@ export function ColorPickerDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               {/* Mode toggle */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Mode:</span>
+                <span className="text-muted-foreground text-xs">{t('components.colorPicker.mode', 'Mode:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={mode}
                   onChange={(v) => setMode(v as ColorPickerMode)}
                   options={[
-                    { label: 'Inline', value: 'inline' },
-                    { label: 'Popover', value: 'popover' },
+                    { label: t('components.colorPicker.modeInline', 'Inline'), value: 'inline' },
+                    { label: t('components.colorPicker.modePopover', 'Popover'), value: 'popover' },
                   ]}
                 />
               </div>
 
               {/* Size selector */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Size:</span>
+                <span className="text-muted-foreground text-xs">{t('components.colorPicker.size', 'Size:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={size}
                   onChange={(v) => setSize(v as ColorPickerSize)}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'SM', value: 'sm' },
+                    { label: t('common.default', 'Default'), value: 'default' },
+                    { label: t('components.colorPicker.sizeSm', 'SM'), value: 'sm' },
                   ]}
                 />
               </div>
@@ -95,7 +96,7 @@ export function ColorPickerDocPage() {
                 size="sm"
                 checked={disabled}
                 onCheckedChange={(val) => setDisabled(val)}
-                label="Disabled"
+                label={t('common.disabled', 'Disabled')}
               />
 
               {/* Movable toggle */}
@@ -103,7 +104,7 @@ export function ColorPickerDocPage() {
                 size="sm"
                 checked={movable}
                 onCheckedChange={(val) => setMovable(val)}
-                label="Movable"
+                label={t('components.colorPicker.movable', 'Movable')}
               />
 
               {/* Show preview toggle */}
@@ -111,7 +112,7 @@ export function ColorPickerDocPage() {
                 size="sm"
                 checked={showPreview}
                 onCheckedChange={(val) => setShowPreview(val)}
-                label="Preview"
+                label={t('components.colorPicker.preview', 'Preview')}
               />
 
               {/* Show hex toggle */}
@@ -119,7 +120,7 @@ export function ColorPickerDocPage() {
                 size="sm"
                 checked={showHex}
                 onCheckedChange={(val) => setShowHex(val)}
-                label="Hex Input"
+                label={t('components.colorPicker.hexInput', 'Hex Input')}
               />
 
               {/* Show swatches toggle */}
@@ -127,7 +128,7 @@ export function ColorPickerDocPage() {
                 size="sm"
                 checked={showSwatches}
                 onCheckedChange={(val) => setShowSwatches(val)}
-                label="Swatches"
+                label={t('components.colorPicker.swatches', 'Swatches')}
               />
             </div>
           }
@@ -145,7 +146,7 @@ export function ColorPickerDocPage() {
               onChange={setColor}
             />
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span>Selected Color:</span>
+              <span>{t('components.colorPicker.selectedColor', 'Selected Color:')}</span>
               <span className="font-mono font-semibold text-foreground px-2 py-0.5 rounded bg-muted">
                 {color}
               </span>
@@ -173,9 +174,9 @@ export function ColorPickerDocPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Popover Swatch Trigger */}
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Popover Dropdown Mode</span>
+            <span className="text-xs font-medium text-foreground">{t('components.colorPicker.popoverTitle', 'Popover Dropdown Mode')}</span>
             <span className="text-xs text-muted-foreground">
-              Compact trigger button showing current color and hex code with floating panel.
+              {t('components.colorPicker.popoverDesc', 'Compact trigger button showing current color and hex code with floating panel.')}
             </span>
             <div className="pt-2">
               <ColorPicker mode="popover" defaultValue="#ef4444" />
@@ -184,9 +185,9 @@ export function ColorPickerDocPage() {
 
           {/* Compact Size */}
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Compact Size (sm)</span>
+            <span className="text-xs font-medium text-foreground">{t('components.colorPicker.compactTitle', 'Compact Size (sm)')}</span>
             <span className="text-xs text-muted-foreground">
-              Smaller dimensions and font size designed for tight sidebar panels.
+              {t('components.colorPicker.compactDesc', 'Smaller dimensions and font size designed for tight sidebar panels.')}
             </span>
             <div className="pt-2">
               <ColorPicker size="sm" defaultValue="#22c55e" />
@@ -195,9 +196,9 @@ export function ColorPickerDocPage() {
 
           {/* Disabled State */}
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Disabled State</span>
+            <span className="text-xs font-medium text-foreground">{t('components.colorPicker.disabledTitle', 'Disabled State')}</span>
             <span className="text-xs text-muted-foreground">
-              Readonly display with 50% opacity and disabled pointer events.
+              {t('components.colorPicker.disabledDesc', 'Readonly display with 50% opacity and disabled pointer events.')}
             </span>
             <div className="pt-2">
               <ColorPicker disabled defaultValue="#8b5cf6" />
@@ -206,9 +207,9 @@ export function ColorPickerDocPage() {
 
           {/* Custom Preset Colors */}
           <Card className="flex flex-col gap-3 p-5">
-            <span className="text-xs font-medium text-foreground">Custom Preset Swatches</span>
+            <span className="text-xs font-medium text-foreground">{t('components.colorPicker.customPresetsTitle', 'Custom Preset Swatches')}</span>
             <span className="text-xs text-muted-foreground">
-              Specific project palette supplied via the presetColors prop.
+              {t('components.colorPicker.customPresetsDesc', 'Specific project palette supplied via the presetColors prop.')}
             </span>
             <div className="pt-2">
               <ColorPicker

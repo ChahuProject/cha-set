@@ -31,14 +31,14 @@ DocLayout {
                 spacing: 14
 
                 ChaSetButton {
-                    text: "Open Profile Dialog"
+                    text: ChaSetI18n.tr("overlays.dialog.openProfile", "Open Profile Dialog")
                     variant: "outline"
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: profileDialog.open = true
                 }
 
                 DocText {
-                    text: "Current profile: " + nameInput.text + " (" + usernameInput.text + ")"
+                    text: ChaSetI18n.tr("overlays.dialog.currentProfile", "Current profile: {{name}} ({{username}})", { name: nameInput.text, username: usernameInput.text })
                     color: root.cMutedFg
                     font.pixelSize: Typography.sizeSmall
                     horizontalAlignment: Text.AlignHCenter
@@ -90,14 +90,14 @@ DocLayout {
                     spacing: ThemeTokens.dp(8)
 
                     DocText {
-                        text: "Desktop Draggable Modal"
+                        text: ChaSetI18n.tr("overlays.dialog.desktopDraggableTitle", "Desktop Draggable Modal")
                         color: root.cFg
                         font.pixelSize: Typography.sizeBody
                         font.weight: Typography.weightSemibold
                     }
 
                     DocText {
-                        text: "Draggable modal with size presets, auto-fitting height, ESC badge, and fixed footer."
+                        text: ChaSetI18n.tr("overlays.dialog.desktopDraggableDesc", "Draggable modal with size presets, auto-fitting height, ESC badge, and fixed footer.")
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                         wrapMode: TextEdit.WordWrap
@@ -107,7 +107,7 @@ DocLayout {
                     ChaSetButton {
                         size: "sm"
                         variant: "outline"
-                        text: "Open Draggable Window"
+                        text: ChaSetI18n.tr("overlays.dialog.openDraggableWindow", "Open Draggable Window")
                         onClicked: desktopDialog.open = true
                     }
                 }
@@ -125,14 +125,14 @@ DocLayout {
                     spacing: ThemeTokens.dp(8)
 
                     DocText {
-                        text: "Destructive Confirmation"
+                        text: ChaSetI18n.tr("overlays.dialog.destructiveConfirmationTitle", "Destructive Confirmation")
                         color: root.cFg
                         font.pixelSize: Typography.sizeBody
                         font.weight: Typography.weightSemibold
                     }
 
                     DocText {
-                        text: "Dialog for destructive actions requiring explicit user confirmation."
+                        text: ChaSetI18n.tr("overlays.dialog.destructiveConfirmationDesc", "Dialog for destructive actions requiring explicit user confirmation.")
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                         wrapMode: TextEdit.WordWrap
@@ -142,7 +142,7 @@ DocLayout {
                     ChaSetButton {
                         size: "sm"
                         variant: "destructive"
-                        text: "Delete Account"
+                        text: ChaSetI18n.tr("overlays.dialog.deleteAccount", "Delete Account")
                         onClicked: confirmDialog.open = true
                     }
                 }
@@ -160,14 +160,14 @@ DocLayout {
                     spacing: ThemeTokens.dp(8)
 
                     DocText {
-                        text: "Informational Notice"
+                        text: ChaSetI18n.tr("overlays.dialog.informationalNoticeTitle", "Informational Notice")
                         color: root.cFg
                         font.pixelSize: Typography.sizeBody
                         font.weight: Typography.weightSemibold
                     }
 
                     DocText {
-                        text: "Lightweight alert modal for system notices and scheduled maintenance."
+                        text: ChaSetI18n.tr("overlays.dialog.informationalNoticeDesc", "Lightweight alert modal for system notices and scheduled maintenance.")
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                         wrapMode: TextEdit.WordWrap
@@ -177,7 +177,7 @@ DocLayout {
                     ChaSetButton {
                         size: "sm"
                         variant: "secondary"
-                        text: "System Update Notice"
+                        text: ChaSetI18n.tr("overlays.dialog.systemUpdateNotice", "System Update Notice")
                         onClicked: noticeDialog.open = true
                     }
                 }
@@ -305,8 +305,8 @@ DocLayout {
     // Profile Dialog Instance
     ChaSetDialog {
         id: profileDialog
-        title: "Edit profile"
-        description: "Make changes to your profile here. Click save when you're done."
+        title: ChaSetI18n.tr("overlays.dialog.editProfileTitle", "Edit profile")
+        description: ChaSetI18n.tr("overlays.dialog.editProfileDesc", "Make changes to your profile here. Click save when you're done.")
         dialogWidth: 480
 
         Column {
@@ -317,7 +317,7 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(10)
                 DocText {
-                    text: "Name"
+                    text: ChaSetI18n.tr("overlays.dialog.name", "Name")
                     width: ThemeTokens.dp(70)
                     color: root.cFg
                     font.pixelSize: Typography.sizeBody
@@ -334,7 +334,7 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(10)
                 DocText {
-                    text: "Username"
+                    text: ChaSetI18n.tr("overlays.dialog.username", "Username")
                     width: ThemeTokens.dp(70)
                     color: root.cFg
                     font.pixelSize: Typography.sizeBody
@@ -355,13 +355,13 @@ DocLayout {
             ChaSetButton {
                 size: "sm"
                 variant: "outline"
-                text: "Cancel"
+                text: ChaSetI18n.tr("common.cancel", "Cancel")
                 onClicked: profileDialog.reject()
             }
 
             ChaSetButton {
                 size: "sm"
-                text: "Save changes"
+                text: ChaSetI18n.tr("common.saveChanges", "Save changes")
                 onClicked: profileDialog.accept()
             }
         }
@@ -370,14 +370,14 @@ DocLayout {
     // Desktop Draggable Modal Instance
     ChaSetDialog {
         id: desktopDialog
-        title: "Advanced Desktop Tool"
-        description: "Drag the title bar or window body to reposition. Switch size presets from the top-right button."
+        title: ChaSetI18n.tr("overlays.dialog.advancedDesktopTitle", "Advanced Desktop Tool")
+        description: ChaSetI18n.tr("overlays.dialog.advancedDesktopDesc", "Drag the title bar or window body to reposition. Switch size presets from the top-right button.")
         dialogWidth: 520
         draggable: true
         showEscBadge: true
 
         DocText {
-            text: "The bottom actions area is extracted as a fixed footer that stays pinned during vertical scrolling."
+            text: ChaSetI18n.tr("overlays.dialog.fixedFooterDesc", "The bottom actions area is extracted as a fixed footer that stays pinned during vertical scrolling.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeSmall
             wrapMode: TextEdit.WordWrap
@@ -388,7 +388,7 @@ DocLayout {
             anchors.right: parent.right
             ChaSetButton {
                 size: "sm"
-                text: "Confirm"
+                text: ChaSetI18n.tr("overlays.dialog.confirm", "Confirm")
                 onClicked: desktopDialog.accept()
             }
         }
@@ -397,8 +397,8 @@ DocLayout {
     // Confirmation Destructive Dialog Instance
     ChaSetDialog {
         id: confirmDialog
-        title: "Are you absolutely sure?"
-        description: "This action cannot be undone. This will permanently delete your account."
+        title: ChaSetI18n.tr("overlays.dialog.areYouSure", "Are you absolutely sure?")
+        description: ChaSetI18n.tr("overlays.dialog.deleteAccountDesc", "This action cannot be undone. This will permanently delete your account.")
         dialogWidth: 440
 
         Row {
@@ -408,14 +408,14 @@ DocLayout {
             ChaSetButton {
                 size: "sm"
                 variant: "outline"
-                text: "Cancel"
+                text: ChaSetI18n.tr("common.cancel", "Cancel")
                 onClicked: confirmDialog.reject()
             }
 
             ChaSetButton {
                 size: "sm"
                 variant: "destructive"
-                text: "Yes, delete account"
+                text: ChaSetI18n.tr("overlays.dialog.yesDeleteAccount", "Yes, delete account")
                 onClicked: confirmDialog.accept()
             }
         }
@@ -424,12 +424,12 @@ DocLayout {
     // Informational Notice Dialog Instance
     ChaSetDialog {
         id: noticeDialog
-        title: "Scheduled Maintenance"
-        description: "The cloud service will be undergoing scheduled infrastructure updates tonight at 02:00 UTC."
+        title: ChaSetI18n.tr("overlays.dialog.scheduledMaintenance", "Scheduled Maintenance")
+        description: ChaSetI18n.tr("overlays.dialog.maintenanceDesc", "The cloud service will be undergoing scheduled infrastructure updates tonight at 02:00 UTC.")
         dialogWidth: 440
 
         DocText {
-            text: "Expected downtime is under 10 minutes. All data remains encrypted and safe."
+            text: ChaSetI18n.tr("overlays.dialog.downtimeDesc", "Expected downtime is under 10 minutes. All data remains encrypted and safe.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeSmall
             wrapMode: TextEdit.WordWrap
@@ -440,7 +440,7 @@ DocLayout {
             anchors.right: parent.right
             ChaSetButton {
                 size: "sm"
-                text: "Understood"
+                text: ChaSetI18n.tr("overlays.dialog.understood", "Understood")
                 onClicked: noticeDialog.accept()
             }
         }

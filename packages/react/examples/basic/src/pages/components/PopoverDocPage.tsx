@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Popover, PopoverTrigger, PopoverContent, Button, Input, SegmentedControl, Checkbox, CodeBlock } from '@chahu/cha-set';
+import { Popover, PopoverTrigger, PopoverContent, Button, Input, SegmentedControl, Checkbox, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function PopoverDocPage() {
+  const { t } = useChaSetI18n();
   const [side, setSide] = useState<'top' | 'bottom' | 'left' | 'right'>('bottom');
   const [align, setAlign] = useState<'start' | 'center' | 'end'>('start');
   const [arrow, setArrow] = useState(true);
@@ -82,31 +83,31 @@ export function PopoverDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               {/* Side Selector */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Side:</span>
+                <span className="text-muted-foreground text-xs">{t('overlays.popover.side', 'Side:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={side}
                   onChange={(v) => setSide(v as any)}
                   options={[
-                    { label: 'Top', value: 'top' },
-                    { label: 'Bottom', value: 'bottom' },
-                    { label: 'Left', value: 'left' },
-                    { label: 'Right', value: 'right' },
+                    { label: t('overlays.popover.sideTop', 'Top'), value: 'top' },
+                    { label: t('overlays.popover.sideBottom', 'Bottom'), value: 'bottom' },
+                    { label: t('overlays.popover.sideLeft', 'Left'), value: 'left' },
+                    { label: t('overlays.popover.sideRight', 'Right'), value: 'right' },
                   ]}
                 />
               </div>
 
               {/* Align Selector */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Align:</span>
+                <span className="text-muted-foreground text-xs">{t('overlays.popover.align', 'Align:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={align}
                   onChange={(v) => setAlign(v as any)}
                   options={[
-                    { label: 'Start', value: 'start' },
-                    { label: 'Center', value: 'center' },
-                    { label: 'End', value: 'end' },
+                    { label: t('overlays.popover.alignStart', 'Start'), value: 'start' },
+                    { label: t('overlays.popover.alignCenter', 'Center'), value: 'center' },
+                    { label: t('overlays.popover.alignEnd', 'End'), value: 'end' },
                   ]}
                 />
               </div>
@@ -116,7 +117,7 @@ export function PopoverDocPage() {
                 size="sm"
                 checked={arrow}
                 onCheckedChange={(val) => setArrow(Boolean(val))}
-                label="Arrow"
+                label={t('overlays.popover.arrow', 'Arrow')}
               />
 
               {/* Movable Toggle */}
@@ -124,7 +125,7 @@ export function PopoverDocPage() {
                 size="sm"
                 checked={movable}
                 onCheckedChange={(val) => setMovable(Boolean(val))}
-                label="Movable"
+                label={t('overlays.popover.movable', 'Movable')}
               />
             </div>
           }
@@ -132,7 +133,7 @@ export function PopoverDocPage() {
           <div className="flex items-center justify-center py-12">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline">Open Popover</Button>
+                <Button variant="outline">{t('overlays.popover.openPopover', 'Open Popover')}</Button>
               </PopoverTrigger>
               <PopoverContent
                 side={side}
@@ -143,18 +144,18 @@ export function PopoverDocPage() {
               >
                 <div className="grid gap-4">
                   <div className="space-y-2">
-                    <h4 className="font-medium leading-none text-foreground text-sm">Dimensions</h4>
+                    <h4 className="font-medium leading-none text-foreground text-sm">{t('overlays.popover.dimensionsTitle', 'Dimensions')}</h4>
                     <p className="text-xs text-muted-foreground">
-                      Set the dimensions for the layer.
+                      {t('overlays.popover.dimensionsDesc', 'Set the dimensions for the layer.')}
                     </p>
                   </div>
                   <div className="grid gap-2">
                     <div className="grid grid-cols-3 items-center gap-4">
-                      <span className="text-xs text-muted-foreground">Width</span>
+                      <span className="text-xs text-muted-foreground">{t('overlays.popover.width', 'Width')}</span>
                       <Input defaultValue="100%" className="col-span-2 h-7 text-xs" />
                     </div>
                     <div className="grid grid-cols-3 items-center gap-4">
-                      <span className="text-xs text-muted-foreground">Height</span>
+                      <span className="text-xs text-muted-foreground">{t('overlays.popover.height', 'Height')}</span>
                       <Input defaultValue="2rem" className="col-span-2 h-7 text-xs" />
                     </div>
                   </div>

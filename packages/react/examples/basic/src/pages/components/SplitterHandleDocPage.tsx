@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { SplitterHandle, Card, Button, Badge, CodeBlock } from '@chahu/cha-set';
+import { SplitterHandle, Card, Button, Badge, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SplitterHandleDocPage() {
+  const { t } = useChaSetI18n();
   const [sidebarWidth, setSidebarWidth] = useState(240);
   const [bottomHeight, setBottomHeight] = useState(120);
 
@@ -76,14 +77,14 @@ export function SplitterHandleDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-4 text-xs">
               <span className="text-muted-foreground flex items-center gap-1.5">
-                Current Width: <Badge variant="outline">{sidebarWidth}</Badge>
+                {t('surfaces.splitterHandle.currentWidth')} <Badge variant="outline">{sidebarWidth}</Badge>
               </span>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setSidebarWidth(200)}
               >
-                Reset to 200
+                {t('surfaces.splitterHandle.reset200')}
               </Button>
             </div>
           }
@@ -94,7 +95,7 @@ export function SplitterHandleDocPage() {
                 style={{ width: `${sidebarWidth * 0.0625}rem` }}
                 className="relative bg-muted/40 p-4 flex flex-col justify-center items-center text-sm font-medium shrink-0"
               >
-                <span>Sidebar</span>
+                <span>{t('surfaces.splitterHandle.sidebar')}</span>
                 <Badge variant="secondary" className="mt-1">{sidebarWidth}</Badge>
                 <SplitterHandle
                   edge="right"
@@ -107,8 +108,8 @@ export function SplitterHandleDocPage() {
                 />
               </div>
               <div className="flex-1 p-6 flex flex-col justify-center items-center text-sm text-muted-foreground">
-                <span>Main Content Viewport</span>
-                <span className="text-xs text-muted-foreground/70">Focus handle and use arrow keys to resize</span>
+                <span>{t('surfaces.splitterHandle.mainContent')}</span>
+                <span className="text-xs text-muted-foreground/70">{t('surfaces.splitterHandle.focusHint')}</span>
               </div>
             </Card>
           </div>
@@ -137,13 +138,13 @@ ChaSetSplitterHandle {
         </p>
         <Card className="w-full max-w-xl mx-auto h-64 flex flex-col overflow-hidden bg-card">
           <div className="flex-1 p-4 text-sm text-muted-foreground">
-            Editor / Log Canvas Area
+            {t('surfaces.splitterHandle.editorCanvasArea')}
           </div>
           <div
             style={{ height: `${bottomHeight * 0.0625}rem` }}
             className="relative bg-muted/40 p-3 text-xs flex items-center justify-between shrink-0"
           >
-            <span className="font-semibold">Terminal / Output Console</span>
+            <span className="font-semibold">{t('surfaces.splitterHandle.terminalConsole')}</span>
             <Badge variant="secondary">{bottomHeight}</Badge>
             <SplitterHandle
               edge="top"

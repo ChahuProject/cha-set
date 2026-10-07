@@ -41,9 +41,9 @@ DocLayout {
                     width: parent.width
                     connector: "AND"
                     fields: [
-                        { key: "role", label: "Role" },
-                        { key: "age", label: "Age" },
-                        { key: "status", label: "Status" }
+                        { key: "role", label: ChaSetI18n.tr("desktopComposite.queryBuilder.fieldRole", "Role") },
+                        { key: "age", label: ChaSetI18n.tr("desktopComposite.queryBuilder.fieldAge", "Age") },
+                        { key: "status", label: ChaSetI18n.tr("common.status", "Status") }
                     ]
                     rules: [
                         { id: "r1", field: "role", operator: "equals", value: "Staff Engineer" },
@@ -57,11 +57,11 @@ DocLayout {
                 Row {
                     spacing: ThemeTokens.dp(8)
                     ChaSetBadge {
-                        text: "Rules: " + qb.rules.length
+                        text: ChaSetI18n.tr("desktopComposite.queryBuilder.rulesCount", "Rules: {{count}}", { count: qb.rules.length })
                         variant: "outline"
                     }
                     ChaSetBadge {
-                        text: "Combinator: " + qb.connector
+                        text: ChaSetI18n.tr("desktopComposite.queryBuilder.combinatorLabel", "Combinator: {{combinator}}", { combinator: qb.connector })
                         variant: "secondary"
                     }
                 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CheckIcon } from '@chahu/cha-set';
+import { CheckIcon, useChaSetI18n } from '@chahu/cha-set';
 
 const TOKENS = [
   'background',
@@ -22,13 +22,14 @@ const TOKENS = [
 ];
 
 export default function ColorsSection({ themeKey }: { themeKey: string }) {
+  const { t } = useChaSetI18n();
   const [values, setValues] = useState<Record<string, string>>({});
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
 
   useEffect(() => {
     const cs = getComputedStyle(document.documentElement);
     const next: Record<string, string> = {};
-    for (const t of TOKENS) next[t] = cs.getPropertyValue(`--${t}`).trim();
+    for (const tok of TOKENS) next[tok] = cs.getPropertyValue(`--${tok}`).trim();
     setValues(next);
   }, [themeKey]);
 
@@ -46,26 +47,30 @@ export default function ColorsSection({ themeKey }: { themeKey: string }) {
     <section className="block" id="colors">
       <div className="block-header">
         <div>
-          <h2>Palette · Semantic Core Tokens</h2>
+          <h2>{t('getStarted.tokens.palette.title', 'Palette · Semantic Core Tokens')}</h2>
           <p className="desc">
-            All derived from <code>spec/tokens.json</code>. Click any swatch to copy its CSS variable expression.
+            {t('getStarted.tokens.palette.desc', 'All derived from spec/tokens.json. Click any swatch to copy its CSS variable expression.')}
           </p>
         </div>
       </div>
       <div className="swatch-grid">
-        {TOKENS.map((t) => (
+        {TOKENS.map((tok) => (
           <div
             className="swatch clickable"
-            key={t}
-            onClick={() => copyTokenValue(t, values[t] || '')}
-            title="Click to copy CSS variable"
+            key={tok}
+            onClick={() => copyTokenValue(tok, values[tok] || '')}
+            title={t('getStarted.tokens.palette.copySwatchTitle', 'Click to copy CSS variable')}
           >
-            <div className="swatch-color" style={{ background: `var(--${t})` }}>
-              {copiedToken === t && <span className="swatch-copied-badge inline-flex items-center gap-1"><CheckIcon className="size-3" /> Copied</span>}
+            <div className="swatch-color" style={{ background: `var(--${tok})` }}>
+              {copiedToken === tok && (
+                <span className="swatch-copied-badge inline-flex items-center gap-1">
+                  <CheckIcon className="size-3" /> {t('common.copied', 'Copied')}
+                </span>
+              )}
             </div>
             <div className="swatch-meta">
-              <div className="swatch-name">--{t}</div>
-              <div className="swatch-value">{values[t] || '…'}</div>
+              <div className="swatch-name">--{tok}</div>
+              <div className="swatch-value">{values[tok] || '…'}</div>
             </div>
           </div>
         ))}

@@ -27,7 +27,7 @@ Column {
     TextEdit {
         id: tableTitleText
         visible: root.title !== ""
-        text: root.title
+        text: root.title === "Keyboard Navigation & Shortcuts" ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.keyboardShortcuts", "Keyboard Navigation & Shortcuts") : root.title) : root.title
         color: ThemeTokens.text
         font.family: Typography.familySans
         font.pixelSize: Typography.sizeHeading
@@ -85,17 +85,18 @@ Column {
             height: implicitHeight
             interactive: false
             columns: [
-                { key: "key", title: "KEY SHORTCUT", width: 256, kbd: true },
-                { key: "action", title: "ACTION / BEHAVIOR", wrap: true }
+                { key: "key", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.keyShortcut", "KEY SHORTCUT") : "KEY SHORTCUT", width: 256, kbd: true },
+                { key: "action", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.actionBehavior", "ACTION / BEHAVIOR") : "ACTION / BEHAVIOR", wrap: true }
             ]
             rows: {
                 var res = []
                 var list = root.activeShortcuts
                 for (var i = 0; i < list.length; i++) {
                     var it = list[i]
+                    var rawAction = it.action || ""
                     res.push({
                         key: it.key || "",
-                        action: it.action || ""
+                        action: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("keyboard.actions." + rawAction, rawAction) : rawAction
                     })
                 }
                 return res

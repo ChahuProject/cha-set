@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { GenericDataTable, Badge, type ColumnDef, CodeBlock } from '@chahu/cha-set';
+import { GenericDataTable, Badge, type ColumnDef, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -12,47 +12,58 @@ interface UserRecord {
   status: 'Active' | 'Pending' | 'Offline';
 }
 
-const SAMPLE_USERS: UserRecord[] = [
-  { id: '1', name: 'Alice Chen', role: 'Lead Architect', status: 'Active' },
-  { id: '2', name: 'Bob Smith', role: 'Frontend Engineer', status: 'Active' },
-  { id: '3', name: 'Carol White', role: 'Qt Specialist', status: 'Pending' },
-  { id: '4', name: 'David Lee', role: 'DevOps Engineer', status: 'Offline' },
-  { id: '5', name: 'Elena Rostova', role: 'Product Manager', status: 'Active' },
-];
-
 export function GenericDataTableDocPage() {
+  const { t } = useChaSetI18n();
+
+  const sampleUsers = useMemo<UserRecord[]>(() => [
+    { id: '1', name: 'Alice Chen', role: t('desktopComposite.genericDataTable.roleArchitect', 'Lead Architect'), status: 'Active' },
+    { id: '2', name: 'Bob Smith', role: t('desktopComposite.genericDataTable.roleFrontend', 'Frontend Engineer'), status: 'Active' },
+    { id: '3', name: 'Carol White', role: t('desktopComposite.genericDataTable.roleQt', 'Qt Specialist'), status: 'Pending' },
+    { id: '4', name: 'David Lee', role: t('desktopComposite.genericDataTable.roleDevOps', 'DevOps Engineer'), status: 'Offline' },
+    { id: '5', name: 'Elena Rostova', role: t('desktopComposite.genericDataTable.roleProduct', 'Product Manager'), status: 'Active' },
+  ], [t]);
+
   const columns = useMemo<ColumnDef<UserRecord, any>[]>(() => [
     {
       accessorKey: 'id',
-      header: 'ID',
+      header: t('desktopComposite.genericDataTable.colId', 'ID'),
     },
     {
       accessorKey: 'name',
-      header: 'User Name',
+      header: t('desktopComposite.genericDataTable.colName', 'User Name'),
     },
     {
       accessorKey: 'role',
-      header: 'Role',
+      header: t('desktopComposite.genericDataTable.colRole', 'Role'),
     },
     {
       accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }: { row: any }) => (
-        <Badge
-          size="sm"
-          variant={
-            row.original.status === 'Active'
-              ? 'default'
-              : row.original.status === 'Pending'
-              ? 'secondary'
-              : 'outline'
-          }
-        >
-          {row.original.status}
-        </Badge>
-      ),
+      header: t('common.status', 'Status'),
+      cell: ({ row }: { row: any }) => {
+        const rawStatus = row.original.status;
+        const localizedStatus =
+          rawStatus === 'Active'
+            ? t('common.active', 'Active')
+            : rawStatus === 'Pending'
+            ? t('desktopComposite.genericDataTable.statusPending', 'Pending')
+            : t('desktopComposite.genericDataTable.statusOffline', 'Offline');
+        return (
+          <Badge
+            size="sm"
+            variant={
+              rawStatus === 'Active'
+                ? 'default'
+                : rawStatus === 'Pending'
+                ? 'secondary'
+                : 'outline'
+            }
+          >
+            {localizedStatus}
+          </Badge>
+        );
+      },
     },
-  ], []);
+  ], [t]);
 
   const reactCode = `<GenericDataTable
   data={users}
@@ -100,7 +111,7 @@ export function GenericDataTableDocPage() {
         >
           <div className="w-full max-w-xl">
             <GenericDataTable
-              data={SAMPLE_USERS}
+              data={sampleUsers}
               columns={columns}
               enablePagination
               pageSize={5}

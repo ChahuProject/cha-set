@@ -50,8 +50,8 @@ DocLayout {
                     disabled: root.demoDisabled
                     readOnly: root.demoReadOnly
                     invalid: root.demoInvalid
-                    label: root.demoLabel
-                    description: root.demoShowDesc ? root.demoDescription : ""
+                    label: root.demoLabel === "Accept terms and conditions" ? ChaSetI18n.tr("formsA.checkbox.sandboxLabel", "Accept terms and conditions") : root.demoLabel
+                    description: root.demoShowDesc ? (root.demoDescription === "You agree to the automated billing policy and privacy guidelines." ? ChaSetI18n.tr("formsA.checkbox.sandboxDescription", "You agree to the automated billing policy and privacy guidelines.") : root.demoDescription) : ""
                     onToggled: (val) => {
                         if (root.demoIndeterminate) root.demoIndeterminate = false;
                         root.demoChecked = val;
@@ -64,14 +64,14 @@ DocLayout {
             Row {
                 width: childrenRect.width
                 spacing: 8
-                DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("showcase.size", "Size:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
                     size: "sm"
                     value: root.demoSize
                     options: [
-                        { label: "Default", value: "default" },
-                        { label: "Small (sm)", value: "sm" }
+                        { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                        { label: ChaSetI18n.tr("formsA.checkbox.sizeSm", "Small (sm)"), value: "sm" }
                     ]
                     onValueSelected: function(s) { root.demoSize = String(s); }
                 }
@@ -83,7 +83,7 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Checked"
+                    label: ChaSetI18n.tr("formsA.checkbox.checked", "Checked")
                     checked: root.demoChecked && !root.demoIndeterminate
                     onToggled: (val) => {
                         root.demoChecked = val;
@@ -93,14 +93,14 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Indeterminate"
+                    label: ChaSetI18n.tr("formsA.checkbox.indeterminate", "Indeterminate")
                     checked: root.demoIndeterminate
                     onToggled: (val) => root.demoIndeterminate = val
                 }
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Disabled"
+                    label: ChaSetI18n.tr("common.disabled", "Disabled")
                     checked: root.demoDisabled
                     onToggled: (val) => root.demoDisabled = val
                 }
@@ -112,21 +112,21 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Read-Only"
+                    label: ChaSetI18n.tr("formsA.checkbox.readOnly", "Read-Only")
                     checked: root.demoReadOnly
                     onToggled: (val) => root.demoReadOnly = val
                 }
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Invalid"
+                    label: ChaSetI18n.tr("formsA.checkbox.invalid", "Invalid")
                     checked: root.demoInvalid
                     onToggled: (val) => root.demoInvalid = val
                 }
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Description"
+                    label: ChaSetI18n.tr("formsA.checkbox.descriptionLabel", "Description")
                     checked: root.demoShowDesc
                     onToggled: (val) => root.demoShowDesc = val
                 }
@@ -154,7 +154,7 @@ DocLayout {
         }
 
         DocText {
-            text: "Visual showcase of common checkbox states, sizes, and hierarchical groupings."
+            text: ChaSetI18n.tr("formsA.checkbox.examplesSubtitle", "Visual showcase of common checkbox states, sizes, and hierarchical groupings.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -175,14 +175,14 @@ DocLayout {
                     rightPadding: ThemeTokens.dp(16)
                     spacing: ThemeTokens.dp(8)
 
-                    DocText { text: "Unchecked & Checked"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                    DocText { text: "Standard interactive toggle states"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.uncheckedCheckedTitle", "Unchecked & Checked"); font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.uncheckedCheckedDesc", "Standard interactive toggle states"); font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
                     Column {
                         width: parent.width - ThemeTokens.dp(32)
                         spacing: ThemeTokens.dp(8)
-                        ChaSetCheckbox { checked: false; label: "Unchecked by default" }
-                        ChaSetCheckbox { checked: true; label: "Checked by default" }
+                        ChaSetCheckbox { checked: false; label: ChaSetI18n.tr("formsA.checkbox.uncheckedByDefault", "Unchecked by default") }
+                        ChaSetCheckbox { checked: true; label: ChaSetI18n.tr("formsA.checkbox.checkedByDefault", "Checked by default") }
                     }
                 }
             }
@@ -199,17 +199,17 @@ DocLayout {
                     rightPadding: ThemeTokens.dp(16)
                     spacing: ThemeTokens.dp(8)
 
-                    DocText { text: "Indeterminate State"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                    DocText { text: "Represents partially selected sub-options"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.indeterminateTitle", "Indeterminate State"); font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.indeterminateDesc", "Represents partially selected sub-options"); font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
                     Column {
                         width: parent.width - ThemeTokens.dp(32)
                         spacing: ThemeTokens.dp(6)
-                        ChaSetCheckbox { indeterminate: true; label: "Select all sub-tasks" }
+                        ChaSetCheckbox { indeterminate: true; label: ChaSetI18n.tr("formsA.checkbox.selectAllSubtasks", "Select all sub-tasks") }
                         Row {
                             spacing: ThemeTokens.dp(8)
                             Item { width: ThemeTokens.dp(14); height: 1 }
-                            ChaSetCheckbox { size: "sm"; checked: true; label: "Task 1: Requirements" }
+                            ChaSetCheckbox { size: "sm"; checked: true; label: ChaSetI18n.tr("formsA.checkbox.task1", "Task 1: Requirements") }
                         }
                     }
                 }
@@ -227,13 +227,13 @@ DocLayout {
                     rightPadding: ThemeTokens.dp(16)
                     spacing: ThemeTokens.dp(8)
 
-                    DocText { text: "With Helper Description"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                    DocText { text: "Detailed multi-line label and subtext"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.helperDescTitle", "With Helper Description"); font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.helperDescSubtitle", "Detailed multi-line label and subtext"); font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
                     ChaSetCheckbox {
                         checked: true
-                        label: "Automatic background syncing"
-                        description: "Sync data with remote servers when idle."
+                        label: ChaSetI18n.tr("formsA.checkbox.autoSyncLabel", "Automatic background syncing")
+                        description: ChaSetI18n.tr("formsA.checkbox.autoSyncDesc", "Sync data with remote servers when idle.")
                     }
                 }
             }
@@ -250,14 +250,14 @@ DocLayout {
                     rightPadding: ThemeTokens.dp(16)
                     spacing: ThemeTokens.dp(8)
 
-                    DocText { text: "Invalid / Error State"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                    DocText { text: "Highlights unchecked required confirmation"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.invalidTitle", "Invalid / Error State"); font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.invalidDesc", "Highlights unchecked required confirmation"); font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
                     ChaSetCheckbox {
                         invalid: true
                         checked: false
-                        label: "Mandatory compliance confirmation"
-                        description: "Must be accepted before setup."
+                        label: ChaSetI18n.tr("formsA.checkbox.mandatoryLabel", "Mandatory compliance confirmation")
+                        description: ChaSetI18n.tr("formsA.checkbox.mandatoryDesc", "Must be accepted before setup.")
                     }
                 }
             }
@@ -274,14 +274,14 @@ DocLayout {
                     rightPadding: ThemeTokens.dp(16)
                     spacing: ThemeTokens.dp(8)
 
-                    DocText { text: "Disabled & Read-Only States"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                    DocText { text: "Dimmed non-interactive vs locked presentation"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.disabledReadOnlyTitle", "Disabled & Read-Only States"); font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.disabledReadOnlyDesc", "Dimmed non-interactive vs locked presentation"); font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
                     Column {
                         width: parent.width - ThemeTokens.dp(32)
                         spacing: ThemeTokens.dp(8)
-                        ChaSetCheckbox { disabled: true; checked: false; label: "Disabled unchecked" }
-                        ChaSetCheckbox { readOnly: true; checked: true; label: "Read-only checked" }
+                        ChaSetCheckbox { disabled: true; checked: false; label: ChaSetI18n.tr("formsA.checkbox.disabledUnchecked", "Disabled unchecked") }
+                        ChaSetCheckbox { readOnly: true; checked: true; label: ChaSetI18n.tr("formsA.checkbox.readOnlyChecked", "Read-only checked") }
                     }
                 }
             }
@@ -298,14 +298,14 @@ DocLayout {
                     rightPadding: ThemeTokens.dp(16)
                     spacing: ThemeTokens.dp(8)
 
-                    DocText { text: "Size Variants"; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
-                    DocText { text: "Default vs Compact size"; font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.sizeVariantsTitle", "Size Variants"); font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold; color: root.cFg }
+                    DocText { text: ChaSetI18n.tr("formsA.checkbox.sizeVariantsDesc", "Default vs Compact size"); font.pixelSize: Typography.sizeCaption; color: root.cMutedFg }
 
                     Column {
                         width: parent.width - ThemeTokens.dp(32)
                         spacing: ThemeTokens.dp(8)
-                        ChaSetCheckbox { size: "default"; checked: true; label: "Default size (text-sm)" }
-                        ChaSetCheckbox { size: "sm"; checked: true; label: "Small size (sm, text-xs)" }
+                        ChaSetCheckbox { size: "default"; checked: true; label: ChaSetI18n.tr("formsA.checkbox.defaultSizeLabel", "Default size (text-sm)") }
+                        ChaSetCheckbox { size: "sm"; checked: true; label: ChaSetI18n.tr("formsA.checkbox.smSizeLabel", "Small size (sm, text-xs)") }
                     }
                 }
             }

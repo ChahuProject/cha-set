@@ -85,7 +85,7 @@ DocLayout {
                     Row {
                         spacing: 8
                         DocText {
-                            text: "Quick Locations:"
+                            text: ChaSetI18n.tr("desktopComposite.addressBar.quickLocations", "Quick Locations:")
                             color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeCaption
                             anchors.verticalCenter: parent.verticalCenter
@@ -93,7 +93,7 @@ DocLayout {
                         ChaSetButton {
                             size: "sm"
                             variant: "outline"
-                            text: "Project Root"
+                            text: ChaSetI18n.tr("desktopComposite.addressBar.locProjectRoot", "Project Root")
                             onClicked: root.navigateTo("C:/Users/Development/cha-set")
                         }
                         ChaSetButton {
@@ -142,7 +142,7 @@ DocLayout {
                             width: parent.width
 
                             Text {
-                                text: qsTr("Active Path: %1").arg(root.currentPath)
+                                text: ChaSetI18n.tr("desktopComposite.addressBar.activePathFormat", "Active Path: {{path}}", { path: root.currentPath })
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeCaption
                                 font.family: Typography.familyMono
@@ -151,7 +151,7 @@ DocLayout {
                             }
 
                             Text {
-                                text: qsTr("Refreshes: %1").arg(root.refreshCount)
+                                text: ChaSetI18n.tr("desktopComposite.addressBar.refreshes", "Refreshes: {{count}}", { count: root.refreshCount })
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeCaption
                             }

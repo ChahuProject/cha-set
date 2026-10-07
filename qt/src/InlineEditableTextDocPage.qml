@@ -32,7 +32,7 @@ DocLayout {
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Click or double-click the label below to edit in place:"
+                    text: ChaSetI18n.tr("components.inlineEditableText.clickToEdit", "Click or double-click the label below to edit in place:")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                 }
@@ -48,7 +48,7 @@ DocLayout {
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Persisted Value: \"" + root.currentTitle + "\""
+                    text: ChaSetI18n.tr("components.inlineEditableText.persistedValue", "Persisted Value: ") + "\"" + root.currentTitle + "\""
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono
@@ -95,29 +95,29 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Single Click Activation (Default)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    ChaSetInlineEditableText { width: parent.width; value: "Project Architecture Doc"; trigger: "click"; size: "default" }
+                    DocText { text: ChaSetI18n.tr("components.inlineEditableText.singleClickActivation", "Single Click Activation (Default)"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    ChaSetInlineEditableText { width: parent.width; value: ChaSetI18n.tr("components.inlineEditableText.demoSingleClick", "Project Architecture Doc"); trigger: "click"; size: "default" }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Double Click Activation"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    ChaSetInlineEditableText { width: parent.width; value: "Database Connection URI"; trigger: "doubleClick"; size: "default" }
+                    DocText { text: ChaSetI18n.tr("components.inlineEditableText.doubleClickActivation", "Double Click Activation"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    ChaSetInlineEditableText { width: parent.width; value: ChaSetI18n.tr("components.inlineEditableText.demoDoubleClick", "Database Connection URI"); trigger: "doubleClick"; size: "default" }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Compact sm Size"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    ChaSetInlineEditableText { width: parent.width; value: "Sprint-42-Review"; size: "sm" }
+                    DocText { text: ChaSetI18n.tr("components.inlineEditableText.compactSm", "Compact sm Size"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    ChaSetInlineEditableText { width: parent.width; value: ChaSetI18n.tr("components.inlineEditableText.demoCompact", "Sprint-42-Review"); size: "sm" }
                 }
 
                 Column {
                     spacing: 4
                     width: parent.width
-                    DocText { text: "Disabled State"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    ChaSetInlineEditableText { width: parent.width; value: "System Protected File"; disabled: true }
+                    DocText { text: ChaSetI18n.tr("components.inlineEditableText.disabledTitle", "Disabled State"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    ChaSetInlineEditableText { width: parent.width; value: ChaSetI18n.tr("components.inlineEditableText.demoDisabled", "System Protected File"); disabled: true }
                 }
             }
         }

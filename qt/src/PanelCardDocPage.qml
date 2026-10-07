@@ -37,8 +37,8 @@ DocLayout {
             ChaSetPanelCard {
                 anchors.centerIn: parent
                 width: ThemeTokens.dp(360)
-                title: "Production Cluster #01"
-                badgeText: "Active"
+                title: ChaSetI18n.tr("surfaces.panelCard.clusterTitle", "Production Cluster #01")
+                badgeText: ChaSetI18n.tr("common.active", "Active")
                 collapsible: true
 
                 Column {
@@ -49,20 +49,20 @@ DocLayout {
 
                     Row {
                         spacing: ThemeTokens.dp(8)
-                        DocText { text: "Node Count:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
-                        DocText { text: "16 Dedicated Replicas"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                        DocText { text: ChaSetI18n.tr("surfaces.panelCard.nodeCount", "Node Count:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                        DocText { text: ChaSetI18n.tr("surfaces.panelCard.nodeCountVal", "16 Dedicated Replicas"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     }
 
                     Row {
                         spacing: ThemeTokens.dp(8)
-                        DocText { text: "Avg Latency:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
-                        DocText { text: "12ms (p99: 45ms)"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                        DocText { text: ChaSetI18n.tr("surfaces.panelCard.avgLatency", "Avg Latency:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                        DocText { text: ChaSetI18n.tr("surfaces.panelCard.avgLatencyVal", "12ms (p99: 45ms)"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                     }
 
                     Row {
                         spacing: 8
-                        ChaSetButton { text: "Restart"; variant: "outline"; size: "xs" }
-                        ChaSetButton { text: "Scale Out"; variant: "secondary"; size: "xs" }
+                        ChaSetButton { text: ChaSetI18n.tr("surfaces.panelCard.restart", "Restart"); variant: "outline"; size: "xs" }
+                        ChaSetButton { text: ChaSetI18n.tr("surfaces.panelCard.scaleOut", "Scale Out"); variant: "secondary"; size: "xs" }
                     }
                 }
             }

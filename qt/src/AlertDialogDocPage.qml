@@ -9,7 +9,7 @@ DocLayout {
     pageTitle: "Alert Dialog"
     description: "A modal dialog that interrupts the user with important content and expects a confirmation or cancellation action."
 
-    property string alertFeedback: "Dialog is idle."
+    property string alertFeedback: ChaSetI18n.tr("overlays.alertDialog.feedbackIdle", "Dialog is idle.")
 
     ComponentPreview {
         title: "Alert Dialog Sandbox"
@@ -79,7 +79,7 @@ ChaSetAlertDialog {
 
                 ChaSetButton {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Delete Deployment (" + alertDlg.size + ")"
+                    text: ChaSetI18n.tr("overlays.alertDialog.deleteDeployment", "Delete Deployment ({{size}})", { size: alertDlg.size })
                     variant: "destructive"
                     onClicked: alertDlg.open = true
                 }
@@ -95,13 +95,13 @@ ChaSetAlertDialog {
 
             ChaSetAlertDialog {
                 id: alertDlg
-                title: "Are you sure you want to delete this deployment?"
-                description: "This will terminate all active microservices in cluster 'us-east-1'. All runtime logs will be irreversibly purged."
-                confirmText: "Yes, Delete"
-                cancelText: "Cancel"
+                title: ChaSetI18n.tr("overlays.alertDialog.deleteDeploymentTitle", "Are you sure you want to delete this deployment?")
+                description: ChaSetI18n.tr("overlays.alertDialog.deleteDeploymentDesc", "This will terminate all active microservices in cluster 'us-east-1'. All runtime logs will be irreversibly purged.")
+                confirmText: ChaSetI18n.tr("overlays.alertDialog.yesDelete", "Yes, Delete")
+                cancelText: ChaSetI18n.tr("common.cancel", "Cancel")
                 destructive: true
-                onConfirmed: root.alertFeedback = "Action confirmed: Deployment deleted."
-                onCancelled: root.alertFeedback = "Action cancelled."
+                onConfirmed: root.alertFeedback = ChaSetI18n.tr("overlays.alertDialog.feedbackConfirmed", "Action confirmed: Deployment deleted.")
+                onCancelled: root.alertFeedback = ChaSetI18n.tr("overlays.alertDialog.feedbackCancelled", "Action cancelled.")
             }
         }
     }

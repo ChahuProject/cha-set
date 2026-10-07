@@ -48,7 +48,7 @@ DocLayout {
                     disabled: root.demoDisabled
 
                     ChaSetButton {
-                        text: "Hover or Focus Me"
+                        text: ChaSetI18n.tr("overlays.tooltip.hoverOrFocus", "Hover or Focus Me")
                         variant: "outline"
                     }
                 }
@@ -59,17 +59,17 @@ DocLayout {
             // Side Selector
             Row {
                 spacing: 8
-                DocText { text: "Side:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("overlays.tooltip.side", "Side:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
                     size: "sm"
                     value: root.demoSide
                     onValueSelected: function(v) { root.demoSide = String(v); }
                     options: [
-                        { label: "Top", value: "top" },
-                        { label: "Bottom", value: "bottom" },
-                        { label: "Left", value: "left" },
-                        { label: "Right", value: "right" }
+                        { label: ChaSetI18n.tr("overlays.popover.sideTop", "Top"), value: "top" },
+                        { label: ChaSetI18n.tr("overlays.popover.sideBottom", "Bottom"), value: "bottom" },
+                        { label: ChaSetI18n.tr("overlays.popover.sideLeft", "Left"), value: "left" },
+                        { label: ChaSetI18n.tr("overlays.popover.sideRight", "Right"), value: "right" }
                     ]
                 }
             },
@@ -77,16 +77,16 @@ DocLayout {
             // Delay Selector
             Row {
                 spacing: 8
-                DocText { text: "Delay:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("overlays.tooltip.delay", "Delay:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
                     size: "sm"
                     value: String(root.demoDelay)
                     onValueSelected: function(v) { root.demoDelay = parseInt(v); }
                     options: [
-                        { label: "0ms", value: "0" },
-                        { label: "200ms", value: "200" },
-                        { label: "500ms", value: "500" }
+                        { label: ChaSetI18n.tr("overlays.tooltip.delay0ms", "0ms"), value: "0" },
+                        { label: ChaSetI18n.tr("overlays.tooltip.delay200ms", "200ms"), value: "200" },
+                        { label: ChaSetI18n.tr("overlays.tooltip.delay500", "500ms"), value: "500" }
                     ]
                 }
             },
@@ -94,7 +94,7 @@ DocLayout {
             // Text Input
             Row {
                 spacing: ThemeTokens.dp(8)
-                DocText { text: "Text:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("overlays.tooltip.text", "Text:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetInput {
                     width: ThemeTokens.dp(140)
                     size: "sm"
@@ -106,7 +106,7 @@ DocLayout {
             // Shortcut Input
             Row {
                 spacing: ThemeTokens.dp(8)
-                DocText { text: "Shortcut:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("overlays.tooltip.shortcut", "Shortcut:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetInput {
                     width: ThemeTokens.dp(90)
                     size: "sm"
@@ -118,7 +118,7 @@ DocLayout {
             // Arrow Toggle
             ChaSetCheckbox {
                 size: "sm"
-                label: "Arrow"
+                label: ChaSetI18n.tr("overlays.tooltip.arrow", "Arrow")
                 checked: root.demoArrow
                 onToggled: (val) => root.demoArrow = val
             },
@@ -126,7 +126,7 @@ DocLayout {
             // Disabled Toggle
             ChaSetCheckbox {
                 size: "sm"
-                label: "Disabled"
+                label: ChaSetI18n.tr("overlays.tooltip.disabled", "Disabled")
                 checked: root.demoDisabled
                 onToggled: (val) => root.demoDisabled = val
             }
@@ -142,11 +142,13 @@ DocLayout {
 
     // Section 4: Examples & States
     Column {
+        property string sectionId: "states"
+        property string sectionTitle: "Examples & States"
         width: parent.width
         spacing: 12
 
         DocText {
-            text: "Examples & States"
+            text: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
             color: root.cFg
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
@@ -174,16 +176,16 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Top Placement (Default)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("overlays.tooltip.topPlacementTitle", "Top Placement (Default)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width - ThemeTokens.dp(28)
                         height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
-                            text: "Tooltip above target"
+                            text: ChaSetI18n.tr("overlays.tooltip.topPlacementContent", "Tooltip above target")
                             side: "top"
                             delay: 0
-                            ChaSetButton { size: "sm"; variant: "secondary"; text: "Top Tooltip" }
+                            ChaSetButton { size: "sm"; variant: "secondary"; text: ChaSetI18n.tr("overlays.tooltip.topPlacementButton", "Top Tooltip") }
                         }
                     }
                 }
@@ -200,16 +202,16 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Bottom Placement"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("overlays.tooltip.bottomPlacementTitle", "Bottom Placement"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width - ThemeTokens.dp(28)
                         height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
-                            text: "Tooltip below target"
+                            text: ChaSetI18n.tr("overlays.tooltip.bottomPlacementContent", "Tooltip below target")
                             side: "bottom"
                             delay: 0
-                            ChaSetButton { size: "sm"; variant: "secondary"; text: "Bottom Tooltip" }
+                            ChaSetButton { size: "sm"; variant: "secondary"; text: ChaSetI18n.tr("overlays.tooltip.bottomPlacementButton", "Bottom Tooltip") }
                         }
                     }
                 }
@@ -226,16 +228,16 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Left Placement"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("overlays.tooltip.leftPlacementTitle", "Left Placement"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width - ThemeTokens.dp(28)
                         height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
-                            text: "Tooltip on left"
+                            text: ChaSetI18n.tr("overlays.tooltip.leftPlacementContent", "Tooltip on left")
                             side: "left"
                             delay: 0
-                            ChaSetButton { size: "sm"; variant: "secondary"; text: "Left Tooltip" }
+                            ChaSetButton { size: "sm"; variant: "secondary"; text: ChaSetI18n.tr("overlays.tooltip.leftPlacementButton", "Left Tooltip") }
                         }
                     }
                 }
@@ -252,16 +254,16 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Right Placement"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("overlays.tooltip.rightPlacementTitle", "Right Placement"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width - ThemeTokens.dp(28)
                         height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
-                            text: "Tooltip on right"
+                            text: ChaSetI18n.tr("overlays.tooltip.rightPlacementContent", "Tooltip on right")
                             side: "right"
                             delay: 0
-                            ChaSetButton { size: "sm"; variant: "secondary"; text: "Right Tooltip" }
+                            ChaSetButton { size: "sm"; variant: "secondary"; text: ChaSetI18n.tr("overlays.tooltip.rightPlacementButton", "Right Tooltip") }
                         }
                     }
                 }
@@ -278,17 +280,17 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Keyboard Shortcut Hint"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("overlays.tooltip.shortcutHintTitle", "Keyboard Shortcut Hint"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width - ThemeTokens.dp(28)
                         height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
-                            text: "Save Document"
+                            text: ChaSetI18n.tr("overlays.tooltip.shortcutHintContent", "Save Document")
                             shortcut: "Ctrl+S"
                             side: "top"
                             delay: 0
-                            ChaSetButton { size: "sm"; variant: "secondary"; text: "Save Action" }
+                            ChaSetButton { size: "sm"; variant: "secondary"; text: ChaSetI18n.tr("overlays.tooltip.shortcutHintButton", "Save Action") }
                         }
                     }
                 }
@@ -305,17 +307,17 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Directional Arrow"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("overlays.tooltip.directionalArrowTitle", "Directional Arrow"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
                     Item {
                         width: parent.width - ThemeTokens.dp(28)
                         height: ThemeTokens.dp(60)
                         ChaSetTooltip {
                             anchors.centerIn: parent
-                            text: "Anchored Pointer"
+                            text: ChaSetI18n.tr("overlays.tooltip.directionalArrowContent", "Anchored Pointer")
                             arrow: true
                             side: "top"
                             delay: 0
-                            ChaSetButton { size: "sm"; variant: "secondary"; text: "With Arrow" }
+                            ChaSetButton { size: "sm"; variant: "secondary"; text: ChaSetI18n.tr("overlays.tooltip.directionalArrowButton", "With Arrow") }
                         }
                     }
                 }

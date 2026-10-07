@@ -21,7 +21,7 @@ Column {
         objectName: "animations"
 
         DocText {
-            text: "Animations"
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
             color: ThemeTokens.text
@@ -30,7 +30,7 @@ Column {
         DocText {
             text: root.customAnimations !== ""
                 ? root.customAnimations
-                : "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+                : ChaSetI18n.tr("showcase.animationsDescQml", "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled).")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -45,7 +45,7 @@ Column {
         objectName: "keyboard"
 
         DocText {
-            text: "Keyboard Navigation"
+            text: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation")
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
             color: ThemeTokens.text
@@ -54,7 +54,7 @@ Column {
         DocText {
             width: parent.width
             wrap: true
-            text: "Keyboard shortcuts and interaction patterns for this component."
+            text: ChaSetI18n.tr("showcase.keyboardDesc", "Keyboard shortcuts and interaction patterns for this component.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -73,7 +73,7 @@ Column {
         objectName: "props"
 
         DocText {
-            text: "Props Reference"
+            text: ChaSetI18n.tr("showcase.propsReference", "Props Reference")
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
             color: ThemeTokens.text
@@ -83,6 +83,7 @@ Column {
         PropsTable {
             visible: root.propsModel && root.propsModel.length > 0
             width: parent.width
+            componentId: root.componentId
             propsModel: root.propsModel
             title: "" // Suppress internal redundant title
         }

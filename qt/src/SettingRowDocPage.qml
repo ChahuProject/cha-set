@@ -59,10 +59,10 @@ DocLayout {
                 spacing: 4
 
                 ChaSetSettingRow {
-                    name: "Hardware Acceleration"
+                    name: ChaSetI18n.tr("surfaces.settingRow.hwAccelName")
                     icon: "zap"
-                    badge: "Recommended"
-                    description: "Enable GPU-accelerated rasterization and smooth rendering."
+                    badge: ChaSetI18n.tr("surfaces.settingRow.recommended")
+                    description: ChaSetI18n.tr("surfaces.settingRow.hwAccelDesc")
                     highlightId: "hw-accel"
                     highlightTarget: root.activeHighlightTarget
 
@@ -77,9 +77,9 @@ DocLayout {
                 ChaSetSeparator { width: parent.width }
 
                 ChaSetSettingRow {
-                    name: "Auto-Check Updates"
+                    name: ChaSetI18n.tr("surfaces.settingRow.autoUpdateName")
                     icon: "rotate-ccw"
-                    description: "Periodically verify semantic releases and download patches in background."
+                    description: ChaSetI18n.tr("surfaces.settingRow.autoUpdateDesc")
                     highlightId: "auto-update"
                     highlightTarget: root.activeHighlightTarget
 
@@ -98,13 +98,13 @@ DocLayout {
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Flash HW Accel"
+                    text: ChaSetI18n.tr("surfaces.settingRow.flashHwAccel")
                     onClicked: root.triggerJump("hw-accel")
                 }
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
-                    text: "Flash Auto-Update"
+                    text: ChaSetI18n.tr("surfaces.settingRow.flashAutoUpdate")
                     onClicked: root.triggerJump("auto-update")
                 }
             }
@@ -133,7 +133,9 @@ ChaSetSettingRow {
 
     // Anchor Jump & Flash
     DocText {
-        text: "Anchor Jump & Flash"
+        property string sectionId: "anchor-jump-flash"
+        property string sectionTitle: "Anchor Jump & Flash"
+        text: ChaSetI18n.tr("surfaces.settingRow.anchorJumpTitle")
         font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
@@ -154,7 +156,7 @@ ChaSetSettingRow {
                 DocText {
                     width: parent.width
                     wrapMode: TextEdit.Wrap
-                    text: "Setting rows support an anchor targeting mechanism. When highlightTarget matches highlightId, the border triggers a 3-cycle pulse flash animation, guiding the user's attention from dialogs or keyboard shortcuts."
+                    text: ChaSetI18n.tr("surfaces.settingRow.anchorJumpDesc")
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeSmall
                 }

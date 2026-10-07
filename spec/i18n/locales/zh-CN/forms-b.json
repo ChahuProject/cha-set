@@ -1,0 +1,162 @@
+{
+  "showcase": {
+    "previewTitles": {
+      "ColorPicker Sandbox": "拾色器交互沙盒",
+      "Duration Input Sandbox": "时长输入框交互沙盒",
+      "Preset Number Input Sandbox": "预设数值输入框交互沙盒",
+      "Read-Only Input Sandbox": "只读输入框交互沙盒",
+      "Inline Editable Text Sandbox": "行内编辑文本交互沙盒",
+      "Keybinding Recorder Sandbox": "快捷键录制器交互沙盒",
+      "MediaProgressBar Sandbox": "媒体播放进度条交互沙盒",
+      "Sizes & Status Variants": "尺寸与状态变体沙盒",
+      "Sizes & Interaction Triggers": "尺寸与交互触发方式沙盒",
+      "Sizes & States": "尺寸与状态沙盒"
+    }
+  },
+  "components": {
+    "colorPicker": {
+      "mode": "模式:",
+      "modeInline": "内嵌面板",
+      "modePopover": "气泡弹窗",
+      "size": "尺寸:",
+      "sizeDefault": "默认",
+      "sizeSm": "紧凑 (sm)",
+      "movable": "允许拖拽",
+      "preview": "预览区",
+      "hexInput": "HEX 输入",
+      "swatches": "预设色板",
+      "selectedColor": "已选颜色:",
+      "examplesTitle": "示例与状态",
+      "examplesDesc": "颜色选择器常见配置、模式与尺寸的矩阵示例。",
+      "popoverTitle": "气泡下拉模式",
+      "popoverDesc": "紧凑型触发按钮，显示当前颜色与十六进制数值，点击展开浮动面板。",
+      "compactTitle": "紧凑尺寸 (sm)",
+      "compactDesc": "更小的尺寸与字体规格，适合密集的工具栏或侧边栏面板。",
+      "disabledTitle": "禁用状态",
+      "disabledDesc": "只读展示，50% 透明度且禁用交互事件。",
+      "customPresetsTitle": "自定义预设色板",
+      "customPresetsDesc": "通过 presetColors 属性传入专属的项目色板。"
+    },
+    "color-picker": {
+      "description": "交互式拾色器组件，提供色相环方形、色轮圆形、色相环三角形与预设色板 4 种取色面板，实时 HEX 输入与复制，以及独立的多通道滑块 (RGB, HSV, CMYK, LAB)。"
+    },
+    "colorpicker": {
+      "description": "交互式拾色器组件，提供色相环方形、色轮圆形、色相环三角形与预设色板 4 种取色面板，实时 HEX 输入与复制，以及独立的多通道滑块 (RGB, HSV, CMYK, LAB)。"
+    },
+    "durationInput": {
+      "timerDuration": "定时器时长",
+      "timerDurationDefault": "定时器时长 (默认):",
+      "compactSizeColon": "紧凑尺寸 (sm):",
+      "disabledStateColon": "禁用状态:",
+      "formatted": "格式化展示:",
+      "formattedSummary": "{{h}}小时 {{m}}分钟 {{sec}}秒 (共 {{total}} 秒)",
+      "hours": "时",
+      "minutes": "分",
+      "seconds": "秒",
+      "presets": "预设",
+      "compactTitle": "紧凑尺寸 (sm)",
+      "largeTitle": "较大尺寸 (lg)",
+      "disabledTitle": "禁用状态",
+      "variantsTitle": "变体与配置",
+      "variantsDesc": "支持紧凑与宽敞尺寸档位，支持关闭预设菜单或单位标签，以及禁用状态。"
+    },
+    "duration-input": {
+      "description": "分段式时长输入控件，支持时、分、秒独立编辑，带有步进按钮、鼠标滚轮调节、键盘方向键切换与快速预设菜单。"
+    },
+    "presetNumberInput": {
+      "textureDimension": "纹理尺寸",
+      "textureDimensionColon": "纹理尺寸:",
+      "placeholder": "宽 / 高",
+      "currentValue": "当前数值:",
+      "empty": "(空)",
+      "auto": "自动",
+      "none": "无",
+      "customPresetsSmall": "自定义预设 (小尺寸)",
+      "customPresetsSmallColon": "自定义预设 (小尺寸):",
+      "disallowClear": "禁止清空 (必填项)",
+      "disabledTitle": "禁用状态",
+      "variantsTitle": "变体与配置",
+      "variantsDesc": "配置自定义数值预设，关闭清空选项，或置于禁用状态。"
+    },
+    "preset-number-input": {
+      "description": "高密度数值输入控件，内置快速选择下拉面板，提供常用尺寸规格预设、单位标签与可选的清空操作。"
+    },
+    "readOnlyInput": {
+      "apiSecretKey": "API 密钥 (掩码与复制):",
+      "personalAccessToken": "GitHub 访问令牌 (掩码):",
+      "defaultToken": "默认尺寸令牌",
+      "compactToken": "紧凑尺寸 (sm)",
+      "destructiveToken": "已吊销令牌 (破坏性状态)",
+      "warningToken": "即将过期令牌 (警告状态)",
+      "successToken": "已验证令牌 (成功状态)",
+      "sizesAndStatus": "尺寸与状态变体",
+      "sizesAndStatusDesc": "提供默认与 sm 两种尺寸规格，以及语义化状态色彩配置。"
+    },
+    "read-only-input": {
+      "description": "受保护的只读输入控件，专为 API 密钥、访问令牌与资源 ID 设计，内置一键复制到剪贴板与掩码显示切换。"
+    },
+    "inlineEditableText": {
+      "defaultTitle": "项目架构设计文档",
+      "clickToEdit": "单击或双击下方文本以就地编辑:",
+      "placeholder": "输入标题...",
+      "currentStateValue": "当前状态数值:",
+      "persistedValue": "已保存数值: ",
+      "singleClickActivation": "单击激活 (默认)",
+      "doubleClickActivation": "双击激活",
+      "compactSm": "紧凑 sm 尺寸",
+      "disabledTitle": "禁用状态",
+      "demoSingleClick": "项目架构设计文档",
+      "demoDoubleClick": "数据库连接配置串",
+      "demoCompact": "迭代评审-42",
+      "demoDisabled": "系统受保护文件",
+      "sizesAndTriggers": "尺寸与触发交互方式",
+      "sizesAndTriggersDesc": "配置单击或双击触发编辑，以及紧凑尺寸规格。"
+    },
+    "inline-editable-text": {
+      "description": "就地编辑文本控件，双击或点击触发器即可无缝切换为输入框，支持回车键确认保存与 Esc 键取消编辑。"
+    },
+    "keybindingRecorder": {
+      "clickToRecord": "点击录制框并按下快捷键组合:",
+      "placeholder": "按下快捷键...",
+      "recordingPrompt": "请按下按键组合 (Esc 取消)...",
+      "noBinding": "未设置快捷键",
+      "recordedAccelerator": "已录制快捷键:",
+      "none": "无",
+      "defaultWithClear": "默认尺寸 (带清除按钮)",
+      "compactSm": "紧凑 sm 尺寸",
+      "withoutClear": "无清除按钮",
+      "disabledTitle": "禁用状态",
+      "sizesAndStates": "尺寸与状态",
+      "sizesAndStatesDesc": "提供默认与 sm 两种尺寸规格，支持可选清除按钮与禁用状态。"
+    },
+    "keybinding-recorder": {
+      "description": "交互式快捷键录制控件，支持捕获桌面应用修饰键组合 (Ctrl, Shift, Alt, Meta/Cmd) 与热键序列。"
+    },
+    "mediaProgressBar": {
+      "elapsed": "正计时",
+      "remaining": "倒计时",
+      "elapsedMode": "正计时 (已播放)",
+      "remainingMode": "倒计时 (剩余)",
+      "currentElapsedTooltip": "当前：正计时 (已播放时间)",
+      "currentRemainingTooltip": "当前：倒计时 (剩余时间)",
+      "toggleTooltip": "点击切换 · 右键打开菜单",
+      "timingModeMenuTitle": "计时方式",
+      "timeFormatMenuTitle": "时间格式",
+      "formatHms": "时分秒 (00:00)",
+      "formatSeconds": "按秒显示 (0.0s)",
+      "formatFrames": "按帧率显示 (0 帧)",
+      "framesUnit": "{{f}} 帧",
+      "playbackProgress": "播放进度",
+      "playbackStatus": "播放进度",
+      "timingModeLabel": "计时模式",
+      "timeFormatLabel": "时间格式",
+      "timeReadout": "时间读数"
+    },
+    "media-progress-bar": {
+      "description": "通用媒体播放进度条组件，支持拖拽擦洗、点击 seek、悬停预览、左下方「位置 / 总长」时间显示、点击翻转正/倒计时与右键格式菜单。"
+    },
+    "mediaprogressbar": {
+      "description": "通用媒体播放进度条组件，支持拖拽擦洗、点击 seek、悬停预览、左下方「位置 / 总长」时间显示、点击翻转正/倒计时与右键格式菜单。"
+    }
+  }
+}

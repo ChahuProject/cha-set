@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CodeBlock, SegmentedControl } from '@chahu/cha-set';
+import { Card, CodeBlock, SegmentedControl, useChaSetI18n } from '@chahu/cha-set';
 
 export interface DocAnatomyProps {
   id?: string;
@@ -17,12 +17,18 @@ export function DocAnatomy({
   qtCode,
 }: DocAnatomyProps) {
   const [activeTab, setActiveTab] = useState<'react' | 'qt'>('react');
+  const { t } = useChaSetI18n();
+
+  const localizedTitle = title === 'Anatomy' ? t('showcase.anatomy', 'Anatomy') : title;
+  const localizedDesc = description === 'Import and structure definition for React and Qt Quick.'
+    ? t('showcase.anatomyDesc', 'Import and structure definition for React and Qt Quick.')
+    : description;
 
   return (
     <section id={id} className="scroll-mt-20 my-8">
       <div className="flex flex-col gap-1 mb-3">
-        <h2 className="text-xl font-bold tracking-tight text-foreground">{title}</h2>
-        {description && <p className="text-sm text-muted-foreground">{description}</p>}
+        <h2 className="text-xl font-bold tracking-tight text-foreground">{localizedTitle}</h2>
+        {localizedDesc && <p className="text-sm text-muted-foreground">{localizedDesc}</p>}
       </div>
 
       <Card className="overflow-hidden">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, CopyButton, Separator, ListIcon } from '@chahu/cha-set';
+import { Button, CopyButton, Separator, ListIcon, useChaSetI18n } from '@chahu/cha-set';
 import { TableOfContents, type TocItem } from './TableOfContents';
 import { useToc } from './TocContext';
 import { useResponsive } from './useResponsive';
@@ -22,15 +22,19 @@ export function DocLayout({
   const contentRef = React.useRef<HTMLDivElement>(null);
   const { items, setTocOpen } = useToc();
   const { isWide } = useResponsive();
+  const { t } = useChaSetI18n();
+
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const localizedDescription = t(`components.${slug}.description`, description);
 
   return (
     <div className="flex w-full min-w-0 justify-center">
       <main className="w-full max-w-4xl min-w-0 px-4 py-8 md:px-8 lg:py-10">
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-2">
-          <span>Docs</span>
+          <span>{t('showcase.docs', 'Docs')}</span>
           <span>/</span>
-          <span className="text-foreground font-medium">{category}</span>
+          <span className="text-foreground font-medium">{t('showcase.categories.' + category, category)}</span>
           <span>/</span>
           <span className="text-foreground font-semibold">{title}</span>
         </div>
@@ -51,19 +55,19 @@ export function DocLayout({
                   className="gap-1.5 cursor-pointer"
                 >
                   <ListIcon className="size-3.5" />
-                  <span>Outline</span>
+                  <span>{t('showcase.outline', 'Outline')}</span>
                 </Button>
               )}
               <CopyButton
                 variant="outline"
                 size="sm"
                 text={typeof window !== 'undefined' ? window.location.href : ''}
-                label="Copy Link"
+                label={t('common.copyLink', 'Copy Link')}
               />
             </div>
           </div>
           <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-            {description}
+            {localizedDescription}
           </p>
         </div>
         <Separator className="mb-8" />

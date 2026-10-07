@@ -54,16 +54,16 @@ DocLayout {
                 // Side Selector
                 Row {
                     spacing: 8
-                    DocText { text: "Side:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("overlays.popover.side", "Side:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
                         value: root.demoSide
                         options: [
-                            { label: "Top", value: "top" },
-                            { label: "Bottom", value: "bottom" },
-                            { label: "Left", value: "left" },
-                            { label: "Right", value: "right" }
+                            { label: ChaSetI18n.tr("overlays.popover.sideTop", "Top"), value: "top" },
+                            { label: ChaSetI18n.tr("overlays.popover.sideBottom", "Bottom"), value: "bottom" },
+                            { label: ChaSetI18n.tr("overlays.popover.sideLeft", "Left"), value: "left" },
+                            { label: ChaSetI18n.tr("overlays.popover.sideRight", "Right"), value: "right" }
                         ]
                         onValueSelected: function(s) { root.demoSide = String(s); }
                     }
@@ -72,15 +72,15 @@ DocLayout {
                 // Align Selector
                 Row {
                     spacing: 8
-                    DocText { text: "Align:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("overlays.popover.align", "Align:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
                         value: root.demoAlign
                         options: [
-                            { label: "Start", value: "start" },
-                            { label: "Center", value: "center" },
-                            { label: "End", value: "end" }
+                            { label: ChaSetI18n.tr("overlays.popover.alignStart", "Start"), value: "start" },
+                            { label: ChaSetI18n.tr("overlays.popover.alignCenter", "Center"), value: "center" },
+                            { label: ChaSetI18n.tr("overlays.popover.alignEnd", "End"), value: "end" }
                         ]
                         onValueSelected: function(a) { root.demoAlign = String(a); }
                     }
@@ -89,7 +89,7 @@ DocLayout {
                 // Arrow Toggle
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Arrow"
+                    label: ChaSetI18n.tr("overlays.popover.arrow", "Arrow")
                     checked: root.demoArrow
                     onToggled: (val) => root.demoArrow = val
                     anchors.verticalCenter: parent.verticalCenter
@@ -98,7 +98,7 @@ DocLayout {
                 // Movable Toggle
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Movable"
+                    label: ChaSetI18n.tr("overlays.popover.movable", "Movable")
                     checked: root.demoMovable
                     onToggled: (val) => root.demoMovable = val
                     anchors.verticalCenter: parent.verticalCenter
@@ -113,7 +113,7 @@ DocLayout {
                 ChaSetButton {
                     id: triggerBtn
                     anchors.centerIn: parent
-                    text: "Open Popover"
+                    text: ChaSetI18n.tr("overlays.popover.openPopover", "Open Popover")
                     variant: "outline"
                     onClicked: pop.open = !pop.open
 
@@ -135,14 +135,14 @@ DocLayout {
                                 spacing: ThemeTokens.dp(3)
 
                                 DocText {
-                                    text: "Dimensions"
+                                    text: ChaSetI18n.tr("overlays.popover.dimensionsTitle", "Dimensions")
                                     color: ThemeTokens.text
                                     font.pixelSize: Typography.sizeSmall
                                     font.weight: Typography.weightSemibold
                                 }
 
                                 DocText {
-                                    text: "Set the dimensions for the layer."
+                                    text: ChaSetI18n.tr("overlays.popover.dimensionsDesc", "Set the dimensions for the layer.")
                                     color: ThemeTokens.subduedText
                                     font.pixelSize: Typography.sizeCaption
                                     wrapMode: TextEdit.WordWrap
@@ -155,7 +155,7 @@ DocLayout {
                                 width: parent.width
 
                                 DocText {
-                                    text: "Width"
+                                    text: ChaSetI18n.tr("overlays.popover.width", "Width")
                                     color: ThemeTokens.subduedText
                                     font.pixelSize: Typography.sizeSmall
                                     anchors.verticalCenter: parent.verticalCenter
@@ -175,7 +175,7 @@ DocLayout {
                                 width: parent.width
 
                                 DocText {
-                                    text: "Height"
+                                    text: ChaSetI18n.tr("overlays.popover.height", "Height")
                                     color: ThemeTokens.subduedText
                                     font.pixelSize: Typography.sizeSmall
                                     anchors.verticalCenter: parent.verticalCenter

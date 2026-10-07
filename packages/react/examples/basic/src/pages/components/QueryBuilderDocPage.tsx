@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
-import { QueryBuilder, Badge, type QueryRuleGroup, type QueryField, CodeBlock } from '@chahu/cha-set';
+import React, { useState, useMemo } from 'react';
+import { QueryBuilder, Badge, type QueryRuleGroup, type QueryField, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
-const SAMPLE_FIELDS: QueryField[] = [
-  { id: 'name', label: 'User Name', type: 'string' },
-  { id: 'age', label: 'Age', type: 'number' },
-  { id: 'role', label: 'Role', type: 'string' },
-  { id: 'active', label: 'Is Active', type: 'boolean' },
-];
-
 export function QueryBuilderDocPage() {
+  const { t } = useChaSetI18n();
+
+  const sampleFields = useMemo<QueryField[]>(() => [
+    { id: 'name', label: t('desktopComposite.queryBuilder.fieldUserName', 'User Name'), type: 'string' },
+    { id: 'age', label: t('desktopComposite.queryBuilder.fieldAge', 'Age'), type: 'number' },
+    { id: 'role', label: t('desktopComposite.queryBuilder.fieldRole', 'Role'), type: 'string' },
+    { id: 'active', label: t('desktopComposite.queryBuilder.fieldIsActive', 'Is Active'), type: 'boolean' },
+  ], [t]);
+
   const [query, setQuery] = useState<QueryRuleGroup>({
     id: 'root',
     combinator: 'and',
@@ -56,23 +58,23 @@ export function QueryBuilderDocPage() {
 }`} title="Query Builder Sandbox" reactCode={reactCode}>
           <div className="w-full max-w-xl flex flex-col gap-4">
             <QueryBuilder
-              fields={SAMPLE_FIELDS}
+              fields={sampleFields}
               query={query}
               onQueryChange={setQuery}
             />
 
             <div className="flex items-center gap-2">
               <Badge variant="outline">
-                Rules: {query.rules?.length ?? 0}
+                {t('desktopComposite.queryBuilder.rulesCount', 'Rules: {{count}}', { count: query.rules?.length ?? 0 })}
               </Badge>
               <Badge variant="secondary">
-                Combinator: {String(query.combinator).toUpperCase()}
+                {t('desktopComposite.queryBuilder.combinatorLabel', 'Combinator: {{combinator}}', { combinator: String(query.combinator).toUpperCase() })}
               </Badge>
             </div>
 
             <div className="p-3 bg-muted/40 rounded-md border border-border">
               <span className="text-[0.65rem] font-semibold uppercase tracking-wider text-muted-foreground block mb-1">
-                Serialized JSON Query Model:
+                {t('desktopComposite.queryBuilder.serializedModel', 'Serialized JSON Query Model:')}
               </span>
               <pre className="text-[0.7rem] font-mono text-foreground overflow-auto max-h-36">
                 {JSON.stringify(query, null, 2)}

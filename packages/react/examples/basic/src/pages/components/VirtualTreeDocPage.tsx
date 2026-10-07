@@ -7,6 +7,7 @@ import {
   Button,
   Badge,
   CodeBlock,
+  useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
@@ -181,6 +182,7 @@ function removeNodesInTree(tree: TreeNode[], targetKeys: string[]): TreeNode[] {
 }
 
 export function VirtualTreeDocPage() {
+  const { t } = useChaSetI18n();
   const treeRef = useRef<VirtualTreeHandle>(null);
   const [treeData, setTreeData] = useState<TreeNode[]>(INITIAL_TREE);
   const [selectionMode, setSelectionMode] = useState<'single' | 'multiple'>('multiple');
@@ -189,7 +191,9 @@ export function VirtualTreeDocPage() {
     mode: 'cut' | 'copy';
     ids: string[];
   } | null>(null);
-  const [statusMessage, setStatusMessage] = useState<string>('Ready. Try selecting files or dragging to reorder (hold Ctrl to copy).');
+  const [statusMessage, setStatusMessage] = useState<string>(() =>
+    t('desktopComposite.virtualTree.readyStatus', 'Ready. Try selecting files or dragging to reorder (hold Ctrl to copy).'),
+  );
 
   const cutIds = clipboardState?.mode === 'cut' ? clipboardState.ids : [];
   const copiedIds = clipboardState?.mode === 'copy' ? clipboardState.ids : [];
@@ -197,40 +201,58 @@ export function VirtualTreeDocPage() {
   const handleCut = (selectedNodes: TreeNode[], ids: string[]) => {
     if (ids.length === 0) return;
     setClipboardState({ mode: 'cut', ids });
-    setStatusMessage(`Cut ${ids.length} item(s) (dimmed). Select a target and press Ctrl+V to paste or Esc to cancel.`);
+    setStatusMessage(
+      t('desktopComposite.virtualTree.cutStatus', 'Cut {{count}} item(s) (dimmed). Select a target and press Ctrl+V to paste or Esc to cancel.', {
+        count: ids.length,
+      }),
+    );
   };
 
   const handleCopy = (selectedNodes: TreeNode[], ids: string[]) => {
     if (ids.length === 0) return;
     setClipboardState({ mode: 'copy', ids });
-    setStatusMessage(`Copied ${ids.length} item(s) (pulsing). Select a target and press Ctrl+V to paste or Esc to cancel.`);
+    setStatusMessage(
+      t('desktopComposite.virtualTree.copyStatus', 'Copied {{count}} item(s) (pulsing). Select a target and press Ctrl+V to paste or Esc to cancel.', {
+        count: ids.length,
+      }),
+    );
   };
 
   const handleEscape = () => {
     if (clipboardState) {
       setClipboardState(null);
-      setStatusMessage('Clipboard cleared.');
+      setStatusMessage(t('desktopComposite.virtualTree.clipboardCleared', 'Clipboard cleared.'));
     }
   };
 
   const handlePaste = (targetNode: TreeNode | null, position: 'inside' | 'after') => {
     if (!clipboardState || clipboardState.ids.length === 0) {
-      setStatusMessage('Clipboard is empty. Press Ctrl+C to copy or Ctrl+X to cut items first.');
+      setStatusMessage(t('desktopComposite.virtualTree.clipboardEmpty', 'Clipboard is empty. Press Ctrl+C to copy or Ctrl+X to cut items first.'));
       return;
     }
     if (!targetNode) {
-      setStatusMessage('No target selected for paste.');
+      setStatusMessage(t('desktopComposite.virtualTree.noTarget', 'No target selected for paste.'));
       return;
     }
     if (clipboardState.mode === 'cut') {
       const nextTree = moveNodesInTree(treeData, clipboardState.ids, targetNode.id, position);
       setTreeData(nextTree);
       setClipboardState(null);
-      setStatusMessage(`Pasted (moved) ${clipboardState.ids.length} item(s) into/after "${targetNode.label || targetNode.id}".`);
+      setStatusMessage(
+        t('desktopComposite.virtualTree.pastedMoved', 'Pasted (moved) {{count}} item(s) into/after "{{target}}".', {
+          count: clipboardState.ids.length,
+          target: targetNode.label || targetNode.id,
+        }),
+      );
     } else {
       const nextTree = copyNodesInTree(treeData, clipboardState.ids, targetNode.id, position);
       setTreeData(nextTree);
-      setStatusMessage(`Pasted (copied) ${clipboardState.ids.length} item(s) into/after "${targetNode.label || targetNode.id}".`);
+      setStatusMessage(
+        t('desktopComposite.virtualTree.pastedCopied', 'Pasted (copied) {{count}} item(s) into/after "{{target}}".', {
+          count: clipboardState.ids.length,
+          target: targetNode.label || targetNode.id,
+        }),
+      );
     }
   };
 
@@ -239,18 +261,30 @@ export function VirtualTreeDocPage() {
     const nextTree = removeNodesInTree(treeData, ids);
     setTreeData(nextTree);
     setSelectedIds([]);
-    setStatusMessage(`Deleted ${ids.length} item(s).`);
+    setStatusMessage(t('desktopComposite.virtualTree.deletedStatus', 'Deleted {{count}} item(s).', { count: ids.length }));
   };
 
   const handleDropNode = (evt: VirtualTreeDropEvent<TreeNode>) => {
     if (evt.isCopy) {
       const nextTree = copyNodesInTree(treeData, evt.sourceKeys, evt.targetKey, evt.position);
       setTreeData(nextTree);
-      setStatusMessage(`Copied ${evt.sourceKeys.join(', ')} -> ${evt.position} "${evt.targetNode.label || evt.targetKey}".`);
+      setStatusMessage(
+        t('desktopComposite.virtualTree.droppedCopied', 'Copied {{source}} -> {{pos}} "{{target}}".', {
+          source: evt.sourceKeys.join(', '),
+          pos: evt.position,
+          target: evt.targetNode.label || evt.targetKey,
+        }),
+      );
     } else {
       const nextTree = moveNodesInTree(treeData, evt.sourceKeys, evt.targetKey, evt.position);
       setTreeData(nextTree);
-      setStatusMessage(`Moved ${evt.sourceKeys.join(', ')} -> ${evt.position} "${evt.targetNode.label || evt.targetKey}".`);
+      setStatusMessage(
+        t('desktopComposite.virtualTree.droppedMoved', 'Moved {{source}} -> {{pos}} "{{target}}".', {
+          source: evt.sourceKeys.join(', '),
+          pos: evt.position,
+          target: evt.targetNode.label || evt.targetKey,
+        }),
+      );
     }
   };
 
@@ -308,14 +342,14 @@ export function VirtualTreeDocPage() {
                 size="sm"
                 onClick={() => treeRef.current?.expandAll()}
               >
-                Expand All
+                {t('desktopComposite.virtualTree.expandAll', 'Expand All')}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => treeRef.current?.collapseAll()}
               >
-                Collapse All
+                {t('desktopComposite.virtualTree.collapseAll', 'Collapse All')}
               </Button>
               <Button
                 variant="outline"
@@ -324,7 +358,9 @@ export function VirtualTreeDocPage() {
                   setSelectionMode((prev) => (prev === 'multiple' ? 'single' : 'multiple'))
                 }
               >
-                Mode: {selectionMode === 'multiple' ? 'Multi' : 'Single'}
+                {t('desktopComposite.virtualTree.mode', 'Mode: {{mode}}', {
+                  mode: selectionMode === 'multiple' ? t('desktopComposite.virtualTree.multi', 'Multi') : t('desktopComposite.virtualTree.single', 'Single'),
+                })}
               </Button>
               <Button
                 variant="outline"
@@ -332,7 +368,7 @@ export function VirtualTreeDocPage() {
                 disabled={selectedIds.length === 0}
                 onClick={() => handleCopy([], selectedIds)}
               >
-                Copy (Ctrl+C)
+                {t('desktopComposite.virtualTree.copyBtn', 'Copy (Ctrl+C)')}
               </Button>
               <Button
                 variant="outline"
@@ -340,7 +376,7 @@ export function VirtualTreeDocPage() {
                 disabled={selectedIds.length === 0}
                 onClick={() => handleCut([], selectedIds)}
               >
-                Cut (Ctrl+X)
+                {t('desktopComposite.virtualTree.cutBtn', 'Cut (Ctrl+X)')}
               </Button>
               <Button
                 variant="outline"
@@ -362,7 +398,7 @@ export function VirtualTreeDocPage() {
                   if (target) handlePaste(target, target.children ? 'inside' : 'after');
                 }}
               >
-                Paste (Ctrl+V)
+                {t('desktopComposite.virtualTree.pasteBtn', 'Paste (Ctrl+V)')}
               </Button>
               <Button
                 variant="outline"
@@ -370,7 +406,7 @@ export function VirtualTreeDocPage() {
                 disabled={selectedIds.length === 0}
                 onClick={() => handleDelete([], selectedIds)}
               >
-                Delete (Del)
+                {t('desktopComposite.virtualTree.deleteBtn', 'Delete (Del)')}
               </Button>
               <Button
                 variant="outline"
@@ -379,10 +415,10 @@ export function VirtualTreeDocPage() {
                   setTreeData(INITIAL_TREE);
                   setClipboardState(null);
                   setSelectedIds(['Button.tsx']);
-                  setStatusMessage('Reset tree to default.');
+                  setStatusMessage(t('desktopComposite.virtualTree.resetStatus', 'Reset tree to default.'));
                 }}
               >
-                Reset
+                {t('common.reset', 'Reset')}
               </Button>
             </div>
 
@@ -457,17 +493,17 @@ export function VirtualTreeDocPage() {
             <div className="flex flex-col gap-1 text-xs text-muted-foreground bg-muted/30 p-2 rounded border border-border">
               <div className="flex items-center justify-between">
                 <span>
-                  Selected: <strong className="text-foreground">{selectedIds.length > 0 ? selectedIds.join(', ') : 'None'}</strong>
+                  {t('desktopComposite.virtualTree.selectedLabel', 'Selected:')} <strong className="text-foreground">{selectedIds.length > 0 ? selectedIds.join(', ') : t('desktopComposite.virtualTree.none', 'None')}</strong>
                 </span>
                 <div className="flex items-center gap-1.5">
                   {cutIds.length > 0 && (
                     <Badge variant="secondary" className="text-nano">
-                      {cutIds.length} cut (dimmed)
+                      {t('desktopComposite.virtualTree.cutBadge', '{{count}} cut (dimmed)', { count: cutIds.length })}
                     </Badge>
                   )}
                   {copiedIds.length > 0 && (
                     <Badge variant="secondary" className="text-nano">
-                      {copiedIds.length} copied (pulsing)
+                      {t('desktopComposite.virtualTree.copiedBadge', '{{count}} copied (pulsing)', { count: copiedIds.length })}
                     </Badge>
                   )}
                 </div>

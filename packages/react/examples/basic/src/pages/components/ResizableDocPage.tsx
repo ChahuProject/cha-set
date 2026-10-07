@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle, Button, Badge, SegmentedControl, CodeBlock } from '@chahu/cha-set';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle, Button, Badge, SegmentedControl, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function ResizableDocPage() {
+  const { t } = useChaSetI18n();
   const [playgroundDirection, setPlaygroundDirection] = useState<
     'horizontal' | 'vertical'
   >('horizontal');
@@ -164,15 +165,15 @@ export function ResizableDocPage() {
                 }}
               >
                 <div className="flex h-full flex-col justify-center items-center p-6 text-xs text-muted-foreground bg-muted/20">
-                  <span className="font-semibold text-foreground mb-1.5 text-sm">Explorer Tree</span>
-                  <Badge variant="outline">{horizLeft}% Width</Badge>
+                  <span className="font-semibold text-foreground mb-1.5 text-sm">{t('surfaces.resizable.explorerTree')}</span>
+                  <Badge variant="outline">{t('surfaces.resizable.percentWidth', { width: horizLeft })}</Badge>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={65} minSize={5} maxSize={95}>
                 <div className="flex h-full flex-col justify-center items-center p-6 text-xs text-muted-foreground">
-                  <span className="font-semibold text-foreground mb-1.5 text-sm">Source Code Editor</span>
-                  <Badge variant="secondary">{100 - horizLeft}% Width</Badge>
+                  <span className="font-semibold text-foreground mb-1.5 text-sm">{t('surfaces.resizable.sourceCodeEditor')}</span>
+                  <Badge variant="secondary">{t('surfaces.resizable.percentWidth', { width: 100 - horizLeft })}</Badge>
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
@@ -229,8 +230,8 @@ ChaSetResizable {
                 }}
               >
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/20">
-                  <span className="font-semibold text-foreground mb-1.5">Sidebar</span>
-                  <Badge variant="outline">{nestedSidebar}% Width</Badge>
+                  <span className="font-semibold text-foreground mb-1.5">{t('surfaces.resizable.sidebar')}</span>
+                  <Badge variant="outline">{t('surfaces.resizable.percentWidth', { width: nestedSidebar })}</Badge>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
@@ -246,15 +247,15 @@ ChaSetResizable {
                     }}
                   >
                     <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground">
-                      <span className="font-semibold text-foreground mb-1.5">Editor Viewport</span>
-                      <Badge variant="secondary">{nestedEditor}% Height</Badge>
+                      <span className="font-semibold text-foreground mb-1.5">{t('surfaces.resizable.editorViewport')}</span>
+                      <Badge variant="secondary">{t('surfaces.resizable.percentHeight', { height: nestedEditor })}</Badge>
                     </div>
                   </ResizablePanel>
                   <ResizableHandle withHandle />
                   <ResizablePanel defaultSize={35} minSize={5} maxSize={95}>
                     <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/30">
-                      <span className="font-semibold text-foreground mb-1.5">Integrated Terminal</span>
-                      <Badge variant="outline">{100 - nestedEditor}% Height</Badge>
+                      <span className="font-semibold text-foreground mb-1.5">{t('surfaces.resizable.integratedTerminal')}</span>
+                      <Badge variant="outline">{t('surfaces.resizable.percentHeight', { height: 100 - nestedEditor })}</Badge>
                     </div>
                   </ResizablePanel>
                 </ResizablePanelGroup>
@@ -280,14 +281,14 @@ ChaSetResizable {
           controls={
             <div className="flex flex-wrap items-center gap-4 p-3 bg-muted/20 border-b border-border text-xs">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground font-medium">Direction:</span>
+                <span className="text-muted-foreground font-medium">{t('surfaces.resizable.direction')}</span>
                 <SegmentedControl
                   size="default"
                   value={playgroundDirection}
                   onValueChange={(val) => setPlaygroundDirection(val as 'horizontal' | 'vertical')}
                   options={[
-                    { label: 'Horizontal', value: 'horizontal' },
-                    { label: 'Vertical', value: 'vertical' },
+                    { label: t('surfaces.resizable.horizontal'), value: 'horizontal' },
+                    { label: t('surfaces.resizable.vertical'), value: 'vertical' },
                   ]}
                 />
               </div>
@@ -298,7 +299,7 @@ ChaSetResizable {
                   variant={playgroundWithHandle ? 'default' : 'outline'}
                   onClick={() => setPlaygroundWithHandle((v) => !v)}
                 >
-                  {playgroundWithHandle ? 'Handle: Visible' : 'Handle: Hidden'}
+                  {playgroundWithHandle ? t('surfaces.resizable.handleVisible') : t('surfaces.resizable.handleHidden')}
                 </Button>
               </div>
             </div>
@@ -320,18 +321,18 @@ ChaSetResizable {
                 }}
               >
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/20">
-                  <span className="font-semibold text-foreground mb-1.5">Panel Alpha</span>
+                  <span className="font-semibold text-foreground mb-1.5">{t('surfaces.resizable.panelAlpha')}</span>
                   <Badge variant="outline">
-                    {playgroundFirst}% {playgroundDirection === 'horizontal' ? 'Width' : 'Height'}
+                    {playgroundDirection === 'horizontal' ? t('surfaces.resizable.percentWidth', { width: playgroundFirst }) : t('surfaces.resizable.percentHeight', { height: playgroundFirst })}
                   </Badge>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle={playgroundWithHandle} />
               <ResizablePanel defaultSize={60} minSize={5} maxSize={95}>
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground">
-                  <span className="font-semibold text-foreground mb-1.5">Panel Beta</span>
+                  <span className="font-semibold text-foreground mb-1.5">{t('surfaces.resizable.panelBeta')}</span>
                   <Badge variant="secondary">
-                    {100 - playgroundFirst}% {playgroundDirection === 'horizontal' ? 'Width' : 'Height'}
+                    {playgroundDirection === 'horizontal' ? t('surfaces.resizable.percentWidth', { width: 100 - playgroundFirst }) : t('surfaces.resizable.percentHeight', { height: 100 - playgroundFirst })}
                   </Badge>
                 </div>
               </ResizablePanel>

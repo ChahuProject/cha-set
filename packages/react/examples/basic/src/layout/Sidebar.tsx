@@ -20,7 +20,7 @@ export function NavigationContent({ currentHash, onItemClick }: NavigationConten
       {NAVIGATION_CONFIG.map((cat) => (
         <div key={cat.title} className="flex flex-col gap-1.5">
           <h4 className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
-            {t('showcase.categories.' + cat.title, cat.title)}
+            {t('categories.' + cat.title, t('showcase.categories.' + cat.title, cat.title))}
           </h4>
           <div className="flex flex-col gap-0.5">
             {cat.items.map((item) => {
@@ -36,7 +36,7 @@ export function NavigationContent({ currentHash, onItemClick }: NavigationConten
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                   }`}
                 >
-                  <span>{item.title}</span>
+                  <span>{t('navigation.' + item.id, item.title)}</span>
                   {item.badge && (
                     <Badge size="sm" variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                       {item.badge}

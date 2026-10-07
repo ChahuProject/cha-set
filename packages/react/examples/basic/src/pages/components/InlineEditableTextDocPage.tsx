@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { InlineEditableText, Card, CodeBlock } from '@chahu/cha-set';
+import { InlineEditableText, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function InlineEditableTextDocPage() {
+  const { t } = useChaSetI18n();
   const [title, setTitle] = useState('My Awesome Project');
 
   const reactCode = `<InlineEditableText
@@ -38,11 +39,11 @@ export function InlineEditableTextDocPage() {
               <InlineEditableText
                 value={title}
                 onValueChange={setTitle}
-                placeholder="Type a title..."
+                placeholder={t('components.inlineEditableText.placeholder', 'Type a title...')}
               />
             </div>
             <span className="text-xs text-muted-foreground">
-              Current state value: <strong className="text-foreground">{title}</strong>
+              {t('components.inlineEditableText.currentStateValue', 'Current state value:')} <strong className="text-foreground">{title}</strong>
             </span>
           </div>
         </ComponentPreview>
@@ -85,20 +86,20 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`}
         >
           <div className="w-full max-w-sm flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <span className="text-xs text-muted-foreground">Single Click Activation (Default)</span>
-              <InlineEditableText value="Project Architecture Doc" trigger="click" size="default" />
+              <span className="text-xs text-muted-foreground">{t('components.inlineEditableText.singleClickActivation', 'Single Click Activation (Default)')}</span>
+              <InlineEditableText value={t('components.inlineEditableText.demoSingleClick', 'Project Architecture Doc')} trigger="click" size="default" />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-xs text-muted-foreground">Double Click Activation</span>
-              <InlineEditableText value="Database Connection URI" trigger="doubleClick" size="default" />
+              <span className="text-xs text-muted-foreground">{t('components.inlineEditableText.doubleClickActivation', 'Double Click Activation')}</span>
+              <InlineEditableText value={t('components.inlineEditableText.demoDoubleClick', 'Database Connection URI')} trigger="doubleClick" size="default" />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-xs text-muted-foreground">Compact sm Size</span>
-              <InlineEditableText value="Sprint-42-Review" size="sm" />
+              <span className="text-xs text-muted-foreground">{t('components.inlineEditableText.compactSm', 'Compact sm Size')}</span>
+              <InlineEditableText value={t('components.inlineEditableText.demoCompact', 'Sprint-42-Review')} size="sm" />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-xs text-muted-foreground">Disabled State</span>
-              <InlineEditableText value="System Protected File" disabled />
+              <span className="text-xs text-muted-foreground">{t('components.inlineEditableText.disabledTitle', 'Disabled State')}</span>
+              <InlineEditableText value={t('components.inlineEditableText.demoDisabled', 'System Protected File')} disabled />
             </div>
           </div>
         </ComponentPreview>

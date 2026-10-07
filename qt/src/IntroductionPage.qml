@@ -31,14 +31,14 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "Design Philosophy"
+            text: ChaSetI18n.tr("getStarted.intro.philosophy.title", "Design Philosophy")
             textColor: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
         }
 
         DocText {
-            text: "ChaSet is part of the ChahuProject ecosystem. In traditional multi-platform apps, Web and Desktop design systems drift apart quickly. ChaSet solves this by establishing a neutral, machine-readable specification and token shard layer that drives both React and Qt simultaneously with pixel-perfect and behavioral parity."
+            text: ChaSetI18n.tr("getStarted.intro.philosophy.desc", "ChaSet is part of the ChahuProject ecosystem. In traditional multi-platform apps, Web and Desktop design systems drift apart quickly. ChaSet solves this by establishing a neutral, machine-readable specification and token shard layer that drives both React and Qt simultaneously with pixel-perfect and behavioral parity.")
             isMuted: true
             font.pixelSize: Typography.sizeBody
             width: parent.width
@@ -65,9 +65,9 @@ DocLayout {
                         anchors.margins: ThemeTokens.dp(14)
                         spacing: ThemeTokens.dp(6)
                         ChaSetIcon { name: "target"; size: 24; color: ThemeTokens.accent }
-                        DocText { text: "One Source of Truth"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
+                        DocText { text: ChaSetI18n.tr("getStarted.intro.philosophy.oneSourceTitle", "One Source of Truth"); textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
-                            text: "Design tokens and API contracts reside in spec/ and emit synchronized tokens for Web & Qt."
+                            text: ChaSetI18n.tr("getStarted.intro.philosophy.oneSourceDesc", "Design tokens and API contracts reside in spec/ and emit synchronized tokens for Web & Qt.")
                             isMuted: true
                             font.pixelSize: Typography.sizeCaption
                             width: parent.width
@@ -93,9 +93,9 @@ DocLayout {
                         anchors.margins: ThemeTokens.dp(14)
                         spacing: ThemeTokens.dp(6)
                         ChaSetIcon { name: "zap"; size: 24; color: ThemeTokens.accent }
-                        DocText { text: "Native Ergonomics"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
+                        DocText { text: ChaSetI18n.tr("getStarted.intro.philosophy.nativeErgonomicsTitle", "Native Ergonomics"); textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
-                            text: "Tailwind CSS v4 & Base UI on React; pure QML Quick Controls on Qt — no electron bloat or foreign wrappers."
+                            text: ChaSetI18n.tr("getStarted.intro.philosophy.nativeErgonomicsDesc", "Tailwind CSS v4 & Base UI on React; pure QML Quick Controls on Qt — no electron bloat or foreign wrappers.")
                             isMuted: true
                             font.pixelSize: Typography.sizeCaption
                             width: parent.width
@@ -121,9 +121,9 @@ DocLayout {
                         anchors.margins: ThemeTokens.dp(14)
                         spacing: ThemeTokens.dp(6)
                         ChaSetIcon { name: "lock"; size: 24; color: ThemeTokens.accent }
-                        DocText { text: "Automated Parity Gate"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
+                        DocText { text: ChaSetI18n.tr("getStarted.intro.philosophy.parityGateTitle", "Automated Parity Gate"); textColor: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
                         DocText {
-                            text: "CI enforces that all required capabilities and visual rendering match 100% across stacks."
+                            text: ChaSetI18n.tr("getStarted.intro.philosophy.parityGateDesc", "CI enforces that all required capabilities and visual rendering match 100% across stacks.")
                             isMuted: true
                             font.pixelSize: Typography.sizeCaption
                             width: parent.width
@@ -141,7 +141,7 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "How It Works"
+            text: ChaSetI18n.tr("getStarted.intro.architecture.title", "How It Works")
             textColor: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
@@ -160,14 +160,14 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "Quick Start"
+            text: ChaSetI18n.tr("getStarted.intro.quickstart.title", "Quick Start")
             textColor: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
         }
 
         DocText {
-            text: "Install the package and peer dependencies:"
+            text: ChaSetI18n.tr("getStarted.intro.quickstart.installDesc", "Install the package and peer dependencies:")
             isMuted: true
             font.pixelSize: Typography.sizeSmall
         }
@@ -179,7 +179,7 @@ DocLayout {
         }
 
         DocText {
-            text: "Use in your application:"
+            text: ChaSetI18n.tr("getStarted.intro.quickstart.useAppDesc", "Use in your application:")
             isMuted: true
             font.pixelSize: Typography.sizeSmall
         }
@@ -187,7 +187,7 @@ DocLayout {
         ChaSetCodeBlock {
             width: parent.width
             language: "qml"
-            code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetScrollArea {\n    width: 400\n    height: 300\n    showButtons: true\n\n    ChaSetButton {\n        variant: \"default\"\n        size: \"default\"\n        text: \"Launch Workspace\"\n        onClicked: console.log(\"Clicked!\")\n    }\n}"
+            code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetScrollArea {\n    width: 400\n    height: 300\n    showButtons: true\n\n    ChaSetButton {\n        variant: \"default\"\n        size: \"default\"\n        text: \"" + ChaSetI18n.tr("getStarted.intro.quickstart.buttonText", "Launch Workspace") + "\"\n        onClicked: console.log(\"Clicked!\")\n    }\n}"
         }
     }
 
@@ -197,7 +197,7 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "Packages"
+            text: ChaSetI18n.tr("getStarted.intro.packages.title", "Packages")
             textColor: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
@@ -207,14 +207,14 @@ DocLayout {
             width: parent.width
             interactive: false
             columns: [
-                { key: "pkg", title: "PACKAGE", width: 180, code: true },
-                { key: "target", title: "TARGET", width: 140 },
-                { key: "desc", title: "DESCRIPTION" }
+                { key: "pkg", title: ChaSetI18n.tr("getStarted.intro.packages.colPackage", "PACKAGE"), width: 180, code: true },
+                { key: "target", title: ChaSetI18n.tr("getStarted.intro.packages.colTarget", "TARGET"), width: 140 },
+                { key: "desc", title: ChaSetI18n.tr("getStarted.intro.packages.colDesc", "DESCRIPTION") }
             ]
             rows: [
-                { pkg: "@chahu/cha-set", target: "React / Web", desc: "React component library published to npm." },
-                { pkg: "QtChaSetDemo", target: "Qt 6 / C++ / QML", desc: "Qt reference implementation with native QML components." },
-                { pkg: "@chahu/spec", target: "Internal Spec", desc: "Neutral token generator and contract schemas." }
+                { pkg: "@chahu/cha-set", target: "React / Web", desc: ChaSetI18n.tr("getStarted.intro.packages.pkgReactDesc", "React component library published to npm.") },
+                { pkg: "QtChaSetDemo", target: "Qt 6 / C++ / QML", desc: ChaSetI18n.tr("getStarted.intro.packages.pkgQtDesc", "Qt reference implementation with native QML components.") },
+                { pkg: "@chahu/spec", target: "Internal Spec", desc: ChaSetI18n.tr("getStarted.intro.packages.pkgSpecDesc", "Neutral token generator and contract schemas.") }
             ]
         }
     }

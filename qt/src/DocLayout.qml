@@ -11,6 +11,10 @@ Item {
     property string category: "Components"
     property string pageTitle: "Button"
     property string description: ""
+    readonly property string slug: root.pageTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+    readonly property string localizedDescription: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
+        ? ChaSetI18n.tr("components." + root.slug + ".description", root.description)
+        : root.description
     property var tocItems: []
     property var autoTocItems: []
     property var enrichedTocItems: []
@@ -431,7 +435,7 @@ Item {
             // Breadcrumb
             TextEdit {
                 id: breadcrumbText
-                text: "Docs / " + root.category + " / " + root.pageTitle
+                text: ChaSetI18n.tr("showcase.docs", "Docs") + " / " + ChaSetI18n.tr("showcase.categories." + root.category, root.category) + " / " + root.pageTitle
                 color: ThemeTokens.subduedText
                 font.family: Typography.familySans
                 font.pixelSize: Typography.sizeSmall
@@ -546,7 +550,7 @@ Item {
                         anchors.right: parent.right
                         anchors.top: parent.top
                         text: "qt-page://" + root.pageTitle.toLowerCase().replace(/\s+/g, '-')
-                        label: "Copy Link"
+                        label: ChaSetI18n.tr("common.copyLink", "Copy Link")
                         variant: "outline"
                         size: "sm"
                     }
@@ -554,9 +558,9 @@ Item {
 
                 TextEdit {
                     id: descText
-                    visible: root.description !== ""
+                    visible: root.localizedDescription !== ""
                     width: parent.width
-                    text: root.description
+                    text: root.localizedDescription
                     color: ThemeTokens.subduedText
                     font.family: Typography.familySans
                     font.pixelSize: Typography.sizeHeading

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { KeybindingRecorder, formatKeybinding, Card, CodeBlock } from '@chahu/cha-set';
+import { KeybindingRecorder, formatKeybinding, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function KeybindingRecorderDocPage() {
+  const { t } = useChaSetI18n();
   const [binding, setBinding] = useState('Ctrl+Shift+P');
 
   const reactCode = `<KeybindingRecorder
@@ -40,10 +41,11 @@ export function KeybindingRecorderDocPage() {
             <KeybindingRecorder
               value={binding}
               onValueChange={(val) => setBinding(typeof val === 'string' ? val : formatKeybinding(val))}
-              placeholder="Press shortcut keys..."
+              placeholder={t('components.keybindingRecorder.placeholder', 'Press shortcut keys...')}
+              recordingText={t('components.keybindingRecorder.recordingPrompt', 'Please press key combination (Esc to cancel)...')}
             />
             <span className="text-xs text-muted-foreground">
-              Recorded accelerator: <code className="text-foreground">{binding || 'None'}</code>
+              {t('components.keybindingRecorder.recordedAccelerator', 'Recorded accelerator:')} <code className="text-foreground">{binding || t('components.keybindingRecorder.none', 'None')}</code>
             </span>
           </div>
         </ComponentPreview>
@@ -86,19 +88,19 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`}
         >
           <div className="w-full max-w-sm flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-muted-foreground">Default Size (with Clear)</span>
+              <span className="text-xs text-muted-foreground">{t('components.keybindingRecorder.defaultWithClear', 'Default Size (with Clear)')}</span>
               <KeybindingRecorder value="Ctrl+K" size="default" />
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-muted-foreground">Compact sm Tier</span>
+              <span className="text-xs text-muted-foreground">{t('components.keybindingRecorder.compactSm', 'Compact sm Tier')}</span>
               <KeybindingRecorder value="Ctrl+Shift+P" size="sm" />
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-muted-foreground">Without Clear Button</span>
+              <span className="text-xs text-muted-foreground">{t('components.keybindingRecorder.withoutClear', 'Without Clear Button')}</span>
               <KeybindingRecorder value="Alt+F4" clearable={false} />
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-muted-foreground">Disabled State</span>
+              <span className="text-xs text-muted-foreground">{t('components.keybindingRecorder.disabledTitle', 'Disabled State')}</span>
               <KeybindingRecorder value="Ctrl+C" disabled />
             </div>
           </div>

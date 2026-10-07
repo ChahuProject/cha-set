@@ -45,24 +45,24 @@ DocLayout {
                             id: heroCardTitle
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "Create project"
+                            text: ChaSetI18n.tr("surfaces.card.heroTitle", "Create project")
                         }
                         ChaSetBadge {
                             id: heroBadge
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                             variant: "secondary"
-                            text: "Pro"
+                            text: ChaSetI18n.tr("surfaces.card.heroBadge", "Pro")
                         }
                     }
                     ChaSetCardDescription {
-                        text: "Deploy your new project in one-click."
+                        text: ChaSetI18n.tr("surfaces.card.heroDescription", "Deploy your new project in one-click.")
                     }
                 }
 
                 ChaSetCardContent {
                     DocText {
-                        text: "Your project will be deployed to the edge network automatically."
+                        text: ChaSetI18n.tr("surfaces.card.heroContent", "Your project will be deployed to the edge network automatically.")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeBody
                         wrapMode: TextEdit.WordWrap
@@ -74,11 +74,11 @@ DocLayout {
                     ChaSetButton {
                         variant: "outline"
                         size: "sm"
-                        text: "Cancel"
+                        text: ChaSetI18n.tr("common.cancel", "Cancel")
                     }
                     ChaSetButton {
                         size: "sm"
-                        text: "Deploy"
+                        text: ChaSetI18n.tr("surfaces.card.deploy", "Deploy")
                     }
                 }
             }
@@ -90,15 +90,15 @@ DocLayout {
 
                 Row {
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("showcase.variant", "Variant:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
                         value: root.demoVariant
                         options: [
-                            { label: "Default", value: "default" },
-                            { label: "Secondary", value: "secondary" },
-                            { label: "Outline", value: "outline" }
+                            { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                            { label: ChaSetI18n.tr("common.secondary", "Secondary"), value: "secondary" },
+                            { label: ChaSetI18n.tr("common.outline", "Outline"), value: "outline" }
                         ]
                         onValueSelected: function(v) { root.demoVariant = String(v); }
                     }
@@ -106,14 +106,14 @@ DocLayout {
 
                 Row {
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("showcase.size", "Size:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
                         value: root.demoSize
                         options: [
-                            { label: "Default", value: "default" },
-                            { label: "Compact (sm)", value: "sm" }
+                            { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                            { label: ChaSetI18n.tr("surfaces.card.compact", "Compact (sm)"), value: "sm" }
                         ]
                         onValueSelected: function(v) { root.demoSize = String(v); }
                     }
@@ -121,7 +121,7 @@ DocLayout {
 
                 ChaSetCheckbox {
                     anchors.verticalCenter: parent.verticalCenter
-                    label: "Interactive"
+                    label: ChaSetI18n.tr("surfaces.card.interactive", "Interactive")
                     checked: root.demoInteractive
                     onToggled: (val) => root.demoInteractive = val
                 }
@@ -162,8 +162,8 @@ DocLayout {
                 width: (parent.width - 24) / 3
                 variant: "default"
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Default Card"; font.pixelSize: Typography.sizeHeading }
-                    ChaSetCardDescription { text: "Elevated surface with panel background" }
+                    ChaSetCardTitle { text: ChaSetI18n.tr("surfaces.card.defaultCardTitle", "Default Card"); font.pixelSize: Typography.sizeHeading }
+                    ChaSetCardDescription { text: ChaSetI18n.tr("surfaces.card.defaultCardDesc", "Elevated surface with panel background") }
                 }
             }
 
@@ -171,8 +171,8 @@ DocLayout {
                 width: (parent.width - 24) / 3
                 variant: "secondary"
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Secondary Card"; font.pixelSize: Typography.sizeHeading }
-                    ChaSetCardDescription { text: "Subtle contrast for grouped items" }
+                    ChaSetCardTitle { text: ChaSetI18n.tr("surfaces.card.secondaryCardTitle", "Secondary Card"); font.pixelSize: Typography.sizeHeading }
+                    ChaSetCardDescription { text: ChaSetI18n.tr("surfaces.card.secondaryCardDesc", "Subtle contrast for grouped secondary items") }
                 }
             }
 
@@ -180,8 +180,8 @@ DocLayout {
                 width: (parent.width - 24) / 3
                 variant: "outline"
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Outline Card"; font.pixelSize: Typography.sizeHeading }
-                    ChaSetCardDescription { text: "Transparent background with crisp border" }
+                    ChaSetCardTitle { text: ChaSetI18n.tr("surfaces.card.outlineCardTitle", "Outline Card"); font.pixelSize: Typography.sizeHeading }
+                    ChaSetCardDescription { text: ChaSetI18n.tr("surfaces.card.outlineCardDesc", "Transparent background with crisp border") }
                 }
             }
         }
@@ -207,12 +207,12 @@ DocLayout {
                 width: (parent.width - 12) / 2
                 interactive: true
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Interactive Card"; font.pixelSize: Typography.sizeHeading }
-                    ChaSetCardDescription { text: "Hover over me to see cursor and elevation changes" }
+                    ChaSetCardTitle { text: ChaSetI18n.tr("surfaces.card.interactiveCardTitle", "Interactive Card"); font.pixelSize: Typography.sizeHeading }
+                    ChaSetCardDescription { text: ChaSetI18n.tr("surfaces.card.interactiveCardDesc", "Hover over me to see cursor and elevation changes") }
                 }
                 ChaSetCardContent {
                     DocText {
-                        text: "Clickable surface for dashboards and selectable items."
+                        text: ChaSetI18n.tr("surfaces.card.interactiveCardContent", "Clickable surface for dashboards and selectable items.")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                     }
@@ -223,12 +223,12 @@ DocLayout {
                 width: (parent.width - 12) / 2
                 size: "sm"
                 ChaSetCardHeader {
-                    ChaSetCardTitle { text: "Compact Card (sm)"; font.pixelSize: Typography.sizeHeading }
-                    ChaSetCardDescription { text: "Reduced padding for tight sidebars and sheets" }
+                    ChaSetCardTitle { text: ChaSetI18n.tr("surfaces.card.compactCardTitle", "Compact Card (sm)"); font.pixelSize: Typography.sizeHeading }
+                    ChaSetCardDescription { text: ChaSetI18n.tr("surfaces.card.compactCardDesc", "Reduced padding for tight sidebars and mobile sheets") }
                 }
                 ChaSetCardContent {
                     DocText {
-                        text: "Streamlined layout with denser inner padding."
+                        text: ChaSetI18n.tr("surfaces.card.compactCardContent", "Streamlined layout with denser inner padding.")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                     }

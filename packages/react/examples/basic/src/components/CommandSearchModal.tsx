@@ -8,6 +8,7 @@ import {
   SearchIcon,
   VirtualList,
   type VirtualListHandle,
+  useChaSetI18n,
 } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG, type NavItem } from '../types/navigation';
 
@@ -18,6 +19,7 @@ export interface CommandSearchModalProps {
 }
 
 export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchModalProps) {
+  const { t } = useChaSetI18n();
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -92,7 +94,6 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
           onClose();
         }
       }
-
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -113,7 +114,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
           <Input
             ref={inputRef}
             type="text"
-            placeholder="搜索组件与文档..."
+            placeholder={t('common.searchPlaceholder', '搜索组件与文档...')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onClear={() => setQuery('')}
@@ -128,7 +129,9 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
         {/* Results VirtualList */}
         <div className="h-80 w-full p-2">
           {filtered.length === 0 ? (
-            <div className="p-8 text-center text-xs text-muted-foreground">未找到匹配页面</div>
+            <div className="p-8 text-center text-xs text-muted-foreground">
+              {t('common.noMatches', '未找到匹配页面')}
+            </div>
           ) : (
             <VirtualList
               ref={listRef}
@@ -137,6 +140,8 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
               className="h-full w-full"
               renderItem={({ category, item }, index) => {
                 const isSelected = index === selectedIndex;
+                const localizedTitle = t('navigation.' + item.id, item.title);
+                const localizedCategory = t('categories.' + category, t('showcase.categories.' + category, category));
                 return (
                   <div
                     key={item.id}
@@ -156,14 +161,14 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
                         variant="outline"
                         className="text-muted-foreground bg-muted/80 font-normal text-[0.6875rem]"
                       >
-                        {category}
+                        {localizedCategory}
                       </Badge>
                     </div>
 
                     {/* Content area padded on the right so long text never collides with or overflows the badge */}
                     <div className="pr-24 flex flex-col gap-0.5">
                       <div className="font-medium text-sm flex items-center gap-2">
-                        <span className="truncate">{item.title}</span>
+                        <span className="truncate">{localizedTitle}</span>
                         {item.badge && (
                           <Badge
                             size="sm"
@@ -176,7 +181,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
                       </div>
                       {item.description && (
                         <div className="text-xs text-muted-foreground truncate">
-                          {item.description}
+                          {t('components.' + item.id + '.description', item.description)}
                         </div>
                       )}
                     </div>
@@ -193,18 +198,20 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
             <span className="flex items-center gap-1.5">
               <Kbd size="xs" variant="outline">Up</Kbd>
               <Kbd size="xs" variant="outline">Down</Kbd>
-              <span>导航</span>
+              <span>{t('common.navigate', '导航')}</span>
             </span>
             <span className="flex items-center gap-1.5">
               <Kbd size="xs" variant="outline">Enter</Kbd>
-              <span>打开</span>
+              <span>{t('common.open', '打开')}</span>
             </span>
             <span className="flex items-center gap-1.5">
               <Kbd size="xs" variant="outline">Esc</Kbd>
-              <span>关闭</span>
+              <span>{t('common.close', '关闭')}</span>
             </span>
           </div>
-          <span className="text-micro">{filtered.length} 个结果</span>
+          <span className="text-micro">
+            {t('common.resultCount', '{count} 个结果', { count: filtered.length })}
+          </span>
         </div>
       </Card>
     </div>

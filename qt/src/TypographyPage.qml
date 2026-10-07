@@ -21,17 +21,17 @@ DocLayout {
         (typeof textRenderPolicy !== "undefined" && textRenderPolicy !== "") ? textRenderPolicy : "qt"
 
     readonly property var webRows: [
-        { label: "Rasterizer", value: "Grayscale alpha antialiasing" },
-        { label: "Font smoothing", value: "antialiased · grayscale" },
-        { label: "Outline fitting", value: "None — text shaper follows the outline" },
-        { label: "Interface scale", value: "Root font size multiplier" }
+        { label: ChaSetI18n.tr("getStarted.typography.rasterizer.labelRasterizer", "Rasterizer"), value: ChaSetI18n.tr("getStarted.typography.rasterizer.webValRasterizer", "Grayscale alpha antialiasing") },
+        { label: ChaSetI18n.tr("getStarted.typography.rasterizer.labelSmoothing", "Font smoothing"), value: ChaSetI18n.tr("getStarted.typography.rasterizer.webValSmoothing", "antialiased · grayscale") },
+        { label: ChaSetI18n.tr("getStarted.typography.rasterizer.labelFitting", "Outline fitting"), value: ChaSetI18n.tr("getStarted.typography.rasterizer.webValFitting", "None — text shaper follows the outline") },
+        { label: ChaSetI18n.tr("getStarted.typography.rasterizer.labelScale", "Interface scale"), value: ChaSetI18n.tr("getStarted.typography.rasterizer.webValScale", "Root font size multiplier") }
     ]
     readonly property var qtRows: [
-        { label: "Rasterizer", value: root.renderPolicy },
-        { label: "Policies", value: "qt (default) · native · curve" },
-        { label: "Subpixel AA", value: "Disabled — grayscale only" },
-        { label: "Hinting", value: "Vertical only" },
-        { label: "Interface scale", value: "uiScale multiplier on every size token" }
+        { label: ChaSetI18n.tr("getStarted.typography.rasterizer.labelRasterizer", "Rasterizer"), value: root.renderPolicy },
+        { label: ChaSetI18n.tr("getStarted.typography.rasterizer.labelPolicies", "Policies"), value: ChaSetI18n.tr("getStarted.typography.rasterizer.qtValPolicies", "qt (default) · native · curve") },
+        { label: ChaSetI18n.tr("getStarted.typography.rasterizer.labelSubpixel", "Subpixel AA"), value: ChaSetI18n.tr("getStarted.typography.rasterizer.qtValSubpixel", "Disabled — grayscale only") },
+        { label: ChaSetI18n.tr("getStarted.typography.rasterizer.labelHinting", "Hinting"), value: ChaSetI18n.tr("getStarted.typography.rasterizer.qtValHinting", "Vertical only") },
+        { label: ChaSetI18n.tr("getStarted.typography.rasterizer.labelScale", "Interface scale"), value: ChaSetI18n.tr("getStarted.typography.rasterizer.qtValScale", "uiScale multiplier on every size token") }
     ]
 
     Column {
@@ -47,13 +47,13 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(4)
                 DocText {
-                    text: "Rasterization Path"
+                    text: ChaSetI18n.tr("getStarted.typography.rasterizer.title", "Rasterization Path")
                     textColor: ThemeTokens.text
                     font.pixelSize: Typography.sizeTitleSm
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "The two stacks reach the same glyph outlines through different rasterizers. Web asks Chromium for grayscale antialiasing with no grid fitting; Desktop resolves one policy for the whole process before the first window exists."
+                    text: ChaSetI18n.tr("getStarted.typography.rasterizer.desc", "The two stacks reach the same glyph outlines through different rasterizers. Web asks Chromium for grayscale antialiasing with no grid fitting; Desktop resolves one policy for the whole process before the first window exists.")
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -64,8 +64,8 @@ DocLayout {
 
             Repeater {
                 model: [
-                    { title: "Web · Chromium", badge: "React", rows: root.webRows },
-                    { title: "Desktop · Qt Quick", badge: "Qt", rows: root.qtRows }
+                    { title: ChaSetI18n.tr("getStarted.typography.rasterizer.webCardTitle", "Web · Chromium"), badge: "React", rows: root.webRows },
+                    { title: ChaSetI18n.tr("getStarted.typography.rasterizer.desktopCardTitle", "Desktop · Qt Quick"), badge: "Qt", rows: root.qtRows }
                 ]
                 delegate: Rectangle {
                     id: stackCard
@@ -136,13 +136,13 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(4)
                 DocText {
-                    text: "Cross-Script Size Ramp"
+                    text: ChaSetI18n.tr("getStarted.typography.ramp.title", "Cross-Script Size Ramp")
                     textColor: ThemeTokens.text
                     font.pixelSize: Typography.sizeTitleSm
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "Five script portals, each rendered once per type scale step. The passage never changes inside a block, so strokes can be compared across the whole ramp — including the rounded CJK and Hangul curves that reveal grid fitting first. Sizes follow the type scale and the interface scale, so they are named by token instead of by unit."
+                    text: ChaSetI18n.tr("getStarted.typography.ramp.desc", "Five script portals, each rendered once per type scale step. The passage never changes inside a block, so strokes can be compared across the whole ramp — including the rounded CJK and Hangul curves that reveal grid fitting first. Sizes follow the type scale and the interface scale, so they are named by token instead of by unit.")
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -253,13 +253,13 @@ DocLayout {
                 width: parent.width
                 spacing: ThemeTokens.dp(4)
                 DocText {
-                    text: "Host Integration"
+                    text: ChaSetI18n.tr("getStarted.typography.integration.title", "Host Integration")
                     textColor: ThemeTokens.text
                     font.pixelSize: Typography.sizeTitleSm
                     font.weight: Typography.weightBold
                 }
                 DocText {
-                    text: "How host applications configure and initialize ChaSet's typography subsystem across desktop and web runtimes."
+                    text: ChaSetI18n.tr("getStarted.typography.integration.desc", "How host applications configure and initialize ChaSet's typography subsystem across desktop and web runtimes.")
                     isMuted: true
                     font.pixelSize: Typography.sizeBody
                     width: parent.width
@@ -290,7 +290,7 @@ DocLayout {
                         Row {
                             spacing: ThemeTokens.dp(8)
                             DocText {
-                                text: "Desktop · Qt Quick (C++ / QML)"
+                                text: ChaSetI18n.tr("getStarted.typography.integration.desktopTitle", "Desktop · Qt Quick (C++ / QML)")
                                 textColor: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.weight: Typography.weightSemibold
@@ -299,7 +299,7 @@ DocLayout {
                         }
 
                         DocText {
-                            text: "Desktop applications initialize the typography system via ChaSet::FontSystem. Two calls in main.cpp configure DirectWrite pure alpha grayscale antialiasing, vertical hinting, and inject CJK fallback tables into QFontDatabase to eliminate bitmap SimSun degradation."
+                            text: ChaSetI18n.tr("getStarted.typography.integration.desktopDesc", "Desktop applications initialize the typography system via ChaSet::FontSystem. Two calls in main.cpp configure DirectWrite pure alpha grayscale antialiasing, vertical hinting, and inject CJK fallback tables into QFontDatabase to eliminate bitmap SimSun degradation.")
                             isMuted: true
                             font.pixelSize: Typography.sizeSmall
                             width: parent.width
@@ -312,7 +312,7 @@ DocLayout {
                             spacing: ThemeTokens.dp(6)
 
                             DocText {
-                                text: "1. CMake Target Linkage"
+                                text: ChaSetI18n.tr("getStarted.typography.integration.cmakeTitle", "1. CMake Target Linkage")
                                 textColor: ThemeTokens.text
                                 font.pixelSize: Typography.sizeCaption
                                 font.weight: Typography.weightMedium
@@ -331,7 +331,7 @@ DocLayout {
                             spacing: ThemeTokens.dp(6)
 
                             DocText {
-                                text: "2. C++ Initialization (main.cpp)"
+                                text: ChaSetI18n.tr("getStarted.typography.integration.cppTitle", "2. C++ Initialization (main.cpp)")
                                 textColor: ThemeTokens.text
                                 font.pixelSize: Typography.sizeCaption
                                 font.weight: Typography.weightMedium
@@ -350,14 +350,17 @@ DocLayout {
                             spacing: ThemeTokens.dp(6)
 
                             DocText {
-                                text: "3. Environment Variable Control (CHASET_TEXT_RENDER)"
+                                text: ChaSetI18n.tr("getStarted.typography.integration.envTitle", "3. Environment Variable Control (CHASET_TEXT_RENDER)")
                                 textColor: ThemeTokens.text
                                 font.pixelSize: Typography.sizeCaption
                                 font.weight: Typography.weightMedium
                             }
 
                             DocText {
-                                text: "The window-level text rasterization policy is controlled dynamically before startup via the CHASET_TEXT_RENDER environment variable:\n• qt (default): Qt glyph outline rasterizer (QtTextRendering). Smooth grayscale outline coverage without OS pixel grid-fitting; curves remain smooth when scaled.\n• native: Operating-system rasterizer (DirectWrite / CoreText, NativeTextRendering). Crisp pixel-grid fitting for small upright text; staircasing on curves when scaled.\n• curve: Hardware GPU curve rasterizer (CurveTextRendering, Qt 6.7+). Scale-invariant GPU curve rendering; automatically degrades to qt when a software rasterizer is active."
+                                text: ChaSetI18n.tr("getStarted.typography.integration.envDesc", "The window-level text rasterization policy is controlled dynamically before startup via the CHASET_TEXT_RENDER environment variable:") + "\n• " +
+                                      ChaSetI18n.tr("getStarted.typography.integration.envQt", "qt (default): Qt glyph outline rasterizer (QtTextRendering). Smooth grayscale outline coverage without OS pixel grid-fitting; curves remain smooth when scaled.") + "\n• " +
+                                      ChaSetI18n.tr("getStarted.typography.integration.envNative", "native: Operating-system rasterizer (DirectWrite / CoreText, NativeTextRendering). Crisp pixel-grid fitting for small upright text; staircasing on curves when scaled.") + "\n• " +
+                                      ChaSetI18n.tr("getStarted.typography.integration.envCurve", "curve: Hardware GPU curve rasterizer (CurveTextRendering, Qt 6.7+). Scale-invariant GPU curve rendering; automatically degrades to qt when a software rasterizer is active.")
                                 isMuted: true
                                 font.pixelSize: Typography.sizeSmall
                                 width: parent.width
@@ -393,7 +396,7 @@ DocLayout {
                         Row {
                             spacing: ThemeTokens.dp(8)
                             DocText {
-                                text: "Web · Chromium (React / CSS)"
+                                text: ChaSetI18n.tr("getStarted.typography.integration.webTitle", "Web · Chromium (React / CSS)")
                                 textColor: ThemeTokens.text
                                 font.pixelSize: Typography.sizeBody
                                 font.weight: Typography.weightSemibold
@@ -402,7 +405,7 @@ DocLayout {
                         }
 
                         DocText {
-                            text: "Web applications in Chromium / browsers automatically inherit grayscale antialiasing (-webkit-font-smoothing: antialiased) and CJK fallback chains through CSS variables. Environment variables and C++ initialization do not apply to the Web stack."
+                            text: ChaSetI18n.tr("getStarted.typography.integration.webDesc", "Web applications in Chromium / browsers automatically inherit grayscale antialiasing (-webkit-font-smoothing: antialiased) and CJK fallback chains through CSS variables. Environment variables and C++ initialization do not apply to the Web stack.")
                             isMuted: true
                             font.pixelSize: Typography.sizeSmall
                             width: parent.width
@@ -415,14 +418,14 @@ DocLayout {
                             spacing: ThemeTokens.dp(6)
 
                             DocText {
-                                text: "CSS Tokens & Font Family Overrides"
+                                text: ChaSetI18n.tr("getStarted.typography.integration.cssTokensTitle", "CSS Tokens & Font Family Overrides")
                                 textColor: ThemeTokens.text
                                 font.pixelSize: Typography.sizeCaption
                                 font.weight: Typography.weightMedium
                             }
 
                             DocText {
-                                text: "Reference var(--cs-font-sans) and var(--cs-font-mono) when customizing font stacks to preserve the prioritized Chinese fallback chain:"
+                                text: ChaSetI18n.tr("getStarted.typography.integration.cssTokensDesc", "Reference var(--cs-font-sans) and var(--cs-font-mono) when customizing font stacks to preserve the prioritized Chinese fallback chain:")
                                 isMuted: true
                                 font.pixelSize: Typography.sizeSmall
                                 width: parent.width

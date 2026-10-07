@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { SmoothWheelHandler, Card, Badge, SegmentedControl, CodeBlock } from '@chahu/cha-set';
+import { SmoothWheelHandler, Card, Badge, SegmentedControl, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SmoothWheelHandlerDocPage() {
+  const { t } = useChaSetI18n();
   const [speed, setSpeed] = useState(1.2);
   const [duration, setDuration] = useState(200);
   const [mapShift, setMapShift] = useState(true);
@@ -62,7 +63,7 @@ export function SmoothWheelHandlerDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-4 text-xs">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground font-medium">Speed Multiplier:</span>
+                <span className="text-muted-foreground font-medium">{t('desktopComposite.smoothWheelHandler.speedMultiplier', 'Speed Multiplier:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={speed}
@@ -76,7 +77,7 @@ export function SmoothWheelHandlerDocPage() {
                 />
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground font-medium">Damping Duration:</span>
+                <span className="text-muted-foreground font-medium">{t('desktopComposite.smoothWheelHandler.dampingDuration', 'Damping Duration:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={duration}
@@ -104,8 +105,12 @@ export function SmoothWheelHandlerDocPage() {
                     key={i}
                     className="p-3 bg-card border border-border/60 rounded-lg shadow-xs flex items-center justify-between text-xs"
                   >
-                    <span className="font-medium text-foreground">Smooth Scroll Item #{i + 1}</span>
-                    <Badge variant="outline">Item #{i + 1}</Badge>
+                    <span className="font-medium text-foreground">
+                      {t('desktopComposite.smoothWheelHandler.itemLabel', 'Smooth Scroll Item #{{index}}', { index: i + 1 })}
+                    </span>
+                    <Badge variant="outline">
+                      {t('desktopComposite.smoothWheelHandler.itemBadge', 'Item #{{index}}', { index: i + 1 })}
+                    </Badge>
                   </div>
                 ))}
               </div>
@@ -127,27 +132,33 @@ ChaSetSmoothWheelHandler {
 }`}
       />
 
-
-
       <section id="kinematics" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Kinematic Architecture</h2>
+        <h2 className="text-xl font-semibold text-foreground">
+          Kinematic Architecture
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="p-4 space-y-2">
-            <h3 className="text-sm font-semibold text-foreground">Continuous Momentum Accumulation</h3>
+            <h3 className="text-sm font-semibold text-foreground">
+              {t('desktopComposite.smoothWheelHandler.card1Title', 'Continuous Momentum Accumulation')}
+            </h3>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              When rapid successive wheel ticks occur, delta offsets are accumulated onto the existing target position rather than jerking backwards or stuttering.
+              {t('desktopComposite.smoothWheelHandler.card1Desc', 'When rapid successive wheel ticks occur, delta offsets are accumulated onto the existing target position rather than jerking backwards or stuttering.')}
             </p>
           </Card>
           <Card className="p-4 space-y-2">
-            <h3 className="text-sm font-semibold text-foreground">Shift+Wheel Horizontal Translation</h3>
+            <h3 className="text-sm font-semibold text-foreground">
+              {t('desktopComposite.smoothWheelHandler.card2Title', 'Shift+Wheel Horizontal Translation')}
+            </h3>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              In horizontal viewports or long-scroll carousels, automatically intercepts vertical wheel actions while holding Shift and maps them to horizontal translation.
+              {t('desktopComposite.smoothWheelHandler.card2Desc', 'In horizontal viewports or long-scroll carousels, automatically intercepts vertical wheel actions while holding Shift and maps them to horizontal translation.')}
             </p>
           </Card>
           <Card className="p-4 space-y-2">
-            <h3 className="text-sm font-semibold text-foreground">Gesture & Drag Decoupling</h3>
+            <h3 className="text-sm font-semibold text-foreground">
+              {t('desktopComposite.smoothWheelHandler.card3Title', 'Gesture & Drag Decoupling')}
+            </h3>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Instantly terminates smooth scroll interpolation when the user touches the thumb handle or flicks with touchpads, ensuring zero physical friction.
+              {t('desktopComposite.smoothWheelHandler.card3Desc', 'Instantly terminates smooth scroll interpolation when the user touches the thumb handle or flicks with touchpads, ensuring zero physical friction.')}
             </p>
           </Card>
         </div>

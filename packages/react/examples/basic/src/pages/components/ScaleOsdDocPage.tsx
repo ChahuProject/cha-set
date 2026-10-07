@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScaleOsd, Card, CodeBlock, Button } from '@chahu/cha-set';
+import { ScaleOsd, Card, CodeBlock, Button, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -8,6 +8,7 @@ import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable'
 import { PropsTable } from '../../components/PropsTable';
 
 export function ScaleOsdDocPage() {
+  const { t } = useChaSetI18n();
   const [scale, setScale] = useState(1.0);
   const [visible, setVisible] = useState(true);
 
@@ -42,7 +43,7 @@ export function ScaleOsdDocPage() {
           reactCode={heroReactCode}
           controls={
             <div className="flex flex-wrap items-center gap-3 text-xs">
-              <span className="text-muted-foreground">Quick Zoom:</span>
+              <span className="text-muted-foreground">{t('overlays.scaleOsd.quickZoom', 'Quick Zoom:')}</span>
               <Button
                 variant="outline"
                 size="sm"
@@ -78,7 +79,7 @@ export function ScaleOsdDocPage() {
                 size="sm"
                 onClick={() => setVisible((v) => !v)}
               >
-                {visible ? 'Hide OSD' : 'Show OSD'}
+                {visible ? t('overlays.scaleOsd.hideOsd', 'Hide OSD') : t('overlays.scaleOsd.showOsd', 'Show OSD')}
               </Button>
             </div>
           }
@@ -89,10 +90,10 @@ export function ScaleOsdDocPage() {
                 className="w-24 h-24 rounded-lg bg-primary/20 border border-primary flex items-center justify-center text-xs font-semibold text-primary transition-transform duration-short ease-standard"
                 style={{ transform: `scale(${scale})` }}
               >
-                Preview Box
+                {t('overlays.scaleOsd.previewBox', 'Preview Box')}
               </div>
               <p className="text-xs text-muted-foreground">
-                Hover over the floating OSD below to pause auto-hide countdown.
+                {t('overlays.scaleOsd.hoverPauseHint', 'Hover over the floating OSD below to pause auto-hide countdown.')}
               </p>
             </Card>
 

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Input, type InputSize, Button, Badge, SegmentedControl, Checkbox, CodeBlock, MailIcon } from '@chahu/cha-set';
+import { Input, type InputSize, Button, Badge, SegmentedControl, Checkbox, CodeBlock, MailIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from "../../components/ComponentReference";
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function InputDocPage() {
+  const { t } = useChaSetI18n();
   const [size, setSize] = useState<InputSize>('default');
   const [disabled, setDisabled] = useState(false);
   const [invalid, setInvalid] = useState(false);
@@ -58,7 +59,7 @@ export function InputDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Explore interactive input behaviors, sizes, states, clearable action, password toggle, and responsive token styling across Web and Qt Desktop.
+          {t('formsA.input.overviewDesc', 'Explore interactive input behaviors, sizes, states, clearable action, password toggle, and responsive token styling across Web and Qt Desktop.')}
         </p>
 
         <ComponentPreview
@@ -69,28 +70,28 @@ export function InputDocPage() {
             <div className="flex flex-wrap items-center gap-6">
               {/* Size Selector */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Size:</span>
+                <span className="text-muted-foreground text-xs">{t('showcase.size', 'Size:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={size}
                   onChange={(v) => setSize(v as InputSize)}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Small (sm)', value: 'sm' },
+                    { label: t('common.default', 'Default'), value: 'default' },
+                    { label: t('formsA.input.sizeSm', 'Small (sm)'), value: 'sm' },
                   ]}
                 />
               </div>
 
               {/* Type Selector */}
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Type:</span>
+                <span className="text-muted-foreground text-xs">{t('formsA.input.typeLabel', 'Type:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={type}
                   onChange={(v) => setType(v as 'text' | 'password')}
                   options={[
-                    { label: 'Text', value: 'text' },
-                    { label: 'Password', value: 'password' },
+                    { label: t('formsA.input.typeText', 'Text'), value: 'text' },
+                    { label: t('formsA.input.typePassword', 'Password'), value: 'password' },
                   ]}
                 />
               </div>
@@ -101,38 +102,38 @@ export function InputDocPage() {
                   size="sm"
                   checked={disabled}
                   onCheckedChange={(val) => setDisabled(val)}
-                  label="Disabled"
+                  label={t('common.disabled', 'Disabled')}
                 />
                 <Checkbox
                   size="sm"
                   checked={invalid}
                   onCheckedChange={(val) => setInvalid(val)}
-                  label="Invalid"
+                  label={t('formsA.input.invalid', 'Invalid')}
                 />
                 <Checkbox
                   size="sm"
                   checked={clearable}
                   onCheckedChange={(val) => setClearable(val)}
-                  label="Clearable"
+                  label={t('formsA.input.clearable', 'Clearable')}
                 />
                 <Checkbox
                   size="sm"
                   checked={showIcon}
                   onCheckedChange={(val) => setShowIcon(val)}
-                  label="Show Icon"
+                  label={t('formsA.input.showIcon', 'Show Icon')}
                 />
                 <Checkbox
                   size="sm"
                   checked={bordered}
                   onCheckedChange={(val) => setBordered(val)}
-                  label="Bordered"
+                  label={t('formsA.input.bordered', 'Bordered')}
                 />
                 {type === 'password' && (
                   <Checkbox
                     size="sm"
                     checked={passwordToggle}
                     onCheckedChange={(val) => setPasswordToggle(val)}
-                    label="Password Toggle"
+                    label={t('formsA.input.passwordToggle', 'Password Toggle')}
                   />
                 )}
               </div>
@@ -141,13 +142,13 @@ export function InputDocPage() {
         >
           <div className="w-full max-w-sm flex flex-col gap-3 py-4">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>Email address</span>
-              {value && <span className="text-xs font-mono opacity-70">{value.length} chars</span>}
+              <span>{t('formsA.input.emailAddress', 'Email address')}</span>
+              {value && <span className="text-xs font-mono opacity-70">{t('formsA.input.charsCount', '{{count}} chars', { count: value.length })}</span>}
             </div>
             <Input
               type={type}
               size={size}
-              placeholder={placeholder}
+              placeholder={t('formsA.input.emailPlaceholder', 'Enter your email...')}
               value={value}
               disabled={disabled}
               invalid={invalid}
@@ -159,9 +160,9 @@ export function InputDocPage() {
             />
             <p className="text-xs text-muted-foreground">
               {invalid ? (
-                <span className="text-destructive font-medium">Please enter a valid corporate email address.</span>
+                <span className="text-destructive font-medium">{t('formsA.input.emailError', 'Please enter a valid corporate email address.')}</span>
               ) : (
-                'We will never share your email with anyone else.'
+                t('formsA.input.emailHint', 'We will never share your email with anyone else.')
               )}
             </p>
           </div>
@@ -182,43 +183,43 @@ export function InputDocPage() {
           Examples & States
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Visual matrix of common input configurations and states.
+          {t('formsA.input.examplesSubtitle', 'Visual matrix of common input configurations and states.')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
-            <span className="text-xs font-medium text-foreground">Default Input</span>
-            <span className="text-xs text-muted-foreground mb-2">Standard text input with placeholder</span>
-            <Input placeholder="Enter username..." />
+            <span className="text-xs font-medium text-foreground">{t('formsA.input.defaultInputTitle', 'Default Input')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.input.defaultInputDesc', 'Standard text input with placeholder')}</span>
+            <Input placeholder={t('formsA.input.defaultInputPlaceholder', 'Enter username...')} />
           </div>
 
           <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
-            <span className="text-xs font-medium text-foreground">Small Size (sm)</span>
-            <span className="text-xs text-muted-foreground mb-2">Compact height for tight toolbars</span>
-            <Input size="sm" placeholder="Compact input..." />
+            <span className="text-xs font-medium text-foreground">{t('formsA.input.smInputTitle', 'Small Size (sm)')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.input.smInputDesc', 'Compact height for tight toolbars')}</span>
+            <Input size="sm" placeholder={t('formsA.input.smInputPlaceholder', 'Compact input...')} />
           </div>
 
           <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
-            <span className="text-xs font-medium text-foreground">Invalid / Error State</span>
-            <span className="text-xs text-muted-foreground mb-2">Destructive highlight with error feedback</span>
+            <span className="text-xs font-medium text-foreground">{t('formsA.input.invalidInputTitle', 'Invalid / Error State')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.input.invalidInputDesc', 'Destructive highlight with error feedback')}</span>
             <Input invalid defaultValue="invalid-email@" placeholder="user@example.com" />
           </div>
 
           <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
-            <span className="text-xs font-medium text-foreground">Clearable Field</span>
-            <span className="text-xs text-muted-foreground mb-2">Clickable clear action or Escape key</span>
-            <Input clearable defaultValue="Click cross to clear" />
+            <span className="text-xs font-medium text-foreground">{t('formsA.input.clearableInputTitle', 'Clearable Field')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.input.clearableInputDesc', 'Clickable clear action or Escape key')}</span>
+            <Input clearable defaultValue={t('formsA.input.clearableInputVal', 'Click cross to clear')} />
           </div>
 
           <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
-            <span className="text-xs font-medium text-foreground">Password with Toggle</span>
-            <span className="text-xs text-muted-foreground mb-2">Interactive visibility eye button</span>
+            <span className="text-xs font-medium text-foreground">{t('formsA.input.passwordInputTitle', 'Password with Toggle')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.input.passwordInputDesc', 'Interactive visibility eye button')}</span>
             <Input type="password" passwordToggle defaultValue="supersecret123" />
           </div>
 
           <div className="flex flex-col gap-1.5 p-4 rounded-lg border border-border bg-card">
-            <span className="text-xs font-medium text-foreground">Disabled State</span>
-            <span className="text-xs text-muted-foreground mb-2">Non-interactive with dimmed opacity</span>
-            <Input disabled placeholder="Disabled field" value="preset value" />
+            <span className="text-xs font-medium text-foreground">{t('formsA.input.disabledInputTitle', 'Disabled State')}</span>
+            <span className="text-xs text-muted-foreground mb-2">{t('formsA.input.disabledInputDesc', 'Non-interactive with dimmed opacity')}</span>
+            <Input disabled placeholder={t('formsA.input.disabledInputPlaceholder', 'Disabled field')} value={t('formsA.input.disabledInputVal', 'preset value')} />
           </div>
         </div>
       </section>
