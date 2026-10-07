@@ -27,6 +27,7 @@ DocLayout {
 
     // Section 1: Design Philosophy
     Column {
+        property string sectionId: "philosophy"
         width: parent.width
         spacing: 12
 
@@ -137,6 +138,7 @@ DocLayout {
 
     // Section 2: How It Works
     Column {
+        property string sectionId: "architecture"
         width: parent.width
         spacing: 12
 
@@ -156,6 +158,7 @@ DocLayout {
 
     // Section 3: Quick Start
     Column {
+        property string sectionId: "quickstart"
         width: parent.width
         spacing: 12
 
@@ -193,6 +196,7 @@ DocLayout {
 
     // Section 4: Packages
     Column {
+        property string sectionId: "packages"
         width: parent.width
         spacing: 12
 

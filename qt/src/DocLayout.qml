@@ -292,6 +292,9 @@ Item {
     function findHeadingItem(item, targetId, targetTitle) {
         if (!item || !item.visible) return null;
 
+        if (item.sectionId && String(item.sectionId).toLowerCase() === targetId) return item;
+        if (item.objectName && String(item.objectName).toLowerCase() === targetId) return item;
+
         if (item.text !== undefined && matchesSectionText(String(item.text), targetId, targetTitle)) {
             return item;
         }
