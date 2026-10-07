@@ -150,7 +150,7 @@ DocLayout {
             Row {
                 spacing: 16
 
-ChaSetCheckbox {
+                ChaSetCheckbox {
                     size: "sm"
                     label: ChaSetI18n.tr("common.disabled", "Disabled")
                     checked: root.demoDisabled
@@ -180,7 +180,6 @@ ChaSetCheckbox {
                     checked: root.demoShowTicks
                     onToggled: (val) => root.demoShowTicks = val
                     anchors.verticalCenter: parent.verticalCenter
-                }
                 }
             }
         ]
