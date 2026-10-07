@@ -16,7 +16,59 @@ Item {
     property real itemWidth: 0
     readonly property real effectiveItemWidth: root.itemWidth > 0 ? ThemeTokens.dp(root.itemWidth) : 0
 
+    property string tooltipSide: "top" // "top" | "bottom" | "left" | "right"
+    property int tooltipDelay: 200
+    property var tooltipFormatter: null
+    property Component tooltipDelegate: null
+
+    function getOptionTooltipConfig(opt) {
+        if (!opt) return null;
+        var raw = opt.tooltip;
+        if (root.tooltipFormatter && typeof root.tooltipFormatter === "function") {
+            var formatted = root.tooltipFormatter(opt);
+            if (formatted !== undefined && formatted !== null) {
+                raw = formatted;
+            }
+        }
+        if (raw === undefined || raw === null || raw === false || raw === "") return null;
+
+        var cfg = {
+            text: "",
+            shortcut: "",
+            side: root.tooltipSide,
+            delay: root.tooltipDelay,
+            arrow: false,
+            disabled: false,
+            customContent: null
+        };
+
+        if (typeof raw === "string") {
+            cfg.text = raw;
+            return cfg;
+        }
+
+        if (typeof raw === "object") {
+            if (raw.disabled === true) return null;
+            if (raw.text !== undefined) cfg.text = String(raw.text);
+            else if (raw.content !== undefined) cfg.text = String(raw.content);
+            else if (raw.title !== undefined) {
+                cfg.text = raw.description !== undefined ? (raw.title + " — " + raw.description) : raw.title;
+            }
+
+            if (raw.shortcut !== undefined) cfg.shortcut = String(raw.shortcut);
+            if (raw.side !== undefined) cfg.side = String(raw.side);
+            if (raw.delay !== undefined) cfg.delay = Number(raw.delay);
+            else if (raw.delayDuration !== undefined) cfg.delay = Number(raw.delayDuration);
+            if (raw.arrow !== undefined) cfg.arrow = Boolean(raw.arrow);
+            if (raw.customContent !== undefined) cfg.customContent = raw.customContent;
+            return cfg;
+        }
+
+        return null;
+    }
+
     signal valueSelected(var val)
+
 
     readonly property bool hasTitle: root.title.length > 0
     readonly property real titleWidth: hasTitle ? (titleLabel.implicitWidth + 8) : 0
@@ -278,7 +330,10 @@ Item {
                 width: root.getItemWidth(index)
                 height: root.itemHeight
                 radius: root.itemRadius
-                clip: true
+
+                readonly property var tooltipConfig: root.getOptionTooltipConfig(modelData)
+                readonly property bool hasTooltip: tooltipConfig !== null && (tooltipConfig.text.length > 0 || tooltipConfig.shortcut.length > 0 || tooltipConfig.customContent !== null || root.tooltipDelegate !== null)
+
 
                 color: {
                     if (isHighlighted && !isSelected) {
@@ -378,7 +433,21 @@ Item {
                         root.selectIndex(index);
                     }
                 }
+
+                ChaSetTooltip {
+                    id: itemTooltip
+                    visible: segItem.hasTooltip
+                    target: segItem
+                    text: segItem.tooltipConfig ? segItem.tooltipConfig.text : ""
+                    shortcut: segItem.tooltipConfig ? segItem.tooltipConfig.shortcut : ""
+                    side: (segItem.tooltipConfig && segItem.tooltipConfig.side) ? segItem.tooltipConfig.side : root.tooltipSide
+                    delay: (segItem.tooltipConfig && segItem.tooltipConfig.delay !== undefined) ? segItem.tooltipConfig.delay : root.tooltipDelay
+                    arrow: segItem.tooltipConfig ? segItem.tooltipConfig.arrow : false
+                    disabled: !segItem.hasTooltip || (segItem.tooltipConfig && segItem.tooltipConfig.disabled === true)
+                    customContent: (segItem.tooltipConfig && segItem.tooltipConfig.customContent) ? segItem.tooltipConfig.customContent : root.tooltipDelegate
+                }
             }
         }
     }
 }
+

@@ -10,9 +10,9 @@ DocLayout {
     description: "A compact pill-style segmented switch for toolbars, menus, and view toggles."
 
     property var viewOptions: [
-        { label: ChaSetI18n.tr("formsA.segmentedControl.grid", "Grid"), value: "grid", icon: "grid" },
-        { label: ChaSetI18n.tr("formsA.segmentedControl.list", "List"), value: "list", icon: "list" },
-        { label: ChaSetI18n.tr("formsA.segmentedControl.gallery", "Gallery"), value: "gallery", icon: "table", badge: 3 }
+        { label: ChaSetI18n.tr("formsA.segmentedControl.grid", "Grid"), value: "grid", icon: "grid", tooltip: { text: "Grid layout", shortcut: "Ctrl+1" } },
+        { label: ChaSetI18n.tr("formsA.segmentedControl.list", "List"), value: "list", icon: "list", tooltip: { text: "List layout", shortcut: "Ctrl+2" } },
+        { label: ChaSetI18n.tr("formsA.segmentedControl.gallery", "Gallery"), value: "gallery", icon: "table", badge: 3, tooltip: { text: "Gallery view", shortcut: "Ctrl+3" } }
     ]
 
     property var selectedView: "grid"
@@ -25,9 +25,9 @@ DocLayout {
         reactCode: `<SegmentedControl
   size="${root.currentSize}"
   options={[
-    { label: 'Grid', value: 'grid', icon: <GridIcon /> },
-    { label: 'List', value: 'list', icon: <ListIcon /> },
-    { label: 'Gallery', value: 'gallery', icon: <TableIcon />, badge: 3 }
+    { label: 'Grid', value: 'grid', icon: <GridIcon />, tooltip: { content: 'Grid layout', shortcut: 'Ctrl+1' } },
+    { label: 'List', value: 'list', icon: <ListIcon />, tooltip: { content: 'List layout', shortcut: 'Ctrl+2' } },
+    { label: 'Gallery', value: 'gallery', icon: <TableIcon />, badge: 3, tooltip: { content: 'Gallery view', shortcut: 'Ctrl+3' } },
   ]}
   value="${root.selectedView}"
   disabled={${root.disabledState}}
@@ -35,9 +35,9 @@ DocLayout {
         qtCode: `ChaSetSegmentedControl {
     size: "${root.currentSize}"
     options: [
-        { label: "Grid", value: "grid", icon: "grid" },
-        { label: "List", value: "list", icon: "list" },
-        { label: "Gallery", value: "gallery", icon: "table", badge: 3 }
+        { label: "Grid", value: "grid", icon: "grid", tooltip: { text: "Grid layout", shortcut: "Ctrl+1" } },
+        { label: "List", value: "list", icon: "list", tooltip: { text: "List layout", shortcut: "Ctrl+2" } },
+        { label: "Gallery", value: "gallery", icon: "table", badge: 3, tooltip: { text: "Gallery view", shortcut: "Ctrl+3" } }
     ]
     value: "${root.selectedView}"
     disabled: ${root.disabledState}
@@ -261,19 +261,77 @@ ChaSetSegmentedControl {
         }
     }
 
-    // Keyboard Navigation
-        ComponentReference {
+    // Tooltips & Custom Hints
+    DocText {
+        text: "Tooltips & Custom Hints"
+        font.pixelSize: Typography.sizeTitleSm
+        font.bold: true
+        color: ThemeTokens.text
+    }
+
+    ChaSetCard {
+        width: parent.width
+
+        ChaSetCardContent {
+            topPadding: 16
+            bottomPadding: 16
+            horizontalPadding: 16
+            Column {
+                spacing: ThemeTokens.dp(16)
+                width: parent.width
+
+                Column {
+                    spacing: ThemeTokens.dp(6)
+                    DocText { text: "Per-Option Tooltips with Shortcuts & Arrows"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
+                    ChaSetSegmentedControl {
+                        options: [
+                            { label: "Day", value: "day", tooltip: { text: "Daily summary view", shortcut: "Ctrl+D", arrow: true } },
+                            { label: "Week", value: "week", tooltip: { text: "Weekly timeline view", shortcut: "Ctrl+W", arrow: true } },
+                            { label: "Month", value: "month", tooltip: { text: "Monthly overview calendar", shortcut: "Ctrl+M", arrow: true } },
+                            { label: "Year", value: "year", disabled: true, tooltip: { text: "Annual archive (Requires Pro plan)", arrow: true } }
+                        ]
+                        value: "day"
+                    }
+                }
+
+                ChaSetSeparator { width: parent.width }
+
+                Column {
+                    spacing: ThemeTokens.dp(6)
+                    DocText { text: "Global tooltipFormatter Customization"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; font.bold: true }
+                    ChaSetSegmentedControl {
+                        options: [
+                            { label: "Auto", value: "auto" },
+                            { label: "Dark", value: "dark" },
+                            { label: "Light", value: "light" }
+                        ]
+                        value: "auto"
+                        tooltipSide: "bottom"
+                        tooltipFormatter: function(opt) {
+                            return { text: "Theme: " + opt.label + " — Switch application color scheme" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ComponentReference {
         name: "SegmentedControl"
         componentId: "segmented-control"
         propsModel: [
-            { name: "options", type: "array", default: "[]", description: "Array of segment options: [{ label, value, icon?, badge?, disabled? }]" },
+            { name: "options", type: "array", default: "[]", description: "Array of segment options: [{ label, value, icon?, badge?, disabled?, tooltip? }]" },
             { name: "value", type: "var", default: "undefined", description: "Currently active selected value" },
             { name: "size", type: "string", default: "'default'", description: "Size variant: 'sm', 'default', or 'lg'" },
             { name: "title", type: "string", default: "''", description: "Optional inline label displayed before the segments" },
             { name: "disabled", type: "bool", default: "false", description: "Whether the segmented control is disabled" },
             { name: "fullWidth", type: "bool", default: "false", description: "Whether segments expand equally across container width" },
             { name: "equalWidth", type: "bool", default: "false", description: "Whether all segments share an identical fixed width while hugging content" },
-            { name: "itemWidth", type: "real", default: "undefined", description: "Explicit fixed width allocated to each segment option" }
+            { name: "itemWidth", type: "real", default: "undefined", description: "Explicit fixed width allocated to each segment option" },
+            { name: "tooltipSide", type: "string", default: "'top'", description: "Default placement side for option tooltips: 'top', 'bottom', 'left', 'right'" },
+            { name: "tooltipDelay", type: "int", default: "200", description: "Default hover delay duration in ms before displaying option tooltips" },
+            { name: "tooltipFormatter", type: "var", default: "null", description: "Custom formatting function (opt) => text|object for option tooltips" },
+            { name: "tooltipDelegate", type: "Component", default: "null", description: "Custom QML Component delegate for rendering rich custom tooltips" }
         ]
     }
 }

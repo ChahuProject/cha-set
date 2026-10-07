@@ -2,6 +2,42 @@ import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/utils';
 import type { SegmentedControlSize } from '@chahu/spec/segmented-control';
+import {
+  TooltipRoot,
+  TooltipTrigger,
+  TooltipContent,
+  type TooltipSide,
+  type TooltipAlign,
+} from '../tooltip';
+
+export interface SegmentedControlOptionTooltipConfig {
+  /** Plain text or rich React node to display in the tooltip */
+  content?: React.ReactNode;
+  /** Keyboard shortcut hint string (e.g. "Ctrl+1" or "⌘K") */
+  shortcut?: string;
+  /** Preferred placement side */
+  side?: TooltipSide;
+  /** Alignment relative to the anchor */
+  align?: TooltipAlign;
+  /** Distance in pixels between segment and tooltip bubble */
+  sideOffset?: number;
+  /** Alignment offset */
+  alignOffset?: number;
+  /** Whether to show directional arrow pointer */
+  arrow?: boolean;
+  /** Hover delay in ms before revealing tooltip (default: 200) */
+  delayDuration?: number;
+  /** Whether this option's tooltip is disabled */
+  disabled?: boolean;
+  /** Custom CSS classes for the tooltip content */
+  className?: string;
+}
+
+export type SegmentedControlOptionTooltip =
+  | React.ReactNode
+  | SegmentedControlOptionTooltipConfig
+  | false
+  | ((option: SegmentedControlOption) => React.ReactNode | SegmentedControlOptionTooltipConfig | false);
 
 export interface SegmentedControlOption {
   label: React.ReactNode;
@@ -9,6 +45,64 @@ export interface SegmentedControlOption {
   icon?: React.ReactNode;
   badge?: React.ReactNode;
   disabled?: boolean;
+  /** Tooltip for this option (text, rich ReactNode, config object, or function) */
+  tooltip?: SegmentedControlOptionTooltip;
+}
+
+function resolveOptionTooltip(
+  option: SegmentedControlOption,
+  renderTooltip?: (
+    option: SegmentedControlOption
+  ) => React.ReactNode | SegmentedControlOptionTooltipConfig | null | undefined | false,
+  defaultSide: TooltipSide = 'top',
+  defaultDelay = 200
+): SegmentedControlOptionTooltipConfig | null {
+  let raw: SegmentedControlOptionTooltip | undefined = option.tooltip;
+  if (typeof raw === 'function') {
+    raw = raw(option);
+  }
+
+  let fromRender: React.ReactNode | SegmentedControlOptionTooltipConfig | null | undefined | false;
+  if (raw === undefined && renderTooltip) {
+    fromRender = renderTooltip(option);
+  }
+
+  const candidate = raw !== undefined ? raw : fromRender;
+  if (candidate === undefined || candidate === null || candidate === false || candidate === '') {
+    return null;
+  }
+
+  // Plain config object check
+  if (
+    typeof candidate === 'object' &&
+    !React.isValidElement(candidate) &&
+    !Array.isArray(candidate) &&
+    ('content' in candidate ||
+      'shortcut' in candidate ||
+      'side' in candidate ||
+      'align' in candidate ||
+      'arrow' in candidate ||
+      'delayDuration' in candidate ||
+      'disabled' in candidate ||
+      'sideOffset' in candidate ||
+      'alignOffset' in candidate ||
+      'className' in candidate)
+  ) {
+    const config = candidate as SegmentedControlOptionTooltipConfig;
+    if (config.disabled) return null;
+    return {
+      side: config.side ?? defaultSide,
+      delayDuration: config.delayDuration ?? defaultDelay,
+      ...config,
+    };
+  }
+
+  // ReactNode (string, element, fragment, etc.)
+  return {
+    content: candidate as React.ReactNode,
+    side: defaultSide,
+    delayDuration: defaultDelay,
+  };
 }
 
 export const segmentedControlVariants = cva(
@@ -57,7 +151,20 @@ export interface SegmentedControlProps
   fullWidth?: boolean;
   equalWidth?: boolean;
   itemWidth?: number | string;
+
+  /** Default placement side for option tooltips (default: 'top') */
+  tooltipSide?: TooltipSide;
+  /** Default hover delay duration in ms (default: 200) */
+  tooltipDelayDuration?: number;
+  /**
+   * Custom render function for option tooltips.
+   * Allows global customization of tooltips across all options.
+   */
+  renderTooltip?: (
+    option: SegmentedControlOption
+  ) => React.ReactNode | SegmentedControlOptionTooltipConfig | null | undefined | false;
 }
+
 
 export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>(
   (
@@ -73,6 +180,9 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
       fullWidth = false,
       equalWidth = false,
       itemWidth,
+      tooltipSide = 'top',
+      tooltipDelayDuration = 200,
+      renderTooltip,
       className,
       ...props
     },
@@ -150,8 +260,10 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
       let heightPx = elRect.height;
 
       if (widthPx === 0 && el.offsetWidth > 0) {
-        leftPx = el.offsetLeft;
-        topPx = el.offsetTop;
+        const parentOffsetLeft = el.parentElement && el.parentElement !== container ? el.parentElement.offsetLeft : 0;
+        leftPx = parentOffsetLeft + el.offsetLeft;
+        const parentOffsetTop = el.parentElement && el.parentElement !== container ? el.parentElement.offsetTop : 0;
+        topPx = parentOffsetTop + el.offsetTop;
         widthPx = el.offsetWidth;
         heightPx = el.offsetHeight;
       }
@@ -224,8 +336,14 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
           {options.map((option) => {
             const isSelected = option.value === activeValue;
             const isOptionDisabled = disabled || option.disabled;
+            const tooltipConfig = resolveOptionTooltip(
+              option,
+              renderTooltip,
+              tooltipSide,
+              tooltipDelayDuration
+            );
 
-            return (
+            const button = (
               <button
                 key={String(option.value)}
                 ref={(node) => {
@@ -246,7 +364,7 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
                 className={cn(
                   segmentedItemVariants({ size }),
                   'relative z-10 min-w-0',
-                  (fullWidth || equalWidth) && 'flex-1',
+                  (fullWidth || equalWidth) && (tooltipConfig ? 'w-full flex-1' : 'flex-1'),
                   isSelected
                     ? (!indicatorStyle ? 'bg-background shadow-xs ' : '') + 'text-foreground font-semibold'
                     : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
@@ -273,6 +391,38 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
                 )}
               </button>
             );
+
+            if (tooltipConfig && (tooltipConfig.content !== undefined || tooltipConfig.shortcut)) {
+              return (
+                <TooltipRoot
+                  key={String(option.value)}
+                  side={tooltipConfig.side}
+                  delayDuration={tooltipConfig.delayDuration}
+                  disabled={tooltipConfig.disabled}
+                  className={cn(
+                    'relative inline-flex items-center justify-center',
+                    (fullWidth || equalWidth) && 'flex-1 min-w-0',
+                    formattedItemWidth && 'shrink-0'
+                  )}
+                  style={formattedItemWidth ? { width: formattedItemWidth } : undefined}
+                >
+                  <TooltipTrigger asChild>{button}</TooltipTrigger>
+                  <TooltipContent
+                    side={tooltipConfig.side}
+                    align={tooltipConfig.align}
+                    shortcut={tooltipConfig.shortcut}
+                    arrow={tooltipConfig.arrow}
+                    sideOffset={tooltipConfig.sideOffset}
+                    alignOffset={tooltipConfig.alignOffset}
+                    className={tooltipConfig.className}
+                  >
+                    {tooltipConfig.content ?? ''}
+                  </TooltipContent>
+                </TooltipRoot>
+              );
+            }
+
+            return button;
           })}
         </div>
       </div>

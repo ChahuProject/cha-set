@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SegmentedControl, Card, Button, Checkbox, CodeBlock, GridIcon, ListIcon, TableIcon, useChaSetI18n } from '@chahu/cha-set';
+import { SegmentedControl, type SegmentedControlOption, Card, Button, Checkbox, CodeBlock, GridIcon, ListIcon, TableIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -12,9 +12,9 @@ export function SegmentedControlDocPage() {
   const [disabled, setDisabled] = useState(false);
 
   const viewOptions = [
-    { label: t('formsA.segmentedControl.grid', 'Grid'), value: 'grid', icon: <GridIcon className="size-3.5" /> },
-    { label: t('formsA.segmentedControl.list', 'List'), value: 'list', icon: <ListIcon className="size-3.5" /> },
-    { label: t('formsA.segmentedControl.gallery', 'Gallery'), value: 'gallery', icon: <TableIcon className="size-3.5" />, badge: 3 },
+    { label: t('formsA.segmentedControl.grid', 'Grid'), value: 'grid', icon: <GridIcon className="size-3.5" />, tooltip: { content: 'Grid layout', shortcut: 'Ctrl+1' } },
+    { label: t('formsA.segmentedControl.list', 'List'), value: 'list', icon: <ListIcon className="size-3.5" />, tooltip: { content: 'List layout', shortcut: 'Ctrl+2' } },
+    { label: t('formsA.segmentedControl.gallery', 'Gallery'), value: 'gallery', icon: <TableIcon className="size-3.5" />, badge: 3, tooltip: { content: 'Gallery view', shortcut: 'Ctrl+3' } },
   ];
 
   const menuOptions = [
@@ -26,9 +26,9 @@ export function SegmentedControlDocPage() {
   const heroReactCode = `<SegmentedControl
   size="${selectedSize}"
   options={[
-    { label: 'Grid', value: 'grid', icon: <GridIcon /> },
-    { label: 'List', value: 'list', icon: <ListIcon /> },
-    { label: 'Gallery', value: 'gallery', icon: <TableIcon />, badge: 3 },
+    { label: 'Grid', value: 'grid', icon: <GridIcon />, tooltip: { content: 'Grid layout', shortcut: 'Ctrl+1' } },
+    { label: 'List', value: 'list', icon: <ListIcon />, tooltip: { content: 'List layout', shortcut: 'Ctrl+2' } },
+    { label: 'Gallery', value: 'gallery', icon: <TableIcon />, badge: 3, tooltip: { content: 'Gallery view', shortcut: 'Ctrl+3' } },
   ]}
   value={activeView}
   onValueChange={setActiveView}
@@ -38,14 +38,15 @@ export function SegmentedControlDocPage() {
   const heroQtCode = `ChaSetSegmentedControl {
     size: "${selectedSize}"
     options: [
-        { label: "Grid", value: "grid", icon: "grid" },
-        { label: "List", value: "list", icon: "list" },
-        { label: "Gallery", value: "gallery", icon: "table", badge: 3 }
+        { label: "Grid", value: "grid", icon: "grid", tooltip: { text: "Grid layout", shortcut: "Ctrl+1" } },
+        { label: "List", value: "list", icon: "list", tooltip: { text: "List layout", shortcut: "Ctrl+2" } },
+        { label: "Gallery", value: "gallery", icon: "table", badge: 3, tooltip: { text: "Gallery view", shortcut: "Ctrl+3" } }
     ]
     value: activeView
     disabled: ${disabled}
-    onValueChanged: (val) => activeView = val
+    onValueSelected: (val) => activeView = val
 }`;
+
 
   return (
     <DocLayout
@@ -186,6 +187,47 @@ ChaSetSegmentedControl {
         </Card>
       </section>
 
+      <section id="tooltips-custom-hints" className="space-y-4 pt-6">
+        <h2 className="text-xl font-semibold text-foreground">Tooltips & Custom Hints</h2>
+        <p className="text-sm text-muted-foreground">
+          Options support rich interactive tooltips. You can provide plain text, keyboard shortcut badges, custom placement, rich custom content, or a global <code>renderTooltip</code> function.
+        </p>
+        <Card className="p-6 space-y-6">
+          <div className="space-y-2">
+            <div className="text-xs font-semibold text-muted-foreground">Per-Option Tooltips with Shortcuts & Arrows</div>
+            <SegmentedControl
+              options={[
+                { label: 'Day', value: 'day', tooltip: { content: 'Daily summary view', shortcut: 'Ctrl+D', arrow: true } },
+                { label: 'Week', value: 'week', tooltip: { content: 'Weekly timeline view', shortcut: 'Ctrl+W', arrow: true } },
+                { label: 'Month', value: 'month', tooltip: { content: 'Monthly overview calendar', shortcut: 'Ctrl+M', arrow: true } },
+                { label: 'Year', value: 'year', disabled: true, tooltip: { content: 'Annual archive (Requires Pro plan)', arrow: true } },
+              ]}
+              defaultValue="day"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <div className="text-xs font-semibold text-muted-foreground">Global renderTooltip Customization</div>
+            <SegmentedControl
+              options={[
+                { label: 'Auto', value: 'auto' },
+                { label: 'Dark', value: 'dark' },
+                { label: 'Light', value: 'light' },
+              ]}
+              defaultValue="auto"
+              tooltipSide="bottom"
+              renderTooltip={(opt: SegmentedControlOption) => (
+                <div className="flex flex-col gap-0.5 py-0.5">
+
+                  <span className="font-semibold text-foreground">Theme: {opt.label}</span>
+                  <span className="text-muted-foreground text-micro">Switch application color scheme</span>
+                </div>
+              )}
+            />
+          </div>
+        </Card>
+      </section>
+
       <ComponentReference
         name="SegmentedControl"
         componentId="segmented-control"
@@ -194,7 +236,7 @@ ChaSetSegmentedControl {
             name: 'options',
             type: 'SegmentedControlOption[]',
             required: true,
-            description: 'Array of option objects ({ label, value, icon?, badge?, disabled? }).',
+            description: 'Array of option objects ({ label, value, icon?, badge?, disabled?, tooltip? }).',
           },
           {
             name: 'value',
@@ -253,6 +295,26 @@ ChaSetSegmentedControl {
             type: 'number',
             required: false,
             description: 'Explicit fixed width allocated to each segment option.',
+          },
+          {
+            name: 'tooltipSide',
+            type: "'top' | 'bottom' | 'left' | 'right'",
+            default: "'top'",
+            required: false,
+            description: 'Default side placement for option tooltips.',
+          },
+          {
+            name: 'tooltipDelayDuration',
+            type: 'number',
+            default: '200',
+            required: false,
+            description: 'Default hover delay duration in ms before displaying option tooltips.',
+          },
+          {
+            name: 'renderTooltip',
+            type: '(option: SegmentedControlOption) => React.ReactNode',
+            required: false,
+            description: 'Custom render function for option tooltips, allowing full user customization.',
           },
         ]}
       />

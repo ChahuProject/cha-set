@@ -14,6 +14,8 @@ Item {
     property bool disabled: false
     property string shortcut: ""
     property bool arrow: false
+    property Component customContent: null
+
 
     // Optional explicit target item outside this container
     property Item target: null
@@ -118,7 +120,7 @@ Item {
         return base
     }
 
-    readonly property bool shouldShow: (root.active || root.forceHover) && !root.disabled && (root.text.length > 0)
+    readonly property bool shouldShow: (root.active || root.forceHover) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
 
     HoverHandler {
         id: hoverHandler
@@ -188,8 +190,16 @@ Item {
             anchors.centerIn: parent
             spacing: ThemeTokens.dp(6)
 
+            Loader {
+                id: customContentLoader
+                visible: root.customContent !== null
+                sourceComponent: root.customContent
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
             Text {
                 id: bubbleText
+                visible: root.customContent === null && root.text.length > 0
                 text: root.text
                 color: ThemeTokens.dark ? "#020817" : "#f8fafc"
                 font.pixelSize: Typography.sizeCaption
@@ -209,6 +219,7 @@ Item {
                 shortcut: root.shortcut
             }
         }
+
 
         Rectangle {
             id: arrowIndicator
