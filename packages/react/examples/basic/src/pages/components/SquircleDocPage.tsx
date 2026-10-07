@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Squircle, Button, Card, Badge, Input, CodeBlock } from '@chahu/cha-set';
+import { Squircle, Button, Card, Badge, Input, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocFooterSections } from '../../components/DocFooterSections';
 
 export function SquircleDocPage() {
+  const { t } = useChaSetI18n();
   const [radius, setRadius] = useState(16);
   const [smoothing, setSmoothing] = useState(0.6);
 
@@ -115,9 +116,9 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
                   }}
                   data-corner-shape="squircle"
                 >
-                  <span>Squircle (Smoothing: {(smoothing * 100).toFixed(0)}%)</span>
+                  <span>{t('components.squircle.squircleLabel', 'Squircle (Smoothing: {{smoothing}}%)', { smoothing: (smoothing * 100).toFixed(0) })}</span>
                 </div>
-                <span className="text-xs text-muted-foreground font-mono">Radius: {radius} | S: {smoothing.toFixed(2)}</span>
+                <span className="text-xs text-muted-foreground font-mono">{t('components.squircle.radiusLabel', 'Radius: {{radius}}', { radius })} | S: {smoothing.toFixed(2)}</span>
               </div>
 
               {/* Standard Round Comparison */}
@@ -130,9 +131,9 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
                   }}
                   data-shape="round"
                 >
-                  <span>Classic Arc (Smoothing: 0%)</span>
+                  <span>{t('components.squircle.classicArc', 'Classic Arc (Smoothing: 0%)')}</span>
                 </div>
-                <span className="text-xs text-muted-foreground font-mono">Standard Circular Arc</span>
+                <span className="text-xs text-muted-foreground font-mono">{t('components.squircle.g1Label', 'Standard Circular Arc (G1)')}</span>
               </div>
             </div>
 
@@ -140,7 +141,7 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-lg mx-auto w-full pt-4 border-t border-border">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Corner Smoothing</span>
+                  <span>{t('components.squircle.cornerSmoothing', 'Corner Smoothing')}</span>
                   <span className="font-mono font-medium text-foreground">{(smoothing * 100).toFixed(0)}% (iOS: 60%)</span>
                 </div>
                 <input
@@ -156,7 +157,7 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
 
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Corner Radius</span>
+                  <span>{t('components.squircle.cornerRadius', 'Corner Radius')}</span>
                   <span className="font-mono font-medium text-foreground">{radius}</span>
                 </div>
                 <input
@@ -174,7 +175,7 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
             {/* Component Adoption Preview */}
             <div className="flex flex-col gap-3 pt-4 border-t border-border">
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Full-Project Default Adoption Preview
+                {t('components.squircle.adoptionPreview', 'Full-Project Default Adoption Preview')}
               </span>
               <div className="flex flex-wrap items-center gap-3">
                 <Button variant="default">Squircle Button</Button>

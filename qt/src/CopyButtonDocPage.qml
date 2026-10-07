@@ -9,7 +9,7 @@ DocLayout {
     pageTitle: "Copy Button"
     description: "One-click clipboard copy button with transient feedback state and configurable timeouts."
 
-    property string copyStatus: "Click the copy button to test"
+    property string copyStatus: ChaSetI18n.tr("components.copy-button.clickToTest", "Click the copy button to test")
 
     ComponentPreview {
         title: "Copy Button Sandbox"
@@ -50,25 +50,25 @@ DocLayout {
                         text: "pnpm add @chahu/cha-set"
                         size: "icon-sm"
                         onCopiedToClipboard: function(txt) {
-                            root.copyStatus = "Successfully copied: " + txt
+                            root.copyStatus = ChaSetI18n.tr("components.copy-button.copiedSuccess", "Successfully copied: {{text}}", { "text": txt })
                         }
                     }
 
                     ChaSetCopyButton {
                         text: "https://chahu.design"
-                        label: "Copy Link"
+                        label: ChaSetI18n.tr("components.copy-button.copyLink", "Copy Link")
                         variant: "outline"
                         onCopiedToClipboard: function(txt) {
-                            root.copyStatus = "Successfully copied: " + txt
+                            root.copyStatus = ChaSetI18n.tr("components.copy-button.copiedSuccess", "Successfully copied: {{text}}", { "text": txt })
                         }
                     }
 
                     ChaSetCopyButton {
                         text: "export const SECRET = 'sk_live_948271';"
-                        label: "Copy Secret"
+                        label: ChaSetI18n.tr("components.copy-button.copySecret", "Copy Secret")
                         variant: "default"
                         onCopiedToClipboard: function(txt) {
-                            root.copyStatus = "Successfully copied: " + txt
+                            root.copyStatus = ChaSetI18n.tr("components.copy-button.copiedSuccess", "Successfully copied: {{text}}", { "text": txt })
                         }
                     }
                 }

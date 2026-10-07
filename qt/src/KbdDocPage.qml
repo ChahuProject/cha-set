@@ -60,7 +60,7 @@ DocLayout {
             Row {
                 width: childrenRect.width
                 spacing: ThemeTokens.dp(8)
-                DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("common.variant", "Variant:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
                     size: "sm"
@@ -78,7 +78,7 @@ DocLayout {
             Row {
                 width: childrenRect.width
                 spacing: ThemeTokens.dp(8)
-                DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("common.size", "Size:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
                     size: "sm"
@@ -95,15 +95,15 @@ DocLayout {
             Row {
                 width: childrenRect.width
                 spacing: ThemeTokens.dp(8)
-                DocText { text: "Compact:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("components.kbd.compact", "Compact:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
                     size: "sm"
                     value: root.demoCompact
                     options: [
-                        { label: "Auto", value: "auto" },
-                        { label: "Always", value: "always" },
-                        { label: "Never", value: "never" }
+                        { label: ChaSetI18n.tr("components.kbd.auto", "Auto"), value: "auto" },
+                        { label: ChaSetI18n.tr("components.kbd.always", "Always"), value: "always" },
+                        { label: ChaSetI18n.tr("components.kbd.never", "Never"), value: "never" }
                     ]
                     onValueSelected: function(c) { root.demoCompact = String(c); }
                 }
@@ -125,8 +125,8 @@ DocLayout {
         property string sectionId: "variants"
         property string sectionTitle: "Variants"
 
-        DocText { text: "Variants"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Four distinct visual styles designed for menus, search fields, dialogs, and inverted tooltips."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("components.kbd.variantsTitle", "Variants"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("components.kbd.variantsDesc", "Four distinct visual styles designed for menus, search fields, dialogs, and inverted tooltips."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width

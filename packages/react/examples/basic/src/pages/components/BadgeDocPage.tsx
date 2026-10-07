@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Badge, type BadgeVariant, type BadgeSize, SegmentedControl, Checkbox, Card } from '@chahu/cha-set';
+import { Badge, type BadgeVariant, type BadgeSize, SegmentedControl, Checkbox, Card, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from "../../components/ComponentReference";
 
 export function BadgeDocPage() {
+  const { t } = useChaSetI18n();
   const [variant, setVariant] = useState<BadgeVariant>('default');
   const [size, setSize] = useState<BadgeSize>('default');
   const [dot, setDot] = useState(false);
@@ -37,7 +38,7 @@ export function BadgeDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Adjust variant, size, and interactive status options in real time with synchronized previews for Web and Desktop.
+          {t('components.badge.overviewDesc', 'Adjust variant, size, and interactive status options in real time with synchronized previews for Web and Desktop.')}
         </p>
 
         <ComponentPreview
@@ -47,7 +48,7 @@ export function BadgeDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Variant:</span>
+                <span className="text-muted-foreground text-xs">{t('common.variant', 'Variant:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={variant}
@@ -64,7 +65,7 @@ export function BadgeDocPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Size:</span>
+                <span className="text-muted-foreground text-xs">{t('common.size', 'Size:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={size}
@@ -80,7 +81,7 @@ export function BadgeDocPage() {
                 size="sm"
                 checked={dot}
                 onCheckedChange={(v) => setDot(v)}
-                label="Status Dot"
+                label={t('components.badge.statusDot', 'Status Dot')}
               />
 
               <Checkbox
@@ -90,7 +91,7 @@ export function BadgeDocPage() {
                   setRemovable(v);
                   setRemoved(false);
                 }}
-                label="Removable"
+                label={t('components.badge.removable', 'Removable')}
               />
             </div>
           }
@@ -101,7 +102,7 @@ export function BadgeDocPage() {
               onClick={() => setRemoved(false)}
               className="text-xs text-primary underline cursor-pointer"
             >
-              Reset Removed Badge
+              {t('components.badge.resetRemoved', 'Reset Removed Badge')}
             </button>
           ) : (
             <Badge
@@ -126,56 +127,56 @@ export function BadgeDocPage() {
 
       {/* 3. Variants */}
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Variants
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Variants">
+          {t('components.badge.variantsTitle', 'Variants')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          All six standard semantic variants aligned with the ChaSet design token system.
+          {t('components.badge.variantsDesc', 'All six standard semantic variants aligned with the ChaSet design token system.')}
         </p>
         <Card className="flex flex-wrap items-center gap-3 p-6">
-          <Badge variant="default">Default</Badge>
-          <Badge variant="secondary">Secondary</Badge>
-          <Badge variant="destructive">Destructive</Badge>
-          <Badge variant="outline">Outline</Badge>
-          <Badge variant="ghost">Ghost</Badge>
-          <Badge variant="link">Link</Badge>
+          <Badge variant="default">{t('common.default', 'Default')}</Badge>
+          <Badge variant="secondary">{t('common.secondary', 'Secondary')}</Badge>
+          <Badge variant="destructive">{t('common.destructive', 'Destructive')}</Badge>
+          <Badge variant="outline">{t('common.outline', 'Outline')}</Badge>
+          <Badge variant="ghost">{t('common.ghost', 'Ghost')}</Badge>
+          <Badge variant="link">{t('common.link', 'Link')}</Badge>
         </Card>
       </section>
 
       {/* 4. Sizes */}
       <section id="sizes" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Sizes
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Sizes">
+          {t('components.badge.sizesTitle', 'Sizes')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Choose between standard pill scale (default) and compact micro badge (sm).
+          {t('components.badge.sizesDesc', 'Choose between standard pill scale (default) and compact micro badge (sm).')}
         </p>
         <Card className="flex flex-wrap items-center gap-4 p-6">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">Default:</span>
-            <Badge size="default">Badge Default</Badge>
+            <span className="text-xs text-muted-foreground">{t('components.badge.defaultLabel', 'Default:')}</span>
+            <Badge size="default">{t('components.badge.badgeDefault', 'Badge Default')}</Badge>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">Small:</span>
-            <Badge size="sm">NEW</Badge>
+            <span className="text-xs text-muted-foreground">{t('components.badge.smallLabel', 'Small:')}</span>
+            <Badge size="sm">{t('components.badge.badgeNew', 'NEW')}</Badge>
           </div>
         </Card>
       </section>
 
       {/* 5. Status & Removable Badges */}
       <section id="status-removable-tags" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Status & Removable Tags
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Status & Removable Tags">
+          {t('components.badge.statusTitle', 'Status & Removable Tags')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Badges support live status indicator dots and dismissible action buttons for filter tags.
+          {t('components.badge.statusDesc', 'Badges support live status indicator dots and dismissible action buttons for filter tags.')}
         </p>
         <Card className="flex flex-wrap items-center gap-4 p-6">
-          <Badge dot dotColor="bg-emerald-500" variant="outline">Online</Badge>
-          <Badge dot dotColor="bg-amber-500" variant="outline">Away</Badge>
-          <Badge dot dotColor="bg-rose-500" variant="destructive">Error</Badge>
-          <Badge removable onRemove={() => alert('Removed!')}>React Tag</Badge>
-          <Badge removable onRemove={() => alert('Removed!')} variant="secondary">Qt Quick</Badge>
+          <Badge dot dotColor="bg-emerald-500" variant="outline">{t('components.badge.online', 'Online')}</Badge>
+          <Badge dot dotColor="bg-amber-500" variant="outline">{t('components.badge.away', 'Away')}</Badge>
+          <Badge dot dotColor="bg-rose-500" variant="destructive">{t('components.badge.error', 'Error')}</Badge>
+          <Badge removable onRemove={() => alert('Removed!')}>{t('components.badge.reactTag', 'React Tag')}</Badge>
+          <Badge removable onRemove={() => alert('Removed!')} variant="secondary">{t('components.badge.qtQuick', 'Qt Quick')}</Badge>
         </Card>
       </section>
 

@@ -69,7 +69,7 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: 6
-                DocText { text: "Variant:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("common.variant", "Variant:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     size: "sm"
                     value: root.btnVariant
@@ -87,7 +87,7 @@ DocLayout {
             },
             Row {
                 spacing: 6
-                DocText { text: "Size:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("common.size", "Size:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     size: "sm"
                     value: root.btnSize
@@ -108,25 +108,25 @@ DocLayout {
                 spacing: 12
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Loading"
+                    label: ChaSetI18n.tr("common.loading", "Loading")
                     checked: root.btnLoading
                     onToggled: (val) => root.btnLoading = val
                 }
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Disabled"
+                    label: ChaSetI18n.tr("common.disabled", "Disabled")
                     checked: root.btnDisabled
                     onToggled: (val) => root.btnDisabled = val
                 }
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Full Width"
+                    label: ChaSetI18n.tr("common.fullWidth", "Full Width")
                     checked: root.btnFullWidth
                     onToggled: (val) => root.btnFullWidth = val
                 }
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Pressed"
+                    label: ChaSetI18n.tr("common.pressed", "Pressed")
                     checked: root.btnPressed
                     onToggled: (val) => root.btnPressed = val
                 }
@@ -134,7 +134,7 @@ DocLayout {
             Row {
                 visible: !root.isIconSize
                 spacing: 6
-                DocText { text: "Label:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("common.label", "Label:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetInput {
                     width: ThemeTokens.dp(100)
                     size: "sm"
@@ -155,17 +155,19 @@ DocLayout {
 
     // 3. Examples
     Column {
+        property string sectionId: "states"
+        property string sectionTitle: "Examples & States"
         width: parent.width
         spacing: ThemeTokens.dp(20)
 
-        DocText { text: "Examples & States"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        DocText { text: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States"); textColor: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
         // Variants Example
         Column {
             width: parent.width
             spacing: ThemeTokens.dp(8)
-            DocText { text: "Variants"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeHeading; font.weight: Typography.weightSemibold }
-            DocText { text: "Use the variant prop to change the visual hierarchy."; isMuted: true; font.pixelSize: Typography.sizeSmall }
+            DocText { text: ChaSetI18n.tr("components.button.variantsTitle", "Variants"); textColor: ThemeTokens.text; font.pixelSize: Typography.sizeHeading; font.weight: Typography.weightSemibold }
+            DocText { text: ChaSetI18n.tr("components.button.variantsDesc", "Use the variant prop to change the visual hierarchy."); isMuted: true; font.pixelSize: Typography.sizeSmall }
             ChaSetCard {
                 width: parent.width
                 customRadius: 8
@@ -178,13 +180,13 @@ DocLayout {
                     Row {
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: ThemeTokens.dp(10)
-                        ChaSetButton { variant: "default"; text: "Default" }
-                        ChaSetButton { variant: "secondary"; text: "Secondary" }
-                        ChaSetButton { variant: "outline"; text: "Outline" }
-                        ChaSetButton { variant: "ghost"; text: "Ghost" }
-                        ChaSetButton { variant: "destructive"; text: "Destructive" }
-                        ChaSetButton { variant: "link"; text: "Link" }
-                        ChaSetButton { variant: "overlay"; text: "Overlay" }
+                        ChaSetButton { variant: "default"; text: ChaSetI18n.tr("common.default", "Default") }
+                        ChaSetButton { variant: "secondary"; text: ChaSetI18n.tr("common.secondary", "Secondary") }
+                        ChaSetButton { variant: "outline"; text: ChaSetI18n.tr("common.outline", "Outline") }
+                        ChaSetButton { variant: "ghost"; text: ChaSetI18n.tr("common.ghost", "Ghost") }
+                        ChaSetButton { variant: "destructive"; text: ChaSetI18n.tr("common.destructive", "Destructive") }
+                        ChaSetButton { variant: "link"; text: ChaSetI18n.tr("common.link", "Link") }
+                        ChaSetButton { variant: "overlay"; text: ChaSetI18n.tr("common.overlay", "Overlay") }
                     }
                 }
             }
@@ -199,8 +201,8 @@ DocLayout {
         Column {
             width: parent.width
             spacing: ThemeTokens.dp(8)
-            DocText { text: "Sizes"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeHeading; font.weight: Typography.weightSemibold }
-            DocText { text: "Available in standardized sizes: xs, sm, default, lg, and icon variants."; isMuted: true; font.pixelSize: Typography.sizeSmall }
+            DocText { text: ChaSetI18n.tr("components.button.sizesTitle", "Sizes"); textColor: ThemeTokens.text; font.pixelSize: Typography.sizeHeading; font.weight: Typography.weightSemibold }
+            DocText { text: ChaSetI18n.tr("components.button.sizesDesc", "Available in standardized sizes: xs, sm, default, lg, and icon variants."); isMuted: true; font.pixelSize: Typography.sizeSmall }
             ChaSetCard {
                 width: parent.width
                 customRadius: 8
@@ -213,10 +215,10 @@ DocLayout {
                     Row {
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: ThemeTokens.dp(10)
-                        ChaSetButton { size: "xs"; text: "Extra Small" }
-                        ChaSetButton { size: "sm"; text: "Small" }
-                        ChaSetButton { size: "default"; text: "Default" }
-                        ChaSetButton { size: "lg"; text: "Large" }
+                        ChaSetButton { size: "xs"; text: ChaSetI18n.tr("components.button.extraSmall", "Extra Small") }
+                        ChaSetButton { size: "sm"; text: ChaSetI18n.tr("components.button.small", "Small") }
+                        ChaSetButton { size: "default"; text: ChaSetI18n.tr("common.default", "Default") }
+                        ChaSetButton { size: "lg"; text: ChaSetI18n.tr("components.button.large", "Large") }
                         ChaSetButton { size: "icon"; icon: "settings" }
                     }
                 }
@@ -232,8 +234,8 @@ DocLayout {
         Column {
             width: parent.width
             spacing: ThemeTokens.dp(8)
-            DocText { text: "States & Loading"; textColor: ThemeTokens.text; font.pixelSize: Typography.sizeHeading; font.weight: Typography.weightSemibold }
-            DocText { text: "Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events."; isMuted: true; font.pixelSize: Typography.sizeSmall }
+            DocText { text: ChaSetI18n.tr("components.button.statesTitle", "States & Loading"); textColor: ThemeTokens.text; font.pixelSize: Typography.sizeHeading; font.weight: Typography.weightSemibold }
+            DocText { text: ChaSetI18n.tr("components.button.statesDesc", "Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events."); isMuted: true; font.pixelSize: Typography.sizeSmall }
             ChaSetCard {
                 width: parent.width
                 customRadius: 8
@@ -246,9 +248,9 @@ DocLayout {
                     Row {
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: ThemeTokens.dp(10)
-                        ChaSetButton { text: "Saving Changes"; loading: true; loadingText: "Saving..." }
-                        ChaSetButton { text: "Active Toggle"; pressed: true }
-                        ChaSetButton { text: "Disabled Button"; disabled: true }
+                        ChaSetButton { text: ChaSetI18n.tr("common.saveChanges", "Saving Changes"); loading: true; loadingText: ChaSetI18n.tr("common.saving", "Saving...") }
+                        ChaSetButton { text: ChaSetI18n.tr("components.button.activeToggle", "Active Toggle"); pressed: true }
+                        ChaSetButton { text: ChaSetI18n.tr("components.button.disabledButton", "Disabled Button"); disabled: true }
                     }
                 }
             }

@@ -137,11 +137,20 @@ class I18nRegistry {
     return Array.from(this.localesMeta.values());
   }
 
-  public t(key: string, defaultText?: string, params?: Record<string, string | number>): string {
+  public t(key: string, defaultTextOrParams?: string | Record<string, string | number>, params?: Record<string, string | number>): string {
+    let defaultText: string | undefined;
+    let actualParams = params;
+    if (typeof defaultTextOrParams === 'object' && defaultTextOrParams !== null) {
+      actualParams = defaultTextOrParams;
+      defaultText = undefined;
+    } else {
+      defaultText = defaultTextOrParams;
+    }
+
     if (this.customResolver) {
       const custom = this.customResolver(key, defaultText);
       if (custom !== undefined && custom !== null && custom !== '') {
-        return this.interpolate(custom, params);
+        return this.interpolate(custom, actualParams);
       }
     }
 
@@ -158,7 +167,7 @@ class I18nRegistry {
     }
 
     const raw = template !== undefined ? template : (defaultText !== undefined ? defaultText : key);
-    return this.interpolate(raw, params);
+    return this.interpolate(raw, actualParams);
   }
 
   private lookup(locale: LocaleCode, key: string): string | undefined {

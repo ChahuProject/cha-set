@@ -28,6 +28,6 @@ export function useChaSetI18n(): I18nContextValue {
     systemLocale: registry.getSystemLocale(),
     supportedLocales: registry.getSupportedLocales(),
     setPreference: (pref) => registry.setPreference(pref),
-    t: (key, defaultText, params) => registry.t(key, defaultText, params),
+    t: (key: string, defaultTextOrParams?: any, params?: any) => registry.t(key, defaultTextOrParams, params),
   };
 }

@@ -63,7 +63,7 @@ DocLayout {
                     visible: root.demoRemoved
                     variant: "ghost"
                     size: "sm"
-                    text: "Reset Removed Badge"
+                    text: ChaSetI18n.tr("components.badge.resetRemoved", "Reset Removed Badge")
                     onClicked: root.demoRemoved = false
                 }
             }
@@ -73,7 +73,7 @@ DocLayout {
             Row {
                 width: childrenRect.width
                 spacing: 8
-                DocText { text: "Variant:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("common.variant", "Variant:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
                     size: "sm"
@@ -93,7 +93,7 @@ DocLayout {
             Row {
                 width: childrenRect.width
                 spacing: 8
-                DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                DocText { text: ChaSetI18n.tr("common.size", "Size:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
                     size: "sm"
@@ -112,14 +112,14 @@ DocLayout {
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Status Dot"
+                    label: ChaSetI18n.tr("components.badge.statusDot", "Status Dot")
                     checked: root.demoDot
                     onToggled: (v) => root.demoDot = v
                 }
 
                 ChaSetCheckbox {
                     size: "sm"
-                    label: "Removable"
+                    label: ChaSetI18n.tr("components.badge.removable", "Removable")
                     checked: root.demoRemovable
                     onToggled: (v) => {
                         root.demoRemovable = v
@@ -139,10 +139,12 @@ DocLayout {
 
     // Section 3: Variants
     Column {
+        property string sectionId: "variants"
+        property string sectionTitle: "Variants"
         width: parent.width
         spacing: 8
-        DocText { text: "Variants"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "All six standard semantic variants aligned with the ChaSet design token system."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("components.badge.variantsTitle", "Variants"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("components.badge.variantsDesc", "All six standard semantic variants aligned with the ChaSet design token system."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -156,12 +158,12 @@ DocLayout {
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
                     spacing: ThemeTokens.dp(12)
-                    ChaSetBadge { variant: "default"; text: "Default" }
-                    ChaSetBadge { variant: "secondary"; text: "Secondary" }
-                    ChaSetBadge { variant: "destructive"; text: "Destructive" }
-                    ChaSetBadge { variant: "outline"; text: "Outline" }
-                    ChaSetBadge { variant: "ghost"; text: "Ghost" }
-                    ChaSetBadge { variant: "link"; text: "Link" }
+                    ChaSetBadge { variant: "default"; text: ChaSetI18n.tr("common.default", "Default") }
+                    ChaSetBadge { variant: "secondary"; text: ChaSetI18n.tr("common.secondary", "Secondary") }
+                    ChaSetBadge { variant: "destructive"; text: ChaSetI18n.tr("common.destructive", "Destructive") }
+                    ChaSetBadge { variant: "outline"; text: ChaSetI18n.tr("common.outline", "Outline") }
+                    ChaSetBadge { variant: "ghost"; text: ChaSetI18n.tr("common.ghost", "Ghost") }
+                    ChaSetBadge { variant: "link"; text: ChaSetI18n.tr("common.link", "Link") }
                 }
             }
         }
@@ -169,10 +171,12 @@ DocLayout {
 
     // Section 4: Sizes
     Column {
+        property string sectionId: "sizes"
+        property string sectionTitle: "Sizes"
         width: parent.width
         spacing: ThemeTokens.dp(8)
-        DocText { text: "Sizes"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Choose between standard pill scale (default) and compact micro badge (sm)."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("components.badge.sizesTitle", "Sizes"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("components.badge.sizesDesc", "Choose between standard pill scale (default) and compact micro badge (sm)."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -188,13 +192,13 @@ DocLayout {
                     spacing: ThemeTokens.dp(20)
                     Row {
                         spacing: ThemeTokens.dp(8)
-                        DocText { anchors.verticalCenter: parent.verticalCenter; text: "Default:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
-                        ChaSetBadge { size: "default"; text: "Badge Default" }
+                        DocText { anchors.verticalCenter: parent.verticalCenter; text: ChaSetI18n.tr("components.badge.defaultLabel", "Default:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
+                        ChaSetBadge { size: "default"; text: ChaSetI18n.tr("components.badge.badgeDefault", "Badge Default") }
                     }
                     Row {
                         spacing: ThemeTokens.dp(8)
-                        DocText { anchors.verticalCenter: parent.verticalCenter; text: "Small:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
-                        ChaSetBadge { size: "sm"; text: "NEW" }
+                        DocText { anchors.verticalCenter: parent.verticalCenter; text: ChaSetI18n.tr("components.badge.smallLabel", "Small:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
+                        ChaSetBadge { size: "sm"; text: ChaSetI18n.tr("components.badge.badgeNew", "NEW") }
                     }
                 }
             }
@@ -203,10 +207,12 @@ DocLayout {
 
     // Section 5: Status & Removable Badges
     Column {
+        property string sectionId: "status-removable-tags"
+        property string sectionTitle: "Status & Removable Tags"
         width: parent.width
         spacing: ThemeTokens.dp(8)
-        DocText { text: "Status & Removable Tags"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Badges support live status indicator dots and dismissible action buttons for filter tags."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("components.badge.statusTitle", "Status & Removable Tags"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("components.badge.statusDesc", "Badges support live status indicator dots and dismissible action buttons for filter tags."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -220,11 +226,11 @@ DocLayout {
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
                     spacing: ThemeTokens.dp(16)
-                    ChaSetBadge { dot: true; dotColor: "#10b981"; variant: "outline"; text: "Online" }
-                    ChaSetBadge { dot: true; dotColor: "#f59e0b"; variant: "outline"; text: "Away" }
-                    ChaSetBadge { dot: true; dotColor: "#ef4444"; variant: "destructive"; text: "Error" }
-                    ChaSetBadge { removable: true; text: "React Tag"; onRemoved: console.log("Removed React Tag") }
-                    ChaSetBadge { removable: true; variant: "secondary"; text: "Qt Quick"; onRemoved: console.log("Removed Qt Quick") }
+                    ChaSetBadge { dot: true; dotColor: "#10b981"; variant: "outline"; text: ChaSetI18n.tr("components.badge.online", "Online") }
+                    ChaSetBadge { dot: true; dotColor: "#f59e0b"; variant: "outline"; text: ChaSetI18n.tr("components.badge.away", "Away") }
+                    ChaSetBadge { dot: true; dotColor: "#ef4444"; variant: "destructive"; text: ChaSetI18n.tr("components.badge.error", "Error") }
+                    ChaSetBadge { removable: true; text: ChaSetI18n.tr("components.badge.reactTag", "React Tag"); onRemoved: console.log("Removed React Tag") }
+                    ChaSetBadge { removable: true; variant: "secondary"; text: ChaSetI18n.tr("components.badge.qtQuick", "Qt Quick"); onRemoved: console.log("Removed Qt Quick") }
                 }
             }
         }

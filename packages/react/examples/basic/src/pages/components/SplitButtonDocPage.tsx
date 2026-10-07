@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { SplitButton, DropdownMenuItem, DropdownMenuSeparator } from '@chahu/cha-set';
+import { SplitButton, DropdownMenuItem, DropdownMenuSeparator, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from "../../components/ComponentReference";
 
 export function SplitButtonDocPage() {
-  const [lastAction, setLastAction] = useState('None');
+  const { t } = useChaSetI18n();
+  const [lastAction, setLastAction] = useState(t('components.split-button.none', 'None'));
 
   const reactCode = `<SplitButton
   label="Save Project"
@@ -38,7 +39,7 @@ export function SplitButtonDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Click the main button to trigger the primary action, or click the chevron to open the dropdown menu.
+          {t('components.split-button.overviewDesc', 'Click the main button to trigger the primary action, or click the chevron to open the dropdown menu.')}
         </p>
 
         <ComponentPreview
@@ -56,19 +57,19 @@ export function SplitButtonDocPage() {
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-wrap gap-4">
               <SplitButton
-                label="Save Project"
-                onClick={() => setLastAction('Direct Save')}
+                label={t('components.split-button.saveProject', 'Save Project')}
+                onClick={() => setLastAction(t('components.split-button.saveProject', 'Save Project'))}
                 menuContent={
                   <>
-                    <DropdownMenuItem onSelect={() => setLastAction('Save As...')}>
-                      Save As...
+                    <DropdownMenuItem onSelect={() => setLastAction(t('components.split-button.saveAs', 'Save As...'))}>
+                      {t('components.split-button.saveAs', 'Save As...')}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onSelect={() => setLastAction('Save All')}>
-                      Save All
+                    <DropdownMenuItem onSelect={() => setLastAction(t('components.split-button.saveAll', 'Save All'))}>
+                      {t('components.split-button.saveAll', 'Save All')}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onSelect={() => setLastAction('Export to Disk')}>
-                      Export to Disk
+                    <DropdownMenuItem onSelect={() => setLastAction(t('components.split-button.exportToDisk', 'Export to Disk'))}>
+                      {t('components.split-button.exportToDisk', 'Export to Disk')}
                     </DropdownMenuItem>
                   </>
                 }
@@ -76,15 +77,15 @@ export function SplitButtonDocPage() {
 
               <SplitButton
                 variant="outline"
-                label="Deploy"
-                onClick={() => setLastAction('Direct Deploy')}
+                label={t('components.split-button.deploy', 'Deploy')}
+                onClick={() => setLastAction(t('components.split-button.deploy', 'Deploy'))}
                 menuContent={
                   <>
-                    <DropdownMenuItem onSelect={() => setLastAction('Deploy Staging')}>
-                      Deploy to Staging
+                    <DropdownMenuItem onSelect={() => setLastAction(t('components.split-button.deployStaging', 'Deploy to Staging'))}>
+                      {t('components.split-button.deployStaging', 'Deploy to Staging')}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onSelect={() => setLastAction('Deploy Canary')}>
-                      Deploy to Canary
+                    <DropdownMenuItem onSelect={() => setLastAction(t('components.split-button.deployCanary', 'Deploy Canary'))}>
+                      {t('components.split-button.deployCanary', 'Deploy Canary')}
                     </DropdownMenuItem>
                   </>
                 }
@@ -92,7 +93,7 @@ export function SplitButtonDocPage() {
             </div>
 
             <span className="text-xs text-muted-foreground">
-              Last Action Dispatched: <strong className="text-foreground">{lastAction}</strong>
+              {t('components.split-button.lastAction', 'Last Action Dispatched: {{action}}', { action: lastAction })}
             </span>
           </div>
         </ComponentPreview>

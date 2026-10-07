@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Skeleton, Card, type SkeletonAnimation, CodeBlock } from '@chahu/cha-set';
+import { Skeleton, Card, type SkeletonAnimation, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function SkeletonDocPage() {
+  const { t } = useChaSetI18n();
   const [animation, setAnimation] = useState<SkeletonAnimation>('pulse');
 
   const reactCode = `<div className="flex items-center space-x-4">
@@ -27,7 +28,7 @@ export function SkeletonDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Visual placeholder skeleton cards for progressive loading states. Switch between pulse, wave shimmer, or static modes.
+          {t('components.skeleton.overviewDesc', 'Visual placeholder skeleton cards for progressive loading states. Switch between pulse, wave shimmer, or static modes.')}
         </p>
 
         <ComponentPreview
@@ -42,7 +43,7 @@ export function SkeletonDocPage() {
 }`} title="Skeleton Sandbox" reactCode={reactCode}>
           <div className="flex flex-col items-center gap-6">
             <div className="flex items-center gap-2 text-xs">
-              <span className="font-medium text-muted-foreground">Animation:</span>
+              <span className="font-medium text-muted-foreground">{t('common.animation', 'Animation:')}</span>
               {(['pulse', 'wave', 'none'] as const).map((mode) => (
                 <button
                   key={mode}
@@ -54,7 +55,7 @@ export function SkeletonDocPage() {
                       : 'bg-muted text-muted-foreground hover:bg-accent'
                   }`}
                 >
-                  {mode}
+                  {t(`components.skeleton.${mode}`, mode)}
                 </button>
               ))}
             </div>

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Label, type LabelSize, Input, Checkbox, SegmentedControl, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock } from '@chahu/cha-set';
+import { Label, type LabelSize, Input, Checkbox, SegmentedControl, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function LabelDocPage() {
+  const { t } = useChaSetI18n();
   const [size, setSize] = useState<LabelSize>('default');
   const [disabled, setDisabled] = useState(false);
   const [required, setRequired] = useState(false);
@@ -61,7 +62,7 @@ export function LabelDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Adjust size, required markers, optional indicators, validation states, and disabled appearance in real time.
+          {t('components.label.overviewDesc', 'Adjust size, required markers, optional indicators, validation states, and disabled appearance in real time.')}
         </p>
 
         <ComponentPreview
@@ -71,7 +72,7 @@ export function LabelDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Size:</span>
+                <span className="text-xs text-muted-foreground">{t('common.size', 'Size:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={size}
@@ -85,28 +86,28 @@ export function LabelDocPage() {
 
               <Checkbox
                 size="sm"
-                label="Disabled"
+                label={t('common.disabled', 'Disabled')}
                 checked={disabled}
                 onCheckedChange={(v) => setDisabled(v)}
               />
 
               <Checkbox
                 size="sm"
-                label="Required"
+                label={t('common.required', 'Required')}
                 checked={required}
                 onCheckedChange={(v) => setRequired(v)}
               />
 
               <Checkbox
                 size="sm"
-                label="Optional"
+                label={t('common.optional', 'Optional')}
                 checked={optional}
                 onCheckedChange={(v) => setOptional(v)}
               />
 
               <Checkbox
                 size="sm"
-                label="Invalid"
+                label={t('common.invalid', 'Invalid')}
                 checked={invalid}
                 onCheckedChange={(v) => setInvalid(v)}
               />
@@ -122,12 +123,12 @@ export function LabelDocPage() {
               optional={optional}
               invalid={invalid}
             >
-              Email address
+              {t('components.label.emailAddress', 'Email address')}
             </Label>
             <Input
               type="email"
               id="sandbox-email"
-              placeholder="name@example.com"
+              placeholder={t('components.label.emailPlaceholder', 'name@example.com')}
               size={size}
               disabled={disabled}
               invalid={invalid}
@@ -149,26 +150,23 @@ ChaSetLabel {
 }`}
       />
 
-
-
-      {/* 2. Installation */}
       {/* 3. Sizes */}
       <section id="sizes" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Sizes
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Sizes">
+          {t('components.label.sizesTitle', 'Sizes')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Choose between standard text size and compact high-density size for toolbars or dense forms.
+          {t('components.label.sizesDesc', 'Choose between standard text size and compact high-density size for toolbars or dense forms.')}
         </p>
         <Card className="p-6">
           <CardContent className="space-y-4 p-0">
             <div className="flex items-center gap-4">
-              <span className="w-24 text-xs text-muted-foreground">Default:</span>
-              <Label size="default">Default Label</Label>
+              <span className="w-24 text-xs text-muted-foreground">{t('common.default', 'Default')}:</span>
+              <Label size="default">{t('components.label.defaultLabel', 'Default Label')}</Label>
             </div>
             <div className="flex items-center gap-4">
-              <span className="w-24 text-xs text-muted-foreground">Small (sm):</span>
-              <Label size="sm">Small Label</Label>
+              <span className="w-24 text-xs text-muted-foreground">{t('common.small', 'Small')}:</span>
+              <Label size="sm">{t('components.label.smallLabel', 'Small Label')}</Label>
             </div>
           </CardContent>
         </Card>
@@ -176,60 +174,60 @@ ChaSetLabel {
 
       {/* 4. States */}
       <section id="states" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          States & Variants
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="States & Variants">
+          {t('components.label.statesTitle', 'States & Variants')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Visual matrix of label states including required asterisk, optional tag, validation error, helper description, and tooltips.
+          {t('components.label.statesDesc', 'Visual matrix of label states including required asterisk, optional tag, validation error, helper description, and tooltips.')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="p-5">
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-medium text-foreground">Required Indicator</span>
-              <span className="text-xs text-muted-foreground">Destructive asterisk denoting mandatory input fields</span>
+              <span className="text-xs font-medium text-foreground">{t('components.label.requiredTitle', 'Required Indicator')}</span>
+              <span className="text-xs text-muted-foreground">{t('components.label.requiredDesc', 'Destructive asterisk denoting mandatory input fields')}</span>
               <div className="pt-2">
-                <Label required>Work Email</Label>
+                <Label required>{t('components.label.workEmail', 'Work Email')}</Label>
               </div>
             </div>
           </Card>
 
           <Card className="p-5">
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-medium text-foreground">Optional Indicator</span>
-              <span className="text-xs text-muted-foreground">Muted tag denoting non-mandatory optional fields</span>
+              <span className="text-xs font-medium text-foreground">{t('components.label.optionalTitle', 'Optional Indicator')}</span>
+              <span className="text-xs text-muted-foreground">{t('components.label.optionalDesc', 'Muted tag denoting non-mandatory optional fields')}</span>
               <div className="pt-2">
-                <Label optional>Alternative Phone</Label>
+                <Label optional>{t('components.label.altPhone', 'Alternative Phone')}</Label>
               </div>
             </div>
           </Card>
 
           <Card className="p-5">
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-medium text-foreground">Validation Error (Invalid)</span>
-              <span className="text-xs text-muted-foreground">Destructive text color highlighting a field with validation errors</span>
+              <span className="text-xs font-medium text-foreground">{t('components.label.invalidTitle', 'Validation Error (Invalid)')}</span>
+              <span className="text-xs text-muted-foreground">{t('components.label.invalidDesc', 'Destructive text color highlighting a field with validation errors')}</span>
               <div className="pt-2">
-                <Label invalid>Account Password</Label>
+                <Label invalid>{t('components.label.accountPassword', 'Account Password')}</Label>
               </div>
             </div>
           </Card>
 
           <Card className="p-5">
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-medium text-foreground">With Info Tooltip</span>
-              <span className="text-xs text-muted-foreground">Help icon with contextual explanation on hover</span>
+              <span className="text-xs font-medium text-foreground">{t('components.label.tooltipTitle', 'With Info Tooltip')}</span>
+              <span className="text-xs text-muted-foreground">{t('components.label.tooltipDesc', 'Help icon with contextual explanation on hover')}</span>
               <div className="pt-2">
-                <Label tooltip="Used for two-factor authentication recovery codes">Recovery Email</Label>
+                <Label tooltip={t('components.label.recoveryTooltip', 'Used for two-factor authentication recovery codes')}>{t('components.label.recoveryEmail', 'Recovery Email')}</Label>
               </div>
             </div>
           </Card>
 
           <Card className="p-5">
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-medium text-foreground">With Helper Description</span>
-              <span className="text-xs text-muted-foreground">Supporting guidance subtitle directly below the label</span>
+              <span className="text-xs font-medium text-foreground">{t('components.label.descriptionTitle', 'With Helper Description')}</span>
+              <span className="text-xs text-muted-foreground">{t('components.label.descriptionDesc', 'Supporting guidance subtitle directly below the label')}</span>
               <div className="pt-2">
-                <Label description="Enter your company legal name as registered with tax authorities">
-                  Legal Entity Name
+                <Label description={t('components.label.legalEntityHelper', 'Enter your company legal name as registered with tax authorities')}>
+                  {t('components.label.legalEntityName', 'Legal Entity Name')}
                 </Label>
               </div>
             </div>
@@ -237,10 +235,10 @@ ChaSetLabel {
 
           <Card className="p-5">
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-medium text-foreground">Disabled State</span>
-              <span className="text-xs text-muted-foreground">Dimmed opacity for non-interactive form elements</span>
+              <span className="text-xs font-medium text-foreground">{t('components.label.disabledTitle', 'Disabled State')}</span>
+              <span className="text-xs text-muted-foreground">{t('components.label.disabledDesc', 'Dimmed opacity for non-interactive form elements')}</span>
               <div className="pt-2">
-                <Label disabled>Archived Record ID</Label>
+                <Label disabled>{t('components.label.archivedRecordId', 'Archived Record ID')}</Label>
               </div>
             </div>
           </Card>
@@ -249,22 +247,22 @@ ChaSetLabel {
 
       {/* 5. Form Association */}
       <section id="form-control" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Form Association
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Form Association">
+          {t('components.label.formControlTitle', 'Form Association')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Clicking the label activates or toggles the linked input element via <code>htmlFor</code>.
+          {t('components.label.formControlDesc', 'Clicking the label activates or toggles the linked input element via htmlFor.')}
         </p>
         <Card className="p-6">
           <CardHeader className="p-0 pb-4">
-            <CardTitle className="text-base">Terms and Conditions</CardTitle>
-            <CardDescription>Click the text below to toggle the checkbox</CardDescription>
+            <CardTitle className="text-base">{t('components.label.termsTitle', 'Terms and Conditions')}</CardTitle>
+            <CardDescription>{t('components.label.termsSubtitle', 'Click the text below to toggle the checkbox')}</CardDescription>
           </CardHeader>
           <CardContent className="p-0">
             <div className="flex items-center space-x-2">
               <Checkbox id="terms" />
               <Label htmlFor="terms" className="cursor-pointer">
-                I accept the terms and conditions
+                {t('components.label.acceptTerms', 'I accept the terms and conditions')}
               </Label>
             </div>
           </CardContent>

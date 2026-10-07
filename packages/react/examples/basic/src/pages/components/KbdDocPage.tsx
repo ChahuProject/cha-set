@@ -12,6 +12,7 @@ import {
   Badge,
   Button,
   Slider,
+  useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -19,6 +20,7 @@ import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from '../../components/ComponentReference';
 
 export function KbdDocPage() {
+  const { t } = useChaSetI18n();
   const [variant, setVariant] = useState<KbdVariant>('outline');
   const [size, setSize] = useState<KbdSize>('default');
   const [compact, setCompact] = useState<KbdCompact>('auto');
@@ -86,7 +88,7 @@ export function KbdDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Adjust variant, size, and compact symbol mode in real time with synchronized previews for Web and Desktop.
+          {t('components.kbd.overviewDesc', 'Adjust variant, size, and compact symbol mode in real time with synchronized previews for Web and Desktop.')}
         </p>
 
         <ComponentPreview
@@ -96,7 +98,7 @@ export function KbdDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Variant:</span>
+                <span className="text-muted-foreground text-xs">{t('common.variant', 'Variant:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={variant}
@@ -111,7 +113,7 @@ export function KbdDocPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Size:</span>
+                <span className="text-muted-foreground text-xs">{t('common.size', 'Size:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={size}
@@ -125,15 +127,15 @@ export function KbdDocPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Compact:</span>
+                <span className="text-muted-foreground text-xs">{t('components.kbd.compact', 'Compact:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={compact}
                   onChange={(c) => setCompact(c as KbdCompact)}
                   options={[
-                    { label: 'Auto', value: 'auto' },
-                    { label: 'Always', value: 'always' },
-                    { label: 'Never', value: 'never' },
+                    { label: t('components.kbd.auto', 'Auto'), value: 'auto' },
+                    { label: t('components.kbd.always', 'Always'), value: 'always' },
+                    { label: t('components.kbd.never', 'Never'), value: 'never' },
                   ]}
                 />
               </div>
@@ -160,11 +162,11 @@ export function KbdDocPage() {
 
       {/* 3. Variants */}
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Variants
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Variants">
+          {t('components.kbd.variantsTitle', 'Variants')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Four distinct visual styles designed for menus, search fields, dialogs, and inverted tooltips.
+          {t('components.kbd.variantsDesc', 'Four distinct visual styles designed for menus, search fields, dialogs, and inverted tooltips.')}
         </p>
         <Card className="flex flex-wrap items-center gap-6 p-6">
           <div className="flex flex-col items-center gap-2">

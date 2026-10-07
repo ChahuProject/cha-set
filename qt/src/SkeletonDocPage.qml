@@ -42,21 +42,21 @@ DocLayout {
                     spacing: ThemeTokens.dp(8)
 
                     ChaSetButton {
-                        text: "pulse"
+                        text: ChaSetI18n.tr("components.skeleton.pulse", "pulse")
                         variant: root.animationMode === "pulse" ? "default" : "outline"
                         size: "sm"
                         onClicked: root.animationMode = "pulse"
                     }
 
                     ChaSetButton {
-                        text: "wave"
+                        text: ChaSetI18n.tr("components.skeleton.wave", "wave")
                         variant: root.animationMode === "wave" ? "default" : "outline"
                         size: "sm"
                         onClicked: root.animationMode = "wave"
                     }
 
                     ChaSetButton {
-                        text: "none"
+                        text: ChaSetI18n.tr("components.skeleton.none", "none")
                         variant: root.animationMode === "none" ? "default" : "outline"
                         size: "sm"
                         onClicked: root.animationMode = "none"

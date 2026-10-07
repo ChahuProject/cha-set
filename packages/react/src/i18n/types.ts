@@ -24,5 +24,5 @@ export interface I18nContextValue {
   systemLocale: LocaleCode;
   supportedLocales: LocaleMetadata[];
   setPreference: (pref: LocalePreference) => void;
-  t: (key: string, defaultText?: string, params?: Record<string, string | number>) => string;
+  t: (key: string, defaultTextOrParams?: string | Record<string, string | number>, params?: Record<string, string | number>) => string;
 }

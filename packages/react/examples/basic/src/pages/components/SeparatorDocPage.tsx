@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { Separator, type SeparatorOrientation, type SeparatorVariant, type SeparatorLabelPosition, SegmentedControl, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Checkbox } from '@chahu/cha-set';
+import { Separator, type SeparatorOrientation, type SeparatorVariant, type SeparatorLabelPosition, SegmentedControl, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Checkbox, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from "../../components/ComponentReference";
 
 export function SeparatorDocPage() {
+  const { t } = useChaSetI18n();
   const [orientation, setOrientation] = useState<SeparatorOrientation>('horizontal');
   const [variant, setVariant] = useState<SeparatorVariant>('solid');
   const [hasLabel, setHasLabel] = useState(false);
   const [labelPosition, setLabelPosition] = useState<SeparatorLabelPosition>('center');
   const [decorative, setDecorative] = useState(true);
 
-  const labelText = hasLabel ? 'Continue with' : undefined;
+  const labelText = hasLabel ? t('components.separator.continueWith', 'Continue with') : undefined;
 
   const heroReactCode = orientation === 'horizontal'
     ? hasLabel
@@ -107,7 +108,7 @@ export function SeparatorDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Test orientation, dashed/dotted line styles, and labeled section dividers across Web and Desktop.
+          {t('components.separator.overviewDesc', 'Test orientation, dashed/dotted line styles, and labeled section dividers across Web and Desktop.')}
         </p>
 
         <ComponentPreview
@@ -117,28 +118,28 @@ export function SeparatorDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Orientation:</span>
+                <span className="text-muted-foreground text-xs">{t('common.orientation', 'Orientation:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={orientation}
                   onChange={(v) => setOrientation(v as SeparatorOrientation)}
                   options={[
-                    { label: 'Horizontal', value: 'horizontal' },
-                    { label: 'Vertical', value: 'vertical' },
+                    { label: t('common.horizontal', 'Horizontal'), value: 'horizontal' },
+                    { label: t('common.vertical', 'Vertical'), value: 'vertical' },
                   ]}
                 />
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">Style:</span>
+                <span className="text-muted-foreground text-xs">{t('common.style', 'Style:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={variant}
                   onChange={(v) => setVariant(v as SeparatorVariant)}
                   options={[
-                    { label: 'Solid', value: 'solid' },
-                    { label: 'Dashed', value: 'dashed' },
-                    { label: 'Dotted', value: 'dotted' },
+                    { label: t('common.solid', 'Solid'), value: 'solid' },
+                    { label: t('common.dashed', 'Dashed'), value: 'dashed' },
+                    { label: t('common.dotted', 'Dotted'), value: 'dotted' },
                   ]}
                 />
               </div>
@@ -149,20 +150,20 @@ export function SeparatorDocPage() {
                     size="sm"
                     checked={hasLabel}
                     onCheckedChange={(val) => setHasLabel(Boolean(val))}
-                    label="Label"
+                    label={t('common.label', 'Label')}
                   />
 
                   {hasLabel && (
                     <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground text-xs">Position:</span>
+                      <span className="text-muted-foreground text-xs">{t('common.position', 'Position:')}</span>
                       <SegmentedControl
                         size="sm"
                         value={labelPosition}
                         onChange={(v) => setLabelPosition(v as SeparatorLabelPosition)}
                         options={[
-                          { label: 'Left', value: 'left' },
-                          { label: 'Center', value: 'center' },
-                          { label: 'Right', value: 'right' },
+                          { label: t('common.left', 'Left'), value: 'left' },
+                          { label: t('common.center', 'Center'), value: 'center' },
+                          { label: t('common.right', 'Right'), value: 'right' },
                         ]}
                       />
                     </div>
@@ -174,7 +175,7 @@ export function SeparatorDocPage() {
                 size="sm"
                 checked={decorative}
                 onCheckedChange={(val) => setDecorative(Boolean(val))}
-                label={`Decorative (${decorative ? 'role="none"' : 'role="separator"'})`}
+                label={`${t('components.separator.decorative', 'Decorative')} (${decorative ? 'role="none"' : 'role="separator"'})`}
               />
             </div>
           }
@@ -183,7 +184,7 @@ export function SeparatorDocPage() {
             {orientation === 'horizontal' ? (
               hasLabel ? (
                 <div className="w-full max-w-sm space-y-4">
-                  <Button className="w-full" size="sm">Sign in with SSO</Button>
+                  <Button className="w-full" size="sm">{t('components.separator.signInSso', 'Sign in with SSO')}</Button>
                   <Separator
                     orientation="horizontal"
                     variant={variant}
@@ -191,33 +192,33 @@ export function SeparatorDocPage() {
                     labelPosition={labelPosition}
                     decorative={decorative}
                   />
-                  <Button variant="outline" className="w-full" size="sm">Sign in with Email</Button>
+                  <Button variant="outline" className="w-full" size="sm">{t('components.separator.signInEmail', 'Sign in with Email')}</Button>
                 </div>
               ) : (
                 <div className="w-full max-w-sm space-y-4">
                   <div className="space-y-1">
-                    <h4 className="text-sm font-medium leading-none text-foreground">ChaSet UI</h4>
+                    <h4 className="text-sm font-medium leading-none text-foreground">{t('components.separator.chasetUi', 'ChaSet UI')}</h4>
                     <p className="text-sm text-muted-foreground">
-                      Cross-stack React & Qt Quick Design System.
+                      {t('components.separator.systemDesc', 'Cross-stack React & Qt Quick Design System.')}
                     </p>
                   </div>
                   <Separator orientation="horizontal" variant={variant} decorative={decorative} />
                   <div className="flex h-5 items-center space-x-4 text-sm text-muted-foreground">
-                    <span>Docs</span>
+                    <span>{t('components.separator.docs', 'Docs')}</span>
                     <Separator orientation="vertical" variant={variant} />
-                    <span>Source</span>
+                    <span>{t('components.separator.source', 'Source')}</span>
                     <Separator orientation="vertical" variant={variant} />
-                    <span>Changelog</span>
+                    <span>{t('components.separator.changelog', 'Changelog')}</span>
                   </div>
                 </div>
               )
             ) : (
               <div className="flex h-10 items-center space-x-4 text-sm text-foreground">
-                <span>Components</span>
+                <span>{t('components.separator.components', 'Components')}</span>
                 <Separator orientation="vertical" variant={variant} decorative={decorative} />
-                <span>Tokens</span>
+                <span>{t('components.separator.tokens', 'Tokens')}</span>
                 <Separator orientation="vertical" variant={variant} />
-                <span>Showcase</span>
+                <span>{t('components.separator.showcase', 'Showcase')}</span>
               </div>
             )}
           </div>
@@ -233,70 +234,70 @@ export function SeparatorDocPage() {
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & States
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Examples & States">
+          {t('components.separator.examplesTitle', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Common layout patterns using horizontal, vertical, dashed, dotted, and labeled separators.
+          {t('components.separator.examplesDesc', 'Common layout patterns using horizontal, vertical, dashed, dotted, and labeled separators.')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Card Content Segmentation */}
           <Card className="flex flex-col">
             <CardHeader className="pb-3">
-              <CardTitle>Account Overview</CardTitle>
-              <CardDescription>Manage your workspace settings and profile.</CardDescription>
+              <CardTitle>{t('components.separator.accountOverview', 'Account Overview')}</CardTitle>
+              <CardDescription>{t('components.separator.accountDesc', 'Manage your workspace settings and profile.')}</CardDescription>
             </CardHeader>
             <Separator orientation="horizontal" />
             <CardContent className="py-4 space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Status</span>
-                <span className="font-medium text-foreground">Active</span>
+                <span className="text-muted-foreground">{t('components.separator.status', 'Status')}</span>
+                <span className="font-medium text-foreground">{t('components.separator.active', 'Active')}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Plan</span>
-                <span className="font-medium text-foreground">Enterprise</span>
+                <span className="text-muted-foreground">{t('components.separator.plan', 'Plan')}</span>
+                <span className="font-medium text-foreground">{t('components.separator.enterprise', 'Enterprise')}</span>
               </div>
             </CardContent>
             <Separator orientation="horizontal" />
             <CardFooter className="pt-3 flex justify-end">
-              <Button size="sm">Manage</Button>
+              <Button size="sm">{t('components.separator.manage', 'Manage')}</Button>
             </CardFooter>
           </Card>
 
           {/* Labeled Section & Form Dividers */}
           <Card className="flex flex-col justify-between p-6">
             <div>
-              <h3 className="font-semibold text-foreground mb-1">Labeled Dividers</h3>
+              <h3 className="font-semibold text-foreground mb-1">{t('components.separator.labeledDividers', 'Labeled Dividers')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Embed clear section titles or auth splits with left, center, or right alignment.
+                {t('components.separator.labeledDividersDesc', 'Embed clear section titles or auth splits with left, center, or right alignment.')}
               </p>
             </div>
             <div className="space-y-4">
-              <Separator label="Section Start" labelPosition="left" />
-              <Separator label="OR CONTINUE WITH" labelPosition="center" />
-              <Separator label="End of Category" labelPosition="right" />
+              <Separator label={t('components.separator.sectionStart', 'Section Start')} labelPosition="left" />
+              <Separator label={t('components.separator.orContinueWith', 'OR CONTINUE WITH')} labelPosition="center" />
+              <Separator label={t('components.separator.endOfCategory', 'End of Category')} labelPosition="right" />
             </div>
           </Card>
 
           {/* Border Styles (Solid, Dashed, Dotted) */}
           <Card className="flex flex-col justify-between p-6">
             <div>
-              <h3 className="font-semibold text-foreground mb-1">Border Styles</h3>
+              <h3 className="font-semibold text-foreground mb-1">{t('components.separator.borderStyles', 'Border Styles')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Choose between solid, dashed, or dotted dividers to distinguish hierarchy.
+                {t('components.separator.borderStylesDesc', 'Choose between solid, dashed, or dotted dividers to distinguish hierarchy.')}
               </p>
             </div>
             <div className="space-y-4">
               <div>
-                <span className="text-xs text-muted-foreground mb-1 block">Solid (Default)</span>
+                <span className="text-xs text-muted-foreground mb-1 block">{t('components.separator.solidDefault', 'Solid (Default)')}</span>
                 <Separator orientation="horizontal" variant="solid" />
               </div>
               <div>
-                <span className="text-xs text-muted-foreground mb-1 block">Dashed</span>
+                <span className="text-xs text-muted-foreground mb-1 block">{t('components.separator.dashed', 'Dashed')}</span>
                 <Separator orientation="horizontal" variant="dashed" />
               </div>
               <div>
-                <span className="text-xs text-muted-foreground mb-1 block">Dotted</span>
+                <span className="text-xs text-muted-foreground mb-1 block">{t('components.separator.dotted', 'Dotted')}</span>
                 <Separator orientation="horizontal" variant="dotted" />
               </div>
             </div>
@@ -305,9 +306,9 @@ export function SeparatorDocPage() {
           {/* Inline Navigation & Metadata Bar */}
           <Card className="flex flex-col justify-between p-6">
             <div>
-              <h3 className="font-semibold text-foreground mb-1">Navigation Divider</h3>
+              <h3 className="font-semibold text-foreground mb-1">{t('components.separator.navDivider', 'Navigation Divider')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Vertical dividers between inline list items or metadata tags.
+                {t('components.separator.navDividerDesc', 'Vertical dividers between inline list items or metadata tags.')}
               </p>
             </div>
             <div className="flex h-5 items-center space-x-4 text-xs text-muted-foreground border border-border p-3 rounded-lg bg-muted/20">

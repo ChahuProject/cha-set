@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { ElidedText, Card, Button, Slider } from '@chahu/cha-set';
+import { ElidedText, Card, Button, Slider, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from "../../components/ComponentReference";
 
 export function ElidedTextDocPage() {
+  const { t } = useChaSetI18n();
   const [containerWidth, setContainerWidth] = useState(240);
   const [alwaysShow, setAlwaysShow] = useState(false);
   const [copyable, setCopyable] = useState(true);
@@ -42,7 +43,7 @@ export function ElidedTextDocPage() {
       <section id="overview" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
         <p className="text-sm text-muted-foreground">
-          Resize the container below using the slider. When the text is clipped with an ellipsis, hovering reveals the full path in a tooltip. Click to copy the full path when copyable is enabled.
+          {t('components.elided-text.overviewDesc', 'Resize the container below using the slider. When the text is clipped with an ellipsis, hovering reveals the full path in a tooltip. Click to copy the full path when copyable is enabled.')}
         </p>
 
         <ComponentPreview title="Elided Text Sandbox"
@@ -51,7 +52,7 @@ export function ElidedTextDocPage() {
           controls={
             <div className="flex flex-wrap items-center gap-4 text-xs">
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Width: {containerWidth}</span>
+                <span className="text-muted-foreground">{t('components.elided-text.widthLabel', 'Width: {{width}}', { width: containerWidth })}</span>
                 <div className="w-32">
                   <Slider
                     value={containerWidth}
@@ -67,14 +68,14 @@ export function ElidedTextDocPage() {
                 size="sm"
                 onClick={() => setAlwaysShow(!alwaysShow)}
               >
-                Always Show: {alwaysShow ? 'On' : 'Off'}
+                {t('components.elided-text.alwaysShow', 'Always Show: {{status}}', { status: alwaysShow ? t('components.elided-text.on', 'On') : t('components.elided-text.off', 'Off') })}
               </Button>
               <Button
                 variant={copyable ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setCopyable(!copyable)}
               >
-                Copyable: {copyable ? 'On' : 'Off'}
+                {t('components.elided-text.copyable', 'Copyable: {{status}}', { status: copyable ? t('components.elided-text.on', 'On') : t('components.elided-text.off', 'Off') })}
               </Button>
             </div>
           }
@@ -105,14 +106,14 @@ export function ElidedTextDocPage() {
       />
 
       <section id="multi-line-clamping" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Multi-Line Clamping</h2>
+        <h2 className="text-xl font-semibold text-foreground" data-toc-title="Multi-Line Clamping">{t('components.elided-text.multiLineTitle', 'Multi-Line Clamping')}</h2>
         <p className="text-sm text-muted-foreground">
-          Using <code>maxLines={2}</code>, text wraps up to two lines before truncating with an ellipsis.
+          {t('components.elided-text.multiLineDesc', 'Using maxLines={2}, text wraps up to two lines before truncating with an ellipsis.')}
         </p>
         <Card className="p-4 max-w-sm">
           <ElidedText
             maxLines={2}
-            text="ChaSet provides cross-stack design system primitives with pixel-level parity across React Web and Qt Quick desktop applications."
+            text={t('components.elided-text.sampleParagraph', 'ChaSet provides cross-stack design system primitives with pixel-level parity across React Web and Qt Quick desktop applications.')}
             tooltipPlacement="bottom"
           />
         </Card>

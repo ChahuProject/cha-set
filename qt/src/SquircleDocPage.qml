@@ -76,7 +76,7 @@ DocLayout {
                                 width: parent.width - ThemeTokens.dp(20)
                                 horizontalAlignment: Text.AlignHCenter
                                 wrapMode: Text.WordWrap
-                                text: "Squircle\n(Smoothing: " + Math.round(root.customSmoothing * 100) + "%)"
+                                text: ChaSetI18n.tr("components.squircle.squircleLabel", "Squircle (Smoothing: {{smoothing}}%)", { "smoothing": Math.round(root.customSmoothing * 100) })
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeSmall
                                 font.weight: Font.DemiBold
@@ -85,7 +85,7 @@ DocLayout {
 
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            text: "iOS Continuous Curvature (G2)"
+                            text: ChaSetI18n.tr("components.squircle.g2Label", "iOS Continuous Curvature (G2)")
                             color: ThemeTokens.accent
                             font.pixelSize: Typography.sizeCaption
                             font.weight: Font.Medium
@@ -109,7 +109,7 @@ DocLayout {
                                 width: parent.width - ThemeTokens.dp(20)
                                 horizontalAlignment: Text.AlignHCenter
                                 wrapMode: Text.WordWrap
-                                text: "Classic Arc\n(Smoothing: 0%)"
+                                text: ChaSetI18n.tr("components.squircle.classicArc", "Classic Arc (Smoothing: 0%)")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeSmall
                                 font.weight: Font.DemiBold
@@ -118,7 +118,7 @@ DocLayout {
 
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            text: "Standard Circular Arc (G1)"
+                            text: ChaSetI18n.tr("components.squircle.g1Label", "Standard Circular Arc (G1)")
                             color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeCaption
                             font.weight: Font.Medium
@@ -145,7 +145,7 @@ DocLayout {
                                 Text {
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
-                                    text: "Corner Smoothing"
+                                    text: ChaSetI18n.tr("components.squircle.cornerSmoothing", "Corner Smoothing")
                                     color: ThemeTokens.subduedText
                                     font.pixelSize: Typography.sizeCaption
                                 }
@@ -179,7 +179,7 @@ DocLayout {
                                 Text {
                                     anchors.left: parent.left
                                     anchors.verticalCenter: parent.verticalCenter
-                                    text: "Corner Radius"
+                                    text: ChaSetI18n.tr("components.squircle.cornerRadius", "Corner Radius")
                                     color: ThemeTokens.subduedText
                                     font.pixelSize: Typography.sizeCaption
                                 }
@@ -211,7 +211,7 @@ DocLayout {
                     spacing: ThemeTokens.dp(10)
 
                     Text {
-                        text: "FULL-PROJECT DEFAULT ADOPTION PREVIEW"
+                        text: ChaSetI18n.tr("components.squircle.adoptionPreview", "FULL-PROJECT DEFAULT ADOPTION PREVIEW").toUpperCase()
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeNano
                         font.weight: Font.Bold

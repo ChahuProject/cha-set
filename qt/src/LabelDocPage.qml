@@ -38,7 +38,7 @@ DocLayout {
                 width: ThemeTokens.dp(260)
 
                 ChaSetLabel {
-                    text: "Email address"
+                    text: ChaSetI18n.tr("components.label.emailAddress", "Email address")
                     size: root.demoSize
                     disabled: root.demoDisabled
                     required: root.demoRequired
@@ -48,7 +48,7 @@ DocLayout {
 
                 ChaSetInput {
                     width: parent.width
-                    placeholder: "name@example.com"
+                    placeholder: ChaSetI18n.tr("components.label.emailPlaceholder", "name@example.com")
                     size: root.demoSize
                     disabled: root.demoDisabled
                     invalid: root.demoInvalid
@@ -63,7 +63,7 @@ DocLayout {
 
                 Row {
                     spacing: 8
-                    DocText { text: "Size:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { text: ChaSetI18n.tr("common.size", "Size:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetSegmentedControl {
                         anchors.verticalCenter: parent.verticalCenter
                         size: "sm"
@@ -83,7 +83,7 @@ DocLayout {
 
                     ChaSetCheckbox {
                         size: "sm"
-                        label: "Disabled"
+                        label: ChaSetI18n.tr("common.disabled", "Disabled")
                         checked: root.demoDisabled
                         onToggled: (val) => root.demoDisabled = val
                         anchors.verticalCenter: parent.verticalCenter
@@ -91,7 +91,7 @@ DocLayout {
 
                     ChaSetCheckbox {
                         size: "sm"
-                        label: "Required"
+                        label: ChaSetI18n.tr("common.required", "Required")
                         checked: root.demoRequired
                         onToggled: (val) => root.demoRequired = val
                         anchors.verticalCenter: parent.verticalCenter
@@ -99,7 +99,7 @@ DocLayout {
 
                     ChaSetCheckbox {
                         size: "sm"
-                        label: "Optional"
+                        label: ChaSetI18n.tr("common.optional", "Optional")
                         checked: root.demoOptional
                         onToggled: (val) => root.demoOptional = val
                         anchors.verticalCenter: parent.verticalCenter
@@ -107,7 +107,7 @@ DocLayout {
 
                     ChaSetCheckbox {
                         size: "sm"
-                        label: "Invalid"
+                        label: ChaSetI18n.tr("common.invalid", "Invalid")
                         checked: root.demoInvalid
                         onToggled: (val) => root.demoInvalid = val
                         anchors.verticalCenter: parent.verticalCenter
@@ -136,8 +136,8 @@ ChaSetLabel {
         property string sectionId: "sizes"
         width: parent.width
         spacing: 8
-        DocText { text: "Sizes"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Choose between standard text size and compact high-density size for dense layouts."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("components.label.sizesTitle", "Sizes"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("components.label.sizesDesc", "Choose between standard text size and compact high-density size for dense layouts."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -152,13 +152,13 @@ ChaSetLabel {
 
                 Row {
                     spacing: 16
-                    DocText { width: 80; text: "Default:"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetLabel { size: "default"; text: "Default Label" }
+                    DocText { width: 80; text: ChaSetI18n.tr("showcase.defaultLabel", "Default:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetLabel { size: "default"; text: ChaSetI18n.tr("components.label.defaultLabel", "Default Label") }
                 }
                 Row {
                     spacing: 16
-                    DocText { width: 80; text: "Small (sm):"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetLabel { size: "sm"; text: "Small Label" }
+                    DocText { width: 80; text: ChaSetI18n.tr("showcase.smallLabel", "Small (sm):"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    ChaSetLabel { size: "sm"; text: ChaSetI18n.tr("components.label.smallLabel", "Small Label") }
                 }
             }
         }
@@ -167,10 +167,11 @@ ChaSetLabel {
     // Section 4: States
     Column {
         property string sectionId: "states"
+        property string sectionTitle: "States & Variants"
         width: parent.width
         spacing: 8
-        DocText { text: "States & Variants"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Visual matrix of label states including required asterisk, optional tag, validation error, helper description, and tooltips."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("components.label.statesTitle", "States & Variants"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("components.label.statesDesc", "Visual matrix of label states including required asterisk, optional tag, validation error, helper description, and tooltips."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         Grid {
             width: parent.width
@@ -187,9 +188,9 @@ ChaSetLabel {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "Required Indicator"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Destructive asterisk denoting mandatory input fields"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    ChaSetLabel { text: "Work Email"; required: true }
+                    DocText { text: ChaSetI18n.tr("components.label.requiredTitle", "Required Indicator"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.label.requiredDesc", "Destructive asterisk denoting mandatory input fields"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    ChaSetLabel { text: ChaSetI18n.tr("components.label.workEmail", "Work Email"); required: true }
                 }
             }
 
@@ -203,9 +204,9 @@ ChaSetLabel {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "Optional Indicator"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Muted tag denoting non-mandatory optional fields"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    ChaSetLabel { text: "Alternative Phone"; optional: true }
+                    DocText { text: ChaSetI18n.tr("components.label.optionalTitle", "Optional Indicator"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.label.optionalDesc", "Muted tag denoting non-mandatory optional fields"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    ChaSetLabel { text: ChaSetI18n.tr("components.label.altPhone", "Alternative Phone"); optional: true }
                 }
             }
 
@@ -219,9 +220,9 @@ ChaSetLabel {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "Validation Error (Invalid)"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Destructive text color highlighting validation error"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    ChaSetLabel { text: "Account Password"; invalid: true }
+                    DocText { text: ChaSetI18n.tr("components.label.invalidTitle", "Validation Error (Invalid)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.label.invalidDesc", "Destructive text color highlighting validation error"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    ChaSetLabel { text: ChaSetI18n.tr("components.label.accountPassword", "Account Password"); invalid: true }
                 }
             }
 
@@ -235,9 +236,9 @@ ChaSetLabel {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "With Info Tooltip"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Help icon with contextual explanation on hover"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    ChaSetLabel { text: "Recovery Email"; tooltip: "Used for two-factor authentication recovery codes" }
+                    DocText { text: ChaSetI18n.tr("components.label.tooltipTitle", "With Info Tooltip"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.label.tooltipDesc", "Help icon with contextual explanation on hover"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    ChaSetLabel { text: ChaSetI18n.tr("components.label.recoveryEmail", "Recovery Email"); tooltip: ChaSetI18n.tr("components.label.recoveryTooltip", "Used for two-factor authentication recovery codes") }
                 }
             }
 
@@ -251,9 +252,9 @@ ChaSetLabel {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "With Helper Description"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Supporting guidance subtitle directly below label"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    ChaSetLabel { text: "Legal Entity Name"; description: "Enter your official company legal name" }
+                    DocText { text: ChaSetI18n.tr("components.label.descriptionTitle", "With Helper Description"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.label.descriptionDesc", "Supporting guidance subtitle directly below label"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    ChaSetLabel { text: ChaSetI18n.tr("components.label.legalEntityName", "Legal Entity Name"); description: ChaSetI18n.tr("components.label.legalEntityHelper", "Enter your official company legal name") }
                 }
             }
 
@@ -267,9 +268,9 @@ ChaSetLabel {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(6)
-                    DocText { text: "Disabled State"; color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Dimmed opacity for non-interactive form elements"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
-                    ChaSetLabel { text: "Archived Record ID"; disabled: true }
+                    DocText { text: ChaSetI18n.tr("components.label.disabledTitle", "Disabled State"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.label.disabledDesc", "Dimmed opacity for non-interactive form elements"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    ChaSetLabel { text: ChaSetI18n.tr("components.label.archivedRecordId", "Archived Record ID"); disabled: true }
                 }
             }
         }
@@ -278,10 +279,11 @@ ChaSetLabel {
     // Section 5: Form Association
     Column {
         property string sectionId: "form-control"
+        property string sectionTitle: "Form Association"
         width: parent.width
         spacing: 8
-        DocText { text: "Form Association"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Clicking the label activates or toggles the linked input element."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("components.label.formControlTitle", "Form Association"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("components.label.formControlDesc", "Clicking the label activates or toggles the linked input element via htmlFor."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -297,7 +299,7 @@ ChaSetLabel {
                     size: "sm"
                 }
                 ChaSetLabel {
-                    text: "I accept the terms and conditions"
+                    text: ChaSetI18n.tr("components.label.acceptTerms", "I accept the terms and conditions")
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor

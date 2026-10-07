@@ -9,7 +9,7 @@ DocLayout {
     pageTitle: "Split Button"
     description: "Combines a primary direct action button with an adjoining chevron menu trigger for secondary options."
 
-    property string lastTriggered: "None"
+    property string lastTriggered: ChaSetI18n.tr("components.split-button.none", "None")
 
     ComponentPreview {
         title: "Split Button Sandbox"
@@ -43,23 +43,23 @@ DocLayout {
 
                 ChaSetSplitButton {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Deploy Build #142"
+                    text: ChaSetI18n.tr("components.split-button.deployBuild", "Deploy Build #142")
                     variant: "default"
                     menuItems: [
-                        { id: "staging", label: "Deploy to Staging", icon: "rocket" },
-                        { id: "tag", label: "Tag Release v1.2.0", icon: "tag" },
-                        { id: "archive", label: "Archive Artifact", icon: "package" },
-                        { id: "abort", label: "Abort Pipeline", icon: "stop", destructive: true }
+                        { id: "staging", label: ChaSetI18n.tr("components.split-button.deployStaging", "Deploy to Staging"), icon: "rocket" },
+                        { id: "tag", label: ChaSetI18n.tr("components.split-button.tagRelease", "Tag Release v1.2.0"), icon: "tag" },
+                        { id: "archive", label: ChaSetI18n.tr("components.split-button.archiveArtifact", "Archive Artifact"), icon: "package" },
+                        { id: "abort", label: ChaSetI18n.tr("components.split-button.abortPipeline", "Abort Pipeline"), icon: "stop", destructive: true }
                     ]
-                    onClicked: root.lastTriggered = "Primary Action: Deploy Build triggered"
+                    onClicked: root.lastTriggered = ChaSetI18n.tr("components.split-button.deployBuild", "Deploy Build #142")
                     onMenuItemClicked: function(id) {
-                        root.lastTriggered = "Menu Action: " + id + " triggered"
+                        root.lastTriggered = id
                     }
                 }
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Event: " + root.lastTriggered
+                    text: ChaSetI18n.tr("components.split-button.eventMsg", "Event: {{event}}", { "event": root.lastTriggered })
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono

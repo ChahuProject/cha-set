@@ -73,7 +73,7 @@ DocLayout {
 
                     DocText {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: "Width: " + root.containerWidth
+                        text: ChaSetI18n.tr("components.elided-text.widthLabel", "Width: {{width}}", { "width": root.containerWidth })
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeSmall
                     }
@@ -92,14 +92,14 @@ DocLayout {
                 ChaSetButton {
                     size: "sm"
                     variant: root.alwaysShow ? "default" : "outline"
-                    text: "Always Show: " + (root.alwaysShow ? "On" : "Off")
+                    text: ChaSetI18n.tr("components.elided-text.alwaysShow", "Always Show: {{status}}", { "status": root.alwaysShow ? ChaSetI18n.tr("components.elided-text.on", "On") : ChaSetI18n.tr("components.elided-text.off", "Off") })
                     onClicked: root.alwaysShow = !root.alwaysShow
                 }
 
                 ChaSetButton {
                     size: "sm"
                     variant: root.copyable ? "default" : "outline"
-                    text: "Copyable: " + (root.copyable ? "On" : "Off")
+                    text: ChaSetI18n.tr("components.elided-text.copyable", "Copyable: {{status}}", { "status": root.copyable ? ChaSetI18n.tr("components.elided-text.on", "On") : ChaSetI18n.tr("components.elided-text.off", "Off") })
                     onClicked: root.copyable = !root.copyable
                 }
             }
@@ -115,7 +115,9 @@ DocLayout {
 
     // Multi-Line Clamping
     DocText {
-        text: "Multi-Line Clamping"
+        property string sectionId: "multi-line-clamping"
+        property string sectionTitle: "Multi-Line Clamping"
+        text: ChaSetI18n.tr("components.elided-text.multiLineTitle", "Multi-Line Clamping")
         font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
@@ -136,7 +138,7 @@ DocLayout {
                 DocText {
                     width: parent.width
                     wrapMode: TextEdit.Wrap
-                    text: "Using maxLines: 2 to clamp overflowing multiline paragraphs with trailing ellipsis."
+                    text: ChaSetI18n.tr("components.elided-text.multiLineDesc", "Using maxLines: 2 to clamp overflowing multiline paragraphs with trailing ellipsis.")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                 }
@@ -153,7 +155,7 @@ DocLayout {
                         anchors.fill: parent
                         anchors.margins: ThemeTokens.dp(8)
                         maxLines: 2
-                        text: "ChaSet provides cross-stack design system primitives with pixel-level parity across React Web and Qt Quick desktop applications."
+                        text: ChaSetI18n.tr("components.elided-text.sampleParagraph", "ChaSet provides cross-stack design system primitives with pixel-level parity across React Web and Qt Quick desktop applications.")
                         tooltipPlacement: "bottom"
                     }
                 }

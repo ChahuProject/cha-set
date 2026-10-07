@@ -34,7 +34,7 @@ export function ChaSetI18nProvider({
       systemLocale: registry.getSystemLocale(),
       supportedLocales: registry.getSupportedLocales(),
       setPreference: (pref) => registry.setPreference(pref),
-      t: (key, defaultText, params) => registry.t(key, defaultText, params),
+      t: (key, defaultTextOrParams, params) => registry.t(key, defaultTextOrParams, params),
     };
   }, [registry.getPreference(), registry.getResolvedLocale()]);
 

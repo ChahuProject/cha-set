@@ -1,11 +1,12 @@
 import React from 'react';
-import { CopyButton, Card, CodeBlock } from '@chahu/cha-set';
+import { CopyButton, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 
 export function CopyButtonDocPage() {
+  const { t } = useChaSetI18n();
   const reactCode = `<div className="flex items-center gap-4">
   <CopyButton text="pnpm add @chahu/cha-set" />
   <CopyButton text="https://chahu.design" label="Copy URL" />
@@ -22,15 +23,15 @@ export function CopyButtonDocPage() {
           Interactive Overview
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Click either copy button below to copy the target string to your system clipboard.
+          {t('components.copy-button.overviewDesc', 'Click either copy button below to copy the target string to your system clipboard.')}
         </p>
 
         <ComponentPreview
           qtCode={`Row {\n    spacing: 12\n    ChaSetCopyButton {\n        text: "pnpm add @chahu/cha-set"\n        onCopiedToClipboard: function(txt) { console.log("Copied: " + txt) }\n    }\n    ChaSetCopyButton {\n        text: "https://chahu.design"\n        label: "Copy Link"\n        variant: "outline"\n    }\n    ChaSetCopyButton {\n        text: "export const SECRET = 'sk_live_948271';"\n        label: "Copy Secret"\n        variant: "default"\n    }\n}`} title="Copy Button Sandbox" reactCode={reactCode}>
           <div className="flex flex-wrap items-center gap-4">
             <CopyButton text="pnpm add @chahu/cha-set" />
-            <CopyButton text="https://chahu.design" label="Copy Link" />
-            <CopyButton text="export const SECRET = 'sk_live_948271';" variant="default" label="Copy Secret" />
+            <CopyButton text="https://chahu.design" label={t('components.copy-button.copyLink', 'Copy Link')} />
+            <CopyButton text="export const SECRET = 'sk_live_948271';" variant="default" label={t('components.copy-button.copySecret', 'Copy Secret')} />
           </div>
         </ComponentPreview>
       </section>

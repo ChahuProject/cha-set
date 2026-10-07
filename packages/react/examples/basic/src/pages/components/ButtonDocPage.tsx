@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup, Icon, Input, Checkbox, SegmentedControl, type ButtonVariant, type ButtonSize, CodeBlock, SettingsIcon } from '@chahu/cha-set';
+import { Button, ButtonGroup, Icon, Input, Checkbox, SegmentedControl, type ButtonVariant, type ButtonSize, CodeBlock, SettingsIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from "../../components/ComponentReference";
 
 export function ButtonDocPage() {
+  const { t } = useChaSetI18n();
   const [variant, setVariant] = useState<ButtonVariant>('default');
   const [size, setSize] = useState<ButtonSize>('default');
   const [loading, setLoading] = useState(false);
@@ -50,7 +51,7 @@ export function ButtonDocPage() {
             <div className="flex flex-wrap items-center gap-4 w-full">
               {/* Variant Selector */}
               <div className="flex items-center gap-1.5">
-                <span className="text-muted-foreground font-medium text-xs">Variant:</span>
+                <span className="text-muted-foreground font-medium text-xs">{t('common.variant', 'Variant:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={variant}
@@ -69,7 +70,7 @@ export function ButtonDocPage() {
 
               {/* Size Selector */}
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-muted-foreground font-medium text-xs">Size:</span>
+                <span className="text-muted-foreground font-medium text-xs">{t('common.size', 'Size:')}</span>
                 <SegmentedControl
                   size="sm"
                   value={size}
@@ -92,34 +93,34 @@ export function ButtonDocPage() {
                 size="sm"
                 checked={loading}
                 onCheckedChange={(val) => setLoading(val)}
-                label="Loading"
+                label={t('common.loading', 'Loading')}
               />
 
               <Checkbox
                 size="sm"
                 checked={disabled}
                 onCheckedChange={(val) => setDisabled(val)}
-                label="Disabled"
+                label={t('common.disabled', 'Disabled')}
               />
 
               <Checkbox
                 size="sm"
                 checked={fullWidth}
                 onCheckedChange={(val) => setFullWidth(val)}
-                label="Full Width"
+                label={t('common.fullWidth', 'Full Width')}
               />
 
               <Checkbox
                 size="sm"
                 checked={pressed}
                 onCheckedChange={(val) => setPressed(val)}
-                label="Pressed"
+                label={t('common.pressed', 'Pressed')}
               />
 
               {/* Text input */}
               {!isIconSize && (
                 <div className="flex items-center gap-1.5 ml-auto">
-                  <span className="text-muted-foreground text-xs">Label:</span>
+                  <span className="text-muted-foreground text-xs">{t('common.label', 'Label:')}</span>
                   <Input
                     size="sm"
                     value={label}
@@ -159,18 +160,18 @@ export function ButtonDocPage() {
 
         {/* Variants */}
         <div id="variants" className="my-6">
-          <h3 className="text-base font-semibold mb-2">Variants</h3>
+          <h3 className="text-base font-semibold mb-2">{t('components.button.variantsTitle', 'Variants')}</h3>
           <p className="text-xs text-muted-foreground mb-3">
-            Use the <code className="text-primary font-mono">variant</code> prop to change the visual hierarchy.
+            {t('components.button.variantsDesc', 'Use the variant prop to change the visual hierarchy.')}
           </p>
           <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-3">
-            <Button variant="default">Default</Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="outline">Outline</Button>
-            <Button variant="ghost">Ghost</Button>
-            <Button variant="destructive">Destructive</Button>
-            <Button variant="link">Link</Button>
-            <Button variant="overlay">Overlay</Button>
+            <Button variant="default">{t('common.default', 'Default')}</Button>
+            <Button variant="secondary">{t('common.secondary', 'Secondary')}</Button>
+            <Button variant="outline">{t('common.outline', 'Outline')}</Button>
+            <Button variant="ghost">{t('common.ghost', 'Ghost')}</Button>
+            <Button variant="destructive">{t('common.destructive', 'Destructive')}</Button>
+            <Button variant="link">{t('common.link', 'Link')}</Button>
+            <Button variant="overlay">{t('common.overlay', 'Overlay')}</Button>
           </div>
           <CodeBlock
             code={`<Button variant="default">Default</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="outline">Outline</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="destructive">Destructive</Button>\n<Button variant="link">Link</Button>\n<Button variant="overlay">Overlay</Button>`}
@@ -181,15 +182,15 @@ export function ButtonDocPage() {
 
         {/* Sizes */}
         <div id="sizes" className="my-6">
-          <h3 className="text-base font-semibold mb-2">Sizes</h3>
+          <h3 className="text-base font-semibold mb-2">{t('components.button.sizesTitle', 'Sizes')}</h3>
           <p className="text-xs text-muted-foreground mb-3">
-            Available in standardized sizes: <code className="font-mono">xs</code>, <code className="font-mono">sm</code>, <code className="font-mono">default</code>, <code className="font-mono">lg</code>, and icon variants.
+            {t('components.button.sizesDesc', 'Available in standardized sizes: xs, sm, default, lg, and icon variants.')}
           </p>
           <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-3">
-            <Button size="xs">Extra Small</Button>
-            <Button size="sm">Small</Button>
-            <Button size="default">Default</Button>
-            <Button size="lg">Large</Button>
+            <Button size="xs">{t('components.button.extraSmall', 'Extra Small')}</Button>
+            <Button size="sm">{t('components.button.small', 'Small')}</Button>
+            <Button size="default">{t('common.default', 'Default')}</Button>
+            <Button size="lg">{t('components.button.large', 'Large')}</Button>
             <Button size="icon" aria-label="Settings"><SettingsIcon className="size-4" /></Button>
           </div>
           <CodeBlock
@@ -201,14 +202,14 @@ export function ButtonDocPage() {
 
         {/* States */}
         <div id="states" className="my-6">
-          <h3 className="text-base font-semibold mb-2">States & Loading</h3>
+          <h3 className="text-base font-semibold mb-2">{t('components.button.statesTitle', 'States & Loading')}</h3>
           <p className="text-xs text-muted-foreground mb-3">
-            Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events.
+            {t('components.button.statesDesc', 'Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events.')}
           </p>
           <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-3">
-            <Button loading loadingText="Saving...">Saving Changes</Button>
-            <Button pressed>Active Toggle</Button>
-            <Button disabled>Disabled Button</Button>
+            <Button loading loadingText={t('common.saving', 'Saving...')}>{t('common.saveChanges', 'Saving Changes')}</Button>
+            <Button pressed>{t('components.button.activeToggle', 'Active Toggle')}</Button>
+            <Button disabled>{t('components.button.disabledButton', 'Disabled Button')}</Button>
           </div>
           <CodeBlock
             code={`<Button loading loadingText="Saving...">Saving Changes</Button>\n<Button pressed>Active Toggle</Button>\n<Button disabled>Disabled Button</Button>`}
@@ -219,17 +220,17 @@ export function ButtonDocPage() {
 
         {/* Button Group & Icons */}
         <div id="button-group" className="my-6">
-          <h3 className="text-base font-semibold mb-2">Button Group & Icons</h3>
+          <h3 className="text-base font-semibold mb-2">{t('components.button.groupTitle', 'Button Group & Icons')}</h3>
           <p className="text-xs text-muted-foreground mb-3">
-            Group related buttons cohesively with <code className="font-mono text-primary">ButtonGroup</code>, and enrich buttons with leading or trailing icons.
+            {t('components.button.groupDesc', 'Group related buttons cohesively with ButtonGroup, and enrich buttons with leading or trailing icons.')}
           </p>
           <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-wrap items-center gap-4">
-            <Button leftIcon={<Icon name="arrow-left" className="size-4" />}>Back</Button>
-            <Button rightIcon={<Icon name="arrow-right" className="size-4" />}>Next</Button>
+            <Button leftIcon={<Icon name="arrow-left" className="size-4" />}>{t('common.back', 'Back')}</Button>
+            <Button rightIcon={<Icon name="arrow-right" className="size-4" />}>{t('common.next', 'Next')}</Button>
             <ButtonGroup>
-              <Button variant="outline">Left</Button>
-              <Button variant="outline">Middle</Button>
-              <Button variant="outline">Right</Button>
+              <Button variant="outline">{t('components.button.left', 'Left')}</Button>
+              <Button variant="outline">{t('components.button.middle', 'Middle')}</Button>
+              <Button variant="outline">{t('components.button.right', 'Right')}</Button>
             </ButtonGroup>
           </div>
           <CodeBlock
