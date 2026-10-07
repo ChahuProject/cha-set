@@ -84,108 +84,103 @@ DocLayout {
         ]
 
         controlsData: [
-            Flow {
-                width: parent.width
+            Row {
+                spacing: 8
+                DocText {
+                    text: ChaSetI18n.tr("showcase.size", "Size:")
+                    color: root.cMutedFg
+                    font.pixelSize: Typography.sizeSmall
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                ChaSetSegmentedControl {
+                    anchors.verticalCenter: parent.verticalCenter
+                    size: "sm"
+                    value: root.demoSize
+                    options: [
+                        { label: ChaSetI18n.tr("formsA.slider.sizeDefault", "Default"), value: "default" },
+                        { label: ChaSetI18n.tr("formsA.slider.sizeSm", "Small (sm)"), value: "sm" }
+                    ]
+                    onValueSelected: function(s) { root.demoSize = String(s); }
+                }
+            },
+
+            Row {
+                spacing: 8
+                DocText {
+                    text: ChaSetI18n.tr("formsA.slider.stepLabel", "Step:")
+                    color: root.cMutedFg
+                    font.pixelSize: Typography.sizeSmall
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                ChaSetSegmentedControl {
+                    anchors.verticalCenter: parent.verticalCenter
+                    size: "sm"
+                    value: root.demoStep.toString()
+                    options: [
+                        { label: "1", value: "1" },
+                        { label: "5", value: "5" },
+                        { label: "10", value: "10" },
+                        { label: "25", value: "25" }
+                    ]
+                    onValueSelected: function(stepVal) { root.demoStep = parseFloat(stepVal); }
+                }
+            },
+
+            Row {
+                spacing: 8
+                DocText {
+                    text: ChaSetI18n.tr("formsA.slider.orientationLabel", "Orientation:")
+                    color: root.cMutedFg
+                    font.pixelSize: Typography.sizeSmall
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                ChaSetSegmentedControl {
+                    anchors.verticalCenter: parent.verticalCenter
+                    size: "sm"
+                    value: root.demoOrientation
+                    options: [
+                        { label: "H", value: "horizontal" },
+                        { label: "V", value: "vertical" }
+                    ]
+                    onValueSelected: function(o) { root.demoOrientation = String(o); }
+                }
+            },
+
+            // The toggles live in one Row.
+            Row {
                 spacing: 16
 
-                Row {
-                    spacing: 8
-                    DocText {
-                        text: ChaSetI18n.tr("showcase.size", "Size:")
-                        color: root.cMutedFg
-                        font.pixelSize: Typography.sizeSmall
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                    ChaSetSegmentedControl {
-                        anchors.verticalCenter: parent.verticalCenter
-                        size: "sm"
-                        value: root.demoSize
-                        options: [
-                            { label: ChaSetI18n.tr("formsA.slider.sizeDefault", "Default"), value: "default" },
-                            { label: ChaSetI18n.tr("formsA.slider.sizeSm", "Small (sm)"), value: "sm" }
-                        ]
-                        onValueSelected: function(s) { root.demoSize = String(s); }
-                    }
+ChaSetCheckbox {
+                    size: "sm"
+                    label: ChaSetI18n.tr("common.disabled", "Disabled")
+                    checked: root.demoDisabled
+                    onToggled: (val) => root.demoDisabled = val
+                    anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Row {
-                    spacing: 8
-                    DocText {
-                        text: ChaSetI18n.tr("formsA.slider.stepLabel", "Step:")
-                        color: root.cMutedFg
-                        font.pixelSize: Typography.sizeSmall
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                    ChaSetSegmentedControl {
-                        anchors.verticalCenter: parent.verticalCenter
-                        size: "sm"
-                        value: root.demoStep.toString()
-                        options: [
-                            { label: "1", value: "1" },
-                            { label: "5", value: "5" },
-                            { label: "10", value: "10" },
-                            { label: "25", value: "25" }
-                        ]
-                        onValueSelected: function(stepVal) { root.demoStep = parseFloat(stepVal); }
-                    }
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: ChaSetI18n.tr("formsA.slider.readOnly", "Read-Only")
+                    checked: root.demoReadOnly
+                    onToggled: (val) => root.demoReadOnly = val
+                    anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Row {
-                    spacing: 8
-                    DocText {
-                        text: ChaSetI18n.tr("formsA.slider.orientationLabel", "Orientation:")
-                        color: root.cMutedFg
-                        font.pixelSize: Typography.sizeSmall
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                    ChaSetSegmentedControl {
-                        anchors.verticalCenter: parent.verticalCenter
-                        size: "sm"
-                        value: root.demoOrientation
-                        options: [
-                            { label: "H", value: "horizontal" },
-                            { label: "V", value: "vertical" }
-                        ]
-                        onValueSelected: function(o) { root.demoOrientation = String(o); }
-                    }
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: ChaSetI18n.tr("formsA.slider.tooltip", "Tooltip")
+                    checked: root.demoShowTooltip
+                    onToggled: (val) => root.demoShowTooltip = val
+                    anchors.verticalCenter: parent.verticalCenter
                 }
 
-                // Flow forbids anchors on its direct children (QML warns and
-                // disables the whole Flow layout), so the toggles live in one Row.
-                Row {
-                    spacing: 16
-
-                    ChaSetCheckbox {
-                        size: "sm"
-                        label: ChaSetI18n.tr("common.disabled", "Disabled")
-                        checked: root.demoDisabled
-                        onToggled: (val) => root.demoDisabled = val
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    ChaSetCheckbox {
-                        size: "sm"
-                        label: ChaSetI18n.tr("formsA.slider.readOnly", "Read-Only")
-                        checked: root.demoReadOnly
-                        onToggled: (val) => root.demoReadOnly = val
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    ChaSetCheckbox {
-                        size: "sm"
-                        label: ChaSetI18n.tr("formsA.slider.tooltip", "Tooltip")
-                        checked: root.demoShowTooltip
-                        onToggled: (val) => root.demoShowTooltip = val
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    ChaSetCheckbox {
-                        size: "sm"
-                        label: ChaSetI18n.tr("formsA.slider.ticks", "Ticks")
-                        checked: root.demoShowTicks
-                        onToggled: (val) => root.demoShowTicks = val
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
+                ChaSetCheckbox {
+                    size: "sm"
+                    label: ChaSetI18n.tr("formsA.slider.ticks", "Ticks")
+                    checked: root.demoShowTicks
+                    onToggled: (val) => root.demoShowTicks = val
+                    anchors.verticalCenter: parent.verticalCenter
+                }
                 }
             }
         ]

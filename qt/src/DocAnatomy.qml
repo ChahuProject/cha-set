@@ -39,11 +39,14 @@ Column {
     ChaSetCard {
         id: card
         width: parent.width
+        implicitHeight: header.height + (root.activeTab === "qt" ? qtBlock.height : reactBlock.height)
+        height: implicitHeight
         clip: true
 
         Column {
             id: body
             width: parent.width
+            height: header.height + codeContainer.height
             spacing: 0
 
             // Header strip. Uses ChaSetSquircle with roundTop: true and roundBottom: false
@@ -82,30 +85,37 @@ Column {
                 }
             }
 
-            // QML Code Block — square at top interior edge, rounded at bottom corners to match card.
-            ChaSetCodeBlock {
-                id: qtBlock
-                visible: root.activeTab === "qt"
+            Item {
+                id: codeContainer
                 width: parent.width
-                code: root.qtCode.trim()
-                language: "qml"
-                radius: card.radius
-                roundTop: false
-                roundBottom: true
-                border.width: 0
-            }
+                height: root.activeTab === "qt" ? qtBlock.height : reactBlock.height
+                clip: true
 
-            // React Code Block — square at top interior edge, rounded at bottom corners to match card.
-            ChaSetCodeBlock {
-                id: reactBlock
-                visible: root.activeTab === "react" && root.reactCode !== ""
-                width: parent.width
-                code: root.reactCode.trim()
-                language: "tsx"
-                radius: card.radius
-                roundTop: false
-                roundBottom: true
-                border.width: 0
+                // QML Code Block — square at top interior edge, rounded at bottom corners to match card.
+                ChaSetCodeBlock {
+                    id: qtBlock
+                    visible: root.activeTab === "qt"
+                    width: parent.width
+                    code: root.qtCode.trim()
+                    language: "qml"
+                    radius: card.radius
+                    roundTop: false
+                    roundBottom: true
+                    border.width: 0
+                }
+
+                // React Code Block — square at top interior edge, rounded at bottom corners to match card.
+                ChaSetCodeBlock {
+                    id: reactBlock
+                    visible: root.activeTab === "react" && root.reactCode !== ""
+                    width: parent.width
+                    code: root.reactCode.trim()
+                    language: "tsx"
+                    radius: card.radius
+                    roundTop: false
+                    roundBottom: true
+                    border.width: 0
+                }
             }
         }
     }

@@ -22,10 +22,20 @@ ChaSetCard {
     default property alias stageData: stageContainer.data
     property alias controlsData: controlsContainer.data
 
+    readonly property real activeContentHeight: {
+        if (root.activeTab === "qt") {
+            return qtCodeBlock.height;
+        } else if (root.activeTab === "code") {
+            return reactCodeBlock.height;
+        } else {
+            return previewContent.height;
+        }
+    }
+
     Column {
         id: previewContainer
         width: parent.width
-        height: childrenRect.height
+        height: headerRect.height + contentContainer.height
 
         // Tab Navigation Header (44px height matching React px-3 py-2 with default size SegmentedControl)
         ChaSetSquircle {
@@ -107,99 +117,112 @@ ChaSetCard {
             }
         }
 
-        // Preview Mode Content
-        Column {
-            visible: root.activeTab === "preview"
-            width: root.width
-            height: childrenRect.height
+        // Active Tab Content Container
+        Item {
+            id: contentContainer
+            width: parent.width
+            implicitHeight: root.activeContentHeight
+            height: implicitHeight
+            clip: true
 
-            // Center Stage
-            Item {
-                id: stageContainer
-                width: root.width
-                height: ThemeTokens.dp(root.stageHeight)
-                clip: true
+            // Preview Mode Content
+            Column {
+                id: previewContent
+                visible: root.activeTab === "preview"
+                width: parent.width
+                height: stageContainer.height + (controlsBar.visible ? controlsBar.height : 0)
+
+                // Center Stage
+                Item {
+                    id: stageContainer
+                    width: parent.width
+                    height: ThemeTokens.dp(root.stageHeight)
+                    implicitHeight: height
+                    clip: true
+                }
+
+                // Controls Bar (matching React border-t border-border/40 bg-muted/20)
+                ChaSetSquircle {
+                    id: controlsBar
+                    visible: controlsContainer.children.length > 0
+                    width: parent.width
+                    implicitHeight: controlsContainer.implicitHeight + ThemeTokens.dp(24)
+                    height: implicitHeight
+                    clip: true
+                    color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.2) : Qt.rgba(241/255, 245/255, 249/255, 0.2)
+                    radius: root.radius
+                    roundTop: false
+                    roundBottom: true
+                    border.width: 0
+
+                    // Top border divider matching React border-t
+                    Rectangle {
+                        anchors.top: parent.top
+                        width: parent.width
+                        height: 1
+                        color: root.cBorder
+                    }
+
+                    Flow {
+                        id: controlsContainer
+                        width: parent.width - ThemeTokens.dp(32)
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.top: parent.top
+                        anchors.topMargin: ThemeTokens.dp(12)
+                        spacing: ThemeTokens.dp(16)
+
+                        function triggerReflow() {
+                            controlsContainer.flow = Flow.TopToBottom;
+                            controlsContainer.flow = Flow.LeftToRight;
+                        }
+
+                        onChildrenChanged: {
+                            for (var i = 0; i < children.length; ++i) {
+                                var child = children[i];
+                                if (child && child.widthChanged !== undefined) {
+                                    child.widthChanged.connect(reflowTimer.restart);
+                                }
+                            }
+                            reflowTimer.restart();
+                        }
+
+                        Component.onCompleted: Qt.callLater(triggerReflow)
+
+                        Timer {
+                            id: reflowTimer
+                            interval: 16
+                            repeat: false
+                            onTriggered: controlsContainer.triggerReflow()
+                        }
+                    }
+                }
             }
 
-            // Controls Bar (matching React border-t border-border/40 bg-muted/20)
-            ChaSetSquircle {
-                id: controlsBar
-                visible: controlsContainer.children.length > 0
-                width: root.width
-                implicitHeight: controlsContainer.implicitHeight + ThemeTokens.dp(24)
-                height: implicitHeight
-                clip: true
-                color: root.isDark ? Qt.rgba(30/255, 41/255, 59/255, 0.2) : Qt.rgba(241/255, 245/255, 249/255, 0.2)
+            // Qt QML Code Tab
+            ChaSetCodeBlock {
+                id: qtCodeBlock
+                visible: root.activeTab === "qt"
+                width: parent.width
+                code: root.effectiveQtCode
+                language: "qml"
                 radius: root.radius
                 roundTop: false
                 roundBottom: true
                 border.width: 0
-
-                // Top border divider matching React border-t
-                Rectangle {
-                    anchors.top: parent.top
-                    width: parent.width
-                    height: 1
-                    color: root.cBorder
-                }
-
-                Flow {
-                    id: controlsContainer
-                    width: root.width - ThemeTokens.dp(32)
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: parent.top
-                    anchors.topMargin: ThemeTokens.dp(12)
-                    spacing: ThemeTokens.dp(16)
-
-                    function triggerReflow() {
-                        controlsContainer.flow = Flow.TopToBottom;
-                        controlsContainer.flow = Flow.LeftToRight;
-                    }
-
-                    onChildrenChanged: {
-                        for (var i = 0; i < children.length; ++i) {
-                            var child = children[i];
-                            if (child && child.widthChanged !== undefined) {
-                                child.widthChanged.connect(reflowTimer.restart);
-                            }
-                        }
-                        reflowTimer.restart();
-                    }
-
-                    Component.onCompleted: Qt.callLater(triggerReflow)
-
-                    Timer {
-                        id: reflowTimer
-                        interval: 16
-                        repeat: false
-                        onTriggered: controlsContainer.triggerReflow()
-                    }
-                }
             }
-        }
 
-        // Qt QML Code Tab
-        ChaSetCodeBlock {
-            visible: root.activeTab === "qt"
-            width: parent.width
-            code: root.effectiveQtCode
-            language: "qml"
-            radius: root.radius
-            roundTop: false
-            roundBottom: true
-            border.width: 0
-        }
-
-        // React Code Tab
-        ChaSetCodeBlock {
-            visible: root.activeTab === "code"
-            width: parent.width
-            code: root.effectiveReactCode
-            language: "tsx"
-            radius: root.radius
-            roundTop: false
-            roundBottom: true
-            border.width: 0
+            // React Code Tab
+            ChaSetCodeBlock {
+                id: reactCodeBlock
+                visible: root.activeTab === "code"
+                width: parent.width
+                code: root.effectiveReactCode
+                language: "tsx"
+                radius: root.radius
+                roundTop: false
+                roundBottom: true
+                border.width: 0
+            }
         }
     }
 }
