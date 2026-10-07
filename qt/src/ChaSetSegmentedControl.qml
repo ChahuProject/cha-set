@@ -23,7 +23,7 @@ Item {
 
     function getOptionTooltipConfig(opt) {
         if (!opt) return null;
-        var raw = opt.tooltip;
+        var raw = (opt.tooltip !== undefined) ? opt.tooltip : ((opt.tip !== undefined) ? opt.tip : opt.description);
         if (root.tooltipFormatter && typeof root.tooltipFormatter === "function") {
             var formatted = root.tooltipFormatter(opt);
             if (formatted !== undefined && formatted !== null) {
@@ -438,6 +438,7 @@ Item {
                     id: itemTooltip
                     visible: segItem.hasTooltip
                     target: segItem
+                    hovered: mouseArea.containsMouse && !segItem.isItemDisabled && !mouseArea.pressed
                     text: segItem.tooltipConfig ? segItem.tooltipConfig.text : ""
                     shortcut: segItem.tooltipConfig ? segItem.tooltipConfig.shortcut : ""
                     side: (segItem.tooltipConfig && segItem.tooltipConfig.side) ? segItem.tooltipConfig.side : root.tooltipSide

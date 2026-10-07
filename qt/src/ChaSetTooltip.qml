@@ -120,7 +120,22 @@ Item {
         return base
     }
 
-    readonly property bool shouldShow: (root.active || root.forceHover) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
+    property bool internalActive: false
+
+    readonly property bool shouldShow: (root.active || root.internalActive || root.forceHover) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
+
+    onHoveredChanged: {
+        if (hovered && !root.disabled) {
+            if (root.delay <= 0) {
+                root.internalActive = true
+            } else {
+                delayTimer.restart()
+            }
+        } else if (!hoverHandler.hovered) {
+            delayTimer.stop()
+            root.internalActive = false
+        }
+    }
 
     HoverHandler {
         id: hoverHandler
@@ -130,13 +145,13 @@ Item {
             root.hovered = hovered
             if (hovered && !root.disabled) {
                 if (root.delay <= 0) {
-                    root.active = true
+                    root.internalActive = true
                 } else {
                     delayTimer.restart()
                 }
-            } else {
+            } else if (!root.hovered) {
                 delayTimer.stop()
-                root.active = false
+                root.internalActive = false
             }
         }
     }
@@ -147,7 +162,7 @@ Item {
         repeat: false
         onTriggered: {
             if (!root.disabled && (hoverHandler.hovered || root.hovered)) {
-                root.active = true
+                root.internalActive = true
             }
         }
     }
@@ -155,7 +170,7 @@ Item {
     onDisabledChanged: {
         if (disabled) {
             delayTimer.stop()
-            active = false
+            internalActive = false
         }
     }
 
@@ -178,8 +193,8 @@ Item {
         }
 
         radius: ThemeTokens.dp(4)
-        color: ThemeTokens.dark ? "#f8fafc" : "#020817"
-        border.color: ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.15) : Qt.rgba(255, 255, 255, 0.15)
+        color: ThemeTokens.dark ? ThemeTokens.color("panelRaised") : "#ffffff"
+        border.color: ThemeTokens.color("border")
         border.width: 1
 
         implicitWidth: Math.max(ThemeTokens.dp(24), contentRow.implicitWidth + ThemeTokens.dp(16))
@@ -201,7 +216,7 @@ Item {
                 id: bubbleText
                 visible: root.customContent === null && root.text.length > 0
                 text: root.text
-                color: ThemeTokens.dark ? "#020817" : "#f8fafc"
+                color: ThemeTokens.color("text")
                 font.pixelSize: Typography.sizeCaption
                 font.weight: Font.Medium
                 horizontalAlignment: Text.AlignHCenter
@@ -213,7 +228,7 @@ Item {
                 id: shortcutBadge
                 visible: root.shortcut.length > 0
                 anchors.verticalCenter: parent ? parent.verticalCenter : undefined
-                variant: "inverted"
+                variant: "outline"
                 size: "xs"
                 compact: "never"
                 shortcut: root.shortcut
