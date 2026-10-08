@@ -368,6 +368,12 @@ DocLayout {
                     description: "The placement side of the tooltip relative to the target item."
                 },
                 {
+                    name: "sideOffset",
+                    type: "int",
+                    default: "4",
+                    description: "Distance between target item and tooltip bubble."
+                },
+                {
                     name: "delay",
                     type: "int",
                     default: "200",

@@ -373,7 +373,7 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
         style={computedStyle}
         className={cn(
           'absolute whitespace-nowrap pointer-events-none select-none',
-          'z-50 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md inline-flex items-center gap-2',
+          'z-50 rounded-md border border-border bg-popover px-3 py-1.5 text-xs text-popover-foreground shadow-md inline-flex items-center gap-2',
           exiting ? 'animate-out fade-out-0 zoom-out-95' : 'animate-in fade-in-0 zoom-in-95',
           sidePositionClasses[side],
           className,
@@ -384,7 +384,7 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
         {shortcut && (
           <Kbd
             data-slot="tooltip-shortcut"
-            variant="inverted"
+            variant="outline"
             size="xs"
             compact="never"
             shortcut={shortcut}
@@ -395,10 +395,10 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
             data-slot="tooltip-arrow"
             className={cn(
               'absolute w-0 h-0 border-solid pointer-events-none',
-              side === 'top' && 'top-full left-1/2 -translate-x-1/2 border-t-[0.25rem] border-t-primary border-x-[0.25rem] border-x-transparent border-b-0',
-              side === 'bottom' && 'bottom-full left-1/2 -translate-x-1/2 border-b-[0.25rem] border-b-primary border-x-[0.25rem] border-x-transparent border-t-0',
-              side === 'left' && 'left-full top-1/2 -translate-y-1/2 border-l-[0.25rem] border-l-primary border-y-[0.25rem] border-y-transparent border-r-0',
-              side === 'right' && 'right-full top-1/2 -translate-y-1/2 border-r-[0.25rem] border-r-primary border-y-[0.25rem] border-y-transparent border-l-0',
+              side === 'top' && 'top-full left-1/2 -translate-x-1/2 border-t-[0.25rem] border-t-popover border-x-[0.25rem] border-x-transparent border-b-0',
+              side === 'bottom' && 'bottom-full left-1/2 -translate-x-1/2 border-b-[0.25rem] border-b-popover border-x-[0.25rem] border-x-transparent border-t-0',
+              side === 'left' && 'left-full top-1/2 -translate-y-1/2 border-l-[0.25rem] border-l-popover border-y-[0.25rem] border-y-transparent border-r-0',
+              side === 'right' && 'right-full top-1/2 -translate-y-1/2 border-r-[0.25rem] border-r-popover border-y-[0.25rem] border-y-transparent border-l-0',
             )}
           />
         )}

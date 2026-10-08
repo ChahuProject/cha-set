@@ -15,6 +15,8 @@ Item {
     property string shortcut: ""
     property bool arrow: false
     property Component customContent: null
+    property int sideOffset: 4
+    readonly property int effectiveSideOffset: ThemeTokens.dp(root.sideOffset)
 
 
     // Optional explicit target item outside this container
@@ -43,6 +45,13 @@ Item {
     readonly property point targetPosInRoot: {
         if (!effectiveTarget) return Qt.point(0, 0)
         if (effectiveTarget === root) return Qt.point(0, 0)
+        var _depX = effectiveTarget.x
+        var _depY = effectiveTarget.y
+        var _depW = effectiveTarget.width
+        var _depH = effectiveTarget.height
+        var _depScale = ThemeTokens.uiScale
+        var _depRootX = root.x
+        var _depRootY = root.y
         try {
             return root.mapFromItem(effectiveTarget, 0, 0)
         } catch (e) {
@@ -54,7 +63,6 @@ Item {
     readonly property real targetY: targetPosInRoot.y
     readonly property real targetW: effectiveTarget ? effectiveTarget.width : root.width
     readonly property real targetH: effectiveTarget ? effectiveTarget.height : root.height
-    readonly property int sideOffset: ThemeTokens.dp(6)
 
     readonly property real calculatedX: {
         switch (root.side) {
@@ -62,9 +70,9 @@ Item {
         case "bottom":
             return targetX + (targetW - bubble.width) / 2
         case "left":
-            return targetX - bubble.width - sideOffset
+            return targetX - bubble.width - effectiveSideOffset
         case "right":
-            return targetX + targetW + sideOffset
+            return targetX + targetW + effectiveSideOffset
         default:
             return targetX + (targetW - bubble.width) / 2
         }
@@ -73,14 +81,14 @@ Item {
     readonly property real calculatedY: {
         switch (root.side) {
         case "top":
-            return targetY - bubble.height - sideOffset
+            return targetY - bubble.height - effectiveSideOffset
         case "bottom":
-            return targetY + targetH + sideOffset
+            return targetY + targetH + effectiveSideOffset
         case "left":
         case "right":
             return targetY + (targetH - bubble.height) / 2
         default:
-            return targetY - bubble.height - sideOffset
+            return targetY - bubble.height - effectiveSideOffset
         }
     }
 
@@ -88,6 +96,9 @@ Item {
         var base = calculatedX
         var win = root.Window.window
         var margin = ThemeTokens.dp(8)
+        var _scale = ThemeTokens.uiScale
+        var _tw = targetW
+        var _bw = bubble.width
         if (win) {
             try {
                 var mapped = root.mapToItem(null, base, 0)
@@ -106,6 +117,9 @@ Item {
         var base = calculatedY
         var win = root.Window.window
         var margin = ThemeTokens.dp(8)
+        var _scale = ThemeTokens.uiScale
+        var _th = targetH
+        var _bh = bubble.height
         if (win) {
             try {
                 var mappedY = root.mapToItem(null, 0, base)
