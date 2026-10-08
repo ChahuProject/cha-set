@@ -22,14 +22,14 @@ export function PanelCardDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Panel Card"
-      description="Card surface with integrated collapsible sections and header action slots for desktop sidebars and inspectors."
+      description={t('components.panelCard.description', 'Card surface with integrated collapsible sections and header action slots for desktop sidebars and inspectors.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.panelCard.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Click the chevron icon or title to collapse and expand the card panel body.
+          {t('desktopComposite.panelCard.collapseHint', 'Click the chevron icon or title to collapse and expand the card panel body.')}
         </p>
 
         <ComponentPreview
@@ -45,7 +45,7 @@ export function PanelCardDocPage() {
         Text { text: "CPU Utilization: 24%"; color: ThemeTokens.text }
         Text { text: "Memory Usage: 4.2 GB / 16 GB"; color: ThemeTokens.subduedText }
     }
-}`} title="Panel Card Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.panelCard.sandboxTitle', 'Panel Card Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-md">
             <PanelCard
               title={t('surfaces.panelCard.shaderTitle', 'Shader Pipeline Status')}
@@ -94,14 +94,14 @@ ChaSetPanelCard {
         name="PanelCard"
         componentId="panel-card"
         props={[
-            { name: 'title', type: 'ReactNode', default: 'undefined', description: 'Panel header title text or element.' },
-            { name: 'badgeText', type: 'string', default: 'undefined', description: 'Optional badge text displayed next to the title.' },
-            { name: 'collapsible', type: 'boolean', default: 'false', description: 'Whether the panel content can be toggled collapsed.' },
-            { name: 'collapsed', type: 'boolean', default: 'undefined', description: 'Controlled collapsed state.' },
-            { name: 'defaultCollapsed', type: 'boolean', default: 'false', description: 'Initial collapsed state for uncontrolled mode.' },
-            { name: 'onCollapsedChange', type: '(c: boolean) => void', default: 'undefined', description: 'Collapse change handler.' },
-            { name: 'actions', type: 'ReactNode', default: 'undefined', description: 'Right-aligned header action elements.' },
-            { name: 'size', type: "'default' | 'sm'", default: "'default'", description: 'Sizing scale of the card panel.' },
+            { name: 'title', type: 'ReactNode', default: 'undefined', description: t('components.panelCard.titleDesc', 'Panel header title text or element.') },
+            { name: 'badgeText', type: 'string', default: 'undefined', description: t('components.panelCard.badgeTextDesc', 'Optional badge text displayed next to the title.') },
+            { name: 'collapsible', type: 'boolean', default: 'false', description: t('components.panelCard.collapsibleDesc', 'Whether the panel content can be toggled collapsed.') },
+            { name: 'collapsed', type: 'boolean', default: 'undefined', description: t('components.panelCard.collapsedDesc', 'Controlled collapsed state.') },
+            { name: 'defaultCollapsed', type: 'boolean', default: 'false', description: t('components.panelCard.defaultCollapsedDesc', 'Initial collapsed state for uncontrolled mode.') },
+            { name: 'onCollapsedChange', type: '(c: boolean) => void', default: 'undefined', description: t('components.panelCard.onCollapsedChangeDesc', 'Collapse change handler.') },
+            { name: 'actions', type: 'ReactNode', default: 'undefined', description: t('components.panelCard.actionsDesc', 'Right-aligned header action elements.') },
+            { name: 'size', type: "'default' | 'sm'", default: "'default'", description: t('components.panelCard.sizeDesc', 'Sizing scale of the card panel.') },
           ]}
       />
     </DocLayout>

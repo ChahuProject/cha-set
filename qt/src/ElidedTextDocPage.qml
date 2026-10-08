@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Base Primitives"
     pageTitle: "Elided Text"
-    description: "Smart text truncation with automatic overflow detection and contextual tooltip reveal."
+    description: ChaSetI18n.tr("components.elided-text.description", "Smart text truncation with automatic overflow detection, click-to-copy, and contextual tooltip reveal.")
 
     property int containerWidth: 240
     property bool alwaysShow: false
@@ -16,7 +16,7 @@ DocLayout {
 
     ComponentPreview {
         id: heroPreview
-        title: "Elided Text Sandbox"
+        title: ChaSetI18n.tr("showcase.previewTitles.Elided Text Sandbox", "Elided Text Sandbox")
         reactCode: `<div style={{ width: '${(root.containerWidth / 16).toFixed(3)}rem' }}>
   <ElidedText
     text="${root.sampleText}"
@@ -116,7 +116,7 @@ DocLayout {
     // Multi-Line Clamping
     DocText {
         property string sectionId: "multi-line-clamping"
-        property string sectionTitle: "Multi-Line Clamping"
+        property string sectionTitle: ChaSetI18n.tr("components.elided-text.multiLineTitle", "Multi-Line Clamping")
         text: ChaSetI18n.tr("components.elided-text.multiLineTitle", "Multi-Line Clamping")
         font.pixelSize: Typography.sizeTitleSm
         font.bold: true
@@ -170,14 +170,14 @@ DocLayout {
         spacing: ThemeTokens.dp(8)
 
         DocText {
-            text: "Animations"
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
             color: ThemeTokens.text
         }
 
         DocText {
-            text: "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            text: ChaSetI18n.tr("showcase.animationsDescQml", "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled).")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -189,14 +189,14 @@ DocLayout {
         name: "ElidedText"
         componentId: "elided-text"
         propsModel: [
-            { name: "text", type: "string", default: "''", description: "The string content to display and measure for overflow." },
-            { name: "tooltipText", type: "string", default: "''", description: "Custom tooltip text override if different from raw text." },
-            { name: "tooltipPlacement", type: "string", default: "'top'", description: "Placement direction: 'top', 'bottom', 'left', 'right', 'auto'." },
-            { name: "tooltipDelay", type: "int", default: "400", description: "Delay in milliseconds before showing tooltip on hover." },
-            { name: "alwaysShowTooltip", type: "bool", default: "false", description: "Force tooltip to appear on hover even if text is not elided." },
-            { name: "showTooltipWhenElided", type: "bool", default: "true", description: "Enable tooltip reveal whenever overflow truncation is detected." },
+            { name: "text", type: "string", default: "''", description: ChaSetI18n.tr("components.elidedText.textDesc", "The string content to display and measure for overflow.") },
+            { name: "tooltipText", type: "string", default: "''", description: ChaSetI18n.tr("components.elidedText.tooltipTextDesc", "Custom tooltip text override if different from raw text.") },
+            { name: "tooltipPlacement", type: "string", default: "'top'", description: ChaSetI18n.tr("components.elidedText.tooltipPlacementDesc", "Placement direction of the floating tooltip.") },
+            { name: "tooltipDelay", type: "int", default: "400", description: ChaSetI18n.tr("components.elidedText.tooltipDelayDesc", "Delay in milliseconds before showing tooltip on hover.") },
+            { name: "alwaysShowTooltip", type: "bool", default: "false", description: ChaSetI18n.tr("components.elidedText.alwaysShowTooltipDesc", "Force tooltip to appear on hover even if text is not elided.") },
+            { name: "showTooltipWhenElided", type: "bool", default: "true", description: ChaSetI18n.tr("components.elidedText.showTooltipWhenElidedDesc", "Enable tooltip reveal whenever overflow truncation is detected.") },
             { name: "maxLines", type: "int", default: "1", description: "Maximum visible lines before truncating (1 = single line, >1 = clamp)." },
-            { name: "copyable", type: "bool", default: "false", description: "Whether clicking the text copies it to clipboard with instant feedback." }
+            { name: "copyable", type: "bool", default: "false", description: ChaSetI18n.tr("components.elidedText.copyableDesc", "Whether clicking the text copies it to clipboard with instant feedback.") }
         ]
     }
     }

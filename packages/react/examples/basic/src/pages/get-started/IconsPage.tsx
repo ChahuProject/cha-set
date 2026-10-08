@@ -114,15 +114,15 @@ export function IconsPage() {
     <DocLayout
       category="Get Started"
       title="Icon System"
-      description="One icon specification for both stacks: single geometry source, one stroke weight, optical centring by construction, and how to switch specifications."
+      description={t('components.icon-system.description', 'One icon specification for both stacks: single geometry source, one stroke weight, optical centring by construction, and how to switch specifications.')}
       tocItems={[
-        { id: 'specification', title: 'Active Specification' },
-        { id: 'rules', title: 'Governance Rules' },
-        { id: 'grids', title: 'Grids, Weight & Size' },
-        { id: 'centering', title: 'Optical Centring' },
-        { id: 'gallery', title: 'Icon Gallery' },
-        { id: 'configuration', title: 'External Configuration' },
-        { id: 'extensibility', title: 'Extending the Specification' },
+        { id: 'specification', title: t('getStarted.icons.specification.title', 'Active Specification') },
+        { id: 'rules', title: t('getStarted.icons.rules.title', 'Governance Rules') },
+        { id: 'grids', title: t('getStarted.icons.grids.title', 'Grids, Weight & Size') },
+        { id: 'centering', title: t('getStarted.icons.centering.title', 'Optical Centring') },
+        { id: 'gallery', title: t('getStarted.icons.gallery.title', 'Icon Gallery') },
+        { id: 'configuration', title: t('getStarted.icons.configuration.title', 'External Configuration') },
+        { id: 'extensibility', title: t('getStarted.icons.extensibility.title', 'Extending the Specification') },
       ]}
     >
       <div className="space-y-12">

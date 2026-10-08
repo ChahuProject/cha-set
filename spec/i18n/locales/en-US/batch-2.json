@@ -1,0 +1,226 @@
+{
+  "desktopComposite": {
+    "segmentedControl": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Segmented Control Sandbox",
+      "sizesBadgesTitle": "Sizes & Badges",
+      "fixedWidthTitle": "Fixed Width & Truncation",
+      "menuInlineTitle": "Menu & Inline Title",
+      "tooltipsHintsTitle": "Tooltips & Custom Hints",
+      "perOptionTitle": "Per-Option Tooltips with Shortcuts & Arrows",
+      "globalRenderTooltipTitle": "Global renderTooltip Customization",
+      "globalFormatterTitle": "Global tooltipFormatter Customization",
+      "gridTip": "Grid layout",
+      "listTip": "List layout",
+      "galleryTip": "Gallery view",
+      "dayLabel": "Day",
+      "weekLabel": "Week",
+      "monthLabel": "Month",
+      "yearLabel": "Year",
+      "dailyTip": "Daily summary view",
+      "weeklyTip": "Weekly timeline view",
+      "monthlyTip": "Monthly overview calendar",
+      "annualTip": "Annual archive (Requires Pro plan)",
+      "autoLabel": "Auto",
+      "darkLabel": "Dark",
+      "lightLabel": "Light",
+      "switchScheme": "Switch application color scheme",
+      "themeTooltipFormat": "Theme: {{label}} — Switch application color scheme"
+    },
+    "badge": {
+      "overviewHeading": "Interactive Overview",
+      "sizeSmall": "Small (sm)"
+    },
+    "tableOfContents": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Table of Contents Sandbox",
+      "readingPanePara": "Notice how the table of contents tree reflects the nested heading structure, and smoothly aligns with the top banner height offset."
+    },
+    "splitterHandle": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Splitter Handle Sandbox",
+      "overviewDesc": "Drag the right edge handle to resize the sidebar. Double click or press Enter to reset to 200.",
+      "verticalTitle": "Vertical Edge Handle",
+      "horizontalPrefix": "Handles can also be attached to horizontal edges (",
+      "horizontalSuffix": ") for bottom console or drawer resizing.",
+      "horizontalDesc": "Handles can also be attached to horizontal edges (top or bottom) for bottom console or drawer resizing.",
+      "animationsDesc": "Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.",
+      "dragStaticDesc": "Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.",
+      "reducedMotionPrefix": "Respects",
+      "reducedMotionSuffix": "in Qt."
+    },
+    "draggableModal": {
+      "overviewHeading": "Interactive Overview",
+      "overviewDesc": "Click the button below to open the draggable modal window, supporting size presets, drag repositioning, and auto-fitting height.",
+      "sandboxTitle": "Draggable Modal Sandbox",
+      "allocBadge": "128 alloc"
+    },
+    "elidedText": {
+      "overviewHeading": "Interactive Overview"
+    },
+    "rangeSlider": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Range Slider Sandbox",
+      "sizesStatesTitle": "Sizes & States"
+    },
+    "virtualList": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Virtual List Sandbox",
+      "renderingHint": "Rendering {{count}} virtual items smoothly at 60fps. Use the controls below to trigger programmatic scrolling or scroll rapidly to observe instant windowing."
+    },
+    "panelCard": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Panel Card Sandbox",
+      "collapseHint": "Click the chevron icon or title to collapse and expand the card panel body."
+    },
+    "queryBuilder": {
+      "fieldStatus": "Status"
+    },
+    "activityStack": {
+      "accessibleLabel": "Activity stack",
+      "overflowLabel": "{{count}} more items",
+      "summaryText": "{{count}} items {{label}}"
+    }
+  },
+  "components": {
+    "segmentedControl": {
+      "description": "A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support.",
+      "optionsDesc": "Array of option objects ({ label, value, icon?, badge?, disabled?, tooltip? }).",
+      "valueDesc": "Controlled active value.",
+      "defaultValueDesc": "Initial value when uncontrolled.",
+      "onValueChangeDesc": "Callback invoked when a new segment is selected.",
+      "sizeDesc": "Physical dimension variant ('sm', 'default', 'lg').",
+      "titleDesc": "Optional prefix label displayed before the segments.",
+      "disabledDesc": "Whether the entire segmented control is disabled.",
+      "fullWidthDesc": "Whether segments expand equally to fill the parent container.",
+      "equalWidthDesc": "Whether all segments share an identical fixed width while hugging content.",
+      "itemWidthDesc": "Explicit fixed width allocated to each segment option.",
+      "tooltipSideDesc": "Default side placement for option tooltips.",
+      "tooltipDelayDesc": "Default hover delay duration in ms before displaying option tooltips.",
+      "renderTooltipDesc": "Custom render function for option tooltips, allowing full user customization.",
+      "tooltipFormatterDesc": "Custom formatting function (opt) => text|object for option tooltips",
+      "tooltipDelegateDesc": "Custom QML Component delegate for rendering rich custom tooltips"
+    },
+    "badge": {
+      "variantDesc": "Visual stylistic variant corresponding to core color tokens.",
+      "sizeDesc": "Size variant determining pill height, padding, and font metrics scale.",
+      "dotDesc": "Whether to display a leading status indicator dot.",
+      "dotColorDesc": "Custom color class for the status dot (e.g. bg-emerald-500).",
+      "removableDesc": "Whether to display an inline dismiss/remove action button.",
+      "onRemoveDesc": "Callback fired when the dismiss/remove action is triggered.",
+      "interactiveDesc": "Whether the badge responds with interactive cursor and click effects.",
+      "classNameDesc": "Optional additional Tailwind CSS class names."
+    },
+    "tableOfContents": {
+      "description": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support.",
+      "itemsDesc": "Hierarchical array of outline items with level and nested children.",
+      "activeIdDesc": "Currently active section ID.",
+      "topOffsetDesc": "Top offset for sticky positioning, accommodating global announcement banners.",
+      "targetOffsetDesc": "Safety scroll offset ensuring headings are not occluded by top banners.",
+      "variantDesc": "Visual styling variant of the table of contents container.",
+      "sizeDesc": "Size density and font scaling of the outline labels.",
+      "showTrackDesc": "Whether to render the vertical guide track and active indicator marker.",
+      "showTitleDesc": "Whether to display the header title label.",
+      "titleDesc": "Header title text displayed above outline items.",
+      "onSelectDesc": "Callback fired when an outline item is selected or activated."
+    },
+    "splitterHandle": {
+      "description": "Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation.",
+      "edgeDesc": "Which edge of the target panel the resize handle controls.",
+      "targetSizeDesc": "Current size (width or height) of the target element being resized.",
+      "minSizeDesc": "Minimum allowed size bound.",
+      "maxSizeDesc": "Maximum allowed size bound.",
+      "defaultSizeDesc": "Size restored when double-clicked or Enter is pressed.",
+      "liveUpdateDesc": "Whether size updates fire continuously during drag.",
+      "hitThicknessDesc": "Interactive mouse hit test zone thickness.",
+      "visualThicknessDesc": "Resting visible hairline thickness.",
+      "activeVisualThicknessDesc": "Highlighted visible hairline thickness when hovered or dragged.",
+      "disabledDesc": "Whether handle resizing is disabled."
+    },
+    "draggableModal": {
+      "description": "Desktop floating window with dragging title bar and bound viewport constraints.",
+      "childrenDesc": "Scrollable main content body of the modal.",
+      "initialPositionModeDesc": "Initial placement mode: centered or top-anchored.",
+      "sizeOptionsDesc": "Preset size options for the top-right dropdown switcher.",
+      "sizeMenuTooltipDesc": "Hover tooltip text for the size menu button.",
+      "fixedFooterDesc": "Pinned bottom action area that does not scroll with content.",
+      "topControlsDesc": "Extra controls rendered in the top-right action bar (e.g. close button).",
+      "rootExtraDesc": "Extra content inside the root container (e.g. floating panels).",
+      "autoFitHeightDesc": "Whether to auto-fit height to natural content height.",
+      "showEscBadgeDesc": "Whether to show the ESC hint badge in the top-right corner.",
+      "defaultWidthRemDesc": "Initial width (in rem units).",
+      "defaultHeightRemDesc": "Initial height (in rem units).",
+      "defaultWidthDesc": "Initial width.",
+      "defaultHeightDesc": "Initial height.",
+      "topMarginRemDesc": "Top margin in top-anchored mode (in rem units).",
+      "remBaseDesc": "Base ratio for rem conversion.",
+      "titleDesc": "Headline text in the drag bar.",
+      "openDesc": "Whether the floating window is currently visible.",
+      "radiusDesc": "Corner radius of the floating window.",
+      "topMarginDesc": "Top offset margin when in top position mode.",
+      "titleDefault": "Inspector Window",
+      "sizeMenuTooltipDefault": "Adjust Size"
+    },
+    "elidedText": {
+      "textDesc": "The string content to display and measure for overflow.",
+      "tooltipTextDesc": "Custom tooltip text override if different from raw text.",
+      "tooltipPlacementDesc": "Placement direction of the floating tooltip.",
+      "tooltipDelayDesc": "Delay in milliseconds before showing tooltip on hover.",
+      "alwaysShowTooltipDesc": "Force tooltip to appear on hover even if text is not elided.",
+      "showTooltipWhenElidedDesc": "Enable tooltip reveal whenever overflow truncation is detected.",
+      "copyableDesc": "Whether clicking the text copies it to clipboard with instant feedback."
+    },
+    "rangeSlider": {
+      "description": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention and keyboard accessibility.",
+      "valueDesc": "Current [min, max] interval value.",
+      "onValueChangeDesc": "Callback fired on thumb move.",
+      "onChangeDesc": "Alias for onValueChange.",
+      "sizeDesc": "Density and sizing variant.",
+      "showTooltipDesc": "Displays value tooltip bubble on hover, drag, and focus.",
+      "readOnlyDesc": "Prevents user interaction while preserving contrast.",
+      "disabledDesc": "Disables slider interaction and dims opacity.",
+      "minDesc": "Minimum allowed value.",
+      "maxDesc": "Maximum allowed value.",
+      "stepDesc": "Step increment.",
+      "minGapDesc": "Minimum gap between the two thumbs.",
+      "fromDesc": "Minimum bounds value of the slider.",
+      "toDesc": "Maximum bounds value of the slider.",
+      "firstValueDesc": "Value represented by the first thumb.",
+      "secondValueDesc": "Value represented by the second thumb.",
+      "stepSizeDesc": "Stepped granularity increment."
+    },
+    "virtualList": {
+      "itemsDesc": "Array of data items to virtualize.",
+      "renderRowDesc": "Callback rendering an individual row.",
+      "renderItemDesc": "Alias for renderRow.",
+      "estimateSizeDesc": "Estimated item height for measurement.",
+      "gapDesc": "Vertical gap between adjacent items.",
+      "overscanDesc": "Number of buffer items rendered beyond viewport bounds.",
+      "emptyNodeDesc": "Content rendered when items array is empty.",
+      "onScrollDesc": "Scroll event callback receiving distance to bottom.",
+      "refDesc": "Handle exposing scrollToIndex(index, align).",
+      "modelDesc": "List model count or array for delegate generation.",
+      "delegateDesc": "Visual delegate instantiated for visible rows.",
+      "rowHeightDesc": "Default estimated height of each row.",
+      "estimateDesc": "Estimated height of each item for virtual measurement.",
+      "spacingDesc": "Vertical spacing between adjacent items.",
+      "radiusDesc": "Corner radius of the list viewport container.",
+      "scrollToDesc": "Programmatically scrolls to the target item index."
+    },
+    "panelCard": {
+      "description": "Card surface with integrated collapsible sections and header action slots for desktop sidebars and inspectors.",
+      "titleDesc": "Panel header title text or element.",
+      "badgeTextDesc": "Optional badge text displayed next to the title.",
+      "collapsibleDesc": "Whether the panel content can be toggled collapsed.",
+      "collapsedDesc": "Controlled collapsed state.",
+      "defaultCollapsedDesc": "Initial collapsed state for uncontrolled mode.",
+      "onCollapsedChangeDesc": "Collapse change handler.",
+      "actionsDesc": "Right-aligned header action elements.",
+      "sizeDesc": "Sizing scale of the card panel.",
+      "radiusDesc": "Corner radius of the card surface."
+    },
+    "stepTimeline": {
+      "emptyText": "No steps"
+    }
+  }
+}

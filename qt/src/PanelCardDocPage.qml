@@ -10,7 +10,7 @@ DocLayout {
     description: "Structured card container with a distinguished tinted header bar, optional badge indicators, and collapsible content toggling."
 
     ComponentPreview {
-        title: "Panel Card Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.panelCard.sandboxTitle", "Panel Card Sandbox")
         reactCode: `<PanelCard title="System Diagnostics" badgeText="Healthy" collapsible>
   <div className="p-4 space-y-2">
     <p>CPU Utilization: 24%</p>
@@ -89,11 +89,11 @@ ChaSetPanelCard {
         name: "PanelCard"
         componentId: "panel-card"
         propsModel: [
-            { name: "title", type: "string", default: "'Panel Title'", description: "Headline text in the tinted header." },
-            { name: "badgeText", type: "string", default: "''", description: "Optional badge text displayed next to the title." },
-            { name: "collapsible", type: "bool", default: "false", description: "Whether the panel card can be expanded and collapsed." },
-            { name: "collapsed", type: "bool", default: "false", description: "Current collapsed state of the panel." },
-            { name: "customRadius", type: "int", default: "8", description: "Corner radius of the card surface." }
+            { name: "title", type: "string", default: "'Panel Title'", description: ChaSetI18n.tr("components.panelCard.titleDesc", "Panel header title text or element.") },
+            { name: "badgeText", type: "string", default: "''", description: ChaSetI18n.tr("components.panelCard.badgeTextDesc", "Optional badge text displayed next to the title.") },
+            { name: "collapsible", type: "bool", default: "false", description: ChaSetI18n.tr("components.panelCard.collapsibleDesc", "Whether the panel content can be toggled collapsed.") },
+            { name: "collapsed", type: "bool", default: "false", description: ChaSetI18n.tr("components.panelCard.collapsedDesc", "Controlled collapsed state.") },
+            { name: "customRadius", type: "int", default: "8", description: ChaSetI18n.tr("components.panelCard.radiusDesc", "Corner radius of the card surface.") }
         ]
     }
 }

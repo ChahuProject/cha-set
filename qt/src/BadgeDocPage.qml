@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Base Primitives"
     pageTitle: "Badge"
-    description: "Displays a badge or a component that looks like a badge to highlight status, tags, and counts."
+    description: ChaSetI18n.tr("components.badge.description", "Displays a badge or a component that looks like a badge to highlight status, tags, and counts.")
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -27,7 +27,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Badge Sandbox"
+        title: ChaSetI18n.tr("showcase.previewTitles.Badge Sandbox", "Badge Sandbox")
         reactCode: `<Badge
   variant="${root.demoVariant}"
   size="${root.demoSize}"${root.demoDot ? '\n  dot' : ''}${root.demoRemovable ? '\n  removable\n  onRemove={() => console.log("removed")}' : ''}
@@ -79,12 +79,12 @@ DocLayout {
                     size: "sm"
                     value: root.demoVariant
                     options: [
-                        { label: "Default", value: "default" },
-                        { label: "Secondary", value: "secondary" },
-                        { label: "Destructive", value: "destructive" },
-                        { label: "Outline", value: "outline" },
-                        { label: "Ghost", value: "ghost" },
-                        { label: "Link", value: "link" }
+                        { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                        { label: ChaSetI18n.tr("common.secondary", "Secondary"), value: "secondary" },
+                        { label: ChaSetI18n.tr("common.destructive", "Destructive"), value: "destructive" },
+                        { label: ChaSetI18n.tr("common.outline", "Outline"), value: "outline" },
+                        { label: ChaSetI18n.tr("common.ghost", "Ghost"), value: "ghost" },
+                        { label: ChaSetI18n.tr("common.link", "Link"), value: "link" }
                     ]
                     onValueSelected: function(v) { root.demoVariant = String(v); }
                 }
@@ -99,8 +99,8 @@ DocLayout {
                     size: "sm"
                     value: root.demoSize
                     options: [
-                        { label: "Default", value: "default" },
-                        { label: "Small (sm)", value: "sm" }
+                        { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                        { label: ChaSetI18n.tr("desktopComposite.badge.sizeSmall", "Small (sm)"), value: "sm" }
                     ]
                     onValueSelected: function(s) { root.demoSize = String(s); }
                 }
@@ -140,7 +140,7 @@ DocLayout {
     // Section 3: Variants
     Column {
         property string sectionId: "variants"
-        property string sectionTitle: "Variants"
+        property string sectionTitle: ChaSetI18n.tr("components.badge.variantsTitle", "Variants")
         width: parent.width
         spacing: 8
         DocText { text: ChaSetI18n.tr("components.badge.variantsTitle", "Variants"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
@@ -172,7 +172,7 @@ DocLayout {
     // Section 4: Sizes
     Column {
         property string sectionId: "sizes"
-        property string sectionTitle: "Sizes"
+        property string sectionTitle: ChaSetI18n.tr("components.badge.sizesTitle", "Sizes")
         width: parent.width
         spacing: ThemeTokens.dp(8)
         DocText { text: ChaSetI18n.tr("components.badge.sizesTitle", "Sizes"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
@@ -208,7 +208,7 @@ DocLayout {
     // Section 5: Status & Removable Badges
     Column {
         property string sectionId: "status-removable-tags"
-        property string sectionTitle: "Status & Removable Tags"
+        property string sectionTitle: ChaSetI18n.tr("components.badge.statusTitle", "Status & Removable Tags")
         width: parent.width
         spacing: ThemeTokens.dp(8)
         DocText { text: ChaSetI18n.tr("components.badge.statusTitle", "Status & Removable Tags"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
@@ -243,14 +243,14 @@ DocLayout {
         spacing: ThemeTokens.dp(8)
 
         DocText {
-            text: "Animations"
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
             color: ThemeTokens.text
         }
 
         DocText {
-            text: "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            text: ChaSetI18n.tr("showcase.animationsDescQml", "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled).")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap

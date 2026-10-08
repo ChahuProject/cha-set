@@ -7,7 +7,7 @@ Item {
   id: root
 
   property var steps: []
-  property string emptyText: "No steps"
+  property string emptyText: ChaSetI18n.tr("components.stepTimeline.emptyText", "No steps")
 
   implicitWidth: ThemeTokens.dp(320)
   implicitHeight: stepsColumn.implicitHeight

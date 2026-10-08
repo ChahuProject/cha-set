@@ -39,14 +39,14 @@ listRef.current?.scrollToIndex(500, 'center');
     <DocLayout
       category="Desktop & Virtualization"
       title="Virtual List"
-      description="High-performance windowed 100k+ row list powered by TanStack Virtual, rendering only DOM nodes visible in the active viewport."
+      description={t('components.virtual-list.description', 'High-performance windowed 100k+ row list powered by TanStack Virtual, rendering only DOM nodes visible in the active viewport.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.virtualList.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Rendering <strong>10,000</strong> virtual items smoothly at 60fps. Use the controls below to trigger programmatic scrolling or scroll rapidly to observe instant windowing.
+          {t('desktopComposite.virtualList.renderingHint', 'Rendering {{count}} virtual items smoothly at 60fps. Use the controls below to trigger programmatic scrolling or scroll rapidly to observe instant windowing.', { count: '10,000' })}
         </p>
 
         <ComponentPreview
@@ -59,7 +59,7 @@ listRef.current?.scrollToIndex(500, 'center');
         height: 36
         // ...delegate...
     }
-}`} title="Virtual List Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.virtualList.sandboxTitle', 'Virtual List Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-md space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
               <Button
@@ -135,15 +135,15 @@ ChaSetVirtualList {
         name="VirtualList"
         componentId="virtual-list"
         props={[
-            { name: 'items', type: 'readonly T[]', default: '[]', description: 'Array of data items to virtualize.' },
-            { name: 'renderRow', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: 'Callback rendering an individual row.' },
-            { name: 'renderItem', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: 'Alias for renderRow.' },
-            { name: 'estimateSize', type: 'number | ((index: number) => number)', default: '36', description: 'Estimated item height for measurement.' },
-            { name: 'gap', type: 'number', default: '0', description: 'Vertical gap between adjacent items.' },
-            { name: 'overscan', type: 'number', default: '8', description: 'Number of buffer items rendered beyond viewport bounds.' },
-            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: 'Content rendered when items array is empty.' },
-            { name: 'onScroll', type: '(distanceToBottom: number) => void', default: 'undefined', description: 'Scroll event callback receiving distance to bottom.' },
-            { name: 'ref', type: 'Ref<VirtualListHandle>', default: 'undefined', description: 'Handle exposing scrollToIndex(index, align).' },
+            { name: 'items', type: 'readonly T[]', default: '[]', description: t('components.virtualList.itemsDesc', 'Array of data items to virtualize.') },
+            { name: 'renderRow', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: t('components.virtualList.renderRowDesc', 'Callback rendering an individual row.') },
+            { name: 'renderItem', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: t('components.virtualList.renderItemDesc', 'Alias for renderRow.') },
+            { name: 'estimateSize', type: 'number | ((index: number) => number)', default: '36', description: t('components.virtualList.estimateSizeDesc', 'Estimated item height for measurement.') },
+            { name: 'gap', type: 'number', default: '0', description: t('components.virtualList.gapDesc', 'Vertical gap between adjacent items.') },
+            { name: 'overscan', type: 'number', default: '8', description: t('components.virtualList.overscanDesc', 'Number of buffer items rendered beyond viewport bounds.') },
+            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: t('components.virtualList.emptyNodeDesc', 'Content rendered when items array is empty.') },
+            { name: 'onScroll', type: '(distanceToBottom: number) => void', default: 'undefined', description: t('components.virtualList.onScrollDesc', 'Scroll event callback receiving distance to bottom.') },
+            { name: 'ref', type: 'Ref<VirtualListHandle>', default: 'undefined', description: t('components.virtualList.refDesc', 'Handle exposing scrollToIndex(index, align).') },
           ]}
       />
     </DocLayout>

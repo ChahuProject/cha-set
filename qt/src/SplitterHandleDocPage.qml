@@ -14,7 +14,7 @@ DocLayout {
 
     ComponentPreview {
         id: heroPreview
-        title: "Splitter Handle Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.splitterHandle.sandboxTitle", "Splitter Handle Sandbox")
         reactCode: `<div className="flex h-64 border rounded overflow-hidden">
   <div style={{ width: \`\${sidebarWidth * 0.0625}rem\` }} className="relative bg-muted/30 p-4">
     Sidebar Content (\${sidebarWidth})
@@ -191,7 +191,7 @@ ChaSetSplitterHandle {
 
     // Vertical Edge Handle
     DocText {
-        text: "Vertical Edge Handle"
+        text: ChaSetI18n.tr("desktopComposite.splitterHandle.verticalTitle", "Vertical Edge Handle")
         font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
@@ -213,7 +213,7 @@ ChaSetSplitterHandle {
                 DocText {
                     width: parent.width
                     wrapMode: TextEdit.Wrap
-                    text: "Handles can also be attached to horizontal edges (top or bottom) for bottom console or drawer resizing."
+                    text: ChaSetI18n.tr("desktopComposite.splitterHandle.horizontalDesc", "Handles can also be attached to horizontal edges (top or bottom) for bottom console or drawer resizing.")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                 }
@@ -295,14 +295,14 @@ ChaSetSplitterHandle {
         spacing: 12
 
         DocText {
-            text: "Animations"
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.bold: true
         }
 
         DocText {
-            text: "Motion tokens and kinematic timing contracts for SplitterHandle edge indicators."
+            text: ChaSetI18n.tr("desktopComposite.splitterHandle.animationsDesc", "Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -317,7 +317,7 @@ ChaSetSplitterHandle {
             width: parent.width
         }
         DocText {
-            text: "• Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
+            text: "• " + ChaSetI18n.tr("desktopComposite.splitterHandle.dragStaticDesc", "Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -334,7 +334,7 @@ ChaSetSplitterHandle {
 
     // Keyboard Navigation
     DocText {
-        text: "Keyboard Navigation"
+        text: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation")
         font.pixelSize: Typography.sizeTitleSm
         font.bold: true
         color: ThemeTokens.text
@@ -344,16 +344,16 @@ ChaSetSplitterHandle {
         name: "SplitterHandle"
         componentId: "splitter-handle"
         propsModel: [
-            { name: "edge", type: "string", default: "'left'", description: "Which edge of the target panel the resize handle controls ('left', 'right', 'top', 'bottom')." },
-            { name: "targetSize", type: "real", default: "200", description: "Current size (width or height) of the target element being resized." },
-            { name: "minSize", type: "real", default: "100", description: "Minimum allowed size bound." },
-            { name: "maxSize", type: "real", default: "1000", description: "Maximum allowed size bound." },
-            { name: "defaultSize", type: "real", default: "minSize", description: "Size restored when double-clicked or Enter is pressed." },
-            { name: "liveUpdate", type: "bool", default: "true", description: "Whether size updates fire continuously during drag." },
-            { name: "hitThickness", type: "real", default: "6", description: "Interactive mouse hit test zone thickness." },
-            { name: "visualThickness", type: "real", default: "1", description: "Resting visible hairline thickness." },
-            { name: "activeVisualThickness", type: "real", default: "2", description: "Highlighted visible hairline thickness when hovered or dragged." },
-            { name: "disabled", type: "bool", default: "false", description: "Whether handle resizing is disabled." }
+            { name: "edge", type: "string", default: "'left'", description: ChaSetI18n.tr("components.splitterHandle.edgeDesc", "Which edge of the target panel the resize handle controls.") },
+            { name: "targetSize", type: "real", default: "200", description: ChaSetI18n.tr("components.splitterHandle.targetSizeDesc", "Current size (width or height) of the target element being resized.") },
+            { name: "minSize", type: "real", default: "100", description: ChaSetI18n.tr("components.splitterHandle.minSizeDesc", "Minimum allowed size bound.") },
+            { name: "maxSize", type: "real", default: "1000", description: ChaSetI18n.tr("components.splitterHandle.maxSizeDesc", "Maximum allowed size bound.") },
+            { name: "defaultSize", type: "real", default: "minSize", description: ChaSetI18n.tr("components.splitterHandle.defaultSizeDesc", "Size restored when double-clicked or Enter is pressed.") },
+            { name: "liveUpdate", type: "bool", default: "true", description: ChaSetI18n.tr("components.splitterHandle.liveUpdateDesc", "Whether size updates fire continuously during drag.") },
+            { name: "hitThickness", type: "real", default: "6", description: ChaSetI18n.tr("components.splitterHandle.hitThicknessDesc", "Interactive mouse hit test zone thickness.") },
+            { name: "visualThickness", type: "real", default: "1", description: ChaSetI18n.tr("components.splitterHandle.visualThicknessDesc", "Resting visible hairline thickness.") },
+            { name: "activeVisualThickness", type: "real", default: "2", description: ChaSetI18n.tr("components.splitterHandle.activeVisualThicknessDesc", "Highlighted visible hairline thickness when hovered or dragged.") },
+            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.splitterHandle.disabledDesc", "Whether handle resizing is disabled.") }
         ]
     }
 }

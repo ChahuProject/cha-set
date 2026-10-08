@@ -63,15 +63,15 @@ export function SplitterHandleDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Splitter Handle"
-      description="Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
+      description={t('components.splitterHandle.description', 'Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.splitterHandle.overviewHeading', 'Interactive Overview')}</h2>
         <p className="text-sm text-muted-foreground">
-          Drag the right edge handle to resize the sidebar. Double click or press Enter to reset to 200.
+          {t('desktopComposite.splitterHandle.overviewDesc', 'Drag the right edge handle to resize the sidebar. Double click or press Enter to reset to 200.')}
         </p>
 
-        <ComponentPreview title="Splitter Handle Sandbox"
+        <ComponentPreview title={t('desktopComposite.splitterHandle.sandboxTitle', 'Splitter Handle Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -132,9 +132,9 @@ ChaSetSplitterHandle {
 
 
       <section id="vertical-edge-handle" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Vertical Edge Handle</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.splitterHandle.verticalTitle', 'Vertical Edge Handle')}</h2>
         <p className="text-sm text-muted-foreground">
-          Handles can also be attached to horizontal edges (<code>top</code> or <code>bottom</code>) for bottom console or drawer resizing.
+          {t('desktopComposite.splitterHandle.horizontalPrefix', 'Handles can also be attached to horizontal edges (')}<code>top</code> or <code>bottom</code>{t('desktopComposite.splitterHandle.horizontalSuffix', ') for bottom console or drawer resizing.')}
         </p>
         <Card className="w-full max-w-xl mx-auto h-64 flex flex-col overflow-hidden bg-card">
           <div className="flex-1 p-4 text-sm text-muted-foreground">
@@ -160,9 +160,9 @@ ChaSetSplitterHandle {
       </section>
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Animations</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
         <p className="text-sm text-muted-foreground">
-          Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.
+          {t('desktopComposite.splitterHandle.animationsDesc', 'Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
@@ -173,11 +173,11 @@ ChaSetSplitterHandle {
             <code className="text-xs bg-muted px-1 rounded">ThemeTokens.easeStandard</code>).
           </li>
           <li>
-            Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.
+            {t('desktopComposite.splitterHandle.dragStaticDesc', 'Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.')}
           </li>
           <li>
-            Respects <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> in Qt.
+            {t('desktopComposite.splitterHandle.reducedMotionPrefix', 'Respects')} <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> {t('desktopComposite.splitterHandle.reducedMotionSuffix', 'in Qt.')}
           </li>
         </ul>
       </section>
@@ -191,69 +191,69 @@ ChaSetSplitterHandle {
             type: "'left' | 'right' | 'top' | 'bottom'",
             default: "'left'",
             required: false,
-            description: 'Which edge of the target panel the resize handle controls.',
+            description: t('components.splitterHandle.edgeDesc', 'Which edge of the target panel the resize handle controls.'),
           },
           {
             name: 'targetSize',
             type: 'number',
             default: '200',
             required: false,
-            description: 'Current size (width or height) of the target element being resized.',
+            description: t('components.splitterHandle.targetSizeDesc', 'Current size (width or height) of the target element being resized.'),
           },
           {
             name: 'minSize',
             type: 'number',
             default: '100',
             required: false,
-            description: 'Minimum allowed size bound.',
+            description: t('components.splitterHandle.minSizeDesc', 'Minimum allowed size bound.'),
           },
           {
             name: 'maxSize',
             type: 'number',
             default: '1000',
             required: false,
-            description: 'Maximum allowed size bound.',
+            description: t('components.splitterHandle.maxSizeDesc', 'Maximum allowed size bound.'),
           },
           {
             name: 'defaultSize',
             type: 'number',
             required: false,
-            description: 'Size restored when double-clicked or Enter is pressed.',
+            description: t('components.splitterHandle.defaultSizeDesc', 'Size restored when double-clicked or Enter is pressed.'),
           },
           {
             name: 'liveUpdate',
             type: 'boolean',
             default: 'true',
             required: false,
-            description: 'Whether size updates fire continuously during drag.',
+            description: t('components.splitterHandle.liveUpdateDesc', 'Whether size updates fire continuously during drag.'),
           },
           {
             name: 'hitThickness',
             type: 'number',
             default: '6',
             required: false,
-            description: 'Interactive mouse hit test zone thickness.',
+            description: t('components.splitterHandle.hitThicknessDesc', 'Interactive mouse hit test zone thickness.'),
           },
           {
             name: 'visualThickness',
             type: 'number',
             default: '1',
             required: false,
-            description: 'Resting visible hairline thickness.',
+            description: t('components.splitterHandle.visualThicknessDesc', 'Resting visible hairline thickness.'),
           },
           {
             name: 'activeVisualThickness',
             type: 'number',
             default: '2',
             required: false,
-            description: 'Highlighted visible hairline thickness when hovered or dragged.',
+            description: t('components.splitterHandle.activeVisualThicknessDesc', 'Highlighted visible hairline thickness when hovered or dragged.'),
           },
           {
             name: 'disabled',
             type: 'boolean',
             default: 'false',
             required: false,
-            description: 'Whether handle resizing is disabled.',
+            description: t('components.splitterHandle.disabledDesc', 'Whether handle resizing is disabled.'),
           },
         ]}
       />

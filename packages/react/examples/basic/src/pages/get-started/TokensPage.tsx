@@ -1,4 +1,5 @@
 import React from 'react';
+import { useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import ColorsSection from '../../sections/ColorsSection';
 import TypeRadiusSection from '../../sections/TypeRadiusSection';
@@ -8,14 +9,15 @@ export interface TokensPageProps {
 }
 
 export function TokensPage({ themeKey }: TokensPageProps) {
+  const { t } = useChaSetI18n();
   return (
     <DocLayout
       category="Get Started"
       title="Theme & Tokens"
-      description="Neutral token system driving both Tailwind custom CSS properties and Qt Quick C++ / QML singletons."
+      description={t('components.theme-tokens.description', 'Neutral token system driving both Tailwind custom CSS properties and Qt Quick C++ / QML singletons.')}
       tocItems={[
-        { id: 'colors', title: 'Color Palette' },
-        { id: 'type', title: 'Typography & Radius' },
+        { id: 'colors', title: t('showcase.toc.colors', 'Color Palette') },
+        { id: 'type', title: t('showcase.toc.type', 'Typography & Radius') },
       ]}
     >
       <div className="space-y-12">

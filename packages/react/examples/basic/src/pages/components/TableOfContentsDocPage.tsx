@@ -102,13 +102,13 @@ export function TableOfContentsDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Table of Contents"
-      description="Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
+      description={t('components.tableOfContents.description', 'Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support.')}
     >
       {/* 1. Interactive Overview */}
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.tableOfContents.overviewHeading', 'Interactive Overview')}</h2>
         <ComponentPreview
-          title="Table of Contents Sandbox"
+          title={t('desktopComposite.tableOfContents.sandboxTitle', 'Table of Contents Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -197,7 +197,7 @@ export function TableOfContentsDocPage() {
                       {t('surfaces.tableOfContents.activeOutlineTarget', { target: activeId })}
                     </p>
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                      Notice how the table of contents tree reflects the nested heading structure, and smoothly aligns with the top banner height offset.
+                      {t('desktopComposite.tableOfContents.readingPanePara', 'Notice how the table of contents tree reflects the nested heading structure, and smoothly aligns with the top banner height offset.')}
                     </p>
                   </div>
                 </div>
@@ -231,11 +231,11 @@ export function TableOfContentsDocPage() {
             {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <div>
           <p className="text-sm text-muted-foreground mb-4">
-            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+            {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
@@ -260,61 +260,61 @@ export function TableOfContentsDocPage() {
             name: 'items',
             type: 'TocItem[]',
             defaultValue: '[]',
-            description: 'Hierarchical array of outline items with level and nested children.',
+            description: t('components.tableOfContents.itemsDesc', 'Hierarchical array of outline items with level and nested children.'),
           },
           {
             name: 'activeId',
             type: 'string',
             defaultValue: '""',
-            description: 'Currently active section ID.',
+            description: t('components.tableOfContents.activeIdDesc', 'Currently active section ID.'),
           },
           {
             name: 'topOffset',
             type: 'number | string',
             defaultValue: '0',
-            description: 'Top offset for sticky positioning, accommodating global announcement banners.',
+            description: t('components.tableOfContents.topOffsetDesc', 'Top offset for sticky positioning, accommodating global announcement banners.'),
           },
           {
             name: 'targetOffset',
             type: 'number',
             defaultValue: '0',
-            description: 'Safety scroll offset ensuring headings are not occluded by top banners.',
+            description: t('components.tableOfContents.targetOffsetDesc', 'Safety scroll offset ensuring headings are not occluded by top banners.'),
           },
           {
             name: 'variant',
             type: '"default" | "track" | "flat"',
             defaultValue: '"default"',
-            description: 'Visual styling variant of the table of contents container.',
+            description: t('components.tableOfContents.variantDesc', 'Visual styling variant of the table of contents container.'),
           },
           {
             name: 'size',
             type: '"default" | "sm"',
             defaultValue: '"default"',
-            description: 'Size density and font scaling of the outline labels.',
+            description: t('components.tableOfContents.sizeDesc', 'Size density and font scaling of the outline labels.'),
           },
           {
             name: 'showTrack',
             type: 'boolean',
             defaultValue: 'true',
-            description: 'Whether to render the vertical guide track and active indicator marker.',
+            description: t('components.tableOfContents.showTrackDesc', 'Whether to render the vertical guide track and active indicator marker.'),
           },
           {
             name: 'showTitle',
             type: 'boolean',
             defaultValue: 'true',
-            description: 'Whether to display the header title label.',
+            description: t('components.tableOfContents.showTitleDesc', 'Whether to display the header title label.'),
           },
           {
             name: 'title',
             type: 'string',
             defaultValue: '"On this page"',
-            description: 'Header title text displayed above outline items.',
+            description: t('components.tableOfContents.titleDesc', 'Header title text displayed above outline items.'),
           },
           {
             name: 'onSelect',
             type: '(item: TocItem, event) => void',
             defaultValue: 'undefined',
-            description: 'Callback fired when an outline item is selected or activated.',
+            description: t('components.tableOfContents.onSelectDesc', 'Callback fired when an outline item is selected or activated.'),
           },
         ]}
       />

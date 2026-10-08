@@ -12,9 +12,9 @@ export function SegmentedControlDocPage() {
   const [disabled, setDisabled] = useState(false);
 
   const viewOptions = [
-    { label: t('formsA.segmentedControl.grid', 'Grid'), value: 'grid', icon: <GridIcon className="size-3.5" />, tooltip: { content: 'Grid layout', shortcut: 'Ctrl+1' } },
-    { label: t('formsA.segmentedControl.list', 'List'), value: 'list', icon: <ListIcon className="size-3.5" />, tooltip: { content: 'List layout', shortcut: 'Ctrl+2' } },
-    { label: t('formsA.segmentedControl.gallery', 'Gallery'), value: 'gallery', icon: <TableIcon className="size-3.5" />, badge: 3, tooltip: { content: 'Gallery view', shortcut: 'Ctrl+3' } },
+    { label: t('formsA.segmentedControl.grid', 'Grid'), value: 'grid', icon: <GridIcon className="size-3.5" />, tooltip: { content: t('desktopComposite.segmentedControl.gridTip', 'Grid layout'), shortcut: 'Ctrl+1' } },
+    { label: t('formsA.segmentedControl.list', 'List'), value: 'list', icon: <ListIcon className="size-3.5" />, tooltip: { content: t('desktopComposite.segmentedControl.listTip', 'List layout'), shortcut: 'Ctrl+2' } },
+    { label: t('formsA.segmentedControl.gallery', 'Gallery'), value: 'gallery', icon: <TableIcon className="size-3.5" />, badge: 3, tooltip: { content: t('desktopComposite.segmentedControl.galleryTip', 'Gallery view'), shortcut: 'Ctrl+3' } },
   ];
 
   const menuOptions = [
@@ -52,11 +52,11 @@ export function SegmentedControlDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Segmented Control"
-      description="A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support."
+      description={t('components.segmentedControl.description', 'A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
-        <ComponentPreview title="Segmented Control Sandbox"
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.overviewHeading', 'Interactive Overview')}</h2>
+        <ComponentPreview title={t('desktopComposite.segmentedControl.sandboxTitle', 'Segmented Control Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -123,7 +123,7 @@ ChaSetSegmentedControl {
 
 
       <section id="sizes-badges" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Sizes & Badges</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.sizesBadgesTitle', 'Sizes & Badges')}</h2>
         <Card className="p-6 space-y-6">
           <div className="space-y-2">
             <div className="text-xs font-semibold text-muted-foreground">{t('formsA.segmentedControl.smDesc', 'Small (sm - Menu & Toolbar dense)')}</div>
@@ -141,7 +141,7 @@ ChaSetSegmentedControl {
       </section>
 
       <section id="fixed-width-truncation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Fixed Width & Truncation</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.fixedWidthTitle', 'Fixed Width & Truncation')}</h2>
         <p className="text-sm text-muted-foreground">
           {t('formsA.segmentedControl.truncationSubtitle', 'By default, segments auto-adapt to their content length. When equalWidth, fullWidth, or itemWidth is configured, segments enforce equal or fixed dimensions and truncate overflowing text with an ellipsis.')}
         </p>
@@ -173,7 +173,7 @@ ChaSetSegmentedControl {
       </section>
 
       <section id="menu-inline-title" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Menu & Inline Title</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.menuInlineTitle', 'Menu & Inline Title')}</h2>
         <p className="text-sm text-muted-foreground">
           {t('formsA.segmentedControl.menuTitleSubtitle', 'Supports an optional prefix title to seamlessly embed within context menu rows and parameter settings panels.')}
         </p>
@@ -188,31 +188,31 @@ ChaSetSegmentedControl {
       </section>
 
       <section id="tooltips-custom-hints" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Tooltips & Custom Hints</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.tooltipsHintsTitle', 'Tooltips & Custom Hints')}</h2>
         <p className="text-sm text-muted-foreground">
           Options support rich interactive tooltips. You can provide plain text, keyboard shortcut badges, custom placement, rich custom content, or a global <code>renderTooltip</code> function.
         </p>
         <Card className="p-6 space-y-6">
           <div className="space-y-2">
-            <div className="text-xs font-semibold text-muted-foreground">Per-Option Tooltips with Shortcuts & Arrows</div>
+            <div className="text-xs font-semibold text-muted-foreground">{t('desktopComposite.segmentedControl.perOptionTitle', 'Per-Option Tooltips with Shortcuts & Arrows')}</div>
             <SegmentedControl
               options={[
-                { label: 'Day', value: 'day', tooltip: { content: 'Daily summary view', shortcut: 'Ctrl+D', arrow: true } },
-                { label: 'Week', value: 'week', tooltip: { content: 'Weekly timeline view', shortcut: 'Ctrl+W', arrow: true } },
-                { label: 'Month', value: 'month', tooltip: { content: 'Monthly overview calendar', shortcut: 'Ctrl+M', arrow: true } },
-                { label: 'Year', value: 'year', disabled: true, tooltip: { content: 'Annual archive (Requires Pro plan)', arrow: true } },
+                { label: t('desktopComposite.segmentedControl.dayLabel', 'Day'), value: 'day', tooltip: { content: t('desktopComposite.segmentedControl.dailyTip', 'Daily summary view'), shortcut: 'Ctrl+D', arrow: true } },
+                { label: t('desktopComposite.segmentedControl.weekLabel', 'Week'), value: 'week', tooltip: { content: t('desktopComposite.segmentedControl.weeklyTip', 'Weekly timeline view'), shortcut: 'Ctrl+W', arrow: true } },
+                { label: t('desktopComposite.segmentedControl.monthLabel', 'Month'), value: 'month', tooltip: { content: t('desktopComposite.segmentedControl.monthlyTip', 'Monthly overview calendar'), shortcut: 'Ctrl+M', arrow: true } },
+                { label: t('desktopComposite.segmentedControl.yearLabel', 'Year'), value: 'year', disabled: true, tooltip: { content: t('desktopComposite.segmentedControl.annualTip', 'Annual archive (Requires Pro plan)'), arrow: true } },
               ]}
               defaultValue="day"
             />
           </div>
 
           <div className="space-y-2">
-            <div className="text-xs font-semibold text-muted-foreground">Global renderTooltip Customization</div>
+            <div className="text-xs font-semibold text-muted-foreground">{t('desktopComposite.segmentedControl.globalRenderTooltipTitle', 'Global renderTooltip Customization')}</div>
             <SegmentedControl
               options={[
-                { label: 'Auto', value: 'auto' },
-                { label: 'Dark', value: 'dark' },
-                { label: 'Light', value: 'light' },
+                { label: t('desktopComposite.segmentedControl.autoLabel', 'Auto'), value: 'auto' },
+                { label: t('desktopComposite.segmentedControl.darkLabel', 'Dark'), value: 'dark' },
+                { label: t('desktopComposite.segmentedControl.lightLabel', 'Light'), value: 'light' },
               ]}
               defaultValue="auto"
               tooltipSide="bottom"
@@ -220,7 +220,7 @@ ChaSetSegmentedControl {
                 <div className="flex flex-col gap-0.5 py-0.5">
 
                   <span className="font-semibold text-foreground">Theme: {opt.label}</span>
-                  <span className="text-muted-foreground text-micro">Switch application color scheme</span>
+                  <span className="text-muted-foreground text-micro">{t('desktopComposite.segmentedControl.switchScheme', 'Switch application color scheme')}</span>
                 </div>
               )}
             />
@@ -236,85 +236,85 @@ ChaSetSegmentedControl {
             name: 'options',
             type: 'SegmentedControlOption[]',
             required: true,
-            description: 'Array of option objects ({ label, value, icon?, badge?, disabled?, tooltip? }).',
+            description: t('components.segmentedControl.optionsDesc', 'Array of option objects ({ label, value, icon?, badge?, disabled?, tooltip? }).'),
           },
           {
             name: 'value',
             type: 'string | number',
             required: false,
-            description: 'Controlled active value.',
+            description: t('components.segmentedControl.valueDesc', 'Controlled active value.'),
           },
           {
             name: 'defaultValue',
             type: 'string | number',
             required: false,
-            description: 'Initial value when uncontrolled.',
+            description: t('components.segmentedControl.defaultValueDesc', 'Initial value when uncontrolled.'),
           },
           {
             name: 'onValueChange',
             type: '(value: string | number) => void',
             required: false,
-            description: 'Callback invoked when a new segment is selected.',
+            description: t('components.segmentedControl.onValueChangeDesc', 'Callback invoked when a new segment is selected.'),
           },
           {
             name: 'size',
             type: "'sm' | 'default' | 'lg'",
             default: "'default'",
             required: false,
-            description: "Physical dimension variant ('sm', 'default', 'lg').",
+            description: t("components.segmentedControl.sizeDesc", "Physical dimension variant ('sm', 'default', 'lg')."),
           },
           {
             name: 'title',
             type: 'string',
             required: false,
-            description: 'Optional prefix label displayed before the segments.',
+            description: t('components.segmentedControl.titleDesc', 'Optional prefix label displayed before the segments.'),
           },
           {
             name: 'disabled',
             type: 'boolean',
             default: 'false',
             required: false,
-            description: 'Whether the entire segmented control is disabled.',
+            description: t('components.segmentedControl.disabledDesc', 'Whether the entire segmented control is disabled.'),
           },
           {
             name: 'fullWidth',
             type: 'boolean',
             default: 'false',
             required: false,
-            description: 'Whether segments expand equally to fill the parent container.',
+            description: t('components.segmentedControl.fullWidthDesc', 'Whether segments expand equally to fill the parent container.'),
           },
           {
             name: 'equalWidth',
             type: 'boolean',
             default: 'false',
             required: false,
-            description: 'Whether all segments share an identical fixed width while hugging content.',
+            description: t('components.segmentedControl.equalWidthDesc', 'Whether all segments share an identical fixed width while hugging content.'),
           },
           {
             name: 'itemWidth',
             type: 'number',
             required: false,
-            description: 'Explicit fixed width allocated to each segment option.',
+            description: t('components.segmentedControl.itemWidthDesc', 'Explicit fixed width allocated to each segment option.'),
           },
           {
             name: 'tooltipSide',
             type: "'top' | 'bottom' | 'left' | 'right'",
             default: "'top'",
             required: false,
-            description: 'Default side placement for option tooltips.',
+            description: t('components.segmentedControl.tooltipSideDesc', 'Default side placement for option tooltips.'),
           },
           {
             name: 'tooltipDelayDuration',
             type: 'number',
             default: '200',
             required: false,
-            description: 'Default hover delay duration in ms before displaying option tooltips.',
+            description: t('components.segmentedControl.tooltipDelayDesc', 'Default hover delay duration in ms before displaying option tooltips.'),
           },
           {
             name: 'renderTooltip',
             type: '(option: SegmentedControlOption) => React.ReactNode',
             required: false,
-            description: 'Custom render function for option tooltips, allowing full user customization.',
+            description: t('components.segmentedControl.renderTooltipDesc', 'Custom render function for option tooltips, allowing full user customization.'),
           },
         ]}
       />

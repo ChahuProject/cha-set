@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Table of Contents"
-    description: "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
+    description: ChaSetI18n.tr("components.tableOfContents.description", "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support.")
 
     property bool showBanner: true
     property int bannerHeight: 40
@@ -70,7 +70,7 @@ DocLayout {
 
     ComponentPreview {
         id: heroPreview
-        title: "Table of Contents Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.tableOfContents.sandboxTitle", "Table of Contents Sandbox")
         reactCode: `<TableOfContents
   items={items}
   activeId="${root.activeId}"
@@ -297,7 +297,7 @@ DocLayout {
         spacing: ThemeTokens.dp(8)
 
         DocText {
-            text: "Animations"
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
             color: ThemeTokens.text
@@ -320,55 +320,55 @@ DocLayout {
                 name: "items",
                 type: "var (array)",
                 defaultValue: "[]",
-                description: "Hierarchical array of outline items with level and nested children."
+                description: ChaSetI18n.tr("components.tableOfContents.itemsDesc", "Hierarchical array of outline items with level and nested children.")
             },
             {
                 name: "activeId",
                 type: "string",
                 defaultValue: '""',
-                description: "Currently active section ID."
+                description: ChaSetI18n.tr("components.tableOfContents.activeIdDesc", "Currently active section ID.")
             },
             {
                 name: "topOffset",
                 type: "real",
                 defaultValue: "0",
-                description: "Top offset for sticky positioning, accommodating global announcement banners."
+                description: ChaSetI18n.tr("components.tableOfContents.topOffsetDesc", "Top offset for sticky positioning, accommodating global announcement banners.")
             },
             {
                 name: "targetOffset",
                 type: "real",
                 defaultValue: "0",
-                description: "Safety scroll offset ensuring headings are not occluded by top banners."
+                description: ChaSetI18n.tr("components.tableOfContents.targetOffsetDesc", "Safety scroll offset ensuring headings are not occluded by top banners.")
             },
             {
                 name: "variant",
                 type: "string",
                 defaultValue: '"default"',
-                description: 'Visual styling variant ("default", "track", "flat").'
+                description: ChaSetI18n.tr("components.tableOfContents.variantDesc", "Visual styling variant of the table of contents container.")
             },
             {
                 name: "size",
                 type: "string",
                 defaultValue: '"default"',
-                description: 'Size density and font scaling ("default", "sm").'
+                description: ChaSetI18n.tr("components.tableOfContents.sizeDesc", "Size density and font scaling of the outline labels.")
             },
             {
                 name: "showTrack",
                 type: "bool",
                 defaultValue: "true",
-                description: "Whether to render the vertical guide track and active indicator marker."
+                description: ChaSetI18n.tr("components.tableOfContents.showTrackDesc", "Whether to render the vertical guide track and active indicator marker.")
             },
             {
                 name: "showTitle",
                 type: "bool",
                 defaultValue: "true",
-                description: "Whether to display the header title label."
+                description: ChaSetI18n.tr("components.tableOfContents.showTitleDesc", "Whether to display the header title label.")
             },
             {
                 name: "title",
                 type: "string",
                 defaultValue: '"ON THIS PAGE"',
-                description: "Header title text displayed above outline items."
+                description: ChaSetI18n.tr("components.tableOfContents.titleDesc", "Header title text displayed above outline items.")
             }
         ]
     }

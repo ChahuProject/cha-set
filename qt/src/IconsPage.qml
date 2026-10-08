@@ -7,15 +7,15 @@ DocLayout {
     id: root
     category: "Get Started"
     pageTitle: "Icon System"
-    description: "One icon specification for both stacks: single geometry source, one stroke weight, optical centring by construction, and how to switch specifications."
+    description: ChaSetI18n.tr("components.icon-system.description", "One icon specification for both stacks: single geometry source, one stroke weight, optical centring by construction, and how to switch specifications.")
     tocItems: [
-        { id: "specification", title: "Active Specification" },
-        { id: "rules", title: "Governance Rules" },
-        { id: "grids", title: "Grids, Weight & Size" },
-        { id: "centering", title: "Optical Centring" },
-        { id: "gallery", title: "Icon Gallery" },
-        { id: "configuration", title: "External Configuration" },
-        { id: "extensibility", title: "Extending the Specification" }
+        { id: "specification", title: ChaSetI18n.tr("getStarted.icons.specification.title", "Active Specification") },
+        { id: "rules", title: ChaSetI18n.tr("getStarted.icons.rules.title", "Governance Rules") },
+        { id: "grids", title: ChaSetI18n.tr("getStarted.icons.grids.title", "Grids, Weight & Size") },
+        { id: "centering", title: ChaSetI18n.tr("getStarted.icons.centering.title", "Optical Centring") },
+        { id: "gallery", title: ChaSetI18n.tr("getStarted.icons.gallery.title", "Icon Gallery") },
+        { id: "configuration", title: ChaSetI18n.tr("getStarted.icons.configuration.title", "External Configuration") },
+        { id: "extensibility", title: ChaSetI18n.tr("getStarted.icons.extensibility.title", "Extending the Specification") }
     ]
 
     readonly property var metrics: ChaSetIcons.metrics

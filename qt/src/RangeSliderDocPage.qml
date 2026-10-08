@@ -7,13 +7,13 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Range Slider"
-    description: "Dual-thumb slider control for selecting continuous or stepped numeric min-max intervals with collision prevention."
+    description: ChaSetI18n.tr("components.rangeSlider.description", "Dual-thumb slider for selecting numeric min-max intervals with collision prevention and keyboard accessibility.")
 
     property real minPrice: 20.0
     property real maxPrice: 80.0
 
     ComponentPreview {
-        title: "Range Slider Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.rangeSlider.sandboxTitle", "Range Slider Sandbox")
         reactCode: `<RangeSlider
   min={0}
   max={100}
@@ -91,8 +91,8 @@ ChaSetRangeSlider {
 
     ComponentPreview {
         property string sectionId: "variants"
-        property string sectionTitle: "Sizes & States"
-        title: "Sizes & States"
+        property string sectionTitle: ChaSetI18n.tr("desktopComposite.rangeSlider.sizesStatesTitle", "Sizes & States")
+        title: ChaSetI18n.tr("desktopComposite.rangeSlider.sizesStatesTitle", "Sizes & States")
         reactCode: `<RangeSlider size="default" defaultValue={[20, 80]} showTooltip />
 <RangeSlider size="sm" defaultValue={[30, 70]} showTooltip />
 <RangeSlider size="sm" defaultValue={[25, 75]} readOnly />
@@ -145,16 +145,16 @@ ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false 
         name: "RangeSlider"
         componentId: "range-slider"
         propsModel: [
-            { name: "from", type: "real", default: "0.0", description: "Minimum bounds value of the slider." },
-            { name: "to", type: "real", default: "100.0", description: "Maximum bounds value of the slider." },
-            { name: "firstValue", type: "real", default: "20.0", description: "Value represented by the first thumb." },
-            { name: "secondValue", type: "real", default: "80.0", description: "Value represented by the second thumb." },
-            { name: "stepSize", type: "real", default: "1.0", description: "Stepped granularity increment." },
+            { name: "from", type: "real", default: "0.0", description: ChaSetI18n.tr("components.rangeSlider.fromDesc", "Minimum bounds value of the slider.") },
+            { name: "to", type: "real", default: "100.0", description: ChaSetI18n.tr("components.rangeSlider.toDesc", "Maximum bounds value of the slider.") },
+            { name: "firstValue", type: "real", default: "20.0", description: ChaSetI18n.tr("components.rangeSlider.firstValueDesc", "Value represented by the first thumb.") },
+            { name: "secondValue", type: "real", default: "80.0", description: ChaSetI18n.tr("components.rangeSlider.secondValueDesc", "Value represented by the second thumb.") },
+            { name: "stepSize", type: "real", default: "1.0", description: ChaSetI18n.tr("components.rangeSlider.stepSizeDesc", "Stepped granularity increment.") },
             { name: "size", type: "string", default: "'default'", description: "Size variant: 'default' | 'sm'." },
-            { name: "showTooltip", type: "bool", default: "false", description: "Whether to show floating value tooltips above thumbs." },
-            { name: "readOnly", type: "bool", default: "false", description: "Prevents dragging while preserving normal opacity." },
-            { name: "disabled", type: "bool", default: "false", description: "Whether the range slider interaction is disabled." },
-            { name: "minStepsBetweenThumbs", type: "real", default: "0.0", description: "Minimum gap between the two thumbs." }
+            { name: "showTooltip", type: "bool", default: "false", description: ChaSetI18n.tr("components.rangeSlider.showTooltipDesc", "Displays value tooltip bubble on hover, drag, and focus.") },
+            { name: "readOnly", type: "bool", default: "false", description: ChaSetI18n.tr("components.rangeSlider.readOnlyDesc", "Prevents user interaction while preserving contrast.") },
+            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.rangeSlider.disabledDesc", "Disables slider interaction and dims opacity.") },
+            { name: "minStepsBetweenThumbs", type: "real", default: "0.0", description: ChaSetI18n.tr("components.rangeSlider.minGapDesc", "Minimum gap between the two thumbs.") }
         ]
     }
 }

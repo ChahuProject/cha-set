@@ -38,15 +38,15 @@ export function ElidedTextDocPage() {
     <DocLayout
       category="Base Primitives"
       title="Elided Text"
-      description="Smart text truncation with automatic overflow detection, click-to-copy, and contextual tooltip reveal."
+      description={t('components.elided-text.description', 'Smart text truncation with automatic overflow detection, click-to-copy, and contextual tooltip reveal.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.elidedText.overviewHeading', 'Interactive Overview')}</h2>
         <p className="text-sm text-muted-foreground">
           {t('components.elided-text.overviewDesc', 'Resize the container below using the slider. When the text is clipped with an ellipsis, hovering reveals the full path in a tooltip. Click to copy the full path when copyable is enabled.')}
         </p>
 
-        <ComponentPreview title="Elided Text Sandbox"
+        <ComponentPreview title={t('showcase.previewTitles.Elided Text Sandbox', 'Elided Text Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -106,7 +106,7 @@ export function ElidedTextDocPage() {
       />
 
       <section id="multi-line-clamping" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground" data-toc-title="Multi-Line Clamping">{t('components.elided-text.multiLineTitle', 'Multi-Line Clamping')}</h2>
+        <h2 className="text-xl font-semibold text-foreground" data-toc-title={t('components.elided-text.multiLineTitle', 'Multi-Line Clamping')}>{t('components.elided-text.multiLineTitle', 'Multi-Line Clamping')}</h2>
         <p className="text-sm text-muted-foreground">
           {t('components.elided-text.multiLineDesc', 'Using maxLines={2}, text wraps up to two lines before truncating with an ellipsis.')}
         </p>
@@ -122,11 +122,11 @@ export function ElidedTextDocPage() {
             {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <div>
           <p className="text-sm text-muted-foreground mb-4">
-            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+            {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
@@ -151,37 +151,37 @@ export function ElidedTextDocPage() {
             name: 'text',
             type: 'string',
             default: "''",
-            description: 'The string content to display and measure for overflow.',
+            description: t('components.elidedText.textDesc', 'The string content to display and measure for overflow.'),
           },
           {
             name: 'tooltipText',
             type: 'string',
             default: "''",
-            description: 'Custom tooltip text override if different from raw text.',
+            description: t('components.elidedText.tooltipTextDesc', 'Custom tooltip text override if different from raw text.'),
           },
           {
             name: 'tooltipPlacement',
             type: "'top' | 'bottom' | 'left' | 'right' | 'auto'",
             default: "'top'",
-            description: 'Placement direction of the floating tooltip.',
+            description: t('components.elidedText.tooltipPlacementDesc', 'Placement direction of the floating tooltip.'),
           },
           {
             name: 'tooltipDelay',
             type: 'number',
             default: '400',
-            description: 'Delay in milliseconds before showing tooltip on hover.',
+            description: t('components.elidedText.tooltipDelayDesc', 'Delay in milliseconds before showing tooltip on hover.'),
           },
           {
             name: 'alwaysShowTooltip',
             type: 'boolean',
             default: 'false',
-            description: 'Force tooltip to appear on hover even if text is not elided.',
+            description: t('components.elidedText.alwaysShowTooltipDesc', 'Force tooltip to appear on hover even if text is not elided.'),
           },
           {
             name: 'showTooltipWhenElided',
             type: 'boolean',
             default: 'true',
-            description: 'Enable tooltip reveal whenever overflow truncation is detected.',
+            description: t('components.elidedText.showTooltipWhenElidedDesc', 'Enable tooltip reveal whenever overflow truncation is detected.'),
           },
           {
             name: 'maxLines',
@@ -193,7 +193,7 @@ export function ElidedTextDocPage() {
             name: 'copyable',
             type: 'boolean',
             default: 'false',
-            description: 'Whether clicking the text copies it to clipboard with instant feedback.',
+            description: t('components.elidedText.copyableDesc', 'Whether clicking the text copies it to clipboard with instant feedback.'),
           },
         ]}
       />

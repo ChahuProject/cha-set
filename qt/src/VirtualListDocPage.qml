@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Desktop & Virtualization"
     pageTitle: "Virtual List"
-    description: "High-performance windowed virtualized list for handling 100k+ rows with native desktop wheel kinematics and delegate recycling."
+    description: ChaSetI18n.tr("components.virtual-list.description", "High-performance windowed 100k+ row list powered by TanStack Virtual, rendering only DOM nodes visible in the active viewport.")
 
     ComponentPreview {
-        title: "Virtual List Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.virtualList.sandboxTitle", "Virtual List Sandbox")
         stageHeight: 380
         reactCode: `const listRef = useRef<VirtualListHandle>(null);
 
@@ -157,14 +157,14 @@ ChaSetVirtualList {
         name: "VirtualList"
         componentId: "virtual-list"
         propsModel: [
-            { name: "model", type: "var", default: "null", description: "List model count or array for delegate generation." },
-            { name: "delegate", type: "Component", default: "null", description: "Visual delegate instantiated for visible rows." },
-            { name: "itemHeight", type: "int", default: "36", description: "Default estimated height of each row." },
-            { name: "estimateSize", type: "int", default: "36", description: "Estimated height of each item for virtual measurement." },
-            { name: "gap", type: "int", default: "0", description: "Vertical spacing between adjacent items." },
-            { name: "overscan", type: "int", default: "8", description: "Number of buffer items rendered beyond viewport bounds." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the list viewport container." },
-            { name: "scrollToIndex(index, align)", type: "function", default: "function", description: "Programmatically scrolls to the target item index." }
+            { name: "model", type: "var", default: "null", description: ChaSetI18n.tr("components.virtualList.modelDesc", "List model count or array for delegate generation.") },
+            { name: "delegate", type: "Component", default: "null", description: ChaSetI18n.tr("components.virtualList.delegateDesc", "Visual delegate instantiated for visible rows.") },
+            { name: "itemHeight", type: "int", default: "36", description: ChaSetI18n.tr("components.virtualList.rowHeightDesc", "Default estimated height of each row.") },
+            { name: "estimateSize", type: "int", default: "36", description: ChaSetI18n.tr("components.virtualList.estimateDesc", "Estimated height of each item for virtual measurement.") },
+            { name: "gap", type: "int", default: "0", description: ChaSetI18n.tr("components.virtualList.spacingDesc", "Vertical spacing between adjacent items.") },
+            { name: "overscan", type: "int", default: "8", description: ChaSetI18n.tr("components.virtualList.overscanDesc", "Number of buffer items rendered beyond viewport bounds.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.virtualList.radiusDesc", "Corner radius of the list viewport container.") },
+            { name: "scrollToIndex(index, align)", type: "function", default: "function", description: ChaSetI18n.tr("components.virtualList.scrollToDesc", "Programmatically scrolls to the target item index.") }
         ]
     }
 }

@@ -1,0 +1,226 @@
+{
+  "desktopComposite": {
+    "segmentedControl": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "分段控制器沙盒",
+      "sizesBadgesTitle": "尺寸与徽标",
+      "fixedWidthTitle": "固定宽度与截断",
+      "menuInlineTitle": "菜单与行内标题",
+      "tooltipsHintsTitle": "工具提示与自定义提示",
+      "perOptionTitle": "带快捷键与箭头的逐项工具提示",
+      "globalRenderTooltipTitle": "全局 renderTooltip 定制",
+      "globalFormatterTitle": "全局 tooltipFormatter 定制",
+      "gridTip": "网格布局",
+      "listTip": "列表布局",
+      "galleryTip": "画廊视图",
+      "dayLabel": "日",
+      "weekLabel": "周",
+      "monthLabel": "月",
+      "yearLabel": "年",
+      "dailyTip": "每日摘要视图",
+      "weeklyTip": "每周时间线视图",
+      "monthlyTip": "每月概览日历",
+      "annualTip": "年度归档（需要 Pro 方案）",
+      "autoLabel": "自动",
+      "darkLabel": "深色",
+      "lightLabel": "浅色",
+      "switchScheme": "切换应用配色方案",
+      "themeTooltipFormat": "主题：{{label}} — 切换应用配色方案"
+    },
+    "badge": {
+      "overviewHeading": "交互式概览",
+      "sizeSmall": "小号（sm）"
+    },
+    "tableOfContents": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "大纲导航沙盒",
+      "readingPanePara": "注意大纲树如何映射嵌套标题结构，并随顶部横幅高度偏移平滑对齐。"
+    },
+    "splitterHandle": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "分栏手柄沙盒",
+      "overviewDesc": "拖动右侧边缘手柄调整侧边栏宽度。双击或按 Enter 可重置为 200。",
+      "verticalTitle": "垂直边缘手柄",
+      "horizontalPrefix": "手柄亦可吸附于水平边缘（",
+      "horizontalSuffix": "），用于底部控制台或抽屉调参。",
+      "horizontalDesc": "手柄亦可吸附于水平边缘（top 或 bottom），用于底部控制台或抽屉调参。",
+      "animationsDesc": "SplitterHandle 边缘指示器的 motion 令牌与运动学时间契约。",
+      "dragStaticDesc": "手柄拖拽运动学严格禁用动画，以保证确定性 60fps 实时指针追踪。",
+      "reducedMotionPrefix": "遵循",
+      "reducedMotionSuffix": "（Qt 端）。"
+    },
+    "draggableModal": {
+      "overviewHeading": "交互式概览",
+      "overviewDesc": "点击下方按钮打开可拖拽弹窗，支持尺寸预设、拖拽移位与高度自适应。",
+      "sandboxTitle": "可拖拽弹窗沙盒",
+      "allocBadge": "128 个分配"
+    },
+    "elidedText": {
+      "overviewHeading": "交互式概览"
+    },
+    "rangeSlider": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "区间滑块沙盒",
+      "sizesStatesTitle": "尺寸与状态"
+    },
+    "virtualList": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "虚拟列表沙盒",
+      "renderingHint": "以 60fps 流畅渲染 {{count}} 个虚拟项。使用下方控件触发编程式滚动，或快速滚动观察即时窗口化。"
+    },
+    "panelCard": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "面板卡片沙盒",
+      "collapseHint": "点击 chevron 图标或标题以折叠／展开卡片面板主体。"
+    },
+    "queryBuilder": {
+      "fieldStatus": "状态"
+    },
+    "activityStack": {
+      "accessibleLabel": "活动堆栈",
+      "overflowLabel": "还有 {{count}} 项",
+      "summaryText": "{{count}} 项{{label}}"
+    }
+  },
+  "components": {
+    "segmentedControl": {
+      "description": "紧凑胶囊式分段切换控件，适用于工具栏、菜单与视图切换，支持图标与徽标。",
+      "optionsDesc": "选项对象数组（{ label、value、icon?、badge?、disabled?、tooltip? }）。",
+      "valueDesc": "受控激活值。",
+      "defaultValueDesc": "非受控模式下的初始值。",
+      "onValueChangeDesc": "选中新分段时触发的回调。",
+      "sizeDesc": "物理尺寸变体（‘sm’、‘default’、‘lg’）。",
+      "titleDesc": "显示于分段之前的可选前缀标签。",
+      "disabledDesc": "是否禁用整个分段控制器。",
+      "fullWidthDesc": "分段是否等分扩展以填满父容器。",
+      "equalWidthDesc": "所有分段是否在贴合内容的同时共享相同的固定宽度。",
+      "itemWidthDesc": "为每个分段选项分配的显式固定宽度。",
+      "tooltipSideDesc": "选项工具提示的默认显示方位。",
+      "tooltipDelayDesc": "悬停后显示选项工具提示的默认延迟时长（毫秒）。",
+      "renderTooltipDesc": "选项工具提示的自定义渲染函数，支持完全自定义。",
+      "tooltipFormatterDesc": "选项工具提示的自定义格式化函数（opt）=> text|object。",
+      "tooltipDelegateDesc": "用于渲染富文本自定义工具提示的 QML Component 代理。"
+    },
+    "badge": {
+      "variantDesc": "与核心颜色令牌对应的视觉风格变体。",
+      "sizeDesc": "决定胶囊高度、内边距与字体规格的尺寸变体。",
+      "dotDesc": "是否显示前置状态指示圆点。",
+      "dotColorDesc": "状态圆点的自定义颜色类（例如 bg-emerald-500）。",
+      "removableDesc": "是否显示行内关闭／移除操作按钮。",
+      "onRemoveDesc": "触发关闭／移除操作时执行的回调。",
+      "interactiveDesc": "徽标是否响应交互光标与点击效果。",
+      "classNameDesc": "可选的附加 Tailwind CSS 类名。"
+    },
+    "tableOfContents": {
+      "description": "带导轨线、激活指示器与横幅偏移适配的层级大纲导航树。",
+      "itemsDesc": "带层级与嵌套子项的大纲条目数组。",
+      "activeIdDesc": "当前激活的章节 ID。",
+      "topOffsetDesc": "吸顶定位的上方偏移，用于适配全局公告横幅。",
+      "targetOffsetDesc": "安全滚动偏移，确保标题不被顶部横幅遮挡。",
+      "variantDesc": "大纲容器的视觉样式变体。",
+      "sizeDesc": "大纲标签的尺寸密度与字号缩放。",
+      "showTrackDesc": "是否渲染垂直导轨与激活指示标记。",
+      "showTitleDesc": "是否显示头部标题标签。",
+      "titleDesc": "显示于大纲条目上方的头部标题文本。",
+      "onSelectDesc": "选中或激活大纲条目时触发的回调。"
+    },
+    "splitterHandle": {
+      "description": "具备基准坐标防抖、最小／最大钳制与键盘导航的边缘缩放手柄。",
+      "edgeDesc": "控制目标面板哪条边缘的缩放手柄。",
+      "targetSizeDesc": "被缩放目标元素的当前尺寸（宽或高）。",
+      "minSizeDesc": "允许的最小尺寸边界。",
+      "maxSizeDesc": "允许的最大尺寸边界。",
+      "defaultSizeDesc": "双击或按 Enter 时恢复的尺寸。",
+      "liveUpdateDesc": "拖拽过程中是否连续触发尺寸更新。",
+      "hitThicknessDesc": "鼠标交互热区的厚度。",
+      "visualThicknessDesc": "静息态可见细线的厚度。",
+      "activeVisualThicknessDesc": "悬停或拖拽时高亮可见细线的厚度。",
+      "disabledDesc": "是否禁用手柄缩放。"
+    },
+    "draggableModal": {
+      "description": "带拖拽标题栏与边界视口约束的桌面浮动窗口。",
+      "childrenDesc": "弹窗内容主体（可滚动容器）。",
+      "initialPositionModeDesc": "初始定位模式：居中或靠顶显示。",
+      "sizeOptionsDesc": "右上角尺寸切换档位列表。",
+      "sizeMenuTooltipDesc": "尺寸菜单按钮的悬浮提示文本。",
+      "fixedFooterDesc": "固定在底部的操作区域（不随内容滚动）。",
+      "topControlsDesc": "渲染在右上角操作栏内的附加控件（如关闭按钮）。",
+      "rootExtraDesc": "根容器内部的附加内容（如浮动面板）。",
+      "autoFitHeightDesc": "是否根据内容自然高度动态自适应贴高。",
+      "showEscBadgeDesc": "是否在右上角显示 ESC 键提示徽章。",
+      "defaultWidthRemDesc": "初始宽度（rem 单位）。",
+      "defaultHeightRemDesc": "初始高度（rem 单位）。",
+      "defaultWidthDesc": "初始宽度。",
+      "defaultHeightDesc": "初始高度。",
+      "topMarginRemDesc": "靠顶模式下的顶部外边距（rem 单位）。",
+      "remBaseDesc": "rem 换算基准比例。",
+      "titleDesc": "拖拽栏中的标题文本。",
+      "openDesc": "浮窗当前是否可见。",
+      "radiusDesc": "浮窗的圆角半径。",
+      "topMarginDesc": "靠顶定位模式下的顶部偏移边距。",
+      "titleDefault": "检查器窗口",
+      "sizeMenuTooltipDefault": "调整尺寸"
+    },
+    "elidedText": {
+      "textDesc": "待显示并检测溢出的字符串内容。",
+      "tooltipTextDesc": "与原文不同时的自定义提示文本覆盖。",
+      "tooltipPlacementDesc": "浮动工具提示的显示方位。",
+      "tooltipDelayDesc": "悬停后显示提示的延迟时长（毫秒）。",
+      "alwaysShowTooltipDesc": "悬停时强制显示提示，即使文本未被省略。",
+      "showTooltipWhenElidedDesc": "检测到溢出截断时允许提示显现。",
+      "copyableDesc": "点击文本是否复制到剪贴板并即时反馈。"
+    },
+    "rangeSlider": {
+      "description": "用于选择数值最小—最大区间的双滑块，具备防碰撞与键盘无障碍支持。",
+      "valueDesc": "当前 [min, max] 区间值。",
+      "onValueChangeDesc": "滑块移动时触发的回调。",
+      "onChangeDesc": "onValueChange 的别名。",
+      "sizeDesc": "密度与尺寸变体。",
+      "showTooltipDesc": "悬停、拖拽与聚焦时显示数值提示气泡。",
+      "readOnlyDesc": "阻止用户交互但保持对比度。",
+      "disabledDesc": "禁用滑块交互并降低不透明度。",
+      "minDesc": "允许的最小值。",
+      "maxDesc": "允许的最大值。",
+      "stepDesc": "步进增量。",
+      "minGapDesc": "两滑块之间的最小间隔。",
+      "fromDesc": "滑块的最小边界值。",
+      "toDesc": "滑块的最大边界值。",
+      "firstValueDesc": "第一滑块代表的数值。",
+      "secondValueDesc": "第二滑块代表的数值。",
+      "stepSizeDesc": "步进粒度增量。"
+    },
+    "virtualList": {
+      "itemsDesc": "待虚拟化的数据项数组。",
+      "renderRowDesc": "渲染单行的回调。",
+      "renderItemDesc": "renderRow 的别名。",
+      "estimateSizeDesc": "用于测量的预估行高。",
+      "gapDesc": "相邻项之间的垂直间距。",
+      "overscanDesc": "视口边界之外额外渲染的缓冲项数量。",
+      "emptyNodeDesc": "数据为空时渲染的内容。",
+      "onScrollDesc": "接收距底部距离的滚动事件回调。",
+      "refDesc": "暴露 scrollToIndex(index, align) 的句柄。",
+      "modelDesc": "用于生成代理的列表模型数量或数组。",
+      "delegateDesc": "为可见行实例化的视觉代理。",
+      "rowHeightDesc": "每行的默认预估高度。",
+      "estimateDesc": "虚拟测量的每项预估高度。",
+      "spacingDesc": "相邻项之间的垂直间距。",
+      "radiusDesc": "列表视口容器的圆角半径。",
+      "scrollToDesc": "以编程式滚动至目标项索引。"
+    },
+    "panelCard": {
+      "description": "带集成可折叠分区与头部操作槽的卡片表面，适用于桌面侧边栏与检查器。",
+      "titleDesc": "面板头部标题文本或元素。",
+      "badgeTextDesc": "显示于标题旁的可选徽标文本。",
+      "collapsibleDesc": "面板内容是否可折叠切换。",
+      "collapsedDesc": "受控折叠状态。",
+      "defaultCollapsedDesc": "非受控模式下的初始折叠状态。",
+      "onCollapsedChangeDesc": "折叠变化处理函数。",
+      "actionsDesc": "右对齐的头部操作元素。",
+      "sizeDesc": "卡片面板的尺寸规格。",
+      "radiusDesc": "卡片表面的圆角半径。"
+    },
+    "stepTimeline": {
+      "emptyText": "暂无步骤"
+    }
+  }
+}

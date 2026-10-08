@@ -8,9 +8,9 @@ Rectangle {
 
     property string connector: "AND"
     property var fields: [
-        { key: "role", label: "Role" },
-        { key: "age", label: "Age" },
-        { key: "status", label: "Status" }
+        { key: "role", label: ChaSetI18n.tr("desktopComposite.queryBuilder.fieldRole", "Role") },
+        { key: "age", label: ChaSetI18n.tr("desktopComposite.queryBuilder.fieldAge", "Age") },
+        { key: "status", label: ChaSetI18n.tr("desktopComposite.queryBuilder.fieldStatus", "Status") }
     ]
     property var rules: [
         { id: "r1", field: "role", operator: "equals", value: "Architect" },

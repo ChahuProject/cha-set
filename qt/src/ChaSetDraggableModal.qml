@@ -6,13 +6,13 @@ Rectangle {
     id: root
 
     property bool open: true
-    property string title: "Inspector Window"
+    property string title: ChaSetI18n.tr("components.draggableModal.titleDefault", "Inspector Window")
     property int customRadius: 8
     readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property string initialPositionMode: "center" // "center" | "top"
     property int topMargin: ThemeTokens.dp(72)
     property var sizeOptions: []
-    property string sizeMenuTooltip: "Adjust Size"
+    property string sizeMenuTooltip: ChaSetI18n.tr("components.draggableModal.sizeMenuTooltipDefault", "Adjust Size")
     property real remBase: ThemeTokens.dp(16)
     property bool autoFitHeight: true
     property bool showEscBadge: false

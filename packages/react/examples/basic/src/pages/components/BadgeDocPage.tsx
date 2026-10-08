@@ -30,19 +30,19 @@ export function BadgeDocPage() {
     <DocLayout
       category="Base Primitives"
       title="Badge"
-      description="Displays a badge or a component that looks like a badge to highlight status, tags, and counts."
+      description={t('components.badge.description', 'Displays a badge or a component that looks like a badge to highlight status, tags, and counts.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.badge.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('components.badge.overviewDesc', 'Adjust variant, size, and interactive status options in real time with synchronized previews for Web and Desktop.')}
         </p>
 
         <ComponentPreview
-          title="Badge Sandbox"
+          title={t('showcase.previewTitles.Badge Sandbox', 'Badge Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -54,12 +54,12 @@ export function BadgeDocPage() {
                   value={variant}
                   onChange={(v) => setVariant(v as BadgeVariant)}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Secondary', value: 'secondary' },
-                    { label: 'Destructive', value: 'destructive' },
-                    { label: 'Outline', value: 'outline' },
-                    { label: 'Ghost', value: 'ghost' },
-                    { label: 'Link', value: 'link' },
+                    { label: t('common.default', 'Default'), value: 'default' },
+                    { label: t('common.secondary', 'Secondary'), value: 'secondary' },
+                    { label: t('common.destructive', 'Destructive'), value: 'destructive' },
+                    { label: t('common.outline', 'Outline'), value: 'outline' },
+                    { label: t('common.ghost', 'Ghost'), value: 'ghost' },
+                    { label: t('common.link', 'Link'), value: 'link' },
                   ]}
                 />
               </div>
@@ -71,8 +71,8 @@ export function BadgeDocPage() {
                   value={size}
                   onChange={(s) => setSize(s as BadgeSize)}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Small (sm)', value: 'sm' },
+                    { label: t('common.default', 'Default'), value: 'default' },
+                    { label: t('desktopComposite.badge.sizeSmall', 'Small (sm)'), value: 'sm' },
                   ]}
                 />
               </div>
@@ -127,7 +127,7 @@ export function BadgeDocPage() {
 
       {/* 3. Variants */}
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Variants">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.badge.variantsTitle', 'Variants')}>
           {t('components.badge.variantsTitle', 'Variants')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
@@ -145,7 +145,7 @@ export function BadgeDocPage() {
 
       {/* 4. Sizes */}
       <section id="sizes" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Sizes">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.badge.sizesTitle', 'Sizes')}>
           {t('components.badge.sizesTitle', 'Sizes')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
@@ -165,7 +165,7 @@ export function BadgeDocPage() {
 
       {/* 5. Status & Removable Badges */}
       <section id="status-removable-tags" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Status & Removable Tags">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.badge.statusTitle', 'Status & Removable Tags')}>
           {t('components.badge.statusTitle', 'Status & Removable Tags')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
@@ -183,11 +183,11 @@ export function BadgeDocPage() {
             {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <div>
           <p className="text-sm text-muted-foreground mb-4">
-            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+            {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
@@ -212,49 +212,49 @@ export function BadgeDocPage() {
             name: 'variant',
             type: "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'",
             default: "'default'",
-            description: 'Visual stylistic variant corresponding to core color tokens.',
+            description: t('components.badge.variantDesc', 'Visual stylistic variant corresponding to core color tokens.'),
           },
           {
             name: 'size',
             type: "'default' | 'sm'",
             default: "'default'",
-            description: 'Size variant determining pill height, padding, and font metrics scale.',
+            description: t('components.badge.sizeDesc', 'Size variant determining pill height, padding, and font metrics scale.'),
           },
           {
             name: 'dot',
             type: 'boolean',
             default: 'false',
-            description: 'Whether to display a leading status indicator dot.',
+            description: t('components.badge.dotDesc', 'Whether to display a leading status indicator dot.'),
           },
           {
             name: 'dotColor',
             type: 'string',
             default: 'undefined',
-            description: 'Custom color class for the status dot (e.g. bg-emerald-500).',
+            description: t('components.badge.dotColorDesc', 'Custom color class for the status dot (e.g. bg-emerald-500).'),
           },
           {
             name: 'removable',
             type: 'boolean',
             default: 'false',
-            description: 'Whether to display an inline dismiss/remove action button.',
+            description: t('components.badge.removableDesc', 'Whether to display an inline dismiss/remove action button.'),
           },
           {
             name: 'onRemove',
             type: '() => void',
             default: 'undefined',
-            description: 'Callback fired when the dismiss/remove action is triggered.',
+            description: t('components.badge.onRemoveDesc', 'Callback fired when the dismiss/remove action is triggered.'),
           },
           {
             name: 'interactive',
             type: 'boolean',
             default: 'false',
-            description: 'Whether the badge responds with interactive cursor and click effects.',
+            description: t('components.badge.interactiveDesc', 'Whether the badge responds with interactive cursor and click effects.'),
           },
           {
             name: 'className',
             type: 'string',
             default: "''",
-            description: 'Optional additional Tailwind CSS class names.',
+            description: t('components.badge.classNameDesc', 'Optional additional Tailwind CSS class names.'),
           },
         ]}
       />

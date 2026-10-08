@@ -11,18 +11,16 @@ export interface DocAnatomyProps {
 
 export function DocAnatomy({
   id = 'anatomy',
-  title = 'Anatomy',
-  description = 'Import and structure definition for React and Qt Quick.',
+  title,
+  description,
   reactCode,
   qtCode,
 }: DocAnatomyProps) {
   const [activeTab, setActiveTab] = useState<'react' | 'qt'>('react');
   const { t } = useChaSetI18n();
 
-  const localizedTitle = title === 'Anatomy' ? t('showcase.anatomy', 'Anatomy') : title;
-  const localizedDesc = description === 'Import and structure definition for React and Qt Quick.'
-    ? t('showcase.anatomyDesc', 'Import and structure definition for React and Qt Quick.')
-    : description;
+  const localizedTitle = title ?? t('showcase.anatomy', 'Anatomy');
+  const localizedDesc = description ?? t('showcase.anatomyDesc', 'Import and structure definition for React and Qt Quick.');
 
   return (
     <section id={id} className="scroll-mt-20 my-8">

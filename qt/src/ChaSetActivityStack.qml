@@ -473,7 +473,7 @@ Item {
                     anchors.right: summaryChevron.left
                     anchors.rightMargin: ThemeTokens.dp(4)
                     anchors.verticalCenter: parent.verticalCenter
-                    text: root.orderedAll.length + " 项" + root.summaryLabel
+                    text: ChaSetI18n.tr("desktopComposite.activityStack.summaryText", "{{count}} items {{label}}", { count: root.orderedAll.length, label: root.summaryLabel })
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeSmall
                     font.weight: Typography.weightMedium
@@ -493,7 +493,7 @@ Item {
             }
 
             Accessible.role: Accessible.Button
-            Accessible.name: root.label !== "" ? root.label : "Activity stack"
+            Accessible.name: root.label !== "" ? root.label : ChaSetI18n.tr("desktopComposite.activityStack.accessibleLabel", "Activity stack")
 
             HoverHandler {
                 cursorShape: Qt.PointingHandCursor
@@ -546,7 +546,7 @@ Item {
                     id: pillText
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "还有 " + root.hiddenCount + " 项"
+                    text: ChaSetI18n.tr("desktopComposite.activityStack.overflowLabel", "{{count}} more items", { count: root.hiddenCount })
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                     font.weight: Typography.weightMedium

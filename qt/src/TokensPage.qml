@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Get Started"
     pageTitle: "Theme & Tokens"
-    description: "Neutral token system driving both Tailwind custom CSS properties and Qt Quick C++ / QML singletons."
+    description: ChaSetI18n.tr("components.theme-tokens.description", "Neutral token system driving both Tailwind custom CSS properties and Qt Quick C++ / QML singletons.")
     tocItems: [
-        { id: "colors", title: "Color Palette" },
-        { id: "type", title: "Typography & Radius" }
+        { id: "colors", title: ChaSetI18n.tr("showcase.toc.colors", "Color Palette") },
+        { id: "type", title: ChaSetI18n.tr("showcase.toc.type", "Typography & Radius") }
     ]
 
     property int customRadius: 8
