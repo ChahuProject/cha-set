@@ -243,6 +243,9 @@ Item {
             border.color: root.fgColor()
             border.width: 2
             radius: ThemeTokens.dp(8)
+            layer.enabled: true
+            layer.smooth: true
+            layer.samples: 4
 
             Rectangle {
                 width: ThemeTokens.dp(3)

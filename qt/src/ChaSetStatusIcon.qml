@@ -163,10 +163,15 @@ Item {
     height: root.height
     transformOrigin: Item.Center
 
+    layer.enabled: true
+    layer.smooth: true
+    layer.samples: 4
+
     Shape {
       anchors.fill: parent
       asynchronous: false
       antialiasing: true
+      preferredRendererType: Shape.CurveRenderer
 
       ShapePath {
         strokeColor: root.statusColor

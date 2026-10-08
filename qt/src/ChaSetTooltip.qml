@@ -173,24 +173,34 @@ Item {
     }
     readonly property bool useGlobalService: (globalService !== null && root.customContent === null)
 
+    readonly property bool effectiveHovered: (hoverHandler.hovered || root.hovered || root.forceHover) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
+
     readonly property bool shouldShow: (root.active || root.internalActive || root.forceHover) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
+
+    function syncGlobalService() {
+        if (!useGlobalService || !globalService) return
+        var wantShow = (effectiveHovered || root.active) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
+        if (wantShow) {
+            globalService.request({
+                source: root,
+                targetItem: root.effectiveTarget,
+                text: root.text,
+                shortcut: root.shortcut,
+                placement: root.side,
+                delay: root.delay
+            })
+        } else {
+            globalService.cancel(root)
+        }
+    }
+
+    onEffectiveHoveredChanged: root.syncGlobalService()
+    onActiveChanged: root.syncGlobalService()
+    onTextChanged: root.syncGlobalService()
+    onEffectiveTargetChanged: root.syncGlobalService()
 
     onShouldShowChanged: {
         root.clampRevision++
-        if (useGlobalService && globalService) {
-            if (shouldShow) {
-                globalService.request({
-                    source: root,
-                    targetItem: root.effectiveTarget,
-                    text: root.text,
-                    shortcut: root.shortcut,
-                    placement: root.side,
-                    delay: root.delay
-                })
-            } else {
-                globalService.cancel(root)
-            }
-        }
     }
 
     Component.onDestruction: {
@@ -200,15 +210,17 @@ Item {
     }
 
     onHoveredChanged: {
-        if (hovered && !root.disabled) {
-            if (root.delay <= 0) {
-                root.internalActive = true
-            } else {
-                delayTimer.restart()
+        if (!useGlobalService) {
+            if (hovered && !root.disabled) {
+                if (root.delay <= 0) {
+                    root.internalActive = true
+                } else {
+                    delayTimer.restart()
+                }
+            } else if (!hoverHandler.hovered) {
+                delayTimer.stop()
+                root.internalActive = false
             }
-        } else if (!hoverHandler.hovered) {
-            delayTimer.stop()
-            root.internalActive = false
         }
     }
 
@@ -218,15 +230,17 @@ Item {
         enabled: !root.disabled
         onHoveredChanged: {
             root.hovered = hovered
-            if (hovered && !root.disabled) {
-                if (root.delay <= 0) {
-                    root.internalActive = true
-                } else {
-                    delayTimer.restart()
+            if (!root.useGlobalService) {
+                if (hovered && !root.disabled) {
+                    if (root.delay <= 0) {
+                        root.internalActive = true
+                    } else {
+                        delayTimer.restart()
+                    }
+                } else if (!root.hovered) {
+                    delayTimer.stop()
+                    root.internalActive = false
                 }
-            } else if (!root.hovered) {
-                delayTimer.stop()
-                root.internalActive = false
             }
         }
     }
@@ -244,6 +258,9 @@ Item {
 
     onDisabledChanged: {
         if (disabled) {
+            if (useGlobalService && globalService) {
+                globalService.cancel(root)
+            }
             delayTimer.stop()
             internalActive = false
         }

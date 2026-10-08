@@ -212,7 +212,9 @@ Item {
                         Text {
                             id: titleText
                             anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+                            verticalAlignment: Text.AlignVCenter
                             width: parent.width - (metaText.visible ? metaText.width + ThemeTokens.dp(8) : 0)
                             text: root.title
                             color: root.surfaceForeground
@@ -384,7 +386,7 @@ Item {
     }
 
     ChaSetTooltip {
-        target: titleText
+        target: titleRow
         text: root.title
         disabled: !titleText.truncated || root.title === ""
         side: "top"
