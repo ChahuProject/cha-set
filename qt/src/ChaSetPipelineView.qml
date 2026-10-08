@@ -313,7 +313,7 @@ Item {
 
         // Cancel Button on the right
         ChaSetButton {
-          text: "Cancel"
+            text: ChaSetI18n.tr("common.cancel", "Cancel")
           variant: "outline"
           size: "sm"
           disabled: root.cancelDisabled

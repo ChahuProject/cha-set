@@ -62,7 +62,7 @@ Item {
 
             Text {
                 id: optionalLabel
-                text: "(optional)"
+                text: ChaSetI18n.tr("components.label.optionalIndicator", "(optional)")
                 font.pixelSize: root.isSm ? Typography.sizeMicro : Typography.sizeSmall
                 font.weight: Font.Normal
                 color: ThemeTokens.subduedText
