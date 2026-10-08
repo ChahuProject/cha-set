@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Base Primitives"
     pageTitle: "Button"
-    description: "Displays a button or a component that looks like a button with multiple variants, sizes, and states."
+    description: ChaSetI18n.tr("components.button.description", "Displays a button or a component that looks like a button with multiple variants, sizes, and states.")
 
     property string btnVariant: "default"
     property string btnSize: "default"
@@ -30,7 +30,7 @@ DocLayout {
 
     // 1. Interactive Preview Hero
     ComponentPreview {
-        title: "Interactive Button Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.button.sandboxTitle", "Interactive Button Sandbox")
         reactCode: `<Button
   variant="${root.btnVariant}"
   size="${root.btnSize}"${root.btnLoading ? '\n  loading' : ''}${root.btnDisabled ? '\n  disabled' : ''}${root.btnFullWidth ? '\n  fullWidth' : ''}${root.btnPressed ? '\n  pressed' : ''}
@@ -74,13 +74,13 @@ DocLayout {
                     size: "sm"
                     value: root.btnVariant
                     options: [
-                        { label: "Default", value: "default" },
-                        { label: "Secondary", value: "secondary" },
-                        { label: "Outline", value: "outline" },
-                        { label: "Ghost", value: "ghost" },
-                        { label: "Destructive", value: "destructive" },
-                        { label: "Link", value: "link" },
-                        { label: "Overlay", value: "overlay" }
+                        { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                        { label: ChaSetI18n.tr("common.secondary", "Secondary"), value: "secondary" },
+                        { label: ChaSetI18n.tr("common.outline", "Outline"), value: "outline" },
+                        { label: ChaSetI18n.tr("common.ghost", "Ghost"), value: "ghost" },
+                        { label: ChaSetI18n.tr("common.destructive", "Destructive"), value: "destructive" },
+                        { label: ChaSetI18n.tr("common.link", "Link"), value: "link" },
+                        { label: ChaSetI18n.tr("common.overlay", "Overlay"), value: "overlay" }
                     ]
                     onValueSelected: function(v) { root.btnVariant = String(v); }
                 }
@@ -94,12 +94,12 @@ DocLayout {
                     options: [
                         { label: "XS", value: "xs" },
                         { label: "SM", value: "sm" },
-                        { label: "Default", value: "default" },
+                        { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
                         { label: "LG", value: "lg" },
-                        { label: "Icon", value: "icon" },
-                        { label: "Icon-XS", value: "icon-xs" },
-                        { label: "Icon-SM", value: "icon-sm" },
-                        { label: "Icon-LG", value: "icon-lg" }
+                        { label: ChaSetI18n.tr("desktopComposite.button.iconLabel", "Icon"), value: "icon" },
+                        { label: ChaSetI18n.tr("desktopComposite.button.iconXsLabel", "Icon-XS"), value: "icon-xs" },
+                        { label: ChaSetI18n.tr("desktopComposite.button.iconSmLabel", "Icon-SM"), value: "icon-sm" },
+                        { label: ChaSetI18n.tr("desktopComposite.button.iconLgLabel", "Icon-LG"), value: "icon-lg" }
                     ]
                     onValueSelected: function(s) { root.btnSize = String(s); }
                 }
@@ -156,7 +156,7 @@ DocLayout {
     // 3. Examples
     Column {
         property string sectionId: "states"
-        property string sectionTitle: "Examples & States"
+        property string sectionTitle: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
         width: parent.width
         spacing: ThemeTokens.dp(20)
 
@@ -269,14 +269,14 @@ DocLayout {
         spacing: ThemeTokens.dp(8)
 
         DocText {
-            text: "Animations"
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
             color: ThemeTokens.text
         }
 
         DocText {
-            text: "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            text: ChaSetI18n.tr("showcase.animationsDescQml", "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled).")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -288,17 +288,17 @@ DocLayout {
         name: "Button"
         componentId: "button"
         propsModel: [
-            ["variant", "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'overlay'", "'default'", "Visual appearance and semantic intent."],
-            ["size", "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'", "'default'", "Standardized dimensions scale."],
-            ["loading", "bool", "false", "Shows spinning indicator and disables user interaction."],
-            ["loadingText", "string", "\"\"", "Optional label displayed while in loading state."],
-            ["pressed", "bool", "false", "Toggle or selected state with active styling."],
-            ["fullWidth", "bool", "false", "Stretches the button to 100% of the parent container width."],
-            ["disabled", "bool", "false", "Blocks clicks and applies muted disabled styling."],
-            ["iconSource", "string", "\"\"", "Optional icon image source URL."],
-            ["iconPosition", "string", "\"left\"", "Placement of iconSource: left or right."],
-            ["iconSize", "int", "0", "Logical icon size; 0 = auto (derive from size), otherwise logical units scaled internally."],
-            ["text", "string", "\"\"", "Button label text content."]
+            ["variant", "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'overlay'", "'default'", ChaSetI18n.tr("components.button.variantDesc", "Visual appearance and semantic intent.")],
+            ["size", "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'", "'default'", ChaSetI18n.tr("components.button.sizeDesc", "Standardized dimensions scale.")],
+            ["loading", "bool", "false", ChaSetI18n.tr("components.button.loadingDesc", "Shows spinning indicator and disables user interaction.")],
+            ["loadingText", "string", "\"\"", ChaSetI18n.tr("components.button.loadingTextDesc", "Optional content displayed while in loading state.")],
+            ["pressed", "bool", "false", ChaSetI18n.tr("components.button.pressedDesc", "Toggle or selected state with active styling and aria-pressed.")],
+            ["fullWidth", "bool", "false", ChaSetI18n.tr("components.button.fullWidthDesc", "Stretches the button to 100% of the parent container width.")],
+            ["disabled", "bool", "false", ChaSetI18n.tr("components.button.disabledDesc", "Blocks clicks and applies muted disabled styling.")],
+            ["iconSource", "string", "\"\"", ChaSetI18n.tr("components.button.iconSourceDesc", "Optional icon image source URL.")],
+            ["iconPosition", "string", "\"left\"", ChaSetI18n.tr("components.button.iconPositionDesc", "Placement of iconSource: left or right.")],
+            ["iconSize", "int", "0", ChaSetI18n.tr("components.button.iconSizeDesc", "Logical unscaled icon size; enlarges or overrides icons rendered inside the button.")],
+            ["text", "string", "\"\"", ChaSetI18n.tr("components.button.textDesc", "Button label text content.")]
         ]
     }
     }

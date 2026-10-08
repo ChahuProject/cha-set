@@ -7,12 +7,12 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Inline Editable Text"
-    description: "Seamless inline text label that dynamically transforms into an input field on double-click or edit trigger."
+    description: ChaSetI18n.tr("components.inline-editable-text.description", "Text element that switches seamlessly to an input field on double-click or edit trigger, supporting Enter to save and Escape to cancel.")
 
     property string currentTitle: "Project Apollo Architecture"
 
     ComponentPreview {
-        title: "Inline Editable Text Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.inlineEditableText.sandboxTitle", "Inline Editable Text Sandbox")
         reactCode: `<InlineEditableText
   value={text}
   onSave={(val) => setText(val)}
@@ -73,8 +73,8 @@ ChaSetInlineEditableText {
 
     ComponentPreview {
         property string sectionId: "variants"
-        property string sectionTitle: "Sizes & Interaction Triggers"
-        title: "Sizes & Interaction Triggers"
+        property string sectionTitle: ChaSetI18n.tr("components.inlineEditableText.sizesAndTriggers", "Sizes & Interaction Triggers")
+        title: ChaSetI18n.tr("components.inlineEditableText.sizesAndTriggers", "Sizes & Interaction Triggers")
         reactCode: `<InlineEditableText value="Single Click to Edit" trigger="click" size="default" />
 <InlineEditableText value="Double Click to Edit" trigger="doubleClick" size="default" />
 <InlineEditableText value="Compact sm Tier Label" size="sm" />
@@ -127,13 +127,13 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`
         name: "InlineEditableText"
         componentId: "inline-editable-text"
         propsModel: [
-            { name: "value", type: "string", default: "'Click to edit'", description: "The active text value displayed and edited." },
-            { name: "text", type: "string", default: "''", description: "Alias for value property." },
-            { name: "placeholder", type: "string", default: "'Enter text...'", description: "Fallback text when the value property is empty." },
-            { name: "trigger", type: "string", default: "'click'", description: "Activation trigger: 'click' or 'doubleClick'." },
-            { name: "size", type: "string", default: "'default'", description: "Density and sizing variant: 'default' | 'sm'." },
-            { name: "disabled", type: "bool", default: "false", description: "Whether inline editing interaction is disabled." },
-            { name: "editing", type: "bool", default: "false", description: "Whether the component is currently in input edit mode." }
+            { name: "value", type: "string", default: "'Click to edit'", description: ChaSetI18n.tr("components.inlineEditableText.valueDescQt", "The active text value displayed and edited.") },
+            { name: "text", type: "string", default: "''", description: ChaSetI18n.tr("components.inlineEditableText.textDescQt", "Alias for value property.") },
+            { name: "placeholder", type: "string", default: "'Enter text...'", description: ChaSetI18n.tr("components.inlineEditableText.placeholderDescQt", "Fallback text when the value property is empty.") },
+            { name: "trigger", type: "string", default: "'click'", description: ChaSetI18n.tr("components.inlineEditableText.triggerDescQt", "Activation trigger: 'click' or 'doubleClick'.") },
+            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.inlineEditableText.sizeDescQt", "Density and sizing variant: 'default' | 'sm'.") },
+            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.inlineEditableText.disabledDescQt", "Whether inline editing interaction is disabled.") },
+            { name: "editing", type: "bool", default: "false", description: ChaSetI18n.tr("components.inlineEditableText.editingDesc", "Whether the component is currently in input edit mode.") }
         ]
     }
 }

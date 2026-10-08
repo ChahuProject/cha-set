@@ -25,10 +25,10 @@ export function SnapSliderDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Snap Slider"
-      description="Stepped discrete slider that snaps to defined stops with ticks and label row."
+      description={t('components.snap-slider.description', 'Stepped discrete slider that snaps to defined stops with ticks and label row.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.interactiveOverview', 'Interactive Overview')}</h2>
         <ComponentPreview
           qtCode={`ChaSetSnapSlider {
     count: 5
@@ -38,7 +38,7 @@ export function SnapSliderDocPage() {
     currentIndex: 1
     onIndexChanged: function(idx) { console.log(idx) }
 }`}
-          title="Snap Slider Sandbox"
+          title={t('desktopComposite.snapSlider.sandboxTitle', 'Snap Slider Sandbox')}
           reactCode={heroReactCode}
           controls={
             <div className="flex flex-wrap items-center gap-3 text-xs">
@@ -99,105 +99,100 @@ ChaSetSnapSlider {
 
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Animations</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
         <p className="text-sm text-muted-foreground">
           {t('formsA.snapSlider.animationsDesc', 'Motion tokens and kinematic timing contracts for SnapSlider interaction.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
-            Thumb hover and scale micro-interactions animate smoothly over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> (90ms) using{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve (Qt counterpart:{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.motionQuick</code> and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.easeStandard</code>).
+            {t('desktopComposite.snapSlider.animationsBullet1', 'Thumb hover and scale micro-interactions animate smoothly over duration-quick (90ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).')}
           </li>
           <li>
-            Thumb drag kinematics track pointer position in 60fps real-time without un-damped lag.
+            {t('desktopComposite.snapSlider.animationsBullet2', 'Thumb drag kinematics track pointer position in 60fps real-time without un-damped lag.')}
           </li>
           <li>
-            Respects <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> in Qt.
+            {t('desktopComposite.snapSlider.animationsBullet3', 'Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt.')}
           </li>
         </ul>
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard Navigation</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</h2>
         <p className="text-sm text-muted-foreground">
-          Keyboard shortcuts and discrete step navigation patterns.
+          {t('desktopComposite.snapSlider.keyboardDesc', 'Keyboard shortcuts and discrete step navigation patterns.')}
         </p>
         <KeyboardShortcutsTable componentId="snap-slider" />
       </section>
 
       <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.propsReference', 'Props Reference')}</h2>
         <PropsTable
           items={[
             {
               name: 'value',
               type: 'number',
               default: '0',
-              description: 'Controlled current snap stop index.',
+              description: t('components.snapSlider.valueDesc', 'Controlled current snap stop index.'),
             },
             {
               name: 'defaultValue',
               type: 'number',
               default: '0',
-              description: 'Default initial snap stop index in uncontrolled mode.',
+              description: t('components.snapSlider.defaultValueDesc', 'Default initial snap stop index in uncontrolled mode.'),
             },
             {
               name: 'count',
               type: 'number',
               default: '5',
-              description: 'Total number of discrete stops (defaults to labels.length if provided).',
+              description: t('components.snapSlider.countDesc', 'Total number of discrete stops (defaults to labels.length if provided).'),
             },
             {
               name: 'labels',
               type: 'string[]',
               default: '[]',
-              description: 'Array of labels for each stop shown at the active center position.',
+              description: t('components.snapSlider.labelsDesc', 'Array of labels for each stop shown at the active center position.'),
             },
             {
               name: 'leftLabel',
               type: 'string',
               default: '""',
-              description: 'Boundary label on the bottom-left edge.',
+              description: t('components.snapSlider.leftLabelDesc', 'Boundary label on the bottom-left edge.'),
             },
             {
               name: 'rightLabel',
               type: 'string',
               default: '""',
-              description: 'Boundary label on the bottom-right edge.',
+              description: t('components.snapSlider.rightLabelDesc', 'Boundary label on the bottom-right edge.'),
             },
             {
               name: 'showTicks',
               type: 'boolean',
               default: 'true',
-              description: 'Whether to display tick marks on the slider track.',
+              description: t('components.snapSlider.showTicksDesc', 'Whether to display tick marks on the slider track.'),
             },
             {
               name: 'size',
               type: '"default" | "sm"',
               default: '"default"',
-              description: 'Visual sizing variant.',
+              description: t('components.snapSlider.sizeDesc', 'Visual sizing variant.'),
             },
             {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
-              description: 'Whether the slider is disabled.',
+              description: t('components.snapSlider.disabledDesc', 'Whether the slider is disabled.'),
             },
             {
               name: 'readOnly',
               type: 'boolean',
               default: 'false',
-              description: 'Whether the slider is read-only.',
+              description: t('components.snapSlider.readOnlyDesc', 'Whether the slider is read-only.'),
             },
             {
               name: 'onChange',
               type: '(index: number) => void',
               default: 'undefined',
-              description: 'Callback fired when the selected stop index changes.',
+              description: t('components.snapSlider.onChangeDesc', 'Callback fired when the selected stop index changes.'),
             },
           ]}
         />

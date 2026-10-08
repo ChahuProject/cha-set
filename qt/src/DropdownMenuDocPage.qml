@@ -7,12 +7,12 @@ DocLayout {
     id: root
     category: "Overlays & Feedback"
     pageTitle: "Dropdown Menu"
-    description: "Displays a menu to the user triggered by a button with item groups, icons, shortcuts, and destructive actions."
+    description: ChaSetI18n.tr("components.dropdownMenu.description", "Displays a menu to the user triggered by a button, supporting items, labels, separators, shortcuts, and destructive actions.")
 
     property string lastAction: "None"
 
     ComponentPreview {
-        title: "Dropdown Menu Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.dropdownMenu.sandboxTitle", "Dropdown Menu Sandbox")
         reactCode: `<DropdownMenu items={items}>
   <Button variant="outline">Options ▾</Button>
 </DropdownMenu>`
@@ -102,10 +102,10 @@ ChaSetDropdownMenu {
         name: "DropdownMenu"
         componentId: "dropdown-menu"
         propsModel: [
-            { name: "open", type: "bool", default: "false", description: "Whether the menu popup is currently open." },
-            { name: "items", type: "var[]", default: "[]", description: "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }." },
-            { name: "menuWidth", type: "int", default: "180", description: "Width dimension of the popup menu panel." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the menu panel." }
+            { name: "open", type: "bool", default: "false", description: ChaSetI18n.tr("components.dropdownMenu.openDescQt", "Whether the menu popup is currently open.") },
+            { name: "items", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.dropdownMenu.itemsDescQt", "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }.") },
+            { name: "menuWidth", type: "int", default: "180", description: ChaSetI18n.tr("components.dropdownMenu.menuWidthDesc", "Width dimension of the popup menu panel.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.dropdownMenu.customRadiusDesc", "Corner radius of the menu panel.") }
         ]
     }
 }

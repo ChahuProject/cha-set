@@ -10,8 +10,8 @@ Rectangle {
     color: Qt.rgba(0, 0, 0, 0.6)
 
     property bool open: false
-    property string title: "Edit profile"
-    property string description: "Make changes to your profile here. Click save when you're done."
+    property string title: ChaSetI18n.tr("overlays.sheet.editProfileTitle", "Edit profile")
+    property string description: ChaSetI18n.tr("overlays.sheet.editProfileDesc", "Make changes to your profile here. Click save when you're done.")
     property string side: "right" // "top" | "bottom" | "left" | "right"
     property string size: "default" // "sm" | "default" | "lg" | "xl" | "full"
     property bool closeOnOverlayClick: true

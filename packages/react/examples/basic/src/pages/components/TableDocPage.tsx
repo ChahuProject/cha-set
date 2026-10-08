@@ -89,19 +89,19 @@ export function TableDocPage() {
     <DocLayout
       category="Composite Engines"
       title="Table"
-      description="A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics."
+      description={t('components.table.description', 'A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Test interactive data table controls with live filtering, row selection, and synchronized React and Qt Quick code.
+          {t('desktopComposite.table.overviewDesc', 'Test interactive data table controls with live filtering, row selection, and synchronized React and Qt Quick code.')}
         </p>
 
         <ComponentPreview
-          title="Table Sandbox"
+          title={t('desktopComposite.table.sandboxTitle', 'Table Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -217,10 +217,10 @@ export function TableDocPage() {
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & States
+          {t('showcase.examplesAndStates', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Common table patterns and interactive configurations.
+          {t('desktopComposite.table.examplesDesc', 'Common table patterns and interactive configurations.')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Card: Clean Simple Table */}
@@ -240,15 +240,15 @@ export function TableDocPage() {
                   </TableHeader>
                   <TableBody>
                     <TableRow>
-                      <TableCell className="font-medium">Alice</TableCell>
+                      <TableCell className="font-medium">{t('desktopComposite.table.userAlice', 'Alice')}</TableCell>
                       <TableCell>{t('desktopComposite.table.roleAdmin', 'Administrator')}</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell className="font-medium">Bob</TableCell>
+                      <TableCell className="font-medium">{t('desktopComposite.table.userBob', 'Bob')}</TableCell>
                       <TableCell>{t('desktopComposite.table.roleDev', 'Developer')}</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell className="font-medium">Carol</TableCell>
+                      <TableCell className="font-medium">{t('desktopComposite.table.userCarol', 'Carol')}</TableCell>
                       <TableCell>{t('desktopComposite.table.roleDesigner', 'Designer')}</TableCell>
                     </TableRow>
                   </TableBody>
@@ -274,19 +274,19 @@ export function TableDocPage() {
                   </TableHeader>
                   <TableBody>
                     <TableRow data-state="selected">
-                      <TableCell className="font-medium">API Integration</TableCell>
+                      <TableCell className="font-medium">{t('desktopComposite.table.taskApiIntegration', 'API Integration')}</TableCell>
                       <TableCell className="text-right">
                         <Badge size="sm" variant="default">{t('desktopComposite.table.stateComplete', 'Complete')}</Badge>
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell className="font-medium">Unit Testing</TableCell>
+                      <TableCell className="font-medium">{t('desktopComposite.table.taskUnitTesting', 'Unit Testing')}</TableCell>
                       <TableCell className="text-right">
                         <Badge size="sm" variant="secondary">{t('desktopComposite.table.stateInReview', 'In Review')}</Badge>
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell className="font-medium">Documentation</TableCell>
+                      <TableCell className="font-medium">{t('desktopComposite.table.taskDocumentation', 'Documentation')}</TableCell>
                       <TableCell className="text-right">
                         <Badge size="sm" variant="outline">{t('desktopComposite.table.statePlanned', 'Planned')}</Badge>
                       </TableCell>
@@ -309,13 +309,13 @@ export function TableDocPage() {
                   name: 'className',
                   type: 'string',
                   default: "''",
-                  description: 'Additional CSS classes for the table element.',
+                  description: t('components.table.classNameDesc', 'Additional CSS classes for the table element.'),
                 },
                 {
                   name: 'containerClassName',
                   type: 'string',
                   default: "''",
-                  description: 'Additional CSS classes for the overflow-auto wrapper container.',
+                  description: t('components.table.containerClassNameDesc', 'Additional CSS classes for the overflow-auto wrapper container.'),
                 },
               ]}
       />

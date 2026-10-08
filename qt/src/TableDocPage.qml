@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Composite Engines"
     pageTitle: "Table"
-    description: "A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics."
+    description: ChaSetI18n.tr("components.table.description", "A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics.")
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -47,7 +47,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Table Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.table.sandboxTitle", "Table Sandbox")
         reactCode: `<Table>\n  ${root.showCaption ? '<TableCaption>A list of your recent invoices.</TableCaption>\n  ' : ''}<TableHeader>\n    <TableRow>\n      <TableHead className="w-24">Invoice</TableHead>\n      <TableHead>Status</TableHead>\n      <TableHead>Method</TableHead>\n      <TableHead className="text-right">Amount</TableHead>\n    </TableRow>\n  </TableHeader>\n  <TableBody>\n    {invoices.map((inv) => (\n      <TableRow key={inv.id}>\n        <TableCell className="font-medium">{inv.id}</TableCell>\n        <TableCell>{inv.status}</TableCell>\n        <TableCell>{inv.method}</TableCell>\n        <TableCell className="text-right">{inv.amount}</TableCell>\n      </TableRow>\n    ))}\n  </TableBody>\n</Table>`
         qtCode: `ChaSetTable {\n    width: parent.width\n    caption: ${root.showCaption ? '"A list of your recent invoices."' : '""'}\n    columns: [\n        { key: "id", title: "Invoice", width: 100 },\n        { key: "status", title: "Status", width: 100, badge: true },\n        { key: "method", title: "Method" },\n        { key: "amount", title: "Amount", align: "right", width: 120 }\n    ]\n    rows: invoices\n    selectedIndex: 0\n    onRowClicked: (index, rowData) => console.log("Selected:", rowData.id)\n}`
 
@@ -125,7 +125,7 @@ DocLayout {
     // Section 4: Examples & States
     Column {
         property string sectionId: "states"
-        property string sectionTitle: "Examples & States"
+        property string sectionTitle: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
         width: parent.width
         spacing: 12
 
@@ -137,7 +137,7 @@ DocLayout {
         }
 
         DocText {
-            text: "Common configurations and visual states in Qt Quick."
+            text: ChaSetI18n.tr("desktopComposite.table.examplesDescQt", "Common configurations and visual states in Qt Quick.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -164,9 +164,9 @@ DocLayout {
                             { key: "role", title: ChaSetI18n.tr("desktopComposite.table.colRole", "Role"), align: "right" }
                         ]
                         rows: [
-                            { user: "Alice", role: ChaSetI18n.tr("desktopComposite.table.roleAdmin", "Administrator") },
-                            { user: "Bob", role: ChaSetI18n.tr("desktopComposite.table.roleDev", "Developer") },
-                            { user: "Carol", role: ChaSetI18n.tr("desktopComposite.table.roleDesigner", "Designer") }
+                            { user: ChaSetI18n.tr("desktopComposite.table.userAlice", "Alice"), role: ChaSetI18n.tr("desktopComposite.table.roleAdmin", "Administrator") },
+                            { user: ChaSetI18n.tr("desktopComposite.table.userBob", "Bob"), role: ChaSetI18n.tr("desktopComposite.table.roleDev", "Developer") },
+                            { user: ChaSetI18n.tr("desktopComposite.table.userCarol", "Carol"), role: ChaSetI18n.tr("desktopComposite.table.roleDesigner", "Designer") }
                         ]
                     }
                 }
@@ -191,9 +191,9 @@ DocLayout {
                             { key: "state", title: ChaSetI18n.tr("desktopComposite.table.colState", "State"), align: "right", badge: true }
                         ]
                         rows: [
-                            { task: "API Integration", state: ChaSetI18n.tr("desktopComposite.table.stateComplete", "Complete") },
-                            { task: "Unit Testing", state: ChaSetI18n.tr("desktopComposite.table.stateInReview", "In Review") },
-                            { task: "Documentation", state: ChaSetI18n.tr("desktopComposite.table.statePlanned", "Planned") }
+                            { task: ChaSetI18n.tr("desktopComposite.table.taskApiIntegration", "API Integration"), state: ChaSetI18n.tr("desktopComposite.table.stateComplete", "Complete") },
+                            { task: ChaSetI18n.tr("desktopComposite.table.taskUnitTesting", "Unit Testing"), state: ChaSetI18n.tr("desktopComposite.table.stateInReview", "In Review") },
+                            { task: ChaSetI18n.tr("desktopComposite.table.taskDocumentation", "Documentation"), state: ChaSetI18n.tr("desktopComposite.table.statePlanned", "Planned") }
                         ]
                     }
                 }
@@ -209,49 +209,49 @@ DocLayout {
                     name: "columns",
                     type: "var (array)",
                     default: "[]",
-                    description: "Array of column definition objects with key, title, optional width, and align ('left' | 'center' | 'right')."
+                    description: ChaSetI18n.tr("components.table.columnsDesc", "Array of column definition objects with key, title, optional width, and align ('left' | 'center' | 'right').")
                 },
                 {
                     name: "rows",
                     type: "var (array)",
                     default: "[]",
-                    description: "Array of data objects containing keys matching the column definitions."
+                    description: ChaSetI18n.tr("components.table.rowsDesc", "Array of data objects containing keys matching the column definitions.")
                 },
                 {
                     name: "caption",
                     type: "string",
                     default: "\"\"",
-                    description: "Optional caption text rendered at the bottom of the table."
+                    description: ChaSetI18n.tr("components.table.captionDesc", "Optional caption text rendered at the bottom of the table.")
                 },
                 {
                     name: "headerHeight",
                     type: "int",
                     default: "36",
-                    description: "Height for the column header row."
+                    description: ChaSetI18n.tr("components.table.headerHeightDesc", "Height for the column header row.")
                 },
                 {
                     name: "rowHeight",
                     type: "int",
                     default: "36",
-                    description: "Height for each table data row."
+                    description: ChaSetI18n.tr("components.table.rowHeightDesc", "Height for each table data row.")
                 },
                 {
                     name: "selectedIndex",
                     type: "int",
                     default: "-1",
-                    description: "Index of currently selected row, applying active selection token styling."
+                    description: ChaSetI18n.tr("components.table.selectedIndexDesc", "Index of currently selected row, applying active selection token styling.")
                 },
                 {
                     name: "customRadius",
                     type: "int",
                     default: "8",
-                    description: "Corner radius for the table outer container."
+                    description: ChaSetI18n.tr("components.table.customRadiusDesc", "Corner radius for the table outer container.")
                 },
                 {
                     name: "customBorderColor",
                     type: "color",
                     default: "ThemeTokens.border",
-                    description: "Border color for the table and row dividers."
+                    description: ChaSetI18n.tr("components.table.customBorderColorDesc", "Border color for the table and row dividers.")
                 }
             ]
     }

@@ -33,7 +33,7 @@ DocLayout {
     ]
 
     ComponentPreview {
-        title: "Code Block Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.codeBlock.sandboxTitle", "Code Block Sandbox")
         reactCode: `<CodeBlock\n  code={source}\n  language="tsx"\n  showLineNumbers\n  showCopy\n/>`
         qtCode: `ChaSetCodeBlock {\n    language: "tsx"\n    showLineNumbers: true\n    code: source\n}`
 
@@ -60,7 +60,7 @@ DocLayout {
     // Section: Variants & Options
     Column {
         property string sectionId: "variants"
-        property string sectionTitle: "Variants & Options"
+        property string sectionTitle: ChaSetI18n.tr("desktopComposite.codeBlock.variantsTitle", "Variants & Options")
         width: parent.width
         spacing: 16
 
@@ -102,7 +102,7 @@ DocLayout {
             spacing: 8
             Row {
                 spacing: 8
-                ChaSetBadge { variant: "secondary"; text: "wrap" }
+                ChaSetBadge { variant: "secondary"; text: ChaSetI18n.tr("desktopComposite.codeBlock.wrapBadge", "wrap") }
                 DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.wrapDesc", "Soft-wrap long lines instead of horizontal scroll"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
@@ -137,7 +137,7 @@ DocLayout {
             spacing: 8
             Row {
                 spacing: 8
-                ChaSetBadge { variant: "secondary"; text: "embedded" }
+                ChaSetBadge { variant: "secondary"; text: ChaSetI18n.tr("desktopComposite.codeBlock.embeddedBadge", "embedded") }
                 DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.embeddedDesc", "Drop the card chrome and header for inline embedding"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
@@ -152,7 +152,7 @@ DocLayout {
     // Section: Multi-File Tabs
     Column {
         property string sectionId: "multi-file"
-        property string sectionTitle: "Multi-File Tabs"
+        property string sectionTitle: ChaSetI18n.tr("desktopComposite.codeBlock.multiFileTitle", "Multi-File Tabs")
         width: parent.width
         spacing: 12
         DocText {
@@ -181,13 +181,13 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        DocText { text: "Animations"; color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        DocText { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        DocText { text: "Motion behavior and timing driven by ThemeTokens for file switching and the header affordances."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.animationsDescQt", "Motion behavior and timing driven by ThemeTokens for file switching and the header affordances."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        DocText { text: "• Switching the active file cross-fades the body over ThemeTokens.motionShort with the easeEntrance curve."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• The header affordances inherit token motion from their primitives: file tabs interpolate color and border over ThemeTokens.motionQuick with the easeStandard curve, as do the copy button and the scroll bars."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.animationsBullet1Qt", "Switching the active file cross-fades the body over ThemeTokens.motionShort with the easeEntrance curve."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.animationsBullet2Qt", "The header affordances inherit token motion from their primitives: file tabs interpolate color and border over ThemeTokens.motionQuick with the easeStandard curve, as do the copy button and the scroll bars."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.animationsBullet3Qt", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     ComponentReference {
@@ -195,17 +195,17 @@ DocLayout {
         componentId: "code-block"
         propsModel: [
             { name: "code", type: "string", defaultVal: "''", description: "Source text; ignored when `files` is provided." },
-            { name: "language", type: "string", defaultVal: "'tsx'", description: "Language id or alias resolved by the shared lexer." },
+            { name: "language", type: "string", defaultVal: "'tsx'", description: ChaSetI18n.tr("components.codeBlock.languageDesc", "Language id or alias resolved by the shared lexer.") },
             { name: "filename", type: "string", defaultVal: "''", description: "Header title override; defaults to the resolved language label (alias: title)." },
             { name: "files", type: "var", defaultVal: "[]", description: "Multi-file tab group of { name, code, language }; replaces the single-file body." },
-            { name: "highlight", type: "bool", defaultVal: "true", description: "Enable spec-driven syntax highlighting." },
-            { name: "showLineNumbers", type: "bool", defaultVal: "false", description: "Render a line-number gutter." },
+            { name: "highlight", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.codeBlock.highlightDesc", "Enable spec-driven syntax highlighting.") },
+            { name: "showLineNumbers", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.codeBlock.showLineNumbersDesc", "Render a line-number gutter.") },
             { name: "showLanguage", type: "bool", defaultVal: "true", description: "Render the language / filename label in the header." },
-            { name: "showCopy", type: "bool", defaultVal: "true", description: "Render the built-in copy button in the header." },
-            { name: "wrap", type: "bool", defaultVal: "false", description: "Wrap long lines instead of scrolling horizontally." },
+            { name: "showCopy", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.codeBlock.showCopyDesc", "Render the built-in copy button in the header.") },
+            { name: "wrap", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.codeBlock.wrapDesc", "Wrap long lines instead of scrolling horizontally.") },
             { name: "maxHeight", type: "real", defaultVal: "0", description: "Bound the body height; 0 means grow to fit the content." },
-            { name: "embedded", type: "bool", defaultVal: "false", description: "Drop the card chrome and header for inline embedding." },
-            { name: "copyLabel", type: "string", defaultVal: "''", description: "Optional visible label for the copy button." }
+            { name: "embedded", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.codeBlock.embeddedDesc", "Drop the card chrome and header for inline embedding.") },
+            { name: "copyLabel", type: "string", defaultVal: "''", description: ChaSetI18n.tr("components.codeBlock.copyLabelDesc", "Optional visible label for the copy button.") }
         ]
     }
 }

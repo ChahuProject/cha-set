@@ -92,19 +92,19 @@ export function DialogDocPage() {
     <DocLayout
       category="Overlays & Feedback"
       title="Dialog"
-      description="A modal window that interrupts the user with critical content and prompts for user action."
+      description={t('components.dialog.description', 'A modal window that interrupts the user with critical content and prompts for user action.')}
     >
       {/* 1. Interactive Overview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Experience full modal behavior with backdrop blur, keyboard ESC dismissal, and focus containment across Web and Desktop.
+          {t('desktopComposite.dialog.overviewDesc', 'Experience full modal behavior with backdrop blur, keyboard ESC dismissal, and focus containment across Web and Desktop.')}
         </p>
 
         <ComponentPreview
-          title="Dialog Sandbox"
+          title={t('desktopComposite.dialog.sandboxTitle', 'Dialog Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
         >
@@ -172,10 +172,10 @@ export function DialogDocPage() {
       {/* 4. Examples & States */}
       <section id="examples" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & States
+          {t('showcase.examplesAndStates', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Common modal dialog patterns: desktop draggable windows, confirmation dialogs, and alert notices.
+          {t('desktopComposite.dialog.examplesDesc', 'Common modal dialog patterns: desktop draggable windows, confirmation dialogs, and alert notices.')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -295,29 +295,20 @@ export function DialogDocPage() {
       {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Motion behavior and timing for the overlay and content on open and close.
+          {t('desktopComposite.dialog.animationsDesc', 'Motion behavior and timing for the overlay and content on open and close.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
-            The backdrop overlay fades in and out using{' '}
-            <code className="text-xs bg-muted px-1 rounded">animate-fade-in</code> /
-            <code className="text-xs bg-muted px-1 rounded">animate-fade-out</code>, over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-short</code> with the{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-entrance</code> curve.
+            {t('desktopComposite.dialog.animationsBullet1', 'The backdrop overlay fades in and out using animate-fade-in / animate-fade-out, over duration-short with the ease-entrance curve.')}
           </li>
           <li>
-            The content card cross-fades with opacity only (transform-positioned elements avoid
-            scale animation to prevent conflicts), and exit uses
-            <code className="text-xs bg-muted px-1 rounded">useExitAnimation</code> to delay
-            unmounting.
+            {t('desktopComposite.dialog.animationsBullet2', 'The content card cross-fades with opacity only (transform-positioned elements avoid scale animation to prevent conflicts), and exit uses useExitAnimation to delay unmounting.')}
           </li>
           <li>
-            Durations and easing resolve from theme tokens, so{' '}
-            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
-            <code>ThemeTokens.animationsEnabled</code>).
+            {t('desktopComposite.dialog.animationsBullet3', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
           </li>
         </ul>
       </section>
@@ -330,115 +321,115 @@ export function DialogDocPage() {
               name: 'open',
               type: 'boolean',
               default: 'false',
-              description: 'The controlled open state of the dialog.',
+              description: t('components.dialog.openDesc', 'The controlled open state of the dialog.'),
             },
             {
               name: 'defaultOpen',
               type: 'boolean',
               default: 'false',
-              description: 'The default open state when uncontrolled.',
+              description: t('components.dialog.defaultOpenDesc', 'The default open state when uncontrolled.'),
             },
             {
               name: 'onOpenChange',
               type: '(open: boolean) => void',
               default: '—',
-              description: 'Event handler called when the open state changes.',
+              description: t('components.dialog.onOpenChangeDesc', 'Event handler called when the open state changes.'),
             },
             {
               name: 'size',
               type: "'sm' | 'default' | 'lg' | 'xl' | 'full'",
               default: "'default'",
-              description: 'Tiered size preset controlling modal card width and containment.',
+              description: t('components.dialog.sizeDesc', 'Tiered size preset controlling modal card width and containment.'),
             },
             {
               name: 'closeOnOverlayClick',
               type: 'boolean',
               default: 'true',
-              description: 'Whether clicking the backdrop overlay dismisses the dialog.',
+              description: t('components.dialog.closeOnOverlayClickDesc', 'Whether clicking the backdrop overlay dismisses the dialog.'),
             },
             {
               name: 'closeOnEscape',
               type: 'boolean',
               default: 'true',
-              description: 'Whether pressing the Escape key dismisses the dialog.',
+              description: t('components.dialog.closeOnEscapeDesc', 'Whether pressing the Escape key dismisses the dialog.'),
             },
             {
               name: 'draggable',
               type: 'boolean',
               default: 'true',
-              description: 'Whether the dialog is rendered as a desktop draggable and resizable modal window.',
+              description: t('components.dialog.draggableDesc', 'Whether the dialog is rendered as a desktop draggable and resizable modal window.'),
             },
             {
               name: 'showCloseButton',
               type: 'boolean',
               default: 'true',
-              description: 'Whether to render the close button in the top-right controls.',
+              description: t('components.dialog.showCloseButtonDesc', 'Whether to render the close button in the top-right controls.'),
             },
             {
               name: 'showEscBadge',
               type: 'boolean',
               default: 'true',
-              description: 'Whether to render an ESC keyboard shortcut badge in the top-right controls.',
+              description: t('components.dialog.showEscBadgeDesc', 'Whether to render an ESC keyboard shortcut badge in the top-right controls.'),
             },
             {
               name: 'defaultWidthRem',
               type: 'number',
               default: '—',
-              description: 'Initial modal width in rem units (e.g. 32).',
+              description: t('components.dialog.defaultWidthRemDesc', 'Initial modal width in rem units (e.g. 32).'),
             },
             {
               name: 'defaultHeightRem',
               type: 'number',
               default: '—',
-              description: 'Initial modal height in rem units (e.g. 24).',
+              description: t('components.dialog.defaultHeightRemDesc', 'Initial modal height in rem units (e.g. 24).'),
             },
             {
               name: 'initialPositionMode',
               type: "'center' | 'top' | '居中' | '顶部靠上'",
               default: "'center'",
-              description: 'Initial positioning mode for the modal window.',
+              description: t('components.dialog.initialPositionModeDesc', 'Initial positioning mode for the modal window.'),
             },
             {
               name: 'topMarginRem',
               type: 'number',
               default: '4.5',
-              description: 'Top margin in rem when initialPositionMode is top.',
+              description: t('components.dialog.topMarginRemDesc', 'Top margin in rem when initialPositionMode is top.'),
             },
             {
               name: 'autoFitHeight',
               type: 'boolean',
               default: 'true',
-              description: 'Automatically adjust modal height to fit inner content.',
+              description: t('components.dialog.autoFitHeightDesc', 'Automatically adjust modal height to fit inner content.'),
             },
             {
               name: 'sizeOptions',
               type: 'DialogSizeOption[]',
               default: '—',
-              description: 'Preset sizing options for the top-right size switcher dropdown menu.',
+              description: t('components.dialog.sizeOptionsDesc', 'Preset sizing options for the top-right size switcher dropdown menu.'),
             },
             {
               name: 'sizeMenuTooltip',
               type: 'string',
               default: "'调整弹窗尺寸'",
-              description: 'Tooltip text for the size switcher dropdown button.',
+              description: t('components.dialog.sizeMenuTooltipDesc', 'Tooltip text for the size switcher dropdown button.'),
             },
             {
               name: 'dragHandleClassName',
               type: 'string',
               default: '—',
-              description: 'CSS class selector for the drag handle area (e.g. dialog header).',
+              description: t('components.dialog.dragHandleClassNameDesc', 'CSS class selector for the drag handle area (e.g. dialog header).'),
             },
             {
               name: 'contentClassName',
               type: 'string',
               default: '—',
-              description: 'Custom class name for the scrollable inner content container.',
+              description: t('components.dialog.contentClassNameDesc', 'Custom class name for the scrollable inner content container.'),
             },
             {
               name: 'overlayClassName',
               type: 'string',
               default: "''",
-              description: 'Additional CSS classes to customize the backdrop overlay.',
+              description: t('components.dialog.overlayClassNameDesc', 'Additional CSS classes to customize the backdrop overlay.'),
             },
           ]}
       />

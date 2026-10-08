@@ -77,19 +77,18 @@ export function CodeBlockDocPage() {
     <DocLayout
       category="Composite Engines"
       title="Code Block"
-      description="Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt."
+      description={t('components.code-block.description', 'Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          A syntax-highlighted source viewer with a language label and one-click copy. Highlighting is
-          produced by the shared spec lexer — no third-party highlighter is shipped on either stack.
+          {t('desktopComposite.codeBlock.overviewDesc', 'A syntax-highlighted source viewer with a language label and one-click copy. Highlighting is produced by the shared spec lexer — no third-party highlighter is shipped on either stack.')}
         </p>
 
         <ComponentPreview
-          qtCode={`ChaSetCodeBlock {\n    language: "tsx"\n    showLineNumbers: true\n    code: source\n}`} title="Code Block Sandbox" reactCode={reactCode}>
+          qtCode={`ChaSetCodeBlock {\n    language: "tsx"\n    showLineNumbers: true\n    code: source\n}`} title={t('desktopComposite.codeBlock.sandboxTitle', 'Code Block Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-2xl">
             <CodeBlock code={TSX_SAMPLE} language="tsx" showLineNumbers />
           </div>
@@ -119,7 +118,7 @@ ChaSetCodeBlock {
 
 
 
-      <section id="variants" data-toc-title="Variants & Options" className="scroll-mt-20 my-10">
+      <section id="variants" data-toc-title={t('desktopComposite.codeBlock.variantsTitle', 'Variants & Options')} className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           {t('desktopComposite.codeBlock.variantsTitle', 'Variants & Options')}
         </h2>
@@ -138,7 +137,7 @@ ChaSetCodeBlock {
 
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="secondary">wrap</Badge>
+              <Badge variant="secondary">{t('desktopComposite.codeBlock.wrapBadge', 'wrap')}</Badge>
               <span className="text-xs text-muted-foreground">{t('desktopComposite.codeBlock.wrapDesc', 'Soft-wrap long lines instead of horizontal scroll')}</span>
             </div>
             <CodeBlock
@@ -158,7 +157,7 @@ ChaSetCodeBlock {
 
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="secondary">embedded</Badge>
+              <Badge variant="secondary">{t('desktopComposite.codeBlock.embeddedBadge', 'embedded')}</Badge>
               <span className="text-xs text-muted-foreground">{t('desktopComposite.codeBlock.embeddedDesc', 'Drop the card chrome and header for inline embedding')}</span>
             </div>
             <CodeBlock code={`export const VERSION = '1.4.0';`} language="ts" embedded className="rounded-md border border-border" />
@@ -166,7 +165,7 @@ ChaSetCodeBlock {
         </div>
       </section>
 
-      <section id="multi-file" data-toc-title="Multi-File Tabs" className="scroll-mt-20 my-10">
+      <section id="multi-file" data-toc-title={t('desktopComposite.codeBlock.multiFileTitle', 'Multi-File Tabs')} className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           {t('desktopComposite.codeBlock.multiFileTitle', 'Multi-File Tabs')}
         </h2>
@@ -178,27 +177,20 @@ ChaSetCodeBlock {
 
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Motion behavior and timing for file switching and the header affordances.
+          {t('desktopComposite.codeBlock.animationsDesc', 'Motion behavior and timing for file switching and the header affordances.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
-            Switching the active file cross-fades the body in over{' '}
-            <code className="text-xs bg-muted px-1 rounded">animate-in fade-in-0</code> — the duration
-            resolves to the <code className="text-xs bg-muted px-1 rounded">short</code> motion token with
-            the <code className="text-xs bg-muted px-1 rounded">entrance</code> curve.
+            {t('desktopComposite.codeBlock.animationsBullet1', 'Switching the active file cross-fades the body in over animate-in fade-in-0 — the duration resolves to the short motion token with the entrance curve.')}
           </li>
           <li>
-            The header affordances inherit token motion from their primitives: tab triggers interpolate
-            color and border over <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-standard</code>, as do the copy button and
-            the scroll bars.
+            {t('desktopComposite.codeBlock.animationsBullet2', 'The header affordances inherit token motion from their primitives: tab triggers interpolate color and border over duration-quick with ease-standard, as do the copy button and the scroll bars.')}
           </li>
           <li>
-            Durations and easing resolve from theme tokens, so <code>prefers-reduced-motion</code> zeroes
-            them automatically (Qt: governed by <code>ThemeTokens.animationsEnabled</code>).
+            {t('desktopComposite.codeBlock.animationsBullet3', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
           </li>
         </ul>
       </section>
@@ -207,19 +199,19 @@ ChaSetCodeBlock {
         name="CodeBlock"
         componentId="code-block"
         props={[
-            { name: 'code', type: 'string', default: "''", description: 'Source text; ignored when `files` is provided.' },
-            { name: 'language', type: 'string', default: "'tsx'", description: 'Language id or alias resolved by the shared lexer.' },
-            { name: 'filename', type: 'string', default: 'undefined', description: 'Header title override; defaults to the resolved language label.' },
-            { name: 'files', type: 'CodeBlockFileProps[]', default: 'undefined', description: 'Multi-file tab group; when present it replaces the single-file body.' },
-            { name: 'highlight', type: 'boolean', default: 'true', description: 'Enable spec-driven syntax highlighting.' },
-            { name: 'showLineNumbers', type: 'boolean', default: 'false', description: 'Render a line-number gutter.' },
-            { name: 'showLanguage', type: 'boolean', default: 'true', description: 'Render the language / filename label in the header.' },
-            { name: 'showCopy', type: 'boolean', default: 'true', description: 'Render the built-in copy button in the header.' },
-            { name: 'wrap', type: 'boolean', default: 'false', description: 'Wrap long lines instead of scrolling horizontally.' },
-            { name: 'maxHeight', type: 'number | string', default: 'undefined', description: 'Bound the content height (px-equivalent number, or any CSS length string).' },
-            { name: 'embedded', type: 'boolean', default: 'false', description: 'Drop the card chrome (border / background / header) for inline prose embedding.' },
-            { name: 'copyLabel', type: 'string', default: 'undefined', description: 'Accessible label for the copy button.' },
-            { name: 'className', type: 'string', default: 'undefined', description: 'Additional class names for the outer container.' },
+            { name: 'code', type: 'string', default: "''", description: t('components.codeBlock.codeDesc', 'Source text; ignored when `files` is provided.') },
+            { name: 'language', type: 'string', default: "'tsx'", description: t('components.codeBlock.languageDesc', 'Language id or alias resolved by the shared lexer.') },
+            { name: 'filename', type: 'string', default: 'undefined', description: t('components.codeBlock.filenameDesc', 'Header title override; defaults to the resolved language label.') },
+            { name: 'files', type: 'CodeBlockFileProps[]', default: 'undefined', description: t('components.codeBlock.filesDesc', 'Multi-file tab group; when present it replaces the single-file body.') },
+            { name: 'highlight', type: 'boolean', default: 'true', description: t('components.codeBlock.highlightDesc', 'Enable spec-driven syntax highlighting.') },
+            { name: 'showLineNumbers', type: 'boolean', default: 'false', description: t('components.codeBlock.showLineNumbersDesc', 'Render a line-number gutter.') },
+            { name: 'showLanguage', type: 'boolean', default: 'true', description: t('components.codeBlock.showLanguageDesc', 'Render the language / filename label in the header.') },
+            { name: 'showCopy', type: 'boolean', default: 'true', description: t('components.codeBlock.showCopyDesc', 'Render the built-in copy button in the header.') },
+            { name: 'wrap', type: 'boolean', default: 'false', description: t('components.codeBlock.wrapDesc', 'Wrap long lines instead of scrolling horizontally.') },
+            { name: 'maxHeight', type: 'number | string', default: 'undefined', description: t('components.codeBlock.maxHeightDesc', 'Bound the content height (rem-equivalent number, or any CSS length string).') },
+            { name: 'embedded', type: 'boolean', default: 'false', description: t('components.codeBlock.embeddedDesc', 'Drop the card chrome (border / background / header) for inline prose embedding.') },
+            { name: 'copyLabel', type: 'string', default: 'undefined', description: t('components.codeBlock.copyLabelDesc', 'Accessible label for the copy button.') },
+            { name: 'className', type: 'string', default: 'undefined', description: t('components.codeBlock.classNameDesc', 'Additional class names for the outer container.') },
           ]}
       />
     </DocLayout>

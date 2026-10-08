@@ -23,20 +23,20 @@ export function PresetNumberInputDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Preset Number Input"
-      description="High-density numeric input field with a quick-select dropdown panel for common dimension presets, unit tags, and optional clear action."
+      description={t('components.preset-number-input.description', 'High-density numeric input field with a quick-select dropdown panel for common dimension presets, unit tags, and optional clear action.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Focus or click the input field to open the preset numbers list. Click an item to populate the field, or type custom numbers freely.
+          {t('desktopComposite.presetNumberInput.overviewDesc', 'Focus or click the input field to open the preset numbers list. Click an item to populate the field, or type custom numbers freely.')}
         </p>
 
         <ComponentPreview
           qtCode={`ChaSetPresetNumberInput {
     value: "1024"
-}`} title="Preset Number Input Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.presetNumberInput.sandboxTitle', 'Preset Number Input Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-xs flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-muted-foreground">{t('components.presetNumberInput.textureDimension', 'Texture Dimension')}</label>
@@ -71,10 +71,10 @@ ChaSetPresetNumberInput {
 
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Variants & Configurations
+          {t('components.presetNumberInput.variantsTitle', 'Variants & Configurations')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Configure custom numeric presets, disable the clear option, or place the control in disabled state.
+          {t('components.presetNumberInput.variantsDesc', 'Configure custom numeric presets, disable the clear option, or place the control in disabled state.')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -111,15 +111,15 @@ ChaSetPresetNumberInput {
         name="PresetNumberInput"
         componentId="preset-number-input"
         props={[
-            { name: 'value', type: 'string', default: "''", description: 'Current numeric value of the input.' },
-            { name: 'onChange', type: '(val: string) => void', default: 'undefined', description: 'Callback fired when the value changes.' },
-            { name: 'presets', type: 'number[]', default: '[64, 128, 256, 512, 1024, 2048, 4096, 8192]', description: 'List of quick-select preset numbers.' },
-            { name: 'placeholder', type: 'string', default: 'undefined', description: 'Placeholder text displayed when empty.' },
-            { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether typing and dropdown interactions are disabled.' },
-            { name: 'allowClear', type: 'boolean', default: 'true', description: 'Whether to display the clear/reset option in dropdown.' },
-            { name: 'clearLabel', type: 'string', default: "'None'", description: 'Label text for the clear option.' },
-            { name: 'inputClassName', type: 'string', default: 'undefined', description: 'Custom CSS classes for the inner input.' },
-            { name: 'className', type: 'string', default: 'undefined', description: 'Custom CSS classes for the outer container.' },
+            { name: 'value', type: 'string', default: "''", description: t('components.presetNumberInput.valueDesc', 'Current numeric value of the input.') },
+            { name: 'onChange', type: '(val: string) => void', default: 'undefined', description: t('components.presetNumberInput.onChangeDesc', 'Callback fired when the value changes.') },
+            { name: 'presets', type: 'number[]', default: '[64, 128, 256, 512, 1024, 2048, 4096, 8192]', description: t('components.presetNumberInput.presetsDesc', 'List of quick-select preset numbers.') },
+            { name: 'placeholder', type: 'string', default: 'undefined', description: t('components.presetNumberInput.placeholderDesc', 'Placeholder text displayed when empty.') },
+            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.presetNumberInput.disabledDesc', 'Whether typing and dropdown interactions are disabled.') },
+            { name: 'allowClear', type: 'boolean', default: 'true', description: t('components.presetNumberInput.allowClearDesc', 'Whether to display the clear/reset option in dropdown.') },
+            { name: 'clearLabel', type: 'string', default: "'None'", description: t('components.presetNumberInput.clearLabelDesc', 'Label text for the clear option.') },
+            { name: 'inputClassName', type: 'string', default: 'undefined', description: t('components.presetNumberInput.inputClassNameDesc', 'Custom CSS classes for the inner input.') },
+            { name: 'className', type: 'string', default: 'undefined', description: t('components.presetNumberInput.classNameDesc', 'Custom CSS classes for the outer container.') },
           ]}
       />
     </DocLayout>

@@ -8,7 +8,7 @@ Column {
     width: parent ? parent.width : ThemeTokens.dp(760)
     spacing: ThemeTokens.dp(10)
 
-    property string title: "Keyboard Navigation & Shortcuts"
+    property string title: ""
     property string componentId: ""
     property var shortcutsModel: []
 
@@ -26,8 +26,8 @@ Column {
 
     TextEdit {
         id: tableTitleText
-        visible: root.title !== ""
-        text: root.title === "Keyboard Navigation & Shortcuts" ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.keyboardShortcuts", "Keyboard Navigation & Shortcuts") : root.title) : root.title
+        visible: (root.title !== "" ? root.title : ChaSetI18n.tr("showcase.keyboardShortcuts", "Keyboard Navigation & Shortcuts")) !== ""
+        text: root.title !== "" ? root.title : ChaSetI18n.tr("showcase.keyboardShortcuts", "Keyboard Navigation & Shortcuts")
         color: ThemeTokens.text
         font.family: Typography.familySans
         font.pixelSize: Typography.sizeHeading

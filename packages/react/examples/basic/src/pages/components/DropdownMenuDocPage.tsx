@@ -40,14 +40,14 @@ export function DropdownMenuDocPage() {
     <DocLayout
       category="Overlays & Feedback"
       title="Dropdown Menu"
-      description="Displays a menu to the user triggered by a button, supporting items, labels, separators, shortcuts, and destructive actions."
+      description={t('components.dropdownMenu.description', 'Displays a menu to the user triggered by a button, supporting items, labels, separators, shortcuts, and destructive actions.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Click the trigger below to open the dropdown menu. Keyboard navigation and shortcuts are fully supported.
+          {t('desktopComposite.dropdownMenu.overviewDesc', 'Click the trigger below to open the dropdown menu. Keyboard navigation and shortcuts are fully supported.')}
         </p>
 
         <ComponentPreview
@@ -65,7 +65,7 @@ export function DropdownMenuDocPage() {
         variant: "outline"
         onClicked: parent.open = !parent.open
     }
-}`} title="Dropdown Menu Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.dropdownMenu.sandboxTitle', 'Dropdown Menu Sandbox')} reactCode={reactCode}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">{t('overlays.dropdownMenu.options', 'Options ▾')}</Button>
@@ -127,11 +127,11 @@ ChaSetDropdownMenu {
         name="DropdownMenu"
         componentId="dropdown-menu"
         props={[
-            { name: 'open', type: 'boolean', default: 'undefined', description: 'Controlled open state of the dropdown menu.' },
-            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: 'Event handler called when open state changes.' },
-            { name: 'modal', type: 'boolean', default: 'true', description: 'Whether to render as a modal trapping focus.' },
-            { name: 'sideOffset', type: 'number', default: '4', description: 'Distance offset from trigger to floating content.' },
-            { name: 'align', type: "'start' | 'center' | 'end'", default: "'start'", description: 'Alignment along trigger edge.' },
+            { name: 'open', type: 'boolean', default: 'undefined', description: t('components.dropdownMenu.openDesc', 'Controlled open state of the dropdown menu.') },
+            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: t('components.dropdownMenu.onOpenChangeDesc', 'Event handler called when open state changes.') },
+            { name: 'modal', type: 'boolean', default: 'true', description: t('components.dropdownMenu.modalDesc', 'Whether to render as a modal trapping focus.') },
+            { name: 'sideOffset', type: 'number', default: '4', description: t('components.dropdownMenu.sideOffsetDesc', 'Distance offset from trigger to floating content.') },
+            { name: 'align', type: "'start' | 'center' | 'end'", default: "'start'", description: t('components.dropdownMenu.alignDesc', 'Alignment along trigger edge.') },
           ]}
       />
     </DocLayout>

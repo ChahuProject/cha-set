@@ -7,12 +7,12 @@ DocLayout {
     id: root
     category: "Base Primitives"
     pageTitle: "Copy Button"
-    description: "One-click clipboard copy button with transient feedback state and configurable timeouts."
+    description: ChaSetI18n.tr("components.copy-button.description", "One-click clipboard copy button with transient success checkmark feedback and customizable timeout.")
 
     property string copyStatus: ChaSetI18n.tr("components.copy-button.clickToTest", "Click the copy button to test")
 
     ComponentPreview {
-        title: "Copy Button Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.copyButton.sandboxTitle", "Copy Button Sandbox")
         reactCode: `<div className="flex items-center gap-4">\n  <CopyButton text="pnpm add @chahu/cha-set" />\n  <CopyButton text="https://chahu.design" label="Copy Link" />\n  <CopyButton text="export const SECRET = 'sk_live_948271';" variant="default" label="Copy Secret" />\n</div>`
         qtCode: `Row {\n    spacing: 12\n    ChaSetCopyButton {\n        text: "pnpm add @chahu/cha-set"\n        onCopiedToClipboard: function(txt) { console.log("Copied: " + txt) }\n    }\n    ChaSetCopyButton {\n        text: "https://chahu.design"\n        label: "Copy Link"\n        variant: "outline"\n    }\n    ChaSetCopyButton {\n        text: "export const SECRET = 'sk_live_948271';"\n        label: "Copy Secret"\n        variant: "default"\n    }\n}`
 
@@ -102,12 +102,12 @@ ChaSetCopyButton {
         name: "CopyButton"
         componentId: "copy-button"
         propsModel: [
-            { name: "text", type: "string", default: "''", description: "The string content sent to the clipboard when clicked (alias: textToCopy)." },
-            { name: "label", type: "string", default: "''", description: "Optional companion label text displayed next to the copy icon." },
-            { name: "copiedLabel", type: "string", default: "'Copied!'", description: "Feedback label text displayed after successfully copying." },
-            { name: "timeout", type: "int", default: "2000", description: "Duration in milliseconds that the success check icon persists." },
-            { name: "variant", type: "string", default: "'outline'", description: "Visual variant style: 'outline' | 'ghost' | 'default' | 'secondary'." },
-            { name: "size", type: "string", default: "'icon-xs'", description: "Button sizing preset: 'icon-xs', 'icon-sm', 'sm', 'default'." }
+            { name: "text", type: "string", default: "''", description: ChaSetI18n.tr("components.copyButton.textDescQt", "The string content sent to the clipboard when clicked (alias: textToCopy).") },
+            { name: "label", type: "string", default: "''", description: ChaSetI18n.tr("components.copyButton.labelDescQt", "Optional companion label text displayed next to the copy icon.") },
+            { name: "copiedLabel", type: "string", default: "'Copied!'", description: ChaSetI18n.tr("components.copyButton.copiedLabelDescQt", "Feedback label text displayed after successfully copying.") },
+            { name: "timeout", type: "int", default: "2000", description: ChaSetI18n.tr("components.copyButton.timeoutDescQt", "Duration in milliseconds that the success check icon persists.") },
+            { name: "variant", type: "string", default: "'outline'", description: ChaSetI18n.tr("components.copyButton.variantDescQt", "Visual variant style: 'outline' | 'ghost' | 'default' | 'secondary'.") },
+            { name: "size", type: "string", default: "'icon-xs'", description: ChaSetI18n.tr("components.copyButton.sizeDescQt", "Button sizing preset: 'icon-xs', 'icon-sm', 'sm', 'default'.") }
         ]
     }
 }

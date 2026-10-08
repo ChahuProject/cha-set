@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Preset Number Input"
-    description: "High-density numeric input field with a quick-select dropdown panel for common dimension presets, unit tags, and optional clear action."
+    description: ChaSetI18n.tr("components.preset-number-input.description", "High-density numeric input field with a quick-select dropdown panel for common dimension presets, unit tags, and optional clear action.")
 
     ComponentPreview {
-        title: "Preset Number Input Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.presetNumberInput.sandboxTitle", "Preset Number Input Sandbox")
         reactCode: `<PresetNumberInput value="1024" onChange={(v) => console.log(v)} />`
         qtCode: `ChaSetPresetNumberInput {
     value: "1024"
@@ -67,14 +67,14 @@ ChaSetPresetNumberInput {
         spacing: ThemeTokens.dp(12)
 
         DocText {
-            text: "Variants & Configurations"
+            text: ChaSetI18n.tr("components.presetNumberInput.variantsTitle", "Variants & Configurations")
             font.pixelSize: Typography.sizeTitleSm
             font.bold: true
             color: ThemeTokens.text
         }
 
         DocText {
-            text: "Configure custom numeric presets, disable the clear option, or place the control in disabled state."
+            text: ChaSetI18n.tr("components.presetNumberInput.variantsDesc", "Configure custom numeric presets, disable the clear option, or place the control in disabled state.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -139,13 +139,13 @@ ChaSetPresetNumberInput {
         name: "PresetNumberInput"
         componentId: "preset-number-input"
         propsModel: [
-            { name: "value", type: "string", default: "''", description: "Current numeric value of the input." },
-            { name: "presets", type: "array", default: "[64, 128, 256, 512, 1024, 2048, 4096, 8192]", description: "Array of preset numbers shown in dropdown." },
-            { name: "placeholder", type: "string", default: "''", description: "Placeholder text displayed when empty." },
-            { name: "disabled", type: "bool", default: "false", description: "Disables typing and dropdown interactions." },
-            { name: "allowClear", type: "bool", default: "true", description: "Whether to show the reset/clear option." },
-            { name: "clearLabel", type: "string", default: "'None'", description: "Label text for the clear option." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the input and popup." }
+            { name: "value", type: "string", default: "''", description: ChaSetI18n.tr("components.presetNumberInput.valueDescQt", "Current string value shown in the input field.") },
+            { name: "presets", type: "array", default: "[64, 128, 256, 512, 1024, 2048, 4096, 8192]", description: ChaSetI18n.tr("components.presetNumberInput.presetsDescQt", "Array of preset numbers shown in dropdown.") },
+            { name: "placeholder", type: "string", default: "''", description: ChaSetI18n.tr("components.presetNumberInput.placeholderDescQt", "Placeholder text displayed when empty.") },
+            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.presetNumberInput.disabledDescQt", "Disables typing and dropdown interactions.") },
+            { name: "allowClear", type: "bool", default: "true", description: ChaSetI18n.tr("components.presetNumberInput.allowClearDescQt", "Whether to show the reset/clear option.") },
+            { name: "clearLabel", type: "string", default: "'None'", description: ChaSetI18n.tr("components.presetNumberInput.clearLabelDescQt", "Label text for the clear option.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.presetNumberInput.customRadiusDesc", "Corner radius of the input and popup.") }
         ]
     }
 }

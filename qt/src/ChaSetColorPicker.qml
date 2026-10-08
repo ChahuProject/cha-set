@@ -630,7 +630,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: ThemeTokens.dp(2)
                         Text {
-                            text: "Color"
+                            text: ChaSetI18n.tr("components.colorPicker.defaultTitle", "Color")
                             color: ThemeTokens.text
                             font.pixelSize: Typography.sizeSmall
                             font.weight: Font.DemiBold
@@ -659,10 +659,10 @@ Item {
 
                         Repeater {
                             model: [
-                                { id: "square", label: "Square" },
-                                { id: "circle", label: "Circle" },
-                                { id: "triangle", label: "Triangle" },
-                                { id: "swatches", label: "Swatches" }
+                                { id: "square", label: ChaSetI18n.tr("components.colorPicker.panelSquare", "Square") },
+                                { id: "circle", label: ChaSetI18n.tr("components.colorPicker.panelCircle", "Circle") },
+                                { id: "triangle", label: ChaSetI18n.tr("components.colorPicker.panelTriangle", "Triangle") },
+                                { id: "swatches", label: ChaSetI18n.tr("components.colorPicker.panelSwatches", "Swatches") }
                             ]
                             Rectangle {
                                 width: (parent.width - ThemeTokens.dp(6)) / 4

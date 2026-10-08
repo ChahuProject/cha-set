@@ -16,7 +16,7 @@ export function NavigationContent({ currentHash, onItemClick }: NavigationConten
   const { t } = useChaSetI18n();
 
   return (
-    <nav className="flex flex-col gap-6" aria-label="Documentation Navigation">
+    <nav className="flex flex-col gap-6" aria-label={t('desktopComposite.sidebar.docsNav', 'Documentation Navigation')}>
       {NAVIGATION_CONFIG.map((cat) => (
         <div key={cat.title} className="flex flex-col gap-1.5">
           <h4 className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">

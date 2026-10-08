@@ -28,7 +28,7 @@ DocLayout {
     // 1. Interactive Preview Hero
     // ==============================================================
     ComponentPreview {
-        title: "ScrollArea Showcase"
+        title: ChaSetI18n.tr("desktopComposite.scrollArea.sandboxTitle", "ScrollArea Showcase")
         reactCode: `<ScrollArea
   className="h-72 w-full rounded-md border border-border"
   size="${root.heroSize}"
@@ -166,7 +166,7 @@ DocLayout {
                             width: ThemeTokens.dp(88); height: ThemeTokens.dp(60); radius: ThemeTokens.dp(6)
                             color: ThemeTokens.panel
                             border.color: ThemeTokens.border
-                            DocText { anchors.centerIn: parent; text: "Cell " + (parent.index + 1); color: ThemeTokens.text; font.pixelSize: Typography.sizeCaption; font.weight: Typography.weightMedium }
+                            DocText { anchors.centerIn: parent; text: ChaSetI18n.tr("desktopComposite.scrollArea.cellLabel", "Cell") + " " + (parent.index + 1); color: ThemeTokens.text; font.pixelSize: Typography.sizeCaption; font.weight: Typography.weightMedium }
                         }
                     }
                 }
@@ -257,14 +257,14 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "Horizontal Example"
+            text: ChaSetI18n.tr("desktopComposite.scrollArea.horizontalTitle", "Horizontal Example")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
         }
 
         DocText {
-            text: "Hover over the bottom scrollbar to reveal the left and right stepper buttons."
+            text: ChaSetI18n.tr("desktopComposite.scrollArea.horizontalDesc", "Hover over the bottom scrollbar to reveal the left and right stepper buttons.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -325,14 +325,14 @@ DocLayout {
         spacing: ThemeTokens.dp(12)
 
         DocText {
-            text: "Dual-Axis"
+            text: ChaSetI18n.tr("desktopComposite.scrollArea.dualAxisTitle", "Dual-Axis")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
         }
 
         DocText {
-            text: "When content exceeds both width and height, both scrollbars render with a synchronized corner piece."
+            text: ChaSetI18n.tr("desktopComposite.scrollArea.dualAxisDesc", "When content exceeds both width and height, both scrollbars render with a synchronized corner piece.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -403,14 +403,14 @@ export const CrossStackSpecification = {
         spacing: 12
 
         DocText {
-            text: "Dual-Box Hot Zone"
+            text: ChaSetI18n.tr("desktopComposite.scrollArea.hotZoneTitle", "Dual-Box Hot Zone")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
         }
 
         DocText {
-            text: "Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces an interaction hot-zone paired with an animated visual indicator that expands from slim idle to expanded hover with 150ms cubic easing."
+            text: ChaSetI18n.tr("desktopComposite.scrollArea.hotZoneDesc", "Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces a compact 0.5rem transparent interaction hot-zone paired with an animated visual indicator that expands from 0.25rem (idle) to 0.5rem (hover) with 150ms cubic easing.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -430,17 +430,17 @@ export const CrossStackSpecification = {
                 Row {
                     spacing: ThemeTokens.dp(8)
                     Rectangle { width: ThemeTokens.dp(8); height: ThemeTokens.dp(8); radius: ThemeTokens.dp(4); color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
-                    DocText { text: "Idle State: Slim indicator bar, non-intrusive and lightweight."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                    DocText { text: ChaSetI18n.tr("desktopComposite.scrollArea.hotZoneIdle", "Idle State: 0.25rem slim indicator bar, non-intrusive."); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                 }
                 Row {
                     spacing: ThemeTokens.dp(8)
                     Rectangle { width: ThemeTokens.dp(8); height: ThemeTokens.dp(8); radius: ThemeTokens.dp(4); color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
-                    DocText { text: "Hover State: Expands with high visual affordance."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                    DocText { text: ChaSetI18n.tr("desktopComposite.scrollArea.hotZoneHover", "Hover State: Expands to 0.5rem with high visual affordance."); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                 }
                 Row {
                     spacing: ThemeTokens.dp(8)
                     Rectangle { width: ThemeTokens.dp(8); height: ThemeTokens.dp(8); radius: ThemeTokens.dp(4); color: ThemeTokens.accent; anchors.verticalCenter: parent.verticalCenter }
-                    DocText { text: "Hit Area: Compact trigger box prevents accidental cursor capture."; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
+                    DocText { text: ChaSetI18n.tr("desktopComposite.scrollArea.hotZoneHit", "Hit Area: 0.5rem compact trigger box prevents accidental cursor capture."); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall }
                 }
             }
         }
@@ -454,14 +454,14 @@ export const CrossStackSpecification = {
         spacing: 12
 
         DocText {
-            text: "Stepper Buttons"
+            text: ChaSetI18n.tr("desktopComposite.scrollArea.stepperTitle", "Stepper Buttons")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
         }
 
         DocText {
-            text: "Hovering the scrollbar reveals two-end stepper action buttons:"
+            text: ChaSetI18n.tr("desktopComposite.scrollArea.stepperDesc", "Hovering the scrollbar reveals two-end stepper action buttons:")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -480,10 +480,10 @@ export const CrossStackSpecification = {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(6)
-                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "Vertical Cluster"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
-                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Top: [To Top] & [Page Up] (85% viewport step)"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Bottom: [Page Down] & [To Bottom]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Auto-disabled when at boundary limits."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: ChaSetI18n.tr("desktopComposite.scrollArea.verticalClusterTitle", "Vertical Cluster"); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: ChaSetI18n.tr("desktopComposite.scrollArea.verticalTop", "Top: To Top (Home) & Page Up (85% viewport step)"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: ChaSetI18n.tr("desktopComposite.scrollArea.verticalBottom", "Bottom: Page Down & To Bottom (End)"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: ChaSetI18n.tr("desktopComposite.scrollArea.verticalAuto", "Auto-disabled when at boundary limits."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                 }
             }
 
@@ -497,10 +497,10 @@ export const CrossStackSpecification = {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(6)
-                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "Horizontal Cluster"; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
-                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Left: [To Start] & [Page Left]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Right: [Page Right] & [To End]"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: "• Supports smooth animated interpolation."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: ChaSetI18n.tr("desktopComposite.scrollArea.horizontalClusterTitle", "Horizontal Cluster"); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; font.weight: Typography.weightBold }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: ChaSetI18n.tr("desktopComposite.scrollArea.horizontalLeft", "Left: To Start (Home) & Page Left"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: ChaSetI18n.tr("desktopComposite.scrollArea.horizontalRight", "Right: Page Right & To End (End)"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { width: parent.width - ThemeTokens.dp(28); wrap: true; text: ChaSetI18n.tr("desktopComposite.scrollArea.horizontalSmooth", "Supports smooth animated interpolation."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                 }
             }
         }

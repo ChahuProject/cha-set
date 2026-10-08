@@ -9,7 +9,7 @@ export interface KeyboardShortcutsTableProps {
 }
 
 export function KeyboardShortcutsTable({
-  title = 'Keyboard Navigation & Shortcuts',
+  title,
   componentId,
   shortcuts,
 }: KeyboardShortcutsTableProps) {
@@ -37,9 +37,7 @@ export function KeyboardShortcutsTable({
     return null;
   }
 
-  const localizedTitle = title === 'Keyboard Navigation & Shortcuts'
-    ? t('showcase.keyboardShortcuts', 'Keyboard Navigation & Shortcuts')
-    : title;
+  const localizedTitle = title ?? t('showcase.keyboardShortcuts', 'Keyboard Navigation & Shortcuts');
 
   return (
     <div className="my-6">

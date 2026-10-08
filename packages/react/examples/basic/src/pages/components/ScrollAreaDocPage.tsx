@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollArea, Button, Checkbox, CodeBlock, Table, type TableColumn, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-
-const MATRIX_COLUMNS: TableColumn[] = [
-  { key: 'id', title: 'ID', width: 80, code: true },
-  { key: 'name', title: 'Feature Name', width: 220 },
-  { key: 'category', title: 'Category', width: 140, badge: true },
-  { key: 'stack', title: 'Target Stack', width: 160 },
-  { key: 'status', title: 'Status', width: 120, badge: true },
-  { key: 'hash', title: 'Commit', width: 100, code: true },
-];
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from "../../components/DocAnatomy";
 import { ComponentReference } from "../../components/ComponentReference";
@@ -55,6 +46,14 @@ const SAMPLE_MATRIX_ROWS = Array.from({ length: 100 }).map((_, i) => {
 export function ScrollAreaDocPage() {
   const { t } = useChaSetI18n();
   const [heroMode, setHeroMode] = useState<'vertical' | 'horizontal' | 'both'>('vertical');
+  const MATRIX_COLUMNS: TableColumn[] = [
+    { key: 'id', title: 'ID', width: 80, code: true },
+    { key: 'name', title: t('desktopComposite.scrollArea.colFeatureName', 'Feature Name'), width: 220 },
+    { key: 'category', title: t('desktopComposite.scrollArea.colCategory', 'Category'), width: 140, badge: true },
+    { key: 'stack', title: t('desktopComposite.scrollArea.colTargetStack', 'Target Stack'), width: 160 },
+    { key: 'status', title: t('desktopComposite.scrollArea.colStatus', 'Status'), width: 120, badge: true },
+    { key: 'hash', title: t('desktopComposite.scrollArea.colCommit', 'Commit'), width: 100, code: true },
+  ];
   const [heroSize, setHeroSize] = useState<'default' | 'sm'>('default');
   const [showButtons, setShowButtons] = useState(true);
   const [smoothScroll, setSmoothScroll] = useState(true);
@@ -129,8 +128,8 @@ export function ScrollAreaDocPage() {
       {/* 1. Interactive Preview Hero */}
       <section id="overview">
         <ComponentPreview
-          title="ScrollArea Showcase"
-          description="Interactive playground demonstrating cross-stack scrollbar styling, stepper pagination, and dynamic hot-zone expansion."
+          title={t('desktopComposite.scrollArea.sandboxTitle', 'ScrollArea Showcase')}
+          description={t('desktopComposite.scrollArea.overviewDesc', 'Interactive playground demonstrating cross-stack scrollbar styling, stepper pagination, and dynamic hot-zone expansion.')}
           reactCode={reactCode}
           qtCode={qtCode}
           controls={
@@ -302,10 +301,10 @@ export function ScrollAreaDocPage() {
 
       {/* 2. Installation */}
       {/* 3. Horizontal Example Card */}
-      <section id="horizontal-example" data-toc-title="Horizontal Example" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">Horizontal Example</h2>
+      <section id="horizontal-example" data-toc-title={t('desktopComposite.scrollArea.horizontalTitle', 'Horizontal Example')} className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-2">{t('desktopComposite.scrollArea.horizontalTitle', 'Horizontal Example')}</h2>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-          Hover over the bottom scrollbar to reveal the left and right stepper buttons.
+          {t('desktopComposite.scrollArea.horizontalDesc', 'Hover over the bottom scrollbar to reveal the left and right stepper buttons.')}
         </p>
 
         <div className="rounded-xl border border-border bg-card p-6 shadow-xs">
@@ -346,10 +345,10 @@ export function ScrollAreaDocPage() {
       </section>
 
       {/* 4. Dual-Axis Example */}
-      <section id="dual-axis" data-toc-title="Dual-Axis" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">Dual-Axis</h2>
+      <section id="dual-axis" data-toc-title={t('desktopComposite.scrollArea.dualAxisTitle', 'Dual-Axis')} className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-2">{t('desktopComposite.scrollArea.dualAxisTitle', 'Dual-Axis')}</h2>
         <p className="text-xs text-muted-foreground mb-4">
-          When content exceeds both width and height, both scrollbars render with a synchronized corner piece.
+          {t('desktopComposite.scrollArea.dualAxisDesc', 'When content exceeds both width and height, both scrollbars render with a synchronized corner piece.')}
         </p>
 
         <div className="rounded-xl border border-border bg-card p-6 shadow-xs">
@@ -425,53 +424,51 @@ export const CrossStackSpecification = {
       </section>
 
       {/* 5. Hot Zone & Dynamic Width Feature */}
-      <section id="dual-box-hot-zone" data-toc-title="Dual-Box Hot Zone" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">Dual-Box Hot Zone</h2>
+      <section id="dual-box-hot-zone" data-toc-title={t('desktopComposite.scrollArea.hotZoneTitle', 'Dual-Box Hot Zone')} className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-2">{t('desktopComposite.scrollArea.hotZoneTitle', 'Dual-Box Hot Zone')}</h2>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-          Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces a compact{' '}
-          <strong>0.5rem transparent interaction hot-zone</strong> paired with an animated visual indicator that expands
-          from <code className="font-mono text-primary">0.25rem</code> (idle) to <code className="font-mono text-primary">0.5rem</code> (hover) with 150ms cubic easing.
+          {t('desktopComposite.scrollArea.hotZoneDesc', 'Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces a compact 0.5rem transparent interaction hot-zone paired with an animated visual indicator that expands from 0.25rem (idle) to 0.5rem (hover) with 150ms cubic easing.')}
         </p>
 
         <div className="p-6 rounded-lg border border-border bg-card/40 flex flex-col md:flex-row gap-6 items-center">
           <div className="flex-1 text-xs text-muted-foreground space-y-2">
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Idle State:</strong> 0.25rem slim indicator bar, non-intrusive.</span>
+              <span>{t('desktopComposite.scrollArea.hotZoneIdle', 'Idle State: 0.25rem slim indicator bar, non-intrusive.')}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Hover State:</strong> Expands to 0.5rem with high visual affordance.</span>
+              <span>{t('desktopComposite.scrollArea.hotZoneHover', 'Hover State: Expands to 0.5rem with high visual affordance.')}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-primary" />
-              <span><strong>Hit Area:</strong> 0.5rem compact trigger box prevents accidental cursor capture.</span>
+              <span>{t('desktopComposite.scrollArea.hotZoneHit', 'Hit Area: 0.5rem compact trigger box prevents accidental cursor capture.')}</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* 6. Stepper Navigation */}
-      <section id="stepper-buttons" data-toc-title="Stepper Buttons" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">Stepper Buttons</h2>
+      <section id="stepper-buttons" data-toc-title={t('desktopComposite.scrollArea.stepperTitle', 'Stepper Buttons')} className="my-10">
+        <h2 className="text-xl font-bold tracking-tight mb-2">{t('desktopComposite.scrollArea.stepperTitle', 'Stepper Buttons')}</h2>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-          Hovering the scrollbar reveals two-end stepper action buttons:
+          {t('desktopComposite.scrollArea.stepperDesc', 'Hovering the scrollbar reveals two-end stepper action buttons:')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <div className="p-4 rounded-lg border border-border bg-card/40">
-            <h4 className="font-semibold mb-2">Vertical Cluster</h4>
+            <h4 className="font-semibold mb-2">{t('desktopComposite.scrollArea.verticalClusterTitle', 'Vertical Cluster')}</h4>
             <ul className="space-y-1 text-muted-foreground list-disc pl-4">
-              <li><strong>Top:</strong> To Top (Home) & Page Up (85% viewport step)</li>
-              <li><strong>Bottom:</strong> Page Down & To Bottom (End)</li>
-              <li>Auto-disabled when at boundary limits.</li>
+              <li>{t('desktopComposite.scrollArea.verticalTop', 'Top: To Top (Home) & Page Up (85% viewport step)')}</li>
+              <li>{t('desktopComposite.scrollArea.verticalBottom', 'Bottom: Page Down & To Bottom (End)')}</li>
+              <li>{t('desktopComposite.scrollArea.verticalAuto', 'Auto-disabled when at boundary limits.')}</li>
             </ul>
           </div>
           <div className="p-4 rounded-lg border border-border bg-card/40">
-            <h4 className="font-semibold mb-2">Horizontal Cluster</h4>
+            <h4 className="font-semibold mb-2">{t('desktopComposite.scrollArea.horizontalClusterTitle', 'Horizontal Cluster')}</h4>
             <ul className="space-y-1 text-muted-foreground list-disc pl-4">
-              <li><strong>Left:</strong> To Start (Home) & Page Left</li>
-              <li><strong>Right:</strong> Page Right & To End (End)</li>
-              <li>Supports smooth animated interpolation.</li>
+              <li>{t('desktopComposite.scrollArea.horizontalLeft', 'Left: To Start (Home) & Page Left')}</li>
+              <li>{t('desktopComposite.scrollArea.horizontalRight', 'Right: Page Right & To End (End)')}</li>
+              <li>{t('desktopComposite.scrollArea.horizontalSmooth', 'Supports smooth animated interpolation.')}</li>
             </ul>
           </div>
         </div>
@@ -487,25 +484,25 @@ export const CrossStackSpecification = {
             name: "size",
             type: "'default' | 'sm'",
             default: "'default'",
-            description: "Scrollbar density and scale.",
+            description: t('components.scrollArea.sizeDesc', 'Scrollbar density and scale.'),
           },
           {
             name: "showVerticalScrollBar",
             type: "boolean",
             default: "true",
-            description: "Whether to render the vertical scrollbar.",
+            description: t('components.scrollArea.showVerticalDesc', 'Whether to render the vertical scrollbar.'),
           },
           {
             name: "showHorizontalScrollBar",
             type: "boolean",
             default: "false",
-            description: "Whether to render the horizontal scrollbar.",
+            description: t('components.scrollArea.showHorizontalDesc', 'Whether to render the horizontal scrollbar.'),
           },
           {
             name: "showButtons",
             type: "boolean",
             default: "true",
-            description: "Whether stepper navigation buttons appear on scrollbar hover.",
+            description: t('components.scrollArea.showButtonsDesc', 'Whether stepper navigation buttons appear on scrollbar hover.'),
           },
           {
             name: "pageStepRatio",
@@ -517,19 +514,19 @@ export const CrossStackSpecification = {
             name: "smoothScroll",
             type: "boolean",
             default: "true",
-            description: "Whether stepper buttons use smooth scrolling behavior.",
+            description: t('components.scrollArea.smoothScrollDesc', 'Whether stepper buttons use smooth scrolling behavior.'),
           },
           {
             name: "floating",
             type: "boolean",
             default: "true",
-            description: "Whether scrollbars float over viewport content or occupy dedicated gutter layout space.",
+            description: t('components.scrollArea.floatingDesc', 'Whether scrollbars float over viewport content or occupy dedicated gutter layout space.'),
           },
           {
             name: "viewportClassName",
             type: "string",
             default: "undefined",
-            description: "Additional CSS classes for the internal scroll viewport element.",
+            description: t('components.scrollArea.viewportClassNameDesc', 'Additional CSS classes for the internal scroll viewport element.'),
           },
         ]}
       />
@@ -543,37 +540,37 @@ export const CrossStackSpecification = {
             name: "orientation",
             type: "'vertical' | 'horizontal'",
             default: "'vertical'",
-            description: "Scrollbar orientation axis.",
+            description: t('components.scrollBar.orientationDesc', 'Scrollbar orientation axis.'),
           },
           {
             name: "size",
             type: "'default' | 'sm'",
             default: "'default'",
-            description: "Scrollbar density and scale.",
+            description: t('components.scrollBar.sizeDesc', 'Scrollbar density and scale.'),
           },
           {
             name: "floating",
             type: "boolean",
             default: "true",
-            description: "Whether the scrollbar floats over viewport content or occupies dedicated gutter layout space.",
+            description: t('components.scrollBar.floatingDesc', 'Whether the scrollbar floats over viewport content or occupies dedicated gutter layout space.'),
           },
           {
             name: "hitSize",
             type: "number | string",
             default: "8",
-            description: "Thickness of the transparent pointer-capture hot-zone.",
+            description: t('components.scrollBar.hitSizeDesc', 'Thickness of the transparent pointer-capture hot-zone.'),
           },
           {
             name: "collapsedSize",
             type: "number | string",
             default: "4",
-            description: "Thickness of the visual indicator when idle.",
+            description: t('components.scrollBar.collapsedSizeDesc', 'Thickness of the visual indicator when idle.'),
           },
           {
             name: "expandedSize",
             type: "number | string",
             default: "8",
-            description: "Thickness of the visual indicator when hovered.",
+            description: t('components.scrollBar.expandedSizeDesc', 'Thickness of the visual indicator when hovered.'),
           },
         ]}
       />

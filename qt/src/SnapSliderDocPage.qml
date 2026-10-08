@@ -8,12 +8,12 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Snap Slider"
-    description: "Stepped discrete slider that snaps to defined stops with ticks and label row."
+    description: ChaSetI18n.tr("components.snap-slider.description", "Stepped discrete slider that snaps to defined stops with ticks and label row.")
     property int demoIndex: 1
     readonly property var demoLabels: ["0.5x", "1.0x", "1.5x", "2.0x", "3.0x"]
 
     ComponentPreview {
-        title: "Snap Slider Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.snapSlider.sandboxTitle", "Snap Slider Sandbox")
         reactCode: `<SnapSlider
   count={5}
   labels={["0.5x", "1.0x", "1.5x", "2.0x", "3.0x"]}
@@ -79,7 +79,7 @@ ChaSetSnapSlider {
             spacing: 8
 
             DocText {
-                text: "Animations"
+                text: ChaSetI18n.tr("showcase.animations", "Animations")
                 font.pixelSize: Typography.sizeTitleSm
                 font.bold: true
                 color: ThemeTokens.text
@@ -88,7 +88,7 @@ ChaSetSnapSlider {
             DocText {
                 width: parent.width
                 wrap: true
-                text: "Thumb hover and focus transitions animate over ThemeTokens.motionQuick (90ms) with ThemeTokens.easeStandard. Dragging tracks pointer without lag in 60fps."
+                text: ChaSetI18n.tr("desktopComposite.snapSlider.animationsDescQt", "Thumb hover and focus transitions animate over ThemeTokens.motionQuick (90ms) with ThemeTokens.easeStandard. Dragging tracks pointer without lag in 60fps.")
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
             }
@@ -99,15 +99,15 @@ ChaSetSnapSlider {
         name: "SnapSlider"
         componentId: "snap-slider"
         props: [
-            { name: "currentIndex", type: "int", defaultVal: "0", description: "Current selected stop index (aliased as value)." },
-            { name: "count", type: "int", defaultVal: "5", description: "Total number of discrete snap stops." },
-            { name: "labels", type: "var", defaultVal: "[]", description: "List of labels for each stop." },
-            { name: "leftLabel", type: "string", defaultVal: '""', description: "Boundary label on the bottom-left edge." },
-            { name: "rightLabel", type: "string", defaultVal: '""', description: "Boundary label on the bottom-right edge." },
-            { name: "showTicks", type: "bool", defaultVal: "true", description: "Displays tick mark indicators for stops." },
-            { name: "disabled", type: "bool", defaultVal: "false", description: "Disables interaction and dims opacity." },
-            { name: "readOnly", type: "bool", defaultVal: "false", description: "Prevents changes while maintaining contrast." },
-            { name: "size", type: "string", defaultVal: '"default"', description: 'Density variant ("default" | "sm").' }
+            { name: "currentIndex", type: "int", defaultVal: "0", description: ChaSetI18n.tr("components.snapSlider.currentIndexDesc", "Current selected stop index (aliased as value).") },
+            { name: "count", type: "int", defaultVal: "5", description: ChaSetI18n.tr("components.snapSlider.countDescQt", "Total number of discrete snap stops.") },
+            { name: "labels", type: "var", defaultVal: "[]", description: ChaSetI18n.tr("components.snapSlider.labelsDescQt", "List of labels for each stop.") },
+            { name: "leftLabel", type: "string", defaultVal: '""', description: ChaSetI18n.tr("components.snapSlider.leftLabelDescQt", "Boundary label on the bottom-left edge.") },
+            { name: "rightLabel", type: "string", defaultVal: '""', description: ChaSetI18n.tr("components.snapSlider.rightLabelDescQt", "Boundary label on the bottom-right edge.") },
+            { name: "showTicks", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.snapSlider.showTicksDescQt", "Displays tick mark indicators for stops.") },
+            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.snapSlider.disabledDescQt", "Disables interaction and dims opacity.") },
+            { name: "readOnly", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.snapSlider.readOnlyDescQt", "Prevents changes while maintaining contrast.") },
+            { name: "size", type: "string", defaultVal: '"default"', description: ChaSetI18n.tr("components.snapSlider.sizeDescQt", "Density variant (\"default\" | \"sm\").") }
         ]
     }
 }

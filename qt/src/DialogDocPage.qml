@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Overlays & Feedback"
     pageTitle: "Dialog"
-    description: "A modal window that interrupts the user with critical content and prompts for user action."
+    description: ChaSetI18n.tr("components.dialog.description", "A modal window that interrupts the user with critical content and prompts for user action.")
     property int customRadius: 8
     property color cFg: ThemeTokens.text
     property color cMutedFg: ThemeTokens.subduedText
@@ -21,7 +21,7 @@ DocLayout {
         id: heroPreview
         width: parent.width
         stageHeight: 200
-        title: "Dialog Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.dialog.sandboxTitle", "Dialog Sandbox")
         reactCode: `<Dialog open={open} onOpenChange={setOpen}>\n  <DialogTrigger asChild>\n    <Button variant="outline">Open Profile Dialog</Button>\n  </DialogTrigger>\n  <DialogContent>\n    <DialogHeader>\n      <DialogTitle>Edit profile</DialogTitle>\n      <DialogDescription>\n        Make changes to your profile here. Click save when you're done.\n      </DialogDescription>\n    </DialogHeader>\n    <div className="grid gap-4 py-4">\n      <div className="grid grid-cols-4 items-center gap-4">\n        <label className="text-right text-sm">Name</label>\n        <Input className="col-span-3" defaultValue="Alex Rivera" />\n      </div>\n      <div className="grid grid-cols-4 items-center gap-4">\n        <label className="text-right text-sm">Username</label>\n        <Input className="col-span-3" defaultValue="@arivera" />\n      </div>\n    </div>\n    <DialogFooter>\n      <DialogClose asChild>\n        <Button variant="outline">Cancel</Button>\n      </DialogClose>\n      <Button>Save changes</Button>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>`
         qtCode: `ChaSetDialog {\n    id: profileDialog\n    title: "Edit profile"\n    description: "Make changes to your profile here. Click save when you're done."\n    dialogWidth: 480\n\n    Column {\n        width: parent.width\n        spacing: 12\n\n        Row {\n            spacing: 10\n            Text { text: "Name:"; width: 70; color: ThemeTokens.text }\n            ChaSetInput { width: 340; text: "Alex Rivera" }\n        }\n        Row {\n            spacing: 10\n            Text { text: "Username:"; width: 70; color: ThemeTokens.text }\n            ChaSetInput { width: 340; text: "@arivera" }\n        }\n    }\n\n    Row {\n        anchors.right: parent.right\n        spacing: 10\n        ChaSetButton {\n            variant: "outline"\n            text: "Cancel"\n            onClicked: profileDialog.reject()\n        }\n        ChaSetButton {\n            text: "Save changes"\n            onClicked: profileDialog.accept()\n        }\n    }\n}`
 
@@ -61,14 +61,14 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "Examples & States"
+            text: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
             color: root.cFg
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
         }
 
         DocText {
-            text: "Common modal dialog patterns: desktop draggable windows, confirmation dialogs, and alert notices."
+            text: ChaSetI18n.tr("desktopComposite.dialog.examplesDesc", "Common modal dialog patterns: desktop draggable windows, confirmation dialogs, and alert notices.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -190,13 +190,13 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        DocText { text: "Animations"; color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        DocText { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        DocText { text: "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.dialog.animationsDescQt", "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        DocText { text: "• The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.dialog.animationsBullet1Qt", "The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.dialog.animationsBullet2Qt", "Transitions use ThemeTokens.motionShort with the easeEntrance curve."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.dialog.animationsBullet3Qt", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     ComponentReference {
@@ -207,97 +207,97 @@ DocLayout {
                 name: "open",
                 type: "bool",
                 defaultVal: "false",
-                description: "Controls the visible / open state of the modal dialog."
+                description: ChaSetI18n.tr("components.dialog.openDescQt", "Controls the visible / open state of the modal dialog.")
             },
             {
                 name: "title",
                 type: "string",
                 defaultVal: "\"\"",
-                description: "Header title text displayed in prominent bold styling."
+                description: ChaSetI18n.tr("components.dialog.titleDescQt", "Header title text displayed in prominent bold styling.")
             },
             {
                 name: "description",
                 type: "string",
                 defaultVal: "\"\"",
-                description: "Header descriptive text displayed beneath the title."
+                description: ChaSetI18n.tr("components.dialog.headerDescQt", "Header descriptive text displayed beneath the title.")
             },
             {
                 name: "size",
                 type: "\"sm\" | \"default\" | \"lg\" | \"xl\" | \"full\"",
                 defaultVal: "\"default\"",
-                description: "Tiered size preset controlling modal card width."
+                description: ChaSetI18n.tr("components.dialog.sizeDescQt", "Tiered size preset controlling modal card width.")
             },
             {
                 name: "customRadius",
                 type: "int",
                 defaultVal: "8",
-                description: "Corner radius of the modal dialog card."
+                description: ChaSetI18n.tr("components.dialog.customRadiusDesc", "Corner radius of the modal dialog card.")
             },
             {
                 name: "dialogWidth",
                 type: "int",
                 defaultVal: "500",
-                description: "Explicit width of the dialog card override."
+                description: ChaSetI18n.tr("components.dialog.dialogWidthDesc", "Explicit width of the dialog card override.")
             },
             {
                 name: "showCloseButton",
                 type: "bool",
                 defaultVal: "true",
-                description: "Whether to render the close button in the top-right corner."
+                description: ChaSetI18n.tr("components.dialog.showCloseButtonDescQt", "Whether to render the close button in the top-right corner.")
             },
             {
                 name: "showEscBadge",
                 type: "bool",
                 defaultVal: "false",
-                description: "Whether to display the ESC keyboard badge in the top-right header."
+                description: ChaSetI18n.tr("components.dialog.showEscBadgeDescQt", "Whether to display the ESC keyboard badge in the top-right header.")
             },
             {
                 name: "closeOnOverlayClick",
                 type: "bool",
                 defaultVal: "true",
-                description: "Whether clicking the backdrop overlay dismisses the dialog."
+                description: ChaSetI18n.tr("components.dialog.closeOnOverlayClickDescQt", "Whether clicking the backdrop overlay dismisses the dialog.")
             },
             {
                 name: "closeOnEscape",
                 type: "bool",
                 defaultVal: "true",
-                description: "Whether pressing Escape key dismisses the dialog."
+                description: ChaSetI18n.tr("components.dialog.closeOnEscapeDescQt", "Whether pressing Escape key dismisses the dialog.")
             },
             {
                 name: "draggable",
                 type: "bool",
                 defaultVal: "true",
-                description: "Whether the dialog card can be dragged across the viewport."
+                description: ChaSetI18n.tr("components.dialog.draggableDescQt", "Whether the dialog card can be dragged across the viewport.")
             },
             {
                 name: "contentData",
                 type: "list<QtObject>",
                 defaultVal: "[]",
-                description: "Default property alias for body content elements."
+                description: ChaSetI18n.tr("components.dialog.contentDataDesc", "Default property alias for body content elements.")
             },
             {
                 name: "opened()",
                 type: "signal",
                 defaultVal: "—",
-                description: "Emitted when the modal has transitioned to open."
+                description: ChaSetI18n.tr("components.dialog.openedDesc", "Emitted when the modal has transitioned to open.")
             },
             {
                 name: "closed()",
                 type: "signal",
                 defaultVal: "—",
-                description: "Emitted when the modal has closed."
+                description: ChaSetI18n.tr("components.dialog.closedDesc", "Emitted when the modal has closed.")
             },
             {
                 name: "accepted()",
                 type: "signal",
                 defaultVal: "—",
-                description: "Emitted when the accept() function is invoked."
+                description: ChaSetI18n.tr("components.dialog.acceptedDesc", "Emitted when the accept() function is invoked.")
             },
             {
                 name: "rejected()",
                 type: "signal",
                 defaultVal: "—",
-                description: "Emitted when the reject() function or scrim / close button is triggered."
+                description: ChaSetI18n.tr("components.dialog.rejectedDesc", "Emitted when the reject() function or scrim / close button is triggered.")
             }
         ]
     }
@@ -326,7 +326,7 @@ DocLayout {
                 ChaSetInput {
                     id: nameInput
                     width: parent.width - ThemeTokens.dp(80)
-                    text: "Alex Rivera"
+                    text: ChaSetI18n.tr("desktopComposite.dialog.demoName", "Alex Rivera")
                 }
             }
 

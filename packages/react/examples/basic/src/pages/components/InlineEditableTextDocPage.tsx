@@ -19,21 +19,21 @@ export function InlineEditableTextDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Inline Editable Text"
-      description="Text element that switches seamlessly to an input field on double-click or edit trigger, supporting Enter to save and Escape to cancel."
+      description={t('components.inline-editable-text.description', 'Text element that switches seamlessly to an input field on double-click or edit trigger, supporting Enter to save and Escape to cancel.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Click or double-click on the text below to modify it. Press <code>Enter</code> to confirm or <code>Esc</code> to cancel.
+          {t('desktopComposite.inlineEditableText.overviewDesc', 'Click or double-click on the text below to modify it. Press Enter to confirm or Esc to cancel.')}
         </p>
 
         <ComponentPreview
           qtCode={`ChaSetInlineEditableText {
     value: "Project Apollo Architecture"
     onSave: function(newVal) { console.log(newVal) }
-}`} title="Inline Editable Text Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.inlineEditableText.sandboxTitle', 'Inline Editable Text Sandbox')} reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4">
             <div className="p-4 rounded-lg border border-border bg-card text-foreground text-base">
               <InlineEditableText
@@ -67,10 +67,10 @@ ChaSetInlineEditableText {
 
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Sizes & Interaction Triggers
+          {t('components.inlineEditableText.sizesAndTriggers', 'Sizes & Interaction Triggers')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Configure single-click vs double-click activations and high-density sizing tiers.
+          {t('components.inlineEditableText.sizesAndTriggersDesc', 'Configure single-click vs double-click activations and high-density sizing tiers.')}
         </p>
 
         <ComponentPreview
@@ -78,7 +78,7 @@ ChaSetInlineEditableText {
 ChaSetInlineEditableText { value: "Database Connection URI"; trigger: "doubleClick"; size: "default" }
 ChaSetInlineEditableText { value: "Sprint-42-Review"; size: "sm" }
 ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`}
-          title="Sizes & Interaction Triggers"
+          title={t('components.inlineEditableText.sizesAndTriggers', 'Sizes & Interaction Triggers')}
           reactCode={`<InlineEditableText value="Single Click to Edit" trigger="click" size="default" />
 <InlineEditableText value="Double Click to Edit" trigger="doubleClick" size="default" />
 <InlineEditableText value="Compact sm Tier Label" size="sm" />
@@ -109,14 +109,14 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`}
         name="InlineEditableText"
         componentId="inline-editable-text"
         props={[
-            { name: 'value', type: 'string', default: "''", description: 'Current text value.' },
-            { name: 'onValueChange', type: '(v: string) => void', default: 'undefined', description: 'Callback invoked upon confirming an edit.' },
-            { name: 'onSave', type: '(v: string) => void | boolean | Promise<...>', default: 'undefined', description: 'Async save handler; returning false keeps edit mode open.' },
-            { name: 'trigger', type: '"click" | "doubleClick"', default: '"click"', description: 'Mouse gesture that opens the inline input.' },
-            { name: 'size', type: '"default" | "sm"', default: '"default"', description: 'Density and sizing variant.' },
-            { name: 'placeholder', type: 'string', default: "''", description: 'Placeholder when value is empty.' },
-            { name: 'hint', type: 'string', default: "''", description: 'Hover tooltip hint.' },
-            { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether inline editing is disabled.' },
+            { name: 'value', type: 'string', default: "''", description: t('components.inlineEditableText.valueDesc', 'Current text value.') },
+            { name: 'onValueChange', type: '(v: string) => void', default: 'undefined', description: t('components.inlineEditableText.onValueChangeDesc', 'Callback invoked upon confirming an edit.') },
+            { name: 'onSave', type: '(v: string) => void | boolean | Promise<...>', default: 'undefined', description: t('components.inlineEditableText.onSaveDesc', 'Async save handler; returning false keeps edit mode open.') },
+            { name: 'trigger', type: '"click" | "doubleClick"', default: '"click"', description: t('components.inlineEditableText.triggerDesc', 'Mouse gesture that opens the inline input.') },
+            { name: 'size', type: '"default" | "sm"', default: '"default"', description: t('components.inlineEditableText.sizeDesc', 'Density and sizing variant.') },
+            { name: 'placeholder', type: 'string', default: "''", description: t('components.inlineEditableText.placeholderDesc', 'Placeholder when value is empty.') },
+            { name: 'hint', type: 'string', default: "''", description: t('components.inlineEditableText.hintDesc', 'Hover tooltip hint.') },
+            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.inlineEditableText.disabledDesc', 'Whether inline editing is disabled.') },
           ]}
       />
     </DocLayout>
