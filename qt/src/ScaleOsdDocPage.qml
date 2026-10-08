@@ -8,11 +8,11 @@ DocLayout {
     id: root
     category: "Overlays & Feedback"
     pageTitle: "Scale OSD"
-    description: "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
+    description: ChaSetI18n.tr("components.scaleOsd.description", "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.")
     property real demoScale: 1.0
 
     ComponentPreview {
-        title: "Scale OSD Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.scaleOsd.sandboxTitle", "Scale OSD Sandbox")
         reactCode: `<ScaleOsd
   value={scale}
   step={0.1}
@@ -102,7 +102,7 @@ ChaSetScaleOsd {
             spacing: 8
 
             DocText {
-                text: "Animations"
+                text: ChaSetI18n.tr("showcase.animations", "Animations")
                 font.pixelSize: Typography.sizeTitleSm
                 font.bold: true
                 color: ThemeTokens.text
@@ -111,7 +111,7 @@ ChaSetScaleOsd {
             DocText {
                 width: parent.width
                 wrap: true
-                text: "OSD enter and exit transitions animate smoothly over ThemeTokens.motionShort (120ms) using ThemeTokens.easeStandard. Auto-hide timer runs with a 1400ms countdown, pausing on mouse hover."
+                text: ChaSetI18n.tr("desktopComposite.scaleOsd.animationsDesc", "OSD enter and exit transitions run over duration-short (120ms) with the ease-standard curve (Qt: ThemeTokens.motionShort / ThemeTokens.easeStandard). The 1400ms auto-hide countdown pauses deterministically on hover.")
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
             }
@@ -122,17 +122,17 @@ ChaSetScaleOsd {
         name: "ScaleOsd"
         componentId: "scale-osd"
         propsModel: [
-            { name: "value", type: "real", defaultVal: "1.0", description: "Current scale ratio (e.g. 1.0 represents 100%)." },
-            { name: "step", type: "real", defaultVal: "0.1", description: "Step increment applied on +/- button click." },
-            { name: "min", type: "real", defaultVal: "0.2", description: "Minimum allowed zoom scale ratio." },
-            { name: "max", type: "real", defaultVal: "3.0", description: "Maximum allowed zoom scale ratio." },
-            { name: "steps", type: "var", defaultVal: "[]", description: "Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS)." },
-            { name: "size", type: "string", defaultVal: "\"default\"", description: "Visual scale variant (desktop launcher 42px or standard 40px)." },
-            { name: "ignoreUiScale", type: "bool", defaultVal: "true", description: "Locks physical pixel size and renders invariant regardless of interface scaling." },
-            { name: "autoHideDuration", type: "int", defaultVal: "1400", description: "Duration in ms before auto-hiding (pauses on hover)." },
-            { name: "showControls", type: "bool", defaultVal: "true", description: "Whether to display +/- and reset buttons." },
-            { name: "showTooltips", type: "bool", defaultVal: "true", description: "Whether to display hover tooltip hints for control buttons." },
-            { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all controls and user interaction." }
+            { name: "value", type: "real", defaultVal: "1.0", description: ChaSetI18n.tr("components.scaleOsd.valueDesc", "Current scale ratio (e.g. 1.0 represents 100%).") },
+            { name: "step", type: "real", defaultVal: "0.1", description: ChaSetI18n.tr("components.scaleOsd.stepDesc", "Step increment applied on +/- button click.") },
+            { name: "min", type: "real", defaultVal: "0.2", description: ChaSetI18n.tr("components.scaleOsd.minDesc", "Minimum allowed zoom scale ratio.") },
+            { name: "max", type: "real", defaultVal: "3.0", description: ChaSetI18n.tr("components.scaleOsd.maxDesc", "Maximum allowed zoom scale ratio.") },
+            { name: "steps", type: "var", defaultVal: "[]", description: ChaSetI18n.tr("components.scaleOsd.stepsDesc", "Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS).") },
+            { name: "size", type: "string", defaultVal: "\"default\"", description: ChaSetI18n.tr("components.scaleOsd.sizeDesc", "Visual scale variant (desktop launcher 42px or standard 40px).") },
+            { name: "ignoreUiScale", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.scaleOsd.ignoreUiScaleDesc", "Locks physical pixel size and renders invariant regardless of interface scaling.") },
+            { name: "autoHideDuration", type: "int", defaultVal: "1400", description: ChaSetI18n.tr("components.scaleOsd.autoHideDurationDesc", "Duration in ms before auto-hiding (pauses on hover).") },
+            { name: "showControls", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.scaleOsd.showControlsDesc", "Whether to display +/- and reset buttons.") },
+            { name: "showTooltips", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.scaleOsd.showTooltipsDesc", "Whether to display hover tooltip hints for control buttons.") },
+            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.disabledDesc", "Disables all controls and user interaction.") }
         ]
     }
 }

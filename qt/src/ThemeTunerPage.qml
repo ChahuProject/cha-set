@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Get Started"
     pageTitle: "Theme Studio"
-    description: "Live interactive theme tuner. Fine-tune colors, radiuses, and accents with real-time feedback and one-click config export."
+    description: ChaSetI18n.tr("components.theme-studio.description", "Live interactive theme tuner. Fine-tune colors, radiuses, and accents with real-time feedback and one-click config export.")
     tocItems: [
-        { id: "tuner", title: "Theme Controls" },
-        { id: "playground", title: "Live Sandbox" }
+        { id: "tuner", title: ChaSetI18n.tr("showcase.toc.tuner", "Theme Controls") },
+        { id: "playground", title: ChaSetI18n.tr("showcase.toc.playground", "Live Sandbox") }
     ]
 
     property int customRadius: 8

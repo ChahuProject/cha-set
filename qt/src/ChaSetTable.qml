@@ -372,7 +372,7 @@ Rectangle {
 
             Text {
                 anchors.centerIn: parent
-                text: "No data available"
+                text: ChaSetI18n.tr("components.table.emptyState", "No data available")
                 color: root.cSubduedText
                 font.pixelSize: Typography.sizeSmall
             }

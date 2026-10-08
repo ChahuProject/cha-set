@@ -44,14 +44,14 @@ gridRef.current?.scrollToIndex(20, 'center');
     <DocLayout
       category="Desktop & Virtualization"
       title="Virtual Grid"
-      description="2D responsive windowed grid virtualizer for massive cards, matrix data, and dynamic layouts."
+      description={t('components.virtualGrid.description', '2D responsive windowed grid virtualizer for massive cards, matrix data, and dynamic layouts.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.virtualGrid.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Virtualizing responsive card columns with automatic width calculation and row-based DOM recycling. Use controls below for programmatic navigation.
+          {t('desktopComposite.virtualGrid.overviewDesc', 'Virtualizing responsive card columns with automatic width calculation and row-based DOM recycling. Use controls below for programmatic navigation.')}
         </p>
 
         <ComponentPreview
@@ -64,7 +64,7 @@ gridRef.current?.scrollToIndex(20, 'center');
     delegate: Item {
         // ...card delegate...
     }
-}`} title="Virtual Grid Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.virtualGrid.sandboxTitle', 'Virtual Grid Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-xl space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
               <Button
@@ -147,15 +147,15 @@ ChaSetVirtualGrid {
         name="VirtualGrid"
         componentId="virtual-grid"
         props={[
-            { name: 'items', type: 'readonly T[]', default: '[]', description: 'Array of data items to layout into grid cards.' },
-            { name: 'renderCard', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: 'Callback rendering an individual grid card.' },
-            { name: 'renderItem', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: 'Alias for renderCard.' },
-            { name: 'minColumnWidthRem', type: 'number', default: '12', description: 'Minimum column width before responsive wrapping.' },
-            { name: 'gapRem', type: 'number', default: '0.75', description: 'Grid gap spacing between cards.' },
-            { name: 'estimateSize', type: 'number', default: '180', description: 'Estimated row height for virtual calculation.' },
-            { name: 'overscan', type: 'number', default: '4', description: 'Buffer row count rendered beyond viewport bounds.' },
-            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: 'Content rendered when items array is empty.' },
-            { name: 'ref', type: 'Ref<VirtualGridHandle>', default: 'undefined', description: 'Handle exposing scrollToIndex(index, align).' },
+            { name: 'items', type: 'readonly T[]', default: '[]', description: t('components.virtualGrid.itemsDesc', 'Array of data items to layout into grid cards.') },
+            { name: 'renderCard', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: t('components.virtualGrid.renderCardDesc', 'Callback rendering an individual grid card.') },
+            { name: 'renderItem', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: t('components.virtualGrid.renderItemDesc', 'Alias for renderCard.') },
+            { name: 'minColumnWidthRem', type: 'number', default: '12', description: t('components.virtualGrid.minColumnWidthDesc', 'Minimum column width before responsive wrapping.') },
+            { name: 'gapRem', type: 'number', default: '0.75', description: t('components.virtualGrid.gapDesc', 'Grid gap spacing between cards.') },
+            { name: 'estimateSize', type: 'number', default: '180', description: t('components.virtualGrid.estimateSizeDesc', 'Estimated row height for virtual calculation.') },
+            { name: 'overscan', type: 'number', default: '4', description: t('components.virtualGrid.overscanDesc', 'Buffer row count rendered beyond viewport bounds.') },
+            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: t('components.virtualGrid.emptyNodeDesc', 'Content rendered when items array is empty.') },
+            { name: 'ref', type: 'Ref<VirtualGridHandle>', default: 'undefined', description: t('components.virtualGrid.refDesc', 'Handle exposing scrollToIndex(index, align).') },
           ]}
       />
     </DocLayout>

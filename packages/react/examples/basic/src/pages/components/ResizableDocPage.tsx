@@ -134,19 +134,19 @@ export function ResizableDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Resizable"
-      description="Accessible resizable panel groups and layout splitters."
+      description={t('components.resizable.description', 'Accessible resizable panel groups and layout splitters.')}
     >
       {/* 1. Horizontal Split Overview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Horizontal Split
+          {t('desktopComposite.resizable.horizontalTitle', 'Horizontal Split')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Panels automatically adapt to available width and provide interactive drag handles with boundary limits.
+          {t('desktopComposite.resizable.horizontalDesc', 'Panels automatically adapt to available width and provide interactive drag handles with boundary limits.')}
         </p>
 
         <ComponentPreview
-          title="Horizontal Resizable Group"
+          title={t('desktopComposite.resizable.horizontalSandboxTitle', 'Horizontal Resizable Group')}
           reactCode={horizontalCode}
           qtCode={horizontalQtCode}
         >
@@ -204,14 +204,14 @@ ChaSetResizable {
       {/* 2. Nested Splitters */}
       <section id="nested" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Nested Resizable Layout
+          {t('desktopComposite.resizable.nestedTitle', 'Nested Resizable Layout')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Embed vertical panel groups inside horizontal panels to construct multi-pane IDE workbenches and docking surfaces.
+          {t('desktopComposite.resizable.nestedDesc', 'Embed vertical panel groups inside horizontal panels to construct multi-pane IDE workbenches and docking surfaces.')}
         </p>
 
         <ComponentPreview
-          title="Nested Resizable Layout"
+          title={t('desktopComposite.resizable.nestedTitle', 'Nested Resizable Layout')}
           reactCode={nestedCode}
           qtCode={nestedQtCode}
         >
@@ -268,14 +268,14 @@ ChaSetResizable {
       {/* 3. Variants Playground */}
       <section id="playground" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Playground
+          {t('desktopComposite.resizable.playgroundTitle', 'Interactive Playground')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Toggle between horizontal and vertical orientations and test visual grip handle styles dynamically.
+          {t('desktopComposite.resizable.playgroundDesc', 'Toggle between horizontal and vertical orientations and test visual grip handle styles dynamically.')}
         </p>
 
         <ComponentPreview
-          title="Interactive Playground"
+          title={t('desktopComposite.resizable.playgroundTitle', 'Interactive Playground')}
           reactCode={playgroundReactCode}
           qtCode={playgroundQtCode}
           controls={
@@ -345,25 +345,20 @@ ChaSetResizable {
       {/* 5. Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Motion tokens and kinematic timing contracts for Resizable dividers and handles.
+          {t('desktopComposite.resizable.animationsDesc', 'Motion tokens and kinematic timing contracts for Resizable dividers and handles.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
-            Separator grip indicator border and hover highlight color transitions animate smoothly over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> (150ms) using{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve (Qt counterpart:{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.motionQuick</code> and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.easeStandard</code>).
+            {t('desktopComposite.resizable.animationsBullet1', 'Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt: ThemeTokens.motionQuick / ThemeTokens.easeStandard).')}
           </li>
           <li>
-            Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.
+            {t('desktopComposite.resizable.animationsBullet2', 'Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.')}
           </li>
           <li>
-            Respects <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> in Qt.
+            {t('desktopComposite.resizable.animationsBullet3', 'Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt.')}
           </li>
         </ul>
       </section>
@@ -377,37 +372,37 @@ ChaSetResizable {
               name: 'direction',
               type: "'horizontal' | 'vertical'",
               default: "'horizontal'",
-              description: 'Direction of panel layout (also supports orientation prop).',
+              description: t('components.resizable.directionDesc', 'Direction of panel layout (also supports orientation prop).'),
             },
             {
               name: 'defaultSize',
               type: 'number',
               default: 'undefined',
-              description: 'Initial percentage size allocated to the panel (0-100).',
+              description: t('components.resizable.defaultSizeDesc', 'Initial percentage size allocated to the panel (0-100).'),
             },
             {
               name: 'minSize',
               type: 'number',
               default: '0',
-              description: 'Minimum allowed percentage size constraint.',
+              description: t('components.resizable.minSizeDesc', 'Minimum allowed percentage size constraint.'),
             },
             {
               name: 'maxSize',
               type: 'number',
               default: '100',
-              description: 'Maximum allowed percentage size constraint.',
+              description: t('components.resizable.maxSizeDesc', 'Maximum allowed percentage size constraint.'),
             },
             {
               name: 'collapsible',
               type: 'boolean',
               default: 'false',
-              description: 'Whether the panel collapses completely past its minimum size.',
+              description: t('components.resizable.collapsibleDesc', 'Whether the panel collapses completely past its minimum size.'),
             },
             {
               name: 'withHandle',
               type: 'boolean',
               default: 'false',
-              description: 'Renders an accessible tactile visual grip handle on the separator divider.',
+              description: t('components.resizable.withHandleDesc', 'Renders an accessible tactile visual grip handle on the separator divider.'),
             },
           ]}
       />

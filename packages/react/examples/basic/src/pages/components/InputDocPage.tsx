@@ -51,19 +51,19 @@ export function InputDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Input"
-      description="Displays a form text input field or a component that looks like an input field."
+      description={t('components.input.description', 'Displays a form text input field or a component that looks like an input field.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.input.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('formsA.input.overviewDesc', 'Explore interactive input behaviors, sizes, states, clearable action, password toggle, and responsive token styling across Web and Qt Desktop.')}
         </p>
 
         <ComponentPreview
-          title="Input Sandbox"
+          title={t('desktopComposite.input.sandboxTitle', 'Input Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -180,7 +180,7 @@ export function InputDocPage() {
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & States
+          {t('showcase.examplesAndStates', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('formsA.input.examplesSubtitle', 'Visual matrix of common input configurations and states.')}
@@ -233,85 +233,85 @@ export function InputDocPage() {
               name: 'size',
               type: "'default' | 'sm'",
               default: "'default'",
-              description: 'The height and padding scale of the input.',
+              description: t('components.input.sizeDesc', 'The height and padding scale of the input.'),
             },
             {
               name: 'type',
               type: 'string',
               default: "'text'",
-              description: 'Standard HTML/Qt input type: "text" | "password" | "email" | "search" | "number".',
+              description: t('components.input.typeDesc', 'Standard HTML/Qt input type: "text" | "password" | "email" | "search" | "number".'),
             },
             {
               name: 'placeholder',
               type: 'string',
               default: "''",
-              description: 'Placeholder hint text displayed when input is empty.',
+              description: t('components.input.placeholderDesc', 'Placeholder hint text displayed when input is empty.'),
             },
             {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
-              description: 'Disables user interactions and applies 50% opacity.',
+              description: t('components.input.disabledDesc', 'Disables user interactions and applies 50% opacity.'),
             },
             {
               name: 'readOnly',
               type: 'boolean',
               default: 'false',
-              description: 'Prevents editing value while keeping focusability.',
+              description: t('components.input.readOnlyDesc', 'Prevents editing value while keeping focusability.'),
             },
             {
               name: 'invalid',
               type: 'boolean',
               default: 'false',
-              description: 'Applies destructive error styling and aria-invalid attribute.',
+              description: t('components.input.invalidDesc', 'Applies destructive error styling and aria-invalid attribute.'),
             },
             {
               name: 'clearable',
               type: 'boolean',
               default: 'false',
-              description: 'Renders a clear button when text is present to wipe content.',
+              description: t('components.input.clearableDesc', 'Renders a clear button when text is present to wipe content.'),
             },
             {
               name: 'passwordToggle',
               type: 'boolean',
               default: 'false',
-              description: 'Renders an eye toggle button to reveal or mask passwords.',
+              description: t('components.input.passwordToggleDesc', 'Renders an eye toggle button to reveal or mask passwords.'),
             },
             {
               name: 'leftIcon',
               type: 'ReactNode',
               default: 'undefined',
-              description: 'Icon element rendered on the leading side of the input.',
+              description: t('components.input.leftIconDesc', 'Icon element rendered on the leading side of the input.'),
             },
             {
               name: 'rightIcon',
               type: 'ReactNode',
               default: 'undefined',
-              description: 'Icon element rendered on the trailing side of the input.',
+              description: t('components.input.rightIconDesc', 'Icon element rendered on the trailing side of the input.'),
             },
             {
               name: 'onClear',
               type: '() => void',
               default: 'undefined',
-              description: 'Callback fired when the clear button is clicked.',
+              description: t('components.input.onClearDesc', 'Callback fired when the clear button is clicked.'),
             },
             {
               name: 'forceHover',
               type: 'boolean',
               default: 'false',
-              description: 'Visual testing aid to force hover state styles.',
+              description: t('components.input.forceHoverDesc', 'Visual testing aid to force hover state styles.'),
             },
             {
               name: 'forceFocus',
               type: 'boolean',
               default: 'false',
-              description: 'Visual testing aid to force focus ring styles.',
+              description: t('components.input.forceFocusDesc', 'Visual testing aid to force focus ring styles.'),
             },
             {
               name: 'className',
               type: 'string',
               default: "''",
-              description: 'Additional CSS class names to apply to the input element.',
+              description: t('components.input.classNameDesc', 'Additional CSS class names to apply to the input element.'),
             },
           ]}
       />

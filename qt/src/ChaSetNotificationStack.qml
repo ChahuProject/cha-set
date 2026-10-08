@@ -23,7 +23,7 @@ ChaSetActivityStack {
     /** Renders the per-card dismiss control on dismissible notifications. */
     property bool dismissEnabled: true
 
-    label: "Notifications"
+    label: ChaSetI18n.tr("components.notificationStack.defaultLabel", "Notifications")
     maxVisible: 4
     entries: {
         var _revision = root._revision

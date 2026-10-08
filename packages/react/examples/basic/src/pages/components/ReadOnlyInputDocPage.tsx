@@ -18,14 +18,14 @@ export function ReadOnlyInputDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Read-Only Input"
-      description="Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle."
+      description={t('components.readOnlyInput.description', 'Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.readOnlyInput.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Safely expose secret credentials with optional masking, reveal toggle, and one-click copy.
+          {t('desktopComposite.readOnlyInput.overviewDesc', 'Safely expose secret credentials with optional masking, reveal toggle, and one-click copy.')}
         </p>
 
         <ComponentPreview
@@ -33,7 +33,7 @@ export function ReadOnlyInputDocPage() {
     value: "cs_live_94817264810294827104"
     masked: true
     showCopy: true
-}`} title="Read-Only Input Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.readOnlyInput.sandboxTitle', 'Read-Only Input Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-md flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-muted-foreground">{t('components.readOnlyInput.apiSecretKey', 'API Secret Key (Masked with Copy):')}</label>
@@ -72,10 +72,10 @@ ChaSetReadOnlyInput {
 
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Sizes & Status Variants
+          {t('desktopComposite.readOnlyInput.variantsTitle', 'Sizes & Status Variants')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Available in default and sm sizing tiers with semantic status color schemes.
+          {t('desktopComposite.readOnlyInput.variantsDesc', 'Available in default and sm sizing tiers with semantic status color schemes.')}
         </p>
 
         <ComponentPreview
@@ -84,7 +84,7 @@ ChaSetReadOnlyInput { value: "chaset_compact_sm_token_preview"; size: "sm" }
 ChaSetReadOnlyInput { value: "chaset_destructive_revoked"; colorScheme: "destructive" }
 ChaSetReadOnlyInput { value: "chaset_warning_expiring_soon"; colorScheme: "warning" }
 ChaSetReadOnlyInput { value: "chaset_success_verified"; colorScheme: "success" }`}
-          title="Sizes & Status Variants"
+          title={t('desktopComposite.readOnlyInput.variantsTitle', 'Sizes & Status Variants')}
           reactCode={`<ReadOnlyInput value="default_token_val_1" size="default" />
 <ReadOnlyInput value="compact_sm_token_2" size="sm" />
 <ReadOnlyInput value="destructive_secret_3" colorScheme="destructive" />
@@ -105,15 +105,15 @@ ChaSetReadOnlyInput { value: "chaset_success_verified"; colorScheme: "success" }
         name="ReadOnlyInput"
         componentId="read-only-input"
         props={[
-            { name: 'value', type: 'string', default: "''", description: 'Protected value displayed in the input.' },
-            { name: 'showCopy', type: 'boolean', default: 'true', description: 'Whether to show the attached copy button.' },
-            { name: 'masked', type: 'boolean', default: 'false', description: 'Whether to mask characters with bullets.' },
-            { name: 'maskChar', type: 'string', default: "'•'", description: 'Character used for masking.' },
-            { name: 'showMaskToggle', type: 'boolean', default: 'true', description: 'Whether to show the reveal/hide toggle button when masked.' },
-            { name: 'size', type: '"default" | "sm"', default: '"default"', description: 'Density and sizing variant.' },
-            { name: 'colorScheme', type: '"default" | "destructive" | "warning" | "success"', default: '"default"', description: 'Color theme variant.' },
-            { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether the input field is disabled.' },
-            { name: 'placeholder', type: 'string', default: "''", description: 'Placeholder displayed when value is empty.' },
+            { name: 'value', type: 'string', default: "''", description: t('components.readOnlyInput.valueDesc', 'Protected value displayed in the input.') },
+            { name: 'showCopy', type: 'boolean', default: 'true', description: t('components.readOnlyInput.showCopyDesc', 'Whether to show the attached copy button.') },
+            { name: 'masked', type: 'boolean', default: 'false', description: t('components.readOnlyInput.maskedDesc', 'Whether to mask characters with bullets.') },
+            { name: 'maskChar', type: 'string', default: "'•'", description: t('components.readOnlyInput.maskCharDesc', 'Character used for masking.') },
+            { name: 'showMaskToggle', type: 'boolean', default: 'true', description: t('components.readOnlyInput.showMaskToggleDesc', 'Whether to show the reveal/hide toggle button when masked.') },
+            { name: 'size', type: '"default" | "sm"', default: '"default"', description: t('components.readOnlyInput.sizeDesc', 'Density and sizing variant.') },
+            { name: 'colorScheme', type: '"default" | "destructive" | "warning" | "success"', default: '"default"', description: t('components.readOnlyInput.colorSchemeDesc', 'Color theme variant.') },
+            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.readOnlyInput.disabledDesc', 'Whether the input field is disabled.') },
+            { name: 'placeholder', type: 'string', default: "''", description: t('components.readOnlyInput.placeholderDesc', 'Placeholder displayed when value is empty.') },
           ]}
       />
     </DocLayout>

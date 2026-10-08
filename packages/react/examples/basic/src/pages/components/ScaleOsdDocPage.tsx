@@ -26,10 +26,10 @@ export function ScaleOsdDocPage() {
     <DocLayout
       category="Overlays & Feedback"
       title="Scale OSD"
-      description="Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
+      description={t('components.scaleOsd.description', 'Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.scaleOsd.overviewHeading', 'Interactive Overview')}</h2>
         <ComponentPreview
           qtCode={`ChaSetScaleOsd {
     value: 1.0
@@ -39,7 +39,7 @@ export function ScaleOsdDocPage() {
     autoHideDuration: 1400
     onValueChanged: function(val) { console.log(val) }
 }`}
-          title="Scale OSD Sandbox"
+          title={t('desktopComposite.scaleOsd.sandboxTitle', 'Scale OSD Sandbox')}
           reactCode={heroReactCode}
           controls={
             <div className="flex flex-wrap items-center gap-3 text-xs">
@@ -130,141 +130,125 @@ ChaSetScaleOsd {
 
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Animations</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
         <p className="text-sm text-muted-foreground">
-          Motion tokens and kinematic timing contracts for ScaleOsd visibility.
+          {t('desktopComposite.scaleOsd.animationsDesc', 'OSD enter and exit transitions run over duration-short (120ms) with the ease-standard curve (Qt: ThemeTokens.motionShort / ThemeTokens.easeStandard). The 1400ms auto-hide countdown pauses deterministically on hover.')}
         </p>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            OSD enter and exit transitions animate smoothly over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-short</code> (120ms) using{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve (Qt counterpart:{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.motionShort</code> and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.easeStandard</code>).
-          </li>
-          <li>
-            Auto-hide timer runs with a 1400ms countdown, pausing deterministically on mouse hover.
-          </li>
-          <li>
-            Respects <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> in Qt.
-          </li>
-        </ul>
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard Navigation</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</h2>
         <p className="text-sm text-muted-foreground">
-          Keyboard shortcuts and button activation patterns.
+          {t('showcase.keyboardDesc', 'Keyboard shortcuts and interaction patterns for this component.')}
         </p>
         <KeyboardShortcutsTable componentId="scale-osd" />
       </section>
 
       <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.propsReference', 'Props Reference')}</h2>
         <PropsTable
           items={[
             {
               name: 'value',
               type: 'number',
               default: '1.0',
-              description: 'Current scale ratio (e.g. 1.0 represents 100%).',
+              description: t('components.scaleOsd.valueDesc', 'Current scale ratio (e.g. 1.0 represents 100%).'),
             },
             {
               name: 'defaultValue',
               type: 'number',
               default: '1.0',
-              description: 'Initial scale ratio in uncontrolled mode.',
+              description: t('components.scaleOsd.defaultValueDesc', 'Initial scale ratio in uncontrolled mode.'),
             },
             {
               name: 'step',
               type: 'number',
               default: '0.1',
-              description: 'Step increment applied on +/- button click.',
+              description: t('components.scaleOsd.stepDesc', 'Step increment applied on +/- button click.'),
             },
             {
               name: 'min',
               type: 'number',
               default: '0.2',
-              description: 'Minimum allowed zoom scale ratio.',
+              description: t('components.scaleOsd.minDesc', 'Minimum allowed zoom scale ratio.'),
             },
             {
               name: 'max',
               type: 'number',
               default: '3.0',
-              description: 'Maximum allowed zoom scale ratio.',
+              description: t('components.scaleOsd.maxDesc', 'Maximum allowed zoom scale ratio.'),
             },
             {
               name: 'steps',
               type: 'number[]',
               default: 'undefined',
-              description: 'Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS).',
+              description: t('components.scaleOsd.stepsDesc', 'Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS).'),
             },
             {
               name: 'size',
               type: '"default" | "lg"',
               default: '"default"',
-              description: 'Visual scale variant (desktop launcher 42px or standard 40px).',
+              description: t('components.scaleOsd.sizeDesc', 'Visual scale variant (desktop launcher 42px or standard 40px).'),
             },
             {
               name: 'ignoreUiScale',
               type: 'boolean',
               default: 'true',
-              description: 'Locks physical pixel size and renders invariant regardless of interface scaling.',
+              description: t('components.scaleOsd.ignoreUiScaleDesc', 'Locks physical pixel size and renders invariant regardless of interface scaling.'),
             },
             {
               name: 'visible',
               type: 'boolean',
               default: 'undefined',
-              description: 'Controlled visibility state.',
+              description: t('components.scaleOsd.visibleDesc', 'Controlled visibility state.'),
             },
             {
               name: 'autoHideDuration',
               type: 'number',
               default: '1400',
-              description: 'Duration in ms before auto-hiding (pauses on hover).',
+              description: t('components.scaleOsd.autoHideDurationDesc', 'Duration in ms before auto-hiding (pauses on hover).'),
             },
             {
               name: 'showControls',
               type: 'boolean',
               default: 'true',
-              description: 'Whether to display +/- and reset buttons.',
+              description: t('components.scaleOsd.showControlsDesc', 'Whether to display +/- and reset buttons.'),
             },
             {
               name: 'showTooltips',
               type: 'boolean',
               default: 'true',
-              description: 'Whether to display hover tooltip hints for control buttons.',
+              description: t('components.scaleOsd.showTooltipsDesc', 'Whether to display hover tooltip hints for control buttons.'),
             },
             {
               name: 'placement',
               type: '"bottom-center" | "top-center" | "bottom-right" | "top-right"',
               default: '"bottom-center"',
-              description: 'Fixed viewport anchor position.',
+              description: t('components.scaleOsd.placementDesc', 'Fixed viewport anchor position.'),
             },
             {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
-              description: 'Disables all controls and user interaction.',
+              description: t('components.scaleOsd.disabledDesc', 'Disables all controls and user interaction.'),
             },
             {
               name: 'onChange',
               type: '(value: number) => void',
               default: 'undefined',
-              description: 'Callback fired when scale value changes.',
+              description: t('components.scaleOsd.onChangeDesc', 'Callback fired when scale value changes.'),
             },
             {
               name: 'onStep',
               type: '(delta: number) => void',
               default: 'undefined',
-              description: 'Callback fired on step adjustments.',
+              description: t('components.scaleOsd.onStepDesc', 'Callback fired on step adjustments.'),
             },
             {
               name: 'onReset',
               type: '() => void',
               default: 'undefined',
-              description: 'Callback fired when resetting to 100%.',
+              description: t('components.scaleOsd.onResetDesc', 'Callback fired when resetting to 100%.'),
             },
           ]}
         />

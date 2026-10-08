@@ -80,19 +80,19 @@ export function KbdDocPage() {
     <DocLayout
       category="Base Primitives"
       title="Kbd"
-      description="Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation."
+      description={t('components.kbd.description', 'Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.kbd.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('components.kbd.overviewDesc', 'Adjust variant, size, and compact symbol mode in real time with synchronized previews for Web and Desktop.')}
         </p>
 
         <ComponentPreview
-          title="Kbd Sandbox"
+          title={t('desktopComposite.kbd.sandboxTitle', 'Kbd Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -104,10 +104,10 @@ export function KbdDocPage() {
                   value={variant}
                   onChange={(v) => setVariant(v as KbdVariant)}
                   options={[
-                    { label: 'Outline', value: 'outline' },
-                    { label: 'Solid', value: 'solid' },
-                    { label: 'Subtle', value: 'subtle' },
-                    { label: 'Inverted', value: 'inverted' },
+                    { label: t('desktopComposite.kbd.variantOutline', 'Outline'), value: 'outline' },
+                    { label: t('desktopComposite.kbd.variantSolid', 'Solid'), value: 'solid' },
+                    { label: t('desktopComposite.kbd.variantSubtle', 'Subtle'), value: 'subtle' },
+                    { label: t('desktopComposite.kbd.variantInverted', 'Inverted'), value: 'inverted' },
                   ]}
                 />
               </div>
@@ -119,9 +119,9 @@ export function KbdDocPage() {
                   value={size}
                   onChange={(s) => setSize(s as KbdSize)}
                   options={[
-                    { label: 'Extra Small (xs)', value: 'xs' },
-                    { label: 'Small (sm)', value: 'sm' },
-                    { label: 'Default', value: 'default' },
+                    { label: t('desktopComposite.kbd.sizeXs', 'Extra Small (xs)'), value: 'xs' },
+                    { label: t('desktopComposite.kbd.sizeSm', 'Small (sm)'), value: 'sm' },
+                    { label: t('common.default', 'Default'), value: 'default' },
                   ]}
                 />
               </div>
@@ -170,19 +170,19 @@ export function KbdDocPage() {
         </p>
         <Card className="flex flex-wrap items-center gap-6 p-6">
           <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-muted-foreground">Outline (Default)</span>
+            <span className="text-xs text-muted-foreground">{t('desktopComposite.kbd.outlineDefault', 'Outline (Default)')}</span>
             <Kbd variant="outline" shortcut="Ctrl+K" compact="never" />
           </div>
           <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-muted-foreground">Solid</span>
+            <span className="text-xs text-muted-foreground">{t('desktopComposite.kbd.variantSolid', 'Solid')}</span>
             <Kbd variant="solid" shortcut="Ctrl+K" compact="never" />
           </div>
           <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-muted-foreground">Subtle</span>
+            <span className="text-xs text-muted-foreground">{t('desktopComposite.kbd.variantSubtle', 'Subtle')}</span>
             <Kbd variant="subtle" shortcut="Ctrl+K" compact="never" />
           </div>
           <div className="flex flex-col items-center gap-2 rounded-md bg-foreground p-3 text-background">
-            <span className="text-xs text-background/80">Inverted (Tooltip)</span>
+            <span className="text-xs text-background/80">{t('desktopComposite.kbd.invertedTooltip', 'Inverted (Tooltip)')}</span>
             <Kbd variant="inverted" shortcut="Ctrl+S" compact="never" />
           </div>
         </Card>
@@ -191,22 +191,22 @@ export function KbdDocPage() {
       {/* 4. Key Combinations & Symbols */}
       <section id="combinations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Key Combinations & Symbols
+          {t('desktopComposite.kbd.combinationsTitle', 'Key Combinations & Symbols')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Support for multi-key combinations, alternative choices, and compact modifier symbols.
+          {t('desktopComposite.kbd.combinationsDesc', 'Support for multi-key combinations, alternative choices, and compact modifier symbols.')}
         </p>
         <Card className="flex flex-col gap-4 p-6">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-foreground">Compact Modifier Symbols:</span>
+            <span className="text-sm text-foreground">{t('desktopComposite.kbd.compactSymbols', 'Compact Modifier Symbols:')}</span>
             <Kbd shortcut="Ctrl+Alt+Shift+P" compact="always" />
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-foreground">Alternative Key Choices:</span>
+            <span className="text-sm text-foreground">{t('desktopComposite.kbd.altChoices', 'Alternative Key Choices:')}</span>
             <Kbd shortcut="Space / Enter" compact="never" />
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-foreground">Multi-Modifier Sequence:</span>
+            <span className="text-sm text-foreground">{t('desktopComposite.kbd.multiModifier', 'Multi-Modifier Sequence:')}</span>
             <Kbd shortcut="Ctrl + Shift + P" compact="never" />
           </div>
         </Card>
@@ -215,22 +215,22 @@ export function KbdDocPage() {
       {/* 5. Menu Trailing Shortcuts */}
       <section id="menu-shortcuts" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Menu Trailing Shortcuts
+          {t('desktopComposite.kbd.menuTitle', 'Menu Trailing Shortcuts')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Dedicated Shortcut component with built-in right-alignment and non-shrinking behavior for menu items.
+          {t('desktopComposite.kbd.menuDesc', 'Dedicated Shortcut component with built-in right-alignment and non-shrinking behavior for menu items.')}
         </p>
         <Card className="max-w-xs p-2 space-y-1">
           <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors duration-quick ease-standard">
-            <span>New File</span>
+            <span>{t('desktopComposite.kbd.newFile', 'New File')}</span>
             <Shortcut value="Ctrl+N" />
           </div>
           <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors duration-quick ease-standard">
-            <span>Save Document</span>
+            <span>{t('desktopComposite.kbd.saveDocument', 'Save Document')}</span>
             <Shortcut value="Ctrl+S" />
           </div>
           <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors duration-quick ease-standard">
-            <span>Command Palette</span>
+            <span>{t('desktopComposite.kbd.commandPalette', 'Command Palette')}</span>
             <Shortcut value="Ctrl+Shift+P" />
           </div>
         </Card>
@@ -239,19 +239,19 @@ export function KbdDocPage() {
       {/* 6. Narrow Container Adaptation */}
       <section id="narrow-container" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Narrow Container Adaptation
+          {t('desktopComposite.kbd.narrowTitle', 'Narrow Container Adaptation')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols.
+          {t('desktopComposite.kbd.narrowDesc', 'When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols.')}
         </p>
         <div className="flex flex-col gap-6">
           <Card className="w-56 p-2 space-y-1 border-dashed">
             <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm">
-              <span className="flex-1 min-w-0 truncate text-foreground">Very Long Action Name That Truncates</span>
+              <span className="flex-1 min-w-0 truncate text-foreground">{t('desktopComposite.kbd.veryLongAction', 'Very Long Action Name That Truncates')}</span>
               <Shortcut value="Ctrl+P" compact="always" />
             </div>
             <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm">
-              <span className="flex-1 min-w-0 truncate text-foreground">Export Project as Archive</span>
+              <span className="flex-1 min-w-0 truncate text-foreground">{t('desktopComposite.kbd.exportProject', 'Export Project as Archive')}</span>
               <Shortcut value="Ctrl+Shift+E" compact="always" />
             </div>
           </Card>
@@ -260,18 +260,17 @@ export function KbdDocPage() {
           <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
             <div className="flex flex-col gap-1">
               <h3 className="text-sm font-semibold text-foreground">
-                Interactive Multi-Stage Responsive Playground
+                {t('desktopComposite.kbd.playgroundTitle', 'Interactive Multi-Stage Responsive Playground')}
               </h3>
               <p className="text-xs text-muted-foreground">
-                Drag the right handle or adjust the slider to observe how the shortcut bar progresses through 4 adaptive stages:
-                Full scale → Squeezed micro-scale → Compact symbols → +N folded badge with floating popover.
+                {t('desktopComposite.kbd.playgroundDesc', 'Drag the right handle or adjust the slider to observe how the shortcut bar progresses through 4 adaptive stages: Full scale → Squeezed micro-scale → Compact symbols → +N folded badge with floating popover.')}
               </p>
             </div>
 
             {/* Controls: Slider & Quick Presets */}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3 w-full sm:w-64">
-                <span className="text-xs text-muted-foreground shrink-0">Width:</span>
+                <span className="text-xs text-muted-foreground shrink-0">{t('desktopComposite.kbd.widthLabel', 'Width:')}</span>
                 <Slider
                   value={playgroundWidth}
                   min={160}
@@ -283,34 +282,34 @@ export function KbdDocPage() {
               </div>
 
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-xs text-muted-foreground mr-1">Presets:</span>
+                <span className="text-xs text-muted-foreground mr-1">{t('desktopComposite.kbd.presetsLabel', 'Presets:')}</span>
                 <Button
                   variant={playgroundWidth === 460 ? 'secondary' : 'outline'}
                   size="xs"
                   onClick={() => setPlaygroundWidth(460)}
                 >
-                  Full (28.75rem)
+                  {t('desktopComposite.kbd.presetFull', 'Full ({{value}})', { value: '28.75rem' })}
                 </Button>
                 <Button
                   variant={playgroundWidth === 330 ? 'secondary' : 'outline'}
                   size="xs"
                   onClick={() => setPlaygroundWidth(330)}
                 >
-                  Squeezed (20.63rem)
+                  {t('desktopComposite.kbd.presetSqueezed', 'Squeezed ({{value}})', { value: '20.63rem' })}
                 </Button>
                 <Button
                   variant={playgroundWidth === 250 ? 'secondary' : 'outline'}
                   size="xs"
                   onClick={() => setPlaygroundWidth(250)}
                 >
-                  Compact (15.63rem)
+                  {t('desktopComposite.kbd.presetCompact', 'Compact ({{value}})', { value: '15.63rem' })}
                 </Button>
                 <Button
                   variant={playgroundWidth === 180 ? 'secondary' : 'outline'}
                   size="xs"
                   onClick={() => setPlaygroundWidth(180)}
                 >
-                  Folded (11.25rem)
+                  {t('desktopComposite.kbd.presetFolded', 'Folded ({{value}})', { value: '11.25rem' })}
                 </Button>
               </div>
             </div>
@@ -325,7 +324,7 @@ export function KbdDocPage() {
                   variant="outline"
                   className="border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs"
                 >
-                  Stage 1: Full (完整文字)
+                  {t('desktopComposite.kbd.stageFull', 'Stage 1: Full (Full Text)')}
                 </Badge>
               )}
               {activeStage === 'squeezed' && (
@@ -333,7 +332,7 @@ export function KbdDocPage() {
                   variant="outline"
                   className="border-sky-500/40 bg-sky-500/10 text-sky-600 dark:text-sky-400 text-xs"
                 >
-                  Stage 2: Squeezed (等比微缩)
+                  {t('desktopComposite.kbd.stageSqueezed', 'Stage 2: Squeezed (Scaled)')}
                 </Badge>
               )}
               {activeStage === 'compact' && (
@@ -341,7 +340,7 @@ export function KbdDocPage() {
                   variant="outline"
                   className="border-amber-500/40 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs"
                 >
-                  Stage 3: Compact (图标符号)
+                  {t('desktopComposite.kbd.stageCompact', 'Stage 3: Compact (Symbols)')}
                 </Badge>
               )}
               {activeStage === 'folded' && (
@@ -349,7 +348,7 @@ export function KbdDocPage() {
                   variant="outline"
                   className="border-purple-500/40 bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs"
                 >
-                  Stage 4: Folded (+N 折叠)
+                  {t('desktopComposite.kbd.stageFolded', 'Stage 4: Folded (+N Collapsed)')}
                 </Badge>
               )}
             </div>
@@ -369,8 +368,8 @@ export function KbdDocPage() {
                   <ShortcutBar
                     preset="address-bar"
                     additionalShortcuts={[
-                      { id: 'tab', keys: ['Tab'], label: '补全', priority: 2 },
-                      { id: 'copy', keys: ['Ctrl', 'C'], label: '复制路径', priority: 4 },
+                      { id: 'tab', keys: ['Tab'], label: t('desktopComposite.kbd.completeLabel', 'Autocomplete'), priority: 2 },
+                      { id: 'copy', keys: ['Ctrl', 'C'], label: t('desktopComposite.kbd.copyPathLabel', 'Copy Path'), priority: 4 },
                     ]}
                     onStageChange={setActiveStage}
                   />
@@ -384,7 +383,7 @@ export function KbdDocPage() {
                       ? 'bg-accent text-accent-foreground'
                       : 'hover:bg-accent/70'
                   }`}
-                  title="Drag right handle to resize container width"
+                  title={t('desktopComposite.kbd.dragHandleTooltip', 'Drag right handle to resize container width')}
                 >
                   <div className="flex flex-col gap-0.5 items-center">
                     <span className="block h-1 w-1 rounded-full bg-muted-foreground/50 group-hover:bg-foreground/70 transition-colors" />
@@ -402,22 +401,18 @@ export function KbdDocPage() {
       {/* 7. Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <div>
           <p className="text-sm text-muted-foreground mb-4">
-            Interactive micro-interaction transitions aligned with ChaSet tokens.
+            {t('desktopComposite.kbd.animationsDesc', 'Interactive micro-interaction transitions aligned with ChaSet tokens.')}
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
-              Interactive state changes (hover and active) animate over{' '}
-              <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{' '}
-              <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+              {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}
             </li>
             <li>
-              Durations and easing resolve from theme tokens, so{' '}
-              <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
-              <code>ThemeTokens.animationsEnabled</code>).
+              {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
             </li>
           </ul>
         </div>
@@ -432,43 +427,43 @@ export function KbdDocPage() {
             name: 'variant',
             type: "'outline' | 'solid' | 'subtle' | 'inverted'",
             default: "'outline'",
-            description: 'Visual presentation variant matching container surfaces.',
+            description: t('components.kbd.variantDesc', 'Visual presentation variant matching container surfaces.'),
           },
           {
             name: 'size',
             type: "'xs' | 'sm' | 'default' | 'md'",
             default: "'default'",
-            description: 'Size scale controlling keycap height, padding, and font size.',
+            description: t('components.kbd.sizeDesc', 'Size scale controlling keycap height, padding, and font size.'),
           },
           {
             name: 'compact',
             type: "'auto' | 'always' | 'never'",
             default: "'auto'",
-            description: 'Whether to convert verbose modifiers to compact symbols (Ctrl to ⌃).',
+            description: t('components.kbd.compactDesc', 'Whether to convert verbose modifiers to compact symbols (Ctrl to ⌃).'),
           },
           {
             name: 'overflow',
             type: "'collapse' | 'hide' | 'visible'",
             default: "'collapse'",
-            description: 'Overflow strategy when space is constrained in narrow containers.',
+            description: t('components.kbd.overflowDesc', 'Overflow strategy when space is constrained in narrow containers.'),
           },
           {
             name: 'shortcut',
             type: 'string',
             default: "''",
-            description: 'Serialized shortcut combination string to parse automatically.',
+            description: t('components.kbd.shortcutDesc', 'Serialized shortcut combination string to parse automatically.'),
           },
           {
             name: 'separator',
             type: 'string',
             default: "'+'",
-            description: 'Custom separator character between combination keys.',
+            description: t('components.kbd.separatorDesc', 'Custom separator character between combination keys.'),
           },
           {
             name: 'className',
             type: 'string',
             default: "''",
-            description: 'Optional additional Tailwind CSS class names.',
+            description: t('components.kbd.classNameDesc', 'Optional additional Tailwind CSS class names.'),
           },
         ]}
       />

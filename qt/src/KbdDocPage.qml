@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Base Primitives"
     pageTitle: "Kbd"
-    description: "Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation."
+    description: ChaSetI18n.tr("components.kbd.description", "Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation.")
 
     property color cFg: ThemeTokens.text
     property color cMutedFg: ThemeTokens.subduedText
@@ -25,7 +25,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Kbd Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.kbd.sandboxTitle", "Kbd Sandbox")
         reactCode: `<Kbd
   variant="${root.demoVariant}"
   size="${root.demoSize}"
@@ -66,10 +66,10 @@ DocLayout {
                     size: "sm"
                     value: root.demoVariant
                     options: [
-                        { label: "Outline", value: "outline" },
-                        { label: "Solid", value: "solid" },
-                        { label: "Subtle", value: "subtle" },
-                        { label: "Inverted", value: "inverted" }
+                        { label: ChaSetI18n.tr("desktopComposite.kbd.variantOutline", "Outline"), value: "outline" },
+                        { label: ChaSetI18n.tr("desktopComposite.kbd.variantSolid", "Solid"), value: "solid" },
+                        { label: ChaSetI18n.tr("desktopComposite.kbd.variantSubtle", "Subtle"), value: "subtle" },
+                        { label: ChaSetI18n.tr("desktopComposite.kbd.variantInverted", "Inverted"), value: "inverted" }
                     ]
                     onValueSelected: function(v) { root.demoVariant = String(v); }
                 }
@@ -84,9 +84,9 @@ DocLayout {
                     size: "sm"
                     value: root.demoSize
                     options: [
-                        { label: "Extra Small (xs)", value: "xs" },
-                        { label: "Small (sm)", value: "sm" },
-                        { label: "Default", value: "default" }
+                        { label: ChaSetI18n.tr("desktopComposite.kbd.sizeXs", "Extra Small (xs)"), value: "xs" },
+                        { label: ChaSetI18n.tr("desktopComposite.kbd.sizeSm", "Small (sm)"), value: "sm" },
+                        { label: ChaSetI18n.tr("common.default", "Default"), value: "default" }
                     ]
                     onValueSelected: function(s) { root.demoSize = String(s); }
                 }
@@ -123,7 +123,7 @@ DocLayout {
         width: parent.width
         spacing: ThemeTokens.dp(8)
         property string sectionId: "variants"
-        property string sectionTitle: "Variants"
+        property string sectionTitle: ChaSetI18n.tr("components.kbd.variantsTitle", "Variants")
 
         DocText { text: ChaSetI18n.tr("components.kbd.variantsTitle", "Variants"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
         DocText { text: ChaSetI18n.tr("components.kbd.variantsDesc", "Four distinct visual styles designed for menus, search fields, dialogs, and inverted tooltips."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
@@ -140,21 +140,21 @@ DocLayout {
                 Column {
                     spacing: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
-                    DocText { text: "Outline (Default)"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
+                    DocText { text: ChaSetI18n.tr("desktopComposite.kbd.outlineDefault", "Outline (Default)"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
                     ChaSetKbd { variant: "outline"; shortcut: "Ctrl+K"; compact: "never"; anchors.horizontalCenter: parent.horizontalCenter }
                 }
 
                 Column {
                     spacing: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
-                    DocText { text: "Solid"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
+                    DocText { text: ChaSetI18n.tr("desktopComposite.kbd.variantSolid", "Solid"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
                     ChaSetKbd { variant: "solid"; shortcut: "Ctrl+K"; compact: "never"; anchors.horizontalCenter: parent.horizontalCenter }
                 }
 
                 Column {
                     spacing: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
-                    DocText { text: "Subtle"; color: root.cMutedFg; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
+                    DocText { text: ChaSetI18n.tr("desktopComposite.kbd.variantSubtle", "Subtle"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
                     ChaSetKbd { variant: "subtle"; shortcut: "Ctrl+K"; compact: "never"; anchors.horizontalCenter: parent.horizontalCenter }
                 }
 
@@ -169,7 +169,7 @@ DocLayout {
                         id: invertedCol
                         anchors.centerIn: parent
                         spacing: ThemeTokens.dp(6)
-                        DocText { text: "Inverted (Tooltip)"; color: ThemeTokens.dark ? "#020817" : "#f8fafc"; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
+                        DocText { text: ChaSetI18n.tr("desktopComposite.kbd.invertedTooltip", "Inverted (Tooltip)"); color: ThemeTokens.dark ? "#020817" : "#f8fafc"; font.pixelSize: Typography.sizeCaption; anchors.horizontalCenter: parent.horizontalCenter }
                         ChaSetKbd { variant: "inverted"; shortcut: "Ctrl+S"; compact: "never"; anchors.horizontalCenter: parent.horizontalCenter }
                     }
                 }
@@ -182,10 +182,10 @@ DocLayout {
         width: parent.width
         spacing: ThemeTokens.dp(8)
         property string sectionId: "combinations"
-        property string sectionTitle: "Key Combinations & Symbols"
+        property string sectionTitle: ChaSetI18n.tr("desktopComposite.kbd.combinationsTitle", "Key Combinations & Symbols")
 
-        DocText { text: "Key Combinations & Symbols"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Support for multi-key combinations, alternative choices, and compact modifier symbols."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("desktopComposite.kbd.combinationsTitle", "Key Combinations & Symbols"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("desktopComposite.kbd.combinationsDesc", "Support for multi-key combinations, alternative choices, and compact modifier symbols."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -202,7 +202,7 @@ DocLayout {
                     height: Math.max(symbolsText.implicitHeight, symbolsKbd.implicitHeight)
                     DocText {
                         id: symbolsText
-                        text: "Compact Modifier Symbols:"
+                        text: ChaSetI18n.tr("desktopComposite.kbd.compactSymbols", "Compact Modifier Symbols:")
                         color: root.cFg
                         font.pixelSize: Typography.sizeBody
                         anchors.left: parent.left
@@ -222,7 +222,7 @@ DocLayout {
                     height: Math.max(altText.implicitHeight, altKbd.implicitHeight)
                     DocText {
                         id: altText
-                        text: "Alternative Key Choices:"
+                        text: ChaSetI18n.tr("desktopComposite.kbd.altChoices", "Alternative Key Choices:")
                         color: root.cFg
                         font.pixelSize: Typography.sizeBody
                         anchors.left: parent.left
@@ -242,7 +242,7 @@ DocLayout {
                     height: Math.max(seqText.implicitHeight, seqKbd.implicitHeight)
                     DocText {
                         id: seqText
-                        text: "Multi-Modifier Sequence:"
+                        text: ChaSetI18n.tr("desktopComposite.kbd.multiModifier", "Multi-Modifier Sequence:")
                         color: root.cFg
                         font.pixelSize: Typography.sizeBody
                         anchors.left: parent.left
@@ -265,10 +265,10 @@ DocLayout {
         width: parent.width
         spacing: ThemeTokens.dp(8)
         property string sectionId: "menu-shortcuts"
-        property string sectionTitle: "Menu Trailing Shortcuts"
+        property string sectionTitle: ChaSetI18n.tr("desktopComposite.kbd.menuTitle", "Menu Trailing Shortcuts")
 
-        DocText { text: "Menu Trailing Shortcuts"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Dedicated Shortcut component with built-in right-alignment and non-shrinking behavior for menu items."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("desktopComposite.kbd.menuTitle", "Menu Trailing Shortcuts"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("desktopComposite.kbd.menuDesc", "Dedicated Shortcut component with built-in right-alignment and non-shrinking behavior for menu items."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: ThemeTokens.dp(320)
@@ -287,7 +287,7 @@ DocLayout {
                     color: "transparent"
 
                     DocText {
-                        text: "New File"
+                        text: ChaSetI18n.tr("desktopComposite.kbd.newFile", "New File")
                         anchors.left: parent.left
                         anchors.leftMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
@@ -309,7 +309,7 @@ DocLayout {
                     color: "transparent"
 
                     DocText {
-                        text: "Save Document"
+                        text: ChaSetI18n.tr("desktopComposite.kbd.saveDocument", "Save Document")
                         anchors.left: parent.left
                         anchors.leftMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
@@ -331,7 +331,7 @@ DocLayout {
                     color: "transparent"
 
                     DocText {
-                        text: "Command Palette"
+                        text: ChaSetI18n.tr("desktopComposite.kbd.commandPalette", "Command Palette")
                         anchors.left: parent.left
                         anchors.leftMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
@@ -354,10 +354,10 @@ DocLayout {
         width: parent.width
         spacing: ThemeTokens.dp(8)
         property string sectionId: "narrow-container"
-        property string sectionTitle: "Narrow Container Adaptation"
+        property string sectionTitle: ChaSetI18n.tr("desktopComposite.kbd.narrowTitle", "Narrow Container Adaptation")
 
-        DocText { text: "Narrow Container Adaptation"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("desktopComposite.kbd.narrowTitle", "Narrow Container Adaptation"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("desktopComposite.kbd.narrowDesc", "When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: ThemeTokens.dp(224)
@@ -373,7 +373,7 @@ DocLayout {
                     width: parent.width
                     spacing: ThemeTokens.dp(8)
                     Text {
-                        text: "Very Long Action Name That Truncates"
+                        text: ChaSetI18n.tr("desktopComposite.kbd.veryLongAction", "Very Long Action Name That Truncates")
                         width: parent.width - narrowKbd1.width - ThemeTokens.dp(12)
                         elide: Text.ElideRight
                         color: root.cFg
@@ -393,7 +393,7 @@ DocLayout {
                     width: parent.width
                     spacing: ThemeTokens.dp(8)
                     Text {
-                        text: "Export Project as Archive"
+                        text: ChaSetI18n.tr("desktopComposite.kbd.exportProject", "Export Project as Archive")
                         width: parent.width - narrowKbd2.width - ThemeTokens.dp(12)
                         elide: Text.ElideRight
                         color: root.cFg
@@ -422,14 +422,14 @@ DocLayout {
                 spacing: ThemeTokens.dp(12)
 
                 DocText {
-                    text: "Interactive Multi-Stage Responsive Playground"
+                    text: ChaSetI18n.tr("desktopComposite.kbd.playgroundTitle", "Interactive Multi-Stage Responsive Playground")
                     font.pixelSize: Typography.sizeBody
                     font.weight: Typography.weightBold
                     color: root.cFg
                 }
 
                 DocText {
-                    text: "Drag the right handle or adjust the slider to observe how the shortcut bar progresses through 4 adaptive stages: Full scale → Squeezed micro-scale → Compact symbols → +N folded badge with floating popover."
+                    text: ChaSetI18n.tr("desktopComposite.kbd.playgroundDesc", "Drag the right handle or adjust the slider to observe how the shortcut bar progresses through 4 adaptive stages: Full scale → Squeezed micro-scale → Compact symbols → +N folded badge with floating popover.")
                     font.pixelSize: Typography.sizeCaption
                     color: root.cMutedFg
                     wrapMode: Text.WordWrap
@@ -446,7 +446,7 @@ DocLayout {
                         anchors.verticalCenter: parent.verticalCenter
 
                         DocText {
-                            text: "Width:"
+                            text: ChaSetI18n.tr("desktopComposite.kbd.widthLabel", "Width:")
                             font.pixelSize: Typography.sizeCaption
                             color: root.cMutedFg
                             anchors.verticalCenter: parent.verticalCenter
@@ -477,7 +477,7 @@ DocLayout {
                         anchors.verticalCenter: parent.verticalCenter
 
                         DocText {
-                            text: "Presets:"
+                            text: ChaSetI18n.tr("desktopComposite.kbd.presetsLabel", "Presets:")
                             font.pixelSize: Typography.sizeCaption
                             color: root.cMutedFg
                             anchors.verticalCenter: parent.verticalCenter
@@ -486,28 +486,28 @@ DocLayout {
                         ChaSetButton {
                             size: "xs"
                             variant: Math.round(root.playgroundWidth) === 460 ? "secondary" : "outline"
-                            text: "Full (460)"
+                            text: ChaSetI18n.tr("desktopComposite.kbd.presetFull", "Full ({{value}})", { value: "460" })
                             onClicked: root.playgroundWidth = 460
                         }
 
                         ChaSetButton {
                             size: "xs"
                             variant: Math.round(root.playgroundWidth) === 330 ? "secondary" : "outline"
-                            text: "Squeezed (330)"
+                            text: ChaSetI18n.tr("desktopComposite.kbd.presetSqueezed", "Squeezed ({{value}})", { value: "330" })
                             onClicked: root.playgroundWidth = 330
                         }
 
                         ChaSetButton {
                             size: "xs"
                             variant: Math.round(root.playgroundWidth) === 250 ? "secondary" : "outline"
-                            text: "Compact (250)"
+                            text: ChaSetI18n.tr("desktopComposite.kbd.presetCompact", "Compact ({{value}})", { value: "250" })
                             onClicked: root.playgroundWidth = 250
                         }
 
                         ChaSetButton {
                             size: "xs"
                             variant: Math.round(root.playgroundWidth) === 180 ? "secondary" : "outline"
-                            text: "Folded (180)"
+                            text: ChaSetI18n.tr("desktopComposite.kbd.presetFolded", "Folded ({{value}})", { value: "180" })
                             onClicked: root.playgroundWidth = 180
                         }
                     }
@@ -519,17 +519,17 @@ DocLayout {
 
                     ChaSetBadge {
                         variant: "outline"
-                        text: "Width: " + Math.round(root.playgroundWidth)
+                        text: ChaSetI18n.tr("desktopComposite.kbd.widthBadge", "Width: {{value}}", { value: Math.round(root.playgroundWidth) })
                     }
 
                     ChaSetBadge {
                         variant: "outline"
                         text: {
                             var s = playgroundShortcutBar.responsiveStage
-                            if (s === "full") return "Stage 1: Full (完整文字)"
-                            if (s === "squeezed") return "Stage 2: Squeezed (等比微缩)"
-                            if (s === "compact") return "Stage 3: Compact (图标符号)"
-                            if (s === "folded") return "Stage 4: Folded (+N 折叠)"
+                            if (s === "full") return ChaSetI18n.tr("desktopComposite.kbd.stageFull", "Stage 1: Full (Full Text)")
+                            if (s === "squeezed") return ChaSetI18n.tr("desktopComposite.kbd.stageSqueezed", "Stage 2: Squeezed (Scaled)")
+                            if (s === "compact") return ChaSetI18n.tr("desktopComposite.kbd.stageCompact", "Stage 3: Compact (Symbols)")
+                            if (s === "folded") return ChaSetI18n.tr("desktopComposite.kbd.stageFolded", "Stage 4: Folded (+N Collapsed)")
                             return "Stage: " + s
                         }
                     }
@@ -553,8 +553,8 @@ DocLayout {
                         anchors.verticalCenter: parent.verticalCenter
                         preset: "address-bar"
                         additionalShortcuts: [
-                            { "id": "tab", "keys": ["Tab"], "label": qsTr("补全"), "priority": 2 },
-                            { "id": "copy", "keys": ["Ctrl", "C"], "label": qsTr("复制路径"), "priority": 4 }
+                            { "id": "tab", "keys": ["Tab"], "label": ChaSetI18n.tr("desktopComposite.kbd.completeLabel", "Autocomplete"), "priority": 2 },
+                            { "id": "copy", "keys": ["Ctrl", "C"], "label": ChaSetI18n.tr("desktopComposite.kbd.copyPathLabel", "Copy Path"), "priority": 4 }
                         ]
                     }
 
@@ -611,14 +611,14 @@ DocLayout {
         spacing: ThemeTokens.dp(8)
 
         DocText {
-            text: "Animations"
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
             color: ThemeTokens.text
         }
 
         DocText {
-            text: "Interactive state changes (hover and active) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            text: ChaSetI18n.tr("desktopComposite.kbd.animationsDesc", "Interactive micro-interaction transitions aligned with ChaSet tokens.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -631,13 +631,13 @@ DocLayout {
         name: "Kbd"
         componentId: "kbd"
         propsModel: [
-            { name: "variant", type: "'outline' | 'solid' | 'subtle' | 'inverted'", defaultValue: "'outline'", desc: "Visual presentation variant matching container surfaces." },
-            { name: "size", type: "'xs' | 'sm' | 'default' | 'md'", defaultValue: "'default'", desc: "Size scale controlling keycap height, padding, and font size." },
-            { name: "compact", type: "'auto' | 'always' | 'never'", defaultValue: "'auto'", desc: "Whether to convert verbose modifiers to compact symbols (Ctrl to ⌃)." },
-            { name: "overflow", type: "'collapse' | 'hide' | 'visible'", defaultValue: "'collapse'", desc: "Overflow strategy when space is constrained in narrow containers." },
-            { name: "shortcut", type: "string", defaultValue: "''", desc: "Serialized shortcut combination string to parse automatically." },
-            { name: "separator", type: "string", defaultValue: "'+'", desc: "Custom separator character between combination keys." },
-            { name: "text", type: "string", defaultValue: "''", desc: "Direct single key text to display." }
+            { name: "variant", type: "'outline' | 'solid' | 'subtle' | 'inverted'", defaultValue: "'outline'", description: ChaSetI18n.tr("components.kbd.variantDesc", "Visual presentation variant matching container surfaces.") },
+            { name: "size", type: "'xs' | 'sm' | 'default' | 'md'", defaultValue: "'default'", description: ChaSetI18n.tr("components.kbd.sizeDesc", "Size scale controlling keycap height, padding, and font size.") },
+            { name: "compact", type: "'auto' | 'always' | 'never'", defaultValue: "'auto'", description: ChaSetI18n.tr("components.kbd.compactDesc", "Whether to convert verbose modifiers to compact symbols (Ctrl to ⌃).") },
+            { name: "overflow", type: "'collapse' | 'hide' | 'visible'", defaultValue: "'collapse'", description: ChaSetI18n.tr("components.kbd.overflowDesc", "Overflow strategy when space is constrained in narrow containers.") },
+            { name: "shortcut", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.kbd.shortcutDesc", "Serialized shortcut combination string to parse automatically.") },
+            { name: "separator", type: "string", defaultValue: "'+'", description: ChaSetI18n.tr("components.kbd.separatorDesc", "Custom separator character between combination keys.") },
+            { name: "text", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.kbd.textDesc", "Direct single key text to display.") }
         ]
     }
 }

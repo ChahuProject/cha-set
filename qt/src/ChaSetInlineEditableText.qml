@@ -5,9 +5,9 @@ import ChaSet
 Item {
     id: root
 
-    property string text: "Click to edit"
+    property string text: ChaSetI18n.tr("components.inlineEditableText.defaultText", "Click to edit")
     property string value: text
-    property string placeholder: "Enter text..."
+    property string placeholder: ChaSetI18n.tr("components.inlineEditableText.placeholder", "Enter text...")
     property bool editing: false
     property string tempText: ""
     property bool disabled: false

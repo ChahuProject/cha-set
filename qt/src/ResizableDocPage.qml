@@ -7,14 +7,14 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Resizable"
-    description: "Accessible resizable panel groups and layout splitters."
+    description: ChaSetI18n.tr("components.resizable.description", "Accessible resizable panel groups and layout splitters.")
 
     property string playgroundDirection: "horizontal"
     property bool playgroundWithHandle: true
 
     // 1. Horizontal Split Overview
     ComponentPreview {
-        title: "Horizontal Resizable Group"
+        title: ChaSetI18n.tr("desktopComposite.resizable.horizontalSandboxTitle", "Horizontal Resizable Group")
         reactCode: `<ResizablePanelGroup direction="horizontal" className="min-h-64 rounded-lg border border-border">
   <ResizablePanel defaultSize={35} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-6 bg-muted/20">
@@ -138,7 +138,7 @@ ChaSetResizable {
     // 2. Nested Splitters
     ComponentPreview {
         property string sectionId: "nested"
-        title: "Nested Resizable Layout"
+        title: ChaSetI18n.tr("desktopComposite.resizable.nestedTitle", "Nested Resizable Layout")
         reactCode: `<ResizablePanelGroup direction="horizontal" className="min-h-64 rounded-lg border border-border">
   <ResizablePanel defaultSize={28} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-4 bg-muted/20 text-xs">
@@ -294,7 +294,7 @@ ChaSetResizable {
     // 3. Variants Playground
     ComponentPreview {
         property string sectionId: "playground"
-        title: "Interactive Playground"
+        title: ChaSetI18n.tr("desktopComposite.resizable.playgroundTitle", "Interactive Playground")
         reactCode: `<ResizablePanelGroup direction="${root.playgroundDirection}" className="min-h-56 rounded-lg border border-border">
   <ResizablePanel defaultSize={40} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-4 bg-muted/20 text-sm">
@@ -459,14 +459,14 @@ ChaSetResizable {
         spacing: 12
 
         DocText {
-            text: "Animations"
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.bold: true
         }
 
         DocText {
-            text: "Motion tokens and kinematic timing contracts for Resizable dividers and handles."
+            text: ChaSetI18n.tr("desktopComposite.resizable.animationsDesc", "Motion tokens and kinematic timing contracts for Resizable dividers and handles.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -474,21 +474,21 @@ ChaSetResizable {
         }
 
         DocText {
-            text: "• Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (ThemeTokens.motionQuick and ThemeTokens.easeStandard)."
+            text: "• " + ChaSetI18n.tr("desktopComposite.resizable.animationsBullet1", "Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt: ThemeTokens.motionQuick / ThemeTokens.easeStandard).")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
         DocText {
-            text: "• Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
+            text: "• " + ChaSetI18n.tr("desktopComposite.resizable.animationsBullet2", "Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
         DocText {
-            text: "• Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt."
+            text: "• " + ChaSetI18n.tr("desktopComposite.resizable.animationsBullet3", "Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt.")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -500,12 +500,12 @@ ChaSetResizable {
         name: "Resizable"
         componentId: "resizable"
         propsModel: [
-            { name: "orientation", type: "int", default: "Qt.Horizontal", description: "Split layout orientation: Qt.Horizontal or Qt.Vertical." },
-            { name: "withHandle", type: "bool", default: "false", description: "Whether to render a tactile 6-dot visual grip indicator on the handle." },
-            { name: "handleThickness", type: "int", default: "4 (or 8 with handle)", description: "Thickness of the divider separator bound." },
-            { name: "handleColor", type: "color", default: "ThemeTokens.border", description: "Idle separator line background color." },
-            { name: "handleHoverColor", type: "color", default: "ThemeTokens.accent", description: "Hovered or active separator accent color." },
-            { name: "handleGripColor", type: "color", default: "ThemeTokens.subduedText", description: "Grip dot indicator color." }
+            { name: "orientation", type: "int", default: "Qt.Horizontal", description: ChaSetI18n.tr("components.resizable.orientationDesc", "Split layout orientation: Qt.Horizontal or Qt.Vertical.") },
+            { name: "withHandle", type: "bool", default: "false", description: ChaSetI18n.tr("components.resizable.withHandleDescQt", "Whether to render a tactile 6-dot visual grip indicator on the handle.") },
+            { name: "handleThickness", type: "int", default: "4 (or 8 with handle)", description: ChaSetI18n.tr("components.resizable.handleThicknessDesc", "Thickness of the divider separator bound.") },
+            { name: "handleColor", type: "color", default: "ThemeTokens.border", description: ChaSetI18n.tr("components.resizable.handleColorDesc", "Idle separator line background color.") },
+            { name: "handleHoverColor", type: "color", default: "ThemeTokens.accent", description: ChaSetI18n.tr("components.resizable.handleHoverColorDesc", "Hovered or active separator accent color.") },
+            { name: "handleGripColor", type: "color", default: "ThemeTokens.subduedText", description: ChaSetI18n.tr("components.resizable.handleGripColorDesc", "Grip dot indicator color.") }
         ]
     }
 }

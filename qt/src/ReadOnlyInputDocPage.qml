@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Read-Only Input"
-    description: "Protected display field for non-editable cryptographic tokens, resource IDs, and keys with an integrated one-click copy button."
+    description: ChaSetI18n.tr("components.readOnlyInput.description", "Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle.")
 
     ComponentPreview {
-        title: "Read-Only Input Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.readOnlyInput.sandboxTitle", "Read-Only Input Sandbox")
         reactCode: `<ReadOnlyInput
   value="cs_live_94817264810294827104"
   showCopy
@@ -74,7 +74,7 @@ ChaSetReadOnlyInput {
 
     ComponentPreview {
         property string sectionId: "variants"
-        title: "Sizes & Status Variants"
+        title: ChaSetI18n.tr("desktopComposite.readOnlyInput.variantsTitle", "Sizes & Status Variants")
         reactCode: `<ReadOnlyInput value="default_token_val_1" size="default" />
 <ReadOnlyInput value="compact_sm_token_2" size="sm" />
 <ReadOnlyInput value="destructive_secret_3" colorScheme="destructive" />
@@ -107,16 +107,16 @@ ChaSetReadOnlyInput { value: "chaset_success_verified"; colorScheme: "success" }
         name: "ReadOnlyInput"
         componentId: "read-only-input"
         propsModel: [
-            { name: "value", type: "string", default: "''", description: "The read-only token or string to be displayed and copied." },
-            { name: "placeholder", type: "string", default: "''", description: "Placeholder text displayed when value is empty." },
-            { name: "masked", type: "bool", default: "false", description: "Whether to obscure characters for secrets/passwords." },
-            { name: "showMaskToggle", type: "bool", default: "true", description: "Whether to render the reveal eye toggle button." },
-            { name: "maskChar", type: "string", default: "'•'", description: "Character used for masking." },
-            { name: "size", type: "string", default: "'default'", description: "Size variant: 'default' | 'sm'." },
-            { name: "disabled", type: "bool", default: "false", description: "Whether user interaction is disabled." },
-            { name: "showCopy", type: "bool", default: "true", description: "Whether to display the copy-to-clipboard button." },
-            { name: "colorScheme", type: "string", default: "'default'", description: "Color theme variant: 'default', 'destructive', 'warning', 'success'." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the input container." }
+            { name: "value", type: "string", default: "''", description: ChaSetI18n.tr("components.readOnlyInput.valueDesc", "Protected value displayed in the input.") },
+            { name: "placeholder", type: "string", default: "''", description: ChaSetI18n.tr("components.readOnlyInput.placeholderDesc", "Placeholder displayed when value is empty.") },
+            { name: "masked", type: "bool", default: "false", description: ChaSetI18n.tr("components.readOnlyInput.maskedDesc", "Whether to mask characters with bullets.") },
+            { name: "showMaskToggle", type: "bool", default: "true", description: ChaSetI18n.tr("components.readOnlyInput.showMaskToggleDesc", "Whether to show the reveal/hide toggle button when masked.") },
+            { name: "maskChar", type: "string", default: "'•'", description: ChaSetI18n.tr("components.readOnlyInput.maskCharDesc", "Character used for masking.") },
+            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.readOnlyInput.sizeDesc", "Density and sizing variant.") },
+            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.readOnlyInput.disabledDesc", "Whether the input field is disabled.") },
+            { name: "showCopy", type: "bool", default: "true", description: ChaSetI18n.tr("components.readOnlyInput.showCopyDesc", "Whether to show the attached copy button.") },
+            { name: "colorScheme", type: "string", default: "'default'", description: ChaSetI18n.tr("components.readOnlyInput.colorSchemeDesc", "Color theme variant.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.readOnlyInput.customRadiusDesc", "Corner radius of the input container.") }
         ]
     }
 }

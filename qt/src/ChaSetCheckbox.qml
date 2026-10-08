@@ -50,7 +50,7 @@ Item {
     opacity: root.disabled ? 0.5 : 1.0
 
     Accessible.role: Accessible.CheckBox
-    Accessible.name: root.label !== "" ? root.label : "Checkbox"
+    Accessible.name: root.label !== "" ? root.label : ChaSetI18n.tr("components.checkbox.fallbackLabel", "Checkbox")
     Accessible.checked: root.checked
     activeFocusOnTab: !root.disabled
 

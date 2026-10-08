@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Overlays & Feedback"
     pageTitle: "Popover"
-    description: "Displays rich interactive content in a floating portal anchored to a trigger button."
+    description: ChaSetI18n.tr("components.popover.description", "Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management.")
 
     property int layerWidth: 100
     property int layerHeight: 200
@@ -17,7 +17,7 @@ DocLayout {
     property bool demoMovable: false
 
     ComponentPreview {
-        title: "Popover Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.popover.sandboxTitle", "Popover Sandbox")
         reactCode: `<Popover>
   <PopoverTrigger asChild>
     <Button variant="outline">Open Popover</Button>
@@ -223,14 +223,14 @@ ChaSetPopover {
         spacing: ThemeTokens.dp(12)
 
         DocText {
-            text: "Examples & States"
+            text: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
             font.pixelSize: Typography.sizeTitleSm
             font.bold: true
             color: ThemeTokens.text
         }
 
         DocText {
-            text: "Common interactive configurations including directional arrows and draggable repositioning."
+            text: ChaSetI18n.tr("desktopComposite.popover.examplesDesc", "Common interactive configurations including directional arrows and draggable repositioning.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -247,10 +247,10 @@ ChaSetPopover {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "With Directional Arrow"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Anchored triangle indicator pointed directly at the trigger"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("desktopComposite.popover.arrowTitle", "With Directional Arrow"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("desktopComposite.popover.arrowDesc", "Anchored triangle indicator pointed directly at the trigger"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetButton {
-                        text: "Arrow Popover"
+                        text: ChaSetI18n.tr("desktopComposite.popover.arrowButton", "Arrow Popover")
                         variant: "secondary"
                         size: "sm"
                         onClicked: arrowPop.open = !arrowPop.open
@@ -260,7 +260,7 @@ ChaSetPopover {
                             side: "top"
                             popoverWidth: 220
                             popoverHeight: 80
-                            DocText { anchors.centerIn: parent; text: "Anchored pointer triangle."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                            DocText { anchors.centerIn: parent; text: ChaSetI18n.tr("desktopComposite.popover.arrowContent", "This popover renders an anchored pointer triangle."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                         }
                     }
                 }
@@ -273,10 +273,10 @@ ChaSetPopover {
                     width: parent.width
                     padding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: "Movable Drag Handle"; color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: "Interactive drag header to freely reposition the popover layer"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("desktopComposite.popover.movableTitle", "Movable Drag Handle"); color: ThemeTokens.text; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("desktopComposite.popover.movableDesc", "Interactive drag header to freely reposition the popover layer"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetButton {
-                        text: "Movable Popover"
+                        text: ChaSetI18n.tr("desktopComposite.popover.movableButton", "Movable Popover")
                         variant: "secondary"
                         size: "sm"
                         onClicked: movePop.open = !movePop.open
@@ -286,7 +286,7 @@ ChaSetPopover {
                             side: "bottom"
                             popoverWidth: 220
                             popoverHeight: 80
-                            DocText { anchors.centerIn: parent; text: "Drag top grip bar to move."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
+                            DocText { anchors.centerIn: parent; text: ChaSetI18n.tr("desktopComposite.popover.movableContent", "Drag the top grip bar to move this popover anywhere."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                         }
                     }
                 }
@@ -298,16 +298,16 @@ ChaSetPopover {
         name: "Popover"
         componentId: "popover"
         propsModel: [
-            { name: "open", type: "bool", default: "false", description: "Whether the popover is currently visible." },
-            { name: "side", type: "string", default: "'bottom'", description: "Placement anchor side: 'top' | 'bottom' | 'left' | 'right'." },
-            { name: "align", type: "string", default: "'start'", description: "Alignment along the anchor edge: 'start' | 'center' | 'end'." },
-            { name: "sideOffset", type: "int", default: "8", description: "Distance offset between trigger and popover bubble." },
-            { name: "arrow", type: "bool", default: "false", description: "Whether to render an anchored directional arrow." },
-            { name: "movable", type: "bool", default: "false", description: "Enables dragging popover position via grip handle." },
-            { name: "modal", type: "bool", default: "false", description: "Whether popover is modal with backdrop overlay." },
-            { name: "popoverWidth", type: "int", default: "260", description: "Width of the popover content." },
-            { name: "popoverHeight", type: "int", default: "160", description: "Height of the popover content." },
-            { name: "customRadius", type: "int", default: "8", description: "Corner radius of the popover border." }
+            { name: "open", type: "bool", default: "false", description: ChaSetI18n.tr("components.popover.openDesc", "Controlled open state.") },
+            { name: "side", type: "string", default: "'bottom'", description: ChaSetI18n.tr("components.popover.sideDesc", "Placement side relative to trigger.") },
+            { name: "align", type: "string", default: "'start'", description: ChaSetI18n.tr("components.popover.alignDesc", "Alignment along the anchor edge.") },
+            { name: "sideOffset", type: "int", default: "8", description: ChaSetI18n.tr("components.popover.sideOffsetDesc", "Distance offset from trigger.") },
+            { name: "arrow", type: "bool", default: "false", description: ChaSetI18n.tr("components.popover.arrowDesc", "Whether to render an anchored directional arrow.") },
+            { name: "movable", type: "bool", default: "false", description: ChaSetI18n.tr("components.popover.movableDesc", "Enables interactive drag repositioning via handle.") },
+            { name: "modal", type: "bool", default: "false", description: ChaSetI18n.tr("components.popover.modalDesc", "Whether the popover is rendered as modal with backdrop.") },
+            { name: "popoverWidth", type: "int", default: "260", description: ChaSetI18n.tr("components.popover.popoverWidthDesc", "Width of the popover content.") },
+            { name: "popoverHeight", type: "int", default: "160", description: ChaSetI18n.tr("components.popover.popoverHeightDesc", "Height of the popover content.") },
+            { name: "customRadius", type: "int", default: "8", description: ChaSetI18n.tr("components.popover.customRadiusDesc", "Corner radius of the popover border.") }
         ]
     }
 }

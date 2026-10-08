@@ -65,18 +65,18 @@ export function PopoverDocPage() {
     <DocLayout
       category="Overlays & Feedback"
       title="Popover"
-      description="Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management."
+      description={t('components.popover.description', 'Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.popover.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Click the button below to toggle the anchored popover card, test side alignment, directional arrows, and draggable move handles.
+          {t('desktopComposite.popover.overviewDesc', 'Click the button below to toggle the anchored popover card, test side alignment, directional arrows, and draggable move handles.')}
         </p>
 
         <ComponentPreview
-          title="Popover Sandbox"
+          title={t('desktopComposite.popover.sandboxTitle', 'Popover Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -191,24 +191,24 @@ ChaSetPopover {
       {/* Examples & States */}
       <section id="examples" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & States
+          {t('showcase.examplesAndStates', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Common interactive configurations including directional arrows and draggable repositioning.
+          {t('desktopComposite.popover.examplesDesc', 'Common interactive configurations including directional arrows and draggable repositioning.')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Directional Arrow Example */}
           <div className="flex flex-col gap-2 p-6 rounded-lg border border-border bg-card">
-            <span className="text-xs font-semibold text-foreground">With Directional Arrow</span>
-            <span className="text-xs text-muted-foreground mb-3">Anchored triangle indicator pointed directly at the trigger</span>
+            <span className="text-xs font-semibold text-foreground">{t('desktopComposite.popover.arrowTitle', 'With Directional Arrow')}</span>
+            <span className="text-xs text-muted-foreground mb-3">{t('desktopComposite.popover.arrowDesc', 'Anchored triangle indicator pointed directly at the trigger')}</span>
             <div className="flex items-center justify-center py-6">
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="secondary" size="sm">Arrow Popover</Button>
+                  <Button variant="secondary" size="sm">{t('desktopComposite.popover.arrowButton', 'Arrow Popover')}</Button>
                 </PopoverTrigger>
                 <PopoverContent arrow side="top" className="w-64">
-                  <p className="text-xs text-muted-foreground">This popover renders an anchored pointer triangle.</p>
+                  <p className="text-xs text-muted-foreground">{t('desktopComposite.popover.arrowContent', 'This popover renders an anchored pointer triangle.')}</p>
                 </PopoverContent>
               </Popover>
             </div>
@@ -216,15 +216,15 @@ ChaSetPopover {
 
           {/* Movable Popover Example */}
           <div className="flex flex-col gap-2 p-6 rounded-lg border border-border bg-card">
-            <span className="text-xs font-semibold text-foreground">Movable Drag Handle</span>
-            <span className="text-xs text-muted-foreground mb-3">Interactive drag header to freely reposition the popover layer</span>
+            <span className="text-xs font-semibold text-foreground">{t('desktopComposite.popover.movableTitle', 'Movable Drag Handle')}</span>
+            <span className="text-xs text-muted-foreground mb-3">{t('desktopComposite.popover.movableDesc', 'Interactive drag header to freely reposition the popover layer')}</span>
             <div className="flex items-center justify-center py-6">
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="secondary" size="sm">Movable Popover</Button>
+                  <Button variant="secondary" size="sm">{t('desktopComposite.popover.movableButton', 'Movable Popover')}</Button>
                 </PopoverTrigger>
                 <PopoverContent movable side="bottom" className="w-64">
-                  <p className="text-xs text-muted-foreground">Drag the top grip bar to move this popover anywhere.</p>
+                  <p className="text-xs text-muted-foreground">{t('desktopComposite.popover.movableContent', 'Drag the top grip bar to move this popover anywhere.')}</p>
                 </PopoverContent>
               </Popover>
             </div>
@@ -236,17 +236,17 @@ ChaSetPopover {
         name="Popover"
         componentId="popover"
         props={[
-            { name: 'open', type: 'boolean', default: 'undefined', description: 'Controlled open state.' },
-            { name: 'defaultOpen', type: 'boolean', default: 'false', description: 'Default open state when uncontrolled.' },
-            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: 'Open state change handler.' },
-            { name: 'modal', type: 'boolean', default: 'false', description: 'Whether the popover is rendered as modal with backdrop.' },
-            { name: 'side', type: "'top' | 'bottom' | 'left' | 'right'", default: "'bottom'", description: 'Placement side relative to trigger.' },
-            { name: 'align', type: "'start' | 'center' | 'end'", default: "'start'", description: 'Alignment along the anchor edge.' },
-            { name: 'sideOffset', type: 'number', default: '8', description: 'Distance offset from trigger.' },
-            { name: 'alignOffset', type: 'number', default: '0', description: 'Offset distance along alignment edge.' },
-            { name: 'arrow', type: 'boolean', default: 'false', description: 'Whether to render an anchored directional arrow.' },
-            { name: 'movable', type: 'boolean', default: 'false', description: 'Enables interactive drag repositioning via handle.' },
-            { name: 'moveLabel', type: 'string', default: "'Drag to move'", description: 'Accessible label for the drag handle button.' },
+            { name: 'open', type: 'boolean', default: 'undefined', description: t('components.popover.openDesc', 'Controlled open state.') },
+            { name: 'defaultOpen', type: 'boolean', default: 'false', description: t('components.popover.defaultOpenDesc', 'Default open state when uncontrolled.') },
+            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: t('components.popover.onOpenChangeDesc', 'Open state change handler.') },
+            { name: 'modal', type: 'boolean', default: 'false', description: t('components.popover.modalDesc', 'Whether the popover is rendered as modal with backdrop.') },
+            { name: 'side', type: "'top' | 'bottom' | 'left' | 'right'", default: "'bottom'", description: t('components.popover.sideDesc', 'Placement side relative to trigger.') },
+            { name: 'align', type: "'start' | 'center' | 'end'", default: "'start'", description: t('components.popover.alignDesc', 'Alignment along the anchor edge.') },
+            { name: 'sideOffset', type: 'number', default: '8', description: t('components.popover.sideOffsetDesc', 'Distance offset from trigger.') },
+            { name: 'alignOffset', type: 'number', default: '0', description: t('components.popover.alignOffsetDesc', 'Offset distance along alignment edge.') },
+            { name: 'arrow', type: 'boolean', default: 'false', description: t('components.popover.arrowDesc', 'Whether to render an anchored directional arrow.') },
+            { name: 'movable', type: 'boolean', default: 'false', description: t('components.popover.movableDesc', 'Enables interactive drag repositioning via handle.') },
+            { name: 'moveLabel', type: 'string', default: "'Drag to move'", description: t('components.popover.moveLabelDesc', 'Accessible label for the drag handle button.') },
           ]}
       />
     </DocLayout>

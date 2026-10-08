@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Setting Row"
-    description: "Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight."
+    description: ChaSetI18n.tr("components.settingRow.description", "Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight.")
 
     property bool hwAccel: true
     property string activeHighlightTarget: ""
@@ -25,7 +25,7 @@ DocLayout {
 
     ComponentPreview {
         id: heroPreview
-        title: "Setting Row Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.settingRow.sandboxTitle", "Setting Row Sandbox")
         reactCode: `<SettingRow
   name="Hardware Acceleration"
   description="Enable GPU-accelerated rasterization and smooth rendering."
@@ -134,7 +134,7 @@ ChaSetSettingRow {
     // Anchor Jump & Flash
     DocText {
         property string sectionId: "anchor-jump-flash"
-        property string sectionTitle: "Anchor Jump & Flash"
+        property string sectionTitle: ChaSetI18n.tr("surfaces.settingRow.anchorJumpTitle", "Anchor Jump & Flash")
         text: ChaSetI18n.tr("surfaces.settingRow.anchorJumpTitle")
         font.pixelSize: Typography.sizeTitleSm
         font.bold: true
@@ -169,15 +169,15 @@ ChaSetSettingRow {
         name: "SettingRow"
         componentId: "setting-row"
         propsModel: [
-            { name: "name", type: "string", default: "''", description: "Primary title of the setting row" },
-            { name: "description", type: "string", default: "''", description: "Secondary subtitle description text" },
-            { name: "icon", type: "string", default: "''", description: "Optional leading icon" },
-            { name: "badge", type: "string", default: "''", description: "Optional trailing badge tag next to title" },
-            { name: "size", type: "string", default: "'default'", description: "Size variant ('default' or 'sm')" },
-            { name: "highlightId", type: "string", default: "''", description: "Unique anchor ID for targeted highlighting" },
-            { name: "highlightTarget", type: "string", default: "''", description: "Current active target ID to trigger flash pulse" },
-            { name: "highlight", type: "bool", default: "false", description: "Boolean flag indicating if highlight animation is active" },
-            { name: "disabled", type: "bool", default: "false", description: "Whether the row and controls are dimmed and disabled" }
+            { name: "name", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.nameDesc", "Primary title label for the setting item.") },
+            { name: "description", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.descriptionDesc", "Secondary explanatory subtitle text.") },
+            { name: "icon", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.iconDesc", "Optional leading icon or badge avatar.") },
+            { name: "badge", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.badgeDesc", "Optional trailing badge tag next to title.") },
+            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.settingRow.sizeDesc", "Density size variant ('default' or 'sm').") },
+            { name: "highlightId", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.highlightIdDesc", "Unique identifier used for anchor jump targeting.") },
+            { name: "highlightTarget", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.highlightTargetDesc", "Active target identifier. When matching highlightId, triggers pulse.") },
+            { name: "highlight", type: "bool", default: "false", description: ChaSetI18n.tr("components.settingRow.highlightDesc", "Direct boolean override to force active highlight animation.") },
+            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.settingRow.disabledDesc", "Whether the setting row and controls are dimmed and disabled.") }
         ]
     }
 }

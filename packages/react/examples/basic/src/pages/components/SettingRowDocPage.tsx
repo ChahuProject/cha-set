@@ -46,11 +46,11 @@ export function SettingRowDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Setting Row"
-      description="Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight."
+      description={t('components.settingRow.description', 'Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
-        <ComponentPreview title="Setting Row Sandbox"
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.settingRow.overviewHeading', 'Interactive Overview')}</h2>
+        <ComponentPreview title={t('desktopComposite.settingRow.sandboxTitle', 'Setting Row Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -149,58 +149,58 @@ ChaSetSettingRow {
             name: 'name',
             type: 'ReactNode | string',
             required: true,
-            description: 'Primary title label for the setting item.',
+            description: t('components.settingRow.nameDesc', 'Primary title label for the setting item.'),
           },
           {
             name: 'description',
             type: 'ReactNode | string',
             required: false,
-            description: 'Secondary explanatory subtitle text.',
+            description: t('components.settingRow.descriptionDesc', 'Secondary explanatory subtitle text.'),
           },
           {
             name: 'icon',
             type: 'ReactNode | string',
             required: false,
-            description: 'Optional leading icon or badge avatar.',
+            description: t('components.settingRow.iconDesc', 'Optional leading icon or badge avatar.'),
           },
           {
             name: 'badge',
             type: 'ReactNode | string',
             required: false,
-            description: 'Optional trailing badge tag next to title.',
+            description: t('components.settingRow.badgeDesc', 'Optional trailing badge tag next to title.'),
           },
           {
             name: 'size',
             type: "'default' | 'sm'",
             default: "'default'",
             required: false,
-            description: "Density size variant ('default' or 'sm').",
+            description: t('components.settingRow.sizeDesc', "Density size variant ('default' or 'sm')."),
           },
           {
             name: 'highlightId',
             type: 'string',
             required: false,
-            description: 'Unique identifier used for anchor jump targeting.',
+            description: t('components.settingRow.highlightIdDesc', 'Unique identifier used for anchor jump targeting.'),
           },
           {
             name: 'highlightTarget',
             type: 'string',
             required: false,
-            description: 'Active target identifier. When matching highlightId, triggers pulse.',
+            description: t('components.settingRow.highlightTargetDesc', 'Active target identifier. When matching highlightId, triggers pulse.'),
           },
           {
             name: 'highlight',
             type: 'boolean',
             default: 'false',
             required: false,
-            description: 'Direct boolean override to force active highlight animation.',
+            description: t('components.settingRow.highlightDesc', 'Direct boolean override to force active highlight animation.'),
           },
           {
             name: 'disabled',
             type: 'boolean',
             default: 'false',
             required: false,
-            description: 'Whether the setting row and controls are dimmed and disabled.',
+            description: t('components.settingRow.disabledDesc', 'Whether the setting row and controls are dimmed and disabled.'),
           },
         ]}
       />

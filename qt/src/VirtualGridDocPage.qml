@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Desktop & Virtualization"
     pageTitle: "Virtual Grid"
-    description: "2D windowed grid virtualizer for high-performance visualization of massive visual card and thumbnail matrices."
+    description: ChaSetI18n.tr("components.virtualGrid.description", "2D responsive windowed grid virtualizer for massive cards, matrix data, and dynamic layouts.")
 
     ComponentPreview {
-        title: "Virtual Grid Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.virtualGrid.sandboxTitle", "Virtual Grid Sandbox")
         stageHeight: 360
         reactCode: `<VirtualGrid
   items={items}
@@ -146,15 +146,15 @@ ChaSetVirtualGrid {
         name: "VirtualGrid"
         componentId: "virtual-grid"
         propsModel: [
-            { name: "model", type: "var", default: "null", description: "Number of grid items or data array." },
-            { name: "cellWidth", type: "int", default: "160", description: "Width of each grid slot cell." },
-            { name: "cellHeight", type: "int", default: "120", description: "Height of each grid slot cell." },
-            { name: "minColumnWidthRem", type: "real", default: "12", description: "Minimum column width guideline." },
-            { name: "gapRem", type: "real", default: "0.75", description: "Grid gap spacing guideline." },
-            { name: "estimateSize", type: "int", default: "180", description: "Estimated cell height for virtual calculation." },
-            { name: "overscan", type: "int", default: "4", description: "Buffer rows rendered outside visible bounds." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the grid container." },
-            { name: "scrollToIndex(index)", type: "function", default: "function", description: "Scrolls the virtual grid to the target card index." }
+            { name: "model", type: "var", default: "null", description: ChaSetI18n.tr("components.virtualGrid.modelDesc", "Number of grid items or data array.") },
+            { name: "cellWidth", type: "int", default: "160", description: ChaSetI18n.tr("components.virtualGrid.cellWidthDesc", "Width of each grid slot cell.") },
+            { name: "cellHeight", type: "int", default: "120", description: ChaSetI18n.tr("components.virtualGrid.cellHeightDesc", "Height of each grid slot cell.") },
+            { name: "minColumnWidthRem", type: "real", default: "12", description: ChaSetI18n.tr("components.virtualGrid.minColumnWidthQtDesc", "Minimum column width guideline.") },
+            { name: "gapRem", type: "real", default: "0.75", description: ChaSetI18n.tr("components.virtualGrid.gapQtDesc", "Grid gap spacing guideline.") },
+            { name: "estimateSize", type: "int", default: "180", description: ChaSetI18n.tr("components.virtualGrid.estimateSizeQtDesc", "Estimated cell height for virtual calculation.") },
+            { name: "overscan", type: "int", default: "4", description: ChaSetI18n.tr("components.virtualGrid.overscanQtDesc", "Buffer rows rendered outside visible bounds.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.virtualGrid.customRadiusDesc", "Corner radius of the grid container.") },
+            { name: "scrollToIndex(index)", type: "function", default: "function", description: ChaSetI18n.tr("components.virtualGrid.scrollToIndexDesc", "Scrolls the virtual grid to the target card index.") }
         ]
     }
 }

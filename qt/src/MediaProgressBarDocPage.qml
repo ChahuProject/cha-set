@@ -20,7 +20,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "MediaProgressBar Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.mediaProgressBar.sandboxTitle", "MediaProgressBar Sandbox")
         reactCode: `<MediaProgressBar
   ratio={${root.demoRatio.toFixed(2)}}
   duration={${root.demoDuration}}
@@ -101,16 +101,16 @@ DocLayout {
         width: parent.width
         componentId: "media-progress-bar"
         propsModel: [
-            { "name": "ratio", "type": "real", "defaultValue": "0", "description": "Playback progress ratio from 0.0 to 1.0." },
-            { "name": "duration", "type": "real", "defaultValue": "0", "description": "Total duration of the media in milliseconds." },
-            { "name": "position", "type": "real", "defaultValue": "0", "description": "Current playback position in milliseconds." },
-            { "name": "frameRate", "type": "real", "defaultValue": "30", "description": "Frame rate for frame-based time formatting." },
-            { "name": "timingMode", "type": "string", "defaultValue": "\"elapsed\"", "description": "Timing mode: elapsed time or remaining countdown." },
-            { "name": "timeFormat", "type": "string", "defaultValue": "\"hms\"", "description": "Format to display timestamp." },
-            { "name": "showTime", "type": "bool", "defaultValue": "true", "description": "Whether to show the time readout underneath." },
-            { "name": "showThumb", "type": "bool", "defaultValue": "true", "description": "Whether to display the progress thumb handle." },
-            { "name": "interactive", "type": "bool", "defaultValue": "true", "description": "Whether pointer seek/drag is enabled." },
-            { "name": "disabled", "type": "bool", "defaultValue": "false", "description": "Disabled state." }
+            { "name": "ratio", "type": "real", "defaultValue": "0", "description": ChaSetI18n.tr("components.mediaProgressBar.ratioDesc", "Playback progress ratio from 0.0 to 1.0.") },
+            { "name": "duration", "type": "real", "defaultValue": "0", "description": ChaSetI18n.tr("components.mediaProgressBar.durationDesc", "Total duration of the media in milliseconds.") },
+            { "name": "position", "type": "real", "defaultValue": "0", "description": ChaSetI18n.tr("components.mediaProgressBar.positionDesc", "Current playback position in milliseconds.") },
+            { "name": "frameRate", "type": "real", "defaultValue": "30", "description": ChaSetI18n.tr("components.mediaProgressBar.frameRateDesc", "Frame rate for frame-based time formatting.") },
+            { "name": "timingMode", "type": "string", "defaultValue": "\"elapsed\"", "description": ChaSetI18n.tr("components.mediaProgressBar.timingModeDesc", "Timing mode: elapsed time or remaining countdown.") },
+            { "name": "timeFormat", "type": "string", "defaultValue": "\"hms\"", "description": ChaSetI18n.tr("components.mediaProgressBar.timeFormatDesc", "Format to display timestamp.") },
+            { "name": "showTime", "type": "bool", "defaultValue": "true", "description": ChaSetI18n.tr("components.mediaProgressBar.showTimeDesc", "Whether to show the time readout underneath.") },
+            { "name": "showThumb", "type": "bool", "defaultValue": "true", "description": ChaSetI18n.tr("components.mediaProgressBar.showThumbDesc", "Whether to display the progress thumb handle.") },
+            { "name": "interactive", "type": "bool", "defaultValue": "true", "description": ChaSetI18n.tr("components.mediaProgressBar.interactiveDesc", "Whether pointer seek/drag is enabled.") },
+            { "name": "disabled", "type": "bool", "defaultValue": "false", "description": ChaSetI18n.tr("components.mediaProgressBar.disabledDesc", "Disabled state.") }
         ]
     }
 }

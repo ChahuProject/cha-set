@@ -1,6 +1,7 @@
 import React from 'react';
 import { DocLayout } from '../../layout/DocLayout';
 import { ThemeTuner, type ThemeOverrides } from '../../components/ThemeTuner';
+import { useChaSetI18n } from '@chahu/cha-set';
 import { ComponentPlayground } from '../../components/ComponentPlayground';
 
 export interface ThemeTunerPageProps {
@@ -22,14 +23,15 @@ export function ThemeTunerPage({
   setOverrides,
   onOpenExport,
 }: ThemeTunerPageProps) {
+  const { t } = useChaSetI18n();
   return (
     <DocLayout
       category="Get Started"
       title="Theme Studio"
-      description="Live interactive theme tuner. Fine-tune colors, radiuses, and accents with real-time feedback and one-click config export."
+      description={t('components.theme-studio.description', 'Live interactive theme tuner. Fine-tune colors, radiuses, and accents with real-time feedback and one-click config export.')}
       tocItems={[
-        { id: 'tuner', title: 'Theme Controls' },
-        { id: 'playground', title: 'Live Sandbox' },
+        { id: 'tuner', title: t('showcase.toc.tuner', 'Theme Controls') },
+        { id: 'playground', title: t('showcase.toc.playground', 'Live Sandbox') },
       ]}
     >
       <div className="space-y-8">

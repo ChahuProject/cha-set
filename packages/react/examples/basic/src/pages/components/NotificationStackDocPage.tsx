@@ -139,12 +139,12 @@ export function NotificationStackDocPage() {
     <DocLayout
       category="Overlays & Feedback"
       title="Notification Stack"
-      description="Floating, severity-coded notification stack with per-item lifetimes and inline actions."
+      description={t('components.notificationStack.description', 'Floating, severity-coded notification stack with per-item lifetimes and inline actions.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.notificationStack.overviewHeading', 'Interactive Overview')}</h2>
         <ComponentPreview
-          title="Notification Stack Sandbox"
+          title={t('desktopComposite.notificationStack.sandboxTitle', 'Notification Stack Sandbox')}
           reactCode={feedReactCode}
           qtCode={`ChaSetNotificationStack {
     notifications: demoNotifications
@@ -182,9 +182,9 @@ export function NotificationStackDocPage() {
       </section>
 
       <section id="levels" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Levels & Actions</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.notificationStack.levelsTitle', 'Levels & Actions')}</h2>
         <ComponentPreview
-          title="Levels & Actions"
+          title={t('desktopComposite.notificationStack.levelsTitle', 'Levels & Actions')}
           reactCode={levelsReactCode}
           qtCode={`ChaSetNotificationStack {
     notifications: levelNotifications
@@ -246,124 +246,108 @@ ChaSetNotificationStack {
       />
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Animations</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
         <p className="text-sm text-muted-foreground">
-          Motion tokens and lifetime contracts shared with the activity stack.
+          {t('desktopComposite.notificationStack.animationsDesc', 'Motion tokens and lifetime contracts shared with the activity stack.')}
         </p>
         <ul className="list-disc space-y-1.5 pl-5 text-sm text-foreground">
           <li>
-            Notifications enter and exit over{' '}
-            <code className="rounded bg-muted px-1 text-xs">duration-medium</code> (180ms) with the{' '}
-            <code className="rounded bg-muted px-1 text-xs">ease-standard</code> curve, sliding through the anchored
-            edge (Qt counterpart: <code className="rounded bg-muted px-1 text-xs">ThemeTokens.motionMedium</code> and{' '}
-            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.easeStandard</code>).
+            {t('desktopComposite.notificationStack.animationsBullet1', 'Notifications enter and exit over duration-medium (180ms) with the ease-standard curve, sliding through the anchored edge (Qt: ThemeTokens.motionMedium / ThemeTokens.easeStandard).')}
           </li>
           <li>
-            Expiry is a remaining-time budget, not a bare timer: hovering the stack freezes every countdown mid-flight
-            and releases it from the same remainder when the pointer leaves.
+            {t('desktopComposite.notificationStack.animationsBullet2', 'Expiry is a remaining-time budget, not a bare timer: hovering the stack freezes every countdown mid-flight and releases it from the same remainder when the pointer leaves.')}
           </li>
           <li>
-            A <code className="rounded bg-muted px-1 text-xs">duration</code> of 0 pins a notification on screen until
-            it is dismissed, which is what action-bearing messages use.
+            {t('desktopComposite.notificationStack.animationsBullet3', 'A duration of 0 pins a notification on screen until it is dismissed, which is what action-bearing messages use.')}
           </li>
           <li>
-            Respects <code className="rounded bg-muted px-1 text-xs">prefers-reduced-motion</code> on Web and{' '}
-            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.animationsEnabled</code> in Qt.
+            {t('desktopComposite.notificationStack.animationsBullet4', 'Every transition respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt, resolving durations to zero when motion is disabled.')}
           </li>
         </ul>
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard Navigation</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</h2>
         <p className="text-sm text-muted-foreground">
-          The stack is a single tab stop: notification cards are roving-focus entries inside it.
+          {t('desktopComposite.notificationStack.keyboardDesc', 'The stack is a single tab stop: notification cards are roving-focus entries inside it.')}
         </p>
         <KeyboardShortcutsTable componentId="notification-stack" />
       </section>
 
       <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.propsReference', 'Props Reference')}</h2>
         <PropsTable
           items={[
             {
               name: 'notifications',
               type: 'NotificationItem[]',
               default: '[]',
-              description: 'Notifications to surface, oldest first; the newest card sits nearest the anchor.',
+              description: t('components.notificationStack.notificationsDesc', 'Notifications to surface, oldest first; the newest card sits nearest the anchor.'),
             },
             {
               name: 'onDismiss',
               type: '(id: string) => void',
               default: 'undefined',
-              description: 'Renders the per-card dismiss control and receives every auto-expiry.',
+              description: t('components.notificationStack.onDismissDesc', 'Renders the per-card dismiss control and receives every auto-expiry.'),
             },
             {
               name: 'onAction',
               type: '(notificationId: string, actionId: string) => void',
               default: 'undefined',
-              description: 'Fired when an inline action button is pressed; the card stays until dismissed.',
+              description: t('components.notificationStack.onActionDesc', 'Fired when an inline action button is pressed; the card stays until dismissed.'),
             },
             {
               name: 'placement',
               type: '"top-left" | "top-center" | "top-right" | "left-center" | "right-center" | "bottom-left" | "bottom-center" | "bottom-right"',
               default: "'bottom-right'",
-              description: 'Viewport anchor. Cards enter and exit through the anchored edge.',
+              description: t('components.notificationStack.placementDesc', 'Viewport anchor. Cards enter and exit through the anchored edge.'),
             },
             {
               name: 'offset',
               type: 'number',
               default: '16',
-              description: 'Inset from the anchored viewport edges, in logical units.',
+              description: t('components.notificationStack.offsetDesc', 'Inset from the anchored viewport edges, in logical units.'),
             },
             {
               name: 'maxVisible',
               type: 'number',
               default: '4',
-              description: 'Cards rendered before the stack overflows into its "show all" pill.',
+              description: t('components.notificationStack.maxVisibleDesc', 'Cards rendered before the stack overflows into its "show all" pill.'),
             },
             {
               name: 'defaultDuration',
               type: 'number',
               default: '5000',
-              description: 'Lifetime for items that do not state their own duration.',
+              description: t('components.notificationStack.defaultDurationDesc', 'Lifetime for items that do not state their own duration.'),
             },
             {
               name: 'pauseOnHover',
               type: 'boolean',
               default: 'true',
-              description: 'Suspends every expiry countdown while the pointer rests on the stack.',
+              description: t('components.notificationStack.pauseOnHoverDesc', 'Suspends every expiry countdown while the pointer rests on the stack.'),
             },
             {
               name: 'collapsible',
               type: 'boolean',
               default: 'true',
-              description: 'Offers the collapse-to-summary-row control.',
+              description: t('components.notificationStack.collapsibleDesc', 'Offers the collapse-to-summary-row control.'),
             },
             {
               name: 'defaultCollapsed',
               type: 'boolean',
               default: 'false',
-              description: 'Renders the stack collapsed on first paint.',
+              description: t('components.notificationStack.defaultCollapsedDesc', 'Renders the stack collapsed on first paint.'),
             },
             {
               name: 'label',
               type: 'string',
               default: "'Notifications'",
-              description: 'Accessible name of the live region.',
+              description: t('components.notificationStack.labelDesc', 'Accessible name of the live region.'),
             },
           ]}
         />
         <p className="text-sm text-muted-foreground">
-          Each <code className="rounded bg-muted px-1 text-xs">NotificationItem</code> carries{' '}
-          <code className="rounded bg-muted px-1 text-xs">id</code>,{' '}
-          <code className="rounded bg-muted px-1 text-xs">title</code>, an optional{' '}
-          <code className="rounded bg-muted px-1 text-xs">description</code>, a{' '}
-          <code className="rounded bg-muted px-1 text-xs">level</code> of{' '}
-          <code className="rounded bg-muted px-1 text-xs">info | success | warning | error</code>, an optional{' '}
-          <code className="rounded bg-muted px-1 text-xs">duration</code>,{' '}
-          <code className="rounded bg-muted px-1 text-xs">dismissible</code> and a list of{' '}
-          <code className="rounded bg-muted px-1 text-xs">actions</code> (
-          <code className="rounded bg-muted px-1 text-xs">{'{ id, label, variant }'}</code>).
+          {t('components.notificationStack.itemFooterDesc', 'Each notification carries id, title, an optional description, a level of info | success | warning | error, an optional duration, dismissible and a list of actions (id, label, variant).')}
         </p>
       </section>
     </DocLayout>
