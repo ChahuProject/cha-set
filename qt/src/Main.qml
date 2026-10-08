@@ -849,6 +849,25 @@ ApplicationWindow {
                 themeFailures++;
             }
 
+            // 6. Test Tooltip positioning under high UI zoom (300% scale parity & off-screen clamp immunity)
+            ThemeTokens.uiScale = 3.0;
+            var testTooltipHolder = Qt.createQmlObject(
+                'import QtQuick 6.10; import ChaSet; Item { x: 100; y: 1500; width: 200; height: 100; ChaSetTooltip { id: tt; text: ChaSetI18n.tr("common.test", "Test"); side: "top"; forceHover: true } }',
+                win.contentItem,
+                "scaleTestTooltip"
+            );
+            if (testTooltipHolder) {
+                var testTt = testTooltipHolder.children[0];
+                if (Math.abs(testTt.clampedY - testTt.calculatedY) > 0.001) {
+                    console.log("[qt-scenario] FAIL: Tooltip clampedY diverged from calculatedY at 300% zoom: clampedY=" + testTt.clampedY + ", calculatedY=" + testTt.calculatedY);
+                    themeFailures++;
+                } else {
+                    console.log("[qt-scenario] PASS: Tooltip high-zoom 300% positioning parity verified (clampedY == calculatedY=" + testTt.calculatedY + ")");
+                }
+                testTooltipHolder.destroy();
+            }
+            ThemeTokens.uiScale = 1.0; // restore
+
             if (themeFailures === 0) {
                 console.log("[qt-scenario] PASS: Global Theme Control & Authentic UI Scale verified (mode, palette, decoration, uiScale, reset, scaleOsd)");
             } else {

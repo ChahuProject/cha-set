@@ -52,6 +52,8 @@ Item {
         var _depScale = ThemeTokens.uiScale
         var _depRootX = root.x
         var _depRootY = root.y
+        var _rev = root.clampRevision
+        var _show = root.shouldShow
         try {
             return root.mapFromItem(effectiveTarget, 0, 0)
         } catch (e) {
@@ -92,21 +94,35 @@ Item {
         }
     }
 
+    property int clampRevision: 0
+
     readonly property real clampedX: {
         var base = calculatedX
+        if (!root.shouldShow) return base
         var win = root.Window.window
         var margin = ThemeTokens.dp(8)
         var _scale = ThemeTokens.uiScale
         var _tw = targetW
         var _bw = bubble.width
-        if (win) {
+        var _rev = root.clampRevision
+        if (win && bubble.width > 0) {
             try {
                 var mapped = root.mapToItem(null, base, 0)
-                if (mapped.x + bubble.width > win.width - margin) {
-                    base -= (mapped.x + bubble.width - (win.width - margin))
-                }
-                if (mapped.x < margin) {
-                    base += (margin - mapped.x)
+                if (root.side === "top" || root.side === "bottom") {
+                    if (mapped.x + bubble.width > win.width - margin) {
+                        base -= (mapped.x + bubble.width - (win.width - margin))
+                    }
+                    if (mapped.x < margin) {
+                        base += (margin - mapped.x)
+                    }
+                } else if (root.side === "left") {
+                    if (mapped.x < margin) {
+                        base += (margin - mapped.x)
+                    }
+                } else if (root.side === "right") {
+                    if (mapped.x + bubble.width > win.width - margin) {
+                        base -= (mapped.x + bubble.width - (win.width - margin))
+                    }
                 }
             } catch (e) {}
         }
@@ -115,19 +131,31 @@ Item {
 
     readonly property real clampedY: {
         var base = calculatedY
+        if (!root.shouldShow) return base
         var win = root.Window.window
         var margin = ThemeTokens.dp(8)
         var _scale = ThemeTokens.uiScale
         var _th = targetH
         var _bh = bubble.height
-        if (win) {
+        var _rev = root.clampRevision
+        if (win && bubble.height > 0) {
             try {
                 var mappedY = root.mapToItem(null, 0, base)
-                if (mappedY.y + bubble.height > win.height - margin) {
-                    base -= (mappedY.y + bubble.height - (win.height - margin))
-                }
-                if (mappedY.y < margin) {
-                    base += (margin - mappedY.y)
+                if (root.side === "left" || root.side === "right") {
+                    if (mappedY.y + bubble.height > win.height - margin) {
+                        base -= (mappedY.y + bubble.height - (win.height - margin))
+                    }
+                    if (mappedY.y < margin) {
+                        base += (margin - mappedY.y)
+                    }
+                } else if (root.side === "top") {
+                    if (mappedY.y < margin) {
+                        base += (margin - mappedY.y)
+                    }
+                } else if (root.side === "bottom") {
+                    if (mappedY.y + bubble.height > win.height - margin) {
+                        base -= (mappedY.y + bubble.height - (win.height - margin))
+                    }
                 }
             } catch (e) {}
         }
@@ -148,6 +176,7 @@ Item {
     readonly property bool shouldShow: (root.active || root.internalActive || root.forceHover) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
 
     onShouldShowChanged: {
+        root.clampRevision++
         if (useGlobalService && globalService) {
             if (shouldShow) {
                 globalService.request({
