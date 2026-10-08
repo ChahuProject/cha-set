@@ -1,5 +1,5 @@
 import React, { Component, type ReactNode } from 'react';
-import { Button } from '@chahu/cha-set';
+import { Button, registry } from '@chahu/cha-set';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -37,19 +37,19 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div className="p-6 m-4 rounded-lg border border-destructive/40 bg-destructive/10 text-foreground flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-semibold text-destructive">
-              {this.props.fallbackTitle || 'Component Rendering Error'}
+              {this.props.fallbackTitle || registry.t('components.errorBoundary.fallbackTitle', 'Component Rendering Error')}
             </h3>
             <div className="flex items-center gap-2">
               <Button size="xs" variant="outline" onClick={this.handleReset}>
-                Try Again
+                {registry.t('components.errorBoundary.tryAgain', 'Try Again')}
               </Button>
               <Button size="xs" variant="destructive" onClick={() => window.location.reload()}>
-                Reload Page
+                {registry.t('components.errorBoundary.reloadPage', 'Reload Page')}
               </Button>
             </div>
           </div>
           <p className="text-xs text-muted-foreground font-mono bg-background/80 p-3 rounded border border-border/40 overflow-auto max-h-40">
-            {this.state.error?.message || 'An unexpected error occurred during rendering.'}
+            {this.state.error?.message || registry.t('components.errorBoundary.unexpectedError', 'An unexpected error occurred during rendering.')}
           </p>
         </div>
       );

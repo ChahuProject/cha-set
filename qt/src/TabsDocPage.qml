@@ -7,14 +7,14 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Tabs"
-    description: "A set of layered content sections known as tab panels, displayed one at a time."
+    description: ChaSetI18n.tr("components.tabs.description", "A set of layered content sections known as tab panels, displayed one at a time.")
     tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "installation", title: "Installation" },
-        { id: "anatomy", title: "Anatomy" },
-        { id: "examples", title: "Examples & Variants" },
-        { id: "props", title: "Props Reference" }
+        { id: "overview", title: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview") },
+        { id: "keyboard", title: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation") },
+        { id: "installation", title: ChaSetI18n.tr("showcase.installation", "Installation") },
+        { id: "anatomy", title: ChaSetI18n.tr("showcase.anatomy", "Anatomy") },
+        { id: "examples", title: ChaSetI18n.tr("showcase.examplesVariants", "Examples & Variants") },
+        { id: "props", title: ChaSetI18n.tr("showcase.propsReference", "Props Reference") }
     ]
 
     property string demoTab: "account"
@@ -31,7 +31,7 @@ DocLayout {
 
     // 1. Interactive Preview Hero
     ComponentPreview {
-        title: "Tabs Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.tabs.sandboxTitle", "Tabs Sandbox")
         reactCode: `<Tabs defaultValue="account" variant="${root.demoVariant}" size="${root.demoSize}" orientation="${root.demoOrientation}">
   <TabsList>
     <TabsTrigger value="account">Account</TabsTrigger>
@@ -126,7 +126,7 @@ DocLayout {
                         }
                         DocText {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            text: root.demoTab === "account" ? ChaSetI18n.tr("surfaces.tabs.accountDesc", "Make changes to your account here.") : (root.demoTab === "password" ? ChaSetI18n.tr("surfaces.tabs.passwordDesc", "Change your password credentials.") : ChaSetI18n.tr("surfaces.tabs.settingsDesc", "Manage your notification preferences."))
+                            text: root.demoTab === "account" ? ChaSetI18n.tr("surfaces.tabs.accountDesc", "Make changes to your account here. Click save when you're done.") : (root.demoTab === "password" ? ChaSetI18n.tr("surfaces.tabs.passwordDesc", "Change your password here. After saving, you'll be logged out.") : ChaSetI18n.tr("surfaces.tabs.settingsDesc", "Manage your notification frequency and display preferences."))
                             font.pixelSize: Typography.sizeCaption
                             color: root.cMutedFg
                             wrap: true
@@ -204,7 +204,7 @@ DocLayout {
             width: parent.width
             spacing: 8
 
-            DocText { text: "Installation"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+            DocText { text: ChaSetI18n.tr("showcase.installation", "Installation"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
             ChaSetCodeBlock {
                 width: parent.width
                 language: "bash"
@@ -231,8 +231,8 @@ DocLayout {
             width: parent.width
             spacing: 12
 
-            DocText { text: "Examples & Variants"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-            DocText { text: "Visual matrix of tab variants, sizes, badges, and disabled states."; font.pixelSize: Typography.sizeBody; color: root.cMutedFg }
+            DocText { text: ChaSetI18n.tr("showcase.examplesVariants", "Examples & Variants"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+            DocText { text: ChaSetI18n.tr("desktopComposite.tabs.examplesDesc", "Visual matrix of tab variants, sizes, badges, and disabled states."); font.pixelSize: Typography.sizeBody; color: root.cMutedFg }
 
             Grid {
                 width: parent.width
@@ -346,7 +346,7 @@ DocLayout {
             width: parent.width
             spacing: 8
 
-            DocText { text: "Props Reference"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+            DocText { text: ChaSetI18n.tr("showcase.propsReference", "Props Reference"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
 
             PropsTable {
                 width: parent.width

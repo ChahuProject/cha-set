@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "ColorPicker"
-    description: "An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB)."
+    description: ChaSetI18n.tr("components.colorPicker.description", "An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB).")
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -30,7 +30,7 @@ DocLayout {
         id: heroPreview
         width: parent.width
         stageHeight: root.demoMode === "popover" ? 280 : 660
-        title: "ColorPicker Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.colorPicker.sandboxTitle", "ColorPicker Sandbox")
         reactCode: `<ColorPicker\n  value="${root.demoColor}"\n  mode="${root.demoMode}"\n  size="${root.demoSize}"\n  disabled={${root.demoDisabled}}\n  movable={${root.demoMovable}}\n  showPreview={${root.demoShowPreview}}\n  showHex={${root.demoShowHex}}\n  showSwatches={${root.demoShowSwatches}}\n  onChange={setColor}\n/>`
         qtCode: `ChaSetColorPicker {\n    value: "${root.demoColor}"\n    mode: "${root.demoMode}"\n    size: "${root.demoSize}"\n    disabled: ${root.demoDisabled}\n    movable: ${root.demoMovable}\n    showPreview: ${root.demoShowPreview}\n    showHex: ${root.demoShowHex}\n    showSwatches: ${root.demoShowSwatches}\n    onHexChanged: function(newHex) {\n        // handle color change\n    }\n}`
 
@@ -154,7 +154,7 @@ DocLayout {
 
             ChaSetCheckbox {
                 size: "sm"
-                label: ChaSetI18n.tr("components.colorPicker.hexInput", "HEX")
+                label: ChaSetI18n.tr("components.colorPicker.hexInput", "Hex Input")
                 checked: root.demoShowHex
                 onToggled: (val) => root.demoShowHex = val
             },
@@ -181,14 +181,14 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "Examples & States"
+            text: ChaSetI18n.tr("components.colorPicker.examplesTitle", "Examples & States")
             color: root.cFg
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
         }
 
         DocText {
-            text: "Visual matrix of color picker configurations, modes, and states in Qt Quick."
+            text: ChaSetI18n.tr("components.colorPicker.examplesDesc", "Matrix of common color picker configurations, modes, and sizes.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -209,7 +209,7 @@ DocLayout {
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: ChaSetI18n.tr("components.colorPicker.popoverTitle", "Popover Dropdown Mode"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: ChaSetI18n.tr("components.colorPicker.popoverDesc", "Compact swatch trigger opening floating overlay"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.popoverDesc", "Compact trigger button showing current color and hex code with floating panel."); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
                         mode: "popover"
                         value: "#ef4444"
@@ -228,7 +228,7 @@ DocLayout {
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: ChaSetI18n.tr("components.colorPicker.compactTitle", "Compact Size (sm)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: ChaSetI18n.tr("components.colorPicker.compactDesc", "Smaller footprint suitable for toolbars and palettes"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.compactDesc", "Smaller dimensions and font size designed for tight sidebar panels."); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
                         mode: "popover"
                         size: "sm"
@@ -248,7 +248,7 @@ DocLayout {
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
                     DocText { text: ChaSetI18n.tr("components.colorPicker.disabledTitle", "Disabled State"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: ChaSetI18n.tr("components.colorPicker.disabledDesc", "Non-interactive with 50% opacity"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.disabledDesc", "Readonly display with 50% opacity and disabled pointer events."); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
                         mode: "popover"
                         disabled: true
@@ -267,8 +267,8 @@ DocLayout {
                     leftPadding: ThemeTokens.dp(14)
                     rightPadding: ThemeTokens.dp(14)
                     spacing: ThemeTokens.dp(8)
-                    DocText { text: ChaSetI18n.tr("components.colorPicker.customPresetsTitle", "Custom Swatches Palette"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
-                    DocText { text: ChaSetI18n.tr("components.colorPicker.customPresetsDesc", "Configured with specialized palette colors"); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.customPresetsTitle", "Custom Preset Swatches"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("components.colorPicker.customPresetsDesc", "Specific project palette supplied via the presetColors prop."); color: root.cMutedFg; font.pixelSize: Typography.sizeCaption }
                     ChaSetColorPicker {
                         mode: "popover"
                         value: "#f59e0b"
@@ -288,91 +288,91 @@ DocLayout {
                 name: "value",
                 type: "color",
                 default: "\"#1d7ae0\"",
-                description: "The selected color value."
+                description: ChaSetI18n.tr("components.colorPicker.valueColorDesc", "The selected color value.")
             },
             {
                 name: "hex",
                 type: "string",
                 default: "\"#1D7AE0\"",
-                description: "The selected hex color string (e.g. #1D7AE0)."
+                description: ChaSetI18n.tr("components.colorPicker.hexDesc", "The selected hex color string (e.g. #1D7AE0).")
             },
             {
                 name: "mode",
                 type: "\"inline\" | \"popover\"",
                 default: "\"inline\"",
-                description: "Display mode: inline panel card or popover swatch button."
+                description: ChaSetI18n.tr("components.colorPicker.modeDesc", "Display mode: inline panel card or popover dropdown trigger.")
             },
             {
                 name: "size",
                 type: "\"default\" | \"sm\"",
                 default: "\"default\"",
-                description: "Visual scale size for the picker and its controls."
+                description: ChaSetI18n.tr("components.colorPicker.sizeDesc", "Visual sizing scale for canvas, swatches, and inputs.")
             },
             {
                 name: "disabled",
                 type: "bool",
                 default: "false",
-                description: "Disables user interactions and applies muted opacity."
+                description: ChaSetI18n.tr("components.colorPicker.disabledPropDesc", "When true, prevents user interaction and applies muted opacity.")
             },
             {
                 name: "movable",
                 type: "bool",
                 default: "false",
-                description: "Allows dragging blank background areas to reposition the component. Double-click resets offset."
+                description: ChaSetI18n.tr("components.colorPicker.movableDesc", "When true, allows dragging on empty background areas to reposition the component. Double-click resets position.")
             },
             {
                 name: "showPreview",
                 type: "bool",
                 default: "true",
-                description: "Whether to show the top preview header swatch and hex label."
+                description: ChaSetI18n.tr("components.colorPicker.showPreviewDesc", "Whether to show the top preview header swatch and hex label.")
             },
             {
                 name: "showHex",
                 type: "bool",
                 default: "true",
-                description: "Whether to display the editable HEX text input row."
+                description: ChaSetI18n.tr("components.colorPicker.showHexDesc", "Whether to display the editable HEX text input row.")
             },
             {
                 name: "showSwatches",
                 type: "bool",
                 default: "true",
-                description: "Whether to display the quick preset color chips row."
+                description: ChaSetI18n.tr("components.colorPicker.showSwatchesDesc", "Whether to show the quick preset color swatch row.")
             },
             {
                 name: "presetColors",
                 type: "var (string[])",
                 default: "16 default colors",
-                description: "Array of hex color strings displayed as preset swatches."
+                description: ChaSetI18n.tr("components.colorPicker.presetColorsDesc", "Array of preset hex color strings displayed in swatches panel.")
             },
             {
                 name: "activePanel",
                 type: "\"square\" | \"circle\" | \"triangle\" | \"swatches\"",
                 default: "\"square\"",
-                description: "Active color selector panel mode."
+                description: ChaSetI18n.tr("components.colorPicker.activePanelDesc", "Active color selector panel mode.")
             },
             {
                 name: "showRgbSliders",
                 type: "bool",
                 default: "true",
-                description: "Whether RGB channel sliders and numeric inputs are visible."
+                description: ChaSetI18n.tr("components.colorPicker.showRgbSlidersDesc", "Whether RGB channel sliders and numeric inputs are visible.")
             },
             {
                 name: "showHsvSliders",
                 type: "bool",
                 default: "false",
-                description: "Whether HSV channel sliders and numeric inputs are visible."
+                description: ChaSetI18n.tr("components.colorPicker.showHsvSlidersDesc", "Whether HSV channel sliders and numeric inputs are visible.")
             },
             {
                 name: "showCmykSliders",
                 type: "bool",
                 default: "false",
-                description: "Whether CMYK channel sliders and numeric inputs are visible."
+                description: ChaSetI18n.tr("components.colorPicker.showCmykSlidersDesc", "Whether CMYK channel sliders and numeric inputs are visible.")
             },
             {
                 name: "showLabSliders",
                 type: "bool",
                 default: "false",
-                description: "Whether CIELAB channel sliders and numeric inputs are visible."
+                description: ChaSetI18n.tr("components.colorPicker.showLabSlidersDesc", "Whether CIELAB channel sliders and numeric inputs are visible.")
             }
         ]
     }

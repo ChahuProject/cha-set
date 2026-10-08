@@ -70,7 +70,7 @@ export function Header({
               size="icon"
               onClick={onOpenSidebar}
               className="-ml-1 text-muted-foreground hover:text-foreground cursor-pointer"
-              aria-label="Open navigation sidebar"
+              aria-label={t('desktopComposite.header.openNavSidebar', 'Open navigation sidebar')}
             >
               <PanelLeftIcon className="size-4" />
             </Button>
@@ -152,26 +152,26 @@ export function Header({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={8} className="w-52">
               <DropdownMenuGroup>
-                <DropdownMenuLabel>Featured Engines</DropdownMenuLabel>
+                <DropdownMenuLabel>{t('showcase.featuredEngines', 'Featured Engines')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => { window.location.hash = '#/components/generic-data-table'; }}>
                   <TableIcon className="size-3.5 mr-2 inline text-muted-foreground" />
-                  Generic Data Table
+                  {t('desktopComposite.header.genericDataTable', 'Generic Data Table')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => { window.location.hash = '#/components/query-builder'; }}>
                   <SearchIcon className="size-3.5 mr-2 inline text-muted-foreground" />
-                  Query Builder
+                  {t('desktopComposite.header.queryBuilder', 'Query Builder')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => { window.location.hash = '#/components/virtual-list'; }}>
                   <FileTextIcon className="size-3.5 mr-2 inline text-muted-foreground" />
-                  Virtual List
+                  {t('desktopComposite.header.virtualList', 'Virtual List')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => { window.location.hash = '#/components/draggable-modal'; }}>
                   <Maximize2Icon className="size-3.5 mr-2 inline text-muted-foreground" />
-                  Draggable Modal
+                  {t('desktopComposite.header.draggableModal', 'Draggable Modal')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => { window.location.hash = '#/components/splitter'; }}>
-                  Splitter
+                  {t('desktopComposite.header.splitter', 'Splitter')}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
@@ -253,7 +253,7 @@ export function Header({
               mode === 'dark'
                 ? t('theme.mode.dark', 'Dark')
                 : mode === 'system'
-                ? t('theme.mode.system', 'Follow System')
+                ? t('theme.mode.system', 'System')
                 : t('theme.mode.light', 'Light')
             }
             side="bottom"
@@ -263,7 +263,7 @@ export function Header({
               variant="outline"
               size="icon"
               onClick={onToggleMode}
-              aria-label="Toggle theme appearance"
+              aria-label={t('desktopComposite.header.toggleTheme', 'Toggle theme appearance')}
             >
               {mode === 'dark' ? (
                 <MoonIcon className="size-4" />
@@ -277,12 +277,12 @@ export function Header({
 
           {/* GitHub Icon */}
           {effectiveWidth >= 640 && (
-            <Tooltip content="GitHub Repository" side="bottom">
+            <Tooltip content={t('desktopComposite.header.githubRepo', 'GitHub Repository')} side="bottom">
               <Button
                 asChild
                 variant="outline"
                 size="icon"
-                aria-label="GitHub Repository"
+                aria-label={t('desktopComposite.header.githubRepo', 'GitHub Repository')}
                 className="inline-flex"
               >
                 <a

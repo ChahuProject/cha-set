@@ -137,20 +137,20 @@ export function TaskHudDocPage() {
     <DocLayout
       category="Overlays & Feedback"
       title="Task HUD"
-      description="Floating stack of background executions with progress, overflow and collapse-to-summary."
+      description={t('components.taskHud.description', 'Floating stack of background executions with progress, overflow and collapse-to-summary.')}
       tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
+        { id: 'overview', title: t('showcase.interactiveOverview', 'Interactive Overview') },
+        { id: 'installation', title: t('showcase.installation', 'Installation') },
+        { id: 'anatomy', title: t('showcase.anatomy', 'Anatomy') },
+        { id: 'animations', title: t('showcase.animations', 'Animations') },
+        { id: 'keyboard', title: t('showcase.keyboardNavigation', 'Keyboard Navigation') },
+        { id: 'props', title: t('showcase.propsReference', 'Props Reference') },
       ]}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.interactiveOverview', 'Interactive Overview')}</h2>
         <ComponentPreview
-          title="Task HUD Sandbox"
+          title={t('desktopComposite.taskHud.sandboxTitle', 'Task HUD Sandbox')}
           reactCode={sandboxReactCode}
           qtCode={`ChaSetTaskHud {
     tasks: demoTasks
@@ -200,9 +200,9 @@ export function TaskHudDocPage() {
         </ComponentPreview>
 
         <div className="space-y-4 pt-6">
-          <h3 className="text-lg font-semibold text-foreground">Collapse & Overflow</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('showcase.collapseOverflow', 'Collapse & Overflow')}</h3>
           <ComponentPreview
-            title="Collapsed & Overflow"
+            title={t('desktopComposite.taskHud.overflowSandboxTitle', 'Collapsed & Overflow')}
             reactCode={overflowReactCode}
             qtCode={`ChaSetTaskHud {
     tasks: backlogTasks
@@ -250,7 +250,7 @@ export function TaskHudDocPage() {
               />
               <div className="absolute bottom-2 left-1/2 -translate-x-1/2">
                 <Badge variant="secondary" size="sm">
-                  anchor: {placement}
+                  {t('desktopComposite.taskHud.anchorLabel', 'anchor: {{placement}}', { placement })}
                 </Badge>
               </div>
             </div>
@@ -259,7 +259,7 @@ export function TaskHudDocPage() {
       </section>
 
       <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Installation</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.installation', 'Installation')}</h2>
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
@@ -282,130 +282,126 @@ ChaSetTaskHud {
       />
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Animations</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
         <p className="text-sm text-muted-foreground">
-          Motion tokens and kinematic timing contracts for the activity stack and its cards.
+          {t('desktopComposite.taskHud.animationsDesc', 'Motion tokens and kinematic timing contracts for the activity stack and its cards.')}
         </p>
         <ul className="list-disc space-y-1.5 pl-5 text-sm text-foreground">
           <li>
-            New cards enter with <code className="rounded bg-muted px-1 text-xs">duration-medium</code> (180ms) and the{' '}
-            <code className="rounded bg-muted px-1 text-xs">ease-standard</code> curve, sliding in from the anchored
-            edge (Qt counterpart:{' '}
-            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.motionMedium</code> and{' '}
-            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.easeStandard</code>).
+            {t('desktopComposite.taskHud.animEnterPrefix', 'New cards enter with')}{' '}
+            <code className="rounded bg-muted px-1 text-xs">duration-medium</code>{' '}
+            {t('desktopComposite.taskHud.animEnterMid', '(180ms) and the')}{' '}
+            <code className="rounded bg-muted px-1 text-xs">ease-standard</code>{' '}
+            {t('desktopComposite.taskHud.animEnterSuffix', 'curve, sliding in from the anchored edge (Qt counterpart:')}{' '}
+            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.motionMedium</code> {t('desktopComposite.taskHud.and', 'and')}{' '}
+            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.easeStandard</code>
+            {t('desktopComposite.taskHud.animEnterEnd', ').')}
           </li>
           <li>
-            Dismissed cards linger as exit ghosts for the same 180ms so the stack reorders underneath them instead of
-            snapping.
+            {t('desktopComposite.taskHud.animExitGhosts', 'Dismissed cards linger as exit ghosts for the same 180ms so the stack reorders underneath them instead of snapping.')}
           </li>
           <li>
-            Determinate progress transitions over{' '}
-            <code className="rounded bg-muted px-1 text-xs">duration-medium</code>; indeterminate tasks run an infinite
-            1.6s shimmer rail.
+            {t('desktopComposite.taskHud.animProgressPrefix', 'Determinate progress transitions over')}{' '}
+            <code className="rounded bg-muted px-1 text-xs">duration-medium</code>
+            {t('desktopComposite.taskHud.animProgressSuffix', '; indeterminate tasks run an infinite 1.6s shimmer rail.')}
           </li>
           <li>
-            An emptied HUD holds its last frame for{' '}
-            <code className="rounded bg-muted px-1 text-xs">autoHideDelay</code> (600ms) before fading out.
+            {t('desktopComposite.taskHud.animAutoHidePrefix', 'An emptied HUD holds its last frame for')}{' '}
+            <code className="rounded bg-muted px-1 text-xs">autoHideDelay</code>
+            {t('desktopComposite.taskHud.animAutoHideSuffix', '(600ms) before fading out.')}
           </li>
           <li>
-            Respects <code className="rounded bg-muted px-1 text-xs">prefers-reduced-motion</code> on Web and{' '}
-            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.animationsEnabled</code> in Qt.
+            {t('desktopComposite.taskHud.animReducedPrefix', 'Respects')}{' '}
+            <code className="rounded bg-muted px-1 text-xs">prefers-reduced-motion</code>{' '}
+            {t('desktopComposite.taskHud.animReducedMid', 'on Web and')}{' '}
+            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.animationsEnabled</code>{' '}
+            {t('desktopComposite.taskHud.animReducedSuffix', 'in Qt.')}
           </li>
         </ul>
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard Navigation</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</h2>
         <p className="text-sm text-muted-foreground">
-          The stack is a single tab stop: cards are roving-focus entries inside it.
+          {t('desktopComposite.taskHud.keyboardDesc', 'The stack is a single tab stop: cards are roving-focus entries inside it.')}
         </p>
         <KeyboardShortcutsTable componentId="task-hud" />
       </section>
 
       <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.propsReference', 'Props Reference')}</h2>
         <PropsTable
           items={[
             {
               name: 'tasks',
               type: 'TaskItem[]',
               default: '[]',
-              description: 'Background executions to surface, oldest first; the newest card sits nearest the anchor.',
+              description: t('components.taskHud.propTasks', 'Background executions to surface, oldest first; the newest card sits nearest the anchor.'),
             },
             {
               name: 'onDismiss',
               type: '(id: string) => void',
               default: 'undefined',
-              description: 'Renders the per-card dismiss control; omit to make cards non-dismissible.',
+              description: t('components.taskHud.propOnDismiss', 'Renders the per-card dismiss control; omit to make cards non-dismissible.'),
             },
             {
               name: 'onCancel',
               type: '(id: string) => void',
               default: 'undefined',
-              description: 'Renders a cancel control on running tasks flagged cancellable.',
+              description: t('components.taskHud.propOnCancel', 'Renders a cancel control on running tasks flagged cancellable.'),
             },
             {
               name: 'maxVisible',
               type: 'number',
               default: '3',
-              description: 'Cards rendered before the stack overflows into its "show all" pill.',
+              description: t('components.taskHud.propMaxVisible', 'Cards rendered before the stack overflows into its "show all" pill.'),
             },
             {
               name: 'autoHideDelay',
               type: 'number',
               default: '600',
-              description: 'Grace period in milliseconds an emptied HUD stays on screen before fading out.',
+              description: t('components.taskHud.propAutoHideDelay', 'Grace period in milliseconds an emptied HUD stays on screen before fading out.'),
             },
             {
               name: 'placement',
               type: '"top-left" | "top-center" | "top-right" | "left-center" | "right-center" | "bottom-left" | "bottom-center" | "bottom-right"',
               default: "'bottom-right'",
-              description: 'Viewport anchor. Cards enter and exit through the anchored edge.',
+              description: t('components.taskHud.propPlacement', 'Viewport anchor. Cards enter and exit through the anchored edge.'),
             },
             {
               name: 'offset',
               type: 'number',
               default: '16',
-              description: 'Inset from the anchored viewport edges, in logical units.',
+              description: t('components.taskHud.propOffset', 'Inset from the anchored viewport edges, in logical units.'),
             },
             {
               name: 'collapsible',
               type: 'boolean',
               default: 'true',
-              description: 'Offers the collapse-to-summary-row control.',
+              description: t('components.taskHud.propCollapsible', 'Offers the collapse-to-summary-row control.'),
             },
             {
               name: 'defaultCollapsed',
               type: 'boolean',
               default: 'false',
-              description: 'Renders the stack collapsed on first paint.',
+              description: t('components.taskHud.propDefaultCollapsed', 'Renders the stack collapsed on first paint.'),
             },
             {
               name: 'forceVisible',
               type: 'boolean',
               default: 'false',
-              description: 'Keeps the HUD mounted while no task is running (used by static sandboxes).',
+              description: t('components.taskHud.propForceVisible', 'Keeps the HUD mounted while no task is running (used by static sandboxes).'),
             },
             {
               name: 'label',
               type: 'string',
               default: "'Task Progress HUD'",
-              description: 'Accessible name of the HUD region.',
+              description: t('components.taskHud.propLabel', 'Accessible name of the HUD region.'),
             },
           ]}
         />
         <p className="text-sm text-muted-foreground">
-          Each <code className="rounded bg-muted px-1 text-xs">TaskItem</code> carries{' '}
-          <code className="rounded bg-muted px-1 text-xs">id</code>,{' '}
-          <code className="rounded bg-muted px-1 text-xs">title</code>, an optional{' '}
-          <code className="rounded bg-muted px-1 text-xs">detail</code>, a{' '}
-          <code className="rounded bg-muted px-1 text-xs">status</code> of{' '}
-          <code className="rounded bg-muted px-1 text-xs">queued | running | success | warning | error | cancelled</code>
-          , a <code className="rounded bg-muted px-1 text-xs">progress</code> ratio (or{' '}
-          <code className="rounded bg-muted px-1 text-xs">indeterminate</code>), a{' '}
-          <code className="rounded bg-muted px-1 text-xs">total</code>/
-          <code className="rounded bg-muted px-1 text-xs">done</code> step counter and{' '}
-          <code className="rounded bg-muted px-1 text-xs">elapsedMs</code>.
+          {t('components.taskHud.taskItemFooter', 'Each TaskItem carries id, title, an optional detail, a status of queued | running | success | warning | error | cancelled, a progress ratio (or indeterminate), a total/done step counter and elapsedMs.')}
         </p>
       </section>
     </DocLayout>

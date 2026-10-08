@@ -59,19 +59,19 @@ export function SliderDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Slider"
-      description="An interactive control that allows the user to select a numeric value along a track."
+      description={t('components.slider.description', 'An interactive control that allows the user to select a numeric value along a track.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('formsA.slider.overviewDesc', 'Explore interactive slider behaviors, sizes, steps, orientations, tooltips, and states across Web and Qt Desktop.')}
         </p>
 
         <ComponentPreview
-          title="Slider Sandbox"
+          title={t('desktopComposite.slider.sandboxTitle', 'Slider Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -169,7 +169,7 @@ export function SliderDocPage() {
             >
               {orientation === 'horizontal' && (
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Value</span>
+                  <span>{t('desktopComposite.slider.valueLabel', 'Value')}</span>
                   <span className="font-mono font-medium text-foreground">{value}</span>
                 </div>
               )}
@@ -205,7 +205,7 @@ export function SliderDocPage() {
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & States
+          {t('desktopComposite.slider.examplesTitle', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('formsA.slider.examplesSubtitle', 'Visual matrix of common slider configurations, size scales, tooltips, and interactive states.')}
@@ -270,115 +270,115 @@ export function SliderDocPage() {
               name: 'value',
               type: 'number',
               default: '—',
-              description: 'The controlled numeric value of the slider.',
+              description: t('components.slider.valueDesc', 'The controlled numeric value of the slider.'),
             },
             {
               name: 'defaultValue',
               type: 'number',
               default: '0',
-              description: 'The default value for uncontrolled slider usage.',
+              description: t('components.slider.defaultValueDesc', 'The default value for uncontrolled slider usage.'),
             },
             {
               name: 'min',
               type: 'number',
               default: '0',
-              description: 'The minimum allowable value.',
+              description: t('components.slider.minDesc', 'The minimum allowable value.'),
             },
             {
               name: 'max',
               type: 'number',
               default: '100',
-              description: 'The maximum allowable value.',
+              description: t('components.slider.maxDesc', 'The maximum allowable value.'),
             },
             {
               name: 'step',
               type: 'number',
               default: '1',
-              description: 'The stepping granularity interval.',
+              description: t('components.slider.stepDesc', 'The stepping granularity interval.'),
             },
             {
               name: 'size',
               type: "'default' | 'sm'",
               default: "'default'",
-              description: 'The size scale of the slider track and thumb.',
+              description: t('components.slider.sizeDesc', 'The size scale of the slider track and thumb.'),
             },
             {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
-              description: 'When true, prevents user interaction and applies muted opacity.',
+              description: t('components.slider.disabledDesc', 'When true, prevents user interaction and applies muted opacity.'),
             },
             {
               name: 'readOnly',
               type: 'boolean',
               default: 'false',
-              description: 'When true, prevents value changes while maintaining full visual opacity.',
+              description: t('components.slider.readOnlyDesc', 'When true, prevents value changes while maintaining full visual opacity.'),
             },
             {
               name: 'showTooltip',
               type: 'boolean',
               default: 'false',
-              description: 'When true, shows an interactive floating value tooltip over the thumb on drag and hover.',
+              description: t('components.slider.showTooltipDesc', 'When true, shows an interactive floating value tooltip over the thumb on drag and hover.'),
             },
             {
               name: 'formatValue',
               type: '(value: number) => string',
               default: '—',
-              description: 'Optional formatter function for the floating tooltip text.',
+              description: t('components.slider.formatValueDesc', 'Optional formatter function for the floating tooltip text.'),
             },
             {
               name: 'showTicks',
               type: 'boolean',
               default: 'false',
-              description: 'Displays tick mark indicators along the slider track.',
+              description: t('components.slider.showTicksDesc', 'Displays tick mark indicators along the slider track.'),
             },
             {
               name: 'marks',
               type: 'string[]',
               default: '—',
-              description: 'Optional array of label strings corresponding to discrete stop positions.',
+              description: t('components.slider.marksDesc', 'Optional array of label strings corresponding to discrete stop positions.'),
             },
             {
               name: 'orientation',
               type: "'horizontal' | 'vertical'",
               default: "'horizontal'",
-              description: 'The orientation of the slider track.',
+              description: t('components.slider.orientationDesc', 'The orientation of the slider track.'),
             },
             {
               name: 'onValueChange',
               type: '(value: number) => void',
               default: '—',
-              description: 'Event handler called when the slider value changes.',
+              description: t('components.slider.onValueChangeDesc', 'Event handler called when the slider value changes.'),
             },
             {
               name: 'onChange',
               type: '(value: number) => void',
               default: '—',
-              description: 'Standard event handler called when the slider value changes.',
+              description: t('components.slider.onChangeDesc', 'Standard event handler called when the slider value changes.'),
             },
             {
               name: 'name',
               type: 'string',
               default: '—',
-              description: 'Form submission name for an underlying hidden input.',
+              description: t('components.slider.nameDesc', 'Form submission name for an underlying hidden input.'),
             },
             {
               name: 'forceHover',
               type: 'boolean',
               default: 'false',
-              description: 'Visual testing aid to programmatically force hover styling.',
+              description: t('components.slider.forceHoverDesc', 'Visual testing aid to programmatically force hover styling.'),
             },
             {
               name: 'forceFocus',
               type: 'boolean',
               default: 'false',
-              description: 'Visual testing aid to programmatically force focus ring styling.',
+              description: t('components.slider.forceFocusDesc', 'Visual testing aid to programmatically force focus ring styling.'),
             },
             {
               name: 'className',
               type: 'string',
               default: "''",
-              description: 'Additional CSS class names to apply to the slider root element.',
+              description: t('components.slider.classNameDesc', 'Additional CSS class names to apply to the slider root element.'),
             },
           ]}
       />

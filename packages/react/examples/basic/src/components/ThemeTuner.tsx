@@ -26,15 +26,15 @@ interface ThemeTunerProps {
 }
 
 const ACCENT_PRESETS = [
-  { id: '', key: 'common.default', label: 'Default', color: '#30a0ff' },
-  { id: 'slate', key: 'theme.palette.slate', label: 'Slate', color: '#64748b' },
-  { id: 'red', key: 'theme.palette.red', label: 'Red', color: '#ef4444' },
-  { id: 'orange', key: 'theme.palette.orange', label: 'Orange', color: '#f97316' },
-  { id: 'yellow', key: 'theme.palette.yellow', label: 'Yellow', color: '#eab308' },
-  { id: 'green', key: 'theme.palette.green', label: 'Green', color: '#22c55e' },
-  { id: 'blue', key: 'theme.palette.blue', label: 'Blue', color: '#3b82f6' },
-  { id: 'violet', key: 'theme.palette.violet', label: 'Violet', color: '#8b5cf6' },
-  { id: 'rose', key: 'theme.palette.rose', label: 'Rose', color: '#f43f5e' },
+  { id: '', key: 'common.default', fallback: 'Default', color: '#30a0ff' },
+  { id: 'slate', key: 'theme.palette.slate', fallback: 'Slate', color: '#64748b' },
+  { id: 'red', key: 'theme.palette.red', fallback: 'Red', color: '#ef4444' },
+  { id: 'orange', key: 'theme.palette.orange', fallback: 'Orange', color: '#f97316' },
+  { id: 'yellow', key: 'theme.palette.yellow', fallback: 'Yellow', color: '#eab308' },
+  { id: 'green', key: 'theme.palette.green', fallback: 'Green', color: '#22c55e' },
+  { id: 'blue', key: 'theme.palette.blue', fallback: 'Blue', color: '#3b82f6' },
+  { id: 'violet', key: 'theme.palette.violet', fallback: 'Violet', color: '#8b5cf6' },
+  { id: 'rose', key: 'theme.palette.rose', fallback: 'Rose', color: '#f43f5e' },
 ];
 
 export const ThemeTuner: React.FC<ThemeTunerProps> = ({
@@ -89,7 +89,7 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
       <div className="tuner-body">
         {/* Preset Modes */}
         <div className="tuner-group">
-          <label className="tuner-label">{t('getStarted.themeTuner.tuner.appearance', 'Appearance & Mode')}</label>
+          <label className="tuner-label">{t('getStarted.themeTuner.tuner.appearance', 'APPEARANCE & MODE')}</label>
           <SegmentedControl
             size="sm"
             value={mode}
@@ -104,10 +104,10 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
 
         {/* Accent Themes */}
         <div className="tuner-group">
-          <label className="tuner-label">{t('getStarted.themeTuner.tuner.accentPreset', 'Accent Theme Preset')}</label>
+          <label className="tuner-label">{t('getStarted.themeTuner.tuner.accentPreset', 'ACCENT THEME PRESET')}</label>
           <div className="accent-grid">
             {ACCENT_PRESETS.map((a) => {
-              const label = t(a.key, a.label);
+              const label = t(a.key, a.fallback);
               return (
                 <Button
                   key={a.id}
@@ -128,7 +128,7 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
         {/* Radius Slider */}
         <div className="tuner-group">
           <div className="tuner-label-row">
-            <label className="tuner-label">{t('getStarted.themeTuner.tuner.cornerRadius', 'Corner Radius (--radius)')}</label>
+            <label className="tuner-label">{t('getStarted.themeTuner.tuner.cornerRadius', 'CORNER RADIUS (--RADIUS)')}</label>
             <Badge size="sm" variant="secondary">{overrides.radius || t('getStarted.themeTuner.tuner.radiusDefault', '0.5rem (Default)')}</Badge>
           </div>
           <div className="py-2">
@@ -150,7 +150,7 @@ export const ThemeTuner: React.FC<ThemeTunerProps> = ({
 
         {/* Custom Color Overrides */}
         <div className="tuner-group">
-          <label className="tuner-label">{t('getStarted.themeTuner.tuner.liveColorOverrides', 'Live Color Overrides')}</label>
+          <label className="tuner-label">{t('getStarted.themeTuner.tuner.liveColorOverrides', 'LIVE COLOR OVERRIDES')}</label>
           <div className="color-inputs-grid">
             <div className="color-input-row">
               <label>{t('getStarted.themeTuner.tuner.primaryAction', 'Primary Action')}</label>

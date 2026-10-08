@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Slider"
-    description: "An interactive control that allows the user to select a numeric value along a track."
+    description: ChaSetI18n.tr("components.slider.description", "An interactive control that allows the user to select a numeric value along a track.")
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -29,7 +29,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Slider Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.slider.sandboxTitle", "Slider Sandbox")
         reactCode: `<div className="w-full max-w-xs flex flex-col gap-2">\n  <div className="flex justify-between text-xs text-muted-foreground">\n    <span>Value</span>\n    <span className="font-mono font-medium text-foreground">${root.demoValue}</span>\n  </div>\n  <Slider\n    value={${root.demoValue}}\n    min={0}\n    max={100}\n    step={${root.demoStep}}\n    size="${root.demoSize}"\n    disabled={${root.demoDisabled}}\n    readOnly={${root.demoReadOnly}}\n    showTooltip={${root.demoShowTooltip}}\n    showTicks={${root.demoShowTicks}}\n    orientation="${root.demoOrientation}"\n    onValueChange={setValue}\n  />\n</div>`
         qtCode: `ChaSetSlider {\n    width: 240\n    value: ${root.demoValue}\n    min: 0\n    max: 100\n    step: ${root.demoStep}\n    size: "${root.demoSize}"\n    disabled: ${root.demoDisabled}\n    readOnly: ${root.demoReadOnly}\n    showTooltip: ${root.demoShowTooltip}\n    showTicks: ${root.demoShowTicks}\n    orientation: "${root.demoOrientation}"\n    onValueMoved: function(val) {\n        // handle slider value update\n    }\n}`
 
@@ -200,14 +200,14 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "Examples & States"
+            text: ChaSetI18n.tr("desktopComposite.slider.examplesTitle", "Examples & States")
             color: root.cFg
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
         }
 
         DocText {
-            text: ChaSetI18n.tr("formsA.slider.examplesSubtitle", "Visual matrix of common slider configurations, size scales, tooltips, and interactive states in Qt Quick.")
+            text: ChaSetI18n.tr("formsA.slider.examplesSubtitle", "Visual matrix of common slider configurations, size scales, tooltips, and interactive states.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -369,85 +369,85 @@ DocLayout {
                 name: "value",
                 type: "real",
                 defaultVal: "0",
-                description: "The numeric value of the slider."
+                description: ChaSetI18n.tr("components.slider.valueDesc", "The controlled numeric value of the slider.")
             },
             {
                 name: "min",
                 type: "real",
                 defaultVal: "0",
-                description: "The minimum allowable value."
+                description: ChaSetI18n.tr("components.slider.minDesc", "The minimum allowable value.")
             },
             {
                 name: "max",
                 type: "real",
                 defaultVal: "100",
-                description: "The maximum allowable value."
+                description: ChaSetI18n.tr("components.slider.maxDesc", "The maximum allowable value.")
             },
             {
                 name: "step",
                 type: "real",
                 defaultVal: "1",
-                description: "The stepping granularity interval."
+                description: ChaSetI18n.tr("components.slider.stepDesc", "The stepping granularity interval.")
             },
             {
                 name: "size",
                 type: "\"default\" | \"sm\"",
                 defaultVal: "\"default\"",
-                description: "The size scale of the slider track and thumb."
+                description: ChaSetI18n.tr("components.slider.sizeDesc", "The size scale of the slider track and thumb.")
             },
             {
                 name: "disabled",
                 type: "bool",
                 defaultVal: "false",
-                description: "Disables user interactions and applies muted opacity."
+                description: ChaSetI18n.tr("components.slider.disabledDesc", "When true, prevents user interaction and applies muted opacity.")
             },
             {
                 name: "readOnly",
                 type: "bool",
                 defaultVal: "false",
-                description: "Locks value changes while keeping active full visual contrast."
+                description: ChaSetI18n.tr("components.slider.readOnlyDesc", "When true, prevents value changes while maintaining full visual opacity.")
             },
             {
                 name: "showTooltip",
                 type: "bool",
                 defaultVal: "false",
-                description: "Displays a floating value indicator tooltip badge on hover or active dragging."
+                description: ChaSetI18n.tr("components.slider.showTooltipDesc", "When true, shows an interactive floating value tooltip over the thumb on drag and hover.")
             },
             {
                 name: "formatValue",
                 type: "var",
                 defaultVal: "null",
-                description: "Optional formatting function for the floating tooltip text."
+                description: ChaSetI18n.tr("components.slider.formatValueDesc", "Optional formatter function for the floating tooltip text.")
             },
             {
                 name: "showTicks",
                 type: "bool",
                 defaultVal: "false",
-                description: "Renders tick marks at step intervals along the track."
+                description: ChaSetI18n.tr("components.slider.showTicksDesc", "Displays tick mark indicators along the slider track.")
             },
             {
                 name: "marks",
                 type: "var",
                 defaultVal: "[]",
-                description: "Optional array of text mark labels rendered along the track."
+                description: ChaSetI18n.tr("components.slider.marksDesc", "Optional array of label strings corresponding to discrete stop positions.")
             },
             {
                 name: "orientation",
                 type: "\"horizontal\" | \"vertical\"",
                 defaultVal: "\"horizontal\"",
-                description: "Orientation of the slider track."
+                description: ChaSetI18n.tr("components.slider.orientationDesc", "The orientation of the slider track.")
             },
             {
                 name: "forceHover",
                 type: "bool",
                 defaultVal: "false",
-                description: "Visual testing aid to force hover state."
+                description: ChaSetI18n.tr("components.slider.forceHoverDesc", "Visual testing aid to programmatically force hover styling.")
             },
             {
                 name: "forceFocus",
                 type: "bool",
                 defaultVal: "false",
-                description: "Visual testing aid to force focus ring."
+                description: ChaSetI18n.tr("components.slider.forceFocusDesc", "Visual testing aid to programmatically force focus ring styling.")
             }
         ]
     }

@@ -298,35 +298,35 @@ ApplicationWindow {
     }
 
     readonly property var quickJumpMenuItems: [
-        { isLabel: true, label: "Featured Engines" },
+        { isLabel: true, label: ChaSetI18n.tr("showcase.featuredEngines", "Featured Engines") },
         { separator: true },
         {
             id: "generic-data-table",
-            label: "Generic Data Table",
+            label: ChaSetI18n.tr("desktopComposite.header.genericDataTable", "Generic Data Table"),
             icon: "table",
             onSelect: function() { win.activePage = "generic-data-table"; }
         },
         {
             id: "query-builder",
-            label: "Query Builder",
+            label: ChaSetI18n.tr("desktopComposite.header.queryBuilder", "Query Builder"),
             icon: "search",
             onSelect: function() { win.activePage = "query-builder"; }
         },
         {
             id: "virtual-list",
-            label: "Virtual List",
+            label: ChaSetI18n.tr("desktopComposite.header.virtualList", "Virtual List"),
             icon: "file-text",
             onSelect: function() { win.activePage = "virtual-list"; }
         },
         {
             id: "draggable-modal",
-            label: "Draggable Modal",
+            label: ChaSetI18n.tr("desktopComposite.header.draggableModal", "Draggable Modal"),
             icon: "maximize",
             onSelect: function() { win.activePage = "draggable-modal"; }
         },
         {
             id: "splitter",
-            label: "Splitter",
+            label: ChaSetI18n.tr("desktopComposite.header.splitter", "Splitter"),
             onSelect: function() { win.activePage = "splitter"; }
         }
     ]
@@ -2329,7 +2329,7 @@ ApplicationWindow {
 
                         // Dark/Light/System Mode Toggle Button
                         ChaSetTooltip {
-                            text: win.themeMode === "dark" ? ChaSetI18n.tr("theme.mode.dark", "Dark") : (win.themeMode === "system" ? ChaSetI18n.tr("theme.mode.system", "Follow System") : ChaSetI18n.tr("theme.mode.light", "Light"))
+                            text: win.themeMode === "dark" ? ChaSetI18n.tr("theme.mode.dark", "Dark") : (win.themeMode === "system" ? ChaSetI18n.tr("theme.mode.system", "System") : ChaSetI18n.tr("theme.mode.light", "Light"))
                             side: "bottom"
                             ChaSetButton {
                                 size: "icon"
@@ -2349,7 +2349,7 @@ ApplicationWindow {
 
                         // GitHub Repository Button
                         ChaSetTooltip {
-                            text: "GitHub Repository"
+                            text: ChaSetI18n.tr("desktopComposite.header.githubRepo", "GitHub Repository")
                             side: "bottom"
                             visible: topbar.width >= ThemeTokens.dp(640)
                             ChaSetButton {

@@ -6,7 +6,7 @@ import ChaSet
 Item {
     id: root
 
-    property string text: "Action"
+    property string text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.splitButton.defaultAction", "Action") : "Action"
     property string variant: "default"
     property string size: "default"
     property bool disabled: false

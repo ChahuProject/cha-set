@@ -65,27 +65,27 @@ export function TabsDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Tabs"
-      description="A set of layered content sections known as tab panels, displayed one at a time."
+      description={t('components.tabs.description', 'A set of layered content sections known as tab panels, displayed one at a time.')}
       tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'anatomy', title: 'Anatomy' },
-        { id: 'examples', title: 'Examples & Variants' },
-        { id: 'props', title: 'Props Reference' },
+        { id: 'overview', title: t('showcase.interactiveOverview', 'Interactive Overview') },
+        { id: 'keyboard', title: t('showcase.keyboardNavigation', 'Keyboard Navigation') },
+        { id: 'installation', title: t('showcase.installation', 'Installation') },
+        { id: 'anatomy', title: t('showcase.anatomy', 'Anatomy') },
+        { id: 'examples', title: t('showcase.examplesVariants', 'Examples & Variants') },
+        { id: 'props', title: t('showcase.propsReference', 'Props Reference') },
       ]}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Test interactive tab switching, pill vs line underline styles, size scaling, and keyboard arrow navigation.
+          {t('desktopComposite.tabs.overviewDesc', 'Test interactive tab switching, pill vs line underline styles, size scaling, and keyboard arrow navigation.')}
         </p>
 
         <ComponentPreview
-          title="Tabs Sandbox"
+          title={t('desktopComposite.tabs.sandboxTitle', 'Tabs Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -173,10 +173,10 @@ export function TabsDocPage() {
       {/* Keyboard Navigation */}
       <section id="keyboard" className="mt-12 scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Keyboard Navigation
+          {t('showcase.keyboardNavigation', 'Keyboard Navigation')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Tabs support standard horizontal and vertical arrow navigation with automatic selection or manual Space/Enter commit.
+          {t('desktopComposite.tabs.keyboardDesc', 'Tabs support standard horizontal and vertical arrow navigation with automatic selection or manual Space/Enter commit.')}
         </p>
         <KeyboardShortcutsTable componentId="tabs" />
       </section>
@@ -184,7 +184,7 @@ export function TabsDocPage() {
       {/* 2. Installation */}
       <section id="installation" className="mt-12 scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Installation
+          {t('showcase.installation', 'Installation')}
         </h2>
         <CodeBlock language="bash" code="pnpm add @chahu/cha-set" />
       </section>
@@ -199,10 +199,10 @@ export function TabsDocPage() {
       {/* 4. Examples & Variants */}
       <section id="examples" className="mt-12 scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & Variants
+          {t('showcase.examplesVariants', 'Examples & Variants')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Visual matrix of tab variants, sizes, badges, and disabled states.
+          {t('desktopComposite.tabs.examplesDesc', 'Visual matrix of tab variants, sizes, badges, and disabled states.')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="p-5">
@@ -275,7 +275,7 @@ export function TabsDocPage() {
       {/* 5. Props Reference */}
       <section id="props" className="mt-12 scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Props Reference
+          {t('showcase.propsReference', 'Props Reference')}
         </h2>
         <PropsTable
           props={[
@@ -283,55 +283,55 @@ export function TabsDocPage() {
               name: 'defaultValue',
               type: 'string',
               default: 'undefined',
-              description: 'The value of the tab that should be active when initially rendered (uncontrolled).',
+              description: t('components.tabs.defaultValueDesc', 'The value of the tab that should be active when initially rendered (uncontrolled).'),
             },
             {
               name: 'value',
               type: 'string',
               default: 'undefined',
-              description: 'The controlled value of the active tab.',
+              description: t('components.tabs.valueDesc', 'The controlled value of the active tab.'),
             },
             {
               name: 'onValueChange',
               type: '(value: string) => void',
               default: 'undefined',
-              description: 'Event handler called when the active tab changes.',
+              description: t('components.tabs.onValueChangeDesc', 'Event handler called when the active tab changes.'),
             },
             {
               name: 'variant',
               type: "'default' | 'line'",
               default: "'default'",
-              description: 'Visual presentation style: pill container (default) or underline tab bar (line).',
+              description: t('components.tabs.variantDesc', 'Visual presentation style: pill container (default) or underline tab bar (line).'),
             },
             {
               name: 'size',
               type: "'default' | 'sm'",
               default: "'default'",
-              description: 'Size scale of the tabs triggers and container.',
+              description: t('components.tabs.sizeDesc', 'Size scale of the tabs triggers and container.'),
             },
             {
               name: 'orientation',
               type: "'horizontal' | 'vertical'",
               default: "'horizontal'",
-              description: 'The orientation of the tabs (controls keyboard navigation axis).',
+              description: t('components.tabs.orientationDesc', 'The orientation of the tabs (controls keyboard navigation axis).'),
             },
             {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
-              description: 'When true on TabsTrigger, prevents interaction on that tab.',
+              description: t('components.tabs.disabledDesc', 'When true on TabsTrigger, prevents interaction on that tab.'),
             },
             {
               name: 'badge',
               type: 'ReactNode | string',
               default: 'undefined',
-              description: 'Optional count badge or text label rendered inside the trigger.',
+              description: t('components.tabs.badgeDesc', 'Optional count badge or text label rendered inside the trigger.'),
             },
             {
               name: 'icon',
               type: 'ReactNode',
               default: 'undefined',
-              description: 'Optional leading icon element rendered inside the trigger.',
+              description: t('components.tabs.iconDesc', 'Optional leading icon element rendered inside the trigger.'),
             },
           ]}
         />

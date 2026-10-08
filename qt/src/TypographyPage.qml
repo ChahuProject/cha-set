@@ -6,11 +6,11 @@ DocLayout {
     id: root
     category: "Get Started"
     pageTitle: "Typography Rendering"
-    description: "Global text rasterizer policy and a five-script size ramp previewing every type scale step."
+    description: ChaSetI18n.tr("components.typography-rendering.description", "Global text rasterizer policy and a five-script size ramp previewing every type scale step.")
     tocItems: [
-        { id: "rasterizer", title: "Rasterization Path" },
-        { id: "ramp", title: "Cross-Script Size Ramp" },
-        { id: "integration", title: "Host Integration" }
+        { id: "rasterizer", title: ChaSetI18n.tr("getStarted.typography.rasterizer.title", "Rasterization Path") },
+        { id: "ramp", title: ChaSetI18n.tr("getStarted.typography.ramp.title", "Cross-Script Size Ramp") },
+        { id: "integration", title: ChaSetI18n.tr("getStarted.typography.integration.title", "Host Integration") }
     ]
 
     readonly property var scaleSteps: ShowcaseData.typographyRamp.scaleSteps

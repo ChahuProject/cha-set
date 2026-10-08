@@ -1,4 +1,5 @@
 import React from 'react';
+import { useChaSetI18n } from '@chahu/cha-set';
 import { KeyboardShortcutsTable } from './KeyboardShortcutsTable';
 import { PropsTable, type PropItem } from './PropsTable';
 import { KEYBOARD_SHORTCUTS_DATA, type KeyboardShortcutItem } from '../data/showcaseData.generated';
@@ -25,6 +26,7 @@ export function ComponentReference({
   isSubComponent = false,
 }: ComponentReferenceProps) {
   const propList = props ?? items ?? [];
+  const { t } = useChaSetI18n();
   const resolvedShortcuts =
     shortcuts ?? (componentId ? KEYBOARD_SHORTCUTS_DATA[componentId] ?? [] : []);
   const hasShortcuts = resolvedShortcuts.length > 0;
@@ -68,7 +70,7 @@ export function ComponentReference({
       >
         {!isSubComponent && (
           <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-            Props Reference
+            {t('showcase.propsReference', 'Props Reference')}
           </h2>
         )}
         {description && (

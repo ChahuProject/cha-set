@@ -74,10 +74,10 @@ export function AddressBarDocPage() {
     <DocLayout
       category="Composite Engines"
       title="Address Bar"
-      description="Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing."
+      description={t('components.address-bar.description', 'Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.interactiveOverview', 'Interactive Overview')}</h2>
         <ComponentPreview
           qtCode={`ChaSetAddressBar {
     width: parent.width
@@ -89,7 +89,7 @@ export function AddressBarDocPage() {
     onForwardRequested: handleForward()
     onRefreshRequested: handleRefresh()
 }`}
-          title="Address Bar Sandbox"
+          title={t('desktopComposite.addressBar.sandboxTitle', 'Address Bar Sandbox')}
           reactCode={heroReactCode}
           controls={
             <div className="flex flex-wrap items-center gap-2 text-xs">
@@ -171,110 +171,110 @@ ChaSetAddressBar {
 
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Animations</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
         <p className="text-sm text-muted-foreground">
-          Motion tokens and kinematic transitions for mode transitions and suggestions.
+          {t('desktopComposite.addressBar.animationsDesc', 'Motion tokens and kinematic transitions for mode transitions and suggestions.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
-            Breadcrumb segment hover highlights transition over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> (100ms) with{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve (Qt counterpart:{' '}
+            {t('desktopComposite.addressBar.animHoverPrefix', 'Breadcrumb segment hover highlights transition over')}{' '}
+            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> {t('desktopComposite.addressBar.animHoverMid', '(100ms) with')}{' '}
+            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> {t('desktopComposite.addressBar.animHoverSuffix', 'curve (Qt counterpart:')}{' '}
             <code className="text-xs bg-muted px-1 rounded">ThemeTokens.motionQuick</code>).
           </li>
           <li>
-            Suggestions popover renders with an entry scale and fade animation over 120ms.
+            {t('desktopComposite.addressBar.animSuggest', 'Suggestions popover renders with an entry scale and fade animation over 120ms.')}
           </li>
           <li>
-            Respects <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> in Qt.
+            {t('desktopComposite.taskHud.animReducedPrefix', 'Respects')} <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> {t('desktopComposite.taskHud.animReducedMid', 'on Web and')}{' '}
+            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> {t('desktopComposite.taskHud.animReducedSuffix', 'in Qt.')}
           </li>
         </ul>
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Keyboard Navigation</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</h2>
         <p className="text-sm text-muted-foreground">
-          Keyboard shortcuts and button activation patterns.
+          {t('desktopComposite.addressBar.keyboardDesc', 'Keyboard shortcuts and button activation patterns.')}
         </p>
         <KeyboardShortcutsTable componentId="address-bar" />
       </section>
 
       <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">Props Reference</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.propsReference', 'Props Reference')}</h2>
         <PropsTable
           items={[
             {
               name: 'path',
               type: 'string',
               default: "''",
-              description: 'Current path string rendered in breadcrumb and edit modes.',
+              description: t('components.addressBar.pathDesc', 'Current path string rendered in breadcrumb and edit modes.'),
             },
             {
               name: 'defaultValue',
               type: 'string',
               default: "''",
-              description: 'Initial path string for uncontrolled usage.',
+              description: t('components.addressBar.defaultValueDesc', 'Initial path string for uncontrolled usage.'),
             },
             {
               name: 'onNavigate',
               type: '(path: string) => void',
               default: 'undefined',
-              description: 'Callback invoked when a new path is committed via segment click or Enter.',
+              description: t('components.addressBar.onNavigateDesc', 'Callback invoked when a new path is committed via segment click or Enter.'),
             },
             {
               name: 'showNavButtons',
               type: 'boolean',
               default: 'true',
-              description: 'Whether to show back, forward, up, and refresh navigation buttons.',
+              description: t('components.addressBar.showNavButtonsDesc', 'Whether to show back, forward, up, and refresh navigation buttons.'),
             },
             {
               name: 'canGoBack',
               type: 'boolean',
               default: 'false',
-              description: 'Enables the backward history navigation button.',
+              description: t('components.addressBar.canGoBackDesc', 'Enables the backward history navigation button.'),
             },
             {
               name: 'canGoForward',
               type: 'boolean',
               default: 'false',
-              description: 'Enables the forward history navigation button.',
+              description: t('components.addressBar.canGoForwardDesc', 'Enables the forward history navigation button.'),
             },
             {
               name: 'suggestions',
               type: 'string[]',
               default: '[]',
-              description: 'List of auto-complete path strings in the dropdown popover.',
+              description: t('components.addressBar.suggestionsDesc', 'List of auto-complete path strings in the dropdown popover.'),
             },
             {
               name: 'history',
               type: 'string[]',
               default: '[]',
-              description: 'Recent typed path history for dropdown display.',
+              description: t('components.addressBar.historyDesc', 'Recent typed path history for dropdown display.'),
             },
             {
               name: 'showSearch',
               type: 'boolean',
               default: 'false',
-              description: 'Whether to show the integrated search/filter input on the right side.',
+              description: t('components.addressBar.showSearchDesc', 'Whether to show the integrated search/filter input on the right side.'),
             },
             {
               name: 'fileSystemAdapter',
               type: 'AddressBarFileSystemAdapter',
               default: 'defaultVirtualFileSystemAdapter',
-              description: 'File system adapter providing subfolder enumeration and suggestion querying.',
+              description: t('components.addressBar.fileSystemAdapterDesc', 'File system adapter providing subfolder enumeration and suggestion querying.'),
             },
             {
               name: 'onNavigateWithSelection',
               type: '(path: string, selectionPath: string) => void',
               default: 'undefined',
-              description: 'Callback when navigating with a specific file item selected.',
+              description: t('components.addressBar.onNavigateWithSelectionDesc', 'Callback when navigating with a specific file item selected.'),
             },
             {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
-              description: 'Disables all interactions and input editing.',
+              description: t('components.addressBar.disabledDesc', 'Disables all interactions and input editing.'),
             },
           ]}
         />

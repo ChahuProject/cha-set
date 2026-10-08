@@ -46,19 +46,19 @@ export function ColorPickerDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="ColorPicker"
-      description="An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB)."
+      description={t('components.colorPicker.description', 'An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB).')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Experiment with modes, sizes, swatches, and states across Web (React) and Desktop (Qt Quick).
+          {t('desktopComposite.colorPicker.overviewDesc', 'Experiment with modes, sizes, swatches, and states across Web (React) and Desktop (Qt Quick).')}
         </p>
 
         <ComponentPreview
-          title="ColorPicker Sandbox"
+          title={t('desktopComposite.colorPicker.sandboxTitle', 'ColorPicker Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -165,10 +165,10 @@ export function ColorPickerDocPage() {
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & States
+          {t('components.colorPicker.examplesTitle', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Matrix of common color picker configurations, modes, and sizes.
+          {t('components.colorPicker.examplesDesc', 'Matrix of common color picker configurations, modes, and sizes.')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -230,79 +230,79 @@ export function ColorPickerDocPage() {
             name: 'value',
             type: 'string',
             default: '—',
-            description: 'Controlled hex color value (e.g. #1D7AE0).',
+            description: t('components.colorPicker.valueDesc', 'Controlled hex color value (e.g. #1D7AE0).'),
           },
           {
             name: 'defaultValue',
             type: 'string',
             default: "'#1d7ae0'",
-            description: 'Initial color value for uncontrolled usage.',
+            description: t('components.colorPicker.defaultValueDesc', 'Initial color value for uncontrolled usage.'),
           },
           {
             name: 'mode',
             type: "'inline' | 'popover'",
             default: "'inline'",
-            description: 'Display mode: inline panel card or popover dropdown trigger.',
+            description: t('components.colorPicker.modeDesc', 'Display mode: inline panel card or popover dropdown trigger.'),
           },
           {
             name: 'size',
             type: "'default' | 'sm'",
             default: "'default'",
-            description: 'Visual sizing scale for canvas, swatches, and inputs.',
+            description: t('components.colorPicker.sizeDesc', 'Visual sizing scale for canvas, swatches, and inputs.'),
           },
           {
             name: 'disabled',
             type: 'boolean',
             default: 'false',
-            description: 'When true, prevents user interaction and applies muted opacity.',
+            description: t('components.colorPicker.disabledPropDesc', 'When true, prevents user interaction and applies muted opacity.'),
           },
           {
             name: 'movable',
             type: 'boolean',
             default: 'false',
-            description: 'When true, allows dragging on empty background areas to reposition the component. Double-click resets position.',
+            description: t('components.colorPicker.movableDesc', 'When true, allows dragging on empty background areas to reposition the component. Double-click resets position.'),
           },
           {
             name: 'showPreview',
             type: 'boolean',
             default: 'true',
-            description: 'Whether to show the top preview header swatch and hex label.',
+            description: t('components.colorPicker.showPreviewDesc', 'Whether to show the top preview header swatch and hex label.'),
           },
           {
             name: 'showHex',
             type: 'boolean',
             default: 'true',
-            description: 'Whether to display the editable HEX text input row.',
+            description: t('components.colorPicker.showHexDesc', 'Whether to display the editable HEX text input row.'),
           },
           {
             name: 'showSwatches',
             type: 'boolean',
             default: 'true',
-            description: 'Whether to show the quick preset color swatch row.',
+            description: t('components.colorPicker.showSwatchesDesc', 'Whether to show the quick preset color swatch row.'),
           },
           {
             name: 'presetColors',
             type: 'string[]',
             default: '16 default colors',
-            description: 'Array of preset hex color strings displayed in swatches panel.',
+            description: t('components.colorPicker.presetColorsDesc', 'Array of preset hex color strings displayed in swatches panel.'),
           },
           {
             name: 'onChange',
             type: '(hex: string) => void',
             default: '—',
-            description: 'Callback invoked whenever the selected color changes.',
+            description: t('components.colorPicker.onChangeDesc', 'Callback invoked whenever the selected color changes.'),
           },
           {
             name: 'onValueChange',
             type: '(hex: string) => void',
             default: '—',
-            description: 'Alias callback for onChange for contract consistency.',
+            description: t('components.colorPicker.onValueChangeDesc', 'Alias callback for onChange for contract consistency.'),
           },
           {
             name: 'title',
             type: 'ReactNode',
             default: "'Color'",
-            description: 'Custom label rendered in the preview header.',
+            description: t('components.colorPicker.titleDesc', 'Custom label rendered in the preview header.'),
           },
         ]}
       />

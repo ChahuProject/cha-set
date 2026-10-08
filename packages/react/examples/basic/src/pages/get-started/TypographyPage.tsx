@@ -82,11 +82,11 @@ export function TypographyPage() {
     <DocLayout
       category="Get Started"
       title="Typography Rendering"
-      description="Global text rasterizer policy and a five-script size ramp previewing every type scale step."
+      description={t('components.typography-rendering.description', 'Global text rasterizer policy and a five-script size ramp previewing every type scale step.')}
       tocItems={[
-        { id: 'rasterizer', title: 'Rasterization Path' },
-        { id: 'ramp', title: 'Cross-Script Size Ramp' },
-        { id: 'integration', title: 'Host Integration' },
+        { id: 'rasterizer', title: t('getStarted.typography.rasterizer.title', 'Rasterization Path') },
+        { id: 'ramp', title: t('getStarted.typography.ramp.title', 'Cross-Script Size Ramp') },
+        { id: 'integration', title: t('getStarted.typography.integration.title', 'Host Integration') },
       ]}
     >
       <div className="space-y-12">

@@ -27,6 +27,7 @@ import {
   SheetTitle,
   ChaSetLogoIcon,
   type ThemeConfig,
+  useChaSetI18n,
 } from '@chahu/cha-set';
 import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
@@ -179,6 +180,7 @@ function applyTheme(effectiveIsDark: boolean, accent: string, overrides: ThemeOv
 }
 
 export function App() {
+  const { t } = useChaSetI18n();
   const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
   const harness = searchParams?.get('harness');
 
@@ -928,10 +930,10 @@ export function App() {
 
             {/* Mobile Navigation Drawer Sheet (< 768 effectiveWidth) */}
             <SheetRoot open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
-              <SheetContent side="left" className="w-72 max-w-[85vw] p-0" aria-label="Navigation">
+              <SheetContent side="left" className="w-72 max-w-[85vw] p-0" aria-label={t('desktopComposite.app.navLabel', 'Navigation')}>
                 <SheetHeader className="p-4 pb-2 border-b border-border flex flex-row items-center gap-2">
                   <ChaSetLogoIcon className="size-5 text-primary shrink-0" />
-                  <SheetTitle className="text-sm font-bold">ChaSet Docs</SheetTitle>
+                  <SheetTitle className="text-sm font-bold">{t('desktopComposite.app.docsTitle', 'ChaSet Docs')}</SheetTitle>
                 </SheetHeader>
                 <ScrollArea className="h-[calc(100vh-4.5rem)]" viewportClassName="p-4">
                   <NavigationContent

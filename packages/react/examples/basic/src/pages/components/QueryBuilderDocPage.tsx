@@ -34,14 +34,14 @@ export function QueryBuilderDocPage() {
     <DocLayout
       category="Composite Engines"
       title="Query Builder"
-      description="Visual rule tree builder for structured search query generation with nested logic groups (AND/OR), operator filters, and JSON serialization."
+      description={t('components.query-builder.description', 'Visual rule tree builder for structured search query generation with nested logic groups (AND/OR), operator filters, and JSON serialization.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Add rules and nested groups dynamically to construct complex query predicates.
+          {t('desktopComposite.queryBuilder.overviewDesc', 'Add rules and nested groups dynamically to construct complex query predicates.')}
         </p>
 
         <ComponentPreview
@@ -55,7 +55,7 @@ export function QueryBuilderDocPage() {
         { id: "r1", field: "role", operator: "equals", value: "Architect" }
     ]
     onQueryChanged: console.log("query changed")
-}`} title="Query Builder Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.queryBuilder.sandboxTitle', 'Query Builder Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-xl flex flex-col gap-4">
             <QueryBuilder
               fields={sampleFields}
@@ -104,10 +104,10 @@ ChaSetQueryBuilder {
         name="QueryBuilder"
         componentId="query-builder"
         props={[
-            { name: 'fields', type: 'QueryField[]', default: '[]', description: 'Available queryable fields and data types.' },
-            { name: 'query', type: 'QueryRuleGroup', default: 'undefined', description: 'Active query tree root group.' },
-            { name: 'onQueryChange', type: '(q: QueryRuleGroup) => void', default: 'undefined', description: 'Callback fired on rule addition, deletion, or editing.' },
-            { name: 'maxDepth', type: 'number', default: '3', description: 'Maximum nested rule group depth.' },
+            { name: 'fields', type: 'QueryField[]', default: '[]', description: t('components.queryBuilder.fieldsDesc', 'Available queryable fields and data types.') },
+            { name: 'query', type: 'QueryRuleGroup', default: 'undefined', description: t('components.queryBuilder.queryDesc', 'Active query tree root group.') },
+            { name: 'onQueryChange', type: '(q: QueryRuleGroup) => void', default: 'undefined', description: t('components.queryBuilder.onQueryChangeDesc', 'Callback fired on rule addition, deletion, or editing.') },
+            { name: 'maxDepth', type: 'number', default: '3', description: t('components.queryBuilder.maxDepthDesc', 'Maximum nested rule group depth.') },
           ]}
       />
     </DocLayout>

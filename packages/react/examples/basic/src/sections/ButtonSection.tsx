@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Button, ScrollArea, SettingsIcon } from '@chahu/cha-set';
+import { Button, ScrollArea, SettingsIcon, useChaSetI18n } from '@chahu/cha-set';
 
 const VARIANTS = ['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'] as const;
 const SIZES = ['sm', 'default', 'lg', 'icon'] as const;
 
 export default function ButtonSection() {
+  const { t } = useChaSetI18n();
   const [loading, setLoading] = useState(false);
   const [log, setLog] = useState<string[]>([]);
   const push = (msg: string) => setLog((l) => [msg, ...l].slice(0, 5));
@@ -13,7 +14,7 @@ export default function ButtonSection() {
     <section className="block" id="button">
       <div className="block-header">
         <div>
-          <h2>Components · Button Matrix</h2>
+          <h2>{t('desktopComposite.buttonSection.title', 'Components · Button Matrix')}</h2>
           <p className="desc">
             Neutral contract (spec/components/button.ts) implemented via @base-ui/react. Full variant × size matrix,
             polymorphic link rendering, and asynchronous loading states.
@@ -35,26 +36,26 @@ export default function ButtonSection() {
 
       {/* States Row */}
       <div className="matrix-row">
-        <span className="matrix-label">states</span>
+        <span className="matrix-label">{t('desktopComposite.buttonSection.statesLabel', 'states')}</span>
         <Button variant="destructive" onClick={() => push('destructive clicked')}>
-          Delete Item
+          {t('desktopComposite.buttonSection.deleteItem', 'Delete Item')}
         </Button>
         <Button disabled onClick={() => push('never fire')}>
-          Disabled Button
+          {t('desktopComposite.buttonSection.disabledButton', 'Disabled Button')}
         </Button>
         <Button
           asChild
           variant="secondary"
           nativeButton={false}
-          onClick={() => push('asChild <a> link clicked')}
+          onClick={() => push('asChild link clicked')}
         >
-          <a href="#docs">asChild Link (`&lt;a&gt;`)</a>
+          <a href="#docs">{t('desktopComposite.buttonSection.asChildLink', 'asChild Link (<a>)')}</a>
         </Button>
       </div>
 
       {/* Async Loading & Full Width */}
       <div className="matrix-row">
-        <span className="matrix-label">async & block</span>
+        <span className="matrix-label">{t('desktopComposite.buttonSection.asyncBlock', 'async & block')}</span>
         <Button
           loading={loading}
           onClick={() => {
@@ -74,7 +75,7 @@ export default function ButtonSection() {
         <span className="matrix-label">fullWidth</span>
         <div style={{ flex: 1 }}>
           <Button fullWidth onClick={() => push('fullWidth clicked')}>
-            Full Width Block Action
+            {t('desktopComposite.buttonSection.fullWidthAction', 'Full Width Block Action')}
           </Button>
         </div>
       </div>
@@ -82,17 +83,17 @@ export default function ButtonSection() {
       {/* Interactive Log */}
       <div className="log-container">
         <div className="log-header">
-          <span>Interaction Log (Click events)</span>
+          <span>{t('desktopComposite.buttonSection.logTitle', 'Interaction Log (Click events)')}</span>
           {log.length > 0 && (
             <Button variant="ghost" size="sm" onClick={() => setLog([])}>
-              Clear
+              {t('desktopComposite.buttonSection.clear', 'Clear')}
             </Button>
           )}
         </div>
         <ScrollArea className="max-h-32" viewportClassName="p-3">
           <ul className="list-none m-0 p-0 font-mono text-xs text-muted-foreground space-y-1">
             {log.length === 0 ? (
-              <li className="italic opacity-60">Click buttons above to see click events…</li>
+              <li className="italic opacity-60">{t('desktopComposite.buttonSection.emptyLog', 'Click buttons above to see click events…')}</li>
             ) : (
               log.map((entry, i) => <li key={i}>{entry}</li>)
             )}

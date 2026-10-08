@@ -8,7 +8,7 @@ DocLayout {
     id: root
     category: "Composite Engines"
     pageTitle: "Address Bar"
-    description: "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing."
+    description: ChaSetI18n.tr("components.address-bar.description", "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing.")
 
     property string currentPath: "C:/Users/Development/Projects/cha-set"
     property var history: [
@@ -68,7 +68,7 @@ DocLayout {
             spacing: 16
 
             DocText {
-                text: "Interactive Overview"
+                text: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview")
                 font.pixelSize: Typography.sizeTitleSm
                 font.bold: true
                 color: ThemeTokens.text
@@ -77,7 +77,7 @@ DocLayout {
             ComponentPreview {
                 id: heroPreview
                 width: parent.width
-                title: "Address Bar Sandbox"
+                title: ChaSetI18n.tr("desktopComposite.addressBar.sandboxTitle", "Address Bar Sandbox")
                 reactCode: "<AddressBar\n  path={currentPath}\n  canGoBack={canGoBack}\n  canGoForward={canGoForward}\n  showSearch\n  onNavigate={(newPath) => setCurrentPath(newPath)}\n  onBack={handleBack}\n  onForward={handleForward}\n  onRefresh={() => console.log('Refreshed')}\n  suggestions={[\n    'C:/Users/Development/cha-set',\n    'C:/Windows/System32',\n    'D:/Projects/qt-demo',\n    '/var/log/nginx',\n  ]}\n/>"
                 qtCode: "ChaSetAddressBar {\n    width: parent.width\n    path: currentPath\n    canGoBack: canGoBack\n    canGoForward: canGoForward\n    onNavigateRequested: (path) => navigateTo(path)\n    onBackRequested: handleBack()\n    onForwardRequested: handleForward()\n    onRefreshRequested: handleRefresh()\n}"
 
@@ -195,7 +195,7 @@ ChaSetAddressBar {
             spacing: 8
 
             DocText {
-                text: "Animations"
+                text: ChaSetI18n.tr("showcase.animations", "Animations")
                 font.pixelSize: Typography.sizeTitleSm
                 font.bold: true
                 color: ThemeTokens.text
@@ -204,7 +204,7 @@ ChaSetAddressBar {
             DocText {
                 width: parent.width
                 wrap: true
-                text: "Breadcrumb segment hover highlights transition over ThemeTokens.motionQuick (100ms) with ThemeTokens.easeStandard curve. Suggestions popover renders with an entry scale and fade animation over 120ms."
+                text: ChaSetI18n.tr("desktopComposite.addressBar.animFull", "Breadcrumb segment hover highlights transition over ThemeTokens.motionQuick (100ms) with ThemeTokens.easeStandard curve. Suggestions popover renders with an entry scale and fade animation over 120ms.")
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
             }
@@ -215,15 +215,15 @@ ChaSetAddressBar {
         name: "AddressBar"
         componentId: "address-bar"
         propsModel: [
-            { name: "path", type: "string", defaultVal: "''", description: "Current path string rendered in breadcrumb and edit modes." },
-            { name: "canGoBack", type: "bool", defaultVal: "false", description: "Enables the backward history navigation button." },
-            { name: "canGoForward", type: "bool", defaultVal: "false", description: "Enables the forward history navigation button." },
-            { name: "showNavButtons", type: "bool", defaultVal: "true", description: "Whether to show back, forward, up, and refresh navigation buttons." },
-            { name: "showRefresh", type: "bool", defaultVal: "true", description: "Whether to show the refresh button." },
-            { name: "showSearch", type: "bool", defaultVal: "false", description: "Whether to show the integrated search input on the right side." },
-            { name: "suggestions", type: "var", defaultVal: "[]", description: "List of auto-complete path strings in the dropdown popover." },
-            { name: "history", type: "var", defaultVal: "[]", description: "Recent typed path history for dropdown display." },
-            { name: "disabled", type: "bool", defaultVal: "false", description: "Disables all interactions and input editing." }
+            { name: "path", type: "string", defaultVal: "''", description: ChaSetI18n.tr("components.addressBar.pathDesc", "Current path string rendered in breadcrumb and edit modes.") },
+            { name: "canGoBack", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.addressBar.canGoBackDesc", "Enables the backward history navigation button.") },
+            { name: "canGoForward", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.addressBar.canGoForwardDesc", "Enables the forward history navigation button.") },
+            { name: "showNavButtons", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.addressBar.showNavButtonsDesc", "Whether to show back, forward, up, and refresh navigation buttons.") },
+            { name: "showRefresh", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.addressBar.showRefreshDesc", "Whether to show the refresh button.") },
+            { name: "showSearch", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.addressBar.showSearchDesc", "Whether to show the integrated search/filter input on the right side.") },
+            { name: "suggestions", type: "var", defaultVal: "[]", description: ChaSetI18n.tr("components.addressBar.suggestionsDesc", "List of auto-complete path strings in the dropdown popover.") },
+            { name: "history", type: "var", defaultVal: "[]", description: ChaSetI18n.tr("components.addressBar.historyDesc", "Recent typed path history for dropdown display.") },
+            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.addressBar.disabledDesc", "Disables all interactions and input editing.") }
         ]
     }
 }

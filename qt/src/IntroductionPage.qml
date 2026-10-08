@@ -7,12 +7,12 @@ DocLayout {
     id: root
     category: "Get Started"
     pageTitle: "Introduction"
-    description: "ChaSet (Tea Set) is a cross-stack UI component library where a single source of truth powers both React (Web) and Qt/QML (Desktop) implementations."
+    description: ChaSetI18n.tr("components.introduction.description", "ChaSet (Tea Set) is a cross-stack UI component library where a single source of truth powers both React (Web) and Qt/QML (Desktop) implementations.")
     tocItems: [
-        { id: "philosophy", title: "Design Philosophy" },
-        { id: "architecture", title: "How It Works" },
-        { id: "quickstart", title: "Quick Start" },
-        { id: "packages", title: "Packages & Structure" }
+        { id: "philosophy", title: ChaSetI18n.tr("showcase.toc.philosophy", "Design Philosophy") },
+        { id: "architecture", title: ChaSetI18n.tr("showcase.toc.architecture", "How It Works") },
+        { id: "quickstart", title: ChaSetI18n.tr("showcase.toc.quickstart", "Quick Start") },
+        { id: "packages", title: ChaSetI18n.tr("showcase.toc.packages", "Packages & Structure") }
     ]
 
     property int customRadius: 8
@@ -211,9 +211,9 @@ DocLayout {
             width: parent.width
             interactive: false
             columns: [
-                { key: "pkg", title: ChaSetI18n.tr("getStarted.intro.packages.colPackage", "PACKAGE"), width: 180, code: true },
-                { key: "target", title: ChaSetI18n.tr("getStarted.intro.packages.colTarget", "TARGET"), width: 140 },
-                { key: "desc", title: ChaSetI18n.tr("getStarted.intro.packages.colDesc", "DESCRIPTION") }
+                { key: "pkg", title: ChaSetI18n.tr("getStarted.intro.packages.colPackage", "Package"), width: 180, code: true },
+                { key: "target", title: ChaSetI18n.tr("getStarted.intro.packages.colTarget", "Target"), width: 140 },
+                { key: "desc", title: ChaSetI18n.tr("getStarted.intro.packages.colDesc", "Description") }
             ]
             rows: [
                 { pkg: "@chahu/cha-set", target: "React / Web", desc: ChaSetI18n.tr("getStarted.intro.packages.pkgReactDesc", "React component library published to npm.") },

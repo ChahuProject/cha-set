@@ -21,12 +21,12 @@ export function IntroductionPage() {
     <DocLayout
       category="Get Started"
       title="Introduction"
-      description="ChaSet (Tea Set) is a cross-stack UI component library where a single source of truth powers both React (Web) and Qt/QML (Desktop) implementations."
+      description={t('components.introduction.description', 'ChaSet (Tea Set) is a cross-stack UI component library where a single source of truth powers both React (Web) and Qt/QML (Desktop) implementations.')}
       tocItems={[
-        { id: 'philosophy', title: 'Design Philosophy' },
-        { id: 'architecture', title: 'How It Works' },
-        { id: 'quickstart', title: 'Quick Start' },
-        { id: 'packages', title: 'Packages & Structure' },
+        { id: 'philosophy', title: t('showcase.toc.philosophy', 'Design Philosophy') },
+        { id: 'architecture', title: t('showcase.toc.architecture', 'How It Works') },
+        { id: 'quickstart', title: t('showcase.toc.quickstart', 'Quick Start') },
+        { id: 'packages', title: t('showcase.toc.packages', 'Packages & Structure') },
       ]}
     >
       <section id="philosophy" className="my-6">

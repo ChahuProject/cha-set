@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Composite Engines"
     pageTitle: "Query Builder"
-    description: "Visual rule tree builder for structured query generation with AND/OR logic toggling, field and operator predicates, and dynamic condition management."
+    description: ChaSetI18n.tr("components.query-builder.description", "Visual rule tree builder for structured search query generation with nested logic groups (AND/OR), operator filters, and JSON serialization.")
 
     ComponentPreview {
-        title: "Query Builder Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.queryBuilder.sandboxTitle", "Query Builder Sandbox")
         reactCode: `<QueryBuilder
   fields={fields}
   query={query}
@@ -107,10 +107,10 @@ ChaSetQueryBuilder {
         name: "QueryBuilder"
         componentId: "query-builder"
         propsModel: [
-            { name: "connector", type: "string", default: "'AND'", description: "Root boolean combinator logic ('AND' | 'OR')." },
-            { name: "fields", type: "var[]", default: "[]", description: "Array of queryable field definitions." },
-            { name: "rules", type: "var[]", default: "[]", description: "Array of active condition rules." },
-            { name: "customRadius", type: "int", default: "8", description: "Corner radius of the rule builder container." }
+            { name: "connector", type: "string", default: "'AND'", description: ChaSetI18n.tr("components.queryBuilder.connectorDesc", "Root boolean combinator logic ('AND' | 'OR').") },
+            { name: "fields", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.queryBuilder.fieldsListDesc", "Array of queryable field definitions.") },
+            { name: "rules", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.queryBuilder.rulesDesc", "Array of active condition rules.") },
+            { name: "customRadius", type: "int", default: "8", description: ChaSetI18n.tr("components.queryBuilder.customRadiusDesc", "Corner radius of the rule builder container.") }
         ]
     }
 }
