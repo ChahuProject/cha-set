@@ -36,6 +36,13 @@ pwsh .agents/skills/subrepo-sync/scripts/show-unapplied-commits.ps1 -SubrepoPath
    - Sibling local dev worktree (`..\<name>`);
    - Environment variable `$env:<NAME>_DIR`;
    - Remote upstream branch (`origin/main` or `origin/master`).
+3. **When several pending commits each bumped the pin, settle the ordering before picking a target**:
+   the new pin must be a **descendant** of the old one, otherwise the features you merge in
+   **silently fail** (surfacing as missing properties or symbols at the API/QML layer).
+   Read each commit's pin (`git show <sha>:<lockfile> | grep <PIN variable>`), run
+   `git fetch origin <sha>` inside the subrepo first (the object is usually absent locally —
+   **the fetch is mandatory**), then check `git merge-base --is-ancestor <old> <new>`;
+   finally confirm the target capability really exists in the source tree actually used for builds.
 
 ### Step 2: Unapplied Commits & Semantic Impact Clustering
 Extract commits via `git log <old>..<new> --oneline --no-merges` and cluster:
@@ -53,6 +60,21 @@ Extract commits via `git log <old>..<new> --oneline --no-merges` and cluster:
 ### Step 4: Host Refactoring & Adaptation
 1. Replace duplicate host implementations with canonical components.
 2. Comply with project architecture red lines (declared in the project-specific area below).
+
+### ⚠️ Rebuild the Test Target First (Stale Artifact Trap)
+
+A normal build usually **produces only the main executable, not the test executables**; the dependency's
+modules (static libraries, resources, QML) are compiled into each test executable. If you run test gates
+right after bumping the dependency pin, **the old executables load the new source tree's resources with
+the old dependency modules**, producing a string of errors that look self-inflicted:
+
+- `Cannot assign to non-existent property "<newly added property>"`;
+- `Type <host component> unavailable`;
+- If host code was changed in parallel, unrelated errors of the same shape appear too
+  (same cause: the executable predates that property).
+
+**These are stale-artifact false positives, not regressions** — rebuild/relink the test target and they
+disappear. Before investigating, confirm the test executables were built *after* the dependency update.
 
 ### Step 5: Verification Gates & Conventional Commit
 1. Run host compilation, static checks, and unit tests.
