@@ -122,7 +122,39 @@ Item {
 
     property bool internalActive: false
 
+    readonly property var globalService: {
+        if (typeof tooltipService !== "undefined" && tooltipService && typeof tooltipService.request === "function")
+            return tooltipService
+        if (typeof tooltip !== "undefined" && tooltip && typeof tooltip.request === "function")
+            return tooltip
+        return null
+    }
+    readonly property bool useGlobalService: (globalService !== null && root.customContent === null)
+
     readonly property bool shouldShow: (root.active || root.internalActive || root.forceHover) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
+
+    onShouldShowChanged: {
+        if (useGlobalService && globalService) {
+            if (shouldShow) {
+                globalService.request({
+                    source: root,
+                    targetItem: root.effectiveTarget,
+                    text: root.text,
+                    shortcut: root.shortcut,
+                    placement: root.side,
+                    delay: root.delay
+                })
+            } else {
+                globalService.cancel(root)
+            }
+        }
+    }
+
+    Component.onDestruction: {
+        if (useGlobalService && globalService) {
+            globalService.cancel(root)
+        }
+    }
 
     onHoveredChanged: {
         if (hovered && !root.disabled) {
@@ -177,9 +209,9 @@ Item {
     ChaSetSquircle {
         id: bubble
         z: 999
+        visible: !root.useGlobalService && root.shouldShow
         x: Math.round(root.clampedX)
         y: Math.round(root.clampedY)
-        visible: root.shouldShow
         opacity: visible ? 1.0 : 0.0
         scale: visible ? 1.0 : 0.95
 
