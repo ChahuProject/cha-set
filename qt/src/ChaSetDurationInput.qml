@@ -21,11 +21,11 @@ Item {
 
     property var presets: [
         {
-            label: "Seconds",
+            label: ChaSetI18n.tr("components.durationInput.seconds", "Seconds"),
             items: [{ label: "30s", seconds: 30 }]
         },
         {
-            label: "Minutes",
+            label: ChaSetI18n.tr("components.durationInput.minutes", "Minutes"),
             items: [
                 { label: "1m", seconds: 60 },
                 { label: "5m", seconds: 300 },
@@ -34,7 +34,7 @@ Item {
             ]
         },
         {
-            label: "Hours",
+            label: ChaSetI18n.tr("components.durationInput.hours", "Hours"),
             items: [
                 { label: "1h", seconds: 3600 },
                 { label: "2h", seconds: 7200 },

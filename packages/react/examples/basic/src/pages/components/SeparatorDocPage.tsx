@@ -100,19 +100,19 @@ export function SeparatorDocPage() {
     <DocLayout
       category="Base Primitives"
       title="Separator"
-      description="Visually or semantically separates content in a list, form, or section."
+      description={t('components.separator.description', 'Visually or semantically separates content in a list, form, or section.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.separator.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('components.separator.overviewDesc', 'Test orientation, dashed/dotted line styles, and labeled section dividers across Web and Desktop.')}
         </p>
 
         <ComponentPreview
-          title="Separator Sandbox"
+          title={t('desktopComposite.separator.sandboxTitle', 'Separator Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -234,7 +234,7 @@ export function SeparatorDocPage() {
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Examples & States">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.separator.examplesTitle', 'Examples & States')}>
           {t('components.separator.examplesTitle', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
@@ -314,9 +314,9 @@ export function SeparatorDocPage() {
             <div className="flex h-5 items-center space-x-4 text-xs text-muted-foreground border border-border p-3 rounded-lg bg-muted/20">
               <span className="font-medium text-foreground">v0.2.0</span>
               <Separator orientation="vertical" />
-              <span>MIT License</span>
+              <span>{t('desktopComposite.separator.mitLicense', 'MIT License')}</span>
               <Separator orientation="vertical" />
-              <span>React 19 & Qt 6</span>
+              <span>{t('desktopComposite.separator.stackBadge', 'React 19 & Qt 6')}</span>
             </div>
           </Card>
         </div>
@@ -325,22 +325,18 @@ export function SeparatorDocPage() {
             {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <div>
           <p className="text-sm text-muted-foreground mb-4">
-            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+            {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
-              State changes (hover, press, focus) animate over{" "}
-              <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{" "}
-              <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+              {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}
             </li>
             <li>
-              Durations and easing resolve from theme tokens, so{" "}
-              <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{" "}
-              <code>ThemeTokens.animationsEnabled</code>).
+              {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
             </li>
           </ul>
         </div>
@@ -354,25 +350,25 @@ export function SeparatorDocPage() {
             name: 'orientation',
             type: "'horizontal' | 'vertical'",
             default: "'horizontal'",
-            description: 'The orientation of the separator line.',
+            description: t('components.separator.orientationDesc', 'The orientation of the separator line.'),
           },
           {
             name: 'variant',
             type: "'solid' | 'dashed' | 'dotted'",
             default: "'solid'",
-            description: 'The stroke style of the separator line.',
+            description: t('components.separator.variantDesc', 'The stroke style of the separator line.'),
           },
           {
             name: 'label',
             type: 'ReactNode',
             default: 'undefined',
-            description: 'Optional label or annotation text embedded in the divider line.',
+            description: t('components.separator.labelDesc', 'Optional label or annotation text embedded in the divider line.'),
           },
           {
             name: 'labelPosition',
             type: "'left' | 'center' | 'right'",
             default: "'center'",
-            description: 'Horizontal alignment for the embedded label.',
+            description: t('components.separator.labelPositionDesc', 'Horizontal alignment for the embedded label.'),
           },
           {
             name: 'decorative',
@@ -385,7 +381,7 @@ export function SeparatorDocPage() {
             name: 'className',
             type: 'string',
             default: "''",
-            description: 'Additional CSS classes for custom width, height, margin, or color overrides.',
+            description: t('components.separator.classNameDesc', 'Additional CSS classes for custom width, height, margin, or color overrides.'),
           },
         ]}
       />

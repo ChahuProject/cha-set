@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Overlays & Feedback"
     pageTitle: "Tooltip"
-    description: "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it."
+    description: ChaSetI18n.tr("components.tooltip.description", "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.")
 
     property int customRadius: 6
     property color cFg: ThemeTokens.text
@@ -28,7 +28,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Tooltip Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.tooltip.sandboxTitle", "Tooltip Sandbox")
         reactCode: `<Tooltip\n  content="${root.demoText}"\n  shortcut="${root.demoShortcut}"\n  arrow={${root.demoArrow}}\n  side="${root.demoSide}"\n  delayDuration={${root.demoDelay}}\n  disabled={${root.demoDisabled}}\n>\n  <Button variant="outline">Hover or Focus Me</Button>\n</Tooltip>`
         qtCode: `ChaSetTooltip {\n    text: "${root.demoText}"\n    shortcut: "${root.demoShortcut}"\n    arrow: ${root.demoArrow}\n    side: "${root.demoSide}"\n    delay: ${root.demoDelay}\n    disabled: ${root.demoDisabled}\n\n    ChaSetButton {\n        text: "Hover or Focus Me"\n        variant: "outline"\n    }\n}`
 
@@ -143,7 +143,7 @@ DocLayout {
     // Section 4: Examples & States
     Column {
         property string sectionId: "states"
-        property string sectionTitle: "Examples & States"
+        property string sectionTitle: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
         width: parent.width
         spacing: 12
 
@@ -155,7 +155,7 @@ DocLayout {
         }
 
         DocText {
-            text: "Visual matrix of Tooltip directional placements in Qt Quick Desktop."
+            text: ChaSetI18n.tr("desktopComposite.tooltip.examplesDescQt", "Visual matrix of Tooltip directional placements in Qt Quick Desktop.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -330,13 +330,13 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        DocText { text: "Animations"; color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        DocText { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        DocText { text: "Motion behavior and timing driven by ThemeTokens for the tooltip bubble on open and close."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.tooltip.animationsDescQt", "Motion behavior and timing driven by ThemeTokens for the tooltip bubble on open and close."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        DocText { text: "• The bubble cross-fades its opacity and scales it slightly on entry and exit to signal appearance."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.tooltip.animationsBulletQt1", "• The bubble cross-fades its opacity and scales it slightly on entry and exit to signal appearance."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.tooltip.animationsBulletQt2", "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.tooltip.animationsBulletQt3", "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
         ComponentReference {
@@ -347,25 +347,25 @@ DocLayout {
                     name: "text",
                     type: "string",
                     default: "\"\"",
-                    description: "The content text rendered inside the floating tooltip bubble."
+                    description: ChaSetI18n.tr("components.tooltip.contentDesc", "The content rendered inside the floating tooltip bubble.")
                 },
                 {
                     name: "shortcut",
                     type: "string",
                     default: "\"\"",
-                    description: "Keyboard shortcut hint badge rendered inside the tooltip bubble."
+                    description: ChaSetI18n.tr("components.tooltip.shortcutDesc", "Keyboard shortcut badge rendered inside the tooltip bubble.")
                 },
                 {
                     name: "arrow",
                     type: "bool",
                     default: "false",
-                    description: "Whether to render a directional arrow pointing toward the trigger item."
+                    description: ChaSetI18n.tr("components.tooltip.arrowDesc", "Whether to render a directional arrow pointing toward the trigger.")
                 },
                 {
                     name: "side",
                     type: "\"top\" | \"bottom\" | \"left\" | \"right\"",
                     default: "\"top\"",
-                    description: "The placement side of the tooltip relative to the target item."
+                    description: ChaSetI18n.tr("components.tooltip.sideDesc", "The preferred placement relative to the trigger.")
                 },
                 {
                     name: "sideOffset",
@@ -377,31 +377,31 @@ DocLayout {
                     name: "delay",
                     type: "int",
                     default: "200",
-                    description: "Hover delay duration in milliseconds before tooltip appears."
+                    description: ChaSetI18n.tr("components.tooltip.delayDesc", "Hover delay in milliseconds before the tooltip opens.")
                 },
                 {
                     name: "active",
                     type: "bool",
                     default: "false",
-                    description: "Whether the tooltip bubble is currently active and visible."
+                    description: ChaSetI18n.tr("components.tooltip.activeDesc", "Whether the tooltip bubble is currently active and visible.")
                 },
                 {
                     name: "disabled",
                     type: "bool",
                     default: "false",
-                    description: "Disables hover trigger and suppresses the tooltip."
+                    description: ChaSetI18n.tr("components.tooltip.disabledDesc", "Prevents the tooltip from opening when hovering or focusing.")
                 },
                 {
                     name: "target",
                     type: "Item",
                     default: "null",
-                    description: "Optional target Item to attach the tooltip to when not wrapping children."
+                    description: ChaSetI18n.tr("components.tooltip.targetDesc", "Optional target item to attach the tooltip to when not wrapping children.")
                 },
                 {
                     name: "forceHover",
                     type: "bool",
                     default: "false",
-                    description: "Visual testing hook to force active tooltip visibility."
+                    description: ChaSetI18n.tr("components.tooltip.forceHoverDesc", "Visual testing hook to force active tooltip visibility.")
                 }
             ]
     }

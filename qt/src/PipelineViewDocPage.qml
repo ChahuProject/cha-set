@@ -7,7 +7,7 @@ DocLayout {
   id: root
   category: "Composite Engines"
   pageTitle: "Pipeline View"
-  description: "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
+  description: ChaSetI18n.tr("components.pipelineView.description", "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console.")
 
   property var sampleSteps: [
     { name: ChaSetI18n.tr("desktopComposite.pipelineView.stepParseSpirv", "Parse SPIR-V Bytecode"), status: "success", durationMs: 3200 },
@@ -74,7 +74,7 @@ DocLayout {
   property string activeJobId: "job-2"
 
   ComponentPreview {
-    title: "Pipeline View Sandbox"
+    title: ChaSetI18n.tr("desktopComposite.pipelineView.sandboxTitle", "Pipeline View Sandbox")
     stageHeight: 472
     reactCode: `<PipelineView\n  status="running"\n  startMs={0}\n  endMs={null}\n  jobs={jobs}\n  activeJobId={activeJobId}\n  onSelectJob={setActiveJobId}\n  getLogs={jobId => logs[jobId] ?? []}\n/>`
     qtCode: `ChaSetPipelineView {\n    width: parent.width\n    status: "running"\n    jobs: root.sampleJobs\n    activeJobId: "job-2"\n    logsSupplier: function(jobId) { return root.getLogsForJob(jobId) }\n}`
@@ -114,26 +114,26 @@ ChaSetPipelineView {
         width: parent.width
         spacing: 12
 
-        Text { text: "Animations"; color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-        Text { text: "Execution transitions and status node states are governed by shared motion tokens:"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: "• Active execution nodes (running, compiling, retrying) display continuous rotation animations."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: "• Job list selection and hover states interpolate smoothly using ThemeTokens.motionQuick."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        Text { text: ChaSetI18n.tr("desktopComposite.pipelineView.animationsDesc", "Execution transitions and status node states are governed by shared motion tokens:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: ChaSetI18n.tr("desktopComposite.pipelineView.animationsBulletQt1", "• Active execution nodes (running, compiling, retrying) display continuous rotation animations."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: ChaSetI18n.tr("desktopComposite.pipelineView.animationsBulletQt2", "• Job list selection and hover states interpolate smoothly using ThemeTokens.motionQuick."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+        Text { text: ChaSetI18n.tr("desktopComposite.pipelineView.animationsBulletQt3", "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
     }
 
     ComponentReference {
         name: "PipelineView"
         componentId: "pipeline-view"
         propsModel: [
-            { name: "status", type: "string", default: "'running'", description: "Overall execution status for summary header badge." },
-            { name: "startMs", type: "real", default: "0", description: "Execution start timestamp in epoch milliseconds." },
-            { name: "endMs", type: "var", default: "null", description: "Execution completion timestamp; displays formatted duration when non-null." },
-            { name: "jobs", type: "var", default: "[]", description: "Array of jobs belonging to the current execution run." },
-            { name: "activeJobId", type: "string", default: "''", description: "Currently selected job id displaying step timeline and logs." },
-            { name: "logsSupplier", type: "var", default: "null", description: "Function supplying log lines array for a given job id." },
-            { name: "jobsTitle", type: "string", default: "'Jobs'", description: "Title text for the job list sidebar." },
-            { name: "emptyJobsText", type: "string", default: "'No jobs'", description: "Placeholder text displayed when the job list is empty." },
-            { name: "cancelDisabled", type: "bool", default: "false", description: "Disables the cancel button." }
+            { name: "status", type: "string", default: "'running'", description: ChaSetI18n.tr("components.pipelineView.statusDesc", "Overall execution status for summary header badge.") },
+            { name: "startMs", type: "real", default: "0", description: ChaSetI18n.tr("components.pipelineView.startMsDesc", "Execution start timestamp in epoch milliseconds.") },
+            { name: "endMs", type: "var", default: "null", description: ChaSetI18n.tr("components.pipelineView.endMsDesc", "Execution completion timestamp; displays formatted duration when non-null.") },
+            { name: "jobs", type: "var", default: "[]", description: ChaSetI18n.tr("components.pipelineView.jobsDesc", "Array of jobs belonging to the current execution run.") },
+            { name: "activeJobId", type: "string", default: "''", description: ChaSetI18n.tr("components.pipelineView.activeJobIdDesc", "Currently selected job id displaying step timeline and logs.") },
+            { name: "logsSupplier", type: "var", default: "null", description: ChaSetI18n.tr("components.pipelineView.getLogsDesc", "Function supplying log lines array for a given job id.") },
+            { name: "jobsTitle", type: "string", default: "'Jobs'", description: ChaSetI18n.tr("components.pipelineView.jobsTitleDesc", "Title text for the job list sidebar.") },
+            { name: "emptyJobsText", type: "string", default: "'No jobs'", description: ChaSetI18n.tr("components.pipelineView.emptyJobsTextDesc", "Placeholder text displayed when the job list is empty.") },
+            { name: "cancelDisabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.pipelineView.cancelDisabledDesc", "Disables the cancel button.") }
         ]
     }
 }

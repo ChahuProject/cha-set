@@ -127,7 +127,7 @@ Item {
                 ChaSetInput {
                     width: ThemeTokens.dp(180)
                     height: ThemeTokens.dp(28)
-                    placeholder: "Filter records..."
+                    placeholder: ChaSetI18n.tr("components.genericDataTable.filterPlaceholder", "Filter records...")
                     text: root.searchFilter
                     onTextEdited: {
                         root.searchFilter = text
@@ -208,7 +208,7 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: ThemeTokens.dp(12)
                 anchors.verticalCenter: parent.verticalCenter
-                text: "Page " + root.currentPage + " of " + root.totalPages
+                text: ChaSetI18n.tr("components.genericDataTable.pageOf", "Page {{current}} of {{total}}", { current: root.currentPage, total: root.totalPages })
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeCaption
             }
@@ -220,7 +220,7 @@ Item {
                 spacing: ThemeTokens.dp(8)
 
                 ChaSetButton {
-                    text: "Previous"
+                    text: ChaSetI18n.tr("components.genericDataTable.previous", "Previous")
                     size: "xs"
                     variant: "outline"
                     disabled: root.currentPage <= 1
@@ -228,7 +228,7 @@ Item {
                 }
 
                 ChaSetButton {
-                    text: "Next"
+                    text: ChaSetI18n.tr("components.genericDataTable.next", "Next")
                     size: "xs"
                     variant: "outline"
                     disabled: root.currentPage >= root.totalPages

@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Composite Engines"
     pageTitle: "Generic Data Table"
-    description: "Enterprise data table with column header sorting, live search filter querying, responsive row virtualization, and paginated navigation."
+    description: ChaSetI18n.tr("components.genericDataTable.description", "Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination.")
 
     ComponentPreview {
-        title: "Generic Data Table Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.genericDataTable.sandboxTitle", "Generic Data Table Sandbox")
         reactCode: `<GenericDataTable
   data={users}
   columns={[
@@ -80,10 +80,10 @@ ChaSetGenericDataTable {
         name: "DataTable"
         componentId: "data-table"
         propsModel: [
-            { name: "columns", type: "var[]", default: "[]", description: "Array of column specifications: { key, header, width }." },
-            { name: "rows", type: "var[]", default: "[]", description: "Array of arbitrary records to display (alias: tableData)." },
-            { name: "pageSize", type: "int", default: "5", description: "Number of rows per page." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the table border frame." }
+            { name: "columns", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.genericDataTable.columnsQtDesc", "Array of column specifications: { key, header, width }.") },
+            { name: "rows", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.genericDataTable.rowsDesc", "Array of arbitrary records to display (alias: tableData).") },
+            { name: "pageSize", type: "int", default: "5", description: ChaSetI18n.tr("components.genericDataTable.pageSizeDesc", "Number of rows per page.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.genericDataTable.customRadiusDesc", "Corner radius of the table border frame.") }
         ]
     }
 }

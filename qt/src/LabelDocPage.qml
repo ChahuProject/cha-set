@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Base Primitives"
     pageTitle: "Label"
-    description: "Renders an accessible label associated with form controls."
+    description: ChaSetI18n.tr("components.label.description", "Renders an accessible label associated with form controls.")
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -27,7 +27,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Label Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.label.sandboxTitle", "Label Sandbox")
         reactCode: `<div className="grid w-full max-w-sm items-center gap-1.5">\n  <Label htmlFor="email" size="${root.demoSize}"${root.demoDisabled ? ' disabled' : ''}${root.demoRequired ? ' required' : ''}${root.demoOptional ? ' optional' : ''}${root.demoInvalid ? ' invalid' : ''}>\n    Email address\n  </Label>\n  <Input type="email" id="email" placeholder="name@example.com" size="${root.demoSize}"${root.demoDisabled ? ' disabled' : ''}${root.demoInvalid ? ' invalid' : ''} />\n</div>`
         qtCode: `Column {\n    spacing: 6\n    width: 260\n\n    ChaSetLabel {\n        text: "Email address"\n        size: "${root.demoSize}"\n        disabled: ${root.demoDisabled}\n        required: ${root.demoRequired}\n        optional: ${root.demoOptional}\n        invalid: ${root.demoInvalid}\n    }\n\n    ChaSetInput {\n        width: parent.width\n        placeholder: "name@example.com"\n        size: "${root.demoSize}"\n        disabled: ${root.demoDisabled}\n        invalid: ${root.demoInvalid}\n    }\n}`
 
@@ -69,8 +69,8 @@ DocLayout {
                         size: "sm"
                         value: root.demoSize
                         options: [
-                            { label: "Default", value: "default" },
-                            { label: "Small (sm)", value: "sm" }
+                            { label: ChaSetI18n.tr("common.default", "Default"), value: "default" },
+                            { label: ChaSetI18n.tr("formsA.switch.sizeSm", "Small (sm)"), value: "sm" }
                         ]
                         onValueSelected: function(s) { root.demoSize = String(s); }
                     }
@@ -152,12 +152,12 @@ ChaSetLabel {
 
                 Row {
                     spacing: 16
-                    DocText { width: 80; text: ChaSetI18n.tr("showcase.defaultLabel", "Default:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { width: 80; text: ChaSetI18n.tr("common.default", "Default") + ":"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetLabel { size: "default"; text: ChaSetI18n.tr("components.label.defaultLabel", "Default Label") }
                 }
                 Row {
                     spacing: 16
-                    DocText { width: 80; text: ChaSetI18n.tr("showcase.smallLabel", "Small (sm):"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                    DocText { width: 80; text: ChaSetI18n.tr("common.small", "Small") + " (sm):"; color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
                     ChaSetLabel { size: "sm"; text: ChaSetI18n.tr("components.label.smallLabel", "Small Label") }
                 }
             }
@@ -167,7 +167,7 @@ ChaSetLabel {
     // Section 4: States
     Column {
         property string sectionId: "states"
-        property string sectionTitle: "States & Variants"
+        property string sectionTitle: ChaSetI18n.tr("components.label.statesTitle", "States & Variants")
         width: parent.width
         spacing: 8
         DocText { text: ChaSetI18n.tr("components.label.statesTitle", "States & Variants"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
@@ -279,7 +279,7 @@ ChaSetLabel {
     // Section 5: Form Association
     Column {
         property string sectionId: "form-control"
-        property string sectionTitle: "Form Association"
+        property string sectionTitle: ChaSetI18n.tr("components.label.formControlTitle", "Form Association")
         width: parent.width
         spacing: 8
         DocText { text: ChaSetI18n.tr("components.label.formControlTitle", "Form Association"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
@@ -315,14 +315,14 @@ ChaSetLabel {
         name: "Label"
         componentId: "label"
         props: [
-            { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", description: "Text size variant (default or compact sm)." },
-            { name: "disabled", type: "bool", defaultValue: "false", description: "Whether the label is displayed in a disabled dimmed state." },
-            { name: "required", type: "bool", defaultValue: "false", description: "Displays a destructive colored asterisk marker." },
-            { name: "optional", type: "bool", defaultValue: "false", description: "Displays a muted optional text indicator." },
-            { name: "invalid", type: "bool", defaultValue: "false", description: "Displays destructive text color indicating validation error." },
-            { name: "description", type: "string", defaultValue: "''", description: "Supporting helper text rendered beneath the label." },
-            { name: "tooltip", type: "string", defaultValue: "''", description: "Contextual help tooltip text displayed on hovering the info icon." },
-            { name: "text", type: "string", defaultValue: "''", description: "The label text to display." }
+            { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", description: ChaSetI18n.tr("components.label.sizeDesc", "Text size variant (default or compact sm).") },
+            { name: "disabled", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.label.disabledDesc", "Whether the label is displayed in a disabled dimmed state.") },
+            { name: "required", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.label.requiredDesc", "Displays a destructive colored asterisk marker.") },
+            { name: "optional", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.label.optionalDesc", "Displays a muted optional text indicator.") },
+            { name: "invalid", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.label.invalidDesc", "Displays destructive text color indicating validation error.") },
+            { name: "description", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.label.helperDesc", "Supporting helper text rendered beneath the label.") },
+            { name: "tooltip", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.label.tooltipDescNew", "Contextual help tooltip text displayed with info icon.") },
+            { name: "text", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.label.textDesc", "The label text to display.") }
         ]
     }
 }

@@ -7,7 +7,7 @@ Rectangle {
   id: root
 
   property var lines: []
-  property string emptyText: "No logs"
+  property string emptyText: ChaSetI18n.tr("components.logConsole.empty", "No logs")
   property bool showCopy: true
   property bool showLineCount: true
   property bool autoScroll: true

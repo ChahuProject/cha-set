@@ -7,12 +7,12 @@ DocLayout {
     id: root
     category: "Overlays & Feedback"
     pageTitle: "Context Menu"
-    description: "Displays a contextual popup menu at pointer coordinates triggered by right-click interaction."
+    description: ChaSetI18n.tr("components.contextMenu.description", "Displays a menu located at the pointer coordinates on right-click or desktop context gesture.")
 
     property string lastAction: "idle"
 
     ComponentPreview {
-        title: "Context Menu Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.contextMenu.sandboxTitle", "Context Menu Sandbox")
         reactCode: `<ContextMenu>
   <ContextMenuTrigger className="border-dashed p-12">
     Right click here
@@ -127,9 +127,9 @@ ChaSetContextMenu {
         name: "ContextMenu"
         componentId: "context-menu"
         propsModel: [
-            { name: "items", type: "var[]", default: "[]", description: "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }." },
-            { name: "menuWidth", type: "int", default: "180", description: "Width of the context menu popup panel." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the context menu." }
+            { name: "items", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.contextMenu.itemsDesc", "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }.") },
+            { name: "menuWidth", type: "int", default: "180", description: ChaSetI18n.tr("components.contextMenu.menuWidthDesc", "Width of the context menu popup panel.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.contextMenu.customRadiusDesc", "Corner radius of the context menu.") }
         ]
     }
 }

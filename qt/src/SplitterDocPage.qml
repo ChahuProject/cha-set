@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Splitter"
-    description: "Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits."
+    description: ChaSetI18n.tr("components.splitter.description", "Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits.")
 
     ComponentPreview {
-        title: "Horizontal Splitter Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.splitter.horizontalSandboxTitle", "Horizontal Splitter Sandbox")
         reactCode: `<div className="flex h-48 border rounded-md">
   <div style={{ width: \`\${size}%\` }} className="p-4 text-xs">
     Left Pane (Sidebar)
@@ -44,7 +44,7 @@ DocLayout {
                     width: ThemeTokens.dp(480)
                     wrap: true
                     horizontalAlignment: Text.AlignHCenter
-                    text: "Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset."
+                    text: ChaSetI18n.tr("desktopComposite.splitter.horizontalDesc", "Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset.")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                 }
@@ -86,9 +86,9 @@ DocLayout {
 
                                     Column {
                                         spacing: 4
-                                        DocText { text: "▾ src"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
-                                        DocText { text: "  ▸ components"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
-                                        DocText { text: "  ▸ layout"; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
+                                        DocText { text: ChaSetI18n.tr("desktopComposite.splitter.fileSrc", "▾ src"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
+                                        DocText { text: "  " + ChaSetI18n.tr("desktopComposite.splitter.fileComponents", "▸ components"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
+                                        DocText { text: "  " + ChaSetI18n.tr("desktopComposite.splitter.fileLayout", "▸ layout"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
                                     }
                                 }
                             }
@@ -166,8 +166,8 @@ ChaSetSplitter {
 
     ComponentPreview {
         property string sectionId: "vertical"
-        property string sectionTitle: "Vertical Splitter"
-        title: "Vertical Splitter"
+        property string sectionTitle: ChaSetI18n.tr("desktopComposite.splitter.verticalTitle", "Vertical Splitter")
+        title: ChaSetI18n.tr("desktopComposite.splitter.verticalSandboxTitle", "Vertical Splitter")
         reactCode: `<div className="flex flex-col h-64 border rounded-md">
   <div style={{ height: \`\${verticalSize}%\` }} className="p-4 text-xs">
     Top Pane (Editor Canvas)
@@ -201,7 +201,7 @@ ChaSetSplitter {
                     width: ThemeTokens.dp(480)
                     wrap: true
                     horizontalAlignment: Text.AlignHCenter
-                    text: "Top and bottom pane split with horizontal divider line. Drag vertically to resize console output."
+                    text: ChaSetI18n.tr("desktopComposite.splitter.verticalDesc", "Top and bottom pane split with horizontal divider line. Drag vertically to resize console output.")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                 }
@@ -309,14 +309,14 @@ ChaSetSplitter {
         spacing: 12
 
         DocText {
-            text: "Animations"
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeTitleSm
             font.bold: true
         }
 
         DocText {
-            text: "Motion tokens and kinematic timing contracts for Splitter divider gutters."
+            text: ChaSetI18n.tr("desktopComposite.splitter.animationsDesc", "Motion tokens and kinematic timing contracts for Splitter divider gutters.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -324,21 +324,21 @@ ChaSetSplitter {
         }
 
         DocText {
-            text: "• Gutter indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve."
+            text: ChaSetI18n.tr("desktopComposite.splitter.animationsBulletQt1", "• Gutter indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve.")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
         DocText {
-            text: "• Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking."
+            text: ChaSetI18n.tr("desktopComposite.splitter.animationsBullet2", "• Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
         DocText {
-            text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."
+            text: ChaSetI18n.tr("desktopComposite.splitter.animationsBulletQt3", "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -352,12 +352,12 @@ ChaSetSplitter {
         propsModel: [
             { name: "orientation", type: "string", default: "'vertical'", description: "Divider orientation: 'vertical' (separates left/right panes) or 'horizontal' (separates top/bottom panes)." },
             { name: "size", type: "real", default: "50", description: "Controlled percentage width/height (0-100)." },
-            { name: "initialSize", type: "int", default: "50", description: "Initial size percentage for default layout distribution." },
-            { name: "minSize", type: "int", default: "0", description: "Minimum allowed percentage bound." },
-            { name: "maxSize", type: "int", default: "100", description: "Maximum allowed percentage bound." },
-            { name: "gutterSize", type: "int", default: "8", description: "Interactive divider gutter thickness." },
-            { name: "leftItem", type: "Component", default: "null", description: "First pane content component." },
-            { name: "rightItem", type: "Component", default: "null", description: "Second pane content component." }
+            { name: "initialSize", type: "int", default: "50", description: ChaSetI18n.tr("components.splitter.initialSizeDesc", "Initial size percentage for uncontrolled usage.") },
+            { name: "minSize", type: "int", default: "0", description: ChaSetI18n.tr("components.splitter.minSizeDesc", "Minimum allowed percentage bound.") },
+            { name: "maxSize", type: "int", default: "100", description: ChaSetI18n.tr("components.splitter.maxSizeDesc", "Maximum allowed percentage bound.") },
+            { name: "gutterSize", type: "int", default: "8", description: ChaSetI18n.tr("components.splitter.gutterSizeDesc", "Interactive divider gutter thickness.") },
+            { name: "leftItem", type: "Component", default: "null", description: ChaSetI18n.tr("components.splitter.leftItemDesc", "First pane content component.") },
+            { name: "rightItem", type: "Component", default: "null", description: ChaSetI18n.tr("components.splitter.rightItemDesc", "Second pane content component.") }
         ]
     }
 }

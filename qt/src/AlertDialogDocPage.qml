@@ -7,12 +7,12 @@ DocLayout {
     id: root
     category: "Overlays & Feedback"
     pageTitle: "Alert Dialog"
-    description: "A modal dialog that interrupts the user with important content and expects a confirmation or cancellation action."
+    description: ChaSetI18n.tr("desktopComposite.alertDialog.pageDescription", "A modal dialog that interrupts the user with important content and requires confirmation.")
 
     property string alertFeedback: ChaSetI18n.tr("overlays.alertDialog.feedbackIdle", "Dialog is idle.")
 
     ComponentPreview {
-        title: "Alert Dialog Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.alertDialog.sandboxTitle", "Alert Dialog Sandbox")
         reactCode: `<AlertDialog>
   <AlertDialogTrigger asChild>
     <Button variant="destructive">Delete Account</Button>
@@ -152,16 +152,16 @@ ChaSetAlertDialog {
         name: "AlertDialog"
         componentId: "alert-dialog"
         propsModel: [
-            { name: "open", type: "bool", default: "false", description: "Whether the alert dialog modal is visible." },
-            { name: "size", type: "string", default: "'default'", description: "Preset modal width sizing ('sm', 'default', 'lg')." },
-            { name: "title", type: "string", default: "'Are you absolutely sure?'", description: "Dialog headline title." },
-            { name: "description", type: "string", default: "''", description: "Explanatory content warning the user about action consequences." },
-            { name: "confirmText", type: "string", default: "'Continue'", description: "Label for the confirmation button." },
-            { name: "cancelText", type: "string", default: "'Cancel'", description: "Label for the cancellation button." },
-            { name: "destructive", type: "bool", default: "true", description: "Whether the confirmation button should display in destructive styling." },
-            { name: "actionVariant", type: "string", default: "'destructive'", description: "Custom button variant for confirmation ('destructive', 'default', etc.)." },
-            { name: "closeOnOverlayClick", type: "bool", default: "false", description: "Whether clicking the backdrop automatically dismisses the dialog." },
-            { name: "closeOnEscape", type: "bool", default: "true", description: "Whether pressing the Escape key dismisses the dialog." }
+            { name: "open", type: "bool", default: "false", description: ChaSetI18n.tr("components.alertDialog.openDesc", "Controlled open state.") },
+            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.alertDialog.sizeDesc", "Preset maximum width container sizing for AlertDialogContent.") },
+            { name: "title", type: "string", default: "'Are you absolutely sure?'", description: ChaSetI18n.tr("components.alertDialog.titleDesc", "Dialog headline title.") },
+            { name: "description", type: "string", default: "''", description: ChaSetI18n.tr("components.alertDialog.descriptionDesc", "Explanatory content warning the user about action consequences.") },
+            { name: "confirmText", type: "string", default: "'Continue'", description: ChaSetI18n.tr("components.alertDialog.confirmTextDesc", "Label for the confirmation button.") },
+            { name: "cancelText", type: "string", default: "'Cancel'", description: ChaSetI18n.tr("components.alertDialog.cancelTextDesc", "Label for the cancellation button.") },
+            { name: "destructive", type: "bool", default: "true", description: ChaSetI18n.tr("components.alertDialog.destructiveDesc", "Whether the confirmation button should display in destructive styling.") },
+            { name: "actionVariant", type: "string", default: "'destructive'", description: ChaSetI18n.tr("components.alertDialog.variantDesc", "Button variant styling for AlertDialogAction.") },
+            { name: "closeOnOverlayClick", type: "bool", default: "false", description: ChaSetI18n.tr("components.alertDialog.closeOnOverlayClickDesc", "Whether clicking the backdrop overlay automatically dismisses the dialog.") },
+            { name: "closeOnEscape", type: "bool", default: "true", description: ChaSetI18n.tr("components.alertDialog.closeOnEscapeDesc", "Whether pressing the Escape key dismisses the dialog.") }
         ]
     }
 }

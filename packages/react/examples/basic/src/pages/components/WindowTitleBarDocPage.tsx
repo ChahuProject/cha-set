@@ -21,14 +21,14 @@ export function WindowTitleBarDocPage() {
     <DocLayout
       category="Desktop & Virtualization"
       title="Window Title Bar"
-      description="Desktop window frame header with title, drag region, and minimize/maximize/close control buttons for frameless native windows."
+      description={t('components.windowTitleBar.description', 'Desktop window frame header with title, drag region, and minimize/maximize/close control buttons for frameless native windows.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Frameless window title bar with native-style action buttons.
+          {t('desktopComposite.windowTitleBar.overviewDesc', 'Frameless window title bar with native-style action buttons.')}
         </p>
 
         <ComponentPreview
@@ -39,7 +39,7 @@ export function WindowTitleBarDocPage() {
     onMinimizeClicked: console.log("minimize")
     onMaximizeClicked: console.log("maximize")
     onCloseClicked: console.log("close")
-}`} title="Window Title Bar Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.windowTitleBar.sandboxTitle', 'Window Title Bar Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-lg border border-border rounded-lg overflow-hidden shadow-sm">
             <WindowTitleBar
               title={t('desktopComposite.windowTitleBar.appTitle', 'ChaSet Desktop Studio')}
@@ -79,11 +79,11 @@ ChaSetWindowTitleBar {
         name="WindowTitleBar"
         componentId="window-title-bar"
         props={[
-            { name: 'title', type: 'ReactNode', default: 'undefined', description: 'Window title label or element.' },
-            { name: 'icon', type: 'ReactNode', default: 'undefined', description: 'Application icon rendered at left edge.' },
-            { name: 'onMinimize', type: '() => void', default: 'undefined', description: 'Minimize button click callback.' },
-            { name: 'onMaximize', type: '() => void', default: 'undefined', description: 'Maximize button click callback.' },
-            { name: 'onClose', type: '() => void', default: 'undefined', description: 'Close button click callback.' },
+            { name: 'title', type: 'ReactNode', default: 'undefined', description: t('components.windowTitleBar.titleDesc', 'Window title label or element.') },
+            { name: 'icon', type: 'ReactNode', default: 'undefined', description: t('components.windowTitleBar.iconDesc', 'Application icon rendered at left edge.') },
+            { name: 'onMinimize', type: '() => void', default: 'undefined', description: t('components.windowTitleBar.onMinimizeDesc', 'Minimize button click callback.') },
+            { name: 'onMaximize', type: '() => void', default: 'undefined', description: t('components.windowTitleBar.onMaximizeDesc', 'Maximize button click callback.') },
+            { name: 'onClose', type: '() => void', default: 'undefined', description: t('components.windowTitleBar.onCloseDesc', 'Close button click callback.') },
           ]}
       />
     </DocLayout>

@@ -53,11 +53,11 @@ export function SmoothWheelHandlerDocPage() {
     <DocLayout
       category="Desktop & Virtualization"
       title="Smooth Wheel Handler"
-      description="Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex."
+      description={t('components.smoothWheelHandler.description', 'Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">Interactive Overview</h2>
-        <ComponentPreview title="Smooth Wheel Handler Sandbox"
+        <h2 className="text-xl font-semibold text-foreground">{t('showcase.interactiveOverview', 'Interactive Overview')}</h2>
+        <ComponentPreview title={t('desktopComposite.smoothWheelHandler.sandboxTitle', 'Smooth Wheel Handler Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -134,7 +134,7 @@ ChaSetSmoothWheelHandler {
 
       <section id="kinematics" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">
-          Kinematic Architecture
+          {t('desktopComposite.smoothWheelHandler.kinematicsTitle', 'Kinematic Architecture')}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="p-4 space-y-2">
@@ -173,42 +173,42 @@ ChaSetSmoothWheelHandler {
             type: "'vertical' | 'horizontal'",
             default: "'vertical'",
             required: false,
-            description: 'Primary direction of scrolling for the target viewport.',
+            description: t('components.smoothWheelHandler.scrollOrientationDesc', 'Primary direction of scrolling for the target viewport.'),
           },
           {
             name: 'mapVerticalToHorizontal',
             type: 'boolean',
             default: 'false',
             required: false,
-            description: 'Whether to map vertical wheel ticks to horizontal axis movement.',
+            description: t('components.smoothWheelHandler.mapVerticalToHorizontalDesc', 'Whether to map vertical wheel ticks to horizontal axis movement.'),
           },
           {
             name: 'speedMultiplier',
             type: 'number',
             default: '1.2',
             required: false,
-            description: 'Scroll speed multiplier applied to raw delta values.',
+            description: t('components.smoothWheelHandler.speedMultiplierDesc', 'Scroll speed multiplier applied to raw delta values.'),
           },
           {
             name: 'duration',
             type: 'number',
             default: '200',
             required: false,
-            description: 'Duration in milliseconds for the OutCubic damping transition.',
+            description: t('components.smoothWheelHandler.durationDesc', 'Duration in milliseconds for the OutCubic damping transition.'),
           },
           {
             name: 'fixedStepSize',
             type: 'number',
             default: '0',
             required: false,
-            description: 'Optional quantized step increment per wheel notch (0 for dynamic).',
+            description: t('components.smoothWheelHandler.fixedStepSizeDesc', 'Optional quantized step increment per wheel notch (0 for dynamic).'),
           },
           {
             name: 'consumeEvent',
             type: 'boolean',
             default: 'true',
             required: false,
-            description: 'Whether to prevent propagation of handled wheel events to parent windows.',
+            description: t('components.smoothWheelHandler.consumeEventDesc', 'Whether to prevent propagation of handled wheel events to parent windows.'),
           },
         ]}
       />

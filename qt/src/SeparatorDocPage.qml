@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Base Primitives"
     pageTitle: "Separator"
-    description: "Visually or semantically separates content in a list or section."
+    description: ChaSetI18n.tr("components.separator.description", "Visually or semantically separates content in a list, form, or section.")
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -24,7 +24,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Separator Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.separator.sandboxTitle", "Separator Sandbox")
         reactCode: root.demoOrientation === "horizontal"
             ? (root.demoHasLabel
                 ? `<div className="w-full max-w-sm space-y-4">\n  <Button className="w-full" size="sm">Sign in with SSO</Button>\n  <Separator orientation="horizontal" variant="${root.demoVariant}" label="Continue with" labelPosition="${root.demoLabelPosition}" />\n  <Button variant="outline" className="w-full" size="sm">Sign in with Email</Button>\n</div>`
@@ -201,7 +201,7 @@ DocLayout {
     // Section 4: Examples & States
     Column {
         property string sectionId: "states"
-        property string sectionTitle: "Examples & States"
+        property string sectionTitle: ChaSetI18n.tr("components.separator.examplesTitle", "Examples & States")
         width: parent.width
         spacing: 12
         DocText { text: ChaSetI18n.tr("components.separator.examplesTitle", "Examples & States"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
@@ -416,7 +416,7 @@ DocLayout {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                             DocText {
-                                text: "MIT License"
+                                text: ChaSetI18n.tr("desktopComposite.separator.mitLicense", "MIT License")
                                 font.pixelSize: Typography.sizeSmall
                                 color: root.cMutedFg
                                 anchors.verticalCenter: parent.verticalCenter
@@ -427,7 +427,7 @@ DocLayout {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                             DocText {
-                                text: "React 19 & Qt 6"
+                                text: ChaSetI18n.tr("desktopComposite.separator.stackBadge", "React 19 & Qt 6")
                                 font.pixelSize: Typography.sizeSmall
                                 color: root.cMutedFg
                                 anchors.verticalCenter: parent.verticalCenter
@@ -446,14 +446,14 @@ DocLayout {
         spacing: ThemeTokens.dp(8)
 
         DocText {
-            text: "Animations"
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
             color: ThemeTokens.text
         }
 
         DocText {
-            text: "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled)."
+            text: ChaSetI18n.tr("showcase.animationsDescQml", "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled).")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -469,37 +469,37 @@ DocLayout {
                 name: "orientation",
                 type: "\"horizontal\" | \"vertical\"",
                 default: "\"horizontal\"",
-                description: "The orientation of the separator line."
+                description: ChaSetI18n.tr("components.separator.orientationDesc", "The orientation of the separator line.")
             },
             {
                 name: "variant",
                 type: "\"solid\" | \"dashed\" | \"dotted\"",
                 default: "\"solid\"",
-                description: "The stroke style of the separator line."
+                description: ChaSetI18n.tr("components.separator.variantDesc", "The stroke style of the separator line.")
             },
             {
                 name: "label",
                 type: "string",
                 default: "\"\"",
-                description: "Optional label text embedded in the divider line."
+                description: ChaSetI18n.tr("components.separator.labelDesc", "Optional label or annotation text embedded in the divider line.")
             },
             {
                 name: "labelPosition",
                 type: "\"left\" | \"center\" | \"right\"",
                 default: "\"center\"",
-                description: "Alignment for the embedded label text."
+                description: ChaSetI18n.tr("components.separator.labelPositionDesc", "Horizontal alignment for the embedded label.")
             },
             {
                 name: "decorative",
                 type: "bool",
                 default: "true",
-                description: "Whether the element is purely decorative or conveys semantic structure."
+                description: ChaSetI18n.tr("components.separator.decorativeDesc", "Whether the element is purely decorative or conveys semantic structure.")
             },
             {
                 name: "customColor",
                 type: "color",
                 default: "\"transparent\"",
-                description: "Optional explicit override color for the divider line (defaults to ThemeTokens.border)."
+                description: ChaSetI18n.tr("components.separator.customColorDesc", "Optional explicit override color for the divider line (defaults to ThemeTokens.border).")
             }
         ]
     }

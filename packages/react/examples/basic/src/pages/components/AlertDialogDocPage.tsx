@@ -36,11 +36,11 @@ export function AlertDialogDocPage() {
     <DocLayout
       category="Overlays & Feedback"
       title="Alert Dialog"
-      description="A modal dialog that interrupts the user with important content and requires confirmation."
+      description={t('desktopComposite.alertDialog.pageDescription', 'A modal dialog that interrupts the user with important content and requires confirmation.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           Click the destructive button below to trigger the confirmation modal. You can toggle size presets and overlay click behavior.
@@ -61,7 +61,7 @@ ChaSetAlertDialog {
     destructive: true
     onConfirmed: console.log("confirmed")
     onCancelled: console.log("cancelled")
-}`} title="Alert Dialog Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.alertDialog.sandboxTitle', 'Alert Dialog Sandbox')} reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-wrap items-center gap-3 text-xs">
               <span className="font-medium text-muted-foreground">{t('showcase.size', 'Size:')}</span>
@@ -170,12 +170,12 @@ ChaSetAlertDialog {
         name="AlertDialog"
         componentId="alert-dialog"
         props={[
-            { name: 'open', type: 'boolean', default: 'undefined', description: 'Controlled open state.' },
-            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: 'Callback fired when open state changes.' },
-            { name: 'defaultOpen', type: 'boolean', default: 'false', description: 'Default open state for uncontrolled usage.' },
-            { name: 'size', type: "'sm' | 'default' | 'lg'", default: "'default'", description: 'Preset maximum width container sizing for AlertDialogContent.' },
-            { name: 'closeOnOverlayClick', type: 'boolean', default: 'false', description: 'Whether clicking the backdrop overlay automatically dismisses the dialog.' },
-            { name: 'variant', type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", default: "'default'", description: 'Button variant styling for AlertDialogAction.' },
+            { name: 'open', type: 'boolean', default: 'undefined', description: t('components.alertDialog.openDesc', 'Controlled open state.') },
+            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: t('components.alertDialog.onOpenChangeDesc', 'Callback fired when open state changes.') },
+            { name: 'defaultOpen', type: 'boolean', default: 'false', description: t('components.alertDialog.defaultOpenDesc', 'Default open state for uncontrolled usage.') },
+            { name: 'size', type: "'sm' | 'default' | 'lg'", default: "'default'", description: t('components.alertDialog.sizeDesc', 'Preset maximum width container sizing for AlertDialogContent.') },
+            { name: 'closeOnOverlayClick', type: 'boolean', default: 'false', description: t('components.alertDialog.closeOnOverlayClickDesc', 'Whether clicking the backdrop overlay automatically dismisses the dialog.') },
+            { name: 'variant', type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", default: "'default'", description: t('components.alertDialog.variantDesc', 'Button variant styling for AlertDialogAction.') },
           ]}
       />
     </DocLayout>

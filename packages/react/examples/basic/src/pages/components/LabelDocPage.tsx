@@ -54,19 +54,19 @@ export function LabelDocPage() {
     <DocLayout
       category="Base Primitives"
       title="Label"
-      description="Renders an accessible label associated with form controls."
+      description={t('components.label.description', 'Renders an accessible label associated with form controls.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.label.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('components.label.overviewDesc', 'Adjust size, required markers, optional indicators, validation states, and disabled appearance in real time.')}
         </p>
 
         <ComponentPreview
-          title="Label Sandbox"
+          title={t('desktopComposite.label.sandboxTitle', 'Label Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -78,8 +78,8 @@ export function LabelDocPage() {
                   value={size}
                   onChange={(s) => setSize(s as LabelSize)}
                   options={[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Small (sm)', value: 'sm' },
+                    { label: t('common.default', 'Default'), value: 'default' },
+                    { label: t('formsA.switch.sizeSm', 'Small (sm)'), value: 'sm' },
                   ]}
                 />
               </div>
@@ -152,7 +152,7 @@ ChaSetLabel {
 
       {/* 3. Sizes */}
       <section id="sizes" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Sizes">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.label.sizesTitle', 'Sizes')}>
           {t('components.label.sizesTitle', 'Sizes')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
@@ -174,7 +174,7 @@ ChaSetLabel {
 
       {/* 4. States */}
       <section id="states" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="States & Variants">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.label.statesTitle', 'States & Variants')}>
           {t('components.label.statesTitle', 'States & Variants')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
@@ -247,7 +247,7 @@ ChaSetLabel {
 
       {/* 5. Form Association */}
       <section id="form-control" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Form Association">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.label.formControlTitle', 'Form Association')}>
           {t('components.label.formControlTitle', 'Form Association')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
@@ -278,55 +278,55 @@ ChaSetLabel {
               name: 'size',
               type: "'default' | 'sm'",
               default: "'default'",
-              description: 'Text size variant (default or compact sm).',
+              description: t('components.label.sizeDesc', 'Text size variant (default or compact sm).'),
             },
             {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
-              description: 'Whether the label is displayed in a disabled dimmed state.',
+              description: t('components.label.disabledDesc', 'Whether the label is displayed in a disabled dimmed state.'),
             },
             {
               name: 'required',
               type: 'boolean',
               default: 'false',
-              description: 'Displays a destructive colored asterisk marker.',
+              description: t('components.label.requiredDesc', 'Displays a destructive colored asterisk marker.'),
             },
             {
               name: 'optional',
               type: 'boolean',
               default: 'false',
-              description: 'Displays a muted optional text indicator.',
+              description: t('components.label.optionalDesc', 'Displays a muted optional text indicator.'),
             },
             {
               name: 'invalid',
               type: 'boolean',
               default: 'false',
-              description: 'Displays destructive text color indicating validation error.',
+              description: t('components.label.invalidDesc', 'Displays destructive text color indicating validation error.'),
             },
             {
               name: 'description',
               type: 'ReactNode',
               default: 'undefined',
-              description: 'Supporting helper text rendered beneath the label.',
+              description: t('components.label.helperDesc', 'Supporting helper text rendered beneath the label.'),
             },
             {
               name: 'tooltip',
               type: 'ReactNode',
               default: 'undefined',
-              description: 'Contextual help tooltip text or node displayed with info icon.',
+              description: t('components.label.tooltipDescNew', 'Contextual help tooltip text displayed with info icon.'),
             },
             {
               name: 'htmlFor',
               type: 'string',
               default: 'undefined',
-              description: 'ID of the form element the label is bound to.',
+              description: t('components.label.htmlForDesc', 'ID of the form element the label is bound to.'),
             },
             {
               name: 'className',
               type: 'string',
               default: "''",
-              description: 'Additional custom CSS classes.',
+              description: t('components.label.classNameDesc', 'Additional custom CSS classes.'),
             },
           ]}
       />

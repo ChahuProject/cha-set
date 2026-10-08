@@ -34,14 +34,14 @@ export function ContextMenuDocPage() {
     <DocLayout
       category="Overlays & Feedback"
       title="Context Menu"
-      description="Displays a menu located at the pointer coordinates on right-click or desktop context gesture."
+      description={t('components.contextMenu.description', 'Displays a menu located at the pointer coordinates on right-click or desktop context gesture.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Right-click (or long press) inside the dashed container below to reveal the context menu.
+          {t('desktopComposite.contextMenu.overviewDesc', 'Right-click (or long press) inside the dashed container below to reveal the context menu.')}
         </p>
 
         <ComponentPreview
@@ -57,7 +57,7 @@ export function ContextMenuDocPage() {
     Rectangle {
         // Target canvas to receive right-click
     }
-}`} title="Context Menu Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.contextMenu.sandboxTitle', 'Context Menu Sandbox')} reactCode={reactCode}>
           <ContextMenu>
             <ContextMenuTrigger className="flex h-36 w-full max-w-xs items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground select-none bg-muted/20 hover:bg-muted/40 transition-colors">
               {t('overlays.contextMenu.rightClickHere', 'Right click here')}
@@ -113,8 +113,8 @@ ChaSetContextMenu {
         name="ContextMenu"
         componentId="context-menu"
         props={[
-            { name: 'modal', type: 'boolean', default: 'true', description: 'Whether the context menu is modal.' },
-            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: 'Callback fired on open state change.' },
+            { name: 'modal', type: 'boolean', default: 'true', description: t('components.contextMenu.modalDesc', 'Whether the context menu is modal.') },
+            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: t('components.contextMenu.onOpenChangeDesc', 'Callback fired on open state change.') },
           ]}
       />
     </DocLayout>

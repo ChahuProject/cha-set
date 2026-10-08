@@ -21,11 +21,11 @@ export function SkeletonDocPage() {
     <DocLayout
       category="Base Primitives"
       title="Skeleton"
-      description="Used to show a placeholder while content is loading, with smooth CSS pulse and wave shimmer animations."
+      description={t('components.skeleton.description', 'Used to show a placeholder while content is loading, with smooth CSS pulse and wave shimmer animations.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('components.skeleton.overviewDesc', 'Visual placeholder skeleton cards for progressive loading states. Switch between pulse, wave shimmer, or static modes.')}
@@ -40,7 +40,7 @@ export function SkeletonDocPage() {
         ChaSetSkeleton { width: 200; height: 16; rounded: "md"; animation: "${animation}" }
         ChaSetSkeleton { width: 140; height: 16; rounded: "md"; animation: "${animation}" }
     }
-}`} title="Skeleton Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.skeleton.sandboxTitle', 'Skeleton Sandbox')} reactCode={reactCode}>
           <div className="flex flex-col items-center gap-6">
             <div className="flex items-center gap-2 text-xs">
               <span className="font-medium text-muted-foreground">{t('common.animation', 'Animation:')}</span>
@@ -103,25 +103,20 @@ Column {
 
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Motion behavior and timing for the skeletographic placeholder effects.
+          {t('desktopComposite.skeleton.animationsDesc', 'Motion behavior and timing for the placeholder loading effects.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
-            <code className="text-xs bg-muted px-1 rounded">pulse</code> uses the default{' '}
-            <code className="text-xs bg-muted px-1 rounded">animate-pulse</code> keyframes.
+            {t('desktopComposite.skeleton.animationsBullet1', 'pulse uses the default animate-pulse keyframes for a soft opacity fade.')}
           </li>
           <li>
-            <code className="text-xs bg-muted px-1 rounded">wave</code> uses the custom{' '}
-            <code className="text-xs bg-muted px-1 rounded">cs-shimmer</code> keyframes via the{' '}
-            <code className="text-xs bg-muted px-1 rounded">animate-shimmer</code> utility.
+            {t('desktopComposite.skeleton.animationsBullet2', 'wave uses the custom cs-shimmer keyframes via the animate-shimmer utility for a sweeping highlight.')}
           </li>
           <li>
-            When <code>prefers-reduced-motion</code> is set, animations resolve to{' '}
-            <code>animation: none</code> automatically (Qt: governed by{' '}
-            <code>ThemeTokens.animationsEnabled</code>).
+            {t('desktopComposite.skeleton.animationsBullet3', 'When prefers-reduced-motion is set, animations resolve to animation: none automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
           </li>
         </ul>
       </section>
@@ -130,10 +125,10 @@ Column {
         name="Skeleton"
         componentId="skeleton"
         props={[
-            { name: 'animation', type: "'pulse' | 'wave' | 'none'", default: "'pulse'", description: 'Animation style for the placeholder loading effect.' },
-            { name: 'rounded', type: "'none' | 'sm' | 'md' | 'lg' | 'full'", default: "'md'", description: 'Corner radius preset for the placeholder shape.' },
-            { name: 'animate', type: 'boolean', default: 'true', description: 'Convenience boolean flag to toggle animation on or off.' },
-            { name: 'className', type: 'string', default: "''", description: 'Custom CSS classes for height, width, and background styling.' },
+            { name: 'animation', type: "'pulse' | 'wave' | 'none'", default: "'pulse'", description: t('components.skeleton.animationDesc', 'Animation style for the placeholder loading effect.') },
+            { name: 'rounded', type: "'none' | 'sm' | 'md' | 'lg' | 'full'", default: "'md'", description: t('components.skeleton.roundedDesc', 'Corner radius preset for the placeholder shape.') },
+            { name: 'animate', type: 'boolean', default: 'true', description: t('components.skeleton.animateDesc', 'Convenience boolean flag to toggle animation on or off.') },
+            { name: 'className', type: 'string', default: "''", description: t('components.skeleton.classNameDesc', 'Custom CSS classes for height, width, and background styling.') },
           ]}
       />
     </DocLayout>

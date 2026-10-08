@@ -45,14 +45,14 @@ export function SwitchDocPage() {
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.switch.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('formsA.switch.overviewDesc', 'Explore interactive switch behaviors, async loading, read-only states, descriptions, and sizes across Web and Qt Desktop.')}
         </p>
 
         <ComponentPreview
-          title="Switch Sandbox"
+          title={t('desktopComposite.switch.sandboxTitle', 'Switch Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -137,7 +137,7 @@ export function SwitchDocPage() {
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & States
+          {t('showcase.examplesAndStates', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('formsA.switch.examplesSubtitle', 'Visual matrix of common switch configurations and interactive states.')}
@@ -202,73 +202,73 @@ export function SwitchDocPage() {
               name: 'checked',
               type: 'boolean',
               default: 'false',
-              description: 'The controlled checked state of the switch.',
+              description: t('components.switch.checkedDesc', 'Whether the switch is toggled on (checked).'),
             },
             {
               name: 'defaultChecked',
               type: 'boolean',
               default: 'false',
-              description: 'The default checked state for uncontrolled usage.',
+              description: t('components.switch.defaultCheckedDesc', 'The default checked state for uncontrolled usage.'),
             },
             {
               name: 'onCheckedChange',
               type: '(checked: boolean) => void',
               default: '—',
-              description: 'Event handler called when the checked state changes.',
+              description: t('components.switch.onCheckedChangeDesc', 'Event handler called when the checked state changes.'),
             },
             {
               name: 'size',
               type: "'default' | 'sm'",
               default: "'default'",
-              description: 'The size scale of the switch track and thumb.',
+              description: t('components.switch.sizeDesc', 'The size scale of the switch track and thumb.'),
             },
             {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
-              description: 'When true, prevents user interaction and applies muted opacity.',
+              description: t('components.switch.disabledDesc', 'Disables user interactions and applies muted opacity.'),
             },
             {
               name: 'readOnly',
               type: 'boolean',
               default: 'false',
-              description: 'Prevents toggling state while retaining focusability and full opacity.',
+              description: t('components.switch.readOnlyDesc', 'Whether the switch is read-only (prevents interaction without muted opacity).'),
             },
             {
               name: 'loading',
               type: 'boolean',
               default: 'false',
-              description: 'Renders an active spinner inside the thumb and blocks interaction.',
+              description: t('components.switch.loadingDesc', 'Shows an animated spinner inside the thumb and prevents toggling.'),
             },
             {
               name: 'label',
               type: 'React.ReactNode',
               default: '—',
-              description: 'Optional companion label rendered alongside the switch track.',
+              description: t('components.switch.labelDesc', 'Optional companion label rendered alongside the switch.'),
             },
             {
               name: 'description',
               type: 'React.ReactNode',
               default: '—',
-              description: 'Optional helper text rendered below the label.',
+              description: t('components.switch.helperDesc', 'Optional helper text displayed below the label.'),
             },
             {
               name: 'forceHover',
               type: 'boolean',
               default: 'false',
-              description: 'Visual testing aid to programmatically force hover styling.',
+              description: t('components.switch.forceHoverDesc', 'Visual testing aid to force hover state.'),
             },
             {
               name: 'forceFocus',
               type: 'boolean',
               default: 'false',
-              description: 'Visual testing aid to programmatically force focus ring styling.',
+              description: t('components.switch.forceFocusDesc', 'Visual testing aid to force focus ring.'),
             },
             {
               name: 'className',
               type: 'string',
               default: "''",
-              description: 'Additional CSS class names to apply to the switch track element.',
+              description: t('components.switch.classNameDesc', 'Additional CSS class names to apply to the switch track element.'),
             },
           ]}
       />

@@ -94,18 +94,18 @@ export function GenericDataTableDocPage() {
     <DocLayout
       category="Composite Engines"
       title="Generic Data Table"
-      description="Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination."
+      description={t('components.genericDataTable.description', 'Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Click column headers to sort ascending and descending.
+          {t('desktopComposite.genericDataTable.overviewDesc', 'Click column headers to sort ascending and descending.')}
         </p>
 
         <ComponentPreview
-          title="Generic Data Table Sandbox"
+          title={t('desktopComposite.genericDataTable.sandboxTitle', 'Generic Data Table Sandbox')}
           reactCode={reactCode}
           qtCode={qtCode}
         >
@@ -142,11 +142,11 @@ ChaSetGenericDataTable {
         name="DataTable"
         componentId="data-table"
         props={[
-            { name: 'data', type: 'TData[]', default: '[]', description: 'Array of data records.' },
-            { name: 'columns', type: 'ColumnDef<TData, any>[]', default: '[]', description: 'TanStack Table column definitions.' },
-            { name: 'enableSorting', type: 'boolean', default: 'true', description: 'Whether column sorting is enabled.' },
-            { name: 'enablePagination', type: 'boolean', default: 'true', description: 'Whether pagination controls are rendered.' },
-            { name: 'pageSize', type: 'number', default: '10', description: 'Number of rows per page.' },
+            { name: 'data', type: 'TData[]', default: '[]', description: t('components.genericDataTable.dataDesc', 'Array of data records.') },
+            { name: 'columns', type: 'ColumnDef<TData, any>[]', default: '[]', description: t('components.genericDataTable.columnsDesc', 'TanStack Table column definitions.') },
+            { name: 'enableSorting', type: 'boolean', default: 'true', description: t('components.genericDataTable.enableSortingDesc', 'Whether column sorting is enabled.') },
+            { name: 'enablePagination', type: 'boolean', default: 'true', description: t('components.genericDataTable.enablePaginationDesc', 'Whether pagination controls are rendered.') },
+            { name: 'pageSize', type: 'number', default: '10', description: t('components.genericDataTable.pageSizeDesc', 'Number of rows per page.') },
           ]}
       />
     </DocLayout>

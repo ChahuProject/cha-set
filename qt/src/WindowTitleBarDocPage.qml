@@ -7,12 +7,12 @@ DocLayout {
     id: root
     category: "Desktop & Virtualization"
     pageTitle: "Window Title Bar"
-    description: "Frameless desktop application window header with app branding, icon, drag region, and caption control buttons."
+    description: ChaSetI18n.tr("components.windowTitleBar.description", "Desktop window frame header with title, drag region, and minimize/maximize/close control buttons for frameless native windows.")
 
     property string lastActionKey: "idle"
 
     ComponentPreview {
-        title: "Window Title Bar Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.windowTitleBar.sandboxTitle", "Window Title Bar Sandbox")
         reactCode: `<WindowTitleBar
   title="Render Debugger"
   icon={<ChaSetLogoIcon />}
@@ -117,9 +117,9 @@ ChaSetWindowTitleBar {
         name: "WindowTitleBar"
         componentId: "window-title-bar"
         propsModel: [
-            { name: "title", type: "string", default: "'ChaSet Desktop Studio'", description: "Headline text in the title bar." },
-            { name: "icon", type: "string", default: "'logo'", description: "Vector icon identifier for application branding." },
-            { name: "maximized", type: "bool", default: "false", description: "Whether the window is in maximized state." }
+            { name: "title", type: "string", default: "'ChaSet Desktop Studio'", description: ChaSetI18n.tr("components.windowTitleBar.titleDesc", "Window title label or element.") },
+            { name: "icon", type: "string", default: "'logo'", description: ChaSetI18n.tr("components.windowTitleBar.iconDesc", "Application icon rendered at left edge.") },
+            { name: "maximized", type: "bool", default: "false", description: ChaSetI18n.tr("components.windowTitleBar.maximizedDesc", "Whether the window is in maximized state.") }
         ]
     }
 }

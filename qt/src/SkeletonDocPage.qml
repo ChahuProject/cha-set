@@ -7,12 +7,12 @@ DocLayout {
     id: root
     category: "Base Primitives"
     pageTitle: "Skeleton"
-    description: "Used to show a placeholder while content is loading, utilizing a subtle looping pulse animation."
+    description: ChaSetI18n.tr("components.skeleton.description", "Used to show a placeholder while content is loading, with smooth CSS pulse and wave shimmer animations.")
 
     property string animationMode: "pulse"
 
     ComponentPreview {
-        title: "Skeleton Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.skeleton.sandboxTitle", "Skeleton Sandbox")
         reactCode: `<div className="flex items-center space-x-4">
   <Skeleton animation="${root.animationMode}" rounded="full" className="size-12" />
   <div className="space-y-2">
@@ -126,22 +126,22 @@ Column {
         width: parent.width
         spacing: 12
 
-        DocText { text: "Animations"; color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        DocText { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        DocText { text: "Motion behavior for the loading placeholder effects."; color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.skeleton.animationsDesc", "Motion behavior and timing for the placeholder loading effects."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        DocText { text: "• pulse animates a SequentialAnimation over opacity; wave moves a linear NumberAnimation over x for the shimmer sweep."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All animations stop when ThemeTokens.animationsEnabled is false, keeping the skeleton static."; color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.skeleton.animationsBulletQt1", "pulse animates a SequentialAnimation over opacity; wave moves a linear NumberAnimation over x for the shimmer sweep."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.skeleton.animationsBulletQt2", "All animations stop when ThemeTokens.animationsEnabled is false, keeping the skeleton static."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     ComponentReference {
         name: "Skeleton"
         componentId: "skeleton"
         propsModel: [
-            { name: "animation", type: "string", default: "'pulse'", description: "Animation mode: 'pulse' | 'wave' | 'none'." },
-            { name: "rounded", type: "string", default: "'md'", description: "Corner radius preset: 'none' | 'sm' | 'md' | 'lg' | 'full'." },
-            { name: "customRadius", type: "int", default: "-1", description: "Custom corner radius override." },
-            { name: "animate", type: "bool", default: "true", description: "Convenience flag to enable or disable animation." }
+            { name: "animation", type: "string", default: "'pulse'", description: ChaSetI18n.tr("components.skeleton.animationDescQt", "Animation mode: 'pulse' | 'wave' | 'none'.") },
+            { name: "rounded", type: "string", default: "'md'", description: ChaSetI18n.tr("components.skeleton.roundedDescQt", "Corner radius preset: 'none' | 'sm' | 'md' | 'lg' | 'full'.") },
+            { name: "customRadius", type: "int", default: "-1", description: ChaSetI18n.tr("components.skeleton.customRadiusDesc", "Custom corner radius override.") },
+            { name: "animate", type: "bool", default: "true", description: ChaSetI18n.tr("components.skeleton.animateDesc", "Convenience flag to enable or disable animation.") }
         ]
     }
 }

@@ -41,14 +41,14 @@ export function TooltipDocPage() {
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.tooltip.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           Test interactive hover delays, side positioning, keyboard shortcut badges, directional arrows, and disabled behavior across Web and Qt Quick Desktop.
         </p>
 
         <ComponentPreview
-          title="Tooltip Sandbox"
+          title={t('desktopComposite.tooltip.sandboxTitle', 'Tooltip Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -150,10 +150,10 @@ export function TooltipDocPage() {
       {/* 4. Examples & States */}
       <section id="examples" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & States
+          {t('showcase.examplesAndStates', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Visual matrix of common Tooltip configurations across all 4 directional placements and interaction states.
+          {t('desktopComposite.tooltip.examplesDesc', 'Visual matrix of common Tooltip configurations across all 4 directional placements and interaction states.')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -228,31 +228,20 @@ export function TooltipDocPage() {
       {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Motion behavior and timing for the tooltip bubble on open and close.
+          {t('desktopComposite.tooltip.animationsDesc', 'Motion behavior and timing for the tooltip bubble on open and close.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
-            Opening fades and zooms in using{' '}
-            <code className="text-xs bg-muted px-1 rounded">animate-in</code> with{' '}
-            <code className="text-xs bg-muted px-1 rounded">fade-in-0</code> and{' '}
-            <code className="text-xs bg-muted px-1 rounded">zoom-in-95</code>, over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-short</code> with the{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-entrance</code> curve.
+            {t('desktopComposite.tooltip.animationsBullet1', 'Opening fades and zooms in using animate-in with fade-in-0 and zoom-in-95, over duration-short with the ease-entrance curve.')}
           </li>
           <li>
-            Closing fades and zooms out using{' '}
-            <code className="text-xs bg-muted px-1 rounded">animate-out</code> with{' '}
-            <code className="text-xs bg-muted px-1 rounded">fade-out-0</code> and{' '}
-            <code className="text-xs bg-muted px-1 rounded">zoom-out-95</code>, delaying
-            unmount until the exit animation finishes.
+            {t('desktopComposite.tooltip.animationsBullet2', 'Closing fades and zooms out using animate-out with fade-out-0 and zoom-out-95, delaying unmount until the exit animation finishes.')}
           </li>
           <li>
-            Durations and easing resolve from theme tokens, so{' '}
-            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
-            <code>ThemeTokens.animationsEnabled</code>).
+            {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
           </li>
         </ul>
       </section>
@@ -265,61 +254,61 @@ export function TooltipDocPage() {
               name: 'content',
               type: 'ReactNode | string',
               default: "''",
-              description: 'The content rendered inside the floating tooltip bubble.',
+              description: t('components.tooltip.contentDesc', 'The content rendered inside the floating tooltip bubble.'),
             },
             {
               name: 'shortcut',
               type: 'string',
               default: "''",
-              description: 'Keyboard shortcut badge rendered inside the tooltip bubble.',
+              description: t('components.tooltip.shortcutDesc', 'Keyboard shortcut badge rendered inside the tooltip bubble.'),
             },
             {
               name: 'arrow',
               type: 'boolean',
               default: 'false',
-              description: 'Whether to render a directional arrow pointing toward the trigger element.',
+              description: t('components.tooltip.arrowDesc', 'Whether to render a directional arrow pointing toward the trigger.'),
             },
             {
               name: 'side',
               type: "'top' | 'bottom' | 'left' | 'right'",
               default: "'top'",
-              description: 'The preferred placement relative to the trigger element.',
+              description: t('components.tooltip.sideDesc', 'The preferred placement relative to the trigger.'),
             },
             {
               name: 'delayDuration',
               type: 'number',
               default: '200',
-              description: 'Hover delay in milliseconds before the tooltip opens.',
+              description: t('components.tooltip.delayDesc', 'Hover delay in milliseconds before the tooltip opens.'),
             },
             {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
-              description: 'Prevents the tooltip from opening when hovering or focusing.',
+              description: t('components.tooltip.disabledDesc', 'Prevents the tooltip from opening when hovering or focusing.'),
             },
             {
               name: 'asChild',
               type: 'boolean',
               default: 'false',
-              description: 'Merges trigger props and event handlers directly onto the single child element.',
+              description: t('components.tooltip.asChildDesc', 'Merges trigger props and event handlers directly onto the single child element.'),
             },
             {
               name: 'open',
               type: 'boolean',
               default: 'undefined',
-              description: 'Controlled open state of the tooltip.',
+              description: t('components.tooltip.openDesc', 'Controlled open state of the tooltip.'),
             },
             {
               name: 'onOpenChange',
               type: '(open: boolean) => void',
               default: 'undefined',
-              description: 'Callback executed when the open state changes.',
+              description: t('components.tooltip.onOpenChangeDesc', 'Callback executed when the open state changes.'),
             },
             {
               name: 'className',
               type: 'string',
               default: "''",
-              description: 'Additional CSS class names applied to the element.',
+              description: t('components.tooltip.classNameDesc', 'Additional CSS class names applied to the element.'),
             },
           ]}
       />

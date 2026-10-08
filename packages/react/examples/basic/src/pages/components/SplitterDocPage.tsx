@@ -56,18 +56,18 @@ export function SplitterDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Splitter"
-      description="Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits."
+      description={t('components.splitter.description', 'Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Horizontal Splitter
+          {t('desktopComposite.splitter.overviewHeading', 'Horizontal Splitter')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset.
+          {t('desktopComposite.splitter.horizontalDesc', 'Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset.')}
         </p>
 
         <ComponentPreview
-          title="Horizontal Splitter Sandbox"
+          title={t('desktopComposite.splitter.horizontalSandboxTitle', 'Horizontal Splitter Sandbox')}
           reactCode={horizontalReactCode}
           qtCode={horizontalQtCode}
         >
@@ -79,9 +79,9 @@ export function SplitterDocPage() {
               >
                 <strong className="text-foreground block mb-2">{t('surfaces.splitter.navTree')}</strong>
                 <ul className="space-y-1 font-mono">
-                  <li>▾ src</li>
-                  <li className="pl-3">▸ components</li>
-                  <li className="pl-3">▸ layout</li>
+                  <li>{t('desktopComposite.splitter.fileSrc', '▾ src')}</li>
+                  <li className="pl-3">{t('desktopComposite.splitter.fileComponents', '▸ components')}</li>
+                  <li className="pl-3">{t('desktopComposite.splitter.fileLayout', '▸ layout')}</li>
                 </ul>
               </div>
 
@@ -128,14 +128,14 @@ ChaSetSplitter {
 
       <section id="vertical" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Vertical Splitter
+          {t('desktopComposite.splitter.verticalTitle', 'Vertical Splitter')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Top and bottom pane split with horizontal divider line. Drag vertically to resize console output.
+          {t('desktopComposite.splitter.verticalDesc', 'Top and bottom pane split with horizontal divider line. Drag vertically to resize console output.')}
         </p>
 
         <ComponentPreview
-          title="Vertical Splitter"
+          title={t('desktopComposite.splitter.verticalSandboxTitle', 'Vertical Splitter')}
           reactCode={verticalReactCode}
           qtCode={verticalQtCode}
         >
@@ -173,25 +173,20 @@ ChaSetSplitter {
 
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Motion tokens and kinematic timing contracts for Splitter divider gutters.
+          {t('desktopComposite.splitter.animationsDesc', 'Motion tokens and kinematic timing contracts for Splitter divider gutters.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
-            Gutter indicator color and opacity transitions animate smoothly over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> (150ms) using{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve (Qt counterpart:{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.motionQuick</code> and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.easeStandard</code>).
+            {t('desktopComposite.splitter.animationsBullet1', 'Gutter indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).')}
           </li>
           <li>
-            Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.
+            {t('desktopComposite.splitter.animationsBullet2', 'Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.')}
           </li>
           <li>
-            Respects <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> in Qt.
+            {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
           </li>
         </ul>
       </section>
@@ -200,12 +195,12 @@ ChaSetSplitter {
         name="Splitter"
         componentId="splitter"
         props={[
-            { name: 'size', type: 'number', default: 'undefined', description: 'Controlled percentage width/height (0-100).' },
-            { name: 'onChange', type: '(size: number) => void', default: 'undefined', description: 'Callback fired on drag with new percentage.' },
-            { name: 'initialSize', type: 'number', default: '50', description: 'Initial size percentage for uncontrolled usage.' },
-            { name: 'minSize', type: 'number', default: '0', description: 'Minimum allowed percentage bound.' },
-            { name: 'maxSize', type: 'number', default: '100', description: 'Maximum allowed percentage bound.' },
-            { name: 'orientation', type: "'vertical' | 'horizontal'", default: "'vertical'", description: 'Orientation of the divider.' },
+            { name: 'size', type: 'number', default: 'undefined', description: t('components.splitter.sizeDesc', 'Controlled percentage width/height (0-100).') },
+            { name: 'onChange', type: '(size: number) => void', default: 'undefined', description: t('components.splitter.onChangeDesc', 'Callback fired on drag with new percentage.') },
+            { name: 'initialSize', type: 'number', default: '50', description: t('components.splitter.initialSizeDesc', 'Initial size percentage for uncontrolled usage.') },
+            { name: 'minSize', type: 'number', default: '0', description: t('components.splitter.minSizeDesc', 'Minimum allowed percentage bound.') },
+            { name: 'maxSize', type: 'number', default: '100', description: t('components.splitter.maxSizeDesc', 'Maximum allowed percentage bound.') },
+            { name: 'orientation', type: "'vertical' | 'horizontal'", default: "'vertical'", description: t('components.splitter.orientationDesc', 'Orientation of the divider.') },
           ]}
       />
     </DocLayout>

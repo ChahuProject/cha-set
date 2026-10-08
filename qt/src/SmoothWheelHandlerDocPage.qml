@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Desktop & Virtualization"
     pageTitle: "Smooth Wheel Handler"
-    description: "Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex."
+    description: ChaSetI18n.tr("components.smoothWheelHandler.description", "Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex.")
 
     property real demoSpeed: 1.2
     property int demoDuration: 200
@@ -15,7 +15,7 @@ DocLayout {
 
     ComponentPreview {
         id: heroPreview
-        title: "Smooth Wheel Handler Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.smoothWheelHandler.sandboxTitle", "Smooth Wheel Handler Sandbox")
         reactCode: `<SmoothWheelHandler
   scrollOrientation="vertical"
   speedMultiplier={${root.demoSpeed}}
@@ -180,7 +180,7 @@ ChaSetSmoothWheelHandler {
     // Kinematic Architecture
     Column {
         property string sectionId: "kinematics"
-        property string sectionTitle: "Kinematic Architecture"
+        property string sectionTitle: ChaSetI18n.tr("desktopComposite.smoothWheelHandler.kinematicsTitle", "Kinematic Architecture")
         width: parent.width
         spacing: 12
 
@@ -233,13 +233,13 @@ ChaSetSmoothWheelHandler {
         name: "SmoothWheelHandler"
         componentId: "smooth-wheel-handler"
         propsModel: [
-            { name: "targetItem", type: "Item", defaultValue: "parent", description: "Target scrollable item (Flickable, ListView, GridView, etc.)" },
-            { name: "scrollOrientation", type: "int", defaultValue: "Qt.Vertical", description: "Scroll axis: Qt.Vertical or Qt.Horizontal" },
-            { name: "mapVerticalToHorizontal", type: "bool", defaultValue: "false", description: "Whether vertical mouse wheel rolls horizontally" },
-            { name: "speedMultiplier", type: "real", defaultValue: "1.2", description: "Velocity scaling factor applied to raw wheel delta" },
-            { name: "duration", type: "int", defaultValue: "200", description: "Transition damping duration in milliseconds" },
-            { name: "fixedStepSize", type: "real", defaultValue: "0", description: "Optional fixed quantization step per tick (0 for dynamic)" },
-            { name: "consumeEvent", type: "bool", defaultValue: "true", description: "Whether to accept wheel event to stop propagation" }
+            { name: "targetItem", type: "Item", defaultValue: "parent", description: ChaSetI18n.tr("components.smoothWheelHandler.targetItemDesc", "Target scrollable item (Flickable, ListView, GridView, etc.)") },
+            { name: "scrollOrientation", type: "int", defaultValue: "Qt.Vertical", description: ChaSetI18n.tr("components.smoothWheelHandler.scrollOrientationDesc", "Primary direction of scrolling for the target viewport.") },
+            { name: "mapVerticalToHorizontal", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.smoothWheelHandler.mapVerticalToHorizontalDesc", "Whether to map vertical wheel ticks to horizontal axis movement.") },
+            { name: "speedMultiplier", type: "real", defaultValue: "1.2", description: ChaSetI18n.tr("components.smoothWheelHandler.speedMultiplierDesc", "Scroll speed multiplier applied to raw delta values.") },
+            { name: "duration", type: "int", defaultValue: "200", description: ChaSetI18n.tr("components.smoothWheelHandler.durationDesc", "Duration in milliseconds for the OutCubic damping transition.") },
+            { name: "fixedStepSize", type: "real", defaultValue: "0", description: ChaSetI18n.tr("components.smoothWheelHandler.fixedStepSizeDesc", "Optional quantized step increment per wheel notch (0 for dynamic).") },
+            { name: "consumeEvent", type: "bool", defaultValue: "true", description: ChaSetI18n.tr("components.smoothWheelHandler.consumeEventDesc", "Whether to prevent propagation of handled wheel events to parent windows.") }
         ]
     }
 }

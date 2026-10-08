@@ -7,7 +7,7 @@ Item {
     id: root
 
     property string value: ""
-    property string placeholder: "Select an option..."
+    property string placeholder: ChaSetI18n.tr("components.select.placeholder", "Select an option...")
     property var options: [] // [{ value: "apple", label: "Apple", disabled: false }]
     property bool disabled: false
     property bool closeOnEscape: true

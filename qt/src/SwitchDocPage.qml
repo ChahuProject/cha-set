@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Switch"
-    description: "A control that allows the user to toggle between checked and not checked states."
+    description: ChaSetI18n.tr("components.switch.description", "A control that allows the user to toggle between checked and not checked states, with support for async loading, read-only mode, and helper descriptions.")
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -27,7 +27,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Switch Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.switch.sandboxTitle", "Switch Sandbox")
         reactCode: `<Switch\n  size="${root.demoSize}"\n  checked={${root.demoChecked}}\n  disabled={${root.demoDisabled}}\n  readOnly={${root.demoReadOnly}}\n  loading={${root.demoLoading}}\n  label="Airplane Mode"${root.demoDescription ? `\n  description="${root.demoDescription}"` : ""}\n  onCheckedChange={setChecked}\n/>`
         qtCode: `ChaSetSwitch {\n    size: "${root.demoSize}"\n    checked: ${root.demoChecked}\n    disabled: ${root.demoDisabled}\n    readOnly: ${root.demoReadOnly}\n    loading: ${root.demoLoading}\n    label: "Airplane Mode"${root.demoDescription ? `\n    description: "${root.demoDescription}"` : ""}\n    onToggled: function(checked) {\n        // handle toggle\n    }\n}`
 
@@ -133,7 +133,7 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "Examples & States"
+            text: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
             color: root.cFg
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
@@ -274,55 +274,55 @@ DocLayout {
                     name: "checked",
                     type: "bool",
                     default: "false",
-                    description: "Whether the switch is toggled on (checked)."
+                    description: ChaSetI18n.tr("components.switch.checkedDesc", "Whether the switch is toggled on (checked).")
                 },
                 {
                     name: "size",
                     type: "\"default\" | \"sm\"",
                     default: "\"default\"",
-                    description: "The size scale of the switch track and thumb (default, sm)."
+                    description: ChaSetI18n.tr("components.switch.sizeDesc", "The size scale of the switch track and thumb.")
                 },
                 {
                     name: "disabled",
                     type: "bool",
                     default: "false",
-                    description: "Disables user interactions and applies muted opacity."
+                    description: ChaSetI18n.tr("components.switch.disabledDesc", "Disables user interactions and applies muted opacity.")
                 },
                 {
                     name: "readOnly",
                     type: "bool",
                     default: "false",
-                    description: "Whether the switch is read-only (prevents interaction without muted opacity)."
+                    description: ChaSetI18n.tr("components.switch.readOnlyDesc", "Whether the switch is read-only (prevents interaction without muted opacity).")
                 },
                 {
                     name: "loading",
                     type: "bool",
                     default: "false",
-                    description: "Shows an animated spinner inside the thumb and prevents toggling."
+                    description: ChaSetI18n.tr("components.switch.loadingDesc", "Shows an animated spinner inside the thumb and prevents toggling.")
                 },
                 {
                     name: "label",
                     type: "string",
                     default: "\"\"",
-                    description: "Optional companion label text beside the switch."
+                    description: ChaSetI18n.tr("components.switch.labelDesc", "Optional companion label rendered alongside the switch.")
                 },
                 {
                     name: "description",
                     type: "string",
                     default: "\"\"",
-                    description: "Optional descriptive helper text displayed below the label."
+                    description: ChaSetI18n.tr("components.switch.helperDesc", "Optional helper text displayed below the label.")
                 },
                 {
                     name: "forceHover",
                     type: "bool",
                     default: "false",
-                    description: "Visual testing aid to force hover state."
+                    description: ChaSetI18n.tr("components.switch.forceHoverDesc", "Visual testing aid to force hover state.")
                 },
                 {
                     name: "forceFocus",
                     type: "bool",
                     default: "false",
-                    description: "Visual testing aid to force focus ring."
+                    description: ChaSetI18n.tr("components.switch.forceFocusDesc", "Visual testing aid to force focus ring.")
                 }
             ]
     }
