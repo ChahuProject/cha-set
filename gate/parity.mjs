@@ -325,6 +325,33 @@ if (existsSync(concentricCheckPath)) {
   console.log(`[gate] OK — Concentric Corner Radii Parity Gate passed (${concentricRes.checkedCount} concentric assertions verified)`);
 }
 
+// 2.15 Mandatory Cross-Stack i18n Translation Coverage Gate (Ratchet)
+// Character-distribution based translation completeness audit: detects
+// missing dictionary keys, English-only zh-CN renderings, CJK-leaked en-US
+// renderings, and visible strings not wrapped in t()/tr() at all. The ratchet
+// baseline (spec/i18n/coverage-baseline.json) may only shrink; new violations
+// fail the gate. See scripts/check-i18n-coverage.mjs header for the model.
+const i18nCoverageCheckPath = resolve(root, 'scripts/check-i18n-coverage.mjs');
+if (existsSync(i18nCoverageCheckPath)) {
+  const { verifyI18nCoverage, selfTest: i18nCoverageSelfTest } = await import(pathToFileURL(i18nCoverageCheckPath).href);
+  const i18nSt = i18nCoverageSelfTest();
+  if (!i18nSt.ok) {
+    console.error('[gate] FAIL: i18n coverage gate self-test failed — the guard no longer detects injected violations');
+    for (const e of i18nSt.errors) console.error('  - ' + e);
+    process.exit(1);
+  }
+  const i18nRes = verifyI18nCoverage({ quiet: true });
+  for (const w of i18nRes.warnings) console.warn(`[gate] WARN ${w}`);
+  if (!i18nRes.ok) {
+    console.error(`[gate] FAIL: i18n Translation Coverage Gate failed (${i18nRes.stats.newViolations} new violation(s), ${i18nRes.stats.staleBaseline} stale baseline entries):`);
+    for (const err of i18nRes.errors) {
+      console.error('  - ' + err);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — i18n Translation Coverage Gate passed (${i18nRes.stats.files} files scanned, ${i18nRes.stats.findings} known findings in ratchet baseline, 0 new)`);
+}
+
 // 3. Executable Behavioral Parity Checks
 const skipQt = process.argv.includes('--skip-qt') || process.env.CHASE_SKIP_QT === '1';
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');
