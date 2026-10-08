@@ -64,11 +64,11 @@ export function SidebarDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Sidebar"
-      description="Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing."
+      description={t('components.sidebar.description', 'Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.sidebar.overviewHeading', 'Interactive Overview')}
         </h2>
       <ComponentPreview
           qtCode={`ChaSetSidebar {
@@ -101,7 +101,7 @@ export function SidebarDocPage() {
             variant: "default"
         }
     }
-}`} title="Sidebar Sandbox" reactCode={basicUsageCode}>
+}`} title={t('desktopComposite.sidebar.sandboxTitle', 'Sidebar Sandbox')} reactCode={basicUsageCode}>
         <div className="relative h-[22.5rem] w-full border rounded-lg overflow-hidden flex bg-background">
           <SidebarProvider defaultOpen={true} container>
             <Sidebar collapsible={collapsibleMode} className="border-r">
@@ -220,25 +220,25 @@ ChaSetSidebar {
             name: "collapsible",
             type: "'offcanvas' | 'icon' | 'none'",
             default: "'offcanvas'",
-            description: "Collapsing behavior mode when closed on desktop.",
+            description: t('components.sidebar.collapsibleDesc', 'Collapsing behavior mode when closed on desktop.'),
           },
           {
             name: "variant",
             type: "'sidebar' | 'floating' | 'inset'",
             default: "'sidebar'",
-            description: "Visual container styling variant.",
+            description: t('components.sidebar.variantDesc', 'Visual container styling variant.'),
           },
           {
             name: "side",
             type: "'left' | 'right'",
             default: "'left'",
-            description: "Docking side for the sidebar layout.",
+            description: t('components.sidebar.sideDesc', 'Docking side for the sidebar layout.'),
           },
           {
             name: "defaultOpen",
             type: "boolean",
             default: "true",
-            description: "Initial expanded state on SidebarProvider.",
+            description: t('components.sidebar.defaultOpenDesc', 'Initial expanded state on SidebarProvider.'),
           },
         ]}
       />

@@ -1,0 +1,279 @@
+{
+  "components": {
+    "alertDialog": {
+      "confirmText": "Continue",
+      "description": "This action cannot be undone. This will permanently delete your account and remove your data.",
+      "title": "Are you absolutely sure?"
+    },
+    "card": {
+      "childrenDesc": "Card composite subcomponents or custom elements.",
+      "classNameDesc": "Additional CSS class names to apply to the container.",
+      "customRadiusDesc": "Explicit corner radius override (defaults to ThemeTokens.radius).",
+      "description": "Displays a card with header, title, description, content, and footer actions.",
+      "interactiveDesc": "Whether the card provides hover/active elevation styling and cursor pointer.",
+      "sizeDesc": "Density and padding scale of the card and composite containers.",
+      "variantDesc": "Visual presentation style of the card container."
+    },
+    "checkbox": {
+      "checkedDesc": "The controlled checked state of the checkbox.",
+      "classNameDesc": "Additional CSS class names to apply to the checkbox button.",
+      "customRadiusDesc": "Optional custom corner radius for the checkbox box (-1 uses default).",
+      "defaultCheckedDesc": "The default checked state when uncontrolled.",
+      "disabledDesc": "Disables user interactions and applies 50% opacity.",
+      "forceFocusDesc": "Visual testing aid to force focus ring styles.",
+      "forceHoverDesc": "Visual testing aid to force hover state styles.",
+      "helperDesc": "Optional helper text rendered below the label.",
+      "indeterminateDesc": "Whether the checkbox is in an indeterminate state (takes visual precedence over checked).",
+      "invalidDesc": "Applies destructive error styling and aria-invalid attribute.",
+      "labelDesc": "Optional companion label rendered alongside the checkbox.",
+      "onCheckedChangeDesc": "Callback invoked when checked state changes.",
+      "readOnlyDesc": "Prevents toggling state while retaining focusability and full opacity.",
+      "sizeDesc": "The size variant: default or sm."
+    },
+    "collapsible": {
+      "classNameDesc": "Additional custom CSS classes.",
+      "customRadiusDesc": "Corner radius of the header and container.",
+      "defaultOpenDesc": "Initial open state for uncontrolled usage.",
+      "defaultOpenDescQt": "Whether the collapsible is initially expanded on load.",
+      "description": "An interactive component which expands and collapses a panel of content.",
+      "disabledDesc": "Whether user interaction is disabled.",
+      "disabledDescQt": "Whether user interaction and toggling are disabled.",
+      "onOpenChangeDesc": "Callback invoked when open state changes.",
+      "openDesc": "Controlled open state of the collapsible panel.",
+      "openDescQt": "Whether the collapsible content is currently expanded.",
+      "titleDesc": "Title text displayed in the header trigger bar.",
+      "variantDesc": "Visual container styling variant.",
+      "variantDescQt": "Visual container styling variant: 'default' | 'card' | 'ghost'."
+    },
+    "durationInput": {
+      "classNameDesc": "Custom CSS classes for outer container.",
+      "customRadiusDesc": "Corner radius of segment boxes and popup.",
+      "defaultValueDesc": "Initial duration in seconds (uncontrolled mode).",
+      "disabledDesc": "Whether the inputs, buttons, and preset dropdown are disabled.",
+      "hoursLabelDesc": "Label text for hours segment.",
+      "maxHoursDesc": "Upper clamp limit for the hours segment.",
+      "minutesLabelDesc": "Label text for minutes segment.",
+      "onChangeDesc": "Callback fired when the duration changes.",
+      "presetsDesc": "Custom grouped duration presets for the dropdown.",
+      "presetsLabelDesc": "Label text for the presets trigger button.",
+      "secondsLabelDesc": "Label text for seconds segment.",
+      "showLabelsDesc": "Whether to display the segment unit labels underneath.",
+      "showPresetsDesc": "Whether to display the preset dropdown button.",
+      "sizeDesc": "Visual density and size variant.",
+      "valueDesc": "Total duration in seconds (controlled mode)."
+    },
+    "kbd": {
+      "clickLabel": "Click",
+      "orDivider": "or"
+    },
+    "keybindingRecorder": {
+      "aliasDesc": "Alias for value.",
+      "clearableDesc": "Whether to display a clear button when a shortcut is set.",
+      "cornerRadiusDesc": "Corner radius of the input container.",
+      "disabledDesc": "Whether the recorder is disabled.",
+      "onChangeDesc": "Dual callback receiving both structured object and string.",
+      "onValueChangeDesc": "Callback fired when new combination recorded.",
+      "placeholderDesc": "Placeholder when no shortcut is defined.",
+      "recordingDesc": "Whether the recorder is actively listening for key combinations.",
+      "recordingTextDesc": "Prompt displayed during active recording.",
+      "sizeDesc": "Size preset variant for regular or compact density.",
+      "valueDesc": "Active key combination (string or structured object).",
+      "valueShortDesc": "The serialized shortcut string representation (e.g. 'Ctrl+Shift+P')."
+    },
+    "panelCard": {
+      "defaultTitle": "Panel Title"
+    },
+    "select": {
+      "defaultValueDesc": "Initial value for uncontrolled usage.",
+      "disabledDesc": "Whether the select is disabled.",
+      "onValueChangeDesc": "Callback triggered when value changes.",
+      "optionsDesc": "Array of selectable option objects: { value, label, disabled }.",
+      "placeholderDesc": "Placeholder label displayed when no value is chosen.",
+      "triggerRadiusDesc": "Corner radius of the select trigger.",
+      "valueDesc": "Controlled selected value.",
+      "valueQtDesc": "The currently selected option value."
+    },
+    "sidebar": {
+      "collapsibleDesc": "Collapsing behavior mode when closed on desktop.",
+      "collapsedDesc": "Whether the sidebar is currently collapsed.",
+      "defaultOpenDesc": "Initial expanded state on SidebarProvider.",
+      "description": "Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing.",
+      "iconWidthDesc": "Width when collapsed in icon mode.",
+      "maxWidthDesc": "Maximum draggable width limit.",
+      "minWidthDesc": "Minimum draggable width limit.",
+      "resizableDesc": "Enables interactive edge dragging rail for dynamic resizing.",
+      "sideDesc": "Docking side for the sidebar layout.",
+      "sidebarWidthDesc": "Expanded width of the sidebar bound.",
+      "variantDesc": "Visual container styling variant."
+    },
+    "splitButton": {
+      "disabledDesc": "Whether the split button is disabled.",
+      "labelDesc": "Label on the primary action button.",
+      "menuContentDesc": "Dropdown menu items rendered on chevron click.",
+      "onClickDesc": "Callback fired on clicking primary action.",
+      "sizeDesc": "Button size variant.",
+      "variantDesc": "Button stylistic variant."
+    },
+    "squircle": {
+      "asDesc": "Underlying HTML tag or component to render as.",
+      "bgDesc": "Background surface fill color.",
+      "borderColorDesc": "Border stroke color for continuous curvature outline.",
+      "borderWidthDesc": "Border stroke width in logical units.",
+      "bottomLeftDesc": "Explicit bottom-left corner radius override.",
+      "bottomRightDesc": "Explicit bottom-right corner radius override.",
+      "cornerSmoothingDesc": "Alias for smoothing conforming to the neutral schema.",
+      "heightDesc": "Explicit height in logical units (auto-measured via ResizeObserver if omitted).",
+      "radiusDesc": "Corner radius in logical units.",
+      "rbDesc": "Whether bottom corners are rounded.",
+      "rlDesc": "Whether left corners are rounded.",
+      "rrDesc": "Whether right corners are rounded.",
+      "rtDesc": "Whether top corners are rounded.",
+      "smoothingDesc": "Curvature smoothing factor from 0.0 (circle arc) to 1.0 (full squircle). 0.6 is the Apple iOS standard.",
+      "topLeftDesc": "Explicit top-left corner radius override.",
+      "topRightDesc": "Explicit top-right corner radius override.",
+      "widthDesc": "Explicit width in logical units (auto-measured via ResizeObserver if omitted)."
+    },
+    "taskHud": {
+      "dismissPrefix": "Dismiss ",
+      "label": "Task Progress HUD"
+    },
+    "viewportConstrainedContainer": {
+      "bgDesc": "Background surface fill color.",
+      "borderDesc": "Border outline color.",
+      "childrenDesc": "Elements rendered inside the container.",
+      "classNameDesc": "Custom CSS class names for styling.",
+      "customRadiusDesc": "Corner radius of the container.",
+      "description": "Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling.",
+      "marginDesc": "Reserved margin between container bottom and viewport bottom edge.",
+      "maxHeightDesc": "Optional upper limit on container max-height.",
+      "minHeightDesc": "Minimum allowable height lower bound.",
+      "overflowDesc": "Vertical overflow scrolling strategy."
+    },
+    "virtualTree": {
+      "collapseAllDesc": "Collapses all open tree branches.",
+      "cornerRadiusDesc": "Corner radius of the tree container.",
+      "defaultExpandDesc": "Default level of expansion for child branches.",
+      "dimmedDesc": "Array of node IDs rendered in dimmed/cut state.",
+      "emptyDesc": "Content shown when tree is empty.",
+      "enableDndDesc": "Enables drag-and-drop reordering and folder nesting.",
+      "estimateDesc": "Estimated row height for virtual calculation.",
+      "expandAllDesc": "Expands all collapsible tree branches.",
+      "expandedMapDesc": "Map of expanded node IDs.",
+      "gapDesc": "Spacing between adjacent rows.",
+      "getChildrenDesc": "Accessor returning child nodes of a node.",
+      "getKeyDesc": "Unique identifier accessor for a node.",
+      "nodesDesc": "Alias for rootNodes.",
+      "onCutDesc": "Callback fired on Ctrl+X cut shortcut.",
+      "onDropDesc": "Callback fired when nodes are dropped.",
+      "onPasteDesc": "Callback fired on Ctrl+V paste shortcut.",
+      "onSelectDesc": "Callback fired when selected nodes change.",
+      "onStickySelectDesc": "Callback fired when a pinned row is clicked (navigate only, never toggles expansion).",
+      "onStickyToggleDesc": "Callback fired when the chevron of a pinned row is activated.",
+      "overscanDesc": "Buffer nodes rendered outside visible bounds.",
+      "refDesc": "Handle exposing expandAll(), collapseAll(), selectAll(), scrollToIndex().",
+      "renderRowDesc": "Custom row rendering function.",
+      "rootNodesDesc": "Array of top-level hierarchy nodes.",
+      "scrollToDesc": "Scrolls the virtual tree to the specified index.",
+      "selectAllDesc": "Selects all visible nodes in multiple mode.",
+      "selectedIdDesc": "Identifier of the currently selected node (single mode).",
+      "selectedIdsDesc": "Array of selected node identifiers (multiple mode).",
+      "selectionModeDesc": "Active selection interaction mode.",
+      "stickyDesc": "Expanded ancestor chain of the open node, pinned above the scroll area so parents stay visible."
+    }
+  },
+  "desktopComposite": {
+    "card": {
+      "overviewDesc": "Test card variants with interactive subcomponents synchronized across Web and Desktop.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Card Sandbox"
+    },
+    "checkbox": {
+      "animationsBullet1": "The check-mark SVG stays mounted and, when checked, fades in from opacity 0 to 1 while scaling from 0.5 to 1 over duration-quick with the ease-entrance curve.",
+      "animationsBullet2": "The box border color cross-fades on hover, focus, checked, and invalid state changes.",
+      "animationsBullet3": "Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).",
+      "animationsDesc": "Motion behavior and timing for the checked, indeterminate, and state transitions.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Checkbox Sandbox"
+    },
+    "collapsible": {
+      "advancedOptionsQt": "Advanced System Options",
+      "advancedSettings": "Advanced Project Settings",
+      "defaultOpenDesc": "Render an uncontrolled collapsible with initial expanded state via",
+      "defaultOpenDescQt": "Use defaultOpen to initialize the collapsible in an expanded state.",
+      "defaultOpenHeading": "Default Open",
+      "disabledDesc": "Disables trigger interaction and dims opacity to prevent user expansion.",
+      "disabledDescQt": "Prevents clicking and interaction with a dimmed appearance.",
+      "disabledHeading": "Disabled State",
+      "falseLabel": "False",
+      "lockedSettings": "Locked Premium Settings",
+      "overviewDesc": "Toggle the collapsible open/closed state or disable user interaction with live controls.",
+      "overviewHeading": "Interactive Overview",
+      "protectedSettings": "Protected Developer Settings",
+      "sandboxTitle": "Collapsible Sandbox",
+      "toggleLabel": "Toggle",
+      "trueLabel": "True",
+      "vulkanBadge": "Vulkan Validation Layers: Enabled"
+    },
+    "durationInput": {
+      "overviewDesc": "Directly type into any segment or use the up/down stepper buttons. Press Left/Right arrow keys to jump between segments, or pick from grouped quick-select presets.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Duration Input Sandbox"
+    },
+    "keybindingRecorder": {
+      "overviewDesc": "Click the recorder box below and press any key combination (e.g. {{example}}).",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Keybinding Recorder Sandbox"
+    },
+    "select": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Select Sandbox"
+    },
+    "sidebar": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Sidebar Sandbox"
+    },
+    "splitButton": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Split Button Sandbox"
+    },
+    "squircle": {
+      "borderNote": "Traditional CSS borders render uneven widths or hard corners under superellipse clipping. Passing borderWidth and borderColor renders an adaptive continuous-curvature vector stroke with uniform outline thickness.",
+      "borderSupportLabel": "Continuous-Curvature Stroke Support:",
+      "demoBadge": "Secondary Badge",
+      "demoButton": "Squircle Button",
+      "demoInput": "Squircle Input...",
+      "demoOutline": "Outline Button",
+      "demoPill": "Status Pill",
+      "guideDesc": "External projects adopt the ChaSet iOS continuous-curvature system via two progressive enhancement strategies: the base layer accelerates all Tailwind utilities at zero cost through modern browser CSS features; legacy environments or high-precision bordered geometry fall back to guaranteed rendering through the primitive component.",
+      "guideTitle": "Global Adoption Guide for External Projects",
+      "installDesc": "Package installation and CMake / QML module linkage.",
+      "installHeading": "Installation",
+      "strategyBadge1": "Strategy 1",
+      "strategyBadge2": "Strategy 2",
+      "strategyBadge3": "Strategy 3",
+      "tailwindNote": "No business-code changes to rounded-md, rounded-lg, or rounded-xl are needed. After the browser matches corner-shape: squircle, continuous-curvature superellipses apply directly, while the .rounded-full rule protects circular avatars and status dots from geometric distortion.",
+      "tailwindSyncLabel": "Tailwind Synergy:",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Squircle Sandbox & Curvature Comparison",
+      "strategy1Desc": "Add a CSS feature query in the host project's global stylesheet (e.g. globals.css or index.css). Every element based on Tailwind rounded-* utilities is instantly promoted to iOS continuous-curvature superellipses, smoothly eliminating harsh edge creases.",
+      "strategy1Title": "Universal CSS Acceleration (Global CSS Continuous-Curvature Acceleration)",
+      "strategy2Desc": "For dialogs (Dialog/Sheet), highlight cards, or browser engines without CSS corner-shape support, wrap content with the ChaSet component. Internally it clips via SVG clipPath with ResizeObserver-driven geometry, guaranteeing 100% cross-platform pixel-smooth rendering.",
+      "strategy2Title": "Guaranteed Progressive Enhancement (Container Progressive Enhancement)",
+      "strategy3Desc": "ChaSet core design tokens ship built-in curvature variables. Host projects may define --cs-corner-shape and --cs-corner-smoothing at the root level, and the full component library automatically inherits the matching curvature.",
+      "strategy3Title": "Design Tokens Configuration (Global Design-Token Setup)"
+    },
+    "viewport": {
+      "overviewDesc": "The container dynamically measures the distance from its anchor to the bottom of the window (window.innerHeight - rect.top - margin) and clamps content height to prevent overflowing outside the viewport.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Viewport Constrained Container Sandbox",
+      "variantsDesc": "Configure custom numeric overrides, string-based bounds, or custom margin offsets.",
+      "variantsTitle": "Variants & Limits"
+    },
+    "virtualTree": {
+      "dirBadge": "dir",
+      "overviewDesc": "Hierarchical tree with multi-selection (Ctrl/Shift+Click), external dimmed cut state (Ctrl+X/V), copied state (Ctrl+C/V), Ctrl+Drag copy, and keyboard navigation.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Virtual Tree Sandbox"
+    }
+  }
+}

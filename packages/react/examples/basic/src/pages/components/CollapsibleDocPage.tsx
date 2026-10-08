@@ -80,19 +80,19 @@ export function CollapsibleDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Collapsible"
-      description="An interactive component which expands and collapses a panel of content."
+      description={t('components.collapsible.description', 'An interactive component which expands and collapses a panel of content.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.collapsible.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Toggle the collapsible open/closed state or disable user interaction with live controls.
+          {t('desktopComposite.collapsible.overviewDesc', 'Toggle the collapsible open/closed state or disable user interaction with live controls.')}
         </p>
 
         <ComponentPreview
-          title="Collapsible Sandbox"
+          title={t('desktopComposite.collapsible.sandboxTitle', 'Collapsible Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -131,8 +131,8 @@ export function CollapsibleDocPage() {
                   value={disabled ? 'true' : 'false'}
                   onChange={(v) => setDisabled(v === 'true')}
                   options={[
-                    { label: 'False', value: 'false' },
-                    { label: 'True', value: 'true' },
+                    { label: t('desktopComposite.collapsible.falseLabel', 'False'), value: 'false' },
+                    { label: t('desktopComposite.collapsible.trueLabel', 'True'), value: 'true' },
                   ]}
                 />
               </div>
@@ -150,7 +150,7 @@ export function CollapsibleDocPage() {
                     <span className={`text-xs transition-transform duration-200 ${open ? 'rotate-180' : ''}`}>
                       ▼
                     </span>
-                    <span className="sr-only">Toggle</span>
+                    <span className="sr-only">{t('desktopComposite.collapsible.toggleLabel', 'Toggle')}</span>
                   </Button>
                 </CollapsibleTrigger>
               </div>
@@ -198,16 +198,16 @@ ChaSetCollapsible {
       {/* 3. Default Open */}
       <section id="default-open" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Default Open
+          {t('desktopComposite.collapsible.defaultOpenHeading', 'Default Open')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Render an uncontrolled collapsible with initial expanded state via <code>defaultOpen</code>.
+          {t('desktopComposite.collapsible.defaultOpenDesc', 'Render an uncontrolled collapsible with initial expanded state via')} <code>defaultOpen</code>.
         </p>
         <Card className="p-6">
           <CardContent className="space-y-4 p-0 max-w-sm">
             <Collapsible defaultOpen>
               <div className="flex items-center justify-between border px-4 py-2 rounded-md bg-card">
-                <span className="text-sm font-medium">Advanced Project Settings</span>
+                <span className="text-sm font-medium">{t('desktopComposite.collapsible.advancedSettings', 'Advanced Project Settings')}</span>
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
                     <span className="text-xs">▼</span>
@@ -230,16 +230,16 @@ ChaSetCollapsible {
       {/* 4. Disabled State */}
       <section id="disabled" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Disabled State
+          {t('desktopComposite.collapsible.disabledHeading', 'Disabled State')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Disables trigger interaction and dims opacity to prevent user expansion.
+          {t('desktopComposite.collapsible.disabledDesc', 'Disables trigger interaction and dims opacity to prevent user expansion.')}
         </p>
         <Card className="p-6">
           <CardContent className="space-y-4 p-0 max-w-sm">
             <Collapsible disabled>
               <div className="flex items-center justify-between border px-4 py-2 rounded-md opacity-50 bg-card">
-                <span className="text-sm font-medium">Locked Premium Settings</span>
+                <span className="text-sm font-medium">{t('desktopComposite.collapsible.lockedSettings', 'Locked Premium Settings')}</span>
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" size="sm" className="w-8 h-8 p-0" disabled>
                     <LockIcon className="size-3.5 text-muted-foreground" />
@@ -261,37 +261,37 @@ ChaSetCollapsible {
               name: 'open',
               type: 'boolean',
               default: 'undefined',
-              description: 'Controlled open state of the collapsible panel.',
+              description: t('components.collapsible.openDesc', 'Controlled open state of the collapsible panel.'),
             },
             {
               name: 'defaultOpen',
               type: 'boolean',
               default: 'false',
-              description: 'Initial open state for uncontrolled usage.',
+              description: t('components.collapsible.defaultOpenDesc', 'Initial open state for uncontrolled usage.'),
             },
             {
               name: 'onOpenChange',
               type: '(open: boolean) => void',
               default: 'undefined',
-              description: 'Callback invoked when open state changes.',
+              description: t('components.collapsible.onOpenChangeDesc', 'Callback invoked when open state changes.'),
             },
             {
               name: 'variant',
               type: "'default' | 'card' | 'ghost'",
               default: "'default'",
-              description: 'Visual container styling variant.',
+              description: t('components.collapsible.variantDesc', 'Visual container styling variant.'),
             },
             {
               name: 'disabled',
               type: 'boolean',
               default: 'false',
-              description: 'Whether user interaction is disabled.',
+              description: t('components.collapsible.disabledDesc', 'Whether user interaction is disabled.'),
             },
             {
               name: 'className',
               type: 'string',
               default: "''",
-              description: 'Additional custom CSS classes.',
+              description: t('components.collapsible.classNameDesc', 'Additional custom CSS classes.'),
             },
           ]}
       />

@@ -11,10 +11,10 @@ Rectangle {
 
     property bool open: false
     property string size: "default"
-    property string title: "Are you absolutely sure?"
-    property string description: "This action cannot be undone. This will permanently delete your account and remove your data."
-    property string confirmText: "Continue"
-    property string cancelText: "Cancel"
+    property string title: ChaSetI18n.tr("components.alertDialog.title", "Are you absolutely sure?")
+    property string description: ChaSetI18n.tr("components.alertDialog.description", "This action cannot be undone. This will permanently delete your account and remove your data.")
+    property string confirmText: ChaSetI18n.tr("components.alertDialog.confirmText", "Continue")
+    property string cancelText: ChaSetI18n.tr("common.cancel", "Cancel")
     property bool destructive: true
     property string actionVariant: destructive ? "destructive" : "default"
     property int customRadius: 8

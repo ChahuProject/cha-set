@@ -311,14 +311,14 @@ export function VirtualTreeDocPage() {
     <DocLayout
       category="Desktop & Virtualization"
       title="Virtual Tree"
-      description="Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
+      description={t('components.virtual-tree.description', 'Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.virtualTree.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Hierarchical tree with multi-selection (Ctrl/Shift+Click), external dimmed cut state (Ctrl+X/V), copied state (Ctrl+C/V), Ctrl+Drag copy, and keyboard navigation.
+          {t('desktopComposite.virtualTree.overviewDesc', 'Hierarchical tree with multi-selection (Ctrl/Shift+Click), external dimmed cut state (Ctrl+X/V), copied state (Ctrl+C/V), Ctrl+Drag copy, and keyboard navigation.')}
         </p>
 
         <ComponentPreview
@@ -333,7 +333,7 @@ export function VirtualTreeDocPage() {
     onNodeCut: function(ids) { cutIds = ids }
     onNodeCopied: function(ids) { copiedIds = ids }
     onNodeDeleted: function(ids) { ... }
-}`} title="Virtual Tree Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.virtualTree.sandboxTitle', 'Virtual Tree Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-md flex flex-col gap-3">
             {/* Control Toolbar */}
             <div className="flex flex-wrap items-center gap-2">
@@ -482,7 +482,7 @@ export function VirtualTreeDocPage() {
                   <span className="font-mono">{node.label}</span>
                   {hasChildren && (
                     <Badge variant="outline" className="text-nano ml-auto">
-                      dir
+                      {t('desktopComposite.virtualTree.dirBadge', 'dir')}
                     </Badge>
                   )}
                 </div>
@@ -537,29 +537,29 @@ ChaSetVirtualTree {
         name="VirtualTree"
         componentId="virtual-tree"
         props={[
-            { name: 'rootNodes', type: 'readonly T[]', default: '[]', description: 'Array of top-level hierarchy nodes.' },
-            { name: 'nodes', type: 'readonly T[]', default: '[]', description: 'Alias for rootNodes.' },
-            { name: 'getChildren', type: '(node: T) => readonly T[]', default: '(node) => node.children', description: 'Accessor returning child nodes of a node.' },
-            { name: 'getNodeKey', type: '(node: T) => string', default: '(node) => node.id', description: 'Unique identifier accessor for a node.' },
-            { name: 'selectionMode', type: "'single' | 'multiple' | 'none'", default: "'single'", description: 'Active selection interaction mode.' },
-            { name: 'selectedId', type: 'string | null', default: 'null', description: 'Identifier of the currently selected node (single mode).' },
-            { name: 'selectedIds', type: 'readonly string[]', default: '[]', description: 'Array of selected node identifiers (multiple mode).' },
-            { name: 'dimmedIds', type: 'readonly string[]', default: '[]', description: 'Array of node IDs rendered in dimmed/cut state.' },
-            { name: 'stickyItems', type: 'readonly VirtualTreeStickyItem[]', default: '[]', description: 'Expanded ancestor chain of the open node, pinned above the scroll area so parents stay visible.' },
-            { name: 'onStickySelect', type: '(item: VirtualTreeStickyItem) => void', default: 'undefined', description: 'Callback fired when a pinned row is clicked (navigate only, never toggles expansion).' },
-            { name: 'onStickyToggle', type: '(item: VirtualTreeStickyItem) => void', default: 'undefined', description: 'Callback fired when the chevron of a pinned row is activated.' },
-            { name: 'enableDnd', type: 'boolean', default: 'false', description: 'Enables drag-and-drop reordering and folder nesting.' },
-            { name: 'onSelectionChange', type: '(ids: string[], nodes: T[]) => void', default: 'undefined', description: 'Callback fired when selected nodes change.' },
-            { name: 'onDropNode', type: '(evt: VirtualTreeDropEvent<T>) => void', default: 'undefined', description: 'Callback fired when nodes are dropped.' },
-            { name: 'onCut', type: '(nodes: T[], ids: string[]) => void', default: 'undefined', description: 'Callback fired on Ctrl+X cut shortcut.' },
-            { name: 'onPaste', type: '(target: T | null, pos: string) => void', default: 'undefined', description: 'Callback fired on Ctrl+V paste shortcut.' },
-            { name: 'defaultExpandDepth', type: 'number', default: '0', description: 'Default level of expansion for child branches.' },
-            { name: 'estimateSize', type: 'number', default: '32', description: 'Estimated row height for virtual calculation.' },
-            { name: 'gap', type: 'number', default: '0', description: 'Spacing between adjacent rows.' },
-            { name: 'overscan', type: 'number', default: '10', description: 'Buffer nodes rendered outside visible bounds.' },
-            { name: 'renderRow', type: '(context: VirtualTreeRowContext<T>) => ReactNode', default: 'undefined', description: 'Custom row rendering function.' },
-            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: 'Content shown when tree is empty.' },
-            { name: 'ref', type: 'Ref<VirtualTreeHandle>', default: 'undefined', description: 'Handle exposing expandAll(), collapseAll(), selectAll(), scrollToIndex().' },
+            { name: 'rootNodes', type: 'readonly T[]', default: '[]', description: t('components.virtualTree.rootNodesDesc', 'Array of top-level hierarchy nodes.') },
+            { name: 'nodes', type: 'readonly T[]', default: '[]', description: t('components.virtualTree.nodesDesc', 'Alias for rootNodes.') },
+            { name: 'getChildren', type: '(node: T) => readonly T[]', default: '(node) => node.children', description: t('components.virtualTree.getChildrenDesc', 'Accessor returning child nodes of a node.') },
+            { name: 'getNodeKey', type: '(node: T) => string', default: '(node) => node.id', description: t('components.virtualTree.getKeyDesc', 'Unique identifier accessor for a node.') },
+            { name: 'selectionMode', type: "'single' | 'multiple' | 'none'", default: "'single'", description: t('components.virtualTree.selectionModeDesc', 'Active selection interaction mode.') },
+            { name: 'selectedId', type: 'string | null', default: 'null', description: t('components.virtualTree.selectedIdDesc', 'Identifier of the currently selected node (single mode).') },
+            { name: 'selectedIds', type: 'readonly string[]', default: '[]', description: t('components.virtualTree.selectedIdsDesc', 'Array of selected node identifiers (multiple mode).') },
+            { name: 'dimmedIds', type: 'readonly string[]', default: '[]', description: t('components.virtualTree.dimmedDesc', 'Array of node IDs rendered in dimmed/cut state.') },
+            { name: 'stickyItems', type: 'readonly VirtualTreeStickyItem[]', default: '[]', description: t('components.virtualTree.stickyDesc', 'Expanded ancestor chain of the open node, pinned above the scroll area so parents stay visible.') },
+            { name: 'onStickySelect', type: '(item: VirtualTreeStickyItem) => void', default: 'undefined', description: t('components.virtualTree.onStickySelectDesc', 'Callback fired when a pinned row is clicked (navigate only, never toggles expansion).') },
+            { name: 'onStickyToggle', type: '(item: VirtualTreeStickyItem) => void', default: 'undefined', description: t('components.virtualTree.onStickyToggleDesc', 'Callback fired when the chevron of a pinned row is activated.') },
+            { name: 'enableDnd', type: 'boolean', default: 'false', description: t('components.virtualTree.enableDndDesc', 'Enables drag-and-drop reordering and folder nesting.') },
+            { name: 'onSelectionChange', type: '(ids: string[], nodes: T[]) => void', default: 'undefined', description: t('components.virtualTree.onSelectDesc', 'Callback fired when selected nodes change.') },
+            { name: 'onDropNode', type: '(evt: VirtualTreeDropEvent<T>) => void', default: 'undefined', description: t('components.virtualTree.onDropDesc', 'Callback fired when nodes are dropped.') },
+            { name: 'onCut', type: '(nodes: T[], ids: string[]) => void', default: 'undefined', description: t('components.virtualTree.onCutDesc', 'Callback fired on Ctrl+X cut shortcut.') },
+            { name: 'onPaste', type: '(target: T | null, pos: string) => void', default: 'undefined', description: t('components.virtualTree.onPasteDesc', 'Callback fired on Ctrl+V paste shortcut.') },
+            { name: 'defaultExpandDepth', type: 'number', default: '0', description: t('components.virtualTree.defaultExpandDesc', 'Default level of expansion for child branches.') },
+            { name: 'estimateSize', type: 'number', default: '32', description: t('components.virtualTree.estimateDesc', 'Estimated row height for virtual calculation.') },
+            { name: 'gap', type: 'number', default: '0', description: t('components.virtualTree.gapDesc', 'Spacing between adjacent rows.') },
+            { name: 'overscan', type: 'number', default: '10', description: t('components.virtualTree.overscanDesc', 'Buffer nodes rendered outside visible bounds.') },
+            { name: 'renderRow', type: '(context: VirtualTreeRowContext<T>) => ReactNode', default: 'undefined', description: t('components.virtualTree.renderRowDesc', 'Custom row rendering function.') },
+            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: t('components.virtualTree.emptyDesc', 'Content shown when tree is empty.') },
+            { name: 'ref', type: 'Ref<VirtualTreeHandle>', default: 'undefined', description: t('components.virtualTree.refDesc', 'Handle exposing expandAll(), collapseAll(), selectAll(), scrollToIndex().') },
           ]}
       />
     </DocLayout>

@@ -5,7 +5,7 @@ import ChaSet
 Rectangle {
     id: root
 
-    property string title: "Panel Title"
+    property string title: ChaSetI18n.tr("components.panelCard.defaultTitle", "Panel Title")
     property string description: ""
     property string badgeText: ""
     property bool collapsible: false

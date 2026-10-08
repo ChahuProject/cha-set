@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Duration Input"
-    description: "Segmented duration input control for hours, minutes, and seconds with stepper buttons, mouse wheel adjustments, keyboard arrow jumping, and preset menu."
+    description: ChaSetI18n.tr("components.duration-input.description", "Segmented duration input control for hours, minutes, and seconds with stepper buttons, mouse wheel adjustments, keyboard arrow jumping, and preset menu.")
 
     ComponentPreview {
-        title: "Duration Input Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.durationInput.sandboxTitle", "Duration Input Sandbox")
         reactCode: `<DurationInput value={3665} onChange={(v) => console.log(v)} />`
         qtCode: `ChaSetDurationInput {
     value: 3665
@@ -85,14 +85,14 @@ ChaSetDurationInput {
         spacing: ThemeTokens.dp(12)
 
         DocText {
-            text: "Variants & Configurations"
+            text: ChaSetI18n.tr("components.durationInput.variantsTitle", "Variants & Configurations")
             font.pixelSize: Typography.sizeTitleSm
             font.bold: true
             color: ThemeTokens.text
         }
 
         DocText {
-            text: "Supports compact and comfortable sizes, disabling presets or labels, and disabled states."
+            text: ChaSetI18n.tr("components.durationInput.variantsDesc", "Supports compact and comfortable sizes, disabling presets or labels, and disabled states.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -168,17 +168,17 @@ ChaSetDurationInput {
         name: "DurationInput"
         componentId: "duration-input"
         propsModel: [
-            { name: "value", type: "int", defaultVal: "0", description: "Total duration in seconds." },
-            { name: "maxHours", type: "int", defaultVal: "99", description: "Upper clamp limit for the hours segment." },
-            { name: "size", type: "string", defaultVal: "'default'", description: "Visual density and size variant ('sm', 'default', 'lg')." },
-            { name: "disabled", type: "bool", defaultVal: "false", description: "Whether editing, stepper buttons, and dropdown are disabled." },
-            { name: "showPresets", type: "bool", defaultVal: "true", description: "Whether to display the preset dropdown button." },
-            { name: "showLabels", type: "bool", defaultVal: "true", description: "Whether to display the segment unit labels underneath." },
-            { name: "hoursLabel", type: "string", defaultVal: "'Hours'", description: "Label text for the hours segment." },
-            { name: "minutesLabel", type: "string", defaultVal: "'Minutes'", description: "Label text for the minutes segment." },
-            { name: "secondsLabel", type: "string", defaultVal: "'Seconds'", description: "Label text for the seconds segment." },
-            { name: "presetsLabel", type: "string", defaultVal: "'Presets'", description: "Label text for the presets button." },
-            { name: "customRadius", type: "int", defaultVal: "6", description: "Corner radius of segment boxes and popup." }
+            { name: "value", type: "int", defaultVal: "0", description: ChaSetI18n.tr("components.durationInput.valueDesc", "Total duration in seconds (controlled mode).") },
+            { name: "maxHours", type: "int", defaultVal: "99", description: ChaSetI18n.tr("components.durationInput.maxHoursDesc", "Upper clamp limit for the hours segment.") },
+            { name: "size", type: "string", defaultVal: "'default'", description: ChaSetI18n.tr("components.durationInput.sizeDesc", "Visual density and size variant.") },
+            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.durationInput.disabledDesc", "Whether the inputs, buttons, and preset dropdown are disabled.") },
+            { name: "showPresets", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.durationInput.showPresetsDesc", "Whether to display the preset dropdown button.") },
+            { name: "showLabels", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.durationInput.showLabelsDesc", "Whether to display the segment unit labels underneath.") },
+            { name: "hoursLabel", type: "string", defaultVal: "'Hours'", description: ChaSetI18n.tr("components.durationInput.hoursLabelDesc", "Label text for hours segment.") },
+            { name: "minutesLabel", type: "string", defaultVal: "'Minutes'", description: ChaSetI18n.tr("components.durationInput.minutesLabelDesc", "Label text for minutes segment.") },
+            { name: "secondsLabel", type: "string", defaultVal: "'Seconds'", description: ChaSetI18n.tr("components.durationInput.secondsLabelDesc", "Label text for seconds segment.") },
+            { name: "presetsLabel", type: "string", defaultVal: "'Presets'", description: ChaSetI18n.tr("components.durationInput.presetsLabelDesc", "Label text for the presets trigger button.") },
+            { name: "customRadius", type: "int", defaultVal: "6", description: ChaSetI18n.tr("components.durationInput.customRadiusDesc", "Corner radius of segment boxes and popup.") }
         ]
     }
 }

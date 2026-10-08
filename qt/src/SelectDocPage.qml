@@ -7,12 +7,12 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Select"
-    description: "Displays a list of options for the user to pick from — triggered by a button with chevron and checked indicators."
+    description: ChaSetI18n.tr("components.select.description", "Displays a list of options for the user to pick from, triggered by a button with item indicators and scroll buttons.")
 
     property string selectedFruit: "apple"
 
     ComponentPreview {
-        title: "Select Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.select.sandboxTitle", "Select Sandbox")
         reactCode: `<Select value={value} onValueChange={setValue}>
   <SelectTrigger className="w-48">
     <SelectValue placeholder="Choose fruit..." />
@@ -94,11 +94,11 @@ ChaSetSelect {
         name: "Select"
         componentId: "select"
         propsModel: [
-            { name: "value", type: "string", default: "''", description: "The currently selected option value." },
-            { name: "placeholder", type: "string", default: "'Select an option...'", description: "Placeholder label displayed when no value is chosen." },
-            { name: "options", type: "var[]", default: "[]", description: "Array of selectable option objects: { value, label, disabled }." },
-            { name: "disabled", type: "bool", default: "false", description: "Whether the select control is disabled." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the select trigger." }
+            { name: "value", type: "string", default: "''", description: ChaSetI18n.tr("components.select.valueQtDesc", "The currently selected option value.") },
+            { name: "placeholder", type: "string", default: "'Select an option...'", description: ChaSetI18n.tr("components.select.placeholderDesc", "Placeholder label displayed when no value is chosen.") },
+            { name: "options", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.select.optionsDesc", "Array of selectable option objects: { value, label, disabled }.") },
+            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.select.disabledDesc", "Whether the select is disabled.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.select.triggerRadiusDesc", "Corner radius of the select trigger.") }
         ]
     }
 }

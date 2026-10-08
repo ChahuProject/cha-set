@@ -37,14 +37,14 @@ export function ViewportConstrainedContainerDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Viewport Constrained Container"
-      description="Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling."
+      description={t('components.viewportConstrainedContainer.description', 'Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.viewport.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          The container dynamically measures the distance from its anchor to the bottom of the window (window.innerHeight - rect.top - margin) and clamps content height to prevent overflowing outside the viewport.
+          {t('desktopComposite.viewport.overviewDesc', 'The container dynamically measures the distance from its anchor to the bottom of the window (window.innerHeight - rect.top - margin) and clamps content height to prevent overflowing outside the viewport.')}
         </p>
 
         <ComponentPreview
@@ -73,7 +73,7 @@ export function ViewportConstrainedContainerDocPage() {
             }
         }
     }
-}`} title="Viewport Constrained Container Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.viewport.sandboxTitle', 'Viewport Constrained Container Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-sm flex flex-col gap-4">
             <div className="flex items-center gap-2">
               <Button
@@ -143,10 +143,10 @@ ChaSetViewportConstrainedContainer {
 
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Variants & Limits
+          {t('desktopComposite.viewport.variantsTitle', 'Variants & Limits')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Configure custom numeric overrides, string-based bounds, or custom margin offsets.
+          {t('desktopComposite.viewport.variantsDesc', 'Configure custom numeric overrides, string-based bounds, or custom margin offsets.')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -195,12 +195,12 @@ ChaSetViewportConstrainedContainer {
         name="ViewportConstrainedContainer"
         componentId="viewport-constrained-container"
         props={[
-            { name: 'maxHeight', type: 'number | string', default: 'undefined', description: 'Optional upper limit on container max-height.' },
-            { name: 'minHeight', type: 'number | string', default: '80', description: 'Minimum allowable height lower bound.' },
-            { name: 'margin', type: 'number', default: '16', description: 'Reserved margin between container bottom and viewport bottom edge.' },
-            { name: 'overflow', type: "'auto' | 'scroll'", default: "'auto'", description: 'Vertical overflow scrolling strategy.' },
-            { name: 'className', type: 'string', default: 'undefined', description: 'Custom CSS class names for styling.' },
-            { name: 'children', type: 'React.ReactNode', default: 'undefined', description: 'Elements rendered inside the container.' },
+            { name: 'maxHeight', type: 'number | string', default: 'undefined', description: t('components.viewportConstrainedContainer.maxHeightDesc', 'Optional upper limit on container max-height.') },
+            { name: 'minHeight', type: 'number | string', default: '80', description: t('components.viewportConstrainedContainer.minHeightDesc', 'Minimum allowable height lower bound.') },
+            { name: 'margin', type: 'number', default: '16', description: t('components.viewportConstrainedContainer.marginDesc', 'Reserved margin between container bottom and viewport bottom edge.') },
+            { name: 'overflow', type: "'auto' | 'scroll'", default: "'auto'", description: t('components.viewportConstrainedContainer.overflowDesc', 'Vertical overflow scrolling strategy.') },
+            { name: 'className', type: 'string', default: 'undefined', description: t('components.viewportConstrainedContainer.classNameDesc', 'Custom CSS class names for styling.') },
+            { name: 'children', type: 'React.ReactNode', default: 'undefined', description: t('components.viewportConstrainedContainer.childrenDesc', 'Elements rendered inside the container.') },
           ]}
       />
     </DocLayout>

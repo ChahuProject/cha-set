@@ -45,19 +45,19 @@ export function CheckboxDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Checkbox"
-      description="A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, helper descriptions, and companion labels."
+      description={t('components.checkbox.description', 'A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, helper descriptions, and companion labels.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.checkbox.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('formsA.checkbox.overviewDesc', 'Test interactive checkbox toggling, indeterminate states, helper descriptions, error states, and sizes across Web and Qt Desktop.')}
         </p>
 
         <ComponentPreview
-          title="Checkbox Sandbox"
+          title={t('desktopComposite.checkbox.sandboxTitle', 'Checkbox Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -155,7 +155,7 @@ export function CheckboxDocPage() {
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Examples & States
+          {t('showcase.examplesAndStates', 'Examples & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('formsA.checkbox.examplesSubtitle', 'Visual matrix of common checkbox configurations, sizes, descriptions, and states.')}
@@ -230,25 +230,20 @@ export function CheckboxDocPage() {
       {/* 5. Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Motion behavior and timing for the checked, indeterminate, and state transitions.
+          {t('desktopComposite.checkbox.animationsDesc', 'Motion behavior and timing for the checked, indeterminate, and state transitions.')}
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
-            The check-mark SVG stays mounted and, when checked, fades in from opacity 0 to 1
-            while scaling from 0.5 to 1 over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-entrance</code> curve.
+            {t('desktopComposite.checkbox.animationsBullet1', 'The check-mark SVG stays mounted and, when checked, fades in from opacity 0 to 1 while scaling from 0.5 to 1 over duration-quick with the ease-entrance curve.')}
           </li>
           <li>
-            The box border color cross-fades on hover, focus, checked, and invalid state changes.
+            {t('desktopComposite.checkbox.animationsBullet2', 'The box border color cross-fades on hover, focus, checked, and invalid state changes.')}
           </li>
           <li>
-            Durations and easing resolve from theme tokens, so{' '}
-            <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{' '}
-            <code>ThemeTokens.animationsEnabled</code>).
+            {t('desktopComposite.checkbox.animationsBullet3', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
           </li>
         </ul>
       </section>
@@ -262,79 +257,79 @@ export function CheckboxDocPage() {
             name: 'checked',
             type: 'boolean',
             default: 'false',
-            description: 'The controlled checked state of the checkbox.',
+            description: t('components.checkbox.checkedDesc', 'The controlled checked state of the checkbox.'),
           },
           {
             name: 'defaultChecked',
             type: 'boolean',
             default: 'false',
-            description: 'The default checked state when uncontrolled.',
+            description: t('components.checkbox.defaultCheckedDesc', 'The default checked state when uncontrolled.'),
           },
           {
             name: 'indeterminate',
             type: 'boolean',
             default: 'false',
-            description: 'Whether the checkbox is in an indeterminate state (takes visual precedence over checked).',
+            description: t('components.checkbox.indeterminateDesc', 'Whether the checkbox is in an indeterminate state (takes visual precedence over checked).'),
           },
           {
             name: 'disabled',
             type: 'boolean',
             default: 'false',
-            description: 'Disables user interactions and applies 50% opacity.',
+            description: t('components.checkbox.disabledDesc', 'Disables user interactions and applies 50% opacity.'),
           },
           {
             name: 'readOnly',
             type: 'boolean',
             default: 'false',
-            description: 'Prevents toggling state while retaining focusability and full opacity.',
+            description: t('components.checkbox.readOnlyDesc', 'Prevents toggling state while retaining focusability and full opacity.'),
           },
           {
             name: 'invalid',
             type: 'boolean',
             default: 'false',
-            description: 'Applies destructive error styling and aria-invalid attribute.',
+            description: t('components.checkbox.invalidDesc', 'Applies destructive error styling and aria-invalid attribute.'),
           },
           {
             name: 'size',
             type: "'default' | 'sm'",
             default: "'default'",
-            description: 'The size variant: default or sm.',
+            description: t('components.checkbox.sizeDesc', 'The size variant: default or sm.'),
           },
           {
             name: 'label',
             type: 'ReactNode',
             default: 'undefined',
-            description: 'Optional companion label rendered alongside the checkbox.',
+            description: t('components.checkbox.labelDesc', 'Optional companion label rendered alongside the checkbox.'),
           },
           {
             name: 'description',
             type: 'ReactNode',
             default: 'undefined',
-            description: 'Optional helper text rendered below the label.',
+            description: t('components.checkbox.helperDesc', 'Optional helper text rendered below the label.'),
           },
           {
             name: 'onCheckedChange',
             type: '(checked: boolean) => void',
             default: 'undefined',
-            description: 'Callback invoked when checked state changes.',
+            description: t('components.checkbox.onCheckedChangeDesc', 'Callback invoked when checked state changes.'),
           },
           {
             name: 'forceHover',
             type: 'boolean',
             default: 'false',
-            description: 'Visual testing aid to force hover state styles.',
+            description: t('components.checkbox.forceHoverDesc', 'Visual testing aid to force hover state styles.'),
           },
           {
             name: 'forceFocus',
             type: 'boolean',
             default: 'false',
-            description: 'Visual testing aid to force focus ring styles.',
+            description: t('components.checkbox.forceFocusDesc', 'Visual testing aid to force focus ring styles.'),
           },
           {
             name: 'className',
             type: 'string',
             default: "''",
-            description: 'Additional CSS class names to apply to the checkbox button.',
+            description: t('components.checkbox.classNameDesc', 'Additional CSS class names to apply to the checkbox button.'),
           },
         ]}
       />

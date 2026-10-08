@@ -7,10 +7,10 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Viewport Constrained Container"
-    description: "Container that dynamically bounds max-height based on available viewport space below the anchor, enabling smooth scrolling."
+    description: ChaSetI18n.tr("components.viewportConstrainedContainer.description", "Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling.")
 
     ComponentPreview {
-        title: "Viewport Constrained Container Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.viewport.sandboxTitle", "Viewport Constrained Container Sandbox")
         reactCode: `<ViewportConstrainedContainer maxHeight={240} margin={16}>
   <div className="p-3 flex flex-col gap-2">
     {items.map(item => <div key={item}>{item}</div>)}
@@ -114,14 +114,14 @@ ChaSetViewportConstrainedContainer {
         spacing: ThemeTokens.dp(12)
 
         DocText {
-            text: "Variants & Limits"
+            text: ChaSetI18n.tr("desktopComposite.viewport.variantsTitle", "Variants & Limits")
             font.pixelSize: Typography.sizeTitleSm
             font.bold: true
             color: ThemeTokens.text
         }
 
         DocText {
-            text: "Configure custom numeric overrides, string-based bounds, or custom margin offsets."
+            text: ChaSetI18n.tr("desktopComposite.viewport.variantsDesc", "Configure custom numeric overrides, string-based bounds, or custom margin offsets.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
         }
@@ -184,13 +184,13 @@ ChaSetViewportConstrainedContainer {
         name: "ViewportConstrainedContainer"
         componentId: "viewport-constrained-container"
         propsModel: [
-            { name: "maxHeight", type: "var", default: "undefined", description: "Optional upper bound on max-height." },
-            { name: "minHeight", type: "var", default: "80", description: "Minimum allowable height lower bound." },
-            { name: "margin", type: "real", default: "16", description: "Reserved margin between container bottom and viewport bottom." },
-            { name: "overflow", type: "string", default: "'auto'", description: "Overflow behavior ('auto' | 'scroll')." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the container." },
-            { name: "backgroundColor", type: "color", default: "ThemeTokens.panel", description: "Background surface fill color." },
-            { name: "borderColor", type: "color", default: "ThemeTokens.border", description: "Border outline color." }
+            { name: "maxHeight", type: "var", default: "undefined", description: ChaSetI18n.tr("components.viewportConstrainedContainer.maxHeightDesc", "Optional upper limit on container max-height.") },
+            { name: "minHeight", type: "var", default: "80", description: ChaSetI18n.tr("components.viewportConstrainedContainer.minHeightDesc", "Minimum allowable height lower bound.") },
+            { name: "margin", type: "real", default: "16", description: ChaSetI18n.tr("components.viewportConstrainedContainer.marginDesc", "Reserved margin between container bottom and viewport bottom edge.") },
+            { name: "overflow", type: "string", default: "'auto'", description: ChaSetI18n.tr("components.viewportConstrainedContainer.overflowDesc", "Vertical overflow scrolling strategy.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.viewportConstrainedContainer.customRadiusDesc", "Corner radius of the container.") },
+            { name: "backgroundColor", type: "color", default: "ThemeTokens.panel", description: ChaSetI18n.tr("components.viewportConstrainedContainer.bgDesc", "Background surface fill color.") },
+            { name: "borderColor", type: "color", default: "ThemeTokens.border", description: ChaSetI18n.tr("components.viewportConstrainedContainer.borderDesc", "Border outline color.") }
         ]
     }
 }

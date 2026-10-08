@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Collapsible"
-    description: "An interactive component which expands and collapses a panel of content."
+    description: ChaSetI18n.tr("components.collapsible.description", "An interactive component which expands and collapses a panel of content.")
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -25,7 +25,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Collapsible Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.collapsible.sandboxTitle", "Collapsible Sandbox")
         reactCode: `<Collapsible open={${root.demoOpen}} disabled={${root.demoDisabled}} variant="${root.demoVariant}">\n  <CollapsibleTrigger>Toggle Details</CollapsibleTrigger>\n  <CollapsibleContent>\n    <div>Collapsible content panel</div>\n  </CollapsibleContent>\n</Collapsible>`
         qtCode: `ChaSetCollapsible {\n    width: 280\n    title: "Repository Details"\n    open: ${root.demoOpen}\n    disabled: ${root.demoDisabled}\n    variant: "${root.demoVariant}"\n\n    Column {\n        width: parent.width\n        spacing: 6\n        topPadding: 8\n\n        Rectangle {\n            width: parent.width\n            height: 32\n            radius: 4\n            color: ThemeTokens.hover\n            Text {\n                anchors.centerIn: parent\n                text: "@radix-ui/primitives"\n                color: ThemeTokens.text\n                font.pixelSize: 12\n            }\n        }\n    }\n}`
 
@@ -123,8 +123,8 @@ DocLayout {
                         size: "sm"
                         value: root.demoDisabled ? "true" : "false"
                         options: [
-                            { label: "False", value: "false" },
-                            { label: "True", value: "true" }
+                            { label: ChaSetI18n.tr("desktopComposite.collapsible.falseLabel", "False"), value: "false" },
+                            { label: ChaSetI18n.tr("desktopComposite.collapsible.trueLabel", "True"), value: "true" }
                         ]
                         onValueSelected: function(v) { root.demoDisabled = (String(v) === "true"); }
                     }
@@ -160,8 +160,8 @@ ChaSetCollapsible {
         property string sectionId: "default-open"
         width: parent.width
         spacing: 8
-        DocText { text: "Default Open"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Use defaultOpen to initialize the collapsible in an expanded state."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("desktopComposite.collapsible.defaultOpenHeading", "Default Open"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("desktopComposite.collapsible.defaultOpenDescQt", "Use defaultOpen to initialize the collapsible in an expanded state."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -175,7 +175,7 @@ ChaSetCollapsible {
 
                 ChaSetCollapsible {
                     width: parent.width
-                    title: "Advanced System Options"
+                    title: ChaSetI18n.tr("desktopComposite.collapsible.advancedOptionsQt", "Advanced System Options")
                     defaultOpen: true
 
                     Column {
@@ -193,7 +193,7 @@ ChaSetCollapsible {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.left: parent.left
                                 anchors.leftMargin: ThemeTokens.dp(8)
-                                text: "Vulkan Validation Layers: Enabled"
+                                text: ChaSetI18n.tr("desktopComposite.collapsible.vulkanBadge", "Vulkan Validation Layers: Enabled")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeSmall
                             }
@@ -209,8 +209,8 @@ ChaSetCollapsible {
         property string sectionId: "disabled"
         width: parent.width
         spacing: 8
-        DocText { text: "Disabled State"; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-        DocText { text: "Prevents clicking and interaction with a dimmed appearance."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
+        DocText { text: ChaSetI18n.tr("desktopComposite.collapsible.disabledHeading", "Disabled State"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
+        DocText { text: ChaSetI18n.tr("desktopComposite.collapsible.disabledDescQt", "Prevents clicking and interaction with a dimmed appearance."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody }
 
         ChaSetCard {
             width: parent.width
@@ -224,7 +224,7 @@ ChaSetCollapsible {
 
                 ChaSetCollapsible {
                     width: parent.width
-                    title: "Protected Developer Settings"
+                    title: ChaSetI18n.tr("desktopComposite.collapsible.protectedSettings", "Protected Developer Settings")
                     disabled: true
                 }
             }
@@ -236,12 +236,12 @@ ChaSetCollapsible {
         name: "Collapsible"
         componentId: "collapsible"
         props: [
-            { name: "open", type: "bool", defaultValue: "false", description: "Whether the collapsible content is currently expanded." },
-            { name: "defaultOpen", type: "bool", defaultValue: "false", description: "Whether the collapsible is initially expanded on load." },
-            { name: "disabled", type: "bool", defaultValue: "false", description: "Whether user interaction and toggling are disabled." },
-            { name: "variant", type: "string", defaultValue: "'default'", description: "Visual container styling variant: 'default' | 'card' | 'ghost'." },
-            { name: "title", type: "string", defaultValue: "''", description: "Title text displayed in the header trigger bar." },
-            { name: "customRadius", type: "int", defaultValue: "6", description: "Corner radius of the header and container." }
+            { name: "open", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.collapsible.openDescQt", "Whether the collapsible content is currently expanded.") },
+            { name: "defaultOpen", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.collapsible.defaultOpenDescQt", "Whether the collapsible is initially expanded on load.") },
+            { name: "disabled", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.collapsible.disabledDescQt", "Whether user interaction and toggling are disabled.") },
+            { name: "variant", type: "string", defaultValue: "'default'", description: ChaSetI18n.tr("components.collapsible.variantDescQt", "Visual container styling variant: 'default' | 'card' | 'ghost'.") },
+            { name: "title", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.collapsible.titleDesc", "Title text displayed in the header trigger bar.") },
+            { name: "customRadius", type: "int", defaultValue: "6", description: ChaSetI18n.tr("components.collapsible.customRadiusDesc", "Corner radius of the header and container.") }
         ]
     }
 }

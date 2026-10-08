@@ -7,14 +7,14 @@ DocLayout {
     id: root
     category: "Base Primitives"
     pageTitle: "Squircle"
-    description: "iOS 连续曲率超椭圆圆角（G2 连续律）。消除了传统圆弧角在直线与切点处曲率突变导致的生硬折痕，为整个项目提供平滑、有机的现代圆角设计。"
+    description: ChaSetI18n.tr("components.squircle.description", "iOS continuous curvature superellipse rounded corners (G2 continuity). Eliminates harsh creases caused by abrupt curvature transitions in classic circular arcs, providing smooth, organic modern corners across the design system.")
 
     tocItems: [
-        { id: "overview", title: "Interactive Overview" },
-        { id: "installation", title: "Installation" },
-        { id: "animations", title: "Animations" },
-        { id: "keyboard", title: "Keyboard Navigation" },
-        { id: "props", title: "Props Reference" }
+        { id: "overview", title: ChaSetI18n.tr("desktopComposite.squircle.overviewHeading", "Interactive Overview") },
+        { id: "installation", title: ChaSetI18n.tr("desktopComposite.squircle.installHeading", "Installation") },
+        { id: "animations", title: ChaSetI18n.tr("showcase.animations", "Animations") },
+        { id: "keyboard", title: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation") },
+        { id: "props", title: ChaSetI18n.tr("showcase.propsReference", "Props Reference") }
     ]
 
     property int customRadius: 16
@@ -23,7 +23,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Squircle Sandbox & Curvature Comparison"
+        title: ChaSetI18n.tr("desktopComposite.squircle.sandboxTitle", "Squircle Sandbox & Curvature Comparison")
         reactCode: `<Squircle
   radius={${root.customRadius}}
   smoothing={${root.customSmoothing.toFixed(2)}}
@@ -221,23 +221,23 @@ DocLayout {
                         spacing: ThemeTokens.dp(10)
 
                         ChaSetButton {
-                            text: "Squircle Button"
+                            text: ChaSetI18n.tr("desktopComposite.squircle.demoButton", "Squircle Button")
                             variant: "default"
                         }
 
                         ChaSetButton {
-                            text: "Outline Button"
+                            text: ChaSetI18n.tr("desktopComposite.squircle.demoOutline", "Outline Button")
                             variant: "outline"
                         }
 
                         ChaSetBadge {
-                            text: "Status Pill"
+                            text: ChaSetI18n.tr("desktopComposite.squircle.demoPill", "Status Pill")
                             variant: "default"
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
                         ChaSetBadge {
-                            text: "Secondary Badge"
+                            text: ChaSetI18n.tr("desktopComposite.squircle.demoBadge", "Secondary Badge")
                             variant: "secondary"
                             anchors.verticalCenter: parent.verticalCenter
                         }
@@ -252,7 +252,7 @@ DocLayout {
         id: installationSection
         objectName: "installation"
         property string sectionId: "installation"
-        property string sectionTitle: "Installation"
+        property string sectionTitle: ChaSetI18n.tr("desktopComposite.squircle.installHeading", "Installation")
         width: parent.width
         spacing: ThemeTokens.dp(20)
 
@@ -261,12 +261,12 @@ DocLayout {
             spacing: ThemeTokens.dp(6)
 
             DocText {
-                text: "Installation"
+                text: ChaSetI18n.tr("desktopComposite.squircle.installHeading", "Installation")
                 role: "h2"
             }
 
             DocText {
-                text: "Package installation and CMake / QML module linkage."
+                text: ChaSetI18n.tr("desktopComposite.squircle.installDesc", "Package installation and CMake / QML module linkage.")
                 role: "p"
                 isMuted: true
             }
@@ -287,12 +287,12 @@ DocLayout {
                 spacing: ThemeTokens.dp(4)
 
                 DocText {
-                    text: "项目全局接入指南 (Global Adoption Guide for External Projects)"
+                    text: ChaSetI18n.tr("desktopComposite.squircle.guideTitle", "Global Adoption Guide for External Projects")
                     role: "h3"
                 }
 
                 DocText {
-                    text: "外部项目接入 ChaSet iOS 连续曲率超椭圆体系指南。在 Web 侧支持原生 CSS corner-shape 与 <Squircle> 容器渐进增强；在 Qt Quick 桌面端中，ChaSetSquircle (ChaSetSmoothRectangle) 实现了对标准 Rectangle 的 100% 属性超集无缝替换。"
+                    text: ChaSetI18n.tr("desktopComposite.squircle.guideDesc", "External projects adopt the ChaSet iOS continuous-curvature system via two progressive enhancement strategies: the base layer accelerates all Tailwind utilities at zero cost through modern browser CSS features; legacy environments or high-precision bordered geometry fall back to guaranteed rendering through the primitive component.")
                     role: "p"
                     isMuted: true
                 }
@@ -315,11 +315,11 @@ DocLayout {
                         spacing: ThemeTokens.dp(8)
                         ChaSetBadge {
                             variant: "default"
-                            text: "策略一"
+                            text: ChaSetI18n.tr("desktopComposite.squircle.strategyBadge1", "Strategy 1")
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         DocText {
-                            text: "Universal CSS Acceleration (全局 CSS 连续曲率加速)"
+                            text: ChaSetI18n.tr("desktopComposite.squircle.strategy1Title", "Universal CSS Acceleration (Global CSS Continuous-Curvature Acceleration)")
                             font.pixelSize: Typography.sizeBody
                             font.weight: Typography.weightSemibold
                             color: ThemeTokens.text
@@ -328,7 +328,7 @@ DocLayout {
                     }
 
                     DocText {
-                        text: "在宿主项目的全局样式表（如 globals.css 或 index.css）中加入 CSS 特性查询。所有基于 Tailwind CSS rounded-* 类的元素将即刻提升为 iOS 连续曲率超椭圆，平滑消除边缘生硬折痕。"
+                        text: ChaSetI18n.tr("desktopComposite.squircle.strategy1Desc", "Add a CSS feature query in the host project global stylesheet (e.g. globals.css or index.css). Every element based on Tailwind rounded-* utilities is instantly promoted to iOS continuous-curvature superellipses, smoothly eliminating harsh edge creases.")
                         role: "p"
                         isMuted: true
                     }
@@ -359,11 +359,11 @@ DocLayout {
                         spacing: ThemeTokens.dp(8)
                         ChaSetBadge {
                             variant: "secondary"
-                            text: "策略二"
+                            text: ChaSetI18n.tr("desktopComposite.squircle.strategyBadge2", "Strategy 2")
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         DocText {
-                            text: "CMake 模块链接与 ChaSetSquircle 无缝替换 (Desktop Drop-in Replacement)"
+                            text: ChaSetI18n.tr("desktopComposite.squircle.strategy2Title", "Guaranteed Progressive Enhancement (Container Progressive Enhancement)")
                             font.pixelSize: Typography.sizeBody
                             font.weight: Typography.weightSemibold
                             color: ThemeTokens.text
@@ -372,7 +372,7 @@ DocLayout {
                     }
 
                     DocText {
-                        text: "在桌面宿主项目的 CMakeLists.txt 中链接 ChaSet 插件模块。在 QML 视图中将原有 Rectangle 直接替换为 ChaSetSquircle (或别名 ChaSetSmoothRectangle)，即可获得 iOS G2 连续平滑曲率与单边独立圆角能力："
+                        text: ChaSetI18n.tr("desktopComposite.squircle.strategy2Desc", "For dialogs (Dialog/Sheet), highlight cards, or browser engines without CSS corner-shape support, wrap content with the ChaSet component. Internally it clips via SVG clipPath with ResizeObserver-driven geometry, guaranteeing 100% cross-platform pixel-smooth rendering.")
                         role: "p"
                         isMuted: true
                     }
@@ -410,11 +410,11 @@ DocLayout {
                         spacing: ThemeTokens.dp(8)
                         ChaSetBadge {
                             variant: "outline"
-                            text: "策略三"
+                            text: ChaSetI18n.tr("desktopComposite.squircle.strategyBadge3", "Strategy 3")
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         DocText {
-                            text: "Design Tokens 全局主题曲率配置 (Theme Tokens Configuration)"
+                            text: ChaSetI18n.tr("desktopComposite.squircle.strategy3Title", "Design Tokens Configuration (Global Design-Token Setup)")
                             font.pixelSize: Typography.sizeBody
                             font.weight: Typography.weightSemibold
                             color: ThemeTokens.text
@@ -423,7 +423,7 @@ DocLayout {
                     }
 
                     DocText {
-                        text: "ChaSet 核心设计令牌内置了曲率控制变量。宿主可在全局主题管理器或 ThemeTokens 中调整 cornerSmoothing 参数 (0.0 为传统圆弧，0.6 为 Apple iOS 标准，1.0 为极限超椭圆)："
+                        text: ChaSetI18n.tr("desktopComposite.squircle.strategy3Desc", "ChaSet core design tokens ship built-in curvature variables. Host projects may define --cs-corner-shape and --cs-corner-smoothing at the root level, and the full component library automatically inherits the matching curvature.")
                         role: "p"
                         isMuted: true
                     }

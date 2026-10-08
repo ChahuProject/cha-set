@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Checkbox"
-    description: "A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, and companion labels."
+    description: ChaSetI18n.tr("components.checkbox.description", "A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, helper descriptions, and companion labels.")
 
     property int customRadius: 6
     property color cFg: ThemeTokens.text
@@ -31,7 +31,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Checkbox Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.checkbox.sandboxTitle", "Checkbox Sandbox")
         reactCode: `<Checkbox\n  size="${root.demoSize}"\n  checked={${root.demoIndeterminate ? 'false' : root.demoChecked}}\n  indeterminate={${root.demoIndeterminate}}\n  disabled={${root.demoDisabled}}\n  readOnly={${root.demoReadOnly}}\n  invalid={${root.demoInvalid}}\n  label="${root.demoLabel}"\n  ${root.demoShowDesc ? `description="${root.demoDescription}"\n  ` : ''}onCheckedChange={(val) => setChecked(val)}\n/>`
         qtCode: `ChaSetCheckbox {\n    size: "${root.demoSize}"\n    checked: ${root.demoIndeterminate ? 'false' : root.demoChecked}\n    indeterminate: ${root.demoIndeterminate}\n    disabled: ${root.demoDisabled}\n    readOnly: ${root.demoReadOnly}\n    invalid: ${root.demoInvalid}\n    label: "${root.demoLabel}"\n    ${root.demoShowDesc ? `description: "${root.demoDescription}"\n    ` : ''}onToggled: (val) => { /* handle toggle */ }\n}`
 
@@ -147,7 +147,7 @@ DocLayout {
         spacing: 16
 
         DocText {
-            text: "Examples & States"
+            text: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
             color: root.cFg
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
@@ -317,12 +317,12 @@ DocLayout {
         width: parent.width
         spacing: 12
 
-        DocText { text: "Animations"; color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        DocText { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
 
-        DocText { text: "Motion behavior and timing driven by ThemeTokens for state transitions."; color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: ChaSetI18n.tr("desktopComposite.checkbox.animationsDesc", "Motion behavior and timing for the checked, indeterminate, and state transitions."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
         DocText { text: "• The check-mark SVG stays mounted and cross-fades its opacity and scale when checked, using ThemeTokens.motionQuick with the easeEntrance curve on opacity/scale and easeStandard on colors."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• The box border color interpolates across hover, focus, checked, and invalid states."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• " + ChaSetI18n.tr("desktopComposite.checkbox.animationsBullet2", "The box border color cross-fades on hover, focus, checked, and invalid state changes."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
         DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
@@ -331,17 +331,17 @@ DocLayout {
         name: "Checkbox"
         componentId: "checkbox"
         propsModel: [
-            { name: "checked", type: "bool", defaultValue: "false", desc: "Whether the checkbox is currently checked." },
-            { name: "indeterminate", type: "bool", defaultValue: "false", desc: "Whether the checkbox is in an indeterminate state (takes visual precedence over checked)." },
-            { name: "disabled", type: "bool", defaultValue: "false", desc: "Disables user interactions and applies 50% opacity." },
-            { name: "readOnly", type: "bool", defaultValue: "false", desc: "Prevents toggling state while retaining focusability and full opacity." },
-            { name: "invalid", type: "bool", defaultValue: "false", desc: "Applies destructive error styling to box border and focus ring." },
-            { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "The size variant: default or sm." },
-            { name: "label", type: "string", defaultValue: "''", desc: "Companion label text displayed next to the checkbox." },
-            { name: "description", type: "string", defaultValue: "''", desc: "Optional helper text displayed below the label." },
-            { name: "customRadius", type: "int", defaultValue: "-1", desc: "Optional custom corner radius for the checkbox box (-1 uses default)." },
-            { name: "forceHover", type: "bool", defaultValue: "false", desc: "Visual testing aid to force hover state styles." },
-            { name: "forceFocus", type: "bool", defaultValue: "false", desc: "Visual testing aid to force focus ring styles." }
+            { name: "checked", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.checkedDesc", "The controlled checked state of the checkbox.") },
+            { name: "indeterminate", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.indeterminateDesc", "Whether the checkbox is in an indeterminate state (takes visual precedence over checked).") },
+            { name: "disabled", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.disabledDesc", "Disables user interactions and applies 50% opacity.") },
+            { name: "readOnly", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.readOnlyDesc", "Prevents toggling state while retaining focusability and full opacity.") },
+            { name: "invalid", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.invalidDesc", "Applies destructive error styling and aria-invalid attribute.") },
+            { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", description: ChaSetI18n.tr("components.checkbox.sizeDesc", "The size variant: default or sm.") },
+            { name: "label", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.checkbox.labelDesc", "Optional companion label rendered alongside the checkbox.") },
+            { name: "description", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.checkbox.helperDesc", "Optional helper text rendered below the label.") },
+            { name: "customRadius", type: "int", defaultValue: "-1", description: ChaSetI18n.tr("components.checkbox.customRadiusDesc", "Optional custom corner radius for the checkbox box (-1 uses default).") },
+            { name: "forceHover", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.forceHoverDesc", "Visual testing aid to force hover state styles.") },
+            { name: "forceFocus", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.forceFocusDesc", "Visual testing aid to force focus ring styles.") }
         ]
     }
 }

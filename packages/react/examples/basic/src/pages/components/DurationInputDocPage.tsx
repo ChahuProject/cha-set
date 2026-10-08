@@ -30,20 +30,20 @@ export function DurationInputDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Duration Input"
-      description="Segmented duration input control for hours, minutes, and seconds with stepper buttons, mouse wheel adjustments, keyboard arrow jumping, and preset menu."
+      description={t('components.duration-input.description', 'Segmented duration input control for hours, minutes, and seconds with stepper buttons, mouse wheel adjustments, keyboard arrow jumping, and preset menu.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.durationInput.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Directly type into any segment or use the up/down stepper buttons. Press Left/Right arrow keys to jump between segments, or pick from grouped quick-select presets.
+          {t('desktopComposite.durationInput.overviewDesc', 'Directly type into any segment or use the up/down stepper buttons. Press Left/Right arrow keys to jump between segments, or pick from grouped quick-select presets.')}
         </p>
 
         <ComponentPreview
           qtCode={`ChaSetDurationInput {
     value: 3665
-}`} title="Duration Input Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.durationInput.sandboxTitle', 'Duration Input Sandbox')} reactCode={reactCode}>
           <div className="w-full max-w-sm flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-muted-foreground">{t('components.durationInput.timerDuration', 'Timer Duration')}</label>
@@ -81,10 +81,10 @@ ChaSetDurationInput {
 
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Variants & Configurations
+          {t('components.durationInput.variantsTitle', 'Variants & Configurations')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Supports compact and comfortable sizes, disabling presets or labels, and disabled states.
+          {t('components.durationInput.variantsDesc', 'Supports compact and comfortable sizes, disabling presets or labels, and disabled states.')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -132,20 +132,20 @@ ChaSetDurationInput {
         name="DurationInput"
         componentId="duration-input"
         props={[
-            { name: 'value', type: 'number', default: '0', description: 'Total duration in seconds (controlled mode).' },
-            { name: 'defaultValue', type: 'number', default: '0', description: 'Initial duration in seconds (uncontrolled mode).' },
-            { name: 'onChange', type: '(seconds: number) => void', default: 'undefined', description: 'Callback fired when the duration changes.' },
-            { name: 'maxHours', type: 'number', default: '99', description: 'Upper clamp limit for the hours segment.' },
-            { name: 'size', type: "'sm' | 'default' | 'lg'", default: "'default'", description: 'Visual density and size variant.' },
-            { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether the inputs, buttons, and preset dropdown are disabled.' },
-            { name: 'showPresets', type: 'boolean', default: 'true', description: 'Whether to display the preset dropdown button.' },
-            { name: 'showLabels', type: 'boolean', default: 'true', description: 'Whether to display the segment unit labels underneath.' },
-            { name: 'presets', type: 'DurationPresetGroup[]', default: 'defaultDurationPresetGroups', description: 'Custom grouped duration presets for the dropdown.' },
-            { name: 'hoursLabel', type: 'string', default: "'Hours'", description: 'Label text for hours segment.' },
-            { name: 'minutesLabel', type: 'string', default: "'Minutes'", description: 'Label text for minutes segment.' },
-            { name: 'secondsLabel', type: 'string', default: "'Seconds'", description: 'Label text for seconds segment.' },
-            { name: 'presetsLabel', type: 'string', default: "'Presets'", description: 'Label text for the presets trigger button.' },
-            { name: 'className', type: 'string', default: 'undefined', description: 'Custom CSS classes for outer container.' },
+            { name: 'value', type: 'number', default: '0', description: t('components.durationInput.valueDesc', 'Total duration in seconds (controlled mode).') },
+            { name: 'defaultValue', type: 'number', default: '0', description: t('components.durationInput.defaultValueDesc', 'Initial duration in seconds (uncontrolled mode).') },
+            { name: 'onChange', type: '(seconds: number) => void', default: 'undefined', description: t('components.durationInput.onChangeDesc', 'Callback fired when the duration changes.') },
+            { name: 'maxHours', type: 'number', default: '99', description: t('components.durationInput.maxHoursDesc', 'Upper clamp limit for the hours segment.') },
+            { name: 'size', type: "'sm' | 'default' | 'lg'", default: "'default'", description: t('components.durationInput.sizeDesc', 'Visual density and size variant.') },
+            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.durationInput.disabledDesc', 'Whether the inputs, buttons, and preset dropdown are disabled.') },
+            { name: 'showPresets', type: 'boolean', default: 'true', description: t('components.durationInput.showPresetsDesc', 'Whether to display the preset dropdown button.') },
+            { name: 'showLabels', type: 'boolean', default: 'true', description: t('components.durationInput.showLabelsDesc', 'Whether to display the segment unit labels underneath.') },
+            { name: 'presets', type: 'DurationPresetGroup[]', default: 'defaultDurationPresetGroups', description: t('components.durationInput.presetsDesc', 'Custom grouped duration presets for the dropdown.') },
+            { name: 'hoursLabel', type: 'string', default: "'Hours'", description: t('components.durationInput.hoursLabelDesc', 'Label text for hours segment.') },
+            { name: 'minutesLabel', type: 'string', default: "'Minutes'", description: t('components.durationInput.minutesLabelDesc', 'Label text for minutes segment.') },
+            { name: 'secondsLabel', type: 'string', default: "'Seconds'", description: t('components.durationInput.secondsLabelDesc', 'Label text for seconds segment.') },
+            { name: 'presetsLabel', type: 'string', default: "'Presets'", description: t('components.durationInput.presetsLabelDesc', 'Label text for the presets trigger button.') },
+            { name: 'className', type: 'string', default: 'undefined', description: t('components.durationInput.classNameDesc', 'Custom CSS classes for outer container.') },
           ]}
       />
     </DocLayout>

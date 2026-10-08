@@ -27,7 +27,7 @@ ChaSetActivityStack {
     /** Emitted when a cancellable running task's Cancel control is pressed. */
     signal cancelled(string id)
 
-    label: "Task Progress HUD"
+    label: ChaSetI18n.tr("components.taskHud.label", "Task Progress HUD")
     summaryLabel: "进行中"
     entries: {
         var _revision = root._revision
@@ -176,7 +176,7 @@ ChaSetActivityStack {
 
         var cancellable = Boolean(task.cancellable) && running && root.cancelEnabled
         var actions = []
-        if (cancellable) actions.push({ id: "cancel", label: "Cancel", variant: "ghost" })
+        if (cancellable) actions.push({ id: "cancel", label: ChaSetI18n.tr("common.cancel", "Cancel"), variant: "ghost" })
 
         return {
             id: String(task.id),
@@ -189,7 +189,7 @@ ChaSetActivityStack {
             progress: (typeof task.progress === "number") ? task.progress : -1,
             indeterminate: Boolean(task.indeterminate) && running,
             dismissible: root.dismissEnabled && !cancellable,
-            dismissLabel: "Dismiss " + ((task.title !== undefined && task.title !== null) ? String(task.title) : ""),
+            dismissLabel: ChaSetI18n.tr("components.taskHud.dismissPrefix", "Dismiss ") + ((task.title !== undefined && task.title !== null) ? String(task.title) : ""),
             actions: actions
         }
     }

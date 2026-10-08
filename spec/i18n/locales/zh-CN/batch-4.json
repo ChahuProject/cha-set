@@ -1,0 +1,279 @@
+{
+  "components": {
+    "alertDialog": {
+      "confirmText": "继续",
+      "description": "此操作不可撤销。这将永久删除您的账户并移除您的全部数据。",
+      "title": "您确定要执行此操作吗？"
+    },
+    "card": {
+      "childrenDesc": "卡片复合子组件或自定义元素。",
+      "classNameDesc": "应用于容器的额外 CSS 类名。",
+      "customRadiusDesc": "显式圆角覆盖值（默认继承 ThemeTokens.radius）。",
+      "description": "展示包含页眉、标题、描述、正文与底部操作区的卡片容器。",
+      "interactiveDesc": "卡片是否提供悬停／激活态层级阴影与指针光标反馈。",
+      "sizeDesc": "卡片与复合容器的密度及内边距规格。",
+      "variantDesc": "卡片容器的视觉呈现样式。"
+    },
+    "checkbox": {
+      "checkedDesc": "复选框的受控选中状态。",
+      "classNameDesc": "应用于复选框按钮的额外 CSS 类名。",
+      "customRadiusDesc": "复选框方框的可选自定义圆角半径（-1 表示使用默认值）。",
+      "defaultCheckedDesc": "非受控模式下的默认选中状态。",
+      "disabledDesc": "禁用用户交互，并应用 50％ 不透明度。",
+      "forceFocusDesc": "用于强制呈现聚焦环样式的视觉测试辅助。",
+      "forceHoverDesc": "用于强制呈现悬停态样式的视觉测试辅助。",
+      "helperDesc": "渲染于标签下方的可选辅助说明文本。",
+      "indeterminateDesc": "复选框是否处于半选状态（视觉优先级高于选中态）。",
+      "invalidDesc": "应用破坏性错误样式与 aria-invalid 属性。",
+      "labelDesc": "与复选框并排渲染的可选配套标签。",
+      "onCheckedChangeDesc": "选中状态变化时触发的回调。",
+      "readOnlyDesc": "阻止状态切换，同时保留聚焦能力与完整不透明度。",
+      "sizeDesc": "尺寸变体：default 或 sm。"
+    },
+    "collapsible": {
+      "classNameDesc": "额外的自定义 CSS 类。",
+      "customRadiusDesc": "头部与容器的圆角半径。",
+      "defaultOpenDesc": "非受控用法下的初始展开状态。",
+      "defaultOpenDescQt": "折叠面板在加载时是否初始展开。",
+      "description": "可展开与折叠内容面板的交互式组件。",
+      "disabledDesc": "是否禁用用户交互。",
+      "disabledDescQt": "是否禁用用户交互与展开切换。",
+      "onOpenChangeDesc": "展开状态变化时触发的回调。",
+      "openDesc": "折叠面板的受控展开状态。",
+      "openDescQt": "折叠内容当前是否处于展开状态。",
+      "titleDesc": "显示于头部触发栏的标题文本。",
+      "variantDesc": "视觉容器样式变体。",
+      "variantDescQt": "视觉容器样式变体：default、card 或 ghost。"
+    },
+    "durationInput": {
+      "classNameDesc": "外层容器的自定义 CSS 类。",
+      "customRadiusDesc": "分段框与弹窗的圆角半径。",
+      "defaultValueDesc": "非受控模式下的初始时长（秒）。",
+      "disabledDesc": "输入框、按钮与预设下拉是否禁用。",
+      "hoursLabelDesc": "小时分段的标签文本。",
+      "maxHoursDesc": "小时分段的上限钳制值。",
+      "minutesLabelDesc": "分钟分段的标签文本。",
+      "onChangeDesc": "时长变化时触发的回调。",
+      "presetsDesc": "下拉菜单的自定义分组时长预设。",
+      "presetsLabelDesc": "预设触发按钮的标签文本。",
+      "secondsLabelDesc": "秒分段的标签文本。",
+      "showLabelsDesc": "是否在分段下方显示单位标签。",
+      "showPresetsDesc": "是否显示预设下拉按钮。",
+      "sizeDesc": "视觉密度与尺寸变体。",
+      "valueDesc": "受控模式下的总时长（秒）。"
+    },
+    "kbd": {
+      "clickLabel": "点击",
+      "orDivider": "或"
+    },
+    "keybindingRecorder": {
+      "aliasDesc": "value 的别名。",
+      "clearableDesc": "设置快捷键后是否渲染清除按钮。",
+      "cornerRadiusDesc": "输入容器的圆角半径。",
+      "disabledDesc": "录制器是否禁用。",
+      "onChangeDesc": "同时接收结构化对象与字符串的双回调。",
+      "onValueChangeDesc": "录制到新组合时触发的回调。",
+      "placeholderDesc": "未定义快捷键时的占位提示。",
+      "recordingDesc": "录制器是否正在监听按键组合。",
+      "recordingTextDesc": "录制过程中显示的提示语。",
+      "sizeDesc": "常规与紧凑密度的尺寸预设变体。",
+      "valueDesc": "当前按键组合（字符串或结构化对象）。",
+      "valueShortDesc": "序列化快捷键字符串（如 Ctrl+Shift+P）。"
+    },
+    "panelCard": {
+      "defaultTitle": "面板标题"
+    },
+    "select": {
+      "defaultValueDesc": "非受控用法的初始值。",
+      "disabledDesc": "选择器是否禁用。",
+      "onValueChangeDesc": "数值变化时触发的回调。",
+      "optionsDesc": "可选选项对象数组：{ value、label、disabled }。",
+      "placeholderDesc": "未选择数值时显示的占位标签。",
+      "triggerRadiusDesc": "选择器触发器的圆角半径。",
+      "valueDesc": "受控选中值。",
+      "valueQtDesc": "当前选中的选项值。"
+    },
+    "sidebar": {
+      "collapsibleDesc": "桌面端关闭时的折叠行为模式。",
+      "collapsedDesc": "侧边栏当前是否处于折叠状态。",
+      "defaultOpenDesc": "SidebarProvider 的初始展开状态。",
+      "description": "可组合、响应式、可调尺寸的桌面级侧边栏导航系统，支持图标折叠、抽屉模式与自定义 rem 尺寸。",
+      "iconWidthDesc": "图标模式折叠时的宽度。",
+      "maxWidthDesc": "可拖拽的最大宽度限制。",
+      "minWidthDesc": "可拖拽的最小宽度限制。",
+      "resizableDesc": "启用边缘拖拽轨道以动态调整尺寸。",
+      "sideDesc": "侧边栏布局的停靠方位。",
+      "sidebarWidthDesc": "侧边栏展开时的绑定宽度。",
+      "variantDesc": "视觉容器样式变体。"
+    },
+    "splitButton": {
+      "disabledDesc": "分体按钮是否禁用。",
+      "labelDesc": "主操作按钮上的标签。",
+      "menuContentDesc": "点击下拉箭头渲染的下拉菜单项。",
+      "onClickDesc": "点击主操作时触发的回调。",
+      "sizeDesc": "按钮尺寸变体。",
+      "variantDesc": "按钮样式变体。"
+    },
+    "squircle": {
+      "asDesc": "底层渲染的 HTML 标签或组件。",
+      "bgDesc": "背景表面填充颜色。",
+      "borderColorDesc": "连续曲率描边的边框颜色。",
+      "borderWidthDesc": "逻辑单位下的边框描边宽度。",
+      "bottomLeftDesc": "左下角圆角覆盖值。",
+      "bottomRightDesc": "右下角圆角覆盖值。",
+      "cornerSmoothingDesc": "符合中性规范的 smoothing 别名。",
+      "heightDesc": "逻辑单位下的显式高度（缺省时经由 ResizeObserver 自动测量）。",
+      "radiusDesc": "逻辑单位下的圆角半径。",
+      "rbDesc": "底部圆角是否生效。",
+      "rlDesc": "左侧圆角是否生效。",
+      "rrDesc": "右侧圆角是否生效。",
+      "rtDesc": "顶部圆角是否生效。",
+      "smoothingDesc": "曲率平滑系数，0．0 为圆弧角至 1．0 为完整超椭圆，0．6 为 Apple iOS 标准。",
+      "topLeftDesc": "左上角圆角覆盖值。",
+      "topRightDesc": "右上角圆角覆盖值。",
+      "widthDesc": "逻辑单位下的显式宽度（缺省时经由 ResizeObserver 自动测量）。"
+    },
+    "taskHud": {
+      "dismissPrefix": "关闭",
+      "label": "任务进度浮层"
+    },
+    "viewportConstrainedContainer": {
+      "bgDesc": "背景表面填充颜色。",
+      "borderDesc": "边框轮廓颜色。",
+      "childrenDesc": "渲染于容器内部的元素。",
+      "classNameDesc": "自定义样式 CSS 类名。",
+      "customRadiusDesc": "容器的圆角半径。",
+      "description": "根据锚点矩形下方可用视口空间动态约束最大高度的容器，支持自定义上限覆盖与平滑垂直滚动。",
+      "marginDesc": "容器底部与视口底边之间的预留边距。",
+      "maxHeightDesc": "容器最大高度的可选上限。",
+      "minHeightDesc": "最小允许高度下限。",
+      "overflowDesc": "垂直溢出滚动策略。"
+    },
+    "virtualTree": {
+      "collapseAllDesc": "折叠所有已展开的树分支。",
+      "cornerRadiusDesc": "树容器的圆角半径。",
+      "defaultExpandDesc": "子分支的默认展开层级。",
+      "dimmedDesc": "以半透明剪切态渲染的节点 ID 数组。",
+      "emptyDesc": "树为空时展示的内容。",
+      "enableDndDesc": "启用拖拽重排与文件夹嵌套。",
+      "estimateDesc": "虚拟计算用的预估行高。",
+      "expandAllDesc": "展开所有可折叠树分支。",
+      "expandedMapDesc": "已展开节点 ID 映射表。",
+      "gapDesc": "相邻行之间的间距。",
+      "getChildrenDesc": "返回节点子节点的访问器。",
+      "getKeyDesc": "节点的唯一标识访问器。",
+      "nodesDesc": "rootNodes 的别名。",
+      "onCutDesc": "按下 Ctrl+X 剪切快捷键时触发的回调。",
+      "onDropDesc": "节点被放置时触发的回调。",
+      "onPasteDesc": "按下 Ctrl+V 粘贴快捷键时触发的回调。",
+      "onSelectDesc": "选中节点变化时触发的回调。",
+      "onStickySelectDesc": "点击置顶行时触发的回调（仅导航，永不切换展开）。",
+      "onStickyToggleDesc": "激活置顶行折叠箭头时触发的回调。",
+      "overscanDesc": "可视边界外渲染的缓冲节点数。",
+      "refDesc": "暴露 expandAll（）、collapseAll（）、selectAll（）、scrollToIndex（）的句柄。",
+      "renderRowDesc": "自定义行渲染函数。",
+      "rootNodesDesc": "顶层层级节点数组。",
+      "scrollToDesc": "将虚拟树滚动至指定索引。",
+      "selectAllDesc": "在多选模式下选中所有可见节点。",
+      "selectedIdDesc": "当前选中节点的标识（单选模式）。",
+      "selectedIdsDesc": "已选中节点标识数组（多选模式）。",
+      "selectionModeDesc": "当前的选择交互模式。",
+      "stickyDesc": "展开节点祖先链，置顶于滚动区上方以保持父级可见。"
+    }
+  },
+  "desktopComposite": {
+    "card": {
+      "overviewDesc": "通过跨 Web 与桌面端同步的交互式子组件，测试卡片变体。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "卡片沙盒"
+    },
+    "checkbox": {
+      "animationsBullet1": "对勾 SVG 常驻挂载，选中时以 duration-quick 时长、ease-entrance 曲线，从透明度 0 缩放 0．5 淡入至透明度 1 缩放 1。",
+      "animationsBullet2": "方框边框颜色在悬停、聚焦、选中与错误态之间交叉淡入淡出。",
+      "animationsBullet3": "时长与缓动取自主题令牌，prefers-reduced-motion 偏好下自动归零（Qt 端由 ThemeTokens.animationsEnabled 控制）。",
+      "animationsDesc": "选中、半选及状态切换的动效行为与时序。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "复选框沙盒"
+    },
+    "collapsible": {
+      "advancedOptionsQt": "高级系统选项",
+      "advancedSettings": "高级项目设置",
+      "defaultOpenDesc": "通过 defaultOpen 以初始展开态渲染非受控折叠面板。",
+      "defaultOpenDescQt": "使用 defaultOpen 将折叠面板初始化为展开状态。",
+      "defaultOpenHeading": "默认展开",
+      "disabledDesc": "禁用触发器交互并降低不透明度，以阻止用户展开。",
+      "disabledDescQt": "以半透明外观阻止点击与交互。",
+      "disabledHeading": "禁用状态",
+      "falseLabel": "关闭",
+      "lockedSettings": "已锁定的高级设置",
+      "overviewDesc": "通过实时控件切换折叠面板的展开／收起状态，或禁用用户交互。",
+      "overviewHeading": "交互式概览",
+      "protectedSettings": "受保护的开发者设置",
+      "sandboxTitle": "折叠面板沙盒",
+      "toggleLabel": "切换",
+      "trueLabel": "开启",
+      "vulkanBadge": "Vulkan 验证层：已启用"
+    },
+    "durationInput": {
+      "overviewDesc": "直接在任意分段中键入，或使用上／下步进按钮。按左／右方向键在分段间跳转，或从分组快捷预设中选取。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "时长输入框沙盒"
+    },
+    "keybindingRecorder": {
+      "overviewDesc": "点击下方录制框并按下任意按键组合（例如{{example}}）。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "快捷键录制器沙盒"
+    },
+    "select": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "选择器沙盒"
+    },
+    "sidebar": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "侧边栏沙盒"
+    },
+    "splitButton": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "分体按钮沙盒"
+    },
+    "squircle": {
+      "borderNote": "传统 CSS 边框在超椭圆剪裁下会出现宽度不均或硬直角。传入 borderWidth 与 borderColor 时，将自动渲染自适应连续曲率矢量描边，保证外轮廓厚度均匀。",
+      "borderSupportLabel": "连续曲率描边支持：",
+      "demoBadge": "次要徽标",
+      "demoButton": "超椭圆按钮",
+      "demoInput": "超椭圆输入框……",
+      "demoOutline": "线框按钮",
+      "demoPill": "状态胶囊",
+      "guideDesc": "外部项目经由两层渐进增强策略接入 ChaSet iOS 连续曲率体系：底层经由现代浏览器 CSS 特性，以零成本加速全量 Tailwind 工具类；老旧环境或高精度带边框几何，则经由原语组件获得保真渲染。",
+      "guideTitle": "外部项目全局接入指南（Global Adoption Guide for External Projects）",
+      "installDesc": "包安装与 CMake／QML 模块链接。",
+      "installHeading": "安装指南",
+      "strategyBadge1": "策略一",
+      "strategyBadge2": "策略二",
+      "strategyBadge3": "策略三",
+      "tailwindNote": "无需修改业务代码中的 rounded-md、rounded-lg、rounded-xl。浏览器匹配 corner-shape: squircle 后将直接应用超椭圆连续曲率，并由 .rounded-full 规则保护圆形头像与状态点不发生几何形变。",
+      "tailwindSyncLabel": "Tailwind 协同机制：",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "超椭圆沙盒与曲率对比",
+      "strategy1Desc": "在宿主项目的全局样式表（如 globals.css 或 index.css）中加入 CSS 特性查询。所有基于 Tailwind rounded-* 工具类的元素将即刻提升为 iOS 连续曲率超椭圆，平滑消除边缘生硬折痕。",
+      "strategy1Title": "全局 CSS 加速（Universal CSS Acceleration）",
+      "strategy2Desc": "对于弹窗（Dialog／Sheet）、高光卡片或不支持 CSS corner-shape 的浏览器内核，使用 ChaSet 组件进行包裹。内部经由 SVG clipPath 裁剪与 ResizeObserver 驱动的几何计算，保证 100％ 跨平台像素级平滑。",
+      "strategy2Title": "保底渐进增强（Guaranteed Progressive Enhancement）",
+      "strategy3Desc": "ChaSet 核心设计令牌内置曲率控制变量。宿主工程可在根层级定义 --cs-corner-shape 与 --cs-corner-smoothing，全库组件将自动继承对应曲率平滑度。",
+      "strategy3Title": "设计令牌配置（Design Tokens Configuration）"
+    },
+    "viewport": {
+      "overviewDesc": "容器动态测量锚点至窗口底部的距离（window.innerHeight - rect.top - margin），并钳制内容高度以防溢出视口之外。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "视口约束容器沙盒",
+      "variantsDesc": "配置自定义数值覆盖、字符串边界或自定义边距偏移。",
+      "variantsTitle": "变体与边界"
+    },
+    "virtualTree": {
+      "dirBadge": "目录",
+      "overviewDesc": "支持多选（Ctrl／Shift＋点击）、外部半透明剪切态（Ctrl+X／V）、复制态（Ctrl+C／V）、Ctrl＋拖拽复制与键盘导航的层级树。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "虚拟树沙盒"
+    }
+  }
+}

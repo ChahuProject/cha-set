@@ -32,18 +32,18 @@ export function SplitButtonDocPage() {
     <DocLayout
       category="Base Primitives"
       title="Split Button"
-      description="Dual-action button with primary direct click and secondary attached dropdown menu."
+      description={t('components.split-button.description', 'Dual-action button with primary direct click and secondary attached dropdown menu.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.splitButton.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('components.split-button.overviewDesc', 'Click the main button to trigger the primary action, or click the chevron to open the dropdown menu.')}
         </p>
 
         <ComponentPreview
-          title="Split Button Sandbox"
+          title={t('desktopComposite.splitButton.sandboxTitle', 'Split Button Sandbox')}
           reactCode={reactCode}
           qtCode={`ChaSetSplitButton {
     text: "Deploy"
@@ -109,22 +109,18 @@ export function SplitButtonDocPage() {
             {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
-          Animations
+          {t('showcase.animations', 'Animations')}
         </h2>
         <div>
           <p className="text-sm text-muted-foreground mb-4">
-            Motion behavior and timing for interactive states aligned with ChaSet tokens.
+            {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
-              State changes (hover, press, focus) animate over{" "}
-              <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{" "}
-              <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+              {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}
             </li>
             <li>
-              Durations and easing resolve from theme tokens, so{" "}
-              <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{" "}
-              <code>ThemeTokens.animationsEnabled</code>).
+              {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
             </li>
           </ul>
         </div>
@@ -134,11 +130,11 @@ export function SplitButtonDocPage() {
         name="SplitButton"
         componentId="split-button"
         props={[
-          { name: 'label', type: 'ReactNode', default: 'undefined', description: 'Label on the primary action button.' },
-          { name: 'onClick', type: '() => void', default: 'undefined', description: 'Callback fired on clicking primary action.' },
-          { name: 'menuContent', type: 'ReactNode', default: 'undefined', description: 'Dropdown menu items rendered on chevron click.' },
-          { name: 'variant', type: 'ButtonVariant', default: "'default'", description: 'Button stylistic variant.' },
-          { name: 'size', type: 'ButtonSize', default: "'default'", description: 'Button size variant.' },
+          { name: 'label', type: 'ReactNode', default: 'undefined', description: t('components.splitButton.labelDesc', 'Label on the primary action button.') },
+          { name: 'onClick', type: '() => void', default: 'undefined', description: t('components.splitButton.onClickDesc', 'Callback fired on clicking primary action.') },
+          { name: 'menuContent', type: 'ReactNode', default: 'undefined', description: t('components.splitButton.menuContentDesc', 'Dropdown menu items rendered on chevron click.') },
+          { name: 'variant', type: 'ButtonVariant', default: "'default'", description: t('components.splitButton.variantDesc', 'Button stylistic variant.') },
+          { name: 'size', type: 'ButtonSize', default: "'default'", description: t('components.splitButton.sizeDesc', 'Button size variant.') },
         ]}
       />
     </DocLayout>

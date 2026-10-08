@@ -170,7 +170,7 @@ Item {
             return { isMouse: true, button: "middle", text: "MMB", label: labelPart };
         }
         if (l === "mouse" || l === "click") {
-            return { isMouse: true, button: "left", text: "Click", label: labelPart };
+            return { isMouse: true, button: "left", text: ChaSetI18n.tr("components.kbd.clickLabel", "Click"), label: labelPart };
         }
         return { isMouse: false, button: "none", text: formatKeyTokenWithMode(rawStr, compactMode), label: "" };
     }
@@ -304,7 +304,7 @@ Item {
                 // "or" alternative divider
                 Text {
                     visible: branchRow.index > 0
-                    text: "or"
+                    text: ChaSetI18n.tr("components.kbd.orDivider", "or")
                     color: ThemeTokens.subduedText
                     font.family: Typography.familySans
                     font.pixelSize: Typography.sizeMicro

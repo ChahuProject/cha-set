@@ -29,11 +29,11 @@ export function SelectDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Select"
-      description="Displays a list of options for the user to pick from, triggered by a button with item indicators and scroll buttons."
+      description={t('components.select.description', 'Displays a list of options for the user to pick from, triggered by a button with item indicators and scroll buttons.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.select.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
           {t('formsA.select.overviewDesc', 'Select an item from the menu. Selected value: {{value}}', { value })}
@@ -49,7 +49,7 @@ export function SelectDocPage() {
         { value: "cherry", label: "Cherry" }
     ]
     onValueChanged: function(val) { console.log(val) }
-}`} title="Select Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.select.sandboxTitle', 'Select Sandbox')} reactCode={reactCode}>
           <Select value={value} onValueChange={setValue}>
             <SelectTrigger className="w-48">
               <SelectValue placeholder={t('formsA.select.placeholder', 'Select a fruit')} />
@@ -96,10 +96,10 @@ ChaSetSelect {
         name="Select"
         componentId="select"
         props={[
-            { name: 'value', type: 'string', default: 'undefined', description: 'Controlled selected value.' },
-            { name: 'defaultValue', type: 'string', default: 'undefined', description: 'Initial value for uncontrolled usage.' },
-            { name: 'onValueChange', type: '(value: string) => void', default: 'undefined', description: 'Callback triggered when value changes.' },
-            { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether the select is disabled.' },
+            { name: 'value', type: 'string', default: 'undefined', description: t('components.select.valueDesc', 'Controlled selected value.') },
+            { name: 'defaultValue', type: 'string', default: 'undefined', description: t('components.select.defaultValueDesc', 'Initial value for uncontrolled usage.') },
+            { name: 'onValueChange', type: '(value: string) => void', default: 'undefined', description: t('components.select.onValueChangeDesc', 'Callback triggered when value changes.') },
+            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.select.disabledDesc', 'Whether the select is disabled.') },
           ]}
       />
     </DocLayout>

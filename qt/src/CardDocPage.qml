@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Card"
-    description: "Displays a card with header, title, description, content, and footer actions."
+    description: ChaSetI18n.tr("components.card.description", "Displays a card with header, title, description, content, and footer actions.")
 
     property int customRadius: 8
     property color cFg: ThemeTokens.text
@@ -25,7 +25,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        title: "Card Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.card.sandboxTitle", "Card Sandbox")
         reactCode: `<Card variant="${root.demoVariant}" size="${root.demoSize}"${root.demoInteractive ? ' interactive' : ''} className="w-full max-w-sm">\n  <CardHeader>\n    <div className="flex items-center justify-between">\n      <CardTitle>Create project</CardTitle>\n      <Badge variant="secondary">Pro</Badge>\n    </div>\n    <CardDescription>Deploy your new project in one-click.</CardDescription>\n  </CardHeader>\n  <CardContent>\n    <p className="text-sm text-muted-foreground">\n      Your project will be deployed to the edge network automatically.\n    </p>\n  </CardContent>\n  <CardFooter className="flex justify-between">\n    <Button variant="outline" size="sm">Cancel</Button>\n    <Button size="sm">Deploy</Button>\n  </CardFooter>\n</Card>`
         qtCode: `ChaSetCard {\n    width: 340\n    variant: "${root.demoVariant}"\n    size: "${root.demoSize}"\n    interactive: ${root.demoInteractive}\n\n    ChaSetCardHeader {\n        Item {\n            width: parent.width\n            implicitHeight: Math.max(cardTitle.implicitHeight, badge.implicitHeight)\n            ChaSetCardTitle { id: cardTitle; text: "Create project"; anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter }\n            ChaSetBadge { id: badge; variant: "secondary"; text: "Pro"; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter }\n        }\n        ChaSetCardDescription { text: "Deploy your new project in one-click." }\n    }\n    ChaSetCardContent {\n        Text {\n            text: "Your project will be deployed to the edge network automatically."\n            color: ThemeTokens.subduedText\n            font.pixelSize: 13\n        }\n    }\n    ChaSetCardFooter {\n        ChaSetButton { variant: "outline"; size: "sm"; text: "Cancel" }\n        ChaSetButton { size: "sm"; text: "Deploy" }\n    }\n}`
 
@@ -142,14 +142,14 @@ DocLayout {
         spacing: 12
 
         DocText {
-            text: "Variants"
+            text: ChaSetI18n.tr("surfaces.card.variantsTitle", "Variants")
             color: root.cFg
             font.pixelSize: Typography.sizeTitleSm
             font.weight: Typography.weightBold
         }
 
         DocText {
-            text: "Three semantic variants styled with design tokens for consistent elevation and contrast."
+            text: ChaSetI18n.tr("surfaces.card.variantsDesc", "Three semantic variants styled with design tokens for consistent elevation and contrast.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -187,14 +187,14 @@ DocLayout {
         }
 
         DocText {
-            text: "Interactive Feedback & Density"
+            text: ChaSetI18n.tr("surfaces.card.feedbackDensityTitle", "Interactive Feedback & Density")
             color: root.cFg
             font.pixelSize: Typography.sizeHeading
             font.weight: Typography.weightSemibold
         }
 
         DocText {
-            text: "Enable interactive hover/press elevation feedback, or use compact density for constrained spaces."
+            text: ChaSetI18n.tr("surfaces.card.feedbackDensityDesc", "Enable interactive hover/press elevation feedback, or use compact density for constrained spaces.")
             color: root.cMutedFg
             font.pixelSize: Typography.sizeBody
         }
@@ -245,31 +245,31 @@ DocLayout {
                     name: "variant",
                     type: "\"default\" | \"secondary\" | \"outline\"",
                     defaultValue: "\"default\"",
-                    description: "Visual presentation style of the card container."
+                    description: ChaSetI18n.tr("components.card.variantDesc", "Visual presentation style of the card container.")
                 },
                 {
                     name: "size",
                     type: "\"default\" | \"sm\"",
                     defaultValue: "\"default\"",
-                    description: "Density and spacing scale of the card."
+                    description: ChaSetI18n.tr("components.card.sizeDesc", "Density and padding scale of the card and composite containers.")
                 },
                 {
                     name: "interactive",
                     type: "bool",
                     defaultValue: "false",
-                    description: "Whether the card exhibits hover and press feedback with click interaction."
+                    description: ChaSetI18n.tr("components.card.interactiveDesc", "Whether the card provides hover/active elevation styling and cursor pointer.")
                 },
                 {
                     name: "customRadius",
                     type: "int",
                     defaultValue: "-1",
-                    description: "Explicit corner radius override (defaults to ThemeTokens.radius)."
+                    description: ChaSetI18n.tr("components.card.customRadiusDesc", "Explicit corner radius override (defaults to ThemeTokens.radius).")
                 },
                 {
                     name: "contentData",
                     type: "list<QtObject>",
                     defaultValue: "[]",
-                    description: "Card composite subcomponents or custom elements."
+                    description: ChaSetI18n.tr("components.card.childrenDesc", "Card composite subcomponents or custom elements.")
                 }
             ]
     }

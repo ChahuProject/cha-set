@@ -86,19 +86,19 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
     <DocLayout
       category="Base Primitives"
       title="Squircle"
-      description="iOS 连续曲率超椭圆圆角（G2 连续律）。消除了传统圆弧角在直线与切点处曲率突变导致的生硬折痕，为整个项目提供平滑、有机的现代圆角设计。"
+      description={t('components.squircle.description', 'iOS continuous curvature superellipse rounded corners (G2 continuity). Eliminates harsh creases caused by abrupt curvature transitions in classic circular arcs, providing smooth, organic modern corners across the design system.')}
       tocItems={[
-        { id: 'overview', title: 'Interactive Overview' },
-        { id: 'installation', title: 'Installation' },
-        { id: 'animations', title: 'Animations' },
-        { id: 'keyboard', title: 'Keyboard Navigation' },
-        { id: 'props', title: 'Props Reference' },
+        { id: 'overview', title: t('desktopComposite.squircle.overviewHeading', 'Interactive Overview') },
+        { id: 'installation', title: t('desktopComposite.squircle.installHeading', 'Installation') },
+        { id: 'animations', title: t('showcase.animations', 'Animations') },
+        { id: 'keyboard', title: t('showcase.keyboardNavigation', 'Keyboard Navigation') },
+        { id: 'props', title: t('showcase.propsReference', 'Props Reference') },
       ]}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold mb-4 text-foreground">Interactive Overview</h2>
+        <h2 className="text-xl font-semibold mb-4 text-foreground">{t('desktopComposite.squircle.overviewHeading', 'Interactive Overview')}</h2>
         <ComponentPreview
-          title="Squircle Sandbox & Curvature Comparison"
+          title={t('desktopComposite.squircle.sandboxTitle', 'Squircle Sandbox & Curvature Comparison')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
         >
@@ -178,12 +178,12 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
                 {t('components.squircle.adoptionPreview', 'Full-Project Default Adoption Preview')}
               </span>
               <div className="flex flex-wrap items-center gap-3">
-                <Button variant="default">Squircle Button</Button>
-                <Button variant="outline">Outline Button</Button>
-                <Badge variant="default">Status Pill</Badge>
-                <Badge variant="secondary">Secondary Badge</Badge>
+                <Button variant="default">{t('desktopComposite.squircle.demoButton', 'Squircle Button')}</Button>
+                <Button variant="outline">{t('desktopComposite.squircle.demoOutline', 'Outline Button')}</Button>
+                <Badge variant="default">{t('desktopComposite.squircle.demoPill', 'Status Pill')}</Badge>
+                <Badge variant="secondary">{t('desktopComposite.squircle.demoBadge', 'Secondary Badge')}</Badge>
                 <div className="w-48">
-                  <Input placeholder="Squircle Input..." />
+                  <Input placeholder={t('desktopComposite.squircle.demoInput', 'Squircle Input...')} />
                 </div>
               </div>
             </div>
@@ -194,30 +194,30 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
       {/* 2. Installation & Global Adoption Guide */}
       <section id="installation" className="mt-12 scroll-mt-20 space-y-6">
         <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
-          Installation
+          {t('desktopComposite.squircle.installHeading', 'Installation')}
         </h2>
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
 
         <div className="pt-4 space-y-6 border-t border-border">
           <div>
             <h3 className="text-lg font-semibold tracking-tight text-foreground mb-1">
-              项目全局接入指南 (Global Adoption Guide for External Projects)
+              {t('desktopComposite.squircle.guideTitle', 'Global Adoption Guide for External Projects')}
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              外部项目接入 ChaSet iOS 连续曲率体系支持两层渐进增强策略：底层通过现代浏览器 CSS 特性实现全量 Tailwind 零成本加速；对老旧环境或高精度几何边框需求，则通过 <code>&lt;Squircle&gt;</code> 原语组件获得保真渲染。
+              {t('desktopComposite.squircle.guideDesc', 'External projects adopt the ChaSet iOS continuous-curvature system via two progressive enhancement strategies: the base layer accelerates all Tailwind utilities at zero cost through modern browser CSS features; legacy environments or high-precision bordered geometry fall back to guaranteed rendering through the primitive component.')}
             </p>
           </div>
 
           {/* Section 1: Universal CSS Acceleration */}
           <Card className="p-5 space-y-3 bg-card text-card-foreground border border-border">
             <div className="flex items-center gap-2">
-              <Badge variant="default">策略一</Badge>
+              <Badge variant="default">{t('desktopComposite.squircle.strategyBadge1', 'Strategy 1')}</Badge>
               <h4 className="text-sm font-semibold text-foreground">
-                Universal CSS Acceleration (全局 CSS 连续曲率加速)
+                {t('desktopComposite.squircle.strategy1Title', 'Universal CSS Acceleration (Global CSS Continuous-Curvature Acceleration)')}
               </h4>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              在宿主项目的全局样式表（如 <code>globals.css</code> 或 <code>index.css</code>）中加入 CSS 特性查询。所有基于 Tailwind CSS <code>rounded-*</code> 类的元素将即刻提升为 iOS 连续曲率超椭圆，平滑消除边缘生硬折痕。
+              {t('desktopComposite.squircle.strategy1Desc', 'Add a CSS feature query in the host project global stylesheet (e.g. globals.css or index.css). Every element based on Tailwind rounded-* utilities is instantly promoted to iOS continuous-curvature superellipses, smoothly eliminating harsh edge creases.')}
             </p>
             <CodeBlock
               code={globalCssSnippet}
@@ -225,9 +225,9 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
               filename="globals.css"
             />
             <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded-md space-y-1">
-              <span className="font-semibold text-foreground">Tailwind 协同机制：</span>
+              <span className="font-semibold text-foreground">{t('desktopComposite.squircle.tailwindSyncLabel', 'Tailwind Synergy:')}</span>
               <p>
-                无需修改业务代码中的 <code>rounded-md</code>, <code>rounded-lg</code>, <code>rounded-xl</code>。浏览器匹配 <code>corner-shape: squircle</code> 后将直接应用超椭圆连续曲率，并由 <code>.rounded-full</code> 规则保护圆形头像与状态点不发生几何形变。
+                {t('desktopComposite.squircle.tailwindNote', 'No business-code changes to rounded-md, rounded-lg, or rounded-xl are needed. After the browser matches corner-shape: squircle, continuous-curvature superellipses apply directly, while the .rounded-full rule protects circular avatars and status dots from geometric distortion.')}
               </p>
             </div>
           </Card>
@@ -235,13 +235,13 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
           {/* Section 2: Guaranteed Progressive Enhancement */}
           <Card className="p-5 space-y-3 bg-card text-card-foreground border border-border">
             <div className="flex items-center gap-2">
-              <Badge variant="secondary">策略二</Badge>
+              <Badge variant="secondary">{t('desktopComposite.squircle.strategyBadge2', 'Strategy 2')}</Badge>
               <h4 className="text-sm font-semibold text-foreground">
-                Guaranteed Progressive Enhancement (<code>&lt;Squircle&gt;</code> 容器渐进增强)
+                {t('desktopComposite.squircle.strategy2Title', 'Guaranteed Progressive Enhancement (Container Progressive Enhancement)')}
               </h4>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              对于弹窗（Dialog/Sheet）、高光卡片或不支持 CSS <code>corner-shape</code> 的浏览器内核，使用 ChaSet 的 <code>&lt;Squircle&gt;</code> 组件进行包裹。内部通过 SVG <code>clipPath</code> 裁剪与 <code>ResizeObserver</code> 动态几何计算，确保 100% 跨平台像素级平滑。
+              {t('desktopComposite.squircle.strategy2Desc', 'For dialogs (Dialog/Sheet), highlight cards, or browser engines without CSS corner-shape support, wrap content with the ChaSet component. Internally it clips via SVG clipPath with ResizeObserver-driven geometry, guaranteeing 100% cross-platform pixel-smooth rendering.')}
             </p>
             <CodeBlock
               code={progressiveComponentSnippet}
@@ -249,9 +249,9 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
               filename="components/PremiumCard.tsx"
             />
             <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded-md space-y-1">
-              <span className="font-semibold text-foreground">连续曲率描边支持：</span>
+              <span className="font-semibold text-foreground">{t('desktopComposite.squircle.borderSupportLabel', 'Continuous-Curvature Stroke Support:')}</span>
               <p>
-                传统 CSS <code>border</code> 在超椭圆剪裁下会出现宽度不均或硬直角。传入 <code>borderWidth</code> 与 <code>borderColor</code> 时，<code>&lt;Squircle&gt;</code> 会自动渲染自适应连续曲率矢量描边，保证外轮廓厚度均匀。
+                {t('desktopComposite.squircle.borderNote', 'Traditional CSS borders render uneven widths or hard corners under superellipse clipping. Passing borderWidth and borderColor renders an adaptive continuous-curvature vector stroke with uniform outline thickness.')}
               </p>
             </div>
           </Card>
@@ -259,13 +259,13 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
           {/* Section 3: Design Tokens Configuration */}
           <Card className="p-5 space-y-3 bg-card text-card-foreground border border-border">
             <div className="flex items-center gap-2">
-              <Badge variant="outline">策略三</Badge>
+              <Badge variant="outline">{t('desktopComposite.squircle.strategyBadge3', 'Strategy 3')}</Badge>
               <h4 className="text-sm font-semibold text-foreground">
-                Design Tokens Configuration (设计令牌全局配置)
+                {t('desktopComposite.squircle.strategy3Title', 'Design Tokens Configuration (Global Design-Token Setup)')}
               </h4>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              ChaSet 核心设计令牌内置曲率控制变量。宿主工程可在根层级定义 <code>--cs-corner-shape</code> 与 <code>--cs-corner-smoothing</code>，全库组件将自动继承对应曲率平滑度。
+              {t('desktopComposite.squircle.strategy3Desc', 'ChaSet core design tokens ship built-in curvature variables. Host projects may define --cs-corner-shape and --cs-corner-smoothing at the root level, and the full component library automatically inherits the matching curvature.')}
             </p>
             <CodeBlock
               code={tokensConfigSnippet}
@@ -280,23 +280,23 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
       <DocFooterSections
         componentId="squircle"
         props={[
-          { name: 'radius', type: 'number', defaultValue: '8', description: 'Corner radius in logical units.' },
-          { name: 'smoothing', type: 'number', defaultValue: '0.6', description: 'Curvature smoothing factor from 0.0 (circle arc) to 1.0 (full squircle). 0.6 is the Apple iOS standard.' },
-          { name: 'cornerSmoothing', type: 'number', defaultValue: '0.6', description: 'Alias for smoothing conforming to the neutral schema.' },
-          { name: 'topLeftRadius', type: 'number', defaultValue: 'undefined', description: 'Explicit top-left corner radius override.' },
-          { name: 'topRightRadius', type: 'number', defaultValue: 'undefined', description: 'Explicit top-right corner radius override.' },
-          { name: 'bottomLeftRadius', type: 'number', defaultValue: 'undefined', description: 'Explicit bottom-left corner radius override.' },
-          { name: 'bottomRightRadius', type: 'number', defaultValue: 'undefined', description: 'Explicit bottom-right corner radius override.' },
-          { name: 'roundLeft', type: 'boolean', defaultValue: 'true', description: 'Whether left corners are rounded.' },
-          { name: 'roundRight', type: 'boolean', defaultValue: 'true', description: 'Whether right corners are rounded.' },
-          { name: 'roundTop', type: 'boolean', defaultValue: 'true', description: 'Whether top corners are rounded.' },
-          { name: 'roundBottom', type: 'boolean', defaultValue: 'true', description: 'Whether bottom corners are rounded.' },
-          { name: 'borderWidth', type: 'number', defaultValue: '0', description: 'Border stroke width in logical units.' },
-          { name: 'borderColor', type: 'string', defaultValue: 'undefined', description: 'Border stroke color for continuous curvature outline.' },
-          { name: 'color', type: 'string', defaultValue: 'undefined', description: 'Background surface fill color.' },
-          { name: 'width', type: 'number', defaultValue: 'undefined', description: 'Explicit width in logical units (auto-measured via ResizeObserver if omitted).' },
-          { name: 'height', type: 'number', defaultValue: 'undefined', description: 'Explicit height in logical units (auto-measured via ResizeObserver if omitted).' },
-          { name: 'as', type: 'React.ElementType', defaultValue: "'div'", description: 'Underlying HTML tag or component to render as.' },
+          { name: 'radius', type: 'number', defaultValue: '8', description: t('components.squircle.radiusDesc', 'Corner radius in logical units.') },
+          { name: 'smoothing', type: 'number', defaultValue: '0.6', description: t('components.squircle.smoothingDesc', 'Curvature smoothing factor from 0.0 (circle arc) to 1.0 (full squircle). 0.6 is the Apple iOS standard.') },
+          { name: 'cornerSmoothing', type: 'number', defaultValue: '0.6', description: t('components.squircle.cornerSmoothingDesc', 'Alias for smoothing conforming to the neutral schema.') },
+          { name: 'topLeftRadius', type: 'number', defaultValue: 'undefined', description: t('components.squircle.topLeftDesc', 'Explicit top-left corner radius override.') },
+          { name: 'topRightRadius', type: 'number', defaultValue: 'undefined', description: t('components.squircle.topRightDesc', 'Explicit top-right corner radius override.') },
+          { name: 'bottomLeftRadius', type: 'number', defaultValue: 'undefined', description: t('components.squircle.bottomLeftDesc', 'Explicit bottom-left corner radius override.') },
+          { name: 'bottomRightRadius', type: 'number', defaultValue: 'undefined', description: t('components.squircle.bottomRightDesc', 'Explicit bottom-right corner radius override.') },
+          { name: 'roundLeft', type: 'boolean', defaultValue: 'true', description: t('components.squircle.rlDesc', 'Whether left corners are rounded.') },
+          { name: 'roundRight', type: 'boolean', defaultValue: 'true', description: t('components.squircle.rrDesc', 'Whether right corners are rounded.') },
+          { name: 'roundTop', type: 'boolean', defaultValue: 'true', description: t('components.squircle.rtDesc', 'Whether top corners are rounded.') },
+          { name: 'roundBottom', type: 'boolean', defaultValue: 'true', description: t('components.squircle.rbDesc', 'Whether bottom corners are rounded.') },
+          { name: 'borderWidth', type: 'number', defaultValue: '0', description: t('components.squircle.borderWidthDesc', 'Border stroke width in logical units.') },
+          { name: 'borderColor', type: 'string', defaultValue: 'undefined', description: t('components.squircle.borderColorDesc', 'Border stroke color for continuous curvature outline.') },
+          { name: 'color', type: 'string', defaultValue: 'undefined', description: t('components.squircle.bgDesc', 'Background surface fill color.') },
+          { name: 'width', type: 'number', defaultValue: 'undefined', description: t('components.squircle.widthDesc', 'Explicit width in logical units (auto-measured via ResizeObserver if omitted).') },
+          { name: 'height', type: 'number', defaultValue: 'undefined', description: t('components.squircle.heightDesc', 'Explicit height in logical units (auto-measured via ResizeObserver if omitted).') },
+          { name: 'as', type: 'React.ElementType', defaultValue: "'div'", description: t('components.squircle.asDesc', 'Underlying HTML tag or component to render as.') },
         ]}
       />
     </DocLayout>

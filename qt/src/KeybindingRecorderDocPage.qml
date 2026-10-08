@@ -7,13 +7,13 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "Keybinding Recorder"
-    description: "Interactive keyboard accelerator recorder that captures modifier sequences (Ctrl, Shift, Alt, Cmd) and hotkeys for desktop applications."
+    description: ChaSetI18n.tr("components.keybinding-recorder.description", "Interactive keyboard sequence recorder that captures desktop accelerator combinations (Ctrl, Alt, Shift, Meta).")
 
     property string boundKey: "Ctrl+Shift+P"
     property string compactKey: "Ctrl+K"
 
     ComponentPreview {
-        title: "Keybinding Recorder Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.keybindingRecorder.sandboxTitle", "Keybinding Recorder Sandbox")
         reactCode: `<KeybindingRecorder
   value={binding}
   onValueChange={setBinding}
@@ -75,8 +75,8 @@ ChaSetKeybindingRecorder {
 
     ComponentPreview {
         property string sectionId: "variants"
-        property string sectionTitle: "Sizes & States"
-        title: "Sizes & States"
+        property string sectionTitle: ChaSetI18n.tr("components.keybindingRecorder.sizesAndStates", "Sizes & States")
+        title: ChaSetI18n.tr("components.keybindingRecorder.sizesAndStates", "Sizes & States")
         reactCode: `<KeybindingRecorder value="Ctrl+K" size="default" />
 <KeybindingRecorder value="Ctrl+Shift+P" size="sm" />
 <KeybindingRecorder value="Alt+F4" clearable={false} />
@@ -129,13 +129,13 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`
         name: "KeybindingRecorder"
         componentId: "keybinding-recorder"
         propsModel: [
-            { name: "value", type: "string", default: "'Ctrl+K'", description: "The serialized shortcut string representation (e.g. 'Ctrl+Shift+P')." },
-            { name: "keybinding", type: "string", default: "'Ctrl+K'", description: "Alias for value." },
-            { name: "size", type: "'default' | 'sm'", default: "'default'", description: "Size preset variant for regular or compact density." },
-            { name: "clearable", type: "bool", default: "true", description: "Whether to display a clear button when a shortcut is set." },
-            { name: "recording", type: "bool", default: "false", description: "Whether the recorder is actively listening for key combinations." },
-            { name: "disabled", type: "bool", default: "false", description: "Whether the recorder is disabled." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the input container." }
+            { name: "value", type: "string", default: "'Ctrl+K'", description: ChaSetI18n.tr("components.keybindingRecorder.valueShortDesc", "The serialized shortcut string representation (e.g. 'Ctrl+Shift+P').") },
+            { name: "keybinding", type: "string", default: "'Ctrl+K'", description: ChaSetI18n.tr("components.keybindingRecorder.aliasDesc", "Alias for value.") },
+            { name: "size", type: "'default' | 'sm'", default: "'default'", description: ChaSetI18n.tr("components.keybindingRecorder.sizeDesc", "Size preset variant for regular or compact density.") },
+            { name: "clearable", type: "bool", default: "true", description: ChaSetI18n.tr("components.keybindingRecorder.clearableDesc", "Whether to display a clear button when a shortcut is set.") },
+            { name: "recording", type: "bool", default: "false", description: ChaSetI18n.tr("components.keybindingRecorder.recordingDesc", "Whether the recorder is actively listening for key combinations.") },
+            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.keybindingRecorder.disabledDesc", "Whether the recorder is disabled.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.keybindingRecorder.cornerRadiusDesc", "Corner radius of the input container.") }
         ]
     }
 }

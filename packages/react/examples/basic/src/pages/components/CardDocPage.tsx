@@ -57,19 +57,19 @@ export function CardDocPage() {
     <DocLayout
       category="Surfaces & Layout"
       title="Card"
-      description="Displays a card with header, title, description, content, and footer actions."
+      description={t('components.card.description', 'Displays a card with header, title, description, content, and footer actions.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.card.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Test card variants with interactive subcomponents synchronized across Web and Desktop.
+          {t('desktopComposite.card.overviewDesc', 'Test card variants with interactive subcomponents synchronized across Web and Desktop.')}
         </p>
 
         <ComponentPreview
-          title="Card Sandbox"
+          title={t('desktopComposite.card.sandboxTitle', 'Card Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
           controls={
@@ -141,10 +141,10 @@ export function CardDocPage() {
       {/* 4. Variants */}
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Variants
+          {t('surfaces.card.variantsTitle', 'Variants')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Three semantic variants styled with design tokens for consistent elevation and contrast.
+          {t('surfaces.card.variantsDesc', 'Three semantic variants styled with design tokens for consistent elevation and contrast.')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card variant="default">
@@ -168,10 +168,10 @@ export function CardDocPage() {
         </div>
 
         <h3 className="text-base font-semibold tracking-tight text-foreground mt-8 mb-3">
-          Interactive Feedback & Density
+          {t('surfaces.card.feedbackDensityTitle', 'Interactive Feedback & Density')}
         </h3>
         <p className="text-sm text-muted-foreground mb-4">
-          Enable interactive hover/press elevation feedback, or use compact density for constrained spaces.
+          {t('surfaces.card.feedbackDensityDesc', 'Enable interactive hover/press elevation feedback, or use compact density for constrained spaces.')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card interactive>
@@ -204,31 +204,31 @@ export function CardDocPage() {
               name: 'variant',
               type: "'default' | 'secondary' | 'outline'",
               default: "'default'",
-              description: 'Visual presentation style of the card container.',
+              description: t('components.card.variantDesc', 'Visual presentation style of the card container.'),
             },
             {
               name: 'size',
               type: "'default' | 'sm'",
               default: "'default'",
-              description: 'Density and padding scale of the card and composite containers.',
+              description: t('components.card.sizeDesc', 'Density and padding scale of the card and composite containers.'),
             },
             {
               name: 'interactive',
               type: 'boolean',
               default: 'false',
-              description: 'Whether the card provides hover/active elevation styling and cursor pointer.',
+              description: t('components.card.interactiveDesc', 'Whether the card provides hover/active elevation styling and cursor pointer.'),
             },
             {
               name: 'className',
               type: 'string',
               default: "''",
-              description: 'Additional CSS class names to apply to the container.',
+              description: t('components.card.classNameDesc', 'Additional CSS class names to apply to the container.'),
             },
             {
               name: 'children',
               type: 'React.ReactNode',
               default: '—',
-              description: 'Card composite subcomponents or custom elements.',
+              description: t('components.card.childrenDesc', 'Card composite subcomponents or custom elements.'),
             },
           ]}
       />

@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Desktop & Virtualization"
     pageTitle: "Virtual Tree"
-    description: "Hierarchical tree structure with reactive node expansion, indentation guides, and selection states."
+    description: ChaSetI18n.tr("components.virtual-tree.description", "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation.")
 
     property string selectionMode: "multiple"
     property var selectedIds: ["Button.tsx"]
@@ -170,7 +170,7 @@ DocLayout {
     }
 
     ComponentPreview {
-        title: "Virtual Tree Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.virtualTree.sandboxTitle", "Virtual Tree Sandbox")
         stageHeight: 420
         reactCode: `<VirtualTree
   ref={treeRef}
@@ -445,25 +445,25 @@ ChaSetVirtualTree {
         name: "VirtualTree"
         componentId: "virtual-tree"
         propsModel: [
-            { name: "nodes", type: "var[]", default: "[]", description: "Hierarchical array of tree node objects with nested children arrays." },
-            { name: "selectionMode", type: "string", default: "'single'", description: "Selection modality: 'single' | 'multiple' | 'none'." },
-            { name: "selectedId", type: "string", default: "''", description: "ID of the currently highlighted node (single mode)." },
-            { name: "selectedIds", type: "var[]", default: "[]", description: "Array of selected node IDs in multiple mode." },
-            { name: "dimmedIds", type: "var[]", default: "[]", description: "Array of node IDs rendered in dimmed/cut state." },
-            { name: "stickyItems", type: "var[]", default: "[]", description: "Expanded ancestor chain of the open node, pinned above the scroll area so parents stay visible." },
-            { name: "stickyNodeSelected(nodeId)", type: "signal", default: "signal", description: "Emitted when a pinned row is clicked (navigate only, never toggles expansion)." },
-            { name: "stickyNodeToggled(nodeId)", type: "signal", default: "signal", description: "Emitted when the chevron of a pinned row is activated." },
-            { name: "enableDnd", type: "bool", default: "false", description: "Enables drag-and-drop reordering and folder nesting." },
-            { name: "expandedIds", type: "var", default: "{}", description: "Map of expanded node IDs." },
-            { name: "defaultExpandDepth", type: "int", default: "0", description: "Default level of expansion for child branches." },
-            { name: "estimateSize", type: "int", default: "28", description: "Estimated row height for virtual calculations." },
-            { name: "gap", type: "int", default: "0", description: "Spacing between adjacent rows." },
-            { name: "overscan", type: "int", default: "10", description: "Buffer nodes rendered outside visible bounds." },
-            { name: "customRadius", type: "int", default: "6", description: "Corner radius of the tree container." },
-            { name: "expandAll()", type: "function", default: "function", description: "Expands all collapsible tree branches." },
-            { name: "collapseAll()", type: "function", default: "function", description: "Collapses all open tree branches." },
-            { name: "selectAll()", type: "function", default: "function", description: "Selects all visible nodes in multiple mode." },
-            { name: "scrollToIndex(index)", type: "function", default: "function", description: "Scrolls the virtual tree to the specified index." }
+            { name: "nodes", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.virtualTree.rootNodesDesc", "Array of top-level hierarchy nodes.") },
+            { name: "selectionMode", type: "string", default: "'single'", description: ChaSetI18n.tr("components.virtualTree.selectionModeDesc", "Active selection interaction mode.") },
+            { name: "selectedId", type: "string", default: "''", description: ChaSetI18n.tr("components.virtualTree.selectedIdDesc", "Identifier of the currently selected node (single mode).") },
+            { name: "selectedIds", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.virtualTree.selectedIdsDesc", "Array of selected node identifiers (multiple mode).") },
+            { name: "dimmedIds", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.virtualTree.dimmedDesc", "Array of node IDs rendered in dimmed/cut state.") },
+            { name: "stickyItems", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.virtualTree.stickyDesc", "Expanded ancestor chain of the open node, pinned above the scroll area so parents stay visible.") },
+            { name: "stickyNodeSelected(nodeId)", type: "signal", default: "signal", description: ChaSetI18n.tr("components.virtualTree.onStickySelectDesc", "Callback fired when a pinned row is clicked (navigate only, never toggles expansion).") },
+            { name: "stickyNodeToggled(nodeId)", type: "signal", default: "signal", description: ChaSetI18n.tr("components.virtualTree.onStickyToggleDesc", "Callback fired when the chevron of a pinned row is activated.") },
+            { name: "enableDnd", type: "bool", default: "false", description: ChaSetI18n.tr("components.virtualTree.enableDndDesc", "Enables drag-and-drop reordering and folder nesting.") },
+            { name: "expandedIds", type: "var", default: "{}", description: ChaSetI18n.tr("components.virtualTree.expandedMapDesc", "Map of expanded node IDs.") },
+            { name: "defaultExpandDepth", type: "int", default: "0", description: ChaSetI18n.tr("components.virtualTree.defaultExpandDesc", "Default level of expansion for child branches.") },
+            { name: "estimateSize", type: "int", default: "28", description: ChaSetI18n.tr("components.virtualTree.estimateDesc", "Estimated row height for virtual calculation.") },
+            { name: "gap", type: "int", default: "0", description: ChaSetI18n.tr("components.virtualTree.gapDesc", "Spacing between adjacent rows.") },
+            { name: "overscan", type: "int", default: "10", description: ChaSetI18n.tr("components.virtualTree.overscanDesc", "Buffer nodes rendered outside visible bounds.") },
+            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.virtualTree.cornerRadiusDesc", "Corner radius of the tree container.") },
+            { name: "expandAll()", type: "function", default: "function", description: ChaSetI18n.tr("components.virtualTree.expandAllDesc", "Expands all collapsible tree branches.") },
+            { name: "collapseAll()", type: "function", default: "function", description: ChaSetI18n.tr("components.virtualTree.collapseAllDesc", "Collapses all open tree branches.") },
+            { name: "selectAll()", type: "function", default: "function", description: ChaSetI18n.tr("components.virtualTree.selectAllDesc", "Selects all visible nodes in multiple mode.") },
+            { name: "scrollToIndex(index)", type: "function", default: "function", description: ChaSetI18n.tr("components.virtualTree.scrollToDesc", "Scrolls the virtual tree to the specified index.") }
         ]
     }
 }

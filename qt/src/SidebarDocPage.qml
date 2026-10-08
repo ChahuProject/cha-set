@@ -7,14 +7,14 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Sidebar"
-    description: "Composable, responsive and resizable desktop-grade sidebar navigation system supporting expanded, icon collapsed, and offcanvas modes."
+    description: ChaSetI18n.tr("components.sidebar.description", "Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing.")
 
     property bool demoCollapsed: false
     property string demoVariant: "sidebar"
     property string demoCollapsible: "icon"
 
     ComponentPreview {
-        title: "Sidebar Sandbox"
+        title: ChaSetI18n.tr("desktopComposite.sidebar.sandboxTitle", "Sidebar Sandbox")
         stageHeight: 420
         reactCode: `<SidebarProvider defaultOpen={true}>
   <Sidebar collapsible="icon" variant="sidebar">
@@ -285,15 +285,15 @@ ChaSetSidebar {
         name: "Sidebar"
         componentId: "sidebar"
         propsModel: [
-            { name: "sidebarWidth", type: "int", default: "256", description: "Expanded width of the sidebar bound." },
-            { name: "minWidth", type: "int", default: "160", description: "Minimum draggable width limit." },
-            { name: "maxWidth", type: "int", default: "400", description: "Maximum draggable width limit." },
-            { name: "iconWidth", type: "int", default: "52", description: "Width when collapsed in icon mode." },
-            { name: "collapsed", type: "bool", default: "false", description: "Whether the sidebar is currently collapsed." },
-            { name: "side", type: "string", default: "'left'", description: "Dock side: 'left' | 'right'." },
-            { name: "variant", type: "string", default: "'sidebar'", description: "Visual container variant: 'sidebar' | 'floating' | 'inset'." },
-            { name: "collapsible", type: "string", default: "'icon'", description: "Collapse strategy: 'offcanvas' | 'icon' | 'none'." },
-            { name: "resizable", type: "bool", default: "true", description: "Enables interactive edge dragging rail for dynamic resizing." }
+            { name: "sidebarWidth", type: "int", default: "256", description: ChaSetI18n.tr("components.sidebar.sidebarWidthDesc", "Expanded width of the sidebar bound.") },
+            { name: "minWidth", type: "int", default: "160", description: ChaSetI18n.tr("components.sidebar.minWidthDesc", "Minimum draggable width limit.") },
+            { name: "maxWidth", type: "int", default: "400", description: ChaSetI18n.tr("components.sidebar.maxWidthDesc", "Maximum draggable width limit.") },
+            { name: "iconWidth", type: "int", default: "52", description: ChaSetI18n.tr("components.sidebar.iconWidthDesc", "Width when collapsed in icon mode.") },
+            { name: "collapsed", type: "bool", default: "false", description: ChaSetI18n.tr("components.sidebar.collapsedDesc", "Whether the sidebar is currently collapsed.") },
+            { name: "side", type: "string", default: "'left'", description: ChaSetI18n.tr("components.sidebar.sideDesc", "Docking side for the sidebar layout.") },
+            { name: "variant", type: "string", default: "'sidebar'", description: ChaSetI18n.tr("components.sidebar.variantDesc", "Visual container styling variant.") },
+            { name: "collapsible", type: "string", default: "'icon'", description: ChaSetI18n.tr("components.sidebar.collapsibleDesc", "Collapsing behavior mode when closed on desktop.") },
+            { name: "resizable", type: "bool", default: "true", description: ChaSetI18n.tr("components.sidebar.resizableDesc", "Enables interactive edge dragging rail for dynamic resizing.") }
         ]
     }
 }

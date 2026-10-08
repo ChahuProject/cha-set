@@ -19,14 +19,14 @@ export function KeybindingRecorderDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Keybinding Recorder"
-      description="Interactive keyboard sequence recorder that captures desktop accelerator combinations (Ctrl, Alt, Shift, Meta)."
+      description={t('components.keybinding-recorder.description', 'Interactive keyboard sequence recorder that captures desktop accelerator combinations (Ctrl, Alt, Shift, Meta).')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Interactive Overview
+          {t('desktopComposite.keybindingRecorder.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Click the recorder box below and press any key combination (e.g. <code>Ctrl+Alt+S</code>).
+          {t('desktopComposite.keybindingRecorder.overviewDesc', 'Click the recorder box below and press any key combination (e.g. {{example}}).', { example: 'Ctrl+Alt+S' })}
         </p>
 
         <ComponentPreview
@@ -36,7 +36,7 @@ export function KeybindingRecorderDocPage() {
     size: "default"
     clearable: true
     onKeybindingRecorded: function(b) { console.log(b) }
-}`} title="Keybinding Recorder Sandbox" reactCode={reactCode}>
+}`} title={t('desktopComposite.keybindingRecorder.sandboxTitle', 'Keybinding Recorder Sandbox')} reactCode={reactCode}>
           <div className="flex flex-col items-center gap-4 w-full max-w-sm">
             <KeybindingRecorder
               value={binding}
@@ -69,10 +69,10 @@ ChaSetKeybindingRecorder {
 
       <section id="variants" className="scroll-mt-20 my-10">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
-          Sizes & States
+          {t('components.keybindingRecorder.sizesAndStates', 'Sizes & States')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Available in default and sm sizing tiers, with optional clearing and disabled states.
+          {t('components.keybindingRecorder.sizesAndStatesDesc', 'Available in default and sm sizing tiers, with optional clearing and disabled states.')}
         </p>
 
         <ComponentPreview
@@ -80,7 +80,7 @@ ChaSetKeybindingRecorder {
 ChaSetKeybindingRecorder { value: "Ctrl+Shift+P"; size: "sm" }
 ChaSetKeybindingRecorder { value: "Alt+F4"; clearable: false }
 ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`}
-          title="Sizes & States"
+          title={t('components.keybindingRecorder.sizesAndStates', 'Sizes & States')}
           reactCode={`<KeybindingRecorder value="Ctrl+K" size="default" />
 <KeybindingRecorder value="Ctrl+Shift+P" size="sm" />
 <KeybindingRecorder value="Alt+F4" clearable={false} />
@@ -111,14 +111,14 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`}
         name="KeybindingRecorder"
         componentId="keybinding-recorder"
         props={[
-            { name: 'value', type: 'string | KeybindingValue', default: "''", description: 'Active key combination (string or structured object).' },
-            { name: 'onValueChange', type: '(val: string | KeybindingValue) => void', default: 'undefined', description: 'Callback fired when new combination recorded.' },
-            { name: 'onChange', type: '(value: KeybindingValue, str: string) => void', default: 'undefined', description: 'Dual callback receiving both structured object and string.' },
-            { name: 'size', type: '"default" | "sm"', default: '"default"', description: 'Density and sizing variant.' },
-            { name: 'clearable', type: 'boolean', default: 'true', description: 'Whether to render a clear button when shortcut is set.' },
-            { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether recorder interaction is disabled.' },
-            { name: 'placeholder', type: 'string', default: "'No keybinding set'", description: 'Placeholder when no shortcut is defined.' },
-            { name: 'recordingText', type: 'string', default: "'Press key combination (Esc to cancel)...'", description: 'Prompt displayed during active recording.' },
+            { name: 'value', type: 'string | KeybindingValue', default: "''", description: t('components.keybindingRecorder.valueDesc', 'Active key combination (string or structured object).') },
+            { name: 'onValueChange', type: '(val: string | KeybindingValue) => void', default: 'undefined', description: t('components.keybindingRecorder.onValueChangeDesc', 'Callback fired when new combination recorded.') },
+            { name: 'onChange', type: '(value: KeybindingValue, str: string) => void', default: 'undefined', description: t('components.keybindingRecorder.onChangeDesc', 'Dual callback receiving both structured object and string.') },
+            { name: 'size', type: '"default" | "sm"', default: '"default"', description: t('components.keybindingRecorder.sizeDesc', 'Size preset variant for regular or compact density.') },
+            { name: 'clearable', type: 'boolean', default: 'true', description: t('components.keybindingRecorder.clearableDesc', 'Whether to display a clear button when a shortcut is set.') },
+            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.keybindingRecorder.disabledDesc', 'Whether the recorder is disabled.') },
+            { name: 'placeholder', type: 'string', default: "'No keybinding set'", description: t('components.keybindingRecorder.placeholderDesc', 'Placeholder when no shortcut is defined.') },
+            { name: 'recordingText', type: 'string', default: "'Press key combination (Esc to cancel)...'", description: t('components.keybindingRecorder.recordingTextDesc', 'Prompt displayed during active recording.') },
           ]}
       />
     </DocLayout>
