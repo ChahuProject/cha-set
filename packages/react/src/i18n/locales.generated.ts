@@ -129,7 +129,11 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "dotted": "点线",
     "left": "居左",
     "center": "居中",
-    "right": "居右"
+    "right": "居右",
+    "dark": "深色",
+    "light": "浅色",
+    "system": "系统",
+    "small": "小型"
   },
   "theme": {
     "settings": {
@@ -345,6 +349,11 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "Sizes & Interaction Triggers": "尺寸与交互触发方式沙盒",
       "Sizes & States": "尺寸与状态沙盒"
     },
+    "collapseOverflow": "折叠与溢出",
+    "examplesVariants": "示例与变体",
+    "installation": "安装",
+    "interactiveOverview": "交互式概览",
+    "navigation": "导航",
     "toc": {
       "philosophy": "设计理念",
       "architecture": "工作机制",
@@ -471,7 +480,22 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "groupDesc": "使用 ButtonGroup 聚合相关联的按钮，并为按钮添加前置或后置图标。",
       "left": "左侧",
       "middle": "中间",
-      "right": "右侧"
+      "right": "右侧",
+      "variantDesc": "按钮外观与语义意图。",
+      "sizeDesc": "标准化尺寸规格。",
+      "loadingDesc": "显示加载旋转指示并禁用用户交互。",
+      "loadingTextDesc": "加载状态下显示的可选内容。",
+      "pressedDesc": "带激活样式与 aria-pressed 的切换或选中状态。",
+      "leftIconDesc": "显示在子内容之前的可选前置图标。",
+      "rightIconDesc": "显示在子内容之后的可选后置图标。",
+      "iconSizeDesc": "逻辑未缩放图标尺寸；可放大或覆盖按钮内渲染的图标。",
+      "fullWidthDesc": "将按钮拉伸至父容器宽度的 100%。",
+      "asChildDesc": "将属性直接传递给子元素（多态）。",
+      "disabledDesc": "阻止点击并应用弱化禁用样式。",
+      "typeDesc": "HTML 按钮类型属性。",
+      "iconSourceDesc": "可选图标图片来源地址。",
+      "iconPositionDesc": "图标来源位置：居左或居右。",
+      "textDesc": "按钮标签文本内容。"
     },
     "badge": {
       "description": "展示徽章或具有徽章外观的组件，用于高亮状态、标签和计数。",
@@ -493,7 +517,15 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "away": "离开",
       "error": "错误",
       "reactTag": "React 标签",
-      "qtQuick": "Qt Quick"
+      "qtQuick": "Qt Quick",
+      "variantDesc": "与核心颜色令牌对应的视觉风格变体。",
+      "sizeDesc": "决定胶囊高度、内边距与字体规格的尺寸变体。",
+      "dotDesc": "是否显示前置状态指示圆点。",
+      "dotColorDesc": "状态圆点的自定义颜色类（例如 bg-emerald-500）。",
+      "removableDesc": "是否显示行内关闭／移除操作按钮。",
+      "onRemoveDesc": "触发关闭／移除操作时执行的回调。",
+      "interactiveDesc": "徽标是否响应交互光标与点击效果。",
+      "classNameDesc": "可选的附加 Tailwind CSS 类名。"
     },
     "label": {
       "description": "渲染与表单控件相关联的可访问性文本标签。",
@@ -530,7 +562,14 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "formControlDesc": "点击标签可通过 htmlFor 自动激活或切换关联的输入控件。",
       "termsTitle": "条款与条件",
       "termsSubtitle": "点击下方文字可切换复选框勾选状态",
-      "acceptTerms": "我同意并接受服务条款与隐私政策"
+      "acceptTerms": "我同意并接受服务条款与隐私政策",
+      "optionalIndicator": "（选填）",
+      "sizeDesc": "文本尺寸变体（默认或紧凑 sm）。",
+      "helperDesc": "渲染于标签下方的辅助说明文本。",
+      "tooltipDescNew": "随 info 图标展示的上下文帮助提示文案。",
+      "htmlForDesc": "标签所绑定的表单元素 ID。",
+      "classNameDesc": "额外的自定义 CSS 类名。",
+      "textDesc": "要展示的标签文本。"
     },
     "separator": {
       "description": "在列表、表单或区域中在视觉或语义上分隔内容。",
@@ -567,14 +606,28 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "dashed": "虚线",
       "dotted": "点线",
       "navDivider": "行内导航分隔",
-      "navDividerDesc": "行内列表项或元数据标签之间的垂直分隔线。"
+      "navDividerDesc": "行内列表项或元数据标签之间的垂直分隔线。",
+      "orientationDesc": "分隔线的方向。",
+      "variantDesc": "分隔线的线型样式。",
+      "labelDesc": "嵌入分隔线中的可选标签或注释文本。",
+      "labelPositionDesc": "嵌入标签的水平对齐方式。",
+      "classNameDesc": "用于自定义宽度、高度、边距或颜色覆盖的额外 CSS 类名。",
+      "decorativeDesc": "该元素是纯装饰还是传达语义结构。",
+      "customColorDesc": "分隔线的可选显式覆盖颜色（默认为 ThemeTokens.border）。"
     },
     "skeleton": {
       "description": "在内容加载期间显示占位骨架屏，具有平滑的 CSS 脉冲与波纹闪烁动画。",
       "overviewDesc": "用于渐进式加载状态的视觉占位骨架卡片。可在脉冲、波纹扫光或静态模式间切换。",
       "pulse": "脉冲",
       "wave": "波纹扫光",
-      "none": "无动画"
+      "none": "无动画",
+      "animationDesc": "占位加载效果的动画样式。",
+      "roundedDesc": "占位形状的圆角预设。",
+      "animateDesc": "切换动画开或关的便捷布尔开关。",
+      "classNameDesc": "用于高度、宽度与背景造型的自定义 CSS 类名。",
+      "animationDescQt": "动画模式：“pulse”｜“wave”｜“none”。",
+      "roundedDescQt": "圆角预设：“none”｜“sm”｜“md”｜“lg”｜“full”。",
+      "customRadiusDesc": "自定义圆角覆盖。"
     },
     "copy-button": {
       "description": "一键剪贴板复制按钮，带有短暂的成功对勾反馈和可自定义的超时时长。",
@@ -622,7 +675,17 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "always": "始终紧凑",
       "never": "从不紧凑",
       "variantsTitle": "变体",
-      "variantsDesc": "专为菜单、搜索输入框、对话框和反相气泡提示设计的四种视觉样式。"
+      "variantsDesc": "专为菜单、搜索输入框、对话框和反相气泡提示设计的四种视觉样式。",
+      "classNameDesc": "可选的额外 Tailwind CSS 类名。",
+      "compactDesc": "是否将冗长修饰符转换为紧凑符号（Ctrl 转为 ⌃）。",
+      "overflowDesc": "窄容器空间受限时的溢出策略。",
+      "separatorDesc": "组合键之间的自定义分隔符。",
+      "shortcutDesc": "自动解析的序列化快捷键组合字符串。",
+      "sizeDesc": "控制键帽高度、内边距与字号的尺寸规格。",
+      "textDesc": "直接显示的单个按键文本。",
+      "variantDesc": "与容器表面匹配的视觉呈现变体。",
+      "clickLabel": "点击",
+      "orDivider": "或"
     },
     "squircle": {
       "description": "iOS 连续曲率超椭圆圆角（G2 连续律）。消除了传统圆弧角在直线与切点处曲率突变导致的生硬折痕，为整个项目提供平滑、有机的现代圆角设计。",
@@ -634,72 +697,67 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "smoothingLabel": "平滑度: {{smoothing}}%",
       "cornerSmoothing": "圆角平滑度",
       "cornerRadius": "圆角半径",
-      "adoptionPreview": "全局默认接入预览"
+      "adoptionPreview": "全局默认接入预览",
+      "asDesc": "底层渲染的 HTML 标签或组件。",
+      "bgDesc": "背景表面填充颜色。",
+      "borderColorDesc": "连续曲率描边的边框颜色。",
+      "borderWidthDesc": "逻辑单位下的边框描边宽度。",
+      "bottomLeftDesc": "左下角圆角覆盖值。",
+      "bottomRightDesc": "右下角圆角覆盖值。",
+      "cornerSmoothingDesc": "符合中性规范的 smoothing 别名。",
+      "heightDesc": "逻辑单位下的显式高度（缺省时经由 ResizeObserver 自动测量）。",
+      "radiusDesc": "逻辑单位下的圆角半径。",
+      "rbDesc": "底部圆角是否生效。",
+      "rlDesc": "左侧圆角是否生效。",
+      "rrDesc": "右侧圆角是否生效。",
+      "rtDesc": "顶部圆角是否生效。",
+      "smoothingDesc": "曲率平滑系数，0．0 为圆弧角至 1．0 为完整超椭圆，0．6 为 Apple iOS 标准。",
+      "topLeftDesc": "左上角圆角覆盖值。",
+      "topRightDesc": "右上角圆角覆盖值。",
+      "widthDesc": "逻辑单位下的显式宽度（缺省时经由 ResizeObserver 自动测量）。"
     },
-    "window-title-bar": {
-      "description": "桌面端无边框窗口标题栏组件，包含应用标识、标题、拖拽移动区域以及最小化/最大化/关闭系统控制按钮。"
-    },
-    "smooth-wheel-handler": {
-      "description": "桌面端平滑滚轮运动学辅助组件，提供连续物理动量阻尼累加、Shift+滚轮水平转置及触控拖拽解耦互斥。"
-    },
-    "virtual-list": {
-      "description": "基于 TanStack Virtual 构建的高性能视口虚拟化长列表，支持 10 万+ 行数据流畅滚动与 DOM 动态回收。"
-    },
-    "virtual-tree": {
-      "description": "虚拟化层级树视图组件，支持节点动态折叠展开、多选/单选、剪切复制粘贴及键盘空间导航。"
-    },
-    "virtual-grid": {
-      "description": "二维自适应响应式虚拟化网格视图，支持海量卡片、图像矩阵与动态单元格布局渲染。"
-    },
-    "generic-data-table": {
-      "description": "基于 TanStack Table 构建的企业级通用数据表格，提供列头排序、实时筛选、行选择与分页控制。"
-    },
-    "table": {
-      "description": "响应式语义化基础数据表格组件，具备行悬停高亮、精致分割边框与表头/表尾语义结构。"
-    },
-    "query-builder": {
-      "description": "可视化条件查询构建器，支持嵌套逻辑分组 (AND/OR)、字段选择、运算符谓词筛选及 JSON 结构序列化。"
-    },
-    "code-block": {
-      "description": "规范驱动的代码语法高亮查看器，基于统一零依赖词法分析器与滚动、复制、标签组件构建，双端色彩与分词完全一致。"
-    },
-    "pipeline-view": {
-      "description": "多阶段任务流水线执行视图，整合任务追踪队列、步骤时间线及虚拟化自动滚动日志控制台。"
-    },
-    "address-bar": {
-      "description": "资源管理器与浏览器风格的地址导航栏，具备可交互的面包屑路径分段与行内路径即时编辑功能。"
-    },
-    "theme-settings": {
-      "description": "跨端主题配置面板，统一管控外观模式、强调色调色板、装饰圆角阴影级别与界面缩放密度。"
-    },
-    "language-settings": {
-      "description": "跨端语言偏好设置卡片，提供系统语言自动检测、即时生效切换与文化诗词意境引语。"
-    },
-    "input": {
-      "description": "显示表单文本输入框或具备输入框外观与行为的组件。"
-    },
-    "checkbox": {
-      "description": "允许用户在选中和未选中状态之间切换的控件，支持半选状态、多尺寸、辅助说明文本与配套标签。"
-    },
-    "switch": {
-      "description": "允许用户在开与关状态之间切换的控制开关，支持异步加载、只读模式及辅助说明描述。"
-    },
-    "select": {
-      "description": "显示供用户挑选的下拉选项列表，由带箭头与选中指示器的触发按钮呼出。"
-    },
-    "slider": {
-      "description": "允许用户沿滑动轨道选取数值的交互控件。"
-    },
-    "range-slider": {
-      "description": "双把手区间滑块，用于选取具备防碰撞约束与键盘无障碍支持的数值区间。"
-    },
-    "snap-slider": {
-      "description": "具备刻度与标签行的阶梯式吸附滑块，可精准对齐离散分档。"
-    },
-    "segmented-control": {
-      "description": "紧凑胶囊风格分段选择控件，适用于工具栏、菜单与视图切换，支持图标与角标。"
+    "addressBar": {
+      "canGoBackDesc": "启用后退历史导航按钮。",
+      "canGoForwardDesc": "启用前进历史导航按钮。",
+      "defaultValueDesc": "非受控用法下的初始路径字符串。",
+      "disabledDesc": "禁用全部交互与输入编辑。",
+      "fileSystemAdapterDesc": "提供子文件夹枚举与建议查询的文件系统适配器。",
+      "historyDesc": "用于下拉展示的最近输入路径历史。",
+      "onNavigateDesc": "通过分段点击或 Enter 提交新路径时触发的回调。",
+      "onNavigateWithSelectionDesc": "选中特定文件项并导航时触发的回调。",
+      "pathDesc": "在面包屑与编辑模式下渲染的当前路径字符串。",
+      "showNavButtonsDesc": "是否显示后退、前进、向上与刷新导航按钮。",
+      "showRefreshDesc": "是否显示刷新按钮。",
+      "showSearchDesc": "是否在右侧显示集成搜索／过滤输入框。",
+      "suggestionsDesc": "下拉浮层中自动补全路径字符串列表。"
     },
     "colorPicker": {
+      "activePanelDesc": "当前激活的颜色选择器面板模式。",
+      "defaultValueDesc": "非受控用法下的初始颜色值。",
+      "description": "支持 4 种选择器面板（HueRing 方形、圆形色轮、HueRing 三角形与色板）、实时十六进制输入与复制按钮，以及独立多通道滑块（RGB、HSV、CMYK、LAB）的交互式颜色选择组件。",
+      "disabledPropDesc": "为 true 时阻止用户交互并应用弱化透明度。",
+      "hexDesc": "选中的十六进制颜色字符串（例如 #1D7AE0）。",
+      "modeDesc": "显示模式：内联面板卡片或浮层下拉触发器。",
+      "movableDesc": "为 true 时允许拖拽空白背景区域以移动组件，双击重置位置。",
+      "onChangeDesc": "选中颜色变化时触发的回调。",
+      "onValueChangeDesc": "为契约一致性提供的 onChange 别名回调。",
+      "presetColorsDesc": "在色板面板中展示的预设十六进制颜色字符串数组。",
+      "showCmykSlidersDesc": "是否显示 CMYK 通道滑块与数字输入框。",
+      "showHexDesc": "是否显示可编辑的 HEX 文本输入行。",
+      "showHsvSlidersDesc": "是否显示 HSV 通道滑块与数字输入框。",
+      "showLabSlidersDesc": "是否显示 CIELAB 通道滑块与数字输入框。",
+      "showPreviewDesc": "是否显示顶部预览头的色板与十六进制标签。",
+      "showRgbSlidersDesc": "是否显示 RGB 通道滑块与数字输入框。",
+      "showSwatchesDesc": "是否显示快捷预设颜色色板行。",
+      "sizeDesc": "画布、色板与输入框的视觉尺寸规格。",
+      "titleDesc": "在预览头中渲染的自定义标签。",
+      "valueColorDesc": "选中的颜色值。",
+      "valueDesc": "受控十六进制颜色值（例如 #1D7AE0）。",
+      "defaultTitle": "颜色",
+      "panelSquare": "方形",
+      "panelCircle": "圆形",
+      "panelTriangle": "三角形",
+      "panelSwatches": "色板",
       "mode": "模式:",
       "modeInline": "内嵌面板",
       "modePopover": "气泡弹窗",
@@ -722,65 +780,273 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "customPresetsTitle": "自定义预设色板",
       "customPresetsDesc": "通过 presetColors 属性传入专属的项目色板。"
     },
-    "color-picker": {
-      "description": "交互式拾色器组件，提供色相环方形、色轮圆形、色相环三角形与预设色板 4 种取色面板，实时 HEX 输入与复制，以及独立的多通道滑块 (RGB, HSV, CMYK, LAB)。"
+    "errorBoundary": {
+      "fallbackTitle": "组件渲染错误",
+      "reloadPage": "重新加载页面",
+      "tryAgain": "重试",
+      "unexpectedError": "渲染过程中发生了意外错误。"
     },
-    "colorpicker": {
-      "description": "交互式拾色器组件，提供色相环方形、色轮圆形、色相环三角形与预设色板 4 种取色面板，实时 HEX 输入与复制，以及独立的多通道滑块 (RGB, HSV, CMYK, LAB)。"
+    "languageSettings": {
+      "disabledDesc": "语言选择控件是否禁用。",
+      "onPreferenceChangeDesc": "用户选择其他语言或切换系统模式时触发的回调。",
+      "preferenceDesc": "当前语言偏好，“system”或明确的语言代码。",
+      "showFollowSystemDesc": "是否显示带系统检测的 Follow System 突出选项卡片。",
+      "textProviderDesc": "用于覆盖组件文案的可选自定义翻译函数。",
+      "variantDesc": "视觉容器变体。“card”渲染带标题的外层边框卡片；“embedded”渲染无外框内联内容。"
     },
-    "durationInput": {
-      "timerDuration": "定时器时长",
-      "timerDurationDefault": "定时器时长 (默认):",
-      "compactSizeColon": "紧凑尺寸 (sm):",
-      "disabledStateColon": "禁用状态:",
-      "formatted": "格式化展示:",
-      "formattedSummary": "{{h}}小时 {{m}}分钟 {{sec}}秒 (共 {{total}} 秒)",
-      "hours": "时",
-      "minutes": "分",
-      "seconds": "秒",
-      "presets": "预设",
-      "compactTitle": "紧凑尺寸 (sm)",
-      "largeTitle": "较大尺寸 (lg)",
-      "disabledTitle": "禁用状态",
-      "variantsTitle": "变体与配置",
-      "variantsDesc": "支持紧凑与宽敞尺寸档位，支持关闭预设菜单或单位标签，以及禁用状态。"
+    "queryBuilder": {
+      "connectorDesc": "根布尔组合逻辑（“AND”｜“OR”）。",
+      "customRadiusDesc": "规则构建器容器的圆角半径。",
+      "fieldsDesc": "可用可查询字段与数据类型。",
+      "fieldsListDesc": "可查询字段定义数组。",
+      "maxDepthDesc": "最大嵌套规则分组深度。",
+      "onQueryChangeDesc": "添加、删除或编辑规则时触发的回调。",
+      "queryDesc": "当前查询树根分组。",
+      "rulesDesc": "当前条件规则数组。"
     },
-    "duration-input": {
-      "description": "分段式时长输入控件，支持时、分、秒独立编辑，带有步进按钮、鼠标滚轮调节、键盘方向键切换与快速预设菜单。"
+    "slider": {
+      "classNameDesc": "应用于滑块根元素的额外 CSS 类名。",
+      "defaultValueDesc": "滑块非受控用法下的默认值。",
+      "disabledDesc": "为 true 时阻止用户交互并应用弱化透明度。",
+      "forceFocusDesc": "以编程方式强制焦点环样式的视觉测试辅助。",
+      "forceHoverDesc": "以编程方式强制悬停样式的视觉测试辅助。",
+      "formatValueDesc": "浮动提示文本的可选格式化函数。",
+      "marksDesc": "与离散停靠位置对应的标签字符串可选数组。",
+      "maxDesc": "允许的最大值。",
+      "minDesc": "允许的最小值。",
+      "nameDesc": "底层隐藏输入框的表单提交名称。",
+      "onChangeDesc": "滑块数值变化时调用的标准事件处理函数。",
+      "onValueChangeDesc": "滑块数值变化时调用的事件处理函数。",
+      "orientationDesc": "滑块轨道的方向。",
+      "readOnlyDesc": "为 true 时阻止数值变化，同时保持完整视觉不透明度。",
+      "showTicksDesc": "沿滑块轨道显示刻度标记。",
+      "showTooltipDesc": "为 true 时，在拖拽与悬停时于滑块上显示交互式浮动数值提示。",
+      "sizeDesc": "滑块轨道与滑块的尺寸规格。",
+      "stepDesc": "步进粒度间隔。",
+      "valueDesc": "滑块的受控数值。",
+      "description": "允许用户沿滑动轨道选取数值的交互控件。"
     },
-    "presetNumberInput": {
-      "textureDimension": "纹理尺寸",
-      "textureDimensionColon": "纹理尺寸:",
-      "placeholder": "宽 / 高",
-      "currentValue": "当前数值:",
-      "empty": "(空)",
-      "auto": "自动",
-      "none": "无",
-      "customPresetsSmall": "自定义预设 (小尺寸)",
-      "customPresetsSmallColon": "自定义预设 (小尺寸):",
-      "disallowClear": "禁止清空 (必填项)",
-      "disabledTitle": "禁用状态",
-      "variantsTitle": "变体与配置",
-      "variantsDesc": "配置自定义数值预设，关闭清空选项，或置于禁用状态。"
+    "splitButton": {
+      "defaultAction": "操作",
+      "disabledDesc": "分体按钮是否禁用。",
+      "labelDesc": "主操作按钮上的标签。",
+      "menuContentDesc": "点击下拉箭头渲染的下拉菜单项。",
+      "onClickDesc": "点击主操作时触发的回调。",
+      "sizeDesc": "按钮尺寸变体。",
+      "variantDesc": "按钮样式变体。"
     },
-    "preset-number-input": {
-      "description": "高密度数值输入控件，内置快速选择下拉面板，提供常用尺寸规格预设、单位标签与可选的清空操作。"
+    "tabs": {
+      "badgeDesc": "在触发器内渲染的可选计数徽章或文本标签。",
+      "defaultValueDesc": "初始渲染时应激活的选项卡值（非受控）。",
+      "description": "一组层叠内容区（称为选项卡面板），一次显示其中之一。",
+      "disabledDesc": "在 TabsTrigger 上为 true 时阻止该选项卡的交互。",
+      "iconDesc": "在触发器内渲染的可选前置图标元素。",
+      "onValueChangeDesc": "激活选项卡变化时调用的事件处理函数。",
+      "orientationDesc": "选项卡的方向（控制键盘导航轴）。",
+      "sizeDesc": "选项卡触发器与容器的尺寸规格。",
+      "valueDesc": "当前激活选项卡的受控值。",
+      "variantDesc": "视觉呈现样式：胶囊容器（default）或下划线选项卡栏（line）。"
     },
-    "readOnlyInput": {
-      "apiSecretKey": "API 密钥 (掩码与复制):",
-      "personalAccessToken": "GitHub 访问令牌 (掩码):",
-      "defaultToken": "默认尺寸令牌",
-      "compactToken": "紧凑尺寸 (sm)",
-      "destructiveToken": "已吊销令牌 (破坏性状态)",
-      "warningToken": "即将过期令牌 (警告状态)",
-      "successToken": "已验证令牌 (成功状态)",
-      "sizesAndStatus": "尺寸与状态变体",
-      "sizesAndStatusDesc": "提供默认与 sm 两种尺寸规格，以及语义化状态色彩配置。"
+    "taskHud": {
+      "description": "带进度、溢出与折叠汇总的后台执行浮动堆栈。",
+      "propAutoHideDelay": "清空后的 HUD 在淡出前于屏幕停留的宽限期（毫秒）。",
+      "propCollapsible": "提供折叠为汇总行控件。",
+      "propDefaultCollapsed": "首次绘制时以折叠状态渲染堆栈。",
+      "propForceVisible": "无任务运行时仍保持 HUD 挂载（用于静态沙盒）。",
+      "propLabel": "HUD 区域的无障碍名称。",
+      "propMaxVisible": "堆栈溢出为“show all”胶囊前渲染的卡片数。",
+      "propOffset": "距锚定视口边缘的内缩距离（逻辑单位）。",
+      "propOnCancel": "为标记为可取消的运行中任务渲染取消控件。",
+      "propOnDismiss": "渲染每卡片的关闭控件；省略则卡片不可关闭。",
+      "propPlacement": "视口锚点。卡片经由锚定边进入与退出。",
+      "propTasks": "要呈现的后台执行，最旧在前；最新卡片最靠近锚点。",
+      "taskItemFooter": "每个 TaskItem 携带 id、title、可选 detail、状态（queued｜running｜success｜warning｜error｜cancelled）、进度比例（或不定）、total／done 步骤计数与 elapsedMs。",
+      "dismissPrefix": "关闭",
+      "label": "任务进度浮层"
     },
-    "read-only-input": {
-      "description": "受保护的只读输入控件，专为 API 密钥、访问令牌与资源 ID 设计，内置一键复制到剪贴板与掩码显示切换。"
+    "themeSettings": {
+      "configDesc": "包含 mode、palette、decoration、typography 与 uiScale 的规范主题配置对象。",
+      "configQtDesc": "符合 ThemeConfig 模式的规范主题配置对象。",
+      "controlledDesc": "受控模式：组件永不回写 config，所有编辑仅通过 configModified 发出。当宿主以自身状态驱动 config（声明式绑定）时启用，避免本地快照覆盖宿主持有的 uiScale 等字段。",
+      "disabledDesc": "禁用全部交互控件并降低不透明度。",
+      "onChangeDesc": "任一主题属性变化时触发的回调。",
+      "onExportDesc": "导出配置 JSON 时触发的回调。",
+      "onImportDesc": "导入并解析配置 JSON 时触发的回调。",
+      "onResetDesc": "重置按钮被激活时触发的回调。",
+      "showExportDesc": "是否在头部显示导出 JSON 按钮。",
+      "showImportDesc": "是否在头部显示导入按钮。",
+      "showResetDesc": "是否在头部显示重置按钮。",
+      "showTypographyDesc": "是否渲染字体家族与缩放选择行。",
+      "showTypographyQtDesc": "是否渲染字体排印选择行。",
+      "textProviderDesc": "可选国际化字符串解析回调。",
+      "textProviderQtDesc": "可选 i18n 字符串解析函数。",
+      "variantQtDesc": "容器处理：“card”将行包裹在面板中，“embedded”裸渲染行。"
+    },
+    "segmentedControl": {
+      "description": "紧凑胶囊式分段切换控件，适用于工具栏、菜单与视图切换，支持图标与徽标。",
+      "optionsDesc": "选项对象数组（{ label、value、icon?、badge?、disabled?、tooltip? }）。",
+      "valueDesc": "受控激活值。",
+      "defaultValueDesc": "非受控模式下的初始值。",
+      "onValueChangeDesc": "选中新分段时触发的回调。",
+      "sizeDesc": "物理尺寸变体（‘sm’、‘default’、‘lg’）。",
+      "titleDesc": "显示于分段之前的可选前缀标签。",
+      "disabledDesc": "是否禁用整个分段控制器。",
+      "fullWidthDesc": "分段是否等分扩展以填满父容器。",
+      "equalWidthDesc": "所有分段是否在贴合内容的同时共享相同的固定宽度。",
+      "itemWidthDesc": "为每个分段选项分配的显式固定宽度。",
+      "tooltipSideDesc": "选项工具提示的默认显示方位。",
+      "tooltipDelayDesc": "悬停后显示选项工具提示的默认延迟时长（毫秒）。",
+      "renderTooltipDesc": "选项工具提示的自定义渲染函数，支持完全自定义。",
+      "tooltipFormatterDesc": "选项工具提示的自定义格式化函数（opt）=> text|object。",
+      "tooltipDelegateDesc": "用于渲染富文本自定义工具提示的 QML Component 代理。"
+    },
+    "tableOfContents": {
+      "description": "带导轨线、激活指示器与横幅偏移适配的层级大纲导航树。",
+      "itemsDesc": "带层级与嵌套子项的大纲条目数组。",
+      "activeIdDesc": "当前激活的章节 ID。",
+      "topOffsetDesc": "吸顶定位的上方偏移，用于适配全局公告横幅。",
+      "targetOffsetDesc": "安全滚动偏移，确保标题不被顶部横幅遮挡。",
+      "variantDesc": "大纲容器的视觉样式变体。",
+      "sizeDesc": "大纲标签的尺寸密度与字号缩放。",
+      "showTrackDesc": "是否渲染垂直导轨与激活指示标记。",
+      "showTitleDesc": "是否显示头部标题标签。",
+      "titleDesc": "显示于大纲条目上方的头部标题文本。",
+      "onSelectDesc": "选中或激活大纲条目时触发的回调。"
+    },
+    "splitterHandle": {
+      "description": "具备基准坐标防抖、最小／最大钳制与键盘导航的边缘缩放手柄。",
+      "edgeDesc": "控制目标面板哪条边缘的缩放手柄。",
+      "targetSizeDesc": "被缩放目标元素的当前尺寸（宽或高）。",
+      "minSizeDesc": "允许的最小尺寸边界。",
+      "maxSizeDesc": "允许的最大尺寸边界。",
+      "defaultSizeDesc": "双击或按 Enter 时恢复的尺寸。",
+      "liveUpdateDesc": "拖拽过程中是否连续触发尺寸更新。",
+      "hitThicknessDesc": "鼠标交互热区的厚度。",
+      "visualThicknessDesc": "静息态可见细线的厚度。",
+      "activeVisualThicknessDesc": "悬停或拖拽时高亮可见细线的厚度。",
+      "disabledDesc": "是否禁用手柄缩放。"
+    },
+    "draggableModal": {
+      "description": "带拖拽标题栏与边界视口约束的桌面浮动窗口。",
+      "childrenDesc": "弹窗内容主体（可滚动容器）。",
+      "initialPositionModeDesc": "初始定位模式：居中或靠顶显示。",
+      "sizeOptionsDesc": "右上角尺寸切换档位列表。",
+      "sizeMenuTooltipDesc": "尺寸菜单按钮的悬浮提示文本。",
+      "fixedFooterDesc": "固定在底部的操作区域（不随内容滚动）。",
+      "topControlsDesc": "渲染在右上角操作栏内的附加控件（如关闭按钮）。",
+      "rootExtraDesc": "根容器内部的附加内容（如浮动面板）。",
+      "autoFitHeightDesc": "是否根据内容自然高度动态自适应贴高。",
+      "showEscBadgeDesc": "是否在右上角显示 ESC 键提示徽章。",
+      "defaultWidthRemDesc": "初始宽度（rem 单位）。",
+      "defaultHeightRemDesc": "初始高度（rem 单位）。",
+      "defaultWidthDesc": "初始宽度。",
+      "defaultHeightDesc": "初始高度。",
+      "topMarginRemDesc": "靠顶模式下的顶部外边距（rem 单位）。",
+      "remBaseDesc": "rem 换算基准比例。",
+      "titleDesc": "拖拽栏中的标题文本。",
+      "openDesc": "浮窗当前是否可见。",
+      "radiusDesc": "浮窗的圆角半径。",
+      "topMarginDesc": "靠顶定位模式下的顶部偏移边距。",
+      "titleDefault": "检查器窗口",
+      "sizeMenuTooltipDefault": "调整尺寸"
+    },
+    "elidedText": {
+      "textDesc": "待显示并检测溢出的字符串内容。",
+      "tooltipTextDesc": "与原文不同时的自定义提示文本覆盖。",
+      "tooltipPlacementDesc": "浮动工具提示的显示方位。",
+      "tooltipDelayDesc": "悬停后显示提示的延迟时长（毫秒）。",
+      "alwaysShowTooltipDesc": "悬停时强制显示提示，即使文本未被省略。",
+      "showTooltipWhenElidedDesc": "检测到溢出截断时允许提示显现。",
+      "copyableDesc": "点击文本是否复制到剪贴板并即时反馈。"
+    },
+    "rangeSlider": {
+      "description": "用于选择数值最小—最大区间的双滑块，具备防碰撞与键盘无障碍支持。",
+      "valueDesc": "当前 [min, max] 区间值。",
+      "onValueChangeDesc": "滑块移动时触发的回调。",
+      "onChangeDesc": "onValueChange 的别名。",
+      "sizeDesc": "密度与尺寸变体。",
+      "showTooltipDesc": "悬停、拖拽与聚焦时显示数值提示气泡。",
+      "readOnlyDesc": "阻止用户交互但保持对比度。",
+      "disabledDesc": "禁用滑块交互并降低不透明度。",
+      "minDesc": "允许的最小值。",
+      "maxDesc": "允许的最大值。",
+      "stepDesc": "步进增量。",
+      "minGapDesc": "两滑块之间的最小间隔。",
+      "fromDesc": "滑块的最小边界值。",
+      "toDesc": "滑块的最大边界值。",
+      "firstValueDesc": "第一滑块代表的数值。",
+      "secondValueDesc": "第二滑块代表的数值。",
+      "stepSizeDesc": "步进粒度增量。"
+    },
+    "virtualList": {
+      "itemsDesc": "待虚拟化的数据项数组。",
+      "renderRowDesc": "渲染单行的回调。",
+      "renderItemDesc": "renderRow 的别名。",
+      "estimateSizeDesc": "用于测量的预估行高。",
+      "gapDesc": "相邻项之间的垂直间距。",
+      "overscanDesc": "视口边界之外额外渲染的缓冲项数量。",
+      "emptyNodeDesc": "数据为空时渲染的内容。",
+      "onScrollDesc": "接收距底部距离的滚动事件回调。",
+      "refDesc": "暴露 scrollToIndex(index, align) 的句柄。",
+      "modelDesc": "用于生成代理的列表模型数量或数组。",
+      "delegateDesc": "为可见行实例化的视觉代理。",
+      "rowHeightDesc": "每行的默认预估高度。",
+      "estimateDesc": "虚拟测量的每项预估高度。",
+      "spacingDesc": "相邻项之间的垂直间距。",
+      "radiusDesc": "列表视口容器的圆角半径。",
+      "scrollToDesc": "以编程式滚动至目标项索引。"
+    },
+    "panelCard": {
+      "description": "带集成可折叠分区与头部操作槽的卡片表面，适用于桌面侧边栏与检查器。",
+      "titleDesc": "面板头部标题文本或元素。",
+      "badgeTextDesc": "显示于标题旁的可选徽标文本。",
+      "collapsibleDesc": "面板内容是否可折叠切换。",
+      "collapsedDesc": "受控折叠状态。",
+      "defaultCollapsedDesc": "非受控模式下的初始折叠状态。",
+      "onCollapsedChangeDesc": "折叠变化处理函数。",
+      "actionsDesc": "右对齐的头部操作元素。",
+      "sizeDesc": "卡片面板的尺寸规格。",
+      "radiusDesc": "卡片表面的圆角半径。",
+      "defaultTitle": "面板标题"
+    },
+    "stepTimeline": {
+      "emptyText": "暂无步骤"
+    },
+    "checkbox": {
+      "fallbackLabel": "复选框",
+      "checkedDesc": "复选框的受控选中状态。",
+      "classNameDesc": "应用于复选框按钮的额外 CSS 类名。",
+      "customRadiusDesc": "复选框方框的可选自定义圆角半径（-1 表示使用默认值）。",
+      "defaultCheckedDesc": "非受控模式下的默认选中状态。",
+      "disabledDesc": "禁用用户交互，并应用 50％ 不透明度。",
+      "forceFocusDesc": "用于强制呈现聚焦环样式的视觉测试辅助。",
+      "forceHoverDesc": "用于强制呈现悬停态样式的视觉测试辅助。",
+      "helperDesc": "渲染于标签下方的可选辅助说明文本。",
+      "indeterminateDesc": "复选框是否处于半选状态（视觉优先级高于选中态）。",
+      "invalidDesc": "应用破坏性错误样式与 aria-invalid 属性。",
+      "labelDesc": "与复选框并排渲染的可选配套标签。",
+      "onCheckedChangeDesc": "选中状态变化时触发的回调。",
+      "readOnlyDesc": "阻止状态切换，同时保留聚焦能力与完整不透明度。",
+      "sizeDesc": "尺寸变体：default 或 sm。",
+      "description": "允许用户在选中和未选中状态之间切换的控件，支持半选状态、多尺寸、辅助说明文本与配套标签。"
     },
     "inlineEditableText": {
+      "defaultText": "点击编辑",
+      "valueDesc": "当前文本值。",
+      "onValueChangeDesc": "确认编辑时调用的回调。",
+      "onSaveDesc": "异步保存处理函数；返回 false则保持编辑模式。",
+      "triggerDesc": "打开行内输入框的鼠标手势。",
+      "sizeDesc": "密度与尺寸变体。",
+      "placeholderDesc": "值为空时的占位符。",
+      "hintDesc": "悬停提示气泡。",
+      "disabledDesc": "是否禁用行内编辑。",
+      "valueDescQt": "当前展示与编辑的文本值。",
+      "textDescQt": "value 属性的别名。",
+      "placeholderDescQt": "value 为空时的回退文本。",
+      "triggerDescQt": "激活触发方式：'click' 或 'doubleClick'。",
+      "sizeDescQt": "密度与尺寸变体：'default'｜'sm'。",
+      "disabledDescQt": "是否禁用行内编辑交互。",
+      "editingDesc": "组件当前是否处于输入编辑模式。",
       "defaultTitle": "项目架构设计文档",
       "clickToEdit": "单击或双击下方文本以就地编辑:",
       "placeholder": "输入标题...",
@@ -797,27 +1063,34 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sizesAndTriggers": "尺寸与触发交互方式",
       "sizesAndTriggersDesc": "配置单击或双击触发编辑，以及紧凑尺寸规格。"
     },
-    "inline-editable-text": {
-      "description": "就地编辑文本控件，双击或点击触发器即可无缝切换为输入框，支持回车键确认保存与 Esc 键取消编辑。"
-    },
-    "keybindingRecorder": {
-      "clickToRecord": "点击录制框并按下快捷键组合:",
-      "placeholder": "按下快捷键...",
-      "recordingPrompt": "请按下按键组合 (Esc 取消)...",
-      "noBinding": "未设置快捷键",
-      "recordedAccelerator": "已录制快捷键:",
-      "none": "无",
-      "defaultWithClear": "默认尺寸 (带清除按钮)",
-      "compactSm": "紧凑 sm 尺寸",
-      "withoutClear": "无清除按钮",
-      "disabledTitle": "禁用状态",
-      "sizesAndStates": "尺寸与状态",
-      "sizesAndStatesDesc": "提供默认与 sm 两种尺寸规格，支持可选清除按钮与禁用状态。"
-    },
-    "keybinding-recorder": {
-      "description": "交互式快捷键录制控件，支持捕获桌面应用修饰键组合 (Ctrl, Shift, Alt, Meta/Cmd) 与热键序列。"
+    "input": {
+      "classNameDesc": "应用于输入框元素的额外 CSS 类名。",
+      "clearableDesc": "文本存在时渲染清除按钮以清空内容。",
+      "disabledDesc": "禁用用户交互并应用 50% 不透明度。",
+      "forceFocusDesc": "用于强制聚焦环样式的视觉测试辅助。",
+      "forceHoverDesc": "用于强制悬停态样式的视觉测试辅助。",
+      "invalidDesc": "应用破坏性错误样式与 aria-invalid 属性。",
+      "leftIconDesc": "渲染于输入框前置位置的图标元素。",
+      "onClearDesc": "点击清除按钮时触发的回调。",
+      "passwordToggleDesc": "渲染眼睛切换按钮以显示或遮盖密码。",
+      "placeholderDesc": "输入框为空时显示的占位提示文本。",
+      "readOnlyDesc": "阻止编辑数值，同时保持可聚焦性。",
+      "rightIconDesc": "渲染于输入框后置位置的图标元素。",
+      "sizeDesc": "输入框的高度与内边距规格。",
+      "typeDesc": "标准 HTML／Qt 输入框类型：「text」｜「password」｜「email」｜「search」｜「number」。",
+      "description": "显示表单文本输入框或具备输入框外观与行为的组件。"
     },
     "mediaProgressBar": {
+      "disabledDesc": "禁用状态。",
+      "durationDesc": "媒体总时长（毫秒）。",
+      "frameRateDesc": "基于帧的时间格式所用的帧率。",
+      "interactiveDesc": "是否启用指针定位／拖拽。",
+      "positionDesc": "当前播放位置（毫秒）。",
+      "ratioDesc": "播放进度比例（0.0 至 1.0）。",
+      "showThumbDesc": "是否显示进度滑块手柄。",
+      "showTimeDesc": "是否在下方显示时间读数。",
+      "timeFormatDesc": "时间戳显示格式。",
+      "timingModeDesc": "计时模式：正计时或剩余倒计时。",
       "elapsed": "正计时",
       "remaining": "倒计时",
       "elapsedMode": "正计时 (已播放)",
@@ -836,6 +1109,651 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "timingModeLabel": "计时模式",
       "timeFormatLabel": "时间格式",
       "timeReadout": "时间读数"
+    },
+    "notificationStack": {
+      "collapsibleDesc": "提供折叠为汇总行控件。",
+      "defaultCollapsedDesc": "首次绘制时以折叠状态渲染堆栈。",
+      "defaultDurationDesc": "未声明自身持续时间的条目的存活时长。",
+      "defaultLabel": "通知",
+      "description": "浮动分级通知堆栈，支持按条目独立生命周期与行内操作。",
+      "itemFooterDesc": "每条通知携带 id、title、可选 description、level（info｜success｜warning｜error）、可选 duration、dismissible 与操作列表（id、label、variant）。",
+      "labelDesc": "实时区域的无障碍名称。",
+      "maxVisibleDesc": "堆栈溢出为“全部显示”胶囊前渲染的卡片数。",
+      "notificationsDesc": "待展示的通知，最旧在前；最新卡片最靠近锚点。",
+      "offsetDesc": "距锚定视口边缘的内缩距离（逻辑单位）。",
+      "onActionDesc": "点击行内操作按钮时触发；卡片将保留至被关闭。",
+      "onDismissDesc": "渲染每张卡片的关闭控件，并接收每次自动到期事件。",
+      "pauseOnHoverDesc": "指针悬停在堆栈上时暂停所有到期倒计时。",
+      "placementDesc": "视口锚点。卡片经由锚定边进入与退出。"
+    },
+    "popover": {
+      "alignDesc": "沿锚定边的对齐方式。",
+      "alignOffsetDesc": "沿对齐边的偏移距离。",
+      "arrowDesc": "是否渲染锚定指向箭头。",
+      "customRadiusDesc": "气泡弹窗边框的圆角半径。",
+      "defaultOpenDesc": "非受控模式下的默认打开状态。",
+      "description": "在锚定于触发器的浮动 Portal 中展示富交互内容，具备无障碍焦点管理。",
+      "modalDesc": "是否以带背景遮罩的模态形式渲染气泡弹窗。",
+      "movableDesc": "是否启用通过手柄拖拽位移。",
+      "moveLabelDesc": "拖拽手柄按钮的无障碍标签。",
+      "onOpenChangeDesc": "打开状态变化处理函数。",
+      "openDesc": "受控打开状态。",
+      "popoverHeightDesc": "气泡弹窗内容的高度。",
+      "popoverWidthDesc": "气泡弹窗内容的宽度。",
+      "sideDesc": "相对触发器的放置方位。",
+      "sideOffsetDesc": "距触发器的距离偏移。"
+    },
+    "readOnlyInput": {
+      "colorSchemeDesc": "颜色主题变体。",
+      "customRadiusDesc": "输入框容器的圆角半径。",
+      "description": "受保护的输入框，专为 API 密钥、令牌与 ID 设计，内置复制到剪贴板与掩码切换。",
+      "disabledDesc": "输入框是否禁用。",
+      "maskCharDesc": "用于掩码的字符。",
+      "maskedDesc": "是否以圆点掩码遮盖字符。",
+      "placeholderDesc": "数值为空时显示的占位提示。",
+      "showCopyDesc": "是否显示附带的复制按钮。",
+      "showMaskToggleDesc": "掩码时是否显示显隐切换按钮。",
+      "sizeDesc": "密度与尺寸变体。",
+      "valueDesc": "输入框中展示的受保护数值。",
+      "apiSecretKey": "API 密钥 (掩码与复制):",
+      "personalAccessToken": "GitHub 访问令牌 (掩码):",
+      "defaultToken": "默认尺寸令牌",
+      "compactToken": "紧凑尺寸 (sm)",
+      "destructiveToken": "已吊销令牌 (破坏性状态)",
+      "warningToken": "即将过期令牌 (警告状态)",
+      "successToken": "已验证令牌 (成功状态)",
+      "sizesAndStatus": "尺寸与状态变体",
+      "sizesAndStatusDesc": "提供默认与 sm 两种尺寸规格，以及语义化状态色彩配置。"
+    },
+    "resizable": {
+      "collapsibleDesc": "面板是否可越过最小尺寸完全折叠。",
+      "defaultSizeDesc": "分配给面板的初始百分比尺寸（0-100）。",
+      "description": "无障碍可调面板分组与布局分隔器。",
+      "directionDesc": "面板布局方向（亦支持 orientation 属性）。",
+      "handleColorDesc": "静息态分隔线背景色。",
+      "handleGripColorDesc": "抓握圆点指示器颜色。",
+      "handleHoverColorDesc": "悬停或激活态分隔条强调色。",
+      "handleThicknessDesc": "分隔条分隔边界的厚度。",
+      "maxSizeDesc": "允许的最大百分比尺寸约束。",
+      "minSizeDesc": "允许的最小百分比尺寸约束。",
+      "orientationDesc": "拆分布局方向：Qt.Horizontal 或 Qt.Vertical。",
+      "withHandleDesc": "是否在分隔条上渲染无障碍触觉可视抓握手柄。",
+      "withHandleDescQt": "是否在手柄上渲染触觉 6 点可视抓握指示器。"
+    },
+    "scaleOsd": {
+      "autoHideDurationDesc": "自动隐藏前的持续时长（毫秒，悬停时暂停）。",
+      "defaultValueDesc": "非受控模式下的初始缩放比例。",
+      "description": "用于画布缩放调节的浮动屏幕显示胶囊，支持自动隐藏。",
+      "disabledDesc": "禁用所有控件与用户交互。",
+      "ignoreUiScaleDesc": "锁定物理像素尺寸，不随界面缩放变化。",
+      "maxDesc": "允许的最大缩放比例。",
+      "minDesc": "允许的最小缩放比例。",
+      "onChangeDesc": "缩放值变化时触发的回调。",
+      "onResetDesc": "重置至 100% 时触发的回调。",
+      "onStepDesc": "阶梯调节时触发的回调。",
+      "placementDesc": "固定的视口锚定位置。",
+      "showControlsDesc": "是否显示 +/- 与重置按钮。",
+      "showTooltipsDesc": "是否显示控制按钮的悬停提示。",
+      "sizeDesc": "视觉缩放变体（桌面启动器 42px 或标准 40px）。",
+      "stepDesc": "点击 +/- 按钮时应用的步进增量。",
+      "stepsDesc": "离散缩放阶梯数组（例如 CANONICAL_SCALE_STEPS）。",
+      "valueDesc": "当前缩放比例（例如 1.0 表示 100%）。",
+      "visibleDesc": "受控可见状态。"
+    },
+    "settingRow": {
+      "badgeDesc": "标题旁可选的尾随徽标标签。",
+      "description": "标准化偏好设置项行布局，含标题、描述、内嵌控件区与锚点闪烁高亮。",
+      "descriptionDesc": "次要说明性副标题文本。",
+      "disabledDesc": "设置行与控件是否置灰禁用。",
+      "highlightDesc": "直接强制激活高亮动画的布尔覆盖。",
+      "highlightIdDesc": "用于锚点跳转定位的唯一标识。",
+      "highlightTargetDesc": "当前激活目标标识；与 highlightId 匹配时触发脉冲。",
+      "iconDesc": "可选的前置图标或徽标头像。",
+      "nameDesc": "设置项的主要标题标签。",
+      "sizeDesc": "密度尺寸变体（'default' 或 'sm'）。"
+    },
+    "table": {
+      "emptyState": "暂无数据",
+      "classNameDesc": "表格元素的额外 CSS 类。",
+      "containerClassNameDesc": "可滚动外层容器的额外 CSS 类。",
+      "columnsDesc": "列定义对象数组，包含 key、title、可选 width 与 align（'left'｜'center'｜'right'）。",
+      "rowsDesc": "数据对象数组，键须与列定义匹配。",
+      "captionDesc": "渲染于表格底部的可选标题文本。",
+      "headerHeightDesc": "列表头行的高度。",
+      "rowHeightDesc": "每行数据行的高度。",
+      "selectedIndexDesc": "当前选中行的索引，应用激活选中令牌样式。",
+      "customRadiusDesc": "表格外层容器的圆角半径。",
+      "customBorderColorDesc": "表格与行分隔线的边框颜色。",
+      "description": "响应式语义化基础数据表格组件，具备行悬停高亮、精致分割边框与表头/表尾语义结构。"
+    },
+    "virtualGrid": {
+      "cellHeightDesc": "每个网格槽位的高度。",
+      "cellWidthDesc": "每个网格槽位的宽度。",
+      "customRadiusDesc": "网格容器圆角半径。",
+      "description": "二维自适应窗口化网格虚拟器，面向海量卡片、矩阵数据与动态布局。",
+      "emptyNodeDesc": "数据为空时渲染的内容。",
+      "estimateSizeDesc": "虚拟计算用的预估行高。",
+      "estimateSizeQtDesc": "虚拟计算用的预估单元格高度。",
+      "gapDesc": "卡片之间的网格间距。",
+      "gapQtDesc": "网格间距指引。",
+      "itemsDesc": "布局为网格卡片的数据项数组。",
+      "minColumnWidthDesc": "响应式换行前的最小列宽。",
+      "minColumnWidthQtDesc": "最小列宽指引。",
+      "modelDesc": "网格项数量或数据数组。",
+      "overscanDesc": "视口边界之外额外渲染的缓冲行数。",
+      "overscanQtDesc": "可视边界外渲染的缓冲行。",
+      "refDesc": "暴露 scrollToIndex(index, align) 的句柄。",
+      "renderCardDesc": "渲染单个网格卡片的回调。",
+      "renderItemDesc": "renderCard 的别名。",
+      "scrollToIndexDesc": "将虚拟网格滚动至目标卡片索引。"
+    },
+    "alertDialog": {
+      "confirmText": "继续",
+      "description": "此操作不可撤销。这将永久删除您的账户并移除您的全部数据。",
+      "title": "您确定要执行此操作吗？",
+      "openDesc": "受控打开状态。",
+      "onOpenChangeDesc": "打开状态变化时触发的回调。",
+      "defaultOpenDesc": "非受控用法下的默认打开状态。",
+      "sizeDesc": "针对 AlertDialogContent 的预设最大宽度容器尺寸。",
+      "closeOnOverlayClickDesc": "点击背景遮罩是否自动关闭弹窗。",
+      "variantDesc": "针对 AlertDialogAction 的按钮变体样式。",
+      "titleDesc": "弹窗标题文案。",
+      "descriptionDesc": "向用户警告操作后果的解释性内容。",
+      "confirmTextDesc": "确认按钮的标签文案。",
+      "cancelTextDesc": "取消按钮的标签文案。",
+      "destructiveDesc": "确认按钮是否以破坏性样式展示。",
+      "closeOnEscapeDesc": "按下 Escape 键是否关闭弹窗。"
+    },
+    "card": {
+      "childrenDesc": "卡片复合子组件或自定义元素。",
+      "classNameDesc": "应用于容器的额外 CSS 类名。",
+      "customRadiusDesc": "显式圆角覆盖值（默认继承 ThemeTokens.radius）。",
+      "description": "展示包含页眉、标题、描述、正文与底部操作区的卡片容器。",
+      "interactiveDesc": "卡片是否提供悬停／激活态层级阴影与指针光标反馈。",
+      "sizeDesc": "卡片与复合容器的密度及内边距规格。",
+      "variantDesc": "卡片容器的视觉呈现样式。"
+    },
+    "collapsible": {
+      "classNameDesc": "额外的自定义 CSS 类。",
+      "customRadiusDesc": "头部与容器的圆角半径。",
+      "defaultOpenDesc": "非受控用法下的初始展开状态。",
+      "defaultOpenDescQt": "折叠面板在加载时是否初始展开。",
+      "description": "可展开与折叠内容面板的交互式组件。",
+      "disabledDesc": "是否禁用用户交互。",
+      "disabledDescQt": "是否禁用用户交互与展开切换。",
+      "onOpenChangeDesc": "展开状态变化时触发的回调。",
+      "openDesc": "折叠面板的受控展开状态。",
+      "openDescQt": "折叠内容当前是否处于展开状态。",
+      "titleDesc": "显示于头部触发栏的标题文本。",
+      "variantDesc": "视觉容器样式变体。",
+      "variantDescQt": "视觉容器样式变体：default、card 或 ghost。"
+    },
+    "durationInput": {
+      "classNameDesc": "外层容器的自定义 CSS 类。",
+      "customRadiusDesc": "分段框与弹窗的圆角半径。",
+      "defaultValueDesc": "非受控模式下的初始时长（秒）。",
+      "disabledDesc": "输入框、按钮与预设下拉是否禁用。",
+      "hoursLabelDesc": "小时分段的标签文本。",
+      "maxHoursDesc": "小时分段的上限钳制值。",
+      "minutesLabelDesc": "分钟分段的标签文本。",
+      "onChangeDesc": "时长变化时触发的回调。",
+      "presetsDesc": "下拉菜单的自定义分组时长预设。",
+      "presetsLabelDesc": "预设触发按钮的标签文本。",
+      "secondsLabelDesc": "秒分段的标签文本。",
+      "showLabelsDesc": "是否在分段下方显示单位标签。",
+      "showPresetsDesc": "是否显示预设下拉按钮。",
+      "sizeDesc": "视觉密度与尺寸变体。",
+      "valueDesc": "受控模式下的总时长（秒）。",
+      "timerDuration": "定时器时长",
+      "timerDurationDefault": "定时器时长 (默认):",
+      "compactSizeColon": "紧凑尺寸 (sm):",
+      "disabledStateColon": "禁用状态:",
+      "formatted": "格式化展示:",
+      "formattedSummary": "{{h}}小时 {{m}}分钟 {{sec}}秒 (共 {{total}} 秒)",
+      "hours": "时",
+      "minutes": "分",
+      "seconds": "秒",
+      "presets": "预设",
+      "compactTitle": "紧凑尺寸 (sm)",
+      "largeTitle": "较大尺寸 (lg)",
+      "disabledTitle": "禁用状态",
+      "variantsTitle": "变体与配置",
+      "variantsDesc": "支持紧凑与宽敞尺寸档位，支持关闭预设菜单或单位标签，以及禁用状态。"
+    },
+    "keybindingRecorder": {
+      "aliasDesc": "value 的别名。",
+      "clearableDesc": "设置快捷键后是否渲染清除按钮。",
+      "cornerRadiusDesc": "输入容器的圆角半径。",
+      "disabledDesc": "录制器是否禁用。",
+      "onChangeDesc": "同时接收结构化对象与字符串的双回调。",
+      "onValueChangeDesc": "录制到新组合时触发的回调。",
+      "placeholderDesc": "未定义快捷键时的占位提示。",
+      "recordingDesc": "录制器是否正在监听按键组合。",
+      "recordingTextDesc": "录制过程中显示的提示语。",
+      "sizeDesc": "常规与紧凑密度的尺寸预设变体。",
+      "valueDesc": "当前按键组合（字符串或结构化对象）。",
+      "valueShortDesc": "序列化快捷键字符串（如 Ctrl+Shift+P）。",
+      "clickToRecord": "点击录制框并按下快捷键组合:",
+      "placeholder": "按下快捷键...",
+      "recordingPrompt": "请按下按键组合 (Esc 取消)...",
+      "noBinding": "未设置快捷键",
+      "recordedAccelerator": "已录制快捷键:",
+      "none": "无",
+      "defaultWithClear": "默认尺寸 (带清除按钮)",
+      "compactSm": "紧凑 sm 尺寸",
+      "withoutClear": "无清除按钮",
+      "disabledTitle": "禁用状态",
+      "sizesAndStates": "尺寸与状态",
+      "sizesAndStatesDesc": "提供默认与 sm 两种尺寸规格，支持可选清除按钮与禁用状态。"
+    },
+    "select": {
+      "defaultValueDesc": "非受控用法的初始值。",
+      "disabledDesc": "选择器是否禁用。",
+      "onValueChangeDesc": "数值变化时触发的回调。",
+      "optionsDesc": "可选选项对象数组：{ value、label、disabled }。",
+      "placeholderDesc": "未选择数值时显示的占位标签。",
+      "triggerRadiusDesc": "选择器触发器的圆角半径。",
+      "valueDesc": "受控选中值。",
+      "valueQtDesc": "当前选中的选项值。",
+      "placeholder": "请选择选项……",
+      "description": "显示供用户挑选的下拉选项列表，由带箭头与选中指示器的触发按钮呼出。"
+    },
+    "sidebar": {
+      "collapsibleDesc": "桌面端关闭时的折叠行为模式。",
+      "collapsedDesc": "侧边栏当前是否处于折叠状态。",
+      "defaultOpenDesc": "SidebarProvider 的初始展开状态。",
+      "description": "可组合、响应式、可调尺寸的桌面级侧边栏导航系统，支持图标折叠、抽屉模式与自定义 rem 尺寸。",
+      "iconWidthDesc": "图标模式折叠时的宽度。",
+      "maxWidthDesc": "可拖拽的最大宽度限制。",
+      "minWidthDesc": "可拖拽的最小宽度限制。",
+      "resizableDesc": "启用边缘拖拽轨道以动态调整尺寸。",
+      "sideDesc": "侧边栏布局的停靠方位。",
+      "sidebarWidthDesc": "侧边栏展开时的绑定宽度。",
+      "variantDesc": "视觉容器样式变体。"
+    },
+    "viewportConstrainedContainer": {
+      "bgDesc": "背景表面填充颜色。",
+      "borderDesc": "边框轮廓颜色。",
+      "childrenDesc": "渲染于容器内部的元素。",
+      "classNameDesc": "自定义样式 CSS 类名。",
+      "customRadiusDesc": "容器的圆角半径。",
+      "description": "根据锚点矩形下方可用视口空间动态约束最大高度的容器，支持自定义上限覆盖与平滑垂直滚动。",
+      "marginDesc": "容器底部与视口底边之间的预留边距。",
+      "maxHeightDesc": "容器最大高度的可选上限。",
+      "minHeightDesc": "最小允许高度下限。",
+      "overflowDesc": "垂直溢出滚动策略。"
+    },
+    "virtualTree": {
+      "collapseAllDesc": "折叠所有已展开的树分支。",
+      "cornerRadiusDesc": "树容器的圆角半径。",
+      "defaultExpandDesc": "子分支的默认展开层级。",
+      "dimmedDesc": "以半透明剪切态渲染的节点 ID 数组。",
+      "emptyDesc": "树为空时展示的内容。",
+      "enableDndDesc": "启用拖拽重排与文件夹嵌套。",
+      "estimateDesc": "虚拟计算用的预估行高。",
+      "expandAllDesc": "展开所有可折叠树分支。",
+      "expandedMapDesc": "已展开节点 ID 映射表。",
+      "gapDesc": "相邻行之间的间距。",
+      "getChildrenDesc": "返回节点子节点的访问器。",
+      "getKeyDesc": "节点的唯一标识访问器。",
+      "nodesDesc": "rootNodes 的别名。",
+      "onCutDesc": "按下 Ctrl+X 剪切快捷键时触发的回调。",
+      "onDropDesc": "节点被放置时触发的回调。",
+      "onPasteDesc": "按下 Ctrl+V 粘贴快捷键时触发的回调。",
+      "onSelectDesc": "选中节点变化时触发的回调。",
+      "onStickySelectDesc": "点击置顶行时触发的回调（仅导航，永不切换展开）。",
+      "onStickyToggleDesc": "激活置顶行折叠箭头时触发的回调。",
+      "overscanDesc": "可视边界外渲染的缓冲节点数。",
+      "refDesc": "暴露 expandAll（）、collapseAll（）、selectAll（）、scrollToIndex（）的句柄。",
+      "renderRowDesc": "自定义行渲染函数。",
+      "rootNodesDesc": "顶层层级节点数组。",
+      "scrollToDesc": "将虚拟树滚动至指定索引。",
+      "selectAllDesc": "在多选模式下选中所有可见节点。",
+      "selectedIdDesc": "当前选中节点的标识（单选模式）。",
+      "selectedIdsDesc": "已选中节点标识数组（多选模式）。",
+      "selectionModeDesc": "当前的选择交互模式。",
+      "stickyDesc": "展开节点祖先链，置顶于滚动区上方以保持父级可见。"
+    },
+    "dialog": {
+      "description": "以关键内容打断用户并提示用户操作的中断式模态窗口。",
+      "openDesc": "受控的对话框打开状态。",
+      "defaultOpenDesc": "非受控使用时的默认打开状态。",
+      "onOpenChangeDesc": "打开状态变化时调用的事件处理函数。",
+      "sizeDesc": "控制模态卡片宽度与收纳的分档尺寸预设。",
+      "closeOnOverlayClickDesc": "点击背景遮罩是否关闭对话框。",
+      "closeOnEscapeDesc": "按下 Escape 键是否关闭对话框。",
+      "draggableDesc": "是否将对话框渲染为桌面端可拖拽、可调整尺寸的模态窗口。",
+      "showCloseButtonDesc": "是否在右上角控件中渲染关闭按钮。",
+      "showEscBadgeDesc": "是否在右上角控件中渲染 ESC 快捷键徽标。",
+      "defaultWidthRemDesc": "以 rem 为单位的初始模态宽度（例如 32）。",
+      "defaultHeightRemDesc": "以 rem 为单位的初始模态高度（例如 24）。",
+      "initialPositionModeDesc": "模态窗口的初始定位模式。",
+      "topMarginRemDesc": "当 initialPositionMode 为 top 时以 rem 为单位的顶部边距。",
+      "autoFitHeightDesc": "自动调整模态高度以适配内部内容。",
+      "sizeOptionsDesc": "右上角尺寸切换下拉菜单的预设尺寸选项。",
+      "sizeMenuTooltipDesc": "尺寸切换下拉按钮的提示文本。",
+      "dragHandleClassNameDesc": "拖拽手柄区域的 CSS 类选择器（例如对话框标题栏）。",
+      "contentClassNameDesc": "可滚动内部内容容器的自定义类名。",
+      "overlayClassNameDesc": "用于自定义背景遮罩的额外 CSS 类。",
+      "openDescQt": "控制模态对话框的可见／打开状态。",
+      "titleDescQt": "以醒目粗体样式显示的标题文本。",
+      "headerDescQt": "显示在标题下方的描述文本。",
+      "sizeDescQt": "控制模态卡片宽度的分档尺寸预设。",
+      "customRadiusDesc": "模态对话框卡片的圆角半径。",
+      "dialogWidthDesc": "对话框卡片宽度的显式覆盖值。",
+      "showCloseButtonDescQt": "是否在右上角渲染关闭按钮。",
+      "showEscBadgeDescQt": "是否在右上角标题栏显示 ESC 键盘徽标。",
+      "closeOnOverlayClickDescQt": "点击背景遮罩是否关闭对话框。",
+      "closeOnEscapeDescQt": "按下 Escape 键是否关闭对话框。",
+      "draggableDescQt": "对话框卡片是否可在视口内拖拽。",
+      "contentDataDesc": "正文内容元素的默认属性别名。",
+      "openedDesc": "模态过渡至打开状态时触发。",
+      "closedDesc": "模态关闭时触发。",
+      "acceptedDesc": "调用 accept（） 函数时触发。",
+      "rejectedDesc": "调用 reject（） 函数或触发遮罩／关闭按钮时触发。"
+    },
+    "copyButton": {
+      "textDesc": "点击时写入剪贴板的文本字符串。",
+      "labelDesc": "图标旁的可选伴随标签。",
+      "copiedLabelDesc": "复制成功后显示的标签文本。",
+      "timeoutDesc": "以毫秒为单位显示已复制勾选状态的时长。",
+      "variantDesc": "按钮视觉变体。",
+      "sizeDesc": "按钮尺寸预设。",
+      "onCopyDesc": "文本复制时触发的回调。",
+      "textDescQt": "点击时发送至剪贴板的字符串内容（别名：textToCopy）。",
+      "labelDescQt": "显示在复制图标旁的可选伴随标签文本。",
+      "copiedLabelDescQt": "复制成功后显示的反馈标签文本。",
+      "timeoutDescQt": "成功勾选图标持续显示的毫秒时长。",
+      "variantDescQt": "视觉变体样式：「outline」｜「ghost」｜「default」｜「secondary」。",
+      "sizeDescQt": "按钮尺寸预设：「icon-xs」、「icon-sm」、「sm」、「default」。"
+    },
+    "dropdownMenu": {
+      "description": "显示由按钮触发的菜单，支持菜单项、标签、分隔线、快捷键与破坏性操作。",
+      "openDesc": "下拉菜单的受控打开状态。",
+      "onOpenChangeDesc": "打开状态变化时调用的事件处理函数。",
+      "modalDesc": "是否渲染为捕获焦点的模态。",
+      "sideOffsetDesc": "触发器至浮层内容的距离偏移。",
+      "alignDesc": "沿触发器边缘的对齐方式。",
+      "openDescQt": "菜单弹窗当前是否打开。",
+      "itemsDescQt": "菜单项描述数组：{ id、label、icon、shortcut、destructive、disabled }。",
+      "menuWidthDesc": "弹窗菜单面板的宽度尺寸。",
+      "customRadiusDesc": "菜单面板的圆角半径。"
+    },
+    "presetNumberInput": {
+      "valueDesc": "输入框当前的数值。",
+      "onChangeDesc": "数值变化时触发的回调。",
+      "presetsDesc": "快速选择的预设数值列表。",
+      "placeholderDesc": "为空时显示的占位文本。",
+      "disabledDesc": "是否禁用输入与下拉交互。",
+      "allowClearDesc": "是否在下拉中显示清除／重置选项。",
+      "clearLabelDesc": "清除选项的标签文本。",
+      "inputClassNameDesc": "内部输入框的自定义 CSS 类。",
+      "classNameDesc": "外部容器的自定义 CSS 类。",
+      "valueDescQt": "输入框中显示的当前字符串值。",
+      "presetsDescQt": "下拉中展示的预设数值数组。",
+      "placeholderDescQt": "为空时显示的占位文本。",
+      "disabledDescQt": "禁用输入与下拉交互。",
+      "allowClearDescQt": "是否显示重置／清除选项。",
+      "clearLabelDescQt": "清除选项的标签文本。",
+      "customRadiusDesc": "输入框与弹窗的圆角半径。",
+      "textureDimension": "纹理尺寸",
+      "textureDimensionColon": "纹理尺寸:",
+      "placeholder": "宽 / 高",
+      "currentValue": "当前数值:",
+      "empty": "(空)",
+      "auto": "自动",
+      "none": "无",
+      "customPresetsSmall": "自定义预设 (小尺寸)",
+      "customPresetsSmallColon": "自定义预设 (小尺寸):",
+      "disallowClear": "禁止清空 (必填项)",
+      "disabledTitle": "禁用状态",
+      "variantsTitle": "变体与配置",
+      "variantsDesc": "配置自定义数值预设，关闭清空选项，或置于禁用状态。"
+    },
+    "sheet": {
+      "description": "扩展对话框组件，用于展示从任意屏幕边缘（顶部、右侧、底部、左侧）滑入的内容。",
+      "openDesc": "受控的打开状态。",
+      "defaultOpenDesc": "非受控使用时的默认打开状态。",
+      "onOpenChangeDesc": "打开状态变化时触发的回调。",
+      "sideDesc": "抽屉滑入的视口边缘。",
+      "sizeDesc": "抽屉尺寸预设（左右为宽度，上下为高度）。",
+      "showCloseButtonDesc": "是否在抽屉内渲染右上角关闭图标按钮。",
+      "closeOnOverlayClickDesc": "点击背景是否自动关闭抽屉。",
+      "openDescQt": "抽屉当前是否打开。",
+      "sideDescQt": "抽屉滑入的边缘：'top'｜'bottom'｜'left'｜'right'。",
+      "sizeDescQt": "抽屉尺寸预设（'sm'、'default'、'lg'、'xl'、'full'）。",
+      "customSheetSizeDesc": "宽度或高度的自定义尺寸覆盖值。",
+      "titleDesc": "抽屉头部的标题文本。",
+      "descriptionDesc": "头部的从属描述文本。",
+      "showCloseButtonDescQt": "是否显示头部关闭按钮。",
+      "closeOnOverlayClickDescQt": "点击外部是否关闭抽屉。",
+      "closeOnEscapeDesc": "按下 Escape 是否关闭抽屉。"
+    },
+    "snapSlider": {
+      "valueDesc": "受控的当前吸附档位索引。",
+      "defaultValueDesc": "非受控模式下的默认初始吸附档位索引。",
+      "countDesc": "离散档位总数（若提供 labels则默认为其长度）。",
+      "labelsDesc": "各档位标签数组，显示于激活居中位置。",
+      "leftLabelDesc": "左下边缘的边界标签。",
+      "rightLabelDesc": "右下边缘的边界标签。",
+      "showTicksDesc": "是否在滑块轨道上显示刻度标记。",
+      "sizeDesc": "视觉尺寸变体。",
+      "disabledDesc": "滑块是否禁用。",
+      "readOnlyDesc": "滑块是否为只读。",
+      "onChangeDesc": "选中档位索引变化时触发的回调。",
+      "currentIndexDesc": "当前选中档位索引（value 别名）。",
+      "countDescQt": "离散吸附档位总数。",
+      "labelsDescQt": "各档位标签列表。",
+      "leftLabelDescQt": "左下边缘的边界标签。",
+      "rightLabelDescQt": "右下边缘的边界标签。",
+      "showTicksDescQt": "是否显示档位刻度标记。",
+      "disabledDescQt": "禁用交互并降低不透明度。",
+      "readOnlyDescQt": "只读防止变更同时保持对比度。",
+      "sizeDescQt": "密度变体（“default”｜“sm”）。"
+    },
+    "codeBlock": {
+      "codeDesc": "源码文本；提供 files时将被忽略。",
+      "languageDesc": "由共享词法器解析的语言标识或别名。",
+      "filenameDesc": "顶部标题覆盖；默认为解析后的语言标签。",
+      "filesDesc": "多文件选项卡组；存在时替换单文件正文。",
+      "highlightDesc": "启用规范驱动的语法高亮。",
+      "showLineNumbersDesc": "渲染行号指示槽。",
+      "showLanguageDesc": "在顶部渲染语言／文件名标签。",
+      "showCopyDesc": "在顶部渲染内置复制按钮。",
+      "wrapDesc": "长行自动换行而非水平滚动。",
+      "maxHeightDesc": "限制内容高度（rem 等效数值，或任意 CSS 长度字符串）。",
+      "embeddedDesc": "去除卡片边框（边框／背景／顶部栏）以便行内嵌入。",
+      "copyLabelDesc": "复制按钮的无障碍标签。",
+      "classNameDesc": "外部容器的额外类名。"
+    },
+    "scrollArea": {
+      "sizeDesc": "滚动条密度与尺寸。",
+      "showVerticalDesc": "是否渲染垂直滚动条。",
+      "showHorizontalDesc": "是否渲染水平滚动条。",
+      "showButtonsDesc": "悬停滚动条时是否显示步进导航按钮。",
+      "smoothScrollDesc": "步进按钮是否使用平滑滚动行为。",
+      "floatingDesc": "滚动条是悬浮于视口内容之上还是占据专用沟槽布局空间。",
+      "viewportClassNameDesc": "内部滚动视口元素的额外 CSS 类。"
+    },
+    "scrollBar": {
+      "orientationDesc": "滚动条方向轴。",
+      "sizeDesc": "滚动条密度与尺寸。",
+      "floatingDesc": "滚动条是悬浮于视口内容之上还是占据专用沟槽布局空间。",
+      "hitSizeDesc": "透明指针捕获热区的厚度。",
+      "collapsedSizeDesc": "静息时视觉指示器的厚度。",
+      "expandedSizeDesc": "悬停时视觉指示器的厚度。"
+    },
+    "componentPreview": {
+      "thisComponent": "当前组件"
+    },
+    "contextMenu": {
+      "description": "在右键或桌面端手势位置显示位于指针坐标处的菜单。",
+      "modalDesc": "右键菜单是否为模态。",
+      "onOpenChangeDesc": "打开状态变化时触发的回调。",
+      "itemsDesc": "菜单项描述数组：{ id、label、icon、shortcut、destructive、disabled }。",
+      "menuWidthDesc": "右键菜单浮层面板的宽度。",
+      "customRadiusDesc": "右键菜单的圆角半径。"
+    },
+    "genericDataTable": {
+      "description": "由 TanStack Table 驱动的桌面级全功能数据表，支持列排序、过滤、选择与分页。",
+      "dataDesc": "数据记录数组。",
+      "columnsDesc": "TanStack Table 列定义。",
+      "enableSortingDesc": "是否启用列排序。",
+      "enablePaginationDesc": "是否渲染分页控件。",
+      "pageSizeDesc": "每页行数。",
+      "filterPlaceholder": "过滤记录……",
+      "pageOf": "第 {{current}} 页，共 {{total}} 页",
+      "previous": "上一页",
+      "next": "下一页",
+      "columnsQtDesc": "列规格数组：{ key、header、width }。",
+      "rowsDesc": "要展示的任意记录数组（别名：tableData）。",
+      "customRadiusDesc": "表格边框的圆角半径。"
+    },
+    "logConsole": {
+      "empty": "暂无日志"
+    },
+    "pipelineView": {
+      "statusDesc": "汇总头徽章的总体执行状态。",
+      "startMsDesc": "执行开始时间戳（毫秒纪元）。",
+      "endMsDesc": "执行完成时间戳；非空时展示格式化时长。",
+      "jobsDesc": "属于当前执行轮次的任务数组。",
+      "activeJobIdDesc": "当前选中的任务 ID，展示步骤时间线与日志。",
+      "onSelectJobDesc": "选中任务时触发的回调。",
+      "onCancelDesc": "点击取消按钮时触发的回调。",
+      "cancelDisabledDesc": "禁用取消按钮。",
+      "getLogsDesc": "按任务 ID 提供日志行数组的函数。",
+      "jobsTitleDesc": "任务列表侧边栏的标题文案。",
+      "emptyJobsTextDesc": "任务列表为空时展示的占位文案。",
+      "headerActionSlotDesc": "头部自定义操作插槽。",
+      "description": "带任务追踪、步骤时间线与虚拟化自动滚动日志控制台的多阶段执行视图与流水线中心。"
+    },
+    "smoothWheelHandler": {
+      "description": "提供连续物理动量阻尼、Shift＋滚轮横向转换与手势互斥的桌面端运动学滚动辅助。",
+      "scrollOrientationDesc": "目标视口滚动的主方向。",
+      "mapVerticalToHorizontalDesc": "是否将垂直滚轮映射为横向移动。",
+      "speedMultiplierDesc": "作用于原始增量的滚动速度倍率。",
+      "durationDesc": "OutCubic 阻尼过渡的时长（毫秒）。",
+      "fixedStepSizeDesc": "每滚轮刻度的可选量化步进（0 为动态）。",
+      "consumeEventDesc": "是否阻止已处理的滚轮事件向父窗口传播。",
+      "targetItemDesc": "目标滚动项（Flickable、ListView、GridView 等）。"
+    },
+    "splitter": {
+      "description": "面向 IDE 与桌面工具包的带可拖拽分隔条与折叠限制的多窗格可调布局容器。",
+      "sizeDesc": "受控百分比宽度／高度（0-100）。",
+      "onChangeDesc": "拖拽时携带新百分比触发的回调。",
+      "initialSizeDesc": "非受控用法下的初始尺寸百分比。",
+      "minSizeDesc": "允许的最小百分比边界。",
+      "maxSizeDesc": "允许的最大百分比边界。",
+      "orientationDesc": "分隔条的方向。",
+      "gutterSizeDesc": "可交互分隔条的厚度。",
+      "leftItemDesc": "首个窗格内容组件。",
+      "rightItemDesc": "第二个窗格内容组件。"
+    },
+    "switch": {
+      "checkedDesc": "开关是否处于打开（选中）状态。",
+      "defaultCheckedDesc": "非受控用法下的默认选中状态。",
+      "onCheckedChangeDesc": "选中状态变化时调用的事件处理函数。",
+      "sizeDesc": "开关轨道与滑块的尺寸规格。",
+      "disabledDesc": "禁用用户交互并应用弱化透明度。",
+      "readOnlyDesc": "开关是否为只读（阻止交互但不弱化透明度）。",
+      "loadingDesc": "在滑块内展示动画 spinner 并阻止切换。",
+      "labelDesc": "随开关渲染的可选伴随标签。",
+      "helperDesc": "展示于标签下方的可选辅助文本。",
+      "forceHoverDesc": "强制悬停状态的视觉测试辅助。",
+      "forceFocusDesc": "强制焦点环的视觉测试辅助。",
+      "classNameDesc": "应用于开关轨道元素的额外 CSS 类名。",
+      "description": "允许用户在开与关状态之间切换的控制开关，支持异步加载、只读模式及辅助说明描述。"
+    },
+    "tooltip": {
+      "contentDesc": "在浮动提示气泡内渲染的内容。",
+      "shortcutDesc": "在提示气泡内渲染的键盘快捷键徽章。",
+      "arrowDesc": "是否渲染指向触发器的方向箭头。",
+      "sideDesc": "相对触发器的首选放置方位。",
+      "delayDesc": "悬停至提示打开的延迟（毫秒）。",
+      "disabledDesc": "悬停或聚焦时阻止提示打开。",
+      "asChildDesc": "将触发器属性与事件处理直接合并至单个子元素。",
+      "openDesc": "提示的受控打开状态。",
+      "onOpenChangeDesc": "打开状态变化时执行的回调。",
+      "classNameDesc": "应用于元素的额外 CSS 类名。",
+      "activeDesc": "提示气泡当前是否激活可见。",
+      "targetDesc": "未包裹子元素时要挂载提示的可选目标项。",
+      "forceHoverDesc": "强制提示可见的视觉测试钩子。",
+      "description": "当元素获得键盘焦点或鼠标悬停时展示与之相关信息的浮层。"
+    },
+    "windowTitleBar": {
+      "description": "面向无边框原生窗口的桌面窗口框架头，含标题、拖拽区与最小化／最大化／关闭控制按钮。",
+      "titleDesc": "窗口标题标签或元素。",
+      "iconDesc": "渲染于左缘的应用图标。",
+      "onMinimizeDesc": "最小化按钮点击回调。",
+      "onMaximizeDesc": "最大化按钮点击回调。",
+      "onCloseDesc": "关闭按钮点击回调。",
+      "maximizedDesc": "窗口是否处于最大化状态。"
+    },
+    "window-title-bar": {
+      "description": "桌面端无边框窗口标题栏组件，包含应用标识、标题、拖拽移动区域以及最小化/最大化/关闭系统控制按钮。"
+    },
+    "smooth-wheel-handler": {
+      "description": "桌面端平滑滚轮运动学辅助组件，提供连续物理动量阻尼累加、Shift+滚轮水平转置及触控拖拽解耦互斥。"
+    },
+    "virtual-list": {
+      "description": "基于 TanStack Virtual 构建的高性能视口虚拟化长列表，支持 10 万+ 行数据流畅滚动与 DOM 动态回收。"
+    },
+    "virtual-tree": {
+      "description": "虚拟化层级树视图组件，支持节点动态折叠展开、多选/单选、剪切复制粘贴及键盘空间导航。"
+    },
+    "virtual-grid": {
+      "description": "二维自适应响应式虚拟化网格视图，支持海量卡片、图像矩阵与动态单元格布局渲染。"
+    },
+    "generic-data-table": {
+      "description": "基于 TanStack Table 构建的企业级通用数据表格，提供列头排序、实时筛选、行选择与分页控制。"
+    },
+    "query-builder": {
+      "description": "可视化条件查询构建器，支持嵌套逻辑分组 (AND/OR)、字段选择、运算符谓词筛选及 JSON 结构序列化。"
+    },
+    "code-block": {
+      "description": "规范驱动的代码语法高亮查看器，基于统一零依赖词法分析器与滚动、复制、标签组件构建，双端色彩与分词完全一致。"
+    },
+    "pipeline-view": {
+      "description": "多阶段任务流水线执行视图，整合任务追踪队列、步骤时间线及虚拟化自动滚动日志控制台。"
+    },
+    "address-bar": {
+      "description": "资源管理器与浏览器风格的地址导航栏，具备可交互的面包屑路径分段与行内路径即时编辑功能。"
+    },
+    "theme-settings": {
+      "description": "跨端主题配置面板，统一管控外观模式、强调色调色板、装饰圆角阴影级别与界面缩放密度。"
+    },
+    "language-settings": {
+      "description": "跨端语言偏好设置卡片，提供系统语言自动检测、即时生效切换与文化诗词意境引语。"
+    },
+    "range-slider": {
+      "description": "双把手区间滑块，用于选取具备防碰撞约束与键盘无障碍支持的数值区间。"
+    },
+    "snap-slider": {
+      "description": "具备刻度与标签行的阶梯式吸附滑块，可精准对齐离散分档。"
+    },
+    "segmented-control": {
+      "description": "紧凑胶囊风格分段选择控件，适用于工具栏、菜单与视图切换，支持图标与角标。"
+    },
+    "color-picker": {
+      "description": "交互式拾色器组件，提供色相环方形、色轮圆形、色相环三角形与预设色板 4 种取色面板，实时 HEX 输入与复制，以及独立的多通道滑块 (RGB, HSV, CMYK, LAB)。"
+    },
+    "colorpicker": {
+      "description": "交互式拾色器组件，提供色相环方形、色轮圆形、色相环三角形与预设色板 4 种取色面板，实时 HEX 输入与复制，以及独立的多通道滑块 (RGB, HSV, CMYK, LAB)。"
+    },
+    "duration-input": {
+      "description": "分段式时长输入控件，支持时、分、秒独立编辑，带有步进按钮、鼠标滚轮调节、键盘方向键切换与快速预设菜单。"
+    },
+    "preset-number-input": {
+      "description": "高密度数值输入控件，内置快速选择下拉面板，提供常用尺寸规格预设、单位标签与可选的清空操作。"
+    },
+    "read-only-input": {
+      "description": "受保护的只读输入控件，专为 API 密钥、访问令牌与资源 ID 设计，内置一键复制到剪贴板与掩码显示切换。"
+    },
+    "inline-editable-text": {
+      "description": "就地编辑文本控件，双击或点击触发器即可无缝切换为输入框，支持回车键确认保存与 Esc 键取消编辑。"
+    },
+    "keybinding-recorder": {
+      "description": "交互式快捷键录制控件，支持捕获桌面应用修饰键组合 (Ctrl, Shift, Alt, Meta/Cmd) 与热键序列。"
     },
     "media-progress-bar": {
       "description": "通用媒体播放进度条组件，支持拖拽擦洗、点击 seek、悬停预览、左下方「位置 / 总长」时间显示、点击翻转正/倒计时与右键格式菜单。"
@@ -860,32 +1778,190 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     }
   },
   "desktopComposite": {
-    "windowTitleBar": {
-      "idle": "空闲",
-      "minimizeClicked": "点击最小化",
-      "maximizeClicked": "点击最大化 / 还原",
-      "closeClicked": "点击关闭",
-      "clientArea": "无边框原生客户端窗口区域",
-      "captionEvent": "窗口标题栏操作事件:",
-      "appTitle": "ChaSet 桌面工作室"
+    "addressBar": {
+      "animFull": "面包屑分段悬停高亮经由 ThemeTokens.motionQuick（100ms）与 ThemeTokens.easeStandard 曲线过渡。建议浮层以进入缩放与淡入动画渲染，时长 120ms。",
+      "animHoverMid": "（100ms）与",
+      "animHoverPrefix": "面包屑分段悬停高亮过渡使用",
+      "animHoverSuffix": "曲线（Qt 对应：",
+      "animSuggest": "建议浮层以进入缩放与淡入动画渲染，时长 120ms。",
+      "animationsDesc": "模式切换与建议的运动令牌与运动学过渡。",
+      "keyboardDesc": "键盘快捷键与按钮激活模式。",
+      "sandboxTitle": "Address Bar 沙盒",
+      "quickLocations": "快捷位置:",
+      "locProjectRoot": "项目根目录",
+      "activePath": "当前路径:",
+      "activePathFormat": "当前路径: {{path}}",
+      "refreshes": "刷新次数: {{count}}"
     },
-    "smoothWheelHandler": {
-      "speedMultiplier": "滚动速率倍率:",
-      "dampingDuration": "阻尼减速时长:",
-      "itemLabel": "平滑滚动项 #{{index}}",
-      "itemBadge": "项 #{{index}}",
-      "kinematicsTitle": "运动学物理架构",
-      "card1Title": "连续动量累加",
-      "card1Desc": "当滚轮发生快速连续触发时，增量位移会平滑累加至当前目标位置，而不会产生向后回弹或跳动卡顿。",
-      "card2Title": "Shift+滚轮水平转置",
-      "card2Desc": "在水平滚动视口或横向走马灯中，自动拦截按住 Shift 时的垂直滚轮动作，并将其无缝映射为水平平移位移。",
-      "card3Title": "手势与拖拽解耦",
-      "card3Desc": "当用户触碰滑块手柄或使用触控板扫动时，立即中断平滑滚动插值，保证零物理冲突与摩擦。",
-      "bullet1": "• 动量累加：连续滚轮步进线性累加至目标位置，绝不打断或阻滞当前的运动过渡。",
-      "bullet2": "• 手势解耦：自动监听 targetItem.moving 与 flicking 状态。当用户触碰或拖动视图时，平滑动画立即中止以消除动作对抗。",
-      "bullet3": "• 即插即用：可直接无缝附加至任意 Flickable / ListView / GridView 或 ChaSetScrollArea，无需重构现有视觉层级。"
+    "app": {
+      "docsTitle": "ChaSet 文档",
+      "navLabel": "导航"
+    },
+    "buttonSection": {
+      "asChildLink": "asChild 链接（<a>）",
+      "asyncBlock": "异步与块级",
+      "clear": "清空",
+      "deleteItem": "删除项",
+      "disabledButton": "禁用按钮",
+      "emptyLog": "点击上方按钮查看点击事件……",
+      "fullWidthAction": "全宽块级操作",
+      "logTitle": "交互日志（点击事件）",
+      "statesLabel": "状态",
+      "title": "组件 · 按钮矩阵"
+    },
+    "colorPicker": {
+      "overviewDesc": "在 Web（React）与桌面端（Qt Quick）体验模式、尺寸、色板与状态。",
+      "sandboxTitle": "ColorPicker 沙盒"
+    },
+    "header": {
+      "draggableModal": "可拖拽弹窗",
+      "genericDataTable": "通用数据表",
+      "githubRepo": "GitHub 仓库",
+      "openNavSidebar": "打开导航侧边栏",
+      "queryBuilder": "查询构建器",
+      "splitter": "分栏",
+      "toggleTheme": "切换主题外观",
+      "virtualList": "虚拟列表"
+    },
+    "languageSettings": {
+      "animDescEnd": "作为全局终止开关。",
+      "animDescPrefix": "LanguageSettings 对卡片聚焦、激活选择环与对钩徽章状态使用平滑令牌过渡，过渡使用",
+      "animDescSuffix": "与 Qt",
+      "animFull": "LanguageSettings 对卡片聚焦、激活选择环与对钩徽章状态使用平滑令牌过渡，过渡使用 ThemeTokens.motionQuick 与 ThemeTokens.easeStandard。以 ThemeTokens.animationsEnabled 作为全局终止开关。",
+      "sandboxTitle": "交互式语言设置"
+    },
+    "queryBuilder": {
+      "overviewDesc": "动态添加规则与嵌套分组，构建复杂查询谓词。",
+      "sandboxTitle": "Query Builder 沙盒",
+      "fieldStatus": "状态",
+      "addRule": "+ 添加条件",
+      "addCondition": "+ 添加条件",
+      "addGroup": "+ 添加分组",
+      "deleteGroup": "删除分组",
+      "removeCondition": "移除条件",
+      "fieldPlaceholder": "选择字段",
+      "operatorPlaceholder": "运算符",
+      "valuePlaceholder": "输入数值...",
+      "equals": "等于",
+      "contains": "包含",
+      "greaterThan": "大于",
+      "fieldUserName": "用户名",
+      "fieldAge": "年龄",
+      "fieldRole": "职位",
+      "fieldIsActive": "是否激活",
+      "rulesCount": "规则数: {{count}}",
+      "combinatorLabel": "逻辑连接符: {{combinator}}",
+      "serializedModel": "序列化 JSON 查询模型:"
+    },
+    "slider": {
+      "examplesTitle": "示例与状态",
+      "sandboxTitle": "Slider 沙盒",
+      "valueLabel": "数值"
+    },
+    "tabs": {
+      "examplesDesc": "选项卡变体、尺寸、徽章与禁用状态的视觉矩阵。",
+      "keyboardDesc": "Tabs 支持标准水平与垂直方向键导航，可自动选中或手动以 Space／Enter 确认。",
+      "overviewDesc": "测试交互式选项卡切换、胶囊与下划线样式、尺寸缩放及键盘方向键导航。",
+      "sandboxTitle": "Tabs 沙盒"
+    },
+    "taskHud": {
+      "anchorLabel": "锚点：{{placement}}",
+      "and": "与",
+      "animAutoHideFull": "清空后的 HUD 保持最后一帧至 autoHideDelay（600ms）再淡出。",
+      "animAutoHidePrefix": "清空后的 HUD 保持最后一帧",
+      "animAutoHideSuffix": "（600ms）再淡出。",
+      "animEnterEnd": "）。",
+      "animEnterFull": "新卡片经由 ThemeTokens.motionMedium（180ms）与 ThemeTokens.easeStandard 曲线，自锚定边滑入。",
+      "animEnterMid": "（180ms）与",
+      "animEnterPrefix": "新卡片进入使用",
+      "animEnterSuffix": "曲线，自锚定边滑入（Qt 对应：",
+      "animExitGhosts": "关闭的卡片以退出残影停留同样的 180ms，使堆栈在其下方重排而非突变。",
+      "animProgressFull": "确定性进度经由 ThemeTokens.motionDuration（300）过渡；不确定任务运行无限 1.6s 微光轨道。",
+      "animProgressPrefix": "确定性进度过渡使用",
+      "animProgressSuffix": "；不确定任务运行无限 1.6s 微光轨道。",
+      "animReducedFull": "所有过渡受 ThemeTokens.animationsEnabled 守卫，动效禁用时时长归零。",
+      "animReducedMid": "于 Web 端与",
+      "animReducedPrefix": "遵循",
+      "animReducedSuffix": "于 Qt 端。",
+      "animationsDesc": "活动堆栈及其卡片的运动令牌与运动学时序契约。",
+      "keyboardDesc": "堆栈为单个 Tab 停靠点：卡片为其内部漫游焦点项。",
+      "overflowSandboxTitle": "折叠与溢出",
+      "sandboxTitle": "Task HUD 沙盒"
+    },
+    "themeSettings": {
+      "animDescEnd": "作为全局终止开关。",
+      "animDescPrefix": "ThemeSettings 对按钮、分段控件、颜色选择器与覆盖抽屉的平滑状态过渡使用统一运动令牌，过渡使用",
+      "animDescSuffix": "与 Qt",
+      "animFull": "ThemeSettings 对按钮、分段控件、颜色选择器与覆盖抽屉的平滑状态过渡使用统一运动令牌，过渡使用 ThemeTokens.motionQuick 与 ThemeTokens.easeStandard。以 ThemeTokens.animationsEnabled 作为全局终止开关。",
+      "sandboxTitle": "交互式主题设置"
+    },
+    "segmentedControl": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "分段控制器沙盒",
+      "sizesBadgesTitle": "尺寸与徽标",
+      "fixedWidthTitle": "固定宽度与截断",
+      "menuInlineTitle": "菜单与行内标题",
+      "tooltipsHintsTitle": "工具提示与自定义提示",
+      "perOptionTitle": "带快捷键与箭头的逐项工具提示",
+      "globalRenderTooltipTitle": "全局 renderTooltip 定制",
+      "globalFormatterTitle": "全局 tooltipFormatter 定制",
+      "gridTip": "网格布局",
+      "listTip": "列表布局",
+      "galleryTip": "画廊视图",
+      "dayLabel": "日",
+      "weekLabel": "周",
+      "monthLabel": "月",
+      "yearLabel": "年",
+      "dailyTip": "每日摘要视图",
+      "weeklyTip": "每周时间线视图",
+      "monthlyTip": "每月概览日历",
+      "annualTip": "年度归档（需要 Pro 方案）",
+      "autoLabel": "自动",
+      "darkLabel": "深色",
+      "lightLabel": "浅色",
+      "switchScheme": "切换应用配色方案",
+      "themeTooltipFormat": "主题：{{label}} — 切换应用配色方案"
+    },
+    "badge": {
+      "overviewHeading": "交互式概览",
+      "sizeSmall": "小号（sm）"
+    },
+    "tableOfContents": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "大纲导航沙盒",
+      "readingPanePara": "注意大纲树如何映射嵌套标题结构，并随顶部横幅高度偏移平滑对齐。"
+    },
+    "splitterHandle": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "分栏手柄沙盒",
+      "overviewDesc": "拖动右侧边缘手柄调整侧边栏宽度。双击或按 Enter 可重置为 200。",
+      "verticalTitle": "垂直边缘手柄",
+      "horizontalPrefix": "手柄亦可吸附于水平边缘（",
+      "horizontalSuffix": "），用于底部控制台或抽屉调参。",
+      "horizontalDesc": "手柄亦可吸附于水平边缘（top 或 bottom），用于底部控制台或抽屉调参。",
+      "animationsDesc": "SplitterHandle 边缘指示器的 motion 令牌与运动学时间契约。",
+      "dragStaticDesc": "手柄拖拽运动学严格禁用动画，以保证确定性 60fps 实时指针追踪。",
+      "reducedMotionPrefix": "遵循",
+      "reducedMotionSuffix": "（Qt 端）。"
+    },
+    "draggableModal": {
+      "overviewHeading": "交互式概览",
+      "overviewDesc": "点击下方按钮打开可拖拽弹窗，支持尺寸预设、拖拽移位与高度自适应。",
+      "sandboxTitle": "可拖拽弹窗沙盒",
+      "allocBadge": "128 个分配"
+    },
+    "elidedText": {
+      "overviewHeading": "交互式概览"
+    },
+    "rangeSlider": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "区间滑块沙盒",
+      "sizesStatesTitle": "尺寸与状态"
     },
     "virtualList": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "虚拟列表沙盒",
+      "renderingHint": "以 60fps 流畅渲染 {{count}} 个虚拟项。使用下方控件触发编程式滚动，或快速滚动观察即时窗口化。",
       "hint": "以原生滚轮惯性流畅渲染 10,000 条虚拟数据项:",
       "itemTitle": "数据集项目 #{{index}}",
       "production": "生产环境",
@@ -895,7 +1971,230 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "btn2500": "索引 #2,500",
       "btnBottom": "底部 (#10,000)"
     },
+    "panelCard": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "面板卡片沙盒",
+      "collapseHint": "点击 chevron 图标或标题以折叠／展开卡片面板主体。"
+    },
+    "activityStack": {
+      "accessibleLabel": "活动堆栈",
+      "overflowLabel": "还有 {{count}} 项",
+      "summaryText": "{{count}} 项{{label}}"
+    },
+    "input": {
+      "overviewHeading": "交互概览",
+      "sandboxTitle": "输入框沙盒"
+    },
+    "kbd": {
+      "altChoices": "备选按键：",
+      "animationsDesc": "与 ChaSet 令牌对齐的交互微动效过渡。",
+      "combinationsDesc": "支持多键组合、备选按键与紧凑修饰符符号。",
+      "combinationsTitle": "组合键与符号",
+      "commandPalette": "命令面板",
+      "compactSymbols": "紧凑修饰符符号：",
+      "completeLabel": "自动补全",
+      "copyPathLabel": "复制路径",
+      "dragHandleTooltip": "拖动右侧手柄以调整容器宽度。",
+      "exportProject": "将项目导出为归档",
+      "invertedTooltip": "反白（文字提示）",
+      "menuDesc": "专用 Shortcut 组件，内置右对齐与防收缩行为，适用于菜单项。",
+      "menuTitle": "菜单尾随快捷键",
+      "multiModifier": "多修饰符序列：",
+      "narrowDesc": "当父容器被压缩时，标签文本将被截断，而快捷键保持完整或压缩为符号。",
+      "narrowTitle": "窄容器自适应",
+      "newFile": "新建文件",
+      "outlineDefault": "线框（默认）",
+      "overviewHeading": "交互概览",
+      "playgroundDesc": "拖动右侧手柄或调节滑块，观察快捷键栏如何历经 4 个自适应阶段：完整尺寸 → 挤压微缩 → 紧凑符号 → +N 折叠徽标与浮动气泡。",
+      "playgroundTitle": "交互式多阶段响应式演练场",
+      "presetCompact": "紧凑版（{{value}}）",
+      "presetFolded": "折叠版（{{value}}）",
+      "presetFull": "完整版（{{value}}）",
+      "presetSqueezed": "挤压版（{{value}}）",
+      "presetsLabel": "预设：",
+      "sandboxTitle": "键位徽标沙盒",
+      "saveDocument": "保存文档",
+      "sizeSm": "小尺寸（sm）",
+      "sizeXs": "超小尺寸（xs）",
+      "stageCompact": "第 3 阶段：紧凑版（图标符号）",
+      "stageFolded": "第 4 阶段：折叠版（+N 折叠）",
+      "stageFull": "第 1 阶段：完整版（完整文字）",
+      "stageSqueezed": "第 2 阶段：挤压版（等比微缩）",
+      "variantInverted": "反白样式",
+      "variantOutline": "线框样式",
+      "variantSolid": "实心样式",
+      "variantSubtle": "淡化样式",
+      "veryLongAction": "超长操作名称将被截断",
+      "widthBadge": "宽度：{{value}}",
+      "widthLabel": "宽度："
+    },
+    "mediaProgressBar": {
+      "overviewHeading": "交互概览",
+      "sandboxTitle": "媒体播放进度条沙盒"
+    },
+    "notificationStack": {
+      "animationsBullet1": "通知经由 duration-medium（180ms）与 ease-standard 曲线，自锚定边滑入滑出（Qt：ThemeTokens.motionMedium／ThemeTokens.easeStandard）。",
+      "animationsBullet2": "到期为剩余时间预算而非简单定时器：悬停堆栈将冻结所有进行中的倒计时，指针离开后从相同余量继续。",
+      "animationsBullet3": "持续时间为 0 时通知将驻留屏幕直至被关闭，适用于携带操作的消息。",
+      "animationsBullet4": "所有过渡遵循 Web 端 prefers-reduced-motion 与 Qt 端 ThemeTokens.animationsEnabled，动效禁用时时长归零。",
+      "animationsDesc": "与活动堆栈共享的动效令牌与生命周期契约。",
+      "keyboardDesc": "堆栈为单个 Tab 停靠点：通知卡片为其内部漫游焦点项。",
+      "levelsTitle": "级别与操作",
+      "overviewHeading": "交互概览",
+      "sandboxTitle": "通知堆栈沙盒"
+    },
+    "popover": {
+      "arrowButton": "箭头气泡弹窗",
+      "arrowContent": "此气泡弹窗渲染锚定指针三角。",
+      "arrowDesc": "直指触发器的锚定三角指示器",
+      "arrowTitle": "带指向箭头",
+      "examplesDesc": "常见交互配置，包括指向箭头与可拖拽位移。",
+      "movableButton": "可移动气泡弹窗",
+      "movableContent": "拖动顶部抓握条可将此气泡弹窗移至任意位置。",
+      "movableDesc": "可自由位移气泡图层的交互式拖拽头",
+      "movableTitle": "可移动拖拽手柄",
+      "overviewDesc": "点击下方按钮切换锚定气泡卡片，测试方位对齐、指向箭头与可拖拽移动手柄。",
+      "overviewHeading": "交互概览",
+      "sandboxTitle": "气泡弹窗沙盒"
+    },
+    "readOnlyInput": {
+      "overviewDesc": "通过可选掩码、显隐切换与一键复制，安全展示敏感凭据。",
+      "overviewHeading": "交互概览",
+      "sandboxTitle": "只读输入框沙盒",
+      "variantsDesc": "提供默认与 sm 两种尺寸规格，以及语义化状态色彩配置。",
+      "variantsTitle": "尺寸与状态变体"
+    },
+    "resizable": {
+      "animationsBullet1": "分隔条抓握指示器的边框与悬停高亮颜色过渡经由 duration-quick（150ms）与 ease-standard 曲线平滑运行（Qt：ThemeTokens.motionQuick／ThemeTokens.easeStandard）。",
+      "animationsBullet2": "面板尺寸调整运动学严格禁用动画，保证确定性 60fps 实时指针追踪。",
+      "animationsBullet3": "遵循 Web 端 prefers-reduced-motion 与 Qt 端 ThemeTokens.animationsEnabled。",
+      "animationsDesc": "可调分隔条与手柄的动效令牌与运动学时序契约。",
+      "horizontalDesc": "面板自动适应可用宽度，并提供带边界限制的交互式拖拽手柄。",
+      "horizontalSandboxTitle": "水平可调分组",
+      "horizontalTitle": "水平拆分",
+      "nestedDesc": "在水平面板内嵌入垂直面板分组，构建多窗格 IDE 工作台与停靠面。",
+      "nestedTitle": "嵌套可调布局",
+      "playgroundDesc": "在水平与垂直方向间切换，动态测试可视抓握手柄样式。",
+      "playgroundTitle": "交互式演练场"
+    },
+    "scaleOsd": {
+      "animationsDesc": "OSD 进入与退出过渡经由 duration-short（120ms）与 ease-standard 曲线运行（Qt：ThemeTokens.motionShort／ThemeTokens.easeStandard）。1400ms 自动隐藏倒计时在悬停时确定性暂停。",
+      "overviewHeading": "交互概览",
+      "sandboxTitle": "缩放 OSD 沙盒"
+    },
+    "settingRow": {
+      "overviewHeading": "交互概览",
+      "sandboxTitle": "设置行沙盒"
+    },
+    "virtualGrid": {
+      "overviewDesc": "虚拟化自适应卡片列，自动计算宽度并按行回收 DOM。使用下方控件进行编程式导航。",
+      "overviewHeading": "交互概览",
+      "sandboxTitle": "虚拟网格沙盒",
+      "hint": "以响应式复用池渲染 1,000 张网格卡片:",
+      "itemTitle": "模块 #{{index}}",
+      "itemDesc": "虚拟视口卡片单元资源 {{index}}",
+      "pending": "待处理",
+      "assetLabel": "资源 #{{index}}",
+      "btnTop": "顶部 (#1)",
+      "btn20": "卡片 #20",
+      "btn40": "卡片 #40",
+      "btn500": "卡片 #500",
+      "btnBottom": "底部 (#60)",
+      "btnBottom1000": "底部 (#1,000)"
+    },
+    "card": {
+      "overviewDesc": "通过跨 Web 与桌面端同步的交互式子组件，测试卡片变体。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "卡片沙盒"
+    },
+    "checkbox": {
+      "animationsBullet1": "对勾 SVG 常驻挂载，选中时以 duration-quick 时长、ease-entrance 曲线，从透明度 0 缩放 0．5 淡入至透明度 1 缩放 1。",
+      "animationsBullet2": "方框边框颜色在悬停、聚焦、选中与错误态之间交叉淡入淡出。",
+      "animationsBullet3": "时长与缓动取自主题令牌，prefers-reduced-motion 偏好下自动归零（Qt 端由 ThemeTokens.animationsEnabled 控制）。",
+      "animationsDesc": "选中、半选及状态切换的动效行为与时序。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "复选框沙盒"
+    },
+    "collapsible": {
+      "advancedOptionsQt": "高级系统选项",
+      "advancedSettings": "高级项目设置",
+      "defaultOpenDesc": "通过 defaultOpen 以初始展开态渲染非受控折叠面板。",
+      "defaultOpenDescQt": "使用 defaultOpen 将折叠面板初始化为展开状态。",
+      "defaultOpenHeading": "默认展开",
+      "disabledDesc": "禁用触发器交互并降低不透明度，以阻止用户展开。",
+      "disabledDescQt": "以半透明外观阻止点击与交互。",
+      "disabledHeading": "禁用状态",
+      "falseLabel": "关闭",
+      "lockedSettings": "已锁定的高级设置",
+      "overviewDesc": "通过实时控件切换折叠面板的展开／收起状态，或禁用用户交互。",
+      "overviewHeading": "交互式概览",
+      "protectedSettings": "受保护的开发者设置",
+      "sandboxTitle": "折叠面板沙盒",
+      "toggleLabel": "切换",
+      "trueLabel": "开启",
+      "vulkanBadge": "Vulkan 验证层：已启用"
+    },
+    "durationInput": {
+      "overviewDesc": "直接在任意分段中键入，或使用上／下步进按钮。按左／右方向键在分段间跳转，或从分组快捷预设中选取。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "时长输入框沙盒"
+    },
+    "keybindingRecorder": {
+      "overviewDesc": "点击下方录制框并按下任意按键组合（例如{{example}}）。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "快捷键录制器沙盒"
+    },
+    "select": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "选择器沙盒"
+    },
+    "sidebar": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "侧边栏沙盒",
+      "docsNav": "文档导航"
+    },
+    "splitButton": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "分体按钮沙盒"
+    },
+    "squircle": {
+      "borderNote": "传统 CSS 边框在超椭圆剪裁下会出现宽度不均或硬直角。传入 borderWidth 与 borderColor 时，将自动渲染自适应连续曲率矢量描边，保证外轮廓厚度均匀。",
+      "borderSupportLabel": "连续曲率描边支持：",
+      "demoBadge": "次要徽标",
+      "demoButton": "超椭圆按钮",
+      "demoInput": "超椭圆输入框……",
+      "demoOutline": "线框按钮",
+      "demoPill": "状态胶囊",
+      "guideDesc": "外部项目经由两层渐进增强策略接入 ChaSet iOS 连续曲率体系：底层经由现代浏览器 CSS 特性，以零成本加速全量 Tailwind 工具类；老旧环境或高精度带边框几何，则经由原语组件获得保真渲染。",
+      "guideTitle": "外部项目全局接入指南（Global Adoption Guide for External Projects）",
+      "installDesc": "包安装与 CMake／QML 模块链接。",
+      "installHeading": "安装指南",
+      "strategyBadge1": "策略一",
+      "strategyBadge2": "策略二",
+      "strategyBadge3": "策略三",
+      "tailwindNote": "无需修改业务代码中的 rounded-md、rounded-lg、rounded-xl。浏览器匹配 corner-shape: squircle 后将直接应用超椭圆连续曲率，并由 .rounded-full 规则保护圆形头像与状态点不发生几何形变。",
+      "tailwindSyncLabel": "Tailwind 协同机制：",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "超椭圆沙盒与曲率对比",
+      "strategy1Desc": "在宿主项目的全局样式表（如 globals.css 或 index.css）中加入 CSS 特性查询。所有基于 Tailwind rounded-* 工具类的元素将即刻提升为 iOS 连续曲率超椭圆，平滑消除边缘生硬折痕。",
+      "strategy1Title": "全局 CSS 加速（Universal CSS Acceleration）",
+      "strategy2Desc": "对于弹窗（Dialog／Sheet）、高光卡片或不支持 CSS corner-shape 的浏览器内核，使用 ChaSet 组件进行包裹。内部经由 SVG clipPath 裁剪与 ResizeObserver 驱动的几何计算，保证 100％ 跨平台像素级平滑。",
+      "strategy2Title": "保底渐进增强（Guaranteed Progressive Enhancement）",
+      "strategy3Desc": "ChaSet 核心设计令牌内置曲率控制变量。宿主工程可在根层级定义 --cs-corner-shape 与 --cs-corner-smoothing，全库组件将自动继承对应曲率平滑度。",
+      "strategy3Title": "设计令牌配置（Design Tokens Configuration）"
+    },
+    "viewport": {
+      "overviewDesc": "容器动态测量锚点至窗口底部的距离（window.innerHeight - rect.top - margin），并钳制内容高度以防溢出视口之外。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "视口约束容器沙盒",
+      "variantsDesc": "配置自定义数值覆盖、字符串边界或自定义边距偏移。",
+      "variantsTitle": "变体与边界"
+    },
     "virtualTree": {
+      "dirBadge": "目录",
+      "overviewDesc": "支持多选（Ctrl／Shift＋点击）、外部半透明剪切态（Ctrl+X／V）、复制态（Ctrl+C／V）、Ctrl＋拖拽复制与键盘导航的层级树。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "虚拟树沙盒",
       "expandAll": "全部展开",
       "collapseAll": "全部折叠",
       "mode": "模式: {{mode}}",
@@ -922,32 +2221,76 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "cutBadge": "{{count}} 项已剪切（半透明）",
       "copiedBadge": "{{count}} 项已复制（呼吸态）"
     },
-    "virtualGrid": {
-      "hint": "以响应式复用池渲染 1,000 张网格卡片:",
-      "itemTitle": "模块 #{{index}}",
-      "itemDesc": "虚拟视口卡片单元资源 {{index}}",
-      "pending": "待处理",
-      "assetLabel": "资源 #{{index}}",
-      "btnTop": "顶部 (#1)",
-      "btn20": "卡片 #20",
-      "btn40": "卡片 #40",
-      "btn500": "卡片 #500",
-      "btnBottom": "底部 (#60)",
-      "btnBottom1000": "底部 (#1,000)"
+    "button": {
+      "sandboxTitle": "按钮交互沙盒",
+      "iconLabel": "图标",
+      "iconXsLabel": "图标-XS",
+      "iconSmLabel": "图标-SM",
+      "iconLgLabel": "图标-LG",
+      "settingsAriaLabel": "设置"
     },
-    "genericDataTable": {
-      "colId": "ID",
-      "colName": "用户名",
-      "colRole": "职位",
-      "roleArchitect": "首席架构师",
-      "roleFrontend": "前端工程师",
-      "roleQt": "Qt 专家",
-      "roleDevOps": "DevOps 运维工程师",
-      "roleProduct": "产品经理",
-      "statusPending": "待审核",
-      "statusOffline": "离线"
+    "dialog": {
+      "overviewDesc": "在 Web 与桌面端体验完整的模态行为，包含背景模糊、键盘 ESC 关闭与焦点收纳。",
+      "sandboxTitle": "对话框沙盒",
+      "examplesDesc": "常见模态对话框模式：桌面可拖拽窗口、确认对话框与提示公告。",
+      "animationsDesc": "打开与关闭时遮罩与内容的动效行为与时间节奏。",
+      "animationsBullet1": "背景遮罩使用 animate-fade-in／animate-fade-out淡入淡出，时长为 duration-short并采用 ease-entrance曲线。",
+      "animationsBullet2": "内容卡片仅以透明度交叉淡入淡出（位移定位元素避免缩放动画以防冲突），退出时使用 useExitAnimation延迟卸载。",
+      "animationsBullet3": "时长与缓动解析自主题令牌，因此 prefers-reduced-motion会自动将其置零（Qt 端由 ThemeTokens.animationsEnabled管控）。",
+      "animationsDescQt": "由 ThemeTokens驱动的遮罩与内容在打开与关闭时的动效行为与时间节奏。",
+      "animationsBullet1Qt": "根遮罩与卡片在打开与关闭之间交叉淡入淡出，卡片伴随轻微缩放以强调入场。",
+      "animationsBullet2Qt": "过渡使用 ThemeTokens.motionShort时长与 easeEntrance曲线。",
+      "animationsBullet3Qt": "所有过渡均受 ThemeTokens.animationsEnabled守卫；禁用时时长归零且动画停止。",
+      "demoName": "亚历克斯"
+    },
+    "copyButton": {
+      "sandboxTitle": "复制按钮沙盒"
+    },
+    "dropdownMenu": {
+      "overviewDesc": "点击下方触发器打开下拉菜单，完整支持键盘导航与快捷键。",
+      "sandboxTitle": "下拉菜单沙盒"
+    },
+    "presetNumberInput": {
+      "overviewDesc": "聚焦或点击输入框打开预设数值列表，点击条目填充字段，亦可自由输入自定义数值。",
+      "sandboxTitle": "预设数值输入框沙盒"
+    },
+    "inlineEditableText": {
+      "overviewDesc": "点击或双击下方文本进行修改，按 Enter确认，按 Esc取消。",
+      "sandboxTitle": "行内编辑文本沙盒"
+    },
+    "sheet": {
+      "overviewDesc": "选择滑入边缘与尺寸预设，然后触发抽屉弹窗。",
+      "sandboxTitle": "抽屉沙盒",
+      "animationsDesc": "背景与滑动面板的动效行为与时间节奏。",
+      "animationsBullet1": "背景遮罩使用 animate-fade-in／animate-fade-out交叉淡入淡出。",
+      "animationsBullet2": "面板使用 slide-in-from-{side}-10与 slide-out-to-{side}-10从边缘滑入滑出，时长为 duration-medium并采用 ease-emphasized曲线。",
+      "animationsBullet3": "时长与缓动解析自主题令牌，因此 prefers-reduced-motion会自动将其置零（Qt 端由 ThemeTokens.animationsEnabled管控）。",
+      "animationsDescQt": "由 ThemeTokens 驱动的背景与滑动面板动效行为与时间节奏。",
+      "animationsBullet1Qt": "面板沿进入边缘平移，背景交叉淡入淡出透明度。",
+      "animationsBullet2Qt": "过渡使用 ThemeTokens.motionMedium 时长与 easeEmphasized 曲线实现沉稳滑动。",
+      "animationsBullet3Qt": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零且动画停止。",
+      "demoName": "亚历克斯",
+      "demoRole": "资深基础架构师"
+    },
+    "snapSlider": {
+      "sandboxTitle": "离散吸附滑块沙盒",
+      "animationsBullet1": "滑块悬停与缩放微交互在 duration-quick（90ms）内以 ease-standard曲线平滑过渡（Qt 对应：ThemeTokens.motionQuick与 ThemeTokens.easeStandard）。",
+      "animationsBullet2": "滑块拖拽运动学以 60fps实时追踪指针位置，无欠阻尼滞后。",
+      "animationsBullet3": "在 Web 端遵循 prefers-reduced-motion，在 Qt 端遵循 ThemeTokens.animationsEnabled。",
+      "keyboardDesc": "键盘快捷键与离散步进导航模式。",
+      "animationsDescQt": "滑块悬停与聚焦过渡经 ThemeTokens.motionQuick（90ms）以 ThemeTokens.easeStandard 动画呈现，拖拽以 60fps 实时追踪指针无滞后。"
     },
     "table": {
+      "overviewDesc": "通过实时筛选、行选中与同步的 React／Qt Quick代码测试交互式数据表格控件。",
+      "sandboxTitle": "表格沙盒",
+      "examplesDesc": "常见表格模式与交互配置。",
+      "examplesDescQt": "Qt Quick 中的常见配置与视觉状态。",
+      "userAlice": "爱丽丝",
+      "userBob": "鲍勃",
+      "userCarol": "卡罗尔",
+      "taskApiIntegration": "接口联调",
+      "taskUnitTesting": "单元测试",
+      "taskDocumentation": "文档编写",
       "filterPlaceholder": "过滤发票...",
       "statusAll": "全部",
       "statusPaid": "已支付",
@@ -977,27 +2320,19 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "roleDev": "开发人员",
       "roleDesigner": "设计师"
     },
-    "queryBuilder": {
-      "addRule": "+ 添加条件",
-      "addCondition": "+ 添加条件",
-      "addGroup": "+ 添加分组",
-      "deleteGroup": "删除分组",
-      "removeCondition": "移除条件",
-      "fieldPlaceholder": "选择字段",
-      "operatorPlaceholder": "运算符",
-      "valuePlaceholder": "输入数值...",
-      "equals": "等于",
-      "contains": "包含",
-      "greaterThan": "大于",
-      "fieldUserName": "用户名",
-      "fieldAge": "年龄",
-      "fieldRole": "职位",
-      "fieldIsActive": "是否激活",
-      "rulesCount": "规则数: {{count}}",
-      "combinatorLabel": "逻辑连接符: {{combinator}}",
-      "serializedModel": "序列化 JSON 查询模型:"
-    },
     "codeBlock": {
+      "overviewDesc": "带语言标签与一键复制的语法高亮源码查看器，高亮由共享规范词法器生成，双端均不内置第三方高亮器。",
+      "sandboxTitle": "代码块沙盒",
+      "animationsDesc": "文件切换与顶部操作区的动效行为与时间节奏。",
+      "animationsBullet1": "切换激活文件时正文经 animate-in fade-in-0交叉淡入，时长解析为 short动效令牌并采用 entrance曲线。",
+      "animationsBullet2": "顶部操作区继承原语的令牌动效：选项卡触发器以 duration-quick与 ease-standard插值颜色与边框，复制按钮与滚动条亦然。",
+      "animationsBullet3": "时长与缓动解析自主题令牌，因此 prefers-reduced-motion会自动将其置零（Qt 端由 ThemeTokens.animationsEnabled管控）。",
+      "animationsDescQt": "由 ThemeTokens 驱动的文件切换与顶部操作区动效行为与时间节奏。",
+      "animationsBullet1Qt": "切换激活文件时正文经 ThemeTokens.motionShort 以 easeEntrance 曲线交叉淡入。",
+      "animationsBullet2Qt": "顶部操作区继承原语令牌动效：文件选项卡经 ThemeTokens.motionQuick 与 easeStandard 插值颜色与边框，复制按钮与滚动条亦然。",
+      "animationsBullet3Qt": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零且动画停止。",
+      "wrapBadge": "换行",
+      "embeddedBadge": "嵌入",
       "variantsTitle": "变体与配置",
       "variantsDesc": "行号指示槽、软换行、带垂直滚动的高度边界、单色回退模式，以及面向行内正文的无边框内嵌模式。",
       "gutterDesc": "带有右对齐行号的左侧指示槽",
@@ -1007,7 +2342,71 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "multiFileTitle": "多文件标签组",
       "multiFileDesc": "传入 files 数组渲染多文件选项卡组。每个标签页独立携带其语言类型，且复制按钮始终作用于当前激活的文件。"
     },
+    "scrollArea": {
+      "sandboxTitle": "滚动区域展示",
+      "overviewDesc": "交互式演练场，演示跨端滚动条样式、步进分页与动态热区扩展。",
+      "horizontalTitle": "水平示例",
+      "horizontalDesc": "悬停底部滚动条以显示左右步进按钮。",
+      "dualAxisTitle": "双向滚动",
+      "dualAxisDesc": "当内容同时超出宽度与高度时，双滚动条将渲染同步转角。",
+      "hotZoneTitle": "双盒热区",
+      "hotZoneDesc": "传统窄滚动条难以用鼠标精准命中。ChaSet 引入紧凑的 0.5rem 透明交互热区，配合从 0.25rem（静息）扩展至 0.5rem（悬停）的动画视觉指示器，采用 150ms 三次方缓动。",
+      "hotZoneIdle": "静息态：0.25rem 纤细指示条，低打扰。",
+      "hotZoneHover": "悬停态：扩展至 0.5rem，具备高视觉可供性。",
+      "hotZoneHit": "命中区：0.5rem 紧凑触发盒，防止误捕获光标。",
+      "stepperTitle": "步进按钮",
+      "stepperDesc": "悬停滚动条将显示两端步进操作按钮：",
+      "verticalClusterTitle": "垂直集群",
+      "verticalTop": "顶部：回到顶部（Home）与向上翻页（85% 视口步进）",
+      "verticalBottom": "底部：向下翻页与回到底部（End）",
+      "verticalAuto": "到达边界时自动禁用。",
+      "horizontalClusterTitle": "水平集群",
+      "horizontalLeft": "左侧：回到起点（Home）与向左翻页",
+      "horizontalRight": "右侧：向右翻页与到达末尾（End）",
+      "horizontalSmooth": "支持平滑动画插值。",
+      "colFeatureName": "功能名称",
+      "colCategory": "分类",
+      "colTargetStack": "目标端",
+      "colStatus": "状态",
+      "colCommit": "提交",
+      "cellLabel": "单元格"
+    },
+    "alertDialog": {
+      "pageDescription": "打断用户并要求确认重要内容的中断式模态弹窗。",
+      "sandboxTitle": "警告弹窗沙盒"
+    },
+    "contextMenu": {
+      "overviewDesc": "在下方虚线容器内右键（或长按）以唤出右键菜单。",
+      "sandboxTitle": "右键菜单沙盒"
+    },
+    "genericDataTable": {
+      "overviewDesc": "点击列头以升序与降序排序。",
+      "sandboxTitle": "通用数据表沙盒",
+      "colId": "ID",
+      "colName": "用户名",
+      "colRole": "职位",
+      "roleArchitect": "首席架构师",
+      "roleFrontend": "前端工程师",
+      "roleQt": "Qt 专家",
+      "roleDevOps": "DevOps 运维工程师",
+      "roleProduct": "产品经理",
+      "statusPending": "待审核",
+      "statusOffline": "离线"
+    },
+    "label": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "标签沙盒"
+    },
     "pipelineView": {
+      "overviewHeading": "交互式概览",
+      "overviewDesc": "组装任务追踪、纵向步骤时间线与虚拟化自动滚动日志控制台的高性能执行检查器，所有子组件亦可独立消费。",
+      "sandboxTitle": "流水线视图沙盒",
+      "animationsDesc": "执行过渡与状态节点状态由共享运动令牌管控：",
+      "animationsBullet1": "活动执行节点（running、compiling、retrying）使用 animate-spin 持续旋转。",
+      "animationsBullet2": "任务列表悬停与选中过渡使用 duration-quick 与 ease-standard。",
+      "animationsBulletQt1": "活动执行节点（running、compiling、retrying）展示持续旋转动画。",
+      "animationsBulletQt2": "任务列表选中与悬停状态使用 ThemeTokens.motionQuick 平滑插值。",
+      "animationsBulletQt3": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零。",
       "stepParseSpirv": "解析 SPIR-V 字节码",
       "stepDeadCode": "消除死代码",
       "stepRegAlloc": "硬件寄存器分配",
@@ -1018,12 +2417,81 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "jobBenchmark": "性能基准测试集",
       "jobPackage": "打包构建产物"
     },
-    "addressBar": {
-      "quickLocations": "快捷位置:",
-      "locProjectRoot": "项目根目录",
-      "activePath": "当前路径:",
-      "activePathFormat": "当前路径: {{path}}",
-      "refreshes": "刷新次数: {{count}}"
+    "separator": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "分隔线沙盒",
+      "mitLicense": "MIT 许可证",
+      "stackBadge": "React 19 与 Qt 6"
+    },
+    "skeleton": {
+      "sandboxTitle": "骨架屏沙盒",
+      "animationsDesc": "占位加载效果的动效行为与时间节奏。",
+      "animationsBullet1": "pulse 使用默认 animate-pulse 关键帧实现柔和透明度闪烁。",
+      "animationsBullet2": "wave 使用自定义 cs-shimmer 关键帧并经由 animate-shimmer 工具实现扫光高亮。",
+      "animationsBullet3": "设置 prefers-reduced-motion 后，动画自动解析为 animation：none（Qt 端由 ThemeTokens.animationsEnabled 管控）。",
+      "animationsBulletQt1": "pulse 以 SequentialAnimation 驱动透明度；wave 以线性 NumberAnimation 驱动 x 实现扫光。",
+      "animationsBulletQt2": "当 ThemeTokens.animationsEnabled 为 false 时所有动画停止，骨架保持静态。"
+    },
+    "smoothWheelHandler": {
+      "sandboxTitle": "平滑滚轮沙盒",
+      "speedMultiplier": "滚动速率倍率:",
+      "dampingDuration": "阻尼减速时长:",
+      "itemLabel": "平滑滚动项 #{{index}}",
+      "itemBadge": "项 #{{index}}",
+      "kinematicsTitle": "运动学物理架构",
+      "card1Title": "连续动量累加",
+      "card1Desc": "当滚轮发生快速连续触发时，增量位移会平滑累加至当前目标位置，而不会产生向后回弹或跳动卡顿。",
+      "card2Title": "Shift+滚轮水平转置",
+      "card2Desc": "在水平滚动视口或横向走马灯中，自动拦截按住 Shift 时的垂直滚轮动作，并将其无缝映射为水平平移位移。",
+      "card3Title": "手势与拖拽解耦",
+      "card3Desc": "当用户触碰滑块手柄或使用触控板扫动时，立即中断平滑滚动插值，保证零物理冲突与摩擦。",
+      "bullet1": "• 动量累加：连续滚轮步进线性累加至目标位置，绝不打断或阻滞当前的运动过渡。",
+      "bullet2": "• 手势解耦：自动监听 targetItem.moving 与 flicking 状态。当用户触碰或拖动视图时，平滑动画立即中止以消除动作对抗。",
+      "bullet3": "• 即插即用：可直接无缝附加至任意 Flickable / ListView / GridView 或 ChaSetScrollArea，无需重构现有视觉层级。"
+    },
+    "splitter": {
+      "overviewHeading": "水平分栏",
+      "horizontalDesc": "悬停于窗格间分隔条并横向拖拽以调整面板，双击重置。",
+      "horizontalSandboxTitle": "水平分栏沙盒",
+      "fileSrc": "▾ 源码",
+      "fileComponents": "▸ 组件",
+      "fileLayout": "▸ 布局",
+      "verticalTitle": "垂直分栏",
+      "verticalDesc": "上下窗格以水平分隔线划分，纵向拖拽以调整控制台输出。",
+      "verticalSandboxTitle": "垂直分栏",
+      "animationsDesc": "针对 Splitter 分隔条的运动令牌与运动学时序契约。",
+      "animationsBullet1": "分隔条指示器的颜色与透明度过渡以 duration-quick（150ms）与 ease-standard 曲线平滑呈现（Qt 对应：ThemeTokens.motionQuick 与 ThemeTokens.easeStandard）。",
+      "animationsBullet2": "分隔条拖拽运动学严格无动画，以保证确定性 60fps 实时指针追踪。",
+      "animationsBulletQt1": "分隔条指示器的颜色与透明度过渡以 ThemeTokens.motionQuick（150ms）与 ThemeTokens.easeStandard 曲线平滑呈现。",
+      "animationsBulletQt3": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零且动画停止。"
+    },
+    "switch": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "开关沙盒"
+    },
+    "tooltip": {
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "文字提示沙盒",
+      "examplesDesc": "覆盖全部 4 个方向放置与交互状态的常见 Tooltip 配置视觉矩阵。",
+      "examplesDescQt": "Qt Quick 桌面端 Tooltip 方向放置视觉矩阵。",
+      "animationsDesc": "提示气泡打开与关闭时的动效行为与时间节奏。",
+      "animationsDescQt": "由 ThemeTokens 驱动的提示气泡打开与关闭时的动效行为与时间节奏。",
+      "animationsBullet1": "打开时使用 animate-in 与 fade-in-0、zoom-in-95 淡入并放大，经由 duration-short 与 ease-entrance 曲线。",
+      "animationsBullet2": "关闭时使用 animate-out 与 fade-out-0、zoom-out-95 淡出并缩小，退出动画结束后才卸载。",
+      "animationsBulletQt1": "气泡在进入与退出时交叉淡入淡出透明度并轻微缩放以示意显现。",
+      "animationsBulletQt2": "过渡使用 ThemeTokens.motionShort 时长与 easeEntrance 曲线。",
+      "animationsBulletQt3": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零且动画停止。"
+    },
+    "windowTitleBar": {
+      "overviewDesc": "带原生风格操作按钮的无边框窗口标题栏。",
+      "sandboxTitle": "窗口标题栏沙盒",
+      "idle": "空闲",
+      "minimizeClicked": "点击最小化",
+      "maximizeClicked": "点击最大化 / 还原",
+      "closeClicked": "点击关闭",
+      "clientArea": "无边框原生客户端窗口区域",
+      "captionEvent": "窗口标题栏操作事件:",
+      "appTitle": "ChaSet 桌面工作室"
     }
   },
   "formsA": {
@@ -1998,7 +3466,11 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "dotted": "Dotted",
     "left": "Left",
     "center": "Center",
-    "right": "Right"
+    "right": "Right",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System",
+    "small": "Small"
   },
   "theme": {
     "settings": {
@@ -2214,6 +3686,11 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "Sizes & Interaction Triggers": "Sizes & Interaction Triggers",
       "Sizes & States": "Sizes & States"
     },
+    "collapseOverflow": "Collapse & Overflow",
+    "examplesVariants": "Examples & Variants",
+    "installation": "Installation",
+    "interactiveOverview": "Interactive Overview",
+    "navigation": "Navigation",
     "toc": {
       "philosophy": "Design Philosophy",
       "architecture": "How It Works",
@@ -2340,7 +3817,22 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "groupDesc": "Group related buttons cohesively with ButtonGroup, and enrich buttons with leading or trailing icons.",
       "left": "Left",
       "middle": "Middle",
-      "right": "Right"
+      "right": "Right",
+      "variantDesc": "Visual appearance and semantic intent.",
+      "sizeDesc": "Standardized dimensions scale.",
+      "loadingDesc": "Shows spinning indicator and disables user interaction.",
+      "loadingTextDesc": "Optional content displayed while in loading state.",
+      "pressedDesc": "Toggle or selected state with active styling and aria-pressed.",
+      "leftIconDesc": "Optional leading icon displayed before children.",
+      "rightIconDesc": "Optional trailing icon displayed after children.",
+      "iconSizeDesc": "Logical unscaled icon size; enlarges or overrides icons rendered inside the button.",
+      "fullWidthDesc": "Stretches the button to 100% of the parent container width.",
+      "asChildDesc": "Passes props directly to the child element (polymorphism).",
+      "disabledDesc": "Blocks clicks and applies muted disabled styling.",
+      "typeDesc": "HTML button type attribute.",
+      "iconSourceDesc": "Optional icon image source URL.",
+      "iconPositionDesc": "Placement of iconSource: left or right.",
+      "textDesc": "Button label text content."
     },
     "badge": {
       "description": "Displays a badge or a component that looks like a badge to highlight status, tags, and counts.",
@@ -2362,7 +3854,15 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "away": "Away",
       "error": "Error",
       "reactTag": "React Tag",
-      "qtQuick": "Qt Quick"
+      "qtQuick": "Qt Quick",
+      "variantDesc": "Visual stylistic variant corresponding to core color tokens.",
+      "sizeDesc": "Size variant determining pill height, padding, and font metrics scale.",
+      "dotDesc": "Whether to display a leading status indicator dot.",
+      "dotColorDesc": "Custom color class for the status dot (e.g. bg-emerald-500).",
+      "removableDesc": "Whether to display an inline dismiss/remove action button.",
+      "onRemoveDesc": "Callback fired when the dismiss/remove action is triggered.",
+      "interactiveDesc": "Whether the badge responds with interactive cursor and click effects.",
+      "classNameDesc": "Optional additional Tailwind CSS class names."
     },
     "label": {
       "description": "Renders an accessible label associated with form controls.",
@@ -2399,7 +3899,14 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "formControlDesc": "Clicking the label activates or toggles the linked input element via htmlFor.",
       "termsTitle": "Terms and Conditions",
       "termsSubtitle": "Click the text below to toggle the checkbox",
-      "acceptTerms": "I accept the terms and conditions"
+      "acceptTerms": "I accept the terms and conditions",
+      "optionalIndicator": "(optional)",
+      "classNameDesc": "Additional custom CSS classes.",
+      "helperDesc": "Supporting helper text rendered beneath the label.",
+      "htmlForDesc": "ID of the form element the label is bound to.",
+      "sizeDesc": "Text size variant (default or compact sm).",
+      "textDesc": "The label text to display.",
+      "tooltipDescNew": "Contextual help tooltip text displayed with info icon."
     },
     "separator": {
       "description": "Visually or semantically separates content in a list, form, or section.",
@@ -2436,14 +3943,28 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "dashed": "Dashed",
       "dotted": "Dotted",
       "navDivider": "Navigation Divider",
-      "navDividerDesc": "Vertical dividers between inline list items or metadata tags."
+      "navDividerDesc": "Vertical dividers between inline list items or metadata tags.",
+      "classNameDesc": "Additional CSS classes for custom width, height, margin, or color overrides.",
+      "customColorDesc": "Optional explicit override color for the divider line (defaults to ThemeTokens.border).",
+      "decorativeDesc": "Whether the element is purely decorative or conveys semantic structure.",
+      "labelDesc": "Optional label or annotation text embedded in the divider line.",
+      "labelPositionDesc": "Horizontal alignment for the embedded label.",
+      "orientationDesc": "The orientation of the separator line.",
+      "variantDesc": "The stroke style of the separator line."
     },
     "skeleton": {
       "description": "Used to show a placeholder while content is loading, with smooth CSS pulse and wave shimmer animations.",
       "overviewDesc": "Visual placeholder skeleton cards for progressive loading states. Switch between pulse, wave shimmer, or static modes.",
       "pulse": "pulse",
       "wave": "wave",
-      "none": "none"
+      "none": "none",
+      "animateDesc": "Convenience boolean flag to toggle animation on or off.",
+      "animationDesc": "Animation style for the placeholder loading effect.",
+      "animationDescQt": "Animation mode: 'pulse' | 'wave' | 'none'.",
+      "classNameDesc": "Custom CSS classes for height, width, and background styling.",
+      "customRadiusDesc": "Custom corner radius override.",
+      "roundedDesc": "Corner radius preset for the placeholder shape.",
+      "roundedDescQt": "Corner radius preset: 'none' | 'sm' | 'md' | 'lg' | 'full'."
     },
     "copy-button": {
       "description": "One-click clipboard copy button with transient success checkmark feedback and customizable timeout.",
@@ -2491,7 +4012,17 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "always": "Always",
       "never": "Never",
       "variantsTitle": "Variants",
-      "variantsDesc": "Four distinct visual styles designed for menus, search fields, dialogs, and inverted tooltips."
+      "variantsDesc": "Four distinct visual styles designed for menus, search fields, dialogs, and inverted tooltips.",
+      "classNameDesc": "Optional additional Tailwind CSS class names.",
+      "compactDesc": "Whether to convert verbose modifiers to compact symbols (Ctrl to ⌃).",
+      "overflowDesc": "Overflow strategy when space is constrained in narrow containers.",
+      "separatorDesc": "Custom separator character between combination keys.",
+      "shortcutDesc": "Serialized shortcut combination string to parse automatically.",
+      "sizeDesc": "Size scale controlling keycap height, padding, and font size.",
+      "textDesc": "Direct single key text to display.",
+      "variantDesc": "Visual presentation variant matching container surfaces.",
+      "clickLabel": "Click",
+      "orDivider": "or"
     },
     "squircle": {
       "description": "iOS continuous curvature superellipse rounded corners (G2 continuity). Eliminates harsh creases caused by abrupt curvature transitions in classic circular arcs, providing smooth, organic modern corners across the design system.",
@@ -2503,72 +4034,67 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "smoothingLabel": "Smoothing: {{smoothing}}%",
       "cornerSmoothing": "Corner Smoothing",
       "cornerRadius": "Corner Radius",
-      "adoptionPreview": "Full-Project Default Adoption Preview"
+      "adoptionPreview": "Full-Project Default Adoption Preview",
+      "asDesc": "Underlying HTML tag or component to render as.",
+      "bgDesc": "Background surface fill color.",
+      "borderColorDesc": "Border stroke color for continuous curvature outline.",
+      "borderWidthDesc": "Border stroke width in logical units.",
+      "bottomLeftDesc": "Explicit bottom-left corner radius override.",
+      "bottomRightDesc": "Explicit bottom-right corner radius override.",
+      "cornerSmoothingDesc": "Alias for smoothing conforming to the neutral schema.",
+      "heightDesc": "Explicit height in logical units (auto-measured via ResizeObserver if omitted).",
+      "radiusDesc": "Corner radius in logical units.",
+      "rbDesc": "Whether bottom corners are rounded.",
+      "rlDesc": "Whether left corners are rounded.",
+      "rrDesc": "Whether right corners are rounded.",
+      "rtDesc": "Whether top corners are rounded.",
+      "smoothingDesc": "Curvature smoothing factor from 0.0 (circle arc) to 1.0 (full squircle). 0.6 is the Apple iOS standard.",
+      "topLeftDesc": "Explicit top-left corner radius override.",
+      "topRightDesc": "Explicit top-right corner radius override.",
+      "widthDesc": "Explicit width in logical units (auto-measured via ResizeObserver if omitted)."
     },
-    "window-title-bar": {
-      "description": "Desktop window frame header with title, drag region, and minimize/maximize/close control buttons for frameless native windows."
-    },
-    "smooth-wheel-handler": {
-      "description": "Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex."
-    },
-    "virtual-list": {
-      "description": "High-performance windowed 100k+ row list powered by TanStack Virtual, rendering only DOM nodes visible in the active viewport."
-    },
-    "virtual-tree": {
-      "description": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
-    },
-    "virtual-grid": {
-      "description": "2D responsive windowed grid virtualizer for massive cards, matrix data, and dynamic layouts."
-    },
-    "generic-data-table": {
-      "description": "Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination."
-    },
-    "table": {
-      "description": "A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics."
-    },
-    "query-builder": {
-      "description": "Visual rule tree builder for structured search query generation with nested logic groups (AND/OR), operator filters, and JSON serialization."
-    },
-    "code-block": {
-      "description": "Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt."
-    },
-    "pipeline-view": {
-      "description": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
-    },
-    "address-bar": {
-      "description": "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing."
-    },
-    "theme-settings": {
-      "description": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density."
-    },
-    "language-settings": {
-      "description": "Cross-stack language configuration card with system detection and cultural poetry quotes."
-    },
-    "input": {
-      "description": "Displays a form text input field or a component that looks like an input field."
-    },
-    "checkbox": {
-      "description": "A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, helper descriptions, and companion labels."
-    },
-    "switch": {
-      "description": "A control that allows the user to toggle between checked and not checked states, with support for async loading, read-only mode, and helper descriptions."
-    },
-    "select": {
-      "description": "Displays a list of options for the user to pick from, triggered by a button with item indicators and scroll buttons."
-    },
-    "slider": {
-      "description": "An interactive control that allows the user to select a numeric value along a track."
-    },
-    "range-slider": {
-      "description": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention and keyboard accessibility."
-    },
-    "snap-slider": {
-      "description": "Stepped discrete slider that snaps to defined stops with ticks and label row."
-    },
-    "segmented-control": {
-      "description": "A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support."
+    "addressBar": {
+      "canGoBackDesc": "Enables the backward history navigation button.",
+      "canGoForwardDesc": "Enables the forward history navigation button.",
+      "defaultValueDesc": "Initial path string for uncontrolled usage.",
+      "disabledDesc": "Disables all interactions and input editing.",
+      "fileSystemAdapterDesc": "File system adapter providing subfolder enumeration and suggestion querying.",
+      "historyDesc": "Recent typed path history for dropdown display.",
+      "onNavigateDesc": "Callback invoked when a new path is committed via segment click or Enter.",
+      "onNavigateWithSelectionDesc": "Callback when navigating with a specific file item selected.",
+      "pathDesc": "Current path string rendered in breadcrumb and edit modes.",
+      "showNavButtonsDesc": "Whether to show back, forward, up, and refresh navigation buttons.",
+      "showRefreshDesc": "Whether to show the refresh button.",
+      "showSearchDesc": "Whether to show the integrated search/filter input on the right side.",
+      "suggestionsDesc": "List of auto-complete path strings in the dropdown popover."
     },
     "colorPicker": {
+      "activePanelDesc": "Active color selector panel mode.",
+      "defaultValueDesc": "Initial color value for uncontrolled usage.",
+      "description": "An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB).",
+      "disabledPropDesc": "When true, prevents user interaction and applies muted opacity.",
+      "hexDesc": "The selected hex color string (e.g. #1D7AE0).",
+      "modeDesc": "Display mode: inline panel card or popover dropdown trigger.",
+      "movableDesc": "When true, allows dragging on empty background areas to reposition the component. Double-click resets position.",
+      "onChangeDesc": "Callback invoked whenever the selected color changes.",
+      "onValueChangeDesc": "Alias callback for onChange for contract consistency.",
+      "presetColorsDesc": "Array of preset hex color strings displayed in swatches panel.",
+      "showCmykSlidersDesc": "Whether CMYK channel sliders and numeric inputs are visible.",
+      "showHexDesc": "Whether to display the editable HEX text input row.",
+      "showHsvSlidersDesc": "Whether HSV channel sliders and numeric inputs are visible.",
+      "showLabSlidersDesc": "Whether CIELAB channel sliders and numeric inputs are visible.",
+      "showPreviewDesc": "Whether to show the top preview header swatch and hex label.",
+      "showRgbSlidersDesc": "Whether RGB channel sliders and numeric inputs are visible.",
+      "showSwatchesDesc": "Whether to show the quick preset color swatch row.",
+      "sizeDesc": "Visual sizing scale for canvas, swatches, and inputs.",
+      "titleDesc": "Custom label rendered in the preview header.",
+      "valueColorDesc": "The selected color value.",
+      "valueDesc": "Controlled hex color value (e.g. #1D7AE0).",
+      "defaultTitle": "Color",
+      "panelSquare": "Square",
+      "panelCircle": "Circle",
+      "panelTriangle": "Triangle",
+      "panelSwatches": "Swatches",
       "mode": "Mode:",
       "modeInline": "Inline",
       "modePopover": "Popover",
@@ -2591,65 +4117,273 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "customPresetsTitle": "Custom Preset Swatches",
       "customPresetsDesc": "Specific project palette supplied via the presetColors prop."
     },
-    "color-picker": {
-      "description": "An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB)."
+    "errorBoundary": {
+      "fallbackTitle": "Component Rendering Error",
+      "reloadPage": "Reload Page",
+      "tryAgain": "Try Again",
+      "unexpectedError": "An unexpected error occurred during rendering."
     },
-    "colorpicker": {
-      "description": "An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB)."
+    "languageSettings": {
+      "disabledDesc": "Whether the language selection controls are disabled.",
+      "onPreferenceChangeDesc": "Callback triggered when user selects a different language or toggles system mode.",
+      "preferenceDesc": "Active language preference, either \"system\" or an explicit language code.",
+      "showFollowSystemDesc": "Whether to show the prominent Follow System option card with system detection.",
+      "textProviderDesc": "Optional custom translation function for overriding component strings.",
+      "variantDesc": "Visual container variant. \"card\" renders an outer bordered card with header; \"embedded\" renders inline content without outer frame."
     },
-    "durationInput": {
-      "timerDuration": "Timer Duration",
-      "timerDurationDefault": "Timer Duration (Default):",
-      "compactSizeColon": "Compact Size (sm):",
-      "disabledStateColon": "Disabled State:",
-      "formatted": "Formatted:",
-      "formattedSummary": "{{h}}h {{m}}m {{sec}}s ({{total}}s total)",
-      "hours": "Hours",
-      "minutes": "Minutes",
-      "seconds": "Seconds",
-      "presets": "Presets",
-      "compactTitle": "Compact Size (sm)",
-      "largeTitle": "Large Size (lg)",
-      "disabledTitle": "Disabled State",
-      "variantsTitle": "Variants & Configurations",
-      "variantsDesc": "Supports compact and comfortable sizes, disabling presets or labels, and disabled states."
+    "queryBuilder": {
+      "connectorDesc": "Root boolean combinator logic ('AND' | 'OR').",
+      "customRadiusDesc": "Corner radius of the rule builder container.",
+      "fieldsDesc": "Available queryable fields and data types.",
+      "fieldsListDesc": "Array of queryable field definitions.",
+      "maxDepthDesc": "Maximum nested rule group depth.",
+      "onQueryChangeDesc": "Callback fired on rule addition, deletion, or editing.",
+      "queryDesc": "Active query tree root group.",
+      "rulesDesc": "Array of active condition rules."
     },
-    "duration-input": {
-      "description": "Segmented duration input control for hours, minutes, and seconds with stepper buttons, mouse wheel adjustments, keyboard arrow jumping, and preset menu."
+    "slider": {
+      "classNameDesc": "Additional CSS class names to apply to the slider root element.",
+      "defaultValueDesc": "The default value for uncontrolled slider usage.",
+      "disabledDesc": "When true, prevents user interaction and applies muted opacity.",
+      "forceFocusDesc": "Visual testing aid to programmatically force focus ring styling.",
+      "forceHoverDesc": "Visual testing aid to programmatically force hover styling.",
+      "formatValueDesc": "Optional formatter function for the floating tooltip text.",
+      "marksDesc": "Optional array of label strings corresponding to discrete stop positions.",
+      "maxDesc": "The maximum allowable value.",
+      "minDesc": "The minimum allowable value.",
+      "nameDesc": "Form submission name for an underlying hidden input.",
+      "onChangeDesc": "Standard event handler called when the slider value changes.",
+      "onValueChangeDesc": "Event handler called when the slider value changes.",
+      "orientationDesc": "The orientation of the slider track.",
+      "readOnlyDesc": "When true, prevents value changes while maintaining full visual opacity.",
+      "showTicksDesc": "Displays tick mark indicators along the slider track.",
+      "showTooltipDesc": "When true, shows an interactive floating value tooltip over the thumb on drag and hover.",
+      "sizeDesc": "The size scale of the slider track and thumb.",
+      "stepDesc": "The stepping granularity interval.",
+      "valueDesc": "The controlled numeric value of the slider.",
+      "description": "An interactive control that allows the user to select a numeric value along a track."
     },
-    "presetNumberInput": {
-      "textureDimension": "Texture Dimension",
-      "textureDimensionColon": "Texture Dimension:",
-      "placeholder": "Width / Height",
-      "currentValue": "Current value:",
-      "empty": "(empty)",
-      "auto": "Auto",
-      "none": "None",
-      "customPresetsSmall": "Custom Presets (Small)",
-      "customPresetsSmallColon": "Custom Presets (Small):",
-      "disallowClear": "Disallow Clear (Mandatory)",
-      "disabledTitle": "Disabled State",
-      "variantsTitle": "Variants & Configurations",
-      "variantsDesc": "Configure custom numeric presets, disable the clear option, or place the control in disabled state."
+    "splitButton": {
+      "defaultAction": "Action",
+      "disabledDesc": "Whether the split button is disabled.",
+      "labelDesc": "Label on the primary action button.",
+      "menuContentDesc": "Dropdown menu items rendered on chevron click.",
+      "onClickDesc": "Callback fired on clicking primary action.",
+      "sizeDesc": "Button size variant.",
+      "variantDesc": "Button stylistic variant."
     },
-    "preset-number-input": {
-      "description": "High-density numeric input field with a quick-select dropdown panel for common dimension presets, unit tags, and optional clear action."
+    "tabs": {
+      "badgeDesc": "Optional count badge or text label rendered inside the trigger.",
+      "defaultValueDesc": "The value of the tab that should be active when initially rendered (uncontrolled).",
+      "description": "A set of layered content sections known as tab panels, displayed one at a time.",
+      "disabledDesc": "When true on TabsTrigger, prevents interaction on that tab.",
+      "iconDesc": "Optional leading icon element rendered inside the trigger.",
+      "onValueChangeDesc": "Event handler called when the active tab changes.",
+      "orientationDesc": "The orientation of the tabs (controls keyboard navigation axis).",
+      "sizeDesc": "Size scale of the tabs triggers and container.",
+      "valueDesc": "The controlled value of the active tab.",
+      "variantDesc": "Visual presentation style: pill container (default) or underline tab bar (line)."
     },
-    "readOnlyInput": {
-      "apiSecretKey": "API Secret Key (Masked with Copy):",
-      "personalAccessToken": "GitHub Personal Access Token (Masked):",
-      "defaultToken": "Default Size Token",
-      "compactToken": "Compact Size (sm)",
-      "destructiveToken": "Revoked Key (Destructive)",
-      "warningToken": "Expiring Soon (Warning)",
-      "successToken": "Verified Token (Success)",
-      "sizesAndStatus": "Sizes & Status Variants",
-      "sizesAndStatusDesc": "Available in default and sm sizing tiers with semantic status color schemes."
+    "taskHud": {
+      "description": "Floating stack of background executions with progress, overflow and collapse-to-summary.",
+      "propAutoHideDelay": "Grace period in milliseconds an emptied HUD stays on screen before fading out.",
+      "propCollapsible": "Offers the collapse-to-summary-row control.",
+      "propDefaultCollapsed": "Renders the stack collapsed on first paint.",
+      "propForceVisible": "Keeps the HUD mounted while no task is running (used by static sandboxes).",
+      "propLabel": "Accessible name of the HUD region.",
+      "propMaxVisible": "Cards rendered before the stack overflows into its \"show all\" pill.",
+      "propOffset": "Inset from the anchored viewport edges, in logical units.",
+      "propOnCancel": "Renders a cancel control on running tasks flagged cancellable.",
+      "propOnDismiss": "Renders the per-card dismiss control; omit to make cards non-dismissible.",
+      "propPlacement": "Viewport anchor. Cards enter and exit through the anchored edge.",
+      "propTasks": "Background executions to surface, oldest first; the newest card sits nearest the anchor.",
+      "taskItemFooter": "Each TaskItem carries id, title, an optional detail, a status of queued | running | success | warning | error | cancelled, a progress ratio (or indeterminate), a total/done step counter and elapsedMs.",
+      "dismissPrefix": "Dismiss ",
+      "label": "Task Progress HUD"
     },
-    "read-only-input": {
-      "description": "Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle."
+    "themeSettings": {
+      "configDesc": "Canonical theme configuration object containing mode, palette, decoration, typography, and uiScale.",
+      "configQtDesc": "Canonical theme configuration object matching ThemeConfig schema.",
+      "controlledDesc": "Controlled mode: the component never writes back to `config`; every edit is emitted through configModified only. Enable it when the host drives `config` from its own state (a declarative binding), so a local snapshot can never overwrite host-owned fields such as uiScale.",
+      "disabledDesc": "Disables all interactive controls and dims opacity.",
+      "onChangeDesc": "Callback invoked when any theme property changes.",
+      "onExportDesc": "Callback invoked when exporting configuration JSON.",
+      "onImportDesc": "Callback invoked when importing and parsing configuration JSON.",
+      "onResetDesc": "Callback invoked when the reset button is activated.",
+      "showExportDesc": "Whether to display the export JSON button in header.",
+      "showImportDesc": "Whether to display the import button in header.",
+      "showResetDesc": "Whether to display the reset button in header.",
+      "showTypographyDesc": "Whether to render typography font family and scale selection rows.",
+      "showTypographyQtDesc": "Whether to render typography selection rows.",
+      "textProviderDesc": "Optional internationalization string resolver callback.",
+      "textProviderQtDesc": "Optional i18n string resolver function.",
+      "variantQtDesc": "Container treatment: \\\"card\\\" wraps the rows in a panel, \\\"embedded\\\" renders them bare."
+    },
+    "segmentedControl": {
+      "description": "A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support.",
+      "optionsDesc": "Array of option objects ({ label, value, icon?, badge?, disabled?, tooltip? }).",
+      "valueDesc": "Controlled active value.",
+      "defaultValueDesc": "Initial value when uncontrolled.",
+      "onValueChangeDesc": "Callback invoked when a new segment is selected.",
+      "sizeDesc": "Physical dimension variant ('sm', 'default', 'lg').",
+      "titleDesc": "Optional prefix label displayed before the segments.",
+      "disabledDesc": "Whether the entire segmented control is disabled.",
+      "fullWidthDesc": "Whether segments expand equally to fill the parent container.",
+      "equalWidthDesc": "Whether all segments share an identical fixed width while hugging content.",
+      "itemWidthDesc": "Explicit fixed width allocated to each segment option.",
+      "tooltipSideDesc": "Default side placement for option tooltips.",
+      "tooltipDelayDesc": "Default hover delay duration in ms before displaying option tooltips.",
+      "renderTooltipDesc": "Custom render function for option tooltips, allowing full user customization.",
+      "tooltipFormatterDesc": "Custom formatting function (opt) => text|object for option tooltips",
+      "tooltipDelegateDesc": "Custom QML Component delegate for rendering rich custom tooltips"
+    },
+    "tableOfContents": {
+      "description": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support.",
+      "itemsDesc": "Hierarchical array of outline items with level and nested children.",
+      "activeIdDesc": "Currently active section ID.",
+      "topOffsetDesc": "Top offset for sticky positioning, accommodating global announcement banners.",
+      "targetOffsetDesc": "Safety scroll offset ensuring headings are not occluded by top banners.",
+      "variantDesc": "Visual styling variant of the table of contents container.",
+      "sizeDesc": "Size density and font scaling of the outline labels.",
+      "showTrackDesc": "Whether to render the vertical guide track and active indicator marker.",
+      "showTitleDesc": "Whether to display the header title label.",
+      "titleDesc": "Header title text displayed above outline items.",
+      "onSelectDesc": "Callback fired when an outline item is selected or activated."
+    },
+    "splitterHandle": {
+      "description": "Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation.",
+      "edgeDesc": "Which edge of the target panel the resize handle controls.",
+      "targetSizeDesc": "Current size (width or height) of the target element being resized.",
+      "minSizeDesc": "Minimum allowed size bound.",
+      "maxSizeDesc": "Maximum allowed size bound.",
+      "defaultSizeDesc": "Size restored when double-clicked or Enter is pressed.",
+      "liveUpdateDesc": "Whether size updates fire continuously during drag.",
+      "hitThicknessDesc": "Interactive mouse hit test zone thickness.",
+      "visualThicknessDesc": "Resting visible hairline thickness.",
+      "activeVisualThicknessDesc": "Highlighted visible hairline thickness when hovered or dragged.",
+      "disabledDesc": "Whether handle resizing is disabled."
+    },
+    "draggableModal": {
+      "description": "Desktop floating window with dragging title bar and bound viewport constraints.",
+      "childrenDesc": "Scrollable main content body of the modal.",
+      "initialPositionModeDesc": "Initial placement mode: centered or top-anchored.",
+      "sizeOptionsDesc": "Preset size options for the top-right dropdown switcher.",
+      "sizeMenuTooltipDesc": "Hover tooltip text for the size menu button.",
+      "fixedFooterDesc": "Pinned bottom action area that does not scroll with content.",
+      "topControlsDesc": "Extra controls rendered in the top-right action bar (e.g. close button).",
+      "rootExtraDesc": "Extra content inside the root container (e.g. floating panels).",
+      "autoFitHeightDesc": "Whether to auto-fit height to natural content height.",
+      "showEscBadgeDesc": "Whether to show the ESC hint badge in the top-right corner.",
+      "defaultWidthRemDesc": "Initial width (in rem units).",
+      "defaultHeightRemDesc": "Initial height (in rem units).",
+      "defaultWidthDesc": "Initial width.",
+      "defaultHeightDesc": "Initial height.",
+      "topMarginRemDesc": "Top margin in top-anchored mode (in rem units).",
+      "remBaseDesc": "Base ratio for rem conversion.",
+      "titleDesc": "Headline text in the drag bar.",
+      "openDesc": "Whether the floating window is currently visible.",
+      "radiusDesc": "Corner radius of the floating window.",
+      "topMarginDesc": "Top offset margin when in top position mode.",
+      "titleDefault": "Inspector Window",
+      "sizeMenuTooltipDefault": "Adjust Size"
+    },
+    "elidedText": {
+      "textDesc": "The string content to display and measure for overflow.",
+      "tooltipTextDesc": "Custom tooltip text override if different from raw text.",
+      "tooltipPlacementDesc": "Placement direction of the floating tooltip.",
+      "tooltipDelayDesc": "Delay in milliseconds before showing tooltip on hover.",
+      "alwaysShowTooltipDesc": "Force tooltip to appear on hover even if text is not elided.",
+      "showTooltipWhenElidedDesc": "Enable tooltip reveal whenever overflow truncation is detected.",
+      "copyableDesc": "Whether clicking the text copies it to clipboard with instant feedback."
+    },
+    "rangeSlider": {
+      "description": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention and keyboard accessibility.",
+      "valueDesc": "Current [min, max] interval value.",
+      "onValueChangeDesc": "Callback fired on thumb move.",
+      "onChangeDesc": "Alias for onValueChange.",
+      "sizeDesc": "Density and sizing variant.",
+      "showTooltipDesc": "Displays value tooltip bubble on hover, drag, and focus.",
+      "readOnlyDesc": "Prevents user interaction while preserving contrast.",
+      "disabledDesc": "Disables slider interaction and dims opacity.",
+      "minDesc": "Minimum allowed value.",
+      "maxDesc": "Maximum allowed value.",
+      "stepDesc": "Step increment.",
+      "minGapDesc": "Minimum gap between the two thumbs.",
+      "fromDesc": "Minimum bounds value of the slider.",
+      "toDesc": "Maximum bounds value of the slider.",
+      "firstValueDesc": "Value represented by the first thumb.",
+      "secondValueDesc": "Value represented by the second thumb.",
+      "stepSizeDesc": "Stepped granularity increment."
+    },
+    "virtualList": {
+      "itemsDesc": "Array of data items to virtualize.",
+      "renderRowDesc": "Callback rendering an individual row.",
+      "renderItemDesc": "Alias for renderRow.",
+      "estimateSizeDesc": "Estimated item height for measurement.",
+      "gapDesc": "Vertical gap between adjacent items.",
+      "overscanDesc": "Number of buffer items rendered beyond viewport bounds.",
+      "emptyNodeDesc": "Content rendered when items array is empty.",
+      "onScrollDesc": "Scroll event callback receiving distance to bottom.",
+      "refDesc": "Handle exposing scrollToIndex(index, align).",
+      "modelDesc": "List model count or array for delegate generation.",
+      "delegateDesc": "Visual delegate instantiated for visible rows.",
+      "rowHeightDesc": "Default estimated height of each row.",
+      "estimateDesc": "Estimated height of each item for virtual measurement.",
+      "spacingDesc": "Vertical spacing between adjacent items.",
+      "radiusDesc": "Corner radius of the list viewport container.",
+      "scrollToDesc": "Programmatically scrolls to the target item index."
+    },
+    "panelCard": {
+      "description": "Card surface with integrated collapsible sections and header action slots for desktop sidebars and inspectors.",
+      "titleDesc": "Panel header title text or element.",
+      "badgeTextDesc": "Optional badge text displayed next to the title.",
+      "collapsibleDesc": "Whether the panel content can be toggled collapsed.",
+      "collapsedDesc": "Controlled collapsed state.",
+      "defaultCollapsedDesc": "Initial collapsed state for uncontrolled mode.",
+      "onCollapsedChangeDesc": "Collapse change handler.",
+      "actionsDesc": "Right-aligned header action elements.",
+      "sizeDesc": "Sizing scale of the card panel.",
+      "radiusDesc": "Corner radius of the card surface.",
+      "defaultTitle": "Panel Title"
+    },
+    "stepTimeline": {
+      "emptyText": "No steps"
+    },
+    "checkbox": {
+      "fallbackLabel": "Checkbox",
+      "checkedDesc": "The controlled checked state of the checkbox.",
+      "classNameDesc": "Additional CSS class names to apply to the checkbox button.",
+      "customRadiusDesc": "Optional custom corner radius for the checkbox box (-1 uses default).",
+      "defaultCheckedDesc": "The default checked state when uncontrolled.",
+      "disabledDesc": "Disables user interactions and applies 50% opacity.",
+      "forceFocusDesc": "Visual testing aid to force focus ring styles.",
+      "forceHoverDesc": "Visual testing aid to force hover state styles.",
+      "helperDesc": "Optional helper text rendered below the label.",
+      "indeterminateDesc": "Whether the checkbox is in an indeterminate state (takes visual precedence over checked).",
+      "invalidDesc": "Applies destructive error styling and aria-invalid attribute.",
+      "labelDesc": "Optional companion label rendered alongside the checkbox.",
+      "onCheckedChangeDesc": "Callback invoked when checked state changes.",
+      "readOnlyDesc": "Prevents toggling state while retaining focusability and full opacity.",
+      "sizeDesc": "The size variant: default or sm.",
+      "description": "A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, helper descriptions, and companion labels."
     },
     "inlineEditableText": {
+      "defaultText": "Click to edit",
+      "valueDesc": "Current text value.",
+      "onValueChangeDesc": "Callback invoked upon confirming an edit.",
+      "onSaveDesc": "Async save handler; returning false keeps edit mode open.",
+      "triggerDesc": "Mouse gesture that opens the inline input.",
+      "sizeDesc": "Density and sizing variant.",
+      "placeholderDesc": "Placeholder when value is empty.",
+      "hintDesc": "Hover tooltip hint.",
+      "disabledDesc": "Whether inline editing is disabled.",
+      "valueDescQt": "The active text value displayed and edited.",
+      "textDescQt": "Alias for value property.",
+      "placeholderDescQt": "Fallback text when the value property is empty.",
+      "triggerDescQt": "Activation trigger: 'click' or 'doubleClick'.",
+      "sizeDescQt": "Density and sizing variant: 'default' | 'sm'.",
+      "disabledDescQt": "Whether inline editing interaction is disabled.",
+      "editingDesc": "Whether the component is currently in input edit mode.",
       "defaultTitle": "Project Apollo Architecture",
       "clickToEdit": "Click or double-click the label below to edit in place:",
       "placeholder": "Type a title...",
@@ -2666,27 +4400,34 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sizesAndTriggers": "Sizes & Interaction Triggers",
       "sizesAndTriggersDesc": "Configure single-click vs double-click activations and high-density sizing tiers."
     },
-    "inline-editable-text": {
-      "description": "Text element that switches seamlessly to an input field on double-click or edit trigger, supporting Enter to save and Escape to cancel."
-    },
-    "keybindingRecorder": {
-      "clickToRecord": "Click recorder box and press shortcut combination:",
-      "placeholder": "Press shortcut keys...",
-      "recordingPrompt": "Press desired key combination (Esc to cancel)...",
-      "noBinding": "No keybinding set",
-      "recordedAccelerator": "Recorded accelerator:",
-      "none": "None",
-      "defaultWithClear": "Default Size (with Clear)",
-      "compactSm": "Compact sm Tier",
-      "withoutClear": "Without Clear Button",
-      "disabledTitle": "Disabled State",
-      "sizesAndStates": "Sizes & States",
-      "sizesAndStatesDesc": "Available in default and sm sizing tiers, with optional clearing and disabled states."
-    },
-    "keybinding-recorder": {
-      "description": "Interactive keyboard sequence recorder that captures desktop accelerator combinations (Ctrl, Alt, Shift, Meta)."
+    "input": {
+      "classNameDesc": "Additional CSS class names to apply to the input element.",
+      "clearableDesc": "Renders a clear button when text is present to wipe content.",
+      "disabledDesc": "Disables user interactions and applies 50% opacity.",
+      "forceFocusDesc": "Visual testing aid to force focus ring styles.",
+      "forceHoverDesc": "Visual testing aid to force hover state styles.",
+      "invalidDesc": "Applies destructive error styling and aria-invalid attribute.",
+      "leftIconDesc": "Icon element rendered on the leading side of the input.",
+      "onClearDesc": "Callback fired when the clear button is clicked.",
+      "passwordToggleDesc": "Renders an eye toggle button to reveal or mask passwords.",
+      "placeholderDesc": "Placeholder hint text displayed when input is empty.",
+      "readOnlyDesc": "Prevents editing value while keeping focusability.",
+      "rightIconDesc": "Icon element rendered on the trailing side of the input.",
+      "sizeDesc": "The height and padding scale of the input.",
+      "typeDesc": "Standard HTML/Qt input type: \"text\" | \"password\" | \"email\" | \"search\" | \"number\".",
+      "description": "Displays a form text input field or a component that looks like an input field."
     },
     "mediaProgressBar": {
+      "disabledDesc": "Disabled state.",
+      "durationDesc": "Total duration of the media in milliseconds.",
+      "frameRateDesc": "Frame rate for frame-based time formatting.",
+      "interactiveDesc": "Whether pointer seek/drag is enabled.",
+      "positionDesc": "Current playback position in milliseconds.",
+      "ratioDesc": "Playback progress ratio from 0.0 to 1.0.",
+      "showThumbDesc": "Whether to display the progress thumb handle.",
+      "showTimeDesc": "Whether to show the time readout underneath.",
+      "timeFormatDesc": "Format to display timestamp.",
+      "timingModeDesc": "Timing mode: elapsed time or remaining countdown.",
       "elapsed": "Elapsed",
       "remaining": "Remaining",
       "elapsedMode": "Elapsed (Played)",
@@ -2705,6 +4446,651 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "timingModeLabel": "Timing Mode",
       "timeFormatLabel": "Time Format",
       "timeReadout": "Time Display"
+    },
+    "notificationStack": {
+      "collapsibleDesc": "Offers the collapse-to-summary-row control.",
+      "defaultCollapsedDesc": "Renders the stack collapsed on first paint.",
+      "defaultDurationDesc": "Lifetime for items that do not state their own duration.",
+      "defaultLabel": "Notifications",
+      "description": "Floating, severity-coded notification stack with per-item lifetimes and inline actions.",
+      "itemFooterDesc": "Each notification carries id, title, an optional description, a level of info | success | warning | error, an optional duration, dismissible and a list of actions (id, label, variant).",
+      "labelDesc": "Accessible name of the live region.",
+      "maxVisibleDesc": "Cards rendered before the stack overflows into its \"show all\" pill.",
+      "notificationsDesc": "Notifications to surface, oldest first; the newest card sits nearest the anchor.",
+      "offsetDesc": "Inset from the anchored viewport edges, in logical units.",
+      "onActionDesc": "Fired when an inline action button is pressed; the card stays until dismissed.",
+      "onDismissDesc": "Renders the per-card dismiss control and receives every auto-expiry.",
+      "pauseOnHoverDesc": "Suspends every expiry countdown while the pointer rests on the stack.",
+      "placementDesc": "Viewport anchor. Cards enter and exit through the anchored edge."
+    },
+    "popover": {
+      "alignDesc": "Alignment along the anchor edge.",
+      "alignOffsetDesc": "Offset distance along alignment edge.",
+      "arrowDesc": "Whether to render an anchored directional arrow.",
+      "customRadiusDesc": "Corner radius of the popover border.",
+      "defaultOpenDesc": "Default open state when uncontrolled.",
+      "description": "Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management.",
+      "modalDesc": "Whether the popover is rendered as modal with backdrop.",
+      "movableDesc": "Enables interactive drag repositioning via handle.",
+      "moveLabelDesc": "Accessible label for the drag handle button.",
+      "onOpenChangeDesc": "Open state change handler.",
+      "openDesc": "Controlled open state.",
+      "popoverHeightDesc": "Height of the popover content.",
+      "popoverWidthDesc": "Width of the popover content.",
+      "sideDesc": "Placement side relative to trigger.",
+      "sideOffsetDesc": "Distance offset from trigger."
+    },
+    "readOnlyInput": {
+      "colorSchemeDesc": "Color theme variant.",
+      "customRadiusDesc": "Corner radius of the input container.",
+      "description": "Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle.",
+      "disabledDesc": "Whether the input field is disabled.",
+      "maskCharDesc": "Character used for masking.",
+      "maskedDesc": "Whether to mask characters with bullets.",
+      "placeholderDesc": "Placeholder displayed when value is empty.",
+      "showCopyDesc": "Whether to show the attached copy button.",
+      "showMaskToggleDesc": "Whether to show the reveal/hide toggle button when masked.",
+      "sizeDesc": "Density and sizing variant.",
+      "valueDesc": "Protected value displayed in the input.",
+      "apiSecretKey": "API Secret Key (Masked with Copy):",
+      "personalAccessToken": "GitHub Personal Access Token (Masked):",
+      "defaultToken": "Default Size Token",
+      "compactToken": "Compact Size (sm)",
+      "destructiveToken": "Revoked Key (Destructive)",
+      "warningToken": "Expiring Soon (Warning)",
+      "successToken": "Verified Token (Success)",
+      "sizesAndStatus": "Sizes & Status Variants",
+      "sizesAndStatusDesc": "Available in default and sm sizing tiers with semantic status color schemes."
+    },
+    "resizable": {
+      "collapsibleDesc": "Whether the panel collapses completely past its minimum size.",
+      "defaultSizeDesc": "Initial percentage size allocated to the panel (0-100).",
+      "description": "Accessible resizable panel groups and layout splitters.",
+      "directionDesc": "Direction of panel layout (also supports orientation prop).",
+      "handleColorDesc": "Idle separator line background color.",
+      "handleGripColorDesc": "Grip dot indicator color.",
+      "handleHoverColorDesc": "Hovered or active separator accent color.",
+      "handleThicknessDesc": "Thickness of the divider separator bound.",
+      "maxSizeDesc": "Maximum allowed percentage size constraint.",
+      "minSizeDesc": "Minimum allowed percentage size constraint.",
+      "orientationDesc": "Split layout orientation: Qt.Horizontal or Qt.Vertical.",
+      "withHandleDesc": "Renders an accessible tactile visual grip handle on the separator divider.",
+      "withHandleDescQt": "Whether to render a tactile 6-dot visual grip indicator on the handle."
+    },
+    "scaleOsd": {
+      "autoHideDurationDesc": "Duration in ms before auto-hiding (pauses on hover).",
+      "defaultValueDesc": "Initial scale ratio in uncontrolled mode.",
+      "description": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.",
+      "disabledDesc": "Disables all controls and user interaction.",
+      "ignoreUiScaleDesc": "Locks physical pixel size and renders invariant regardless of interface scaling.",
+      "maxDesc": "Maximum allowed zoom scale ratio.",
+      "minDesc": "Minimum allowed zoom scale ratio.",
+      "onChangeDesc": "Callback fired when scale value changes.",
+      "onResetDesc": "Callback fired when resetting to 100%.",
+      "onStepDesc": "Callback fired on step adjustments.",
+      "placementDesc": "Fixed viewport anchor position.",
+      "showControlsDesc": "Whether to display +/- and reset buttons.",
+      "showTooltipsDesc": "Whether to display hover tooltip hints for control buttons.",
+      "sizeDesc": "Visual scale variant (desktop launcher 42px or standard 40px).",
+      "stepDesc": "Step increment applied on +/- button click.",
+      "stepsDesc": "Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS).",
+      "valueDesc": "Current scale ratio (e.g. 1.0 represents 100%).",
+      "visibleDesc": "Controlled visibility state."
+    },
+    "settingRow": {
+      "badgeDesc": "Optional trailing badge tag next to title.",
+      "description": "Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight.",
+      "descriptionDesc": "Secondary explanatory subtitle text.",
+      "disabledDesc": "Whether the setting row and controls are dimmed and disabled.",
+      "highlightDesc": "Direct boolean override to force active highlight animation.",
+      "highlightIdDesc": "Unique identifier used for anchor jump targeting.",
+      "highlightTargetDesc": "Active target identifier. When matching highlightId, triggers pulse.",
+      "iconDesc": "Optional leading icon or badge avatar.",
+      "nameDesc": "Primary title label for the setting item.",
+      "sizeDesc": "Density size variant ('default' or 'sm')."
+    },
+    "table": {
+      "emptyState": "No data available",
+      "classNameDesc": "Additional CSS classes for the table element.",
+      "containerClassNameDesc": "Additional CSS classes for the overflow-auto wrapper container.",
+      "columnsDesc": "Array of column definition objects with key, title, optional width, and align ('left' | 'center' | 'right').",
+      "rowsDesc": "Array of data objects containing keys matching the column definitions.",
+      "captionDesc": "Optional caption text rendered at the bottom of the table.",
+      "headerHeightDesc": "Height for the column header row.",
+      "rowHeightDesc": "Height for each table data row.",
+      "selectedIndexDesc": "Index of currently selected row, applying active selection token styling.",
+      "customRadiusDesc": "Corner radius for the table outer container.",
+      "customBorderColorDesc": "Border color for the table and row dividers.",
+      "description": "A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics."
+    },
+    "virtualGrid": {
+      "cellHeightDesc": "Height of each grid slot cell.",
+      "cellWidthDesc": "Width of each grid slot cell.",
+      "customRadiusDesc": "Corner radius of the grid container.",
+      "description": "2D responsive windowed grid virtualizer for massive cards, matrix data, and dynamic layouts.",
+      "emptyNodeDesc": "Content rendered when items array is empty.",
+      "estimateSizeDesc": "Estimated row height for virtual calculation.",
+      "estimateSizeQtDesc": "Estimated cell height for virtual calculation.",
+      "gapDesc": "Grid gap spacing between cards.",
+      "gapQtDesc": "Grid gap spacing guideline.",
+      "itemsDesc": "Array of data items to layout into grid cards.",
+      "minColumnWidthDesc": "Minimum column width before responsive wrapping.",
+      "minColumnWidthQtDesc": "Minimum column width guideline.",
+      "modelDesc": "Number of grid items or data array.",
+      "overscanDesc": "Buffer row count rendered beyond viewport bounds.",
+      "overscanQtDesc": "Buffer rows rendered outside visible bounds.",
+      "refDesc": "Handle exposing scrollToIndex(index, align).",
+      "renderCardDesc": "Callback rendering an individual grid card.",
+      "renderItemDesc": "Alias for renderCard.",
+      "scrollToIndexDesc": "Scrolls the virtual grid to the target card index."
+    },
+    "alertDialog": {
+      "confirmText": "Continue",
+      "description": "This action cannot be undone. This will permanently delete your account and remove your data.",
+      "title": "Are you absolutely sure?",
+      "cancelTextDesc": "Label for the cancellation button.",
+      "closeOnEscapeDesc": "Whether pressing the Escape key dismisses the dialog.",
+      "closeOnOverlayClickDesc": "Whether clicking the backdrop overlay automatically dismisses the dialog.",
+      "confirmTextDesc": "Label for the confirmation button.",
+      "defaultOpenDesc": "Default open state for uncontrolled usage.",
+      "descriptionDesc": "Explanatory content warning the user about action consequences.",
+      "destructiveDesc": "Whether the confirmation button should display in destructive styling.",
+      "onOpenChangeDesc": "Callback fired when open state changes.",
+      "openDesc": "Controlled open state.",
+      "sizeDesc": "Preset maximum width container sizing for AlertDialogContent.",
+      "titleDesc": "Dialog headline title.",
+      "variantDesc": "Button variant styling for AlertDialogAction."
+    },
+    "card": {
+      "childrenDesc": "Card composite subcomponents or custom elements.",
+      "classNameDesc": "Additional CSS class names to apply to the container.",
+      "customRadiusDesc": "Explicit corner radius override (defaults to ThemeTokens.radius).",
+      "description": "Displays a card with header, title, description, content, and footer actions.",
+      "interactiveDesc": "Whether the card provides hover/active elevation styling and cursor pointer.",
+      "sizeDesc": "Density and padding scale of the card and composite containers.",
+      "variantDesc": "Visual presentation style of the card container."
+    },
+    "collapsible": {
+      "classNameDesc": "Additional custom CSS classes.",
+      "customRadiusDesc": "Corner radius of the header and container.",
+      "defaultOpenDesc": "Initial open state for uncontrolled usage.",
+      "defaultOpenDescQt": "Whether the collapsible is initially expanded on load.",
+      "description": "An interactive component which expands and collapses a panel of content.",
+      "disabledDesc": "Whether user interaction is disabled.",
+      "disabledDescQt": "Whether user interaction and toggling are disabled.",
+      "onOpenChangeDesc": "Callback invoked when open state changes.",
+      "openDesc": "Controlled open state of the collapsible panel.",
+      "openDescQt": "Whether the collapsible content is currently expanded.",
+      "titleDesc": "Title text displayed in the header trigger bar.",
+      "variantDesc": "Visual container styling variant.",
+      "variantDescQt": "Visual container styling variant: 'default' | 'card' | 'ghost'."
+    },
+    "durationInput": {
+      "classNameDesc": "Custom CSS classes for outer container.",
+      "customRadiusDesc": "Corner radius of segment boxes and popup.",
+      "defaultValueDesc": "Initial duration in seconds (uncontrolled mode).",
+      "disabledDesc": "Whether the inputs, buttons, and preset dropdown are disabled.",
+      "hoursLabelDesc": "Label text for hours segment.",
+      "maxHoursDesc": "Upper clamp limit for the hours segment.",
+      "minutesLabelDesc": "Label text for minutes segment.",
+      "onChangeDesc": "Callback fired when the duration changes.",
+      "presetsDesc": "Custom grouped duration presets for the dropdown.",
+      "presetsLabelDesc": "Label text for the presets trigger button.",
+      "secondsLabelDesc": "Label text for seconds segment.",
+      "showLabelsDesc": "Whether to display the segment unit labels underneath.",
+      "showPresetsDesc": "Whether to display the preset dropdown button.",
+      "sizeDesc": "Visual density and size variant.",
+      "valueDesc": "Total duration in seconds (controlled mode).",
+      "timerDuration": "Timer Duration",
+      "timerDurationDefault": "Timer Duration (Default):",
+      "compactSizeColon": "Compact Size (sm):",
+      "disabledStateColon": "Disabled State:",
+      "formatted": "Formatted:",
+      "formattedSummary": "{{h}}h {{m}}m {{sec}}s ({{total}}s total)",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds",
+      "presets": "Presets",
+      "compactTitle": "Compact Size (sm)",
+      "largeTitle": "Large Size (lg)",
+      "disabledTitle": "Disabled State",
+      "variantsTitle": "Variants & Configurations",
+      "variantsDesc": "Supports compact and comfortable sizes, disabling presets or labels, and disabled states."
+    },
+    "keybindingRecorder": {
+      "aliasDesc": "Alias for value.",
+      "clearableDesc": "Whether to display a clear button when a shortcut is set.",
+      "cornerRadiusDesc": "Corner radius of the input container.",
+      "disabledDesc": "Whether the recorder is disabled.",
+      "onChangeDesc": "Dual callback receiving both structured object and string.",
+      "onValueChangeDesc": "Callback fired when new combination recorded.",
+      "placeholderDesc": "Placeholder when no shortcut is defined.",
+      "recordingDesc": "Whether the recorder is actively listening for key combinations.",
+      "recordingTextDesc": "Prompt displayed during active recording.",
+      "sizeDesc": "Size preset variant for regular or compact density.",
+      "valueDesc": "Active key combination (string or structured object).",
+      "valueShortDesc": "The serialized shortcut string representation (e.g. 'Ctrl+Shift+P').",
+      "clickToRecord": "Click recorder box and press shortcut combination:",
+      "placeholder": "Press shortcut keys...",
+      "recordingPrompt": "Press desired key combination (Esc to cancel)...",
+      "noBinding": "No keybinding set",
+      "recordedAccelerator": "Recorded accelerator:",
+      "none": "None",
+      "defaultWithClear": "Default Size (with Clear)",
+      "compactSm": "Compact sm Tier",
+      "withoutClear": "Without Clear Button",
+      "disabledTitle": "Disabled State",
+      "sizesAndStates": "Sizes & States",
+      "sizesAndStatesDesc": "Available in default and sm sizing tiers, with optional clearing and disabled states."
+    },
+    "select": {
+      "defaultValueDesc": "Initial value for uncontrolled usage.",
+      "disabledDesc": "Whether the select is disabled.",
+      "onValueChangeDesc": "Callback triggered when value changes.",
+      "optionsDesc": "Array of selectable option objects: { value, label, disabled }.",
+      "placeholderDesc": "Placeholder label displayed when no value is chosen.",
+      "triggerRadiusDesc": "Corner radius of the select trigger.",
+      "valueDesc": "Controlled selected value.",
+      "valueQtDesc": "The currently selected option value.",
+      "placeholder": "Select an option...",
+      "description": "Displays a list of options for the user to pick from, triggered by a button with item indicators and scroll buttons."
+    },
+    "sidebar": {
+      "collapsibleDesc": "Collapsing behavior mode when closed on desktop.",
+      "collapsedDesc": "Whether the sidebar is currently collapsed.",
+      "defaultOpenDesc": "Initial expanded state on SidebarProvider.",
+      "description": "Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing.",
+      "iconWidthDesc": "Width when collapsed in icon mode.",
+      "maxWidthDesc": "Maximum draggable width limit.",
+      "minWidthDesc": "Minimum draggable width limit.",
+      "resizableDesc": "Enables interactive edge dragging rail for dynamic resizing.",
+      "sideDesc": "Docking side for the sidebar layout.",
+      "sidebarWidthDesc": "Expanded width of the sidebar bound.",
+      "variantDesc": "Visual container styling variant."
+    },
+    "viewportConstrainedContainer": {
+      "bgDesc": "Background surface fill color.",
+      "borderDesc": "Border outline color.",
+      "childrenDesc": "Elements rendered inside the container.",
+      "classNameDesc": "Custom CSS class names for styling.",
+      "customRadiusDesc": "Corner radius of the container.",
+      "description": "Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling.",
+      "marginDesc": "Reserved margin between container bottom and viewport bottom edge.",
+      "maxHeightDesc": "Optional upper limit on container max-height.",
+      "minHeightDesc": "Minimum allowable height lower bound.",
+      "overflowDesc": "Vertical overflow scrolling strategy."
+    },
+    "virtualTree": {
+      "collapseAllDesc": "Collapses all open tree branches.",
+      "cornerRadiusDesc": "Corner radius of the tree container.",
+      "defaultExpandDesc": "Default level of expansion for child branches.",
+      "dimmedDesc": "Array of node IDs rendered in dimmed/cut state.",
+      "emptyDesc": "Content shown when tree is empty.",
+      "enableDndDesc": "Enables drag-and-drop reordering and folder nesting.",
+      "estimateDesc": "Estimated row height for virtual calculation.",
+      "expandAllDesc": "Expands all collapsible tree branches.",
+      "expandedMapDesc": "Map of expanded node IDs.",
+      "gapDesc": "Spacing between adjacent rows.",
+      "getChildrenDesc": "Accessor returning child nodes of a node.",
+      "getKeyDesc": "Unique identifier accessor for a node.",
+      "nodesDesc": "Alias for rootNodes.",
+      "onCutDesc": "Callback fired on Ctrl+X cut shortcut.",
+      "onDropDesc": "Callback fired when nodes are dropped.",
+      "onPasteDesc": "Callback fired on Ctrl+V paste shortcut.",
+      "onSelectDesc": "Callback fired when selected nodes change.",
+      "onStickySelectDesc": "Callback fired when a pinned row is clicked (navigate only, never toggles expansion).",
+      "onStickyToggleDesc": "Callback fired when the chevron of a pinned row is activated.",
+      "overscanDesc": "Buffer nodes rendered outside visible bounds.",
+      "refDesc": "Handle exposing expandAll(), collapseAll(), selectAll(), scrollToIndex().",
+      "renderRowDesc": "Custom row rendering function.",
+      "rootNodesDesc": "Array of top-level hierarchy nodes.",
+      "scrollToDesc": "Scrolls the virtual tree to the specified index.",
+      "selectAllDesc": "Selects all visible nodes in multiple mode.",
+      "selectedIdDesc": "Identifier of the currently selected node (single mode).",
+      "selectedIdsDesc": "Array of selected node identifiers (multiple mode).",
+      "selectionModeDesc": "Active selection interaction mode.",
+      "stickyDesc": "Expanded ancestor chain of the open node, pinned above the scroll area so parents stay visible."
+    },
+    "dialog": {
+      "description": "A modal window that interrupts the user with critical content and prompts for user action.",
+      "openDesc": "The controlled open state of the dialog.",
+      "defaultOpenDesc": "The default open state when uncontrolled.",
+      "onOpenChangeDesc": "Event handler called when the open state changes.",
+      "sizeDesc": "Tiered size preset controlling modal card width and containment.",
+      "closeOnOverlayClickDesc": "Whether clicking the backdrop overlay dismisses the dialog.",
+      "closeOnEscapeDesc": "Whether pressing the Escape key dismisses the dialog.",
+      "draggableDesc": "Whether the dialog is rendered as a desktop draggable and resizable modal window.",
+      "showCloseButtonDesc": "Whether to render the close button in the top-right controls.",
+      "showEscBadgeDesc": "Whether to render an ESC keyboard shortcut badge in the top-right controls.",
+      "defaultWidthRemDesc": "Initial modal width in rem units (e.g. 32).",
+      "defaultHeightRemDesc": "Initial modal height in rem units (e.g. 24).",
+      "initialPositionModeDesc": "Initial positioning mode for the modal window.",
+      "topMarginRemDesc": "Top margin in rem when initialPositionMode is top.",
+      "autoFitHeightDesc": "Automatically adjust modal height to fit inner content.",
+      "sizeOptionsDesc": "Preset sizing options for the top-right size switcher dropdown menu.",
+      "sizeMenuTooltipDesc": "Tooltip text for the size switcher dropdown button.",
+      "dragHandleClassNameDesc": "CSS class selector for the drag handle area (e.g. dialog header).",
+      "contentClassNameDesc": "Custom class name for the scrollable inner content container.",
+      "overlayClassNameDesc": "Additional CSS classes to customize the backdrop overlay.",
+      "openDescQt": "Controls the visible / open state of the modal dialog.",
+      "titleDescQt": "Header title text displayed in prominent bold styling.",
+      "headerDescQt": "Header descriptive text displayed beneath the title.",
+      "sizeDescQt": "Tiered size preset controlling modal card width.",
+      "customRadiusDesc": "Corner radius of the modal dialog card.",
+      "dialogWidthDesc": "Explicit width of the dialog card override.",
+      "showCloseButtonDescQt": "Whether to render the close button in the top-right corner.",
+      "showEscBadgeDescQt": "Whether to display the ESC keyboard badge in the top-right header.",
+      "closeOnOverlayClickDescQt": "Whether clicking the backdrop overlay dismisses the dialog.",
+      "closeOnEscapeDescQt": "Whether pressing Escape key dismisses the dialog.",
+      "draggableDescQt": "Whether the dialog card can be dragged across the viewport.",
+      "contentDataDesc": "Default property alias for body content elements.",
+      "openedDesc": "Emitted when the modal has transitioned to open.",
+      "closedDesc": "Emitted when the modal has closed.",
+      "acceptedDesc": "Emitted when the accept() function is invoked.",
+      "rejectedDesc": "Emitted when the reject() function or scrim / close button is triggered."
+    },
+    "copyButton": {
+      "textDesc": "Text string written to clipboard on click.",
+      "labelDesc": "Optional companion label alongside the icon.",
+      "copiedLabelDesc": "Label text displayed after successful copy.",
+      "timeoutDesc": "Duration in ms to show the copied checkmark state.",
+      "variantDesc": "Button visual variant.",
+      "sizeDesc": "Button sizing preset.",
+      "onCopyDesc": "Callback fired when text is copied.",
+      "textDescQt": "The string content sent to the clipboard when clicked (alias: textToCopy).",
+      "labelDescQt": "Optional companion label text displayed next to the copy icon.",
+      "copiedLabelDescQt": "Feedback label text displayed after successfully copying.",
+      "timeoutDescQt": "Duration in milliseconds that the success check icon persists.",
+      "variantDescQt": "Visual variant style: 'outline' | 'ghost' | 'default' | 'secondary'.",
+      "sizeDescQt": "Button sizing preset: 'icon-xs', 'icon-sm', 'sm', 'default'."
+    },
+    "dropdownMenu": {
+      "description": "Displays a menu to the user triggered by a button, supporting items, labels, separators, shortcuts, and destructive actions.",
+      "openDesc": "Controlled open state of the dropdown menu.",
+      "onOpenChangeDesc": "Event handler called when open state changes.",
+      "modalDesc": "Whether to render as a modal trapping focus.",
+      "sideOffsetDesc": "Distance offset from trigger to floating content.",
+      "alignDesc": "Alignment along trigger edge.",
+      "openDescQt": "Whether the menu popup is currently open.",
+      "itemsDescQt": "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }.",
+      "menuWidthDesc": "Width dimension of the popup menu panel.",
+      "customRadiusDesc": "Corner radius of the menu panel."
+    },
+    "presetNumberInput": {
+      "valueDesc": "Current numeric value of the input.",
+      "onChangeDesc": "Callback fired when the value changes.",
+      "presetsDesc": "List of quick-select preset numbers.",
+      "placeholderDesc": "Placeholder text displayed when empty.",
+      "disabledDesc": "Whether typing and dropdown interactions are disabled.",
+      "allowClearDesc": "Whether to display the clear/reset option in dropdown.",
+      "clearLabelDesc": "Label text for the clear option.",
+      "inputClassNameDesc": "Custom CSS classes for the inner input.",
+      "classNameDesc": "Custom CSS classes for the outer container.",
+      "valueDescQt": "Current string value shown in the input field.",
+      "presetsDescQt": "Array of preset numbers shown in dropdown.",
+      "placeholderDescQt": "Placeholder text displayed when empty.",
+      "disabledDescQt": "Disables typing and dropdown interactions.",
+      "allowClearDescQt": "Whether to show the reset/clear option.",
+      "clearLabelDescQt": "Label text for the clear option.",
+      "customRadiusDesc": "Corner radius of the input and popup.",
+      "textureDimension": "Texture Dimension",
+      "textureDimensionColon": "Texture Dimension:",
+      "placeholder": "Width / Height",
+      "currentValue": "Current value:",
+      "empty": "(empty)",
+      "auto": "Auto",
+      "none": "None",
+      "customPresetsSmall": "Custom Presets (Small)",
+      "customPresetsSmallColon": "Custom Presets (Small):",
+      "disallowClear": "Disallow Clear (Mandatory)",
+      "disabledTitle": "Disabled State",
+      "variantsTitle": "Variants & Configurations",
+      "variantsDesc": "Configure custom numeric presets, disable the clear option, or place the control in disabled state."
+    },
+    "sheet": {
+      "description": "Extends the dialog component to display content that slides in from any screen edge (top, right, bottom, left).",
+      "openDesc": "Controlled open state.",
+      "defaultOpenDesc": "Default open state for uncontrolled usage.",
+      "onOpenChangeDesc": "Callback fired when open state changes.",
+      "sideDesc": "Edge of the viewport that the drawer slides in from.",
+      "sizeDesc": "Preset drawer dimension sizing (width for left/right, height for top/bottom).",
+      "showCloseButtonDesc": "Whether the top-right close icon button is rendered inside the drawer.",
+      "closeOnOverlayClickDesc": "Whether clicking the backdrop automatically dismisses the sheet.",
+      "openDescQt": "Whether the sheet is currently open.",
+      "sideDescQt": "The edge from which the sheet enters: 'top' | 'bottom' | 'left' | 'right'.",
+      "sizeDescQt": "Preset drawer dimension sizing ('sm', 'default', 'lg', 'xl', 'full').",
+      "customSheetSizeDesc": "Custom dimension override for width or height.",
+      "titleDesc": "Headline text in the sheet header.",
+      "descriptionDesc": "Subordinate description text in the header.",
+      "showCloseButtonDescQt": "Whether the header close button is displayed.",
+      "closeOnOverlayClickDescQt": "Whether clicking outside dismisses the sheet.",
+      "closeOnEscapeDesc": "Whether pressing Escape dismisses the sheet."
+    },
+    "snapSlider": {
+      "valueDesc": "Controlled current snap stop index.",
+      "defaultValueDesc": "Default initial snap stop index in uncontrolled mode.",
+      "countDesc": "Total number of discrete stops (defaults to labels.length if provided).",
+      "labelsDesc": "Array of labels for each stop shown at the active center position.",
+      "leftLabelDesc": "Boundary label on the bottom-left edge.",
+      "rightLabelDesc": "Boundary label on the bottom-right edge.",
+      "showTicksDesc": "Whether to display tick marks on the slider track.",
+      "sizeDesc": "Visual sizing variant.",
+      "disabledDesc": "Whether the slider is disabled.",
+      "readOnlyDesc": "Whether the slider is read-only.",
+      "onChangeDesc": "Callback fired when the selected stop index changes.",
+      "currentIndexDesc": "Current selected stop index (aliased as value).",
+      "countDescQt": "Total number of discrete snap stops.",
+      "labelsDescQt": "List of labels for each stop.",
+      "leftLabelDescQt": "Boundary label on the bottom-left edge.",
+      "rightLabelDescQt": "Boundary label on the bottom-right edge.",
+      "showTicksDescQt": "Displays tick mark indicators for stops.",
+      "disabledDescQt": "Disables interaction and dims opacity.",
+      "readOnlyDescQt": "Prevents changes while maintaining contrast.",
+      "sizeDescQt": "Density variant (\"default\" | \"sm\")."
+    },
+    "codeBlock": {
+      "codeDesc": "Source text; ignored when `files` is provided.",
+      "languageDesc": "Language id or alias resolved by the shared lexer.",
+      "filenameDesc": "Header title override; defaults to the resolved language label.",
+      "filesDesc": "Multi-file tab group; when present it replaces the single-file body.",
+      "highlightDesc": "Enable spec-driven syntax highlighting.",
+      "showLineNumbersDesc": "Render a line-number gutter.",
+      "showLanguageDesc": "Render the language / filename label in the header.",
+      "showCopyDesc": "Render the built-in copy button in the header.",
+      "wrapDesc": "Wrap long lines instead of scrolling horizontally.",
+      "maxHeightDesc": "Bound the content height (rem-equivalent number, or any CSS length string).",
+      "embeddedDesc": "Drop the card chrome (border / background / header) for inline prose embedding.",
+      "copyLabelDesc": "Accessible label for the copy button.",
+      "classNameDesc": "Additional class names for the outer container."
+    },
+    "scrollArea": {
+      "sizeDesc": "Scrollbar density and scale.",
+      "showVerticalDesc": "Whether to render the vertical scrollbar.",
+      "showHorizontalDesc": "Whether to render the horizontal scrollbar.",
+      "showButtonsDesc": "Whether stepper navigation buttons appear on scrollbar hover.",
+      "smoothScrollDesc": "Whether stepper buttons use smooth scrolling behavior.",
+      "floatingDesc": "Whether scrollbars float over viewport content or occupy dedicated gutter layout space.",
+      "viewportClassNameDesc": "Additional CSS classes for the internal scroll viewport element."
+    },
+    "scrollBar": {
+      "orientationDesc": "Scrollbar orientation axis.",
+      "sizeDesc": "Scrollbar density and scale.",
+      "floatingDesc": "Whether the scrollbar floats over viewport content or occupies dedicated gutter layout space.",
+      "hitSizeDesc": "Thickness of the transparent pointer-capture hot-zone.",
+      "collapsedSizeDesc": "Thickness of the visual indicator when idle.",
+      "expandedSizeDesc": "Thickness of the visual indicator when hovered."
+    },
+    "componentPreview": {
+      "thisComponent": "this component"
+    },
+    "contextMenu": {
+      "customRadiusDesc": "Corner radius of the context menu.",
+      "description": "Displays a menu located at the pointer coordinates on right-click or desktop context gesture.",
+      "itemsDesc": "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }.",
+      "menuWidthDesc": "Width of the context menu popup panel.",
+      "modalDesc": "Whether the context menu is modal.",
+      "onOpenChangeDesc": "Callback fired on open state change."
+    },
+    "genericDataTable": {
+      "columnsDesc": "TanStack Table column definitions.",
+      "columnsQtDesc": "Array of column specifications: { key, header, width }.",
+      "customRadiusDesc": "Corner radius of the table border frame.",
+      "dataDesc": "Array of data records.",
+      "description": "Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination.",
+      "enablePaginationDesc": "Whether pagination controls are rendered.",
+      "enableSortingDesc": "Whether column sorting is enabled.",
+      "filterPlaceholder": "Filter records...",
+      "next": "Next",
+      "pageOf": "Page {{current}} of {{total}}",
+      "pageSizeDesc": "Number of rows per page.",
+      "previous": "Previous",
+      "rowsDesc": "Array of arbitrary records to display (alias: tableData)."
+    },
+    "logConsole": {
+      "empty": "No logs"
+    },
+    "pipelineView": {
+      "activeJobIdDesc": "Currently selected job id displaying step timeline and logs.",
+      "cancelDisabledDesc": "Disables the cancel button.",
+      "description": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console.",
+      "emptyJobsTextDesc": "Placeholder text displayed when the job list is empty.",
+      "endMsDesc": "Execution completion timestamp; displays formatted duration when non-null.",
+      "getLogsDesc": "Function supplying log lines array for a given job id.",
+      "headerActionSlotDesc": "Slot for custom actions in the header.",
+      "jobsDesc": "Array of jobs belonging to the current execution run.",
+      "jobsTitleDesc": "Title text for the job list sidebar.",
+      "onCancelDesc": "Callback invoked when the cancel button is clicked.",
+      "onSelectJobDesc": "Callback invoked when a job is selected.",
+      "startMsDesc": "Execution start timestamp in epoch milliseconds.",
+      "statusDesc": "Overall execution status for summary header badge."
+    },
+    "smoothWheelHandler": {
+      "consumeEventDesc": "Whether to prevent propagation of handled wheel events to parent windows.",
+      "description": "Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex.",
+      "durationDesc": "Duration in milliseconds for the OutCubic damping transition.",
+      "fixedStepSizeDesc": "Optional quantized step increment per wheel notch (0 for dynamic).",
+      "mapVerticalToHorizontalDesc": "Whether to map vertical wheel ticks to horizontal axis movement.",
+      "scrollOrientationDesc": "Primary direction of scrolling for the target viewport.",
+      "speedMultiplierDesc": "Scroll speed multiplier applied to raw delta values.",
+      "targetItemDesc": "Target scrollable item (Flickable, ListView, GridView, etc.)"
+    },
+    "splitter": {
+      "description": "Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits.",
+      "gutterSizeDesc": "Interactive divider gutter thickness.",
+      "initialSizeDesc": "Initial size percentage for uncontrolled usage.",
+      "leftItemDesc": "First pane content component.",
+      "maxSizeDesc": "Maximum allowed percentage bound.",
+      "minSizeDesc": "Minimum allowed percentage bound.",
+      "onChangeDesc": "Callback fired on drag with new percentage.",
+      "orientationDesc": "Orientation of the divider.",
+      "rightItemDesc": "Second pane content component.",
+      "sizeDesc": "Controlled percentage width/height (0-100)."
+    },
+    "switch": {
+      "checkedDesc": "Whether the switch is toggled on (checked).",
+      "classNameDesc": "Additional CSS class names to apply to the switch track element.",
+      "defaultCheckedDesc": "The default checked state for uncontrolled usage.",
+      "disabledDesc": "Disables user interactions and applies muted opacity.",
+      "forceFocusDesc": "Visual testing aid to force focus ring.",
+      "forceHoverDesc": "Visual testing aid to force hover state.",
+      "helperDesc": "Optional helper text displayed below the label.",
+      "labelDesc": "Optional companion label rendered alongside the switch.",
+      "loadingDesc": "Shows an animated spinner inside the thumb and prevents toggling.",
+      "onCheckedChangeDesc": "Event handler called when the checked state changes.",
+      "readOnlyDesc": "Whether the switch is read-only (prevents interaction without muted opacity).",
+      "sizeDesc": "The size scale of the switch track and thumb.",
+      "description": "A control that allows the user to toggle between checked and not checked states, with support for async loading, read-only mode, and helper descriptions."
+    },
+    "tooltip": {
+      "activeDesc": "Whether the tooltip bubble is currently active and visible.",
+      "arrowDesc": "Whether to render a directional arrow pointing toward the trigger.",
+      "asChildDesc": "Merges trigger props and event handlers directly onto the single child element.",
+      "classNameDesc": "Additional CSS class names applied to the element.",
+      "contentDesc": "The content rendered inside the floating tooltip bubble.",
+      "delayDesc": "Hover delay in milliseconds before the tooltip opens.",
+      "description": "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      "disabledDesc": "Prevents the tooltip from opening when hovering or focusing.",
+      "forceHoverDesc": "Visual testing hook to force active tooltip visibility.",
+      "onOpenChangeDesc": "Callback executed when the open state changes.",
+      "openDesc": "Controlled open state of the tooltip.",
+      "shortcutDesc": "Keyboard shortcut badge rendered inside the tooltip bubble.",
+      "sideDesc": "The preferred placement relative to the trigger.",
+      "targetDesc": "Optional target item to attach the tooltip to when not wrapping children."
+    },
+    "windowTitleBar": {
+      "description": "Desktop window frame header with title, drag region, and minimize/maximize/close control buttons for frameless native windows.",
+      "iconDesc": "Application icon rendered at left edge.",
+      "maximizedDesc": "Whether the window is in maximized state.",
+      "onCloseDesc": "Close button click callback.",
+      "onMaximizeDesc": "Maximize button click callback.",
+      "onMinimizeDesc": "Minimize button click callback.",
+      "titleDesc": "Window title label or element."
+    },
+    "window-title-bar": {
+      "description": "Desktop window frame header with title, drag region, and minimize/maximize/close control buttons for frameless native windows."
+    },
+    "smooth-wheel-handler": {
+      "description": "Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex."
+    },
+    "virtual-list": {
+      "description": "High-performance windowed 100k+ row list powered by TanStack Virtual, rendering only DOM nodes visible in the active viewport."
+    },
+    "virtual-tree": {
+      "description": "Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation."
+    },
+    "virtual-grid": {
+      "description": "2D responsive windowed grid virtualizer for massive cards, matrix data, and dynamic layouts."
+    },
+    "generic-data-table": {
+      "description": "Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination."
+    },
+    "query-builder": {
+      "description": "Visual rule tree builder for structured search query generation with nested logic groups (AND/OR), operator filters, and JSON serialization."
+    },
+    "code-block": {
+      "description": "Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt."
+    },
+    "pipeline-view": {
+      "description": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
+    },
+    "address-bar": {
+      "description": "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing."
+    },
+    "theme-settings": {
+      "description": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density."
+    },
+    "language-settings": {
+      "description": "Cross-stack language configuration card with system detection and cultural poetry quotes."
+    },
+    "range-slider": {
+      "description": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention and keyboard accessibility."
+    },
+    "snap-slider": {
+      "description": "Stepped discrete slider that snaps to defined stops with ticks and label row."
+    },
+    "segmented-control": {
+      "description": "A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support."
+    },
+    "color-picker": {
+      "description": "An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB)."
+    },
+    "colorpicker": {
+      "description": "An interactive color selection component featuring 4 selector panels (Square in HueRing, Circle Color Wheel, Triangle in HueRing, and Swatches), live hex input with copy button, and independent multi-channel sliders (RGB, HSV, CMYK, LAB)."
+    },
+    "duration-input": {
+      "description": "Segmented duration input control for hours, minutes, and seconds with stepper buttons, mouse wheel adjustments, keyboard arrow jumping, and preset menu."
+    },
+    "preset-number-input": {
+      "description": "High-density numeric input field with a quick-select dropdown panel for common dimension presets, unit tags, and optional clear action."
+    },
+    "read-only-input": {
+      "description": "Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle."
+    },
+    "inline-editable-text": {
+      "description": "Text element that switches seamlessly to an input field on double-click or edit trigger, supporting Enter to save and Escape to cancel."
+    },
+    "keybinding-recorder": {
+      "description": "Interactive keyboard sequence recorder that captures desktop accelerator combinations (Ctrl, Alt, Shift, Meta)."
     },
     "media-progress-bar": {
       "description": "Universal media playback progress bar supporting drag-scrubbing, click-to-seek, hover preview, elapsed/remaining time display, click to toggle countdown, and context format menu."
@@ -2729,32 +5115,190 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     }
   },
   "desktopComposite": {
-    "windowTitleBar": {
-      "idle": "Idle",
-      "minimizeClicked": "Minimize clicked",
-      "maximizeClicked": "Maximize / Restore clicked",
-      "closeClicked": "Close clicked",
-      "clientArea": "Frameless Client Window Area",
-      "captionEvent": "Caption Event:",
-      "appTitle": "ChaSet Desktop Studio"
+    "addressBar": {
+      "animFull": "Breadcrumb segment hover highlights transition over ThemeTokens.motionQuick (100ms) with ThemeTokens.easeStandard curve. Suggestions popover renders with an entry scale and fade animation over 120ms.",
+      "animHoverMid": "(100ms) with",
+      "animHoverPrefix": "Breadcrumb segment hover highlights transition over",
+      "animHoverSuffix": "curve (Qt counterpart:",
+      "animSuggest": "Suggestions popover renders with an entry scale and fade animation over 120ms.",
+      "animationsDesc": "Motion tokens and kinematic transitions for mode transitions and suggestions.",
+      "keyboardDesc": "Keyboard shortcuts and button activation patterns.",
+      "sandboxTitle": "Address Bar Sandbox",
+      "quickLocations": "Quick Locations:",
+      "locProjectRoot": "Project Root",
+      "activePath": "Active Path:",
+      "activePathFormat": "Active Path: {{path}}",
+      "refreshes": "Refreshes: {{count}}"
     },
-    "smoothWheelHandler": {
-      "speedMultiplier": "Speed Multiplier:",
-      "dampingDuration": "Damping Duration:",
-      "itemLabel": "Smooth Scroll Item #{{index}}",
-      "itemBadge": "Item #{{index}}",
-      "kinematicsTitle": "Kinematic Architecture",
-      "card1Title": "Continuous Momentum Accumulation",
-      "card1Desc": "When rapid successive wheel ticks occur, delta offsets are accumulated onto the existing target position rather than jerking backwards or stuttering.",
-      "card2Title": "Shift+Wheel Horizontal Translation",
-      "card2Desc": "In horizontal viewports or long-scroll carousels, automatically intercepts vertical wheel actions while holding Shift and maps them to horizontal translation.",
-      "card3Title": "Gesture & Drag Decoupling",
-      "card3Desc": "Instantly terminates smooth scroll interpolation when the user touches the thumb handle or flicks with touchpads, ensuring zero physical friction.",
-      "bullet1": "• Momentum Accumulation: Consecutive wheel clicks accumulate linearly to targetPos rather than interrupting or jerking the active transition.",
-      "bullet2": "• Gesture Decoupling: Automatically listens to targetItem.moving and targetItem.flicking. When the user touches or drags the view, smooth animations abort instantly to prevent motion fight.",
-      "bullet3": "• Universal Drop-In: Targets any Flickable / ListView / GridView or ChaSetScrollArea without modifying existing visual hierarchies."
+    "app": {
+      "docsTitle": "ChaSet Docs",
+      "navLabel": "Navigation"
+    },
+    "buttonSection": {
+      "asChildLink": "asChild Link (<a>)",
+      "asyncBlock": "async & block",
+      "clear": "Clear",
+      "deleteItem": "Delete Item",
+      "disabledButton": "Disabled Button",
+      "emptyLog": "Click buttons above to see click events…",
+      "fullWidthAction": "Full Width Block Action",
+      "logTitle": "Interaction Log (Click events)",
+      "statesLabel": "states",
+      "title": "Components · Button Matrix"
+    },
+    "colorPicker": {
+      "overviewDesc": "Experiment with modes, sizes, swatches, and states across Web (React) and Desktop (Qt Quick).",
+      "sandboxTitle": "ColorPicker Sandbox"
+    },
+    "header": {
+      "draggableModal": "Draggable Modal",
+      "genericDataTable": "Generic Data Table",
+      "githubRepo": "GitHub Repository",
+      "openNavSidebar": "Open navigation sidebar",
+      "queryBuilder": "Query Builder",
+      "splitter": "Splitter",
+      "toggleTheme": "Toggle theme appearance",
+      "virtualList": "Virtual List"
+    },
+    "languageSettings": {
+      "animDescEnd": "as global kill switches.",
+      "animDescPrefix": "LanguageSettings utilizes smooth token transitions for card focus, active selection rings, and checkmark badge states. Transitions use",
+      "animDescSuffix": "and Qt",
+      "animFull": "LanguageSettings utilizes smooth token transitions for card focus, active selection rings, and checkmark badge states. Transitions use ThemeTokens.motionQuick and ThemeTokens.easeStandard. Respects ThemeTokens.animationsEnabled as global kill switch.",
+      "sandboxTitle": "Interactive Language Settings"
+    },
+    "queryBuilder": {
+      "overviewDesc": "Add rules and nested groups dynamically to construct complex query predicates.",
+      "sandboxTitle": "Query Builder Sandbox",
+      "fieldStatus": "Status",
+      "addRule": "+ Add Rule",
+      "addCondition": "+ Add condition",
+      "addGroup": "+ Add Group",
+      "deleteGroup": "Delete group",
+      "removeCondition": "Remove condition",
+      "fieldPlaceholder": "Field",
+      "operatorPlaceholder": "Operator",
+      "valuePlaceholder": "Value...",
+      "equals": "Equals",
+      "contains": "Contains",
+      "greaterThan": "Greater Than",
+      "fieldUserName": "User Name",
+      "fieldAge": "Age",
+      "fieldRole": "Role",
+      "fieldIsActive": "Is Active",
+      "rulesCount": "Rules: {{count}}",
+      "combinatorLabel": "Combinator: {{combinator}}",
+      "serializedModel": "Serialized JSON Query Model:"
+    },
+    "slider": {
+      "examplesTitle": "Examples & States",
+      "sandboxTitle": "Slider Sandbox",
+      "valueLabel": "Value"
+    },
+    "tabs": {
+      "examplesDesc": "Visual matrix of tab variants, sizes, badges, and disabled states.",
+      "keyboardDesc": "Tabs support standard horizontal and vertical arrow navigation with automatic selection or manual Space/Enter commit.",
+      "overviewDesc": "Test interactive tab switching, pill vs line underline styles, size scaling, and keyboard arrow navigation.",
+      "sandboxTitle": "Tabs Sandbox"
+    },
+    "taskHud": {
+      "anchorLabel": "anchor: {{placement}}",
+      "and": "and",
+      "animAutoHideFull": "An emptied HUD holds its last frame for autoHideDelay (600ms) before fading out.",
+      "animAutoHidePrefix": "An emptied HUD holds its last frame for",
+      "animAutoHideSuffix": "(600ms) before fading out.",
+      "animEnterEnd": ").",
+      "animEnterFull": "New cards enter over ThemeTokens.motionMedium (180ms) with the ThemeTokens.easeStandard curve, sliding in from the anchored edge.",
+      "animEnterMid": "(180ms) and the",
+      "animEnterPrefix": "New cards enter with",
+      "animEnterSuffix": "curve, sliding in from the anchored edge (Qt counterpart:",
+      "animExitGhosts": "Dismissed cards linger as exit ghosts for the same 180ms so the stack reorders underneath them instead of snapping.",
+      "animProgressFull": "Determinate progress transitions over ThemeTokens.motionDuration(300); indeterminate tasks run an infinite 1.6s shimmer rail.",
+      "animProgressPrefix": "Determinate progress transitions over",
+      "animProgressSuffix": "; indeterminate tasks run an infinite 1.6s shimmer rail.",
+      "animReducedFull": "Every transition is guarded by ThemeTokens.animationsEnabled, which resolves durations to zero when motion is disabled.",
+      "animReducedMid": "on Web and",
+      "animReducedPrefix": "Respects",
+      "animReducedSuffix": "in Qt.",
+      "animationsDesc": "Motion tokens and kinematic timing contracts for the activity stack and its cards.",
+      "keyboardDesc": "The stack is a single tab stop: cards are roving-focus entries inside it.",
+      "overflowSandboxTitle": "Collapsed & Overflow",
+      "sandboxTitle": "Task HUD Sandbox"
+    },
+    "themeSettings": {
+      "animDescEnd": "as global kill switches.",
+      "animDescPrefix": "ThemeSettings uses unified motion tokens for smooth state transitions across buttons, segmented controls, color pickers, and override drawers. Transitions use",
+      "animDescSuffix": "and Qt",
+      "animFull": "ThemeSettings uses unified motion tokens for smooth state transitions across buttons, segmented controls, color pickers, and override drawers. Transitions use ThemeTokens.motionQuick and ThemeTokens.easeStandard. Respects ThemeTokens.animationsEnabled as global kill switch.",
+      "sandboxTitle": "Interactive Theme Settings"
+    },
+    "segmentedControl": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Segmented Control Sandbox",
+      "sizesBadgesTitle": "Sizes & Badges",
+      "fixedWidthTitle": "Fixed Width & Truncation",
+      "menuInlineTitle": "Menu & Inline Title",
+      "tooltipsHintsTitle": "Tooltips & Custom Hints",
+      "perOptionTitle": "Per-Option Tooltips with Shortcuts & Arrows",
+      "globalRenderTooltipTitle": "Global renderTooltip Customization",
+      "globalFormatterTitle": "Global tooltipFormatter Customization",
+      "gridTip": "Grid layout",
+      "listTip": "List layout",
+      "galleryTip": "Gallery view",
+      "dayLabel": "Day",
+      "weekLabel": "Week",
+      "monthLabel": "Month",
+      "yearLabel": "Year",
+      "dailyTip": "Daily summary view",
+      "weeklyTip": "Weekly timeline view",
+      "monthlyTip": "Monthly overview calendar",
+      "annualTip": "Annual archive (Requires Pro plan)",
+      "autoLabel": "Auto",
+      "darkLabel": "Dark",
+      "lightLabel": "Light",
+      "switchScheme": "Switch application color scheme",
+      "themeTooltipFormat": "Theme: {{label}} — Switch application color scheme"
+    },
+    "badge": {
+      "overviewHeading": "Interactive Overview",
+      "sizeSmall": "Small (sm)"
+    },
+    "tableOfContents": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Table of Contents Sandbox",
+      "readingPanePara": "Notice how the table of contents tree reflects the nested heading structure, and smoothly aligns with the top banner height offset."
+    },
+    "splitterHandle": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Splitter Handle Sandbox",
+      "overviewDesc": "Drag the right edge handle to resize the sidebar. Double click or press Enter to reset to 200.",
+      "verticalTitle": "Vertical Edge Handle",
+      "horizontalPrefix": "Handles can also be attached to horizontal edges (",
+      "horizontalSuffix": ") for bottom console or drawer resizing.",
+      "horizontalDesc": "Handles can also be attached to horizontal edges (top or bottom) for bottom console or drawer resizing.",
+      "animationsDesc": "Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.",
+      "dragStaticDesc": "Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.",
+      "reducedMotionPrefix": "Respects",
+      "reducedMotionSuffix": "in Qt."
+    },
+    "draggableModal": {
+      "overviewHeading": "Interactive Overview",
+      "overviewDesc": "Click the button below to open the draggable modal window, supporting size presets, drag repositioning, and auto-fitting height.",
+      "sandboxTitle": "Draggable Modal Sandbox",
+      "allocBadge": "128 alloc"
+    },
+    "elidedText": {
+      "overviewHeading": "Interactive Overview"
+    },
+    "rangeSlider": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Range Slider Sandbox",
+      "sizesStatesTitle": "Sizes & States"
     },
     "virtualList": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Virtual List Sandbox",
+      "renderingHint": "Rendering {{count}} virtual items smoothly at 60fps. Use the controls below to trigger programmatic scrolling or scroll rapidly to observe instant windowing.",
       "hint": "Rendering 10,000 Virtual Items with Native Wheel Flicking:",
       "itemTitle": "Dataset Item #{{index}}",
       "production": "Production",
@@ -2764,7 +5308,230 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "btn2500": "Index #2,500",
       "btnBottom": "Bottom (#10,000)"
     },
+    "panelCard": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Panel Card Sandbox",
+      "collapseHint": "Click the chevron icon or title to collapse and expand the card panel body."
+    },
+    "activityStack": {
+      "accessibleLabel": "Activity stack",
+      "overflowLabel": "{{count}} more items",
+      "summaryText": "{{count}} items {{label}}"
+    },
+    "input": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Input Sandbox"
+    },
+    "kbd": {
+      "altChoices": "Alternative Key Choices:",
+      "animationsDesc": "Interactive micro-interaction transitions aligned with ChaSet tokens.",
+      "combinationsDesc": "Support for multi-key combinations, alternative choices, and compact modifier symbols.",
+      "combinationsTitle": "Key Combinations & Symbols",
+      "commandPalette": "Command Palette",
+      "compactSymbols": "Compact Modifier Symbols:",
+      "completeLabel": "Autocomplete",
+      "copyPathLabel": "Copy Path",
+      "dragHandleTooltip": "Drag right handle to resize container width",
+      "exportProject": "Export Project as Archive",
+      "invertedTooltip": "Inverted (Tooltip)",
+      "menuDesc": "Dedicated Shortcut component with built-in right-alignment and non-shrinking behavior for menu items.",
+      "menuTitle": "Menu Trailing Shortcuts",
+      "multiModifier": "Multi-Modifier Sequence:",
+      "narrowDesc": "When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols.",
+      "narrowTitle": "Narrow Container Adaptation",
+      "newFile": "New File",
+      "outlineDefault": "Outline (Default)",
+      "overviewHeading": "Interactive Overview",
+      "playgroundDesc": "Drag the right handle or adjust the slider to observe how the shortcut bar progresses through 4 adaptive stages: Full scale → Squeezed micro-scale → Compact symbols → +N folded badge with floating popover.",
+      "playgroundTitle": "Interactive Multi-Stage Responsive Playground",
+      "presetCompact": "Compact ({{value}})",
+      "presetFolded": "Folded ({{value}})",
+      "presetFull": "Full ({{value}})",
+      "presetSqueezed": "Squeezed ({{value}})",
+      "presetsLabel": "Presets:",
+      "sandboxTitle": "Kbd Sandbox",
+      "saveDocument": "Save Document",
+      "sizeSm": "Small (sm)",
+      "sizeXs": "Extra Small (xs)",
+      "stageCompact": "Stage 3: Compact (Symbols)",
+      "stageFolded": "Stage 4: Folded (+N Collapsed)",
+      "stageFull": "Stage 1: Full (Full Text)",
+      "stageSqueezed": "Stage 2: Squeezed (Scaled)",
+      "variantInverted": "Inverted",
+      "variantOutline": "Outline",
+      "variantSolid": "Solid",
+      "variantSubtle": "Subtle",
+      "veryLongAction": "Very Long Action Name That Truncates",
+      "widthBadge": "Width: {{value}}",
+      "widthLabel": "Width:"
+    },
+    "mediaProgressBar": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "MediaProgressBar Sandbox"
+    },
+    "notificationStack": {
+      "animationsBullet1": "Notifications enter and exit over duration-medium (180ms) with the ease-standard curve, sliding through the anchored edge (Qt: ThemeTokens.motionMedium / ThemeTokens.easeStandard).",
+      "animationsBullet2": "Expiry is a remaining-time budget, not a bare timer: hovering the stack freezes every countdown mid-flight and releases it from the same remainder when the pointer leaves.",
+      "animationsBullet3": "A duration of 0 pins a notification on screen until it is dismissed, which is what action-bearing messages use.",
+      "animationsBullet4": "Every transition respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt, resolving durations to zero when motion is disabled.",
+      "animationsDesc": "Motion tokens and lifetime contracts shared with the activity stack.",
+      "keyboardDesc": "The stack is a single tab stop: notification cards are roving-focus entries inside it.",
+      "levelsTitle": "Levels & Actions",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Notification Stack Sandbox"
+    },
+    "popover": {
+      "arrowButton": "Arrow Popover",
+      "arrowContent": "This popover renders an anchored pointer triangle.",
+      "arrowDesc": "Anchored triangle indicator pointed directly at the trigger",
+      "arrowTitle": "With Directional Arrow",
+      "examplesDesc": "Common interactive configurations including directional arrows and draggable repositioning.",
+      "movableButton": "Movable Popover",
+      "movableContent": "Drag the top grip bar to move this popover anywhere.",
+      "movableDesc": "Interactive drag header to freely reposition the popover layer",
+      "movableTitle": "Movable Drag Handle",
+      "overviewDesc": "Click the button below to toggle the anchored popover card, test side alignment, directional arrows, and draggable move handles.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Popover Sandbox"
+    },
+    "readOnlyInput": {
+      "overviewDesc": "Safely expose secret credentials with optional masking, reveal toggle, and one-click copy.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Read-Only Input Sandbox",
+      "variantsDesc": "Available in default and sm sizing tiers with semantic status color schemes.",
+      "variantsTitle": "Sizes & Status Variants"
+    },
+    "resizable": {
+      "animationsBullet1": "Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt: ThemeTokens.motionQuick / ThemeTokens.easeStandard).",
+      "animationsBullet2": "Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.",
+      "animationsBullet3": "Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt.",
+      "animationsDesc": "Motion tokens and kinematic timing contracts for Resizable dividers and handles.",
+      "horizontalDesc": "Panels automatically adapt to available width and provide interactive drag handles with boundary limits.",
+      "horizontalSandboxTitle": "Horizontal Resizable Group",
+      "horizontalTitle": "Horizontal Split",
+      "nestedDesc": "Embed vertical panel groups inside horizontal panels to construct multi-pane IDE workbenches and docking surfaces.",
+      "nestedTitle": "Nested Resizable Layout",
+      "playgroundDesc": "Toggle between horizontal and vertical orientations and test visual grip handle styles dynamically.",
+      "playgroundTitle": "Interactive Playground"
+    },
+    "scaleOsd": {
+      "animationsDesc": "OSD enter and exit transitions run over duration-short (120ms) with the ease-standard curve (Qt: ThemeTokens.motionShort / ThemeTokens.easeStandard). The 1400ms auto-hide countdown pauses deterministically on hover.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Scale OSD Sandbox"
+    },
+    "settingRow": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Setting Row Sandbox"
+    },
+    "virtualGrid": {
+      "overviewDesc": "Virtualizing responsive card columns with automatic width calculation and row-based DOM recycling. Use controls below for programmatic navigation.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Virtual Grid Sandbox",
+      "hint": "Rendering 1,000 Grid Cards with Responsive Recycling:",
+      "itemTitle": "Module #{{index}}",
+      "itemDesc": "Virtual windowed card unit asset {{index}}",
+      "pending": "Pending",
+      "assetLabel": "Asset #{{index}}",
+      "btnTop": "Top (#1)",
+      "btn20": "Card #20",
+      "btn40": "Card #40",
+      "btn500": "Card #500",
+      "btnBottom": "Bottom (#60)",
+      "btnBottom1000": "Bottom (#1,000)"
+    },
+    "card": {
+      "overviewDesc": "Test card variants with interactive subcomponents synchronized across Web and Desktop.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Card Sandbox"
+    },
+    "checkbox": {
+      "animationsBullet1": "The check-mark SVG stays mounted and, when checked, fades in from opacity 0 to 1 while scaling from 0.5 to 1 over duration-quick with the ease-entrance curve.",
+      "animationsBullet2": "The box border color cross-fades on hover, focus, checked, and invalid state changes.",
+      "animationsBullet3": "Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).",
+      "animationsDesc": "Motion behavior and timing for the checked, indeterminate, and state transitions.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Checkbox Sandbox"
+    },
+    "collapsible": {
+      "advancedOptionsQt": "Advanced System Options",
+      "advancedSettings": "Advanced Project Settings",
+      "defaultOpenDesc": "Render an uncontrolled collapsible with initial expanded state via",
+      "defaultOpenDescQt": "Use defaultOpen to initialize the collapsible in an expanded state.",
+      "defaultOpenHeading": "Default Open",
+      "disabledDesc": "Disables trigger interaction and dims opacity to prevent user expansion.",
+      "disabledDescQt": "Prevents clicking and interaction with a dimmed appearance.",
+      "disabledHeading": "Disabled State",
+      "falseLabel": "False",
+      "lockedSettings": "Locked Premium Settings",
+      "overviewDesc": "Toggle the collapsible open/closed state or disable user interaction with live controls.",
+      "overviewHeading": "Interactive Overview",
+      "protectedSettings": "Protected Developer Settings",
+      "sandboxTitle": "Collapsible Sandbox",
+      "toggleLabel": "Toggle",
+      "trueLabel": "True",
+      "vulkanBadge": "Vulkan Validation Layers: Enabled"
+    },
+    "durationInput": {
+      "overviewDesc": "Directly type into any segment or use the up/down stepper buttons. Press Left/Right arrow keys to jump between segments, or pick from grouped quick-select presets.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Duration Input Sandbox"
+    },
+    "keybindingRecorder": {
+      "overviewDesc": "Click the recorder box below and press any key combination (e.g. {{example}}).",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Keybinding Recorder Sandbox"
+    },
+    "select": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Select Sandbox"
+    },
+    "sidebar": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Sidebar Sandbox",
+      "docsNav": "Documentation Navigation"
+    },
+    "splitButton": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Split Button Sandbox"
+    },
+    "squircle": {
+      "borderNote": "Traditional CSS borders render uneven widths or hard corners under superellipse clipping. Passing borderWidth and borderColor renders an adaptive continuous-curvature vector stroke with uniform outline thickness.",
+      "borderSupportLabel": "Continuous-Curvature Stroke Support:",
+      "demoBadge": "Secondary Badge",
+      "demoButton": "Squircle Button",
+      "demoInput": "Squircle Input...",
+      "demoOutline": "Outline Button",
+      "demoPill": "Status Pill",
+      "guideDesc": "External projects adopt the ChaSet iOS continuous-curvature system via two progressive enhancement strategies: the base layer accelerates all Tailwind utilities at zero cost through modern browser CSS features; legacy environments or high-precision bordered geometry fall back to guaranteed rendering through the primitive component.",
+      "guideTitle": "Global Adoption Guide for External Projects",
+      "installDesc": "Package installation and CMake / QML module linkage.",
+      "installHeading": "Installation",
+      "strategyBadge1": "Strategy 1",
+      "strategyBadge2": "Strategy 2",
+      "strategyBadge3": "Strategy 3",
+      "tailwindNote": "No business-code changes to rounded-md, rounded-lg, or rounded-xl are needed. After the browser matches corner-shape: squircle, continuous-curvature superellipses apply directly, while the .rounded-full rule protects circular avatars and status dots from geometric distortion.",
+      "tailwindSyncLabel": "Tailwind Synergy:",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Squircle Sandbox & Curvature Comparison",
+      "strategy1Desc": "Add a CSS feature query in the host project's global stylesheet (e.g. globals.css or index.css). Every element based on Tailwind rounded-* utilities is instantly promoted to iOS continuous-curvature superellipses, smoothly eliminating harsh edge creases.",
+      "strategy1Title": "Universal CSS Acceleration (Global CSS Continuous-Curvature Acceleration)",
+      "strategy2Desc": "For dialogs (Dialog/Sheet), highlight cards, or browser engines without CSS corner-shape support, wrap content with the ChaSet component. Internally it clips via SVG clipPath with ResizeObserver-driven geometry, guaranteeing 100% cross-platform pixel-smooth rendering.",
+      "strategy2Title": "Guaranteed Progressive Enhancement (Container Progressive Enhancement)",
+      "strategy3Desc": "ChaSet core design tokens ship built-in curvature variables. Host projects may define --cs-corner-shape and --cs-corner-smoothing at the root level, and the full component library automatically inherits the matching curvature.",
+      "strategy3Title": "Design Tokens Configuration (Global Design-Token Setup)"
+    },
+    "viewport": {
+      "overviewDesc": "The container dynamically measures the distance from its anchor to the bottom of the window (window.innerHeight - rect.top - margin) and clamps content height to prevent overflowing outside the viewport.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Viewport Constrained Container Sandbox",
+      "variantsDesc": "Configure custom numeric overrides, string-based bounds, or custom margin offsets.",
+      "variantsTitle": "Variants & Limits"
+    },
     "virtualTree": {
+      "dirBadge": "dir",
+      "overviewDesc": "Hierarchical tree with multi-selection (Ctrl/Shift+Click), external dimmed cut state (Ctrl+X/V), copied state (Ctrl+C/V), Ctrl+Drag copy, and keyboard navigation.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Virtual Tree Sandbox",
       "expandAll": "Expand All",
       "collapseAll": "Collapse All",
       "mode": "Mode: {{mode}}",
@@ -2791,32 +5558,76 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "cutBadge": "{{count}} cut (dimmed)",
       "copiedBadge": "{{count}} copied (pulsing)"
     },
-    "virtualGrid": {
-      "hint": "Rendering 1,000 Grid Cards with Responsive Recycling:",
-      "itemTitle": "Module #{{index}}",
-      "itemDesc": "Virtual windowed card unit asset {{index}}",
-      "pending": "Pending",
-      "assetLabel": "Asset #{{index}}",
-      "btnTop": "Top (#1)",
-      "btn20": "Card #20",
-      "btn40": "Card #40",
-      "btn500": "Card #500",
-      "btnBottom": "Bottom (#60)",
-      "btnBottom1000": "Bottom (#1,000)"
+    "button": {
+      "sandboxTitle": "Interactive Button Sandbox",
+      "iconLabel": "Icon",
+      "iconXsLabel": "Icon-XS",
+      "iconSmLabel": "Icon-SM",
+      "iconLgLabel": "Icon-LG",
+      "settingsAriaLabel": "Settings"
     },
-    "genericDataTable": {
-      "colId": "ID",
-      "colName": "User Name",
-      "colRole": "Role",
-      "roleArchitect": "Lead Architect",
-      "roleFrontend": "Frontend Engineer",
-      "roleQt": "Qt Specialist",
-      "roleDevOps": "DevOps Engineer",
-      "roleProduct": "Product Manager",
-      "statusPending": "Pending",
-      "statusOffline": "Offline"
+    "dialog": {
+      "overviewDesc": "Experience full modal behavior with backdrop blur, keyboard ESC dismissal, and focus containment across Web and Desktop.",
+      "sandboxTitle": "Dialog Sandbox",
+      "examplesDesc": "Common modal dialog patterns: desktop draggable windows, confirmation dialogs, and alert notices.",
+      "animationsDesc": "Motion behavior and timing for the overlay and content on open and close.",
+      "animationsBullet1": "The backdrop overlay fades in and out using animate-fade-in / animate-fade-out, over duration-short with the ease-entrance curve.",
+      "animationsBullet2": "The content card cross-fades with opacity only (transform-positioned elements avoid scale animation to prevent conflicts), and exit uses useExitAnimation to delay unmounting.",
+      "animationsBullet3": "Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).",
+      "animationsDescQt": "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close.",
+      "animationsBullet1Qt": "The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry.",
+      "animationsBullet2Qt": "Transitions use ThemeTokens.motionShort with the easeEntrance curve.",
+      "animationsBullet3Qt": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.",
+      "demoName": "Alex Rivera"
+    },
+    "copyButton": {
+      "sandboxTitle": "Copy Button Sandbox"
+    },
+    "dropdownMenu": {
+      "overviewDesc": "Click the trigger below to open the dropdown menu. Keyboard navigation and shortcuts are fully supported.",
+      "sandboxTitle": "Dropdown Menu Sandbox"
+    },
+    "presetNumberInput": {
+      "overviewDesc": "Focus or click the input field to open the preset numbers list. Click an item to populate the field, or type custom numbers freely.",
+      "sandboxTitle": "Preset Number Input Sandbox"
+    },
+    "inlineEditableText": {
+      "overviewDesc": "Click or double-click on the text below to modify it. Press Enter to confirm or Esc to cancel.",
+      "sandboxTitle": "Inline Editable Text Sandbox"
+    },
+    "sheet": {
+      "overviewDesc": "Choose a slide edge and size preset, then trigger the drawer modal.",
+      "sandboxTitle": "Sheet Sandbox",
+      "animationsDesc": "Motion behavior and timing for the backdrop and sliding panel.",
+      "animationsBullet1": "The backdrop overlay cross-fades with animate-fade-in / animate-fade-out.",
+      "animationsBullet2": "The panel slides in and out from its edge using slide-in-from-{side}-10 and slide-out-to-{side}-10, animated over duration-medium with the ease-emphasized curve.",
+      "animationsBullet3": "Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).",
+      "animationsDescQt": "Motion behavior and timing driven by ThemeTokens for the backdrop and sliding panel.",
+      "animationsBullet1Qt": "The panel translates along its entry edge while the backdrop cross-fades its opacity.",
+      "animationsBullet2Qt": "Transitions use ThemeTokens.motionMedium with the easeEmphasized curve for a deliberate slide.",
+      "animationsBullet3Qt": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.",
+      "demoName": "Alex Developer",
+      "demoRole": "Staff Infrastructure Architect"
+    },
+    "snapSlider": {
+      "sandboxTitle": "Snap Slider Sandbox",
+      "animationsBullet1": "Thumb hover and scale micro-interactions animate smoothly over duration-quick (90ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).",
+      "animationsBullet2": "Thumb drag kinematics track pointer position in 60fps real-time without un-damped lag.",
+      "animationsBullet3": "Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt.",
+      "keyboardDesc": "Keyboard shortcuts and discrete step navigation patterns.",
+      "animationsDescQt": "Thumb hover and focus transitions animate over ThemeTokens.motionQuick (90ms) with ThemeTokens.easeStandard. Dragging tracks pointer without lag in 60fps."
     },
     "table": {
+      "overviewDesc": "Test interactive data table controls with live filtering, row selection, and synchronized React and Qt Quick code.",
+      "sandboxTitle": "Table Sandbox",
+      "examplesDesc": "Common table patterns and interactive configurations.",
+      "examplesDescQt": "Common configurations and visual states in Qt Quick.",
+      "userAlice": "Alice",
+      "userBob": "Bob",
+      "userCarol": "Carol",
+      "taskApiIntegration": "API Integration",
+      "taskUnitTesting": "Unit Testing",
+      "taskDocumentation": "Documentation",
       "filterPlaceholder": "Filter invoices...",
       "statusAll": "All",
       "statusPaid": "Paid",
@@ -2846,27 +5657,19 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "roleDev": "Developer",
       "roleDesigner": "Designer"
     },
-    "queryBuilder": {
-      "addRule": "+ Add Rule",
-      "addCondition": "+ Add condition",
-      "addGroup": "+ Add Group",
-      "deleteGroup": "Delete group",
-      "removeCondition": "Remove condition",
-      "fieldPlaceholder": "Field",
-      "operatorPlaceholder": "Operator",
-      "valuePlaceholder": "Value...",
-      "equals": "Equals",
-      "contains": "Contains",
-      "greaterThan": "Greater Than",
-      "fieldUserName": "User Name",
-      "fieldAge": "Age",
-      "fieldRole": "Role",
-      "fieldIsActive": "Is Active",
-      "rulesCount": "Rules: {{count}}",
-      "combinatorLabel": "Combinator: {{combinator}}",
-      "serializedModel": "Serialized JSON Query Model:"
-    },
     "codeBlock": {
+      "overviewDesc": "A syntax-highlighted source viewer with a language label and one-click copy. Highlighting is produced by the shared spec lexer — no third-party highlighter is shipped on either stack.",
+      "sandboxTitle": "Code Block Sandbox",
+      "animationsDesc": "Motion behavior and timing for file switching and the header affordances.",
+      "animationsBullet1": "Switching the active file cross-fades the body in over animate-in fade-in-0 — the duration resolves to the short motion token with the entrance curve.",
+      "animationsBullet2": "The header affordances inherit token motion from their primitives: tab triggers interpolate color and border over duration-quick with ease-standard, as do the copy button and the scroll bars.",
+      "animationsBullet3": "Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).",
+      "animationsDescQt": "Motion behavior and timing driven by ThemeTokens for file switching and the header affordances.",
+      "animationsBullet1Qt": "Switching the active file cross-fades the body over ThemeTokens.motionShort with the easeEntrance curve.",
+      "animationsBullet2Qt": "The header affordances inherit token motion from their primitives: file tabs interpolate color and border over ThemeTokens.motionQuick with the easeStandard curve, as do the copy button and the scroll bars.",
+      "animationsBullet3Qt": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.",
+      "wrapBadge": "wrap",
+      "embeddedBadge": "embedded",
       "variantsTitle": "Variants & Options",
       "variantsDesc": "Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and chrome-less embedding for inline prose.",
       "gutterDesc": "Gutter with right-aligned line numbers",
@@ -2876,7 +5679,71 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "multiFileTitle": "Multi-File Tabs",
       "multiFileDesc": "Pass a files array to render a tabbed group. Each tab carries its own language, and the copy button always targets the active file."
     },
+    "scrollArea": {
+      "sandboxTitle": "ScrollArea Showcase",
+      "overviewDesc": "Interactive playground demonstrating cross-stack scrollbar styling, stepper pagination, and dynamic hot-zone expansion.",
+      "horizontalTitle": "Horizontal Example",
+      "horizontalDesc": "Hover over the bottom scrollbar to reveal the left and right stepper buttons.",
+      "dualAxisTitle": "Dual-Axis",
+      "dualAxisDesc": "When content exceeds both width and height, both scrollbars render with a synchronized corner piece.",
+      "hotZoneTitle": "Dual-Box Hot Zone",
+      "hotZoneDesc": "Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces a compact 0.5rem transparent interaction hot-zone paired with an animated visual indicator that expands from 0.25rem (idle) to 0.5rem (hover) with 150ms cubic easing.",
+      "hotZoneIdle": "Idle State: 0.25rem slim indicator bar, non-intrusive.",
+      "hotZoneHover": "Hover State: Expands to 0.5rem with high visual affordance.",
+      "hotZoneHit": "Hit Area: 0.5rem compact trigger box prevents accidental cursor capture.",
+      "stepperTitle": "Stepper Buttons",
+      "stepperDesc": "Hovering the scrollbar reveals two-end stepper action buttons:",
+      "verticalClusterTitle": "Vertical Cluster",
+      "verticalTop": "Top: To Top (Home) & Page Up (85% viewport step)",
+      "verticalBottom": "Bottom: Page Down & To Bottom (End)",
+      "verticalAuto": "Auto-disabled when at boundary limits.",
+      "horizontalClusterTitle": "Horizontal Cluster",
+      "horizontalLeft": "Left: To Start (Home) & Page Left",
+      "horizontalRight": "Right: Page Right & To End (End)",
+      "horizontalSmooth": "Supports smooth animated interpolation.",
+      "colFeatureName": "Feature Name",
+      "colCategory": "Category",
+      "colTargetStack": "Target Stack",
+      "colStatus": "Status",
+      "colCommit": "Commit",
+      "cellLabel": "Cell"
+    },
+    "alertDialog": {
+      "pageDescription": "A modal dialog that interrupts the user with important content and requires confirmation.",
+      "sandboxTitle": "Alert Dialog Sandbox"
+    },
+    "contextMenu": {
+      "overviewDesc": "Right-click (or long press) inside the dashed container below to reveal the context menu.",
+      "sandboxTitle": "Context Menu Sandbox"
+    },
+    "genericDataTable": {
+      "overviewDesc": "Click column headers to sort ascending and descending.",
+      "sandboxTitle": "Generic Data Table Sandbox",
+      "colId": "ID",
+      "colName": "User Name",
+      "colRole": "Role",
+      "roleArchitect": "Lead Architect",
+      "roleFrontend": "Frontend Engineer",
+      "roleQt": "Qt Specialist",
+      "roleDevOps": "DevOps Engineer",
+      "roleProduct": "Product Manager",
+      "statusPending": "Pending",
+      "statusOffline": "Offline"
+    },
+    "label": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Label Sandbox"
+    },
     "pipelineView": {
+      "animationsBullet1": "Active execution nodes (running, compiling, retrying) display continuous rotation using animate-spin.",
+      "animationsBullet2": "Job list hover and selection transitions use duration-quick ease-standard.",
+      "animationsBulletQt1": "Active execution nodes (running, compiling, retrying) display continuous rotation animations.",
+      "animationsBulletQt2": "Job list selection and hover states interpolate smoothly using ThemeTokens.motionQuick.",
+      "animationsBulletQt3": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero.",
+      "animationsDesc": "Execution transitions and status node states are governed by shared motion tokens:",
+      "overviewDesc": "A high-performance execution inspector assembling job tracking, vertical step timelines, and virtualized auto-scrolling log consoles. All subcomponents can also be consumed independently.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Pipeline View Sandbox",
       "stepParseSpirv": "Parse SPIR-V Bytecode",
       "stepDeadCode": "Dead Code Elimination",
       "stepRegAlloc": "Hardware Register Allocation",
@@ -2887,12 +5754,81 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "jobBenchmark": "Benchmark Suite",
       "jobPackage": "Package Artifacts"
     },
-    "addressBar": {
-      "quickLocations": "Quick Locations:",
-      "locProjectRoot": "Project Root",
-      "activePath": "Active Path:",
-      "activePathFormat": "Active Path: {{path}}",
-      "refreshes": "Refreshes: {{count}}"
+    "separator": {
+      "mitLicense": "MIT License",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Separator Sandbox",
+      "stackBadge": "React 19 & Qt 6"
+    },
+    "skeleton": {
+      "animationsBullet1": "pulse uses the default animate-pulse keyframes for a soft opacity fade.",
+      "animationsBullet2": "wave uses the custom cs-shimmer keyframes via the animate-shimmer utility for a sweeping highlight.",
+      "animationsBullet3": "When prefers-reduced-motion is set, animations resolve to animation: none automatically (Qt: governed by ThemeTokens.animationsEnabled).",
+      "animationsBulletQt1": "pulse animates a SequentialAnimation over opacity; wave moves a linear NumberAnimation over x for the shimmer sweep.",
+      "animationsBulletQt2": "All animations stop when ThemeTokens.animationsEnabled is false, keeping the skeleton static.",
+      "animationsDesc": "Motion behavior and timing for the placeholder loading effects.",
+      "sandboxTitle": "Skeleton Sandbox"
+    },
+    "smoothWheelHandler": {
+      "sandboxTitle": "Smooth Wheel Handler Sandbox",
+      "speedMultiplier": "Speed Multiplier:",
+      "dampingDuration": "Damping Duration:",
+      "itemLabel": "Smooth Scroll Item #{{index}}",
+      "itemBadge": "Item #{{index}}",
+      "kinematicsTitle": "Kinematic Architecture",
+      "card1Title": "Continuous Momentum Accumulation",
+      "card1Desc": "When rapid successive wheel ticks occur, delta offsets are accumulated onto the existing target position rather than jerking backwards or stuttering.",
+      "card2Title": "Shift+Wheel Horizontal Translation",
+      "card2Desc": "In horizontal viewports or long-scroll carousels, automatically intercepts vertical wheel actions while holding Shift and maps them to horizontal translation.",
+      "card3Title": "Gesture & Drag Decoupling",
+      "card3Desc": "Instantly terminates smooth scroll interpolation when the user touches the thumb handle or flicks with touchpads, ensuring zero physical friction.",
+      "bullet1": "• Momentum Accumulation: Consecutive wheel clicks accumulate linearly to targetPos rather than interrupting or jerking the active transition.",
+      "bullet2": "• Gesture Decoupling: Automatically listens to targetItem.moving and targetItem.flicking. When the user touches or drags the view, smooth animations abort instantly to prevent motion fight.",
+      "bullet3": "• Universal Drop-In: Targets any Flickable / ListView / GridView or ChaSetScrollArea without modifying existing visual hierarchies."
+    },
+    "splitter": {
+      "animationsBullet1": "Gutter indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).",
+      "animationsBullet2": "Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.",
+      "animationsBulletQt1": "Gutter indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve.",
+      "animationsBulletQt3": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.",
+      "animationsDesc": "Motion tokens and kinematic timing contracts for Splitter divider gutters.",
+      "fileComponents": "▸ components",
+      "fileLayout": "▸ layout",
+      "fileSrc": "▾ src",
+      "horizontalDesc": "Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset.",
+      "horizontalSandboxTitle": "Horizontal Splitter Sandbox",
+      "overviewHeading": "Horizontal Splitter",
+      "verticalDesc": "Top and bottom pane split with horizontal divider line. Drag vertically to resize console output.",
+      "verticalSandboxTitle": "Vertical Splitter",
+      "verticalTitle": "Vertical Splitter"
+    },
+    "switch": {
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Switch Sandbox"
+    },
+    "tooltip": {
+      "animationsBullet1": "Opening fades and zooms in using animate-in with fade-in-0 and zoom-in-95, over duration-short with the ease-entrance curve.",
+      "animationsBullet2": "Closing fades and zooms out using animate-out with fade-out-0 and zoom-out-95, delaying unmount until the exit animation finishes.",
+      "animationsBulletQt1": "The bubble cross-fades its opacity and scales it slightly on entry and exit to signal appearance.",
+      "animationsBulletQt2": "Transitions use ThemeTokens.motionShort with the easeEntrance curve.",
+      "animationsBulletQt3": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.",
+      "animationsDesc": "Motion behavior and timing for the tooltip bubble on open and close.",
+      "animationsDescQt": "Motion behavior and timing driven by ThemeTokens for the tooltip bubble on open and close.",
+      "examplesDesc": "Visual matrix of common Tooltip configurations across all 4 directional placements and interaction states.",
+      "examplesDescQt": "Visual matrix of Tooltip directional placements in Qt Quick Desktop.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Tooltip Sandbox"
+    },
+    "windowTitleBar": {
+      "overviewDesc": "Frameless window title bar with native-style action buttons.",
+      "sandboxTitle": "Window Title Bar Sandbox",
+      "idle": "Idle",
+      "minimizeClicked": "Minimize clicked",
+      "maximizeClicked": "Maximize / Restore clicked",
+      "closeClicked": "Close clicked",
+      "clientArea": "Frameless Client Window Area",
+      "captionEvent": "Caption Event:",
+      "appTitle": "ChaSet Desktop Studio"
     }
   },
   "formsA": {
