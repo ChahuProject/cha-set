@@ -112,31 +112,38 @@ Item {
 
     FontMetrics {
         id: textFontMetrics
+        font.family: Typography.familySans
         font.pixelSize: root.itemFontSize
-        font.bold: true
+        font.weight: Typography.weightMedium
     }
 
     FontMetrics {
         id: badgeFontMetrics
-        font.pixelSize: Math.max(8, root.itemFontSize - 2)
-        font.bold: true
+        font.family: Typography.familyMono
+        font.pixelSize: Typography.sizeMicro
+        font.weight: Typography.weightSemibold
     }
 
     function calculateItemContentWidth(opt) {
         if (!opt) return ThemeTokens.dp(40);
         var pad = ThemeTokens.dp(root.size === "sm" ? 16 : (root.size === "lg" ? 24 : 20));
         var label = opt.label !== undefined ? String(opt.label) : "";
-        var w = textFontMetrics.advanceWidth(label) + pad;
+        var textW = Math.ceil(textFontMetrics.advanceWidth(label));
+        var w = textW + pad;
         if (opt.icon !== undefined && String(opt.icon).length > 0) {
             w += (root.itemFontSize + ThemeTokens.dp(4));
         }
         if (opt.badge !== undefined && String(opt.badge).length > 0) {
-            w += (badgeFontMetrics.advanceWidth(String(opt.badge)) + ThemeTokens.dp(12));
+            w += (Math.ceil(badgeFontMetrics.advanceWidth(String(opt.badge))) + ThemeTokens.dp(12));
         }
         return Math.ceil(w);
     }
 
     readonly property var naturalWidths: {
+        var _s = root.size;
+        var _fs = root.itemFontSize;
+        var _scale = ThemeTokens.uiScale;
+        var _rev = (typeof ChaSetI18n !== "undefined") ? ChaSetI18n.revision : 0;
         var arr = [];
         if (!options || options.length === 0) return arr;
         for (var i = 0; i < options.length; i++) {
@@ -357,6 +364,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         name: modelData && modelData.icon ? String(modelData.icon) : ""
                         size: root.itemFontSize
+                        ignoreUiScale: true
                         color: segItem.isSelected ? ThemeTokens.text : ThemeTokens.subduedText
                     }
 
@@ -369,7 +377,10 @@ Item {
                         font.weight: segItem.isSelected ? Typography.weightMedium : Typography.weightRegular
                         elide: Text.ElideRight
                         width: {
-                            var avail = segItem.width - ThemeTokens.dp(12);
+                            if (!root.equalWidth && !root.fullWidth && root.effectiveItemWidth <= 0) {
+                                return implicitWidth;
+                            }
+                            var avail = segItem.width - ThemeTokens.dp(8);
                             if (iconItem.visible) avail -= (iconItem.implicitWidth + ThemeTokens.dp(4));
                             if (badgeItem.visible) avail -= (badgeItem.width + ThemeTokens.dp(4));
                             return Math.max(ThemeTokens.dp(10), Math.min(implicitWidth, avail));
