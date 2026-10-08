@@ -1,6 +1,7 @@
 // ChaSetTooltip.qml — Cross-stack Tooltip component for Qt Quick Desktop matching React Tooltip 1:1
 import QtQuick 6.10
 import QtQuick.Controls 6.10
+import QtQuick.Shapes 6.10
 import ChaSet
 
 Item {
@@ -328,26 +329,118 @@ Item {
         }
 
 
-        Rectangle {
+        // Seamless triangle pointer — fill covers the bubble border segment,
+        // angled strokes redraw only the two outer edges (open base).
+        // Mirrors ChaSetPopover.qml arrowIndicator; rotated-square Rectangle
+        // leaves the bubble border line visible between arrow and body.
+        Shape {
             id: arrowIndicator
             visible: root.arrow
-            width: ThemeTokens.dp(6)
-            height: ThemeTokens.dp(6)
-            rotation: 45
-            color: bubble.color
-            z: -1
+            z: 1
+            readonly property int arrowW: ThemeTokens.dp(8)
+            readonly property int arrowH: ThemeTokens.dp(4)
+            width: (root.side === "left" || root.side === "right") ? (arrowH + 1) : arrowW
+            height: (root.side === "left" || root.side === "right") ? arrowW : (arrowH + 1)
             x: {
                 switch (root.side) {
-                case "left": return bubble.width - ThemeTokens.dp(3)
-                case "right": return -ThemeTokens.dp(3)
+                case "left": return bubble.width - 1
+                case "right": return -arrowH
                 default: return (bubble.width - width) / 2
                 }
             }
             y: {
                 switch (root.side) {
-                case "top": return bubble.height - ThemeTokens.dp(3)
-                case "bottom": return -ThemeTokens.dp(3)
+                case "top": return bubble.height - 1
+                case "bottom": return -arrowH
                 default: return (bubble.height - height) / 2
+                }
+            }
+
+            // Fill triangle covering container border line
+            ShapePath {
+                strokeWidth: 0
+                strokeColor: "transparent"
+                fillColor: bubble.color
+                startX: {
+                    if (root.side === "bottom" || root.side === "top" || root.side === "left") return 0
+                    return arrowIndicator.arrowH + 1 // right
+                }
+                startY: {
+                    if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                    return 0
+                }
+                PathLine {
+                    x: {
+                        if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW / 2
+                        if (root.side === "right") return 0
+                        return arrowIndicator.arrowH + 1 // left
+                    }
+                    y: {
+                        if (root.side === "bottom") return 0
+                        if (root.side === "top") return arrowIndicator.arrowH + 1
+                        return arrowIndicator.arrowW / 2
+                    }
+                }
+                PathLine {
+                    x: {
+                        if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW
+                        if (root.side === "right") return arrowIndicator.arrowH + 1
+                        return 0 // left
+                    }
+                    y: {
+                        if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                        if (root.side === "top") return 0
+                        return arrowIndicator.arrowW
+                    }
+                }
+                PathLine {
+                    x: {
+                        if (root.side === "bottom" || root.side === "top" || root.side === "left") return 0
+                        return arrowIndicator.arrowH + 1 // right
+                    }
+                    y: {
+                        if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                        return 0
+                    }
+                }
+            }
+
+            // Angled border strokes with open base
+            ShapePath {
+                strokeWidth: 1
+                strokeColor: bubble.border.color
+                fillColor: "transparent"
+                startX: {
+                    if (root.side === "bottom" || root.side === "top" || root.side === "left") return 0
+                    return arrowIndicator.arrowH + 1 // right
+                }
+                startY: {
+                    if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                    return 0
+                }
+                PathLine {
+                    x: {
+                        if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW / 2
+                        if (root.side === "right") return 0
+                        return arrowIndicator.arrowH + 1 // left
+                    }
+                    y: {
+                        if (root.side === "bottom") return 0
+                        if (root.side === "top") return arrowIndicator.arrowH + 1
+                        return arrowIndicator.arrowW / 2
+                    }
+                }
+                PathLine {
+                    x: {
+                        if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW
+                        if (root.side === "right") return arrowIndicator.arrowH + 1
+                        return 0 // left
+                    }
+                    y: {
+                        if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                        if (root.side === "top") return 0
+                        return arrowIndicator.arrowW
+                    }
                 }
             }
         }
