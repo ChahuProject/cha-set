@@ -17,6 +17,10 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(MSVC)
+    add_compile_options(/bigobj)
+endif()
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
@@ -36,6 +40,7 @@ set_source_files_properties(src/ThemeTokens.generated.qml PROPERTIES
 set_source_files_properties(src/ShowcaseData.generated.qml PROPERTIES
     QT_QML_SINGLETON_TYPE TRUE
     QT_QML_SOURCE_TYPENAME ShowcaseData
+    QT_QML_SKIP_CACHEGEN TRUE
 )
 
 # Icon specification contract and compiled artwork (emitted from
@@ -88,6 +93,7 @@ set_source_files_properties(src/ChaSetOverlayHub.qml PROPERTIES
 set_source_files_properties(src/ChaSetI18nData.generated.qml PROPERTIES
     QT_QML_SINGLETON_TYPE TRUE
     QT_QML_SOURCE_TYPENAME ChaSetI18nData
+    QT_QML_SKIP_CACHEGEN TRUE
 )
 
 set_source_files_properties(src/ChaSetI18n.qml PROPERTIES

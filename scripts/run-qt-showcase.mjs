@@ -116,7 +116,7 @@ if (configRes.status !== 0) {
 
 // 4. Build with CMake
 console.log('\n[qt-showcase] 2. Building QtChaSetDemo...');
-const buildRes = spawnSync('cmake', ['--build', buildDir], {
+const buildRes = spawnSync('cmake', ['--build', buildDir, '--parallel'], {
   cwd: repoRoot,
   stdio: 'inherit',
   env: process.env,
