@@ -169,7 +169,8 @@ ChaSetActivityStack {
             && task.done !== undefined && task.done !== null
         var counter = hasCounter ? (task.done + "/" + task.total) : ""
         var detail = (task.detail !== undefined && task.detail !== null) ? String(task.detail) : ""
-        if (counter !== "") detail = detail !== "" ? (detail + "  " + counter) : counter
+        var alreadyHasCounter = counter !== "" && detail.indexOf(counter) !== -1
+        if (counter !== "" && !alreadyHasCounter) detail = detail !== "" ? (detail + "  " + counter) : counter
 
         var elapsed = (typeof task.elapsedMs === "number" && task.elapsedMs > 0)
             ? root.formatElapsed(task.elapsedMs) : ""

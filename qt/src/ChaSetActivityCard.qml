@@ -375,4 +375,18 @@ Item {
         border.color: ThemeTokens.focus
         visible: root.focused
     }
+
+    ChaSetTooltip {
+        target: detailText
+        text: root.detail
+        disabled: !detailText.truncated || root.detail === ""
+        side: "top"
+    }
+
+    ChaSetTooltip {
+        target: titleText
+        text: root.title
+        disabled: !titleText.truncated || root.title === ""
+        side: "top"
+    }
 }
