@@ -450,7 +450,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
       }}
       style={{ display: 'flex', flexDirection: 'column' }}
       className={cn(
-        'pointer-events-auto z-50 overflow-hidden rounded-xl border bg-popover text-sm text-popover-foreground shadow-2xl',
+        'pointer-events-auto z-50 overflow-hidden rounded-xl border border-border bg-popover text-sm text-popover-foreground shadow-2xl',
         !dragHandleClassName && 'cursor-move',
         className,
       )}

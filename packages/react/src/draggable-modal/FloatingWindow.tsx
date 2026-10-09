@@ -77,7 +77,7 @@ export function FloatingWindow({
         dragHandleClassName="floating-window-header"
         style={{ display: 'flex', flexDirection: 'column' }}
         className={cn(
-          'z-10 overflow-hidden rounded-xl border bg-popover text-sm text-popover-foreground shadow-2xl',
+          'z-10 overflow-hidden rounded-xl border border-border bg-popover text-sm text-popover-foreground shadow-2xl',
           className,
         )}
       >

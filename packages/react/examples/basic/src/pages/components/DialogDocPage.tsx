@@ -179,11 +179,11 @@ export function DialogDocPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Desktop Draggable Modal */}
-          <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
-            <span className="text-sm font-medium text-foreground">{t('overlays.dialog.desktopDraggableTitle', 'Desktop Draggable Modal')}</span>
-            <p className="text-xs text-muted-foreground mb-3">
+          <div className="flex flex-col gap-2 p-6 rounded-lg border border-border bg-card">
+            <span className="text-xs font-semibold text-foreground">{t('overlays.dialog.desktopDraggableTitle', 'Desktop Draggable Modal')}</span>
+            <span className="text-xs text-muted-foreground mb-3">
               {t('overlays.dialog.desktopDraggableDesc', 'Draggable modal with size presets, auto-fitting height, and fixed footer.')}
-            </p>
+            </span>
             <Dialog open={desktopOpen} onOpenChange={setDesktopOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm">
@@ -218,11 +218,11 @@ export function DialogDocPage() {
           </div>
 
           {/* Confirmation / Destructive */}
-          <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
-            <span className="text-sm font-medium text-foreground">{t('overlays.dialog.destructiveConfirmationTitle', 'Destructive Confirmation')}</span>
-            <p className="text-xs text-muted-foreground mb-3">
+          <div className="flex flex-col gap-2 p-6 rounded-lg border border-border bg-card">
+            <span className="text-xs font-semibold text-foreground">{t('overlays.dialog.destructiveConfirmationTitle', 'Destructive Confirmation')}</span>
+            <span className="text-xs text-muted-foreground mb-3">
               {t('overlays.dialog.destructiveConfirmationDesc', 'Dialog for destructive operations that require explicit confirmation.')}
-            </p>
+            </span>
             <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
               <DialogTrigger asChild>
                 <Button variant="destructive" size="sm">
@@ -255,11 +255,11 @@ export function DialogDocPage() {
           </div>
 
           {/* Simple Alert */}
-          <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
-            <span className="text-sm font-medium text-foreground">{t('overlays.dialog.informationalNoticeTitle', 'Informational Notice')}</span>
-            <p className="text-xs text-muted-foreground mb-3">
+          <div className="flex flex-col gap-2 p-6 rounded-lg border border-border bg-card">
+            <span className="text-xs font-semibold text-foreground">{t('overlays.dialog.informationalNoticeTitle', 'Informational Notice')}</span>
+            <span className="text-xs text-muted-foreground mb-3">
               {t('overlays.dialog.informationalNoticeDesc', 'Lightweight alert modal for system notifications and messages.')}
-            </p>
+            </span>
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="secondary" size="sm">
