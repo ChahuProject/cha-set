@@ -71,9 +71,13 @@ ChaSetInlineEditableText {
 <InlineEditableText value="Project Title" onSave={(val) => console.log(val)} />`
     }
 
-    ComponentPreview {
+    Column {
         property string sectionId: "variants"
         property string sectionTitle: ChaSetI18n.tr("components.inlineEditableText.sizesAndTriggers", "Sizes & Interaction Triggers")
+        width: parent.width
+        spacing: ThemeTokens.dp(12)
+
+        ComponentPreview {
         title: ChaSetI18n.tr("components.inlineEditableText.sizesAndTriggers", "Sizes & Interaction Triggers")
         reactCode: `<InlineEditableText value="Single Click to Edit" trigger="click" size="default" />
 <InlineEditableText value="Double Click to Edit" trigger="doubleClick" size="default" />
@@ -121,6 +125,7 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`
                 }
             }
         }
+    }
     }
 
     ComponentReference {

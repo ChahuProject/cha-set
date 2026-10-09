@@ -46,7 +46,11 @@ Item {
     readonly property int _pencilSize: root.isSm ? 12 : 14
 
     implicitWidth: Math.max(ThemeTokens.dp(120), root.editing ? editInput.implicitWidth + ThemeTokens.dp(56) : displayLabel.implicitWidth + ThemeTokens.dp(_pencilSize) + ThemeTokens.dp(6) + ThemeTokens.dp(8))
-    implicitHeight: root.editing ? editRow.implicitHeight : displayBox.implicitHeight
+    implicitHeight: root.editing ? editRow.height : displayBox.implicitHeight
+    // Explicit geometry: Row/Column parents do not size unconstrained Item
+    // children, so without this the rows render at 0 height (blank sandbox).
+    width: implicitWidth
+    height: implicitHeight
     opacity: root.disabled ? 0.5 : 1.0
 
     function rejectSave() {
@@ -196,7 +200,10 @@ Item {
         anchors.leftMargin: ThemeTokens.dp(4)
         anchors.rightMargin: ThemeTokens.dp(4)
         spacing: ThemeTokens.dp(6)
-        implicitHeight: Math.max(editFieldWrap.implicitHeight, ThemeTokens.dp(20)) + ThemeTokens.dp(8)
+        // NOTE: Row/Column positioners expose read-only implicit sizes —
+        // bind height explicitly instead of implicitHeight (which throws
+        // "Invalid property assignment" and blanks the whole DocPage).
+        height: Math.max(editFieldWrap.implicitHeight, ThemeTokens.dp(20)) + ThemeTokens.dp(8)
 
         Item {
             id: editFieldWrap
@@ -217,7 +224,9 @@ Item {
                 selectionColor: ThemeTokens.accent
                 selectedTextColor: ThemeTokens.primaryForeground
                 selectByMouse: true
-                selectByKeyboard: true
+                // NOTE: TextInput has no selectByKeyboard property (TextEdit
+                // only); assigning it aborts component creation and blanks
+                // the whole DocPage. Keyboard selection works natively.
                 cursorVisible: activeFocus
                 enabled: !root.disabled
                 onTextEdited: root.tempText = text
