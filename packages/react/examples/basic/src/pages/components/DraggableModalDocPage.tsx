@@ -65,7 +65,7 @@ export function DraggableModalDocPage() {
     }
   >
     <div className="space-y-3 p-4 text-xs text-muted-foreground">
-      <h3 className="text-sm font-medium text-foreground">Memory & Shader Diagnostics</h3>
+      <h3 className="text-sm font-medium text-foreground">${t('overlays.draggableModal.diagnosticsTitle', 'Memory & Shader Diagnostics')}</h3>
       <p>Drag anywhere on the modal surface not occupied by controls to move; drag borders to resize.</p>
       <div className="flex items-center justify-between border-t border-border/50 pt-2 font-mono">
         <span>Heap Memory Used:</span>
@@ -141,7 +141,7 @@ export function DraggableModalDocPage() {
         reactCode={`import { DraggableModal, Button } from '@chahu/cha-set';
 
 <DraggableModal
-  title="Floating Tools"
+  title="${t('overlays.draggableModal.floatingTools', 'Floating Tools')}"
   open={open}
   onOpenChange={setOpen}
 >

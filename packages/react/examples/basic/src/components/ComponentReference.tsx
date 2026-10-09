@@ -32,9 +32,9 @@ export function ComponentReference({
   const hasShortcuts = resolvedShortcuts.length > 0;
 
   const kbTitle = isSubComponent
-    ? `${name} Keyboard Navigation & Shortcuts`
-    : 'Keyboard Navigation';
-  const propsTitle = `${name} Properties`;
+    ? `${name} ${t('showcase.keyboardSectionTitle', 'Keyboard Navigation & Shortcuts')}`
+    : t('showcase.keyboardNavigation', 'Keyboard Navigation');
+  const propsTitle = `${name} ${t('showcase.propertiesTitle', 'Properties')}`;
 
   const kbSectionId = isSubComponent
     ? `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-keyboard`
@@ -52,7 +52,7 @@ export function ComponentReference({
             {kbTitle}
           </h2>
           <p className="text-sm text-muted-foreground mb-4">
-            Keyboard shortcuts and interaction patterns for {name}.
+            {t('showcase.keyboardDesc', 'Keyboard shortcuts and interaction patterns for this component.')}
           </p>
           <KeyboardShortcutsTable
             title=""

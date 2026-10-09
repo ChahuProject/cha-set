@@ -439,12 +439,12 @@ describe('VirtualTree', () => {
     expect(hud.getAttribute('data-hud-position')).toBe('bottom');
     expect(hud.className).toContain('bottom-2');
 
-    // Multi-line HUD content verification
-    expect(hud.textContent).toContain('松开左键');
-    expect(hud.textContent).toContain('移动到目标');
-    expect(hud.textContent).toContain('按住 Ctrl');
-    expect(hud.textContent).toContain('复制到目标');
-    expect(hud.textContent).toContain('按 Esc');
+    // Multi-line HUD content verification (locale-tolerant: zh-CN or en-US)
+    expect(hud.textContent).toMatch(/松开左键|Release left/);
+    expect(hud.textContent).toMatch(/移动到目标|Move to target/);
+    expect(hud.textContent).toMatch(/按住 Ctrl|Hold Ctrl/);
+    expect(hud.textContent).toMatch(/复制到目标|Copy to target/);
+    expect(hud.textContent).toMatch(/按 Esc|Press Esc/);
     const mouseGlyphs = hud.querySelectorAll('[data-slot="mouse-glyph"]');
     expect(mouseGlyphs.length).toBeGreaterThanOrEqual(1);
 

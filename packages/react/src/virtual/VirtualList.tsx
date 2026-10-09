@@ -3,6 +3,7 @@ import { observeElementRect, useVirtualizer } from '@tanstack/react-virtual';
 import { cn } from '../lib/utils';
 import { Input } from '../input';
 import { SearchIcon } from '../lib/icons';
+import { useChaSetI18n } from '../i18n';
 
 export interface VirtualListHandle {
   /** Scroll to a specific item index */
@@ -56,11 +57,12 @@ export function VirtualList<T>({
   ref,
   searchable = false,
   searchDefaultOpen = false,
-  searchPlaceholder = '搜索...',
+  searchPlaceholder,
   searchQuery: controlledQuery,
   onSearchChange,
   filterItem,
 }: VirtualListProps<T>) {
+  const { t } = useChaSetI18n();
   const [internalQuery, setInternalQuery] = React.useState('');
   const [searchOpen, setSearchOpen] = React.useState(searchDefaultOpen);
   const activeQuery = controlledQuery !== undefined ? controlledQuery : internalQuery;
@@ -169,7 +171,7 @@ export function VirtualList<T>({
             ref={searchInputRef}
             size="sm"
             value={activeQuery}
-            placeholder={searchPlaceholder}
+            placeholder={searchPlaceholder ?? t('desktopComposite.virtualList.searchPlaceholder', '搜索...')}
             clearable={true}
             leftIcon={<SearchIcon className="size-3.5 text-muted-foreground" />}
             onChange={(e) => {
@@ -201,7 +203,7 @@ export function VirtualList<T>({
         {filteredItems.length === 0 ? (
           emptyNode ?? (
             <div className="p-4 text-center text-xs text-muted-foreground">
-              {activeQuery ? '无匹配项目' : '列表为空'}
+              {activeQuery ? t('desktopComposite.virtualList.emptyFiltered', '无匹配项目') : t('desktopComposite.virtualList.emptyDefault', '列表为空')}
             </div>
           )
         ) : (

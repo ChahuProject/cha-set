@@ -2,6 +2,7 @@ import * as React from 'react';
 import { observeElementRect, useVirtualizer } from '@tanstack/react-virtual';
 import { cn } from '../lib/utils';
 import { Kbd } from '../kbd';
+import { useChaSetI18n } from '../i18n';
 
 export interface TreeNode {
   id: string;
@@ -174,6 +175,7 @@ export function VirtualTree<T>({
   onStickyToggle,
   ref,
 }: VirtualTreeProps<T>) {
+  const { t } = useChaSetI18n();
   const safeRootNodes = rootNodes ?? nodes ?? [];
   const safeGetChildren = React.useMemo(
     () => getChildren ?? ((node: any) => node?.children ?? []),
@@ -1020,18 +1022,38 @@ export function VirtualTree<T>({
             <span>
               {dropTarget ? (
                 dropTarget.position === 'inside'
-                  ? `${dragModifier === 'copy' ? '复制到' : '移入'}: ${
-                      (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.label ||
-                      (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.name ||
-                      dropTarget.key
-                    }`
-                  : `放置在同级: ${
-                      (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.label ||
-                      (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.name ||
-                      dropTarget.key
-                    }`
+                  ? t('desktopComposite.virtualTree.hudInside', '{{prefix}}{{verb}}: {{target}}', {
+                      prefix:
+                        (draggedKeys?.length ?? 0) > 1
+                          ? t('desktopComposite.virtualTree.hudCountPrefix', '{{count}} 项 · ', {
+                              count: draggedKeys?.length ?? 0,
+                            })
+                          : '',
+                      verb:
+                        dragModifier === 'copy'
+                          ? t('desktopComposite.virtualTree.hudCopyVerb', '复制到')
+                          : t('desktopComposite.virtualTree.hudMoveVerb', '移入'),
+                      target:
+                        (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.label ||
+                        (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.name ||
+                        dropTarget.key,
+                    })
+                  : t('desktopComposite.virtualTree.hudSibling', '{{prefix}}放置在同级: {{target}}', {
+                      prefix:
+                        (draggedKeys?.length ?? 0) > 1
+                          ? t('desktopComposite.virtualTree.hudCountPrefix', '{{count}} 项 · ', {
+                              count: draggedKeys?.length ?? 0,
+                            })
+                          : '',
+                      target:
+                        (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.label ||
+                        (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.name ||
+                        dropTarget.key,
+                    })
               ) : (
-                `拖拽中 (${draggedKeys?.length ?? 0} 项)`
+                t('desktopComposite.virtualTree.hudDragging', '拖拽中 ({{count}} 项)', {
+                  count: draggedKeys?.length ?? 0,
+                })
               )}
             </span>
           </div>
@@ -1054,9 +1076,9 @@ export function VirtualTree<T>({
                   variant={dragModifier === 'move' ? 'solid' : 'subtle'}
                   shortcut="mouse-left"
                 />
-                <span>松开左键</span>
+                <span>{t('desktopComposite.virtualTree.hudReleaseLeft', '松开左键')}</span>
               </span>
-              <span className="text-micro font-sans">移动到目标</span>
+              <span className="text-micro font-sans">{t('desktopComposite.virtualTree.hudMoveToTarget', '移动到目标')}</span>
             </div>
 
             <div
@@ -1073,17 +1095,17 @@ export function VirtualTree<T>({
                   variant={dragModifier === 'copy' ? 'solid' : 'subtle'}
                   shortcut="Ctrl+mouse-left"
                 />
-                <span>按住 Ctrl</span>
+                <span>{t('desktopComposite.virtualTree.hudHoldCtrl', '按住 Ctrl')}</span>
               </span>
-              <span className="text-micro font-sans">复制到目标</span>
+              <span className="text-micro font-sans">{t('desktopComposite.virtualTree.hudCopyToTarget', '复制到目标')}</span>
             </div>
 
             <div className="flex items-center justify-between gap-3 text-muted-foreground/75">
               <span className="flex items-center gap-1.5">
                 <Kbd size="xs" variant="subtle" shortcut="Esc" />
-                <span>按 Esc</span>
+                <span>{t('desktopComposite.virtualTree.hudPressEsc', '按 Esc')}</span>
               </span>
-              <span className="text-micro font-sans">取消</span>
+              <span className="text-micro font-sans">{t('desktopComposite.virtualTree.hudCancel', '取消')}</span>
             </div>
           </div>
         </div>

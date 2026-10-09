@@ -2,6 +2,7 @@ import * as React from 'react';
 import { cn } from '../lib/utils';
 import { ScrollArea } from '../scroll-area';
 import { ChevronDownIcon, ChevronUpIcon } from '../lib/icons';
+import { useChaSetI18n } from '../i18n';
 import type { ActivityPlacement } from '@chahu/spec/shared/placement';
 
 /**
@@ -172,6 +173,7 @@ export const ActivityStack = React.forwardRef<HTMLDivElement, ActivityStackProps
   },
   ref,
 ) {
+  const { t } = useChaSetI18n();
   const [collapsed, setCollapsed] = React.useState(collapsible && defaultCollapsed);
   const [expanded, setExpanded] = React.useState(false);
   const [exiting, setExiting] = React.useState<ExitingEntry[]>([]);
@@ -308,7 +310,7 @@ export const ActivityStack = React.forwardRef<HTMLDivElement, ActivityStackProps
       onClick={() => setExpanded(true)}
       className="pointer-events-auto flex cursor-pointer items-center gap-1 rounded-full border border-border/60 bg-muted/90 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur-sm transition-colors hover:bg-muted hover:text-foreground"
     >
-      <span>{`还有 ${hiddenCount} 项`}</span>
+      <span>{t('desktopComposite.activityStack.overflowLabel', '还有 {{count}} 项', { count: hiddenCount })}</span>
       {top ? <ChevronDownIcon className="size-3" /> : <ChevronUpIcon className="size-3" />}
     </button>
   );
@@ -339,7 +341,10 @@ export const ActivityStack = React.forwardRef<HTMLDivElement, ActivityStackProps
         ))}
       </span>
       <span className="min-w-0 flex-1 truncate text-left">
-        {`${orderedAll.length} 项${summaryLabel ?? ''}`}
+        {t('desktopComposite.activityStack.summaryText', '{{count}} 项{{label}}', {
+          count: orderedAll.length,
+          label: summaryLabel ?? '',
+        })}
       </span>
       {expandGlyph}
     </button>

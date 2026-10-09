@@ -15,6 +15,7 @@ import {
 } from '../lib/icons';
 import { Tooltip } from '../tooltip/Tooltip';
 import { Input } from '../input/Input';
+import { useChaSetI18n } from '../i18n';
 
 export type { PathSegment, AddressBarApi };
 
@@ -201,7 +202,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
       showNavButtons = true,
       showRefresh = true,
       showSearch = true,
-      searchPlaceholder = '搜索...',
+      searchPlaceholder,
       canGoBack = false,
       canGoForward = false,
       suggestions = [],
@@ -224,6 +225,9 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
       controlledPath !== undefined ? controlledPath : defaultValue
     );
     const activePath = controlledPath !== undefined ? controlledPath : internalPath;
+    const { t } = useChaSetI18n();
+    const resolvedSearchPlaceholder =
+      searchPlaceholder ?? t('desktopComposite.addressBar.searchPlaceholder', '搜索...');
 
     const [isEditing, setIsEditing] = React.useState(false);
     const [editValue, setEditValue] = React.useState(activePath);
@@ -399,7 +403,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
         {showNavButtons && (
           <div className="flex items-center gap-0.5 shrink-0">
             {/* Back Button */}
-            <Tooltip content="后退" side="bottom">
+            <Tooltip content={t('desktopComposite.addressBar.backTooltip', '后退')} side="bottom">
               <button
                 type="button"
                 aria-label="Back"
@@ -417,7 +421,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
             </Tooltip>
 
             {/* Forward Button */}
-            <Tooltip content="前进" side="bottom">
+            <Tooltip content={t('desktopComposite.addressBar.forwardTooltip', '前进')} side="bottom">
               <button
                 type="button"
                 aria-label="Forward"
@@ -435,7 +439,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
             </Tooltip>
 
             {/* Up (Parent) Button */}
-            <Tooltip content="上一级" side="bottom">
+            <Tooltip content={t('desktopComposite.addressBar.upTooltip', '上一级')} side="bottom">
               <button
                 type="button"
                 aria-label="Up to parent directory"
@@ -454,7 +458,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
 
             {/* Refresh Button */}
             {showRefresh && (
-              <Tooltip content="刷新" side="bottom">
+              <Tooltip content={t('desktopComposite.addressBar.refreshTooltip', '刷新')} side="bottom">
                 <button
                   type="button"
                   aria-label="Refresh"
@@ -606,10 +610,10 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
         {showSearch && (
           <div className="shrink-0 flex items-center">
             {!isSearchExpanded ? (
-              <Tooltip content="搜索" side="bottom">
+              <Tooltip content={t('desktopComposite.addressBar.searchTooltip', '搜索')} side="bottom">
                 <button
                   type="button"
-                  aria-label="搜索"
+                  aria-label={t('desktopComposite.addressBar.searchTooltip', '搜索')}
                   disabled={disabled}
                   onClick={() => {
                     if (disabled) return;
@@ -632,7 +636,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
                 <input
                   ref={searchInputRef}
                   type="text"
-                  placeholder={searchPlaceholder}
+                  placeholder={resolvedSearchPlaceholder}
                   value={searchQuery}
                   disabled={disabled}
                   onChange={(e) => {

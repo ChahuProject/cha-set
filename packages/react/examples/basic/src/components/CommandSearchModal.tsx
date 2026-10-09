@@ -56,12 +56,14 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
       const rawTitle = entry.item.title.toLowerCase();
       const rawCat = entry.category.toLowerCase();
       const rawDesc = (entry.item.description || '').toLowerCase();
+      const locDesc = t('components.' + entry.item.id + '.description', entry.item.description || '').toLowerCase();
       return (
         rawTitle.includes(q) ||
         locTitle.includes(q) ||
         rawCat.includes(q) ||
         locCat.includes(q) ||
-        rawDesc.includes(q)
+        rawDesc.includes(q) ||
+        locDesc.includes(q)
       );
     });
   }, [allItems, query, t]);
@@ -218,7 +220,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
             </span>
           </div>
           <span className="text-micro">
-            {t('common.resultCount', '{count} 个结果', { count: filtered.length })}
+            {t('common.resultCount', '{{count}} 个结果', { count: filtered.length })}
           </span>
         </div>
       </Card>

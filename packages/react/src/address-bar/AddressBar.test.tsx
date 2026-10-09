@@ -188,11 +188,11 @@ describe('AddressBar', () => {
         />
       );
 
-      const searchButton = screen.getByRole('button', { name: '搜索' });
+      const searchButton = screen.getByRole('button', { name: /搜索|Search/ });
       expect(searchButton).toBeInTheDocument();
 
       fireEvent.click(searchButton);
-      const searchInput = screen.getByPlaceholderText('搜索...');
+      const searchInput = screen.getByPlaceholderText(/搜索\.\.\.|Search\.\.\./);
       expect(searchInput).toBeInTheDocument();
 
       fireEvent.change(searchInput, { target: { value: 'file.txt' } });
@@ -205,7 +205,7 @@ describe('AddressBar', () => {
 
       // Escape collapses
       fireEvent.keyDown(searchInput, { key: 'Escape' });
-      expect(screen.getByRole('button', { name: '搜索' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /搜索|Search/ })).toBeInTheDocument();
     });
   });
 });

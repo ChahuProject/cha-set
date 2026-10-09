@@ -11,6 +11,7 @@ import {
 import { Tooltip } from '../tooltip/Tooltip';
 import { Input } from '../input/Input';
 import { Kbd, ShortcutBar } from '../kbd';
+import { useChaSetI18n } from '../i18n';
 
 export interface BreadcrumbProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Array of path segments */
@@ -65,6 +66,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
     },
     ref
   ) => {
+    const { t } = useChaSetI18n();
     const [internalOpenIndex, setInternalOpenIndex] = React.useState(-1);
     const activeOpenIndex = controlledOpenIndex !== undefined ? controlledOpenIndex : internalOpenIndex;
 
@@ -439,7 +441,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
           {/* Overflow ellipsis button if ancestors are collapsed */}
           {hasOverflow && (
             <div className="flex items-center shrink-0">
-              <Tooltip content="显示隐藏的祖先文件夹" side="bottom">
+              <Tooltip content={t('desktopComposite.breadcrumb.showHiddenAncestors', '显示隐藏的祖先文件夹')} side="bottom">
                 <button
                   ref={overflowBtnRef}
                   type="button"
@@ -490,7 +492,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
 
                 {/* Independent Chevron Trigger */}
                 {showChevron && (
-                  <Tooltip content={`展开 ${seg.label || seg.displayName} 的子文件夹`} side="bottom">
+                  <Tooltip content={t('desktopComposite.breadcrumb.expandSubfolders', '展开 %1 的子文件夹').replace('%1', seg.label || seg.displayName || '')} side="bottom">
                     <button
                       type="button"
                       aria-label={`Open subfolders for ${seg.label || seg.displayName}`}
@@ -539,7 +541,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
                   ref={searchInputRef}
                   size="sm"
                   icon="search"
-                  placeholder="搜索文件夹..."
+                  placeholder={t('desktopComposite.breadcrumb.searchPlaceholder', '搜索文件夹...')}
                   clearable
                   value={subfolderSearch}
                   onChange={(e) => {
@@ -588,7 +590,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
               ))}
               {filteredSubfolders.length === 0 && (
                 <div className="px-3 py-6 text-center text-xs text-muted-foreground">
-                  {subfolderSearch ? '未找到匹配文件夹' : '（空文件夹）'}
+                  {subfolderSearch ? t('desktopComposite.breadcrumb.noMatch', '未找到匹配文件夹') : t('desktopComposite.breadcrumb.emptyFolder', '（空文件夹）')}
                 </div>
               )}
             </div>

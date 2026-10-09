@@ -162,7 +162,7 @@ export function KbdDocPage() {
 
       {/* 3. Variants */}
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title="Variants">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.kbd.variantsTitle', 'Variants')}>
           {t('components.kbd.variantsTitle', 'Variants')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">

@@ -122,7 +122,7 @@ describe('TaskHud', () => {
 
   it('renders an overflow pill and expands the whole list on demand', () => {
     render(<TaskHud tasks={sampleTasks} maxVisible={2} forceVisible />);
-    expect(screen.getByText('还有 2 项')).toBeInTheDocument();
+    expect(screen.getByText(/还有 2 项|2 more items/)).toBeInTheDocument();
     expect(screen.queryByText('Packaging Bundle')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByTestId('activity-stack-overflow'));
@@ -133,7 +133,7 @@ describe('TaskHud', () => {
 
   it('collapses into a summary row', () => {
     render(<TaskHud tasks={sampleTasks} forceVisible defaultCollapsed />);
-    expect(screen.getByText('4 项进行中')).toBeInTheDocument();
+    expect(screen.getByText(/4 项进行中|4 items/)).toBeInTheDocument();
     expect(screen.queryByTestId('activity-card-task-1')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByTestId('activity-stack-toggle'));
