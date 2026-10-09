@@ -395,5 +395,8 @@ describe('Dialog', () => {
     expect(tooltip).toBeInTheDocument();
     expect(tooltip).toHaveTextContent('Close');
     expect(tooltip).toHaveTextContent('Esc');
+    // Close affordance: pinned above the button with no viewport nudging.
+    expect(tooltip).toHaveAttribute('data-side', 'top');
+    expect(tooltip.parentElement).toBe(document.body);
   });
 });

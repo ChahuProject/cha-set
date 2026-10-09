@@ -278,7 +278,8 @@ Rectangle {
                     visible: root.showCloseButton
                     text: root.closeTooltip.length > 0 ? root.closeTooltip : ChaSetI18n.tr("common.close", "Close")
                     shortcut: "Esc"
-                    side: "bottom"
+                    side: "top"
+                    avoidCollisions: false
                     anchors.verticalCenter: parent.verticalCenter
 
                     ChaSetButton {

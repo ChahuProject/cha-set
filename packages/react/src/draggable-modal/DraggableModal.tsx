@@ -518,7 +518,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
           )}
           {finalTopControls}
           {showCloseButton && onClose && (
-            <Tooltip content={closeTooltip ?? t('common.close', 'Close')} shortcut="Esc" side="bottom">
+            <Tooltip content={closeTooltip ?? t('common.close', 'Close')} shortcut="Esc" side="top" avoidCollisions={false}>
               <Button
                 variant="ghost"
                 size="icon-xs"

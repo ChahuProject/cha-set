@@ -85,7 +85,7 @@ export function FloatingWindow({
           <span className="truncate text-sm font-medium text-foreground">{title}</span>
           <div className="flex items-center gap-1 shrink-0">
             {topActions}
-            <Tooltip content={closeTooltip} shortcut="Esc" side="bottom">
+            <Tooltip content={closeTooltip} shortcut="Esc" side="top" avoidCollisions={false}>
               <Button
                 size="icon-xs"
                 variant="ghost"

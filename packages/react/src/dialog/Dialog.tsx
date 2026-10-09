@@ -423,7 +423,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
     const resolvedCloseTooltip = closeTooltip ?? t('common.close', 'Close');
 
     const closeControl = showCloseButton && (
-      <Tooltip content={resolvedCloseTooltip} shortcut="Esc" side="bottom">
+      <Tooltip content={resolvedCloseTooltip} shortcut="Esc" side="top" avoidCollisions={false}>
         <DialogClose asChild>
           <Button
             variant="ghost"
