@@ -143,8 +143,8 @@ Item {
             return 0
         var seg = root.segments[index]
         var name = String(seg.displayName || seg.label || "")
-        var fm = (index === root.segments.length - 1) ? segBoldFontMetrics : segFontMetrics
-        var textW = fm.advanceWidth(name)
+        var isIconOnly = (name === "") && Boolean(seg.icon)
+        var textW = isIconOnly ? ThemeTokens.dp(16) : ((index === root.segments.length - 1) ? segBoldFontMetrics.advanceWidth(name) : segFontMetrics.advanceWidth(name))
         var pillW = textW + ThemeTokens.dp(12)
         var hasChevron = (index < root.segments.length - 1) || (root.segments.length === 1) || Boolean(seg.hasSubfolders)
         var chevronW = hasChevron ? ThemeTokens.dp(20) : 0
@@ -281,18 +281,21 @@ Item {
                                 id: pillContent
                                 anchors.centerIn: parent
                                 spacing: ThemeTokens.dp(4)
+                                readonly property bool isIconOnly: segItem.segName === "" && Boolean(segItem.segIcon)
 
-                                // 拖拽到该级且按住 Ctrl（复制模式）时不在面包屑内显示任何图标：
-                                // 复制意图已由拖拽跟随幽灵（pageDragGhost）的 content_copy 图标表达，
-                                // 面包屑内再出现复制图标属于重复示意，故移除。
+                                ChaSetIcon {
+                                    visible: pillContent.isIconOnly
+                                    name: segItem.segIcon || "computer"
+                                    size: 16
+                                    color: segItem.isDropTarget ? ThemeTokens.accent : (segItem.isCurrent ? ThemeTokens.text : ThemeTokens.subduedText)
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
                                 Text {
+                                    visible: !pillContent.isIconOnly
                                     text: segItem.segName
                                     color: segItem.isDropTarget ? ThemeTokens.accent : (segItem.isCurrent ? ThemeTokens.text : ThemeTokens.subduedText)
                                     font.pixelSize: Typography.sizeSmall
-                                    // 拖拽高亮严禁切换字重：Regular↔Semibold 翻转会改变文本宽度，
-                                    // pill 随内容自适应加宽导致后续面包屑整体位移。高亮仅通过
-                                    // 背景 / 描边 / 文字颜色表达（几何零变化），且必须与
-                                    // getSegmentWidth 的度量口径（仅末级 Semibold）保持一致。
                                     font.weight: segItem.isCurrent ? Typography.weightSemibold : Typography.weightRegular
                                     verticalAlignment: Text.AlignVCenter
                                     anchors.verticalCenter: parent.verticalCenter
@@ -307,7 +310,9 @@ Item {
                                 cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                                 onClicked: {
                                     if (!root.disabled) {
-                                        if (segItem.isCurrent) {
+                                        if (segItem.index === 0 && segItem.modelData && segItem.modelData.isTopRoot) {
+                                            root.openSubfoldersRequested(0, segItem.segPath, chevronBox)
+                                        } else if (segItem.isCurrent) {
                                             root.blankAreaClicked()
                                         } else {
                                             root.navigateRequested(segItem.segPath)
@@ -318,7 +323,7 @@ Item {
 
                             ChaSetTooltip {
                                 target: segPill
-                                text: segItem.segPath || segItem.segName
+                                text: (segItem.modelData && segItem.modelData.isTopRoot) ? qsTr("所有位置") : (segItem.segPath || segItem.segName)
                                 side: "bottom"
                                 delay: 400
                                 disabled: root.disabled

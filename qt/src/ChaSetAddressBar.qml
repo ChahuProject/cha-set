@@ -53,7 +53,7 @@ Item {
     signal searchRequested(string query)
     signal dropRequested(string targetPath, var urls)
 
-    property string editValue: controller.currentPath
+    property string editValue: controller.editingText || controller.currentPath
 
     implicitHeight: ThemeTokens.dp(36)
     implicitWidth: ThemeTokens.dp(500)
@@ -72,12 +72,17 @@ Item {
         }
         onCurrentPathChanged: {
             if (!controller.editing) {
-                root.editValue = controller.currentPath
+                root.editValue = controller.editingText || controller.currentPath
+            }
+        }
+        onEditingTextChanged: {
+            if (!controller.editing) {
+                root.editValue = controller.editingText || controller.currentPath
             }
         }
         onEditingChanged: {
             if (controller.editing) {
-                editInput.text = controller.currentPath
+                editInput.text = controller.editingText || controller.currentPath
                 editInput.selectAll()
                 editInput.forceActiveFocus()
             } else {
