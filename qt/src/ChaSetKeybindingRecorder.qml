@@ -13,6 +13,8 @@ Item {
     property bool clearable: true
     property string size: "default" // "default" | "sm"
     property bool disabled: false
+    property string placeholder: "None"
+    property string recordingText: "Press shortcut keys..."
 
     signal keybindingRecorded(string newBinding)
 
@@ -83,7 +85,7 @@ Item {
             anchors.right: btnRow.left
             anchors.rightMargin: ThemeTokens.dp(6)
             anchors.verticalCenter: parent.verticalCenter
-            text: root.recording ? "Press shortcut keys..." : (root.keybinding.length > 0 ? root.keybinding : "None")
+            text: root.recording ? root.recordingText : (root.keybinding.length > 0 ? root.keybinding : root.placeholder)
             color: root.recording ? ThemeTokens.accent : (root.keybinding.length > 0 ? ThemeTokens.text : ThemeTokens.subduedText)
             font.pixelSize: root.isSm ? Typography.sizeCaption : Typography.sizeSmall
             font.family: Typography.familyMono
@@ -112,18 +114,6 @@ Item {
                     root.keybindingRecorded("")
                 }
             }
-
-            ChaSetButton {
-                id: recBtn
-                text: root.recording ? "Done" : "Record"
-                variant: root.recording ? "default" : "outline"
-                size: root.isSm ? "icon-xs" : "xs"
-                enabled: !root.disabled
-                height: ThemeTokens.dp(root.isSm ? 20 : 24)
-                onClicked: {
-                    root.recording = !root.recording
-                }
-            }
         }
 
         MouseArea {
@@ -133,8 +123,10 @@ Item {
             hoverEnabled: true
             cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
             onClicked: {
-                if (!root.disabled) {
-                    root.recording = !root.recording
+                // Whole-box click starts recording (React parity: one-way
+                // start; recording stops via key capture or Escape).
+                if (!root.disabled && !root.recording) {
+                    root.recording = true
                 }
             }
         }
@@ -147,7 +139,7 @@ Item {
             if (event.modifiers & Qt.ControlModifier) parts.push("Ctrl")
             if (event.modifiers & Qt.AltModifier) parts.push("Alt")
             if (event.modifiers & Qt.ShiftModifier) parts.push("Shift")
-            if (event.modifiers & Qt.MetaModifier) parts.push("Cmd")
+            if (event.modifiers & Qt.MetaModifier) parts.push("Win")
 
             let keyText = event.text.toUpperCase()
             if (event.key >= Qt.Key_F1 && event.key <= Qt.Key_F12) {
@@ -156,7 +148,12 @@ Item {
                 root.recording = false
                 return
             } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                // React captures Enter as the binding key itself.
+                parts.push("Enter")
+                root.keybinding = parts.join("+")
+                root.value = root.keybinding
                 root.recording = false
+                root.keybindingRecorded(root.keybinding)
                 return
             }
 

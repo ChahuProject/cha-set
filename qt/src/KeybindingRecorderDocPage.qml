@@ -147,6 +147,8 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`
             { name: "keybinding", type: "string", default: "'Ctrl+K'", description: ChaSetI18n.tr("components.keybindingRecorder.aliasDesc", "Alias for value.") },
             { name: "size", type: "'default' | 'sm'", default: "'default'", description: ChaSetI18n.tr("components.keybindingRecorder.sizeDesc", "Size preset variant for regular or compact density.") },
             { name: "clearable", type: "bool", default: "true", description: ChaSetI18n.tr("components.keybindingRecorder.clearableDesc", "Whether to display a clear button when a shortcut is set.") },
+            { name: "placeholder", type: "string", default: "'None'", description: ChaSetI18n.tr("components.keybindingRecorder.placeholderDesc", "Text shown when no shortcut is set.") },
+            { name: "recordingText", type: "string", default: "'Press shortcut keys...'", description: ChaSetI18n.tr("components.keybindingRecorder.recordingTextDesc", "Prompt shown while listening for key combinations.") },
             { name: "recording", type: "bool", default: "false", description: ChaSetI18n.tr("components.keybindingRecorder.recordingDesc", "Whether the recorder is actively listening for key combinations.") },
             { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.keybindingRecorder.disabledDesc", "Whether the recorder is disabled.") },
             { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.keybindingRecorder.cornerRadiusDesc", "Corner radius of the input container.") }
