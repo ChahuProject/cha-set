@@ -39,7 +39,7 @@
       "nodeCount": "节点数量:",
       "nodeCountVal": "16 专用副本",
       "avgLatency": "平均延迟:",
-      "avgLatencyVal": "12ms (p99: 45ms)",
+      "avgLatencyVal": "12 毫秒 (p99: 45 毫秒)",
       "restart": "重启",
       "scaleOut": "扩容"
     },

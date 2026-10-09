@@ -50,13 +50,21 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
   const filtered = useMemo(() => {
     if (!query.trim()) return allItems;
     const q = query.toLowerCase();
-    return allItems.filter(
-      (entry) =>
-        entry.item.title.toLowerCase().includes(q) ||
-        (entry.item.description && entry.item.description.toLowerCase().includes(q)) ||
-        entry.category.toLowerCase().includes(q),
-    );
-  }, [allItems, query]);
+    return allItems.filter((entry) => {
+      const locTitle = t('navigation.' + entry.item.id, entry.item.title).toLowerCase();
+      const locCat = t('categories.' + entry.category, t('showcase.categories.' + entry.category, entry.category)).toLowerCase();
+      const rawTitle = entry.item.title.toLowerCase();
+      const rawCat = entry.category.toLowerCase();
+      const rawDesc = (entry.item.description || '').toLowerCase();
+      return (
+        rawTitle.includes(q) ||
+        locTitle.includes(q) ||
+        rawCat.includes(q) ||
+        locCat.includes(q) ||
+        rawDesc.includes(q)
+      );
+    });
+  }, [allItems, query, t]);
 
   useEffect(() => {
     setSelectedIndex(0);
@@ -196,8 +204,8 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
         <div className="flex items-center justify-between px-3.5 py-2 border-t border-border bg-muted/40 text-xs text-muted-foreground">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
-              <Kbd size="xs" variant="outline">Up</Kbd>
-              <Kbd size="xs" variant="outline">Down</Kbd>
+              <Kbd size="xs" variant="outline">{t('common.keyUp', '↑')}</Kbd>
+              <Kbd size="xs" variant="outline">{t('common.keyDown', '↓')}</Kbd>
               <span>{t('common.navigate', '导航')}</span>
             </span>
             <span className="flex items-center gap-1.5">

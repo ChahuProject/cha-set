@@ -35,9 +35,13 @@ Rectangle {
         if (!query || query.trim() === "") return allItems
         var q = query.toLowerCase()
         return allItems.filter(function(item) {
+            var locTitle = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("navigation." + item.id, item.title || "").toLowerCase() : ""
+            var locCat = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("categories." + item.category, ChaSetI18n.tr("showcase.categories." + item.category, item.category || "")).toLowerCase() : ""
             return (item.title && item.title.toLowerCase().indexOf(q) >= 0) ||
+                   (locTitle && locTitle.indexOf(q) >= 0) ||
                    (item.desc && item.desc.toLowerCase().indexOf(q) >= 0) ||
-                   (item.category && item.category.toLowerCase().indexOf(q) >= 0)
+                   (item.category && item.category.toLowerCase().indexOf(q) >= 0) ||
+                   (locCat && locCat.indexOf(q) >= 0)
         })
     }
 
@@ -253,7 +257,7 @@ Rectangle {
                             Text {
                                 id: upTxt
                                 anchors.centerIn: parent
-                                text: "Up"
+                                text: ChaSetI18n.tr("common.keyUp", "↑")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeNano
                                 font.family: Typography.familyMono
@@ -271,7 +275,7 @@ Rectangle {
                             Text {
                                 id: downTxt
                                 anchors.centerIn: parent
-                                text: "Down"
+                                text: ChaSetI18n.tr("common.keyDown", "↓")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeNano
                                 font.family: Typography.familyMono

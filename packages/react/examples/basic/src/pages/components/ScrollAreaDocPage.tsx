@@ -508,7 +508,7 @@ export const CrossStackSpecification = {
             name: "pageStepRatio",
             type: "number",
             default: "0.85",
-            description: "Viewport dimension ratio used when clicking page-up/page-down.",
+            description: t('components.scrollArea.pageStepRatioDesc', 'Viewport dimension ratio used when clicking page-up/page-down.'),
           },
           {
             name: "smoothScroll",

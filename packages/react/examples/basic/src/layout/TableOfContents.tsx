@@ -219,11 +219,14 @@ export function TableOfContents({ items: propItems, containerRef }: TableOfConte
   const { t } = useChaSetI18n();
 
   const localizedItems = React.useMemo(() => {
+    if (propItems && propItems.length > 0) {
+      return items;
+    }
     return items.map((item) => ({
       ...item,
       title: t(`showcase.toc.${item.id}`, item.title),
     }));
-  }, [items, t]);
+  }, [items, propItems, t]);
 
   const [activeId, setActiveId] = useState<string>(() => items[0]?.id || '');
   const { setItems: setContextItems, tocOpen, setTocOpen } = useToc();

@@ -35,8 +35,8 @@ export function DocAnatomy({
             value={activeTab}
             onValueChange={(val) => setActiveTab(val as 'react' | 'qt')}
             options={[
-              { label: 'React (TSX)', value: 'react' },
-              ...(qtCode ? [{ label: 'Qt Quick (QML)', value: 'qt' }] : []),
+              { label: t('showcase.reactTsx', 'React (TSX)'), value: 'react' },
+              ...(qtCode ? [{ label: t('showcase.qtQuickQml', 'Qt Quick (QML)'), value: 'qt' }] : []),
             ]}
           />
         </div>

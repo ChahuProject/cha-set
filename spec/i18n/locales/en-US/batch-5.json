@@ -302,7 +302,8 @@
       "maxHeightDesc": "Bound the content height (rem-equivalent number, or any CSS length string).",
       "embeddedDesc": "Drop the card chrome (border / background / header) for inline prose embedding.",
       "copyLabelDesc": "Accessible label for the copy button.",
-      "classNameDesc": "Additional class names for the outer container."
+      "classNameDesc": "Additional class names for the outer container.",
+      "description": "Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt."
     },
     "colorPicker": {
       "defaultTitle": "Color",
@@ -321,7 +322,9 @@
       "showButtonsDesc": "Whether stepper navigation buttons appear on scrollbar hover.",
       "smoothScrollDesc": "Whether stepper buttons use smooth scrolling behavior.",
       "floatingDesc": "Whether scrollbars float over viewport content or occupy dedicated gutter layout space.",
-      "viewportClassNameDesc": "Additional CSS classes for the internal scroll viewport element."
+      "viewportClassNameDesc": "Additional CSS classes for the internal scroll viewport element.",
+      "pageStepRatioDesc": "Viewport dimension ratio used when clicking page-up/page-down.",
+      "description": "Augments native scroll functionality with custom cross-browser styling, dynamic hot-zone expansion, and interactive stepper navigation buttons."
     },
     "scrollBar": {
       "orientationDesc": "Scrollbar orientation axis.",

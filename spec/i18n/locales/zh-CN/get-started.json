@@ -194,7 +194,7 @@
         "weightPermitted": "{{count}} 种允许",
         "weightStrokePrefix": "描边 {{strokeWidth}} — ",
         "sizeRampTitle": "尺寸梯度 — 同一图标全梯度自适应呈现，无需人工缩放",
-        "webLabel": "Web · {{size}}",
+        "webLabel": "Web 端 · {{size}}",
         "desktopLabel": "桌面端 · {{size}}"
       },
       "centering": {
@@ -216,9 +216,9 @@
         "firstMatchWins": "首个匹配胜出",
         "stepEnvLabel": "环境变量 CHASET_ICON_SPEC",
         "stepEnvVal": "最高优先级 — 支持单 Shell、CI 任务单独注入，无需修改代码文件。",
-        "stepConfigLabel": "chaset.config.json → icons.spec",
+        "stepConfigLabel": "项目配置 chaset.config.json → icons.spec",
         "stepConfigVal": "项目级配置；提交至版本库，跟随代码库一同生效。",
-        "stepRegistryLabel": "spec/icons/registry.json → activeSpec",
+        "stepRegistryLabel": "规范注册表 spec/icons/registry.json → activeSpec",
         "stepRegistryVal": "库级默认规范，在宿主未做声明时生效。",
         "stepFallbackLabel": "首个已实现规范",
         "stepFallbackVal": "终极兜底方案，确保缺少配置时绝不中断构建。",

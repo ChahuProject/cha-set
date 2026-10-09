@@ -39,13 +39,13 @@
       "away": "离开",
       "error": "错误",
       "reactTag": "React 标签",
-      "qtQuick": "Qt Quick"
+      "qtQuick": "Qt Quick 标签"
     },
     "label": {
       "description": "渲染与表单控件相关联的可访问性文本标签。",
       "overviewDesc": "实时调整尺寸、必填标记、选填指示符、校验状态及禁用外观。",
       "emailAddress": "电子邮箱地址",
-      "emailPlaceholder": "name@example.com",
+      "emailPlaceholder": "请输入邮箱 (如 name@example.com)",
       "sizesTitle": "尺寸",
       "sizesDesc": "在标准文本尺寸与用于工具栏或高密度表单的紧凑高密度尺寸之间选择。",
       "defaultLabel": "默认标签",
@@ -184,4 +184,3 @@
     }
   }
 }
-

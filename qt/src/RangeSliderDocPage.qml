@@ -150,7 +150,7 @@ ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false 
             { name: "firstValue", type: "real", default: "20.0", description: ChaSetI18n.tr("components.rangeSlider.firstValueDesc", "Value represented by the first thumb.") },
             { name: "secondValue", type: "real", default: "80.0", description: ChaSetI18n.tr("components.rangeSlider.secondValueDesc", "Value represented by the second thumb.") },
             { name: "stepSize", type: "real", default: "1.0", description: ChaSetI18n.tr("components.rangeSlider.stepSizeDesc", "Stepped granularity increment.") },
-            { name: "size", type: "string", default: "'default'", description: "Size variant: 'default' | 'sm'." },
+            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.rangeSlider.sizeDesc", "Size variant: 'default' | 'sm'.") },
             { name: "showTooltip", type: "bool", default: "false", description: ChaSetI18n.tr("components.rangeSlider.showTooltipDesc", "Displays value tooltip bubble on hover, drag, and focus.") },
             { name: "readOnly", type: "bool", default: "false", description: ChaSetI18n.tr("components.rangeSlider.readOnlyDesc", "Prevents user interaction while preserving contrast.") },
             { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.rangeSlider.disabledDesc", "Disables slider interaction and dims opacity.") },

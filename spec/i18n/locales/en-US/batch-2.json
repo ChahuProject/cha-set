@@ -169,7 +169,8 @@
       "tooltipDelayDesc": "Delay in milliseconds before showing tooltip on hover.",
       "alwaysShowTooltipDesc": "Force tooltip to appear on hover even if text is not elided.",
       "showTooltipWhenElidedDesc": "Enable tooltip reveal whenever overflow truncation is detected.",
-      "copyableDesc": "Whether clicking the text copies it to clipboard with instant feedback."
+      "copyableDesc": "Whether clicking the text copies it to clipboard with instant feedback.",
+      "maxLinesDesc": "Maximum visible lines before truncating (1 = single line, >1 = clamp)."
     },
     "rangeSlider": {
       "description": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention and keyboard accessibility.",

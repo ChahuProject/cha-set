@@ -350,8 +350,8 @@ ChaSetSplitter {
         name: "Splitter"
         componentId: "splitter"
         propsModel: [
-            { name: "orientation", type: "string", default: "'vertical'", description: "Divider orientation: 'vertical' (separates left/right panes) or 'horizontal' (separates top/bottom panes)." },
-            { name: "size", type: "real", default: "50", description: "Controlled percentage width/height (0-100)." },
+            { name: "orientation", type: "string", default: "'vertical'", description: ChaSetI18n.tr("components.splitter.orientationDesc", "Divider orientation: 'vertical' (separates left/right panes) or 'horizontal' (separates top/bottom panes).") },
+            { name: "size", type: "real", default: "50", description: ChaSetI18n.tr("components.splitter.sizeDesc", "Controlled percentage width/height (0-100).") },
             { name: "initialSize", type: "int", default: "50", description: ChaSetI18n.tr("components.splitter.initialSizeDesc", "Initial size percentage for uncontrolled usage.") },
             { name: "minSize", type: "int", default: "0", description: ChaSetI18n.tr("components.splitter.minSizeDesc", "Minimum allowed percentage bound.") },
             { name: "maxSize", type: "int", default: "100", description: ChaSetI18n.tr("components.splitter.maxSizeDesc", "Maximum allowed percentage bound.") },

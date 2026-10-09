@@ -377,7 +377,7 @@ DocLayout {
                     name: "sideOffset",
                     type: "int",
                     default: "4",
-                    description: "Distance between target item and tooltip bubble."
+                    description: ChaSetI18n.tr("components.tooltip.sideOffsetDesc", "Distance between target item and tooltip bubble.")
                 },
                 {
                     name: "delay",

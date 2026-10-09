@@ -195,7 +195,7 @@ DocLayout {
             { name: "tooltipDelay", type: "int", default: "400", description: ChaSetI18n.tr("components.elidedText.tooltipDelayDesc", "Delay in milliseconds before showing tooltip on hover.") },
             { name: "alwaysShowTooltip", type: "bool", default: "false", description: ChaSetI18n.tr("components.elidedText.alwaysShowTooltipDesc", "Force tooltip to appear on hover even if text is not elided.") },
             { name: "showTooltipWhenElided", type: "bool", default: "true", description: ChaSetI18n.tr("components.elidedText.showTooltipWhenElidedDesc", "Enable tooltip reveal whenever overflow truncation is detected.") },
-            { name: "maxLines", type: "int", default: "1", description: "Maximum visible lines before truncating (1 = single line, >1 = clamp)." },
+            { name: "maxLines", type: "int", default: "1", description: ChaSetI18n.tr("components.elidedText.maxLinesDesc", "Maximum visible lines before truncating (1 = single line, >1 = clamp).") },
             { name: "copyable", type: "bool", default: "false", description: ChaSetI18n.tr("components.elidedText.copyableDesc", "Whether clicking the text copies it to clipboard with instant feedback.") }
         ]
     }

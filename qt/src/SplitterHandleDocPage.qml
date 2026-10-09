@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Splitter Handle"
-    description: "Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
+    description: ChaSetI18n.tr("components.splitterHandle.description", "Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation.")
 
     property real sidebarWidth: 200
     property real bottomHeight: 120

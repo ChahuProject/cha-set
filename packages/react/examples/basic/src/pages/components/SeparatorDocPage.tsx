@@ -374,8 +374,10 @@ export function SeparatorDocPage() {
             name: 'decorative',
             type: 'boolean',
             default: 'true',
-            description:
+            description: t(
+              'components.separator.decorativeDesc',
               'Whether the component is purely decorative (role="none") or represents a structural semantic separator (role="separator").',
+            ),
           },
           {
             name: 'className',

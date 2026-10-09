@@ -237,7 +237,7 @@ DocLayout {
                     DocText {
                         width: parent.width
                         wrap: true
-                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleRegular", "Regular 400 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)")
+                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleRegular", "Regular 400 — ChaSet Component Library · Unified Cross-Stack Typography System (The quick brown fox jumps over the lazy dog 0123456789)")
                         color: ThemeTokens.text
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeBody
@@ -246,7 +246,7 @@ DocLayout {
                     DocText {
                         width: parent.width
                         wrap: true
-                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleMedium", "Medium 500 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)")
+                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleMedium", "Medium 500 — ChaSet Component Library · Unified Cross-Stack Typography System (The quick brown fox jumps over the lazy dog 0123456789)")
                         color: ThemeTokens.text
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeBody
@@ -255,7 +255,7 @@ DocLayout {
                     DocText {
                         width: parent.width
                         wrap: true
-                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleSemibold", "Semibold 600 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)")
+                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleSemibold", "Semibold 600 — ChaSet Component Library · Unified Cross-Stack Typography System (The quick brown fox jumps over the lazy dog 0123456789)")
                         color: ThemeTokens.text
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeBody
@@ -264,7 +264,7 @@ DocLayout {
                     DocText {
                         width: parent.width
                         wrap: true
-                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleBold", "Bold 700 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)")
+                        text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.sampleBold", "Bold 700 — ChaSet Component Library · Unified Cross-Stack Typography System (The quick brown fox jumps over the lazy dog 0123456789)")
                         color: ThemeTokens.text
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeBody
@@ -305,7 +305,7 @@ DocLayout {
                         DocText {
                             width: parent.width
                             wrap: true
-                            text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.codeComment1", "const fontSystem = ChaSet.FontSystem; // 自动处理中文字体回退，消除宋体锯齿")
+                            text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.codeComment1", "const fontSystem = ChaSet.FontSystem; // Automatically handles Chinese font fallback, eliminating SimSun aliasing")
                             color: ThemeTokens.text
                             font.family: Typography.familyMono
                             font.pixelSize: Typography.sizeSmall
@@ -313,7 +313,7 @@ DocLayout {
                         DocText {
                             width: parent.width
                             wrap: true
-                            text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.codeComment2", "console.log(`[ChaSet] CJK glyphs: 字体平滑清晰, zero raster artifacts`);")
+                            text: ChaSetI18n.tr("getStarted.tokens.typographyRadius.codeComment2", "console.log(`[ChaSet] CJK glyphs: Smooth and sharp glyphs, zero raster artifacts`);")
                             color: ThemeTokens.subduedText
                             font.family: Typography.familyMono
                             font.pixelSize: Typography.sizeSmall

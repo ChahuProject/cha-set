@@ -302,7 +302,8 @@
       "maxHeightDesc": "限制内容高度（rem 等效数值，或任意 CSS 长度字符串）。",
       "embeddedDesc": "去除卡片边框（边框／背景／顶部栏）以便行内嵌入。",
       "copyLabelDesc": "复制按钮的无障碍标签。",
-      "classNameDesc": "外部容器的额外类名。"
+      "classNameDesc": "外部容器的额外类名。",
+      "description": "基于 ChaSet 滚动条、复制、选项卡与卡片原语构建的规范驱动语法高亮代码查看器，底层依赖零第三方词法解析器，在 React 与 Qt Quick 上提供完全一致的词法标记与高亮配色。"
     },
     "colorPicker": {
       "defaultTitle": "颜色",
@@ -321,7 +322,9 @@
       "showButtonsDesc": "悬停滚动条时是否显示步进导航按钮。",
       "smoothScrollDesc": "步进按钮是否使用平滑滚动行为。",
       "floatingDesc": "滚动条是悬浮于视口内容之上还是占据专用沟槽布局空间。",
-      "viewportClassNameDesc": "内部滚动视口元素的额外 CSS 类。"
+      "viewportClassNameDesc": "内部滚动视口元素的额外 CSS 类。",
+      "pageStepRatioDesc": "点击向上/向下翻页时使用的视口尺寸比例。",
+      "description": "为原生滚动能力注入跨端统一视觉样式、动态双盒热区扩展及交互式步进导航按钮的高性能滚动容器。"
     },
     "scrollBar": {
       "orientationDesc": "滚动条方向轴。",

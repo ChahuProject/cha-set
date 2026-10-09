@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Surfaces & Layout"
     pageTitle: "Panel Card"
-    description: "Structured card container with a distinguished tinted header bar, optional badge indicators, and collapsible content toggling."
+    description: ChaSetI18n.tr("components.panelCard.description", "Structured card container with a distinguished tinted header bar, optional badge indicators, and collapsible content toggling.")
 
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.panelCard.sandboxTitle", "Panel Card Sandbox")

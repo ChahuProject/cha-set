@@ -169,7 +169,8 @@
       "tooltipDelayDesc": "悬停后显示提示的延迟时长（毫秒）。",
       "alwaysShowTooltipDesc": "悬停时强制显示提示，即使文本未被省略。",
       "showTooltipWhenElidedDesc": "检测到溢出截断时允许提示显现。",
-      "copyableDesc": "点击文本是否复制到剪贴板并即时反馈。"
+      "copyableDesc": "点击文本是否复制到剪贴板并即时反馈。",
+      "maxLinesDesc": "截断前允许显示的最大可见行数（1 为单行截断，>1 为多行文本截断）。"
     },
     "rangeSlider": {
       "description": "用于选择数值最小—最大区间的双滑块，具备防碰撞与键盘无障碍支持。",

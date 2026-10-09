@@ -187,7 +187,7 @@ export function ElidedTextDocPage() {
             name: 'maxLines',
             type: 'number',
             default: '1',
-            description: 'Maximum visible lines before truncating (1 = single line, >1 = clamp).',
+            description: t('components.elidedText.maxLinesDesc', 'Maximum visible lines before truncating (1 = single line, >1 = clamp).'),
           },
           {
             name: 'copyable',

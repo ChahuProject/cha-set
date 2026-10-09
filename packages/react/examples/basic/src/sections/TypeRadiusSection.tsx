@@ -41,16 +41,16 @@ export default function TypeRadiusSection() {
 
         <div className="space-y-1 text-foreground">
           <p className="font-normal text-sm">
-            {t('getStarted.tokens.typographyRadius.sampleRegular', 'Regular 400 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)')}
+            {t('getStarted.tokens.typographyRadius.sampleRegular', 'Regular 400 — ChaSet Component Library · Unified Cross-Stack Typography System (The quick brown fox jumps over the lazy dog 0123456789)')}
           </p>
           <p className="font-medium text-sm">
-            {t('getStarted.tokens.typographyRadius.sampleMedium', 'Medium 500 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)')}
+            {t('getStarted.tokens.typographyRadius.sampleMedium', 'Medium 500 — ChaSet Component Library · Unified Cross-Stack Typography System (The quick brown fox jumps over the lazy dog 0123456789)')}
           </p>
           <p className="font-semibold text-sm">
-            {t('getStarted.tokens.typographyRadius.sampleSemibold', 'Semibold 600 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)')}
+            {t('getStarted.tokens.typographyRadius.sampleSemibold', 'Semibold 600 — ChaSet Component Library · Unified Cross-Stack Typography System (The quick brown fox jumps over the lazy dog 0123456789)')}
           </p>
           <p className="font-bold text-sm">
-            {t('getStarted.tokens.typographyRadius.sampleBold', 'Bold 700 — ChaSet 组件库 · 跨端统一字体系统 (The quick brown fox jumps over the lazy dog 0123456789)')}
+            {t('getStarted.tokens.typographyRadius.sampleBold', 'Bold 700 — ChaSet Component Library · Unified Cross-Stack Typography System (The quick brown fox jumps over the lazy dog 0123456789)')}
           </p>
         </div>
 
@@ -62,10 +62,10 @@ export default function TypeRadiusSection() {
 
         <div className="p-2.5 rounded-md bg-muted border border-border font-mono text-xs space-y-1">
           <p className="text-foreground">
-            {t('getStarted.tokens.typographyRadius.codeComment1', 'const fontSystem = ChaSet.FontSystem; // 自动处理中文字体回退，消除宋体锯齿')}
+            {t('getStarted.tokens.typographyRadius.codeComment1', 'const fontSystem = ChaSet.FontSystem; // Automatically handles Chinese font fallback, eliminating SimSun aliasing')}
           </p>
           <p className="text-muted-foreground">
-            {t('getStarted.tokens.typographyRadius.codeComment2', 'console.log(`[ChaSet] CJK glyphs: 字体平滑清晰, zero raster artifacts`);')}
+            {t('getStarted.tokens.typographyRadius.codeComment2', 'console.log(`[ChaSet] CJK glyphs: Smooth and sharp glyphs, zero raster artifacts`);')}
           </p>
         </div>
       </div>

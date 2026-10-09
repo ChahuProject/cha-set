@@ -12,8 +12,10 @@ Item {
     property string pageTitle: "Button"
     property string description: ""
     readonly property string slug: root.pageTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+    readonly property string camelSlug: root.slug.replace(/-([a-z0-9])/g, function(match, p1) { return p1.toUpperCase(); })
     readonly property string localizedDescription: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-        ? ChaSetI18n.tr("components." + root.slug + ".description", root.description)
+        ? ChaSetI18n.tr("components." + root.camelSlug + ".description",
+            ChaSetI18n.tr("components." + root.slug + ".description", root.description))
         : root.description
     property var tocItems: []
     property var autoTocItems: []
@@ -621,6 +623,7 @@ Item {
         ChaSetTableOfContents {
             id: tocCol
             visible: root.showToc
+            title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.onThisPage", "ON THIS PAGE").toUpperCase() : "ON THIS PAGE"
             anchors.right: parent.right
             width: ThemeTokens.dp(180)
             items: root.effectiveTocItems

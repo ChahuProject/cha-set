@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Composite Engines"
     pageTitle: "Code Block"
-    description: "Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt."
+    description: ChaSetI18n.tr("components.codeBlock.description", "Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt.")
     property string sampleCode: "import { useState } from 'react';\n\ninterface CounterProps {\n  initial?: number;\n}\n\n/**\n * A tiny counter with a clamped floor.\n * Demonstrates the shared spec lexer across React and Qt.\n */\nexport function Counter({ initial = 0 }: CounterProps) {\n  const [count, setCount] = useState(initial);\n  const bump = () => setCount((c) => Math.max(0, c + 1));\n\n  return (\n    <button onClick={bump} data-testid=\"counter\">\n      Count: {count}\n    </button>\n  );\n}"
 
     property string longLineCode: "const message = \"A deliberately long single line that would otherwise require horizontal scrolling to read in full.\";"
@@ -194,16 +194,16 @@ DocLayout {
         name: "CodeBlock"
         componentId: "code-block"
         propsModel: [
-            { name: "code", type: "string", defaultVal: "''", description: "Source text; ignored when `files` is provided." },
+            { name: "code", type: "string", defaultVal: "''", description: ChaSetI18n.tr("components.codeBlock.codeDesc", "Source text; ignored when `files` is provided.") },
             { name: "language", type: "string", defaultVal: "'tsx'", description: ChaSetI18n.tr("components.codeBlock.languageDesc", "Language id or alias resolved by the shared lexer.") },
-            { name: "filename", type: "string", defaultVal: "''", description: "Header title override; defaults to the resolved language label (alias: title)." },
-            { name: "files", type: "var", defaultVal: "[]", description: "Multi-file tab group of { name, code, language }; replaces the single-file body." },
+            { name: "filename", type: "string", defaultVal: "''", description: ChaSetI18n.tr("components.codeBlock.filenameDesc", "Header title override; defaults to the resolved language label (alias: title).") },
+            { name: "files", type: "var", defaultVal: "[]", description: ChaSetI18n.tr("components.codeBlock.filesDesc", "Multi-file tab group of { name, code, language }; replaces the single-file body.") },
             { name: "highlight", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.codeBlock.highlightDesc", "Enable spec-driven syntax highlighting.") },
             { name: "showLineNumbers", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.codeBlock.showLineNumbersDesc", "Render a line-number gutter.") },
-            { name: "showLanguage", type: "bool", defaultVal: "true", description: "Render the language / filename label in the header." },
+            { name: "showLanguage", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.codeBlock.showLanguageDesc", "Render the language / filename label in the header.") },
             { name: "showCopy", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.codeBlock.showCopyDesc", "Render the built-in copy button in the header.") },
             { name: "wrap", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.codeBlock.wrapDesc", "Wrap long lines instead of scrolling horizontally.") },
-            { name: "maxHeight", type: "real", defaultVal: "0", description: "Bound the body height; 0 means grow to fit the content." },
+            { name: "maxHeight", type: "real", defaultVal: "0", description: ChaSetI18n.tr("components.codeBlock.maxHeightDesc", "Bound the body height; 0 means grow to fit the content.") },
             { name: "embedded", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.codeBlock.embeddedDesc", "Drop the card chrome and header for inline embedding.") },
             { name: "copyLabel", type: "string", defaultVal: "''", description: ChaSetI18n.tr("components.codeBlock.copyLabelDesc", "Optional visible label for the copy button.") }
         ]
