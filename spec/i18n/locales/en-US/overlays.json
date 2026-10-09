@@ -8,7 +8,7 @@
       "username": "Username",
       "currentProfile": "Current profile: {{name}} ({{username}})",
       "desktopDraggableTitle": "Desktop Draggable Modal",
-      "desktopDraggableDesc": "Draggable modal with size presets, auto-fitting height, ESC badge, and fixed footer.",
+      "desktopDraggableDesc": "Draggable modal with size presets, auto-fitting height, and fixed footer.",
       "openDraggableWindow": "Open Draggable Window",
       "advancedDesktopTitle": "Advanced Desktop Tool",
       "advancedDesktopDesc": "Drag the title bar or window body to reposition. Switch size presets from the top-right button.",

@@ -8,7 +8,7 @@
       "username": "用户名",
       "currentProfile": "当前资料：{{name}} ({{username}})",
       "desktopDraggableTitle": "桌面可拖拽弹窗",
-      "desktopDraggableDesc": "支持尺寸档位切换、高度自适应、ESC 徽标及固定底栏的可拖拽弹窗。",
+      "desktopDraggableDesc": "支持尺寸档位切换、高度自适应、固定底栏的可拖拽弹窗。",
       "openDraggableWindow": "打开可拖拽窗口",
       "advancedDesktopTitle": "高级桌面工具",
       "advancedDesktopDesc": "拖动标题栏或窗口主体即可移动位置，通过右上角按钮可切换尺寸预设。",

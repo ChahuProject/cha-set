@@ -97,7 +97,7 @@ DocLayout {
                     }
 
                     DocText {
-                        text: ChaSetI18n.tr("overlays.dialog.desktopDraggableDesc", "Draggable modal with size presets, auto-fitting height, ESC badge, and fixed footer.")
+                        text: ChaSetI18n.tr("overlays.dialog.desktopDraggableDesc", "Draggable modal with size presets, auto-fitting height, and fixed footer.")
                         color: root.cMutedFg
                         font.pixelSize: Typography.sizeSmall
                         wrapMode: TextEdit.WordWrap
@@ -374,7 +374,6 @@ DocLayout {
         description: ChaSetI18n.tr("overlays.dialog.advancedDesktopDesc", "Drag the title bar or window body to reposition. Switch size presets from the top-right button.")
         dialogWidth: 520
         draggable: true
-        showEscBadge: true
 
         DocText {
             text: ChaSetI18n.tr("overlays.dialog.fixedFooterDesc", "The bottom actions area is extracted as a fixed footer that stays pinned during vertical scrolling.")

@@ -182,7 +182,7 @@ export function DialogDocPage() {
           <div className="flex flex-col gap-2 p-5 rounded-lg border border-border bg-card">
             <span className="text-sm font-medium text-foreground">{t('overlays.dialog.desktopDraggableTitle', 'Desktop Draggable Modal')}</span>
             <p className="text-xs text-muted-foreground mb-3">
-              {t('overlays.dialog.desktopDraggableDesc', 'Draggable modal with size presets, auto-fitting height, ESC badge, and fixed footer.')}
+              {t('overlays.dialog.desktopDraggableDesc', 'Draggable modal with size presets, auto-fitting height, and fixed footer.')}
             </p>
             <Dialog open={desktopOpen} onOpenChange={setDesktopOpen}>
               <DialogTrigger asChild>
