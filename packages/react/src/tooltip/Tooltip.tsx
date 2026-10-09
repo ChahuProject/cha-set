@@ -556,22 +556,25 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
 
     const effectiveSide = effectiveCoords ? effectiveCoords.side : side;
 
+    // Never mount a portal bubble without measured coords: a fixed node
+    // without explicit top/left renders at its static position (end of body
+    // = page bottom-right). The layout effect measures and re-renders.
+    if (portal && !effectiveCoords) {
+      return null;
+    }
+
     const computedStyle: React.CSSProperties = { ...style };
     if (portal) {
       computedStyle.position = 'fixed';
       if (effectiveCoords) {
-        computedStyle.top = `${(effectiveCoords.top * 0.0625).toFixed(4)}rem`;
-        computedStyle.left = `${(effectiveCoords.left * 0.0625).toFixed(4)}rem`;
+        // Viewport px from getBoundingClientRect map 1:1 to fixed offsets.
+        // Never convert to rem here: the showcase root font-size changes with
+        // uiScale (e.g. 17.6px/14.4px), which would drift the bubble.
+        computedStyle.top = `${effectiveCoords.top}px`;
+        computedStyle.left = `${effectiveCoords.left}px`;
         computedStyle.bottom = 'auto';
         computedStyle.right = 'auto';
         computedStyle.margin = 0;
-      } else {
-        // Hide until measured: a fixed bubble with no top/left lands at the
-        // bottom-right corner (static position). Keep it invisible at origin
-        // so the first paint never flashes at the wrong spot.
-        computedStyle.top = '0rem';
-        computedStyle.left = '0rem';
-        computedStyle.visibility = 'hidden';
       }
     } else {
       if (sideOffset !== undefined) {

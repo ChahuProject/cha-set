@@ -173,8 +173,8 @@ describe('Tooltip Component', () => {
     const tooltip = screen.getByRole('tooltip');
     // jsdom measures every rect as 0: exact placement would be negative,
     // the default collision clamp pushes the bubble back inside the viewport.
-    expect(tooltip.style.top).toBe('0.5rem');
-    expect(tooltip.style.left).toBe('0.5rem');
+    expect(tooltip.style.top).toBe('8px');
+    expect(tooltip.style.left).toBe('8px');
   });
 
   it('renders exact side placement when avoidCollisions is false', () => {
@@ -193,8 +193,8 @@ describe('Tooltip Component', () => {
     // No flip, no viewport clamping: exact anchor above the trigger,
     // even off-viewport (jsdom measures every rect as 0, bubble falls
     // back to 80x28).
-    expect(tooltip.style.top).toBe('-2.25rem');
-    expect(tooltip.style.left).toBe('-2.5rem');
+    expect(tooltip.style.top).toBe('-36px');
+    expect(tooltip.style.left).toBe('-40px');
   });
 
   it('suppresses tooltip when disabled is true', () => {
