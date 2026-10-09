@@ -187,7 +187,7 @@ export function InlineEditableText({
       {!disabled && (
         <PencilIcon
           className={cn(
-            'shrink-0 text-muted-foreground/0 transition-colors duration-quick ease-standard group-hover/editable-text:text-muted-foreground/70',
+            'shrink-0 text-muted-foreground/40 transition-colors duration-quick ease-standard group-hover/editable-text:text-muted-foreground/100 group-focus-visible/editable-text:text-muted-foreground/100',
             isSm ? 'size-3' : 'size-3.5',
           )}
         />

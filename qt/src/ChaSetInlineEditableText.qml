@@ -163,7 +163,7 @@ Item {
                 name: "pencil"
                 size: root._pencilSize
                 color: ThemeTokens.subduedText
-                opacity: (!root.disabled && (hoverMouse.containsMouse || displayBox.activeFocus)) ? 0.7 : 0.0
+                opacity: root.disabled ? 0.0 : ((hoverMouse.containsMouse || displayBox.activeFocus) ? 1.0 : 0.4)
 
                 Behavior on opacity {
                     enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
