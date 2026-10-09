@@ -44,10 +44,16 @@ export interface ScaleOsdProps
   ignoreUiScale?: boolean;
   /** Whether to show tooltip titles on buttons (default true) */
   showTooltips?: boolean;
-  /** Debounce delay in milliseconds for button clicks (default 0 for standalone component; useScaleOsd defaults to 1500) */
+  /** Debounce delay in milliseconds for button clicks (default 1500 when delayedCommit is true, or 0 when disabled) */
   debounceMs?: number;
+  /** Whether delayed commit / debouncing is enabled (default false; set true to debounce callbacks until user pauses) */
+  delayedCommit?: boolean;
   /** Callbacks */
   onChange?: (value: number) => void;
+  /** Callback fired immediately when scale value changes before debounce commit */
+  onImmediateChange?: (value: number) => void;
+  /** Callback fired when the scale value is committed after debounce (or immediately if delayedCommit is false) */
+  onCommit?: (value: number) => void;
   onStep?: (delta: number) => void;
   onReset?: () => void;
   onVisibilityChange?: (visible: boolean) => void;
@@ -103,8 +109,11 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       animated = true,
       ignoreUiScale = true,
       showTooltips = true,
-      debounceMs = 0,
+      debounceMs,
+      delayedCommit,
       onChange,
+      onImmediateChange,
+      onCommit,
       onStep,
       onReset,
       onVisibilityChange,
@@ -120,9 +129,24 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
     const min = propMin ?? (steps && steps.length > 0 ? (steps[0] ?? 0.2) : 0.2);
     const max = propMax ?? (steps && steps.length > 0 ? (steps[steps.length - 1] ?? 5.0) : 5.0);
 
+    const isDebounced =
+      delayedCommit !== undefined
+        ? delayedCommit && (debounceMs !== undefined ? debounceMs > 0 : true)
+        : debounceMs !== undefined && debounceMs > 0;
+    const effectiveDebounceMs =
+      debounceMs !== undefined ? debounceMs : (delayedCommit ? 1500 : 0);
+
     const isControlledValue = value !== undefined;
     const [internalValue, setInternalValue] = React.useState<number>(defaultValue);
-    const currentValue = isControlledValue ? value : internalValue;
+    const [pendingValue, setPendingValue] = React.useState<number | null>(null);
+
+    React.useEffect(() => {
+      if (isControlledValue) {
+        setPendingValue(null);
+      }
+    }, [isControlledValue, value]);
+
+    const currentValue = pendingValue !== null ? pendingValue : (isControlledValue ? value : internalValue);
 
     const isControlledVisible = propVisible !== undefined;
     const [internalVisible, setInternalVisible] = React.useState<boolean>(defaultVisible);
@@ -214,20 +238,47 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
     const commitValue = React.useCallback(
       (newVal: number) => {
         const clamped = Math.max(min, Math.min(max, Math.round(newVal * 100) / 100));
-        if (!isControlledValue) {
-          setInternalValue(clamped);
-        }
         clearDebounceTimer();
-        if (debounceMs <= 0) {
+
+        if (!isDebounced || effectiveDebounceMs <= 0) {
+          setPendingValue(null);
+          if (!isControlledValue) {
+            setInternalValue(clamped);
+          }
+          onImmediateChange?.(clamped);
           onChange?.(clamped);
+          onCommit?.(clamped);
         } else {
+          setPendingValue(clamped);
+          if (!isControlledValue) {
+            setInternalValue(clamped);
+          }
+          onImmediateChange?.(clamped);
           debounceTimerRef.current = setTimeout(() => {
+            setPendingValue(null);
             onChange?.(clamped);
+            onCommit?.(clamped);
+            updateVisibility(true);
+            if (!isHoveredRef.current) {
+              startHideTimer();
+            }
             debounceTimerRef.current = null;
-          }, debounceMs);
+          }, effectiveDebounceMs);
         }
       },
-      [clearDebounceTimer, debounceMs, isControlledValue, max, min, onChange],
+      [
+        clearDebounceTimer,
+        effectiveDebounceMs,
+        isControlledValue,
+        isDebounced,
+        max,
+        min,
+        onChange,
+        onCommit,
+        onImmediateChange,
+        startHideTimer,
+        updateVisibility,
+      ],
     );
 
     const handleStep = React.useCallback(

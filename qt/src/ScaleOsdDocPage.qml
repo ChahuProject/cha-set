@@ -10,9 +10,12 @@ DocLayout {
     pageTitle: "Scale OSD"
     description: ChaSetI18n.tr("components.scaleOsd.description", "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.")
     property real demoScale: 1.0
-    property bool delayEnabled: true
+    property real pendingScale: 1.0
+    property bool delayedCommit: true
+    property bool autoHideEnabled: true
 
     onDemoScaleChanged: {
+        root.pendingScale = root.demoScale;
         if (scaleOsd && Math.abs(scaleOsd.value - demoScale) > 0.001) {
             scaleOsd.value = demoScale;
             scaleOsd.show();
@@ -28,7 +31,9 @@ DocLayout {
   max={3.0}
   visible={visible}
   contained={true}
-  autoHideDuration={${root.delayEnabled ? 2000 : 0}}
+  delayedCommit={${root.delayedCommit}}
+  debounceMs={1500}
+  autoHideDuration={${root.autoHideEnabled ? 2000 : 0}}
   onChange={setScale}
 />`
         qtCode: `ChaSetScaleOsd {
@@ -36,12 +41,10 @@ DocLayout {
     step: 0.1
     min: 0.2
     max: 3.0
-    autoHideDuration: ${root.delayEnabled ? 2000 : 0}
-    onValueChanged: {
-        if (Math.abs(root.demoScale - value) > 0.001) {
-            root.demoScale = value;
-        }
-    }
+    delayedCommit: ${root.delayedCommit}
+    debounceDuration: 1500
+    autoHideDuration: ${root.autoHideEnabled ? 2000 : 0}
+    onChangeCommitted: function(val) { console.log(val) }
 }`
 
         controlsData: [
@@ -62,6 +65,7 @@ DocLayout {
                     size: "sm"
                     onClicked: {
                         root.demoScale = 0.5;
+                        root.pendingScale = 0.5;
                         scaleOsd.show();
                     }
                 }
@@ -72,6 +76,7 @@ DocLayout {
                     size: "sm"
                     onClicked: {
                         root.demoScale = 1.0;
+                        root.pendingScale = 1.0;
                         scaleOsd.show();
                     }
                 }
@@ -82,6 +87,7 @@ DocLayout {
                     size: "sm"
                     onClicked: {
                         root.demoScale = 2.0;
+                        root.pendingScale = 2.0;
                         scaleOsd.show();
                     }
                 }
@@ -101,10 +107,19 @@ DocLayout {
 
                 ChaSetCheckbox {
                     anchors.verticalCenter: parent.verticalCenter
-                    label: ChaSetI18n.tr("overlays.scaleOsd.delayLabel", "Auto-hide Delay (2s)")
-                    checked: root.delayEnabled
+                    label: ChaSetI18n.tr("overlays.scaleOsd.delayedCommitLabel", "延迟生效 (1.5s)")
+                    checked: root.delayedCommit
                     onToggled: (val) => {
-                        root.delayEnabled = val;
+                        root.delayedCommit = val;
+                    }
+                }
+
+                ChaSetCheckbox {
+                    anchors.verticalCenter: parent.verticalCenter
+                    label: ChaSetI18n.tr("overlays.scaleOsd.autoHideLabel", "自动隐藏 (2s)")
+                    checked: root.autoHideEnabled
+                    onToggled: (val) => {
+                        root.autoHideEnabled = val;
                     }
                 }
             }
@@ -115,8 +130,14 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                spacing: ThemeTokens.dp(24)
+                spacing: ThemeTokens.dp(20)
                 width: ThemeTokens.dp(320)
+
+                ChaSetBadge {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    variant: (root.delayedCommit && Math.abs(root.pendingScale - root.demoScale) > 0.001) ? "secondary" : "outline"
+                    text: (root.delayedCommit && Math.abs(root.pendingScale - root.demoScale) > 0.001) ? ChaSetI18n.tr("overlays.scaleOsd.pendingStatus", "防抖生效中... (待生效: {{percent}}%)", { percent: Math.round(root.pendingScale * 100) }) : ChaSetI18n.tr("overlays.scaleOsd.appliedStatus", "已生效: {{percent}}%", { percent: Math.round(root.demoScale * 100) })
+                }
 
                 Rectangle {
                     width: ThemeTokens.dp(96)
@@ -149,12 +170,16 @@ DocLayout {
                     id: scaleOsd
                     anchors.horizontalCenter: parent.horizontalCenter
                     value: root.demoScale
-                    autoHideDuration: root.delayEnabled ? 2000 : 0
+                    delayedCommit: root.delayedCommit
+                    debounceDuration: 1500
+                    autoHideDuration: root.autoHideEnabled ? 2000 : 0
                     defaultVisible: true
-                    onValueChanged: {
-                        if (Math.abs(root.demoScale - value) > 0.001) {
-                            root.demoScale = value;
-                        }
+                    onImmediateChanged: function(val) {
+                        root.pendingScale = val;
+                    }
+                    onChangeCommitted: function(val) {
+                        root.demoScale = val;
+                        root.pendingScale = val;
                     }
                 }
             }
@@ -215,7 +240,10 @@ ChaSetScaleOsd {
             { name: "showControls", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.scaleOsd.showControlsDesc", "Whether to display +/- and reset buttons.") },
             { name: "showTooltips", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.scaleOsd.showTooltipsDesc", "Whether to display hover tooltip hints for control buttons.") },
             { name: "contained", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.containedDesc", "Whether to position OSD absolutely within its parent container instead of fixed to the global viewport.") },
-            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.disabledDesc", "Disables all controls and user interaction.") }
+            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.disabledDesc", "Disables all controls and user interaction.") },
+            { name: "delayedCommit", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.delayedCommitDesc", "是否开启防抖延迟生效，暂停调节后再触发提交。") },
+            { name: "debounceDuration", type: "int", defaultVal: "1500", description: ChaSetI18n.tr("components.scaleOsd.debounceDurationDesc", "开启延迟生效时的防抖等待时长（毫秒）。") },
+            { name: "changeCommitted", type: "signal", defaultVal: "real value", description: ChaSetI18n.tr("components.scaleOsd.changeCommittedDesc", "延迟生效防抖完成后触发的最终提交信号。") }
         ]
     }
 }

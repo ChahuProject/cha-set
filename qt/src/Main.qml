@@ -507,6 +507,16 @@ ApplicationWindow {
         }
     }
 
+    function commitScaleTo(newVal) {
+        win._pendingUiScale = -1;
+        ThemeTokens.uiScale = newVal;
+        win.syncGlobalThemeConfig();
+        if (scaleOsd && (typeof testScenario === "undefined" || testScenario === "")) {
+            scaleOsd.value = newVal;
+            scaleOsd.show();
+        }
+    }
+
     // Debounced wheel-zoom path (mirrors React useScaleOsd optimistic UI):
     // the OSD readout follows the pending value immediately, while the heavy
     // ThemeTokens.uiScale re-layout commits only after 1500ms of wheel idle
@@ -876,6 +886,32 @@ ApplicationWindow {
                 themeFailures++;
             }
             scaleOsd.hide();
+
+            // 4b. Test ChaSetScaleOsd delayedCommit feature
+            var testDelayedOsd = Qt.createQmlObject(
+                'import QtQuick 6.10; import ChaSet; ChaSetScaleOsd { delayedCommit: true; debounceDuration: 200; value: 1.0; step: 0.1 }',
+                win.contentItem,
+                "scaleTestDelayedOsd"
+            );
+            if (!testDelayedOsd.delayedCommit) {
+                console.log("[qt-scenario] FAIL: testDelayedOsd delayedCommit property not true");
+                themeFailures++;
+            }
+            testDelayedOsd.stepZoom(+0.1);
+            if (testDelayedOsd.displayValue !== 1.1) {
+                console.log("[qt-scenario] FAIL: testDelayedOsd displayValue expected 1.1, got " + testDelayedOsd.displayValue);
+                themeFailures++;
+            }
+            if (testDelayedOsd.value !== 1.0) {
+                console.log("[qt-scenario] FAIL: testDelayedOsd value should still be 1.0 before debounce commit, got " + testDelayedOsd.value);
+                themeFailures++;
+            }
+            testDelayedOsd.commitNow();
+            if (testDelayedOsd.value !== 1.1) {
+                console.log("[qt-scenario] FAIL: testDelayedOsd value expected 1.1 after commitNow, got " + testDelayedOsd.value);
+                themeFailures++;
+            }
+            testDelayedOsd.destroy();
 
             // 5. Test Component Scale Linearity & Double-Scaling Prevention
             var testSegmented = Qt.createQmlObject(
@@ -2874,6 +2910,8 @@ ApplicationWindow {
                 ignoreUiScale: true
                 steps: win.scaleSteps
                 value: ThemeTokens.uiScale
+                delayedCommit: true
+                debounceDuration: 1500
                 format: function(v) {
                     return ChaSetI18n.tr("desktopComposite.scaleOsd.uiScaleFormat", "界面缩放 {{percent}}%", { percent: Math.round(v * 100) });
                 }
@@ -2882,11 +2920,8 @@ ApplicationWindow {
                 anchors.horizontalCenter: parent.horizontalCenter
                 z: 100
 
-                onStepTriggered: function(delta) {
-                    win.stepZoom(delta > 0 ? 1 : -1);
-                }
-                onResetTriggered: {
-                    win.resetZoom();
+                onChangeCommitted: function(newVal) {
+                    win.commitScaleTo(newVal);
                 }
             }
 

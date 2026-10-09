@@ -30,8 +30,14 @@ export interface UseScaleOsdOptions {
    * Direct calls to setScale() bypass debounce and apply immediately.
    */
   debounceMs?: number;
-  /** Callback fired when scale changes */
+  /** Whether delayed commit / debouncing is enabled (default true when debounceMs > 0) */
+  delayedCommit?: boolean;
+  /** Callback fired when scale changes (debounced if delayedCommit is active) */
   onChange?: (scale: number) => void;
+  /** Callback fired immediately when scale changes interactively before debounced commit */
+  onImmediateChange?: (scale: number) => void;
+  /** Callback fired when scale change is committed */
+  onCommit?: (scale: number) => void;
 }
 
 export function useScaleOsd(options: UseScaleOsdOptions = {}) {
@@ -45,8 +51,14 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
     autoHideDuration = 1400,
     enableShortcuts = true,
     debounceMs = 1500,
+    delayedCommit,
     onChange,
+    onImmediateChange,
+    onCommit,
   } = options;
+
+  const isDebounced =
+    delayedCommit !== undefined ? delayedCommit && debounceMs > 0 : debounceMs > 0;
 
   const isControlled = value !== undefined;
   const [internalScale, setInternalScale] = React.useState<number>(defaultValue);
@@ -126,16 +138,19 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
       if (!isControlled) {
         setInternalScale(clamped);
       }
+      onImmediateChange?.(clamped);
       show();
       clearDebounceTimer();
 
-      if (immediate || debounceMs <= 0) {
+      if (immediate || !isDebounced || debounceMs <= 0) {
         setPendingScale(null);
         onChange?.(clamped);
+        onCommit?.(clamped);
       } else {
         debounceTimerRef.current = setTimeout(() => {
           setPendingScale(null);
           onChange?.(clamped);
+          onCommit?.(clamped);
           // The debounced commit (1500ms) outlives autoHide (1400ms): re-show so
           // the OSD is still visible when the heavy apply lands as confirmation.
           show();
@@ -144,7 +159,7 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
       }
       return clamped;
     },
-    [clearDebounceTimer, debounceMs, isControlled, max, min, onChange, show],
+    [clearDebounceTimer, debounceMs, isControlled, isDebounced, max, min, onChange, onCommit, onImmediateChange, show],
   );
 
   const setScale = React.useCallback(
@@ -281,7 +296,14 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
       visible,
       steps,
       autoHideDuration,
-      onChange: setScale,
+      delayedCommit: isDebounced,
+      debounceMs: isDebounced ? debounceMs : 0,
+      onChange: (next: number) => commitScale(next, !isDebounced),
+      onImmediateChange: (next: number) => {
+        setPendingScale(next);
+        onImmediateChange?.(next);
+      },
+      onCommit: (next: number) => commitScale(next, true),
       onStep: (delta: number) => (delta > 0 ? zoomIn() : zoomOut()),
       onReset: reset,
       onVisibilityChange: setVisible,
@@ -290,11 +312,14 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
     }),
     [
       autoHideDuration,
+      commitScale,
+      debounceMs,
       displayScale,
+      isDebounced,
+      onImmediateChange,
       pauseHide,
       reset,
       resumeHide,
-      setScale,
       steps,
       visible,
       zoomIn,
@@ -305,11 +330,13 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
   return {
     scale: displayScale,
     appliedScale: scale,
+    isPending: pendingScale !== null,
     visible,
     zoomIn,
     zoomOut,
     reset,
     setScale,
+    commitScale,
     show,
     hide,
     pauseHide,

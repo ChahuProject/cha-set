@@ -13,6 +13,7 @@ Item {
     property bool ignoreUiScale: true
     property int autoHideDuration: 1400
     property int debounceDuration: 1500
+    property bool delayedCommit: false
     property bool showControls: true
     property bool showTooltips: true
     property bool disabled: false
@@ -22,9 +23,13 @@ Item {
     property bool animated: true
     property bool contained: false
 
+    property real _pendingValue: -1
+    readonly property real displayValue: (delayedCommit && _pendingValue > 0) ? _pendingValue : value
+
     signal stepTriggered(real delta)
     signal resetTriggered()
     signal changeCommitted(real value)
+    signal immediateChanged(real value)
 
     property bool defaultVisible: false
     property bool osdVisible: defaultVisible
@@ -96,16 +101,34 @@ Item {
         repeat: false
         running: false
         onTriggered: {
-            root.changeCommitted(root.value);
+            var committed = root._pendingValue > 0 ? root._pendingValue : root.value;
+            root._pendingValue = -1;
+            root.value = committed;
+            root.changeCommitted(committed);
+            root.show();
         }
     }
 
     function _scheduleCommit() {
-        if (root.debounceDuration > 0) {
+        if (root.delayedCommit && root.debounceDuration > 0) {
             debounceCommitTimer.restart();
         } else {
             debounceCommitTimer.stop();
-            root.changeCommitted(root.value);
+            var finalVal = root._pendingValue > 0 ? root._pendingValue : root.value;
+            root._pendingValue = -1;
+            root.value = finalVal;
+            root.changeCommitted(finalVal);
+        }
+    }
+
+    function commitNow() {
+        if (debounceCommitTimer.running || root._pendingValue > 0) {
+            debounceCommitTimer.stop();
+            var committed = root._pendingValue > 0 ? root._pendingValue : root.value;
+            root._pendingValue = -1;
+            root.value = committed;
+            root.changeCommitted(committed);
+            root.show();
         }
     }
 
@@ -125,12 +148,14 @@ Item {
 
     function stepZoom(delta) {
         if (root.disabled) return;
+        var base = root.displayValue;
+        var next = base;
         if (root.steps && root.steps.length > 0) {
             var sorted = root.steps.slice().sort(function(a, b) { return a - b; });
             var targetIdx = -1;
             if (delta > 0) {
                 for (var i = 0; i < sorted.length; i++) {
-                    if (sorted[i] > root.value + 0.001) {
+                    if (sorted[i] > base + 0.001) {
                         targetIdx = i;
                         break;
                     }
@@ -138,35 +163,57 @@ Item {
                 if (targetIdx === -1) targetIdx = sorted.length - 1;
             } else {
                 for (var j = sorted.length - 1; j >= 0; j--) {
-                    if (sorted[j] < root.value - 0.001) {
+                    if (sorted[j] < base - 0.001) {
                         targetIdx = j;
                         break;
                     }
                 }
                 if (targetIdx === -1) targetIdx = 0;
             }
-            root.value = sorted[targetIdx];
+            next = sorted[targetIdx];
+        } else {
+            next = Math.max(root.min, Math.min(root.max, Math.round((base + delta) * 100) / 100));
+        }
+
+        if (root.delayedCommit) {
+            root._pendingValue = next;
+            root.immediateChanged(next);
             root.stepTriggered(delta > 0 ? 1 : -1);
-            _scheduleCommit();
+            root._scheduleCommit();
             root.show();
         } else {
-            var next = Math.max(root.min, Math.min(root.max, Math.round((root.value + delta) * 100) / 100));
+            root._pendingValue = -1;
             root.value = next;
-            root.stepTriggered(delta);
-            _scheduleCommit();
+            root.immediateChanged(next);
+            root.stepTriggered(delta > 0 ? 1 : -1);
+            root._scheduleCommit();
             root.show();
         }
     }
 
     function resetZoom() {
         if (root.disabled) return;
-        root.value = 1.0;
-        root.resetTriggered();
-        _scheduleCommit();
-        root.show();
+        if (root.delayedCommit) {
+            root._pendingValue = 1.0;
+            root.immediateChanged(1.0);
+            root.resetTriggered();
+            root._scheduleCommit();
+            root.show();
+        } else {
+            root._pendingValue = -1;
+            root.value = 1.0;
+            root.immediateChanged(1.0);
+            root.resetTriggered();
+            root._scheduleCommit();
+            root.show();
+        }
     }
 
     onValueChanged: {
+        if (_pendingValue > 0 && Math.abs(value - _pendingValue) > 0.001) {
+            _pendingValue = -1;
+            debounceCommitTimer.stop();
+        }
         if (_initialized) {
             root.show();
         }
@@ -254,7 +301,7 @@ Item {
                 id: labelText
                 anchors.verticalCenter: parent.verticalCenter
                 width: isLg ? Math.max(root.ignoreUiScale ? 180 : ThemeTokens.dp(180), implicitWidth) : implicitWidth
-                text: root.format ? root.format(root.value) : ChaSetI18n.tr("desktopComposite.scaleOsd.percentFormat", "{{percent}}%", { percent: Math.round(root.value * 100) })
+                text: root.format ? root.format(root.displayValue) : ChaSetI18n.tr("desktopComposite.scaleOsd.percentFormat", "{{percent}}%", { percent: Math.round(root.displayValue * 100) })
                 color: ThemeTokens.text
                 font.pixelSize: root.ignoreUiScale
                     ? (root.isLg ? 20 : 14)
@@ -282,7 +329,7 @@ Item {
                 height: root.ignoreUiScale ? (root.isLg ? 42 : 28) : ThemeTokens.dp(root.isLg ? 42 : 28)
                 radius: root.ignoreUiScale ? (root.isLg ? 21 : 14) : ThemeTokens.dp(root.isLg ? 21 : 14)
                 anchors.verticalCenter: parent.verticalCenter
-                readonly property bool minusDisabled: root.disabled || root.value <= root.effectiveMin + 0.001
+                readonly property bool minusDisabled: root.disabled || root.displayValue <= root.effectiveMin + 0.001
                 color: minusTap.pressed ? ThemeTokens.pressed : (minusHover.hovered && !minusDisabled ? ThemeTokens.hover : "transparent")
                 opacity: minusDisabled ? 0.4 : 1.0
 
@@ -314,7 +361,7 @@ Item {
                 height: root.ignoreUiScale ? (root.isLg ? 42 : 28) : ThemeTokens.dp(root.isLg ? 42 : 28)
                 radius: root.ignoreUiScale ? (root.isLg ? 21 : 14) : ThemeTokens.dp(root.isLg ? 21 : 14)
                 anchors.verticalCenter: parent.verticalCenter
-                readonly property bool plusDisabled: root.disabled || root.value >= root.effectiveMax - 0.001
+                readonly property bool plusDisabled: root.disabled || root.displayValue >= root.effectiveMax - 0.001
                 color: plusTap.pressed ? ThemeTokens.pressed : (plusHover.hovered && !plusDisabled ? ThemeTokens.hover : "transparent")
                 opacity: plusDisabled ? 0.4 : 1.0
 
@@ -346,7 +393,7 @@ Item {
                 height: root.ignoreUiScale ? (root.isLg ? 42 : 28) : ThemeTokens.dp(root.isLg ? 42 : 28)
                 radius: root.ignoreUiScale ? (root.isLg ? 21 : 14) : ThemeTokens.dp(root.isLg ? 21 : 14)
                 anchors.verticalCenter: parent.verticalCenter
-                readonly property bool resetDisabled: root.disabled || Math.abs(root.value - 1.0) < 0.001
+                readonly property bool resetDisabled: root.disabled || Math.abs(root.displayValue - 1.0) < 0.001
                 color: resetTap.pressed ? ThemeTokens.pressed : (resetHover.hovered && !resetDisabled ? ThemeTokens.hover : "transparent")
                 opacity: resetDisabled ? 0.4 : 1.0
 

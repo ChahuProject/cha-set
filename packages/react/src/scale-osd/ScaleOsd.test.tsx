@@ -370,6 +370,92 @@ describe('ScaleOsd', () => {
 
     expect(screen.getByText('100%')).toBeInTheDocument();
   });
+
+  it('supports delayedCommit toggle with onImmediateChange and onCommit', () => {
+    const onChange = vi.fn();
+    const onImmediateChange = vi.fn();
+    const onCommit = vi.fn();
+
+    render(
+      <ScaleOsd
+        visible
+        defaultValue={1.0}
+        step={0.1}
+        delayedCommit={true}
+        debounceMs={500}
+        onChange={onChange}
+        onImmediateChange={onImmediateChange}
+        onCommit={onCommit}
+      />,
+    );
+
+    const zoomIn = screen.getByLabelText('Zoom In');
+    fireEvent.click(zoomIn);
+
+    // Visual readout and onImmediateChange fire immediately
+    expect(screen.getByText('110%')).toBeInTheDocument();
+    expect(onImmediateChange).toHaveBeenCalledWith(1.1);
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onCommit).not.toHaveBeenCalled();
+
+    // Advance 499ms
+    act(() => {
+      vi.advanceTimersByTime(499);
+    });
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onCommit).not.toHaveBeenCalled();
+
+    // Advance 1ms to complete debounce
+    act(() => {
+      vi.advanceTimersByTime(1);
+    });
+    expect(onChange).toHaveBeenCalledWith(1.1);
+    expect(onCommit).toHaveBeenCalledWith(1.1);
+  });
+
+  it('commits immediately when delayedCommit is false even if debounceMs is set', () => {
+    const onChange = vi.fn();
+    const onCommit = vi.fn();
+
+    render(
+      <ScaleOsd
+        visible
+        defaultValue={1.0}
+        step={0.1}
+        delayedCommit={false}
+        debounceMs={1500}
+        onChange={onChange}
+        onCommit={onCommit}
+      />,
+    );
+
+    const zoomIn = screen.getByLabelText('Zoom In');
+    fireEvent.click(zoomIn);
+
+    // Fires immediately without waiting
+    expect(screen.getByText('110%')).toBeInTheDocument();
+    expect(onChange).toHaveBeenCalledWith(1.1);
+    expect(onCommit).toHaveBeenCalledWith(1.1);
+  });
+
+  it('useScaleOsd supports delayedCommit={false} to commit immediately', () => {
+    const onChange = vi.fn();
+    const { result } = renderHook(() =>
+      useScaleOsd({
+        defaultValue: 1.0,
+        delayedCommit: false,
+        debounceMs: 1500,
+        onChange,
+      }),
+    );
+
+    act(() => {
+      result.current.zoomIn();
+    });
+
+    expect(result.current.scale).toBe(1.1);
+    expect(onChange).toHaveBeenCalledWith(1.1);
+  });
 });
 
 

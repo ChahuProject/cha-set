@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScaleOsd, Card, CodeBlock, Button, Checkbox, useChaSetI18n } from '@chahu/cha-set';
+import { ScaleOsd, Card, CodeBlock, Button, Checkbox, Badge, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -10,8 +10,10 @@ import { PropsTable } from '../../components/PropsTable';
 export function ScaleOsdDocPage() {
   const { t } = useChaSetI18n();
   const [scale, setScale] = useState(1.0);
+  const [pendingScale, setPendingScale] = useState(1.0);
   const [visible, setVisible] = useState(true);
-  const [delayEnabled, setDelayEnabled] = useState(true);
+  const [delayedCommit, setDelayedCommit] = useState(true);
+  const [autoHideEnabled, setAutoHideEnabled] = useState(true);
 
   const heroReactCode = `<ScaleOsd
   value={scale}
@@ -20,7 +22,9 @@ export function ScaleOsdDocPage() {
   max={3.0}
   visible={visible}
   contained={true}
-  autoHideDuration={${delayEnabled ? 2000 : 0}}
+  delayedCommit={${delayedCommit}}
+  debounceMs={1500}
+  autoHideDuration={${autoHideEnabled ? 2000 : 0}}
   onChange={setScale}
 />`;
 
@@ -38,8 +42,10 @@ export function ScaleOsdDocPage() {
     step: 0.1
     min: 0.2
     max: 3.0
-    autoHideDuration: ${delayEnabled ? 2000 : 0}
-    onValueChanged: function(val) { console.log(val) }
+    delayedCommit: ${delayedCommit}
+    debounceDuration: 1500
+    autoHideDuration: ${autoHideEnabled ? 2000 : 0}
+    onChangeCommitted: function(val) { console.log(val) }
 }`}
           title={t('desktopComposite.scaleOsd.sandboxTitle', 'Scale OSD Sandbox')}
           reactCode={heroReactCode}
@@ -51,6 +57,7 @@ export function ScaleOsdDocPage() {
                 size="sm"
                 onClick={() => {
                   setScale(0.5);
+                  setPendingScale(0.5);
                   setVisible(true);
                 }}
               >
@@ -61,6 +68,7 @@ export function ScaleOsdDocPage() {
                 size="sm"
                 onClick={() => {
                   setScale(1.0);
+                  setPendingScale(1.0);
                   setVisible(true);
                 }}
               >
@@ -71,6 +79,7 @@ export function ScaleOsdDocPage() {
                 size="sm"
                 onClick={() => {
                   setScale(2.0);
+                  setPendingScale(2.0);
                   setVisible(true);
                 }}
               >
@@ -84,15 +93,30 @@ export function ScaleOsdDocPage() {
                 {visible ? t('overlays.scaleOsd.hideOsd', 'Hide OSD') : t('overlays.scaleOsd.showOsd', 'Show OSD')}
               </Button>
               <Checkbox
-                checked={delayEnabled}
-                onCheckedChange={(checked) => setDelayEnabled(Boolean(checked))}
-                label={t('overlays.scaleOsd.delayLabel', 'Auto-hide Delay (2s)')}
+                checked={delayedCommit}
+                onCheckedChange={(checked) => setDelayedCommit(Boolean(checked))}
+                label={t('overlays.scaleOsd.delayedCommitLabel', 'Delayed Commit (1.5s)')}
+              />
+              <Checkbox
+                checked={autoHideEnabled}
+                onCheckedChange={(checked) => setAutoHideEnabled(Boolean(checked))}
+                label={t('overlays.scaleOsd.autoHideLabel', 'Auto-hide (2s)')}
               />
             </div>
           }
         >
           <div className="w-full max-w-md mx-auto py-12 flex flex-col items-center justify-center relative min-h-[16rem]">
             <Card className="w-full p-8 bg-card border flex flex-col items-center justify-center gap-4 relative overflow-hidden min-h-[16rem]">
+              <div className="flex flex-col items-center gap-2 mb-2">
+                <Badge
+                  variant={delayedCommit && Math.abs(pendingScale - scale) > 0.001 ? "secondary" : "outline"}
+                  className="tabular-nums"
+                >
+                  {delayedCommit && Math.abs(pendingScale - scale) > 0.001
+                    ? t('overlays.scaleOsd.pendingStatus', 'Debouncing commit... (Pending: {{percent}}%)', { percent: Math.round(pendingScale * 100) })
+                    : t('overlays.scaleOsd.appliedStatus', 'Applied: {{percent}}%', { percent: Math.round(scale * 100) })}
+                </Badge>
+              </div>
               <div
                 className="w-24 h-24 rounded-lg bg-primary/20 border border-primary flex items-center justify-center text-xs font-semibold text-primary transition-transform duration-short ease-standard mb-8"
                 style={{ transform: `scale(${scale})` }}
@@ -109,9 +133,15 @@ export function ScaleOsdDocPage() {
                 max={3.0}
                 visible={visible}
                 contained={true}
-                autoHideDuration={delayEnabled ? 2000 : 0}
+                delayedCommit={delayedCommit}
+                debounceMs={1500}
+                autoHideDuration={autoHideEnabled ? 2000 : 0}
                 placement="bottom-center"
-                onChange={setScale}
+                onImmediateChange={(val) => setPendingScale(val)}
+                onChange={(val) => {
+                  setScale(val);
+                  setPendingScale(val);
+                }}
                 onVisibilityChange={setVisible}
               />
             </Card>
@@ -244,10 +274,34 @@ ChaSetScaleOsd {
               description: t('components.scaleOsd.disabledDesc', 'Disables all controls and user interaction.'),
             },
             {
+              name: 'delayedCommit',
+              type: 'boolean',
+              default: 'false',
+              description: t('components.scaleOsd.delayedCommitDesc', 'Whether to enable debounced delayed commit, firing callbacks only after user interaction pauses.'),
+            },
+            {
+              name: 'debounceMs',
+              type: 'number',
+              default: '1500',
+              description: t('components.scaleOsd.debounceMsDesc', 'Debounce delay in milliseconds before committing when delayedCommit is enabled.'),
+            },
+            {
               name: 'onChange',
               type: '(value: number) => void',
               default: 'undefined',
               description: t('components.scaleOsd.onChangeDesc', 'Callback fired when scale value changes.'),
+            },
+            {
+              name: 'onImmediateChange',
+              type: '(value: number) => void',
+              default: 'undefined',
+              description: t('components.scaleOsd.onImmediateChangeDesc', 'Callback fired immediately during adjustments before debounced commit.'),
+            },
+            {
+              name: 'onCommit',
+              type: '(value: number) => void',
+              default: 'undefined',
+              description: t('components.scaleOsd.onCommitDesc', 'Callback fired when the debounced scale change is committed.'),
             },
             {
               name: 'onStep',
