@@ -28,6 +28,7 @@ Rectangle {
     }
     property bool showCloseButton: true
     property bool showEscBadge: false
+    property string closeTooltip: ""
     property bool draggable: true
     property bool closeOnEscape: true
     property bool closeOnOverlayClick: true
@@ -225,18 +226,25 @@ Rectangle {
                             }
                         }
 
-                        ChaSetButton {
-                            id: closeBtn
+                        ChaSetTooltip {
+                            id: closeBtnTooltip
                             visible: root.showCloseButton
-                            width: ThemeTokens.dp(28)
-                            height: ThemeTokens.dp(28)
-                            size: "icon"
-                            variant: "ghost"
-                            icon: "x"
+                            text: root.closeTooltip.length > 0 ? root.closeTooltip : ChaSetI18n.tr("common.close", "Close")
+                            shortcut: "Esc"
+                            side: "bottom"
                             anchors.verticalCenter: parent.verticalCenter
-                            onClicked: {
-                                root.open = false
-                                root.rejected()
+
+                            ChaSetButton {
+                                id: closeBtn
+                                width: ThemeTokens.dp(28)
+                                height: ThemeTokens.dp(28)
+                                size: "icon"
+                                variant: "ghost"
+                                icon: "x"
+                                onClicked: {
+                                    root.open = false
+                                    root.rejected()
+                                }
                             }
                         }
                     }

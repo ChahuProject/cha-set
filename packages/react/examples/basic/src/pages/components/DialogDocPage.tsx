@@ -49,7 +49,6 @@ export function DialogDocPage() {
     description: "Make changes to your profile here. Click save when you're done."
     dialogWidth: 480
     showCloseButton: true
-    showEscBadge: true
 
     Column {
         width: parent.width
@@ -193,7 +192,6 @@ export function DialogDocPage() {
               </DialogTrigger>
               <DialogContent
                 draggable={true}
-                showEscBadge={true}
                 defaultWidthRem={32}
                 defaultHeightRem={22}
                 sizeOptions={desktopSizeOptions}
@@ -368,7 +366,7 @@ export function DialogDocPage() {
             {
               name: 'showEscBadge',
               type: 'boolean',
-              default: 'true',
+              default: 'false',
               description: t('components.dialog.showEscBadgeDesc', 'Whether to render an ESC keyboard shortcut badge in the top-right controls.'),
             },
             {

@@ -200,6 +200,18 @@ Item {
     onTextChanged: root.syncGlobalService()
     onEffectiveTargetChanged: root.syncGlobalService()
 
+    Shortcut {
+        sequence: "Escape"
+        autoRepeat: false
+        enabled: root.shouldShow && !root.disabled && ChaSetOverlayHub.count === 0
+        onActivated: {
+            root.internalActive = false
+            if (useGlobalService && globalService) {
+                globalService.cancel(root)
+            }
+        }
+    }
+
     onShouldShowChanged: {
         root.clampRevision++
     }

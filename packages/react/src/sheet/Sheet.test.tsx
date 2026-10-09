@@ -122,4 +122,25 @@ describe('Sheet', () => {
 
     expect(screen.getByText('Non-dismissible Sheet')).toBeInTheDocument();
   });
+
+  it('provides close button with tooltip containing shortcut Esc hint', async () => {
+    const { fireEvent } = await import('@testing-library/react');
+    render(
+      <Sheet defaultOpen>
+        <SheetContent>
+          <SheetTitle>Tooltip Sheet</SheetTitle>
+        </SheetContent>
+      </Sheet>,
+    );
+
+    const closeBtn = screen.getByRole('button', { name: 'Close' });
+    expect(closeBtn).toBeInTheDocument();
+
+    fireEvent.mouseEnter(closeBtn);
+
+    const tooltip = await screen.findByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent('Close');
+    expect(tooltip).toHaveTextContent('Esc');
+  });
 });

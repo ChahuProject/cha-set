@@ -140,5 +140,29 @@ describe('DraggableModal and FloatingWindow', () => {
       document.documentElement.style.fontSize = prevFontSize;
     }
   });
+
+  it('renders close button with tooltip and handles onClose and Escape', async () => {
+    const onClose = vi.fn();
+    render(
+      <DraggableModal showCloseButton onClose={onClose}>
+        <div>Modal With Close</div>
+      </DraggableModal>,
+    );
+
+    const closeBtn = screen.getByRole('button', { name: 'Close' });
+    expect(closeBtn).toBeInTheDocument();
+
+    fireEvent.mouseEnter(closeBtn);
+    const tooltip = await screen.findByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent('Close');
+    expect(tooltip).toHaveTextContent('Esc');
+
+    fireEvent.click(closeBtn);
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
+    expect(onClose).toHaveBeenCalledTimes(2);
+  });
 });
 

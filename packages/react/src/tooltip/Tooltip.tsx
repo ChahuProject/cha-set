@@ -165,6 +165,22 @@ export const TooltipRoot = React.forwardRef<HTMLDivElement, TooltipRootProps>(
       };
     }, [clearTimer]);
 
+    React.useEffect(() => {
+      if (!isOpen) return;
+
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          clearTimer();
+          updateOpen(false);
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }, [isOpen, clearTimer, updateOpen]);
+
     const contextValue = React.useMemo<TooltipContextValue>(
       () => ({
         isOpen,

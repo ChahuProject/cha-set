@@ -39,7 +39,7 @@ describe('Dialog conformance (spec contract)', () => {
     const parsedContent = dialogContentSchema.parse(contentFixture);
     expect(parsedContent.draggable).toBe(true);
     expect(parsedContent.showCloseButton).toBe(true);
-    expect(parsedContent.showEscBadge).toBe(true);
+    expect(parsedContent.showEscBadge).toBe(false);
     expect(parsedContent.size).toBe('lg');
     expect(parsedContent.closeOnOverlayClick).toBe(true);
     expect(parsedContent.closeOnEscape).toBe(true);

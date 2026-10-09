@@ -121,11 +121,33 @@ Item {
         return false
     }
 
+    property bool closeOnEscape: true
+
+    function close(reason) {
+        root.hide()
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        autoRepeat: false
+        enabled: root.open && root.closeOnEscape && ChaSetOverlayHub.isTop(root)
+        onActivated: root.close("escape")
+    }
+
+    Keys.onEscapePressed: function(event) {
+        if (root.closeOnEscape) {
+            event.accepted = true
+            root.close("escape")
+        }
+    }
+
     onOpenChanged: {
         if (open) {
             updateTargetPos()
+            ChaSetOverlayHub.register(root)
             root.opened()
         } else {
+            ChaSetOverlayHub.unregister(root)
             root.closed()
         }
     }

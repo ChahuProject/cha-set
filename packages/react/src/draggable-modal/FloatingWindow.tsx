@@ -4,6 +4,8 @@ import { Rnd } from 'react-rnd';
 import { Button } from '../button/Button';
 import { XIcon } from '../lib/icons';
 import { ScrollArea } from '../scroll-area/ScrollArea';
+import { Tooltip } from '../tooltip/Tooltip';
+import { useChaSetI18n } from '../i18n';
 import { cn } from '../lib/utils';
 
 export interface FloatingWindowProps {
@@ -56,6 +58,9 @@ export function FloatingWindow({
     height: defaultHeight,
   };
 
+  const { t } = useChaSetI18n();
+  const closeTooltip = t('common.close', 'Close');
+
   return createPortal(
     <div className="fixed inset-0 z-50">
       <div
@@ -80,15 +85,17 @@ export function FloatingWindow({
           <span className="truncate text-sm font-medium text-foreground">{title}</span>
           <div className="flex items-center gap-1 shrink-0">
             {topActions}
-            <Button
-              size="icon-xs"
-              variant="ghost"
-              className="size-6 cursor-pointer rounded-md hover:bg-muted"
-              onClick={() => onOpenChange(false)}
-              aria-label="Close floating window"
-            >
-              <XIcon className="size-3.5" />
-            </Button>
+            <Tooltip content={closeTooltip} shortcut="Esc" side="bottom">
+              <Button
+                size="icon-xs"
+                variant="ghost"
+                className="size-6 cursor-pointer rounded-md hover:bg-muted"
+                onClick={() => onOpenChange(false)}
+                aria-label="Close floating window"
+              >
+                <XIcon className="size-3.5" />
+              </Button>
+            </Tooltip>
           </div>
         </div>
         <ScrollArea className="min-h-0 flex-1 p-4">{children}</ScrollArea>

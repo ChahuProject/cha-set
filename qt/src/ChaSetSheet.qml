@@ -17,6 +17,7 @@ Rectangle {
     property bool closeOnOverlayClick: true
     property bool closeOnEscape: true
     property bool showCloseButton: true
+    property string closeTooltip: ""
     property int customSheetSize: 0
     property int sheetSize: {
         if (customSheetSize > 0) return ThemeTokens.dp(customSheetSize)
@@ -156,15 +157,21 @@ Rectangle {
                     }
                 }
 
-                ChaSetButton {
-                    icon: "x"
-                    variant: "ghost"
-                    size: "icon-xs"
+                ChaSetTooltip {
                     visible: root.showCloseButton
+                    text: root.closeTooltip.length > 0 ? root.closeTooltip : ChaSetI18n.tr("common.close", "Close")
+                    shortcut: "Esc"
+                    side: "bottom"
                     anchors.verticalCenter: parent.verticalCenter
-                    onClicked: {
-                        root.open = false
-                        root.closed()
+
+                    ChaSetButton {
+                        icon: "x"
+                        variant: "ghost"
+                        size: "icon-xs"
+                        onClicked: {
+                            root.open = false
+                            root.closed()
+                        }
                     }
                 }
             }

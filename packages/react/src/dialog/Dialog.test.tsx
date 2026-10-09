@@ -375,4 +375,25 @@ describe('Dialog', () => {
     expect(onOpenChange).not.toHaveBeenCalled();
     expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
+
+  it('provides close button with tooltip containing shortcut Esc hint', async () => {
+    render(
+      <Dialog defaultOpen>
+        <DialogContent>
+          <DialogTitle>Tooltip Test Dialog</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    );
+
+    const closeButton = screen.getByRole('button', { name: 'Close' });
+    expect(closeButton).toBeInTheDocument();
+
+    // Mouse over close button to trigger tooltip
+    fireEvent.mouseEnter(closeButton);
+
+    const tooltip = await screen.findByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent('Close');
+    expect(tooltip).toHaveTextContent('Esc');
+  });
 });

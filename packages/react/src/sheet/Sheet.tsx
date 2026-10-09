@@ -3,6 +3,8 @@ import * as React from 'react';
 import { cn } from '../lib/utils';
 import { Button } from '../button';
 import { XIcon } from '../lib/icons';
+import { Tooltip } from '../tooltip';
+import { useChaSetI18n } from '../i18n';
 
 export interface SheetProps
   extends React.ComponentProps<typeof SheetPrimitive.Root> {
@@ -123,6 +125,7 @@ export interface SheetContentProps
   side?: SheetSide;
   size?: SheetSize;
   showCloseButton?: boolean;
+  closeTooltip?: string;
   overlayClassName?: string;
 }
 
@@ -133,8 +136,11 @@ export function SheetContent({
   side = 'right',
   size = 'default',
   showCloseButton = true,
+  closeTooltip,
   ...props
 }: SheetContentProps) {
+  const { t } = useChaSetI18n();
+  const resolvedCloseTooltip = closeTooltip ?? t('common.close', 'Close');
   const isHorizontal = side === 'left' || side === 'right';
   const sizeClass = isHorizontal ? horizontalSizeClasses[size] : verticalSizeClasses[size];
 
@@ -164,17 +170,24 @@ export function SheetContent({
       >
         {children}
         {showCloseButton && (
-          <SheetClose asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              className="absolute top-3 right-3 rounded-xs opacity-70 transition-opacity hover:opacity-100 cursor-pointer"
-              aria-label="Close"
-            >
-              <XIcon className="size-4" />
-              <span className="sr-only">Close</span>
-            </Button>
-          </SheetClose>
+          <Tooltip
+            content={resolvedCloseTooltip}
+            shortcut="Esc"
+            side="bottom"
+            className="absolute top-3 right-3 z-20"
+          >
+            <SheetClose asChild>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                className="rounded-xs opacity-70 transition-opacity hover:opacity-100 cursor-pointer"
+                aria-label={resolvedCloseTooltip}
+              >
+                <XIcon className="size-4" />
+                <span className="sr-only">{resolvedCloseTooltip}</span>
+              </Button>
+            </SheetClose>
+          </Tooltip>
         )}
       </SheetPrimitive.Popup>
     </SheetPortal>

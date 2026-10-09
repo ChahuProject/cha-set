@@ -11,7 +11,6 @@ export function DraggableModalDocPage() {
 
   const reactCode = `{open && (
   <DraggableModal
-    showEscBadge
     initialPositionMode="center"
     sizeOptions={[
       { name: 'Default', special: 'default' },
@@ -20,11 +19,8 @@ export function DraggableModalDocPage() {
       { name: 'Fullscreen', special: 'fullscreen' },
     ]}
     sizeMenuTooltip="Adjust window size"
-    topControls={
-      <Button variant="ghost" size="icon-xs" onClick={() => setOpen(false)}>
-        <XIcon className="size-3" />
-      </Button>
-    }
+    showCloseButton
+    onClose={() => setOpen(false)}
     fixedFooter={
       <div className="flex justify-end p-3 bg-muted/20">
         <Button variant="secondary" size="xs" onClick={() => setOpen(false)}>
@@ -58,7 +54,6 @@ export function DraggableModalDocPage() {
           qtCode={`ChaSetDraggableModal {
     title: "Floating Tools"
     initialPositionMode: "center"
-    showEscBadge: true
     sizeOptions: [
         { name: "Default", special: "default" },
         { name: "Widescreen", widthRem: 32, heightRem: 20 },
@@ -74,7 +69,6 @@ export function DraggableModalDocPage() {
 
             {open && (
               <DraggableModal
-                showEscBadge
                 initialPositionMode="center"
                 sizeOptions={[
                   { name: t('overlays.draggableModal.presetDefault', 'Default'), special: 'default' },
@@ -83,11 +77,8 @@ export function DraggableModalDocPage() {
                   { name: t('overlays.draggableModal.presetFullscreen', 'Fullscreen'), special: 'fullscreen' },
                 ]}
                 sizeMenuTooltip={t('overlays.draggableModal.adjustSize', 'Adjust window size')}
-                topControls={
-                  <Button variant="ghost" size="icon-xs" onClick={() => setOpen(false)}>
-                    <XIcon className="size-3" />
-                  </Button>
-                }
+                showCloseButton
+                onClose={() => setOpen(false)}
                 fixedFooter={
                   <div className="flex justify-end p-3 bg-muted/20">
                     <Button variant="secondary" size="xs" onClick={() => setOpen(false)}>

@@ -6,7 +6,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../dropdown-menu';
-import { Maximize2Icon } from '../lib/icons';
+import { Maximize2Icon, XIcon } from '../lib/icons';
+import { Button } from '../button';
+import { Tooltip } from '../tooltip';
+import { useChaSetI18n } from '../i18n';
 import { Kbd } from '../kbd';
 import { ScrollArea } from '../scroll-area';
 import { cn } from '../lib/utils';
@@ -35,6 +38,9 @@ export interface DraggableModalProps
   dataSlot?: string;
   dragHandleClassName?: string;
   showEscBadge?: boolean;
+  showCloseButton?: boolean;
+  onClose?: () => void;
+  closeTooltip?: string;
   fixedFooter?: React.ReactNode;
   topControls?: React.ReactNode;
   rootExtra?: React.ReactNode;
@@ -81,6 +87,9 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
       dataSlot = 'dialog-content',
       dragHandleClassName,
       showEscBadge = false,
+      showCloseButton = false,
+      onClose,
+      closeTooltip,
       fixedFooter,
       topControls,
       rootExtra,
@@ -124,6 +133,18 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     const contentRef = React.useRef<HTMLDivElement | null>(null);
     const footerRef = React.useRef<HTMLDivElement | null>(null);
     const hasManuallyAdjustedRef = React.useRef(false);
+    const { t } = useChaSetI18n();
+
+    React.useEffect(() => {
+      if (!onClose) return;
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          onClose();
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [onClose]);
 
     React.useImperativeHandle(ref, () => rndRef.current?.getSelfElement() as HTMLDivElement, []);
 
@@ -415,7 +436,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
         </div>
       )}
 
-      {(showEscBadge || (effectiveSizeOptions && effectiveSizeOptions.length > 0) || finalTopControls) && (
+      {(showEscBadge || (effectiveSizeOptions && effectiveSizeOptions.length > 0) || finalTopControls || (showCloseButton && onClose)) && (
         <div className="absolute top-3.5 right-3.5 z-30 flex items-center gap-1.5 pointer-events-auto">
           {showEscBadge && (
             <Kbd
@@ -456,6 +477,19 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
             </DropdownMenu>
           )}
           {finalTopControls}
+          {showCloseButton && onClose && (
+            <Tooltip content={closeTooltip ?? t('common.close', 'Close')} shortcut="Esc" side="bottom">
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                className="size-7 text-muted-foreground hover:text-foreground cursor-pointer"
+                onClick={onClose}
+                aria-label={closeTooltip ?? t('common.close', 'Close')}
+              >
+                <XIcon className="size-3.5" />
+              </Button>
+            </Tooltip>
+          )}
         </div>
       )}
 

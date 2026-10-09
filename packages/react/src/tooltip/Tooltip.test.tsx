@@ -291,4 +291,26 @@ describe('Tooltip Component', () => {
     const arrow = tooltip.querySelector('[data-slot="tooltip-arrow"]');
     expect(arrow).toBeInTheDocument();
   });
+
+  it('dismisses tooltip when Escape key is pressed', () => {
+    render(
+      <Tooltip content="Escape dismiss" delayDuration={0}>
+        <button type="button">Trigger</button>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Trigger' });
+    fireEvent.mouseEnter(trigger);
+
+    expect(screen.getByRole('tooltip')).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' });
+
+    expect(screen.getByRole('tooltip')).toHaveAttribute('data-state', 'closed');
+
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  });
 });

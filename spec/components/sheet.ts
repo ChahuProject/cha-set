@@ -29,6 +29,7 @@ export const sheetContentSchema = z.object({
   side: sheetSideSchema.default('right'),
   size: sheetSizeSchema.default('default'),
   showCloseButton: z.boolean().default(true),
+  closeTooltip: z.string().optional(),
   closeOnOverlayClick: z.boolean().default(true),
   closeOnEscape: z.boolean().default(true),
 });

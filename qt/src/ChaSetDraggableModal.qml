@@ -16,6 +16,8 @@ Rectangle {
     property real remBase: ThemeTokens.dp(16)
     property bool autoFitHeight: true
     property bool showEscBadge: false
+    property bool showCloseButton: true
+    property string closeTooltip: ""
     property Item fixedFooter: null
     property Item topControls: null
 
@@ -271,13 +273,21 @@ Rectangle {
                 }
 
                 // Close Button
-                ChaSetButton {
-                    id: closeBtn
-                    icon: "x"
-                    variant: "ghost"
-                    size: "icon-xs"
+                ChaSetTooltip {
+                    id: closeBtnTooltip
+                    visible: root.showCloseButton
+                    text: root.closeTooltip.length > 0 ? root.closeTooltip : ChaSetI18n.tr("common.close", "Close")
+                    shortcut: "Esc"
+                    side: "bottom"
                     anchors.verticalCenter: parent.verticalCenter
-                    onClicked: root.open = false
+
+                    ChaSetButton {
+                        id: closeBtn
+                        icon: "x"
+                        variant: "ghost"
+                        size: "icon-xs"
+                        onClicked: root.open = false
+                    }
                 }
             }
         }

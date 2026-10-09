@@ -9,6 +9,8 @@ import { XIcon } from '../lib/icons';
 import { splitFixedFooter } from '../lib/splitFixedFooter';
 import { cn } from '../lib/utils';
 import { useExitAnimation } from '../lib/useExitAnimation';
+import { Tooltip } from '../tooltip';
+import { useChaSetI18n } from '../i18n';
 
 export type { DraggableModalSizeOption as DialogSizeOption, DraggableModalSizeOption as 弹窗尺寸选项 };
 
@@ -203,7 +205,16 @@ export const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>
     if (asChild && React.isValidElement(children)) {
       const child = children as React.ReactElement<any>;
       return React.cloneElement(child, {
-        ref,
+        ...props,
+        ...child.props,
+        ref: (node: HTMLButtonElement | null) => {
+          if (typeof ref === 'function') ref(node);
+          else if (ref && 'current' in ref) (ref as any).current = node;
+
+          const childRef = (child.props as any)?.ref ?? (child as any).ref;
+          if (typeof childRef === 'function') childRef(node);
+          else if (childRef && 'current' in childRef) childRef.current = node;
+        },
         onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
           child.props.onClick?.(e);
           if (!e.defaultPrevented) {
@@ -302,6 +313,7 @@ export interface DialogContentProps
   draggable?: boolean;
   showCloseButton?: boolean;
   showEscBadge?: boolean;
+  closeTooltip?: string;
   defaultWidthRem?: number;
   defaultHeightRem?: number;
   minWidthRem?: number;
@@ -340,7 +352,8 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
       closeOnEscape = true,
       draggable = true,
       showCloseButton = true,
-      showEscBadge = true,
+      showEscBadge = false,
+      closeTooltip,
       defaultWidthRem,
       defaultHeightRem,
       minWidthRem,
@@ -371,6 +384,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
   ) => {
     const { open, setOpen, titleId, descriptionId } = useDialogContext();
     const { visible, exiting } = useExitAnimation(open);
+    const { t } = useChaSetI18n();
 
     React.useEffect(() => {
       if (!open || !closeOnEscape) return;
@@ -406,20 +420,23 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
     const effectiveSizeMenuTooltip = sizeMenuTooltip ?? 尺寸按钮提示;
 
     const { content, fixedFooter } = splitFixedFooter(children, DialogFooter);
+    const resolvedCloseTooltip = closeTooltip ?? t('common.close', 'Close');
 
     const closeControl = showCloseButton && (
-      <DialogClose asChild>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          data-slot="dialog-close-button"
-          className="size-7 text-muted-foreground hover:text-foreground"
-          aria-label="Close"
-        >
-          <XIcon className="size-4" />
-          <span className="sr-only">Close</span>
-        </Button>
-      </DialogClose>
+      <Tooltip content={resolvedCloseTooltip} shortcut="Esc" side="bottom">
+        <DialogClose asChild>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            data-slot="dialog-close-button"
+            className="size-7 text-muted-foreground hover:text-foreground cursor-pointer"
+            aria-label={resolvedCloseTooltip}
+          >
+            <XIcon className="size-4" />
+            <span className="sr-only">{resolvedCloseTooltip}</span>
+          </Button>
+        </DialogClose>
+      </Tooltip>
     );
 
     if (draggable) {
