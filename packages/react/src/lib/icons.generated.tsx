@@ -2984,6 +2984,7 @@ export const ICON_ALIASES: Record<string, IconName> = {
   "logo": "chaset",
   "language": "globe",
   "system": "monitor",
+  "computer": "monitor",
   "edit": "pencil",
   "delete": "trash",
   "archive": "package",

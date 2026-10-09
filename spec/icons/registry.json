@@ -1544,6 +1544,7 @@
         "logo": "chaset",
         "language": "globe",
         "system": "monitor",
+        "computer": "monitor",
         "edit": "pencil",
         "delete": "trash",
         "archive": "package",
