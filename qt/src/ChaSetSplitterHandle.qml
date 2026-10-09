@@ -64,8 +64,15 @@ Item {
 
         width: root.isVertical ? (root.active ? root.activeVisualThickness : root.visualThickness) : parent.width
         height: root.isVertical ? parent.height : (root.active ? root.activeVisualThickness : root.visualThickness)
+        // Rounded ends so the suspended line never reads as a T-cap where
+        // it stops short of the outer border frame.
+        radius: 1
         color: root.active ? root.activeLineColor : root.lineColor
-        opacity: root.active ? 1.0 : 0.75
+        // Resting opacity 0 (React Splitter `opacity-0
+        // group-hover:opacity-100` parity): no full-height constant
+        // border-color line is ever painted; the hairline only appears on
+        // hover/drag while the transparent hit zone stays interactive.
+        opacity: root.active ? 1.0 : 0.0
 
         Behavior on color {
             enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")

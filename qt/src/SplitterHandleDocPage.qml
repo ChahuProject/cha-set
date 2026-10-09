@@ -80,6 +80,12 @@ DocLayout {
 
                 Row {
                     anchors.fill: parent
+                    // Inset by the outer 1px border ring: the sidebar pane is
+                    // an opaque square Rectangle that would otherwise paint
+                    // over the border and rounded corners (occlusion fix).
+                    // The edge:right visual line stays inset from the frame
+                    // via its own dp(6) top/bottom margins (no T-junction).
+                    anchors.margins: 1
 
                     Rectangle {
                         id: sidebarBox
@@ -230,6 +236,9 @@ ChaSetSplitterHandle {
 
                     Item {
                         anchors.fill: parent
+                        // Inset by the outer 1px border ring so the bottom
+                        // pane never covers the border or corners.
+                        anchors.margins: 1
 
                         Rectangle {
                             anchors.left: parent.left

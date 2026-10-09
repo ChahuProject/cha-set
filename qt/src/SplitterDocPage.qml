@@ -49,21 +49,16 @@ DocLayout {
                     font.pixelSize: Typography.sizeSmall
                 }
 
-                Rectangle {
+                // ChaSetSplitter owns its own rounded-md border frame
+                // (radius dp(6), 1px border, panel fill); this wrapper only
+                // sizes the sandbox so no double border is painted.
+                Item {
                     width: ThemeTokens.dp(480)
                     height: ThemeTokens.dp(192)
-                    radius: ThemeTokens.dp(6)
-                    border.color: ThemeTokens.border
-                    border.width: 1
-                    color: ThemeTokens.panel
-                    clip: true
 
                     ChaSetSplitter {
                         id: splitter
                         anchors.fill: parent
-                        // Inset by the outer 1px border: opaque panes paint
-                        // above the parent border ring and would cover it.
-                        anchors.margins: 1
                         orientation: "vertical"
                         initialSize: 35
                         minRatio: 0.20
@@ -209,21 +204,15 @@ ChaSetSplitter {
                     font.pixelSize: Typography.sizeSmall
                 }
 
-                Rectangle {
+                // ChaSetSplitter owns its own rounded-md border frame;
+                // this wrapper only sizes the sandbox (no double border).
+                Item {
                     width: ThemeTokens.dp(480)
                     height: ThemeTokens.dp(220)
-                    radius: ThemeTokens.dp(6)
-                    border.color: ThemeTokens.border
-                    border.width: 1
-                    color: ThemeTokens.panel
-                    clip: true
 
                     ChaSetSplitter {
                         id: verticalSplitter
                         anchors.fill: parent
-                        // Inset by the outer 1px border: opaque panes paint
-                        // above the parent border ring and would cover it.
-                        anchors.margins: 1
                         orientation: "horizontal"
                         initialSize: 65
                         minRatio: 0.20

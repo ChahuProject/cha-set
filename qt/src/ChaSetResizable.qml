@@ -6,6 +6,16 @@ import ChaSet
 SplitView {
     id: root
 
+    // Container-owned rounding contract (React parity):
+    // ResizablePanelGroup itself is borderless; the caller draws
+    // `rounded-lg border border-border bg-card overflow-hidden` and insets
+    // this view by the 1px border ring (anchors.margins: 1). This SplitView
+    // must never draw its own radius/border: its dynamic panes are opaque
+    // square Rectangles that would cover any rounding painted here.
+    // clip: true keeps dragged panes inside the inset viewport so they can
+    // never paint over the caller's border ring (occlusion fix).
+    clip: true
+
     property bool withHandle: false
     property int handleThickness: withHandle ? 8 : 4
     readonly property int effectiveHandleThickness: ThemeTokens.dp(root.handleThickness)

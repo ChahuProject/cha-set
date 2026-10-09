@@ -48,13 +48,33 @@ Item {
 
     readonly property bool isVertical: root.orientation === "vertical"
 
+    // 1px hairline border width of the outer frame below. Panes are inset
+    // by exactly this amount so opaque pane fills never cover the border
+    // ring or the rounded corners (occlusion fix). QML clip is rectangular
+    // and ignores radius, so insetting (not clip) is what protects corners.
+    readonly property int frameInset: 1
+
+    // Outer container owns rounding/border/fill (React parity: DocPage
+    // wrapper `border rounded-md bg-card overflow-hidden`). It sits behind
+    // all panes (z: -1) and never intercepts pointer input.
+    Rectangle {
+        id: outerFrame
+        anchors.fill: parent
+        radius: ThemeTokens.dp(6)
+        border.width: 1
+        border.color: ThemeTokens.border
+        color: ThemeTokens.panel
+        z: -1
+    }
+
     Item {
         id: firstPane
-        x: 0
-        y: 0
-        width: root.isVertical ? Math.max(0, root.width * root.splitRatio - root.effectiveGutterSize / 2) : root.width
-        height: root.isVertical ? root.height : Math.max(0, root.height * root.splitRatio - root.effectiveGutterSize / 2)
+        x: root.frameInset
+        y: root.frameInset
+        width: root.isVertical ? Math.max(0, (root.width - root.frameInset * 2) * root.splitRatio - root.effectiveGutterSize / 2) : root.width - root.frameInset * 2
+        height: root.isVertical ? root.height - root.frameInset * 2 : Math.max(0, (root.height - root.frameInset * 2) * root.splitRatio - root.effectiveGutterSize / 2)
         clip: true
+        z: 0
 
         Loader {
             anchors.fill: parent
@@ -65,12 +85,15 @@ Item {
     // Gutter Separator
     Rectangle {
         id: gutter
-        x: root.isVertical ? firstPane.width : 0
-        y: root.isVertical ? 0 : firstPane.height
-        width: root.isVertical ? root.effectiveGutterSize : root.width
-        height: root.isVertical ? root.height : root.effectiveGutterSize
+        x: root.isVertical ? firstPane.x + firstPane.width : root.frameInset
+        y: root.isVertical ? root.frameInset : firstPane.y + firstPane.height
+        width: root.isVertical ? root.effectiveGutterSize : root.width - root.frameInset * 2
+        height: root.isVertical ? root.height - root.frameInset * 2 : root.effectiveGutterSize
         color: "transparent"
         activeFocusOnTab: true
+        // Floating above both panes so hover/drag highlight never sinks
+        // under opaque pane fills.
+        z: 10
 
         Rectangle {
             id: gutterIndicator
@@ -192,11 +215,12 @@ Item {
 
     Item {
         id: secondPane
-        x: root.isVertical ? (gutter.x + root.effectiveGutterSize) : 0
-        y: root.isVertical ? 0 : (gutter.y + root.effectiveGutterSize)
-        width: root.isVertical ? Math.max(0, root.width - x) : root.width
-        height: root.isVertical ? root.height : Math.max(0, root.height - y)
+        x: root.isVertical ? (gutter.x + root.effectiveGutterSize) : root.frameInset
+        y: root.isVertical ? root.frameInset : (gutter.y + root.effectiveGutterSize)
+        width: root.isVertical ? Math.max(0, root.width - root.frameInset - x) : root.width - root.frameInset * 2
+        height: root.isVertical ? root.height - root.frameInset * 2 : Math.max(0, root.height - root.frameInset - y)
         clip: true
+        z: 0
 
         Loader {
             anchors.fill: parent
