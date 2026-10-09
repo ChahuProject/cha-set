@@ -117,15 +117,10 @@ describe('Tooltip Component', () => {
     expect(screen.getByRole('tooltip')).toBeInTheDocument();
   });
 
-  it('applies correct side positioning classes and data-side attributes', () => {
-    const sides = [
-      { side: 'top', expectedClass: 'bottom-full left-1/2 -translate-x-1/2 mb-2' },
-      { side: 'bottom', expectedClass: 'top-full left-1/2 -translate-x-1/2 mt-2' },
-      { side: 'left', expectedClass: 'right-full top-1/2 -translate-y-1/2 mr-2' },
-      { side: 'right', expectedClass: 'left-full top-1/2 -translate-y-1/2 ml-2' },
-    ] as const;
+  it('renders each side in the global body layer with data-side preserved', () => {
+    const sides = ['top', 'bottom', 'left', 'right'] as const;
 
-    for (const { side, expectedClass } of sides) {
+    for (const side of sides) {
       const { unmount } = render(
         <Tooltip content={`Side ${side}`} side={side} delayDuration={0}>
           <button type="button">Button {side}</button>
@@ -138,12 +133,68 @@ describe('Tooltip Component', () => {
       const tooltip = screen.getByRole('tooltip');
       expect(tooltip).toBeInTheDocument();
       expect(tooltip).toHaveAttribute('data-side', side);
-      for (const cls of expectedClass.split(' ')) {
-        expect(tooltip).toHaveClass(cls);
-      }
+      // Global layer: portalled to document.body with fixed positioning,
+      // immune to `overflow: hidden` clipping from any ancestor.
+      expect(tooltip.parentElement).toBe(document.body);
+      expect(tooltip.style.position).toBe('fixed');
 
       unmount();
     }
+  });
+
+  it('escapes overflow-hidden ancestors via the body portal', () => {
+    render(
+      <div data-testid="clip-box" style={{ overflow: 'hidden', position: 'relative' }}>
+        <Tooltip content="Unclipped tip" delayDuration={0}>
+          <button type="button">Clipped trigger</button>
+        </Tooltip>
+      </div>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Clipped trigger' });
+    fireEvent.mouseEnter(trigger);
+
+    const tooltip = screen.getByRole('tooltip');
+    const clipBox = screen.getByTestId('clip-box');
+    expect(clipBox.contains(tooltip)).toBe(false);
+    expect(document.body.contains(tooltip)).toBe(true);
+  });
+
+  it('clamps the bubble inside the viewport by default', () => {
+    render(
+      <Tooltip content="Clamped tip" side="top" delayDuration={0}>
+        <button type="button">Corner trigger</button>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Corner trigger' });
+    fireEvent.mouseEnter(trigger);
+
+    const tooltip = screen.getByRole('tooltip');
+    // jsdom measures every rect as 0: exact placement would be negative,
+    // the default collision clamp pushes the bubble back inside the viewport.
+    expect(tooltip.style.top).toBe('0.5rem');
+    expect(tooltip.style.left).toBe('0.5rem');
+  });
+
+  it('renders exact side placement when avoidCollisions is false', () => {
+    render(
+      <Tooltip content="Exact tip" side="top" avoidCollisions={false} delayDuration={0}>
+        <button type="button">Exact trigger</button>
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Exact trigger' });
+    fireEvent.mouseEnter(trigger);
+
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toHaveAttribute('data-side', 'top');
+    expect(tooltip.parentElement).toBe(document.body);
+    // No flip, no viewport clamping: exact anchor above the trigger,
+    // even off-viewport (jsdom measures every rect as 0, bubble falls
+    // back to 80x28).
+    expect(tooltip.style.top).toBe('-2.25rem');
+    expect(tooltip.style.left).toBe('-2.5rem');
   });
 
   it('suppresses tooltip when disabled is true', () => {

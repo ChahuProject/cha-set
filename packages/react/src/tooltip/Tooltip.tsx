@@ -34,6 +34,7 @@ interface TooltipContextValue {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   side: TooltipSide;
+  avoidCollisions: boolean;
   delayDuration: number;
   disabled: boolean;
   tooltipId: string;
@@ -71,6 +72,7 @@ function composeEventHandlers<E extends React.SyntheticEvent<any, any>>(
 export interface TooltipRootProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   side?: TooltipSide;
+  avoidCollisions?: boolean;
   delayDuration?: number;
   disabled?: boolean;
   open?: boolean;
@@ -84,6 +86,7 @@ export const TooltipRoot = React.forwardRef<HTMLDivElement, TooltipRootProps>(
     {
       children,
       side = 'top',
+      avoidCollisions = true,
       delayDuration: propDelay,
       disabled = false,
       open: controlledOpen,
@@ -205,6 +208,7 @@ export const TooltipRoot = React.forwardRef<HTMLDivElement, TooltipRootProps>(
         isOpen,
         setIsOpen: updateOpen,
         side,
+        avoidCollisions,
         delayDuration,
         disabled,
         tooltipId,
@@ -220,6 +224,7 @@ export const TooltipRoot = React.forwardRef<HTMLDivElement, TooltipRootProps>(
         isOpen,
         updateOpen,
         side,
+        avoidCollisions,
         delayDuration,
         disabled,
         tooltipId,
@@ -339,6 +344,7 @@ function computeTooltipPosition({
   align,
   sideOffset = 8,
   alignOffset = 0,
+  avoidCollisions = true,
 }: {
   triggerEl: HTMLElement;
   contentEl: HTMLElement | null;
@@ -346,6 +352,7 @@ function computeTooltipPosition({
   align: TooltipAlign;
   sideOffset?: number;
   alignOffset?: number;
+  avoidCollisions?: boolean;
 }): { top: number; left: number; side: TooltipSide } {
   const triggerRect = triggerEl.getBoundingClientRect();
   const contentWidth = contentEl && contentEl.offsetWidth > 0 ? contentEl.offsetWidth : 80;
@@ -356,22 +363,25 @@ function computeTooltipPosition({
 
   let actualSide = side;
 
-  // Collision detection / auto-flip if overflowing viewport boundary
-  if (side === 'top' && triggerRect.top - contentHeight - sideOffset < margin) {
-    if (triggerRect.bottom + contentHeight + sideOffset <= viewportHeight - margin) {
-      actualSide = 'bottom';
-    }
-  } else if (side === 'bottom' && triggerRect.bottom + contentHeight + sideOffset > viewportHeight - margin) {
-    if (triggerRect.top - contentHeight - sideOffset >= margin) {
-      actualSide = 'top';
-    }
-  } else if (side === 'left' && triggerRect.left - contentWidth - sideOffset < margin) {
-    if (triggerRect.right + contentWidth + sideOffset <= viewportWidth - margin) {
-      actualSide = 'right';
-    }
-  } else if (side === 'right' && triggerRect.right + contentWidth + sideOffset > viewportWidth - margin) {
-    if (triggerRect.left - contentWidth - sideOffset >= margin) {
-      actualSide = 'left';
+  // Collision detection / auto-flip if overflowing viewport boundary.
+  // Disabled entirely when avoidCollisions is false: exact side placement.
+  if (avoidCollisions) {
+    if (side === 'top' && triggerRect.top - contentHeight - sideOffset < margin) {
+      if (triggerRect.bottom + contentHeight + sideOffset <= viewportHeight - margin) {
+        actualSide = 'bottom';
+      }
+    } else if (side === 'bottom' && triggerRect.bottom + contentHeight + sideOffset > viewportHeight - margin) {
+      if (triggerRect.top - contentHeight - sideOffset >= margin) {
+        actualSide = 'top';
+      }
+    } else if (side === 'left' && triggerRect.left - contentWidth - sideOffset < margin) {
+      if (triggerRect.right + contentWidth + sideOffset <= viewportWidth - margin) {
+        actualSide = 'right';
+      }
+    } else if (side === 'right' && triggerRect.right + contentWidth + sideOffset > viewportWidth - margin) {
+      if (triggerRect.left - contentWidth - sideOffset >= margin) {
+        actualSide = 'left';
+      }
     }
   }
 
@@ -392,7 +402,9 @@ function computeTooltipPosition({
     }
 
     // Clamp horizontally to viewport bounds
-    left = Math.max(margin, Math.min(left, viewportWidth - contentWidth - margin));
+    if (avoidCollisions) {
+      left = Math.max(margin, Math.min(left, viewportWidth - contentWidth - margin));
+    }
   } else {
     left = actualSide === 'left'
       ? triggerRect.left - contentWidth - sideOffset
@@ -407,7 +419,9 @@ function computeTooltipPosition({
     }
 
     // Clamp vertically to viewport bounds
-    top = Math.max(margin, Math.min(top, viewportHeight - contentHeight - margin));
+    if (avoidCollisions) {
+      top = Math.max(margin, Math.min(top, viewportHeight - contentHeight - margin));
+    }
   }
 
   return { top, left, side: actualSide };
@@ -420,6 +434,7 @@ export interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement
   alignOffset?: number;
   shortcut?: string;
   arrow?: boolean;
+  avoidCollisions?: boolean;
   portal?: boolean;
   container?: HTMLElement | null;
 }
@@ -434,6 +449,7 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
       alignOffset,
       shortcut,
       arrow = false,
+      avoidCollisions: propAvoid,
       portal = true,
       container,
       children,
@@ -442,8 +458,9 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
     },
     ref,
   ) => {
-    const { isOpen, side: contextSide, tooltipId, triggerElement, rootElement } = useTooltip();
+    const { isOpen, side: contextSide, tooltipId, triggerElement, rootElement, avoidCollisions: contextAvoid } = useTooltip();
     const side = propSide || contextSide || 'top';
+    const avoidCollisions = propAvoid ?? contextAvoid ?? true;
     const { visible, exiting } = useExitAnimation(isOpen);
 
     const innerRef = React.useRef<HTMLDivElement>(null);
@@ -468,6 +485,7 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
             align,
             sideOffset,
             alignOffset,
+            avoidCollisions,
           });
           setCoords(next);
         };
@@ -501,7 +519,7 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
 
         setInwardOffset({ x: shiftX, y: shiftY });
       }
-    }, [visible, portal, anchor, side, align, sideOffset, alignOffset, children, shortcut]);
+    }, [visible, portal, anchor, side, align, sideOffset, alignOffset, avoidCollisions, children, shortcut]);
 
     if (!visible) {
       return null;
@@ -515,6 +533,7 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
           align,
           sideOffset,
           alignOffset,
+          avoidCollisions,
         })
       : null);
 
@@ -564,7 +583,9 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
           'whitespace-nowrap pointer-events-none select-none',
           'z-50 rounded-md border border-border bg-popover px-3 py-1.5 text-xs text-popover-foreground shadow-md inline-flex items-center gap-2',
           exiting ? 'animate-out fade-out-0 zoom-out-95' : 'animate-in fade-in-0 zoom-in-95',
-          sidePositionClasses[side],
+          // Portal coordinates are explicit: the in-flow offset/translate
+          // classes would double-shift the bubble, so they only apply inline.
+          portal ? null : sidePositionClasses[side],
           className,
         )}
         {...props}
@@ -621,6 +642,7 @@ const TooltipComponent = React.forwardRef<HTMLDivElement, TooltipProps>(
       content,
       shortcut,
       arrow,
+      avoidCollisions = true,
       sideOffset,
       alignOffset,
       portal = true,
@@ -642,6 +664,7 @@ const TooltipComponent = React.forwardRef<HTMLDivElement, TooltipProps>(
         <TooltipRoot
           ref={ref}
           side={side}
+          avoidCollisions={avoidCollisions}
           delayDuration={delayDuration}
           disabled={disabled}
           open={open}
@@ -659,6 +682,7 @@ const TooltipComponent = React.forwardRef<HTMLDivElement, TooltipProps>(
             side={side}
             shortcut={shortcut}
             arrow={arrow}
+            avoidCollisions={avoidCollisions}
             sideOffset={sideOffset}
             alignOffset={alignOffset}
             portal={portal}
@@ -674,6 +698,7 @@ const TooltipComponent = React.forwardRef<HTMLDivElement, TooltipProps>(
       <TooltipRoot
         ref={ref}
         side={side}
+        avoidCollisions={avoidCollisions}
         delayDuration={delayDuration}
         disabled={disabled}
         open={open}

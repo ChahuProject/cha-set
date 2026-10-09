@@ -10,6 +10,7 @@ Item {
     // Component API Contract per spec/components/tooltip.ts
     property string text: ""
     property string side: "top"        // "top" | "bottom" | "left" | "right"
+    property bool avoidCollisions: true // false pins exact side placement with no viewport nudging
     property int delay: 200
     property bool active: false
     property bool disabled: false
@@ -43,27 +44,33 @@ Item {
         anchors.fill: parent
     }
 
-    readonly property point targetPosInRoot: {
-        if (!effectiveTarget) return Qt.point(0, 0)
-        if (effectiveTarget === root) return Qt.point(0, 0)
+    // Global layer: parent the bubble to the window Overlay so it renders above
+    // every clipped ancestor (dialogs, draggable modals, preview stages) instead
+    // of being cut off by `clip: true` containers. Falls back to local rendering
+    // when no Overlay is available. Same idiom as ChaSetDialog's root parent.
+    readonly property Item overlayLayer: (typeof Overlay !== "undefined" && Overlay.overlay) ? Overlay.overlay : null
+    readonly property Item positionSpace: bubble.parent
+
+    readonly property point targetPosInSpace: {
+        if (!positionSpace || !effectiveTarget) return Qt.point(0, 0)
         var _depX = effectiveTarget.x
         var _depY = effectiveTarget.y
         var _depW = effectiveTarget.width
         var _depH = effectiveTarget.height
         var _depScale = ThemeTokens.uiScale
-        var _depRootX = root.x
-        var _depRootY = root.y
+        var _depSpaceW = positionSpace.width
+        var _depSpaceH = positionSpace.height
         var _rev = root.clampRevision
         var _show = root.shouldShow
         try {
-            return root.mapFromItem(effectiveTarget, 0, 0)
+            return positionSpace.mapFromItem(effectiveTarget, 0, 0)
         } catch (e) {
             return Qt.point(0, 0)
         }
     }
 
-    readonly property real targetX: targetPosInRoot.x
-    readonly property real targetY: targetPosInRoot.y
+    readonly property real targetX: targetPosInSpace.x
+    readonly property real targetY: targetPosInSpace.y
     readonly property real targetW: effectiveTarget ? effectiveTarget.width : root.width
     readonly property real targetH: effectiveTarget ? effectiveTarget.height : root.height
 
@@ -100,12 +107,36 @@ Item {
     readonly property real clampedX: {
         var base = calculatedX
         if (!root.shouldShow) return base
-        var win = root.Window.window
+        if (!root.avoidCollisions) return base
         var margin = ThemeTokens.dp(8)
         var _scale = ThemeTokens.uiScale
         var _tw = targetW
         var _bw = bubble.width
         var _rev = root.clampRevision
+        if (root.overlayLayer) {
+            // Coordinates are already in overlay space: clamp directly.
+            var _ow = root.overlayLayer.width
+            if (bubble.width > 0) {
+                if (root.side === "top" || root.side === "bottom") {
+                    if (base + bubble.width > _ow - margin) {
+                        base -= (base + bubble.width - (_ow - margin))
+                    }
+                    if (base < margin) {
+                        base += (margin - base)
+                    }
+                } else if (root.side === "left") {
+                    if (base < margin) {
+                        base += (margin - base)
+                    }
+                } else if (root.side === "right") {
+                    if (base + bubble.width > _ow - margin) {
+                        base -= (base + bubble.width - (_ow - margin))
+                    }
+                }
+            }
+            return base
+        }
+        var win = root.Window.window
         if (win && bubble.width > 0) {
             try {
                 var mapped = root.mapToItem(null, base, 0)
@@ -133,12 +164,36 @@ Item {
     readonly property real clampedY: {
         var base = calculatedY
         if (!root.shouldShow) return base
-        var win = root.Window.window
+        if (!root.avoidCollisions) return base
         var margin = ThemeTokens.dp(8)
         var _scale = ThemeTokens.uiScale
         var _th = targetH
         var _bh = bubble.height
         var _rev = root.clampRevision
+        if (root.overlayLayer) {
+            // Coordinates are already in overlay space: clamp directly.
+            var _oh = root.overlayLayer.height
+            if (bubble.height > 0) {
+                if (root.side === "left" || root.side === "right") {
+                    if (base + bubble.height > _oh - margin) {
+                        base -= (base + bubble.height - (_oh - margin))
+                    }
+                    if (base < margin) {
+                        base += (margin - base)
+                    }
+                } else if (root.side === "top") {
+                    if (base < margin) {
+                        base += (margin - base)
+                    }
+                } else if (root.side === "bottom") {
+                    if (base + bubble.height > _oh - margin) {
+                        base -= (base + bubble.height - (_oh - margin))
+                    }
+                }
+            }
+            return base
+        }
+        var win = root.Window.window
         if (win && bubble.height > 0) {
             try {
                 var mappedY = root.mapToItem(null, 0, base)
@@ -269,6 +324,17 @@ Item {
         }
     }
 
+    // Overlay-space coordinates go stale when an ancestor moves the trigger
+    // (e.g. dragging the modal while its close tooltip is open): the local
+    // bubble would follow its parent for free, the global one needs a refresh.
+    Timer {
+        id: followTimer
+        interval: 50
+        repeat: true
+        running: root.shouldShow && root.overlayLayer !== null
+        onTriggered: root.clampRevision++
+    }
+
     onDisabledChanged: {
         if (disabled) {
             if (useGlobalService && globalService) {
@@ -281,6 +347,7 @@ Item {
 
     ChaSetSquircle {
         id: bubble
+        parent: root.overlayLayer ? root.overlayLayer : root
         z: 999
         visible: !root.useGlobalService && root.shouldShow
         x: Math.round(root.clampedX)

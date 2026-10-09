@@ -12,6 +12,7 @@ export const tooltipSchema = z.object({
   side: tooltipSideSchema.default('top'),
   align: tooltipAlignSchema.default('center'),
   sideOffset: z.number().default(4),
+  avoidCollisions: z.boolean().default(true),
   delayDuration: z.number().default(200),
   disabled: z.boolean().default(false),
   shortcut: z.string().optional(),

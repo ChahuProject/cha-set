@@ -18,6 +18,7 @@ describe('Tooltip conformance (spec contract)', () => {
     expect(defaultParsed.delayDuration).toBe(200);
     expect(defaultParsed.disabled).toBe(false);
     expect(defaultParsed.content).toBe('');
+    expect(defaultParsed.avoidCollisions).toBe(true);
 
     for (const s of ['top', 'bottom', 'left', 'right'] as const) {
       expect(() => tooltipSchema.parse({ side: s })).not.toThrow();
@@ -25,6 +26,9 @@ describe('Tooltip conformance (spec contract)', () => {
     }
     for (const d of [true, false] as const) {
       expect(() => tooltipSchema.parse({ disabled: d })).not.toThrow();
+    }
+    for (const a of [true, false] as const) {
+      expect(() => tooltipSchema.parse({ avoidCollisions: a })).not.toThrow();
     }
   });
 

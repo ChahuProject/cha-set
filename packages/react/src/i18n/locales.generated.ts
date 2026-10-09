@@ -1671,6 +1671,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "shortcutDesc": "在提示气泡内渲染的键盘快捷键徽章。",
       "arrowDesc": "是否渲染指向触发器的方向箭头。",
       "sideDesc": "相对触发器的首选放置方位。",
+      "avoidCollisionsDesc": "溢出时是否将气泡移回视口内；为 false 时固定精确的方位放置。",
       "delayDesc": "悬停至提示打开的延迟（毫秒）。",
       "disabledDesc": "悬停或聚焦时阻止提示打开。",
       "asChildDesc": "将触发器属性与事件处理直接合并至单个子元素。",
@@ -5021,6 +5022,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "openDesc": "Controlled open state of the tooltip.",
       "shortcutDesc": "Keyboard shortcut badge rendered inside the tooltip bubble.",
       "sideDesc": "The preferred placement relative to the trigger.",
+      "avoidCollisionsDesc": "Whether to shift the bubble back inside the viewport on overflow; false pins exact side placement.",
       "targetDesc": "Optional target item to attach the tooltip to when not wrapping children."
     },
     "windowTitleBar": {

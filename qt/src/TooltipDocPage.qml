@@ -368,6 +368,12 @@ DocLayout {
                     description: ChaSetI18n.tr("components.tooltip.sideDesc", "The preferred placement relative to the trigger.")
                 },
                 {
+                    name: "avoidCollisions",
+                    type: "bool",
+                    default: "true",
+                    description: ChaSetI18n.tr("components.tooltip.avoidCollisionsDesc", "Whether to shift the bubble back inside the viewport on overflow; false pins exact side placement.")
+                },
+                {
                     name: "sideOffset",
                     type: "int",
                     default: "4",

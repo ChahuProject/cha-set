@@ -275,6 +275,12 @@ export function TooltipDocPage() {
               description: t('components.tooltip.sideDesc', 'The preferred placement relative to the trigger.'),
             },
             {
+              name: 'avoidCollisions',
+              type: 'boolean',
+              default: 'true',
+              description: t('components.tooltip.avoidCollisionsDesc', 'Whether to shift the bubble back inside the viewport on overflow; false pins exact side placement.'),
+            },
+            {
               name: 'delayDuration',
               type: 'number',
               default: '200',
