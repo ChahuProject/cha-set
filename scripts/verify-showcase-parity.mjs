@@ -133,15 +133,15 @@ export function extractReactDocMetadata(content) {
   const titleMatch = layoutAttrs.match(/title=(?:["']([^"']+)["']|\{["']([^"']+)["']\})/);
   if (titleMatch) meta.title = titleMatch[1] || titleMatch[2];
 
-  const descMatch = layoutAttrs.match(/description=(?:["']([^"']+)["']|\{["']([^"']+)["']\})/);
-  if (descMatch) meta.description = descMatch[1] || descMatch[2];
+  const descMatch = layoutAttrs.match(/description=(?:["']([^"']+)["']|\{["']([^"']+)["']\}|\{\s*t\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\s*\)\})/);
+  if (descMatch) meta.description = descMatch[1] || descMatch[2] || descMatch[3];
 
   let tocBlock = '';
   const tocBlockMatch = content.match(/tocItems=\{?\s*\[([^\]]*)\]\}?/s);
   if (tocBlockMatch) {
     tocBlock = tocBlockMatch[1];
-    const tocMatches = [...tocBlock.matchAll(/\{\s*id[:=]\s*["']([^"']+)["'],\s*title[:=]\s*["']([^"']+)["']/g)];
-    meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] }));
+    const tocMatches = [...tocBlock.matchAll(/\{\s*id[:=]\s*["']([^"']+)["'],\s*title[:=]\s*(?:t\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\s*\)|["']([^"']+)["'])/g)];
+    meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] || m[3] }));
     meta.isAutoToc = false;
   } else {
     meta.isAutoToc = true;
@@ -167,9 +167,9 @@ export function extractReactDocMetadata(content) {
       if (id === 'multi-file-tabs') id = 'multi-file';
       const inner = sMatch[2];
       let title = '';
-      const customTitleMatch = inner.match(/data-toc-title=["']([^"']+)["']/);
+      const customTitleMatch = inner.match(/data-toc-title=(?:["']([^"']+)["']|\{["']([^"']+)["']\}|\{\s*t\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\s*\)\})/);
       if (customTitleMatch) {
-        title = customTitleMatch[1];
+        title = customTitleMatch[1] || customTitleMatch[2] || customTitleMatch[3];
       } else {
         const hMatch = inner.match(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/);
         if (hMatch) {
@@ -266,8 +266,8 @@ export function extractReactDocMetadata(content) {
 
     if (endIdx !== -1) {
       const attrs = content.slice(pMatch.index + pMatch[0].length, endIdx);
-      const titleMatch = attrs.match(/title=(?:["']([^"']+)["']|\{["']([^"']+)["']\})/);
-      const title = titleMatch ? (titleMatch[1] || titleMatch[2]) : '';
+      const titleMatch = attrs.match(/title=(?:["']([^"']+)["']|\{["']([^"']+)["']\}|\{\s*t\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\s*\)\})/);
+      const title = titleMatch ? (titleMatch[1] || titleMatch[2] || titleMatch[3]) : '';
       const hasReactCode = /reactCode=/.test(attrs);
       const hasQtCode = /qtCode=/.test(attrs);
       const hasControls = /controls=/.test(attrs);
@@ -316,15 +316,15 @@ export function extractQtDocMetadata(content) {
   const titleMatch = layoutProps.match(/pageTitle:\s*["']([^"']+)["']/);
   if (titleMatch) meta.pageTitle = titleMatch[1];
 
-  const descMatch = layoutProps.match(/description:\s*["']([^"']+)["']/);
-  if (descMatch) meta.description = descMatch[1];
+  const descMatch = layoutProps.match(/description:\s*(?:ChaSetI18n\.tr\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\)|["']([^"']+)["'])/);
+  if (descMatch) meta.description = descMatch[1] || descMatch[2];
 
   let tocBlock = '';
   const tocBlockMatch = content.match(/tocItems:\s*\[([^\]]*)\]/s);
   if (tocBlockMatch) {
     tocBlock = tocBlockMatch[1];
-    const tocMatches = [...tocBlock.matchAll(/\{\s*id:\s*["']([^"']+)["'],\s*title:\s*["']([^"']+)["']/g)];
-    meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] }));
+    const tocMatches = [...tocBlock.matchAll(/\{\s*id:\s*["']([^"']+)["'],\s*title:\s*(?:ChaSetI18n\.tr\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\)|["']([^"']+)["'])/g)];
+    meta.tocItems = tocMatches.map(m => ({ id: m[1], title: m[2] || m[3] }));
     meta.isAutoToc = false;
   } else {
     meta.isAutoToc = true;
@@ -333,11 +333,11 @@ export function extractQtDocMetadata(content) {
     const pStarts = [...content.matchAll(/\bComponentPreview\s*\{/g)];
     for (const p of pStarts) {
       const body = scanQmlBlockBody(content, p.index + p[0].length);
-      const sIdMatch = body ? body.match(/sectionId:\s*["']([^"']+)["']/) : null;
-      const sTitleMatch = body ? body.match(/sectionTitle:\s*["']([^"']+)["']/) : null;
-      const titleMatch = body ? body.match(/title:\s*["']([^"']+)["']/) : null;
+      const sIdMatch = body ? body.match(/(?:property\s+string\s+)?sectionId\s*:\s*["']([^"']+)["']/) : null;
+      const sTitleMatch = body ? body.match(/(?:property\s+string\s+)?sectionTitle\s*:\s*(?:ChaSetI18n\.tr\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\)|["']([^"']+)["'])/) : null;
+      const titleMatch = body ? body.match(/title\s*:\s*(?:ChaSetI18n\.tr\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\)|["']([^"']+)["'])/) : null;
       const id = sIdMatch ? sIdMatch[1] : 'overview';
-      const title = sTitleMatch ? sTitleMatch[1] : (id === 'overview' ? 'Interactive Overview' : (titleMatch ? titleMatch[1] : 'Interactive Overview'));
+      const title = sTitleMatch ? (sTitleMatch[1] || sTitleMatch[2]) : (id === 'overview' ? 'Interactive Overview' : (titleMatch ? (titleMatch[1] || titleMatch[2]) : 'Interactive Overview'));
       events.push({ index: p.index, id, title });
     }
 
@@ -352,10 +352,10 @@ export function extractQtDocMetadata(content) {
       const id = secMatch[1];
       if (id === 'overview' || id === 'anatomy' || id === 'installation') continue;
       const snippet = content.slice(secMatch.index, secMatch.index + 500);
-      const stitleMatch = snippet.match(/(?:property\s+string\s+)?sectionTitle\s*:\s*["']([^"']+)["']/);
-      let title = stitleMatch ? stitleMatch[1] : '';
+      const stitleMatch = snippet.match(/(?:property\s+string\s+)?sectionTitle\s*:\s*(?:ChaSetI18n\.tr\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\)|["']([^"']+)["'])/);
+      let title = stitleMatch ? (stitleMatch[1] || stitleMatch[2]) : '';
       if (!title) {
-        const textMatch = snippet.match(/(?:DocText|Text)\s*\{[^}]*?text\s*:\s*(?:ChaSetI18n\.tr\([^,]+,\s*["']([^"']+)["']|["']([^"']+)["'])/);
+        const textMatch = snippet.match(/(?:DocText|Text)\s*\{[^}]*?text\s*:\s*(?:ChaSetI18n\.tr\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\)|["']([^"']+)["'])/);
         if (textMatch) {
           title = (textMatch[1] || textMatch[2]).trim();
         }
@@ -372,24 +372,28 @@ export function extractQtDocMetadata(content) {
       events.push({ index: secMatch.index, id, title });
     }
 
-    const titleRegex = /DocText\s*\{[^}]*?text\s*:\s*["']([^"']+)["'][^}]*?(?:sizeTitleSm|font\.pixelSize:\s*Typography\.sizeTitleSm)[^}]*?\}/g;
-    let tMatch;
-    while ((tMatch = titleRegex.exec(content)) !== null) {
-      const lastOpenBrace = content.lastIndexOf('{', tMatch.index);
-      const lastCloseBrace = content.lastIndexOf('}', tMatch.index);
+    const docTextRegex = /DocText\s*\{([^}]*)\}/g;
+    let dtMatch;
+    while ((dtMatch = docTextRegex.exec(content)) !== null) {
+      const body = dtMatch[1];
+      if (!/(?:sizeTitleSm|font\.pixelSize:\s*Typography\.sizeTitleSm)/.test(body)) continue;
+      const lastOpenBrace = content.lastIndexOf('{', dtMatch.index);
+      const lastCloseBrace = content.lastIndexOf('}', dtMatch.index);
       if (lastOpenBrace > lastCloseBrace) {
-        const blockStart = content.slice(lastOpenBrace, tMatch.index);
+        const blockStart = content.slice(lastOpenBrace, dtMatch.index);
         const sidMatch = blockStart.match(/(?:property\s+string\s+)?sectionId\s*:\s*["']([^"']+)["']/);
         if (sidMatch) continue;
       }
-      const title = tMatch[1].trim();
+      const tMatch = body.match(/text\s*:\s*(?:ChaSetI18n\.tr\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\)|["']([^"']+)["'])/);
+      if (!tMatch) continue;
+      const title = (tMatch[1] || tMatch[2]).trim();
       let id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
       if (id === 'interactive-overview' || id === 'sandbox' || id === 'overview' || id === 'anatomy' || id === 'installation') continue;
       if (id === 'keyboard-navigation' || id === 'keyboard' || id === 'props-reference' || id === 'props' || id === 'api-reference') continue;
       if (id === 'examples-states' || id === 'examples' || id === 'examples-variants') id = 'states';
       if (id === 'variants-options') id = 'variants';
       if (id === 'multi-file-tabs') id = 'multi-file';
-      events.push({ index: tMatch.index, id, title: (id === 'states' ? 'Examples & States' : title) });
+      events.push({ index: dtMatch.index, id, title: (id === 'states' ? 'Examples & States' : title) });
     }
 
     const dfsStarts = [...content.matchAll(/\bDocFooterSections\s*\{/g)];
@@ -443,9 +447,10 @@ export function extractQtDocMetadata(content) {
   let qMatch;
   while ((qMatch = qPreviewRegex.exec(content)) !== null) {
     const startIndex = qMatch.index + qMatch[0].length;
-    const snippet = content.slice(startIndex, startIndex + 1500);
-    const titleMatch = snippet.match(/title\s*:\s*["']([^"']+)["']/);
-    const title = titleMatch ? titleMatch[1] : '';
+    const body = scanQmlBlockBody(content, startIndex);
+    const snippet = body !== null ? body : content.slice(startIndex, startIndex + 4000);
+    const titleMatch = snippet.match(/title\s*:\s*(?:ChaSetI18n\.tr\([^,]+,\s*["']((?:[^"'\\]|\\.)*)["']\)|["']([^"']+)["'])/);
+    const title = titleMatch ? (titleMatch[1] || titleMatch[2]) : '';
     const reactCodeMatch = snippet.match(/reactCode\s*:\s*(?:`([^`]+)`|["']([^"']+)["']|([^\n\r]+))/);
     const reactCode = reactCodeMatch ? (reactCodeMatch[1] || reactCodeMatch[2] || reactCodeMatch[3] || '').trim() : '';
     const qtCodeMatch = snippet.match(/qtCode\s*:\s*(?:`([^`]+)`|["']([^"']+)["']|([^\n\r]+))/);
@@ -700,7 +705,7 @@ export function verifyShowcaseParity(options = {}) {
   };
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === resolve(__filename)) {
+if (process.argv[1] && (process.argv[1].endsWith('verify-showcase-parity.mjs') || resolve(process.argv[1]).toLowerCase() === resolve(__filename).toLowerCase())) {
   const args = process.argv.slice(2);
   const compIndex = args.indexOf('--component');
   const targetComponent = compIndex !== -1 ? args[compIndex + 1] : 'all';
