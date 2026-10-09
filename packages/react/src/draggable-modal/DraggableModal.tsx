@@ -58,6 +58,7 @@ export interface DraggableModalProps
   autoFitHeight?: boolean;
   sizeOptions?: DraggableModalSizeOption[];
   sizeMenuTooltip?: string;
+  bounds?: string | Element;
 
   // Compatibility aliases
   内容类名?: string;
@@ -107,6 +108,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
       autoFitHeight = true,
       sizeOptions,
       sizeMenuTooltip,
+      bounds = 'window',
 
       // Compatibility aliases
       内容类名,
@@ -252,6 +254,41 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
 
   const shouldAutoFit = autoFitHeight ?? 自动贴高 ?? true;
 
+  // Resolve the drag container size: when bounded to parent (showcase canvas),
+  // measure the direct parent element so initial centering and clamping stay
+  // inside the preview box instead of the full window. Falls back to window.
+  const getBoundsSize = React.useCallback(() => {
+    if (typeof window === 'undefined') return { w: 1024, h: 768 };
+    if (bounds === 'parent') {
+      const parentEl = rndRef.current?.getSelfElement()?.parentElement;
+      if (parentEl && parentEl.clientWidth > 0 && parentEl.clientHeight > 0) {
+        return { w: parentEl.clientWidth, h: parentEl.clientHeight };
+      }
+    }
+    return { w: window.innerWidth, h: window.innerHeight };
+  }, [bounds]);
+
+  // When bounded to parent, re-center inside the parent container after mount
+  // (initialPos was computed from window size for SSR safety).
+  React.useLayoutEffect(() => {
+    if (bounds !== 'parent') return;
+    if (hasManuallyAdjustedRef.current) return;
+    const rnd = rndRef.current;
+    if (!rnd || typeof window === 'undefined') return;
+    const { w: bw, h: bh } = getBoundsSize();
+    // Skip if parent not yet measurable (falls back to window size).
+    const parentEl = rnd.getSelfElement()?.parentElement;
+    if (!parentEl || parentEl.clientWidth === 0) return;
+    const cw = currentSizeRef.current.width;
+    const ch = currentSizeRef.current.height;
+    const newX = Math.max(0, (bw - cw) / 2);
+    const newY = isTopMode ? topMarginPx : Math.max(0, (bh - ch) / 2);
+    if (Math.abs(newX - currentPosRef.current.x) > 1 || Math.abs(newY - currentPosRef.current.y) > 1) {
+      currentPosRef.current = { x: newX, y: newY };
+      rnd.updatePosition({ x: newX, y: newY });
+    }
+  }, [bounds, getBoundsSize, isTopMode, topMarginPx]);
+
   const attemptFitHeight = React.useCallback(() => {
     const content = contentRef.current;
     const rnd = rndRef.current;
@@ -264,9 +301,10 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     const borderExtra = 4; // border & subpixel headroom to prevent false overflow
     const neededH = contentH + paddingH + footerH + borderExtra;
 
+    const { h: boundsH } = getBoundsSize();
     const topOffset = isTopMode ? topMarginPx : 16;
     const bottomMargin = (isTopMode ? 2 : 1) * rem;
-    const maxAvailableH = Math.max(resolvedMinHeight, window.innerHeight - topOffset - bottomMargin);
+    const maxAvailableH = Math.max(resolvedMinHeight, boundsH - topOffset - bottomMargin);
 
     const targetH = Math.min(Math.max(neededH, resolvedMinHeight), maxAvailableH);
     if (Math.abs(targetH - currentSizeRef.current.height) > 1) {
@@ -275,12 +313,12 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
 
       // If user has not dragged the modal yet, re-center vertically to avoid pushing below the screen
       if (!hasManuallyAdjustedRef.current && !isTopMode && typeof window !== 'undefined') {
-        const newY = Math.max(16, (window.innerHeight - targetH) / 2);
+        const newY = Math.max(bounds === 'parent' ? 0 : 16, (boundsH - targetH) / 2);
         currentPosRef.current = { ...currentPosRef.current, y: newY };
         rnd.updatePosition({ x: currentPosRef.current.x, y: newY });
       }
     }
-  }, [shouldAutoFit, isTopMode, topMarginPx, rem, resolvedMinHeight]);
+  }, [shouldAutoFit, isTopMode, topMarginPx, rem, resolvedMinHeight, getBoundsSize, bounds]);
 
   React.useLayoutEffect(() => {
     attemptFitHeight();
@@ -292,19 +330,21 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     if (!rnd || typeof window === 'undefined') return;
 
     const baseW = widthRemVal !== undefined ? widthRemVal * rem : (defaultWidth ?? 32 * rem);
-    const maxW = Math.max(resolvedMinWidth, window.innerWidth - 32);
+    const { w: boundsW } = getBoundsSize();
+    const maxW = Math.max(resolvedMinWidth, boundsW - 32);
     const targetW = Math.min(baseW, maxW);
     if (Math.abs(targetW - currentSizeRef.current.width) > 1) {
       currentSizeRef.current = { ...currentSizeRef.current, width: targetW };
       rnd.updateSize({ width: targetW, height: currentSizeRef.current.height });
       if (!hasManuallyAdjustedRef.current) {
-        const newX = Math.max(16, (window.innerWidth - targetW) / 2);
+        const minX = bounds === 'parent' ? 0 : 16;
+        const newX = Math.max(minX, (boundsW - targetW) / 2);
         currentPosRef.current = { ...currentPosRef.current, x: newX };
         rnd.updatePosition({ x: newX, y: currentPosRef.current.y });
       }
     }
     attemptFitHeight();
-  }, [rem, widthRemVal, defaultWidth, resolvedMinWidth, attemptFitHeight]);
+  }, [rem, widthRemVal, defaultWidth, resolvedMinWidth, attemptFitHeight, getBoundsSize, bounds]);
 
   React.useEffect(() => {
     const id = window.setTimeout(attemptFitHeight, 50);
@@ -326,22 +366,22 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
   // Sync with dynamic defaultHeight when not manually adjusted
   React.useEffect(() => {
     if (hasManuallyAdjustedRef.current || !rndRef.current || typeof window === 'undefined') return;
+    const { h: boundsH } = getBoundsSize();
     const topOffset = isTopMode ? topMarginPx : 16;
     const bottomMargin = (isTopMode ? 2 : 1) * rem;
-    const maxAvailableH = Math.max(resolvedMinHeight, window.innerHeight - topOffset - bottomMargin);
+    const maxAvailableH = Math.max(resolvedMinHeight, boundsH - topOffset - bottomMargin);
     const targetH = Math.min(Math.max(resolvedHeight, resolvedMinHeight), maxAvailableH);
 
     if (Math.abs(targetH - currentSizeRef.current.height) > 1) {
       currentSizeRef.current = { ...currentSizeRef.current, height: targetH };
       rndRef.current.updateSize({ width: currentSizeRef.current.width, height: targetH });
     }
-  }, [resolvedHeight, resolvedMinHeight, isTopMode, topMarginPx, rem]);
+  }, [resolvedHeight, resolvedMinHeight, isTopMode, topMarginPx, rem, getBoundsSize]);
 
   const handleSelectSize = (option: DraggableModalSizeOption) => {
     hasManuallyAdjustedRef.current = true;
     if (typeof window === 'undefined') return;
-    const currentInnerW = window.innerWidth;
-    const currentInnerH = window.innerHeight;
+    const { w: currentInnerW, h: currentInnerH } = getBoundsSize();
 
     let targetW: number;
     let targetH: number;
@@ -383,7 +423,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
       }}
       minWidth={resolvedMinWidth}
       minHeight={resolvedMinHeight}
-      bounds="window"
+      bounds={bounds}
       dragHandleClassName={dragHandleClassName}
       cancel={cancelDragSelector}
       data-slot={dataSlot}

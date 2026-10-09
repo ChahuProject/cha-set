@@ -10,86 +10,147 @@ DocLayout {
     description: ChaSetI18n.tr("components.draggableModal.description", "Desktop floating window with dragging title bar and bound viewport constraints.")
 
     ComponentPreview {
+        stageHeight: 360
         title: ChaSetI18n.tr("desktopComposite.draggableModal.sandboxTitle", "Draggable Modal Sandbox")
-        reactCode: `<DraggableModal
-  title="Floating Tools"
-  initialPositionMode="center"
-  showEscBadge
-  sizeOptions={[
-    { name: "默认", special: "default" },
-    { name: "宽屏", widthRem: 32, heightRem: 20 },
-    { name: "全窗口", special: "fullscreen" }
-  ]}
->
-  <div className="p-4">Inspect active rendering targets</div>
-</DraggableModal>`
+        reactCode: `{open && (
+  <DraggableModal
+    bounds="parent"
+    initialPositionMode="center"
+    defaultWidthRem={18.75}
+    defaultHeightRem={12.5}
+    sizeOptions={[
+      { name: "Default", special: "default" },
+      { name: "Compact (24rem x 18rem)", widthRem: 24, heightRem: 18 },
+      { name: "Widescreen (40rem x 24rem)", widthRem: 40, heightRem: 24 },
+      { name: "Fullscreen", special: "fullscreen" }
+    ]}
+    sizeMenuTooltip="Adjust window size"
+    showCloseButton
+    onClose={() => setOpen(false)}
+  >
+    <div className="space-y-3 p-4">Memory & Shader Diagnostics</div>
+  </DraggableModal>
+)}`
         qtCode: `ChaSetDraggableModal {
-    title: "Floating Tools"
     initialPositionMode: "center"
-    showEscBadge: true
     sizeOptions: [
-        { name: "默认", special: "default" },
-        { name: "宽屏", widthRem: 32, heightRem: 20 },
-        { name: "全窗口", special: "fullscreen" }
+        { name: "Default", special: "default" },
+        { name: "Compact (24rem x 18rem)", widthRem: 24, heightRem: 18 },
+        { name: "Widescreen (40rem x 24rem)", widthRem: 40, heightRem: 24 },
+        { name: "Fullscreen", special: "fullscreen" }
     ]
     width: 300
     height: 200
 }`
 
-        Item {
+        Column {
             anchors.fill: parent
+            spacing: ThemeTokens.dp(12)
+
+            ChaSetButton {
+                id: reopenBtn
+                anchors.horizontalCenter: parent.horizontalCenter
+                variant: "outline"
+                text: demoModal.open ? ChaSetI18n.tr("overlays.draggableModal.modalOpen", "Modal is open") : ChaSetI18n.tr("overlays.draggableModal.openModal", "Open Draggable Diagnostic Window")
+                onClicked: demoModal.open = true
+            }
 
             Rectangle {
-                anchors.fill: parent
+                width: parent.width
+                height: parent.height - reopenBtn.height - ThemeTokens.dp(12)
                 color: ThemeTokens.hover
                 border.color: ThemeTokens.border
                 border.width: 1
-                radius: 8
+                radius: ThemeTokens.dp(8)
+                clip: true
 
                 DocText {
                     anchors.centerIn: parent
+                    width: parent.width - ThemeTokens.dp(48)
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.WordWrap
                     text: ChaSetI18n.tr("overlays.draggableModal.canvasHint", "Drag the modal around within this bounded canvas")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
                 }
 
                 ChaSetDraggableModal {
-                    x: ThemeTokens.dp(40)
-                    y: ThemeTokens.dp(30)
+                    id: demoModal
                     width: ThemeTokens.dp(300)
                     height: ThemeTokens.dp(200)
-                    title: ChaSetI18n.tr("overlays.draggableModal.shaderDebuggerTitle", "Shader Debugger")
-                    showEscBadge: true
+                    title: ChaSetI18n.tr("overlays.draggableModal.diagnosticsTitle", "Memory & Shader Diagnostics")
                     initialPositionMode: "center"
                     sizeOptions: [
                         { name: ChaSetI18n.tr("overlays.draggableModal.presetDefault", "Default"), special: "default" },
-                        { name: ChaSetI18n.tr("overlays.draggableModal.presetWidescreenQt", "Widescreen"), widthRem: 22, heightRem: 14 },
+                        { name: ChaSetI18n.tr("overlays.draggableModal.presetCompact", "Compact (24rem x 18rem)"), widthRem: 24, heightRem: 18 },
+                        { name: ChaSetI18n.tr("overlays.draggableModal.presetWidescreen", "Widescreen (40rem x 24rem)"), widthRem: 40, heightRem: 24 },
                         { name: ChaSetI18n.tr("overlays.draggableModal.presetFullscreen", "Fullscreen"), special: "fullscreen" }
                     ]
+                    sizeMenuTooltip: ChaSetI18n.tr("overlays.draggableModal.adjustSize", "Adjust window size")
+                    fixedFooter: Item {
+                        width: demoModal.width
+                        height: ThemeTokens.dp(48)
+                        ChaSetButton {
+                            anchors.right: parent.right
+                            anchors.rightMargin: ThemeTokens.dp(12)
+                            anchors.verticalCenter: parent.verticalCenter
+                            size: "xs"
+                            variant: "secondary"
+                            text: ChaSetI18n.tr("common.close", "Close")
+                            onClicked: demoModal.open = false
+                        }
+                    }
 
                     Column {
                         anchors.fill: parent
                         anchors.margins: ThemeTokens.dp(16)
                         spacing: ThemeTokens.dp(8)
 
+                        DocText {
+                            text: ChaSetI18n.tr("overlays.draggableModal.diagnosticsTitle", "Memory & Shader Diagnostics")
+                            color: ThemeTokens.text
+                            font.pixelSize: Typography.sizeBody
+                            font.weight: Font.DemiBold
+                        }
+                        DocText {
+                            text: ChaSetI18n.tr("overlays.draggableModal.diagnosticsDesc", "Drag anywhere on the modal surface not occupied by controls to move; drag borders to resize.")
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeSmall
+                            wrapMode: Text.WordWrap
+                            width: parent.width
+                        }
+
                         Row {
-                            spacing: 8
+                            spacing: ThemeTokens.dp(8)
                             DocText {
-                                text: ChaSetI18n.tr("overlays.draggableModal.activePass", "Active Pass:")
+                                text: ChaSetI18n.tr("overlays.draggableModal.heapUsed", "Heap Memory Used:")
                                 color: ThemeTokens.subduedText
                                 font.pixelSize: Typography.sizeSmall
+                                font.family: Typography.familyMono
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                             ChaSetBadge {
-                                text: ChaSetI18n.tr("overlays.draggableModal.gbufferDepth", "G-Buffer Depth")
+                                text: "42.8 MB"
+                                size: "sm"
+                                variant: "outline"
+                            }
+                        }
+
+                        Row {
+                            spacing: ThemeTokens.dp(8)
+                            DocText {
+                                text: ChaSetI18n.tr("overlays.draggableModal.activeTextures", "Active Textures:")
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: Typography.sizeSmall
+                                font.family: Typography.familyMono
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            ChaSetBadge {
+                                text: ChaSetI18n.tr("desktopComposite.draggableModal.allocBadge", "128 alloc")
                                 size: "sm"
                                 variant: "secondary"
                             }
                         }
-
-                        DocText { text: ChaSetI18n.tr("overlays.draggableModal.format", "Format: R32G32B32A32_FLOAT"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption; font.family: Typography.familyMono }
-                        DocText { text: ChaSetI18n.tr("overlays.draggableModal.dimensions", "Dimensions: 2560 x 1440"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
-                        ChaSetButton { text: ChaSetI18n.tr("overlays.draggableModal.exportBuffer", "Export Buffer"); size: "xs"; variant: "outline" }
                     }
                 }
             }

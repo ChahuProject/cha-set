@@ -148,6 +148,7 @@
       "rootExtraDesc": "Extra content inside the root container (e.g. floating panels).",
       "autoFitHeightDesc": "Whether to auto-fit height to natural content height.",
       "showEscBadgeDesc": "Whether to show the ESC hint badge in the top-right corner.",
+      "boundsDesc": "Drag bounds for the modal: window-level floating or parent-bounded canvas.",
       "defaultWidthRemDesc": "Initial width (in rem units).",
       "defaultHeightRemDesc": "Initial height (in rem units).",
       "defaultWidthDesc": "Initial width.",

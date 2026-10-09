@@ -148,6 +148,7 @@
       "rootExtraDesc": "根容器内部的附加内容（如浮动面板）。",
       "autoFitHeightDesc": "是否根据内容自然高度动态自适应贴高。",
       "showEscBadgeDesc": "是否在右上角显示 ESC 键提示徽章。",
+      "boundsDesc": "弹窗的拖拽边界：窗口级浮动或父容器限界画布。",
       "defaultWidthRemDesc": "初始宽度（rem 单位）。",
       "defaultHeightRemDesc": "初始高度（rem 单位）。",
       "defaultWidthDesc": "初始宽度。",

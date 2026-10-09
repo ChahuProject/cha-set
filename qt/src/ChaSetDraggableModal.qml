@@ -177,9 +177,9 @@ Rectangle {
                 drag.target: root
                 drag.axis: Drag.XAndYAxis
                 drag.minimumX: 0
-                drag.maximumX: parent.parent ? parent.parent.parent.width - root.width : 1000
+                drag.maximumX: root.parent ? root.parent.width - root.width : 1000
                 drag.minimumY: 0
-                drag.maximumY: parent.parent ? parent.parent.parent.height - root.height : 1000
+                drag.maximumY: root.parent ? root.parent.height - root.height : 1000
                 cursorShape: Qt.SizeAllCursor
                 z: 0
             }
