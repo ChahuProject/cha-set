@@ -63,6 +63,39 @@ const KnownSpec kKnownSpecs[] = {
      {"视频", "videos", "video", "movies", "my videos", nullptr},
      "movie"}};
 
+inline QString localizedKnownName(const KnownSpec &spec) {
+  QString trName = QCoreApplication::translate("ChaSet", spec.zhName);
+  if (trName == QString::fromUtf8(spec.zhName)) {
+    const QString lang = QLocale().name();
+    if (!lang.startsWith(QLatin1String("zh"), Qt::CaseInsensitive)) {
+      return QString::fromLatin1(spec.enName);
+    }
+  }
+  return trName;
+}
+
+inline QString localizedRecycleBinName() {
+  QString trName = QCoreApplication::translate("ChaSet", "回收站");
+  if (trName == QString::fromUtf8("回收站")) {
+    const QString lang = QLocale().name();
+    if (!lang.startsWith(QLatin1String("zh"), Qt::CaseInsensitive)) {
+      return QStringLiteral("Recycle Bin");
+    }
+  }
+  return trName;
+}
+
+inline QString localizedThisPcName() {
+  QString trName = QCoreApplication::translate("ChaSet", "此电脑");
+  if (trName == QString::fromUtf8("此电脑")) {
+    const QString lang = QLocale().name();
+    if (!lang.startsWith(QLatin1String("zh"), Qt::CaseInsensitive)) {
+      return QStringLiteral("This PC");
+    }
+  }
+  return trName;
+}
+
 } // namespace
 
 ChaSetAddressBarController::ChaSetAddressBarController(QObject *parent)
@@ -153,10 +186,10 @@ QStringList ChaSetAddressBarController::history() const {
 
 QString ChaSetAddressBarController::editingText() const {
   if (m_currentPath == QLatin1String("recycle-bin:")) {
-    return QCoreApplication::translate("ChaSet", "回收站");
+    return localizedRecycleBinName();
   }
   if (m_currentPath.isEmpty()) {
-    return QCoreApplication::translate("ChaSet", "此电脑");
+    return localizedThisPcName();
   }
   if (!m_virtualBase.isEmpty()) {
     const QString cleanBase =
@@ -373,8 +406,7 @@ bool ChaSetAddressBarController::navigateValidated(const QString &rawPath,
       const QFileInfo targetInfo(targetPath);
       if (targetInfo.exists() && targetInfo.isDir()) {
         m_virtualBase = baseDir;
-        m_virtualName =
-            QCoreApplication::translate("ChaSet", matchedSpec->zhName);
+        m_virtualName = localizedKnownName(*matchedSpec);
         m_virtualIcon = QString::fromLatin1(matchedSpec->icon);
 
         if (recordStack && targetPath != m_currentPath) {
@@ -543,7 +575,7 @@ QVariantList ChaSetAddressBarController::subfolders(const QString &path) const {
     // 1. 此电脑
     {
       QVariantMap item;
-      const QString name = QCoreApplication::translate("ChaSet", "此电脑");
+      const QString name = localizedThisPcName();
       item.insert(QStringLiteral("displayName"), name);
       item.insert(QStringLiteral("label"), name);
       item.insert(QStringLiteral("realPath"), QString());
@@ -554,7 +586,7 @@ QVariantList ChaSetAddressBarController::subfolders(const QString &path) const {
     // 2. 回收站
     {
       QVariantMap item;
-      const QString name = QCoreApplication::translate("ChaSet", "回收站");
+      const QString name = localizedRecycleBinName();
       item.insert(QStringLiteral("displayName"), name);
       item.insert(QStringLiteral("label"), name);
       item.insert(QStringLiteral("realPath"), QStringLiteral("recycle-bin:"));
@@ -564,8 +596,7 @@ QVariantList ChaSetAddressBarController::subfolders(const QString &path) const {
     }
     // 3. 桌面、文档、下载、图片、音乐、视频
     for (const auto &spec : kKnownSpecs) {
-      const QString locName =
-          QCoreApplication::translate("ChaSet", spec.zhName);
+      const QString locName = localizedKnownName(spec);
       QVariantMap item;
       item.insert(QStringLiteral("displayName"), locName);
       item.insert(QStringLiteral("label"), locName);
@@ -580,7 +611,6 @@ QVariantList ChaSetAddressBarController::subfolders(const QString &path) const {
   }
   if (path.isEmpty()) {
     const auto &labels = driveLabels();
-    const auto &folders = knownFolders();
     for (auto it = labels.constBegin(); it != labels.constEnd(); ++it) {
       QVariantMap item;
       const QChar letter = it.key().at(0);
@@ -589,13 +619,6 @@ QVariantList ChaSetAddressBarController::subfolders(const QString &path) const {
       item.insert(QStringLiteral("realPath"),
                   QStringLiteral("%1:/").arg(QString(letter)));
       item.insert(QStringLiteral("icon"), QStringLiteral("package"));
-      out.append(item);
-    }
-    for (auto it = folders.constBegin(); it != folders.constEnd(); ++it) {
-      QVariantMap item;
-      item.insert(QStringLiteral("displayName"), it.value());
-      item.insert(QStringLiteral("realPath"), it.key());
-      item.insert(QStringLiteral("icon"), QStringLiteral("folder"));
       out.append(item);
     }
     return out;

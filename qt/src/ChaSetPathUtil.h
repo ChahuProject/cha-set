@@ -32,12 +32,22 @@ struct Segment {
   bool hasSubfolders = false;
 };
 
+inline QString trOrFallback(const char *sourceZh, const char *fallbackEn) {
+  QString trName = QCoreApplication::translate("ChaSet", sourceZh);
+  if (trName == QString::fromUtf8(sourceZh)) {
+    const QString lang = QLocale().name();
+    if (!lang.startsWith(QLatin1String("zh"), Qt::CaseInsensitive)) {
+      return QString::fromLatin1(fallbackEn);
+    }
+  }
+  return trName;
+}
+
 inline QString formatDriveName(const QChar &driveLetter, const QString &label) {
   const QString letter = QString(driveLetter).toUpper();
   const QString driveText = QStringLiteral("%1:").arg(letter);
   if (label.isEmpty()) {
-    return QCoreApplication::translate("ChaSet", "本地磁盘 (%1)")
-        .arg(driveText);
+    return trOrFallback("本地磁盘 (%1)", "Local Disk (%1)").arg(driveText);
   }
   return QStringLiteral("%1 (%2)").arg(label, driveText);
 }
@@ -124,7 +134,7 @@ splitPath(const QString &absPath,
   // 回收站模式：直接属于顶层根，不属于此电脑
   if (absPath == QLatin1String("recycle-bin:")) {
     Segment bin;
-    bin.displayName = QCoreApplication::translate("ChaSet", "回收站");
+    bin.displayName = trOrFallback("回收站", "Recycle Bin");
     bin.realPath = QStringLiteral("recycle-bin:");
     bin.icon = QStringLiteral("recycling");
     bin.isRoot = false;
@@ -175,7 +185,7 @@ splitPath(const QString &absPath,
 
   // 此电脑段
   Segment root;
-  root.displayName = QCoreApplication::translate("ChaSet", "此电脑");
+  root.displayName = trOrFallback("此电脑", "This PC");
   root.realPath = QString();
   root.icon = QStringLiteral("computer");
   root.isRoot = true;
