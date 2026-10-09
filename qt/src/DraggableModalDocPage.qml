@@ -28,7 +28,7 @@ DocLayout {
     showCloseButton
     onClose={() => setOpen(false)}
   >
-    <div className="space-y-3 p-4">Memory & Shader Diagnostics</div>
+    <div className="space-y-3 p-4">` + ChaSetI18n.tr("overlays.draggableModal.diagnosticsTitle", "Memory & Shader Diagnostics") + `</div>
   </DraggableModal>
 )}`
         qtCode: `ChaSetDraggableModal {
@@ -162,14 +162,14 @@ DocLayout {
         qtCode: `import ChaSet
 
 ChaSetDraggableModal {
-    title: "Floating Tools"
+    title: "` + ChaSetI18n.tr("overlays.draggableModal.floatingTools", "Floating Tools") + `"
     open: true
     initialPositionMode: "center"
 }`
         reactCode: `import { DraggableModal, Button } from '@chahu/cha-set';
 
 <DraggableModal
-  title="Floating Tools"
+  title="` + ChaSetI18n.tr("overlays.draggableModal.floatingTools", "Floating Tools") + `"
   open={open}
   onOpenChange={setOpen}
 >

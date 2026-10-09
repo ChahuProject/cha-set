@@ -15,7 +15,9 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         title: ChaSetI18n.tr("desktopComposite.languageSettings.sandboxTitle", "Interactive Language Settings")
-        stageHeight: Math.max(380, langSettingsComp.implicitHeight + 48)
+        // langSettingsComp.implicitHeight is already uiScale-scaled pixels; convert back
+        // to logical units before passing into stageHeight (ComponentPreview re-applies dp()).
+        stageHeight: Math.max(380, langSettingsComp.implicitHeight / ThemeTokens.uiScale + 48)
         reactCode: `<LanguageSettings
   preference="${root.demoPref}"
   onPreferenceChange={(next) => console.log('Language changed:', next)}
@@ -35,9 +37,9 @@ DocLayout {
 
             Column {
                 anchors.top: parent.top
-                anchors.topMargin: 24
+                anchors.topMargin: ThemeTokens.dp(24)
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.min(parent.width - 48, 540)
+                width: Math.min(parent.width - ThemeTokens.dp(48), ThemeTokens.dp(540))
 
                 ChaSetLanguageSettings {
                     id: langSettingsComp
@@ -69,7 +71,7 @@ ChaSetLanguageSettings {
     Column {
         property string sectionId: "animations"
         width: parent.width
-        spacing: 8
+        spacing: ThemeTokens.dp(8)
 
         DocText {
             text: ChaSetI18n.tr("showcase.animations", "Animations")

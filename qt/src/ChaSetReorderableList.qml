@@ -23,7 +23,7 @@ Item {
     ///     key: "visible",                 // 绑定的布尔属性
     ///     activeIcon: "visibility",       // 激活态图标
     ///     inactiveIcon: "visibility_off", // 停用态图标
-    ///     tooltip: qsTr("显示/隐藏"),     // 基础 tooltip 文本
+    ///     tooltip: ChaSetI18n.tr("desktopComposite.reorderableList.toggleTooltip", "显示/隐藏"),     // 基础 tooltip 文本
     ///     shortcut: "Alt+Click",           // 快捷键提示
     ///     activeColor: ThemeTokens.accent,// 激活态颜色
     ///     inactiveColor: ThemeTokens.subduedText // 停用态颜色
@@ -50,7 +50,7 @@ Item {
                 key: root.defaultActionKey,
                 activeIcon: "visibility",
                 inactiveIcon: "visibility_off",
-                tooltip: qsTr("显示/隐藏"),
+                tooltip: ChaSetI18n.tr("desktopComposite.reorderableList.toggleTooltip", "显示/隐藏"),
                 shortcut: "Alt+Click"
             }
         ]
@@ -322,7 +322,7 @@ Item {
                             readonly property color iconColor: isActive
                                 ? (colDef.activeColor ? colDef.activeColor : ThemeTokens.accent)
                                 : (colDef.inactiveColor ? colDef.inactiveColor : ThemeTokens.subduedText)
-                            readonly property string tipText: colDef.tooltip ? colDef.tooltip : qsTr("显示/隐藏")
+                            readonly property string tipText: colDef.tooltip ? colDef.tooltip : ChaSetI18n.tr("desktopComposite.reorderableList.toggleTooltip", "显示/隐藏")
                             readonly property string tipShortcut: colDef.shortcut ? colDef.shortcut : "Alt+Click"
 
                             ChaSetIcon {

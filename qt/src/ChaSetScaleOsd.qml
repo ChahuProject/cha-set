@@ -40,9 +40,9 @@ Item {
         return null;
     }
     readonly property string _hoveredBtnText: {
-        if (_hoveredBtn === minusBtn) return qsTr("缩小");
-        if (_hoveredBtn === plusBtn) return qsTr("放大");
-        if (_hoveredBtn === resetBtn) return qsTr("重置");
+        if (_hoveredBtn === minusBtn) return ChaSetI18n.tr("desktopComposite.scaleOsd.zoomOut", "缩小");
+        if (_hoveredBtn === plusBtn) return ChaSetI18n.tr("desktopComposite.scaleOsd.zoomIn", "放大");
+        if (_hoveredBtn === resetBtn) return ChaSetI18n.tr("desktopComposite.scaleOsd.reset", "重置");
         return "";
     }
     property bool _tooltipVisible: false
@@ -254,7 +254,7 @@ Item {
                 id: labelText
                 anchors.verticalCenter: parent.verticalCenter
                 width: isLg ? Math.max(root.ignoreUiScale ? 180 : ThemeTokens.dp(180), implicitWidth) : implicitWidth
-                text: root.format ? root.format(root.value) : qsTr("%1%").arg(Math.round(root.value * 100))
+                text: root.format ? root.format(root.value) : ChaSetI18n.tr("desktopComposite.scaleOsd.percentFormat", "{{percent}}%", { percent: Math.round(root.value * 100) })
                 color: ThemeTokens.text
                 font.pixelSize: root.ignoreUiScale
                     ? (root.isLg ? 20 : 14)

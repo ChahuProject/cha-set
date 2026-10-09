@@ -23,7 +23,8 @@ Item {
 
     default property alias controls: _controlZone.children
 
-    width: parent ? parent.width : 0
+    width: parent ? parent.width : implicitWidth
+    implicitWidth: ThemeTokens.dp(320)
     implicitHeight: Math.max(_labelColumn.implicitHeight, _controlZone.implicitHeight) + ThemeTokens.dp(root.isSm ? 14 : 20)
     height: implicitHeight
 

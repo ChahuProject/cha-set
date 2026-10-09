@@ -36,14 +36,15 @@ Column {
     readonly property bool hasShortcuts: activeShortcuts.length > 0
 
     readonly property string propTableTitle: {
-        if (!root.name || root.name === "") return "Properties";
-        if (root.name.indexOf("ChaSet") === 0) return root.name + " Properties";
-        return "ChaSet" + root.name + " Properties";
+        var suffix = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.propertiesTitle", "Properties") : "Properties";
+        if (!root.name || root.name === "") return suffix;
+        if (root.name.indexOf("ChaSet") === 0) return root.name + " " + suffix;
+        return "ChaSet" + root.name + " " + suffix;
     }
 
     readonly property string kbTitle: root.isSubComponent
-        ? (root.name + " Keyboard Navigation & Shortcuts")
-        : "Keyboard Navigation"
+        ? (root.name + " " + (((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.keyboardSectionTitle", "Keyboard Navigation & Shortcuts") : "Keyboard Navigation & Shortcuts")))
+        : (((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation") : "Keyboard Navigation"))
 
     // Exposed sub-items for DocLayout section scanner / scroll target
     readonly property Item kbItem: kbCol

@@ -89,9 +89,7 @@ Item {
     function formatFrames(ms) {
         const fps = root.frameRate > 0 ? root.frameRate : 30.0
         const f = Math.max(0, Math.floor((ms / 1000.0) * fps))
-        return (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-            ? ChaSetI18n.tr("components.mediaProgressBar.framesUnit", "{{f}} 帧", { f: f })
-            : qsTr("%1 帧").arg(f)
+        return ChaSetI18n.tr("components.mediaProgressBar.framesUnit", "{{f}} 帧", { f: f })
     }
 
     readonly property real currentPositionMs: {
@@ -304,15 +302,9 @@ Item {
                 side: "top"
                 active: posMouseArea.containsMouse && !contextMenuPopup.visible
                 text: root.timingMode === "elapsed"
-                      ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-                          ? ChaSetI18n.tr("components.mediaProgressBar.currentElapsedTooltip", "当前：正计时 (已播放时间)")
-                          : qsTr("当前：正计时 (已播放时间)"))
-                      : ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-                          ? ChaSetI18n.tr("components.mediaProgressBar.currentRemainingTooltip", "当前：倒计时 (剩余时间)")
-                          : qsTr("当前：倒计时 (剩余时间)"))
-                shortcut: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-                          ? ChaSetI18n.tr("components.mediaProgressBar.toggleTooltip", "点击切换 · 右键打开菜单")
-                          : qsTr("点击切换 · 右键打开菜单")
+                      ? ChaSetI18n.tr("components.mediaProgressBar.currentElapsedTooltip", "当前：正计时 (已播放时间)")
+                      : ChaSetI18n.tr("components.mediaProgressBar.currentRemainingTooltip", "当前：倒计时 (剩余时间)")
+                shortcut: ChaSetI18n.tr("components.mediaProgressBar.toggleTooltip", "点击切换 · 右键打开菜单")
             }
         }
 
@@ -373,9 +365,7 @@ Item {
 
             // 计时方式标题
             Text {
-                text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-                      ? ChaSetI18n.tr("components.mediaProgressBar.timingModeMenuTitle", "计时方式")
-                      : qsTr("计时方式")
+                text: ChaSetI18n.tr("components.mediaProgressBar.timingModeMenuTitle", "计时方式")
                 font.pixelSize: Typography.sizeMicro
                 font.bold: true
                 color: ThemeTokens.subduedText
@@ -410,9 +400,7 @@ Item {
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-                              ? ChaSetI18n.tr("components.mediaProgressBar.elapsedMode", "正计时 (已播放)")
-                              : qsTr("正计时 (已播放)")
+                        text: ChaSetI18n.tr("components.mediaProgressBar.elapsedMode", "正计时 (已播放)")
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
@@ -455,9 +443,7 @@ Item {
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-                              ? ChaSetI18n.tr("components.mediaProgressBar.remainingMode", "倒计时 (剩余)")
-                              : qsTr("倒计时 (剩余)")
+                        text: ChaSetI18n.tr("components.mediaProgressBar.remainingMode", "倒计时 (剩余)")
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
@@ -484,9 +470,7 @@ Item {
 
             // 时间格式标题
             Text {
-                text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-                      ? ChaSetI18n.tr("components.mediaProgressBar.timeFormatMenuTitle", "时间格式")
-                      : qsTr("时间格式")
+                text: ChaSetI18n.tr("components.mediaProgressBar.timeFormatMenuTitle", "时间格式")
                 font.pixelSize: Typography.sizeMicro
                 font.bold: true
                 color: ThemeTokens.subduedText
@@ -521,9 +505,7 @@ Item {
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-                              ? ChaSetI18n.tr("components.mediaProgressBar.formatHms", "时分秒 (00:00)")
-                              : qsTr("时分秒 (00:00)")
+                        text: ChaSetI18n.tr("components.mediaProgressBar.formatHms", "时分秒 (00:00)")
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
@@ -566,9 +548,7 @@ Item {
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-                              ? ChaSetI18n.tr("components.mediaProgressBar.formatSeconds", "按秒显示 (0.0s)")
-                              : qsTr("按秒显示 (0.0s)")
+                        text: ChaSetI18n.tr("components.mediaProgressBar.formatSeconds", "按秒显示 (0.0s)")
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
@@ -612,9 +592,7 @@ Item {
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
-                              ? ChaSetI18n.tr("components.mediaProgressBar.formatFrames", "按帧率显示 (0 帧)")
-                              : qsTr("按帧率显示 (0 帧)")
+                        text: ChaSetI18n.tr("components.mediaProgressBar.formatFrames", "按帧率显示 (0 帧)")
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }

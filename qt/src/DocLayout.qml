@@ -138,6 +138,11 @@ Item {
         return null;
     }
 
+    function tr(key, fallback) {
+        if (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) return ChaSetI18n.tr(key, fallback);
+        return fallback;
+    }
+
     function scanSections() {
         if (!pageContentCol || !pageContentCol.children) return;
         var scanned = [];
@@ -147,16 +152,16 @@ Item {
             if (!id || !title || !target) return;
             if (id === "interactive-overview" || id === "sandbox") {
                 id = "overview";
-                title = "Interactive Overview";
+                title = tr("showcase.interactiveOverview", "Interactive Overview");
             } else if (id === "keyboard-navigation") {
                 id = "keyboard";
-                title = "Keyboard Navigation";
+                title = tr("showcase.keyboardNavigation", "Keyboard Navigation");
             } else if (id === "props-reference" || id === "api-reference") {
                 id = "props";
-                title = "Props Reference";
+                title = tr("showcase.propsReference", "Props Reference");
             } else if (id === "examples-states" || id === "examples" || id === "examples-variants") {
                 id = "states";
-                title = "Examples & States";
+                title = tr("showcase.examplesAndStates", "Examples & States");
             } else if (id === "variants-options") {
                 id = "variants";
                 title = "Variants & Options";
@@ -184,7 +189,7 @@ Item {
             // 1. Direct ComponentPreview
             if (child.reactCode !== undefined || child.stageData !== undefined || child.controlsData !== undefined) {
                 var prevId = child.sectionId ? String(child.sectionId) : "overview";
-                var prevTitle = child.sectionTitle ? String(child.sectionTitle) : (prevId === "overview" ? "Interactive Overview" : (child.title || "Interactive Overview"));
+                var prevTitle = child.sectionTitle ? String(child.sectionTitle) : (prevId === "overview" ? tr("showcase.interactiveOverview", "Interactive Overview") : (child.title || tr("showcase.interactiveOverview", "Interactive Overview")));
                 addEntry(prevId, prevTitle, child, 2);
                 continue;
             }
@@ -192,21 +197,21 @@ Item {
             // 2. ComponentReference container (shortcuts on top, props on bottom)
             if (child.kbItem !== undefined && child.propsItem !== undefined) {
                 if (child.hasShortcuts) {
-                    addEntry(child.keyboardSectionId || "keyboard", child.kbTitle || "Keyboard Navigation", child.kbItem, 2);
+                    addEntry(child.keyboardSectionId || "keyboard", child.kbTitle || tr("showcase.keyboardNavigation", "Keyboard Navigation"), child.kbItem, 2);
                 }
-                addEntry(child.propsSectionId || "props", child.isSubComponent ? child.propTableTitle : "Props Reference", child.propsItem, 2);
+                addEntry(child.propsSectionId || "props", child.isSubComponent ? child.propTableTitle : tr("showcase.propsReference", "Props Reference"), child.propsItem, 2);
                 continue;
             }
 
             // 3. Direct KeyboardShortcutsTable
             if (child.componentId !== undefined) {
-                addEntry(child.sectionId || "keyboard", child.sectionTitle || "Keyboard Navigation", child, 2);
+                addEntry(child.sectionId || "keyboard", child.sectionTitle || tr("showcase.keyboardNavigation", "Keyboard Navigation"), child, 2);
                 continue;
             }
 
             // 3. Direct PropsTable
             if (child.propsModel !== undefined) {
-                addEntry(child.sectionId || "props", child.sectionTitle || "Props Reference", child, 2);
+                addEntry(child.sectionId || "props", child.sectionTitle || tr("showcase.propsReference", "Props Reference"), child, 2);
                 continue;
             }
 
@@ -232,12 +237,12 @@ Item {
                 var pt = findChildByType(child, function(it) { return it.propsModel !== undefined; });
 
                 if (kb && pt && (sId === "props" || sId === "keyboard" || sId === "props-reference" || sId === "api-reference")) {
-                    addEntry("keyboard", "Keyboard Navigation", kb, 2);
-                    addEntry("props", "Props Reference", pt, 2);
+                    addEntry("keyboard", tr("showcase.keyboardNavigation", "Keyboard Navigation"), kb, 2);
+                    addEntry("props", tr("showcase.propsReference", "Props Reference"), pt, 2);
                 } else if (kb && !pt) {
-                    addEntry(sId || "keyboard", hText || "Keyboard Navigation", child, 2);
+                    addEntry(sId || "keyboard", hText || tr("showcase.keyboardNavigation", "Keyboard Navigation"), child, 2);
                 } else if (pt && !kb) {
-                    addEntry(sId || "props", hText || "Props Reference", child, 2);
+                    addEntry(sId || "props", hText || tr("showcase.propsReference", "Props Reference"), child, 2);
                 } else {
                     addEntry(sId, hText, child, headingLevel(heading));
 

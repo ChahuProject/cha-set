@@ -21,28 +21,28 @@ Item {
 
     readonly property var defaultPresets: ({
         "dropdown": [
-            { "id": "nav", "keys": ["Up", "Down"], "label": qsTr("导航"), "priority": 1 },
-            { "id": "select", "keys": ["Enter"], "label": qsTr("选择"), "priority": 1 },
-            { "id": "close", "keys": ["Esc"], "label": qsTr("关闭"), "priority": 2 }
+            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.nav", "导航"), "priority": 1 },
+            { "id": "select", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.select", "选择"), "priority": 1 },
+            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.close", "关闭"), "priority": 2 }
         ],
         "dialog": [
-            { "id": "confirm", "keys": ["Enter"], "label": qsTr("确认"), "priority": 1 },
-            { "id": "cancel", "keys": ["Esc"], "label": qsTr("取消"), "priority": 1 }
+            { "id": "confirm", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.confirm", "确认"), "priority": 1 },
+            { "id": "cancel", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.cancel", "取消"), "priority": 1 }
         ],
         "tree": [
-            { "id": "nav", "keys": ["Up", "Down"], "label": qsTr("导航"), "priority": 1 },
-            { "id": "toggle", "keys": ["Left", "Right"], "label": qsTr("折叠/展开"), "priority": 2 },
-            { "id": "select", "keys": ["Enter"], "label": qsTr("选择"), "priority": 1 },
-            { "id": "close", "keys": ["Esc"], "label": qsTr("取消"), "priority": 3 }
+            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.nav", "导航"), "priority": 1 },
+            { "id": "toggle", "keys": ["Left", "Right"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.toggle", "折叠/展开"), "priority": 2 },
+            { "id": "select", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.select", "选择"), "priority": 1 },
+            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.cancel", "取消"), "priority": 3 }
         ],
         "table": [
-            { "id": "nav", "keys": ["Up", "Down"], "label": qsTr("移动"), "priority": 1 },
-            { "id": "select", "keys": ["Space"], "label": qsTr("选中"), "priority": 2 }
+            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.move", "移动"), "priority": 1 },
+            { "id": "select", "keys": ["Space"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.selected", "选中"), "priority": 2 }
         ],
         "address-bar": [
-            { "id": "nav", "keys": ["Up", "Down"], "label": qsTr("导航"), "priority": 1 },
-            { "id": "open", "keys": ["Enter"], "label": qsTr("打开"), "priority": 1 },
-            { "id": "close", "keys": ["Esc"], "label": qsTr("关闭"), "priority": 2 }
+            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.nav", "导航"), "priority": 1 },
+            { "id": "open", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.open", "打开"), "priority": 1 },
+            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.close", "关闭"), "priority": 2 }
         ]
     })
 
@@ -425,7 +425,7 @@ Item {
                     Row {
                         width: parent.width
                         Text {
-                            text: qsTr("更多快捷键")
+                            text: ChaSetI18n.tr("desktopComposite.shortcutBar.moreShortcuts", "更多快捷键")
                             color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeCaption
                             font.weight: Font.Medium

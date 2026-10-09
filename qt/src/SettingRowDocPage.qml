@@ -55,8 +55,9 @@ DocLayout {
 
             Column {
                 anchors.centerIn: parent
-                width: Math.min(parent.width - 48, 440)
-                spacing: 4
+                width: Math.min(parent.width - ThemeTokens.dp(48), ThemeTokens.dp(440))
+                height: implicitHeight
+                spacing: ThemeTokens.dp(4)
 
                 ChaSetSettingRow {
                     name: ChaSetI18n.tr("surfaces.settingRow.hwAccelName")
@@ -94,7 +95,7 @@ DocLayout {
 
         controlsData: [
             Row {
-                spacing: 12
+                spacing: ThemeTokens.dp(12)
                 ChaSetButton {
                     size: "sm"
                     variant: "outline"
@@ -145,12 +146,12 @@ ChaSetSettingRow {
         width: parent.width
 
         ChaSetCardContent {
-            topPadding: 16
-            bottomPadding: 16
-            horizontalPadding: 16
+            topPadding: ThemeTokens.dp(16)
+            bottomPadding: ThemeTokens.dp(16)
+            horizontalPadding: ThemeTokens.dp(16)
 
             Column {
-                spacing: 12
+                spacing: ThemeTokens.dp(12)
                 width: parent.width
 
                 DocText {

@@ -111,7 +111,7 @@ Popup {
                 visible: root.isSearchOpen
                 Layout.fillWidth: true
                 size: "sm"
-                placeholderText: qsTr("搜索...")
+                placeholderText: ChaSetI18n.tr("desktopComposite.addressBar.searchPlaceholder", "搜索...")
                 clearable: true
                 text: root.searchQuery
                 onTextEdited: {
@@ -226,7 +226,7 @@ Popup {
 
                 Text {
                     anchors.centerIn: parent
-                    text: root.searchQuery ? qsTr("未找到匹配文件夹") : qsTr("（空文件夹）")
+                    text: root.searchQuery ? ChaSetI18n.tr("desktopComposite.breadcrumb.noMatch", "未找到匹配文件夹") : ChaSetI18n.tr("desktopComposite.breadcrumb.emptyFolder", "（空文件夹）")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeCaption
                 }

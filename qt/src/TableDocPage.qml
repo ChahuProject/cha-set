@@ -54,11 +54,12 @@ DocLayout {
         stageData: [
             Item {
                 anchors.fill: parent
-                anchors.margins: 16
+                anchors.margins: ThemeTokens.dp(16)
 
                 ChaSetTable {
                     anchors.centerIn: parent
-                    width: parent.width > 540 ? 540 : parent.width
+                    width: parent.width > ThemeTokens.dp(540) ? ThemeTokens.dp(540) : parent.width
+                    height: implicitHeight
                     caption: root.showCaption ? ChaSetI18n.tr("desktopComposite.table.caption", "A list of your recent invoices.") : ""
                     columns: [
                         { key: "id", title: ChaSetI18n.tr("desktopComposite.table.colInvoice", "Invoice"), width: 90 },
@@ -76,7 +77,6 @@ DocLayout {
         controlsData: [
             Row {
                 spacing: ThemeTokens.dp(16)
-
                 ChaSetInput {
                     width: ThemeTokens.dp(160)
                     size: "sm"
@@ -85,25 +85,26 @@ DocLayout {
                     onTextEdited: root.searchTerm = text
                     anchors.verticalCenter: parent.verticalCenter
                 }
-
-                Row {
-                    spacing: ThemeTokens.dp(8)
+            },
+            Row {
+                spacing: ThemeTokens.dp(8)
+                anchors.verticalCenter: parent.verticalCenter
+                DocText { text: ChaSetI18n.tr("common.status", "Status:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
+                ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    DocText { text: ChaSetI18n.tr("common.status", "Status:"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
-                    ChaSetSegmentedControl {
-                        anchors.verticalCenter: parent.verticalCenter
-                        size: "sm"
-                        value: root.statusFilter
-                        options: [
-                            { label: ChaSetI18n.tr("desktopComposite.table.statusAll", "All"), value: "all" },
-                            { label: ChaSetI18n.tr("desktopComposite.table.statusPaid", "Paid"), value: "paid" },
-                            { label: ChaSetI18n.tr("desktopComposite.table.statusPending", "Pending"), value: "pending" },
-                            { label: ChaSetI18n.tr("desktopComposite.table.statusUnpaid", "Unpaid"), value: "unpaid" }
-                        ]
-                        onValueSelected: function(v) { root.statusFilter = String(v); }
-                    }
+                    size: "sm"
+                    value: root.statusFilter
+                    options: [
+                        { label: ChaSetI18n.tr("desktopComposite.table.statusAll", "All"), value: "all" },
+                        { label: ChaSetI18n.tr("desktopComposite.table.statusPaid", "Paid"), value: "paid" },
+                        { label: ChaSetI18n.tr("desktopComposite.table.statusPending", "Pending"), value: "pending" },
+                        { label: ChaSetI18n.tr("desktopComposite.table.statusUnpaid", "Unpaid"), value: "unpaid" }
+                    ]
+                    onValueSelected: function(v) { root.statusFilter = String(v); }
                 }
-
+            },
+            Row {
+                spacing: ThemeTokens.dp(8)
                 ChaSetCheckbox {
                     size: "sm"
                     label: ChaSetI18n.tr("desktopComposite.table.showCaption", "Show Caption")
@@ -127,7 +128,7 @@ DocLayout {
         property string sectionId: "states"
         property string sectionTitle: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
         width: parent.width
-        spacing: 12
+        spacing: ThemeTokens.dp(12)
 
         DocText {
             text: ChaSetI18n.tr("showcase.examplesAndStates", "Examples & States")
@@ -142,13 +143,16 @@ DocLayout {
             font.pixelSize: Typography.sizeBody
         }
 
-        Row {
+        Flow {
+            id: examplesFlow
             width: parent.width
-            spacing: 16
+            spacing: ThemeTokens.dp(16)
 
             // Example 1: Simple Table
             ChaSetCard {
-                width: (parent.width - 16) / 2
+                width: examplesFlow.width < ThemeTokens.dp(600)
+                    ? examplesFlow.width
+                    : (examplesFlow.width - ThemeTokens.dp(16)) / 2
                 customRadius: root.customRadius
 
                 ChaSetCardHeader {
@@ -174,7 +178,9 @@ DocLayout {
 
             // Example 2: Status & Selection
             ChaSetCard {
-                width: (parent.width - 16) / 2
+                width: examplesFlow.width < ThemeTokens.dp(600)
+                    ? examplesFlow.width
+                    : (examplesFlow.width - ThemeTokens.dp(16)) / 2
                 customRadius: root.customRadius
 
                 ChaSetCardHeader {

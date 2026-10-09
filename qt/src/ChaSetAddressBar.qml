@@ -20,7 +20,7 @@ Item {
     property bool showRefresh: true
     property bool showSearch: true
     property string searchQuery: ""
-    property string searchPlaceholder: qsTr("搜索...")
+    property string searchPlaceholder: ChaSetI18n.tr("desktopComposite.addressBar.searchPlaceholder", "搜索...")
     property alias searchText: searchInput.text
     property bool searchCollapsible: true
     readonly property bool isSearchExpanded: !searchCollapsible || searchInput.activeFocus || (root.searchQuery.length > 0)
@@ -123,7 +123,7 @@ Item {
                 id: backButton
                 objectName: "backButton"
                 property bool actionEnabled: root.canGoBack && !root.disabled
-                property string tooltipText: qsTr("后退")
+                property string tooltipText: ChaSetI18n.tr("desktopComposite.addressBar.backTooltip", "后退")
                 property string iconName: "arrow_back"
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
@@ -174,7 +174,7 @@ Item {
                 id: forwardButton
                 objectName: "forwardButton"
                 property bool actionEnabled: root.canGoForward && !root.disabled
-                property string tooltipText: qsTr("前进")
+                property string tooltipText: ChaSetI18n.tr("desktopComposite.addressBar.forwardTooltip", "前进")
                 property string iconName: "arrow_forward"
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
@@ -226,7 +226,7 @@ Item {
                 objectName: "upButton"
                 readonly property bool canUp: Boolean(root.path && root.path !== "/" && !root.path.match(/^[a-zA-Z]:[/\\]?$/))
                 property bool actionEnabled: canUp && !root.disabled
-                property string tooltipText: qsTr("上一级")
+                property string tooltipText: ChaSetI18n.tr("desktopComposite.addressBar.upTooltip", "上一级")
                 property string iconName: "arrow_upward"
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
@@ -278,7 +278,7 @@ Item {
                 objectName: "refreshButton"
                 visible: root.showRefresh
                 property bool actionEnabled: !root.disabled
-                property string tooltipText: qsTr("刷新")
+                property string tooltipText: ChaSetI18n.tr("desktopComposite.addressBar.refreshTooltip", "刷新")
                 property string iconName: "refresh"
                 width: ThemeTokens.dp(26)
                 height: ThemeTokens.dp(26)
@@ -566,7 +566,7 @@ Item {
 
             ChaSetTooltip {
                 target: searchBox
-                text: qsTr("搜索")
+                text: ChaSetI18n.tr("desktopComposite.addressBar.searchTooltip", "搜索")
                 side: "bottom"
                 delay: 400
                 disabled: root.isSearchExpanded || root.disabled

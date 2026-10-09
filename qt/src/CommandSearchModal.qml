@@ -37,9 +37,11 @@ Rectangle {
         return allItems.filter(function(item) {
             var locTitle = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("navigation." + item.id, item.title || "").toLowerCase() : ""
             var locCat = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("categories." + item.category, ChaSetI18n.tr("showcase.categories." + item.category, item.category || "")).toLowerCase() : ""
+            var locDesc = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components." + item.id + ".description", item.desc || "").toLowerCase() : ""
             return (item.title && item.title.toLowerCase().indexOf(q) >= 0) ||
                    (locTitle && locTitle.indexOf(q) >= 0) ||
                    (item.desc && item.desc.toLowerCase().indexOf(q) >= 0) ||
+                   (locDesc && locDesc.indexOf(q) >= 0) ||
                    (item.category && item.category.toLowerCase().indexOf(q) >= 0) ||
                    (locCat && locCat.indexOf(q) >= 0)
         })
@@ -359,7 +361,7 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.rightMargin: ThemeTokens.dp(14)
                 anchors.verticalCenter: parent.verticalCenter
-                text: ChaSetI18n.tr("common.resultCount", "{count} 个结果").replace("{count}", root.filteredItems.length)
+                text: ChaSetI18n.tr("common.resultCount", "{{count}} 个结果", { count: root.filteredItems.length })
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
             }

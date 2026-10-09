@@ -2119,7 +2119,7 @@ ApplicationWindow {
                 animated: false
                 ignoreUiScale: true
                 format: function(v) {
-                    return qsTr("%1%").arg(Math.round(v * 100));
+                    return ChaSetI18n.tr("desktopComposite.scaleOsd.percentFormat", "{{percent}}%", { percent: Math.round(v * 100) });
                 }
             }
         }
@@ -2875,7 +2875,7 @@ ApplicationWindow {
                 steps: win.scaleSteps
                 value: ThemeTokens.uiScale
                 format: function(v) {
-                    return qsTr("界面缩放 %1%").arg(Math.round(v * 100));
+                    return ChaSetI18n.tr("desktopComposite.scaleOsd.uiScaleFormat", "界面缩放 {{percent}}%", { percent: Math.round(v * 100) });
                 }
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 36

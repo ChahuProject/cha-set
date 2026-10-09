@@ -340,7 +340,7 @@ T.ScrollBar {
         kind: 0
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollBack
-        tooltipText: control.vertical ? qsTr("到顶") : qsTr("到最左")
+        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.toTop", "到顶") : ChaSetI18n.tr("desktopComposite.scrollBar.toLeft", "到最左")
         x: 0
         y: 0
         onTriggered: control.scrollToStart()
@@ -352,7 +352,7 @@ T.ScrollBar {
         kind: 1
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollBack
-        tooltipText: control.vertical ? qsTr("向上翻一页") : qsTr("向左翻一页")
+        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.pageUp", "向上翻一页") : ChaSetI18n.tr("desktopComposite.scrollBar.pageLeft", "向左翻一页")
         x: control.vertical ? 0 : control.buttonLength
         y: control.vertical ? control.buttonLength : 0
         onTriggered: control.scrollPageBack()
@@ -365,7 +365,7 @@ T.ScrollBar {
         kind: 2
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollForward
-        tooltipText: control.vertical ? qsTr("向下翻一页") : qsTr("向右翻一页")
+        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.pageDown", "向下翻一页") : ChaSetI18n.tr("desktopComposite.scrollBar.pageRight", "向右翻一页")
         x: control.vertical ? 0 : (control.width - control.buttonLength * 2)
         y: control.vertical ? (control.height - control.buttonLength * 2) : 0
         onTriggered: control.scrollPageForward()
@@ -377,7 +377,7 @@ T.ScrollBar {
         kind: 3
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isEnabled: control.canScrollForward
-        tooltipText: control.vertical ? qsTr("到底") : qsTr("到最右")
+        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.toBottom", "到底") : ChaSetI18n.tr("desktopComposite.scrollBar.toEnd", "到最右")
         x: control.vertical ? 0 : (control.width - control.buttonLength)
         y: control.vertical ? (control.height - control.buttonLength) : 0
         onTriggered: control.scrollToEnd()

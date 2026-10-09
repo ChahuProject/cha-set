@@ -71,6 +71,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         title: ChaSetI18n.tr("desktopComposite.tableOfContents.sandboxTitle", "Table of Contents Sandbox")
+        stageHeight: 420
         reactCode: `<TableOfContents
   items={items}
   activeId="${root.activeId}"
@@ -167,6 +168,7 @@ DocLayout {
                 anchors.centerIn: parent
                 width: Math.min(parent.width - ThemeTokens.dp(32), ThemeTokens.dp(620))
                 implicitHeight: cardCol.implicitHeight
+                height: implicitHeight
                 color: ThemeTokens.panel
                 border.width: 1
                 border.color: ThemeTokens.border
@@ -204,11 +206,18 @@ DocLayout {
                         }
                     }
 
-                    // Content Area
-                    Row {
+                    // Content Area (Item wrapper: Row has no padding prop,
+                    // so apply manual ThemeTokens.dp(20) offsets around the Row)
+                    Item {
                         width: parent.width
-                        padding: ThemeTokens.dp(20)
-                        spacing: ThemeTokens.dp(24)
+                        implicitHeight: contentRow.implicitHeight + ThemeTokens.dp(40)
+
+                        Row {
+                            id: contentRow
+                            anchors.centerIn: parent
+                            width: parent.width - ThemeTokens.dp(40)
+                            height: implicitHeight
+                            spacing: ThemeTokens.dp(24)
 
                         // Document Reading Pane
                         Rectangle {
@@ -277,6 +286,7 @@ DocLayout {
                                 }
                             }
                         }
+                    }
                     }
                 }
             }

@@ -26,7 +26,9 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         title: ChaSetI18n.tr("desktopComposite.themeSettings.sandboxTitle", "Interactive Theme Settings")
-        stageHeight: Math.max(620, settingsComp.implicitHeight + 48)
+        // settingsComp.implicitHeight is already uiScale-scaled pixels; convert back
+        // to logical units before passing into stageHeight (ComponentPreview re-applies dp()).
+        stageHeight: Math.max(620, settingsComp.implicitHeight / ThemeTokens.uiScale + 48)
         reactCode: `<ThemeSettings
   config={demoConfig}
   onChange={(next) => setDemoConfig(next)}
@@ -45,9 +47,9 @@ DocLayout {
 
             Column {
                 anchors.top: parent.top
-                anchors.topMargin: 24
+                anchors.topMargin: ThemeTokens.dp(24)
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.min(parent.width - 48, 520)
+                width: Math.min(parent.width - ThemeTokens.dp(48), ThemeTokens.dp(520))
 
                 ChaSetThemeSettings {
                     id: settingsComp
@@ -88,7 +90,7 @@ ChaSetThemeSettings {
     // Animations Section
     Column {
         width: parent.width
-        spacing: 8
+        spacing: ThemeTokens.dp(8)
 
         DocText {
             text: ChaSetI18n.tr("showcase.animations", "Animations")

@@ -227,7 +227,7 @@ Item {
 
             ChaSetTooltip {
                 target: overflowBtn
-                text: qsTr("显示隐藏的祖先文件夹")
+                text: ChaSetI18n.tr("desktopComposite.breadcrumb.showHiddenAncestors", "显示隐藏的祖先文件夹")
                 side: "bottom"
                 delay: 400
                 disabled: root.disabled
@@ -323,7 +323,7 @@ Item {
 
                             ChaSetTooltip {
                                 target: segPill
-                                text: (segItem.modelData && segItem.modelData.isTopRoot) ? qsTr("所有位置") : (segItem.segPath || segItem.segName)
+                                text: (segItem.modelData && segItem.modelData.isTopRoot) ? ChaSetI18n.tr("desktopComposite.breadcrumb.allLocations", "所有位置") : (segItem.segPath || segItem.segName)
                                 side: "bottom"
                                 delay: 400
                                 disabled: root.disabled
@@ -384,7 +384,7 @@ Item {
 
                             ChaSetTooltip {
                                 target: chevronBox
-                                text: qsTr("展开 %1 的子文件夹").arg(segItem.segName)
+                                text: ChaSetI18n.tr("desktopComposite.breadcrumb.expandSubfolders", "展开 %1 的子文件夹").arg(segItem.segName)
                                 side: "bottom"
                                 delay: 400
                                 disabled: root.disabled
