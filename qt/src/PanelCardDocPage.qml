@@ -9,6 +9,27 @@ DocLayout {
     pageTitle: "Panel Card"
     description: ChaSetI18n.tr("components.panelCard.description", "Structured card container with a distinguished tinted header bar, optional badge indicators, and collapsible content toggling.")
 
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.panelCard.overviewHeading", "Interactive Overview")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.panelCard.collapseHint", "Click the chevron icon or title to collapse and expand the card panel body.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.panelCard.sandboxTitle", "Panel Card Sandbox")
         reactCode: `<PanelCard title="System Diagnostics" badgeText="Healthy" collapsible>

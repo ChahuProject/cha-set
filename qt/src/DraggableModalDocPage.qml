@@ -9,6 +9,27 @@ DocLayout {
     pageTitle: "Draggable Modal"
     description: ChaSetI18n.tr("components.draggableModal.description", "Desktop floating window with dragging title bar and bound viewport constraints.")
 
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.draggableModal.overviewHeading", "Interactive Overview")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.draggableModal.overviewDesc", "Click the button below to open the draggable modal window, supporting size presets, drag repositioning, and auto-fitting height.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
     ComponentPreview {
         stageHeight: 360
         title: ChaSetI18n.tr("desktopComposite.draggableModal.sandboxTitle", "Draggable Modal Sandbox")

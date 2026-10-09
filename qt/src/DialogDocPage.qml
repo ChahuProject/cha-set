@@ -17,6 +17,27 @@ DocLayout {
     property color cAccentBg: ThemeTokens.hover
 
     // Section 1: Interactive Overview
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.dialog.overviewDesc", "Experience full modal behavior with backdrop blur, keyboard ESC dismissal, and focus containment across Web and Desktop.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
     ComponentPreview {
         id: heroPreview
         width: parent.width

@@ -30,6 +30,27 @@ DocLayout {
     property color cAccentBg: ThemeTokens.hover
 
     // 1. Interactive Preview Hero
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.tabs.overviewDesc", "Test interactive tab switching, pill vs line underline styles, size scaling, and keyboard arrow navigation.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.tabs.sandboxTitle", "Tabs Sandbox")
         reactCode: `<Tabs defaultValue="account" variant="${root.demoVariant}" size="${root.demoSize}" orientation="${root.demoOrientation}">

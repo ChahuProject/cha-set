@@ -11,6 +11,27 @@ DocLayout {
 
     property string copyStatus: ChaSetI18n.tr("components.copy-button.clickToTest", "Click the copy button to test")
 
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("components.copy-button.overviewDesc", "Click either copy button below to copy the target string to your system clipboard.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.copyButton.sandboxTitle", "Copy Button Sandbox")
         reactCode: `<div className="flex items-center gap-4">\n  <CopyButton text="pnpm add @chahu/cha-set" />\n  <CopyButton text="https://chahu.design" label="Copy Link" />\n  <CopyButton text="export const SECRET = 'sk_live_948271';" variant="default" label="Copy Secret" />\n</div>`

@@ -11,6 +11,27 @@ DocLayout {
 
     property string lastAction: "None"
 
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.dropdownMenu.overviewDesc", "Click the trigger below to open the dropdown menu. Keyboard navigation and shortcuts are fully supported.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.dropdownMenu.sandboxTitle", "Dropdown Menu Sandbox")
         reactCode: `<DropdownMenu items={items}>

@@ -73,7 +73,7 @@ DocLayout {
                                 anchors.left: parent.left
                                 anchors.leftMargin: ThemeTokens.dp(10)
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: ChaSetI18n.tr("surfaces.viewportConstrainedContainer.constrainedItem", { "index": index + 1 })
+                                text: ChaSetI18n.tr("surfaces.viewportConstrainedContainer.constrainedItem", "Constrained Item #{{index}}", { "index": index + 1 })
                                 color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeSmall
                             }

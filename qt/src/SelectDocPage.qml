@@ -11,6 +11,27 @@ DocLayout {
 
     property string selectedFruit: "apple"
 
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.select.overviewHeading", "Interactive Overview")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("formsA.select.overviewDesc", "Select an item from the menu. Selected value: {{value}}", { "value": root.selectedFruit })
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.select.sandboxTitle", "Select Sandbox")
         reactCode: `<Select value={value} onValueChange={setValue}>

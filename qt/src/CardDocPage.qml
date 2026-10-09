@@ -22,6 +22,27 @@ DocLayout {
     property bool demoInteractive: false
 
     // Section 1: Overview
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.card.overviewHeading", "Interactive Overview")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.card.overviewDesc", "Test card variants with interactive subcomponents synchronized across Web and Desktop.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
     ComponentPreview {
         id: heroPreview
         width: parent.width

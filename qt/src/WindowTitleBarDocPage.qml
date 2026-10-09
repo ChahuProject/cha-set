@@ -11,6 +11,27 @@ DocLayout {
 
     property string lastActionKey: "idle"
 
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.windowTitleBar.overviewDesc", "Frameless window title bar with native-style action buttons.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.windowTitleBar.sandboxTitle", "Window Title Bar Sandbox")
         reactCode: `<WindowTitleBar

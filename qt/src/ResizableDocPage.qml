@@ -13,6 +13,27 @@ DocLayout {
     property bool playgroundWithHandle: true
 
     // 1. Horizontal Split Overview
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.resizable.horizontalTitle", "Horizontal Split")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.resizable.horizontalDesc", "Panels automatically adapt to available width and provide interactive drag handles with boundary limits.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.resizable.horizontalSandboxTitle", "Horizontal Resizable Group")
         reactCode: `<ResizablePanelGroup direction="horizontal" className="min-h-64 rounded-lg border border-border">
@@ -83,7 +104,7 @@ DocLayout {
                             }
                             ChaSetBadge {
                                 variant: "outline"
-                                text: ChaSetI18n.tr("surfaces.resizable.percentWidth", { "width": ((navPanel.width + editorPanel.width > 0) ? Math.round((navPanel.width / (navPanel.width + editorPanel.width)) * 100) : 35) })
+                                text: ChaSetI18n.tr("surfaces.resizable.percentWidth", "{{width}}% Width", { "width": ((navPanel.width + editorPanel.width > 0) ? Math.round((navPanel.width / (navPanel.width + editorPanel.width)) * 100) : 35) })
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }
@@ -107,7 +128,7 @@ DocLayout {
                             }
                             ChaSetBadge {
                                 variant: "secondary"
-                                text: ChaSetI18n.tr("surfaces.resizable.percentWidth", { "width": ((navPanel.width + editorPanel.width > 0) ? Math.round((editorPanel.width / (navPanel.width + editorPanel.width)) * 100) : 65) })
+                                text: ChaSetI18n.tr("surfaces.resizable.percentWidth", "{{width}}% Width", { "width": ((navPanel.width + editorPanel.width > 0) ? Math.round((editorPanel.width / (navPanel.width + editorPanel.width)) * 100) : 65) })
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }
@@ -136,8 +157,28 @@ ChaSetResizable {
     }
 
     // 2. Nested Splitters
-    ComponentPreview {
+    Column {
         property string sectionId: "nested"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.resizable.nestedTitle", "Nested Resizable Layout")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.resizable.nestedDesc", "Embed vertical panel groups inside horizontal panels to construct multi-pane IDE workbenches and docking surfaces.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
+    ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.resizable.nestedTitle", "Nested Resizable Layout")
         reactCode: `<ResizablePanelGroup direction="horizontal" className="min-h-64 rounded-lg border border-border">
   <ResizablePanel defaultSize={28} minSize={5} maxSize={95}>
@@ -225,7 +266,7 @@ ChaSetResizable {
                             }
                             ChaSetBadge {
                                 variant: "outline"
-                                text: ChaSetI18n.tr("surfaces.resizable.percentWidth", { "width": ((nestedSidebar.width + nestedInner.width > 0) ? Math.round((nestedSidebar.width / (nestedSidebar.width + nestedInner.width)) * 100) : 28) })
+                                text: ChaSetI18n.tr("surfaces.resizable.percentWidth", "{{width}}% Width", { "width": ((nestedSidebar.width + nestedInner.width > 0) ? Math.round((nestedSidebar.width / (nestedSidebar.width + nestedInner.width)) * 100) : 28) })
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
                         }
@@ -256,7 +297,7 @@ ChaSetResizable {
                                 }
                                 ChaSetBadge {
                                     variant: "secondary"
-                                    text: ChaSetI18n.tr("surfaces.resizable.percentHeight", { "height": ((nestedEditor.height + nestedTerminal.height > 0) ? Math.round((nestedEditor.height / (nestedEditor.height + nestedTerminal.height)) * 100) : 65) })
+                                    text: ChaSetI18n.tr("surfaces.resizable.percentHeight", "{{height}}% Height", { "height": ((nestedEditor.height + nestedTerminal.height > 0) ? Math.round((nestedEditor.height / (nestedEditor.height + nestedTerminal.height)) * 100) : 65) })
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
                             }
@@ -280,7 +321,7 @@ ChaSetResizable {
                                 }
                                 ChaSetBadge {
                                     variant: "outline"
-                                    text: ChaSetI18n.tr("surfaces.resizable.percentHeight", { "height": ((nestedEditor.height + nestedTerminal.height > 0) ? Math.round((nestedTerminal.height / (nestedEditor.height + nestedTerminal.height)) * 100) : 35) })
+                                    text: ChaSetI18n.tr("surfaces.resizable.percentHeight", "{{height}}% Height", { "height": ((nestedEditor.height + nestedTerminal.height > 0) ? Math.round((nestedTerminal.height / (nestedEditor.height + nestedTerminal.height)) * 100) : 35) })
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
                             }
@@ -292,8 +333,28 @@ ChaSetResizable {
     }
 
     // 3. Variants Playground
-    ComponentPreview {
+    Column {
         property string sectionId: "playground"
+        width: parent.width
+        spacing: 12
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.resizable.playgroundTitle", "Interactive Playground")
+            color: ThemeTokens.text
+            font.pixelSize: Typography.sizeTitleSm
+            font.bold: true
+        }
+
+        DocText {
+            text: ChaSetI18n.tr("desktopComposite.resizable.playgroundDesc", "Toggle between horizontal and vertical orientations and test visual grip handle styles dynamically.")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+            wrapMode: TextEdit.WordWrap
+            width: parent.width
+        }
+    }
+
+    ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.resizable.playgroundTitle", "Interactive Playground")
         reactCode: `<ResizablePanelGroup direction="${root.playgroundDirection}" className="min-h-56 rounded-lg border border-border">
   <ResizablePanel defaultSize={40} minSize={5} maxSize={95}>
@@ -400,11 +461,11 @@ ChaSetResizable {
                                     if (root.playgroundDirection === "horizontal") {
                                         var totalW = playPanel1.width + playPanel2.width
                                         var pctW = totalW > 0 ? Math.round((playPanel1.width / totalW) * 100) : 40
-                                        return ChaSetI18n.tr("surfaces.resizable.percentWidth", { "width": pctW })
+                                        return ChaSetI18n.tr("surfaces.resizable.percentWidth", "{{width}}% Width", { "width": pctW })
                                     } else {
                                         var totalH = playPanel1.height + playPanel2.height
                                         var pctH = totalH > 0 ? Math.round((playPanel1.height / totalH) * 100) : 40
-                                        return ChaSetI18n.tr("surfaces.resizable.percentHeight", { "height": pctH })
+                                        return ChaSetI18n.tr("surfaces.resizable.percentHeight", "{{height}}% Height", { "height": pctH })
                                     }
                                 }
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -436,11 +497,11 @@ ChaSetResizable {
                                     if (root.playgroundDirection === "horizontal") {
                                         var totalW = playPanel1.width + playPanel2.width
                                         var pctW = totalW > 0 ? Math.round((playPanel2.width / totalW) * 100) : 60
-                                        return ChaSetI18n.tr("surfaces.resizable.percentWidth", { "width": pctW })
+                                        return ChaSetI18n.tr("surfaces.resizable.percentWidth", "{{width}}% Width", { "width": pctW })
                                     } else {
                                         var totalH = playPanel1.height + playPanel2.height
                                         var pctH = totalH > 0 ? Math.round((playPanel2.height / totalH) * 100) : 60
-                                        return ChaSetI18n.tr("surfaces.resizable.percentHeight", { "height": pctH })
+                                        return ChaSetI18n.tr("surfaces.resizable.percentHeight", "{{height}}% Height", { "height": pctH })
                                     }
                                 }
                                 anchors.horizontalCenter: parent.horizontalCenter

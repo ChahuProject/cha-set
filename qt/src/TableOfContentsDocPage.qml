@@ -242,7 +242,7 @@ DocLayout {
                                 }
 
                                 Text {
-                                    text: ChaSetI18n.tr("surfaces.tableOfContents.activeOutlineTarget", { "target": root.activeId })
+                                    text: ChaSetI18n.tr("surfaces.tableOfContents.activeOutlineTarget", "Active outline target: {{target}}", { "target": root.activeId })
                                     color: ThemeTokens.accent
                                     font.family: Typography.familyMono
                                     font.pixelSize: Typography.sizeSmall
