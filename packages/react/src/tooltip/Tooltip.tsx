@@ -469,7 +469,24 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
     const [coords, setCoords] = React.useState<{ top: number; left: number; side: TooltipSide } | null>(null);
     const [inwardOffset, setInwardOffset] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-    const anchor = triggerElement || rootElement;
+    const resolvedAnchor = React.useMemo(() => {
+      if (triggerElement) return triggerElement;
+      // Fallback when asChild ref forwarding breaks (e.g. composite Button):
+      // resolve the trigger DOM node from inside the root wrapper.
+      if (rootElement) {
+        const nested =
+          (rootElement.querySelector?.(
+            '[data-slot="tooltip-trigger"]',
+          ) as HTMLElement | null) ??
+          (rootElement.querySelector?.('[data-slot="button"]') as HTMLElement | null) ??
+          (rootElement.querySelector?.('button') as HTMLElement | null);
+        if (nested) return nested;
+        return rootElement;
+      }
+      return null;
+    }, [triggerElement, rootElement]);
+
+    const anchor = resolvedAnchor;
 
     React.useLayoutEffect(() => {
       if (!visible) return;
@@ -548,6 +565,13 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
         computedStyle.bottom = 'auto';
         computedStyle.right = 'auto';
         computedStyle.margin = 0;
+      } else {
+        // Hide until measured: a fixed bubble with no top/left lands at the
+        // bottom-right corner (static position). Keep it invisible at origin
+        // so the first paint never flashes at the wrong spot.
+        computedStyle.top = '0rem';
+        computedStyle.left = '0rem';
+        computedStyle.visibility = 'hidden';
       }
     } else {
       if (sideOffset !== undefined) {
