@@ -82,6 +82,9 @@ DocLayout {
 
                 ChaSetResizable {
                     anchors.fill: parent
+                    // Inset by the outer 1px border: opaque panes paint above
+                    // the parent border ring and would otherwise cover it.
+                    anchors.margins: 1
                     orientation: Qt.Horizontal
                     withHandle: true
 
@@ -245,6 +248,9 @@ ChaSetResizable {
 
                 ChaSetResizable {
                     anchors.fill: parent
+                    // Inset by the outer 1px border: opaque panes paint above
+                    // the parent border ring and would otherwise cover it.
+                    anchors.margins: 1
                     orientation: Qt.Horizontal
                     withHandle: true
 
@@ -434,6 +440,9 @@ ChaSetResizable {
                 ChaSetResizable {
                     id: playgroundResizable
                     anchors.fill: parent
+                    // Inset by the outer 1px border: opaque panes paint above
+                    // the parent border ring and would otherwise cover it.
+                    anchors.margins: 1
                     orientation: root.playgroundDirection === "horizontal" ? Qt.Horizontal : Qt.Vertical
                     withHandle: root.playgroundWithHandle
 

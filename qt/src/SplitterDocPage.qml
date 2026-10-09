@@ -61,6 +61,9 @@ DocLayout {
                     ChaSetSplitter {
                         id: splitter
                         anchors.fill: parent
+                        // Inset by the outer 1px border: opaque panes paint
+                        // above the parent border ring and would cover it.
+                        anchors.margins: 1
                         orientation: "vertical"
                         initialSize: 35
                         minRatio: 0.20
@@ -218,6 +221,9 @@ ChaSetSplitter {
                     ChaSetSplitter {
                         id: verticalSplitter
                         anchors.fill: parent
+                        // Inset by the outer 1px border: opaque panes paint
+                        // above the parent border ring and would cover it.
+                        anchors.margins: 1
                         orientation: "horizontal"
                         initialSize: 65
                         minRatio: 0.20
