@@ -20,6 +20,19 @@ class GlobalWheelZoomFilter : public QObject {
 public:
     explicit GlobalWheelZoomFilter(QQuickWindow* window) : QObject(window), m_window(window) {
         m_timer.start();
+        // Debounced commit for frantic Ctrl+Wheel bursts (mirrors React
+        // useScaleOsd optimistic UI): each qualified tick updates the pending
+        // OSD readout immediately via requestZoom, while this single-shot
+        // timer applies the heavy re-layout only after 1500ms of wheel idle.
+        // The timer intentionally lives here in C++ rather than as a QML Timer:
+        // it fires deterministically, including under QTest::qWait runs.
+        m_commitTimer.setSingleShot(true);
+        m_commitTimer.setInterval(1500);
+        connect(&m_commitTimer, &QTimer::timeout, this, [this]() {
+            if (m_window != nullptr) {
+                QMetaObject::invokeMethod(m_window, "commitPendingZoom");
+            }
+        });
     }
 
 protected:
@@ -37,8 +50,10 @@ protected:
                         int direction = m_accumulatedDelta > 0 ? 1 : -1;
                         m_accumulatedDelta = 0;
                         m_timer.restart();
-                        qInfo() << "[GlobalWheelZoomFilter] Intercepted Ctrl+Wheel delta=" << delta << ", invoking stepZoom(" << direction << ")";
-                        QMetaObject::invokeMethod(m_window, "stepZoom", Q_ARG(QVariant, direction));
+                        qInfo() << "[GlobalWheelZoomFilter] Intercepted Ctrl+Wheel delta=" << delta << ", invoking requestZoom(" << direction << ")";
+                        QMetaObject::invokeMethod(m_window, "requestZoom", Q_ARG(QVariant, direction));
+                        // Restart the idle window: one heavy commit per burst.
+                        m_commitTimer.start();
                     }
                     we->accept();
                     return true;
@@ -119,6 +134,7 @@ protected:
 private:
     QQuickWindow* m_window;
     QElapsedTimer m_timer;
+    QTimer m_commitTimer;
     int m_accumulatedDelta = 0;
 };
 
@@ -132,32 +148,74 @@ static bool runRealCtrlWheelVerification(QQuickWindow* window) {
         return false;
     }
 
-    // 1. Send Ctrl + Wheel Up (zoom in)
+    // 1. Send Ctrl + Wheel Up (zoom in). The wheel path is debounced like React
+    // useScaleOsd: the OSD readout follows the pending value immediately, while
+    // the heavy effectiveUiScale re-layout commits after 1500ms of wheel idle.
     qInfo("[qt-scenario] Step 1: Sending zoomInEvent...");
     QPointF local(100, 100);
     QPointF global = window->mapToGlobal(QPoint(100, 100));
     QWheelEvent zoomInEvent(local, global, QPoint(), QPoint(0, 120),
                             Qt::NoButton, Qt::ControlModifier, Qt::NoScrollPhase, false);
     QCoreApplication::sendEvent(window, &zoomInEvent);
-    qInfo("[qt-scenario] Step 1.1: zoomInEvent sent, waiting 60ms...");
+    qInfo("[qt-scenario] Step 1.1: zoomInEvent sent, waiting 60ms for pending display...");
     QTest::qWait(60);
 
-    double zoomedInScale = window->property("effectiveUiScale").toDouble();
-    qInfo() << "[qt-scenario] Step 1.2: zoomedInScale =" << zoomedInScale;
+    // In headless scenario mode Main.qml deliberately leaves the OSD readout
+    // untouched (no hide-timer races); the pending value is exposed on the
+    // window itself instead.
+    double pendingValue = window->property("_pendingUiScale").toDouble();
+    qInfo() << "[qt-scenario] Step 1.2: pending OSD value =" << pendingValue;
+    if (pendingValue <= initialScale) {
+        qCritical() << "[qt-scenario] FAIL: Ctrl + Wheel Up did not update pending OSD readout (initial="
+                     << initialScale << ", pending=" << pendingValue << ")";
+        return false;
+    }
+
+    // Heavy commit must NOT have landed yet (still inside the 1500ms idle window).
+    double preCommitScale = window->property("effectiveUiScale").toDouble();
+    qInfo() << "[qt-scenario] Step 1.3: pre-commit effectiveUiScale =" << preCommitScale;
+    if (std::abs(preCommitScale - initialScale) > 0.001) {
+        qCritical() << "[qt-scenario] FAIL: effectiveUiScale applied before debounce idle window elapsed (initial="
+                     << initialScale << ", preCommit=" << preCommitScale << ")";
+        return false;
+    }
+
+    // The debounced commit lands ~1500ms after the last tick. Poll with a
+    // generous budget (loaded CI can delay timer delivery) but return as soon
+    // as the commit is observed so the suite stays fast.
+    qInfo("[qt-scenario] Step 1.4: polling up to 5000ms for debounced commit...");
+    double zoomedInScale = initialScale;
+    for (int i = 0; i < 50; ++i) {
+        QTest::qWait(100);
+        if (window->property("_pendingUiScale").toDouble() < 0) {
+            zoomedInScale = window->property("effectiveUiScale").toDouble();
+            if (zoomedInScale > initialScale) {
+                break;
+            }
+        }
+    }
+    qInfo() << "[qt-scenario] Step 1.5: zoomedInScale =" << zoomedInScale;
     if (zoomedInScale <= initialScale) {
-        qCritical() << "[qt-scenario] FAIL: Ctrl + Wheel Up did not increase effectiveUiScale (initial="
+        qCritical() << "[qt-scenario] FAIL: Ctrl + Wheel Up did not increase effectiveUiScale after debounce commit (initial="
                      << initialScale << ", after=" << zoomedInScale << ")";
         return false;
     }
 
-    // 2. High zoom verification: Zoom past 200% up to 250% and 300% without D3D11 device loss
+    // 2. High zoom verification: Zoom past 200% up to 250% and 300% without D3D11 device loss.
+    // Rapid ticks only advance the pending readout; a single debounced commit
+    // applies the final value after the burst (frantic-scroll protection).
     qInfo("[qt-scenario] Step 2: Testing high zoom past 200% (250% & 300%)...");
     for (int i = 0; i < 6; ++i) {
         QCoreApplication::sendEvent(window, &zoomInEvent);
         QTest::qWait(60);
     }
+    qInfo("[qt-scenario] Step 2.1: burst sent, polling up to 8000ms for debounced commit...");
     double highScale = window->property("effectiveUiScale").toDouble();
-    qInfo() << "[qt-scenario] Step 2.1: highScale =" << highScale;
+    for (int i = 0; i < 80 && highScale < 2.5; ++i) {
+        QTest::qWait(100);
+        highScale = window->property("effectiveUiScale").toDouble();
+    }
+    qInfo() << "[qt-scenario] Step 2.2: highScale =" << highScale;
     if (highScale < 2.5) {
         qCritical() << "[qt-scenario] FAIL: High zoom did not reach >= 2.5: got " << highScale;
         return false;

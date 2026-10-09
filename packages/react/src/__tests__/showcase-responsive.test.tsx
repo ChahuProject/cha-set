@@ -82,7 +82,7 @@ describe('React Showcase Scale-Aware Responsive Layout Gate', () => {
 
     // Wait for debounce timer to commit the final scale (1.75)
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 350));
+      await new Promise((r) => setTimeout(r, 1600));
     });
 
     // Now uiScale should be 1.75, effectiveWidth = 1200 / 1.75 = 686px (< 768px)
@@ -109,7 +109,7 @@ describe('React Showcase Scale-Aware Responsive Layout Gate', () => {
 
     // Wait for debounce timer to commit reset (1.0)
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 350));
+      await new Promise((r) => setTimeout(r, 1600));
     });
 
     // Desktop sidebar should be restored (hidden class removed)!
@@ -119,5 +119,5 @@ describe('React Showcase Scale-Aware Responsive Layout Gate', () => {
     // Hamburger button must disappear
     const hamburgerBtnAfterReset = res!.container.querySelector('button[aria-label="Open navigation sidebar"]');
     expect(hamburgerBtnAfterReset).toBeNull();
-  });
+  }, 30000);
 });

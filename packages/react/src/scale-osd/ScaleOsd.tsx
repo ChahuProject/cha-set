@@ -42,7 +42,7 @@ export interface ScaleOsdProps
   ignoreUiScale?: boolean;
   /** Whether to show tooltip titles on buttons (default true) */
   showTooltips?: boolean;
-  /** Debounce delay in milliseconds for button clicks (default 0 for standalone component; useScaleOsd defaults to 300) */
+  /** Debounce delay in milliseconds for button clicks (default 0 for standalone component; useScaleOsd defaults to 1500) */
   debounceMs?: number;
   /** Callbacks */
   onChange?: (value: number) => void;

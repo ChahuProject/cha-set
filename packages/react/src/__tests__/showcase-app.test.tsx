@@ -28,9 +28,9 @@ describe('React Showcase App Integration & Smoke Gate', () => {
     // Root font-size change is debounced to avoid freezing the browser during rapid wheel/key zoom
     expect(document.documentElement.style.fontSize).toBe('');
 
-    // Wait for 350ms debounce timer to fire
+    // Wait for 1600ms debounce timer to fire
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 350));
+      await new Promise((r) => setTimeout(r, 1600));
     });
     expect(document.documentElement.style.fontSize).toBe('17.6px');
 
@@ -40,7 +40,7 @@ describe('React Showcase App Integration & Smoke Gate', () => {
     });
     expect(res!.container.querySelector('[data-slot="scale-osd"]')?.textContent).toContain('100%');
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 350));
+      await new Promise((r) => setTimeout(r, 1600));
     });
     expect(document.documentElement.style.fontSize).toBe('');
 
@@ -50,7 +50,7 @@ describe('React Showcase App Integration & Smoke Gate', () => {
     });
     expect(res!.container.querySelector('[data-slot="scale-osd"]')?.textContent).toContain('90%');
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 350));
+      await new Promise((r) => setTimeout(r, 1600));
     });
     expect(document.documentElement.style.fontSize).toBe('14.4px');
 
@@ -60,7 +60,7 @@ describe('React Showcase App Integration & Smoke Gate', () => {
     });
     expect(res!.container.querySelector('[data-slot="scale-osd"]')?.textContent).toContain('100%');
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 350));
+      await new Promise((r) => setTimeout(r, 1600));
     });
     expect(document.documentElement.style.fontSize).toBe('');
 
@@ -69,17 +69,17 @@ describe('React Showcase App Integration & Smoke Gate', () => {
       fireEvent.keyDown(window, { key: '=', ctrlKey: true });
     });
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 350));
+      await new Promise((r) => setTimeout(r, 1600));
     });
     expect(document.documentElement.style.fontSize).toBe('17.6px');
     await act(async () => {
       fireEvent.keyDown(window, { key: '0', ctrlKey: true });
     });
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 350));
+      await new Promise((r) => setTimeout(r, 1600));
     });
     expect(document.documentElement.style.fontSize).toBe('');
-  });
+  }, 60000);
 
   it('preserves current page and smoothly navigates section on TOC anchor click without falling back to Button', async () => {
     // Set route to slider page

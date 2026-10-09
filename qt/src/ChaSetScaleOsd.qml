@@ -12,7 +12,7 @@ Item {
     property var steps: []
     property bool ignoreUiScale: true
     property int autoHideDuration: 1400
-    property int debounceDuration: 300
+    property int debounceDuration: 1500
     property bool showControls: true
     property bool showTooltips: true
     property bool disabled: false

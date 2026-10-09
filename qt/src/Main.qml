@@ -463,6 +463,11 @@ ApplicationWindow {
     readonly property var scaleSteps: [0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0]
 
     function stepZoom(direction) {
+        // Discrete action (OSD buttons, shortcuts, tests): apply immediately
+        // and drop any in-flight wheel burst so a later idle-timer firing
+        // cannot overwrite this explicit choice (commitPendingZoom no-ops on
+        // cleared pending).
+        win._pendingUiScale = -1;
         var steps = win.scaleSteps;
         var current = ThemeTokens.uiScale;
         var targetIdx = -1;
@@ -493,11 +498,68 @@ ApplicationWindow {
     }
 
     function resetZoom() {
+        win._pendingUiScale = -1;
         ThemeTokens.uiScale = 1.0;
         win.syncGlobalThemeConfig();
         if (scaleOsd && (typeof testScenario === "undefined" || testScenario === "")) {
             scaleOsd.value = 1.0;
             scaleOsd.show();
+        }
+    }
+
+    // Debounced wheel-zoom path (mirrors React useScaleOsd optimistic UI):
+    // the OSD readout follows the pending value immediately, while the heavy
+    // ThemeTokens.uiScale re-layout commits only after 1500ms of wheel idle
+    // (armed by the C++ wheel filter, which calls commitPendingZoom), so
+    // frantic Ctrl+Wheel bursts pay a single re-layout instead of one per tick.
+    // Discrete actions keep using stepZoom()/resetZoom() for instant feedback.
+    // NOTE: the idle timer intentionally lives in C++ (GlobalWheelZoomFilter):
+    // a QML Timer id referenced from these functions proved unreliable once
+    // AOT-compiled by qmlcachegen, while the C++ QTimer fires deterministically
+    // including under QTest::qWait headless runs.
+    property real _pendingUiScale: -1
+
+    function requestZoom(direction) {
+        var steps = win.scaleSteps;
+        var base = win._pendingUiScale > 0 ? win._pendingUiScale : ThemeTokens.uiScale;
+        var targetIdx = -1;
+        if (direction > 0) {
+            for (var i = 0; i < steps.length; i++) {
+                if (steps[i] > base + 0.001) {
+                    targetIdx = i;
+                    break;
+                }
+            }
+            if (targetIdx === -1) targetIdx = steps.length - 1;
+        } else {
+            for (var j = steps.length - 1; j >= 0; j--) {
+                if (steps[j] < base - 0.001) {
+                    targetIdx = j;
+                    break;
+                }
+            }
+            if (targetIdx === -1) targetIdx = 0;
+        }
+        var next = steps[targetIdx];
+        win._pendingUiScale = next;
+        if (scaleOsd && (typeof testScenario === "undefined" || testScenario === "")) {
+            scaleOsd.value = next;
+            scaleOsd.show();
+        }
+        // The 1500ms idle commit is armed by the caller (C++ wheel filter).
+    }
+
+    // Applies the pending wheel-zoom value, if any. Invoked by the C++ idle
+    // timer 1500ms after the last wheel tick. Stale firings (pending already
+    // consumed by a discrete stepZoom/resetZoom or an external settings
+    // change) are harmless no-ops thanks to the pending > 0 guard.
+    function commitPendingZoom() {
+        if (win._pendingUiScale > 0) {
+            var pending = win._pendingUiScale;
+            win._pendingUiScale = -1;
+            ThemeTokens.uiScale = pending;
+            win.syncGlobalThemeConfig();
+            // onUiScaleChanged re-shows the OSD as commit confirmation.
         }
     }
 
@@ -507,6 +569,12 @@ ApplicationWindow {
             win.syncGlobalThemeConfig();
         }
         function onUiScaleChanged() {
+            // External change (e.g. ThemeSettings dropdown) while a wheel burst
+            // is still pending: the explicit choice wins, drop the stale pending
+            // (a later idle-timer firing then becomes a harmless no-op).
+            if (win._pendingUiScale > 0 && Math.abs(ThemeTokens.uiScale - win._pendingUiScale) > 0.001) {
+                win._pendingUiScale = -1;
+            }
             win.syncGlobalThemeConfig();
             if (scaleOsd && (typeof testScenario === "undefined" || testScenario === "")) {
                 scaleOsd.value = ThemeTokens.uiScale;
@@ -1656,7 +1724,9 @@ ApplicationWindow {
         anchors.fill: parent
         color: win.cBg
 
-        // Fallback QML WheelHandler for standalone QML runtime
+        // Fallback QML WheelHandler for standalone QML runtime (no C++ event
+        // filter there, so apply immediately like before; the shipped app's
+        // filter intercepts Ctrl+Wheel first and uses the debounced path).
         WheelHandler {
             target: null
             acceptedModifiers: Qt.ControlModifier
