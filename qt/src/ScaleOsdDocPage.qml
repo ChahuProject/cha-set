@@ -32,7 +32,7 @@ DocLayout {
   visible={visible}
   contained={true}
   delayedCommit={${root.delayedCommit}}
-  debounceMs={1500}
+  debounceMs={500}
   autoHideDuration={${root.autoHideEnabled ? 2000 : 0}}
   onChange={setScale}
 />`
@@ -42,7 +42,7 @@ DocLayout {
     min: 0.2
     max: 3.0
     delayedCommit: ${root.delayedCommit}
-    debounceDuration: 1500
+    debounceDuration: 500
     autoHideDuration: ${root.autoHideEnabled ? 2000 : 0}
     onChangeCommitted: function(val) { console.log(val) }
 }`
@@ -171,7 +171,7 @@ DocLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     value: root.demoScale
                     delayedCommit: root.delayedCommit
-                    debounceDuration: 1500
+                    debounceDuration: 500
                     autoHideDuration: root.autoHideEnabled ? 2000 : 0
                     defaultVisible: true
                     onImmediateChanged: function(val) {
@@ -242,7 +242,7 @@ ChaSetScaleOsd {
             { name: "contained", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.containedDesc", "Whether to position OSD absolutely within its parent container instead of fixed to the global viewport.") },
             { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.disabledDesc", "Disables all controls and user interaction.") },
             { name: "delayedCommit", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.delayedCommitDesc", "是否开启防抖延迟生效，暂停调节后再触发提交。") },
-            { name: "debounceDuration", type: "int", defaultVal: "1500", description: ChaSetI18n.tr("components.scaleOsd.debounceDurationDesc", "开启延迟生效时的防抖等待时长（毫秒）。") },
+            { name: "debounceDuration", type: "int", defaultVal: "500", description: ChaSetI18n.tr("components.scaleOsd.debounceDurationDesc", "开启延迟生效时的防抖等待时长（毫秒）。") },
             { name: "changeCommitted", type: "signal", defaultVal: "real value", description: ChaSetI18n.tr("components.scaleOsd.changeCommittedDesc", "延迟生效防抖完成后触发的最终提交信号。") }
         ]
     }

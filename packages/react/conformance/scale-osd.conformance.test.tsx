@@ -32,7 +32,7 @@ describe('ScaleOsd conformance (spec contract)', () => {
     expect(defaultParsed.max).toBe(3);
     expect(defaultParsed.defaultVisible).toBe(false);
     expect(defaultParsed.autoHideDuration).toBe(1400);
-    expect(defaultParsed.debounceMs).toBe(1500);
+    expect(defaultParsed.debounceMs).toBe(500);
     expect(defaultParsed.delayedCommit).toBe(false);
     expect(defaultParsed.showControls).toBe(true);
     expect(defaultParsed.placement).toBe('bottom-center');

@@ -661,7 +661,7 @@ export function App() {
     steps: CANONICAL_SCALE_STEPS,
     enableShortcuts: true,
     delayedCommit: true,
-    debounceMs: 1500,
+    debounceMs: 500,
   });
 
   const [exportModalOpen, setExportModalOpen] = useState(false);
@@ -969,7 +969,7 @@ export function App() {
               ignoreUiScale={true}
               placement="bottom-center"
               delayedCommit={true}
-              debounceMs={1500}
+              debounceMs={500}
               format={(v) => `界面缩放 ${Math.round(v * 100)}%`}
             />
           </div>

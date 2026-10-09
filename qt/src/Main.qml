@@ -2911,7 +2911,7 @@ ApplicationWindow {
                 steps: win.scaleSteps
                 value: ThemeTokens.uiScale
                 delayedCommit: true
-                debounceDuration: 1500
+                debounceDuration: 500
                 format: function(v) {
                     return ChaSetI18n.tr("desktopComposite.scaleOsd.uiScaleFormat", "界面缩放 {{percent}}%", { percent: Math.round(v * 100) });
                 }

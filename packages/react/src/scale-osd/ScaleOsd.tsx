@@ -44,7 +44,7 @@ export interface ScaleOsdProps
   ignoreUiScale?: boolean;
   /** Whether to show tooltip titles on buttons (default true) */
   showTooltips?: boolean;
-  /** Debounce delay in milliseconds for button clicks (default 1500 when delayedCommit is true, or 0 when disabled) */
+  /** Debounce delay in milliseconds for button clicks (default 500 when delayedCommit is true, or 0 when disabled) */
   debounceMs?: number;
   /** Whether delayed commit / debouncing is enabled (default false; set true to debounce callbacks until user pauses) */
   delayedCommit?: boolean;
@@ -134,7 +134,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
         ? delayedCommit && (debounceMs !== undefined ? debounceMs > 0 : true)
         : debounceMs !== undefined && debounceMs > 0;
     const effectiveDebounceMs =
-      debounceMs !== undefined ? debounceMs : (delayedCommit ? 1500 : 0);
+      debounceMs !== undefined ? debounceMs : (delayedCommit ? 500 : 0);
 
     const isControlledValue = value !== undefined;
     const [internalValue, setInternalValue] = React.useState<number>(defaultValue);

@@ -423,7 +423,7 @@ describe('ScaleOsd', () => {
         defaultValue={1.0}
         step={0.1}
         delayedCommit={false}
-        debounceMs={1500}
+        debounceMs={500}
         onChange={onChange}
         onCommit={onCommit}
       />,
@@ -444,7 +444,7 @@ describe('ScaleOsd', () => {
       useScaleOsd({
         defaultValue: 1.0,
         delayedCommit: false,
-        debounceMs: 1500,
+        debounceMs: 500,
         onChange,
       }),
     );

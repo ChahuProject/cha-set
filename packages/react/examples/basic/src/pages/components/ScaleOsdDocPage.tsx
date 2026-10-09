@@ -23,7 +23,7 @@ export function ScaleOsdDocPage() {
   visible={visible}
   contained={true}
   delayedCommit={${delayedCommit}}
-  debounceMs={1500}
+  debounceMs={500}
   autoHideDuration={${autoHideEnabled ? 2000 : 0}}
   onChange={setScale}
 />`;
@@ -43,7 +43,7 @@ export function ScaleOsdDocPage() {
     min: 0.2
     max: 3.0
     delayedCommit: ${delayedCommit}
-    debounceDuration: 1500
+    debounceDuration: 500
     autoHideDuration: ${autoHideEnabled ? 2000 : 0}
     onChangeCommitted: function(val) { console.log(val) }
 }`}
@@ -134,7 +134,7 @@ export function ScaleOsdDocPage() {
                 visible={visible}
                 contained={true}
                 delayedCommit={delayedCommit}
-                debounceMs={1500}
+                debounceMs={500}
                 autoHideDuration={autoHideEnabled ? 2000 : 0}
                 placement="bottom-center"
                 onImmediateChange={(val) => setPendingScale(val)}
@@ -282,7 +282,7 @@ ChaSetScaleOsd {
             {
               name: 'debounceMs',
               type: 'number',
-              default: '1500',
+              default: '500',
               description: t('components.scaleOsd.debounceMsDesc', 'Debounce delay in milliseconds before committing when delayedCommit is enabled.'),
             },
             {

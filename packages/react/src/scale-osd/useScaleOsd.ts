@@ -24,7 +24,7 @@ export interface UseScaleOsdOptions {
   /** Whether global Ctrl+Wheel and Ctrl++, Ctrl+-, Ctrl+0 shortcuts are enabled (default true) */
   enableShortcuts?: boolean;
   /**
-   * Debounce delay in milliseconds for interactive zooming (wheel, shortcuts, buttons) (default 1500, set 0 to disable).
+   * Debounce delay in milliseconds for interactive zooming (wheel, shortcuts, buttons) (default 500, set 0 to disable).
    * Visual indicator on the capsule updates immediately, while onChange is debounced
    * so frantic Ctrl+Wheel bursts only pay one heavy re-layout after the user pauses.
    * Direct calls to setScale() bypass debounce and apply immediately.
@@ -50,7 +50,7 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
     max = options.max ?? (steps && steps.length > 0 ? (steps[steps.length - 1] ?? 5.0) : 5.0),
     autoHideDuration = 1400,
     enableShortcuts = true,
-    debounceMs = 1500,
+    debounceMs = 500,
     delayedCommit,
     onChange,
     onImmediateChange,
@@ -151,8 +151,7 @@ export function useScaleOsd(options: UseScaleOsdOptions = {}) {
           setPendingScale(null);
           onChange?.(clamped);
           onCommit?.(clamped);
-          // The debounced commit (1500ms) outlives autoHide (1400ms): re-show so
-          // the OSD is still visible when the heavy apply lands as confirmation.
+          // The debounced commit (500ms) re-shows so the OSD confirms the apply:
           show();
           debounceTimerRef.current = null;
         }, debounceMs);
