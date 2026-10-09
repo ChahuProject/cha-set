@@ -12,6 +12,14 @@ DocLayout {
     property string boundKey: "Ctrl+Shift+P"
     property string compactKey: "Ctrl+K"
 
+    Column {
+        property string sectionId: "overview"
+        width: parent.width
+        spacing: ThemeTokens.dp(8)
+        DocText { text: ChaSetI18n.tr("desktopComposite.keybindingRecorder.overviewHeading", "Interactive Overview"); color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        DocText { width: parent.width; wrapMode: Text.WordWrap; text: ChaSetI18n.tr("desktopComposite.keybindingRecorder.overviewDesc", "Click the recorder box below and press any key combination (e.g. Ctrl+Alt+S)."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody }
+    }
+
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.keybindingRecorder.sandboxTitle", "Keybinding Recorder Sandbox")
         reactCode: `<KeybindingRecorder
@@ -73,9 +81,15 @@ ChaSetKeybindingRecorder {
 <KeybindingRecorder value="Ctrl+Shift+P" onChange={(k) => console.log(k)} />`
     }
 
-    ComponentPreview {
+    Column {
         property string sectionId: "variants"
-        property string sectionTitle: ChaSetI18n.tr("components.keybindingRecorder.sizesAndStates", "Sizes & States")
+        width: parent.width
+        spacing: ThemeTokens.dp(8)
+        DocText { text: ChaSetI18n.tr("components.keybindingRecorder.sizesAndStates", "Sizes & States"); color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
+        DocText { width: parent.width; wrapMode: Text.WordWrap; text: ChaSetI18n.tr("components.keybindingRecorder.sizesAndStatesDesc", "Available in default and sm sizing tiers, with optional clearing and disabled states."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody }
+    }
+
+    ComponentPreview {
         title: ChaSetI18n.tr("components.keybindingRecorder.sizesAndStates", "Sizes & States")
         reactCode: `<KeybindingRecorder value="Ctrl+K" size="default" />
 <KeybindingRecorder value="Ctrl+Shift+P" size="sm" />
@@ -92,33 +106,33 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`
             Column {
                 anchors.centerIn: parent
                 spacing: ThemeTokens.dp(14)
-                width: ThemeTokens.dp(260)
+                width: ThemeTokens.dp(384)
 
                 Column {
-                    spacing: 4
+                    spacing: ThemeTokens.dp(6)
                     width: parent.width
-                    DocText { text: ChaSetI18n.tr("components.keybindingRecorder.defaultWithClear", "Default Size (with Clear)"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.keybindingRecorder.defaultWithClear", "Default Size (with Clear)"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetKeybindingRecorder { width: parent.width; value: "Ctrl+K"; size: "default"; clearable: true }
                 }
 
                 Column {
-                    spacing: 4
+                    spacing: ThemeTokens.dp(6)
                     width: parent.width
-                    DocText { text: ChaSetI18n.tr("components.keybindingRecorder.compactSm", "Compact sm Tier"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.keybindingRecorder.compactSm", "Compact sm Tier"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetKeybindingRecorder { width: parent.width; value: "Ctrl+Shift+P"; size: "sm"; clearable: true }
                 }
 
                 Column {
-                    spacing: 4
+                    spacing: ThemeTokens.dp(6)
                     width: parent.width
-                    DocText { text: ChaSetI18n.tr("components.keybindingRecorder.withoutClear", "Without Clear Button"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.keybindingRecorder.withoutClear", "Without Clear Button"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetKeybindingRecorder { width: parent.width; value: "Alt+F4"; clearable: false }
                 }
 
                 Column {
-                    spacing: 4
+                    spacing: ThemeTokens.dp(6)
                     width: parent.width
-                    DocText { text: ChaSetI18n.tr("components.keybindingRecorder.disabledTitle", "Disabled State"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
+                    DocText { text: ChaSetI18n.tr("components.keybindingRecorder.disabledTitle", "Disabled State"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall }
                     ChaSetKeybindingRecorder { width: parent.width; value: "Ctrl+C"; enabled: false }
                 }
             }

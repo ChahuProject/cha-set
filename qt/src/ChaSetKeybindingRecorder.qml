@@ -59,10 +59,27 @@ Item {
             ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
         }
 
-        Text {
-            id: display
+        ChaSetIcon {
+            id: leadIcon
             anchors.left: parent.left
             anchors.leftMargin: ThemeTokens.dp(root.isSm ? 8 : 10)
+            anchors.verticalCenter: parent.verticalCenter
+            name: "keyboard"
+            size: root.isSm ? 14 : 16
+            color: root.recording ? ThemeTokens.accent : ThemeTokens.subduedText
+
+            SequentialAnimation on opacity {
+                running: ThemeTokens.animationsEnabled && root.recording
+                loops: Animation.Infinite
+                NumberAnimation { from: 1.0; to: 0.4; duration: 600 }
+                NumberAnimation { from: 0.4; to: 1.0; duration: 600 }
+            }
+        }
+
+        Text {
+            id: display
+            anchors.left: leadIcon.right
+            anchors.leftMargin: ThemeTokens.dp(8)
             anchors.right: btnRow.left
             anchors.rightMargin: ThemeTokens.dp(6)
             anchors.verticalCenter: parent.verticalCenter
