@@ -69,6 +69,12 @@ DocLayout {
                             Rectangle {
                                 color: ThemeTokens.panel
                                 border.color: "transparent"
+                                // Outer-corner rounding (frame radius 6 minus
+                                // 1px border); divider-side corners stay 0.
+                                topLeftRadius: ThemeTokens.dp(5)
+                                topRightRadius: 0
+                                bottomLeftRadius: ThemeTokens.dp(5)
+                                bottomRightRadius: 0
 
                                 Column {
                                     anchors.fill: parent
@@ -96,6 +102,10 @@ DocLayout {
                             Rectangle {
                                 color: ThemeTokens.background
                                 border.color: "transparent"
+                                topLeftRadius: 0
+                                topRightRadius: ThemeTokens.dp(5)
+                                bottomLeftRadius: 0
+                                bottomRightRadius: ThemeTokens.dp(5)
 
                                 Column {
                                     anchors.centerIn: parent
@@ -223,6 +233,10 @@ ChaSetSplitter {
                             Rectangle {
                                 color: ThemeTokens.panel
                                 border.color: "transparent"
+                                topLeftRadius: ThemeTokens.dp(5)
+                                topRightRadius: ThemeTokens.dp(5)
+                                bottomLeftRadius: 0
+                                bottomRightRadius: 0
 
                                 Column {
                                     anchors.centerIn: parent
@@ -259,6 +273,10 @@ ChaSetSplitter {
                             Rectangle {
                                 color: ThemeTokens.panelRaised
                                 border.color: "transparent"
+                                topLeftRadius: 0
+                                topRightRadius: 0
+                                bottomLeftRadius: ThemeTokens.dp(5)
+                                bottomRightRadius: ThemeTokens.dp(5)
 
                                 Column {
                                     anchors.centerIn: parent

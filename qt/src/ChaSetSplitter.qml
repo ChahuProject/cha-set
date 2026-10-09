@@ -50,8 +50,10 @@ Item {
 
     // 1px hairline border width of the outer frame below. Panes are inset
     // by exactly this amount so opaque pane fills never cover the border
-    // ring or the rounded corners (occlusion fix). QML clip is rectangular
-    // and ignores radius, so insetting (not clip) is what protects corners.
+    // ring, and pane content must carry matching outer-corner radii
+    // (frame radius 6 minus 1px border = 5) because QML rectangular clip
+    // ignores radius — square content would otherwise paint over the
+    // frame's rounded corners (occlusion fix). Divider-side corners stay 0.
     readonly property int frameInset: 1
 
     // Outer container owns rounding/border/fill (React parity: DocPage

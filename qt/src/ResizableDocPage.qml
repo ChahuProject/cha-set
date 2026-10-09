@@ -94,6 +94,14 @@ DocLayout {
                         SplitView.minimumWidth: 40
                         SplitView.maximumWidth: 460
                         color: ThemeTokens.panel
+                        // Outer-corner rounding (frame radius 8 minus 1px border):
+                        // square SplitView panes would otherwise paint over
+                        // the frame's rounded corners (rectangular clip
+                        // ignores radius). Divider-side corners stay 0.
+                        topLeftRadius: ThemeTokens.dp(7)
+                        topRightRadius: 0
+                        bottomLeftRadius: ThemeTokens.dp(7)
+                        bottomRightRadius: 0
 
                         Column {
                             anchors.centerIn: parent
@@ -118,6 +126,10 @@ DocLayout {
                         SplitView.fillWidth: true
                         SplitView.minimumWidth: 40
                         color: ThemeTokens.background
+                        topLeftRadius: 0
+                        topRightRadius: ThemeTokens.dp(7)
+                        bottomLeftRadius: 0
+                        bottomRightRadius: ThemeTokens.dp(7)
 
                         Column {
                             anchors.centerIn: parent
@@ -259,6 +271,10 @@ ChaSetResizable {
                         SplitView.preferredWidth: 140
                         SplitView.minimumWidth: 50
                         color: ThemeTokens.panel
+                        topLeftRadius: ThemeTokens.dp(7)
+                        topRightRadius: 0
+                        bottomLeftRadius: ThemeTokens.dp(7)
+                        bottomRightRadius: 0
 
                         Column {
                             anchors.centerIn: parent
@@ -290,6 +306,12 @@ ChaSetResizable {
                             SplitView.preferredHeight: 155
                             SplitView.minimumHeight: 40
                             color: ThemeTokens.background
+                            // Only the outer top-right corner is rounded;
+                            // divider-side and interior corners stay 0.
+                            topLeftRadius: 0
+                            topRightRadius: ThemeTokens.dp(7)
+                            bottomLeftRadius: 0
+                            bottomRightRadius: 0
 
                             Column {
                                 anchors.centerIn: parent
@@ -314,6 +336,10 @@ ChaSetResizable {
                             SplitView.fillHeight: true
                             SplitView.minimumHeight: 40
                             color: ThemeTokens.panelRaised
+                            topLeftRadius: 0
+                            topRightRadius: 0
+                            bottomLeftRadius: 0
+                            bottomRightRadius: ThemeTokens.dp(7)
 
                             Column {
                                 anchors.centerIn: parent
@@ -453,6 +479,12 @@ ChaSetResizable {
                         SplitView.minimumWidth: 40
                         SplitView.minimumHeight: 40
                         color: ThemeTokens.panel
+                        // Outer corners follow orientation: left column in
+                        // horizontal mode, top row in vertical mode.
+                        topLeftRadius: ThemeTokens.dp(7)
+                        topRightRadius: root.playgroundDirection === "horizontal" ? 0 : ThemeTokens.dp(7)
+                        bottomLeftRadius: ThemeTokens.dp(7)
+                        bottomRightRadius: root.playgroundDirection === "horizontal" ? 0 : ThemeTokens.dp(7)
 
                         Column {
                             anchors.centerIn: parent
@@ -489,6 +521,10 @@ ChaSetResizable {
                         SplitView.minimumWidth: 40
                         SplitView.minimumHeight: 40
                         color: ThemeTokens.background
+                        topLeftRadius: 0
+                        topRightRadius: root.playgroundDirection === "horizontal" ? ThemeTokens.dp(7) : 0
+                        bottomLeftRadius: root.playgroundDirection === "horizontal" ? 0 : ThemeTokens.dp(7)
+                        bottomRightRadius: ThemeTokens.dp(7)
 
                         Column {
                             anchors.centerIn: parent

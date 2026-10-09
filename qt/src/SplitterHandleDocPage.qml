@@ -92,6 +92,10 @@ DocLayout {
                         width: root.sidebarWidth
                         height: parent.height
                         color: ThemeTokens.panel
+                        topLeftRadius: ThemeTokens.dp(5)
+                        topRightRadius: 0
+                        bottomLeftRadius: ThemeTokens.dp(5)
+                        bottomRightRadius: 0
 
                         Column {
                             anchors.centerIn: parent
@@ -262,6 +266,10 @@ ChaSetSplitterHandle {
                             anchors.bottom: parent.bottom
                             height: root.bottomHeight
                             color: ThemeTokens.panel
+                            topLeftRadius: 0
+                            topRightRadius: 0
+                            bottomLeftRadius: ThemeTokens.dp(5)
+                            bottomRightRadius: ThemeTokens.dp(5)
 
                             ChaSetSplitterHandle {
                                 edge: "top"
