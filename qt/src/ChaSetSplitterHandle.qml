@@ -55,6 +55,12 @@ Item {
         anchors.right: root.edge === "right" ? parent.right : (root.edge === "left" ? undefined : parent.right)
         anchors.top: root.edge === "top" ? parent.top : (root.edge === "bottom" ? undefined : parent.top)
         anchors.bottom: root.edge === "bottom" ? parent.bottom : (root.edge === "top" ? undefined : parent.bottom)
+        // Inset from the container edges so the line never butts into an
+        // outer border frame (T-junction artifact).
+        anchors.topMargin: root.isVertical ? ThemeTokens.dp(6) : 0
+        anchors.bottomMargin: root.isVertical ? ThemeTokens.dp(6) : 0
+        anchors.leftMargin: root.isVertical ? 0 : ThemeTokens.dp(6)
+        anchors.rightMargin: root.isVertical ? 0 : ThemeTokens.dp(6)
 
         width: root.isVertical ? (root.active ? root.activeVisualThickness : root.visualThickness) : parent.width
         height: root.isVertical ? parent.height : (root.active ? root.activeVisualThickness : root.visualThickness)

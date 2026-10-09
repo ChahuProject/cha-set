@@ -80,6 +80,12 @@ Item {
             anchors.bottom: root.isVertical ? parent.bottom : undefined
             anchors.left: !root.isVertical ? parent.left : undefined
             anchors.right: !root.isVertical ? parent.right : undefined
+            // Inset from the container edges so the line never butts into
+            // the outer border frame (T-junction artifact).
+            anchors.topMargin: root.isVertical ? ThemeTokens.dp(6) : 0
+            anchors.bottomMargin: root.isVertical ? ThemeTokens.dp(6) : 0
+            anchors.leftMargin: !root.isVertical ? ThemeTokens.dp(6) : 0
+            anchors.rightMargin: !root.isVertical ? ThemeTokens.dp(6) : 0
             width: root.isVertical ? 2 : parent.width
             height: root.isVertical ? parent.height : 2
             radius: 1

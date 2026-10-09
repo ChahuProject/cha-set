@@ -74,7 +74,7 @@ DocLayout {
                 anchors.centerIn: parent
                 width: ThemeTokens.dp(520)
                 height: ThemeTokens.dp(220)
-                radius: ThemeTokens.dp(6)
+                radius: ThemeTokens.dp(8)
                 border.color: ThemeTokens.border
                 border.width: 1
                 color: ThemeTokens.panel
@@ -237,7 +237,7 @@ ChaSetResizable {
                 anchors.centerIn: parent
                 width: ThemeTokens.dp(520)
                 height: ThemeTokens.dp(240)
-                radius: ThemeTokens.dp(6)
+                radius: ThemeTokens.dp(8)
                 border.color: ThemeTokens.border
                 border.width: 1
                 color: ThemeTokens.panel
@@ -425,7 +425,7 @@ ChaSetResizable {
                 anchors.centerIn: parent
                 width: ThemeTokens.dp(520)
                 height: ThemeTokens.dp(220)
-                radius: ThemeTokens.dp(6)
+                radius: ThemeTokens.dp(8)
                 border.color: ThemeTokens.border
                 border.width: 1
                 color: ThemeTokens.panel
