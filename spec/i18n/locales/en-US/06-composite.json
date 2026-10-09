@@ -1,0 +1,313 @@
+{
+  "components": {
+    "generic-data-table": {
+      "description": "Full-featured data table with column sorting, filtering, selection, and pagination."
+    },
+    "query-builder": {
+      "description": "Visual rule tree builder for structured query generation with nested logic groups."
+    },
+    "code-block": {
+      "description": "Spec-driven syntax-highlighted code viewer composed from scroll, copy, and tab primitives."
+    },
+    "pipeline-view": {
+      "description": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
+    },
+    "address-bar": {
+      "description": "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing."
+    },
+    "theme-settings": {
+      "description": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density."
+    },
+    "language-settings": {
+      "description": "Cross-stack language configuration card with system detection and cultural poetry quotes."
+    },
+    "addressBar": {
+      "canGoBackDesc": "Enables the backward history navigation button.",
+      "canGoForwardDesc": "Enables the forward history navigation button.",
+      "defaultValueDesc": "Initial path string for uncontrolled usage.",
+      "description": "Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing.",
+      "disabledDesc": "Disables all interactions and input editing.",
+      "fileSystemAdapterDesc": "File system adapter providing subfolder enumeration and suggestion querying.",
+      "historyDesc": "Recent typed path history for dropdown display.",
+      "onNavigateDesc": "Callback invoked when a new path is committed via segment click or Enter.",
+      "onNavigateWithSelectionDesc": "Callback when navigating with a specific file item selected.",
+      "pathDesc": "Current path string rendered in breadcrumb and edit modes.",
+      "showNavButtonsDesc": "Whether to show back, forward, up, and refresh navigation buttons.",
+      "showRefreshDesc": "Whether to show the refresh button.",
+      "showSearchDesc": "Whether to show the integrated search/filter input on the right side.",
+      "suggestionsDesc": "List of auto-complete path strings in the dropdown popover."
+    },
+    "codeBlock": {
+      "classNameDesc": "Additional class names for the outer container.",
+      "codeDesc": "Source text; ignored when `files` is provided.",
+      "copyLabelDesc": "Accessible label for the copy button.",
+      "description": "Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt.",
+      "embeddedDesc": "Drop the card chrome (border / background / header) for inline prose embedding.",
+      "filenameDesc": "Header title override; defaults to the resolved language label.",
+      "filesDesc": "Multi-file tab group; when present it replaces the single-file body.",
+      "highlightDesc": "Enable spec-driven syntax highlighting.",
+      "languageDesc": "Language id or alias resolved by the shared lexer.",
+      "maxHeightDesc": "Bound the content height (rem-equivalent number, or any CSS length string).",
+      "showCopyDesc": "Render the built-in copy button in the header.",
+      "showLanguageDesc": "Render the language / filename label in the header.",
+      "showLineNumbersDesc": "Render a line-number gutter.",
+      "wrapDesc": "Wrap long lines instead of scrolling horizontally."
+    },
+    "genericDataTable": {
+      "columnsDesc": "TanStack Table column definitions.",
+      "columnsQtDesc": "Array of column specifications: { key, header, width }.",
+      "customRadiusDesc": "Corner radius of the table border frame.",
+      "dataDesc": "Array of data records.",
+      "description": "Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination.",
+      "enablePaginationDesc": "Whether pagination controls are rendered.",
+      "enableSortingDesc": "Whether column sorting is enabled.",
+      "filterPlaceholder": "Filter records...",
+      "next": "Next",
+      "pageOf": "Page {{current}} of {{total}}",
+      "pageSizeDesc": "Number of rows per page.",
+      "previous": "Previous",
+      "rowsDesc": "Array of arbitrary records to display (alias: tableData)."
+    },
+    "languageSettings": {
+      "description": "Cross-stack language configuration card with system detection and cultural poetry quotes.",
+      "disabledDesc": "Whether the language selection controls are disabled.",
+      "onPreferenceChangeDesc": "Callback triggered when user selects a different language or toggles system mode.",
+      "preferenceDesc": "Active language preference, either \"system\" or an explicit language code.",
+      "showFollowSystemDesc": "Whether to show the prominent Follow System option card with system detection.",
+      "textProviderDesc": "Optional custom translation function for overriding component strings.",
+      "variantDesc": "Visual container variant. \"card\" renders an outer bordered card with header; \"embedded\" renders inline content without outer frame."
+    },
+    "logConsole": {
+      "empty": "No logs"
+    },
+    "pipelineView": {
+      "activeJobIdDesc": "Currently selected job id displaying step timeline and logs.",
+      "cancelDisabledDesc": "Disables the cancel button.",
+      "description": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console.",
+      "emptyJobsTextDesc": "Placeholder text displayed when the job list is empty.",
+      "endMsDesc": "Execution completion timestamp; displays formatted duration when non-null.",
+      "getLogsDesc": "Function supplying log lines array for a given job id.",
+      "headerActionSlotDesc": "Slot for custom actions in the header.",
+      "jobsDesc": "Array of jobs belonging to the current execution run.",
+      "jobsTitleDesc": "Title text for the job list sidebar.",
+      "onCancelDesc": "Callback invoked when the cancel button is clicked.",
+      "onSelectJobDesc": "Callback invoked when a job is selected.",
+      "startMsDesc": "Execution start timestamp in epoch milliseconds.",
+      "statusDesc": "Overall execution status for summary header badge."
+    },
+    "queryBuilder": {
+      "connectorDesc": "Root boolean combinator logic ('AND' | 'OR').",
+      "customRadiusDesc": "Corner radius of the rule builder container.",
+      "description": "Visual rule tree builder for structured search query generation with nested logic groups (AND/OR), operator filters, and JSON serialization.",
+      "fieldsDesc": "Available queryable fields and data types.",
+      "fieldsListDesc": "Array of queryable field definitions.",
+      "maxDepthDesc": "Maximum nested rule group depth.",
+      "onQueryChangeDesc": "Callback fired on rule addition, deletion, or editing.",
+      "queryDesc": "Active query tree root group.",
+      "rulesDesc": "Array of active condition rules."
+    },
+    "stepTimeline": {
+      "emptyText": "No steps"
+    },
+    "table": {
+      "captionDesc": "Optional caption text rendered at the bottom of the table.",
+      "classNameDesc": "Additional CSS classes for the table element.",
+      "columnsDesc": "Array of column definition objects with key, title, optional width, and align ('left' | 'center' | 'right').",
+      "containerClassNameDesc": "Additional CSS classes for the overflow-auto wrapper container.",
+      "customBorderColorDesc": "Border color for the table and row dividers.",
+      "customRadiusDesc": "Corner radius for the table outer container.",
+      "description": "A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics.",
+      "emptyState": "No data available",
+      "headerHeightDesc": "Height for the column header row.",
+      "rowHeightDesc": "Height for each table data row.",
+      "rowsDesc": "Array of data objects containing keys matching the column definitions.",
+      "selectedIndexDesc": "Index of currently selected row, applying active selection token styling."
+    },
+    "themeSettings": {
+      "configDesc": "Canonical theme configuration object containing mode, palette, decoration, typography, and uiScale.",
+      "configQtDesc": "Canonical theme configuration object matching ThemeConfig schema.",
+      "controlledDesc": "Controlled mode: the component never writes back to `config`; every edit is emitted through configModified only. Enable it when the host drives `config` from its own state (a declarative binding), so a local snapshot can never overwrite host-owned fields such as uiScale.",
+      "description": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density.",
+      "disabledDesc": "Disables all interactive controls and dims opacity.",
+      "onChangeDesc": "Callback invoked when any theme property changes.",
+      "onExportDesc": "Callback invoked when exporting configuration JSON.",
+      "onImportDesc": "Callback invoked when importing and parsing configuration JSON.",
+      "onResetDesc": "Callback invoked when the reset button is activated.",
+      "showExportDesc": "Whether to display the export JSON button in header.",
+      "showImportDesc": "Whether to display the import button in header.",
+      "showResetDesc": "Whether to display the reset button in header.",
+      "showTypographyDesc": "Whether to render typography font family and scale selection rows.",
+      "showTypographyQtDesc": "Whether to render typography selection rows.",
+      "textProviderDesc": "Optional internationalization string resolver callback.",
+      "textProviderQtDesc": "Optional i18n string resolver function.",
+      "variantQtDesc": "Container treatment: \\\"card\\\" wraps the rows in a panel, \\\"embedded\\\" renders them bare."
+    }
+  },
+  "desktopComposite": {
+    "addressBar": {
+      "activePath": "Active Path:",
+      "activePathFormat": "Active Path: {{path}}",
+      "animFull": "Breadcrumb segment hover highlights transition over ThemeTokens.motionQuick (100ms) with ThemeTokens.easeStandard curve. Suggestions popover renders with an entry scale and fade animation over 120ms.",
+      "animHoverMid": "(100ms) with",
+      "animHoverPrefix": "Breadcrumb segment hover highlights transition over",
+      "animHoverSuffix": "curve (Qt counterpart:",
+      "animSuggest": "Suggestions popover renders with an entry scale and fade animation over 120ms.",
+      "animationsDesc": "Motion tokens and kinematic transitions for mode transitions and suggestions.",
+      "backTooltip": "Back",
+      "forwardTooltip": "Forward",
+      "keyboardDesc": "Keyboard shortcuts and button activation patterns.",
+      "locProjectRoot": "Project Root",
+      "quickLocations": "Quick Locations:",
+      "refreshes": "Refreshes: {{count}}",
+      "refreshTooltip": "Refresh",
+      "sandboxTitle": "Address Bar Sandbox",
+      "searchPlaceholder": "Search...",
+      "searchTooltip": "Search",
+      "upTooltip": "Up one level"
+    },
+    "breadcrumb": {
+      "allLocations": "All locations",
+      "emptyFolder": "(Empty folder)",
+      "expandSubfolders": "Expand subfolders of %1",
+      "noMatch": "No matching folders found",
+      "searchPlaceholder": "Search folders...",
+      "showHiddenAncestors": "Show hidden ancestor folders"
+    },
+    "reorderableList": {
+      "toggleTooltip": "Show/Hide"
+    },
+    "codeBlock": {
+      "animationsBullet1": "Switching the active file cross-fades the body in over animate-in fade-in-0 — the duration resolves to the short motion token with the entrance curve.",
+      "animationsBullet1Qt": "Switching the active file cross-fades the body over ThemeTokens.motionShort with the easeEntrance curve.",
+      "animationsBullet2": "The header affordances inherit token motion from their primitives: tab triggers interpolate color and border over duration-quick with ease-standard, as do the copy button and the scroll bars.",
+      "animationsBullet2Qt": "The header affordances inherit token motion from their primitives: file tabs interpolate color and border over ThemeTokens.motionQuick with the easeStandard curve, as do the copy button and the scroll bars.",
+      "animationsBullet3": "Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).",
+      "animationsBullet3Qt": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.",
+      "animationsDesc": "Motion behavior and timing for file switching and the header affordances.",
+      "animationsDescQt": "Motion behavior and timing driven by ThemeTokens for file switching and the header affordances.",
+      "embeddedBadge": "embedded",
+      "embeddedDesc": "Drop the card chrome and header for inline embedding",
+      "gutterDesc": "Gutter with right-aligned line numbers",
+      "monochromeDesc": "Monochrome fallback using the same layout",
+      "multiFileDesc": "Pass a files array to render a tabbed group. Each tab carries its own language, and the copy button always targets the active file.",
+      "multiFileTitle": "Multi-File Tabs",
+      "overviewDesc": "A syntax-highlighted source viewer with a language label and one-click copy. Highlighting is produced by the shared spec lexer — no third-party highlighter is shipped on either stack.",
+      "sandboxTitle": "Code Block Sandbox",
+      "variantsDesc": "Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and chrome-less embedding for inline prose.",
+      "variantsTitle": "Variants & Options",
+      "wrapBadge": "wrap",
+      "wrapDesc": "Soft-wrap long lines instead of horizontal scroll"
+    },
+    "genericDataTable": {
+      "colId": "ID",
+      "colName": "User Name",
+      "colRole": "Role",
+      "overviewDesc": "Click column headers to sort ascending and descending.",
+      "roleArchitect": "Lead Architect",
+      "roleDevOps": "DevOps Engineer",
+      "roleFrontend": "Frontend Engineer",
+      "roleProduct": "Product Manager",
+      "roleQt": "Qt Specialist",
+      "sandboxTitle": "Generic Data Table Sandbox",
+      "statusOffline": "Offline",
+      "statusPending": "Pending"
+    },
+    "languageSettings": {
+      "animDescEnd": "as global kill switches.",
+      "animDescPrefix": "LanguageSettings utilizes smooth token transitions for card focus, active selection rings, and checkmark badge states. Transitions use",
+      "animDescSuffix": "and Qt",
+      "animFull": "LanguageSettings utilizes smooth token transitions for card focus, active selection rings, and checkmark badge states. Transitions use ThemeTokens.motionQuick and ThemeTokens.easeStandard. Respects ThemeTokens.animationsEnabled as global kill switch.",
+      "sandboxTitle": "Interactive Language Settings"
+    },
+    "pipelineView": {
+      "animationsBullet1": "Active execution nodes (running, compiling, retrying) display continuous rotation using animate-spin.",
+      "animationsBullet2": "Job list hover and selection transitions use duration-quick ease-standard.",
+      "animationsBulletQt1": "Active execution nodes (running, compiling, retrying) display continuous rotation animations.",
+      "animationsBulletQt2": "Job list selection and hover states interpolate smoothly using ThemeTokens.motionQuick.",
+      "animationsBulletQt3": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero.",
+      "animationsDesc": "Execution transitions and status node states are governed by shared motion tokens:",
+      "jobBenchmark": "Benchmark Suite",
+      "jobPackage": "Package Artifacts",
+      "jobShaderComp": "Shader Compilation",
+      "overviewDesc": "A high-performance execution inspector assembling job tracking, vertical step timelines, and virtualized auto-scrolling log consoles. All subcomponents can also be consumed independently.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Pipeline View Sandbox",
+      "stepCompileFragment": "Compile Fragment Stage",
+      "stepCompileVertex": "Compile Vertex Stage",
+      "stepDeadCode": "Dead Code Elimination",
+      "stepEmitBinary": "Emit Target Binary",
+      "stepParseSpirv": "Parse SPIR-V Bytecode",
+      "stepRegAlloc": "Hardware Register Allocation"
+    },
+    "queryBuilder": {
+      "addCondition": "+ Add condition",
+      "addGroup": "+ Add Group",
+      "addRule": "+ Add Rule",
+      "combinatorLabel": "Combinator: {{combinator}}",
+      "contains": "Contains",
+      "deleteGroup": "Delete group",
+      "equals": "Equals",
+      "fieldAge": "Age",
+      "fieldIsActive": "Is Active",
+      "fieldPlaceholder": "Field",
+      "fieldRole": "Role",
+      "fieldStatus": "Status",
+      "fieldUserName": "User Name",
+      "greaterThan": "Greater Than",
+      "operatorPlaceholder": "Operator",
+      "overviewDesc": "Add rules and nested groups dynamically to construct complex query predicates.",
+      "removeCondition": "Remove condition",
+      "rulesCount": "Rules: {{count}}",
+      "sandboxTitle": "Query Builder Sandbox",
+      "serializedModel": "Serialized JSON Query Model:",
+      "valuePlaceholder": "Value..."
+    },
+    "table": {
+      "caption": "A list of your recent invoices.",
+      "colAmount": "Amount",
+      "colInvoice": "Invoice",
+      "colMethod": "Method",
+      "colRole": "Role",
+      "colState": "State",
+      "colTask": "Task",
+      "colUser": "User",
+      "examplesDesc": "Common table patterns and interactive configurations.",
+      "examplesDescQt": "Common configurations and visual states in Qt Quick.",
+      "filterPlaceholder": "Filter invoices...",
+      "methodBankTransfer": "Bank Transfer",
+      "methodCreditCard": "Credit Card",
+      "noResults": "No results found.",
+      "overviewDesc": "Test interactive data table controls with live filtering, row selection, and synchronized React and Qt Quick code.",
+      "roleAdmin": "Administrator",
+      "roleDesigner": "Designer",
+      "roleDev": "Developer",
+      "sandboxTitle": "Table Sandbox",
+      "showCaption": "Show Caption",
+      "simpleTableDesc": "Minimal table without header background or footer.",
+      "simpleTableTitle": "Simple Data Table",
+      "stateComplete": "Complete",
+      "stateInReview": "In Review",
+      "statePlanned": "Planned",
+      "statusAll": "All",
+      "statusCardDesc": "Tables embedding status indicator badges and interactive row states.",
+      "statusCardTitle": "Status Badges & Selection",
+      "statusPaid": "Paid",
+      "statusPending": "Pending",
+      "statusUnpaid": "Unpaid",
+      "taskApiIntegration": "API Integration",
+      "taskDocumentation": "Documentation",
+      "taskUnitTesting": "Unit Testing",
+      "total": "Total",
+      "userAlice": "Alice",
+      "userBob": "Bob",
+      "userCarol": "Carol"
+    },
+    "themeSettings": {
+      "animDescEnd": "as global kill switches.",
+      "animDescPrefix": "ThemeSettings uses unified motion tokens for smooth state transitions across buttons, segmented controls, color pickers, and override drawers. Transitions use",
+      "animDescSuffix": "and Qt",
+      "animFull": "ThemeSettings uses unified motion tokens for smooth state transitions across buttons, segmented controls, color pickers, and override drawers. Transitions use ThemeTokens.motionQuick and ThemeTokens.easeStandard. Respects ThemeTokens.animationsEnabled as global kill switch.",
+      "sandboxTitle": "Interactive Theme Settings"
+    }
+  }
+}

@@ -1,0 +1,313 @@
+{
+  "components": {
+    "generic-data-table": {
+      "description": "基于 TanStack Table 构建的企业级通用数据表格，提供列头排序、实时筛选、行选择与分页控制。"
+    },
+    "query-builder": {
+      "description": "可视化条件查询构建器，支持嵌套逻辑分组 (AND/OR)、字段选择、运算符谓词筛选及 JSON 结构序列化。"
+    },
+    "code-block": {
+      "description": "规范驱动的代码语法高亮查看器，基于统一零依赖词法分析器与滚动、复制、标签组件构建，双端色彩与分词完全一致。"
+    },
+    "pipeline-view": {
+      "description": "多阶段任务流水线执行视图，整合任务追踪队列、步骤时间线及虚拟化自动滚动日志控制台。"
+    },
+    "address-bar": {
+      "description": "资源管理器与浏览器风格的地址导航栏，具备可交互的面包屑路径分段与行内路径即时编辑功能。"
+    },
+    "theme-settings": {
+      "description": "跨端主题配置面板，统一管控外观模式、强调色调色板、装饰圆角阴影级别与界面缩放密度。"
+    },
+    "language-settings": {
+      "description": "跨端语言偏好设置卡片，提供系统语言自动检测、即时生效切换与文化诗词意境引语。"
+    },
+    "addressBar": {
+      "canGoBackDesc": "启用后退历史导航按钮。",
+      "canGoForwardDesc": "启用前进历史导航按钮。",
+      "defaultValueDesc": "非受控用法下的初始路径字符串。",
+      "description": "资源管理器与浏览器风格的地址导航栏，具备可交互的面包屑路径分段与行内路径即时编辑功能。",
+      "disabledDesc": "禁用全部交互与输入编辑。",
+      "fileSystemAdapterDesc": "提供子文件夹枚举与建议查询的文件系统适配器。",
+      "historyDesc": "用于下拉展示的最近输入路径历史。",
+      "onNavigateDesc": "通过分段点击或 Enter 提交新路径时触发的回调。",
+      "onNavigateWithSelectionDesc": "选中特定文件项并导航时触发的回调。",
+      "pathDesc": "在面包屑与编辑模式下渲染的当前路径字符串。",
+      "showNavButtonsDesc": "是否显示后退、前进、向上与刷新导航按钮。",
+      "showRefreshDesc": "是否显示刷新按钮。",
+      "showSearchDesc": "是否在右侧显示集成搜索／过滤输入框。",
+      "suggestionsDesc": "下拉浮层中自动补全路径字符串列表。"
+    },
+    "codeBlock": {
+      "classNameDesc": "外部容器的额外类名。",
+      "codeDesc": "源码文本；提供 files时将被忽略。",
+      "copyLabelDesc": "复制按钮的无障碍标签。",
+      "description": "基于 ChaSet 滚动条、复制、选项卡与卡片原语构建的规范驱动语法高亮代码查看器，底层依赖零第三方词法解析器，在 React 与 Qt Quick 上提供完全一致的词法标记与高亮配色。",
+      "embeddedDesc": "去除卡片边框（边框／背景／顶部栏）以便行内嵌入。",
+      "filenameDesc": "顶部标题覆盖；默认为解析后的语言标签。",
+      "filesDesc": "多文件选项卡组；存在时替换单文件正文。",
+      "highlightDesc": "启用规范驱动的语法高亮。",
+      "languageDesc": "由共享词法器解析的语言标识或别名。",
+      "maxHeightDesc": "限制内容高度（rem 等效数值，或任意 CSS 长度字符串）。",
+      "showCopyDesc": "在顶部渲染内置复制按钮。",
+      "showLanguageDesc": "在顶部渲染语言／文件名标签。",
+      "showLineNumbersDesc": "渲染行号指示槽。",
+      "wrapDesc": "长行自动换行而非水平滚动。"
+    },
+    "genericDataTable": {
+      "columnsDesc": "TanStack Table 列定义。",
+      "columnsQtDesc": "列规格数组：{ key、header、width }。",
+      "customRadiusDesc": "表格边框的圆角半径。",
+      "dataDesc": "数据记录数组。",
+      "description": "由 TanStack Table 驱动的桌面级全功能数据表，支持列排序、过滤、选择与分页。",
+      "enablePaginationDesc": "是否渲染分页控件。",
+      "enableSortingDesc": "是否启用列排序。",
+      "filterPlaceholder": "过滤记录……",
+      "next": "下一页",
+      "pageOf": "第 {{current}} 页，共 {{total}} 页",
+      "pageSizeDesc": "每页行数。",
+      "previous": "上一页",
+      "rowsDesc": "要展示的任意记录数组（别名：tableData）。"
+    },
+    "languageSettings": {
+      "description": "跨端语言偏好设置卡片，提供系统语言自动检测、即时生效切换与文化诗词意境引语。",
+      "disabledDesc": "语言选择控件是否禁用。",
+      "onPreferenceChangeDesc": "用户选择其他语言或切换系统模式时触发的回调。",
+      "preferenceDesc": "当前语言偏好，“system”或明确的语言代码。",
+      "showFollowSystemDesc": "是否显示带系统检测的 Follow System 突出选项卡片。",
+      "textProviderDesc": "用于覆盖组件文案的可选自定义翻译函数。",
+      "variantDesc": "视觉容器变体。“card”渲染带标题的外层边框卡片；“embedded”渲染无外框内联内容。"
+    },
+    "logConsole": {
+      "empty": "暂无日志"
+    },
+    "pipelineView": {
+      "activeJobIdDesc": "当前选中的任务 ID，展示步骤时间线与日志。",
+      "cancelDisabledDesc": "禁用取消按钮。",
+      "description": "带任务追踪、步骤时间线与虚拟化自动滚动日志控制台的多阶段执行视图与流水线中心。",
+      "emptyJobsTextDesc": "任务列表为空时展示的占位文案。",
+      "endMsDesc": "执行完成时间戳；非空时展示格式化时长。",
+      "getLogsDesc": "按任务 ID 提供日志行数组的函数。",
+      "headerActionSlotDesc": "头部自定义操作插槽。",
+      "jobsDesc": "属于当前执行轮次的任务数组。",
+      "jobsTitleDesc": "任务列表侧边栏的标题文案。",
+      "onCancelDesc": "点击取消按钮时触发的回调。",
+      "onSelectJobDesc": "选中任务时触发的回调。",
+      "startMsDesc": "执行开始时间戳（毫秒纪元）。",
+      "statusDesc": "汇总头徽章的总体执行状态。"
+    },
+    "queryBuilder": {
+      "connectorDesc": "根布尔组合逻辑（“AND”｜“OR”）。",
+      "customRadiusDesc": "规则构建器容器的圆角半径。",
+      "description": "可视化条件查询构建器，支持嵌套逻辑分组 (AND/OR)、字段选择、运算符谓词筛选及 JSON 结构序列化。",
+      "fieldsDesc": "可用可查询字段与数据类型。",
+      "fieldsListDesc": "可查询字段定义数组。",
+      "maxDepthDesc": "最大嵌套规则分组深度。",
+      "onQueryChangeDesc": "添加、删除或编辑规则时触发的回调。",
+      "queryDesc": "当前查询树根分组。",
+      "rulesDesc": "当前条件规则数组。"
+    },
+    "stepTimeline": {
+      "emptyText": "暂无步骤"
+    },
+    "table": {
+      "captionDesc": "渲染于表格底部的可选标题文本。",
+      "classNameDesc": "表格元素的额外 CSS 类。",
+      "columnsDesc": "列定义对象数组，包含 key、title、可选 width 与 align（'left'｜'center'｜'right'）。",
+      "containerClassNameDesc": "可滚动外层容器的额外 CSS 类。",
+      "customBorderColorDesc": "表格与行分隔线的边框颜色。",
+      "customRadiusDesc": "表格外层容器的圆角半径。",
+      "description": "响应式语义化基础数据表格组件，具备行悬停高亮、精致分割边框与表头/表尾语义结构。",
+      "emptyState": "暂无数据",
+      "headerHeightDesc": "列表头行的高度。",
+      "rowHeightDesc": "每行数据行的高度。",
+      "rowsDesc": "数据对象数组，键须与列定义匹配。",
+      "selectedIndexDesc": "当前选中行的索引，应用激活选中令牌样式。"
+    },
+    "themeSettings": {
+      "configDesc": "包含 mode、palette、decoration、typography 与 uiScale 的规范主题配置对象。",
+      "configQtDesc": "符合 ThemeConfig 模式的规范主题配置对象。",
+      "controlledDesc": "受控模式：组件永不回写 config，所有编辑仅通过 configModified 发出。当宿主以自身状态驱动 config（声明式绑定）时启用，避免本地快照覆盖宿主持有的 uiScale 等字段。",
+      "description": "跨端主题配置面板，统一管控外观模式、强调色调色板、装饰圆角阴影级别与界面缩放密度。",
+      "disabledDesc": "禁用全部交互控件并降低不透明度。",
+      "onChangeDesc": "任一主题属性变化时触发的回调。",
+      "onExportDesc": "导出配置 JSON 时触发的回调。",
+      "onImportDesc": "导入并解析配置 JSON 时触发的回调。",
+      "onResetDesc": "重置按钮被激活时触发的回调。",
+      "showExportDesc": "是否在头部显示导出 JSON 按钮。",
+      "showImportDesc": "是否在头部显示导入按钮。",
+      "showResetDesc": "是否在头部显示重置按钮。",
+      "showTypographyDesc": "是否渲染字体家族与缩放选择行。",
+      "showTypographyQtDesc": "是否渲染字体排印选择行。",
+      "textProviderDesc": "可选国际化字符串解析回调。",
+      "textProviderQtDesc": "可选 i18n 字符串解析函数。",
+      "variantQtDesc": "容器处理：“card”将行包裹在面板中，“embedded”裸渲染行。"
+    }
+  },
+  "desktopComposite": {
+    "addressBar": {
+      "activePath": "当前路径:",
+      "activePathFormat": "当前路径: {{path}}",
+      "animFull": "面包屑分段悬停高亮经由 ThemeTokens.motionQuick（100ms）与 ThemeTokens.easeStandard 曲线过渡。建议浮层以进入缩放与淡入动画渲染，时长 120ms。",
+      "animHoverMid": "（100ms）与",
+      "animHoverPrefix": "面包屑分段悬停高亮过渡使用",
+      "animHoverSuffix": "曲线（Qt 对应：",
+      "animSuggest": "建议浮层以进入缩放与淡入动画渲染，时长 120ms。",
+      "animationsDesc": "模式切换与建议的运动令牌与运动学过渡。",
+      "backTooltip": "后退",
+      "forwardTooltip": "前进",
+      "keyboardDesc": "键盘快捷键与按钮激活模式。",
+      "locProjectRoot": "项目根目录",
+      "quickLocations": "快捷位置:",
+      "refreshes": "刷新次数: {{count}}",
+      "refreshTooltip": "刷新",
+      "sandboxTitle": "Address Bar 沙盒",
+      "searchPlaceholder": "搜索...",
+      "searchTooltip": "搜索",
+      "upTooltip": "上一级"
+    },
+    "breadcrumb": {
+      "allLocations": "所有位置",
+      "emptyFolder": "（空文件夹）",
+      "expandSubfolders": "展开 %1 的子文件夹",
+      "noMatch": "未找到匹配文件夹",
+      "searchPlaceholder": "搜索文件夹...",
+      "showHiddenAncestors": "显示隐藏的祖先文件夹"
+    },
+    "reorderableList": {
+      "toggleTooltip": "显示/隐藏"
+    },
+    "codeBlock": {
+      "animationsBullet1": "切换激活文件时正文经 animate-in fade-in-0交叉淡入，时长解析为 short动效令牌并采用 entrance曲线。",
+      "animationsBullet1Qt": "切换激活文件时正文经 ThemeTokens.motionShort 以 easeEntrance 曲线交叉淡入。",
+      "animationsBullet2": "顶部操作区继承原语的令牌动效：选项卡触发器以 duration-quick与 ease-standard插值颜色与边框，复制按钮与滚动条亦然。",
+      "animationsBullet2Qt": "顶部操作区继承原语令牌动效：文件选项卡经 ThemeTokens.motionQuick 与 easeStandard 插值颜色与边框，复制按钮与滚动条亦然。",
+      "animationsBullet3": "时长与缓动解析自主题令牌，因此 prefers-reduced-motion会自动将其置零（Qt 端由 ThemeTokens.animationsEnabled管控）。",
+      "animationsBullet3Qt": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零且动画停止。",
+      "animationsDesc": "文件切换与顶部操作区的动效行为与时间节奏。",
+      "animationsDescQt": "由 ThemeTokens 驱动的文件切换与顶部操作区动效行为与时间节奏。",
+      "embeddedBadge": "嵌入",
+      "embeddedDesc": "去除卡片边框、背景与顶部栏，适用于行内嵌入",
+      "gutterDesc": "带有右对齐行号的左侧指示槽",
+      "monochromeDesc": "使用相同布局结构的单色基础渲染回退",
+      "multiFileDesc": "传入 files 数组渲染多文件选项卡组。每个标签页独立携带其语言类型，且复制按钮始终作用于当前激活的文件。",
+      "multiFileTitle": "多文件标签组",
+      "overviewDesc": "带语言标签与一键复制的语法高亮源码查看器，高亮由共享规范词法器生成，双端均不内置第三方高亮器。",
+      "sandboxTitle": "代码块沙盒",
+      "variantsDesc": "行号指示槽、软换行、带垂直滚动的高度边界、单色回退模式，以及面向行内正文的无边框内嵌模式。",
+      "variantsTitle": "变体与配置",
+      "wrapBadge": "换行",
+      "wrapDesc": "长代码行软换行展示，避免水平滚动"
+    },
+    "genericDataTable": {
+      "colId": "ID",
+      "colName": "用户名",
+      "colRole": "职位",
+      "overviewDesc": "点击列头以升序与降序排序。",
+      "roleArchitect": "首席架构师",
+      "roleDevOps": "DevOps 运维工程师",
+      "roleFrontend": "前端工程师",
+      "roleProduct": "产品经理",
+      "roleQt": "Qt 专家",
+      "sandboxTitle": "通用数据表沙盒",
+      "statusOffline": "离线",
+      "statusPending": "待审核"
+    },
+    "languageSettings": {
+      "animDescEnd": "作为全局终止开关。",
+      "animDescPrefix": "LanguageSettings 对卡片聚焦、激活选择环与对钩徽章状态使用平滑令牌过渡，过渡使用",
+      "animDescSuffix": "与 Qt",
+      "animFull": "LanguageSettings 对卡片聚焦、激活选择环与对钩徽章状态使用平滑令牌过渡，过渡使用 ThemeTokens.motionQuick 与 ThemeTokens.easeStandard。以 ThemeTokens.animationsEnabled 作为全局终止开关。",
+      "sandboxTitle": "交互式语言设置"
+    },
+    "pipelineView": {
+      "animationsBullet1": "活动执行节点（running、compiling、retrying）使用 animate-spin 持续旋转。",
+      "animationsBullet2": "任务列表悬停与选中过渡使用 duration-quick 与 ease-standard。",
+      "animationsBulletQt1": "活动执行节点（running、compiling、retrying）展示持续旋转动画。",
+      "animationsBulletQt2": "任务列表选中与悬停状态使用 ThemeTokens.motionQuick 平滑插值。",
+      "animationsBulletQt3": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零。",
+      "animationsDesc": "执行过渡与状态节点状态由共享运动令牌管控：",
+      "jobBenchmark": "性能基准测试集",
+      "jobPackage": "打包构建产物",
+      "jobShaderComp": "着色器编译",
+      "overviewDesc": "组装任务追踪、纵向步骤时间线与虚拟化自动滚动日志控制台的高性能执行检查器，所有子组件亦可独立消费。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "流水线视图沙盒",
+      "stepCompileFragment": "编译片段着色阶段",
+      "stepCompileVertex": "编译顶点着色阶段",
+      "stepDeadCode": "消除死代码",
+      "stepEmitBinary": "生成目标二进制",
+      "stepParseSpirv": "解析 SPIR-V 字节码",
+      "stepRegAlloc": "硬件寄存器分配"
+    },
+    "queryBuilder": {
+      "addCondition": "+ 添加条件",
+      "addGroup": "+ 添加分组",
+      "addRule": "+ 添加条件",
+      "combinatorLabel": "逻辑连接符: {{combinator}}",
+      "contains": "包含",
+      "deleteGroup": "删除分组",
+      "equals": "等于",
+      "fieldAge": "年龄",
+      "fieldIsActive": "是否激活",
+      "fieldPlaceholder": "选择字段",
+      "fieldRole": "职位",
+      "fieldStatus": "状态",
+      "fieldUserName": "用户名",
+      "greaterThan": "大于",
+      "operatorPlaceholder": "运算符",
+      "overviewDesc": "动态添加规则与嵌套分组，构建复杂查询谓词。",
+      "removeCondition": "移除条件",
+      "rulesCount": "规则数: {{count}}",
+      "sandboxTitle": "Query Builder 沙盒",
+      "serializedModel": "序列化 JSON 查询模型:",
+      "valuePlaceholder": "输入数值..."
+    },
+    "table": {
+      "caption": "您最近的发票明细列表。",
+      "colAmount": "金额",
+      "colInvoice": "发票编号",
+      "colMethod": "支付方式",
+      "colRole": "角色",
+      "colState": "执行状态",
+      "colTask": "任务项",
+      "colUser": "用户",
+      "examplesDesc": "常见表格模式与交互配置。",
+      "examplesDescQt": "Qt Quick 中的常见配置与视觉状态。",
+      "filterPlaceholder": "过滤发票...",
+      "methodBankTransfer": "银行转账",
+      "methodCreditCard": "信用卡",
+      "noResults": "未找到匹配数据。",
+      "overviewDesc": "通过实时筛选、行选中与同步的 React／Qt Quick代码测试交互式数据表格控件。",
+      "roleAdmin": "管理员",
+      "roleDesigner": "设计师",
+      "roleDev": "开发人员",
+      "sandboxTitle": "表格沙盒",
+      "showCaption": "显示表尾说明",
+      "simpleTableDesc": "无表头底色或表尾摘要的轻量展示表格。",
+      "simpleTableTitle": "极简数据表格",
+      "stateComplete": "已完成",
+      "stateInReview": "审核中",
+      "statePlanned": "规划中",
+      "statusAll": "全部",
+      "statusCardDesc": "内嵌状态指示徽标与支持交互式行选中的表格形态。",
+      "statusCardTitle": "状态徽标与行选中",
+      "statusPaid": "已支付",
+      "statusPending": "待处理",
+      "statusUnpaid": "未支付",
+      "taskApiIntegration": "接口联调",
+      "taskDocumentation": "文档编写",
+      "taskUnitTesting": "单元测试",
+      "total": "总计",
+      "userAlice": "爱丽丝",
+      "userBob": "鲍勃",
+      "userCarol": "卡罗尔"
+    },
+    "themeSettings": {
+      "animDescEnd": "作为全局终止开关。",
+      "animDescPrefix": "ThemeSettings 对按钮、分段控件、颜色选择器与覆盖抽屉的平滑状态过渡使用统一运动令牌，过渡使用",
+      "animDescSuffix": "与 Qt",
+      "animFull": "ThemeSettings 对按钮、分段控件、颜色选择器与覆盖抽屉的平滑状态过渡使用统一运动令牌，过渡使用 ThemeTokens.motionQuick 与 ThemeTokens.easeStandard。以 ThemeTokens.animationsEnabled 作为全局终止开关。",
+      "sandboxTitle": "交互式主题设置"
+    }
+  }
+}
