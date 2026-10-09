@@ -173,7 +173,9 @@
       "hideOsd": "隐藏 OSD",
       "showOsd": "显示 OSD",
       "previewBox": "缩放预览盒",
-      "hoverPauseHint": "将鼠标悬停在下方浮动 OSD 上可暂停自动隐藏倒计时。"
+      "hoverPauseHint": "将鼠标悬停在下方浮动 OSD 上可暂停自动隐藏倒计时。",
+      "delayLabel": "自动隐藏延迟 (2s)",
+      "noDelayHint": "关闭延迟后 OSD 将保持常驻显示。"
     },
     "taskHud": {
       "simulateTasks": "模拟任务:",

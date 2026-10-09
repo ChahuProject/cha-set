@@ -38,6 +38,7 @@ export const scaleOsdSchema = z.object({
   animated: z.boolean().default(true),
   ignoreUiScale: z.boolean().default(true),
   showTooltips: z.boolean().default(true),
+  contained: z.boolean().default(false),
 });
 
 export type ScaleOsdApi = z.infer<typeof scaleOsdSchema>;

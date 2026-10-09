@@ -38,6 +38,8 @@ export interface ScaleOsdProps
   animated?: boolean;
   /** Whether controls are disabled */
   disabled?: boolean;
+  /** Whether to position OSD absolutely within its parent container instead of fixed to the global viewport */
+  contained?: boolean;
   /** Whether the OSD ignores global UI scale and maintains fixed physical pixel geometry (default true) */
   ignoreUiScale?: boolean;
   /** Whether to show tooltip titles on buttons (default true) */
@@ -58,11 +60,25 @@ const placementClasses: Record<ScaleOsdPlacement, string> = {
   'top-right': 'fixed top-9 right-9',
 };
 
+const containedPlacementClasses: Record<ScaleOsdPlacement, string> = {
+  'bottom-center': 'absolute bottom-4 left-0 right-0 mx-auto w-fit',
+  'top-center': 'absolute top-4 left-0 right-0 mx-auto w-fit',
+  'bottom-right': 'absolute bottom-4 right-4',
+  'top-right': 'absolute top-4 right-4',
+};
+
 const placementStyles: Record<ScaleOsdPlacement, React.CSSProperties> = {
   'bottom-center': { position: 'fixed', bottom: 36, top: 'auto', left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' },
   'top-center': { position: 'fixed', top: 36, bottom: 'auto', left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' },
   'bottom-right': { position: 'fixed', bottom: 36, right: 36, top: 'auto', left: 'auto', width: 'fit-content' },
   'top-right': { position: 'fixed', top: 36, right: 36, bottom: 'auto', left: 'auto', width: 'fit-content' },
+};
+
+const containedPlacementStyles: Record<ScaleOsdPlacement, React.CSSProperties> = {
+  'bottom-center': { position: 'absolute', bottom: '1rem', top: 'auto', left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' },
+  'top-center': { position: 'absolute', top: '1rem', bottom: 'auto', left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' },
+  'bottom-right': { position: 'absolute', bottom: '1rem', right: '1rem', top: 'auto', left: 'auto', width: 'fit-content' },
+  'top-right': { position: 'absolute', top: '1rem', right: '1rem', bottom: 'auto', left: 'auto', width: 'fit-content' },
 };
 
 export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
@@ -82,6 +98,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
       showControls = true,
       placement = 'bottom-center',
       disabled = false,
+      contained = false,
       size = 'default',
       animated = true,
       ignoreUiScale = true,
@@ -132,6 +149,12 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
         hideTimerRef.current = null;
       }
     }, []);
+
+    React.useEffect(() => {
+      if (autoHideDuration <= 0) {
+        clearHideTimer();
+      }
+    }, [autoHideDuration, clearHideTimer]);
 
     const startHideTimer = React.useCallback(() => {
       clearHideTimer();
@@ -254,12 +277,9 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
     const defaultBoxShadow =
       '0 0 0 1px color-mix(in oklch, var(--border) 85%, transparent), 0 12px 36px color-mix(in oklch, black 18%, transparent)';
 
-    const placementStyles: Record<ScaleOsdPlacement, React.CSSProperties> = {
-      'bottom-center': { position: 'fixed', bottom: 36, top: 'auto', left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' },
-      'top-center': { position: 'fixed', top: 36, bottom: 'auto', left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' },
-      'bottom-right': { position: 'fixed', bottom: 36, right: 36, top: 'auto', left: 'auto', width: 'fit-content' },
-      'top-right': { position: 'fixed', top: 36, right: 36, bottom: 'auto', left: 'auto', width: 'fit-content' },
-    };
+    const activePlacementStyles = contained
+      ? containedPlacementStyles[placement]
+      : placementStyles[placement];
 
     // When ignoreUiScale is true, apply fixed physical pixel metrics to guarantee
     // the HUD does not grow or shrink with root font-size rem scaling or uiScale.
@@ -273,11 +293,12 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
           fontSize: isLg ? 20 : 14,
           lineHeight: isLg ? '30px' : '20px',
           boxShadow: style?.boxShadow || defaultBoxShadow,
-          ...placementStyles[placement],
+          ...activePlacementStyles,
           ...style,
         }
       : {
           boxShadow: style?.boxShadow || defaultBoxShadow,
+          ...activePlacementStyles,
           ...style,
         };
 
@@ -314,7 +335,7 @@ export const ScaleOsd = React.forwardRef<HTMLDivElement, ScaleOsdProps>(
           isLg ? 'gap-1.5 h-11 px-4' : 'gap-1.5 h-10 px-3.5',
           'bg-popover text-popover-foreground border border-border/80 shadow-2xl',
           animated ? 'transition-all duration-short ease-standard' : 'transition-none',
-          placementClasses[placement],
+          contained ? containedPlacementClasses[placement] : placementClasses[placement],
           disabled && 'opacity-60 pointer-events-none',
           className,
         )}

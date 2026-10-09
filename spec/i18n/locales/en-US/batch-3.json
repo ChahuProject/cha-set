@@ -107,6 +107,7 @@
     },
     "scaleOsd": {
       "autoHideDurationDesc": "Duration in ms before auto-hiding (pauses on hover).",
+      "containedDesc": "Whether to position OSD absolutely within its parent container instead of fixed to the global viewport.",
       "defaultValueDesc": "Initial scale ratio in uncontrolled mode.",
       "description": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.",
       "disabledDesc": "Disables all controls and user interaction.",

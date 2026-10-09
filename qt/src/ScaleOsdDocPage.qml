@@ -10,6 +10,14 @@ DocLayout {
     pageTitle: "Scale OSD"
     description: ChaSetI18n.tr("components.scaleOsd.description", "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.")
     property real demoScale: 1.0
+    property bool delayEnabled: true
+
+    onDemoScaleChanged: {
+        if (scaleOsd && Math.abs(scaleOsd.value - demoScale) > 0.001) {
+            scaleOsd.value = demoScale;
+            scaleOsd.show();
+        }
+    }
 
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.scaleOsd.sandboxTitle", "Scale OSD Sandbox")
@@ -19,7 +27,8 @@ DocLayout {
   min={0.2}
   max={3.0}
   visible={visible}
-  autoHideDuration={1400}
+  contained={true}
+  autoHideDuration={${root.delayEnabled ? 2000 : 0}}
   onChange={setScale}
 />`
         qtCode: `ChaSetScaleOsd {
@@ -27,9 +36,79 @@ DocLayout {
     step: 0.1
     min: 0.2
     max: 3.0
-    autoHideDuration: 1400
-    onValueChanged: function(val) { console.log(val) }
+    autoHideDuration: ${root.delayEnabled ? 2000 : 0}
+    onValueChanged: {
+        if (Math.abs(root.demoScale - value) > 0.001) {
+            root.demoScale = value;
+        }
+    }
 }`
+
+        controlsData: [
+            Row {
+                width: childrenRect.width
+                spacing: ThemeTokens.dp(8)
+
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: ChaSetI18n.tr("overlays.scaleOsd.quickZoom", "Quick Zoom:")
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: Typography.sizeSmall
+                }
+
+                ChaSetButton {
+                    text: "50%"
+                    variant: "outline"
+                    size: "sm"
+                    onClicked: {
+                        root.demoScale = 0.5;
+                        scaleOsd.show();
+                    }
+                }
+
+                ChaSetButton {
+                    text: "100%"
+                    variant: "outline"
+                    size: "sm"
+                    onClicked: {
+                        root.demoScale = 1.0;
+                        scaleOsd.show();
+                    }
+                }
+
+                ChaSetButton {
+                    text: "200%"
+                    variant: "outline"
+                    size: "sm"
+                    onClicked: {
+                        root.demoScale = 2.0;
+                        scaleOsd.show();
+                    }
+                }
+
+                ChaSetButton {
+                    text: scaleOsd.osdVisible ? ChaSetI18n.tr("overlays.scaleOsd.hideOsd", "Hide OSD") : ChaSetI18n.tr("overlays.scaleOsd.showOsd", "Show OSD")
+                    variant: "outline"
+                    size: "sm"
+                    onClicked: {
+                        if (scaleOsd.osdVisible) {
+                            scaleOsd.hide();
+                        } else {
+                            scaleOsd.show();
+                        }
+                    }
+                }
+
+                ChaSetCheckbox {
+                    anchors.verticalCenter: parent.verticalCenter
+                    label: ChaSetI18n.tr("overlays.scaleOsd.delayLabel", "Auto-hide Delay (2s)")
+                    checked: root.delayEnabled
+                    onToggled: (val) => {
+                        root.delayEnabled = val;
+                    }
+                }
+            }
+        ]
 
         Item {
             anchors.fill: parent
@@ -67,12 +146,15 @@ DocLayout {
                 }
 
                 ChaSetScaleOsd {
+                    id: scaleOsd
                     anchors.horizontalCenter: parent.horizontalCenter
                     value: root.demoScale
-                    autoHideDuration: 2500
+                    autoHideDuration: root.delayEnabled ? 2000 : 0
                     defaultVisible: true
-                    onValueChanged: function(val) {
-                        root.demoScale = val
+                    onValueChanged: {
+                        if (Math.abs(root.demoScale - value) > 0.001) {
+                            root.demoScale = value;
+                        }
                     }
                 }
             }
@@ -132,6 +214,7 @@ ChaSetScaleOsd {
             { name: "autoHideDuration", type: "int", defaultVal: "1400", description: ChaSetI18n.tr("components.scaleOsd.autoHideDurationDesc", "Duration in ms before auto-hiding (pauses on hover).") },
             { name: "showControls", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.scaleOsd.showControlsDesc", "Whether to display +/- and reset buttons.") },
             { name: "showTooltips", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.scaleOsd.showTooltipsDesc", "Whether to display hover tooltip hints for control buttons.") },
+            { name: "contained", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.containedDesc", "Whether to position OSD absolutely within its parent container instead of fixed to the global viewport.") },
             { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.disabledDesc", "Disables all controls and user interaction.") }
         ]
     }

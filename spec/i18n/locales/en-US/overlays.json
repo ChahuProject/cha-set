@@ -173,7 +173,9 @@
       "hideOsd": "Hide OSD",
       "showOsd": "Show OSD",
       "previewBox": "Preview Box",
-      "hoverPauseHint": "Hover over the floating OSD below to pause auto-hide countdown."
+      "hoverPauseHint": "Hover over the floating OSD below to pause auto-hide countdown.",
+      "delayLabel": "Auto-hide Delay (2s)",
+      "noDelayHint": "When delay is disabled, OSD remains permanently visible."
     },
     "taskHud": {
       "simulateTasks": "Simulate Tasks:",

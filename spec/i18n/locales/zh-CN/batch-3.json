@@ -107,6 +107,7 @@
     },
     "scaleOsd": {
       "autoHideDurationDesc": "自动隐藏前的持续时长（毫秒，悬停时暂停）。",
+      "containedDesc": "是否将 OSD 限制在父容器内绝对定位，而非固定在全局视口。",
       "defaultValueDesc": "非受控模式下的初始缩放比例。",
       "description": "用于画布缩放调节的浮动屏幕显示胶囊，支持自动隐藏。",
       "disabledDesc": "禁用所有控件与用户交互。",

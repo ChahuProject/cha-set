@@ -20,6 +20,7 @@ Item {
     property string placement: "bottom-center"
     property string size: "default" // "default" | "lg"
     property bool animated: true
+    property bool contained: false
 
     signal stepTriggered(real delta)
     signal resetTriggered()
@@ -112,6 +113,8 @@ Item {
         root.osdVisible = true;
         if (root.autoHideDuration > 0 && !root.pointerOver) {
             hideTimer.restart();
+        } else {
+            hideTimer.stop();
         }
     }
 
@@ -169,9 +172,17 @@ Item {
         }
     }
 
+    onAutoHideDurationChanged: {
+        if (autoHideDuration <= 0) {
+            hideTimer.stop();
+        } else if (osdVisible && !pointerOver) {
+            hideTimer.restart();
+        }
+    }
+
     Timer {
         id: hideTimer
-        interval: root.autoHideDuration
+        interval: Math.max(1, root.autoHideDuration)
         repeat: false
         running: false
         onTriggered: {

@@ -346,5 +346,30 @@ describe('ScaleOsd', () => {
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith(1.5);
   });
+
+  it('applies contained placement classes and absolute positioning when contained is true', () => {
+    const { rerender } = render(<ScaleOsd visible value={1.0} contained={true} placement="bottom-center" />);
+    const osd = screen.getByRole('region');
+    expect(osd).toHaveClass('absolute');
+    expect(osd).toHaveClass('bottom-4');
+    expect(osd.style.position).toBe('absolute');
+
+    rerender(<ScaleOsd visible value={1.0} contained={false} placement="bottom-center" />);
+    expect(osd).toHaveClass('fixed');
+    expect(osd).toHaveClass('bottom-9');
+    expect(osd.style.position).toBe('fixed');
+  });
+
+  it('does not auto-hide when autoHideDuration is 0', () => {
+    render(<ScaleOsd visible value={1.0} autoHideDuration={0} />);
+    expect(screen.getByText('100%')).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+
+    expect(screen.getByText('100%')).toBeInTheDocument();
+  });
 });
+
 

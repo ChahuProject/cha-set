@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScaleOsd, Card, CodeBlock, Button, useChaSetI18n } from '@chahu/cha-set';
+import { ScaleOsd, Card, CodeBlock, Button, Checkbox, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -11,6 +11,7 @@ export function ScaleOsdDocPage() {
   const { t } = useChaSetI18n();
   const [scale, setScale] = useState(1.0);
   const [visible, setVisible] = useState(true);
+  const [delayEnabled, setDelayEnabled] = useState(true);
 
   const heroReactCode = `<ScaleOsd
   value={scale}
@@ -18,7 +19,8 @@ export function ScaleOsdDocPage() {
   min={0.2}
   max={3.0}
   visible={visible}
-  autoHideDuration={1400}
+  contained={true}
+  autoHideDuration={${delayEnabled ? 2000 : 0}}
   onChange={setScale}
 />`;
 
@@ -36,7 +38,7 @@ export function ScaleOsdDocPage() {
     step: 0.1
     min: 0.2
     max: 3.0
-    autoHideDuration: 1400
+    autoHideDuration: ${delayEnabled ? 2000 : 0}
     onValueChanged: function(val) { console.log(val) }
 }`}
           title={t('desktopComposite.scaleOsd.sandboxTitle', 'Scale OSD Sandbox')}
@@ -81,35 +83,38 @@ export function ScaleOsdDocPage() {
               >
                 {visible ? t('overlays.scaleOsd.hideOsd', 'Hide OSD') : t('overlays.scaleOsd.showOsd', 'Show OSD')}
               </Button>
+              <Checkbox
+                checked={delayEnabled}
+                onCheckedChange={(checked) => setDelayEnabled(Boolean(checked))}
+                label={t('overlays.scaleOsd.delayLabel', 'Auto-hide Delay (2s)')}
+              />
             </div>
           }
         >
-          <div className="w-full max-w-md mx-auto py-12 flex flex-col items-center justify-center relative min-h-[12rem]">
-            <Card className="w-full p-8 bg-card border flex flex-col items-center justify-center gap-4">
+          <div className="w-full max-w-md mx-auto py-12 flex flex-col items-center justify-center relative min-h-[16rem]">
+            <Card className="w-full p-8 bg-card border flex flex-col items-center justify-center gap-4 relative overflow-hidden min-h-[16rem]">
               <div
-                className="w-24 h-24 rounded-lg bg-primary/20 border border-primary flex items-center justify-center text-xs font-semibold text-primary transition-transform duration-short ease-standard"
+                className="w-24 h-24 rounded-lg bg-primary/20 border border-primary flex items-center justify-center text-xs font-semibold text-primary transition-transform duration-short ease-standard mb-8"
                 style={{ transform: `scale(${scale})` }}
               >
                 {t('overlays.scaleOsd.previewBox', 'Preview Box')}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground mb-4">
                 {t('overlays.scaleOsd.hoverPauseHint', 'Hover over the floating OSD below to pause auto-hide countdown.')}
               </p>
-            </Card>
-
-            <div className="mt-4">
               <ScaleOsd
                 value={scale}
                 step={0.1}
                 min={0.2}
                 max={3.0}
                 visible={visible}
-                autoHideDuration={2000}
+                contained={true}
+                autoHideDuration={delayEnabled ? 2000 : 0}
                 placement="bottom-center"
                 onChange={setScale}
                 onVisibilityChange={setVisible}
               />
-            </div>
+            </Card>
           </div>
         </ComponentPreview>
       </section>
@@ -225,6 +230,12 @@ ChaSetScaleOsd {
               type: '"bottom-center" | "top-center" | "bottom-right" | "top-right"',
               default: '"bottom-center"',
               description: t('components.scaleOsd.placementDesc', 'Fixed viewport anchor position.'),
+            },
+            {
+              name: 'contained',
+              type: 'boolean',
+              default: 'false',
+              description: t('components.scaleOsd.containedDesc', 'Whether to position OSD absolutely within its parent container instead of fixed to the global viewport.'),
             },
             {
               name: 'disabled',

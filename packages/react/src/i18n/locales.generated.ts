@@ -1183,6 +1183,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "scaleOsd": {
       "autoHideDurationDesc": "自动隐藏前的持续时长（毫秒，悬停时暂停）。",
+      "containedDesc": "是否将 OSD 限制在父容器内绝对定位，而非固定在全局视口。",
       "defaultValueDesc": "非受控模式下的初始缩放比例。",
       "description": "用于画布缩放调节的浮动屏幕显示胶囊，支持自动隐藏。",
       "disabledDesc": "禁用所有控件与用户交互。",
@@ -3110,7 +3111,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "hideOsd": "隐藏 OSD",
       "showOsd": "显示 OSD",
       "previewBox": "缩放预览盒",
-      "hoverPauseHint": "将鼠标悬停在下方浮动 OSD 上可暂停自动隐藏倒计时。"
+      "hoverPauseHint": "将鼠标悬停在下方浮动 OSD 上可暂停自动隐藏倒计时。",
+      "delayLabel": "自动隐藏延迟 (2s)",
+      "noDelayHint": "关闭延迟后 OSD 将保持常驻显示。"
     },
     "taskHud": {
       "simulateTasks": "模拟任务:",
@@ -4521,6 +4524,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "scaleOsd": {
       "autoHideDurationDesc": "Duration in ms before auto-hiding (pauses on hover).",
+      "containedDesc": "Whether to position OSD absolutely within its parent container instead of fixed to the global viewport.",
       "defaultValueDesc": "Initial scale ratio in uncontrolled mode.",
       "description": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.",
       "disabledDesc": "Disables all controls and user interaction.",
@@ -6448,7 +6452,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "hideOsd": "Hide OSD",
       "showOsd": "Show OSD",
       "previewBox": "Preview Box",
-      "hoverPauseHint": "Hover over the floating OSD below to pause auto-hide countdown."
+      "hoverPauseHint": "Hover over the floating OSD below to pause auto-hide countdown.",
+      "delayLabel": "Auto-hide Delay (2s)",
+      "noDelayHint": "When delay is disabled, OSD remains permanently visible."
     },
     "taskHud": {
       "simulateTasks": "Simulate Tasks:",
