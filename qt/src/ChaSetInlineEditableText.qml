@@ -146,7 +146,9 @@ Item {
             Text {
                 id: displayLabel
                 anchors.verticalCenter: parent.verticalCenter
-                width: Math.max(0, displayBox.width - ThemeTokens.dp(8) - ThemeTokens.dp(root._pencilSize) - ThemeTokens.dp(6))
+                // Hug the text content so the trailing pencil sits at the
+                // end of the TEXT (React parity), not at the component edge.
+                width: Math.min(displayLabel.implicitWidth, Math.max(0, displayBox.width - ThemeTokens.dp(8) - ThemeTokens.dp(root._pencilSize) - ThemeTokens.dp(6)))
                 text: root.value.length > 0 ? root.value : root.placeholder
                 elide: Text.ElideRight
                 maximumLineCount: 1
