@@ -313,4 +313,46 @@ describe('Tooltip Component', () => {
     });
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
+
+  it('renders in a portal attached to document.body outside overflow:hidden parent by default', () => {
+    const { container } = render(
+      <div style={{ overflow: 'hidden', width: '50px', height: '50px' }} data-testid="clipped-parent">
+        <Tooltip content="Escaped overflow tooltip" delayDuration={0}>
+          <button type="button">Inside Overflow</button>
+        </Tooltip>
+      </div>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Inside Overflow' });
+    fireEvent.mouseEnter(trigger);
+
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent('Escaped overflow tooltip');
+
+    // The tooltip should NOT be a descendant of the clipped parent div
+    const clippedParent = screen.getByTestId('clipped-parent');
+    expect(clippedParent.contains(tooltip)).toBe(false);
+    expect(document.body.contains(tooltip)).toBe(true);
+  });
+
+  it('renders inline within parent container when portal is false', () => {
+    render(
+      <div data-testid="inline-parent">
+        <Tooltip content="Inline tooltip" portal={false} delayDuration={0}>
+          <button type="button">Inline Trigger</button>
+        </Tooltip>
+      </div>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Inline Trigger' });
+    fireEvent.mouseEnter(trigger);
+
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+
+    const inlineParent = screen.getByTestId('inline-parent');
+    expect(inlineParent.contains(tooltip)).toBe(true);
+  });
 });
+

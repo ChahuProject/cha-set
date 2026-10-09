@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { createPortal } from 'react-dom';
 import { cn } from '../lib/utils';
 import { useExitAnimation } from '../lib/useExitAnimation';
 import { Kbd } from '../kbd';
 
 export type TooltipSide = 'top' | 'bottom' | 'left' | 'right';
+export type TooltipAlign = 'start' | 'center' | 'end';
 
 // Context for TooltipProvider (global/ancestor defaults)
 interface TooltipProviderContextValue {
@@ -35,6 +37,9 @@ interface TooltipContextValue {
   delayDuration: number;
   disabled: boolean;
   tooltipId: string;
+  triggerElement: HTMLElement | null;
+  setTriggerElement: (el: HTMLElement | null) => void;
+  rootElement: HTMLElement | null;
   handleTriggerMouseEnter: (event?: React.MouseEvent) => void;
   handleTriggerMouseLeave: (event?: React.MouseEvent) => void;
   handleTriggerFocus: (event?: React.FocusEvent) => void;
@@ -181,6 +186,20 @@ export const TooltipRoot = React.forwardRef<HTMLDivElement, TooltipRootProps>(
       };
     }, [isOpen, clearTimer, updateOpen]);
 
+    const [triggerElement, setTriggerElement] = React.useState<HTMLElement | null>(null);
+    const [rootElement, setRootElement] = React.useState<HTMLDivElement | null>(null);
+
+    const innerRootRef = React.useRef<HTMLDivElement | null>(null);
+    const handleRootRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        innerRootRef.current = node;
+        setRootElement(node);
+        if (typeof ref === 'function') ref(node);
+        else if (ref && 'current' in ref) (ref as any).current = node;
+      },
+      [ref],
+    );
+
     const contextValue = React.useMemo<TooltipContextValue>(
       () => ({
         isOpen,
@@ -189,6 +208,9 @@ export const TooltipRoot = React.forwardRef<HTMLDivElement, TooltipRootProps>(
         delayDuration,
         disabled,
         tooltipId,
+        triggerElement,
+        setTriggerElement,
+        rootElement,
         handleTriggerMouseEnter,
         handleTriggerMouseLeave,
         handleTriggerFocus,
@@ -201,6 +223,8 @@ export const TooltipRoot = React.forwardRef<HTMLDivElement, TooltipRootProps>(
         delayDuration,
         disabled,
         tooltipId,
+        triggerElement,
+        rootElement,
         handleTriggerMouseEnter,
         handleTriggerMouseLeave,
         handleTriggerFocus,
@@ -211,7 +235,7 @@ export const TooltipRoot = React.forwardRef<HTMLDivElement, TooltipRootProps>(
     return (
       <TooltipContext.Provider value={contextValue}>
         <div
-          ref={ref}
+          ref={handleRootRef}
           data-slot="tooltip-root"
           className={cn('relative inline-flex items-center justify-center', className)}
           {...props}
@@ -235,6 +259,7 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
     const {
       isOpen,
       tooltipId,
+      setTriggerElement,
       handleTriggerMouseEnter,
       handleTriggerMouseLeave,
       handleTriggerFocus,
@@ -252,6 +277,7 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
         ...props,
         ...child.props,
         ref: (node: HTMLElement | null) => {
+          setTriggerElement(node);
           if (typeof ref === 'function') ref(node);
           else if (ref && 'current' in ref) (ref as any).current = node;
 
@@ -269,10 +295,19 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
       });
     }
 
+    const handleButtonRef = React.useCallback(
+      (node: HTMLButtonElement | null) => {
+        setTriggerElement(node);
+        if (typeof ref === 'function') ref(node);
+        else if (ref && 'current' in ref) (ref as any).current = node;
+      },
+      [ref, setTriggerElement],
+    );
+
     return (
       <button
         type="button"
-        ref={ref as React.Ref<HTMLButtonElement>}
+        ref={handleButtonRef}
         data-slot="tooltip-trigger"
         aria-describedby={isOpen ? tooltipId : undefined}
         onMouseEnter={handleTriggerMouseEnter}
@@ -297,7 +332,86 @@ const sidePositionClasses: Record<TooltipSide, string> = {
   right: 'left-full top-1/2 -translate-y-1/2 ml-2',
 };
 
-export type TooltipAlign = 'start' | 'center' | 'end';
+function computeTooltipPosition({
+  triggerEl,
+  contentEl,
+  side,
+  align,
+  sideOffset = 8,
+  alignOffset = 0,
+}: {
+  triggerEl: HTMLElement;
+  contentEl: HTMLElement | null;
+  side: TooltipSide;
+  align: TooltipAlign;
+  sideOffset?: number;
+  alignOffset?: number;
+}): { top: number; left: number; side: TooltipSide } {
+  const triggerRect = triggerEl.getBoundingClientRect();
+  const contentWidth = contentEl && contentEl.offsetWidth > 0 ? contentEl.offsetWidth : 80;
+  const contentHeight = contentEl && contentEl.offsetHeight > 0 ? contentEl.offsetHeight : 28;
+  const margin = 8;
+  const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1024;
+  const viewportHeight = typeof window !== 'undefined' ? window.innerHeight : 768;
+
+  let actualSide = side;
+
+  // Collision detection / auto-flip if overflowing viewport boundary
+  if (side === 'top' && triggerRect.top - contentHeight - sideOffset < margin) {
+    if (triggerRect.bottom + contentHeight + sideOffset <= viewportHeight - margin) {
+      actualSide = 'bottom';
+    }
+  } else if (side === 'bottom' && triggerRect.bottom + contentHeight + sideOffset > viewportHeight - margin) {
+    if (triggerRect.top - contentHeight - sideOffset >= margin) {
+      actualSide = 'top';
+    }
+  } else if (side === 'left' && triggerRect.left - contentWidth - sideOffset < margin) {
+    if (triggerRect.right + contentWidth + sideOffset <= viewportWidth - margin) {
+      actualSide = 'right';
+    }
+  } else if (side === 'right' && triggerRect.right + contentWidth + sideOffset > viewportWidth - margin) {
+    if (triggerRect.left - contentWidth - sideOffset >= margin) {
+      actualSide = 'left';
+    }
+  }
+
+  let top = 0;
+  let left = 0;
+
+  if (actualSide === 'top' || actualSide === 'bottom') {
+    top = actualSide === 'top'
+      ? triggerRect.top - contentHeight - sideOffset
+      : triggerRect.bottom + sideOffset;
+
+    if (align === 'start') {
+      left = triggerRect.left + alignOffset;
+    } else if (align === 'end') {
+      left = triggerRect.right - contentWidth - alignOffset;
+    } else {
+      left = triggerRect.left + (triggerRect.width - contentWidth) / 2 + alignOffset;
+    }
+
+    // Clamp horizontally to viewport bounds
+    left = Math.max(margin, Math.min(left, viewportWidth - contentWidth - margin));
+  } else {
+    left = actualSide === 'left'
+      ? triggerRect.left - contentWidth - sideOffset
+      : triggerRect.right + sideOffset;
+
+    if (align === 'start') {
+      top = triggerRect.top + alignOffset;
+    } else if (align === 'end') {
+      top = triggerRect.bottom - contentHeight - alignOffset;
+    } else {
+      top = triggerRect.top + (triggerRect.height - contentHeight) / 2 + alignOffset;
+    }
+
+    // Clamp vertically to viewport bounds
+    top = Math.max(margin, Math.min(top, viewportHeight - contentHeight - margin));
+  }
+
+  return { top, left, side: actualSide };
+}
 
 export interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement> {
   side?: TooltipSide;
@@ -306,6 +420,8 @@ export interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement
   alignOffset?: number;
   shortcut?: string;
   arrow?: boolean;
+  portal?: boolean;
+  container?: HTMLElement | null;
 }
 
 export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
@@ -318,66 +434,122 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
       alignOffset,
       shortcut,
       arrow = false,
+      portal = true,
+      container,
       children,
       style,
       ...props
     },
-    ref
+    ref,
   ) => {
-    const { isOpen, side: contextSide, tooltipId } = useTooltip();
+    const { isOpen, side: contextSide, tooltipId, triggerElement, rootElement } = useTooltip();
     const side = propSide || contextSide || 'top';
     const { visible, exiting } = useExitAnimation(isOpen);
 
     const innerRef = React.useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => innerRef.current!);
 
+    const [coords, setCoords] = React.useState<{ top: number; left: number; side: TooltipSide } | null>(null);
     const [inwardOffset, setInwardOffset] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
+    const anchor = triggerElement || rootElement;
+
     React.useLayoutEffect(() => {
-      if (!visible || !innerRef.current || typeof window === 'undefined') return;
-      const rect = innerRef.current.getBoundingClientRect();
-      const margin = 8;
-      let shiftX = 0;
-      let shiftY = 0;
+      if (!visible) return;
 
-      if (rect.right > window.innerWidth - margin) {
-        shiftX = -(rect.right - (window.innerWidth - margin));
-      } else if (rect.left < margin) {
-        shiftX = margin - rect.left;
+      if (portal && typeof window !== 'undefined') {
+        if (!anchor) return;
+
+        const updatePosition = () => {
+          const next = computeTooltipPosition({
+            triggerEl: anchor,
+            contentEl: innerRef.current,
+            side,
+            align,
+            sideOffset,
+            alignOffset,
+          });
+          setCoords(next);
+        };
+
+        updatePosition();
+
+        window.addEventListener('resize', updatePosition);
+        window.addEventListener('scroll', updatePosition, true);
+
+        return () => {
+          window.removeEventListener('resize', updatePosition);
+          window.removeEventListener('scroll', updatePosition, true);
+        };
+      } else if (!portal && innerRef.current && typeof window !== 'undefined') {
+        const rect = innerRef.current.getBoundingClientRect();
+        const margin = 8;
+        let shiftX = 0;
+        let shiftY = 0;
+
+        if (rect.right > window.innerWidth - margin) {
+          shiftX = -(rect.right - (window.innerWidth - margin));
+        } else if (rect.left < margin) {
+          shiftX = margin - rect.left;
+        }
+
+        if (rect.bottom > window.innerHeight - margin) {
+          shiftY = -(rect.bottom - (window.innerHeight - margin));
+        } else if (rect.top < margin) {
+          shiftY = margin - rect.top;
+        }
+
+        setInwardOffset({ x: shiftX, y: shiftY });
       }
-
-      if (rect.bottom > window.innerHeight - margin) {
-        shiftY = -(rect.bottom - (window.innerHeight - margin));
-      } else if (rect.top < margin) {
-        shiftY = margin - rect.top;
-      }
-
-      setInwardOffset({ x: shiftX, y: shiftY });
-    }, [visible, children, shortcut]);
+    }, [visible, portal, anchor, side, align, sideOffset, alignOffset, children, shortcut]);
 
     if (!visible) {
       return null;
     }
 
+    const effectiveCoords = coords ?? (portal && anchor && typeof window !== 'undefined'
+      ? computeTooltipPosition({
+          triggerEl: anchor,
+          contentEl: innerRef.current,
+          side,
+          align,
+          sideOffset,
+          alignOffset,
+        })
+      : null);
+
+    const effectiveSide = effectiveCoords ? effectiveCoords.side : side;
+
     const computedStyle: React.CSSProperties = { ...style };
-    if (sideOffset !== undefined) {
-      const remVal = `${(sideOffset * 0.0625).toFixed(4)}rem`;
-      if (side === 'top') computedStyle.marginBottom = remVal;
-      else if (side === 'bottom') computedStyle.marginTop = remVal;
-      else if (side === 'left') computedStyle.marginRight = remVal;
-      else if (side === 'right') computedStyle.marginLeft = remVal;
+    if (portal) {
+      computedStyle.position = 'fixed';
+      if (effectiveCoords) {
+        computedStyle.top = `${(effectiveCoords.top * 0.0625).toFixed(4)}rem`;
+        computedStyle.left = `${(effectiveCoords.left * 0.0625).toFixed(4)}rem`;
+        computedStyle.bottom = 'auto';
+        computedStyle.right = 'auto';
+        computedStyle.margin = 0;
+      }
+    } else {
+      if (sideOffset !== undefined) {
+        const remVal = `${(sideOffset * 0.0625).toFixed(4)}rem`;
+        if (side === 'top') computedStyle.marginBottom = remVal;
+        else if (side === 'bottom') computedStyle.marginTop = remVal;
+        else if (side === 'left') computedStyle.marginRight = remVal;
+        else if (side === 'right') computedStyle.marginLeft = remVal;
+      }
+
+      if (inwardOffset.x !== 0) {
+        const existingMargin = typeof computedStyle.marginLeft === 'string' ? parseFloat(computedStyle.marginLeft) : 0;
+        computedStyle.marginLeft = `${(existingMargin + inwardOffset.x * 0.0625).toFixed(4)}rem`;
+      }
+      if (inwardOffset.y !== 0) {
+        const existingMargin = typeof computedStyle.marginTop === 'string' ? parseFloat(computedStyle.marginTop) : 0;
+        computedStyle.marginTop = `${(existingMargin + inwardOffset.y * 0.0625).toFixed(4)}rem`;
+      }
     }
 
-    if (inwardOffset.x !== 0) {
-      const existingMargin = typeof computedStyle.marginLeft === 'string' ? parseFloat(computedStyle.marginLeft) : 0;
-      computedStyle.marginLeft = `${(existingMargin + inwardOffset.x * 0.0625).toFixed(4)}rem`;
-    }
-    if (inwardOffset.y !== 0) {
-      const existingMargin = typeof computedStyle.marginTop === 'string' ? parseFloat(computedStyle.marginTop) : 0;
-      computedStyle.marginTop = `${(existingMargin + inwardOffset.y * 0.0625).toFixed(4)}rem`;
-    }
-
-    return (
+    const contentNode = (
       <div
         ref={innerRef}
         role="tooltip"
@@ -388,7 +560,8 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
         data-state={visible ? (exiting ? 'closed' : 'open') : 'closed'}
         style={computedStyle}
         className={cn(
-          'absolute whitespace-nowrap pointer-events-none select-none',
+          portal ? 'fixed' : 'absolute',
+          'whitespace-nowrap pointer-events-none select-none',
           'z-50 rounded-md border border-border bg-popover px-3 py-1.5 text-xs text-popover-foreground shadow-md inline-flex items-center gap-2',
           exiting ? 'animate-out fade-out-0 zoom-out-95' : 'animate-in fade-in-0 zoom-in-95',
           sidePositionClasses[side],
@@ -411,15 +584,21 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
             data-slot="tooltip-arrow"
             className={cn(
               'absolute w-0 h-0 border-solid pointer-events-none',
-              side === 'top' && 'top-full left-1/2 -translate-x-1/2 border-t-[0.25rem] border-t-popover border-x-[0.25rem] border-x-transparent border-b-0',
-              side === 'bottom' && 'bottom-full left-1/2 -translate-x-1/2 border-b-[0.25rem] border-b-popover border-x-[0.25rem] border-x-transparent border-t-0',
-              side === 'left' && 'left-full top-1/2 -translate-y-1/2 border-l-[0.25rem] border-l-popover border-y-[0.25rem] border-y-transparent border-r-0',
-              side === 'right' && 'right-full top-1/2 -translate-y-1/2 border-r-[0.25rem] border-r-popover border-y-[0.25rem] border-y-transparent border-l-0',
+              effectiveSide === 'top' && 'top-full left-1/2 -translate-x-1/2 border-t-[0.25rem] border-t-popover border-x-[0.25rem] border-x-transparent border-b-0',
+              effectiveSide === 'bottom' && 'bottom-full left-1/2 -translate-x-1/2 border-b-[0.25rem] border-b-popover border-x-[0.25rem] border-x-transparent border-t-0',
+              effectiveSide === 'left' && 'left-full top-1/2 -translate-y-1/2 border-l-[0.25rem] border-l-popover border-y-[0.25rem] border-y-transparent border-r-0',
+              effectiveSide === 'right' && 'right-full top-1/2 -translate-y-1/2 border-r-[0.25rem] border-r-popover border-y-[0.25rem] border-y-transparent border-l-0',
             )}
           />
         )}
       </div>
     );
+
+    if (portal && typeof document !== 'undefined') {
+      return createPortal(contentNode, container || document.body);
+    }
+
+    return contentNode;
   },
 );
 
@@ -431,6 +610,8 @@ export interface TooltipProps extends Omit<TooltipRootProps, 'content'> {
   arrow?: boolean;
   sideOffset?: number;
   alignOffset?: number;
+  portal?: boolean;
+  container?: HTMLElement | null;
 }
 
 const TooltipComponent = React.forwardRef<HTMLDivElement, TooltipProps>(
@@ -442,6 +623,8 @@ const TooltipComponent = React.forwardRef<HTMLDivElement, TooltipProps>(
       arrow,
       sideOffset,
       alignOffset,
+      portal = true,
+      container,
       side = 'top',
       delayDuration,
       disabled = false,
@@ -478,6 +661,8 @@ const TooltipComponent = React.forwardRef<HTMLDivElement, TooltipProps>(
             arrow={arrow}
             sideOffset={sideOffset}
             alignOffset={alignOffset}
+            portal={portal}
+            container={container}
           >
             {content}
           </TooltipContent>
@@ -511,3 +696,4 @@ export const Tooltip = Object.assign(TooltipComponent, {
   Trigger: TooltipTrigger,
   Content: TooltipContent,
 });
+
