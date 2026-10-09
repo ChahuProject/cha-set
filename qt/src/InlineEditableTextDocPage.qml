@@ -48,7 +48,7 @@ DocLayout {
 
                 DocText {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: ChaSetI18n.tr("components.inlineEditableText.persistedValue", "Persisted Value: ") + "\"" + root.currentTitle + "\""
+                    text: ChaSetI18n.tr("components.inlineEditableText.currentStateValue", "Current state value: ") + "\"" + root.currentTitle + "\""
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeSmall
                     font.family: Typography.familyMono
@@ -63,8 +63,8 @@ DocLayout {
         qtCode: `import ChaSet
 
 ChaSetInlineEditableText {
-    text: "Project Title"
-    onAccepted: (val) => console.log(val)
+    value: "Project Title"
+    onSave: function(val) { console.log(val) }
 }`
         reactCode: `import { InlineEditableText } from '@chahu/cha-set';
 
@@ -93,28 +93,28 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`
                 width: ThemeTokens.dp(280)
 
                 Column {
-                    spacing: 4
+                    spacing: ThemeTokens.dp(4)
                     width: parent.width
                     DocText { text: ChaSetI18n.tr("components.inlineEditableText.singleClickActivation", "Single Click Activation (Default)"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetInlineEditableText { width: parent.width; value: ChaSetI18n.tr("components.inlineEditableText.demoSingleClick", "Project Architecture Doc"); trigger: "click"; size: "default" }
                 }
 
                 Column {
-                    spacing: 4
+                    spacing: ThemeTokens.dp(4)
                     width: parent.width
                     DocText { text: ChaSetI18n.tr("components.inlineEditableText.doubleClickActivation", "Double Click Activation"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetInlineEditableText { width: parent.width; value: ChaSetI18n.tr("components.inlineEditableText.demoDoubleClick", "Database Connection URI"); trigger: "doubleClick"; size: "default" }
                 }
 
                 Column {
-                    spacing: 4
+                    spacing: ThemeTokens.dp(4)
                     width: parent.width
                     DocText { text: ChaSetI18n.tr("components.inlineEditableText.compactSm", "Compact sm Size"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetInlineEditableText { width: parent.width; value: ChaSetI18n.tr("components.inlineEditableText.demoCompact", "Sprint-42-Review"); size: "sm" }
                 }
 
                 Column {
-                    spacing: 4
+                    spacing: ThemeTokens.dp(4)
                     width: parent.width
                     DocText { text: ChaSetI18n.tr("components.inlineEditableText.disabledTitle", "Disabled State"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeCaption }
                     ChaSetInlineEditableText { width: parent.width; value: ChaSetI18n.tr("components.inlineEditableText.demoDisabled", "System Protected File"); disabled: true }
@@ -127,9 +127,10 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`
         name: "InlineEditableText"
         componentId: "inline-editable-text"
         propsModel: [
-            { name: "value", type: "string", default: "'Click to edit'", description: ChaSetI18n.tr("components.inlineEditableText.valueDescQt", "The active text value displayed and edited.") },
+            { name: "value", type: "string", default: "''", description: ChaSetI18n.tr("components.inlineEditableText.valueDescQt", "The active text value displayed and edited.") },
             { name: "text", type: "string", default: "''", description: ChaSetI18n.tr("components.inlineEditableText.textDescQt", "Alias for value property.") },
             { name: "placeholder", type: "string", default: "'Enter text...'", description: ChaSetI18n.tr("components.inlineEditableText.placeholderDescQt", "Fallback text when the value property is empty.") },
+            { name: "hint", type: "string", default: "''", description: ChaSetI18n.tr("components.inlineEditableText.hintDesc", "Hover tooltip hint.") },
             { name: "trigger", type: "string", default: "'click'", description: ChaSetI18n.tr("components.inlineEditableText.triggerDescQt", "Activation trigger: 'click' or 'doubleClick'.") },
             { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.inlineEditableText.sizeDescQt", "Density and sizing variant: 'default' | 'sm'.") },
             { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.inlineEditableText.disabledDescQt", "Whether inline editing interaction is disabled.") },
