@@ -464,6 +464,7 @@
     "tableOfContents": {
       "activeOutlineTarget": "Active outline target: {{target}}",
       "bannerHeight": "Banner Height:",
+      "bannerOffsetChip": "Offset: {{offset}}",
       "bannerText": "Global System Announcement: Scheduled maintenance at 02:00 UTC",
       "flat": "Flat",
       "items": {

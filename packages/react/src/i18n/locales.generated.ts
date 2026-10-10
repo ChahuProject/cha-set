@@ -3443,6 +3443,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "tableOfContents": {
       "activeOutlineTarget": "当前激活大纲目标: {{target}}",
       "bannerHeight": "横幅高度:",
+      "bannerOffsetChip": "偏移: {{offset}}",
       "bannerText": "全局系统通知：系统将于 UTC 02:00 进行例行维护",
       "flat": "扁平",
       "items": {
@@ -7147,6 +7148,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "tableOfContents": {
       "activeOutlineTarget": "Active outline target: {{target}}",
       "bannerHeight": "Banner Height:",
+      "bannerOffsetChip": "Offset: {{offset}}",
       "bannerText": "Global System Announcement: Scheduled maintenance at 02:00 UTC",
       "flat": "Flat",
       "items": {

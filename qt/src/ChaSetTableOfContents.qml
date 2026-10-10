@@ -8,7 +8,9 @@ Item {
     width: implicitWidth
     height: implicitHeight
     implicitWidth: ThemeTokens.dp(180)
-    implicitHeight: mainCol.implicitHeight + (root.topOffset > 0 ? ThemeTokens.dp(root.topOffset) : 0)
+    // `topOffset` is a sticky-positioning hint in React (`style={{ top }}`), not
+    // a layout contribution, so it must not inflate the outline's own height.
+    implicitHeight: mainCol.implicitHeight
 
     property var items: []
     property string activeId: ""
@@ -129,7 +131,6 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.topMargin: root.topOffset > 0 ? ThemeTokens.dp(root.topOffset) : 0
         spacing: ThemeTokens.dp(12)
 
         Text {

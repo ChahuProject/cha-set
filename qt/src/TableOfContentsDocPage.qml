@@ -71,7 +71,10 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         title: ChaSetI18n.tr("desktopComposite.tableOfContents.sandboxTitle", "Table of Contents Sandbox")
-        stageHeight: 420
+        // React's stage is `min-h-[18.75rem] p-8 …` and grows with its content;
+        // this stage is a fixed height, so size it so the demo card (banner +
+        // p-6 content row) fits without being clipped.
+        stageHeight: 550
         reactCode: `<TableOfContents
   items={items}
   activeId="${root.activeId}"
@@ -93,19 +96,67 @@ DocLayout {
     onSelectItem: (item) => activeId = item.id
 }`
 
+        // Controls bar. Mirrors React's `flex flex-wrap items-center gap-4 text-xs`.
+        // The bar's children live in a Flow, and a Flow positions its own
+        // children: an anchor on a TOP-LEVEL item aborts the whole layout
+        // ("QML Flow: Cannot specify anchors for items inside Flow"), which is
+        // what stacked every control on the origin. Vertical centring therefore
+        // sits on each row's inner children, as on the other living doc pages.
         controlsData: [
             Row {
                 spacing: ThemeTokens.dp(8)
-                anchors.verticalCenter: parent.verticalCenter
                 DocText {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: ChaSetI18n.tr("surfaces.tableOfContents.topBanner", "Top Banner:")
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: Typography.sizeSmall
+                }
+                ChaSetSwitch {
+                    anchors.verticalCenter: parent.verticalCenter
+                    checked: root.showBanner
+                    onToggled: function(val) { root.showBanner = val; }
+                }
+            },
+            Row {
+                visible: root.showBanner
+                spacing: ThemeTokens.dp(8)
+                DocText {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: ChaSetI18n.tr("surfaces.tableOfContents.bannerHeight", "Banner Height:")
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: Typography.sizeSmall
+                }
+                Item {
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: ThemeTokens.dp(96)
+                    height: ThemeTokens.dp(20)
+                    ChaSetSlider {
+                        anchors.fill: parent
+                        min: 24
+                        max: 80
+                        step: 4
+                        value: root.bannerHeight
+                        onValueMoved: function(val) { root.bannerHeight = Math.round(val); }
+                    }
+                }
+                DocText {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: String(root.bannerHeight)
+                    color: ThemeTokens.text
+                    font.family: Typography.familyMono
+                    font.pixelSize: Typography.sizeSmall
+                }
+            },
+            Row {
+                spacing: ThemeTokens.dp(8)
+                DocText {
+                    anchors.verticalCenter: parent.verticalCenter
                     text: ChaSetI18n.tr("showcase.variant")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
-                    anchors.verticalCenter: parent.verticalCenter
                 }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    size: "sm"
                     value: root.variant
                     options: [
                         { label: ChaSetI18n.tr("common.default"), value: "default" },
@@ -117,16 +168,14 @@ DocLayout {
             },
             Row {
                 spacing: ThemeTokens.dp(8)
-                anchors.verticalCenter: parent.verticalCenter
                 DocText {
+                    anchors.verticalCenter: parent.verticalCenter
                     text: ChaSetI18n.tr("showcase.size")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
-                    anchors.verticalCenter: parent.verticalCenter
                 }
                 ChaSetSegmentedControl {
                     anchors.verticalCenter: parent.verticalCenter
-                    size: "sm"
                     value: root.size
                     options: [
                         { label: ChaSetI18n.tr("common.default"), value: "default" },
@@ -137,12 +186,11 @@ DocLayout {
             },
             Row {
                 spacing: ThemeTokens.dp(8)
-                anchors.verticalCenter: parent.verticalCenter
                 DocText {
+                    anchors.verticalCenter: parent.verticalCenter
                     text: ChaSetI18n.tr("surfaces.tableOfContents.showTrack")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeSmall
-                    anchors.verticalCenter: parent.verticalCenter
                 }
                 ChaSetSwitch {
                     anchors.verticalCenter: parent.verticalCenter
@@ -151,142 +199,195 @@ DocLayout {
                 }
             },
             ChaSetButton {
-                anchors.verticalCenter: parent.verticalCenter
                 size: "sm"
                 variant: "outline"
+                icon: "rotate-ccw"
                 text: ChaSetI18n.tr("common.reset")
                 onClicked: function() { root.resetDemo(); }
             }
         ]
 
         // Stage Container
+        // Stage. Mirrors React's `w-full max-w-xl mx-auto py-2` wrapper around a
+        // `rounded-lg border border-border bg-card/60 overflow-hidden` card.
         Rectangle {
             anchors.fill: parent
             color: "transparent"
 
-            Rectangle {
+            Item {
+                id: demoWrapper
                 anchors.centerIn: parent
-                width: Math.min(parent.width - ThemeTokens.dp(32), ThemeTokens.dp(620))
-                implicitHeight: cardCol.implicitHeight
+                width: Math.min(parent.width - ThemeTokens.dp(64), ThemeTokens.dp(576))   // max-w-xl = 36rem
+                implicitHeight: demoCard.implicitHeight + ThemeTokens.dp(16)              // py-2 → 8 + 8
                 height: implicitHeight
-                color: ThemeTokens.panel
-                border.width: 1
-                border.color: ThemeTokens.border
-                radius: ThemeTokens.dp(8)
-                clip: true
 
-                Column {
-                    id: cardCol
+                Rectangle {
+                    id: demoCard
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
                     width: parent.width
+                    implicitHeight: cardCol.implicitHeight
+                    height: implicitHeight
+                    color: Qt.rgba(ThemeTokens.panel.r, ThemeTokens.panel.g, ThemeTokens.panel.b, 0.6)
+                    border.width: 1
+                    border.color: ThemeTokens.border
+                    radius: ThemeTokens.dp(8)
+                    clip: true
 
-                    // Simulated Announcement Banner
-                    Rectangle {
-                        id: bannerBox
-                        visible: root.showBanner
+                    Column {
+                        id: cardCol
                         width: parent.width
-                        height: ThemeTokens.dp(root.bannerHeight)
-                        color: ThemeTokens.isDark ? "#1e293b" : "#f1f5f9"
-                        border.width: 1
-                        border.color: ThemeTokens.accent
 
-                        Row {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.leftMargin: ThemeTokens.dp(16)
-                            anchors.rightMargin: ThemeTokens.dp(16)
+                        // Announcement banner — React `bg-primary/10 border-b
+                        // border-primary/20 px-4`, offset chip pushed right.
+                        Rectangle {
+                            id: bannerBox
+                            visible: root.showBanner
+                            width: parent.width
+                            height: ThemeTokens.dp(root.bannerHeight)
+                            color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.1)
+
+                            Rectangle {
+                                anchors.bottom: parent.bottom
+                                width: parent.width
+                                height: 1
+                                color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.2)
+                            }
 
                             Text {
+                                anchors.left: parent.left
+                                anchors.leftMargin: ThemeTokens.dp(16)
+                                anchors.right: bannerChip.left
+                                anchors.rightMargin: ThemeTokens.dp(8)
+                                anchors.verticalCenter: parent.verticalCenter
                                 text: ChaSetI18n.tr("surfaces.tableOfContents.bannerText")
                                 color: ThemeTokens.accent
                                 font.family: Typography.familySans
-                                font.pixelSize: Typography.sizeCaption
-                                font.weight: Typography.weightMedium
+                                font.pixelSize: Typography.sizeSmall
+                                font.weight: Typography.weightSemibold
+                                elide: Text.ElideRight
                             }
-                        }
-                    }
 
-                    // Content Area (Item wrapper: Row has no padding prop,
-                    // so apply manual ThemeTokens.dp(20) offsets around the Row)
-                    Item {
-                        width: parent.width
-                        implicitHeight: contentRow.implicitHeight + ThemeTokens.dp(40)
-
-                        Row {
-                            id: contentRow
-                            anchors.centerIn: parent
-                            width: parent.width - ThemeTokens.dp(40)
-                            height: implicitHeight
-                            spacing: ThemeTokens.dp(24)
-
-                        // Document Reading Pane
-                        Rectangle {
-                            width: parent.width - ThemeTokens.dp(244)
-                            implicitHeight: ThemeTokens.dp(180)
-                            color: ThemeTokens.panel
-                            border.width: 1
-                            border.color: ThemeTokens.border
-                            radius: ThemeTokens.dp(6)
-
-                            Column {
-                                anchors.fill: parent
-                                anchors.margins: ThemeTokens.dp(16)
-                                spacing: ThemeTokens.dp(8)
+                            Rectangle {
+                                id: bannerChip
+                                anchors.right: parent.right
+                                anchors.rightMargin: ThemeTokens.dp(16)
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: bannerChipText.implicitWidth + ThemeTokens.dp(12)   // px-1.5
+                                height: bannerChipText.implicitHeight + ThemeTokens.dp(4)  // py-0.5
+                                radius: ThemeTokens.dp(4)
+                                color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.2)
 
                                 Text {
-                                    text: ChaSetI18n.tr("surfaces.tableOfContents.readingPaneTitle")
-                                    color: ThemeTokens.text
-                                    font.family: Typography.familySans
-                                    font.pixelSize: Typography.sizeBody
-                                    font.weight: Typography.weightSemibold
-                                }
-
-                                Text {
-                                    text: ChaSetI18n.tr("surfaces.tableOfContents.activeOutlineTarget", "Active outline target: {{target}}", { "target": root.activeId })
+                                    id: bannerChipText
+                                    anchors.centerIn: parent
+                                    text: ChaSetI18n.tr("surfaces.tableOfContents.bannerOffsetChip", "Offset: {{offset}}", { "offset": root.bannerHeight })
                                     color: ThemeTokens.accent
                                     font.family: Typography.familyMono
-                                    font.pixelSize: Typography.sizeSmall
-                                }
-
-                                Text {
-                                    width: parent.width
-                                    text: "Notice how the table of contents tree reflects the nested heading structure, and smoothly aligns with the top banner height offset."
-                                    color: ThemeTokens.subduedText
-                                    font.family: Typography.familySans
-                                    font.pixelSize: Typography.sizeSmall
-                                    wrapMode: Text.WordWrap
+                                    font.pixelSize: Typography.sizeMicro
                                 }
                             }
                         }
 
-                        // TableOfContents Component
-                        Rectangle {
-                            width: ThemeTokens.dp(180)
-                            implicitHeight: tocComp.implicitHeight + ThemeTokens.dp(16)
-                            color: ThemeTokens.panel
-                            border.width: 1
-                            border.color: ThemeTokens.border
-                            radius: ThemeTokens.dp(6)
+                        // Content — React `p-6 flex flex-row gap-8 items-start`.
+                        Item {
+                            id: contentArea
+                            width: parent.width
+                            implicitHeight: contentRow.implicitHeight + ThemeTokens.dp(48)   // p-6 → 24 + 24
 
-                            ChaSetTableOfContents {
-                                id: tocComp
+                            Row {
+                                id: contentRow
+                                anchors.horizontalCenter: parent.horizontalCenter
                                 anchors.top: parent.top
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                anchors.margins: ThemeTokens.dp(8)
-                                items: root.demoItems
-                                activeId: root.activeId
-                                topOffset: root.showBanner ? root.bannerHeight : 0
-                                targetOffset: root.showBanner ? root.bannerHeight + 16 : 16
-                                variant: root.variant
-                                size: root.size
-                                showTrack: root.showTrack
-                                onSelectItem: function(item) {
-                                    root.activeId = item.id;
+                                anchors.topMargin: ThemeTokens.dp(24)
+                                width: parent.width - ThemeTokens.dp(48)
+                                height: implicitHeight
+                                spacing: ThemeTokens.dp(32)                                  // gap-8
+
+                                // flex-1 reading column
+                                Rectangle {
+                                    width: contentRow.width - ThemeTokens.dp(32) - ThemeTokens.dp(224)
+                                    implicitHeight: readingCard.implicitHeight
+                                    height: implicitHeight
+                                    color: "transparent"
+
+                                    // React `p-4 rounded-md border border-border/80 bg-background/50 space-y-2`
+                                    Rectangle {
+                                        id: readingCard
+                                        width: parent.width
+                                        implicitHeight: readingCol.implicitHeight + ThemeTokens.dp(32)   // p-4 → 16 + 16
+                                        height: implicitHeight
+                                        color: Qt.rgba(ThemeTokens.background.r, ThemeTokens.background.g, ThemeTokens.background.b, 0.5)
+                                        border.width: 1
+                                        border.color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.8)
+                                        radius: ThemeTokens.dp(6)
+
+                                        Column {
+                                            id: readingCol
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            width: parent.width - ThemeTokens.dp(32)
+                                            spacing: ThemeTokens.dp(8)                                   // space-y-2
+
+                                            Text {
+                                                width: parent.width
+                                                text: ChaSetI18n.tr("surfaces.tableOfContents.readingPaneTitle")
+                                                color: ThemeTokens.text
+                                                font.family: Typography.familySans
+                                                font.pixelSize: Typography.sizeBody
+                                                font.weight: Typography.weightSemibold
+                                            }
+
+                                            Text {
+                                                width: parent.width
+                                                text: ChaSetI18n.tr("surfaces.tableOfContents.activeOutlineTarget", "Active outline target: {{target}}", { "target": root.activeId })
+                                                color: ThemeTokens.subduedText
+                                                font.family: Typography.familySans
+                                                font.pixelSize: Typography.sizeSmall
+                                                wrapMode: Text.WordWrap
+                                            }
+
+                                            Text {
+                                                width: parent.width
+                                                text: ChaSetI18n.tr("desktopComposite.tableOfContents.readingPanePara", "Notice how the table of contents tree reflects the nested heading structure, and smoothly aligns with the top banner height offset.")
+                                                color: ThemeTokens.subduedText
+                                                font.family: Typography.familySans
+                                                font.pixelSize: Typography.sizeSmall
+                                                wrapMode: Text.WordWrap
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // `w-56 shrink-0 p-3` ToC card — React `rounded-md
+                                // border border-border/60 bg-background/80`.
+                                Rectangle {
+                                    width: ThemeTokens.dp(224)
+                                    implicitHeight: tocComp.implicitHeight + ThemeTokens.dp(24)   // p-3 → 12 + 12
+                                    height: implicitHeight
+                                    color: Qt.rgba(ThemeTokens.background.r, ThemeTokens.background.g, ThemeTokens.background.b, 0.8)
+                                    border.width: 1
+                                    border.color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.6)
+                                    radius: ThemeTokens.dp(6)
+
+                                    ChaSetTableOfContents {
+                                        id: tocComp
+                                        anchors.centerIn: parent
+                                        width: parent.width - ThemeTokens.dp(24)
+                                        items: root.demoItems
+                                        activeId: root.activeId
+                                        topOffset: root.showBanner ? root.bannerHeight : 0
+                                        targetOffset: root.showBanner ? root.bannerHeight + 16 : 16
+                                        variant: root.variant
+                                        size: root.size
+                                        showTrack: root.showTrack
+                                        onSelectItem: function(item) {
+                                            root.activeId = item.id;
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
                     }
                 }
             }
