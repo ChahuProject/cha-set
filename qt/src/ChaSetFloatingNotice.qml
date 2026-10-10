@@ -47,7 +47,7 @@ Item {
     height: implicitHeight
 
     // Default anchoring inside parent if parent exists
-    anchors.horizontalCenter: (parent && !anchors.fill) ? parent.horizontalCenter : undefined
+    anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
     anchors.top: (parent && root.placement === "top") ? parent.top : undefined
     anchors.bottom: (parent && root.placement === "bottom") ? parent.bottom : undefined
     anchors.topMargin: ThemeTokens.dp(root.offset)
@@ -351,6 +351,9 @@ Item {
                 text: root.activeItem ? (root.activeItem.description || "") : ""
                 font.pixelSize: Typography.sizeCaption
                 color: ThemeTokens.subduedText
+                elide: Text.ElideMiddle
+                maximumLineCount: 1
+                width: Math.min(implicitWidth, ThemeTokens.dp(260))
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
