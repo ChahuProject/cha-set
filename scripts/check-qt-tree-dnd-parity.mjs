@@ -70,6 +70,13 @@ export function verifyQtTreeDndParity({ quiet = false } = {}) {
     }
   }
 
+  // Check 7: Collinear seam-centered insertion lines
+  checkedCount++;
+  if (!treeContent.includes('anchors.topMargin: -Math.round(ThemeTokens.dp(2) / 2)') ||
+      !treeContent.includes('anchors.bottomMargin: -Math.round(ThemeTokens.dp(2) / 2)')) {
+    violations.push('ChaSetVirtualTree.qml insertion lines must center on element seams with -Math.round(ThemeTokens.dp(2) / 2) margins.');
+  }
+
   return {
     ok: violations.length === 0,
     checkedCount,

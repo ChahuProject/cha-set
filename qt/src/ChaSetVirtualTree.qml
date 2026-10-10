@@ -898,26 +898,48 @@ Item {
                     NumberAnimation { duration: ThemeTokens.motionQuick }
                 }
 
-                // Drop Indicator: Before Line
+                // Drop Indicator: Before Line (居中于顶缝，带起点圆点)
                 Rectangle {
                     visible: isDropTarget && root.dropPosition === "before" && root.isDropValid && root.allowReorder
                     anchors.top: parent.top
+                    anchors.topMargin: -Math.round(ThemeTokens.dp(2) / 2)
                     anchors.left: parent.left
                     anchors.right: parent.right
                     height: ThemeTokens.dp(2)
                     color: ThemeTokens.focus
                     z: 20
+
+                    Rectangle {
+                        width: ThemeTokens.dp(6)
+                        height: ThemeTokens.dp(6)
+                        radius: ThemeTokens.dp(3)
+                        color: parent.color
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: ThemeTokens.dp(-2)
+                    }
                 }
 
-                // Drop Indicator: After Line
+                // Drop Indicator: After Line (居中于底缝，带起点圆点)
                 Rectangle {
                     visible: isDropTarget && root.dropPosition === "after" && root.isDropValid && root.allowReorder
                     anchors.bottom: parent.bottom
+                    anchors.bottomMargin: -Math.round(ThemeTokens.dp(2) / 2)
                     anchors.left: parent.left
                     anchors.right: parent.right
                     height: ThemeTokens.dp(2)
                     color: ThemeTokens.focus
                     z: 20
+
+                    Rectangle {
+                        width: ThemeTokens.dp(6)
+                        height: ThemeTokens.dp(6)
+                        radius: ThemeTokens.dp(3)
+                        color: parent.color
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: ThemeTokens.dp(-2)
+                    }
                 }
 
                 // Drop Indicator: Inside Highlight

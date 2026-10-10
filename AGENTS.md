@@ -191,6 +191,15 @@
     - **Automated Verification & Parity Gate (机械化缩放静态与动态双重门禁)**:
       - **Static Linter**: `pnpm check:scaling` (`scripts/check-qt-scaling.mjs`) mechanically inspects all 72 ChaSet Qt components, flagging any raw unscaled geometry numbers > 2.
       - **Runtime Headless Verification**: `QtChaSetDemo.exe --test-scenario uiscale` and `--test-scenario all` physically instantiate and dynamically step through UI zoom levels (1.0x -> 1.1x -> 1.5x -> 2.5x -> 3.0x -> reset to 1.0x), asserting scaled pixel sizes and verifying zero binding loops, zero white screens, and scale invariance of OSD overlays. Both checks are embedded directly inside `pnpm gate`.
+17. **Mandatory Drag-and-Drop Reordering & Insertion Geometry Standards (拖拽重排与插入槽位几何规范 — 严禁边框伪装与双重非共线指示线)**:
+    - **统一缝隙插入线（严格居中共线律）**:
+      两个相邻元素中间的拖拽落点必须是唯一的物理缝隙（seam），插入指示线必须严格居中于两元素接缝（QML: `top/bottom` 加 `-Math.round(ThemeTokens.dp(2) / 2)` 边距；React: `top-0 -translate-y-1/2` / `bottom-0 translate-y-1/2`），绝对禁止仅贴在元素内部边缘伪装成「元素边框」，绝对禁止在同一缝隙附近随鼠标移动出现「前一项底边」与「后一项顶边」两个非共线的高亮线位置。
+    - **元素中心线二分槽位判定（中线分割律）**:
+      列表排序拖拽判定落点时，严禁粗暴判断「光标是否处在某个元素内部即放入该元素上方/下方」；必须以元素几何中心为分界（上半部落在元素上方缝隙，下半部落在元素下方缝隙；或通过 `Math.round(y / rowHeight)` 严谨映射到 $0 \dots N$ 槽位），确保光标在两元素中心或缝隙区域时，稳定且唯一映射到该缝隙，无闪烁或跳动。
+    - **经典插入指示器视认特征（起点圆点与高亮贯穿）**:
+      插入指示线必须具备明确的起点圆点/指示标记（`●──────────────`，如 6px 圆点 + 2px 贯穿线），或鲜明的高亮强调色（`ThemeTokens.focus` / `accent`），使之在视觉上与项目本身的选中描边、焦点框或悬停底色形成绝对区分，明确传达「在两项之间插入」的交互语义。
+    - **树结构三态命中区规范（before / inside / after）**:
+      对于具有层级嵌套能力的树控件，叶子节点或仅排序节点按上下各 50%（中线分割）分为 `before` 与 `after`；对于可接纳子节点的容器节点（文件夹），中间区域（如 $25\% \sim 75\%$）为 `inside`（以容器整体内凹/高亮框呈现），上边缘（$<25\%$）为 `before`，下边缘（$>75\%$）为 `after`（折叠时）或展开首子项；所有 `before`/`after` 同样必须严格执行居中缝隙共线律。详细设计规范见 `docs/architecture/drag-and-drop-reorder.md`。
 
 ---
 

@@ -452,4 +452,71 @@ describe('VirtualTree', () => {
     fireEvent.dragEnd(row0);
     expect(container.querySelector('[data-slot="virtual-tree-drag-hud"]')).toBeNull();
   });
+
+  it('renders collinear seam-centered drop indicators with bullet notches for before and after positions', () => {
+    const { container } = render(
+      <VirtualTree
+        rootNodes={treeData}
+        enableDnd
+        defaultExpandDepth={2}
+        getChildren={(node) => node.children ?? []}
+        getNodeKey={(node) => node.id}
+        estimateSize={32}
+      />,
+    );
+
+    const row0 = container.querySelector('[data-index="0"]') as HTMLElement;
+    const row1 = container.querySelector('[data-index="1"]') as HTMLElement;
+    expect(row0).toBeDefined();
+    expect(row1).toBeDefined();
+
+    const dataTransfer = {
+      setData: vi.fn(),
+      getData: vi.fn(),
+      effectAllowed: 'none',
+      dropEffect: 'none',
+    };
+
+    // Start dragging root-2
+    fireEvent.dragStart(row1, { dataTransfer });
+
+    // Mock bounding rect on row0 (top = 0, height = 32)
+    vi.spyOn(row0, 'getBoundingClientRect').mockReturnValue({
+      top: 0,
+      bottom: 32,
+      left: 0,
+      right: 200,
+      width: 200,
+      height: 32,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    } as DOMRect);
+
+    // Hover near top of row0 (clientY = 4, ratio < 0.25 -> before)
+    const evtBefore = createEvent.dragOver(row0, { dataTransfer });
+    Object.defineProperty(evtBefore, 'clientY', { value: 4 });
+    fireEvent(row0, evtBefore);
+
+    const beforeIndicator = container.querySelector('[data-slot="drop-indicator-before"]') as HTMLElement;
+    expect(beforeIndicator).not.toBeNull();
+    // Collinear seam-centering classes and bullet notch
+    expect(beforeIndicator.className).toContain('-translate-y-1/2');
+    expect(beforeIndicator.className).toContain('top-0');
+    expect(beforeIndicator.firstElementChild?.className).toContain('rounded-full');
+
+    // Hover near bottom of row0 (clientY = 28, ratio > 0.75 -> after)
+    const evtAfter = createEvent.dragOver(row0, { dataTransfer });
+    Object.defineProperty(evtAfter, 'clientY', { value: 28 });
+    fireEvent(row0, evtAfter);
+
+    const afterIndicator = container.querySelector('[data-slot="drop-indicator-after"]') as HTMLElement;
+    expect(afterIndicator).not.toBeNull();
+    // Collinear seam-centering classes and bullet notch
+    expect(afterIndicator.className).toContain('translate-y-1/2');
+    expect(afterIndicator.className).toContain('bottom-0');
+    expect(afterIndicator.firstElementChild?.className).toContain('rounded-full');
+
+    fireEvent.dragEnd(row1);
+  });
 });

@@ -956,14 +956,18 @@ export function VirtualTree<T>({
                 {isTarget && isDropValid && dropPos === 'before' && (
                   <div
                     data-slot="drop-indicator-before"
-                    className="absolute top-0 left-0 right-0 h-0.5 bg-primary z-20 pointer-events-none"
-                  />
+                    className="absolute top-0 left-0 right-0 h-0.5 bg-primary z-20 pointer-events-none -translate-y-1/2 flex items-center"
+                  >
+                    <div className="size-1.5 rounded-full bg-primary -ml-0.5 shrink-0" />
+                  </div>
                 )}
                 {isTarget && isDropValid && dropPos === 'after' && (
                   <div
                     data-slot="drop-indicator-after"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary z-20 pointer-events-none"
-                  />
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary z-20 pointer-events-none translate-y-1/2 flex items-center"
+                  >
+                    <div className="size-1.5 rounded-full bg-primary -ml-0.5 shrink-0" />
+                  </div>
                 )}
                 {isTarget && isDropValid && dropPos === 'inside' && (
                   <div

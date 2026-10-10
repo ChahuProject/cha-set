@@ -66,10 +66,14 @@ Item {
     property int dragIndex: -1
     /// 拖拽起点行位移（px）
     property real dragDeltaY: 0
-    /// 落点下标（拖拽中才有效）
-    readonly property int dropIndex: root.dragIndex < 0 ? -1
-        : Math.max(0, Math.min(root.listItems.length - 1,
-                               root.dragIndex + Math.round(root.dragDeltaY / root.effectiveRowHeight)))
+    /// 落点插槽下标（0 到 items.length；拖拽中才有效，基于元素中心几何划分）
+    readonly property int dropSlot: root.dragIndex < 0 ? -1
+        : Math.max(0, Math.min(root.listItems.length,
+                               Math.round(((root.dragIndex + 0.5) * root.effectiveRowHeight + root.dragDeltaY) / root.effectiveRowHeight)))
+    /// 兼容目标行下标（0 到 items.length - 1）
+    readonly property int dropIndex: (root.dragIndex >= 0 && root.dropSlot >= 0)
+        ? Math.max(0, Math.min(root.listItems.length - 1, (root.dragIndex < root.dropSlot ? root.dropSlot - 1 : root.dropSlot)))
+        : -1
 
     function moveItem(from, to) {
         if (from < 0 || to < 0 || from === to) return
@@ -158,15 +162,27 @@ Item {
         width: parent.width
         height: root.listItems.length * root.effectiveRowHeight
 
-        // 落点指示线
+        // 落点指示线（居中于两元素接缝，带标准起点圆点标记）
         Rectangle {
-            visible: root.dragIndex >= 0
+            id: dropIndicator
+            visible: root.dragIndex >= 0 && root.dropSlot >= 0
+                     && root.dropSlot !== root.dragIndex && root.dropSlot !== (root.dragIndex + 1)
             z: 5
             x: 0
             width: fieldRows.width
-            height: 2
+            height: ThemeTokens.dp(2)
             color: ThemeTokens.accent
-            y: root.dropIndex * root.effectiveRowHeight - 1
+            y: root.dropSlot * root.effectiveRowHeight - Math.round(height / 2)
+
+            Rectangle {
+                width: ThemeTokens.dp(6)
+                height: ThemeTokens.dp(6)
+                radius: ThemeTokens.dp(3)
+                color: parent.color
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: ThemeTokens.dp(2)
+            }
         }
 
         Repeater {
@@ -225,17 +241,20 @@ Item {
                         var count = root.listItems.length
                         var raw = sceneY(mouse) - startSceneY
                         var minDelta = -itemRow.index * root.effectiveRowHeight
-                        var maxDelta = (count - 1 - itemRow.index) * root.effectiveRowHeight
+                        var maxDelta = (count - itemRow.index) * root.effectiveRowHeight
                         root.dragDeltaY = Math.max(minDelta, Math.min(maxDelta, raw))
                     }
                     onReleased: {
                         if (!dragActive) return
                         var from = root.dragIndex
-                        var to = root.dropIndex
+                        var slot = root.dropSlot
                         dragActive = false
                         root.dragIndex = -1
                         root.dragDeltaY = 0
-                        root.moveItem(from, to)
+                        if (from >= 0 && slot >= 0 && from !== slot && from !== (slot - 1)) {
+                            var to = (from < slot) ? (slot - 1) : slot
+                            root.moveItem(from, to)
+                        }
                     }
                     onCanceled: {
                         dragActive = false
