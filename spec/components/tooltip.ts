@@ -17,6 +17,7 @@ export const tooltipSchema = z.object({
   disabled: z.boolean().default(false),
   shortcut: z.string().optional(),
   arrow: z.boolean().default(false),
+  warm: z.boolean().default(true),
 });
 
 export type TooltipApi = z.infer<typeof tooltipSchema>;

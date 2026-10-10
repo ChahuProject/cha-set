@@ -79,6 +79,7 @@ export interface TooltipRootProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   forceHover?: boolean;
+  warm?: boolean;
 }
 
 export const TooltipRoot = React.forwardRef<HTMLDivElement, TooltipRootProps>(
@@ -93,6 +94,7 @@ export const TooltipRoot = React.forwardRef<HTMLDivElement, TooltipRootProps>(
       defaultOpen = false,
       onOpenChange,
       forceHover = false,
+      warm = true,
       className,
       ...props
     },

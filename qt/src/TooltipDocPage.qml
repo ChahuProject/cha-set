@@ -429,6 +429,12 @@ DocLayout {
                     type: "bool",
                     default: "false",
                     description: ChaSetI18n.tr("components.tooltip.forceHoverDesc", "Visual testing hook to force active tooltip visibility.")
+                },
+                {
+                    name: "warm",
+                    type: "bool",
+                    default: "true",
+                    description: ChaSetI18n.tr("components.tooltip.warmDesc", "Whether to participate in global warm hover sessions; set to false for independent per-item timers.")
                 }
             ]
     }

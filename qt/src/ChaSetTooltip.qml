@@ -18,6 +18,7 @@ Item {
     property string description: ""
     property string iconName: ""
     property bool arrow: false
+    property bool warm: true
     property Component customContent: null
     property int sideOffset: 4
     readonly property int effectiveSideOffset: ThemeTokens.dp(root.sideOffset)
@@ -251,7 +252,8 @@ Item {
                 iconName: root.iconName,
                 placement: root.side,
                 arrow: root.arrow,
-                delay: root.delay
+                delay: root.delay,
+                warm: root.warm
             })
         } else {
             globalService.cancel(root)
@@ -264,6 +266,7 @@ Item {
     onDescriptionChanged: root.syncGlobalService()
     onIconNameChanged: root.syncGlobalService()
     onArrowChanged: root.syncGlobalService()
+    onWarmChanged: root.syncGlobalService()
     onEffectiveTargetChanged: root.syncGlobalService()
 
     Shortcut {
