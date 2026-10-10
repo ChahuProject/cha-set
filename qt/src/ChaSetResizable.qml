@@ -36,13 +36,16 @@ SplitView {
             cursorShape: root.orientation === Qt.Horizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor
         }
 
-        // Centered 1px hairline, inset from the container edges so it never
-        // butts into the outer border frame (T-junction artifact). React
-        // clips the same junction via overflow-hidden + rounded corners.
+        // Centered 1px hairline spanning the FULL handle extent, so it runs
+        // edge-to-edge between the caller's border ring (React parity: the
+        // separator's bg-border line stretches the whole panel-group height
+        // and only the container's overflow-hidden rounded corners trim it).
+        // The caller insets this view by 1px, so both ends stop exactly on
+        // the inner edge of the border ring — no T-caps, no broken stubs.
         Rectangle {
             anchors.centerIn: parent
-            width: root.orientation === Qt.Horizontal ? 1 : parent.width - ThemeTokens.dp(12)
-            height: root.orientation === Qt.Vertical ? 1 : parent.height - ThemeTokens.dp(12)
+            width: root.orientation === Qt.Horizontal ? 1 : parent.width
+            height: root.orientation === Qt.Vertical ? 1 : parent.height
             color: handleDelegate.SplitHandle.pressed || handleDelegate.SplitHandle.hovered ? root.handleHoverColor : root.handleColor
 
             Behavior on color {
