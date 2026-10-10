@@ -1457,6 +1457,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/notification-stack",
         "desc": "Floating, severity-coded notification stack with per-item lifetimes and inline actions.",
         "description": "Floating, severity-coded notification stack with per-item lifetimes and inline actions."
+      },
+      {
+        "id": "floating-notice",
+        "title": "Floating Notice",
+        "href": "#/components/floating-notice",
+        "desc": "Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content.",
+        "description": "Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content."
       }
     ]
   },
@@ -2404,6 +2411,20 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
     {
       "key": "Tab / Shift + Tab",
       "action": "Move focus between interactive controls"
+    }
+  ],
+  "floating-notice": [
+    {
+      "key": "Escape",
+      "action": "Dismiss the currently active notice"
+    },
+    {
+      "key": "← / →",
+      "action": "Cycle through queued notices"
+    },
+    {
+      "key": "Tab / Shift + Tab",
+      "action": "Move focus between close button and interactive notice actions"
     }
   ]
 };

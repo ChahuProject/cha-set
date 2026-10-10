@@ -62,7 +62,8 @@
     "./address-bar": "./components/address-bar.ts",
     "./theme-settings": "./components/theme-settings.ts",
     "./table-of-contents": "./components/table-of-contents.ts",
-    "./kbd": "./components/kbd.ts"
+    "./kbd": "./components/kbd.ts",
+    "./floating-notice": "./components/floating-notice.ts"
   },
   "dependencies": {
     "zod": "^4.0.0"

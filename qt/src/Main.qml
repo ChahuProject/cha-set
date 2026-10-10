@@ -437,6 +437,7 @@ ApplicationWindow {
         case "kbd": return "KbdDocPage.qml";
         case "squircle": return "SquircleDocPage.qml";
         case "media-progress-bar": return "MediaProgressBarDocPage.qml";
+        case "floating-notice": return "FloatingNoticeDocPage.qml";
         default: return "ButtonDocPage.qml";
 
         }

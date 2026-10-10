@@ -563,6 +563,7 @@
     "scale-osd": "缩放屏幕指示器",
     "task-hud": "任务浮窗",
     "notification-stack": "通知堆叠",
+    "floating-notice": "浮动提示",
     "window-title-bar": "窗口标题栏",
     "smooth-wheel-handler": "平滑滚轮处理器",
     "virtual-list": "虚拟列表",

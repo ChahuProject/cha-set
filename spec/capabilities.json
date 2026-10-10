@@ -426,6 +426,16 @@
       "independentRadii": { "requirement": "must", "description": "supports distinct corner radii for topLeft, topRight, bottomLeft, bottomRight" },
       "border": { "requirement": "should", "description": "inner border stroke conforming to box-sizing border-box" },
       "cornerToggle": { "requirement": "should", "description": "selective per-corner or per-side rounding toggle" }
+    },
+    "floatingNotice": {
+      "placement": { "requirement": "must", "description": "supports top and bottom viewport edge anchoring" },
+      "priority": { "requirement": "must", "description": "sorts notices by priority and insertion timestamp" },
+      "levels": { "requirement": "must", "description": "supports default, info, warning, and error severity levels" },
+      "queueDots": { "requirement": "must", "description": "renders indicator dots for queued notices with hover activation" },
+      "hoverPause": { "requirement": "must", "description": "suspends cycling and countdown timers on mouse hover" },
+      "hoverZoom": { "requirement": "must", "description": "gently zooms component scale on hover to improve readability" },
+      "dismissible": { "requirement": "must", "description": "renders close button on active notice on hover" },
+      "customContent": { "requirement": "must", "description": "supports rendering custom shell content or slots" }
     }
   }
 }

@@ -397,5 +397,15 @@
     "independentRadii": true,
     "border": true,
     "cornerToggle": true
+  },
+  "floatingNotice": {
+    "placement": true,
+    "priority": true,
+    "levels": true,
+    "queueDots": true,
+    "hoverPause": true,
+    "hoverZoom": true,
+    "dismissible": true,
+    "customContent": true
   }
 }

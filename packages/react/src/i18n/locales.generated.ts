@@ -663,6 +663,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "scale-osd": "缩放屏幕指示器",
     "task-hud": "任务浮窗",
     "notification-stack": "通知堆叠",
+    "floating-notice": "浮动提示",
     "window-title-bar": "窗口标题栏",
     "smooth-wheel-handler": "平滑滚轮处理器",
     "virtual-list": "虚拟列表",
@@ -1613,6 +1614,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "notification-stack": {
       "description": "浮动分级通知消息栈，支持单项存活时长与行内操作。"
     },
+    "floating-notice": {
+      "description": "悬浮在视口顶上或底下的紧凑提示胶囊，支持优先级排序、卡片轮播排队与内容插槽扩展。"
+    },
     "alertDialog": {
       "cancelTextDesc": "取消按钮的标签文案。",
       "closeOnEscapeDesc": "按下 Escape 键是否关闭弹窗。",
@@ -1712,6 +1716,17 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "openDesc": "下拉菜单的受控打开状态。",
       "openDescQt": "菜单弹窗当前是否打开。",
       "sideOffsetDesc": "触发器至浮层内容的距离偏移。"
+    },
+    "floatingNotice": {
+      "closableDesc": "悬停时是否显示关闭按钮。",
+      "defaultDurationDesc": "未指定持续时间时的默认显示时长（毫秒）。",
+      "description": "悬浮在窗口顶部或底部的规范化提示胶囊组件，支持优先级排队、多项卡片轮换与扩展槽位。",
+      "noticesDesc": "要显示和排队的提示项列表。",
+      "offsetDesc": "距离锚定视口边缘的内边距偏移（逻辑 dp）。",
+      "pauseOnHoverDesc": "鼠标悬停时是否暂停轮换与倒计时。",
+      "placementDesc": "浮动提示容器的视口锚定边缘。",
+      "renderContentDesc": "用于提示内容槽位的可选自定义渲染回调或委托。",
+      "zoomOnHoverDesc": "鼠标悬停时是否以 1.05 倍平滑微缩放提示。"
     },
     "notificationStack": {
       "collapsibleDesc": "提供折叠为汇总行控件。",
@@ -3609,6 +3624,23 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "settings": "系统设置",
       "shortcuts": "快捷键说明"
     },
+    "floatingNotice": {
+      "addCopy": "+ 复制提示",
+      "addError": "+ 错误告警",
+      "addRating": "+ 评分提示",
+      "animationsDesc": "浮动提示采用共享动效令牌进行微交互：悬停放大使用 duration-short (120ms) ease-standard；提示轮换与指示点使用 duration-quick (90ms)；关闭过渡平滑淡出并滑出。",
+      "copiedTitle": "文件路径已复制到剪贴板",
+      "demoFileDesc": "图片 001.png",
+      "demoStorageDesc": "剩余空间不足 10%",
+      "overviewLead": "浮动提示堆叠多个临时消息，前排显示最高优先级卡片并显示排队指示点。悬停暂停过期并平滑放大以提高可见性。",
+      "placementBottom": "底部",
+      "placementTop": "顶部",
+      "previewTitle": "浮动提示堆叠",
+      "ratingTitle": "已评 5 星",
+      "reset": "重置",
+      "sandboxHint": "悬停在提示上可暂停倒计时并放大卡片，悬停排队圆点可切换查看等待中的项目。",
+      "warningTitle": "磁盘空间不足"
+    },
     "notificationStack": {
       "actionLogs": "查看日志",
       "actionManage": "管理配额",
@@ -4368,6 +4400,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "scale-osd": "Scale OSD",
     "task-hud": "Task HUD",
     "notification-stack": "Notification Stack",
+    "floating-notice": "Floating Notice",
     "window-title-bar": "Window Title Bar",
     "smooth-wheel-handler": "Smooth Wheel Handler",
     "virtual-list": "Virtual List",
@@ -5318,6 +5351,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "notification-stack": {
       "description": "Floating, severity-coded notification stack with per-item lifetimes and inline actions."
     },
+    "floating-notice": {
+      "description": "Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content."
+    },
     "alertDialog": {
       "cancelTextDesc": "Label for the cancellation button.",
       "closeOnEscapeDesc": "Whether pressing the Escape key dismisses the dialog.",
@@ -5417,6 +5453,17 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "openDesc": "Controlled open state of the dropdown menu.",
       "openDescQt": "Whether the menu popup is currently open.",
       "sideOffsetDesc": "Distance offset from trigger to floating content."
+    },
+    "floatingNotice": {
+      "closableDesc": "Whether items reveal a close dismiss button on hover.",
+      "defaultDurationDesc": "Fallback lifetime in ms before auto-dismiss.",
+      "description": "Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content.",
+      "noticesDesc": "Array of notice items to display and queue.",
+      "offsetDesc": "Inset from anchored viewport edge in logical dp.",
+      "pauseOnHoverDesc": "Whether mouse hovering suspends cycling and expiry timers.",
+      "placementDesc": "Anchoring edge for the floating notice container.",
+      "renderContentDesc": "Optional custom render callback for notice content slots.",
+      "zoomOnHoverDesc": "Whether hovering smoothly magnifies the notice by 1.05x."
     },
     "notificationStack": {
       "collapsibleDesc": "Offers the collapse-to-summary-row control.",
@@ -7313,6 +7360,23 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "profile": "Profile",
       "settings": "Settings",
       "shortcuts": "Keyboard shortcuts"
+    },
+    "floatingNotice": {
+      "addCopy": "+ Copy Notice",
+      "addError": "+ Error Alert",
+      "addRating": "+ Rating Notice",
+      "animationsDesc": "Floating Notice utilizes shared motion tokens for micro-interactions: zoom-on-hover utilizes duration-short (120ms) ease-standard; notice cycling and indicator dots use duration-quick (90ms); dismiss transitions fade and slide out smoothly.",
+      "copiedTitle": "File path copied to clipboard",
+      "demoFileDesc": "Image 001.png",
+      "demoStorageDesc": "Under 10% remaining",
+      "overviewLead": "Floating notice stacks multiple transient messages, showing highest-priority card in front with queued indicator dots. Hovering pauses expiry and smoothly zooms for enhanced visibility.",
+      "placementBottom": "Bottom",
+      "placementTop": "Top",
+      "previewTitle": "Floating Notice Stack",
+      "ratingTitle": "Rated 5 stars",
+      "reset": "Reset",
+      "sandboxHint": "Hover over the notice to pause expiry, zoom the pill, or hover queue dots to inspect waiting items.",
+      "warningTitle": "Disk storage low"
     },
     "notificationStack": {
       "actionLogs": "View log",

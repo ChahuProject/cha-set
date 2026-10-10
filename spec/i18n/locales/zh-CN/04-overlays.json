@@ -21,6 +21,9 @@
     "notification-stack": {
       "description": "浮动分级通知消息栈，支持单项存活时长与行内操作。"
     },
+    "floating-notice": {
+      "description": "悬浮在视口顶上或底下的紧凑提示胶囊，支持优先级排序、卡片轮播排队与内容插槽扩展。"
+    },
     "alertDialog": {
       "cancelTextDesc": "取消按钮的标签文案。",
       "closeOnEscapeDesc": "按下 Escape 键是否关闭弹窗。",
@@ -120,6 +123,17 @@
       "openDesc": "下拉菜单的受控打开状态。",
       "openDescQt": "菜单弹窗当前是否打开。",
       "sideOffsetDesc": "触发器至浮层内容的距离偏移。"
+    },
+    "floatingNotice": {
+      "closableDesc": "悬停时是否显示关闭按钮。",
+      "defaultDurationDesc": "未指定持续时间时的默认显示时长（毫秒）。",
+      "description": "悬浮在窗口顶部或底部的规范化提示胶囊组件，支持优先级排队、多项卡片轮换与扩展槽位。",
+      "noticesDesc": "要显示和排队的提示项列表。",
+      "offsetDesc": "距离锚定视口边缘的内边距偏移（逻辑 dp）。",
+      "pauseOnHoverDesc": "鼠标悬停时是否暂停轮换与倒计时。",
+      "placementDesc": "浮动提示容器的视口锚定边缘。",
+      "renderContentDesc": "用于提示内容槽位的可选自定义渲染回调或委托。",
+      "zoomOnHoverDesc": "鼠标悬停时是否以 1.05 倍平滑微缩放提示。"
     },
     "notificationStack": {
       "collapsibleDesc": "提供折叠为汇总行控件。",
@@ -454,6 +468,23 @@
       "profile": "个人资料",
       "settings": "系统设置",
       "shortcuts": "快捷键说明"
+    },
+    "floatingNotice": {
+      "addCopy": "+ 复制提示",
+      "addError": "+ 错误告警",
+      "addRating": "+ 评分提示",
+      "animationsDesc": "浮动提示采用共享动效令牌进行微交互：悬停放大使用 duration-short (120ms) ease-standard；提示轮换与指示点使用 duration-quick (90ms)；关闭过渡平滑淡出并滑出。",
+      "copiedTitle": "文件路径已复制到剪贴板",
+      "demoFileDesc": "图片 001.png",
+      "demoStorageDesc": "剩余空间不足 10%",
+      "overviewLead": "浮动提示堆叠多个临时消息，前排显示最高优先级卡片并显示排队指示点。悬停暂停过期并平滑放大以提高可见性。",
+      "placementBottom": "底部",
+      "placementTop": "顶部",
+      "previewTitle": "浮动提示堆叠",
+      "ratingTitle": "已评 5 星",
+      "reset": "重置",
+      "sandboxHint": "悬停在提示上可暂停倒计时并放大卡片，悬停排队圆点可切换查看等待中的项目。",
+      "warningTitle": "磁盘空间不足"
     },
     "notificationStack": {
       "actionLogs": "查看日志",

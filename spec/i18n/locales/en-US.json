@@ -563,6 +563,7 @@
     "scale-osd": "Scale OSD",
     "task-hud": "Task HUD",
     "notification-stack": "Notification Stack",
+    "floating-notice": "Floating Notice",
     "window-title-bar": "Window Title Bar",
     "smooth-wheel-handler": "Smooth Wheel Handler",
     "virtual-list": "Virtual List",

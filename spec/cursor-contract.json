@@ -102,6 +102,7 @@
     "task-hud": { "semantic": "action", "supportsDisabled": true },
     "notification-stack": { "semantic": "action", "supportsDisabled": true },
     "address-bar": { "semantic": "action", "supportsDisabled": true },
-    "table-of-contents": { "semantic": "action", "supportsDisabled": true }
+    "table-of-contents": { "semantic": "action", "supportsDisabled": true },
+    "floating-notice": { "semantic": "action", "supportsDisabled": true }
   }
 }

@@ -321,6 +321,11 @@
     { "key": "Home / End", "action": "Jump directly to beginning / end of media" },
     { "key": "Space", "action": "Toggle playback play/pause or trigger seek" },
     { "key": "Tab / Shift + Tab", "action": "Move focus between interactive controls" }
+  ],
+  "floating-notice": [
+    { "key": "Escape", "action": "Dismiss the currently active notice" },
+    { "key": "← / →", "action": "Cycle through queued notices" },
+    { "key": "Tab / Shift + Tab", "action": "Move focus between close button and interactive notice actions" }
   ]
 }
 

@@ -57,6 +57,7 @@ export * from './language-settings';
 export * from './table-of-contents';
 export * from './kbd';
 export * from './scale-osd';
+export * from './floating-notice';
 export * from './i18n';
 export * from './typography';
 export * from './lib/splitFixedFooter';

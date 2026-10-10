@@ -341,6 +341,12 @@
         "title": "Notification Stack",
         "href": "#/components/notification-stack",
         "desc": "Floating, severity-coded notification stack with per-item lifetimes and inline actions."
+      },
+      {
+        "id": "floating-notice",
+        "title": "Floating Notice",
+        "href": "#/components/floating-notice",
+        "desc": "Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content."
       }
     ]
   },

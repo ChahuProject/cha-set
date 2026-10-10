@@ -21,6 +21,9 @@
     "notification-stack": {
       "description": "Floating, severity-coded notification stack with per-item lifetimes and inline actions."
     },
+    "floating-notice": {
+      "description": "Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content."
+    },
     "alertDialog": {
       "cancelTextDesc": "Label for the cancellation button.",
       "closeOnEscapeDesc": "Whether pressing the Escape key dismisses the dialog.",
@@ -120,6 +123,17 @@
       "openDesc": "Controlled open state of the dropdown menu.",
       "openDescQt": "Whether the menu popup is currently open.",
       "sideOffsetDesc": "Distance offset from trigger to floating content."
+    },
+    "floatingNotice": {
+      "closableDesc": "Whether items reveal a close dismiss button on hover.",
+      "defaultDurationDesc": "Fallback lifetime in ms before auto-dismiss.",
+      "description": "Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content.",
+      "noticesDesc": "Array of notice items to display and queue.",
+      "offsetDesc": "Inset from anchored viewport edge in logical dp.",
+      "pauseOnHoverDesc": "Whether mouse hovering suspends cycling and expiry timers.",
+      "placementDesc": "Anchoring edge for the floating notice container.",
+      "renderContentDesc": "Optional custom render callback for notice content slots.",
+      "zoomOnHoverDesc": "Whether hovering smoothly magnifies the notice by 1.05x."
     },
     "notificationStack": {
       "collapsibleDesc": "Offers the collapse-to-summary-row control.",
@@ -454,6 +468,23 @@
       "profile": "Profile",
       "settings": "Settings",
       "shortcuts": "Keyboard shortcuts"
+    },
+    "floatingNotice": {
+      "addCopy": "+ Copy Notice",
+      "addError": "+ Error Alert",
+      "addRating": "+ Rating Notice",
+      "animationsDesc": "Floating Notice utilizes shared motion tokens for micro-interactions: zoom-on-hover utilizes duration-short (120ms) ease-standard; notice cycling and indicator dots use duration-quick (90ms); dismiss transitions fade and slide out smoothly.",
+      "copiedTitle": "File path copied to clipboard",
+      "demoFileDesc": "Image 001.png",
+      "demoStorageDesc": "Under 10% remaining",
+      "overviewLead": "Floating notice stacks multiple transient messages, showing highest-priority card in front with queued indicator dots. Hovering pauses expiry and smoothly zooms for enhanced visibility.",
+      "placementBottom": "Bottom",
+      "placementTop": "Top",
+      "previewTitle": "Floating Notice Stack",
+      "ratingTitle": "Rated 5 stars",
+      "reset": "Reset",
+      "sandboxHint": "Hover over the notice to pause expiry, zoom the pill, or hover queue dots to inspect waiting items.",
+      "warningTitle": "Disk storage low"
     },
     "notificationStack": {
       "actionLogs": "View log",
