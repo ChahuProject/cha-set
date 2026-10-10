@@ -52,6 +52,9 @@ Item {
     // when no Overlay is available. Same idiom as ChaSetDialog's root parent.
     readonly property Item overlayLayer: (typeof Overlay !== "undefined" && Overlay.overlay) ? Overlay.overlay : null
     readonly property Item positionSpace: bubble.parent
+    // Local chrome follows the visible branch: the shared standard bubble, or
+    // the custom-content chrome below. Both share the same parent/positioning.
+    readonly property Item activeBubble: root.customContent === null ? bubble : customBubble
 
     readonly property point targetPosInSpace: {
         if (!positionSpace || !effectiveTarget) return Qt.point(0, 0)
@@ -80,27 +83,27 @@ Item {
         switch (root.side) {
         case "top":
         case "bottom":
-            return targetX + (targetW - bubble.width) / 2
+            return targetX + (targetW - activeBubble.width) / 2
         case "left":
-            return targetX - bubble.width - effectiveSideOffset
+            return targetX - activeBubble.width - effectiveSideOffset
         case "right":
             return targetX + targetW + effectiveSideOffset
         default:
-            return targetX + (targetW - bubble.width) / 2
+            return targetX + (targetW - activeBubble.width) / 2
         }
     }
 
     readonly property real calculatedY: {
         switch (root.side) {
         case "top":
-            return targetY - bubble.height - effectiveSideOffset
+            return targetY - activeBubble.height - effectiveSideOffset
         case "bottom":
             return targetY + targetH + effectiveSideOffset
         case "left":
         case "right":
-            return targetY + (targetH - bubble.height) / 2
+            return targetY + (targetH - activeBubble.height) / 2
         default:
-            return targetY - bubble.height - effectiveSideOffset
+            return targetY - activeBubble.height - effectiveSideOffset
         }
     }
 
@@ -113,15 +116,15 @@ Item {
         var margin = ThemeTokens.dp(8)
         var _scale = ThemeTokens.uiScale
         var _tw = targetW
-        var _bw = bubble.width
+        var _bw = activeBubble.width
         var _rev = root.clampRevision
         if (root.overlayLayer) {
             // Coordinates are already in overlay space: clamp directly.
             var _ow = root.overlayLayer.width
-            if (bubble.width > 0) {
+            if (activeBubble.width > 0) {
                 if (root.side === "top" || root.side === "bottom") {
-                    if (base + bubble.width > _ow - margin) {
-                        base -= (base + bubble.width - (_ow - margin))
+                    if (base + activeBubble.width > _ow - margin) {
+                        base -= (base + activeBubble.width - (_ow - margin))
                     }
                     if (base < margin) {
                         base += (margin - base)
@@ -131,20 +134,20 @@ Item {
                         base += (margin - base)
                     }
                 } else if (root.side === "right") {
-                    if (base + bubble.width > _ow - margin) {
-                        base -= (base + bubble.width - (_ow - margin))
+                    if (base + activeBubble.width > _ow - margin) {
+                        base -= (base + activeBubble.width - (_ow - margin))
                     }
                 }
             }
             return base
         }
         var win = root.Window.window
-        if (win && bubble.width > 0) {
+        if (win && activeBubble.width > 0) {
             try {
                 var mapped = root.mapToItem(null, base, 0)
                 if (root.side === "top" || root.side === "bottom") {
-                    if (mapped.x + bubble.width > win.width - margin) {
-                        base -= (mapped.x + bubble.width - (win.width - margin))
+                    if (mapped.x + activeBubble.width > win.width - margin) {
+                        base -= (mapped.x + activeBubble.width - (win.width - margin))
                     }
                     if (mapped.x < margin) {
                         base += (margin - mapped.x)
@@ -154,8 +157,8 @@ Item {
                         base += (margin - mapped.x)
                     }
                 } else if (root.side === "right") {
-                    if (mapped.x + bubble.width > win.width - margin) {
-                        base -= (mapped.x + bubble.width - (win.width - margin))
+                    if (mapped.x + activeBubble.width > win.width - margin) {
+                        base -= (mapped.x + activeBubble.width - (win.width - margin))
                     }
                 }
             } catch (e) {}
@@ -170,15 +173,15 @@ Item {
         var margin = ThemeTokens.dp(8)
         var _scale = ThemeTokens.uiScale
         var _th = targetH
-        var _bh = bubble.height
+        var _bh = activeBubble.height
         var _rev = root.clampRevision
         if (root.overlayLayer) {
             // Coordinates are already in overlay space: clamp directly.
             var _oh = root.overlayLayer.height
-            if (bubble.height > 0) {
+            if (activeBubble.height > 0) {
                 if (root.side === "left" || root.side === "right") {
-                    if (base + bubble.height > _oh - margin) {
-                        base -= (base + bubble.height - (_oh - margin))
+                    if (base + activeBubble.height > _oh - margin) {
+                        base -= (base + activeBubble.height - (_oh - margin))
                     }
                     if (base < margin) {
                         base += (margin - base)
@@ -188,20 +191,20 @@ Item {
                         base += (margin - base)
                     }
                 } else if (root.side === "bottom") {
-                    if (base + bubble.height > _oh - margin) {
-                        base -= (base + bubble.height - (_oh - margin))
+                    if (base + activeBubble.height > _oh - margin) {
+                        base -= (base + activeBubble.height - (_oh - margin))
                     }
                 }
             }
             return base
         }
         var win = root.Window.window
-        if (win && bubble.height > 0) {
+        if (win && activeBubble.height > 0) {
             try {
                 var mappedY = root.mapToItem(null, 0, base)
                 if (root.side === "left" || root.side === "right") {
-                    if (mappedY.y + bubble.height > win.height - margin) {
-                        base -= (mappedY.y + bubble.height - (win.height - margin))
+                    if (mappedY.y + activeBubble.height > win.height - margin) {
+                        base -= (mappedY.y + activeBubble.height - (win.height - margin))
                     }
                     if (mappedY.y < margin) {
                         base += (margin - mappedY.y)
@@ -211,8 +214,8 @@ Item {
                         base += (margin - mappedY.y)
                     }
                 } else if (root.side === "bottom") {
-                    if (mappedY.y + bubble.height > win.height - margin) {
-                        base -= (mappedY.y + bubble.height - (win.height - margin))
+                    if (mappedY.y + activeBubble.height > win.height - margin) {
+                        base -= (mappedY.y + activeBubble.height - (win.height - margin))
                     }
                 }
             } catch (e) {}
@@ -353,11 +356,46 @@ Item {
         }
     }
 
-    ChaSetSquircle {
+    // Standard local branch: shared presentational bubble fed by the wrapper
+    // props. The leaf visibility contract lives inside ChaSetTooltipBubble
+    // (initial-state fallback bindings only); wrapper-level show gating stays
+    // here, unchanged.
+    ChaSetTooltipBubble {
         id: bubble
         parent: root.overlayLayer ? root.overlayLayer : root
         z: 999
-        visible: !root.useGlobalService && root.shouldShow
+        visible: !root.useGlobalService && root.shouldShow && root.customContent === null
+        x: Math.round(root.clampedX)
+        y: Math.round(root.clampedY)
+        opacity: visible ? 1.0 : 0.0
+        scale: visible ? 1.0 : 0.95
+
+        Behavior on opacity {
+            enabled: ThemeTokens.animationsEnabled && !root.forceHover && (typeof harnessMode === "undefined" || harnessMode === "")
+            NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
+        }
+        Behavior on scale {
+            enabled: ThemeTokens.animationsEnabled && !root.forceHover && (typeof harnessMode === "undefined" || harnessMode === "")
+            NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
+        }
+
+        text: root.text
+        description: root.description
+        shortcut: root.shortcut
+        iconName: root.iconName
+        side: root.side
+        arrow: root.arrow
+    }
+
+    // Custom-content local branch (e.g. SegmentedControl tooltipDelegate):
+    // same chrome + arrow geometry as the shared bubble, with a Loader in
+    // place of the standard content row. Only one of bubble / customBubble is
+    // ever visible (see activeBubble); positioning is shared.
+    ChaSetSquircle {
+        id: customBubble
+        parent: root.overlayLayer ? root.overlayLayer : root
+        z: 999
+        visible: !root.useGlobalService && root.shouldShow && root.customContent !== null
         x: Math.round(root.clampedX)
         y: Math.round(root.clampedY)
         opacity: visible ? 1.0 : 0.0
@@ -377,86 +415,28 @@ Item {
         border.color: ThemeTokens.color("border")
         border.width: 1
 
-        implicitWidth: Math.max(ThemeTokens.dp(24), mainContent.implicitWidth + ThemeTokens.dp(16))
-        implicitHeight: Math.max(ThemeTokens.dp(20), mainContent.implicitHeight + ThemeTokens.dp(8))
+        implicitWidth: Math.max(ThemeTokens.dp(24), customRow.implicitWidth + ThemeTokens.dp(16))
+        implicitHeight: Math.max(ThemeTokens.dp(20), customRow.implicitHeight + ThemeTokens.dp(8))
 
-        Column {
-            id: mainContent
-            objectName: "mainContent"
+        Row {
+            id: customRow
             anchors.centerIn: parent
-            spacing: ThemeTokens.dp(3)
+            spacing: ThemeTokens.dp(6)
 
-            Row {
-                id: contentRow
-                objectName: "contentRow"
-                anchors.horizontalCenter: parent.horizontalCenter
-                visible: customContentLoader.visible || appIcon.visible || bubbleText.visible || shortcutBadge.visible
-                spacing: ThemeTokens.dp(6)
-
-                Loader {
-                    id: customContentLoader
-                    visible: root.customContent !== null
-                    sourceComponent: root.customContent
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                ChaSetIcon {
-                    id: appIcon
-                    objectName: "appIcon"
-                    visible: root.customContent === null && root.iconName.length > 0
-                    name: root.iconName
-                    size: 14
-                    color: ThemeTokens.color("text")
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Text {
-                    id: bubbleText
-                    objectName: "bubbleText"
-                    visible: root.customContent === null && root.text.length > 0
-                    text: root.text
-                    color: ThemeTokens.color("text")
-                    font.pixelSize: Typography.sizeCaption
-                    font.weight: Font.Medium
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                ChaSetKbd {
-                    id: shortcutBadge
-                    objectName: "shortcutBadge"
-                    visible: root.shortcut.length > 0
-                    anchors.verticalCenter: parent ? parent.verticalCenter : undefined
-                    variant: "outline"
-                    size: "xs"
-                    compact: "never"
-                    shortcut: root.shortcut
-                }
-            }
-
-            Text {
-                id: descText
-                objectName: "descText"
-                visible: root.customContent === null && root.description.length > 0
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: root.description
-                color: ThemeTokens.color("subduedText")
-                font.pixelSize: Typography.sizeCaption
-                wrapMode: Text.Wrap
-                readonly property real maxDescW: ThemeTokens.dp(280)
-                width: visible ? Math.min(implicitWidth, maxDescW) : 0
-                horizontalAlignment: Text.AlignHCenter
+            Loader {
+                id: customContentLoader
+                visible: root.customContent !== null
+                sourceComponent: root.customContent
+                anchors.verticalCenter: parent.verticalCenter
             }
         }
 
 
-        // Seamless triangle pointer — fill covers the bubble border segment,
-        // angled strokes redraw only the two outer edges (open base).
-        // Mirrors ChaSetPopover.qml arrowIndicator; rotated-square Rectangle
-        // leaves the bubble border line visible between arrow and body.
+        // Seamless triangle pointer for the custom-content chrome — same
+        // geometry as ChaSetTooltipBubble's arrowIndicator, bound to
+        // customBubble instead of the shared bubble.
         Shape {
-            id: arrowIndicator
+            id: customArrowIndicator
             visible: root.arrow
             z: 1
             readonly property int arrowW: ThemeTokens.dp(8)
@@ -465,16 +445,16 @@ Item {
             height: (root.side === "left" || root.side === "right") ? arrowW : (arrowH + 1)
             x: {
                 switch (root.side) {
-                case "left": return bubble.width - 1
+                case "left": return customBubble.width - 1
                 case "right": return -arrowH
-                default: return (bubble.width - width) / 2
+                default: return (customBubble.width - width) / 2
                 }
             }
             y: {
                 switch (root.side) {
-                case "top": return bubble.height - 1
+                case "top": return customBubble.height - 1
                 case "bottom": return -arrowH
-                default: return (bubble.height - height) / 2
+                default: return (customBubble.height - height) / 2
                 }
             }
 
@@ -482,46 +462,46 @@ Item {
             ShapePath {
                 strokeWidth: 0
                 strokeColor: "transparent"
-                fillColor: bubble.color
+                fillColor: customBubble.color
                 startX: {
                     if (root.side === "bottom" || root.side === "top" || root.side === "left") return 0
-                    return arrowIndicator.arrowH + 1 // right
+                    return customArrowIndicator.arrowH + 1 // right
                 }
                 startY: {
-                    if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                    if (root.side === "bottom") return customArrowIndicator.arrowH + 1
                     return 0
                 }
                 PathLine {
                     x: {
-                        if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW / 2
+                        if (root.side === "bottom" || root.side === "top") return customArrowIndicator.arrowW / 2
                         if (root.side === "right") return 0
-                        return arrowIndicator.arrowH + 1 // left
+                        return customArrowIndicator.arrowH + 1 // left
                     }
                     y: {
                         if (root.side === "bottom") return 0
-                        if (root.side === "top") return arrowIndicator.arrowH + 1
-                        return arrowIndicator.arrowW / 2
+                        if (root.side === "top") return customArrowIndicator.arrowH + 1
+                        return customArrowIndicator.arrowW / 2
                     }
                 }
                 PathLine {
                     x: {
-                        if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW
-                        if (root.side === "right") return arrowIndicator.arrowH + 1
+                        if (root.side === "bottom" || root.side === "top") return customArrowIndicator.arrowW
+                        if (root.side === "right") return customArrowIndicator.arrowH + 1
                         return 0 // left
                     }
                     y: {
-                        if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                        if (root.side === "bottom") return customArrowIndicator.arrowH + 1
                         if (root.side === "top") return 0
-                        return arrowIndicator.arrowW
+                        return customArrowIndicator.arrowW
                     }
                 }
                 PathLine {
                     x: {
                         if (root.side === "bottom" || root.side === "top" || root.side === "left") return 0
-                        return arrowIndicator.arrowH + 1 // right
+                        return customArrowIndicator.arrowH + 1 // right
                     }
                     y: {
-                        if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                        if (root.side === "bottom") return customArrowIndicator.arrowH + 1
                         return 0
                     }
                 }
@@ -530,38 +510,38 @@ Item {
             // Angled border strokes with open base
             ShapePath {
                 strokeWidth: 1
-                strokeColor: bubble.border.color
+                strokeColor: customBubble.border.color
                 fillColor: "transparent"
                 startX: {
                     if (root.side === "bottom" || root.side === "top" || root.side === "left") return 0
-                    return arrowIndicator.arrowH + 1 // right
+                    return customArrowIndicator.arrowH + 1 // right
                 }
                 startY: {
-                    if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                    if (root.side === "bottom") return customArrowIndicator.arrowH + 1
                     return 0
                 }
                 PathLine {
                     x: {
-                        if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW / 2
+                        if (root.side === "bottom" || root.side === "top") return customArrowIndicator.arrowW / 2
                         if (root.side === "right") return 0
-                        return arrowIndicator.arrowH + 1 // left
+                        return customArrowIndicator.arrowH + 1 // left
                     }
                     y: {
                         if (root.side === "bottom") return 0
-                        if (root.side === "top") return arrowIndicator.arrowH + 1
-                        return arrowIndicator.arrowW / 2
+                        if (root.side === "top") return customArrowIndicator.arrowH + 1
+                        return customArrowIndicator.arrowW / 2
                     }
                 }
                 PathLine {
                     x: {
-                        if (root.side === "bottom" || root.side === "top") return arrowIndicator.arrowW
-                        if (root.side === "right") return arrowIndicator.arrowH + 1
+                        if (root.side === "bottom" || root.side === "top") return customArrowIndicator.arrowW
+                        if (root.side === "right") return customArrowIndicator.arrowH + 1
                         return 0 // left
                     }
                     y: {
-                        if (root.side === "bottom") return arrowIndicator.arrowH + 1
+                        if (root.side === "bottom") return customArrowIndicator.arrowH + 1
                         if (root.side === "top") return 0
-                        return arrowIndicator.arrowW
+                        return customArrowIndicator.arrowW
                     }
                 }
             }

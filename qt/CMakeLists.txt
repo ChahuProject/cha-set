@@ -154,6 +154,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetMediaProgressBar.qml
         src/ChaSetDialog.qml
         src/ChaSetTooltip.qml
+        src/ChaSetTooltipBubble.qml
         src/ChaSetTable.qml
         src/ChaSetColorPicker.qml
         src/ChaSetDropdownMenu.qml
