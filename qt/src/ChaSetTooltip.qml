@@ -15,6 +15,8 @@ Item {
     property bool active: false
     property bool disabled: false
     property string shortcut: ""
+    property string description: ""
+    property string iconName: ""
     property bool arrow: false
     property Component customContent: null
     property int sideOffset: 4
@@ -229,20 +231,23 @@ Item {
     }
     readonly property bool useGlobalService: (globalService !== null && root.customContent === null)
 
-    readonly property bool effectiveHovered: (hoverHandler.hovered || root.hovered || root.forceHover) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
+    readonly property bool effectiveHovered: (hoverHandler.hovered || root.hovered || root.forceHover) && !root.disabled && (root.text.length > 0 || root.description.length > 0 || root.customContent !== null)
 
-    readonly property bool shouldShow: (root.active || root.internalActive || root.forceHover) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
+    readonly property bool shouldShow: (root.active || root.internalActive || root.forceHover) && !root.disabled && (root.text.length > 0 || root.description.length > 0 || root.customContent !== null)
 
     function syncGlobalService() {
         if (!useGlobalService || !globalService) return
-        var wantShow = (effectiveHovered || root.active) && !root.disabled && (root.text.length > 0 || root.customContent !== null)
+        var wantShow = (effectiveHovered || root.active) && !root.disabled && (root.text.length > 0 || root.description.length > 0 || root.customContent !== null)
         if (wantShow) {
             globalService.request({
                 source: root,
                 targetItem: root.effectiveTarget,
                 text: root.text,
+                description: root.description,
                 shortcut: root.shortcut,
+                iconName: root.iconName,
                 placement: root.side,
+                arrow: root.arrow,
                 delay: root.delay
             })
         } else {
@@ -253,6 +258,9 @@ Item {
     onEffectiveHoveredChanged: root.syncGlobalService()
     onActiveChanged: root.syncGlobalService()
     onTextChanged: root.syncGlobalService()
+    onDescriptionChanged: root.syncGlobalService()
+    onIconNameChanged: root.syncGlobalService()
+    onArrowChanged: root.syncGlobalService()
     onEffectiveTargetChanged: root.syncGlobalService()
 
     Shortcut {
@@ -369,41 +377,76 @@ Item {
         border.color: ThemeTokens.color("border")
         border.width: 1
 
-        implicitWidth: Math.max(ThemeTokens.dp(24), contentRow.implicitWidth + ThemeTokens.dp(16))
-        implicitHeight: Math.max(ThemeTokens.dp(20), contentRow.implicitHeight + ThemeTokens.dp(8))
+        implicitWidth: Math.max(ThemeTokens.dp(24), mainContent.implicitWidth + ThemeTokens.dp(16))
+        implicitHeight: Math.max(ThemeTokens.dp(20), mainContent.implicitHeight + ThemeTokens.dp(8))
 
-        Row {
-            id: contentRow
+        Column {
+            id: mainContent
+            objectName: "mainContent"
             anchors.centerIn: parent
-            spacing: ThemeTokens.dp(6)
+            spacing: ThemeTokens.dp(3)
 
-            Loader {
-                id: customContentLoader
-                visible: root.customContent !== null
-                sourceComponent: root.customContent
-                anchors.verticalCenter: parent.verticalCenter
+            Row {
+                id: contentRow
+                objectName: "contentRow"
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: customContentLoader.visible || appIcon.visible || bubbleText.visible || shortcutBadge.visible
+                spacing: ThemeTokens.dp(6)
+
+                Loader {
+                    id: customContentLoader
+                    visible: root.customContent !== null
+                    sourceComponent: root.customContent
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                ChaSetIcon {
+                    id: appIcon
+                    objectName: "appIcon"
+                    visible: root.customContent === null && root.iconName.length > 0
+                    name: root.iconName
+                    size: 14
+                    color: ThemeTokens.color("text")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Text {
+                    id: bubbleText
+                    objectName: "bubbleText"
+                    visible: root.customContent === null && root.text.length > 0
+                    text: root.text
+                    color: ThemeTokens.color("text")
+                    font.pixelSize: Typography.sizeCaption
+                    font.weight: Font.Medium
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                ChaSetKbd {
+                    id: shortcutBadge
+                    objectName: "shortcutBadge"
+                    visible: root.shortcut.length > 0
+                    anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+                    variant: "outline"
+                    size: "xs"
+                    compact: "never"
+                    shortcut: root.shortcut
+                }
             }
 
             Text {
-                id: bubbleText
-                visible: root.customContent === null && root.text.length > 0
-                text: root.text
-                color: ThemeTokens.color("text")
+                id: descText
+                objectName: "descText"
+                visible: root.customContent === null && root.description.length > 0
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: root.description
+                color: ThemeTokens.color("subduedText")
                 font.pixelSize: Typography.sizeCaption
-                font.weight: Font.Medium
+                wrapMode: Text.Wrap
+                readonly property real maxDescW: ThemeTokens.dp(280)
+                width: visible ? Math.min(implicitWidth, maxDescW) : 0
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
-            ChaSetKbd {
-                id: shortcutBadge
-                visible: root.shortcut.length > 0
-                anchors.verticalCenter: parent ? parent.verticalCenter : undefined
-                variant: "outline"
-                size: "xs"
-                compact: "never"
-                shortcut: root.shortcut
             }
         }
 
