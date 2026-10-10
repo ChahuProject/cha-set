@@ -7,14 +7,19 @@ Item {
 
     property string keybinding: "Ctrl+K"
     property string value: keybinding
+    // Stack-specific: QML has no private component state, so recording stays a
+    // writable property (toggled internally by the whole-box click area and Esc;
+    // React keeps this in useState). Same for customRadius below, which follows
+    // the repo-wide ChaSet Qt radius-override convention (cf. ChaSetButton).
     property bool recording: false
     property int customRadius: 6
     readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
     property bool clearable: true
     property string size: "default" // "default" | "sm"
     property bool disabled: false
-    property string placeholder: "None"
-    property string recordingText: "Press shortcut keys..."
+    // React parity (KeybindingRecorder.tsx defaults + spec/components/keybinding-recorder.ts).
+    property string placeholder: "No keybinding set"
+    property string recordingText: "Press key combination (Esc to cancel)..."
 
     signal keybindingRecorded(string newBinding)
 
@@ -82,8 +87,8 @@ Item {
             id: display
             anchors.left: leadIcon.right
             anchors.leftMargin: ThemeTokens.dp(8)
-            anchors.right: btnRow.left
-            anchors.rightMargin: ThemeTokens.dp(6)
+            anchors.right: parent.right
+            anchors.rightMargin: clearBtn.visible ? btnRow.width + ThemeTokens.dp(6) : ThemeTokens.dp(6)
             anchors.verticalCenter: parent.verticalCenter
             text: root.recording ? root.recordingText : (root.keybinding.length > 0 ? root.keybinding : root.placeholder)
             color: root.recording ? ThemeTokens.accent : (root.keybinding.length > 0 ? ThemeTokens.text : ThemeTokens.subduedText)
@@ -119,14 +124,15 @@ Item {
         MouseArea {
             id: recorderClickArea
             anchors.fill: parent
-            anchors.rightMargin: btnRow.width + ThemeTokens.dp(10)
+            // Below the ghost clear-X so its clicks pass through (React
+            // stopPropagation parity); Text/icon siblings ignore mouse input.
+            z: -1
             hoverEnabled: true
             cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
             onClicked: {
-                // Whole-box click starts recording (React parity: one-way
-                // start; recording stops via key capture or Escape).
-                if (!root.disabled && !root.recording) {
-                    root.recording = true
+                // Whole-box click toggles recording; Escape cancels.
+                if (!root.disabled) {
+                    root.recording = !root.recording
                 }
             }
         }

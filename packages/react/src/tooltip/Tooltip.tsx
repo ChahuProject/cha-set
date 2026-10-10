@@ -259,6 +259,23 @@ export interface TooltipTriggerProps extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode;
 }
 
+interface ClonedTriggerProps {
+  'aria-describedby'?: string;
+  'data-slot'?: string;
+  onMouseEnter?: (event: React.MouseEvent) => void;
+  onMouseLeave?: (event: React.MouseEvent) => void;
+  onFocus?: (event: React.FocusEvent) => void;
+  onBlur?: (event: React.FocusEvent) => void;
+  className?: string;
+  // React 19 passes ref as a regular prop; declaring it keeps cloneElement
+  // attributes typeable without `any`.
+  ref?: React.Ref<HTMLElement>;
+}
+
+interface ElementRefHolder {
+  ref?: React.Ref<HTMLElement> | undefined;
+}
+
 export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>(
   ({ asChild = false, children, className, ...props }, ref) => {
     const {
@@ -271,8 +288,51 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
       handleTriggerBlur,
     } = useTooltip();
 
-    if (asChild && React.isValidElement(children)) {
-      const child = children as React.ReactElement<Record<string, any>>;
+    const childElement =
+      asChild && React.isValidElement(children)
+        ? (children as React.ReactElement<ClonedTriggerProps>)
+        : null;
+    // The child's own ref (composite Button forwards it to its DOM node).
+    // Read outside the callback so the ref identity stays stable across renders.
+    const childRefValue: React.Ref<HTMLElement> | undefined = childElement
+      ? (childElement.props.ref ??
+        (childElement as unknown as ElementRefHolder).ref)
+      : undefined;
+
+    // Stable across renders: a fresh inline ref would detach (null) + reattach
+    // on every open/close, flashing the anchor to null. Nulls are ignored so
+    // the anchor never drops (the whole root unmounts together anyway).
+    const handleAsChildRef = React.useCallback(
+      (node: HTMLElement | null) => {
+        if (node) {
+          setTriggerElement(node);
+        }
+        if (typeof ref === 'function') ref(node);
+        else if (ref && 'current' in ref) {
+          (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+        }
+
+        if (typeof childRefValue === 'function') childRefValue(node);
+        else if (childRefValue && typeof childRefValue === 'object' && 'current' in childRefValue) {
+          (childRefValue as React.MutableRefObject<HTMLElement | null>).current = node;
+        }
+      },
+      [ref, setTriggerElement, childRefValue],
+    );
+
+    const handleButtonRef = React.useCallback(
+      (node: HTMLButtonElement | null) => {
+        if (node) {
+          setTriggerElement(node);
+        }
+        if (typeof ref === 'function') ref(node);
+        else if (ref && 'current' in ref) (ref as any).current = node;
+      },
+      [ref, setTriggerElement],
+    );
+
+    if (childElement) {
+      const child = childElement;
       const existingDescribedBy = child.props['aria-describedby'];
       const combinedDescribedBy = [existingDescribedBy, isOpen ? tooltipId : undefined]
         .filter(Boolean)
@@ -281,15 +341,7 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
       return React.cloneElement(child, {
         ...props,
         ...child.props,
-        ref: (node: HTMLElement | null) => {
-          setTriggerElement(node);
-          if (typeof ref === 'function') ref(node);
-          else if (ref && 'current' in ref) (ref as any).current = node;
-
-          const childRef = (child.props as any)?.ref ?? (child as any).ref;
-          if (typeof childRef === 'function') childRef(node);
-          else if (childRef && 'current' in childRef) childRef.current = node;
-        },
+        ref: handleAsChildRef,
         'data-slot': child.props['data-slot'] || 'tooltip-trigger',
         'aria-describedby': combinedDescribedBy || undefined,
         onMouseEnter: composeEventHandlers(child.props.onMouseEnter, handleTriggerMouseEnter),
@@ -299,15 +351,6 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
         className: cn(child.props.className, className),
       });
     }
-
-    const handleButtonRef = React.useCallback(
-      (node: HTMLButtonElement | null) => {
-        setTriggerElement(node);
-        if (typeof ref === 'function') ref(node);
-        else if (ref && 'current' in ref) (ref as any).current = node;
-      },
-      [ref, setTriggerElement],
-    );
 
     return (
       <button

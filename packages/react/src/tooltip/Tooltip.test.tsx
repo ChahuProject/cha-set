@@ -8,6 +8,7 @@ import {
   TooltipContent,
   TooltipRoot,
 } from './Tooltip';
+import { Button } from '../button/Button';
 
 describe('Tooltip Component', () => {
   beforeEach(() => {
@@ -404,6 +405,39 @@ describe('Tooltip Component', () => {
 
     const inlineParent = screen.getByTestId('inline-parent');
     expect(inlineParent.contains(tooltip)).toBe(true);
+  });
+
+  it('anchors shorthand Tooltip + composite Button to the trigger with explicit px coords', () => {
+    // DocPage scenario: composite Button child resolves its DOM node through
+    // the asChild ref handoff. Mock the trigger rect; everything else is 0.
+    const rect = {
+      x: 300, y: 200, width: 100, height: 40,
+      top: 200, right: 400, bottom: 240, left: 300,
+      toJSON: () => ({}),
+    } as DOMRect;
+    const spy = vi.spyOn(HTMLButtonElement.prototype, 'getBoundingClientRect').mockReturnValue(rect);
+    try {
+      render(
+        <Tooltip content="DocPage tip" side="top" avoidCollisions={false} delayDuration={0}>
+          <Button variant="outline">Hover or Focus Me</Button>
+        </Tooltip>,
+      );
+
+      const trigger = screen.getByRole('button', { name: 'Hover or Focus Me' });
+      fireEvent.mouseEnter(trigger);
+
+      const tooltip = screen.getByRole('tooltip');
+      // Bubble falls back to 80x28 in jsdom: top = 200-28-8 = 164,
+      // left = 300+(100-80)/2 = 310. A null anchor would mount nothing
+      // (or an unpositioned bubble); explicit px proves trigger anchoring.
+      expect(tooltip.style.position).toBe('fixed');
+      expect(tooltip.style.top).toBe('164px');
+      expect(tooltip.style.left).toBe('310px');
+      expect(tooltip).toHaveAttribute('data-side', 'top');
+      expect(trigger).toHaveAttribute('aria-describedby', tooltip.getAttribute('id'));
+    } finally {
+      spy.mockRestore();
+    }
   });
 });
 

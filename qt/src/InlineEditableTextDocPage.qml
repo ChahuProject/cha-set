@@ -78,7 +78,7 @@ ChaSetInlineEditableText {
         spacing: ThemeTokens.dp(12)
 
         ComponentPreview {
-        title: ChaSetI18n.tr("components.inlineEditableText.sizesAndTriggers", "Sizes & Interaction Triggers")
+            title: ChaSetI18n.tr("components.inlineEditableText.sizesAndTriggers", "Sizes & Interaction Triggers")
         reactCode: `<InlineEditableText value="Single Click to Edit" trigger="click" size="default" />
 <InlineEditableText value="Double Click to Edit" trigger="doubleClick" size="default" />
 <InlineEditableText value="Compact sm Tier Label" size="sm" />
