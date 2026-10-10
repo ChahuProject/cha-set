@@ -10,6 +10,15 @@ Item {
     property string placeholder: ChaSetI18n.tr("components.select.placeholder", "Select an option...")
     property var options: [] // [{ value: "apple", label: "Apple", disabled: false }]
     property bool disabled: false
+    // 可观测状态（测试与外部调用方）：选项弹层是否打开。只读，无行为变化。
+    readonly property bool popupOpen: selectPopup.visible
+    // 防重开守卫：非模态弹层的 CloseOnPressOutside 在 press 阶段先关弹层，
+    // 事件穿透后 release 触发触发器 onClicked 又会重开，导致“二次点击关不上”。
+    // 本守卫吞掉“刚被外部 press 关掉”之后的第一次 toggle 点击；选项选中走
+    // 显式路径（popupClosedBySelect）不受影响，键盘重开走 openPopup 直调，
+    // 本来就不经过 onClicked。
+    property double lastOutsideCloseMsecs: 0
+    property bool popupClosedBySelect: false
     property bool closeOnEscape: true
     property int customRadius: 6
     readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
@@ -98,6 +107,7 @@ Item {
             if (opt && !opt.disabled) {
                 root.value = String(opt.value)
                 root.valueChanged()
+                root.popupClosedBySelect = true
                 selectPopup.close()
                 root.forceActiveFocus()
             }
@@ -205,12 +215,16 @@ Item {
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
-            onClicked: {
-                if (root.disabled) return
-                root.forceActiveFocus()
-                if (selectPopup.visible) selectPopup.close()
-                else root.openPopup()
-            }
+                        onClicked: {
+                            if (root.disabled) return
+                            if (Date.now() - root.lastOutsideCloseMsecs < 400) {
+                                root.lastOutsideCloseMsecs = 0
+                                return
+                            }
+                            root.forceActiveFocus()
+                            if (selectPopup.visible) selectPopup.close()
+                            else root.openPopup()
+                        }
         }
     }
 
@@ -231,6 +245,9 @@ Item {
         onClosed: {
             ChaSetOverlayHub.unregister(selectPopup)
             root.highlightedIndex = -1
+            if (!root.popupClosedBySelect)
+                root.lastOutsideCloseMsecs = Date.now()
+            root.popupClosedBySelect = false
         }
 
         background: ChaSetSquircle {
@@ -319,6 +336,7 @@ Item {
                             if (parent && parent.modelData && parent.modelData.disabled) return
                             root.value = String(parent.modelData.value)
                             root.valueChanged()
+                            root.popupClosedBySelect = true
                             selectPopup.close()
                             root.forceActiveFocus()
                         }
