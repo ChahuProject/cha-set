@@ -36,6 +36,10 @@ export const buttonSchema = z.object({
   pressed: z.boolean().default(false),
   /** Logical unscaled icon size; enlarges/overrides the icon rendered inside the button. */
   iconSize: z.number().int().positive().optional(),
+  /** Optional keyboard shortcut serialized string (e.g. 'Ctrl+Enter'). */
+  shortcut: z.string().optional(),
+  /** Compact presentation strategy for shortcut keycap. */
+  shortcutCompact: z.enum(['auto', 'always', 'never']).default('auto').optional(),
 });
 
 export type ButtonApi = z.infer<typeof buttonSchema>;

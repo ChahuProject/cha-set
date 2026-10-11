@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/utils';
+import { Kbd } from '../kbd/Kbd';
 
 export type ButtonVariant =
   | 'default'
@@ -92,6 +93,10 @@ export interface ButtonProps
    * In Base UI, this maps directly to the `render` prop.
    */
   asChild?: boolean;
+  /** Optional keyboard shortcut string (e.g. 'Ctrl+Enter'). */
+  shortcut?: string;
+  /** Compact presentation strategy for shortcut keycap. @default 'auto' */
+  shortcutCompact?: 'auto' | 'always' | 'never';
   /** Programmatically force the hover state for visual testing and snapshot parity. */
   forceHover?: boolean;
   /** Programmatically force the active/pressed state for visual testing and snapshot parity. */
@@ -130,6 +135,8 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
     rightIcon,
     iconSize,
     asChild = false,
+    shortcut,
+    shortcutCompact = 'auto',
     forceHover = false,
     forceActive = false,
     className,
@@ -199,6 +206,15 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
             <>
               {leftIcon}
               {children}
+              {shortcut && (
+                <Kbd
+                  size="xs"
+                  compact={shortcutCompact}
+                  variant={currentVariant === 'default' ? 'inverted' : 'subtle'}
+                >
+                  {shortcut}
+                </Kbd>
+              )}
               {rightIcon}
             </>
           )}

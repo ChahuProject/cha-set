@@ -64,8 +64,13 @@ Item {
         }
     }
 
+    property color customBgColor: "transparent"
+    property color customBorderColor: "transparent"
+    property color customTextColor: "transparent"
+
     // Color tokens
     readonly property color bgFillColor: {
+        if (root.customBgColor !== "transparent" && root.customBgColor.a > 0) return root.customBgColor;
         if (root.forceActive) return ThemeTokens.accent;
         if (isSubtle) return "transparent";
         if (isInverted) return ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.15) : Qt.rgba(255, 255, 255, 0.2);
@@ -75,6 +80,7 @@ Item {
     }
 
     readonly property color borderColor: {
+        if (root.customBorderColor !== "transparent" && root.customBorderColor.a > 0) return root.customBorderColor;
         if (root.forceHover) return ThemeTokens.accent;
         if (isSubtle || isSolid) return "transparent";
         if (isInverted) return ThemeTokens.dark ? Qt.rgba(0, 0, 0, 0.2) : Qt.rgba(255, 255, 255, 0.25);
@@ -82,6 +88,7 @@ Item {
     }
 
     readonly property color fgTextColor: {
+        if (root.customTextColor !== "transparent" && root.customTextColor.a > 0) return root.customTextColor;
         if (root.forceActive) return ThemeTokens.text;
         if (isSubtle) return ThemeTokens.subduedText;
         if (isInverted) return ThemeTokens.dark ? "#020817" : "#f8fafc";

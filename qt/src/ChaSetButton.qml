@@ -16,6 +16,8 @@ Item {
     property bool disabled: false
     property bool pressed: false
     property string text: ""
+    property string shortcut: ""
+    property string shortcutCompact: "auto" // "auto" | "always" | "never"
     property string icon: ""
     property string iconSource: ""
     property string iconPosition: "left" // left | right
@@ -160,7 +162,7 @@ Item {
     implicitHeight: buttonHeight()
     implicitWidth: isIconButton()
         ? buttonHeight()
-        : ((text !== "" || iconSource !== "" ? contentRow.implicitWidth : fontSize()) + paddingH() * 2)
+        : ((text !== "" || iconSource !== "" || icon !== "" || shortcut !== "" ? contentRow.implicitWidth : fontSize()) + paddingH() * 2)
     height: buttonHeight()
     width: fullWidth && parent ? parent.width : implicitWidth
 
@@ -309,6 +311,25 @@ Item {
                 enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
                 ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
             }
+        }
+
+        // Optional Shortcut Keycap (compact symbol support)
+        ChaSetKbd {
+            id: btnKbd
+            visible: !root.loading && root.shortcut !== ""
+            shortcut: root.shortcut
+            variant: (root.variant === "default" || root.variant === "primary") ? "inverted" : "subtle"
+            size: (root.size === "xs" || root.size === "sm" || root.size === "icon-xs" || root.size === "icon-sm") ? "xs" : "sm"
+            compact: root.shortcutCompact
+            customTextColor: root.fgColor()
+            customBgColor: (root.variant === "default" || root.variant === "primary")
+                ? Qt.rgba(1, 1, 1, 0.22)
+                : ((typeof ThemeTokens !== "undefined" && ThemeTokens.dark) ? Qt.rgba(1, 1, 1, 0.08) : Qt.rgba(0, 0, 0, 0.05))
+            customBorderColor: (root.variant === "default" || root.variant === "primary")
+                ? Qt.rgba(1, 1, 1, 0.35)
+                : ((typeof theme !== "undefined" && theme) ? theme.border : ThemeTokens.border)
+            availableWidth: root.width > 0 ? Math.max(0, root.width - (contentRow.implicitWidth - btnKbd.implicitWidth) - root.paddingH() * 2) : -1
+            anchors.verticalCenter: parent.verticalCenter
         }
 
         // Optional Right Icon
