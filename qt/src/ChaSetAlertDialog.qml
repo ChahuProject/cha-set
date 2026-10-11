@@ -22,6 +22,10 @@ Rectangle {
     property int dialogWidth: ThemeTokens.dp(size === "sm" ? 400 : (size === "lg" ? 560 : 460))
     property bool closeOnEscape: true
     property bool closeOnOverlayClick: false
+    property Item footer: null
+    property Component footerComponent: null
+
+    default property alias contentData: alertCustomBody.data
 
     signal confirmed()
     signal cancelled()
@@ -48,6 +52,34 @@ Rectangle {
             root.forceActiveFocus()
         } else {
             ChaSetOverlayHub.unregister(root)
+        }
+    }
+
+    function clampCardPosition() {
+        if (!root || root.width <= 0 || root.height <= 0) return;
+        var minX = ThemeTokens.dp(8);
+        var minY = ThemeTokens.dp(8);
+        var maxX = Math.max(minX, root.width - card.width - minX);
+        var maxY = Math.max(minY, root.height - card.height - minY);
+        card.x = Math.max(minX, Math.min(card.x, maxX));
+        card.y = Math.max(minY, Math.min(card.y, maxY));
+    }
+
+    Connections {
+        target: root
+        function onWidthChanged() { root.clampCardPosition(); }
+        function onHeightChanged() { root.clampCardPosition(); }
+    }
+
+    onFooterChanged: {
+        if (root.footer) {
+            root.footer.parent = footerContainer;
+        }
+    }
+
+    Component.onCompleted: {
+        if (root.footer) {
+            root.footer.parent = footerContainer;
         }
     }
 
@@ -82,11 +114,12 @@ Rectangle {
     ChaSetSquircle {
         id: card
         width: Math.min(parent ? parent.width - ThemeTokens.dp(40) : ThemeTokens.dp(460), root.dialogWidth)
-        readonly property real contentPreferredHeight: titleCol.implicitHeight + alertDescText.height + buttonRow.implicitHeight + ThemeTokens.dp(40) + ThemeTokens.dp(26)
+        readonly property real maxSafeHeight: Math.max(ThemeTokens.dp(120), (parent ? parent.height : ThemeTokens.dp(800)) - ThemeTokens.dp(40))
+        readonly property real contentPreferredHeight: titleCol.implicitHeight + alertBodyCol.implicitHeight + footerContainer.implicitHeight + ThemeTokens.dp(40) + ThemeTokens.dp(28)
         implicitHeight: contentPreferredHeight
-        height: Math.min(parent ? Math.max(ThemeTokens.dp(120), parent.height - ThemeTokens.dp(40)) : ThemeTokens.dp(600), contentPreferredHeight)
-        x: Math.max(ThemeTokens.dp(8), Math.min(parent ? parent.width - width - ThemeTokens.dp(8) : 0, Math.round((parent ? (parent.width - width) / 2 : 0))))
-        y: Math.max(ThemeTokens.dp(8), Math.min(parent ? parent.height - height - ThemeTokens.dp(8) : 0, Math.round((parent ? (parent.height - height) / 2 : 0))))
+        height: Math.min(maxSafeHeight, contentPreferredHeight)
+        x: (root.width > 0 && width > 0) ? Math.max(ThemeTokens.dp(8), Math.round((root.width - width) / 2)) : 0
+        y: (root.height > 0 && height > 0) ? Math.max(ThemeTokens.dp(8), Math.round((root.height - height) / 2)) : 0
         color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
@@ -160,49 +193,66 @@ Rectangle {
             }
         }
 
-        // Action Buttons Row (pinned at bottom)
-        Row {
-            id: buttonRow
+        // Action Buttons Footer (pinned at bottom)
+        Item {
+            id: footerContainer
             anchors.bottom: parent.bottom
             anchors.bottomMargin: ThemeTokens.dp(20)
-            anchors.right: parent.right
-            anchors.rightMargin: ThemeTokens.dp(20)
-            spacing: ThemeTokens.dp(8)
-
-            ChaSetButton {
-                text: root.cancelText
-                variant: "outline"
-                size: "sm"
-                onClicked: {
-                    root.open = false
-                    root.cancelled()
-                }
-            }
-
-            ChaSetButton {
-                text: root.confirmText
-                variant: root.actionVariant
-                size: "sm"
-                onClicked: {
-                    root.open = false
-                    root.confirmed()
-                }
-            }
-        }
-
-        // Description Flickable in the middle
-        Flickable {
-            id: alertDescFlickable
-            anchors.top: titleCol.bottom
-            anchors.topMargin: ThemeTokens.dp(10)
-            anchors.bottom: buttonRow.top
-            anchors.bottomMargin: ThemeTokens.dp(16)
             anchors.left: parent.left
             anchors.leftMargin: ThemeTokens.dp(20)
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(20)
+            height: (root.footer ? root.footer.height : (footerLoader.item ? footerLoader.item.height : defaultButtonRow.implicitHeight))
+            implicitHeight: height
+
+            Loader {
+                id: footerLoader
+                anchors.fill: parent
+                visible: !root.footer && root.footerComponent !== null
+                sourceComponent: root.footerComponent
+            }
+
+            Row {
+                id: defaultButtonRow
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: ThemeTokens.dp(8)
+                visible: !root.footer && !root.footerComponent
+
+                ChaSetButton {
+                    text: root.cancelText
+                    variant: "outline"
+                    size: "sm"
+                    onClicked: {
+                        root.open = false
+                        root.cancelled()
+                    }
+                }
+
+                ChaSetButton {
+                    text: root.confirmText
+                    variant: root.actionVariant
+                    size: "sm"
+                    onClicked: {
+                        root.open = false
+                        root.confirmed()
+                    }
+                }
+            }
+        }
+
+        // Description & Body Flickable in the middle
+        Flickable {
+            id: alertBodyFlickable
+            anchors.top: titleCol.bottom
+            anchors.topMargin: ThemeTokens.dp(10)
+            anchors.bottom: footerContainer.top
+            anchors.bottomMargin: ThemeTokens.dp(16)
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.rightMargin: ThemeTokens.dp(2)
             contentWidth: width
-            contentHeight: alertDescText.height
+            contentHeight: alertBodyCol.implicitHeight
             clip: true
             boundsBehavior: Flickable.StopAtBounds
 
@@ -210,46 +260,60 @@ Rectangle {
                 policy: ScrollBar.AsNeeded
             }
 
-            TextEdit {
-                id: alertDescText
-                text: root.description
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeBody
-                wrapMode: TextEdit.WordWrap
-                width: alertDescFlickable.width
-                height: contentHeight
-                readOnly: true
-                selectByMouse: true
-                selectByKeyboard: true
-                cursorVisible: false
-                activeFocusOnPress: true
-                textMargin: 0
-                padding: 0
-                selectionColor: ThemeTokens.accent
-                selectedTextColor: "#ffffff"
+            Column {
+                id: alertBodyCol
+                x: ThemeTokens.dp(20)
+                width: Math.max(0, alertBodyFlickable.width - ThemeTokens.dp(40))
+                spacing: ThemeTokens.dp(12)
 
-                HoverHandler {
-                    cursorShape: Qt.IBeamCursor
-                }
+                TextEdit {
+                    id: alertDescText
+                    text: root.description
+                    color: ThemeTokens.subduedText
+                    font.pixelSize: Typography.sizeBody
+                    wrapMode: TextEdit.WordWrap
+                    width: parent.width
+                    height: contentHeight
+                    visible: text !== ""
+                    readOnly: true
+                    selectByMouse: true
+                    selectByKeyboard: true
+                    cursorVisible: false
+                    activeFocusOnPress: true
+                    textMargin: 0
+                    padding: 0
+                    selectionColor: ThemeTokens.accent
+                    selectedTextColor: "#ffffff"
 
-                onSelectedTextChanged: {
-                    if (selectedText.length > 0) SelectionHub.claim(alertDescText);
-                    else if (SelectionHub.activeOwner === alertDescText) SelectionHub.clear(alertDescText);
-                }
+                    HoverHandler {
+                        cursorShape: Qt.IBeamCursor
+                    }
 
-                Keys.onPressed: function(event) {
-                    if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
-                        SelectionHub.copyActiveSelection();
-                        event.accepted = true;
+                    onSelectedTextChanged: {
+                        if (selectedText.length > 0) SelectionHub.claim(alertDescText);
+                        else if (SelectionHub.activeOwner === alertDescText) SelectionHub.clear(alertDescText);
+                    }
+
+                    Keys.onPressed: function(event) {
+                        if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
+                            SelectionHub.copyActiveSelection();
+                            event.accepted = true;
+                        }
+                    }
+
+                    TapHandler {
+                        acceptedButtons: Qt.RightButton
+                        onTapped: function(eventPoint) {
+                            var scenePos = eventPoint.scenePosition;
+                            SelectionHub.showContextMenu(scenePos.x, scenePos.y, alertDescText);
+                        }
                     }
                 }
 
-                TapHandler {
-                    acceptedButtons: Qt.RightButton
-                    onTapped: function(eventPoint) {
-                        var scenePos = eventPoint.scenePosition;
-                        SelectionHub.showContextMenu(scenePos.x, scenePos.y, alertDescText);
-                    }
+                Column {
+                    id: alertCustomBody
+                    width: parent.width
+                    spacing: ThemeTokens.dp(12)
                 }
             }
         }

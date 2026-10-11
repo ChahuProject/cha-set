@@ -38,9 +38,28 @@ Item {
     // overflows int.
     property double _settleUntil: 0
     property int _pendingRaise: -1
+    property int _lastRaisedFrom: -1
+    property real _lastSwitchX: -1
+    property real _lastSwitchY: -1
     property var _sorted: []
     property var _budgets: ({})
     property int _revision: 0
+
+    function raiseCard(index, immediate) {
+        if (index === root._activeIndex || index < 0 || index >= root._sorted.length) return;
+        var prev = root._activeIndex;
+        root._lastRaisedFrom = prev;
+        if (stackHover.point) {
+            root._lastSwitchX = stackHover.point.position.x;
+            root._lastSwitchY = stackHover.point.position.y;
+        }
+        root._pendingRaise = -1;
+        root._activeIndex = index;
+        var cd = Math.max(150, ThemeTokens.motionShort);
+        root._settleUntil = Date.now() + cd;
+        settleTimer.interval = cd;
+        settleTimer.restart();
+    }
 
     readonly property bool hasNotices: root._sorted.length > 0
     readonly property var activeItem: root.hasNotices && root._activeIndex < root._sorted.length
@@ -258,14 +277,12 @@ Item {
             if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return || event.key === Qt.Key_Space
                     || event.key === Qt.Key_Right || event.key === Qt.Key_Down) {
                 if (root._sorted.length > 1) {
-                    root._pendingRaise = -1;
-                    root._activeIndex = (root._activeIndex + 1) % root._sorted.length;
+                    root.raiseCard((root._activeIndex + 1) % root._sorted.length, true);
                     event.accepted = true;
                 }
             } else if (event.key === Qt.Key_Left || event.key === Qt.Key_Up) {
                 if (root._sorted.length > 1) {
-                    root._pendingRaise = -1;
-                    root._activeIndex = (root._activeIndex - 1 + root._sorted.length) % root._sorted.length;
+                    root.raiseCard((root._activeIndex - 1 + root._sorted.length) % root._sorted.length, true);
                     event.accepted = true;
                 }
             }
@@ -275,8 +292,15 @@ Item {
             id: stackHover
             onHoveredChanged: {
                 root._hovered = hovered;
-                if (!hovered) root._pendingRaise = -1;
-                root._settleUntil = Date.now() + ThemeTokens.motionShort;
+                if (!hovered) {
+                    root._pendingRaise = -1;
+                    root._lastRaisedFrom = -1;
+                    root._lastSwitchX = -1;
+                    root._lastSwitchY = -1;
+                }
+                var cd = Math.max(150, ThemeTokens.motionShort);
+                root._settleUntil = Date.now() + cd;
+                settleTimer.interval = cd;
                 settleTimer.restart();
             }
         }
@@ -284,11 +308,14 @@ Item {
         // Fires once per settle window: raises the last card entered mid-glide.
         Timer {
             id: settleTimer
-            interval: ThemeTokens.motionShort
+            interval: Math.max(150, ThemeTokens.motionShort)
             repeat: false
             onTriggered: {
-                if (root._pendingRaise >= 0) {
-                    root._activeIndex = root._pendingRaise;
+                if (root._pendingRaise >= 0 && root._pendingRaise !== root._activeIndex) {
+                    var target = root._pendingRaise;
+                    root._pendingRaise = -1;
+                    root.raiseCard(target, false);
+                } else {
                     root._pendingRaise = -1;
                 }
             }
@@ -387,21 +414,58 @@ Item {
                 // hover raises instantly, so sweeps feel immediate. Taps and
                 // keyboard cycling stay immediate.
                 HoverHandler {
+                    id: delegateHover
                     cursorShape: Qt.PointingHandCursor
                     onHoveredChanged: {
                         if (hovered) {
-                            if (Date.now() < root._settleUntil) root._pendingRaise = index;
-                            else root._activeIndex = index;
+                            checkHoverRaise();
                         } else if (root._pendingRaise === index) {
                             root._pendingRaise = -1;
+                        }
+                    }
+
+                    onPointChanged: {
+                        if (delegateHover.hovered && (index === root._lastRaisedFrom)) {
+                            var curX = stackHover.point ? stackHover.point.position.x : -1;
+                            var curY = stackHover.point ? stackHover.point.position.y : -1;
+                            var dx = Math.abs(curX - root._lastSwitchX);
+                            var dy = Math.abs(curY - root._lastSwitchY);
+                            if (dx > ThemeTokens.dp(5) || dy > ThemeTokens.dp(5)) {
+                                if (Date.now() >= root._settleUntil) {
+                                    root.raiseCard(index, false);
+                                }
+                            }
+                        }
+                    }
+
+                    function checkHoverRaise() {
+                        var now = Date.now();
+                        var inSettle = now < root._settleUntil;
+                        var isRecentExit = (index === root._lastRaisedFrom);
+                        var curX = stackHover.point ? stackHover.point.position.x : -1;
+                        var curY = stackHover.point ? stackHover.point.position.y : -1;
+                        var dx = Math.abs(curX - root._lastSwitchX);
+                        var dy = Math.abs(curY - root._lastSwitchY);
+                        var hasMovedIntent = (root._lastSwitchX >= 0) && (dx > ThemeTokens.dp(5) || dy > ThemeTokens.dp(5));
+
+                        // Strict reverse trigger prevention: if this card was the one that just retreated
+                        // to behind under the pointer, and the cursor hasn't moved with intent or the layout
+                        // animation hasn't settled, ignore this accidental hover entirely.
+                        if (isRecentExit && (!hasMovedIntent || inSettle)) {
+                            return;
+                        }
+
+                        if (inSettle) {
+                            root._pendingRaise = index;
+                        } else {
+                            root.raiseCard(index, false);
                         }
                     }
                 }
 
                 TapHandler {
                     onTapped: {
-                        root._pendingRaise = -1;
-                        root._activeIndex = index;
+                        root.raiseCard(index, true);
                     }
                 }
             }

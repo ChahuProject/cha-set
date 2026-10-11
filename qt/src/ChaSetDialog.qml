@@ -32,6 +32,10 @@ Rectangle {
     property bool draggable: true
     property bool closeOnEscape: true
     property bool closeOnOverlayClick: true
+    property Item headerItem: null
+    property Component headerComponent: null
+    property Item footer: null
+    property Component footerComponent: null
 
     signal opened()
     signal closed()
@@ -70,21 +74,54 @@ Rectangle {
     }
 
     function resetCardPosition() {
-        if (!root.parent) return;
-        card.x = Math.max(ThemeTokens.dp(8), Math.min(root.parent.width - card.width - ThemeTokens.dp(8), Math.round((root.width - card.width) / 2)));
-        card.y = Math.max(ThemeTokens.dp(8), Math.min(root.parent.height - card.height - ThemeTokens.dp(8), Math.round((root.height - card.height) / 2)));
+        if (!root || root.width <= 0 || root.height <= 0) return;
+        var minX = ThemeTokens.dp(8);
+        var minY = ThemeTokens.dp(8);
+        var maxX = Math.max(minX, root.width - card.width - minX);
+        var maxY = Math.max(minY, root.height - card.height - minY);
+        var targetX = Math.round((root.width - card.width) / 2);
+        var targetY = Math.round((root.height - card.height) / 2);
+        card.x = Math.max(minX, Math.min(targetX, maxX));
+        card.y = Math.max(minY, Math.min(targetY, maxY));
     }
 
     function clampCardPosition() {
-        if (!root.parent) return;
-        card.x = Math.max(ThemeTokens.dp(8), Math.min(card.x, root.parent.width - card.width - ThemeTokens.dp(8)));
-        card.y = Math.max(ThemeTokens.dp(8), Math.min(card.y, root.parent.height - card.height - ThemeTokens.dp(8)));
+        if (!root || root.width <= 0 || root.height <= 0) return;
+        var minX = ThemeTokens.dp(8);
+        var minY = ThemeTokens.dp(8);
+        var maxX = Math.max(minX, root.width - card.width - minX);
+        var maxY = Math.max(minY, root.height - card.height - minY);
+        card.x = Math.max(minX, Math.min(card.x, maxX));
+        card.y = Math.max(minY, Math.min(card.y, maxY));
     }
 
     Connections {
-        target: root.parent
+        target: root
         function onWidthChanged() { root.clampCardPosition(); }
         function onHeightChanged() { root.clampCardPosition(); }
+    }
+
+    onFooterChanged: {
+        if (root.footer) {
+            root.footer.parent = footerContainer;
+            if (root.footer.width <= 0) root.footer.width = Qt.binding(function() { return footerContainer.width; });
+        }
+    }
+
+    onHeaderItemChanged: {
+        if (root.headerItem) {
+            root.headerItem.parent = headerContainer;
+        }
+    }
+
+    Component.onCompleted: {
+        if (root.footer) {
+            root.footer.parent = footerContainer;
+            if (root.footer.width <= 0) root.footer.width = Qt.binding(function() { return footerContainer.width; });
+        }
+        if (root.headerItem) {
+            root.headerItem.parent = headerContainer;
+        }
     }
 
     Shortcut {
@@ -120,11 +157,14 @@ Rectangle {
     ChaSetSquircle {
         id: card
         width: Math.min((parent ? parent.width : ThemeTokens.dp(1000)) - ThemeTokens.dp(40), root.dialogWidth)
-        readonly property real contentPreferredHeight: (headerCol.visible ? (headerCol.implicitHeight + ThemeTokens.dp(16)) : 0) + bodyContent.implicitHeight + ThemeTokens.dp(40)
+        readonly property real maxSafeHeight: Math.max(ThemeTokens.dp(120), (parent ? parent.height : ThemeTokens.dp(800)) - ThemeTokens.dp(40))
+        readonly property real headerAreaHeight: headerContainer.visible ? (headerContainer.implicitHeight + ThemeTokens.dp(16)) : 0
+        readonly property real footerAreaHeight: footerContainer.visible ? (footerContainer.implicitHeight + ThemeTokens.dp(16)) : 0
+        readonly property real contentPreferredHeight: headerAreaHeight + footerAreaHeight + bodyContent.implicitHeight + ThemeTokens.dp(40)
         implicitHeight: contentPreferredHeight
-        height: Math.min((parent ? parent.height : ThemeTokens.dp(800)) - ThemeTokens.dp(40), contentPreferredHeight)
-        x: Math.max(ThemeTokens.dp(8), Math.min(parent ? parent.width - width - ThemeTokens.dp(8) : 0, Math.round((parent ? (parent.width - width) / 2 : 0))))
-        y: Math.max(ThemeTokens.dp(8), Math.min(parent ? parent.height - height - ThemeTokens.dp(8) : 0, Math.round((parent ? (parent.height - height) / 2 : 0))))
+        height: Math.min(maxSafeHeight, contentPreferredHeight)
+        x: (root.width > 0 && width > 0) ? Math.max(ThemeTokens.dp(8), Math.round((root.width - width) / 2)) : 0
+        y: (root.height > 0 && height > 0) ? Math.max(ThemeTokens.dp(8), Math.round((root.height - height) / 2)) : 0
         color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
@@ -144,26 +184,57 @@ Rectangle {
             onClicked: {}
         }
 
-        DragHandler {
-            enabled: root.draggable
-            target: card
-            xAxis.minimum: ThemeTokens.dp(8)
-            xAxis.maximum: parent ? Math.max(ThemeTokens.dp(8), parent.width - card.width - ThemeTokens.dp(8)) : 0
-            yAxis.minimum: ThemeTokens.dp(8)
-            yAxis.maximum: parent ? Math.max(ThemeTokens.dp(8), parent.height - card.height - ThemeTokens.dp(8)) : 0
-        }
-
-        // Dialog Header (pinned at top)
-        Column {
-            id: headerCol
+        // Dialog Header Container (pinned at top, drag handle confined here)
+        Item {
+            id: headerContainer
             anchors.top: parent.top
-            anchors.topMargin: ThemeTokens.dp(20)
             anchors.left: parent.left
-            anchors.leftMargin: ThemeTokens.dp(20)
             anchors.right: parent.right
-            anchors.rightMargin: ThemeTokens.dp(20)
-            spacing: ThemeTokens.dp(6)
-            visible: root.title !== "" || root.description !== ""
+            height: {
+                if (root.headerItem) return root.headerItem.height + ThemeTokens.dp(20);
+                if (headerLoader.item) return headerLoader.item.height + ThemeTokens.dp(20);
+                if (headerCol.visible) return headerCol.implicitHeight + ThemeTokens.dp(20);
+                return root.draggable ? ThemeTokens.dp(36) : 0;
+            }
+            implicitHeight: height
+            visible: headerCol.visible || !!root.headerItem || !!root.headerComponent || root.draggable
+
+            DragHandler {
+                id: headerDragHandler
+                enabled: root.draggable
+                target: card
+                xAxis.minimum: ThemeTokens.dp(8)
+                xAxis.maximum: Math.max(ThemeTokens.dp(8), root.width - card.width - ThemeTokens.dp(8))
+                yAxis.minimum: ThemeTokens.dp(8)
+                yAxis.maximum: Math.max(ThemeTokens.dp(8), root.height - card.height - ThemeTokens.dp(8))
+            }
+
+            HoverHandler {
+                enabled: root.draggable
+                cursorShape: Qt.SizeAllCursor
+            }
+
+            Loader {
+                id: headerLoader
+                anchors.fill: parent
+                anchors.topMargin: ThemeTokens.dp(20)
+                anchors.leftMargin: ThemeTokens.dp(20)
+                anchors.rightMargin: ThemeTokens.dp(20)
+                visible: !root.headerItem && root.headerComponent !== null
+                sourceComponent: root.headerComponent
+            }
+
+            // Dialog Header (pinned at top)
+            Column {
+                id: headerCol
+                anchors.top: parent.top
+                anchors.topMargin: ThemeTokens.dp(20)
+                anchors.left: parent.left
+                anchors.leftMargin: ThemeTokens.dp(20)
+                anchors.right: parent.right
+                anchors.rightMargin: ThemeTokens.dp(20)
+                spacing: ThemeTokens.dp(6)
+                visible: !root.headerItem && !root.headerComponent && (root.title !== "" || root.description !== "")
 
                 Row {
                     width: parent.width
@@ -310,19 +381,19 @@ Rectangle {
                         }
                     }
                 }
+            }
         }
 
         // Dialog Body Content Area (Flickable + ChaSetScrollBar)
         Flickable {
             id: bodyFlickable
-            anchors.top: headerCol.visible ? headerCol.bottom : parent.top
-            anchors.topMargin: headerCol.visible ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: ThemeTokens.dp(20)
+            anchors.top: headerContainer.visible ? headerContainer.bottom : parent.top
+            anchors.topMargin: headerContainer.visible ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
+            anchors.bottom: footerContainer.visible ? footerContainer.top : parent.bottom
+            anchors.bottomMargin: footerContainer.visible ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
             anchors.left: parent.left
-            anchors.leftMargin: ThemeTokens.dp(20)
             anchors.right: parent.right
-            anchors.rightMargin: ThemeTokens.dp(20)
+            anchors.rightMargin: ThemeTokens.dp(2)
             contentWidth: width
             contentHeight: bodyContent.implicitHeight
             clip: true
@@ -334,8 +405,30 @@ Rectangle {
 
             Column {
                 id: bodyContent
-                width: bodyFlickable.width
+                x: ThemeTokens.dp(20)
+                width: Math.max(0, bodyFlickable.width - ThemeTokens.dp(40))
                 spacing: ThemeTokens.dp(14)
+            }
+        }
+
+        // Dialog Footer Container (pinned at bottom)
+        Item {
+            id: footerContainer
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: visible ? ThemeTokens.dp(20) : 0
+            anchors.left: parent.left
+            anchors.leftMargin: ThemeTokens.dp(20)
+            anchors.right: parent.right
+            anchors.rightMargin: ThemeTokens.dp(20)
+            visible: (root.footer !== null && root.footer !== undefined) || (root.footerComponent !== null && footerLoader.item !== null)
+            height: visible ? (root.footer ? (root.footer.implicitHeight > 0 ? root.footer.implicitHeight : root.footer.height) : (footerLoader.item ? (footerLoader.item.implicitHeight > 0 ? footerLoader.item.implicitHeight : footerLoader.item.height) : 0)) : 0
+            implicitHeight: height
+
+            Loader {
+                id: footerLoader
+                anchors.fill: parent
+                visible: !root.footer && root.footerComponent !== null
+                sourceComponent: root.footerComponent
             }
         }
     }
