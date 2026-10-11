@@ -61,7 +61,7 @@ describe('FloatingNotice', () => {
     expect(screen.getByTestId('queue-dot-0')).toBeInTheDocument();
   });
 
-  it('ignores transient hovers and only activates a rested pointer', async () => {
+  it('defers activation during the settle glide, then raises the last-entered card', async () => {
     const onActiveChange = vi.fn();
     const notices: FloatingNoticeItem[] = [
       { id: '1', title: 'First Notice' },
@@ -72,21 +72,57 @@ describe('FloatingNotice', () => {
     // Mount itself notifies the initial raised card; only later calls matter.
     onActiveChange.mockClear();
 
-    // A swipe across the strip (enter then leave before intent elapses)
-    // must not flip the raised card — this is what stops mid-animation jitter.
-    const dot = screen.getByTestId('queue-dot-1');
-    fireEvent.mouseEnter(dot);
-    fireEvent.mouseLeave(dot);
+    fireEvent.mouseEnter(screen.getByTestId('floating-notice-container'));
+    // Entered mid-glide: stashed, not raised yet — this is what stops the
+    // mid-animation flap between neighbours.
+    fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
+    expect(screen.getByTestId('queue-dot-1')).toBeInTheDocument();
+
+    // Once the window ends the stashed card raises exactly once.
+    await screen.findByTestId('notice-card-1');
+    await vi.waitFor(() => expect(onActiveChange).toHaveBeenCalledWith('2', 1));
+    expect(onActiveChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('activates instantly once the layout has settled', async () => {
+    const onActiveChange = vi.fn();
+    const notices: FloatingNoticeItem[] = [
+      { id: '1', title: 'First Notice' },
+      { id: '2', title: 'Second Notice' },
+    ];
+
+    render(<FloatingNotice notices={notices} onActiveChange={onActiveChange} />);
+    onActiveChange.mockClear();
+
+    fireEvent.mouseEnter(screen.getByTestId('floating-notice-container'));
     await React.act(async () => {
-      await new Promise((r) => setTimeout(r, 250));
+      await new Promise((r) => setTimeout(r, 150));
+    });
+
+    // Settled: no waiting, the touched card raises synchronously.
+    fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
+    expect(screen.getByTestId('notice-card-1')).toBeInTheDocument();
+    expect(onActiveChange).toHaveBeenCalledWith('2', 1);
+  });
+
+  it('cancels a stashed raise when the pointer leaves mid-settle', async () => {
+    const onActiveChange = vi.fn();
+    const notices: FloatingNoticeItem[] = [
+      { id: '1', title: 'First Notice' },
+      { id: '2', title: 'Second Notice' },
+    ];
+
+    render(<FloatingNotice notices={notices} onActiveChange={onActiveChange} />);
+    onActiveChange.mockClear();
+
+    fireEvent.mouseEnter(screen.getByTestId('floating-notice-container'));
+    fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
+    fireEvent.mouseLeave(screen.getByTestId('floating-notice-container'));
+    await React.act(async () => {
+      await new Promise((r) => setTimeout(r, 200));
     });
     expect(onActiveChange).not.toHaveBeenCalled();
     expect(screen.getByTestId('notice-card-0')).toBeInTheDocument();
-
-    // A rested hover does activate.
-    fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
-    await screen.findByTestId('notice-card-1');
-    await vi.waitFor(() => expect(onActiveChange).toHaveBeenCalledWith('2', 1));
   });
 
   it('sizes cards by distance from the raised card, raised always largest', async () => {

@@ -32,6 +32,12 @@ Item {
     // State
     property int _activeIndex: 0
     property bool _hovered: false
+    // Settle gate (mirrors React): card hovers inside the 120ms layout glide
+    // after a hover flip are stashed, then the last one activates once.
+    // Outside the window every hover raises instantly. double: epoch ms
+    // overflows int.
+    property double _settleUntil: 0
+    property int _pendingRaise: -1
     property var _sorted: []
     property var _budgets: ({})
     property int _revision: 0
@@ -244,11 +250,13 @@ Item {
             if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return || event.key === Qt.Key_Space
                     || event.key === Qt.Key_Right || event.key === Qt.Key_Down) {
                 if (root._sorted.length > 1) {
+                    root._pendingRaise = -1;
                     root._activeIndex = (root._activeIndex + 1) % root._sorted.length;
                     event.accepted = true;
                 }
             } else if (event.key === Qt.Key_Left || event.key === Qt.Key_Up) {
                 if (root._sorted.length > 1) {
+                    root._pendingRaise = -1;
                     root._activeIndex = (root._activeIndex - 1 + root._sorted.length) % root._sorted.length;
                     event.accepted = true;
                 }
@@ -259,6 +267,22 @@ Item {
             id: stackHover
             onHoveredChanged: {
                 root._hovered = hovered;
+                if (!hovered) root._pendingRaise = -1;
+                root._settleUntil = Date.now() + ThemeTokens.motionShort;
+                settleTimer.restart();
+            }
+        }
+
+        // Fires once per settle window: raises the last card entered mid-glide.
+        Timer {
+            id: settleTimer
+            interval: ThemeTokens.motionShort
+            repeat: false
+            onTriggered: {
+                if (root._pendingRaise >= 0) {
+                    root._activeIndex = root._pendingRaise;
+                    root._pendingRaise = -1;
+                }
             }
         }
 
@@ -349,32 +373,26 @@ Item {
                     }
                 }
 
-                // Hover intent (anti-jitter, mirrors React): while the spread
-                // animation is still gliding, delegates slide under a
-                // stationary cursor and transient hovers flap between
-                // neighbours. Only a rested hover raises the card; taps and
+                // Settle-gated hover (mirrors React): enters inside the layout
+                // glide after a hover flip are stashed, not acted on; the last
+                // one raises once the window ends. Outside the window every
+                // hover raises instantly, so sweeps feel immediate. Taps and
                 // keyboard cycling stay immediate.
                 HoverHandler {
-                    id: intentHover
                     cursorShape: Qt.PointingHandCursor
                     onHoveredChanged: {
-                        if (hovered) intentTimer.restart();
-                        else intentTimer.stop();
-                    }
-                }
-
-                Timer {
-                    id: intentTimer
-                    interval: 150
-                    repeat: false
-                    onTriggered: {
-                        if (intentHover.hovered) root._activeIndex = index;
+                        if (hovered) {
+                            if (Date.now() < root._settleUntil) root._pendingRaise = index;
+                            else root._activeIndex = index;
+                        } else if (root._pendingRaise === index) {
+                            root._pendingRaise = -1;
+                        }
                     }
                 }
 
                 TapHandler {
                     onTapped: {
-                        intentTimer.stop();
+                        root._pendingRaise = -1;
                         root._activeIndex = index;
                     }
                 }

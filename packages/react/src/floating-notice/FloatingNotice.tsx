@@ -99,40 +99,46 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
   const [budgets, setBudgets] = React.useState<Record<string, number>>({});
   const isHovered = forceHover || internalHover;
 
-  // Hover intent (industry-standard anti-jitter): while the spread animation
-  // is still gliding, layers slide under a stationary cursor and transient
-  // enter/leave events flap between neighbours. Activation only fires after
-  // the pointer has RESTED on a card for HOVER_INTENT_MS (longer than the
-  // 120ms spread transition), so mid-flight hovers are filtered and the
-  // settled card activates exactly once. Deliberate input (click / focus /
-  // keyboard) still activates immediately. Raising itself causes no motion
-  // (offsets never depend on the raised card), so no feedback loop can form.
-  const HOVER_INTENT_MS = 150;
-  const hoverIntentRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const clearHoverIntent = React.useCallback(() => {
-    if (hoverIntentRef.current !== null) {
-      clearTimeout(hoverIntentRef.current);
-      hoverIntentRef.current = null;
+  // Settle-gated activation (anti-jitter without a sluggish blanket delay):
+  // the only thing that can flap hover targets is layout motion — the
+  // spread/collapse glide that runs for duration-short (120ms) after the stack
+  // hover flips. Card enters inside that window are stashed (latest wins) and
+  // the stashed card activates once when the window ends. Outside the window
+  // every hover activates instantly, so sweeps raise each touched card the
+  // moment it is hit. Leave events cancel their own stash. Raising itself
+  // causes no motion (offsets never depend on the raised card), so no feedback
+  // loop can form. Deliberate input (click / focus / keyboard) always
+  // activates immediately.
+  const SETTLE_MS = 120; // must cover the duration-short spread/raise glide
+  const settleUntilRef = React.useRef(0);
+  const pendingRaiseRef = React.useRef<number | null>(null);
+  // True while the pointer is inside the stack. Container enter fires once per
+  // boundary crossing in real browsers, but synthetic test events re-fire it
+  // through ancestors — the guard keeps re-entries from re-arming the window.
+  const pointerInsideRef = React.useRef(false);
+  const settleTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clearSettleTimer = React.useCallback(() => {
+    if (settleTimerRef.current !== null) {
+      clearTimeout(settleTimerRef.current);
+      settleTimerRef.current = null;
     }
   }, []);
-  React.useEffect(() => clearHoverIntent, [clearHoverIntent]);
-  const requestActiveIndex = React.useCallback(
-    (idx: number) => {
-      clearHoverIntent();
-      hoverIntentRef.current = setTimeout(() => {
-        hoverIntentRef.current = null;
-        setActiveIndex(idx);
-      }, HOVER_INTENT_MS);
-    },
-    [clearHoverIntent]
-  );
-  const activateImmediately = React.useCallback(
-    (idx: number) => {
-      clearHoverIntent();
-      setActiveIndex(idx);
-    },
-    [clearHoverIntent]
-  );
+  React.useEffect(() => clearSettleTimer, [clearSettleTimer]);
+  const armSettleWindow = React.useCallback(() => {
+    settleUntilRef.current = Date.now() + SETTLE_MS;
+    clearSettleTimer();
+    settleTimerRef.current = setTimeout(() => {
+      settleTimerRef.current = null;
+      const pending = pendingRaiseRef.current;
+      pendingRaiseRef.current = null;
+      if (pending !== null) setActiveIndex(pending);
+    }, SETTLE_MS);
+  }, [clearSettleTimer]);
+  // forceHover flips (doc-page preview hover) glide the same layout without a
+  // container enter, so arm the window on any hover change.
+  React.useEffect(() => {
+    armSettleWindow();
+  }, [isHovered, armSettleWindow]);
 
   // Stable sort: priority descending, insertion order FIFO
   const sortedNotices = React.useMemo(() => {
@@ -296,8 +302,19 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
         zoomOnHover && isHovered && 'scale-105',
         className
       )}
-      onMouseEnter={() => setInternalHover(true)}
-      onMouseLeave={() => setInternalHover(false)}
+      onMouseEnter={() => {
+        setInternalHover(true);
+        if (!pointerInsideRef.current) {
+          pointerInsideRef.current = true;
+          armSettleWindow();
+        }
+      }}
+      onMouseLeave={() => {
+        setInternalHover(false);
+        pointerInsideRef.current = false;
+        pendingRaiseRef.current = null;
+        armSettleWindow();
+      }}
     >
       <div className="relative">
         {/* Fixed sizing anchor: reserves stable container dimensions so the
@@ -357,14 +374,31 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
                 opacity: opacityForDistance(dist, isActive),
                 zIndex: isActive ? 30 : (stackEntries.length - dist) * 2 + (entry.sortedIdx < activeIndex ? 1 : 0),
               }}
-              onMouseEnter={() => requestActiveIndex(entry.sortedIdx)}
-              onMouseLeave={clearHoverIntent}
-              onClick={() => activateImmediately(entry.sortedIdx)}
-              onFocus={() => activateImmediately(entry.sortedIdx)}
+              onMouseEnter={() => {
+                if (Date.now() < settleUntilRef.current) {
+                  pendingRaiseRef.current = entry.sortedIdx;
+                } else {
+                  setActiveIndex(entry.sortedIdx);
+                }
+              }}
+              onMouseLeave={() => {
+                if (pendingRaiseRef.current === entry.sortedIdx) {
+                  pendingRaiseRef.current = null;
+                }
+              }}
+              onClick={() => {
+                pendingRaiseRef.current = null;
+                setActiveIndex(entry.sortedIdx);
+              }}
+              onFocus={() => {
+                pendingRaiseRef.current = null;
+                setActiveIndex(entry.sortedIdx);
+              }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  activateImmediately(entry.sortedIdx);
+                  pendingRaiseRef.current = null;
+                  setActiveIndex(entry.sortedIdx);
                 }
               }}
             >
