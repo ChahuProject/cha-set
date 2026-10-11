@@ -160,17 +160,17 @@ describe('FloatingNotice', () => {
 
     const container = screen.getByTestId('floating-notice-container');
     const resting = screen.getByTestId('queue-dot-1').style.transform;
-    expect(resting).toContain('translateY(0.875rem)');
+    expect(resting).toContain('translateY(0.4375rem)');
 
     fireEvent.mouseEnter(container);
     const spread = screen.getByTestId('queue-dot-1').style.transform;
-    expect(spread).toContain('translateY(1.53125rem)');
+    expect(spread).toContain('translateY(0.765625rem)');
     // Spreading never changes which card is raised.
     expect(screen.getByTestId('notice-card-0')).toBeInTheDocument();
 
     fireEvent.mouseLeave(container);
     expect(screen.getByTestId('queue-dot-1').style.transform).toContain(
-      'translateY(0.875rem)'
+      'translateY(0.4375rem)'
     );
   });
 
@@ -191,9 +191,10 @@ describe('FloatingNotice', () => {
       return Number(match?.[1]);
     });
     const [o0 = 0, o1 = 0, o2 = 0] = offsets;
-    // Top reveal gap then uniform body steps, so the fan reads identically
-    // above and below any raised card (no near-dense/far-sparse surprise).
-    expect(o0).toBeCloseTo(0.875, 5);
+    // Every joint uses the same gap — depth 0 included — so the fan reads
+    // identically above and below any raised card (no near-dense/far-sparse
+    // surprise, no special first card).
+    expect(o0).toBeCloseTo(0.4375, 5);
     expect(o1 - o0).toBeCloseTo(0.4375, 5);
     expect(o2 - o1).toBeCloseTo(0.4375, 5);
 

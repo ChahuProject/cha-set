@@ -42,9 +42,9 @@ Item {
 
     // ---- Stack geometry: positions are fixed by sorted order, but sizes are
     // driven by DISTANCE from the raised card — the raised card is always the
-    // largest (full size) and cards shrink the farther they sit from it. Gaps
-    // are a top reveal plus uniform body steps, so they read identically above
-    // and below any raised card. While the stack is hovered, gaps expand so
+    // largest (full size) and cards shrink the farther they sit from it. Every
+    // joint uses the same gap, so the fan reads identically above and below
+    // any raised card. While the stack is hovered, gaps expand so
     // peeking strips stay reachable.
     function expandFactor() {
         return root._hovered ? 1.75 : 1.0;
@@ -52,7 +52,6 @@ Item {
 
     function stackGap(depth) {
         if (depth <= 0) return 0;
-        if (depth === 1) return ThemeTokens.dp(14);
         return ThemeTokens.dp(7);
     }
 
