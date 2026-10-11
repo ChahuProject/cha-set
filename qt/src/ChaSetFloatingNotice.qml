@@ -344,15 +344,32 @@ Item {
                     }
                 }
 
+                // Hover intent (anti-jitter, mirrors React): while the spread
+                // animation is still gliding, delegates slide under a
+                // stationary cursor and transient hovers flap between
+                // neighbours. Only a rested hover raises the card; taps and
+                // keyboard cycling stay immediate.
                 HoverHandler {
+                    id: intentHover
                     cursorShape: Qt.PointingHandCursor
                     onHoveredChanged: {
-                        if (hovered) root._activeIndex = index;
+                        if (hovered) intentTimer.restart();
+                        else intentTimer.stop();
+                    }
+                }
+
+                Timer {
+                    id: intentTimer
+                    interval: 150
+                    repeat: false
+                    onTriggered: {
+                        if (intentHover.hovered) root._activeIndex = index;
                     }
                 }
 
                 TapHandler {
                     onTapped: {
+                        intentTimer.stop();
                         root._activeIndex = index;
                     }
                 }

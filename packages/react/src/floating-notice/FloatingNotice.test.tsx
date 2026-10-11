@@ -30,7 +30,7 @@ describe('FloatingNotice', () => {
     expect(screen.getByTestId('queue-dot-1')).toBeInTheDocument();
   });
 
-  it('raises the hovered card in place without moving it to the front', () => {
+  it('raises the hovered card in place without moving it to the front', async () => {
     const onActiveChange = vi.fn();
     const notices: FloatingNoticeItem[] = [
       { id: '1', title: 'First Notice', level: 'info', priority: 10 },
@@ -49,9 +49,10 @@ describe('FloatingNotice', () => {
       .style.transform.match(/translateY\(([-\d.]+)rem\)/);
     fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
 
-    expect(onActiveChange).toHaveBeenCalledWith('2', 1);
+    // Hover intent: activation fires after the pointer rests, not instantly.
+    const raised = await screen.findByTestId('notice-card-1');
+    await vi.waitFor(() => expect(onActiveChange).toHaveBeenCalledWith('2', 1));
     // Raised card keeps its stacked position (same Y offset) but gains top z-order + full size
-    const raised = screen.getByTestId('notice-card-1');
     const raisedMatch = raised.style.transform.match(/translateY\(([-\d.]+)rem\)/);
     expect(raisedMatch).not.toBeNull();
     expect(Number(raisedMatch?.[1])).toBeCloseTo(Number(beforeMatch?.[1]), 5);
@@ -60,7 +61,35 @@ describe('FloatingNotice', () => {
     expect(screen.getByTestId('queue-dot-0')).toBeInTheDocument();
   });
 
-  it('sizes cards by distance from the raised card, raised always largest', () => {
+  it('ignores transient hovers and only activates a rested pointer', async () => {
+    const onActiveChange = vi.fn();
+    const notices: FloatingNoticeItem[] = [
+      { id: '1', title: 'First Notice' },
+      { id: '2', title: 'Second Notice' },
+    ];
+
+    render(<FloatingNotice notices={notices} onActiveChange={onActiveChange} />);
+    // Mount itself notifies the initial raised card; only later calls matter.
+    onActiveChange.mockClear();
+
+    // A swipe across the strip (enter then leave before intent elapses)
+    // must not flip the raised card — this is what stops mid-animation jitter.
+    const dot = screen.getByTestId('queue-dot-1');
+    fireEvent.mouseEnter(dot);
+    fireEvent.mouseLeave(dot);
+    await React.act(async () => {
+      await new Promise((r) => setTimeout(r, 250));
+    });
+    expect(onActiveChange).not.toHaveBeenCalled();
+    expect(screen.getByTestId('notice-card-0')).toBeInTheDocument();
+
+    // A rested hover does activate.
+    fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
+    await screen.findByTestId('notice-card-1');
+    await vi.waitFor(() => expect(onActiveChange).toHaveBeenCalledWith('2', 1));
+  });
+
+  it('sizes cards by distance from the raised card, raised always largest', async () => {
     const notices: FloatingNoticeItem[] = [
       { id: 'a', title: 'Notice A' },
       { id: 'b', title: 'Notice B' },
@@ -88,7 +117,7 @@ describe('FloatingNotice', () => {
     fireEvent.mouseEnter(screen.getByTestId('queue-dot-2'));
 
     // Raised card restores full size in place
-    const raised = screen.getByTestId('notice-card-2');
+    const raised = await screen.findByTestId('notice-card-2');
     expect(scaleOf('notice-card-2')).toBeCloseTo(1, 5);
     expect(raised.style.zIndex).toBe('30');
 
@@ -97,9 +126,9 @@ describe('FloatingNotice', () => {
     expect(scaleOf('queue-dot-0')).toBeCloseTo(0.9, 5);
     expect(scaleOf('queue-dot-1')).toBeCloseTo(0.95, 5);
     expect(scaleOf('queue-dot-3')).toBeCloseTo(0.95, 5);
-    // No special treatment: inactive depth 0 narrows exactly like any other
-    // card at the same distance instead of keeping full width.
-    expect(screen.getByTestId('queue-dot-0').style.width).toBe('calc(100% - 1.8rem)');
+    // No special treatment: inactive depth 0 keeps its fixed positional width
+    // (full sizer width) instead of following the raised content's width.
+    expect(screen.getByTestId('queue-dot-0').style.width).toBe('100%');
 
     // Positions never move when raising: offsets only follow the hover spread.
     expect(translateYOf('queue-dot-1')).toBeCloseTo(restAbove * 1.75, 5);
@@ -182,7 +211,7 @@ describe('FloatingNotice', () => {
     expect(p2).toBeLessThan(p1);
   });
 
-  it('never slides sideways: centering stays out of the animated transform', () => {
+  it('never slides sideways: centering stays out of the animated transform', async () => {
     const notices: FloatingNoticeItem[] = [
       { id: 'a', title: 'Notice A' },
       { id: 'b', title: 'Notice B' },
@@ -205,16 +234,38 @@ describe('FloatingNotice', () => {
     // activation only changes Y offset and scale, never the X channel.
     fireEvent.mouseEnter(screen.getByTestId('floating-notice-container'));
     fireEvent.mouseEnter(screen.getByTestId('queue-dot-2'));
+    await screen.findByTestId('notice-card-2');
     for (const t of transforms()) {
       expect(t).not.toContain('translateX');
     }
     fireEvent.mouseEnter(screen.getByTestId('queue-dot-0'));
+    await screen.findByTestId('notice-card-0');
     for (const t of transforms()) {
       expect(t).not.toContain('translateX');
     }
   });
 
-  it('renders an unlimited stack without slicing behind layers', () => {    const notices: FloatingNoticeItem[] = Array.from({ length: 5 }, (_, i) => ({
+  it('resizes only the hovered card when messages have different lengths', async () => {
+    const notices: FloatingNoticeItem[] = [
+      { id: 'short', title: 'OK' },
+      { id: 'long', title: 'This is a much longer notice message that needs more room' },
+      { id: 'mid', title: 'Medium length note' },
+    ];
+
+    render(<FloatingNotice notices={notices} />);
+
+    // Bystander width is fixed per position and must survive the switch.
+    const bystanderBefore = screen.getByTestId('queue-dot-2').style.width;
+    fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
+    await screen.findByTestId('notice-card-1');
+
+    expect(screen.getByTestId('queue-dot-2').style.width).toBe(bystanderBefore);
+    // Only the two swapping roles change width treatment.
+    expect(screen.getByTestId('queue-dot-0').style.width).toBe('100%');
+  });
+
+  it('renders an unlimited stack without slicing behind layers', () => {
+    const notices: FloatingNoticeItem[] = Array.from({ length: 5 }, (_, i) => ({
       id: `n-${i}`,
       title: `Notice ${i}`,
     }));

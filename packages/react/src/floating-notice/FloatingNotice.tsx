@@ -99,6 +99,41 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
   const [budgets, setBudgets] = React.useState<Record<string, number>>({});
   const isHovered = forceHover || internalHover;
 
+  // Hover intent (industry-standard anti-jitter): while the spread animation
+  // is still gliding, layers slide under a stationary cursor and transient
+  // enter/leave events flap between neighbours. Activation only fires after
+  // the pointer has RESTED on a card for HOVER_INTENT_MS (longer than the
+  // 120ms spread transition), so mid-flight hovers are filtered and the
+  // settled card activates exactly once. Deliberate input (click / focus /
+  // keyboard) still activates immediately. Raising itself causes no motion
+  // (offsets never depend on the raised card), so no feedback loop can form.
+  const HOVER_INTENT_MS = 150;
+  const hoverIntentRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clearHoverIntent = React.useCallback(() => {
+    if (hoverIntentRef.current !== null) {
+      clearTimeout(hoverIntentRef.current);
+      hoverIntentRef.current = null;
+    }
+  }, []);
+  React.useEffect(() => clearHoverIntent, [clearHoverIntent]);
+  const requestActiveIndex = React.useCallback(
+    (idx: number) => {
+      clearHoverIntent();
+      hoverIntentRef.current = setTimeout(() => {
+        hoverIntentRef.current = null;
+        setActiveIndex(idx);
+      }, HOVER_INTENT_MS);
+    },
+    [clearHoverIntent]
+  );
+  const activateImmediately = React.useCallback(
+    (idx: number) => {
+      clearHoverIntent();
+      setActiveIndex(idx);
+    },
+    [clearHoverIntent]
+  );
+
   // Stable sort: priority descending, insertion order FIFO
   const sortedNotices = React.useMemo(() => {
     return notices
@@ -168,9 +203,9 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
     return total;
   };
 
-  const insetForDistance = (dist: number): number => {
+  const insetForDepth = (sortedIdx: number): number => {
     let total = 0;
-    for (let d = 1; d <= dist; d++) {
+    for (let d = 1; d <= sortedIdx; d++) {
       total += Math.max(MIN_INSET_REM, BASE_INSET_REM * Math.pow(INSET_DECAY, d - 1));
     }
     return total;
@@ -190,6 +225,11 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
   // only gains it top z-order and full size where it already sits. Offsets
   // never depend on which card is raised, so raising causes no motion and the
   // hover target under the cursor cannot chase away mid-transition.
+  // Widths are decoupled the same way: the container size comes from a fixed
+  // invisible sizer (never from the raised content), inactive widths are fixed
+  // per position, and only the raised card sizes to its own content (w-max) —
+  // so switching to a long message grows just that card, with the width change
+  // animated by the shared transition-all motion tokens.
   const stackEntries = sortedNotices.map((item, sortedIdx) => ({ item, sortedIdx }));
   const stackSign = placement === 'top' ? 1 : -1;
   const expandFactor = isHovered ? HOVER_EXPAND : 1;
@@ -257,13 +297,19 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
       onMouseLeave={() => setInternalHover(false)}
     >
       <div className="relative">
+        {/* Fixed sizing anchor: reserves stable container dimensions so the
+            stack never jumps when the raised message changes length. Content-
+            free (no duplicate text for queries); every layer is absolutely
+            positioned against it. */}
+        <div aria-hidden="true" className="invisible h-[2.125rem] w-64" />
         {/* Full stack: every notice keeps its sorted position; hover raises
             that position to the top (z-index + full size) without reordering.
             Sizes follow distance from the raised card (raised is always the
             largest); gaps widen while hovered so peeking strips stay reachable.
-            The raised card itself stays in-flow as the sizing anchor, so no
-            card gets special treatment — depth 0 shrinks like any other card
-            as soon as it is no longer raised. Deeper layers overlay.
+            The raised card sizes to its own content (w-max) while every other
+            card keeps its fixed positional width, so no card gets special
+            treatment and switching messages never resizes the rest of the
+            stack. Deeper layers overlay.
             Centering never lives inside `transform`: inactive layers center via
             `left-0 right-0 mx-auto`, so both states share the exact same
             transform list (`translateY scale`) and activation only glides
@@ -276,7 +322,7 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
           const layerIcon = LEVEL_ICON[layerLevel] ?? LEVEL_ICON.default;
           const depthOffset = offsetForDepth(entry.sortedIdx) * expandFactor * stackSign;
           const scale = scaleForDistance(dist, isActive);
-          const inset = isActive ? 0 : insetForDistance(dist);
+          const inset = insetForDepth(entry.sortedIdx);
           const layerClosable = (entry.item.closable ?? true) && closable;
           return (
             <div
@@ -289,25 +335,26 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
               title={entry.item.title}
               aria-label={isActive ? entry.item.title : `Show notice: ${entry.item.title}`}
               className={cn(
-                'flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
+                'absolute top-0 left-0 right-0 mx-auto flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
                 'min-w-[12rem] max-w-[28rem] cursor-pointer transition-all duration-short ease-standard',
-                isActive ? 'relative' : 'absolute top-0 left-0 right-0 mx-auto',
+                isActive && 'w-max',
                 layerStyle.container
               )}
               style={{
                 transform: `translateY(${depthOffset}rem) scale(${scale})`,
                 width: isActive ? undefined : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
-                height: isActive ? undefined : '100%',
+                height: '100%',
                 opacity: opacityForDistance(dist, isActive),
                 zIndex: isActive ? 30 : (stackEntries.length - dist) * 2 + (entry.sortedIdx < activeIndex ? 1 : 0),
               }}
-              onMouseEnter={() => setActiveIndex(entry.sortedIdx)}
-              onClick={() => setActiveIndex(entry.sortedIdx)}
-              onFocus={() => setActiveIndex(entry.sortedIdx)}
+              onMouseEnter={() => requestActiveIndex(entry.sortedIdx)}
+              onMouseLeave={clearHoverIntent}
+              onClick={() => activateImmediately(entry.sortedIdx)}
+              onFocus={() => activateImmediately(entry.sortedIdx)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  setActiveIndex(entry.sortedIdx);
+                  activateImmediately(entry.sortedIdx);
                 }
               }}
             >
