@@ -92,6 +92,22 @@ const rawArgs = process.argv.slice(2);
 const buildOnly = rawArgs.includes('--build-only');
 const forwardArgs = rawArgs.filter((arg) => arg !== '--build-only');
 
+// 0. Regenerate all spec-derived artifacts first, so `pnpm showcase:qt`
+// always launches with the latest tokens / i18n / showcase data / icons.
+// QML itself is compiled from qt/src on every build below, but the
+// *.generated.qml singletons would otherwise lag behind spec/ edits.
+console.log('\n[qt-showcase] 0. Regenerating spec-derived artifacts...');
+const genRes = spawnSync(process.execPath, [resolve(repoRoot, 'spec/generators/generate-all.mjs')], {
+  cwd: repoRoot,
+  stdio: 'inherit',
+  env: process.env,
+});
+
+if (genRes.status !== 0) {
+  console.error('[qt-showcase] Artifact regeneration failed.');
+  process.exit(genRes.status || 1);
+}
+
 // 3. Configure with CMake
 console.log('\n[qt-showcase] 1. Configuring CMake...');
 const cmakeArgs = ['-S', qtDir, '-B', buildDir, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release'];
