@@ -40,9 +40,14 @@ Item {
     readonly property var activeItem: root.hasNotices && root._activeIndex < root._sorted.length
         ? root._sorted[root._activeIndex] : null
 
-    // ---- Stack geometry: dispersed near the front, tighter toward the back.
-    // Positions are fixed by sorted order (no quantity limit); hovering only
-    // raises that position to the top (z-order + full size) without reordering.
+    // ---- Stack geometry: positions are fixed by sorted order, but sizes are
+    // driven by DISTANCE from the raised card — the raised card is always the
+    // largest (full size) and cards shrink the farther they sit from it. While
+    // the stack is hovered, gaps expand so peeking strips stay reachable.
+    function expandFactor() {
+        return root._hovered ? 1.75 : 1.0;
+    }
+
     function stackGap(depth) {
         if (depth <= 0) return 0;
         return Math.max(ThemeTokens.dp(4), ThemeTokens.dp(14) * Math.pow(0.85, depth - 1));
@@ -51,21 +56,32 @@ Item {
     function stackOffset(idx) {
         var total = 0;
         for (var d = 1; d <= idx; d++) total += root.stackGap(d);
-        return total;
+        return total * root.expandFactor();
     }
 
-    function stackInset(idx) {
+    function stackDistance(idx) {
+        return Math.abs(idx - root._activeIndex);
+    }
+
+    function stackInsetForDistance(dist) {
         var total = 0;
-        for (var d = 1; d <= idx; d++) total += Math.max(ThemeTokens.dp(4), ThemeTokens.dp(16) * Math.pow(0.8, d - 1));
+        for (var d = 1; d <= dist; d++) total += Math.max(ThemeTokens.dp(4), ThemeTokens.dp(16) * Math.pow(0.8, d - 1));
         return total;
     }
 
-    function stackScale(idx) {
-        return Math.max(0.72, 1 - idx * 0.04);
+    function stackScaleForDistance(idx) {
+        if (idx === root._activeIndex) return 1.0;
+        return Math.max(0.6, 1 - root.stackDistance(idx) * 0.05);
     }
 
-    function stackOpacity(idx) {
-        return Math.max(0.3, 0.9 - idx * 0.15);
+    function stackOpacityForDistance(idx) {
+        if (idx === root._activeIndex) return 1.0;
+        return Math.max(0.25, 0.85 - root.stackDistance(idx) * 0.15);
+    }
+
+    function stackZForDistance(idx) {
+        if (idx === root._activeIndex) return 100;
+        return (root._sorted.length - root.stackDistance(idx)) * 2 + (idx < root._activeIndex ? 1 : 0);
     }
 
     function stackMaxOffset() {
@@ -75,7 +91,7 @@ Item {
             total += gap;
             gap = Math.max(ThemeTokens.dp(4), gap * 0.85);
         }
-        return total;
+        return total * root.expandFactor();
     }
 
     // Geometry (extra peek room for the dispersed stack layers)
@@ -249,8 +265,10 @@ Item {
         }
 
         // Behind stack (full quantity): every non-raised notice keeps its fixed
-        // sorted position with diminishing gaps and shrinking sizes. Hovering
-        // raises that position to the top in place (no reorder to front).
+        // sorted position, sized by distance from the raised card (raised is
+        // always the largest). Gaps widen while hovered so peeking strips stay
+        // reachable; offsets never depend on which card is raised, so raising
+        // causes no motion and the hover target cannot chase away mid-flight.
         Repeater {
             id: stackRepeater
             model: root._sorted.length
@@ -262,16 +280,26 @@ Item {
                 property color lvlColor: root.levelColor(stackedLevel)
 
                 visible: root.hasNotices && stackedItem !== undefined && index !== root._activeIndex
-                width: Math.max(ThemeTokens.dp(80), pill.width - root.stackInset(index))
+                width: Math.max(ThemeTokens.dp(80), pill.width - root.stackInsetForDistance(root.stackDistance(index)))
                 height: pill.height
                 anchors.horizontalCenter: parent.horizontalCenter
                 y: root.placement === "top"
                     ? root.stackOffset(index)
                     : Math.max(0, root.stackMaxOffset() - root.stackOffset(index))
-                z: root._sorted.length - index
+                z: root.stackZForDistance(index)
                 radius: pill.radius
-                scale: root.stackScale(index)
-                opacity: root.stackOpacity(index)
+                scale: root.stackScaleForDistance(index)
+                opacity: root.stackOpacityForDistance(index)
+
+                Behavior on y {
+                    enabled: ThemeTokens.animationsEnabled
+                    NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
+                }
+
+                Behavior on scale {
+                    enabled: ThemeTokens.animationsEnabled
+                    NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                }
 
                 Behavior on opacity {
                     enabled: ThemeTokens.animationsEnabled
@@ -342,6 +370,11 @@ Item {
                 ? root.stackOffset(root._activeIndex)
                 : Math.max(0, root.stackMaxOffset() - root.stackOffset(root._activeIndex))
             z: 100
+
+            Behavior on y {
+                enabled: ThemeTokens.animationsEnabled
+                NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
+            }
 
             implicitWidth: Math.max(ThemeTokens.dp(160), contentRow.implicitWidth + ThemeTokens.dp(24))
             implicitHeight: Math.max(ThemeTokens.dp(36), contentRow.implicitHeight + ThemeTokens.dp(12))

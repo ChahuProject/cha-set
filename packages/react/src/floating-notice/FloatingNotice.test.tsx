@@ -41,19 +41,95 @@ describe('FloatingNotice', () => {
 
     expect(screen.getByTestId('notice-card-0')).toBeInTheDocument();
 
-    const secondDot = screen.getByTestId('queue-dot-1');
-    const offsetBefore = secondDot.style.transform;
-    fireEvent.mouseEnter(secondDot);
+    // Pin the hover-spread state first so the offset comparison is deterministic
+    // whether or not the card hover also flips the container hover flag.
+    fireEvent.mouseEnter(screen.getByTestId('floating-notice-container'));
+    const offsetBefore = screen.getByTestId('queue-dot-1').style.transform;
+    fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
 
     expect(onActiveChange).toHaveBeenCalledWith('2', 1);
     // Raised card keeps its stacked position (same offset) but gains top z-order + full size
     const raised = screen.getByTestId('notice-card-1');
     expect(raised.style.transform).toBe(offsetBefore.replace(/scale\([^)]*\)/, 'scale(1)'));
-    expect(raised.style.transform).toContain('translateY(0.875rem)');
     expect(raised.style.zIndex).toBe('30');
     expect(raised.style.width).toBe('100%');
     // Previous front card stays at its own position instead of being displaced
     expect(screen.getByTestId('queue-dot-0')).toBeInTheDocument();
+  });
+
+  it('sizes cards by distance from the raised card, raised always largest', () => {
+    const notices: FloatingNoticeItem[] = [
+      { id: 'a', title: 'Notice A' },
+      { id: 'b', title: 'Notice B' },
+      { id: 'c', title: 'Notice C' },
+      { id: 'd', title: 'Notice D' },
+    ];
+
+    const translateYOf = (testId: string): number => {
+      const t = screen.getByTestId(testId).style.transform;
+      const m = t.match(/translateY\(([-\d.]+)rem\)/);
+      return m?.[1] !== undefined ? Number(m[1]) : 0;
+    };
+    const scaleOf = (testId: string): number => {
+      const t = screen.getByTestId(testId).style.transform;
+      const m = t.match(/scale\(([-\d.]+)\)/);
+      return m?.[1] !== undefined ? Number(m[1]) : NaN;
+    };
+
+    render(<FloatingNotice notices={notices} />);
+
+    const restAbove = translateYOf('queue-dot-1');
+    const restBelow = translateYOf('queue-dot-3');
+
+    fireEvent.mouseEnter(screen.getByTestId('floating-notice-container'));
+    fireEvent.mouseEnter(screen.getByTestId('queue-dot-2'));
+
+    // Raised card restores full size in place
+    const raised = screen.getByTestId('notice-card-2');
+    expect(scaleOf('notice-card-2')).toBeCloseTo(1, 5);
+    expect(raised.style.zIndex).toBe('30');
+
+    // Non-raised cards shrink by distance, even above the raised card:
+    // depth 0 (distance 2) is smaller than depth 1 (distance 1).
+    expect(scaleOf('queue-dot-0')).toBeCloseTo(0.9, 5);
+    expect(scaleOf('queue-dot-1')).toBeCloseTo(0.95, 5);
+    expect(scaleOf('queue-dot-3')).toBeCloseTo(0.95, 5);
+
+    // Positions never move when raising: offsets only follow the hover spread.
+    expect(translateYOf('queue-dot-1')).toBeCloseTo(restAbove * 1.75, 5);
+    expect(translateYOf('queue-dot-3')).toBeCloseTo(restBelow * 1.75, 5);
+
+    // Nearer cards stack above farther ones, raised stays on top.
+    const zRaised = Number(raised.style.zIndex);
+    const zNear = Number(screen.getByTestId('queue-dot-1').style.zIndex);
+    const zFar = Number(screen.getByTestId('queue-dot-0').style.zIndex);
+    expect(zRaised).toBeGreaterThan(zNear);
+    expect(zNear).toBeGreaterThan(zFar);
+  });
+
+  it('widens gaps while hovered so peeking strips stay reachable', () => {
+    const notices: FloatingNoticeItem[] = [
+      { id: 'a', title: 'Notice A' },
+      { id: 'b', title: 'Notice B' },
+      { id: 'c', title: 'Notice C' },
+    ];
+
+    render(<FloatingNotice notices={notices} />);
+
+    const container = screen.getByTestId('floating-notice-container');
+    const resting = screen.getByTestId('queue-dot-1').style.transform;
+    expect(resting).toContain('translateY(0.875rem)');
+
+    fireEvent.mouseEnter(container);
+    const spread = screen.getByTestId('queue-dot-1').style.transform;
+    expect(spread).toContain('translateY(1.53125rem)');
+    // Spreading never changes which card is raised.
+    expect(screen.getByTestId('notice-card-0')).toBeInTheDocument();
+
+    fireEvent.mouseLeave(container);
+    expect(screen.getByTestId('queue-dot-1').style.transform).toContain(
+      'translateY(0.875rem)'
+    );
   });
 
   it('disperses deeper layers with diminishing gaps and shrinking sizes', () => {
@@ -87,7 +163,7 @@ describe('FloatingNotice', () => {
       return Number(match?.[1]);
     });
     const [s0 = 0, s1 = 0, s2 = 0] = scales;
-    expect(s0).toBeCloseTo(0.96, 5);
+    expect(s0).toBeCloseTo(0.95, 5);
     expect(s1).toBeLessThan(s0);
     expect(s2).toBeLessThan(s1);
 

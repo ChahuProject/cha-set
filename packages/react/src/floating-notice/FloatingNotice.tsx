@@ -143,15 +143,19 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
   const activeBudget = activeItem ? budgets[activeItem.id] : undefined;
   const isExpired = activeBudget === 0;
 
-  // Stack geometry: dispersed near the front, progressively tighter toward the
-  // back. Positions are fixed by sorted order; hovering only raises the layer
-  // (z-index + full size in place) without reordering.
+  // Stack geometry: positions are fixed by sorted order, but sizes are driven
+  // by DISTANCE from the raised card — the raised card is always the largest
+  // (full size) and cards shrink the farther they sit from it. While the stack
+  // is hovered, gaps expand so peeking strips stay reachable behind the front.
   const BASE_GAP_REM = 0.875; // 14px — visibly more dispersed than the old 6px
   const GAP_DECAY = 0.85;
   const MIN_GAP_REM = 0.25; // 4px floor
-  const BASE_INSET_REM = 1; // 16px narrower per depth step (decaying)
+  const HOVER_EXPAND = 1.75; // gap multiplier while the stack is hovered
+  const BASE_INSET_REM = 1; // 16px narrower per distance step (decaying)
   const INSET_DECAY = 0.8;
   const MIN_INSET_REM = 0.25;
+  const SIZE_STEP = 0.05; // shrink per step of distance from the raised card
+  const MIN_SCALE = 0.6;
 
   const gapForDepth = (depth: number): number => {
     if (depth <= 0) return 0;
@@ -164,28 +168,31 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
     return total;
   };
 
-  const insetForDepth = (sortedIdx: number): number => {
+  const insetForDistance = (dist: number): number => {
     let total = 0;
-    for (let d = 1; d <= sortedIdx; d++) {
+    for (let d = 1; d <= dist; d++) {
       total += Math.max(MIN_INSET_REM, BASE_INSET_REM * Math.pow(INSET_DECAY, d - 1));
     }
     return total;
   };
 
-  const scaleForDepth = (sortedIdx: number, isActive: boolean): number => {
-    if (isActive) return 1; // raised card restores full size in place
-    return Math.max(0.72, 1 - sortedIdx * 0.04);
+  const scaleForDistance = (dist: number, isActive: boolean): number => {
+    if (isActive) return 1; // raised card is always the largest, in place
+    return Math.max(MIN_SCALE, 1 - dist * SIZE_STEP);
   };
 
-  const opacityForDepth = (sortedIdx: number, isActive: boolean): number => {
+  const opacityForDistance = (dist: number, isActive: boolean): number => {
     if (isActive) return isExpired ? 0 : 1;
-    return Math.max(0.3, 0.9 - sortedIdx * 0.15);
+    return Math.max(0.25, 0.85 - dist * 0.15);
   };
 
-  // All entries stay in sorted positions (no slice limit); the active entry
-  // only gains top z-order and full size where it already sits.
+  // All entries stay in sorted positions (no slice limit); hovering a card
+  // only gains it top z-order and full size where it already sits. Offsets
+  // never depend on which card is raised, so raising causes no motion and the
+  // hover target under the cursor cannot chase away mid-transition.
   const stackEntries = sortedNotices.map((item, sortedIdx) => ({ item, sortedIdx }));
   const stackSign = placement === 'top' ? 1 : -1;
+  const expandFactor = isHovered ? HOVER_EXPAND : 1;
 
   // Notify on active change
   React.useEffect(() => {
@@ -252,16 +259,19 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
       <div className="relative">
         {/* Full stack: every notice keeps its sorted position; hover raises
             that position to the top (z-index + full size) without reordering.
+            Sizes follow distance from the raised card (raised is always the
+            largest); gaps widen while hovered so peeking strips stay reachable.
             Depth 0 stays in-flow as the sizing anchor; deeper layers overlay. */}
         {stackEntries.map((entry) => {
           const isActive = entry.sortedIdx === activeIndex;
           const isAnchor = entry.sortedIdx === 0;
+          const dist = Math.abs(entry.sortedIdx - activeIndex);
           const layerLevel = entry.item.level ?? 'default';
           const layerStyle = LEVEL_STYLES[layerLevel] ?? LEVEL_STYLES.default;
           const layerIcon = LEVEL_ICON[layerLevel] ?? LEVEL_ICON.default;
-          const depthOffset = offsetForDepth(entry.sortedIdx) * stackSign;
-          const scale = scaleForDepth(entry.sortedIdx, isActive);
-          const inset = isActive ? 0 : insetForDepth(entry.sortedIdx);
+          const depthOffset = offsetForDepth(entry.sortedIdx) * expandFactor * stackSign;
+          const scale = scaleForDistance(dist, isActive);
+          const inset = isActive ? 0 : insetForDistance(dist);
           const layerClosable = (entry.item.closable ?? true) && closable;
           return (
             <div
@@ -285,8 +295,8 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
                   : `translateX(-50%) translateY(${depthOffset}rem) scale(${scale})`,
                 width: isAnchor ? undefined : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
                 height: isAnchor ? undefined : '100%',
-                opacity: opacityForDepth(entry.sortedIdx, isActive),
-                zIndex: isActive ? 30 : stackEntries.length - entry.sortedIdx,
+                opacity: opacityForDistance(dist, isActive),
+                zIndex: isActive ? 30 : (stackEntries.length - dist) * 2 + (entry.sortedIdx < activeIndex ? 1 : 0),
               }}
               onMouseEnter={() => setActiveIndex(entry.sortedIdx)}
               onClick={() => setActiveIndex(entry.sortedIdx)}
