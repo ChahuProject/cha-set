@@ -140,6 +140,15 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
   }, [sortedNotices.length, activeIndex]);
 
   const activeItem = sortedNotices[activeIndex] ?? null;
+  const activeBudget = activeItem ? budgets[activeItem.id] : undefined;
+  const isExpired = activeBudget === 0;
+
+  // Queued entries behind the front card (max 2 layers, total max 3 visible).
+  // Ordered by sorted order, excluding the active front item.
+  const queuedEntries = sortedNotices
+    .map((item, sortedIdx) => ({ item, sortedIdx }))
+    .filter((entry) => entry.sortedIdx !== activeIndex)
+    .slice(0, 2);
 
   // Notify on active change
   React.useEffect(() => {
@@ -148,7 +157,9 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
     }
   }, [activeItem?.id, activeIndex, onActiveChange]);
 
-  // Countdown timer: only ticks when activeItem has duration > 0 and not paused
+  // Countdown timer: only ticks when activeItem has duration > 0 and not paused.
+  // Updater stays pure (no side effects inside); expiry notification is handled
+  // by the dedicated effect below to avoid setState-during-render warnings.
   React.useEffect(() => {
     if (!activeItem || (pauseOnHover && isHovered)) return;
 
@@ -158,16 +169,26 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
         if (currentBudget === undefined || currentBudget <= 0) return prev;
 
         const updated = currentBudget - 100;
-        if (updated <= 0) {
-          onDismiss?.(activeItem.id);
-          return { ...prev, [activeItem.id]: 0 };
-        }
-        return { ...prev, [activeItem.id]: updated };
+        return { ...prev, [activeItem.id]: updated > 0 ? updated : 0 };
       });
     }, 100);
 
     return () => clearInterval(timer);
-  }, [activeItem?.id, isHovered, pauseOnHover, onDismiss]);
+  }, [activeItem?.id, isHovered, pauseOnHover]);
+
+  // Expiry notification: fires onDismiss once when the active item's budget
+  // transitions from positive to zero (sticky budget-0 items never fire).
+  const prevBudgetsRef = React.useRef<Record<string, number>>({});
+  React.useEffect(() => {
+    if (activeItem) {
+      const current = budgets[activeItem.id];
+      const previous = prevBudgetsRef.current[activeItem.id];
+      if (current === 0 && previous !== undefined && previous > 0) {
+        onDismiss?.(activeItem.id);
+      }
+    }
+    prevBudgetsRef.current = budgets;
+  }, [budgets, activeItem, onDismiss]);
 
   if (!activeItem) return null;
 
@@ -188,20 +209,70 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
       data-testid="floating-notice-container"
       style={offsetStyle}
       className={cn(
-        'fixed left-1/2 -translate-x-1/2 z-50 pointer-events-auto transition-transform duration-short ease-standard',
+        'absolute left-1/2 -translate-x-1/2 z-50 pointer-events-auto transition-transform duration-short ease-standard',
         zoomOnHover && isHovered && 'scale-105',
         className
       )}
       onMouseEnter={() => setInternalHover(true)}
       onMouseLeave={() => setInternalHover(false)}
     >
-      <div
-        className={cn(
-          'flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
-          'transition-all duration-short ease-standard min-w-[12rem] max-w-[28rem]',
-          styles.container
-        )}
-      >
+      <div className="relative">
+        {/* Card-stack behind layers (max 2), fixed geometry independent of text length */}
+        {queuedEntries.map((entry, layerIdx) => {
+          const layerLevel = entry.item.level ?? 'default';
+          const layerStyle = LEVEL_STYLES[layerLevel] ?? LEVEL_STYLES.default;
+          const isFirstLayer = layerIdx === 0;
+          return (
+            <button
+              key={entry.item.id}
+              type="button"
+              data-testid={`queue-dot-${entry.sortedIdx}`}
+              title={entry.item.title}
+              aria-label={`Show notice: ${entry.item.title}`}
+              className={cn(
+                'absolute top-0 left-1/2 rounded-full border backdrop-blur-md',
+                'min-h-[0.5rem] cursor-pointer transition-all duration-short ease-standard',
+                layerStyle.container
+              )}
+              style={
+                isFirstLayer
+                  ? {
+                      transform: 'translateX(-50%) translateY(0.375rem) scale(0.96)',
+                      width: 'calc(100% - 1rem)',
+                      height: '100%',
+                      opacity: 0.7,
+                    }
+                  : {
+                      transform: 'translateX(-50%) translateY(0.75rem) scale(0.92)',
+                      width: 'calc(100% - 2rem)',
+                      height: '100%',
+                      opacity: 0.4,
+                    }
+              }
+              onMouseEnter={() => setActiveIndex(entry.sortedIdx)}
+              onClick={() => setActiveIndex(entry.sortedIdx)}
+              onFocus={() => setActiveIndex(entry.sortedIdx)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setActiveIndex(entry.sortedIdx);
+                }
+              }}
+            >
+              <span className="sr-only">{entry.item.title}</span>
+            </button>
+          );
+        })}
+
+        {/* Front card (full-size) */}
+        <div
+          className={cn(
+            'relative z-10 flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
+            'transition-all duration-short ease-standard min-w-[12rem] max-w-[28rem]',
+            styles.container,
+            isExpired ? 'opacity-0' : 'opacity-100'
+          )}
+        >
         {/* Leading icon */}
         <div className="shrink-0 flex items-center justify-center">
           {LEVEL_ICON[currentLevel](cn('size-4 shrink-0', styles.icon))}
@@ -223,38 +294,7 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
           )}
         </div>
 
-        {/* Queue Dots (when multiple notices exist) */}
-        {sortedNotices.length > 1 && (
-          <div
-            data-testid="queue-dots"
-            className="flex items-center gap-1 shrink-0 px-1"
-          >
-            {sortedNotices.map((item, idx) => {
-              const isActive = idx === activeIndex;
-              const dotLevel = item.level ?? 'default';
-              const dotStyle = LEVEL_STYLES[dotLevel];
-
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  data-testid={`queue-dot-${idx}`}
-                  title={item.title}
-                  className={cn(
-                    'transition-all duration-quick rounded-full cursor-pointer p-0 border-0',
-                    isActive
-                      ? cn('w-3 h-1.5', dotStyle.dotActive)
-                      : cn('size-1.5', dotStyle.dot)
-                  )}
-                  onMouseEnter={() => setActiveIndex(idx)}
-                  onClick={() => setActiveIndex(idx)}
-                />
-              );
-            })}
-          </div>
-        )}
-
-        {/* Close Button ('x'): reveals on hover */}
+        {/* Close Button ('x'): reveals on hover, front card only */}
         {itemClosable && (
           <button
             type="button"
@@ -272,6 +312,7 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
             <XIcon className="size-3.5" />
           </button>
         )}
+        </div>
       </div>
     </div>
   );

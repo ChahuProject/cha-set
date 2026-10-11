@@ -103,7 +103,7 @@ export function FloatingNoticeDocPage() {
         <p className="text-sm text-muted-foreground">
           {t(
             'overlays.floatingNotice.overviewLead',
-            'Floating notice stacks multiple transient messages, showing highest-priority card in front with queued indicator dots. Hovering pauses expiry and smoothly zooms for enhanced visibility.'
+            'Floating notice stacks multiple transient messages, showing highest-priority card in front with queued cards peeking behind. Hovering pauses expiry and smoothly zooms for enhanced visibility.'
           )}
         </p>
 
@@ -177,7 +177,7 @@ export function FloatingNoticeDocPage() {
             <div className="text-center text-xs text-muted-foreground pb-2">
               {t(
                 'overlays.floatingNotice.sandboxHint',
-                'Hover over the notice to pause expiry, zoom the pill, or hover queue dots to inspect waiting items.'
+                'Hover over the notice to pause expiry and zoom the stack, or hover the peeking cards behind to bring that notice to the front.'
               )}
             </div>
           </div>

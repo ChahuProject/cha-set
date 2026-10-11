@@ -12,7 +12,7 @@ describe('FloatingNotice', () => {
     render(<FloatingNotice notices={notices} />);
 
     expect(screen.getByText('File copied to clipboard')).toBeInTheDocument();
-    expect(screen.queryByTestId('queue-dots')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('queue-dot-0')).not.toBeInTheDocument();
   });
 
   it('sorts multiple notices by priority descending and FIFO', () => {
@@ -26,7 +26,8 @@ describe('FloatingNotice', () => {
 
     // Highest priority 'high' should be rendered in the active notice
     expect(screen.getByText('Critical error alert')).toBeInTheDocument();
-    expect(screen.getByTestId('queue-dots')).toBeInTheDocument();
+    // Card-stack behind layers peek behind the front card (max 2 layers)
+    expect(screen.getByTestId('queue-dot-1')).toBeInTheDocument();
   });
 
   it('switches active notice when hovering queue dots', () => {
@@ -60,6 +61,41 @@ describe('FloatingNotice', () => {
 
     fireEvent.click(closeBtn);
     expect(onDismiss).toHaveBeenCalledWith('active-item');
+  });
+
+  it('renders behind layers at full pill height so the peek strip stays hoverable', () => {
+    const notices: FloatingNoticeItem[] = [
+      { id: '1', title: 'First Notice', level: 'info', priority: 10 },
+      { id: '2', title: 'Second Notice', level: 'info', priority: 10 },
+    ];
+
+    render(<FloatingNotice notices={notices} />);
+
+    // Behind layer must be as tall as the front pill and shifted down,
+    // otherwise the front pill fully covers it and hover can never reach it.
+    const behindLayer = screen.getByTestId('queue-dot-1');
+    expect(behindLayer.style.height).toBe('100%');
+  });
+
+  it('fires onDismiss once when the active notice expires', () => {
+    vi.useFakeTimers();
+    try {
+      const onDismiss = vi.fn();
+      const notices: FloatingNoticeItem[] = [
+        { id: 'expiring', title: 'Expiring Notice', level: 'default', duration: 300 },
+      ];
+
+      render(<FloatingNotice notices={notices} onDismiss={onDismiss} />);
+
+      React.act(() => {
+        vi.advanceTimersByTime(500);
+      });
+
+      expect(onDismiss).toHaveBeenCalledTimes(1);
+      expect(onDismiss).toHaveBeenCalledWith('expiring');
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('supports custom renderContent slot', () => {

@@ -40,9 +40,9 @@ Item {
     readonly property var activeItem: root.hasNotices && root._activeIndex < root._sorted.length
         ? root._sorted[root._activeIndex] : null
 
-    // Geometry
+    // Geometry (extra peek room for the two behind stack layers)
     implicitWidth: pill.implicitWidth
-    implicitHeight: pill.implicitHeight
+    implicitHeight: pill.implicitHeight + ThemeTokens.dp(12)
     width: implicitWidth
     height: implicitHeight
 
@@ -164,10 +164,11 @@ Item {
     readonly property string currentLevel: root.activeItem
         ? root.levelTone(root.activeItem.level) : "default"
 
-    // ---- Main Pill Surface -----------------------------------------------
+    // ---- Card Stack Surface (front pill + up to 2 queued layers) -----------
 
-    Rectangle {
-        id: pill
+    Item {
+        id: stackWrapper
+        anchors.fill: parent
         visible: root.hasNotices
         opacity: root.hasNotices ? 1.0 : 0.0
 
@@ -184,146 +185,210 @@ Item {
             NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
         }
 
-        implicitWidth: Math.max(ThemeTokens.dp(160), contentRow.implicitWidth + ThemeTokens.dp(24))
-        implicitHeight: Math.max(ThemeTokens.dp(36), contentRow.implicitHeight + ThemeTokens.dp(12))
-        radius: height / 2
-
-        color: {
-            if (root.currentLevel === "error")
-                return Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.95);
-            if (root.currentLevel === "warning")
-                return Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.95);
-            if (root.currentLevel === "info")
-                return Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.95);
-            return Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.92);
+        // Keyboard: Enter/Space/Arrows cycle the queue (bring item to front).
+        // No default button action exists on the stack, so activation cycles.
+        activeFocusOnTab: true
+        Keys.onPressed: (event) => {
+            if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return || event.key === Qt.Key_Space
+                    || event.key === Qt.Key_Right || event.key === Qt.Key_Down) {
+                if (root._sorted.length > 1) {
+                    root._activeIndex = (root._activeIndex + 1) % root._sorted.length;
+                    event.accepted = true;
+                }
+            } else if (event.key === Qt.Key_Left || event.key === Qt.Key_Up) {
+                if (root._sorted.length > 1) {
+                    root._activeIndex = (root._activeIndex - 1 + root._sorted.length) % root._sorted.length;
+                    event.accepted = true;
+                }
+            }
         }
-
-        border.color: {
-            if (root.currentLevel === "error") return ThemeTokens.danger;
-            if (root.currentLevel === "warning") return "#f59e0b";
-            if (root.currentLevel === "info") return ThemeTokens.accent;
-            return ThemeTokens.border;
-        }
-        border.width: 1
 
         HoverHandler {
-            id: containerHover
+            id: stackHover
             onHoveredChanged: {
                 root._hovered = hovered;
             }
         }
 
-        Row {
-            id: contentRow
-            anchors.centerIn: parent
-            spacing: ThemeTokens.dp(8)
+        // Behind layer (far): second queued item peeking behind the stack.
+        Rectangle {
+            id: farLayer
+            readonly property int queuedIndex: root._sorted.length > 0
+                ? (root._activeIndex + 2) % root._sorted.length : -1
+            readonly property var queuedItem: queuedIndex >= 0 ? root._sorted[queuedIndex] : null
+            readonly property string queuedLevel: queuedItem ? root.levelTone(queuedItem.level) : "default"
+            property color lvlColor: root.levelColor(queuedLevel)
 
-            // Leading Icon (when using standard item presentation)
-            ChaSetIcon {
-                id: noticeIcon
-                anchors.verticalCenter: parent.verticalCenter
-                visible: !contentLoader.item || !root.activeItem || !root.activeItem.customComponent
-                name: root.activeItem ? root.levelIcon(root.currentLevel, root.activeItem.icon) : "info"
-                size: 16
-                color: root.levelColor(root.currentLevel)
+            visible: root._sorted.length > 2
+            width: pill.width - ThemeTokens.dp(32)
+            height: pill.height
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: root.placement === "top" ? ThemeTokens.dp(12) : 0
+            radius: pill.radius
+            scale: 0.92
+            opacity: 0.4
+
+            Behavior on opacity {
+                enabled: ThemeTokens.animationsEnabled
+                NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
             }
 
-            // Notice Content Slot / Loader
-            Loader {
-                id: contentLoader
-                anchors.verticalCenter: parent.verticalCenter
-                sourceComponent: {
-                    if (root.activeItem && root.activeItem.customComponent)
-                        return root.activeItem.customComponent;
-                    if (root.customDelegate)
-                        return root.customDelegate;
-                    return defaultContentComponent;
+            color: Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.92)
+            border.color: Qt.rgba(lvlColor.r, lvlColor.g, lvlColor.b, 0.5)
+            border.width: 1
+
+            HoverHandler {
+                cursorShape: Qt.PointingHandCursor
+                onHoveredChanged: {
+                    if (hovered && farLayer.queuedIndex >= 0) root._activeIndex = farLayer.queuedIndex;
                 }
-                property var modelData: root.activeItem
             }
 
-            // Queue Dots: rendered when multiple notices exist
+            TapHandler {
+                onTapped: {
+                    if (farLayer.queuedIndex >= 0) root._activeIndex = farLayer.queuedIndex;
+                }
+            }
+        }
+
+        // Behind layer (near): next queued item peeking behind the front pill.
+        Rectangle {
+            id: nearLayer
+            readonly property int queuedIndex: root._sorted.length > 0
+                ? (root._activeIndex + 1) % root._sorted.length : -1
+            readonly property var queuedItem: queuedIndex >= 0 ? root._sorted[queuedIndex] : null
+            readonly property string queuedLevel: queuedItem ? root.levelTone(queuedItem.level) : "default"
+            property color lvlColor: root.levelColor(queuedLevel)
+
+            visible: root._sorted.length > 1
+            width: pill.width - ThemeTokens.dp(16)
+            height: pill.height
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: ThemeTokens.dp(6)
+            radius: pill.radius
+            scale: 0.96
+            opacity: 0.7
+
+            Behavior on opacity {
+                enabled: ThemeTokens.animationsEnabled
+                NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+            }
+
+            color: Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.92)
+            border.color: Qt.rgba(lvlColor.r, lvlColor.g, lvlColor.b, 0.6)
+            border.width: 1
+
+            HoverHandler {
+                cursorShape: Qt.PointingHandCursor
+                onHoveredChanged: {
+                    if (hovered && nearLayer.queuedIndex >= 0) root._activeIndex = nearLayer.queuedIndex;
+                }
+            }
+
+            TapHandler {
+                onTapped: {
+                    if (nearLayer.queuedIndex >= 0) root._activeIndex = nearLayer.queuedIndex;
+                }
+            }
+        }
+
+        // Front pill (full-size, top of the stack).
+        Rectangle {
+            id: pill
+
+            width: implicitWidth
+            height: implicitHeight
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: root.placement === "top" ? 0 : ThemeTokens.dp(12)
+
+            implicitWidth: Math.max(ThemeTokens.dp(160), contentRow.implicitWidth + ThemeTokens.dp(24))
+            implicitHeight: Math.max(ThemeTokens.dp(36), contentRow.implicitHeight + ThemeTokens.dp(12))
+            radius: height / 2
+
+            color: {
+                if (root.currentLevel === "error")
+                    return Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.95);
+                if (root.currentLevel === "warning")
+                    return Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.95);
+                if (root.currentLevel === "info")
+                    return Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.95);
+                return Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.92);
+            }
+
+            border.color: {
+                if (root.currentLevel === "error") return ThemeTokens.danger;
+                if (root.currentLevel === "warning") return "#f59e0b";
+                if (root.currentLevel === "info") return ThemeTokens.accent;
+                return ThemeTokens.border;
+            }
+            border.width: 1
+
             Row {
-                id: queueDotsRow
-                anchors.verticalCenter: parent.verticalCenter
-                spacing: ThemeTokens.dp(4)
-                visible: root._sorted.length > 1
+                id: contentRow
+                anchors.centerIn: parent
+                spacing: ThemeTokens.dp(8)
 
-                Repeater {
-                    model: root._sorted.length
-                    delegate: Rectangle {
-                        required property int index
-                        readonly property bool isActive: index === root._activeIndex
-                        readonly property var dotItem: root._sorted[index]
-                        readonly property string dotLevel: dotItem ? root.levelTone(dotItem.level) : "default"
+                // Leading Icon (when using standard item presentation)
+                ChaSetIcon {
+                    id: noticeIcon
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: !contentLoader.item || !root.activeItem || !root.activeItem.customComponent
+                    name: root.activeItem ? root.levelIcon(root.currentLevel, root.activeItem.icon) : "info"
+                    size: 16
+                    color: root.levelColor(root.currentLevel)
+                }
 
-                        width: isActive ? ThemeTokens.dp(12) : ThemeTokens.dp(6)
-                        height: ThemeTokens.dp(6)
-                        radius: ThemeTokens.dp(3)
+                // Notice Content Slot / Loader
+                Loader {
+                    id: contentLoader
+                    anchors.verticalCenter: parent.verticalCenter
+                    sourceComponent: {
+                        if (root.activeItem && root.activeItem.customComponent)
+                            return root.activeItem.customComponent;
+                        if (root.customDelegate)
+                            return root.customDelegate;
+                        return defaultContentComponent;
+                    }
+                    property var modelData: root.activeItem
+                }
 
-                        color: isActive ? root.levelColor(dotLevel) : ThemeTokens.subduedText
-                        opacity: isActive ? 1.0 : 0.45
+                // Close button ('x'): smoothly reveals on hover
+                Item {
+                    id: closeBtn
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: ThemeTokens.dp(18)
+                    height: ThemeTokens.dp(18)
+                    visible: root.closable && root.activeItem && (root.activeItem.closable !== false)
+                    opacity: (root._hovered && visible) ? 1.0 : 0.0
 
-                        Behavior on width {
-                            enabled: ThemeTokens.animationsEnabled
-                            NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                    Behavior on opacity {
+                        enabled: ThemeTokens.animationsEnabled
+                        NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                    }
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: width / 2
+                        color: closeHover.hovered ? ThemeTokens.hover : "transparent"
+
+                        ChaSetIcon {
+                            anchors.centerIn: parent
+                            name: "x"
+                            size: 14
+                            color: closeHover.hovered ? ThemeTokens.text : ThemeTokens.subduedText
                         }
+                    }
 
-                        Behavior on color {
-                            enabled: ThemeTokens.animationsEnabled
-                            ColorAnimation { duration: ThemeTokens.motionQuick }
-                        }
+                    HoverHandler {
+                        id: closeHover
+                        cursorShape: Qt.PointingHandCursor
+                    }
 
-                        HoverHandler {
-                            cursorShape: Qt.PointingHandCursor
-                            onHoveredChanged: {
-                                if (hovered) root._activeIndex = index;
+                    TapHandler {
+                        onTapped: {
+                            if (root.activeItem) {
+                                root.dismissed(String(root.activeItem.id));
                             }
-                        }
-
-                        TapHandler {
-                            onTapped: root._activeIndex = index
-                        }
-                    }
-                }
-            }
-
-            // Close button ('x'): smoothly reveals on hover
-            Item {
-                id: closeBtn
-                anchors.verticalCenter: parent.verticalCenter
-                width: ThemeTokens.dp(18)
-                height: ThemeTokens.dp(18)
-                visible: root.closable && root.activeItem && (root.activeItem.closable !== false)
-                opacity: (root._hovered && visible) ? 1.0 : 0.0
-
-                Behavior on opacity {
-                    enabled: ThemeTokens.animationsEnabled
-                    NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
-                }
-
-                Rectangle {
-                    anchors.fill: parent
-                    radius: width / 2
-                    color: closeHover.hovered ? ThemeTokens.hover : "transparent"
-
-                    ChaSetIcon {
-                        anchors.centerIn: parent
-                        name: "x"
-                        size: 14
-                        color: closeHover.hovered ? ThemeTokens.text : ThemeTokens.subduedText
-                    }
-                }
-
-                HoverHandler {
-                    id: closeHover
-                    cursorShape: Qt.PointingHandCursor
-                }
-
-                TapHandler {
-                    onTapped: {
-                        if (root.activeItem) {
-                            root.dismissed(String(root.activeItem.id));
                         }
                     }
                 }
