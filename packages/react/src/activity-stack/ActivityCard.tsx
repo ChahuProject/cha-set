@@ -103,6 +103,7 @@ export const ActivityCard = React.forwardRef<HTMLDivElement, ActivityCardProps>(
       data-testid={`activity-card-${itemId}`}
       data-tone={tone}
       className={cn(
+        /* theme-adaptive:allow dynamic-tone-border — colour supplied by TONE_BORDER[tone] (every tone defines one) */
         'pointer-events-auto relative overflow-hidden rounded-xl border p-3.5 shadow-lg backdrop-blur-md',
         'bg-card/95 text-card-foreground',
         TONE_BORDER[tone],
@@ -118,6 +119,7 @@ export const ActivityCard = React.forwardRef<HTMLDivElement, ActivityCardProps>(
       <div className="flex items-center gap-3">
         <div
           className={cn(
+            /* theme-adaptive:allow dynamic-tone-border — colour supplied by TONE_GLYPH[tone] (every tone defines one) */
             'flex size-9 shrink-0 items-center justify-center rounded-full border',
             TONE_GLYPH[tone],
           )}

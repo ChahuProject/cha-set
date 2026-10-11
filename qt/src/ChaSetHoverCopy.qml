@@ -145,6 +145,7 @@ Item {
             size: copyBtn.glyphSize
             // White-on-dim-scrim overlay idiom (same approach as dialog
             // scrims): semi-transparent at rest, solid on success feedback.
+            // theme-adaptive:allow overlay-icon - white glyph on black dim scrim (functional contrast, both modes).
             color: "white"
             opacity: root.state === "copied" ? 1.0 : 0.65
             scale: root.state === "copied" ? 1.0 : 0.85

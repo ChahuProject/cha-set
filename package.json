@@ -20,6 +20,7 @@
     "test": "pnpm --filter @chahu/cha-set test",
     "test:tokens": "pnpm --filter @chahu/cha-set exec vitest run --config ../../spec/vitest.config.mjs",
     "check:theme-boundary": "node scripts/check-theme-boundary.mjs",
+    "check:theme-adaptive": "node scripts/check-theme-adaptive.mjs",
     "check:theme-boundary:self-test": "node scripts/check-theme-boundary.mjs --self-test",
     "check:derived-parity": "node scripts/check-derived-parity.mjs",
     "check:scaling": "node scripts/check-qt-scaling.mjs",

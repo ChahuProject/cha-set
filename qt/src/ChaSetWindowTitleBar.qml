@@ -126,7 +126,7 @@ Rectangle {
                 anchors.centerIn: parent
                 name: "window-close"
                 size: 10
-                color: closeMouse.containsMouse ? "#ffffff" : ThemeTokens.text
+                color: closeMouse.containsMouse ? ThemeTokens.onAccentColor : ThemeTokens.text
             }
 
             MouseArea {

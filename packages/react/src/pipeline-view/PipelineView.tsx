@@ -24,6 +24,7 @@ function PipelineStatusBadge({ status }: { status: PipelineViewProps['status'] }
   return (
     <span
       className={cn(
+        /* theme-adaptive:allow dynamic-status-border — colour supplied by getStatusBadgeClass(status) for every status */
         'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium select-none',
         badgeClass,
       )}
@@ -107,7 +108,7 @@ export function PipelineView({
         </header>
 
         {activeJob !== null && activeJob.steps.length > 0 && (
-          <div className="shrink-0 rounded-lg border border-border p-3 bg-card">
+          <div className="shrink-0 rounded-lg border border-border p-3 bg-card text-card-foreground">
             <StepTimeline steps={activeJob.steps} />
           </div>
         )}

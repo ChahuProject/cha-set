@@ -80,6 +80,7 @@ export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
         <BaseTabs.Indicator
           data-slot="tabs-indicator"
           className={cn(
+            /* theme-adaptive:allow decorative-indicator — sliding active-tab indicator, no text content */
             'absolute pointer-events-none transition-[left,width,top,height] duration-200 ease-standard z-0',
             variant === 'line'
               ? 'bottom-0 h-0.5 bg-primary'

@@ -10,7 +10,7 @@ ChaSetSquircle {
     property string size: "default"        // "default" | "sm"
     property string text: ""
     property bool dot: false
-    property color dotColor: root.variant === "default" ? "#ffffff" : ThemeTokens.accent
+    property color dotColor: root.variant === "default" ? ThemeTokens.onAccentColor : ThemeTokens.accent
     property bool removable: false
     property bool interactive: false
     property string iconSource: ""
@@ -127,7 +127,7 @@ ChaSetSquircle {
             anchors.verticalCenter: parent.verticalCenter
             color: {
                 if (root.variant === "default") {
-                    return "#ffffff"
+                    return ThemeTokens.onAccentColor
                 } else if (root.variant === "destructive") {
                     return Qt.rgba(0.937, 0.267, 0.267, 1.0)
                 } else if (root.variant === "link") {

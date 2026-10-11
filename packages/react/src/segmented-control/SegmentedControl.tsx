@@ -322,6 +322,7 @@ export const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedContro
               data-slot="segmented-indicator"
               aria-hidden="true"
               className={cn(
+                /* theme-adaptive:allow decorative-indicator — sliding selection pill, no text content */
                 'absolute bg-background shadow-xs pointer-events-none transition-[left,top,width,height] duration-200 ease-standard',
                 size === 'sm' ? 'rounded-sm' : 'rounded-md'
               )}

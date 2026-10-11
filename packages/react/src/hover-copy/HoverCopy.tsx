@@ -248,6 +248,7 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
         >
           <OverlayGlyph
             className={cn(
+              /* theme-adaptive:allow overlay-glyph — white glyph over the black dim scrim (functional contrast in both themes) */
               'h-[min(1.5rem,55%)] w-auto shrink-0',
               state === 'copied'
                 ? 'text-white'

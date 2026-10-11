@@ -45,7 +45,7 @@ export function JobList({
   return (
     <aside
       className={cn(
-        'flex w-[18rem] shrink-0 flex-col overflow-hidden rounded-lg border border-border bg-card select-text',
+        'flex w-[18rem] shrink-0 flex-col overflow-hidden rounded-lg border border-border bg-card text-card-foreground select-text',
         className,
       )}
     >

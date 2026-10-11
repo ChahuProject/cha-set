@@ -314,7 +314,7 @@ function ConditionRenderer<TRecord>({
   return (
     <div
       data-slot="query-condition"
-      className="animate-fade-in flex flex-wrap items-center gap-2 rounded-md bg-background/80 p-1.5 border border-border/40"
+      className="animate-fade-in flex flex-wrap items-center gap-2 rounded-md bg-background/80 p-1.5 border border-border/40 text-foreground"
     >
       {/* Field selector */}
       <Select

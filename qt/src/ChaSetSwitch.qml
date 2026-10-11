@@ -95,7 +95,7 @@ Item {
             radius: ThemeTokens.dp(root.isSm ? 6 : 8)
             y: (track.height - height) / 2
             x: root.checked ? (track.width - width - ThemeTokens.dp(2)) : ThemeTokens.dp(2)
-            color: "#ffffff"
+            color: ThemeTokens.onAccentColor
             border.width: 1
             border.color: Qt.rgba(0, 0, 0, 0.06)
 

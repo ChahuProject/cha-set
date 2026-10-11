@@ -120,7 +120,7 @@ Item {
             anchors.centerIn: parent
             name: root.indeterminate ? "minus" : "check"
             size: root.isSm ? 11 : 13
-            color: "#ffffff"
+            color: ThemeTokens.onAccentColor
             weight: 600
             opacity: root.isCheckedOrIndeterminate ? 1.0 : 0.0
             scale: root.isCheckedOrIndeterminate ? 1.0 : 0.5

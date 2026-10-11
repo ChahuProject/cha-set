@@ -207,6 +207,12 @@
       Raw `#fff` / `#000` / `white` / `black` / `border-white` / `bg-black` are forbidden in component and showcase code (logic-point exception: pure-icon canvas fills explicitly covered by the icon spec). Surfaces, borders and text MUST come from theme tokens (`bg-background`, `bg-card`, `text-foreground`, `text-muted-foreground`, `border-border` on React; `ThemeTokens.panel`, `ThemeTokens.text`, `ThemeTokens.border` on Qt) so both themes adapt automatically.
     - **Dual-Theme Eyeball Gate (双主题目检门禁)**:
       Every UI change MUST be eyeballed in BOTH light and dark before declaring done — React via the showcase theme toggle, Qt via `--shot` dark/light captures. A change verified in only one theme is NOT complete.
+    - **Token-Aware Guard & Explicit-Exception Escape Hatch (token 精确匹配与显式豁免)**:
+      The guard (`scripts/check-theme-adaptive.mjs`) matches **utility tokens**, not substrings: `bg-border`, `bg-sidebar-border`, `bg-sidebar-ring` and `var(--sidebar-border)` are never read as a bare `border`, a `bg-sidebar-*` colour is never read as a surface, `border.width` is paired when *any* `border.color` is declared (token, property, or conditional), and only an unbranched **white** Qt overlay is a violation (pure-black scrims mirror the allowed React `bg-black/60` scrim, α=0 stops are no-ops). Verbatim functional-contrast cases — a white glyph on a dim scrim, a decorative thumb/indicator/arrow, a harness-only fallback, a border colour supplied dynamically — MUST be declared with `// theme-adaptive:allow <reason>` on the offending line, inside the enclosing `cn(...)`/`Rectangle {` block, or on any of the three lines above it. Never weaken a rule to silence one site.
+
+### Gate Self-Evolution Rule (Theme-Adaptive)
+- Any user-reported light/dark bug means a missed rule in `scripts/check-theme-adaptive.mjs: RULES_VERSION` -> the fixer MUST add a regex + fixture for it: bump `RULES_VERSION`, add a self-test case asserting the new violation is caught, and verify `node scripts/check-theme-adaptive.mjs --self-test && pnpm gate --skip-qt` before commit. A theme fix without a gate rule is NOT complete.
+- Precision is part of the rule: when a fix would otherwise need a false-positive exemption, tighten the matcher (token boundaries, pairing context) and add a *negative* self-test fixture proving the misreported form no longer fires — a guard that only ever grows stricter degrades into noise and stops being read.
 
 ---
 

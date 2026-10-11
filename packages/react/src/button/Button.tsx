@@ -47,7 +47,7 @@ export const buttonVariants = cva(
         link:
           'text-primary underline-offset-4 hover:underline',
         overlay:
-          'border border-[rgba(203,213,225,0.6)] bg-[rgba(232,236,243,0.85)] text-foreground shadow-none hover:border-[rgba(203,213,225,0.9)] hover:bg-[rgba(255,255,255,0.96)] active:border-[rgba(203,213,225,0.9)] active:bg-white dark:border-[rgba(60,72,88,0.6)] dark:bg-[rgba(37,45,61,0.85)] dark:hover:border-[rgba(60,72,88,0.9)] dark:hover:bg-[rgba(48,59,79,0.94)] dark:active:border-[rgba(60,72,88,0.9)] dark:active:bg-[rgba(55,67,89,0.97)]',
+          'border border-[rgba(203,213,225,0.6)] bg-[rgba(232,236,243,0.85)] text-foreground shadow-none hover:border-[rgba(203,213,225,0.9)] hover:bg-background/95 active:border-[rgba(203,213,225,0.9)] active:bg-background dark:border-[rgba(60,72,88,0.6)] dark:bg-[rgba(37,45,61,0.85)] dark:hover:border-[rgba(60,72,88,0.9)] dark:hover:bg-[rgba(48,59,79,0.94)] dark:active:border-[rgba(60,72,88,0.9)] dark:active:bg-[rgba(55,67,89,0.97)]',
       },
       size: {
         default: 'h-8 gap-1.5 px-2.5 text-sm',
@@ -110,7 +110,7 @@ const forceHoverClasses: Record<string, string> = {
   secondary: 'bg-secondary/80',
   ghost: 'bg-muted text-foreground',
   link: 'underline',
-  overlay: 'border-[rgba(203,213,225,0.9)] bg-[rgba(255,255,255,0.96)] dark:border-[rgba(60,72,88,0.9)] dark:bg-[rgba(48,59,79,0.94)]',
+  overlay: 'border-[rgba(203,213,225,0.9)] bg-background/95 text-foreground dark:border-[rgba(60,72,88,0.9)] dark:bg-[rgba(48,59,79,0.94)]',
 };
 
 const forceActiveClasses: Record<string, string> = {
@@ -120,7 +120,7 @@ const forceActiveClasses: Record<string, string> = {
   secondary: 'bg-secondary/70',
   ghost: 'bg-muted/80 text-foreground',
   link: 'underline',
-  overlay: 'border-[rgba(203,213,225,0.9)] bg-[rgba(255,255,255,1)] dark:border-[rgba(60,72,88,0.9)] dark:bg-[rgba(55,67,89,0.97)]',
+  overlay: 'border-[rgba(203,213,225,0.9)] bg-background text-foreground dark:border-[rgba(60,72,88,0.9)] dark:bg-[rgba(55,67,89,0.97)]',
 };
 
 export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(

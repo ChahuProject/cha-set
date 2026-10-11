@@ -68,16 +68,16 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ) => {
     let forcedStateClass = '';
     if (forceHover) {
-      if (variant === 'default') forcedStateClass = '!bg-[#3387e3]';
-      else if (variant === 'secondary') forcedStateClass = '!bg-[#f4f7fa]';
-      else if (variant === 'outline') forcedStateClass = '!bg-[#f1f5f9] !text-[#0f172a]';
+      if (variant === 'default') forcedStateClass = '!bg-primary !text-primary-foreground';
+      else if (variant === 'secondary') forcedStateClass = '!bg-secondary !text-secondary-foreground';
+      else if (variant === 'outline') forcedStateClass = '!bg-muted !text-foreground';
       else if (variant === 'destructive') forcedStateClass = '!bg-destructive/20';
       else if (variant === 'ghost') forcedStateClass = '!bg-muted';
       else if (variant === 'link') forcedStateClass = '!underline';
     } else if (forceActive) {
-      if (variant === 'default') forcedStateClass = '!bg-[#4a95e6]';
-      else if (variant === 'secondary') forcedStateClass = '!bg-[#f5f8fb]';
-      else if (variant === 'outline') forcedStateClass = '!bg-[#f4f7fa]';
+      if (variant === 'default') forcedStateClass = '!bg-primary !text-primary-foreground';
+      else if (variant === 'secondary') forcedStateClass = '!bg-secondary !text-secondary-foreground';
+      else if (variant === 'outline') forcedStateClass = '!bg-muted !text-foreground';
       else if (variant === 'destructive') forcedStateClass = '!bg-destructive/30';
       else if (variant === 'ghost') forcedStateClass = '!bg-muted/80';
       else if (variant === 'link') forcedStateClass = '!underline';
@@ -111,7 +111,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
               e.stopPropagation();
               onRemove?.();
             }}
-            className="inline-flex items-center justify-center -mr-1 ml-0.5 size-3.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer transition-colors duration-quick ease-standard"
+            className="inline-flex items-center justify-center -mr-1 ml-0.5 size-3.5 rounded-full hover:bg-muted cursor-pointer transition-colors duration-quick ease-standard"
           >
             <svg
               className="size-2.5"

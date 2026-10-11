@@ -864,7 +864,7 @@ export function VirtualTree<T>({
       {stickyRows.length > 0 && (
         <div
           data-slot="virtual-tree-sticky"
-          className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur-xs"
+          className="sticky top-0 z-10 border-b border-border bg-background/95 text-foreground backdrop-blur-xs"
         >
           {stickyRows.map((sticky) => {
             const stickyDepth = sticky.depth ?? 0;

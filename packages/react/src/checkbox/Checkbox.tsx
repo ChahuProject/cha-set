@@ -108,6 +108,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
         data-state={isExplicitIndeterminate ? 'indeterminate' : isChecked ? 'checked' : 'unchecked'}
         data-size={size}
         className={cn(
+          /* theme-adaptive:allow dynamic-state-border — border colour supplied by stateClasses (checked/invalid/default all define one) */
           'inline-flex items-center justify-center shrink-0 border transition-colors duration-quick ease-standard',
           readOnly ? 'cursor-default' : 'cursor-pointer',
           'focus-visible:outline-hidden focus-visible:ring-1',

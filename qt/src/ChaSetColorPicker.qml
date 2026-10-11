@@ -434,8 +434,8 @@ Item {
                 radius: width * 0.5
                 y: Math.round((parent.height - height) * 0.5)
                 x: Math.round(row.progress * trackContainer.maxTravel)
-                color: root.isDark ? "#ffffff" : "#0f172a"
-                border.color: "#ffffff"
+                color: root.isDark ? ThemeTokens.panel : ThemeTokens.background
+                border.color: ThemeTokens.border
                 border.width: 1.5
             }
 
@@ -514,7 +514,7 @@ Item {
             implicitHeight: cardColumn.implicitHeight + ThemeTokens.dp(24)
             height: implicitHeight
             radius: ThemeTokens.dp(8)
-            color: root.isDark ? ThemeTokens.panel : "#ffffff"
+            color: ThemeTokens.panel
             border.color: ThemeTokens.border
             border.width: 1
             visible: root.mode !== "popover" || root.popoverOpen
@@ -669,7 +669,7 @@ Item {
                                 height: parent.height
                                 radius: ThemeTokens.dp(4)
                                 color: root.activePanel === modelData.id
-                                    ? (root.isDark ? Qt.rgba(1, 1, 1, 0.15) : "#ffffff")
+                                    ? (root.isDark ? Qt.rgba(1, 1, 1, 0.15) : ThemeTokens.panel)
                                     : "transparent"
                                 Text {
                                     anchors.centerIn: parent
@@ -746,7 +746,7 @@ Item {
                             width: root.innerStageSize
                             height: root.innerStageSize
                             radius: width * 0.5
-                            color: root.isDark ? ThemeTokens.panel : "#ffffff"
+                            color: ThemeTokens.panel
                             border.color: root.isDark ? Qt.rgba(1, 1, 1, 0.15) : Qt.rgba(0, 0, 0, 0.12)
                             border.width: 1
                         }
@@ -795,7 +795,7 @@ Item {
                                     height: ThemeTokens.dp(12)
                                     radius: height / 2
                                     color: root.value
-                                    border.color: "#ffffff"
+                                    border.color: ThemeTokens.border
                                     border.width: 2
                                     x: Math.max(0, Math.min(parent.width - width, root.currentS * (parent.width - width)))
                                     y: Math.max(0, Math.min(parent.height - height, (1.0 - root.currentV) * (parent.height - height)))
@@ -880,7 +880,7 @@ Item {
                                     height: ThemeTokens.dp(14)
                                     radius: height / 2
                                     color: root.value
-                                    border.color: "#ffffff"
+                                    border.color: ThemeTokens.border
                                     border.width: 2
 
                                     readonly property var pt: {
@@ -917,7 +917,7 @@ Item {
                             width: ThemeTokens.dp(14)
                             height: ThemeTokens.dp(14)
                             radius: height / 2
-                            color: "#ffffff"
+                            color: ThemeTokens.panel
                             border.color: ThemeTokens.accent
                             border.width: 2
                             x: (parent.width * 0.5) + root.ringHandleRadius * Math.cos((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - width / 2
@@ -987,10 +987,11 @@ Item {
                             Component.onCompleted: requestPaint()
                         }
 
-                        // Black brightness overlay
+                        // Black brightness overlay.
                         Rectangle {
                             anchors.fill: parent
                             radius: width * 0.5
+                            // theme-adaptive:allow color-picker-brightness-overlay — pure-black SV brightness darkener, correct in both themes (functional, not a surface).
                             color: "#000000"
                             opacity: 1.0 - root.currentV
                         }
@@ -1010,7 +1011,7 @@ Item {
                             height: ThemeTokens.dp(14)
                             radius: height / 2
                             color: root.value
-                            border.color: "#ffffff"
+                            border.color: ThemeTokens.border
                             border.width: 2
                             x: (parent.width * 0.5) + (root.currentS * (parent.width * 0.5 - width / 2)) * Math.cos((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - width / 2
                             y: (parent.height * 0.5) + (root.currentS * (parent.height * 0.5 - height / 2)) * Math.sin((root.currentH * 360.0 - 90.0) * Math.PI / 180.0) - height / 2
@@ -1419,7 +1420,7 @@ Item {
         implicitWidth: ThemeTokens.dp(root.isSm ? 110 : 124)
         implicitHeight: ThemeTokens.dp(root.isSm ? 32 : 36)
         radius: ThemeTokens.dp(6)
-        color: root.disabled ? ThemeTokens.disabled : (triggerMouse.containsMouse || popoverTrigger.activeFocus ? Qt.rgba(1, 1, 1, 0.08) : "transparent")
+        color: root.disabled ? ThemeTokens.disabled : (triggerMouse.containsMouse || popoverTrigger.activeFocus ? (root.isDark ? Qt.rgba(1, 1, 1, 0.08) : Qt.rgba(0, 0, 0, 0.06)) : "transparent")
         border.color: popoverTrigger.activeFocus ? ThemeTokens.focus : ThemeTokens.border
         border.width: popoverTrigger.activeFocus ? 2 : 1
         activeFocusOnTab: root.mode === "popover" && !root.disabled

@@ -363,7 +363,7 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
               title={entry.item.title}
               aria-label={isActive ? entry.item.title : `Show notice: ${entry.item.title}`}
               className={cn(
-                'absolute top-0 left-1/2 flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
+                'absolute top-0 left-1/2 flex items-center gap-2.5 px-3.5 py-2 rounded-full border border-border/80 backdrop-blur-md',
                 'min-w-[12rem] max-w-[28rem] cursor-pointer transition-all duration-short ease-standard',
                 layerStyle.container
               )}

@@ -32,9 +32,9 @@ Item {
     property real hoverRatio: -1.0
 
     // —— 视觉样式 ——
-    property color trackColor: Qt.rgba(1, 1, 1, 0.25)
+    property color trackColor: ThemeTokens.dark ? Qt.rgba(1, 1, 1, 0.25) : Qt.rgba(0, 0, 0, 0.15)
     property color progressColor: ThemeTokens.accent
-    property color thumbColor: dragging ? "#FFFFFF" : progressColor
+    property color thumbColor: dragging ? ThemeTokens.panel : progressColor
     property color timeColor: ThemeTokens.text
     property color timeSubduedColor: ThemeTokens.subduedText
     property real trackHeight: ThemeTokens.dp(4)
@@ -258,8 +258,8 @@ Item {
             width: posText.implicitWidth + ThemeTokens.dp(8)
             radius: ThemeTokens.dp(3)
             color: posMouseArea.pressed
-                   ? Qt.rgba(1, 1, 1, 0.22)
-                   : (posMouseArea.containsMouse ? (ThemeTokens.hover ? ThemeTokens.hover : Qt.rgba(1, 1, 1, 0.12)) : "transparent")
+                   ? (ThemeTokens.dark ? Qt.rgba(1, 1, 1, 0.22) : Qt.rgba(0, 0, 0, 0.08))
+                   : (posMouseArea.containsMouse ? (ThemeTokens.hover ? ThemeTokens.hover : (ThemeTokens.dark ? Qt.rgba(1, 1, 1, 0.12) : Qt.rgba(0, 0, 0, 0.06))) : "transparent")
 
             Behavior on color {
                 enabled: ThemeTokens.animationsEnabled

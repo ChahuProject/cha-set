@@ -352,6 +352,28 @@ if (existsSync(i18nCoverageCheckPath)) {
   console.log(`[gate] OK — i18n Translation Coverage Gate passed (${i18nRes.stats.files} files scanned, ${i18nRes.stats.findings} known findings in ratchet baseline, 0 new)`);
 }
 
+// 2.16 Mandatory Theme-Adaptive Color Contract Gate
+// Strictly enforces Red Line 18: bare border -> currentColor fallback, hardcoded
+// white/black/zinc borders, and bg surfaces without text pairing across React + Qt.
+const themeAdaptiveCheckPath = resolve(root, 'scripts/check-theme-adaptive.mjs');
+if (existsSync(themeAdaptiveCheckPath)) {
+  const { verifyThemeAdaptive, selfTest: themeAdaptiveSelfTest } = await import(pathToFileURL(themeAdaptiveCheckPath).href);
+  const taSt = themeAdaptiveSelfTest();
+  if (!taSt.ok) {
+    console.error('[gate] FAIL: Theme-Adaptive gate self-test failed — the guard no longer detects injected violations');
+    process.exit(1);
+  }
+  const taRes = verifyThemeAdaptive({ quiet: true });
+  if (!taRes.ok) {
+    console.error(`[gate] FAIL: Theme-Adaptive Gate failed (${taRes.errors.length} violation(s)):`);
+    for (const err of taRes.errors) {
+      console.error(`  - ${err}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Theme-Adaptive Gate passed (${taRes.checkedCount} assertions, guard self-test verified)`);
+}
+
 // 3. Executable Behavioral Parity Checks
 const skipQt = process.argv.includes('--skip-qt') || process.env.CHASE_SKIP_QT === '1';
 const qtExe = resolve(root, 'qt/build/QtChaSetDemo.exe');

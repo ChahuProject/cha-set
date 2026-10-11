@@ -97,6 +97,7 @@ export function ResizableHandle({
       }}
     >
       {withHandle && (
+        // theme-adaptive:allow decorative-grip — resize grip, no text content
         <div
           data-slot="resizable-handle-grip"
           className="z-10 flex h-4 w-3 items-center justify-center rounded-xs border border-border bg-background shadow-xs"

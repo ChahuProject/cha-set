@@ -334,6 +334,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           aria-disabled={disabled}
           aria-readonly={readOnly || undefined}
           className={cn(
+            /* theme-adaptive:allow decorative-thumb — slider thumb, no text content */
             'block rounded-full border-2 border-primary bg-background shadow-xs transition-[scale,box-shadow] duration-quick ease-standard focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50 hover:scale-105 active:scale-95',
             disabled ? 'cursor-not-allowed' : (readOnly ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'),
             isSm ? 'size-3' : 'size-4',

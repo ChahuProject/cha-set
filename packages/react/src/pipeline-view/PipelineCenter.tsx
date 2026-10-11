@@ -80,7 +80,7 @@ export function PipelineCenter({
   return (
     <div
       className={cn(
-        'flex h-full w-full min-h-0 min-w-0 overflow-hidden rounded-lg border border-border bg-card select-text',
+        'flex h-full w-full min-h-0 min-w-0 overflow-hidden rounded-lg border border-border bg-card text-card-foreground select-text',
         className,
       )}
     >
@@ -167,6 +167,7 @@ export function PipelineCenter({
                     </div>
                     <span
                       className={cn(
+                        /* theme-adaptive:allow dynamic-status-border — colour supplied by getStatusBadgeClass(status) for every status */
                         'inline-flex shrink-0 items-center rounded-sm border px-1 py-0.2 text-micro',
                         badgeClass,
                       )}
@@ -207,7 +208,7 @@ export function PipelineCenter({
         )}
       </aside>
 
-      <main className="flex flex-1 min-h-0 min-w-0 flex-col p-3 overflow-hidden bg-background">
+      <main className="flex flex-1 min-h-0 min-w-0 flex-col p-3 overflow-hidden bg-background text-foreground">
         {activePipeline ? (
           <PipelineView
             status={activePipeline.status}

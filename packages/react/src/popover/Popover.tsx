@@ -175,6 +175,7 @@ export function PopoverArrow({ className, ...props }: PopoverArrowProps) {
     <PopoverPrimitive.Arrow
       data-slot="popover-arrow"
       className={cn(
+        /* theme-adaptive:allow decorative-popover-arrow — geometric arrow tail, no text content */
         'w-2.5 h-2.5 rotate-45 border border-border bg-popover pointer-events-none',
         'data-[side=bottom]:-top-1.5 data-[side=bottom]:border-b-0 data-[side=bottom]:border-r-0',
         'data-[side=top]:-bottom-1.5 data-[side=top]:border-t-0 data-[side=top]:border-l-0',

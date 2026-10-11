@@ -119,6 +119,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           data-slot="switch-thumb"
           data-state={state}
           className={cn(
+            /* theme-adaptive:allow decorative-thumb — switch thumb, no text content */
             'pointer-events-none flex items-center justify-center rounded-full bg-background shadow-lg ring-0 transition-[translate] duration-short ease-standard',
             isSm ? 'size-3' : 'size-4',
             isChecked ? (isSm ? 'translate-x-3' : 'translate-x-4') : 'translate-x-0',

@@ -393,15 +393,16 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
                   {/* Visual Mockup Frame */}
                   <div
                     className={cn(
+                      /* theme-adaptive:allow decorative-mock — theme-preview mockup frame, bars only, no text content */
                       'relative w-full h-12 rounded-lg border overflow-hidden p-1.5 flex flex-col gap-1 transition-all',
-                      item.value === 'light' && 'bg-white border-zinc-200/90 shadow-2xs',
-                      item.value === 'dark' && 'bg-zinc-950 border-zinc-800 shadow-2xs',
-                      item.value === 'system' && 'border-zinc-300 dark:border-zinc-700 overflow-hidden'
+                      item.value === 'light' && 'bg-card border-border shadow-2xs',
+                      item.value === 'dark' && 'bg-card border-border shadow-2xs',
+                      item.value === 'system' && 'border-border overflow-hidden'
                     )}
                   >
                     {item.value === 'light' && (
                       <>
-                        <div className="flex items-center gap-0.5 pb-0.5 border-b border-zinc-100">
+                        <div className="flex items-center gap-0.5 pb-0.5 border-b border-border/60">
                           <span className="size-1 rounded-full bg-red-400/80" />
                           <span className="size-1 rounded-full bg-amber-400/80" />
                           <span className="size-1 rounded-full bg-emerald-400/80" />
@@ -418,7 +419,7 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
 
                     {item.value === 'dark' && (
                       <>
-                        <div className="flex items-center gap-0.5 pb-0.5 border-b border-zinc-800">
+                        <div className="flex items-center gap-0.5 pb-0.5 border-b border-border/60">
                           <span className="size-1 rounded-full bg-zinc-600" />
                           <span className="size-1 rounded-full bg-zinc-600" />
                           <span className="size-1 rounded-full bg-zinc-600" />
@@ -435,8 +436,9 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
 
                     {item.value === 'system' && (
                       <div className="absolute inset-0 flex">
-                        <div className="w-1/2 h-full bg-white p-1.5 flex flex-col gap-1 border-r border-zinc-200">
-                          <div className="flex items-center gap-0.5 pb-0.5 border-b border-zinc-100">
+                        {/* theme-adaptive:allow decorative-mock — split light/dark preview, bars only, no text content */}
+                        <div className="w-1/2 h-full bg-card p-1.5 flex flex-col gap-1 border-r border-border">
+                          <div className="flex items-center gap-0.5 pb-0.5 border-b border-border/60">
                             <span className="size-1 rounded-full bg-red-400/80" />
                             <span className="size-1 rounded-full bg-amber-400/80" />
                           </div>
@@ -447,8 +449,9 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
                             </div>
                           </div>
                         </div>
-                        <div className="w-1/2 h-full bg-zinc-950 p-1.5 flex flex-col gap-1">
-                          <div className="flex items-center gap-0.5 pb-0.5 border-b border-zinc-800">
+                        {/* theme-adaptive:allow decorative-mock — split light/dark preview, bars only, no text content */}
+                        <div className="w-1/2 h-full bg-card p-1.5 flex flex-col gap-1">
+                          <div className="flex items-center gap-0.5 pb-0.5 border-b border-border/60">
                             <span className="size-1 rounded-full bg-zinc-600" />
                             <span className="size-1 rounded-full bg-zinc-600" />
                           </div>
@@ -486,7 +489,6 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
           <div className="flex flex-wrap items-center justify-end gap-2 max-w-[26rem]">
             {CANONICAL_PALETTES.map((p) => {
               const isSelected = config.palette.id === p.id;
-              const isYellow = p.id === 'yellow';
               const paletteName = t(`theme.palette.${p.id}`, p.name);
               return (
                 <button
@@ -516,7 +518,7 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
                     <CheckIcon
                       className={cn(
                         'size-3.5 stroke-[2.5] drop-shadow-xs',
-                        isYellow ? 'text-zinc-900' : 'text-white'
+                        'text-primary-foreground'
                       )}
                     />
                   )}
@@ -529,7 +531,7 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
               <div className="flex items-center gap-1.5 pl-1.5 ml-0.5 border-l border-border/80">
                 <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-muted/70 border border-border/80 text-caption font-mono text-foreground shadow-2xs">
                   <span
-                    className="size-2.5 rounded-full border border-black/15 dark:border-white/20 shadow-2xs"
+                    className="size-2.5 rounded-full border border-border shadow-2xs"
                     style={{ backgroundColor: config.palette.customHex || '#30a0ff' }}
                   />
                   <span className="font-semibold">{(config.palette.customHex || '#30a0ff').toUpperCase()}</span>

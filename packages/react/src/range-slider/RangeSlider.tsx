@@ -236,6 +236,7 @@ export function RangeSlider({
           aria-readonly={readOnly}
           aria-orientation="horizontal"
           className={cn(
+            /* theme-adaptive:allow decorative-thumb — range thumb, no text content */
             'absolute top-1/2 -translate-x-1/2 -translate-y-1/2 touch-none rounded-full border-2 border-primary bg-background shadow-xs outline-none transition-shadow duration-quick ease-standard',
             isSm ? 'size-3' : 'size-4',
             readOnly
@@ -269,6 +270,7 @@ export function RangeSlider({
           aria-readonly={readOnly}
           aria-orientation="horizontal"
           className={cn(
+            /* theme-adaptive:allow decorative-thumb — range thumb, no text content */
             'absolute top-1/2 -translate-x-1/2 -translate-y-1/2 touch-none rounded-full border-2 border-primary bg-background shadow-xs outline-none transition-shadow duration-quick ease-standard',
             isSm ? 'size-3' : 'size-4',
             readOnly

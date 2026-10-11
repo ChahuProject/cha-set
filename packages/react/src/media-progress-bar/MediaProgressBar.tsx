@@ -145,7 +145,7 @@ export const MediaProgressBar = React.forwardRef<HTMLDivElement, MediaProgressBa
           onPointerLeave={() => setHoverRatio(-1)}
         >
           {/* Base Track */}
-          <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden relative">
+          <div className="w-full h-1 bg-muted rounded-full overflow-hidden relative">
             {/* Progress Fill */}
             <div
               className="h-full bg-primary transition-all duration-75"
@@ -156,7 +156,7 @@ export const MediaProgressBar = React.forwardRef<HTMLDivElement, MediaProgressBa
           {/* Hover indicator line */}
           {hoverRatio >= 0 && !dragging && (
             <div
-              className="absolute top-1/2 -translate-y-1/2 w-0.5 h-2 bg-white/60 pointer-events-none"
+              className="absolute top-1/2 -translate-y-1/2 w-0.5 h-2 bg-muted-foreground/60 pointer-events-none"
               style={{ left: `${hoverRatio * 100}%` }}
             />
           )}
@@ -165,7 +165,7 @@ export const MediaProgressBar = React.forwardRef<HTMLDivElement, MediaProgressBa
           {showThumb && (
             <div
               className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-2.5 rounded-full bg-primary shadow transition-transform ${
-                dragging ? 'scale-125 bg-white' : 'group-hover:scale-110'
+                dragging ? 'scale-125' : 'group-hover:scale-110'
               }`}
               style={{ left: `${clampedRatio * 100}%` }}
             />

@@ -65,6 +65,7 @@ Item {
     // —— Styling ——
     property color panelColor: (typeof ThemeTokens !== "undefined" && ThemeTokens.panelRaised)
                                ? ThemeTokens.panelRaised : Qt.rgba(0.12, 0.12, 0.12, 0.96)
+    // theme-adaptive:allow harness-fallback — white border fallback only applies when ThemeTokens is unbound (headless harness).
     property color borderColor: (typeof ThemeTokens !== "undefined" && ThemeTokens.border)
                                 ? ThemeTokens.border : Qt.rgba(1, 1, 1, 0.22)
 

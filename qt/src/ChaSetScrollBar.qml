@@ -77,6 +77,7 @@ T.ScrollBar {
     readonly property color _subduedText: _themeSource ? _themeSource.subduedText : "#888888"
     readonly property color _panelRaised: (_themeSource && typeof _themeSource.panelRaised !== "undefined") ? _themeSource.panelRaised : (_themeSource && _themeSource.panel ? _themeSource.panel : "#222222")
     readonly property color _border: _themeSource ? _themeSource.border : "#444444"
+    // theme-adaptive:allow harness-fallback — only reached when no theme source is bound (themed builds always resolve _themeSource.hover).
     readonly property color _hoverColor: (_themeSource && typeof _themeSource.hover !== "undefined") ? _themeSource.hover : Qt.rgba(1, 1, 1, 0.1)
 
     // ---- Overflow & Visibility ----

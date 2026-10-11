@@ -217,7 +217,7 @@ Item {
                             anchors.centerIn: parent
                             name: "check"
                             size: 12
-                            color: "#ffffff"
+                            color: ThemeTokens.onAccentColor
                             visible: root.preference === "system"
                         }
                     }
@@ -315,7 +315,7 @@ Item {
                                             anchors.centerIn: parent
                                             name: "check"
                                             size: 12
-                                            color: "#ffffff"
+                                            color: ThemeTokens.onAccentColor
                                             visible: langCard.isSelected
                                         }
                                     }

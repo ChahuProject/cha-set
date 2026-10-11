@@ -172,7 +172,7 @@ function HueRing({
           'inset 0 0 0 1px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14)',
       }}
     >
-      {/* Clean inner circular card mask */}
+      {/* Clean inner circular card mask. theme-adaptive:allow decorative-mask — no text content */}
       <div
         className="absolute rounded-full bg-card pointer-events-none"
         style={{

@@ -298,7 +298,7 @@ export function SidebarProvider({
           } as React.CSSProperties
         }
         className={cn(
-          'group/sidebar-wrapper flex h-full min-h-0 w-full has-data-[variant=inset]:bg-sidebar',
+          'group/sidebar-wrapper flex h-full min-h-0 w-full text-sidebar-foreground has-data-[variant=inset]:bg-sidebar',
           container && 'relative overflow-hidden',
           className,
         )}
@@ -572,6 +572,7 @@ export function SidebarRail({
       onPointerDown={handlePointerDown}
       title={title}
       className={cn(
+        /* theme-adaptive:allow decorative-resize-zone — invisible resize hit zone, hover-only bg, no text content */
         'absolute inset-y-0 z-20 hidden w-4 touch-none transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:start-1/2 after:w-0.5 after:transition-colors after:duration-150 hover:after:bg-sidebar-ring/60 sm:flex ltr:-translate-x-1/2 rtl:-translate-x-1/2',
         'in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize',
         'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full hover:group-data-[collapsible=offcanvas]:bg-sidebar',
@@ -589,7 +590,7 @@ export function SidebarInset({ className, ...props }: React.ComponentProps<'main
     <main
       data-slot="sidebar-inset"
       className={cn(
-        'relative flex w-full flex-1 flex-col bg-background md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
+        'relative flex w-full flex-1 flex-col bg-background text-foreground md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
         className,
       )}
       {...props}
@@ -602,7 +603,7 @@ export function SidebarInput({ className, ...props }: React.ComponentProps<typeo
     <Input
       data-slot="sidebar-input"
       data-sidebar="input"
-      className={cn('h-8 w-full bg-background shadow-none', className)}
+      className={cn('h-8 w-full bg-background text-foreground shadow-none', className)}
       {...props}
     />
   );
@@ -766,7 +767,7 @@ export const sidebarMenuButtonVariants = cva(
       variant: {
         default: 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
         outline:
-          'bg-background shadow-[0_0_0_1px_var(--sidebar-border)] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_var(--sidebar-accent)]',
+          'bg-background text-sidebar-foreground shadow-[0_0_0_1px_var(--sidebar-border)] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_var(--sidebar-accent)]',
       },
       size: {
         default: 'h-8 text-sm',
