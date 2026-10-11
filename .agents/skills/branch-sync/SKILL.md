@@ -18,8 +18,8 @@ History must be strictly linear, zero merge commits, and force pushes must use `
 ```
 [1-Shot One-Line Execution: sync-branch.ps1 -Apply] 
   ├── 1. Dynamic integration branch resolution (active directory branch)
-  ├── 2. Auto-discovery of all candidate branches & remote fast-forwarding
-  ├── 3. Chronological net commit extraction (sorted by committer timestamp)
+   ├── 2. Remote-truth discovery via `git ls-remote` (never trust stale `refs/remotes/*`) & diverged-branch quarantine
+   ├── 3. Net-commit extraction from the true unreachable set (`rev-list --not`), patch-id dedup, chronological order
   ├── 4. Safety snapshot reference (refs/sync-backup/ permanent protection)
   ├── 5. Linear merge (Route A: rebase-ff / Route B: ordered cherry-pick)
   ├── 6. Tree-Diff Guard (strictly verifies 100% changes preserved)
@@ -45,7 +45,7 @@ pwsh .agents/skills/branch-sync/scripts/show-branch-topology.ps1
 > **Efficiency & Low-Intelligence Guardrails (Hard Rules)**:
 > 1. **1-Shot to Completion**: Do NOT split into multiple tool calls (dry-run -> apply -> build check). Run `-Apply` directly; the script inspects worktrees, prevents dirty overwrites, merges chronologically, pushes, and automatically runs the project's verification test (e.g. `cargo test`).
 > 2. **Never Hand-Craft Raw Git Commands**: Do NOT attempt manual `git merge` (violates commitlint) or manual `reset --hard` (causes irrevocable commit drops). Everything must go through `sync-branch.ps1`.
-> 3. **Dashboard Decides Completion**: When the script reports `STATUS: COMPLETED_READY_TO_REPORT`, all synchronization, pushes, and test checks have succeeded. Immediately report completion to the user without redundant tool calls.
+> 3. **Dashboard Decides Completion**: When the script reports `STATUS: COMPLETED_READY_TO_REPORT`, all synchronization, pushes, and test checks have succeeded. Immediately report completion to the user without redundant tool calls. If it reports diverged-branch quarantine (manual work required, non-zero exit), do NOT report success — follow the printed manual steps instead.
 
 ---
 
@@ -67,9 +67,16 @@ pwsh .agents/skills/branch-sync/scripts/show-branch-topology.ps1
    Before performing any destructive operation, the script snapshots branches to `refs/sync-backup/<branch>/<timestamp>-<sha>`. Restore at any time via `manage-sync-backups.ps1 -RestoreBranch <bName> -BackupRef <ref>`.
 2. **Global Chronological Ordering**:
    When merging multiple branches, all net commits are sorted by committer timestamp (`%ct`) ascending before cherry-picking, eliminating out-of-order temporal dependency conflicts.
-3. **Tree-Diff Guard**:
-   Before resetting branches, the script audits the integration branch:
-   **If any net commit from any source branch is missing, branches are NEVER reset or pushed**, and integration is rolled back automatically.
+3. **Tree-Diff Guard v2**:
+   Before resetting branches, the script audits the integration branch with a dual check —
+   (i) zero residual `git cherry -v` `+` lines AND (ii) every file changed between merge-base
+   and the source snapshot must also be changed between merge-base and integration.
+   **If either check fails for any branch, branches are NEVER reset or pushed**, and integration
+   is rolled back automatically. Empty cherry-picks are skipped (recorded, not treated as conflicts),
+   and every landed commit is verified line-by-line against its source.
+4. **Diverged-branch quarantine**: a branch diverged from remote truth is NEVER reset or pushed
+   by the script — it is excluded from the merge set and reported for manual handling
+   (see `REFERENCE.md` §3). The final board then reports manual work required instead of success.
 
 ## 🤖 Agent Environment Adaptation (Sandbox / Tool Constraints)
 
