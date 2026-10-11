@@ -38,6 +38,12 @@ Item {
         highlightedIndex = idx
     }
 
+    function isItemDisabled(item) {
+        if (!item) return true
+        if (item.status === "intermediate" || item.intermediate) return false
+        return !!item.disabled
+    }
+
     function findNextEnabledIndex(startIndex, direction) {
         if (!items || items.length === 0) return -1
         let count = items.length
@@ -45,7 +51,7 @@ Item {
         for (let step = 0; step < count; step++) {
             if (idx < 0) idx = count - 1
             else if (idx >= count) idx = 0
-            if (items[idx] && !items[idx].disabled) {
+            if (items[idx] && !isItemDisabled(items[idx])) {
                 return idx
             }
             idx += direction
@@ -56,7 +62,7 @@ Item {
     function findFirstEnabledIndex() {
         if (!items || items.length === 0) return -1
         for (let i = 0; i < items.length; i++) {
-            if (!items[i] || !items[i].disabled) return i
+            if (!items[i] || !isItemDisabled(items[i])) return i
         }
         return -1
     }
@@ -64,7 +70,7 @@ Item {
     function findLastEnabledIndex() {
         if (!items || items.length === 0) return -1
         for (let i = items.length - 1; i >= 0; i--) {
-            if (!items[i] || !items[i].disabled) return i
+            if (!items[i] || !isItemDisabled(items[i])) return i
         }
         return -1
     }
@@ -72,7 +78,7 @@ Item {
     function triggerHighlighted() {
         if (highlightedIndex >= 0 && highlightedIndex < items.length) {
             const item = items[highlightedIndex]
-            if (item && !item.disabled) {
+            if (item && !isItemDisabled(item)) {
                 contextPopup.close()
                 if (typeof item.onSelect === "function") {
                     item.onSelect()
@@ -202,8 +208,10 @@ Item {
                     height: ThemeTokens.dp(28)
                     radius: ThemeTokens.innerRadius(root.customRadius, contextPopup.padding)
                     readonly property bool isHighlighted: index === root.highlightedIndex
-                    color: isHighlighted ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : ThemeTokens.hover) : "transparent"
-                    opacity: modelData.disabled ? 0.4 : 1.0
+                    readonly property bool isIntermediate: !!(modelData && (modelData.status === "intermediate" || modelData.intermediate))
+                    readonly property bool isActuallyDisabled: !!(modelData && modelData.disabled && !isIntermediate)
+                    color: isHighlighted ? (modelData.destructive ? Qt.rgba(239/255, 68/255, 68/255, 0.15) : (isIntermediate ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.15) : ThemeTokens.hover)) : "transparent"
+                    opacity: isActuallyDisabled ? 0.4 : 1.0
 
                     Behavior on color {
                         enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
@@ -213,7 +221,7 @@ Item {
                     Row {
                         anchors.left: parent.left
                         anchors.leftMargin: ThemeTokens.dp(8)
-                        anchors.right: shortcutText.visible ? shortcutText.left : parent.right
+                        anchors.right: trailingItem.left
                         anchors.rightMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: ThemeTokens.dp(6)
@@ -223,52 +231,78 @@ Item {
                             visible: !!parent.parent.modelData.icon && (String(parent.parent.modelData.icon).length <= 16 && !/[^\x00-\x7F]/.test(String(parent.parent.modelData.icon)))
                             name: String(parent.parent.modelData.icon || "")
                             size: 14
-                            color: parent.parent.modelData.destructive ? ThemeTokens.danger : (parent.parent.modelData.disabled ? ThemeTokens.subduedText : ThemeTokens.text)
+                            color: parent.parent.modelData.destructive ? ThemeTokens.danger : (parent.parent.isActuallyDisabled ? ThemeTokens.subduedText : (parent.parent.isIntermediate ? ThemeTokens.subduedText : ThemeTokens.text))
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
                         Text {
                             visible: !!parent.parent.modelData.icon && !vectorIcon.visible
                             text: parent.parent.modelData.icon || ""
-                            color: parent.parent.modelData.destructive ? ThemeTokens.danger : (parent.parent.modelData.disabled ? ThemeTokens.subduedText : ThemeTokens.text)
+                            color: parent.parent.modelData.destructive ? ThemeTokens.danger : (parent.parent.isActuallyDisabled ? ThemeTokens.subduedText : (parent.parent.isIntermediate ? ThemeTokens.subduedText : ThemeTokens.text))
                             font.pixelSize: Typography.sizeSmall
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
                         Text {
                             text: parent.parent.modelData.label || ""
-                            color: parent.parent.modelData.destructive ? ThemeTokens.danger : ThemeTokens.text
+                            color: parent.parent.modelData.destructive ? ThemeTokens.danger : (parent.parent.isActuallyDisabled ? ThemeTokens.subduedText : (parent.parent.isIntermediate ? ThemeTokens.subduedText : ThemeTokens.text))
                             font.pixelSize: Typography.sizeSmall
                             anchors.verticalCenter: parent.verticalCenter
                         }
                     }
 
-                    ChaSetShortcut {
-                        id: shortcutText
+                    Row {
+                        id: trailingItem
                         anchors.right: parent.right
                         anchors.rightMargin: ThemeTokens.dp(8)
                         anchors.verticalCenter: parent.verticalCenter
-                        visible: !!parent.modelData.shortcut
-                        value: parent.modelData.shortcut || ""
+                        spacing: ThemeTokens.dp(6)
+
+                        ChaSetSquircle {
+                            id: badgeBox
+                            visible: parent.parent.isIntermediate
+                            height: ThemeTokens.dp(16)
+                            implicitWidth: badgeLabel.implicitWidth + ThemeTokens.dp(8)
+                            radius: ThemeTokens.dp(3)
+                            color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.12)
+                            border.color: Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.28)
+                            border.width: 1
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            Text {
+                                id: badgeLabel
+                                anchors.centerIn: parent
+                                text: (parent.parent.parent.modelData && parent.parent.parent.modelData.intermediateBadge) ? parent.parent.parent.modelData.intermediateBadge : ChaSetI18n.tr("common.open", "已打开")
+                                color: ThemeTokens.accent
+                                font.pixelSize: ThemeTokens.sp(10)
+                            }
+                        }
+
+                        ChaSetShortcut {
+                            id: shortcutText
+                            anchors.verticalCenter: parent.verticalCenter
+                            visible: !!parent.parent.modelData.shortcut
+                            value: parent.parent.modelData.shortcut || ""
+                        }
                     }
 
                     MouseArea {
                         id: itemMouse
                         anchors.fill: parent
                         hoverEnabled: true
-                        cursorShape: (parent && parent.modelData && parent.modelData.disabled) ? Qt.ForbiddenCursor : Qt.PointingHandCursor
+                        cursorShape: parent.isActuallyDisabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
                         onPositionChanged: (mouse) => {
-                            if (parent && parent.modelData && parent.modelData.disabled) return
+                            if (parent.isActuallyDisabled) return
                             var p = itemMouse.mapToItem(null, mouse.x, mouse.y)
                             root.handlePointerMove(parent.index, p.x, p.y)
                         }
                         onEntered: {
-                            if (root.modality === "pointer" && parent && parent.modelData && !parent.modelData.disabled) {
+                            if (root.modality === "pointer" && !parent.isActuallyDisabled) {
                                 root.highlightedIndex = parent.index
                             }
                         }
                         onClicked: {
-                            if (parent && parent.modelData && parent.modelData.disabled) return
+                            if (parent.isActuallyDisabled) return
                             contextPopup.close()
                             if (typeof parent.modelData.onSelect === "function") {
                                 parent.modelData.onSelect()

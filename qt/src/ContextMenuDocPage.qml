@@ -71,6 +71,7 @@ DocLayout {
                     items: [
                         { id: "back", label: ChaSetI18n.tr("overlays.contextMenu.back", "Back"), shortcut: "Alt+Left" },
                         { id: "forward", label: ChaSetI18n.tr("overlays.contextMenu.forward", "Forward"), shortcut: "Alt+Right", disabled: true },
+                        { id: "settings", label: ChaSetI18n.tr("common.settings", "Settings"), status: "intermediate", intermediateBadge: ChaSetI18n.tr("common.open", "已打开") },
                         { id: "reload", label: ChaSetI18n.tr("overlays.contextMenu.reload", "Reload"), shortcut: "Ctrl+R" },
                         { id: "save", label: ChaSetI18n.tr("overlays.contextMenu.saveAs", "Save As..."), shortcut: "Ctrl+S" },
                         { id: "inspect", label: ChaSetI18n.tr("overlays.contextMenu.inspectElement", "Inspect Element"), shortcut: "F12" }
