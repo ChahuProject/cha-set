@@ -343,12 +343,15 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
               )}
               style={{
                 transform: `translateX(-50%) translateY(${depthOffset}rem) scale(${scale})`,
-                // Raised card: grow-only — width follows content but min-width
-                // pins it to the slot, so short messages never shrink below
-                // it (min 100% sits safely under the max-w cap). Inactive
-                // cards fan narrower the farther they sit from the raised card.
-                width: isActive ? 'max-content' : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
-                minWidth: isActive ? '100%' : undefined,
+                // Grow/shrink that truly animates: width stays max-content in
+                // both states (switching value types would flip discretely),
+                // while min-width/max-width — both length-percentage and
+                // covered by transition-all — glide open and closed. Raised:
+                // min 100% pins short messages to the slot, max-w cap lets
+                // long ones grow. Inactive: min = max = fan width (fixed).
+                width: 'max-content',
+                minWidth: isActive ? '100%' : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
+                maxWidth: isActive ? undefined : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
                 height: '100%',
                 opacity: opacityForDistance(dist, isActive),
                 zIndex: isActive ? 30 : (stackEntries.length - dist) * 2 + (entry.sortedIdx < activeIndex ? 1 : 0),

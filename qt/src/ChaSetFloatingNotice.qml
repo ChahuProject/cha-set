@@ -296,6 +296,13 @@ Item {
                     NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
                 }
 
+                // Width glides with the shared motion tokens when the fan
+                // reshuffles (mirrors React transition-all on min/max-width).
+                Behavior on width {
+                    enabled: ThemeTokens.animationsEnabled
+                    NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
+                }
+
                 Behavior on scale {
                     enabled: ThemeTokens.animationsEnabled
                     NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
@@ -389,6 +396,13 @@ Item {
             z: 100
 
             Behavior on y {
+                enabled: ThemeTokens.animationsEnabled
+                NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
+            }
+
+            // Pill width follows content; glide it instead of jumping so long
+            // messages grow (and shrink back) inside the motion system.
+            Behavior on width {
                 enabled: ThemeTokens.animationsEnabled
                 NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
             }

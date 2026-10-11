@@ -128,7 +128,7 @@ describe('FloatingNotice', () => {
     expect(scaleOf('queue-dot-3')).toBeCloseTo(0.95, 5);
     // No special treatment: inactive depth 0 fans by distance exactly like the
     // back cards (distance 2 narrows like depth 2 behind).
-    expect(screen.getByTestId('queue-dot-0').style.width).toBe('calc(100% - 1.8rem)');
+    expect(screen.getByTestId('queue-dot-0').style.maxWidth).toBe('calc(100% - 1.8rem)');
 
     // Positions never move when raising: offsets only follow the hover spread.
     expect(translateYOf('queue-dot-1')).toBeCloseTo(restAbove * 1.75, 5);
@@ -258,18 +258,23 @@ describe('FloatingNotice', () => {
     fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
     await screen.findByTestId('notice-card-1');
 
-    // Front mirrors back: both distance-1 cards share the same width.
-    expect(screen.getByTestId('queue-dot-0').style.width).toBe('calc(100% - 1rem)');
-    expect(screen.getByTestId('queue-dot-2').style.width).toBe('calc(100% - 1rem)');
+    // Front mirrors back: both distance-1 cards share the same fan width, and
+    // width itself stays content-sized in both states so only the min/max
+    // clamps (length-percentage, covered by transition-all) glide the grow.
+    expect(screen.getByTestId('queue-dot-0').style.width).toBe('max-content');
+    expect(screen.getByTestId('queue-dot-0').style.maxWidth).toBe('calc(100% - 1rem)');
+    expect(screen.getByTestId('queue-dot-2').style.maxWidth).toBe('calc(100% - 1rem)');
     // Container never follows content length: fixed sizer still anchors it.
     const sizer = screen
       .getByTestId('floating-notice-container')
       .querySelector('[aria-hidden="true"]');
     expect(sizer?.className).toContain('w-64');
-    // Raised card grows only: content width pinned by min-width 100%.
+    // Raised card grows only: content width pinned by min-width 100%, with no
+    // inline max cap so the max-w class lets long messages open up.
     const raisedStyle = screen.getByTestId('notice-card-1').style;
     expect(raisedStyle.width).toBe('max-content');
     expect(raisedStyle.minWidth).toBe('100%');
+    expect(raisedStyle.maxWidth).toBe('');
   });
 
   it('renders an unlimited stack without slicing behind layers', () => {
