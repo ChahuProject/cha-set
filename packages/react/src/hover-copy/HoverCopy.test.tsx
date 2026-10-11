@@ -92,11 +92,18 @@ describe('HoverCopy', () => {
     expect(icon).toHaveClass('animate-in');
   });
 
-  it('button is centered in the overlay', () => {
-    render(<HoverCopy text="abc">content</HoverCopy>);
+  it('trigger is a background-free full-overlay layer with an auto-fit glyph', () => {
+    const { container } = render(<HoverCopy text="abc">content</HoverCopy>);
     const button = screen.getByRole('button', { name: 'Copy to clipboard' });
-    expect(button).toHaveClass('left-1/2');
-    expect(button).toHaveClass('top-1/2');
+    // Fills the overlay so the whole layer reads as one big button...
+    expect(button).toHaveClass('inset-0');
+    // ...with no button chrome (no surface, border, or shadow).
+    expect(button).not.toHaveClass('bg-popover');
+    expect(button.className).not.toMatch(/border/);
+    expect(button).not.toHaveClass('shadow-sm');
+    // Glyph auto-fits inside the wrapped content and never overflows it.
+    const icon = container.querySelector('button svg');
+    expect(icon).toHaveClass('h-[min(1.5rem,55%)]');
   });
 
   it('clicking anywhere on the revealed overlay copies (whole-overlay trigger)', async () => {

@@ -51,9 +51,11 @@ const ICONS = {
 } as const;
 
 /**
- * Hover-dim overlay + centered copy button around arbitrary content.
- * The whole overlay is the copy trigger: hovering reveals a dim scrim with
- * a centered button, and clicking anywhere on the overlay copies.
+ * Hover-dim overlay + background-free centered glyph around arbitrary content.
+ * The whole overlay reads as one big button: hovering reveals a dim scrim
+ * with a semi-transparent centered icon (no button chrome), and clicking
+ * anywhere on the overlay copies. The glyph auto-fits inside the wrapped
+ * content and never overflows it.
  * Capability layer: owns overlay interaction, when to copy, and feedback
  * state. Zero assumptions about wrapped content. State machine per
  * docs/architecture/hover-copy.md section 3: idle | hovered | copied.
@@ -239,13 +241,19 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
           disabled={disabled}
           onClick={handleCopy}
           className={cn(
-            'absolute left-1/2 top-1/2 z-10 flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-popover text-popover-foreground shadow-sm transition-opacity duration-quick ease-standard',
+            'absolute inset-0 z-10 flex items-center justify-center rounded-[inherit] p-1 transition-opacity duration-quick ease-standard',
             revealed ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
             disabled ? 'cursor-not-allowed' : 'cursor-pointer',
           )}
         >
           <OverlayGlyph
-            className={cn('size-3.5', state === 'copied' && 'animate-in fade-in-0 zoom-in-75 duration-short')}
+            className={cn(
+              'h-[min(1.5rem,55%)] w-auto shrink-0',
+              state === 'copied'
+                ? 'text-white'
+                : 'text-white/60 transition-colors duration-quick ease-standard group-hover:text-white/90',
+              state === 'copied' && 'animate-in fade-in-0 zoom-in-75 duration-short',
+            )}
           />
         </button>
       </span>

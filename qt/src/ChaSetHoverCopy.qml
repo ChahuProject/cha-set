@@ -1,6 +1,8 @@
-// ChaSetHoverCopy.qml — Hover-dim overlay + centered copy button (capability layer)
-// The whole overlay is the copy trigger: hovering reveals a dim scrim with a
-// centered button, and tapping anywhere on the overlay copies.
+// ChaSetHoverCopy.qml — Hover-dim overlay + background-free centered glyph
+// (capability layer). The whole overlay reads as one big button: hovering
+// reveals a dim scrim with a semi-transparent centered icon (no button
+// chrome), and tapping anywhere on the overlay copies. The glyph auto-fits
+// inside the wrapped content and never overflows it.
 // Implements docs/architecture/hover-copy.md sections 3-4 exactly.
 // Zero assumptions about wrapped content: arbitrary children are hosted in
 // contentHost via the default property alias; the root hugs them.
@@ -93,23 +95,26 @@ Item {
         }
     }
 
-    // Centered copy button: 24 logical-unit circle, centered in the overlay,
-    // above the scrim. Present only while revealed (idle = not visible/clickable).
-    Rectangle {
+    // Big-button trigger: background-free, fills the overlay with an inset
+    // margin so it never overflows the wrapped content. Present only while
+    // revealed (idle = not visible/clickable). The centered glyph is the only
+    // visible affordance — no surface, no border, no shadow.
+    Item {
         id: copyBtn
-        width: ThemeTokens.dp(24)
-        height: ThemeTokens.dp(24)
-        radius: ThemeTokens.dp(12)
-        anchors.centerIn: parent
+        anchors.fill: parent
+        anchors.margins: ThemeTokens.dp(4)
         z: 2
-        // Surface + text pairing red line: panel surface, ThemeTokens.text icon.
-        color: ThemeTokens.panel
-        border.width: 1
-        border.color: ThemeTokens.border
         opacity: root._revealed ? 1.0 : 0.0
         visible: opacity > 0
         enabled: visible && !root.disabled
         activeFocusOnTab: enabled
+
+        // Glyph size in logical units (ChaSetIcon scales via ThemeTokens.dp
+        // internally): 55% of the smallest overlay dimension, clamped to
+        // 8..14 so it auto-shrinks with small content and never overflows.
+        readonly property int glyphSize: Math.max(8, Math.min(14,
+            Math.round(Math.min(copyBtn.width, copyBtn.height)
+                / Math.max(0.25, ThemeTokens.uiScale) * 0.55)))
 
         onActiveFocusChanged: {
             root._buttonFocused = copyBtn.activeFocus
@@ -137,8 +142,11 @@ Item {
             id: copyIcon
             anchors.centerIn: parent
             name: root.effectiveIcon
-            size: 14
-            color: ThemeTokens.text
+            size: copyBtn.glyphSize
+            // White-on-dim-scrim overlay idiom (same approach as dialog
+            // scrims): semi-transparent at rest, solid on success feedback.
+            color: "white"
+            opacity: root.state === "copied" ? 1.0 : 0.65
             scale: root.state === "copied" ? 1.0 : 0.85
 
             Behavior on scale {
@@ -147,12 +155,13 @@ Item {
             }
         }
 
-        HoverHandler {
-            id: btnHover
-            enabled: !root.disabled
-            cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.PointingHandCursor
-        }
-
+        // NOTE: no HoverHandler here on purpose. Cursor affordance for the
+        // whole overlay is owned solely by the state-aware revealHover below
+        // (Arrow while idle, PointingHand while revealed), so deeper content
+        // keeps its own cursor (e.g. selectable text keeps IBeam under an
+        // idle overlay) exactly as before the background-free redesign.
+        // A topmost PointingHand handler here would win over deeper handlers
+        // within the probe window and break cursor-conformance raycasting.
         TapHandler {
             id: btnTap
             enabled: copyBtn.enabled
@@ -160,9 +169,10 @@ Item {
         }
     }
 
-    // Reveal handler (#1): mouse hover over the wrapper. The whole overlay is
-    // the copy trigger while revealed, so the wrapper claims the pointing
-    // hand alongside the centered button.
+    // Reveal handler (#1): mouse hover over the wrapper. It is the sole owner
+    // of the overlay cursor affordance — Arrow while idle, PointingHand while
+    // revealed (the whole overlay is the copy trigger then). Deeper content
+    // handlers (e.g. IBeam over selectable text) keep precedence by depth.
     HoverHandler {
         id: revealHover
         enabled: !root.disabled
@@ -181,7 +191,7 @@ Item {
 
     // Touch fallback (#3): first tap on content pins the overlay open when no
     // hover modality is active; the second tap anywhere on the overlay
-    // (scrim or centered button) copies (#5).
+    // (scrim or centered glyph) copies (#5).
     TapHandler {
         id: touchTap
         enabled: !root.disabled

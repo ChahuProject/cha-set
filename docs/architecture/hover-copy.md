@@ -105,20 +105,27 @@ drift between stacks; the parity test asserts both implementations restore to
   reach the wrapper; Qt: scrim `TapHandler` active only while revealed).
 - Whole-overlay click-to-copy: hovering reveals the overlay, and clicking
   ANYWHERE on it copies. React: the wrapper `span` owns `onClick=copy`
-  (the centered button stops propagation so it never double-fires). Qt:
-  the scrim `TapHandler` (`enabled: revealed && !disabled`) and the button
-  `TapHandler` both call `copy()`.
-- Centered button: circle, size 24 logical units, centered in the overlay
-  (React: `absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`;
-  Qt: `anchors.centerIn: parent`), border 1 (`border-border` /
-  `ThemeTokens.border`), surface `bg-popover text-popover-foreground`
-  (React) / `ThemeTokens.panel` + `ThemeTokens.text` (Qt), icon size 14
-  logical units. Cursor: the whole revealed overlay claims
-  `cursor-pointer` / `Qt.PointingHandCursor` (React: wrapper + button;
-  Qt: reveal `HoverHandler` switches to `PointingHandCursor` while
-  revealed); disabled -> `cursor-not-allowed` / `Qt.ForbiddenCursor`
-  (never bare `pointer-events-none` dropping the cursor).
-- Button z-order above scrim; scrim never above content text by interaction.
+  (the full-bleed trigger button stops propagation so it never double-fires).
+  Qt: the scrim `TapHandler` (`enabled: revealed && !disabled`) and the
+  trigger `TapHandler` both call `copy()`.
+- Background-free centered glyph (the overlay reads as one big button):
+  no surface, no border, no shadow — only a centered icon over the dim.
+  White-on-dim-scrim overlay idiom (same approach as dialog scrims, so it
+  reads in light AND dark themes): semi-transparent at rest (React
+  `text-white/60`, brightening to `text-white/90` on hover; Qt opacity
+  `0.65`), solid white on success feedback (`copied`).
+  Auto-fit, never overflows: the trigger fills the overlay with a 4-unit
+  inset margin (React `absolute inset-0 ... p-1`; Qt `anchors.fill` +
+  `margins: dp(4)`), and the glyph is clamped to 55% of the smallest overlay
+  dimension capped at 24 logical units / `1.5rem` (React
+  `h-[min(1.5rem,55%)] w-auto`; Qt `glyphSize: max(8, min(14, ...))`),
+  so it shrinks with small content instead of crossing its bounds.
+- Cursor: the whole revealed overlay claims `cursor-pointer` /
+  `Qt.PointingHandCursor` (React: wrapper + trigger; Qt: reveal
+  `HoverHandler` switches to `PointingHandCursor` while revealed);
+  disabled -> `cursor-not-allowed` / `Qt.ForbiddenCursor` (never bare
+  `pointer-events-none` dropping the cursor).
+- Glyph z-order above scrim; scrim never above content text by interaction.
 - HoverCopy itself stays content-agnostic: any children are accepted and no
   child tag is assumed.
 
@@ -126,11 +133,11 @@ drift between stacks; the parity test asserts both implementations restore to
 
 ## 5. Keyboard, touch, and a11y
 
-- The overlay button is always present in the tree but unrevealed until
-  hover/focus (focus-within reveals it). `Tab` focuses the centered button,
-  `Shift+Tab` leaves, `Enter`/`Space` act as copy activation (transition #5).
-  Clicking anywhere on the revealed overlay is equivalent to activating the
-  centered button.
+- The overlay trigger is always present in the tree but unrevealed until
+  hover/focus (focus-within reveals it). `Tab` focuses the full-overlay
+  trigger, `Shift+Tab` leaves, `Enter`/`Space` act as copy activation
+  (transition #5). Clicking anywhere on the revealed overlay is equivalent
+  to activating the centered glyph.
 - Touch (no hover): first tap on the content reveals the overlay (pinned
   `hovered`), second tap anywhere on the overlay (scrim or centered button)
   copies. A mouse pointer entering the component takes over (unpins).
