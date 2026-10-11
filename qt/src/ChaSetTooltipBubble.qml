@@ -144,6 +144,21 @@ Item {
                 }
             }
 
+            // Natural (unwrapped) description width measured off-layout:
+            // TextMetrics never participates in layout, so feeding it into the
+            // wrapping Text's `width` below cannot form the
+            // width -> implicitWidth -> width feedback cycle that QQuickText
+            // flags as a binding loop now that this subtree stays visible
+            // (opacity-hidden bubble, see ChaSetTooltip).
+            TextMetrics {
+                id: descMetrics
+                text: root.description
+                font.family: (typeof Typography !== "undefined" && Typography && Typography.familySans)
+                        ? Typography.familySans : undefined
+                font.pixelSize: (typeof Typography !== "undefined" && Typography)
+                        ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
+            }
+
             Text {
                 id: descText
                 objectName: "descText"
@@ -159,7 +174,7 @@ Item {
                 wrapMode: Text.Wrap
                 readonly property real maxDescW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                         ? ThemeTokens.dp(280) : Math.round(280 * root.uiScaleFactor)
-                width: visible ? Math.min(implicitWidth, maxDescW) : 0
+                width: visible ? Math.min(descMetrics.boundingWidth, maxDescW) : 0
                 horizontalAlignment: Text.AlignHCenter
             }
         }
