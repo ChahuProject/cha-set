@@ -226,7 +226,19 @@ Item {
             revealed: false,
             slideOffset: root.slideY * ThemeTokens.dp(10),
             slideOffsetX: root.slideX * ThemeTokens.dp(10),
-            width: root.cardWidth
+            width: root.cardWidth,
+            itemId: entry.id !== undefined ? String(entry.id) : "",
+            tone: entry.tone !== undefined ? String(entry.tone) : "neutral",
+            statusKey: entry.statusKey !== undefined ? String(entry.statusKey) : "queued",
+            iconName: entry.iconName !== undefined ? String(entry.iconName) : "",
+            title: entry.title !== undefined ? String(entry.title) : "",
+            detail: entry.detail !== undefined ? String(entry.detail) : "",
+            meta: entry.meta !== undefined ? String(entry.meta) : "",
+            progress: (typeof entry.progress === "number") ? entry.progress : -1,
+            indeterminate: Boolean(entry.indeterminate),
+            dismissible: Boolean(entry.dismissible),
+            dismissLabel: entry.dismissLabel !== undefined ? String(entry.dismissLabel) : "",
+            actions: entry.actions ? entry.actions : []
         })
         if (!card) return null
         root.applyEntry(card, entry)

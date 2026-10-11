@@ -59,6 +59,7 @@ ChaSetActivityStack {
         onTriggered: {
             root._cleared = true
             root._revision++
+            root.entries = root.buildEntries()
             root.rebuild()
         }
     }
@@ -108,6 +109,7 @@ ChaSetActivityStack {
             }
         }
         root._revision++
+        root.entries = root.buildEntries()
         root.rebuild()
     }
 

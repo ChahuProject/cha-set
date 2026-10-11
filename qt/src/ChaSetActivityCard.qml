@@ -166,6 +166,7 @@ Item {
             Item {
                 id: topRow
                 width: parent.width
+                implicitHeight: height
                 height: Math.max(glyphFrame.height, middle.height, dismissBtn.visible ? dismissBtn.height : 0)
 
                 Rectangle {
@@ -293,6 +294,7 @@ Item {
                 id: progressTrack
                 visible: root.hasProgress
                 width: parent.width
+                implicitHeight: height
                 height: ThemeTokens.dp(3)
                 radius: height / 2
                 color: Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.4)
