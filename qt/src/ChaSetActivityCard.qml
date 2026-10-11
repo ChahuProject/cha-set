@@ -342,7 +342,7 @@ Item {
                 id: actionsHost
                 visible: root.hasActions
                 width: parent.width
-                implicitHeight: actionsRow.implicitHeight
+                implicitHeight: root.hasActions ? Math.max(actionsRow.implicitHeight, ThemeTokens.dp(24)) : 0
                 height: implicitHeight
 
                 Row {

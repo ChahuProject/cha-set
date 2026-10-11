@@ -230,6 +230,8 @@ Item {
         })
         if (!card) return null
         root.applyEntry(card, entry)
+        card.heightChanged.connect(root.layout)
+        card.implicitHeightChanged.connect(root.layout)
         card.dismissRequested.connect(function () {
             root.dismissed(card.itemId)
         })
@@ -249,6 +251,12 @@ Item {
     }
 
     function retireCard(card, slot) {
+        if (card && card.obj) {
+            try {
+                card.obj.heightChanged.disconnect(root.layout)
+                card.obj.implicitHeightChanged.disconnect(root.layout)
+            } catch (err) {}
+        }
         var ghost = { id: card.id, obj: card.obj, slot: slot }
         root._ghosts.push(ghost)
         ghost.obj.revealed = false
@@ -513,6 +521,7 @@ Item {
             visible: !root.collapsed
             showVerticalScrollBar: root.expanded || root._wellContentHeight > root.maxStackHeight
             showHorizontalScrollBar: false
+            clip: root.expanded || root._wellContentHeight > root.maxStackHeight
             height: root.expanded
                 ? Math.min(root._wellContentHeight, root.maxWellHeight)
                 : Math.min(root._wellContentHeight, root.maxStackHeight)

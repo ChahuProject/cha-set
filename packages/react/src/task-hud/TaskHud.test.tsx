@@ -53,6 +53,21 @@ describe('TaskHud', () => {
     expect(screen.getByText('12/12')).toBeInTheDocument();
   });
 
+  it('does not render counter when total is non-positive or unknown (-1)', () => {
+    const unknownTask: TaskItem = {
+      id: 'task-unknown',
+      title: 'Indeterminate Notification',
+      detail: 'Copying path',
+      status: 'success',
+      total: -1,
+      done: 0,
+    };
+    render(<TaskHud tasks={[unknownTask]} forceVisible />);
+    expect(screen.getByText('Indeterminate Notification')).toBeInTheDocument();
+    expect(screen.getByText('Copying path')).toBeInTheDocument();
+    expect(screen.queryByText(/0\/-1/)).not.toBeInTheDocument();
+  });
+
   it('shows the elapsed readout for a running task', () => {
     render(<TaskHud tasks={[sampleTasks[0]!]} forceVisible />);
     expect(screen.getByText('1s')).toBeInTheDocument();

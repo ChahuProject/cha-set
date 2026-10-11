@@ -165,8 +165,8 @@ ChaSetActivityStack {
     function entryFor(task) {
         var status = root.normalizeStatus(task.status)
         var running = status === "running"
-        var hasCounter = task.total !== undefined && task.total !== null
-            && task.done !== undefined && task.done !== null
+        var hasCounter = typeof task.total === "number" && task.total > 0
+            && typeof task.done === "number" && task.done >= 0
         var counter = hasCounter ? (task.done + "/" + task.total) : ""
         var detail = (task.detail !== undefined && task.detail !== null) ? String(task.detail) : ""
         var alreadyHasCounter = counter !== "" && detail.indexOf(counter) !== -1

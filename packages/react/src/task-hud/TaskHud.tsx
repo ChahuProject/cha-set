@@ -126,7 +126,10 @@ export const TaskHud = React.forwardRef<HTMLDivElement, TaskHudProps>(function T
     const presentation = STATUS_PRESENTATION[status] ?? STATUS_PRESENTATION.running;
     const running = status === 'running';
     const indeterminate = Boolean(task.indeterminate) && running;
-    const counter = task.total != null && task.done != null ? `${task.done}/${task.total}` : null;
+    const counter =
+      task.total != null && task.total > 0 && task.done != null && task.done >= 0
+        ? `${task.done}/${task.total}`
+        : null;
     const cancellable = Boolean(task.cancellable) && running && Boolean(onCancel);
     const dismissible = Boolean(onDismiss) && !cancellable;
 
