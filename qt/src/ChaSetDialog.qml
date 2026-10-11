@@ -71,8 +71,20 @@ Rectangle {
 
     function resetCardPosition() {
         if (!root.parent) return;
-        card.x = Math.max(ThemeTokens.dp(20), Math.round((root.width - card.width) / 2));
-        card.y = Math.max(ThemeTokens.dp(20), Math.round((root.height - card.height) / 2));
+        card.x = Math.max(ThemeTokens.dp(8), Math.min(root.parent.width - card.width - ThemeTokens.dp(8), Math.round((root.width - card.width) / 2)));
+        card.y = Math.max(ThemeTokens.dp(8), Math.min(root.parent.height - card.height - ThemeTokens.dp(8), Math.round((root.height - card.height) / 2)));
+    }
+
+    function clampCardPosition() {
+        if (!root.parent) return;
+        card.x = Math.max(ThemeTokens.dp(8), Math.min(card.x, root.parent.width - card.width - ThemeTokens.dp(8)));
+        card.y = Math.max(ThemeTokens.dp(8), Math.min(card.y, root.parent.height - card.height - ThemeTokens.dp(8)));
+    }
+
+    Connections {
+        target: root.parent
+        function onWidthChanged() { root.clampCardPosition(); }
+        function onHeightChanged() { root.clampCardPosition(); }
     }
 
     Shortcut {
@@ -108,10 +120,11 @@ Rectangle {
     ChaSetSquircle {
         id: card
         width: Math.min((parent ? parent.width : ThemeTokens.dp(1000)) - ThemeTokens.dp(40), root.dialogWidth)
-        implicitHeight: cardLayout.implicitHeight + ThemeTokens.dp(40)
-        height: Math.min((parent ? parent.height : ThemeTokens.dp(800)) - ThemeTokens.dp(40), implicitHeight)
-        x: Math.max(ThemeTokens.dp(20), Math.round((parent ? (parent.width - width) / 2 : 0)))
-        y: Math.max(ThemeTokens.dp(20), Math.round((parent ? (parent.height - height) / 2 : 0)))
+        readonly property real contentPreferredHeight: (headerCol.visible ? (headerCol.implicitHeight + ThemeTokens.dp(16)) : 0) + bodyContent.implicitHeight + ThemeTokens.dp(40)
+        implicitHeight: contentPreferredHeight
+        height: Math.min((parent ? parent.height : ThemeTokens.dp(800)) - ThemeTokens.dp(40), contentPreferredHeight)
+        x: Math.max(ThemeTokens.dp(8), Math.min(parent ? parent.width - width - ThemeTokens.dp(8) : 0, Math.round((parent ? (parent.width - width) / 2 : 0))))
+        y: Math.max(ThemeTokens.dp(8), Math.min(parent ? parent.height - height - ThemeTokens.dp(8) : 0, Math.round((parent ? (parent.height - height) / 2 : 0))))
         color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
@@ -134,19 +147,23 @@ Rectangle {
         DragHandler {
             enabled: root.draggable
             target: card
+            xAxis.minimum: ThemeTokens.dp(8)
+            xAxis.maximum: parent ? Math.max(ThemeTokens.dp(8), parent.width - card.width - ThemeTokens.dp(8)) : 0
+            yAxis.minimum: ThemeTokens.dp(8)
+            yAxis.maximum: parent ? Math.max(ThemeTokens.dp(8), parent.height - card.height - ThemeTokens.dp(8)) : 0
         }
 
+        // Dialog Header (pinned at top)
         Column {
-            id: cardLayout
-            width: parent.width - ThemeTokens.dp(40)
-            anchors.centerIn: parent
-            spacing: ThemeTokens.dp(16)
-
-            // Dialog Header
-            Column {
-                width: parent.width
-                spacing: ThemeTokens.dp(6)
-                visible: root.title !== "" || root.description !== ""
+            id: headerCol
+            anchors.top: parent.top
+            anchors.topMargin: ThemeTokens.dp(20)
+            anchors.left: parent.left
+            anchors.leftMargin: ThemeTokens.dp(20)
+            anchors.right: parent.right
+            anchors.rightMargin: ThemeTokens.dp(20)
+            spacing: ThemeTokens.dp(6)
+            visible: root.title !== "" || root.description !== ""
 
                 Row {
                     width: parent.width
@@ -293,12 +310,31 @@ Rectangle {
                         }
                     }
                 }
+        }
+
+        // Dialog Body Content Area (Flickable + ChaSetScrollBar)
+        Flickable {
+            id: bodyFlickable
+            anchors.top: headerCol.visible ? headerCol.bottom : parent.top
+            anchors.topMargin: headerCol.visible ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: ThemeTokens.dp(20)
+            anchors.left: parent.left
+            anchors.leftMargin: ThemeTokens.dp(20)
+            anchors.right: parent.right
+            anchors.rightMargin: ThemeTokens.dp(20)
+            contentWidth: width
+            contentHeight: bodyContent.implicitHeight
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
+
+            ScrollBar.vertical: ChaSetScrollBar {
+                policy: ScrollBar.AsNeeded
             }
 
-            // Dialog Body Content Area
             Column {
                 id: bodyContent
-                width: parent.width
+                width: bodyFlickable.width
                 spacing: ThemeTokens.dp(14)
             }
         }

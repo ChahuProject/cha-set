@@ -80,13 +80,17 @@ Rectangle {
 
     ChaSetSquircle {
         id: card
-        width: Math.min(parent.width - ThemeTokens.dp(40), root.dialogWidth)
-        implicitHeight: cardCol.implicitHeight + ThemeTokens.dp(36)
-        anchors.centerIn: parent
+        width: Math.min(parent ? parent.width - ThemeTokens.dp(40) : ThemeTokens.dp(460), root.dialogWidth)
+        readonly property real contentPreferredHeight: titleCol.implicitHeight + alertDescText.height + buttonRow.implicitHeight + ThemeTokens.dp(40) + ThemeTokens.dp(26)
+        implicitHeight: contentPreferredHeight
+        height: Math.min(parent ? Math.max(ThemeTokens.dp(120), parent.height - ThemeTokens.dp(40)) : ThemeTokens.dp(600), contentPreferredHeight)
+        x: Math.max(ThemeTokens.dp(8), Math.min(parent ? parent.width - width - ThemeTokens.dp(8) : 0, Math.round((parent ? (parent.width - width) / 2 : 0))))
+        y: Math.max(ThemeTokens.dp(8), Math.min(parent ? parent.height - height - ThemeTokens.dp(8) : 0, Math.round((parent ? (parent.height - height) / 2 : 0))))
         color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
         radius: ThemeTokens.dp(root.customRadius)
+        clip: true
         scale: root.open ? 1.0 : 0.95
 
         Behavior on scale {
@@ -100,124 +104,150 @@ Rectangle {
             // prevent scrim dismiss when clicking inside dialog
         }
 
+        // Title Column (pinned at top)
         Column {
-            id: cardCol
-            anchors.fill: parent
-            anchors.margins: ThemeTokens.dp(20)
-            spacing: ThemeTokens.dp(16)
+            id: titleCol
+            anchors.top: parent.top
+            anchors.topMargin: ThemeTokens.dp(20)
+            anchors.left: parent.left
+            anchors.leftMargin: ThemeTokens.dp(20)
+            anchors.right: parent.right
+            anchors.rightMargin: ThemeTokens.dp(20)
+            spacing: ThemeTokens.dp(6)
 
-            Column {
+            TextEdit {
+                id: alertTitleText
+                text: root.title
+                color: ThemeTokens.text
+                font.pixelSize: Typography.sizeHeading
+                font.weight: Font.DemiBold
                 width: parent.width
-                spacing: ThemeTokens.dp(6)
+                height: contentHeight
+                readOnly: true
+                selectByMouse: true
+                selectByKeyboard: true
+                cursorVisible: false
+                activeFocusOnPress: true
+                textMargin: 0
+                padding: 0
+                selectionColor: ThemeTokens.accent
+                selectedTextColor: "#ffffff"
 
-                TextEdit {
-                    id: alertTitleText
-                    text: root.title
-                    color: ThemeTokens.text
-                    font.pixelSize: Typography.sizeHeading
-                    font.weight: Font.DemiBold
-                    width: parent.width
-                    height: contentHeight
-                    readOnly: true
-                    selectByMouse: true
-                    selectByKeyboard: true
-                    cursorVisible: false
-                    activeFocusOnPress: true
-                    textMargin: 0
-                    padding: 0
-                    selectionColor: ThemeTokens.accent
-                    selectedTextColor: "#ffffff"
+                HoverHandler {
+                    cursorShape: Qt.IBeamCursor
+                }
 
-                    HoverHandler {
-                        cursorShape: Qt.IBeamCursor
-                    }
+                onSelectedTextChanged: {
+                    if (selectedText.length > 0) SelectionHub.claim(alertTitleText);
+                    else if (SelectionHub.activeOwner === alertTitleText) SelectionHub.clear(alertTitleText);
+                }
 
-                    onSelectedTextChanged: {
-                        if (selectedText.length > 0) SelectionHub.claim(alertTitleText);
-                        else if (SelectionHub.activeOwner === alertTitleText) SelectionHub.clear(alertTitleText);
-                    }
-
-                    Keys.onPressed: function(event) {
-                        if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
-                            SelectionHub.copyActiveSelection();
-                            event.accepted = true;
-                        }
-                    }
-
-                    TapHandler {
-                        acceptedButtons: Qt.RightButton
-                        onTapped: function(eventPoint) {
-                            var scenePos = eventPoint.scenePosition;
-                            SelectionHub.showContextMenu(scenePos.x, scenePos.y, alertTitleText);
-                        }
+                Keys.onPressed: function(event) {
+                    if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
+                        SelectionHub.copyActiveSelection();
+                        event.accepted = true;
                     }
                 }
 
-                TextEdit {
-                    id: alertDescText
-                    text: root.description
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: Typography.sizeBody
-                    wrapMode: TextEdit.WordWrap
-                    width: parent.width
-                    height: contentHeight
-                    readOnly: true
-                    selectByMouse: true
-                    selectByKeyboard: true
-                    cursorVisible: false
-                    activeFocusOnPress: true
-                    textMargin: 0
-                    padding: 0
-                    selectionColor: ThemeTokens.accent
-                    selectedTextColor: "#ffffff"
-
-                    HoverHandler {
-                        cursorShape: Qt.IBeamCursor
-                    }
-
-                    onSelectedTextChanged: {
-                        if (selectedText.length > 0) SelectionHub.claim(alertDescText);
-                        else if (SelectionHub.activeOwner === alertDescText) SelectionHub.clear(alertDescText);
-                    }
-
-                    Keys.onPressed: function(event) {
-                        if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
-                            SelectionHub.copyActiveSelection();
-                            event.accepted = true;
-                        }
-                    }
-
-                    TapHandler {
-                        acceptedButtons: Qt.RightButton
-                        onTapped: function(eventPoint) {
-                            var scenePos = eventPoint.scenePosition;
-                            SelectionHub.showContextMenu(scenePos.x, scenePos.y, alertDescText);
-                        }
+                TapHandler {
+                    acceptedButtons: Qt.RightButton
+                    onTapped: function(eventPoint) {
+                        var scenePos = eventPoint.scenePosition;
+                        SelectionHub.showContextMenu(scenePos.x, scenePos.y, alertTitleText);
                     }
                 }
             }
+        }
 
-            Row {
-                anchors.right: parent.right
-                spacing: ThemeTokens.dp(8)
+        // Action Buttons Row (pinned at bottom)
+        Row {
+            id: buttonRow
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: ThemeTokens.dp(20)
+            anchors.right: parent.right
+            anchors.rightMargin: ThemeTokens.dp(20)
+            spacing: ThemeTokens.dp(8)
 
-                ChaSetButton {
-                    text: root.cancelText
-                    variant: "outline"
-                    size: "sm"
-                    onClicked: {
-                        root.open = false
-                        root.cancelled()
+            ChaSetButton {
+                text: root.cancelText
+                variant: "outline"
+                size: "sm"
+                onClicked: {
+                    root.open = false
+                    root.cancelled()
+                }
+            }
+
+            ChaSetButton {
+                text: root.confirmText
+                variant: root.actionVariant
+                size: "sm"
+                onClicked: {
+                    root.open = false
+                    root.confirmed()
+                }
+            }
+        }
+
+        // Description Flickable in the middle
+        Flickable {
+            id: alertDescFlickable
+            anchors.top: titleCol.bottom
+            anchors.topMargin: ThemeTokens.dp(10)
+            anchors.bottom: buttonRow.top
+            anchors.bottomMargin: ThemeTokens.dp(16)
+            anchors.left: parent.left
+            anchors.leftMargin: ThemeTokens.dp(20)
+            anchors.right: parent.right
+            anchors.rightMargin: ThemeTokens.dp(20)
+            contentWidth: width
+            contentHeight: alertDescText.height
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
+
+            ScrollBar.vertical: ChaSetScrollBar {
+                policy: ScrollBar.AsNeeded
+            }
+
+            TextEdit {
+                id: alertDescText
+                text: root.description
+                color: ThemeTokens.subduedText
+                font.pixelSize: Typography.sizeBody
+                wrapMode: TextEdit.WordWrap
+                width: alertDescFlickable.width
+                height: contentHeight
+                readOnly: true
+                selectByMouse: true
+                selectByKeyboard: true
+                cursorVisible: false
+                activeFocusOnPress: true
+                textMargin: 0
+                padding: 0
+                selectionColor: ThemeTokens.accent
+                selectedTextColor: "#ffffff"
+
+                HoverHandler {
+                    cursorShape: Qt.IBeamCursor
+                }
+
+                onSelectedTextChanged: {
+                    if (selectedText.length > 0) SelectionHub.claim(alertDescText);
+                    else if (SelectionHub.activeOwner === alertDescText) SelectionHub.clear(alertDescText);
+                }
+
+                Keys.onPressed: function(event) {
+                    if (event.matches(StandardKey.Copy) || (event.key === Qt.Key_C && (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)))) {
+                        SelectionHub.copyActiveSelection();
+                        event.accepted = true;
                     }
                 }
 
-                ChaSetButton {
-                    text: root.confirmText
-                    variant: root.actionVariant
-                    size: "sm"
-                    onClicked: {
-                        root.open = false
-                        root.confirmed()
+                TapHandler {
+                    acceptedButtons: Qt.RightButton
+                    onTapped: function(eventPoint) {
+                        var scenePos = eventPoint.scenePosition;
+                        SelectionHub.showContextMenu(scenePos.x, scenePos.y, alertDescText);
                     }
                 }
             }
