@@ -219,6 +219,14 @@ Item {
         return "info";
     }
 
+    // Clipboard text for a notice: title plus description (newline-joined).
+    function copyTextFor(item) {
+        if (!item) return "";
+        var t = item.title || "";
+        var d = item.description || "";
+        return d.length > 0 ? t + "\n" + d : t;
+    }
+
     readonly property string currentLevel: root.activeItem
         ? root.levelTone(root.activeItem.level) : "default"
 
@@ -472,6 +480,23 @@ Item {
                         return defaultContentComponent;
                     }
                     property var modelData: root.activeItem
+                }
+
+                // Copy button: smoothly reveals on hover, ahead of close.
+                ChaSetCopyButton {
+                    id: copyBtn
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: root.activeItem !== null && root.activeItem !== undefined
+                    enabled: root._hovered && visible
+                    opacity: (root._hovered && visible) ? 1.0 : 0.0
+                    text: root.copyTextFor(root.activeItem)
+                    size: "icon-xs"
+                    variant: "ghost"
+
+                    Behavior on opacity {
+                        enabled: ThemeTokens.animationsEnabled
+                        NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+                    }
                 }
 
                 // Close button ('x'): smoothly reveals on hover

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as React from 'react';
 import { FloatingNotice, type FloatingNoticeItem } from './FloatingNotice';
 
@@ -332,8 +332,46 @@ describe('FloatingNotice', () => {
     }
   });
 
-  it('triggers onDismiss when close button is clicked', () => {
-    const onDismiss = vi.fn();
+  it('copies the raised notice message via the copy button ahead of close', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, { clipboard: { writeText } });
+    const notices: FloatingNoticeItem[] = [
+      { id: '1', title: 'Deploy finished', description: '32 services updated' },
+    ];
+
+    render(<FloatingNotice notices={notices} forceHover />);
+
+    const copyBtn = screen.getByTestId('notice-copy-button');
+    const closeBtn = screen.getByTestId('notice-close-button');
+    // Copy sits ahead of (before) the close button in DOM order.
+    expect(copyBtn.compareDocumentPosition(closeBtn)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    );
+
+    fireEvent.click(copyBtn);
+    await vi.waitFor(() => {
+      expect(writeText).toHaveBeenCalledWith('Deploy finished\n32 services updated');
+    });
+    // Copied feedback appears on the same button.
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Copied' })).toBeInTheDocument();
+    });
+  });
+
+  it('copies just the title when a notice has no description', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, { clipboard: { writeText } });
+    const notices: FloatingNoticeItem[] = [{ id: '1', title: 'Just a title' }];
+
+    render(<FloatingNotice notices={notices} forceHover />);
+
+    fireEvent.click(screen.getByTestId('notice-copy-button'));
+    await vi.waitFor(() => {
+      expect(writeText).toHaveBeenCalledWith('Just a title');
+    });
+  });
+
+  it('triggers onDismiss when close button is clicked', () => {    const onDismiss = vi.fn();
     const notices: FloatingNoticeItem[] = [
       { id: 'active-item', title: 'Closable Notice', closable: true },
     ];

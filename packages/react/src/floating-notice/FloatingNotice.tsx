@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
 import { AlertTriangleIcon, CheckIcon, InfoIcon, XIcon } from '../lib/icons';
+import { CopyButton } from '../copy-button/CopyButton';
 import type {
   FloatingNoticeItem,
   FloatingNoticeLevel,
@@ -52,6 +53,13 @@ const LEVEL_ICON: Record<FloatingNoticeLevel, (className: string) => React.React
   warning: (className) => <AlertTriangleIcon className={className} />,
   error: (className) => <XIcon className={className} />,
 };
+
+/** Clipboard text for a notice: title plus description (newline-joined). */
+function copyTextFor(item: FloatingNoticeItem): string {
+  const title = item.title ?? '';
+  const description = item.description ?? '';
+  return description.length > 0 ? `${title}\n${description}` : title;
+}
 
 const LEVEL_STYLES: Record<FloatingNoticeLevel, { container: string; icon: string; dot: string; dotActive: string }> = {
   default: {
@@ -422,6 +430,23 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
                   </div>
                 )}
               </div>
+
+              {/* Copy Button: reveals on hover, raised card only, ahead of close */}
+              {isActive && (
+                <CopyButton
+                  data-testid="notice-copy-button"
+                  text={copyTextFor(entry.item)}
+                  variant="ghost"
+                  size="icon-xs"
+                  title="Copy notice"
+                  copiedTitle="Copied"
+                  timeout={1500}
+                  className={cn(
+                    'shrink-0 size-5 rounded-full cursor-pointer transition-opacity duration-quick',
+                    isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  )}
+                />
+              )}
 
               {/* Close Button ('x'): reveals on hover, raised card only */}
               {isActive && layerClosable && (
