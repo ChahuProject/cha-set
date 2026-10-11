@@ -200,6 +200,13 @@
       插入指示线必须具备明确的起点圆点/指示标记（`●──────────────`，如 6px 圆点 + 2px 贯穿线），或鲜明的高亮强调色（`ThemeTokens.focus` / `accent`），使之在视觉上与项目本身的选中描边、焦点框或悬停底色形成绝对区分，明确传达「在两项之间插入」的交互语义。
     - **树结构三态命中区规范（before / inside / after）**:
       对于具有层级嵌套能力的树控件，叶子节点或仅排序节点按上下各 50%（中线分割）分为 `before` 与 `after`；对于可接纳子节点的容器节点（文件夹），中间区域（如 $25\% \sim 75\%$）为 `inside`（以容器整体内凹/高亮框呈现），上边缘（$<25\%$）为 `before`，下边缘（$>75\%$）为 `after`（折叠时）或展开首子项；所有 `before`/`after` 同样必须严格执行居中缝隙共线律。详细设计规范见 `docs/architecture/drag-and-drop-reorder.md`。
+18. **Mandatory Theme-Adaptive Color Contract (明暗主题自适应颜色契约 — 严禁裸描边与硬编码黑白)**:
+    - **Border-Color Pairing Mandate (描边宽度与颜色必须成对出现)**:
+      Every `border` width utility MUST be paired with an explicit theme-token border color (`border-border`, `border-primary/50`, `border-border/40`, …). A bare `border` falls back to `currentColor` (Tailwind v4 default), which renders near-white in dark mode and near-black in light mode — this is exactly how the FloatingNotice sandbox shipped a white border under the dark theme. Qt 侧同理：任何 `border.width: 1` 必须同时声明 `border.color: ThemeTokens.*`。
+    - **No Hardcoded Black & White (严禁硬编码黑白)**:
+      Raw `#fff` / `#000` / `white` / `black` / `border-white` / `bg-black` are forbidden in component and showcase code (logic-point exception: pure-icon canvas fills explicitly covered by the icon spec). Surfaces, borders and text MUST come from theme tokens (`bg-background`, `bg-card`, `text-foreground`, `text-muted-foreground`, `border-border` on React; `ThemeTokens.panel`, `ThemeTokens.text`, `ThemeTokens.border` on Qt) so both themes adapt automatically.
+    - **Dual-Theme Eyeball Gate (双主题目检门禁)**:
+      Every UI change MUST be eyeballed in BOTH light and dark before declaring done — React via the showcase theme toggle, Qt via `--shot` dark/light captures. A change verified in only one theme is NOT complete.
 
 ---
 
