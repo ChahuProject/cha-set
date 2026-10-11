@@ -203,9 +203,9 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
     return total;
   };
 
-  const insetForDepth = (sortedIdx: number): number => {
+  const insetForDistance = (dist: number): number => {
     let total = 0;
-    for (let d = 1; d <= sortedIdx; d++) {
+    for (let d = 1; d <= dist; d++) {
       total += Math.max(MIN_INSET_REM, BASE_INSET_REM * Math.pow(INSET_DECAY, d - 1));
     }
     return total;
@@ -226,10 +226,12 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
   // never depend on which card is raised, so raising causes no motion and the
   // hover target under the cursor cannot chase away mid-transition.
   // Widths are decoupled the same way: the container size comes from a fixed
-  // invisible sizer (never from the raised content), inactive widths are fixed
-  // per position, and only the raised card sizes to its own content (w-max) —
-  // so switching to a long message grows just that card, with the width change
-  // animated by the shared transition-all motion tokens.
+  // invisible sizer (never from the raised content), so switching to a long
+  // message never resizes the container. Inactive widths fan by distance from
+  // the raised card (front mirrors back); the raised card takes width
+  // max-content pinned by min-width 100% — it may only grow, never shrink
+  // below its slot — with the change covered by the shared transition-all
+  // tokens.
   const stackEntries = sortedNotices.map((item, sortedIdx) => ({ item, sortedIdx }));
   const stackSign = placement === 'top' ? 1 : -1;
   const expandFactor = isHovered ? HOVER_EXPAND : 1;
@@ -306,14 +308,14 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
             that position to the top (z-index + full size) without reordering.
             Sizes follow distance from the raised card (raised is always the
             largest); gaps widen while hovered so peeking strips stay reachable.
-            The raised card sizes to its own content (w-max) while every other
-            card keeps its fixed positional width, so no card gets special
-            treatment and switching messages never resizes the rest of the
-            stack. Deeper layers overlay.
-            Centering never lives inside `transform`: inactive layers center via
-            `left-0 right-0 mx-auto`, so both states share the exact same
-            transform list (`translateY scale`) and activation only glides
-            vertically instead of sliding sideways mid-transition. */}
+            The raised card follows its content pinned by min-width 100% while
+            every other card fans by distance, so no card gets special
+            treatment and switching messages never resizes the container. Deeper layers
+            overlay.
+            Centering never animates: every layer in every state centers via
+            `left-1/2` plus a constant `translateX(-50%)`, so the transform
+            list is identical (`translateX translateY scale`) and activation
+            only glides vertically instead of sliding sideways mid-transition. */}
         {stackEntries.map((entry) => {
           const isActive = entry.sortedIdx === activeIndex;
           const dist = Math.abs(entry.sortedIdx - activeIndex);
@@ -322,7 +324,7 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
           const layerIcon = LEVEL_ICON[layerLevel] ?? LEVEL_ICON.default;
           const depthOffset = offsetForDepth(entry.sortedIdx) * expandFactor * stackSign;
           const scale = scaleForDistance(dist, isActive);
-          const inset = insetForDepth(entry.sortedIdx);
+          const inset = insetForDistance(dist);
           const layerClosable = (entry.item.closable ?? true) && closable;
           return (
             <div
@@ -335,14 +337,18 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
               title={entry.item.title}
               aria-label={isActive ? entry.item.title : `Show notice: ${entry.item.title}`}
               className={cn(
-                'absolute top-0 left-0 right-0 mx-auto flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
+                'absolute top-0 left-1/2 flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
                 'min-w-[12rem] max-w-[28rem] cursor-pointer transition-all duration-short ease-standard',
-                isActive && 'w-max',
                 layerStyle.container
               )}
               style={{
-                transform: `translateY(${depthOffset}rem) scale(${scale})`,
-                width: isActive ? undefined : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
+                transform: `translateX(-50%) translateY(${depthOffset}rem) scale(${scale})`,
+                // Raised card: grow-only — width follows content but min-width
+                // pins it to the slot, so short messages never shrink below
+                // it (min 100% sits safely under the max-w cap). Inactive
+                // cards fan narrower the farther they sit from the raised card.
+                width: isActive ? 'max-content' : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
+                minWidth: isActive ? '100%' : undefined,
                 height: '100%',
                 opacity: opacityForDistance(dist, isActive),
                 zIndex: isActive ? 30 : (stackEntries.length - dist) * 2 + (entry.sortedIdx < activeIndex ? 1 : 0),

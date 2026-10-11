@@ -126,9 +126,9 @@ describe('FloatingNotice', () => {
     expect(scaleOf('queue-dot-0')).toBeCloseTo(0.9, 5);
     expect(scaleOf('queue-dot-1')).toBeCloseTo(0.95, 5);
     expect(scaleOf('queue-dot-3')).toBeCloseTo(0.95, 5);
-    // No special treatment: inactive depth 0 keeps its fixed positional width
-    // (full sizer width) instead of following the raised content's width.
-    expect(screen.getByTestId('queue-dot-0').style.width).toBe('100%');
+    // No special treatment: inactive depth 0 fans by distance exactly like the
+    // back cards (distance 2 narrows like depth 2 behind).
+    expect(screen.getByTestId('queue-dot-0').style.width).toBe('calc(100% - 1.8rem)');
 
     // Positions never move when raising: offsets only follow the hover spread.
     expect(translateYOf('queue-dot-1')).toBeCloseTo(restAbove * 1.75, 5);
@@ -224,28 +224,29 @@ describe('FloatingNotice', () => {
         (el) => (el as HTMLElement).style.transform
       );
 
-    // At rest every layer shares the same transform list (translateY scale).
+    // At rest every layer shares the same transform list with a constant X
+    // channel (translateX(-50%) translateY scale).
     expect(transforms()).toHaveLength(3);
     for (const t of transforms()) {
-      expect(t).not.toContain('translateX');
+      expect(t).toContain('translateX(-50%)');
     }
 
-    // Switching the raised card must not introduce a sideways slide either:
-    // activation only changes Y offset and scale, never the X channel.
+    // Switching the raised card must keep the X channel constant too:
+    // activation only changes Y offset and scale, never slides sideways.
     fireEvent.mouseEnter(screen.getByTestId('floating-notice-container'));
     fireEvent.mouseEnter(screen.getByTestId('queue-dot-2'));
     await screen.findByTestId('notice-card-2');
     for (const t of transforms()) {
-      expect(t).not.toContain('translateX');
+      expect(t).toContain('translateX(-50%)');
     }
     fireEvent.mouseEnter(screen.getByTestId('queue-dot-0'));
     await screen.findByTestId('notice-card-0');
     for (const t of transforms()) {
-      expect(t).not.toContain('translateX');
+      expect(t).toContain('translateX(-50%)');
     }
   });
 
-  it('resizes only the hovered card when messages have different lengths', async () => {
+  it('fans widths symmetrically by distance without following content length', async () => {
     const notices: FloatingNoticeItem[] = [
       { id: 'short', title: 'OK' },
       { id: 'long', title: 'This is a much longer notice message that needs more room' },
@@ -254,14 +255,21 @@ describe('FloatingNotice', () => {
 
     render(<FloatingNotice notices={notices} />);
 
-    // Bystander width is fixed per position and must survive the switch.
-    const bystanderBefore = screen.getByTestId('queue-dot-2').style.width;
     fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
     await screen.findByTestId('notice-card-1');
 
-    expect(screen.getByTestId('queue-dot-2').style.width).toBe(bystanderBefore);
-    // Only the two swapping roles change width treatment.
-    expect(screen.getByTestId('queue-dot-0').style.width).toBe('100%');
+    // Front mirrors back: both distance-1 cards share the same width.
+    expect(screen.getByTestId('queue-dot-0').style.width).toBe('calc(100% - 1rem)');
+    expect(screen.getByTestId('queue-dot-2').style.width).toBe('calc(100% - 1rem)');
+    // Container never follows content length: fixed sizer still anchors it.
+    const sizer = screen
+      .getByTestId('floating-notice-container')
+      .querySelector('[aria-hidden="true"]');
+    expect(sizer?.className).toContain('w-64');
+    // Raised card grows only: content width pinned by min-width 100%.
+    const raisedStyle = screen.getByTestId('notice-card-1').style;
+    expect(raisedStyle.width).toBe('max-content');
+    expect(raisedStyle.minWidth).toBe('100%');
   });
 
   it('renders an unlimited stack without slicing behind layers', () => {
