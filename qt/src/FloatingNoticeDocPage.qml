@@ -167,7 +167,7 @@ DocLayout {
                     anchors.bottom: parent.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottomMargin: ThemeTokens.dp(8)
-                    text: ChaSetI18n.tr("overlays.floatingNotice.sandboxHint", "Hover over the notice to pause expiry and zoom the stack, or hover the peeking cards behind to bring that notice to the front.")
+                    text: ChaSetI18n.tr("overlays.floatingNotice.sandboxHint", "Hover over the notice to pause expiry and zoom the stack, or hover a peeking card behind to raise it to the top in place.")
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeNano
                 }

@@ -483,7 +483,7 @@
       "previewTitle": "Floating Notice Stack",
       "ratingTitle": "Rated 5 stars",
       "reset": "Reset",
-      "sandboxHint": "Hover over the notice to pause expiry and zoom the stack, or hover the peeking cards behind to bring that notice to the front.",
+      "sandboxHint": "Hover over the notice to pause expiry and zoom the stack, or hover a peeking card behind to raise it to the top in place.",
       "warningTitle": "Disk storage low"
     },
     "notificationStack": {

@@ -177,7 +177,7 @@ export function FloatingNoticeDocPage() {
             <div className="text-center text-xs text-muted-foreground pb-2">
               {t(
                 'overlays.floatingNotice.sandboxHint',
-                'Hover over the notice to pause expiry and zoom the stack, or hover the peeking cards behind to bring that notice to the front.'
+                'Hover over the notice to pause expiry and zoom the stack, or hover a peeking card behind to raise it to the top in place.'
               )}
             </div>
           </div>

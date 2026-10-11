@@ -3638,7 +3638,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "previewTitle": "浮动提示堆叠",
       "ratingTitle": "已评 5 星",
       "reset": "重置",
-      "sandboxHint": "悬停在提示上可暂停倒计时并放大整个堆叠，悬停后方探出的卡片可将对应提示提到最前查看。",
+      "sandboxHint": "悬停在提示上可暂停倒计时并放大整个堆叠，悬停后方探出的卡片可将其原位提到最上层查看。",
       "warningTitle": "磁盘空间不足"
     },
     "notificationStack": {
@@ -7375,7 +7375,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "previewTitle": "Floating Notice Stack",
       "ratingTitle": "Rated 5 stars",
       "reset": "Reset",
-      "sandboxHint": "Hover over the notice to pause expiry and zoom the stack, or hover the peeking cards behind to bring that notice to the front.",
+      "sandboxHint": "Hover over the notice to pause expiry and zoom the stack, or hover a peeking card behind to raise it to the top in place.",
       "warningTitle": "Disk storage low"
     },
     "notificationStack": {
