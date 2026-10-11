@@ -38,7 +38,7 @@ DocLayout {
         }
 
         DocText {
-            text: ChaSetI18n.tr("desktopComposite.tooltip.overviewDesc", "Test interactive hover delays, side positioning, keyboard shortcut badges, directional arrows, and disabled behavior across Web and Qt Quick Desktop.")
+            text: ChaSetI18n.tr("desktopComposite.tooltip.overviewDesc", "Test interactive hover delays, side positioning, keyboard shortcut badges, directional arrows, and disabled behavior across Web and Qt Quick Desktop. Placement policy: dense vertical lists (menu items, select options, sidebar nav, virtual rows) default to right so bubbles never cover the prev/next sibling; top-docked chrome defaults to bottom; bottom-docked chrome to top; modal close buttons to bottom; everything else to top.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -339,6 +339,47 @@ DocLayout {
                             side: "top"
                             delay: 0
                             ChaSetButton { size: "sm"; variant: "secondary"; text: ChaSetI18n.tr("overlays.tooltip.directionalArrowButton", "With Arrow") }
+                        }
+                    }
+                }
+            }
+
+            // Menu Items: Right Default (mirrors React DocPage)
+            ChaSetCard {
+                width: (parent.width - ThemeTokens.dp(16)) / 2
+                customRadius: 8
+                Column {
+                    width: parent.width
+                    topPadding: ThemeTokens.dp(14)
+                    bottomPadding: ThemeTokens.dp(14)
+                    leftPadding: ThemeTokens.dp(14)
+                    rightPadding: ThemeTokens.dp(14)
+                    spacing: ThemeTokens.dp(8)
+                    DocText { text: ChaSetI18n.tr("overlays.tooltip.menuItemsRightTitle", "Menu Items (Right Default)"); color: root.cFg; font.pixelSize: Typography.sizeSmall; font.weight: Typography.weightSemibold }
+                    DocText { text: ChaSetI18n.tr("overlays.tooltip.menuItemsRightDesc", "Dense vertical lists use right so the bubble never covers the prev/next sibling item"); color: root.cMutedFg; font.pixelSize: Typography.sizeSmall }
+                    Column {
+                        width: parent.width - ThemeTokens.dp(28)
+                        spacing: ThemeTokens.dp(4)
+                        ChaSetTooltip {
+                            width: parent.width
+                            text: ChaSetI18n.tr("overlays.tooltip.menuItemsRightPinContent", "Pinned — keeps siblings visible")
+                            side: "right"
+                            delay: 0
+                            ChaSetButton { width: parent.width; size: "sm"; variant: "ghost"; text: ChaSetI18n.tr("overlays.tooltip.menuItemsRightPinButton", "Pin tab") }
+                        }
+                        ChaSetTooltip {
+                            width: parent.width
+                            text: ChaSetI18n.tr("overlays.tooltip.menuItemsRightDuplicateContent", "Duplicate this row")
+                            side: "right"
+                            delay: 0
+                            ChaSetButton { width: parent.width; size: "sm"; variant: "ghost"; text: ChaSetI18n.tr("overlays.tooltip.menuItemsRightDuplicateButton", "Duplicate") }
+                        }
+                        ChaSetTooltip {
+                            width: parent.width
+                            text: ChaSetI18n.tr("overlays.tooltip.menuItemsRightDeleteContent", "Remove permanently")
+                            side: "right"
+                            delay: 0
+                            ChaSetButton { width: parent.width; size: "sm"; variant: "ghost"; text: ChaSetI18n.tr("overlays.tooltip.menuItemsRightDeleteButton", "Delete") }
                         }
                     }
                 }

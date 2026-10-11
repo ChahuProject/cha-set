@@ -357,6 +357,11 @@ Item {
                                 text: actionBtn.tipText
                                 shortcut: actionBtn.tipShortcut
                                 delay: 300
+                                // Row actions sit in dense vertical rows: right keeps
+                                // the bubbles off the prev/next row (top/bottom would
+                                // cover sibling actions). Collision flip covers the
+                                // right-edge case.
+                                side: "right"
                             }
 
                             MouseArea {

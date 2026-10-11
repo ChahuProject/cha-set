@@ -44,7 +44,10 @@ export function TooltipDocPage() {
           {t('desktopComposite.tooltip.overviewHeading', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Test interactive hover delays, side positioning, keyboard shortcut badges, directional arrows, and disabled behavior across Web and Qt Quick Desktop.
+          {t(
+            'desktopComposite.tooltip.overviewDesc',
+            'Test interactive hover delays, side positioning, keyboard shortcut badges, directional arrows, and disabled behavior across Web and Qt Quick Desktop. Placement policy: dense vertical lists (menu items, select options, sidebar nav, virtual rows) default to right so bubbles never cover the prev/next sibling; top-docked chrome defaults to bottom; bottom-docked chrome to top; modal close buttons to bottom; everything else to top.',
+          )}
         </p>
 
         <ComponentPreview
@@ -219,6 +222,33 @@ export function TooltipDocPage() {
             <div className="flex items-center justify-center py-6">
               <Tooltip content={t('overlays.tooltip.directionalArrowContent', 'Anchored Pointer')} arrow side="top" delayDuration={0}>
                 <Button variant="secondary" size="sm">{t('overlays.tooltip.directionalArrowButton', 'With Arrow')}</Button>
+              </Tooltip>
+            </div>
+          </div>
+
+          {/* Menu Items: Right Default */}
+          <div className="flex flex-col gap-2 p-6 rounded-lg border border-border bg-card">
+            <span className="text-xs font-semibold text-foreground">
+              {t('overlays.tooltip.menuItemsRightTitle', 'Menu Items (Right Default)')}
+            </span>
+            <span className="text-xs text-muted-foreground mb-3">
+              {t('overlays.tooltip.menuItemsRightDesc', 'Dense vertical lists use right so the bubble never covers the prev/next sibling item')}
+            </span>
+            <div className="flex flex-col items-stretch gap-1 py-2">
+              <Tooltip content={t('overlays.tooltip.menuItemsRightPinContent', 'Pinned — keeps siblings visible')} side="right" delayDuration={0}>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  {t('overlays.tooltip.menuItemsRightPinButton', 'Pin tab')}
+                </Button>
+              </Tooltip>
+              <Tooltip content={t('overlays.tooltip.menuItemsRightDuplicateContent', 'Duplicate this row')} side="right" delayDuration={0}>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  {t('overlays.tooltip.menuItemsRightDuplicateButton', 'Duplicate')}
+                </Button>
+              </Tooltip>
+              <Tooltip content={t('overlays.tooltip.menuItemsRightDeleteContent', 'Remove permanently')} side="right" delayDuration={0}>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  {t('overlays.tooltip.menuItemsRightDeleteButton', 'Delete')}
+                </Button>
               </Tooltip>
             </div>
           </div>

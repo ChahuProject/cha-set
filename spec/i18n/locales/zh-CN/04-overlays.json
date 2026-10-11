@@ -371,6 +371,7 @@
       "animationsDescQt": "由 ThemeTokens 驱动的提示气泡打开与关闭时的动效行为与时间节奏。",
       "examplesDesc": "覆盖全部 4 个方向放置与交互状态的常见 Tooltip 配置视觉矩阵。",
       "examplesDescQt": "Qt Quick 桌面端 Tooltip 方向放置视觉矩阵。",
+      "overviewDesc": "测试交互式悬停延迟、方位放置、键盘快捷键角标、方向箭头与禁用行为，覆盖 Web 与 Qt Quick 桌面端。方位策略：纵向密集列表（菜单项、下拉选项、侧边导航、虚拟列表行）默认朝右，气泡不会遮挡上/下相邻的同级项；顶部停靠栏默认朝下；底部停靠栏朝上；弹窗关闭按钮朝下；其余场景朝上。",
       "overviewHeading": "交互式概览",
       "sandboxTitle": "文字提示沙盒"
     }
@@ -633,6 +634,14 @@
       "leftPlacementContent": "目标左侧提示",
       "leftPlacementDesc": "在目标元素垂直居中左侧显示",
       "leftPlacementTitle": "左侧对齐",
+      "menuItemsRightDeleteButton": "删除",
+      "menuItemsRightDeleteContent": "永久移除",
+      "menuItemsRightDesc": "纵向密集列表一律使用右侧方位，气泡不会遮挡上/下相邻的同级项",
+      "menuItemsRightDuplicateButton": "复制",
+      "menuItemsRightDuplicateContent": "复制此行",
+      "menuItemsRightPinButton": "固定标签页",
+      "menuItemsRightPinContent": "已固定 —— 同级项全程可见",
+      "menuItemsRightTitle": "菜单项（默认朝右）",
       "rightPlacementButton": "右侧提示",
       "rightPlacementContent": "目标右侧提示",
       "rightPlacementDesc": "在目标元素垂直居中右侧显示",

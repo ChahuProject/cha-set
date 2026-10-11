@@ -214,6 +214,16 @@
 - Any user-reported light/dark bug means a missed rule in `scripts/check-theme-adaptive.mjs: RULES_VERSION` -> the fixer MUST add a regex + fixture for it: bump `RULES_VERSION`, add a self-test case asserting the new violation is caught, and verify `node scripts/check-theme-adaptive.mjs --self-test && pnpm gate --skip-qt` before commit. A theme fix without a gate rule is NOT complete.
 - Precision is part of the rule: when a fix would otherwise need a false-positive exemption, tighten the matcher (token boundaries, pairing context) and add a *negative* self-test fixture proving the misreported form no longer fires — a guard that only ever grows stricter degrades into noise and stops being read.
 
+19. **Mandatory Tooltip Placement Contract (浮层提示默认方位契约 — 严禁上下遮挡纵向同级项)**:
+    - **Single Source of Truth (单一真理源)**: `spec/components/tooltip.ts` 头注释即方位对照表；`side` schema 默认仍为 `'top'`，各宿主按类别显式覆盖。
+    - **Dense Vertical Lists → `right` (菜单类一律右侧)**: `dropdown-menu` / `context-menu` / `select` options、`sidebar` 导航、`virtual-tree` / `virtual-list` 行、`reorderable` / `table` 行内操作、移动端导航抽屉——一律 `side="right"` + `align="center"`。`top`/`bottom` 会正好盖住上/下相邻菜单项；`right` 让同级项全程可见。必须保留 `avoidCollisions: true`（默认），近右边缘时自动翻转到 `left`，仍不遮挡纵向同级。
+    - **Top-Docked Chrome → `bottom`**: `address-bar`、`breadcrumb`、顶栏 actions、`window-title-bar`（上方即窗口边缘，`top` 会被裁剪/翻转）。
+    - **Modal Chrome → `bottom`**: `dialog` / `sheet` / `draggable-modal` / `floating-window` 的关闭与尺寸按钮（落入弹窗体内；严禁 `side="top" + avoidCollisions={false}` 把气泡钉死在视口外）。
+    - **Bottom-Docked Chrome → `top`**: `media-progress` 时间胶囊、底部贴边条（`bottom` 会被 `clampedY` 拉回叠住自身）。
+    - **Left Rail → `right` (Right Rail 镜像为 `left`)**: `sidebar` 折叠图标轨；右停靠时镜像或依赖碰撞翻转。
+    - **Everything Else → `top`**: 孤立按钮/输入/`badge`/`card`、`segmented-control` 选项、`elided-text`（但处在纵向密集列表内的 `ElidedText` 必须覆盖为 `right`）。
+    - **DocPages 举证**: `TooltipDocPage` 双端 `overview` 必须复述本策略，且 `Examples` 网格必须各含一个 `Menu Items (Right Default)` 纵向三行示例（React 与 Qt 数量/顺序 1:1，见 SPAS 2.0 红线）。
+
 ---
 
 ### Four-Layer Quality Defense Matrix (四级分层质量防御体系)

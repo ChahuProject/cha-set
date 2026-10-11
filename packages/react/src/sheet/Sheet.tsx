@@ -173,8 +173,7 @@ export function SheetContent({
           <Tooltip
             content={resolvedCloseTooltip}
             shortcut="Esc"
-            side="top"
-            avoidCollisions={false}
+            side="bottom"
             className="absolute top-3 right-3 z-20"
           >
             <SheetClose asChild>
