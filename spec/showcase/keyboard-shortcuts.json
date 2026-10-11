@@ -145,6 +145,10 @@
   "copy-button": [
     { "key": "Space / Enter", "action": "Copy target text content to system clipboard" }
   ],
+  "hover-copy": [
+    { "key": "Tab", "action": "Move focus to the floating copy button (reveals the overlay)" },
+    { "key": "Space / Enter", "action": "Copy the configured text and show the check icon" }
+  ],
   "split-button": [
     { "key": "Space / Enter", "action": "Trigger primary action on main button segment" },
     { "key": "↓ / Enter", "action": "Open secondary actions dropdown menu from dropdown segment" }

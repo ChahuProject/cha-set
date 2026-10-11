@@ -76,6 +76,12 @@
         "desc": "One-click clipboard copy button with transient feedback icons and custom timeouts."
       },
       {
+        "id": "hover-copy",
+        "title": "Hover Copy",
+        "href": "#/components/hover-copy",
+        "desc": "Hover-dim overlay with floating copy button for arbitrary content."
+      },
+      {
         "id": "split-button",
         "title": "Split Button",
         "href": "#/components/split-button",

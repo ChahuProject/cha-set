@@ -77,6 +77,7 @@
     "button": { "semantic": "action", "supportsDisabled": true },
     "split-button": { "semantic": "action", "supportsDisabled": true },
     "copy-button": { "semantic": "action", "supportsDisabled": true },
+    "hover-copy": { "semantic": "action", "supportsDisabled": true },
     "checkbox": { "semantic": "action", "supportsDisabled": true, "supportsReadOnly": true },
     "switch": { "semantic": "action", "supportsDisabled": true, "supportsReadOnly": true },
     "tabs-trigger": { "semantic": "action", "supportsDisabled": true },

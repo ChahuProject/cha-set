@@ -162,6 +162,18 @@
     "copyText": true,
     "feedbackState": true
   },
+  "hoverCopy": {
+    "hoverReveal": true,
+    "copyAction": true,
+    "copiedFeedback": true,
+    "restoreTiming": true,
+    "emptyTextGuard": true,
+    "disabledGuard": true,
+    "touchFallback": true,
+    "keyboardActivation": true,
+    "contentAgnostic": true,
+    "copyableBadgePreset": true
+  },
   "panelCard": {
     "container": true,
     "tintedHeader": true,

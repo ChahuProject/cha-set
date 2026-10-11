@@ -202,6 +202,18 @@
       "feedbackState": { "requirement": "must", "description": "temporarily displays copied state icon and tooltip" },
       "label": { "requirement": "should", "description": "supports companion text label alongside copy icon" }
     },
+    "hoverCopy": {
+      "hoverReveal": { "requirement": "must", "description": "reveals floating copy button and dim scrim on pointer hover or focus" },
+      "copyAction": { "requirement": "must", "description": "copies configured text to clipboard on button activation" },
+      "copiedFeedback": { "requirement": "must", "description": "swaps icon to check for a fixed restore interval then restores" },
+      "restoreTiming": { "requirement": "must", "description": "restores to hovered state while pointer remains and idle otherwise" },
+      "emptyTextGuard": { "requirement": "must", "description": "empty copy text is a silent no-op without errors" },
+      "disabledGuard": { "requirement": "must", "description": "disabled state blocks reveal and copy" },
+      "touchFallback": { "requirement": "must", "description": "touch devices reveal the overlay via tap before copy" },
+      "keyboardActivation": { "requirement": "must", "description": "Tab focuses and Enter or Space activates the copy button" },
+      "contentAgnostic": { "requirement": "must", "description": "wraps arbitrary content without assumptions" },
+      "copyableBadgePreset": { "requirement": "must", "description": "CopyableBadge preset forwards to HoverCopy with badge-bound defaults" }
+    },
     "panelCard": {
       "container": { "requirement": "must", "description": "renders card container with rounded borders and background" },
       "tintedHeader": { "requirement": "must", "description": "supports tinted header background styling" },

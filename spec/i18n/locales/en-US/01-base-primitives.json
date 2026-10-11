@@ -1,4 +1,9 @@
 {
+  "showcase": {
+    "previewTitles": {
+      "Truncated display full copy": "Truncated display, full copy"
+    }
+  },
   "components": {
     "badge": {
       "away": "Away",
@@ -108,6 +113,52 @@
       "tooltipDelayDesc": "Delay in milliseconds before showing tooltip on hover.",
       "tooltipPlacementDesc": "Placement direction of the floating tooltip.",
       "tooltipTextDesc": "Custom tooltip text override if different from raw text."
+    },
+    "hover-copy": {
+      "animBullet1": "Overlay reveal and leave animate over duration-quick with the ease-standard curve (Qt: ThemeTokens.motionQuick + easeStandard).",
+      "animBullet2": "The resting-to-success icon swap uses the duration-short token.",
+      "animBullet3": "Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled). The restore timer is logic timing and is never shortened.",
+      "animationsDesc": "Overlay reveal and icon swap animate with ThemeTokens.motionQuick and ThemeTokens.motionShort using ThemeTokens.easeStandard. Setting ThemeTokens.animationsEnabled to false makes every transition instant; the restore timer is a logic timer and is never shortened.",
+      "childrenDesc": "Arbitrary wrapped content the overlay hugs; no assumptions are made about child tags.",
+      "copiedIconDesc": "Success icon semantic name, default check.",
+      "copiedStatus": "Copied",
+      "copiedSuccess": "Successfully copied: {{text}}",
+      "demoToken": "sk-chaset-demo-token-9182",
+      "description": "Hover-dim overlay with floating copy button for arbitrary content.",
+      "dimAmount": "Dim amount",
+      "dimDesc": "Black scrim alpha of the hover overlay, 0 to 1, default 0.45.",
+      "disabled": "Disabled",
+      "disabledDesc": "When disabled the overlay never appears and copy never fires.",
+      "hoverHint": "Hover the card, then click the floating button to copy.",
+      "iconDesc": "Resting overlay icon semantic name, default copy.",
+      "installationDesc": "Import HoverCopy or the CopyableBadge preset from the shared package.",
+      "keyboardDesc": "Tab focuses the floating button, Enter or Space copies, and leaving focus dismisses the overlay.",
+      "onCopyDesc": "Fired on successful copy with the copied text.",
+      "onErrorDesc": "Fired when the clipboard write fails.",
+      "orderMeta": "cha-set / dev-2049",
+      "orderTitle": "Order #1024",
+      "overviewDesc": "Hover the card to reveal a dimmed scrim with a floating copy button. Click it to copy the hidden payload to the clipboard.",
+      "playgroundDesc": "Tune the overlay radius, restore interval, scrim density, and disabled state. The sandbox below mirrors the desktop layout exactly.",
+      "playgroundTitle": "Timing & Dim Controls",
+      "presetDesc": "CopyableBadge is a thin preset that wraps a secondary Badge in HoverCopy with a pill overlay. It adds no state or timing of its own.",
+      "presetHint": "Hover the badge to reveal its copy button.",
+      "presetText": "ORDER-1024",
+      "presetTitle": "CopyableBadge Preset",
+      "radius": "Radius",
+      "radiusDesc": "Semantic radius of the overlay: none, sm, md, lg or full (pill).",
+      "radiusFull": "full",
+      "radiusLg": "lg",
+      "radiusMd": "md",
+      "radiusNone": "none",
+      "radiusSm": "sm",
+      "resetTarget": "sk-chaset-reset-2048",
+      "resetTimeDesc": "Milliseconds before restoring after a successful copy, default 2000.",
+      "restoreInterval": "Restore interval",
+      "textDesc": "Payload copied to the clipboard; may differ from the displayed (possibly truncated) content.",
+      "truncateDesc": "The visible label may be truncated while the copied payload stays the full string.",
+      "truncateHint": "Only the start fits on screen; copying grabs the complete identifier.",
+      "truncateText": "ORDER-2026-0417-PROD-HOTFIX",
+      "truncateTitle": "Truncated display, full copy"
     },
     "kbd": {
       "always": "Always",
