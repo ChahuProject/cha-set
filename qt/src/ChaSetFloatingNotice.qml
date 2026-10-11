@@ -40,9 +40,47 @@ Item {
     readonly property var activeItem: root.hasNotices && root._activeIndex < root._sorted.length
         ? root._sorted[root._activeIndex] : null
 
-    // Geometry (extra peek room for the two behind stack layers)
+    // ---- Stack geometry: dispersed near the front, tighter toward the back.
+    // Positions are fixed by sorted order (no quantity limit); hovering only
+    // raises that position to the top (z-order + full size) without reordering.
+    function stackGap(depth) {
+        if (depth <= 0) return 0;
+        return Math.max(ThemeTokens.dp(4), ThemeTokens.dp(14) * Math.pow(0.85, depth - 1));
+    }
+
+    function stackOffset(idx) {
+        var total = 0;
+        for (var d = 1; d <= idx; d++) total += root.stackGap(d);
+        return total;
+    }
+
+    function stackInset(idx) {
+        var total = 0;
+        for (var d = 1; d <= idx; d++) total += Math.max(ThemeTokens.dp(4), ThemeTokens.dp(16) * Math.pow(0.8, d - 1));
+        return total;
+    }
+
+    function stackScale(idx) {
+        return Math.max(0.72, 1 - idx * 0.04);
+    }
+
+    function stackOpacity(idx) {
+        return Math.max(0.3, 0.9 - idx * 0.15);
+    }
+
+    function stackMaxOffset() {
+        var total = 0;
+        var gap = ThemeTokens.dp(14);
+        for (var i = 1; i < root._sorted.length; i++) {
+            total += gap;
+            gap = Math.max(ThemeTokens.dp(4), gap * 0.85);
+        }
+        return total;
+    }
+
+    // Geometry (extra peek room for the dispersed stack layers)
     implicitWidth: pill.implicitWidth
-    implicitHeight: pill.implicitHeight + ThemeTokens.dp(12)
+    implicitHeight: pill.implicitHeight + root.stackMaxOffset()
     width: implicitWidth
     height: implicitHeight
 
@@ -164,7 +202,7 @@ Item {
     readonly property string currentLevel: root.activeItem
         ? root.levelTone(root.activeItem.level) : "default"
 
-    // ---- Card Stack Surface (front pill + up to 2 queued layers) -----------
+    // ---- Card Stack Surface (raised pill + full-quantity behind stack) -----------
 
     Item {
         id: stackWrapper
@@ -185,8 +223,8 @@ Item {
             NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
         }
 
-        // Keyboard: Enter/Space/Arrows cycle the queue (bring item to front).
-        // No default button action exists on the stack, so activation cycles.
+        // Keyboard: Enter/Space/Arrows raise the stacked position in place.
+        // No default button action exists on the stack, so activation raises.
         activeFocusOnTab: true
         Keys.onPressed: (event) => {
             if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return || event.key === Qt.Key_Space
@@ -210,96 +248,100 @@ Item {
             }
         }
 
-        // Behind layer (far): second queued item peeking behind the stack.
-        Rectangle {
-            id: farLayer
-            readonly property int queuedIndex: root._sorted.length > 0
-                ? (root._activeIndex + 2) % root._sorted.length : -1
-            readonly property var queuedItem: queuedIndex >= 0 ? root._sorted[queuedIndex] : null
-            readonly property string queuedLevel: queuedItem ? root.levelTone(queuedItem.level) : "default"
-            property color lvlColor: root.levelColor(queuedLevel)
+        // Behind stack (full quantity): every non-raised notice keeps its fixed
+        // sorted position with diminishing gaps and shrinking sizes. Hovering
+        // raises that position to the top in place (no reorder to front).
+        Repeater {
+            id: stackRepeater
+            model: root._sorted.length
 
-            visible: root._sorted.length > 2
-            width: pill.width - ThemeTokens.dp(32)
-            height: pill.height
-            anchors.horizontalCenter: parent.horizontalCenter
-            y: root.placement === "top" ? ThemeTokens.dp(12) : 0
-            radius: pill.radius
-            scale: 0.92
-            opacity: 0.4
+            delegate: Rectangle {
+                required property int index
+                readonly property var stackedItem: root._sorted[index]
+                readonly property string stackedLevel: stackedItem ? root.levelTone(stackedItem.level) : "default"
+                property color lvlColor: root.levelColor(stackedLevel)
 
-            Behavior on opacity {
-                enabled: ThemeTokens.animationsEnabled
-                NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
-            }
+                visible: root.hasNotices && stackedItem !== undefined && index !== root._activeIndex
+                width: Math.max(ThemeTokens.dp(80), pill.width - root.stackInset(index))
+                height: pill.height
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: root.placement === "top"
+                    ? root.stackOffset(index)
+                    : Math.max(0, root.stackMaxOffset() - root.stackOffset(index))
+                z: root._sorted.length - index
+                radius: pill.radius
+                scale: root.stackScale(index)
+                opacity: root.stackOpacity(index)
 
-            color: Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.92)
-            border.color: Qt.rgba(lvlColor.r, lvlColor.g, lvlColor.b, 0.5)
-            border.width: 1
-
-            HoverHandler {
-                cursorShape: Qt.PointingHandCursor
-                onHoveredChanged: {
-                    if (hovered && farLayer.queuedIndex >= 0) root._activeIndex = farLayer.queuedIndex;
+                Behavior on opacity {
+                    enabled: ThemeTokens.animationsEnabled
+                    NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
                 }
-            }
 
-            TapHandler {
-                onTapped: {
-                    if (farLayer.queuedIndex >= 0) root._activeIndex = farLayer.queuedIndex;
+                color: Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.92)
+                border.color: Qt.rgba(lvlColor.r, lvlColor.g, lvlColor.b, 0.5)
+                border.width: 1
+
+                Row {
+                    anchors.centerIn: parent
+                    spacing: ThemeTokens.dp(6)
+
+                    ChaSetIcon {
+                        anchors.verticalCenter: parent.verticalCenter
+                        name: root.levelIcon(stackedLevel, stackedItem ? stackedItem.icon : undefined)
+                        size: 16
+                        color: root.levelColor(stackedLevel)
+                    }
+
+                    Text {
+                        text: stackedItem ? (stackedItem.title || "") : ""
+                        font.pixelSize: Typography.sizeSmall
+                        font.weight: Font.Medium
+                        color: ThemeTokens.text
+                        anchors.verticalCenter: parent.verticalCenter
+                        elide: Text.ElideRight
+                        maximumLineCount: 1
+                        width: Math.min(implicitWidth, ThemeTokens.dp(200))
+                    }
+
+                    Text {
+                        visible: text !== ""
+                        text: stackedItem ? (stackedItem.description || "") : ""
+                        font.pixelSize: Typography.sizeCaption
+                        color: ThemeTokens.subduedText
+                        elide: Text.ElideMiddle
+                        maximumLineCount: 1
+                        width: Math.min(implicitWidth, ThemeTokens.dp(160))
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+
+                HoverHandler {
+                    cursorShape: Qt.PointingHandCursor
+                    onHoveredChanged: {
+                        if (hovered) root._activeIndex = index;
+                    }
+                }
+
+                TapHandler {
+                    onTapped: {
+                        root._activeIndex = index;
+                    }
                 }
             }
         }
 
-        // Behind layer (near): next queued item peeking behind the front pill.
-        Rectangle {
-            id: nearLayer
-            readonly property int queuedIndex: root._sorted.length > 0
-                ? (root._activeIndex + 1) % root._sorted.length : -1
-            readonly property var queuedItem: queuedIndex >= 0 ? root._sorted[queuedIndex] : null
-            readonly property string queuedLevel: queuedItem ? root.levelTone(queuedItem.level) : "default"
-            property color lvlColor: root.levelColor(queuedLevel)
-
-            visible: root._sorted.length > 1
-            width: pill.width - ThemeTokens.dp(16)
-            height: pill.height
-            anchors.horizontalCenter: parent.horizontalCenter
-            y: ThemeTokens.dp(6)
-            radius: pill.radius
-            scale: 0.96
-            opacity: 0.7
-
-            Behavior on opacity {
-                enabled: ThemeTokens.animationsEnabled
-                NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
-            }
-
-            color: Qt.rgba(ThemeTokens.panelRaised.r, ThemeTokens.panelRaised.g, ThemeTokens.panelRaised.b, 0.92)
-            border.color: Qt.rgba(lvlColor.r, lvlColor.g, lvlColor.b, 0.6)
-            border.width: 1
-
-            HoverHandler {
-                cursorShape: Qt.PointingHandCursor
-                onHoveredChanged: {
-                    if (hovered && nearLayer.queuedIndex >= 0) root._activeIndex = nearLayer.queuedIndex;
-                }
-            }
-
-            TapHandler {
-                onTapped: {
-                    if (nearLayer.queuedIndex >= 0) root._activeIndex = nearLayer.queuedIndex;
-                }
-            }
-        }
-
-        // Front pill (full-size, top of the stack).
+        // Raised pill (full-size, top of the stack, kept at its sorted position).
         Rectangle {
             id: pill
 
             width: implicitWidth
             height: implicitHeight
             anchors.horizontalCenter: parent.horizontalCenter
-            y: root.placement === "top" ? 0 : ThemeTokens.dp(12)
+            y: root.placement === "top"
+                ? root.stackOffset(root._activeIndex)
+                : Math.max(0, root.stackMaxOffset() - root.stackOffset(root._activeIndex))
+            z: 100
 
             implicitWidth: Math.max(ThemeTokens.dp(160), contentRow.implicitWidth + ThemeTokens.dp(24))
             implicitHeight: Math.max(ThemeTokens.dp(36), contentRow.implicitHeight + ThemeTokens.dp(12))

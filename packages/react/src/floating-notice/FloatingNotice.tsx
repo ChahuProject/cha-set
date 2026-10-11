@@ -143,12 +143,49 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
   const activeBudget = activeItem ? budgets[activeItem.id] : undefined;
   const isExpired = activeBudget === 0;
 
-  // Queued entries behind the front card (max 2 layers, total max 3 visible).
-  // Ordered by sorted order, excluding the active front item.
-  const queuedEntries = sortedNotices
-    .map((item, sortedIdx) => ({ item, sortedIdx }))
-    .filter((entry) => entry.sortedIdx !== activeIndex)
-    .slice(0, 2);
+  // Stack geometry: dispersed near the front, progressively tighter toward the
+  // back. Positions are fixed by sorted order; hovering only raises the layer
+  // (z-index + full size in place) without reordering.
+  const BASE_GAP_REM = 0.875; // 14px — visibly more dispersed than the old 6px
+  const GAP_DECAY = 0.85;
+  const MIN_GAP_REM = 0.25; // 4px floor
+  const BASE_INSET_REM = 1; // 16px narrower per depth step (decaying)
+  const INSET_DECAY = 0.8;
+  const MIN_INSET_REM = 0.25;
+
+  const gapForDepth = (depth: number): number => {
+    if (depth <= 0) return 0;
+    return Math.max(MIN_GAP_REM, BASE_GAP_REM * Math.pow(GAP_DECAY, depth - 1));
+  };
+
+  const offsetForDepth = (sortedIdx: number): number => {
+    let total = 0;
+    for (let d = 1; d <= sortedIdx; d++) total += gapForDepth(d);
+    return total;
+  };
+
+  const insetForDepth = (sortedIdx: number): number => {
+    let total = 0;
+    for (let d = 1; d <= sortedIdx; d++) {
+      total += Math.max(MIN_INSET_REM, BASE_INSET_REM * Math.pow(INSET_DECAY, d - 1));
+    }
+    return total;
+  };
+
+  const scaleForDepth = (sortedIdx: number, isActive: boolean): number => {
+    if (isActive) return 1; // raised card restores full size in place
+    return Math.max(0.72, 1 - sortedIdx * 0.04);
+  };
+
+  const opacityForDepth = (sortedIdx: number, isActive: boolean): number => {
+    if (isActive) return isExpired ? 0 : 1;
+    return Math.max(0.3, 0.9 - sortedIdx * 0.15);
+  };
+
+  // All entries stay in sorted positions (no slice limit); the active entry
+  // only gains top z-order and full size where it already sits.
+  const stackEntries = sortedNotices.map((item, sortedIdx) => ({ item, sortedIdx }));
+  const stackSign = placement === 'top' ? 1 : -1;
 
   // Notify on active change
   React.useEffect(() => {
@@ -192,10 +229,6 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
 
   if (!activeItem) return null;
 
-  const currentLevel: FloatingNoticeLevel = activeItem.level ?? 'default';
-  const styles = LEVEL_STYLES[currentLevel] ?? LEVEL_STYLES.default;
-  const itemClosable = (activeItem.closable ?? true) && closable;
-
   const offsetStyle: React.CSSProperties =
     placement === 'top'
       ? { top: `${offset * 0.0625}rem` }
@@ -217,38 +250,44 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
       onMouseLeave={() => setInternalHover(false)}
     >
       <div className="relative">
-        {/* Card-stack behind layers (max 2), fixed geometry independent of text length */}
-        {queuedEntries.map((entry, layerIdx) => {
+        {/* Full stack: every notice keeps its sorted position; hover raises
+            that position to the top (z-index + full size) without reordering.
+            Depth 0 stays in-flow as the sizing anchor; deeper layers overlay. */}
+        {stackEntries.map((entry) => {
+          const isActive = entry.sortedIdx === activeIndex;
+          const isAnchor = entry.sortedIdx === 0;
           const layerLevel = entry.item.level ?? 'default';
           const layerStyle = LEVEL_STYLES[layerLevel] ?? LEVEL_STYLES.default;
-          const isFirstLayer = layerIdx === 0;
+          const layerIcon = LEVEL_ICON[layerLevel] ?? LEVEL_ICON.default;
+          const depthOffset = offsetForDepth(entry.sortedIdx) * stackSign;
+          const scale = scaleForDepth(entry.sortedIdx, isActive);
+          const inset = isActive ? 0 : insetForDepth(entry.sortedIdx);
+          const layerClosable = (entry.item.closable ?? true) && closable;
           return (
-            <button
+            <div
               key={entry.item.id}
-              type="button"
-              data-testid={`queue-dot-${entry.sortedIdx}`}
+              role="button"
+              tabIndex={0}
+              data-testid={isActive ? `notice-card-${entry.sortedIdx}` : `queue-dot-${entry.sortedIdx}`}
+              data-active={isActive ? 'true' : 'false'}
+              data-depth={entry.sortedIdx}
               title={entry.item.title}
-              aria-label={`Show notice: ${entry.item.title}`}
+              aria-label={isActive ? entry.item.title : `Show notice: ${entry.item.title}`}
               className={cn(
-                'absolute top-0 left-1/2 rounded-full border backdrop-blur-md',
-                'min-h-[0.5rem] cursor-pointer transition-all duration-short ease-standard',
+                'flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
+                'min-w-[12rem] max-w-[28rem] cursor-pointer transition-all duration-short ease-standard',
+                isAnchor ? 'relative' : 'absolute top-0 left-1/2',
                 layerStyle.container
               )}
-              style={
-                isFirstLayer
-                  ? {
-                      transform: 'translateX(-50%) translateY(0.375rem) scale(0.96)',
-                      width: 'calc(100% - 1rem)',
-                      height: '100%',
-                      opacity: 0.7,
-                    }
-                  : {
-                      transform: 'translateX(-50%) translateY(0.75rem) scale(0.92)',
-                      width: 'calc(100% - 2rem)',
-                      height: '100%',
-                      opacity: 0.4,
-                    }
-              }
+              style={{
+                transform: isAnchor
+                  ? `scale(${scale})`
+                  : `translateX(-50%) translateY(${depthOffset}rem) scale(${scale})`,
+                width: isAnchor ? undefined : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
+                height: isAnchor ? undefined : '100%',
+                opacity: opacityForDepth(entry.sortedIdx, isActive),
+                zIndex: isActive ? 30 : stackEntries.length - entry.sortedIdx,
+              }}
               onMouseEnter={() => setActiveIndex(entry.sortedIdx)}
               onClick={() => setActiveIndex(entry.sortedIdx)}
               onFocus={() => setActiveIndex(entry.sortedIdx)}
@@ -259,60 +298,48 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
                 }
               }}
             >
-              <span className="sr-only">{entry.item.title}</span>
-            </button>
-          );
-        })}
+              {/* Leading icon */}
+              <div className="shrink-0 flex items-center justify-center">
+                {layerIcon(cn('size-4 shrink-0', layerStyle.icon))}
+              </div>
 
-        {/* Front card (full-size) */}
-        <div
-          className={cn(
-            'relative z-10 flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
-            'transition-all duration-short ease-standard min-w-[12rem] max-w-[28rem]',
-            styles.container,
-            isExpired ? 'opacity-0' : 'opacity-100'
-          )}
-        >
-        {/* Leading icon */}
-        <div className="shrink-0 flex items-center justify-center">
-          {LEVEL_ICON[currentLevel](cn('size-4 shrink-0', styles.icon))}
-        </div>
+              {/* Notice Content / Slot */}
+              <div className="flex-1 min-w-0 text-xs font-medium truncate">
+                {renderContent ? (
+                  renderContent(entry.item)
+                ) : (
+                  <div className="flex items-center gap-1.5 truncate">
+                    <span className="truncate">{entry.item.title}</span>
+                    {entry.item.description && (
+                      <span className="text-muted-foreground truncate font-normal">
+                        {entry.item.description}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
 
-        {/* Notice Content / Slot */}
-        <div className="flex-1 min-w-0 text-xs font-medium truncate">
-          {renderContent ? (
-            renderContent(activeItem)
-          ) : (
-            <div className="flex items-center gap-1.5 truncate">
-              <span className="truncate">{activeItem.title}</span>
-              {activeItem.description && (
-                <span className="text-muted-foreground truncate font-normal">
-                  {activeItem.description}
-                </span>
+              {/* Close Button ('x'): reveals on hover, raised card only */}
+              {isActive && layerClosable && (
+                <button
+                  type="button"
+                  data-testid="notice-close-button"
+                  aria-label="Close notice"
+                  className={cn(
+                    'shrink-0 p-0.5 rounded-full hover:bg-foreground/10 text-muted-foreground hover:text-foreground cursor-pointer transition-opacity duration-quick',
+                    isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  )}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDismiss?.(entry.item.id);
+                  }}
+                >
+                  <XIcon className="size-3.5" />
+                </button>
               )}
             </div>
-          )}
-        </div>
-
-        {/* Close Button ('x'): reveals on hover, front card only */}
-        {itemClosable && (
-          <button
-            type="button"
-            data-testid="notice-close-button"
-            aria-label="Close notice"
-            className={cn(
-              'shrink-0 p-0.5 rounded-full hover:bg-foreground/10 text-muted-foreground hover:text-foreground cursor-pointer transition-opacity duration-quick',
-              isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            )}
-            onClick={(e) => {
-              e.stopPropagation();
-              onDismiss?.(activeItem.id);
-            }}
-          >
-            <XIcon className="size-3.5" />
-          </button>
-        )}
-        </div>
+          );
+        })}
       </div>
     </div>
   );

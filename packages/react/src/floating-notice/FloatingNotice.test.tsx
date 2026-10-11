@@ -24,13 +24,13 @@ describe('FloatingNotice', () => {
 
     render(<FloatingNotice notices={notices} />);
 
-    // Highest priority 'high' should be rendered in the active notice
+    // Highest priority 'high' should be rendered in the raised notice
     expect(screen.getByText('Critical error alert')).toBeInTheDocument();
-    // Card-stack behind layers peek behind the front card (max 2 layers)
+    // Full stack behind layers peek behind at fixed sorted positions
     expect(screen.getByTestId('queue-dot-1')).toBeInTheDocument();
   });
 
-  it('switches active notice when hovering queue dots', () => {
+  it('raises the hovered card in place without moving it to the front', () => {
     const onActiveChange = vi.fn();
     const notices: FloatingNoticeItem[] = [
       { id: '1', title: 'First Notice', level: 'info', priority: 10 },
@@ -39,13 +39,78 @@ describe('FloatingNotice', () => {
 
     render(<FloatingNotice notices={notices} onActiveChange={onActiveChange} />);
 
-    expect(screen.getByText('First Notice')).toBeInTheDocument();
+    expect(screen.getByTestId('notice-card-0')).toBeInTheDocument();
 
     const secondDot = screen.getByTestId('queue-dot-1');
+    const offsetBefore = secondDot.style.transform;
     fireEvent.mouseEnter(secondDot);
 
-    expect(screen.getByText('Second Notice')).toBeInTheDocument();
     expect(onActiveChange).toHaveBeenCalledWith('2', 1);
+    // Raised card keeps its stacked position (same offset) but gains top z-order + full size
+    const raised = screen.getByTestId('notice-card-1');
+    expect(raised.style.transform).toBe(offsetBefore.replace(/scale\([^)]*\)/, 'scale(1)'));
+    expect(raised.style.transform).toContain('translateY(0.875rem)');
+    expect(raised.style.zIndex).toBe('30');
+    expect(raised.style.width).toBe('100%');
+    // Previous front card stays at its own position instead of being displaced
+    expect(screen.getByTestId('queue-dot-0')).toBeInTheDocument();
+  });
+
+  it('disperses deeper layers with diminishing gaps and shrinking sizes', () => {
+    const notices: FloatingNoticeItem[] = [
+      { id: 'a', title: 'Notice A' },
+      { id: 'b', title: 'Notice B' },
+      { id: 'c', title: 'Notice C' },
+      { id: 'd', title: 'Notice D' },
+    ];
+
+    render(<FloatingNotice notices={notices} />);
+
+    const offsets = [1, 2, 3].map((depth) => {
+      const el = screen.getByTestId(`queue-dot-${depth}`);
+      const match = el.style.transform.match(/translateY\(([-\d.]+)rem\)/);
+      expect(match).not.toBeNull();
+      return Number(match?.[1]);
+    });
+    const [o0 = 0, o1 = 0, o2 = 0] = offsets;
+    // Offsets spread out (more dispersed than the old 6px/12px stack)
+    expect(o0).toBeGreaterThan(0.75);
+    expect(o1).toBeGreaterThan(o0 + 0.5);
+    expect(o2).toBeGreaterThan(o1 + 0.25);
+    // Gaps diminish toward the back
+    expect(o1 - o0).toBeLessThan(o0);
+    expect(o2 - o1).toBeLessThan(o1 - o0);
+
+    const scales = [1, 2, 3].map((depth) => {
+      const el = screen.getByTestId(`queue-dot-${depth}`);
+      const match = el.style.transform.match(/scale\(([-\d.]+)\)/);
+      return Number(match?.[1]);
+    });
+    const [s0 = 0, s1 = 0, s2 = 0] = scales;
+    expect(s0).toBeCloseTo(0.96, 5);
+    expect(s1).toBeLessThan(s0);
+    expect(s2).toBeLessThan(s1);
+
+    const opacities = [1, 2, 3].map(
+      (depth) => Number(screen.getByTestId(`queue-dot-${depth}`).style.opacity)
+    );
+    const [p0 = 0, p1 = 0, p2 = 0] = opacities;
+    expect(p0).toBeLessThan(1);
+    expect(p1).toBeLessThan(p0);
+    expect(p2).toBeLessThan(p1);
+  });
+
+  it('renders an unlimited stack without slicing behind layers', () => {
+    const notices: FloatingNoticeItem[] = Array.from({ length: 5 }, (_, i) => ({
+      id: `n-${i}`,
+      title: `Notice ${i}`,
+    }));
+
+    render(<FloatingNotice notices={notices} />);
+
+    for (const depth of [1, 2, 3, 4]) {
+      expect(screen.getByTestId(`queue-dot-${depth}`)).toBeInTheDocument();
+    }
   });
 
   it('triggers onDismiss when close button is clicked', () => {
