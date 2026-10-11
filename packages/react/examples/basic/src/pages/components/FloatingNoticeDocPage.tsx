@@ -124,7 +124,7 @@ export function FloatingNoticeDocPage() {
     onDismissed: function(id) { removeNotice(id) }
 }`}
         >
-          <div className="relative w-full h-64 border rounded-xl bg-muted/20 flex flex-col justify-between p-4 overflow-hidden">
+          <div className="relative w-full h-64 border border-border rounded-xl bg-muted/20 flex flex-col justify-between p-4 overflow-hidden">
             {/* Controls Bar */}
             <div className="flex flex-wrap items-center justify-between gap-2 z-10">
               <div className="flex items-center gap-2">
